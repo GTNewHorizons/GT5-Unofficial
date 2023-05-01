@@ -5,9 +5,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import mods.railcraft.common.util.misc.Game;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import io.netty.buffer.Unpooled;
+import mods.railcraft.common.util.misc.Game;
 
 public abstract class CustomPacket {
 

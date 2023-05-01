@@ -88,6 +88,7 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
         return CORE.ConfigSwitches.pollutionPerSecondMultiAutoCrafter;
     }
 
+    @Override
     public int getAmountOfOutputs() {
         return 1;
     }

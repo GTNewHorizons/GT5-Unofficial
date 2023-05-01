@@ -56,10 +56,12 @@ public abstract class CustomMetaTileBase extends MetaTileEntity {
         super(aName, aInvSlotCount);
     }
 
+    @Override
     public ItemStack getStackForm(long aAmount) {
         return new ItemStack(Meta_GT_Proxy.sBlockMachines, (int) aAmount, this.getBaseMetaTileEntity().getMetaTileID());
     }
 
+    @Override
     public String getLocalName() {
         return GT_LanguageManager.getTranslation("gtpp.blockmachines." + this.mName + ".name");
     }

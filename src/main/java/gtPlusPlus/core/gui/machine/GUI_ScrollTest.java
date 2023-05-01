@@ -47,6 +47,7 @@ public class GUI_ScrollTest extends GuiScreen {
     /**
      * Adds the buttons (and other controls) to the screen in question.
      */
+    @Override
     @SuppressWarnings("unchecked")
     public void initGui() {
         this.buttonList.add(
@@ -103,6 +104,7 @@ public class GUI_ScrollTest extends GuiScreen {
         return this.field_146969_h;
     }
 
+    @Override
     protected void actionPerformed(GuiButton p_146284_1_) {
         if (p_146284_1_.enabled) {
             if (p_146284_1_.id == 2) {
@@ -177,6 +179,7 @@ public class GUI_ScrollTest extends GuiScreen {
     /**
      * Called when the mouse is clicked.
      */
+    @Override
     protected void mouseClicked(int p_73864_1_, int p_73864_2_, int p_73864_3_) {
         super.mouseClicked(p_73864_1_, p_73864_2_, p_73864_3_);
         this.MapOfFreeResourcePacks.func_148179_a(p_73864_1_, p_73864_2_, p_73864_3_);
@@ -187,6 +190,7 @@ public class GUI_ScrollTest extends GuiScreen {
      * Called when the mouse is moved or a mouse button is released. Signature: (mouseX, mouseY, which) which==-1 is
      * mouseMove, which==0 or which==1 is mouseUp
      */
+    @Override
     protected void mouseMovedOrUp(int p_146286_1_, int p_146286_2_, int p_146286_3_) {
         super.mouseMovedOrUp(p_146286_1_, p_146286_2_, p_146286_3_);
     }
@@ -194,6 +198,7 @@ public class GUI_ScrollTest extends GuiScreen {
     /**
      * Draws the screen and all the components in it.
      */
+    @Override
     public void drawScreen(int p_73863_1_, int p_73863_2_, float p_73863_3_) {
         this.drawBackground(0);
         this.MapOfFreeResourcePacks.drawScreen(p_73863_1_, p_73863_2_, p_73863_3_);

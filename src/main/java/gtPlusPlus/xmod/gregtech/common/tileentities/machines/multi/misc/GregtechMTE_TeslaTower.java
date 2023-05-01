@@ -207,7 +207,7 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase<Gregtech
         xLoc = getBaseMetaTileEntity().getXCoord();
         yLoc = getBaseMetaTileEntity().getYCoord();
         zLoc = getBaseMetaTileEntity().getZCoord();
-        back = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing());
+        back = getBaseMetaTileEntity().getBackFacing();
     }
 
     protected boolean checkCasingBlock(int xOff, int yOff, int zOff) {
@@ -464,7 +464,7 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase<Gregtech
     }
 
     @Override
-    public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mMode = Utils.invertBoolean(mMode);
         this.mInRange.clear();
         if (mMode) {

@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
@@ -76,8 +77,8 @@ public class GregtechMetaTileEntityGeothermalGenerator extends GT_MetaTileEntity
     }
 
     @Override
-    public boolean isOutputFacing(final byte aSide) {
-        return aSide == this.getBaseMetaTileEntity().getFrontFacing();
+    public boolean isOutputFacing(final ForgeDirection side) {
+        return side == this.getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -156,6 +157,7 @@ public class GregtechMetaTileEntityGeothermalGenerator extends GT_MetaTileEntity
         return GT_Recipe_Map.sHotFuels;
     }
 
+    @Override
     public int getPollution() {
         return (int) (CORE.ConfigSwitches.basePollutionPerSecondGeothermalGenerator
                 * CORE.ConfigSwitches.pollutionReleasedByTierGeothermalGenerator[mTier]);

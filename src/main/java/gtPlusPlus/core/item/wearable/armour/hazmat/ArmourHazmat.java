@@ -28,6 +28,7 @@ public class ArmourHazmat extends BaseArmourHelm {
         super(ArmourLoader.TinFoilArmour, 0);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister ir) {
         this.iconHelm = ir.registerIcon(GTPlusPlus.ID + ":itemHatTinFoil");
@@ -38,19 +39,23 @@ public class ArmourHazmat extends BaseArmourHelm {
         return 0;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int par1) {
         return this.iconHelm;
     }
 
+    @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
         return GTPlusPlus.ID + ":textures/models/TinFoil.png";
     }
 
+    @Override
     public EnumRarity getRarity(ItemStack itemstack) {
         return EnumRarity.rare;
     }
 
+    @Override
     public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
         return false;
     }

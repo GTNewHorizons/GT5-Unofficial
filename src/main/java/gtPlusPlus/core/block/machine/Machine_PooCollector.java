@@ -55,13 +55,13 @@ public class Machine_PooCollector extends BlockContainer {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(final int aSide, final int aMeta) {
+    public IIcon getIcon(final int ordinalSide, final int aMeta) {
         if (aMeta <= 7) {
             blockIcon = textureSide;
-            return aSide <= 1 ? this.textureTop : this.textureSide;
+            return ordinalSide <= 1 ? this.textureTop : this.textureSide;
         } else {
             blockIcon = textureSide2;
-            return aSide <= 1 ? this.textureTop2 : this.textureSide2;
+            return ordinalSide <= 1 ? this.textureTop2 : this.textureSide2;
         }
     }
 

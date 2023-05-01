@@ -31,6 +31,7 @@ public class MetaItemCoverCasings extends MetaCustomCoverItem {
         }
     }
 
+    @Override
     public boolean hide() {
         return false;
     }

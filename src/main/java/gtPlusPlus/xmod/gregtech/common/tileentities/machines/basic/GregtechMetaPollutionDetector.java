@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -46,9 +47,9 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
     }
 
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return aSide == aFacing
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
+            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return side == facing
                 ? new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
                         new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
                 : new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
@@ -75,9 +76,9 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 
     /*
      * @Override public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final
-     * byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) { return
-     * this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0 : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 :
-     * aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex + 1]; }
+     * byte aFacing, final int aColorIndex, final boolean aActive, final boolean aRedstone) { return
+     * this.mTextures[(aActive ? 5 : 0) + (side == facing ? 0 : side == facing.getOpposite() ? 1 : side ==
+     * ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex + 1]; }
      */
 
     public ITexture[] getFront(final byte aColor) {
@@ -156,7 +157,7 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
     }
 
     @Override
-    public boolean isFacingValid(final byte aFacing) {
+    public boolean isFacingValid(final ForgeDirection facing) {
         return true;
     }
 
@@ -171,13 +172,13 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
     }
 
     @Override
-    public boolean isInputFacing(final byte aSide) {
-        return aSide != this.getBaseMetaTileEntity().getFrontFacing();
+    public boolean isInputFacing(final ForgeDirection side) {
+        return side != this.getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
-    public boolean isOutputFacing(final byte aSide) {
-        return aSide == this.getBaseMetaTileEntity().getFrontFacing();
+    public boolean isOutputFacing(final ForgeDirection side) {
+        return side == this.getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -274,14 +275,14 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
     }
 
     @Override
-    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
+    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
@@ -407,8 +408,8 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
         super.onFirstTick(aBaseMetaTileEntity);
     }
 
-    public boolean allowCoverOnSide(final byte aSide, final int aCoverID) {
-        return aSide != this.getBaseMetaTileEntity().getFrontFacing();
+    public boolean allowCoverOnSide(final ForgeDirection side, final int aCoverID) {
+        return side != this.getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -421,13 +422,13 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
         }
         // Emit Redstone
         if (this.getCurrentChunkPollution() >= this.mRedstoneLevel) {
-            for (int i = 0; i < 6; i++) {
-                this.getBaseMetaTileEntity().setStrongOutputRedstoneSignal((byte) i, (byte) 16);
+            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                this.getBaseMetaTileEntity().setStrongOutputRedstoneSignal(side, (byte) 16);
             }
             this.markDirty();
         } else {
-            for (int i = 0; i < 6; i++) {
-                this.getBaseMetaTileEntity().setStrongOutputRedstoneSignal((byte) i, (byte) 0);
+            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                this.getBaseMetaTileEntity().setStrongOutputRedstoneSignal(side, (byte) 0);
             }
             this.markDirty();
         }
@@ -450,10 +451,10 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 
-        if (aSide == this.getBaseMetaTileEntity().getFrontFacing()) {
-            final float[] tCoords = GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ);
+        if (side == this.getBaseMetaTileEntity().getFrontFacing()) {
+            final float[] tCoords = GT_Utility.getClickedFacingCoords(side, aX, aY, aZ);
             switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
                 case 0:
                     this.mRedstoneLevel -= 5000;
@@ -471,9 +472,10 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
             GT_Utility.sendChatToPlayer(aPlayer, "Emit Redstone at Pollution Level: " + this.mRedstoneLevel);
         }
 
-        super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
     }
 
+    @Override
     public boolean allowGeneralRedstoneOutput() {
         if (this.getCurrentChunkPollution() >= this.mRedstoneLevel) {
             this.markDirty();
@@ -483,9 +485,9 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
-            float aY, float aZ) {
-        return super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
+            float aX, float aY, float aZ) {
+        return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
     }
 
     @Override

@@ -220,7 +220,7 @@ public class FirePit extends BasicBlock {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(final int p_149691_1_, final int p_149691_2_) {
+    public IIcon getIcon(final int ordinalSide, final int meta) {
         return FirePit.TEXTURE[0];
     }
 

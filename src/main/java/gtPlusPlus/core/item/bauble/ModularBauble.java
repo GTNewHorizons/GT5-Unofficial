@@ -19,10 +19,9 @@ import net.minecraft.util.IIcon;
 
 import org.lwjgl.input.Keyboard;
 
-import baubles.api.BaubleType;
-
 import com.google.common.collect.Multimap;
 
+import baubles.api.BaubleType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.util.minecraft.ModularArmourUtils;

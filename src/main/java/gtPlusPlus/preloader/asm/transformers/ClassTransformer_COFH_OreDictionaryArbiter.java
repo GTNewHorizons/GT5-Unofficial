@@ -19,13 +19,12 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
-import cofh.core.util.oredict.OreDictionaryArbiter;
-import cofh.lib.util.ItemWrapper;
-
 import com.google.common.base.Strings;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
+import cofh.core.util.oredict.OreDictionaryArbiter;
+import cofh.lib.util.ItemWrapper;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;

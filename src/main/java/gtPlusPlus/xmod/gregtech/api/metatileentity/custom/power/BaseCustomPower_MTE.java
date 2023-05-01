@@ -14,26 +14,27 @@ public class BaseCustomPower_MTE extends BaseCustomTileEntity {
         Logger.INFO("Created new BaseCustomPower_MTE");
     }
 
+    @Override
     public boolean doesExplode() {
         return false;
     }
 
-    public long injectEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
+    public long injectEnergyUnits(ForgeDirection side, long aVoltage, long aAmperage) {
         if (mMetaTileEntity == null) {
             Logger.INFO("Bad Tile");
         }
         if (this.canAccessData() && this.mMetaTileEntity.isElectric()
-                && this.inputEnergyFrom(aSide)
+                && this.inputEnergyFrom(side)
                 && aAmperage > 0L
                 && aVoltage > 0L
                 && this.getStoredEU() < this.getEUCapacity()
                 && this.mMetaTileEntity.maxAmperesIn() >= this.getInputAmperage()) {
             Logger.INFO("Injecting Energy Units");
-            return super.injectEnergyUnits(aSide, aVoltage, aAmperage);
+            return super.injectEnergyUnits(side, aVoltage, aAmperage);
         } else {
             Logger.INFO("canAccessData(): " + canAccessData());
             Logger.INFO("isElectric(): " + this.mMetaTileEntity.isElectric());
-            Logger.INFO("InputEnergyFromSide(" + aSide + "): " + this.inputEnergyFrom(aSide));
+            Logger.INFO("InputEnergyFromSide(" + side + "): " + this.inputEnergyFrom(side));
             Logger.INFO("aAmperage: " + aAmperage);
             Logger.INFO("aVoltage: " + aVoltage);
             Logger.INFO("this.getStoredEU() < this.getEUCapacity(): " + (this.getStoredEU() < this.getEUCapacity()));
@@ -46,10 +47,10 @@ public class BaseCustomPower_MTE extends BaseCustomTileEntity {
         }
     }
 
-    public boolean drainEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
+    public boolean drainEnergyUnits(ForgeDirection side, long aVoltage, long aAmperage) {
         Logger.INFO("Draining Energy Units 4");
         if (this.canAccessData() && this.mMetaTileEntity.isElectric()
-                && this.outputsEnergyTo(aSide)
+                && this.outputsEnergyTo(side)
                 && this.getStoredEU() - aVoltage * aAmperage >= this.mMetaTileEntity.getMinimumStoredEU()) {
             if (this.decreaseStoredEU(aVoltage * aAmperage, false)) {
                 this.mAverageEUOutput[this.mAverageEUOutputIndex] = (int) ((long) this.mAverageEUOutput[this.mAverageEUOutputIndex]
@@ -77,16 +78,16 @@ public class BaseCustomPower_MTE extends BaseCustomTileEntity {
     }
 
     @Override
-    public boolean inputEnergyFrom(byte aSide) {
+    public boolean inputEnergyFrom(ForgeDirection side) {
         // TODO Auto-generated method stub
-        return super.inputEnergyFrom(aSide);
+        return super.inputEnergyFrom(side);
     }
 
     @Override
-    public boolean outputsEnergyTo(byte aSide) {
+    public boolean outputsEnergyTo(ForgeDirection side) {
         Logger.INFO("Draining Energy Units 2");
         // TODO Auto-generated method stub
-        return super.outputsEnergyTo(aSide);
+        return super.outputsEnergyTo(side);
     }
 
     @Override

@@ -67,7 +67,7 @@ public class BlockCompressedObsidian extends BlockObsidian {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(final int side, final int meta) {
+    public IIcon getIcon(final int ordinalSide, final int meta) {
         return this.textureArray[meta];
     }
 

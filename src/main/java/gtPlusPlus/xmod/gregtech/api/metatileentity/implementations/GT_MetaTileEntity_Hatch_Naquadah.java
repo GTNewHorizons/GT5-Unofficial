@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.Materials;
@@ -56,19 +57,21 @@ public class GT_MetaTileEntity_Hatch_Naquadah extends GT_MetaTileEntity_Hatch_In
         }
     }
 
+    @Override
     public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
                 new GT_RenderedTexture((IIconContainer) Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE_ACTIVE) };
     }
 
+    @Override
     public ITexture[] getTexturesInactive(final ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
                 new GT_RenderedTexture((IIconContainer) Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE) };
     }
 
-    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
-        if (aSide == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
+        if (side == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0) {
             for (FluidStack f : mFluidsToUse) {
                 if (f != null) {
                     if (GT_Utility.getFluidForFilledItem(aStack, true).getFluid() == f.getFluid()) {
@@ -80,6 +83,7 @@ public class GT_MetaTileEntity_Hatch_Naquadah extends GT_MetaTileEntity_Hatch_In
         return false;
     }
 
+    @Override
     public boolean isFluidInputAllowed(final FluidStack aFluid) {
         for (FluidStack f : mFluidsToUse) {
             if (f != null) {
@@ -91,10 +95,12 @@ public class GT_MetaTileEntity_Hatch_Naquadah extends GT_MetaTileEntity_Hatch_In
         return false;
     }
 
+    @Override
     public int getCapacity() {
         return this.mFluidCapacity;
     }
 
+    @Override
     public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return (MetaTileEntity) new GT_MetaTileEntity_Hatch_Naquadah(this.mName, this.mDescription, this.mTextures);
     }
@@ -160,8 +166,8 @@ public class GT_MetaTileEntity_Hatch_Naquadah extends GT_MetaTileEntity_Hatch_In
     private Field F1, F2;
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int aColorIndex, boolean aActive, boolean aRedstone) {
         byte a1 = 0, a2 = 0;
         try {
             if (F1 == null) {
@@ -182,7 +188,7 @@ public class GT_MetaTileEntity_Hatch_Naquadah extends GT_MetaTileEntity_Hatch_In
         int textureIndex = a1 | a2 << 7;
         byte texturePointer = (byte) (a1 & 127);
 
-        if (aSide == 1 || aSide == 0) {
+        if (side == ForgeDirection.UP || side == ForgeDirection.DOWN) {
             ITexture g = textureIndex > 0 ? BlockIcons.casingTexturePages[a2][texturePointer]
                     : BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1];
 
@@ -190,7 +196,7 @@ public class GT_MetaTileEntity_Hatch_Naquadah extends GT_MetaTileEntity_Hatch_In
                     new GT_RenderedTexture((IIconContainer) Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_TOP_ACTIVE) };
         }
 
-        return aSide != aFacing
+        return side != facing
                 ? (textureIndex > 0 ? new ITexture[] { BlockIcons.casingTexturePages[a2][texturePointer] }
                         : new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1] })
                 : (textureIndex > 0

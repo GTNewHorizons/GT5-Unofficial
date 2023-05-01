@@ -140,6 +140,7 @@ public class RenderPlasmaBolt extends Render {
     /**
      * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
      */
+    @Override
     protected ResourceLocation getEntityTexture(Entity p_110775_1_) {
         Logger.INFO("Render  Plasma. 5");
         return this.getEntityTexture((EntityTeslaTowerLightning) p_110775_1_);
@@ -151,6 +152,7 @@ public class RenderPlasmaBolt extends Render {
      * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
+    @Override
     public void doRender(Entity p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_,
             float p_76986_9_) {
         Logger.INFO("Render  Plasma. 2");

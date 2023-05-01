@@ -17,8 +17,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import team.chisel.carving.Carving;
-
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -38,6 +36,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import team.chisel.carving.Carving;
 
 public class GregtechMetaTileEntity_IndustrialChisel
         extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialChisel> implements ISurvivalConstructable {
@@ -56,6 +55,7 @@ public class GregtechMetaTileEntity_IndustrialChisel
         super(aName);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GregtechMetaTileEntity_IndustrialChisel(this.mName);
     }
@@ -130,10 +130,12 @@ public class GregtechMetaTileEntity_IndustrialChisel
         return 90;
     }
 
+    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return null;
     }
 
+    @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
     }
@@ -223,6 +225,7 @@ public class GregtechMetaTileEntity_IndustrialChisel
         return null;
     }
 
+    @Override
     public boolean checkRecipe(final ItemStack aStack) {
         ArrayList<ItemStack> aItems = this.getStoredInputs();
         if (!aItems.isEmpty()) {
@@ -316,18 +319,22 @@ public class GregtechMetaTileEntity_IndustrialChisel
         return getChiselSound();
     }
 
+    @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return 10000;
     }
 
+    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialChisel;
     }
 
+    @Override
     public int getDamageToComponent(ItemStack aStack) {
         return 0;
     }
 
+    @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }

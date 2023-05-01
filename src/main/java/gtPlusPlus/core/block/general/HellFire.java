@@ -426,7 +426,7 @@ public class HellFire extends BlockFire {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(final int p_149691_1_, final int p_149691_2_) {
+    public IIcon getIcon(final int ordinalSide, final int meta) {
         return this.IIconArray[0];
     }
 

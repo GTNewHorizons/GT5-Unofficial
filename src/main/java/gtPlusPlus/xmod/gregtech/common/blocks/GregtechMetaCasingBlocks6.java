@@ -46,18 +46,18 @@ public class GregtechMetaCasingBlocks6 extends GregtechMetaCasingBlocksAbstract 
     }
 
     @Override
-    public IIcon getIcon(final int aSide, final int aMeta) {
-        return CasingTextureHandler6.getIcon(aSide, aMeta);
+    public IIcon getIcon(final int ordinalSide, final int aMeta) {
+        return CasingTextureHandler6.getIcon(ordinalSide, aMeta);
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
-            final int aSide) {
+            final int ordinalSide) {
         final Block thisBlock = aWorld.getBlock(xCoord, yCoord, zCoord);
         final int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
         if ((tMeta != 0) || !GregtechMetaCasingBlocks6.mConnectedMachineTextures) {
-            return getIcon(aSide, tMeta);
+            return getIcon(ordinalSide, tMeta);
         }
         final int tStartIndex = 0;
         if (tMeta == 0) {
@@ -74,7 +74,7 @@ public class GregtechMetaCasingBlocks6 extends GregtechMetaCasingBlocksAbstract 
                             && aWorld.getBlockMetadata(xCoord - 1, yCoord, zCoord) == tMeta,
                     aWorld.getBlock(xCoord, yCoord, zCoord - 1) == thisBlock
                             && aWorld.getBlockMetadata(xCoord, yCoord, zCoord - 1) == tMeta };
-            switch (aSide) {
+            switch (ordinalSide) {
                 case 0: {
                     if (tConnectedSides[0]) {
                         return TexturesGtBlock.CONNECTED_FUSION_HULLS_MK4[tStartIndex + 7].getIcon();
@@ -325,6 +325,6 @@ public class GregtechMetaCasingBlocks6 extends GregtechMetaCasingBlocksAbstract 
             }
             return TexturesGtBlock.CONNECTED_FUSION_HULLS_MK4[tStartIndex + 7].getIcon();
         }
-        return CasingTextureHandler6.getIcon(aSide, tMeta);
+        return CasingTextureHandler6.getIcon(ordinalSide, tMeta);
     }
 }

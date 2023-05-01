@@ -92,8 +92,9 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack))
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
+        return (super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack))
                 && (getRecipeList().containsInput(aStack));
     }
 
@@ -113,13 +114,13 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
     }
 
     @Override
-    public boolean isLiquidInput(byte aSide) {
-        return aSide > 1;
+    public boolean isLiquidInput(ForgeDirection side) {
+        return side.offsetY == 0;
     }
 
     @Override
-    public boolean isLiquidOutput(byte aSide) {
-        return aSide < 2;
+    public boolean isLiquidOutput(ForgeDirection side) {
+        return side.offsetY != 0;
     }
 
     @Override
@@ -190,19 +191,23 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
      * Custom Fluid Handling - TODO
      */
 
+    @Override
     public FluidStack getFillableStack() {
         return this.mFluid;
     }
 
+    @Override
     public FluidStack setFillableStack(FluidStack aFluid) {
         this.mFluid = aFluid;
         return this.mFluid;
     }
 
+    @Override
     public FluidStack getDrainableStack() {
         return this.mFluid;
     }
 
+    @Override
     public FluidStack setDrainableStack(FluidStack aFluid) {
         this.mFluid = aFluid;
         return this.mFluid;
@@ -277,15 +282,9 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
                 if (tTank != null) {
                     FluidStack tDrained = this.drain(1000, false);
                     if (tDrained != null) {
-                        int tFilledAmount = tTank.fill(
-                                ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
-                                tDrained,
-                                false);
+                        int tFilledAmount = tTank.fill(aBaseMetaTileEntity.getBackFacing(), tDrained, false);
                         if (tFilledAmount > 0) {
-                            tTank.fill(
-                                    ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
-                                    this.drain(tFilledAmount, true),
-                                    true);
+                            tTank.fill(aBaseMetaTileEntity.getBackFacing(), this.drain(tFilledAmount, true), true);
                         }
                     }
                 }
@@ -459,8 +458,9 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return super.allowPullStack(aBaseMetaTileEntity, aIndex, aSide, aStack);
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
+        return super.allowPullStack(aBaseMetaTileEntity, aIndex, side, aStack);
     }
 
     @Override
@@ -471,22 +471,6 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
-
-        /*
-         * if (aBaseMetaTileEntity != null) { if (!aBaseMetaTileEntity.getWorld().isRemote) { itemslots : for (int
-         * i=3;i<7;i++) { ItemStack aStack = aBaseMetaTileEntity.getStackInSlot(i); if (aStack != null) { if
-         * (FluidContainerRegistry.isContainer(aStack)) { if (this.isItemValidForSlot(i, aStack)) { // Add Fluid
-         * FluidStack aContainerFluid = FluidContainerRegistry.getFluidForFilledItem(aStack); if (aContainerFluid !=
-         * null) { fluidslots : for (FluidStack u : mInputFluids) { if (u != null && u.isFluidEqual(aContainerFluid)) {
-         * if (u.amount <= (this.getCapacity() - aContainerFluid.amount)) { // Matching, not full, let's fill, then
-         * continue u.amount += aContainerFluid.amount; // Update stack size if (aStack.stackSize > 1) {
-         * aStack.stackSize--; } else { aStack = null; } // Add Output container // TODO continue itemslots; } else { //
-         * Too full break fluidslots; } } else { if (u == null ) { // Empty, let's fill, then continue u =
-         * aContainerFluid.copy(); // Update stack size if (aStack.stackSize > 1) { aStack.stackSize--; } else { aStack
-         * = null; } // Add Output container // TODO continue itemslots; } else { // Not empty, doesn't match, check
-         * next slot. continue fluidslots; } } } } // Eat Input // Add Container to Output } } } } } }
-         */
-
     }
 
     @Override
@@ -523,22 +507,22 @@ public class GregtechMetaTileEntity_ChemicalReactor extends GT_MetaTileEntity_Ba
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int aSide) {
-        return super.getAccessibleSlotsFromSide(aSide);
+    public int[] getAccessibleSlotsFromSide(int ordinalSide) {
+        return super.getAccessibleSlotsFromSide(ordinalSide);
     }
 
     @Override
-    public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
+    public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
         if (aIndex >= 3 && aIndex <= 6) {
-            return super.canInsertItem(aIndex, aStack, aSide);
+            return super.canInsertItem(aIndex, aStack, ordinalSide);
         }
         return false;
     }
 
     @Override
-    public boolean canExtractItem(int aIndex, ItemStack aStack, int aSide) {
+    public boolean canExtractItem(int aIndex, ItemStack aStack, int ordinalSide) {
         if (aIndex >= 7 && aIndex <= 11) {
-            return super.canExtractItem(aIndex, aStack, aSide);
+            return super.canExtractItem(aIndex, aStack, ordinalSide);
         }
         return false;
     }

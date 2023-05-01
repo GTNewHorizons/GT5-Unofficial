@@ -260,6 +260,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
      * Causes the TileEntity to reset all it's cached values for it's container Block, metadata and in the case of
      * chests, the adjacent chest check
      */
+    @Override
     public void updateContainingBlockInfo() {
         super.updateContainingBlockInfo();
         this.adjacentChestChecked = false;
@@ -331,6 +332,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
     /**
      * Called when a client event is received with the event number and argument, see World.sendClientEvent
      */
+    @Override
     public boolean receiveClientEvent(int p_145842_1_, int p_145842_2_) {
         if (p_145842_1_ == 1) {
             this.numPlayersUsing = p_145842_2_;
@@ -343,6 +345,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
     /**
      * invalidates a tile entity
      */
+    @Override
     public final void invalidate() {
         super.invalidate();
         cachedChestType = 1;

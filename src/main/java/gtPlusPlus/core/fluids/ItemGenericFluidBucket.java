@@ -66,6 +66,7 @@ public class ItemGenericFluidBucket extends ItemBucket {
     /**
      * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
      */
+    @Override
     public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
 
         Block isFull = FluidFactory.mMetaToBlockMap.get(aStack.getItemDamage());

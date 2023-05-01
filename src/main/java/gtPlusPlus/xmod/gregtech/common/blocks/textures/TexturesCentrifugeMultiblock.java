@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -58,33 +59,36 @@ public class TexturesCentrifugeMultiblock {
             frontFaceActive_8 };
 
     public IIcon handleCasingsGT(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
-            final int aSide, final GregtechMetaCasingBlocks thisBlock) {
-        return this.handleCasingsGT58(aWorld, xCoord, yCoord, zCoord, aSide, thisBlock);
+            final ForgeDirection side, final GregtechMetaCasingBlocks thisBlock) {
+        return this.handleCasingsGT58(aWorld, xCoord, yCoord, zCoord, side, thisBlock);
     }
 
-    private static int isCentrifugeControllerWithSide(IBlockAccess aWorld, int aX, int aY, int aZ, int aSide) {
+    private static int isCentrifugeControllerWithSide(IBlockAccess aWorld, int aX, int aY, int aZ,
+            ForgeDirection side) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (!(tTileEntity instanceof IGregTechTileEntity)) return 0;
         IGregTechTileEntity tTile = (IGregTechTileEntity) tTileEntity;
         if (tTile.getMetaTileEntity() instanceof GregtechMetaTileEntity_IndustrialCentrifuge
-                && tTile.getFrontFacing() == aSide)
+                && tTile.getFrontFacing() == side)
             return tTile.isActive() ? 1 : 2;
         return 0;
     }
 
     public IIcon handleCasingsGT58(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
-            final int aSide, final GregtechMetaCasingBlocks thisBlock) {
+            final ForgeDirection side, final GregtechMetaCasingBlocks thisBlock) {
         final int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
+        final int ordinalSide = side.ordinal();
         if (tMeta != 0) {
-            return CasingTextureHandler.getIcon(aSide, tMeta);
+            return CasingTextureHandler.getIcon(ordinalSide, tMeta);
         }
-        int tInvertLeftRightMod = aSide % 2 * 2 - 1;
-        switch (aSide / 2) {
+
+        int tInvertLeftRightMod = ordinalSide % 2 * 2 - 1;
+        switch (ordinalSide / 2) {
             case 0:
                 for (int i = -1; i < 2; i++) {
                     for (int j = -1; j < 2; j++) {
                         if (i == 0 && j == 0) continue;
-                        if (isCentrifugeControllerWithSide(aWorld, xCoord + j, yCoord, zCoord + i, aSide) != 0) {
+                        if (isCentrifugeControllerWithSide(aWorld, xCoord + j, yCoord, zCoord + i, side) != 0) {
                             IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) aWorld
                                     .getTileEntity(xCoord + j, yCoord, zCoord + i)).getMetaTileEntity();
                             return getIconByIndex(tMetaTileEntity, 4 - i * 3 - j);
@@ -96,7 +100,7 @@ public class TexturesCentrifugeMultiblock {
                 for (int i = -1; i < 2; i++) {
                     for (int j = -1; j < 2; j++) {
                         if (i == 0 && j == 0) continue;
-                        if (isCentrifugeControllerWithSide(aWorld, xCoord + j, yCoord + i, zCoord, aSide) != 0) {
+                        if (isCentrifugeControllerWithSide(aWorld, xCoord + j, yCoord + i, zCoord, side) != 0) {
                             IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) aWorld
                                     .getTileEntity(xCoord + j, yCoord + i, zCoord)).getMetaTileEntity();
                             return getIconByIndex(tMetaTileEntity, 4 + i * 3 - j * tInvertLeftRightMod);
@@ -108,7 +112,7 @@ public class TexturesCentrifugeMultiblock {
                 for (int i = -1; i < 2; i++) {
                     for (int j = -1; j < 2; j++) {
                         if (i == 0 && j == 0) continue;
-                        if (isCentrifugeControllerWithSide(aWorld, xCoord, yCoord + i, zCoord + j, aSide) != 0) {
+                        if (isCentrifugeControllerWithSide(aWorld, xCoord, yCoord + i, zCoord + j, side) != 0) {
                             IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) aWorld
                                     .getTileEntity(xCoord, yCoord + i, zCoord + j)).getMetaTileEntity();
                             return getIconByIndex(tMetaTileEntity, 4 + i * 3 + j * tInvertLeftRightMod);

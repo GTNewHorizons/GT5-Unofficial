@@ -29,8 +29,8 @@ public class BlockFluidSludge extends BlockFluidClassic {
     }
 
     @Override
-    public IIcon getIcon(final int side, final int meta) {
-        return ((side == 0) || (side == 1)) ? this.stillIcon : this.flowingIcon;
+    public IIcon getIcon(final int ordinalSide, final int meta) {
+        return ((ordinalSide == 0) || (ordinalSide == 1)) ? this.stillIcon : this.flowingIcon;
     }
 
     @SideOnly(Side.CLIENT)

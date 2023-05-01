@@ -58,7 +58,7 @@
     * this.tryForceNBTUpdate(); super.onLeftclick(aBaseMetaTileEntity, aPlayer); }
     * @Override public boolean onWrenchRightClick(final byte aSide, final byte aWrenchingSide, final EntityPlayer
     * aPlayer, final float aX, final float aY, final float aZ) { this.tryForceNBTUpdate(); return
-    * super.onWrenchRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ); }
+    * super.onWrenchRightclick(side, aWrenchingSide, aPlayer, aX, aY, aZ); }
     * @Override public void onRemoval() { this.tryForceNBTUpdate(); super.onRemoval(); }
     * @Override public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
     * super.onPostTick(aBaseMetaTileEntity, aTick); if ((this.internalStorageTank != null) &&
@@ -73,12 +73,12 @@
     * "Each casing within the structure adds 128000L storage.", "Multitank Exterior Casings (16 at least!)",
     * "Controller (front centered)", "1x Input hatch", "1x Output hatch", "1x Energy Hatch", }; }
     * @Override public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte
-    * aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) { if (aSide == aFacing) { return
-    * new ITexture[]{Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(11)), new GT_RenderedTexture(aActive ?
+    * aFacing, final int aColorIndex, final boolean aActive, final boolean aRedstone) { if (side == facing) { return new
+    * ITexture[]{Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(11)), new GT_RenderedTexture(aActive ?
     * TexturesGtBlock.Overlay_Machine_Screen_Logo : TexturesGtBlock.Overlay_Machine_Screen_Logo)}; } return new
     * ITexture[]{Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(11))}; }
     * @Override public GT_Recipe.GT_Recipe_Map getRecipeMap() { return null; }
-    * @Override public boolean isFacingValid(final byte aFacing) { return aFacing > 1; }
+    * @Override public boolean isFacingValid(final ForgeDirection facing) { return facing.offsetY == 0; }
     * @Override public boolean checkRecipe(final ItemStack aStack) { final ArrayList<ItemStack> tInputList =
     * this.getStoredInputs(); for (int i = 0; i < (tInputList.size() - 1); i++) { for (int j = i + 1; j <
     * tInputList.size(); j++) { if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) { if

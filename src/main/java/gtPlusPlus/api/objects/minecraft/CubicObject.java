@@ -32,22 +32,22 @@ public class CubicObject<T> {
         EAST = aEAST;
     }
 
-    public T get(int aSide) {
-        return get(ForgeDirection.getOrientation(aSide));
+    public T get(int ordinalSide) {
+        return get(ForgeDirection.getOrientation(ordinalSide));
     }
 
-    public T get(ForgeDirection aSide) {
-        if (aSide == ForgeDirection.DOWN) {
+    public T get(ForgeDirection side) {
+        if (side == ForgeDirection.DOWN) {
             return DOWN;
-        } else if (aSide == ForgeDirection.UP) {
+        } else if (side == ForgeDirection.UP) {
             return UP;
-        } else if (aSide == ForgeDirection.NORTH) {
+        } else if (side == ForgeDirection.NORTH) {
             return NORTH;
-        } else if (aSide == ForgeDirection.SOUTH) {
+        } else if (side == ForgeDirection.SOUTH) {
             return SOUTH;
-        } else if (aSide == ForgeDirection.WEST) {
+        } else if (side == ForgeDirection.WEST) {
             return WEST;
-        } else if (aSide == ForgeDirection.EAST) {
+        } else if (side == ForgeDirection.EAST) {
             return EAST;
         } else {
             return null;

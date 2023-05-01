@@ -85,7 +85,7 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
     }
 
     @Override
-    public IIcon getIcon(final int aSide, final int aMeta) {
-        return CasingTextureHandler2.getIcon(aSide, aMeta);
+    public IIcon getIcon(final int ordinalSide, final int aMeta) {
+        return CasingTextureHandler2.getIcon(ordinalSide, aMeta);
     }
 }

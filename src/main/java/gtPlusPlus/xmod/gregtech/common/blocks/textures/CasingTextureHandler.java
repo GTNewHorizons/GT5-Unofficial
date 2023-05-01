@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Textures;
 import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks;
@@ -12,7 +13,7 @@ public class CasingTextureHandler {
     // private static final TexturesGregtech58 gregtech58 = new TexturesGregtech58();
     private static final TexturesCentrifugeMultiblock gregtechX = new TexturesCentrifugeMultiblock();
 
-    public static IIcon getIcon(final int aSide, final int aMeta) { // Texture ID's. case 0 == ID[57]
+    public static IIcon getIcon(final int ordinalSide, final int aMeta) { // Texture ID's. case 0 == ID[57]
         if ((aMeta >= 0) && (aMeta < 16)) {
             switch (aMeta) {
                 // Centrifuge
@@ -70,12 +71,7 @@ public class CasingTextureHandler {
     }
 
     public static IIcon handleCasingsGT(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
-            final int aSide, final GregtechMetaCasingBlocks thisBlock) {
-        /*
-         * if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){ return gregtech59.handleCasingsGT59(aWorld, xCoord, yCoord,
-         * zCoord, aSide, thisBlock); } return gregtech58.handleCasingsGT58(aWorld, xCoord, yCoord, zCoord, aSide,
-         * thisBlock);
-         */
-        return gregtechX.handleCasingsGT(aWorld, xCoord, yCoord, zCoord, aSide, thisBlock);
+            final ForgeDirection side, final GregtechMetaCasingBlocks thisBlock) {
+        return gregtechX.handleCasingsGT(aWorld, xCoord, yCoord, zCoord, side, thisBlock);
     }
 }

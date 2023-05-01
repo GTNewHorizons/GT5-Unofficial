@@ -38,6 +38,7 @@ public class RenderTabulaBase extends TileEntitySpecialRenderer {
         }
     }
 
+    @Override
     public void renderTileEntityAt(TileEntity aTile, double p_147500_2_, double p_147500_4_, double p_147500_6_,
             float p_147500_8_) {
         if (mTileClass != null && aTile != null) {

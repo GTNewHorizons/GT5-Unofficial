@@ -6,6 +6,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -55,9 +56,9 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
         this.mFluidCapacity = aAmount;
     }
 
-    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
-        if (aSide == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
+        if (side == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0) {
             FluidStack fs = GT_Utility.getFluidForFilledItem(aStack, true);
             return fs != null && fs.getFluid() == this.mLockedFluid;
         }
@@ -65,8 +66,9 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aSide == aBaseMetaTileEntity.getFrontFacing() && aIndex == 1;
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
+        return side == aBaseMetaTileEntity.getFrontFacing() && aIndex == 1;
     }
 
     @Override
@@ -89,7 +91,7 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -145,6 +147,7 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
         return -100;
     }
 
+    @Override
     public int getCapacity() {
         return this.mFluidCapacity;
     }
@@ -187,10 +190,12 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
                 "Capacity: " + getCapacity() + "L", aFluidName, CORE.GT_Tooltip.get() };
     }
 
+    @Override
     public boolean isFluidInputAllowed(final FluidStack aFluid) {
         return aFluid.getFluid() == this.mLockedFluid;
     }
 
+    @Override
     public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Hatch_CustomFluidBase(
                 this.mLockedFluid,

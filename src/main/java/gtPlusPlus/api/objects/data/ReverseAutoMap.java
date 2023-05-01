@@ -24,6 +24,7 @@ public class ReverseAutoMap<N> extends AutoMap<N> {
         return values().iterator();
     }
 
+    @Override
     public synchronized boolean setValue(N object) {
         int mOriginalID = this.mInternalID;
         put(object);

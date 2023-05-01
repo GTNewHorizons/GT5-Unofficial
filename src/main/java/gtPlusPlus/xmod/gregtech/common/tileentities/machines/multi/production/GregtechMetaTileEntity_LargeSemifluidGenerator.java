@@ -274,6 +274,7 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator extends
         return 1;
     }
 
+    @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return boostEu ? 15000 : 10000;
     }

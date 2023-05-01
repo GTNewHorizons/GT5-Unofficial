@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -108,6 +109,7 @@ public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
         super.onOpenGUI();
     }
 
+    @Override
     public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTimer) {
         if (this.getBaseMetaTileEntity().isServerSide() && this.getBaseMetaTileEntity().isAllowedToWork()) {
             try {
@@ -163,10 +165,12 @@ public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
         return this.mItemCount;
     }
 
+    @Override
     public void setItemCount(final int aCount) {
         this.mItemCount = aCount;
     }
 
+    @Override
     public int getProgresstime() {
         try {
             return this.mItemCount + ((this.mInventory[0] == null) ? 0 : this.mInventory[0].stackSize)
@@ -176,26 +180,31 @@ public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
         }
     }
 
+    @Override
     public int maxProgresstime() {
         return this.getMaxItemCount();
     }
 
+    @Override
     public int getMaxItemCount() {
         return this.mSize;
     }
 
-    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
+    @Override
+    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
         return aIndex == 1;
     }
 
-    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
+    @Override
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
         return aIndex == 0 && ((this.mInventory[0] == null && this.mItemStack == null)
                 || GT_Utility.areStacksEqual(this.mInventory[0], aStack)
                 || (this.mItemStack != null && GT_Utility.areStacksEqual(this.mItemStack, aStack)));
     }
 
+    @Override
     public String[] getInfoData() {
         if (this.mItemStack == null) {
             return new String[] { this.getLocalName(), "No Items Stored",
@@ -236,7 +245,7 @@ public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
     }
 
     @Override
-    public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
+    public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
         Logger.INFO("2:" + aIndex);
         if (aIndex == 0) {
             if (ItemStack.areItemStacksEqual(aStack, mItemStack)) {
@@ -248,7 +257,7 @@ public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
                 return false;
             }
         }
-        return super.canInsertItem(aIndex, aStack, aSide);
+        return super.canInsertItem(aIndex, aStack, ordinalSide);
     }
 
     @Override

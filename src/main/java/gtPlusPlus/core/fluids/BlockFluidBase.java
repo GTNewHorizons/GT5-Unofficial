@@ -51,8 +51,8 @@ public class BlockFluidBase extends BlockFluidClassic {
     }
 
     @Override
-    public IIcon getIcon(int side, int meta) {
-        return (side == 0 || side == 1) ? stillIcon : flowingIcon;
+    public IIcon getIcon(int ordinalSide, int meta) {
+        return (ordinalSide == 0 || ordinalSide == 1) ? stillIcon : flowingIcon;
     }
 
     @SideOnly(Side.CLIENT)

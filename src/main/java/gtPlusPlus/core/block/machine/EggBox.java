@@ -62,6 +62,7 @@ public class EggBox extends BlockContainer implements ITileTooltip {
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
+    @Override
     public boolean renderAsNormalBlock() {
         return true;
     }
@@ -69,6 +70,7 @@ public class EggBox extends BlockContainer implements ITileTooltip {
     /**
      * The type of render function that is called for this block
      */
+    @Override
     @SideOnly(Side.CLIENT)
     public int getRenderType() {
         return super.getRenderType();
@@ -79,8 +81,8 @@ public class EggBox extends BlockContainer implements ITileTooltip {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(final int p_149691_1_, final int p_149691_2_) {
-        return p_149691_1_ == 1 ? this.textureTop : this.textureFront;
+    public IIcon getIcon(final int ordinalSide, final int meta) {
+        return ordinalSide == 1 ? this.textureTop : this.textureFront;
     }
 
     @Override

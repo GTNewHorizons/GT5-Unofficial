@@ -204,6 +204,7 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
         return 0;
     }
 
+    @Override
     public int getAmountOfOutputs() {
         return 5;
     }

@@ -46,6 +46,7 @@ public class VanillaBedHeightFix implements IBugFix {
         }
     }
 
+    @Override
     public boolean isFixValid() {
         return mSleepInBedAt != null;
     }

@@ -28,6 +28,7 @@ public class GTPP_Item_Machines extends ItemBlock {
         this.setCreativeTab(GregTech_API.TAB_GREGTECH);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean par4) {
         try {
@@ -197,11 +198,13 @@ public class GTPP_Item_Machines extends ItemBlock {
         }
     }
 
+    @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
             float hitX, float hitY, float hitZ) {
         return false;
     }
 
+    @Override
     public String getUnlocalizedName(ItemStack aStack) {
         short tDamage = (short) (this.getDamage(aStack) + 30400); // Add Offset;
         return tDamage >= 0 && tDamage < GregTech_API.METATILEENTITIES.length
@@ -211,6 +214,7 @@ public class GTPP_Item_Machines extends ItemBlock {
                 : "";
     }
 
+    @Override
     public void onCreated(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         super.onCreated(aStack, aWorld, aPlayer);
         short tDamage = (short) ((short) this.getDamage(aStack) + 30400); // Add Offset;
@@ -220,6 +224,7 @@ public class GTPP_Item_Machines extends ItemBlock {
         }
     }
 
+    @Override
     public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side,
             float hitX, float hitY, float hitZ, int aMeta) {
         short tDamage = (short) ((short) this.getDamage(aStack) + 30400); // Add Offset;

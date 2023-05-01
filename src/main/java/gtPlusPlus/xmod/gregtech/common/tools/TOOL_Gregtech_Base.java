@@ -116,6 +116,7 @@ public abstract class TOOL_Gregtech_Base implements Interface_ToolStats {
         return true;
     }
 
+    @Override
     public boolean isChainsaw() {
         return false;
     }

@@ -42,12 +42,11 @@ public abstract class GregtechMetaBoilerBase extends GT_MetaTileEntity_BasicTank
     }
 
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-        ITexture[] tmp = this.mTextures[aSide >= 2 ? aSide != aFacing ? 2 : ((byte) (aActive ? 4 : 3))
-                : aSide][aColorIndex + 1];
-        // mTextures[(aSide==aFacing?(aActive?4:3):aSide==GT_Utility.getOppositeSide(aFacing)?2:aSide==0?0:aSide==1?1:2)][aColorIndex+1];
-        if ((aSide != aFacing) && (tmp.length == 2)) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
+            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        ITexture[] tmp = this.mTextures[side.offsetY == 0 ? side != facing ? 2 : ((byte) (aActive ? 4 : 3))
+                : side.ordinal()][aColorIndex + 1];
+        if ((side != facing) && (tmp.length == 2)) {
             tmp = new ITexture[] { tmp[0] };
         }
         return tmp;
@@ -74,8 +73,8 @@ public abstract class GregtechMetaBoilerBase extends GT_MetaTileEntity_BasicTank
     }
 
     @Override
-    public boolean isFacingValid(final byte aFacing) {
-        return aFacing > 1;
+    public boolean isFacingValid(final ForgeDirection facing) {
+        return facing.offsetY == 0;
     }
 
     @Override
@@ -166,7 +165,7 @@ public abstract class GregtechMetaBoilerBase extends GT_MetaTileEntity_BasicTank
     }
 
     @Override
-    public boolean allowCoverOnSide(final byte aSide, final GT_ItemStack aCover) {
+    public boolean allowCoverOnSide(final ForgeDirection side, final GT_ItemStack aCover) {
         return GregTech_API.getCoverBehavior(aCover.toStack()).isSimpleCover();
     }
 
@@ -203,20 +202,18 @@ public abstract class GregtechMetaBoilerBase extends GT_MetaTileEntity_BasicTank
                 this.mTemperature -= 1;
                 this.mLossTimer = 0;
             }
-            for (byte i = 1; (this.mSteam != null) && (i < 6); i = (byte) (i + 1)) {
-                if (i != aBaseMetaTileEntity.getFrontFacing()) {
-                    final IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(i);
+            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                if (side != aBaseMetaTileEntity.getFrontFacing()) {
+                    final IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(side);
                     if (tTileEntity != null) {
                         final FluidStack tDrained = aBaseMetaTileEntity
-                                .drain(ForgeDirection.getOrientation(i), Math.max(1, this.mSteam.amount / 2), false);
+                                .drain(side, Math.max(1, this.mSteam.amount / 2), false);
                         if (tDrained != null) {
-                            final int tFilledAmount = tTileEntity
-                                    .fill(ForgeDirection.getOrientation(i).getOpposite(), tDrained, false);
+                            final int tFilledAmount = tTileEntity.fill(side.getOpposite(), tDrained, false);
                             if (tFilledAmount > 0) {
                                 tTileEntity.fill(
-                                        ForgeDirection.getOrientation(i).getOpposite(),
-                                        aBaseMetaTileEntity
-                                                .drain(ForgeDirection.getOrientation(i), tFilledAmount, true),
+                                        side.getOpposite(),
+                                        aBaseMetaTileEntity.drain(side, tFilledAmount, true),
                                         true);
                             }
                         }
@@ -321,14 +318,14 @@ public abstract class GregtechMetaBoilerBase extends GT_MetaTileEntity_BasicTank
     }
 
     @Override
-    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
+    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
         return (aIndex == 1) || (aIndex == 3);
     }
 
     @Override
-    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
         return aIndex == 2;
     }
 

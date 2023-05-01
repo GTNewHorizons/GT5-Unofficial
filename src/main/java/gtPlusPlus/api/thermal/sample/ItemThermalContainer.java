@@ -46,6 +46,7 @@ public class ItemThermalContainer extends Item implements IThermalContainerItem 
         this.maxExtract = arg0;
     }
 
+    @Override
     public int receiveThermalEnergy(ItemStack arg0, int arg1, boolean arg2) {
         if (arg0.getTagCompound() == null) {
             arg0.stackTagCompound = new NBTTagCompound();
@@ -59,6 +60,7 @@ public class ItemThermalContainer extends Item implements IThermalContainerItem 
         return arg4;
     }
 
+    @Override
     public int extractThermalEnergy(ItemStack arg0, int arg1, boolean arg2) {
         if (arg0.stackTagCompound != null && arg0.stackTagCompound.hasKey("ThermalEnergy")) {
             int arg3 = arg0.stackTagCompound.getInteger("ThermalEnergy");
@@ -73,12 +75,14 @@ public class ItemThermalContainer extends Item implements IThermalContainerItem 
         }
     }
 
+    @Override
     public int getThermalEnergyStored(ItemStack arg0) {
         return arg0.stackTagCompound != null && arg0.stackTagCompound.hasKey("ThermalEnergy")
                 ? arg0.stackTagCompound.getInteger("ThermalEnergy")
                 : 0;
     }
 
+    @Override
     public int getMaxThermalEnergyStored(ItemStack arg0) {
         return this.capacity;
     }

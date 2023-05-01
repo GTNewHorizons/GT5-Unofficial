@@ -1,11 +1,11 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
@@ -39,6 +39,7 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
         super(aName, aTier, 3, aDescription, aTextures);
     }
 
+    @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[10][17][];
 
@@ -58,13 +59,17 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
         return rTextures;
     }
 
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0
-                : (aSide == GT_Utility.getOppositeSide(aFacing) ? 1
-                        : (aSide == 0 ? 2 : (aSide == 1 ? 3 : 4))))][aColorIndex + 1];
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int aColorIndex, boolean aActive, boolean aRedstone) {
+        return this.mTextures[(aActive ? 5 : 0)
+                + (side == facing ? 0
+                        : (side == facing.getOpposite() ? 1
+                                : (side == ForgeDirection.DOWN ? 2 : (side == ForgeDirection.UP ? 3 : 4))))][aColorIndex
+                                        + 1];
     }
 
+    @Override
     public String[] getDescription() {
         String[] desc = new String[this.mDescriptionArray.length + 1];
         System.arraycopy(this.mDescriptionArray, 0, desc, 0, this.mDescriptionArray.length);
@@ -72,6 +77,7 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
         return desc;
     }
 
+    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         Logger.WARNING("Right Clicked");
         GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
@@ -118,68 +124,82 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
         return this.getSides(aColor);
     }
 
-    public boolean isFacingValid(byte aSide) {
-        return aSide > 1;
+    public boolean isFacingValid(ForgeDirection side) {
+        return side.offsetY == 0;
     }
 
+    @Override
     public boolean isSimpleMachine() {
         return false;
     }
 
+    @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex < 2;
     }
 
+    @Override
     public boolean isEnetOutput() {
         return true;
     }
 
-    public boolean isOutputFacing(byte aSide) {
+    public boolean isOutputFacing(ForgeDirection side) {
         return true;
     }
 
+    @Override
     public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
     }
 
+    @Override
     public long maxEUOutput() {
         return this.getBaseMetaTileEntity().isAllowedToWork() ? GT_Values.V[this.mTier] : 0L;
     }
 
+    @Override
     public long maxEUStore() {
         return Math.max(this.getEUVar(), GT_Values.V[this.mTier] * 40L + this.getMinimumStoredEU());
     }
 
+    @Override
     public boolean doesFillContainers() {
         return this.getBaseMetaTileEntity().isAllowedToWork();
     }
 
+    @Override
     public boolean doesEmptyContainers() {
         return this.getBaseMetaTileEntity().isAllowedToWork();
     }
 
+    @Override
     public boolean canTankBeFilled() {
         return this.getBaseMetaTileEntity().isAllowedToWork();
     }
 
+    @Override
     public boolean canTankBeEmptied() {
         return this.getBaseMetaTileEntity().isAllowedToWork();
     }
 
+    @Override
     public boolean displaysItemStack() {
         return true;
     }
 
+    @Override
     public boolean displaysStackSize() {
         return false;
     }
 
+    @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
         int aVal = this.getFuelValue(aFluid);
         Logger.WARNING("Fuel Value: " + aVal);
         return aVal > 0;
     }
 
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && aTick % 10L == 0L) {
             int tFuelValue;
@@ -250,10 +270,8 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
             Collection<GT_Recipe> tRecipeList = this.getRecipes().mRecipeList;
             if (tRecipeList != null) {
                 Logger.WARNING("Fuels: " + tRecipeList.size());
-                Iterator<GT_Recipe> var4 = tRecipeList.iterator();
 
-                while (var4.hasNext()) {
-                    GT_Recipe tFuel = (GT_Recipe) var4.next();
+                for (GT_Recipe tFuel : tRecipeList) {
                     FluidStack tLiquid;
                     if ((tLiquid = GT_Utility.getFluidForFilledItem(tFuel.getRepresentativeInput(0), true)) != null
                             && aLiquid.isFluidEqual(tLiquid)) {
@@ -307,15 +325,19 @@ public abstract class GTPP_MTE_BasicLosslessGenerator extends GTPP_MTE_BasicTank
         }
     }
 
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack) && (this.getFuelValue(aStack) > 0
+    @Override
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
+        return super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack) && (this.getFuelValue(aStack) > 0
                 || this.getFuelValue(GT_Utility.getFluidForFilledItem(aStack, true)) > 0);
     }
 
+    @Override
     public int getCapacity() {
         return 16000;
     }
 
+    @Override
     public int getTankPressure() {
         return -100;
     }

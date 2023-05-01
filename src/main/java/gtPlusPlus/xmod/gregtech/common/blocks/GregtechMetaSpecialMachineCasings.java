@@ -66,7 +66,8 @@ public class GregtechMetaSpecialMachineCasings extends GregtechMetaCasingBlocksA
         GregtechItemList.Casing_Machine_Custom_4.set(new ItemStack(this, 1, 3));
     }
 
-    public IIcon getIcon(int aSide, int aMeta) {
+    @Override
+    public IIcon getIcon(int ordinalSide, int aMeta) {
         switch (aMeta) {
             case 0:
                 return Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getIcon();

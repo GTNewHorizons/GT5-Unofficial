@@ -134,14 +134,14 @@ public class GregtechMetaTileEntity_IndustrialSifter
     public void onPreTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())
-                && (aBaseMetaTileEntity.getFrontFacing() != 1)
-                && (aBaseMetaTileEntity.getCoverIDAtSide((byte) 1) == 0)
-                && (!aBaseMetaTileEntity.getOpacityAtSide((byte) 1))) {
+                && (aBaseMetaTileEntity.getFrontFacing() != ForgeDirection.UP)
+                && (aBaseMetaTileEntity.getCoverIDAtSide(ForgeDirection.UP) == 0)
+                && (!aBaseMetaTileEntity.getOpacityAtSide(ForgeDirection.UP))) {
             final Random tRandom = aBaseMetaTileEntity.getWorld().rand;
             if (tRandom.nextFloat() > 0.4) return;
 
-            final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
-            final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;
+            final int xDir = aBaseMetaTileEntity.getBackFacing().offsetX * 2;
+            final int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ * 2;
 
             aBaseMetaTileEntity.getWorld().spawnParticle(
                     "smoke",

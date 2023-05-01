@@ -57,6 +57,7 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends
         CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 1);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GregtechMetaTileEntity_IndustrialAlloySmelter(this.mName);
     }
@@ -76,26 +77,32 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends
         return CASING_TEXTURE_ID;
     }
 
+    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes;
     }
 
+    @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
     }
 
+    @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return 10000;
     }
 
+    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialAlloySmelter;
     }
 
+    @Override
     public int getDamageToComponent(ItemStack aStack) {
         return 0;
     }
 
+    @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }

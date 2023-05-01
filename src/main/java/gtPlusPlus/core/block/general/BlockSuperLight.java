@@ -41,7 +41,7 @@ public class BlockSuperLight extends BlockContainer {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(final int p_149691_1_, final int p_149691_2_) {
+    public IIcon getIcon(final int ordinalSide, final int meta) {
         return this.blockIcon;
     }
 
@@ -54,6 +54,7 @@ public class BlockSuperLight extends BlockContainer {
     /**
      * Returns a new instance of a block's tile entity class. Called on placing the block.
      */
+    @Override
     public TileEntity createNewTileEntity(World aWorld, int p_149915_2_) {
         return new TileEntitySuperLight();
     }
@@ -75,6 +76,7 @@ public class BlockSuperLight extends BlockContainer {
             Logger.INFO("Created Super-Lamp");
         }
 
+        @Override
         public void readFromNBT(NBTTagCompound aNBT) {
             super.readFromNBT(aNBT);
             mCreated = aNBT.getLong("mCreated");
@@ -90,6 +92,7 @@ public class BlockSuperLight extends BlockContainer {
             }
         }
 
+        @Override
         public void writeToNBT(NBTTagCompound aNBT) {
             super.writeToNBT(aNBT);
             aNBT.setLong("mCreated", mCreated);

@@ -77,7 +77,7 @@ public class LeavesBase extends BlockLeaves {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int p_149691_1_, int metaID) {
+    public IIcon getIcon(int ordinalSide, int metaID) {
         return (metaID & 3) == 1 ? this.leafTextures[this.field_150127_b][1]
                 : this.leafTextures[this.field_150127_b][0];
     }

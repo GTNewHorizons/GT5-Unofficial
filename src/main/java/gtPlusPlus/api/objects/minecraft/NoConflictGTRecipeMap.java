@@ -24,6 +24,7 @@ public class NoConflictGTRecipeMap implements Collection<GT_Recipe> {
         return add(recipe);
     }
 
+    @Override
     public boolean add(GT_Recipe recipe) {
         return mRecipeCache.setValue(recipe);
     }

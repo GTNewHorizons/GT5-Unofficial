@@ -36,7 +36,7 @@ public class Behaviour_Prospecting_Ex extends Behaviour_Prospecting {
 
     @Override
     public boolean onItemUseFirst(final GT_MetaBase_Item aItem, final ItemStack aStack, final EntityPlayer aPlayer,
-            final World aWorld, final int aX, final int aY, final int aZ, final int aSide, final float hitX,
+            final World aWorld, final int aX, final int aY, final int aZ, final ForgeDirection side, final float hitX,
             final float hitY, final float hitZ) {
         if (aWorld.isRemote) {
             return false;
@@ -87,9 +87,9 @@ public class Behaviour_Prospecting_Ex extends Behaviour_Prospecting {
 
                 int i = 0;
                 for (final int j = 6 + tQuality; i < j; i++) {
-                    tX -= ForgeDirection.getOrientation(aSide).offsetX;
-                    tY -= ForgeDirection.getOrientation(aSide).offsetY;
-                    tZ -= ForgeDirection.getOrientation(aSide).offsetZ;
+                    tX -= side.offsetX;
+                    tY -= side.offsetY;
+                    tZ -= side.offsetZ;
 
                     final Block tBlock = aWorld.getBlock(tX, tY, tZ);
                     if ((tBlock == Blocks.lava) || (tBlock == Blocks.flowing_lava)) {
@@ -113,7 +113,7 @@ public class Behaviour_Prospecting_Ex extends Behaviour_Prospecting {
                         break;
                     }
                 }
-                final Random tRandom = new Random(aX ^ aY ^ aZ ^ aSide);
+                final Random tRandom = new Random(aX ^ aY ^ aZ ^ side.ordinal());
                 i = 0;
                 for (final int j = 9 + (2 * tQuality); i < j; i++) {
                     tX = (aX - 4 - tQuality) + tRandom.nextInt(j);

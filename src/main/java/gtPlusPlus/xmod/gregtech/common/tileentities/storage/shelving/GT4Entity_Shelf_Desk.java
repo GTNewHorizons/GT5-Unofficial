@@ -27,18 +27,22 @@ public class GT4Entity_Shelf_Desk extends GT4Entity_Shelf {
         return new ITexture[] { TexturesGtBlock.OVERLAYS_CABINET_FRONT[this.mType < 16 ? this.mType : 0] };
     }
 
+    @Override
     public ITexture[] getBack(final byte aColor) {
         return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.VanillaIcon_OakPlanks) };
     }
 
+    @Override
     public ITexture[] getBottom(final byte aColor) {
         return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.VanillaIcon_OakPlanks) };
     }
 
+    @Override
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.VanillaIcon_OakPlanks) };
     }
 
+    @Override
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.VanillaIcon_OakPlanks) };
     }

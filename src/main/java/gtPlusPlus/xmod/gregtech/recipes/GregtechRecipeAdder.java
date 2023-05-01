@@ -272,6 +272,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
                 aOptimizeRecipe);
     }
 
+    @Override
     public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack[] aInputFluid, FluidStack aOutput,
             ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt, int aSpecialValue,
             boolean aOptimizeRecipe) {
@@ -455,6 +456,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         return false;
     }
 
+    @Override
     public boolean addMultiblockCentrifugeRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs,
             FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick,
             int aSpecial) {
@@ -487,6 +489,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         return true;
     }
 
+    @Override
     public boolean addMultiblockElectrolyzerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs,
             FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick,
             int aSpecial) {
@@ -518,6 +521,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         return true;
     }
 
+    @Override
     public boolean addAdvancedFreezerRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs,
             ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial) {
         if (areItemsAndFluidsBothNull(aInputs, aFluidInputs) || areItemsAndFluidsBothNull(aOutputs, aFluidOutputs)
@@ -610,6 +614,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         return true;
     }
 
+    @Override
     public boolean addSixSlotAssemblingRecipe(ItemStack[] aInputs, FluidStack aInputFluid, ItemStack aOutput1,
             int aDuration, int aEUt) {
         return RA.addAssemblerRecipe(aInputs, aInputFluid, aOutput1, aDuration, aEUt);
@@ -627,6 +632,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         return RA.addAssemblylineRecipe(aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt);
     }
 
+    @Override
     public boolean addChemicalRecipe(ItemStack input1, ItemStack input2, FluidStack inputFluid, FluidStack outputFluid,
             ItemStack output, int time, int eu) {
         return addChemicalRecipe(input1, input2, inputFluid, outputFluid, output, null, time, eu);

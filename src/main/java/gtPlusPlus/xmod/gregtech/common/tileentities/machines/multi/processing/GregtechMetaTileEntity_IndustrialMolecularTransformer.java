@@ -47,6 +47,7 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer
         super(aName);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new GregtechMetaTileEntity_IndustrialMolecularTransformer(this.mName);
     }
@@ -184,10 +185,12 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer
         return 44;
     }
 
+    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GTPP_Recipe_Map.sMolecularTransformerRecipes;
     }
 
+    @Override
     public boolean isCorrectMachinePart(final ItemStack aStack) {
         return true;
     }
@@ -207,18 +210,22 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer
         return 0;
     }
 
+    @Override
     public int getMaxEfficiency(final ItemStack aStack) {
         return 10000;
     }
 
+    @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return CORE.ConfigSwitches.pollutionPerSecondMultiMolecularTransformer;
     }
 
+    @Override
     public int getDamageToComponent(final ItemStack aStack) {
         return 0;
     }
 
+    @Override
     public boolean explodesOnComponentBreak(final ItemStack aStack) {
         return false;
     }

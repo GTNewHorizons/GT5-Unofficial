@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -183,9 +184,9 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         // Fix GT bug
-        if (this.getBaseMetaTileEntity().getFrontFacing() != 1) {
+        if (this.getBaseMetaTileEntity().getFrontFacing() != ForgeDirection.UP) {
             log("Fixing Bad Facing. (GT Bug)");
-            this.getBaseMetaTileEntity().setFrontFacing((byte) 1);
+            this.getBaseMetaTileEntity().setFrontFacing(ForgeDirection.UP);
         }
     }
 

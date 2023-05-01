@@ -33,8 +33,10 @@ public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
         return true;
     }
 
+    @Override
     public void onPreLogicTick() {}
 
+    @Override
     public <V> boolean addDrop(V aPooMaker) {
         int aChance = MathUtils.randInt(0, 50000);
         if (aChance > 0) {

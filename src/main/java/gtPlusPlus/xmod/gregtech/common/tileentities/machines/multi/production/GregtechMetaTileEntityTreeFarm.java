@@ -99,6 +99,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
         CASING_TEXTURE_ID = TAE.getIndexFromPage(1, 15);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new GregtechMetaTileEntityTreeFarm(this.mName);
     }

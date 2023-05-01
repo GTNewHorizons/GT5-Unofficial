@@ -144,13 +144,13 @@ public class TileEntityXpConverter extends TileBasicTank {
     }
 
     @Override
-    public boolean isLiquidInput(byte aSide) {
+    public boolean isLiquidInput(ForgeDirection side) {
         if (mConvertToEssence) {
-            if (aSide == 0 || aSide == 1) {
+            if (side.offsetY != 0) {
                 return false;
             }
         } else {
-            if (aSide == 0 || aSide == 1) {
+            if (side.offsetY != 0) {
                 return true;
             }
         }
@@ -158,13 +158,13 @@ public class TileEntityXpConverter extends TileBasicTank {
     }
 
     @Override
-    public boolean isLiquidOutput(byte aSide) {
+    public boolean isLiquidOutput(ForgeDirection side) {
         if (mConvertToEssence) {
-            if (aSide == 0 || aSide == 1) {
+            if (side.offsetY != 0) {
                 return true;
             }
         } else {
-            if (aSide == 0 || aSide == 1) {
+            if (side.offsetY != 0) {
                 return false;
             }
         }
@@ -186,13 +186,13 @@ public class TileEntityXpConverter extends TileBasicTank {
     }
 
     @Override
-    public FluidStack drain(ForgeDirection aSide, int maxDrain, boolean doDrain) {
+    public FluidStack drain(ForgeDirection side, int maxDrain, boolean doDrain) {
         if (mConvertToEssence) {
-            if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN) {
+            if (side == ForgeDirection.UP || side == ForgeDirection.DOWN) {
                 return this.tankEssence.drain(maxDrain, doDrain);
             }
         } else {
-            if (aSide != ForgeDirection.UP && aSide != ForgeDirection.DOWN) {
+            if (side != ForgeDirection.UP && side != ForgeDirection.DOWN) {
                 return this.tankLiquidXp.drain(maxDrain, doDrain);
             }
         }
@@ -200,13 +200,13 @@ public class TileEntityXpConverter extends TileBasicTank {
     }
 
     @Override
-    public FluidStack drain(ForgeDirection aSide, FluidStack aFluid, boolean doDrain) {
+    public FluidStack drain(ForgeDirection side, FluidStack aFluid, boolean doDrain) {
         if (mConvertToEssence) {
-            if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN) {
+            if (side == ForgeDirection.UP || side == ForgeDirection.DOWN) {
                 return this.tankEssence.drain(aFluid, doDrain);
             }
         } else {
-            if (aSide != ForgeDirection.UP && aSide != ForgeDirection.DOWN) {
+            if (side != ForgeDirection.UP && side != ForgeDirection.DOWN) {
                 return this.tankLiquidXp.drain(aFluid, doDrain);
             }
         }
@@ -214,13 +214,13 @@ public class TileEntityXpConverter extends TileBasicTank {
     }
 
     @Override
-    public boolean canFill(ForgeDirection aSide, Fluid aFluid) {
+    public boolean canFill(ForgeDirection side, Fluid aFluid) {
         if (mConvertToEssence) {
-            if (aSide != ForgeDirection.UP && aSide != ForgeDirection.DOWN) {
+            if (side != ForgeDirection.UP && side != ForgeDirection.DOWN) {
                 return this.tankLiquidXp.canTankBeFilled();
             }
         } else {
-            if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN) {
+            if (side == ForgeDirection.UP || side == ForgeDirection.DOWN) {
                 return this.tankEssence.canTankBeFilled();
             }
         }
@@ -228,13 +228,13 @@ public class TileEntityXpConverter extends TileBasicTank {
     }
 
     @Override
-    public boolean canDrain(ForgeDirection aSide, Fluid aFluid) {
+    public boolean canDrain(ForgeDirection side, Fluid aFluid) {
         if (mConvertToEssence) {
-            if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN) {
+            if (side == ForgeDirection.UP || side == ForgeDirection.DOWN) {
                 return this.tankEssence.canTankBeEmptied();
             }
         } else {
-            if (aSide != ForgeDirection.UP && aSide != ForgeDirection.DOWN) {
+            if (side != ForgeDirection.UP && side != ForgeDirection.DOWN) {
                 return this.tankLiquidXp.canTankBeEmptied();
             }
         }
@@ -242,8 +242,8 @@ public class TileEntityXpConverter extends TileBasicTank {
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
-        if (aSide == ForgeDirection.UP || aSide == ForgeDirection.DOWN) {
+    public FluidTankInfo[] getTankInfo(ForgeDirection side) {
+        if (side == ForgeDirection.UP || side == ForgeDirection.DOWN) {
             return new FluidTankInfo[] { this.tankEssence.getInfo() };
         } else {
             return new FluidTankInfo[] { this.tankLiquidXp.getInfo() };

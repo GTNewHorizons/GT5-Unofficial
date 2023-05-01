@@ -12,7 +12,6 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -203,7 +202,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
 
         // Get Facing direction
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
-        int mDirectionX = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
+        int mDirectionX = aBaseMetaTileEntity.getBackFacing().offsetX;
         int mCurrentDirectionX;
         int mCurrentDirectionZ;
         int mOffsetX_Lower = 0;
@@ -221,10 +220,8 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
 
         // if (aBaseMetaTileEntity.fac)
 
-        final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX
-                * mCurrentDirectionX;
-        final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ
-                * mCurrentDirectionZ;
+        final int xDir = aBaseMetaTileEntity.getBackFacing().offsetX * mCurrentDirectionX;
+        final int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ * mCurrentDirectionZ;
 
         int tAmount = 0;
         for (int i = mOffsetX_Lower + 1; i <= mOffsetX_Upper - 1; ++i) {
@@ -315,6 +312,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
         return checkRecipeGeneric(getMaxParallelRecipes(), getEuDiscountForParallelism(), 0);
     }
 
+    @Override
     public boolean checkRecipeGeneric(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
             long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
 
@@ -390,8 +388,8 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
             Block aInitStructureCheck;
             int aInitStructureCheckMeta;
             IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
-            int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-            int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+            int xDir = aBaseMetaTileEntity.getBackFacing().offsetX;
+            int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ;
             aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(xDir, -1, zDir);
             aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir, -1, zDir);
             if (aInitStructureCheck == GregTech_API.sBlockCasings1) {

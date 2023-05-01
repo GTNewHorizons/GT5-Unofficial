@@ -184,7 +184,7 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
 
     @Override
     public boolean onItemUse(final ItemStack aStack, final EntityPlayer aPlayer, final World aWorld, final int aX,
-            final int aY, final int aZ, final int aSide, final float hitX, final float hitY, final float hitZ) {
+            final int aY, final int aZ, final int ordinalSide, final float hitX, final float hitY, final float hitZ) {
         this.use(aStack, 0, aPlayer);
         this.isItemStackUsable(aStack);
         final ArrayList<Interface_ItemBehaviour<Gregtech_MetaItem_Base>> tList = this.mItemBehaviors
@@ -192,7 +192,7 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
         if (tList != null) {
             for (final Interface_ItemBehaviour<Gregtech_MetaItem_Base> tBehavior : tList) {
                 try {
-                    if (tBehavior.onItemUse(this, aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ)) {
+                    if (tBehavior.onItemUse(this, aStack, aPlayer, aWorld, aX, aY, aZ, ordinalSide, hitX, hitY, hitZ)) {
                         if (aStack.stackSize <= 0) {
                             aPlayer.destroyCurrentEquippedItem();
                         }
@@ -214,7 +214,7 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
 
     @Override
     public boolean onItemUseFirst(final ItemStack aStack, final EntityPlayer aPlayer, final World aWorld, final int aX,
-            final int aY, final int aZ, final int aSide, final float hitX, final float hitY, final float hitZ) {
+            final int aY, final int aZ, final int ordinalSide, final float hitX, final float hitY, final float hitZ) {
         this.use(aStack, 0, aPlayer);
         this.isItemStackUsable(aStack);
         final ArrayList<Interface_ItemBehaviour<Gregtech_MetaItem_Base>> tList = this.mItemBehaviors
@@ -222,7 +222,8 @@ public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
         if (tList != null) {
             for (final Interface_ItemBehaviour<Gregtech_MetaItem_Base> tBehavior : tList) {
                 try {
-                    if (tBehavior.onItemUseFirst(this, aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ)) {
+                    if (tBehavior
+                            .onItemUseFirst(this, aStack, aPlayer, aWorld, aX, aY, aZ, ordinalSide, hitX, hitY, hitZ)) {
                         if (aStack.stackSize <= 0) {
                             aPlayer.destroyCurrentEquippedItem();
                         }

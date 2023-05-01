@@ -9,6 +9,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.CubicObject;
@@ -30,11 +31,11 @@ public class Machine_RoundRobinator extends BasicTileBlockWithTooltip {
      */
     @Override
     public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
-            final int side, final float lx, final float ly, final float lz) {
+            final int ordinalSide, final float lx, final float ly, final float lz) {
         if (world.isRemote) {
             return true;
         } else {
-
+            final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
             boolean mDidScrewDriver = false;
             // Check For Screwdriver
             try {
@@ -42,7 +43,7 @@ public class Machine_RoundRobinator extends BasicTileBlockWithTooltip {
                 if (ItemUtils.isToolScrewdriver(mHandStack)) {
                     final TileEntityRoundRobinator tile = (TileEntityRoundRobinator) world.getTileEntity(x, y, z);
                     if (tile != null) {
-                        mDidScrewDriver = tile.onScrewdriverRightClick((byte) side, player, x, y, z);
+                        mDidScrewDriver = tile.onScrewdriverRightClick(side, player, x, y, z);
                     }
                 }
             } catch (final Throwable t) {}
@@ -50,7 +51,7 @@ public class Machine_RoundRobinator extends BasicTileBlockWithTooltip {
             if (!mDidScrewDriver) {
                 final TileEntity te = world.getTileEntity(x, y, z);
                 if ((te != null) && (te instanceof TileEntityRoundRobinator)) {
-                    return ((TileEntityRoundRobinator) te).onRightClick((byte) side, player, x, y, z);
+                    return ((TileEntityRoundRobinator) te).onRightClick(side, player, x, y, z);
                 }
                 return false;
             } else {

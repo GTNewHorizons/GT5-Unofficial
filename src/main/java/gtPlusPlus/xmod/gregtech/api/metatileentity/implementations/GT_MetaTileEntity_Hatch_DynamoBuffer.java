@@ -25,10 +25,12 @@ public class GT_MetaTileEntity_Hatch_DynamoBuffer extends GT_MetaTileEntity_Hatc
      * final ITexture[][][] aTextures) { super(aName, aTier, aDescription, aTextures); }
      */
 
+    @Override
     public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, TexturesGtBlock.OVERLAYS_ENERGY_OUT_MULTI_BUFFER[this.mTier] };
     }
 
+    @Override
     public ITexture[] getTexturesInactive(final ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, TexturesGtBlock.OVERLAYS_ENERGY_OUT_MULTI_BUFFER[this.mTier] };
     }

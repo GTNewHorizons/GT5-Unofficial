@@ -6,7 +6,7 @@ import gregtech.api.enums.Textures;
 
 public class CasingTextureHandler2 {
 
-    public static IIcon getIcon(final int aSide, final int aMeta) { // Texture ID's. case 0 == ID[57]
+    public static IIcon getIcon(final int ordinalSide, final int aMeta) { // Texture ID's. case 0 == ID[57]
         if ((aMeta >= 0) && (aMeta < 16)) {
             switch (aMeta) {
                 case 0:
@@ -36,7 +36,7 @@ public class CasingTextureHandler2 {
                 case 12:
                     return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
                 case 13:
-                    if (aSide < 2) {
+                    if (ordinalSide < 2) {
                         return TexturesGtBlock.TEXTURE_TECH_A.getIcon();
                     } else {
                         return TexturesGtBlock.TEXTURE_TECH_B.getIcon();

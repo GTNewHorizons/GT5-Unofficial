@@ -2,13 +2,13 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.redstone;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Utility;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
 
@@ -68,74 +68,74 @@ public class GT_MetaTileEntity_RedstoneButtonPanel extends GT_MetaTileEntity_Red
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
-            float aY, float aZ) {
-        if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
+            float aX, float aY, float aZ) {
+        if (side == getBaseMetaTileEntity().getFrontFacing()) {
             if (getBaseMetaTileEntity().isServerSide()) {
                 mUpdate = 2;
                 switch (mType) {
                     case 0:
                     default:
-                        switch (aSide) {
-                            case 0:
-                            case 1:
+                        switch (side) {
+                            case DOWN:
+                            case UP:
                                 mRedstoneStrength = (byte) ((byte) (aX * 4) + 4 * (byte) (aZ * 4));
                                 break;
-                            case 2:
+                            case NORTH:
                                 mRedstoneStrength = (byte) ((byte) (4 - aX * 4) + 4 * (byte) (4 - aY * 4));
                                 break;
-                            case 3:
+                            case SOUTH:
                                 mRedstoneStrength = (byte) ((byte) (aX * 4) + 4 * (byte) (4 - aY * 4));
                                 break;
-                            case 4:
+                            case WEST:
                                 mRedstoneStrength = (byte) ((byte) (aZ * 4) + 4 * (byte) (4 - aY * 4));
                                 break;
-                            case 5:
+                            case EAST:
                                 mRedstoneStrength = (byte) ((byte) (4 - aZ * 4) + 4 * (byte) (4 - aY * 4));
                                 break;
                         }
                         break;
                     case 1:
-                        switch (aSide) {
-                            case 0:
-                            case 1:
+                        switch (side) {
+                            case DOWN:
+                            case UP:
                                 mRedstoneStrength = (byte) (mRedstoneStrength
                                         ^ (1 << (((byte) (aX * 2) + 2 * (byte) (aZ * 2)))));
                                 break;
-                            case 2:
+                            case NORTH:
                                 mRedstoneStrength = (byte) (mRedstoneStrength
                                         ^ (1 << (((byte) (2 - aX * 2) + 2 * (byte) (2 - aY * 2)))));
                                 break;
-                            case 3:
+                            case SOUTH:
                                 mRedstoneStrength = (byte) (mRedstoneStrength
                                         ^ (1 << (((byte) (aX * 2) + 2 * (byte) (2 - aY * 2)))));
                                 break;
-                            case 4:
+                            case WEST:
                                 mRedstoneStrength = (byte) (mRedstoneStrength
                                         ^ (1 << (((byte) (aZ * 2) + 2 * (byte) (2 - aY * 2)))));
                                 break;
-                            case 5:
+                            case EAST:
                                 mRedstoneStrength = (byte) (mRedstoneStrength
                                         ^ (1 << (((byte) (2 - aZ * 2) + 2 * (byte) (2 - aY * 2)))));
                                 break;
                         }
                         break;
                     case 2:
-                        switch (aSide) {
-                            case 0:
-                            case 1:
+                        switch (side) {
+                            case DOWN:
+                            case UP:
                                 mRedstoneStrength = (byte) (mRedstoneStrength ^ (1 << ((byte) (aZ * 4))));
                                 break;
-                            case 2:
+                            case NORTH:
                                 mRedstoneStrength = (byte) (mRedstoneStrength ^ (1 << ((byte) (4 - aY * 4))));
                                 break;
-                            case 3:
+                            case SOUTH:
                                 mRedstoneStrength = (byte) (mRedstoneStrength ^ (1 << ((byte) (4 - aY * 4))));
                                 break;
-                            case 4:
+                            case WEST:
                                 mRedstoneStrength = (byte) (mRedstoneStrength ^ (1 << ((byte) (4 - aY * 4))));
                                 break;
-                            case 5:
+                            case EAST:
                                 mRedstoneStrength = (byte) (mRedstoneStrength ^ (1 << ((byte) (4 - aY * 4))));
                                 break;
                         }
@@ -156,20 +156,20 @@ public class GT_MetaTileEntity_RedstoneButtonPanel extends GT_MetaTileEntity_Red
             } else if (getBaseMetaTileEntity().isAllowedToWork()) {
                 mRedstoneStrength = 0;
             }
-            for (byte i = 0; i < 6; i++) {
+            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 getBaseMetaTileEntity().setStrongOutputRedstoneSignal(
-                        i,
-                        i == getBaseMetaTileEntity().getFrontFacing() ? (byte) 0 : mRedstoneStrength);
+                        side,
+                        side == getBaseMetaTileEntity().getFrontFacing() ? (byte) 0 : mRedstoneStrength);
                 getBaseMetaTileEntity().setInternalOutputRedstoneSignal(
-                        i,
-                        i == getBaseMetaTileEntity().getFrontFacing() ? (byte) 0 : mRedstoneStrength);
+                        side,
+                        side == getBaseMetaTileEntity().getFrontFacing() ? (byte) 0 : mRedstoneStrength);
             }
         }
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (aSide == getBaseMetaTileEntity().getFrontFacing()) mType = (byte) ((mType + 1) % 3);
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (side == getBaseMetaTileEntity().getFrontFacing()) mType = (byte) ((mType + 1) % 3);
     }
 
     @Override
@@ -191,15 +191,17 @@ public class GT_MetaTileEntity_RedstoneButtonPanel extends GT_MetaTileEntity_Red
     }
 
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-        if (aSide == aFacing) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
+            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
                     new GT_RenderedTexture(sIconList[mType * 16 + mRedstoneStrength]) };
         }
-        return this.mTextures[(aActive || hasRedstoneSignal() ? 5 : 0) + (aSide == aFacing ? 0
-                : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
-                        + 1];
+        return this.mTextures[(aActive || hasRedstoneSignal() ? 5 : 0)
+                + (side == facing ? 0
+                        : side == facing.getOpposite() ? 1
+                                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex
+                                        + 1];
     }
 
     public ITexture[] getFront(final byte aColor) {

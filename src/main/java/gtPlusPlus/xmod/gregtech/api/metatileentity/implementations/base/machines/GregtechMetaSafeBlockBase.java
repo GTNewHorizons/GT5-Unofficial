@@ -7,6 +7,7 @@ import java.util.UUID;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UIInfos;
@@ -14,7 +15,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.player.PlayerCache;
@@ -85,61 +85,61 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
     }
 
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-        if (aSide == aFacing) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
+            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        if (side == facing) {
             return this.mTextures[5][aColorIndex + 1];
         }
-        if (GT_Utility.getOppositeSide(aSide) == aFacing) {
+        if (side.getOpposite() == facing) {
             return this.mTextures[0][aColorIndex + 1];
         }
-        switch (aFacing) {
-            case 0:
+        switch (facing) {
+            case DOWN:
                 return this.mTextures[4][aColorIndex + 1];
-            case 1:
+            case UP:
                 return this.mTextures[2][aColorIndex + 1];
-            case 2:
-                switch (aSide) {
-                    case 0:
+            case NORTH:
+                switch (side) {
+                    case DOWN:
                         return this.mTextures[2][aColorIndex + 1];
-                    case 1:
+                    case UP:
                         return this.mTextures[2][aColorIndex + 1];
-                    case 4:
+                    case WEST:
                         return this.mTextures[1][aColorIndex + 1];
-                    case 5:
+                    case EAST:
                         return this.mTextures[3][aColorIndex + 1];
                 }
-            case 3:
-                switch (aSide) {
-                    case 0:
+            case SOUTH:
+                switch (side) {
+                    case DOWN:
                         return this.mTextures[4][aColorIndex + 1];
-                    case 1:
+                    case UP:
                         return this.mTextures[4][aColorIndex + 1];
-                    case 4:
+                    case WEST:
                         return this.mTextures[3][aColorIndex + 1];
-                    case 5:
+                    case EAST:
                         return this.mTextures[1][aColorIndex + 1];
                 }
-            case 4:
-                switch (aSide) {
-                    case 0:
+            case WEST:
+                switch (side) {
+                    case DOWN:
                         return this.mTextures[3][aColorIndex + 1];
-                    case 1:
+                    case UP:
                         return this.mTextures[1][aColorIndex + 1];
-                    case 2:
+                    case NORTH:
                         return this.mTextures[3][aColorIndex + 1];
-                    case 3:
+                    case SOUTH:
                         return this.mTextures[1][aColorIndex + 1];
                 }
-            case 5:
-                switch (aSide) {
-                    case 0:
+            case EAST:
+                switch (side) {
+                    case DOWN:
                         return this.mTextures[1][aColorIndex + 1];
-                    case 1:
+                    case UP:
                         return this.mTextures[3][aColorIndex + 1];
-                    case 2:
+                    case NORTH:
                         return this.mTextures[1][aColorIndex + 1];
-                    case 3:
+                    case SOUTH:
                         return this.mTextures[3][aColorIndex + 1];
                 }
         }
@@ -157,7 +157,7 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
     }
 
     @Override
-    public boolean isFacingValid(final byte aFacing) {
+    public boolean isFacingValid(final ForgeDirection facing) {
         return true;
     }
 
@@ -172,13 +172,13 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
     }
 
     @Override
-    public boolean isInputFacing(final byte aSide) {
-        return !this.isOutputFacing(aSide);
+    public boolean isInputFacing(final ForgeDirection side) {
+        return !this.isOutputFacing(side);
     }
 
     @Override
-    public boolean isOutputFacing(final byte aSide) {
-        return this.getBaseMetaTileEntity().getBackFacing() == aSide;
+    public boolean isOutputFacing(final ForgeDirection side) {
+        return this.getBaseMetaTileEntity().getBackFacing() == side;
     }
 
     @Override
@@ -317,14 +317,14 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
     }
 
     @Override
-    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
+    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
-        return aSide != aBaseMetaTileEntity.getBackFacing();
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
+        return side != aBaseMetaTileEntity.getBackFacing();
     }
 }

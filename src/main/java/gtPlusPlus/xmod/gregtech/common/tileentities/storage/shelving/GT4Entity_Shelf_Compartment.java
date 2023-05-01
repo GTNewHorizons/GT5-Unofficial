@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -25,8 +26,8 @@ public class GT4Entity_Shelf_Compartment extends GT4Entity_Shelf {
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (side == getBaseMetaTileEntity().getFrontFacing()) {
             this.mType = ((byte) ((this.mType + 1) % 16));
             PlayerUtils.messagePlayer(aPlayer, "Set type to " + this.mType + ".");
         }

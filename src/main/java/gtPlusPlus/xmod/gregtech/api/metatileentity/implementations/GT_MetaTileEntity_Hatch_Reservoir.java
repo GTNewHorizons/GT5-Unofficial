@@ -22,6 +22,7 @@ public class GT_MetaTileEntity_Hatch_Reservoir extends GT_MetaTileEntity_Hatch_F
         super(aName, aTier, aDescription, aTextures);
     }
 
+    @Override
     public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Hatch_Reservoir(this.mName, this.mTier, this.mDescription, this.mTextures);
     }
@@ -62,10 +63,12 @@ public class GT_MetaTileEntity_Hatch_Reservoir extends GT_MetaTileEntity_Hatch_F
     @Override
     public void generateParticles(World aWorld, String name) {}
 
+    @Override
     public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Water) };
     }
 
+    @Override
     public ITexture[] getTexturesInactive(final ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Water) };
     }

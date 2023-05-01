@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
@@ -25,14 +26,17 @@ public class BTF_Inventory implements ISidedInventory {
         return this.mInventory;
     }
 
+    @Override
     public int getSizeInventory() {
         return this.mInventory.length;
     }
 
+    @Override
     public ItemStack getStackInSlot(int aIndex) {
         return aIndex >= 0 && aIndex < this.mInventory.length ? this.mInventory[aIndex] : null;
     }
 
+    @Override
     public void setInventorySlotContents(int aIndex, ItemStack aStack) {
         if (aIndex >= 0 && aIndex < this.mInventory.length) {
             this.mInventory[aIndex] = aStack;
@@ -47,6 +51,7 @@ public class BTF_Inventory implements ISidedInventory {
         return true;
     }
 
+    @Override
     public int getInventoryStackLimit() {
         return 64;
     }
@@ -55,10 +60,12 @@ public class BTF_Inventory implements ISidedInventory {
         return false;
     }
 
+    @Override
     public boolean isItemValidForSlot(int aIndex, ItemStack aStack) {
         return isValidSlot(aIndex);
     }
 
+    @Override
     public ItemStack decrStackSize(int aIndex, int aAmount) {
         ItemStack tStack = this.getStackInSlot(aIndex);
         ItemStack rStack = GT_Utility.copy(new Object[] { tStack });
@@ -80,34 +87,36 @@ public class BTF_Inventory implements ISidedInventory {
         return rStack;
     }
 
-    public int[] getAccessibleSlotsFromSide(int aSide) {
+    @Override
+    public int[] getAccessibleSlotsFromSide(int ordinalSide) {
+        final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
         ArrayList<Integer> tList = new ArrayList<Integer>();
         TileEntityBase tTileEntity = this.mTile;
-        boolean tSkip = tTileEntity.getCoverBehaviorAtSide((byte) aSide).letsItemsIn(
-                (byte) aSide,
-                tTileEntity.getCoverIDAtSide((byte) aSide),
-                tTileEntity.getCoverDataAtSide((byte) aSide),
+        boolean tSkip = tTileEntity.getCoverBehaviorAtSide(side).letsItemsIn(
+                side,
+                tTileEntity.getCoverIDAtSide(side),
+                tTileEntity.getCoverDataAtSide(side),
                 -2,
                 tTileEntity)
-                || tTileEntity.getCoverBehaviorAtSide((byte) aSide).letsItemsOut(
-                        (byte) aSide,
-                        tTileEntity.getCoverIDAtSide((byte) aSide),
-                        tTileEntity.getCoverDataAtSide((byte) aSide),
+                || tTileEntity.getCoverBehaviorAtSide(side).letsItemsOut(
+                        side,
+                        tTileEntity.getCoverIDAtSide(side),
+                        tTileEntity.getCoverDataAtSide(side),
                         -2,
                         tTileEntity);
 
         for (int rArray = 0; rArray < this.getSizeInventory(); ++rArray) {
             if (this.isValidSlot(rArray) && (tSkip
-                    || tTileEntity.getCoverBehaviorAtSide((byte) aSide).letsItemsOut(
-                            (byte) aSide,
-                            tTileEntity.getCoverIDAtSide((byte) aSide),
-                            tTileEntity.getCoverDataAtSide((byte) aSide),
+                    || tTileEntity.getCoverBehaviorAtSide(side).letsItemsOut(
+                            side,
+                            tTileEntity.getCoverIDAtSide(side),
+                            tTileEntity.getCoverDataAtSide(side),
                             rArray,
                             tTileEntity)
-                    || tTileEntity.getCoverBehaviorAtSide((byte) aSide).letsItemsIn(
-                            (byte) aSide,
-                            tTileEntity.getCoverIDAtSide((byte) aSide),
-                            tTileEntity.getCoverDataAtSide((byte) aSide),
+                    || tTileEntity.getCoverBehaviorAtSide(side).letsItemsIn(
+                            side,
+                            tTileEntity.getCoverIDAtSide(side),
+                            tTileEntity.getCoverDataAtSide(side),
                             rArray,
                             tTileEntity))) {
                 tList.add(Integer.valueOf(rArray));
@@ -123,36 +132,42 @@ public class BTF_Inventory implements ISidedInventory {
         return arg6;
     }
 
-    public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
+    @Override
+    public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
         return this.isValidSlot(aIndex) && aStack != null
                 && aIndex < this.mInventory.length
                 && (this.mInventory[aIndex] == null || GT_Utility.areStacksEqual(aStack, this.mInventory[aIndex]))
-                && this.allowPutStack(this.mTile, aIndex, (byte) aSide, aStack);
+                && this.allowPutStack(this.mTile, aIndex, ForgeDirection.getOrientation(ordinalSide), aStack);
     }
 
-    public boolean canExtractItem(int aIndex, ItemStack aStack, int aSide) {
+    @Override
+    public boolean canExtractItem(int aIndex, ItemStack aStack, int ordinalSide) {
         return this.isValidSlot(aIndex) && aStack != null
                 && aIndex < this.mInventory.length
-                && this.allowPullStack(this.mTile, aIndex, (byte) aSide, aStack);
+                && this.allowPullStack(this.mTile, aIndex, ForgeDirection.getOrientation(ordinalSide), aStack);
     }
 
-    public boolean allowPullStack(TileEntityBase mTile2, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(TileEntityBase mTile2, int aIndex, ForgeDirection side, ItemStack aStack) {
         return aIndex >= 0 && aIndex < this.getSizeInventory();
     }
 
-    public boolean allowPutStack(TileEntityBase aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(TileEntityBase aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return (aIndex >= 0 && aIndex < this.getSizeInventory())
                 && (this.mInventory[aIndex] == null || GT_Utility.areStacksEqual(this.mInventory[aIndex], aStack));
     }
 
+    @Override
     public ItemStack getStackInSlotOnClosing(int i) {
         return null;
     }
 
+    @Override
     public final boolean hasCustomInventoryName() {
         return mTile != null ? mTile.hasCustomInventoryName() : false;
     }
 
+    @Override
     public void markDirty() {
         if (mTile != null) {
             purgeNulls();
@@ -160,12 +175,15 @@ public class BTF_Inventory implements ISidedInventory {
         }
     }
 
+    @Override
     public boolean isUseableByPlayer(EntityPlayer entityplayer) {
         return true;
     }
 
+    @Override
     public void openInventory() {}
 
+    @Override
     public void closeInventory() {}
 
     @Override

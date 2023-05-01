@@ -1,11 +1,19 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.automation;
 
+import static net.minecraftforge.common.util.ForgeDirection.DOWN;
+import static net.minecraftforge.common.util.ForgeDirection.EAST;
+import static net.minecraftforge.common.util.ForgeDirection.NORTH;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.UP;
+import static net.minecraftforge.common.util.ForgeDirection.WEST;
+
 import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.gtnewhorizons.modularui.api.ModularUITextures;
@@ -74,7 +82,7 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -124,14 +132,14 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
-        return !isOutputFacing(aSide);
+    public boolean isInputFacing(ForgeDirection side) {
+        return !isOutputFacing(side);
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
+    public boolean isOutputFacing(ForgeDirection side) {
         for (int i = 0; i < mSlotRange.length; i++) {
-            if (aSide == getRangeDirection(i) && getRangeEnergy(i)) {
+            if (side == getRangeDirection(i) && getRangeEnergy(i)) {
                 return true;
             }
         }
@@ -211,20 +219,20 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
         mSlotRange[aIndex] = (mSlotRange[aIndex] & ~32768) | ((mSlotRange[aIndex] & 32768) > 0 ? 0 : 32768);
     }
 
-    public byte getRangeDirection(int aIndex) {
-        return (byte) (mSlotRange[aIndex] & 7);
+    public ForgeDirection getRangeDirection(int aIndex) {
+        return ForgeDirection.getOrientation(mSlotRange[aIndex] & 7);
     }
 
-    public byte getSlot1Direction(int aIndex) {
-        return (byte) ((mSlotRange[aIndex] & 112) >> 4);
+    public ForgeDirection getSlot1Direction(int aIndex) {
+        return ForgeDirection.getOrientation((mSlotRange[aIndex] & 112) >> 4);
     }
 
-    public byte getSlot2Direction(int aIndex) {
-        return (byte) ((mSlotRange[aIndex] & 896) >> 7);
+    public ForgeDirection getSlot2Direction(int aIndex) {
+        return ForgeDirection.getOrientation((mSlotRange[aIndex] & 896) >> 7);
     }
 
-    public byte getSlot3Direction(int aIndex) {
-        return (byte) ((mSlotRange[aIndex] & 7168) >> 10);
+    public ForgeDirection getSlot3Direction(int aIndex) {
+        return ForgeDirection.getOrientation((mSlotRange[aIndex] & 7168) >> 10);
     }
 
     public boolean getRangeEnergy(int aIndex) {
@@ -253,17 +261,17 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
                         || getBaseMetaTileEntity().hasInventoryBeenModified())) {
             mWorkedLastTick = false;
 
-            IInventory[] tTileEntities = new IInventory[] { getBaseMetaTileEntity().getIInventoryAtSide((byte) 0),
-                    getBaseMetaTileEntity().getIInventoryAtSide((byte) 1),
-                    getBaseMetaTileEntity().getIInventoryAtSide((byte) 2),
-                    getBaseMetaTileEntity().getIInventoryAtSide((byte) 3),
-                    getBaseMetaTileEntity().getIInventoryAtSide((byte) 4),
-                    getBaseMetaTileEntity().getIInventoryAtSide((byte) 5), null, null };
+            IInventory[] tTileEntities = new IInventory[] { getBaseMetaTileEntity().getIInventoryAtSide(DOWN),
+                    getBaseMetaTileEntity().getIInventoryAtSide(UP), getBaseMetaTileEntity().getIInventoryAtSide(NORTH),
+                    getBaseMetaTileEntity().getIInventoryAtSide(SOUTH),
+                    getBaseMetaTileEntity().getIInventoryAtSide(WEST),
+                    getBaseMetaTileEntity().getIInventoryAtSide(EAST), null, null };
 
             int tCost = 0;
 
             for (int i = 0; i < 4; i++) {
-                if (tTileEntities[getRangeDirection(i)] != null) {
+                final int ordinalRangeDirection = getRangeDirection(i).ordinal();
+                if (tTileEntities[ordinalRangeDirection] != null) {
                     ArrayList<ItemStack> tList = new ArrayList<ItemStack>();
                     ItemStack tStack;
                     tList.add(null);
@@ -272,7 +280,7 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
                     if (tStack == null) {
                         if (getSlot1InOut(i)) tCost += 5 * GT_Utility.moveOneItemStack(
                                 getBaseMetaTileEntity(),
-                                tTileEntities[getRangeDirection(i)],
+                                tTileEntities[ordinalRangeDirection],
                                 getSlot1Direction(i),
                                 getSlot1Direction(i),
                                 null,
@@ -282,7 +290,7 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
                                 (byte) 64,
                                 (byte) 1);
                         else tCost += 5 * GT_Utility.moveOneItemStack(
-                                tTileEntities[getRangeDirection(i)],
+                                tTileEntities[ordinalRangeDirection],
                                 getBaseMetaTileEntity(),
                                 getSlot1Direction(i),
                                 getSlot1Direction(i),
@@ -296,7 +304,7 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
                         tList.set(0, tStack);
                         if (getSlot1InOut(i)) tCost += 5 * GT_Utility.moveOneItemStack(
                                 getBaseMetaTileEntity(),
-                                tTileEntities[getRangeDirection(i)],
+                                tTileEntities[ordinalRangeDirection],
                                 getSlot1Direction(i),
                                 getSlot1Direction(i),
                                 tList,
@@ -306,7 +314,7 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
                                 (byte) 64,
                                 (byte) 1);
                         else tCost += 5 * GT_Utility.moveOneItemStack(
-                                tTileEntities[getRangeDirection(i)],
+                                tTileEntities[ordinalRangeDirection],
                                 getBaseMetaTileEntity(),
                                 getSlot1Direction(i),
                                 getSlot1Direction(i),
@@ -322,7 +330,7 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
                     if (tStack == null) {
                         if (getSlot2InOut(i)) tCost += 5 * GT_Utility.moveOneItemStack(
                                 getBaseMetaTileEntity(),
-                                tTileEntities[getRangeDirection(i)],
+                                tTileEntities[ordinalRangeDirection],
                                 getSlot2Direction(i),
                                 getSlot2Direction(i),
                                 null,
@@ -332,7 +340,7 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
                                 (byte) 64,
                                 (byte) 1);
                         else tCost += 5 * GT_Utility.moveOneItemStack(
-                                tTileEntities[getRangeDirection(i)],
+                                tTileEntities[ordinalRangeDirection],
                                 getBaseMetaTileEntity(),
                                 getSlot2Direction(i),
                                 getSlot2Direction(i),
@@ -346,7 +354,7 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
                         tList.set(0, tStack);
                         if (getSlot2InOut(i)) tCost += 5 * GT_Utility.moveOneItemStack(
                                 getBaseMetaTileEntity(),
-                                tTileEntities[getRangeDirection(i)],
+                                tTileEntities[ordinalRangeDirection],
                                 getSlot2Direction(i),
                                 getSlot2Direction(i),
                                 tList,
@@ -356,7 +364,7 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
                                 (byte) 64,
                                 (byte) 1);
                         else tCost += 5 * GT_Utility.moveOneItemStack(
-                                tTileEntities[getRangeDirection(i)],
+                                tTileEntities[ordinalRangeDirection],
                                 getBaseMetaTileEntity(),
                                 getSlot2Direction(i),
                                 getSlot2Direction(i),
@@ -372,7 +380,7 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
                     if (tStack == null) {
                         if (getSlot3InOut(i)) tCost += 5 * GT_Utility.moveOneItemStack(
                                 getBaseMetaTileEntity(),
-                                tTileEntities[getRangeDirection(i)],
+                                tTileEntities[ordinalRangeDirection],
                                 getSlot3Direction(i),
                                 getSlot3Direction(i),
                                 null,
@@ -382,7 +390,7 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
                                 (byte) 64,
                                 (byte) 1);
                         else tCost += 5 * GT_Utility.moveOneItemStack(
-                                tTileEntities[getRangeDirection(i)],
+                                tTileEntities[ordinalRangeDirection],
                                 getBaseMetaTileEntity(),
                                 getSlot3Direction(i),
                                 getSlot3Direction(i),
@@ -396,7 +404,7 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
                         tList.set(0, tStack);
                         if (getSlot3InOut(i)) tCost += 5 * GT_Utility.moveOneItemStack(
                                 getBaseMetaTileEntity(),
-                                tTileEntities[getRangeDirection(i)],
+                                tTileEntities[ordinalRangeDirection],
                                 getSlot3Direction(i),
                                 getSlot3Direction(i),
                                 tList,
@@ -406,7 +414,7 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
                                 (byte) 64,
                                 (byte) 1);
                         else tCost += 5 * GT_Utility.moveOneItemStack(
-                                tTileEntities[getRangeDirection(i)],
+                                tTileEntities[ordinalRangeDirection],
                                 getBaseMetaTileEntity(),
                                 getSlot3Direction(i),
                                 getSlot3Direction(i),
@@ -432,25 +440,20 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
         return new String[] { "It's simpler than you think. I promise.", this.mDescription, CORE.GT_Tooltip.get() };
     }
 
-    /*
-     * @Override public int getTextureIndex(byte aSide, byte aFacing, boolean aActive, boolean aRedstone) { switch
-     * (aSide) { case 0: return 113 + (aRedstone?8:0); case 1: return 112 + (aRedstone?8:0); case 2: return 116 +
-     * (aRedstone?8:0); case 3: return 213 + (aRedstone?8:0); case 4: return 212 + (aRedstone?8:0); case 5: return 117 +
-     * (aRedstone?8:0); } return 0; }
-     */
-
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return true;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return true;
     }
 
@@ -475,9 +478,9 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
     }
 
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return this.mTextures[!aRedstone ? aSide : aSide + 6][aColorIndex < 0 ? 0 : aColorIndex];
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
+            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[!aRedstone ? side.ordinal() : side.ordinal() + 6][aColorIndex < 0 ? 0 : aColorIndex];
     }
 
     public ITexture[] getBottom(final byte aColor) {
@@ -642,21 +645,21 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
 
         for (int i = 0; i < mTargetDirections.length; i++) {
             final int index = i;
-            builder.widget(new FakeSyncWidget.ByteSyncer(() -> {
+            builder.widget(new FakeSyncWidget.IntegerSyncer(() -> {
                 if (index % 3 == 0) {
-                    return getSlot1Direction(index / 3);
+                    return getSlot1Direction(index / 3).ordinal();
                 } else if (index % 3 == 1) {
-                    return getSlot2Direction(index / 3);
+                    return getSlot2Direction(index / 3).ordinal();
                 } else {
-                    return getSlot3Direction(index / 3);
+                    return getSlot3Direction(index / 3).ordinal();
                 }
             }, val -> mTargetDirections[index] = val));
         }
         for (int i = 0; i < mRangeDirections.length; i++) {
             final int index = i;
             builder.widget(
-                    new FakeSyncWidget.ByteSyncer(
-                            () -> getRangeDirection(index),
+                    new FakeSyncWidget.IntegerSyncer(
+                            () -> getRangeDirection(index).ordinal(),
                             val -> mRangeDirections[index] = val));
         }
         for (int i = 0; i < mTargetInOut.length; i++) {

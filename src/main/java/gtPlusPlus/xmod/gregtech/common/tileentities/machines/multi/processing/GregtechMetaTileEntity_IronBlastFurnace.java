@@ -61,9 +61,9 @@ public class GregtechMetaTileEntity_IronBlastFurnace extends MetaTileEntity impl
     }
 
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-        if (aSide == aFacing) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
+            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        if (side == facing) {
             return aActive ? FACING_ACTIVE : FACING_FRONT;
         }
         return FACING_SIDE;
@@ -95,12 +95,12 @@ public class GregtechMetaTileEntity_IronBlastFurnace extends MetaTileEntity impl
     }
 
     @Override
-    public boolean isInputFacing(final byte aSide) {
+    public boolean isInputFacing(final ForgeDirection side) {
         return false;
     }
 
     @Override
-    public boolean isOutputFacing(final byte aSide) {
+    public boolean isOutputFacing(final ForgeDirection side) {
         return false;
     }
 
@@ -110,8 +110,8 @@ public class GregtechMetaTileEntity_IronBlastFurnace extends MetaTileEntity impl
     }
 
     @Override
-    public boolean isFacingValid(final byte aFacing) {
-        return aFacing > 1;
+    public boolean isFacingValid(final ForgeDirection facing) {
+        return facing.offsetY == 0;
     }
 
     @Override
@@ -136,9 +136,9 @@ public class GregtechMetaTileEntity_IronBlastFurnace extends MetaTileEntity impl
     }
 
     @Override
-    public boolean allowCoverOnSide(final byte aSide, final GT_ItemStack aCoverID) {
+    public boolean allowCoverOnSide(final ForgeDirection side, final GT_ItemStack aCoverID) {
         return (GregTech_API.getCoverBehavior(aCoverID.toStack()).isSimpleCover())
-                && (super.allowCoverOnSide(aSide, aCoverID));
+                && (super.allowCoverOnSide(side, aCoverID));
     }
 
     @Override
@@ -178,8 +178,8 @@ public class GregtechMetaTileEntity_IronBlastFurnace extends MetaTileEntity impl
     }
 
     private boolean checkMachine() {
-        final int xDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetX;
-        final int zDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ;
+        final int xDir = this.getBaseMetaTileEntity().getBackFacing().offsetX;
+        final int zDir = this.getBaseMetaTileEntity().getBackFacing().offsetZ;
         for (int i = -1; i < 2; i++) {
             for (int j = -1; j < 4; j++) { // This is height
                 for (int k = -1; k < 2; k++) {
@@ -462,14 +462,14 @@ public class GregtechMetaTileEntity_IronBlastFurnace extends MetaTileEntity impl
     }
 
     @Override
-    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
+    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
         return aIndex > 1;
     }
 
     @Override
-    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
         if (aIndex < 2) {}
         return !GT_Utility.areStacksEqual(aStack, this.mInventory[0]);
     }

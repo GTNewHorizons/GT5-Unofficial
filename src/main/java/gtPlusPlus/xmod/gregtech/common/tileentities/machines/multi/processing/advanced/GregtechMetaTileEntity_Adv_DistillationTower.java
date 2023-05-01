@@ -75,6 +75,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
         super(aName);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GregtechMetaTileEntity_Adv_DistillationTower(this.mName);
     }
@@ -260,10 +261,12 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
         return check;
     }
 
+    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return mMode.getRecipeMap();
     }
 
+    @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
     }
@@ -274,10 +277,12 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
         return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
     }
 
+    @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return 10000;
     }
 
+    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         if (this.mMode == Mode.Distillery)
             return CORE.ConfigSwitches.pollutionPerSecondMultiAdvDistillationTower_ModeDistillery;
@@ -299,7 +304,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
     }
 
     @Override
-    public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (mHeight < 11) {
             PlayerUtils.messagePlayer(aPlayer, "Cannot switch mode if not in full height.");
             return;
@@ -309,10 +314,12 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
         mLastRecipe = null;
     }
 
+    @Override
     public int getDamageToComponent(ItemStack aStack) {
         return 0;
     }
 
+    @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }

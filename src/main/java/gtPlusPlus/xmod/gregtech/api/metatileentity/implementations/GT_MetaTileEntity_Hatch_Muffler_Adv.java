@@ -55,6 +55,7 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
         super(aName, aTier, 1, aDescription, aTextures);
     }
 
+    @Override
     public String[] getDescription() {
         String[] desc = new String[mDescriptionArray.length + 7];
         System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
@@ -70,18 +71,22 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
         return desc;
     }
 
+    @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Muffler_Adv) };
     }
 
+    @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, new GT_RenderedTexture(TexturesGtBlock.Overlay_Hatch_Muffler_Adv) };
     }
 
+    @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex == SLOT_FILTER;
     }
 
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Hatch_Muffler_Adv(this.mName, this.mTier, mDescriptionArray, this.mTextures);
     }
@@ -120,6 +125,7 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
         return (int) (aPollution * Math.pow(0.64D, (double) (this.mTier - 1)));
     }
 
+    @Override
     public int calculatePollutionReduction(int aPollution) {
         double aVal1 = aPollution * Math.pow(0.64D, (double) (this.mTier - 1));
         int aVal2 = (int) aVal1;
@@ -129,7 +135,9 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
         return aVal2;
     }
 
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    @Override
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         if (aIndex == this.SLOT_FILTER) {
             if (isAirFilter(aStack)) {
                 return true;
@@ -160,6 +168,7 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
         return isAirFilter(getInventoryStack());
     }
 
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 
         // Logger.INFO("A1");
@@ -238,6 +247,7 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
         return false;
     }
 
+    @Override
     public void pollutionParticles(World aWorld, String name) {
         float ran1 = CORE.RANDOM.nextFloat();
         float ran2 = 0.0F;
@@ -264,7 +274,7 @@ public class GT_MetaTileEntity_Hatch_Muffler_Adv extends GT_MetaTileEntity_Hatch
         }
 
         IGregTechTileEntity aMuffler = this.getBaseMetaTileEntity();
-        ForgeDirection aDir = ForgeDirection.getOrientation(aMuffler.getFrontFacing());
+        ForgeDirection aDir = aMuffler.getFrontFacing();
         float xPos = (float) aDir.offsetX * 0.76F + (float) aMuffler.getXCoord() + 0.25F;
         float yPos = (float) aDir.offsetY * 0.76F + (float) aMuffler.getYCoord() + 0.25F;
         float zPos = (float) aDir.offsetZ * 0.76F + (float) aMuffler.getZCoord() + 0.25F;

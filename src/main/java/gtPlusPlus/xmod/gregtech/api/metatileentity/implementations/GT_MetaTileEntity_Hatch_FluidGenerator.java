@@ -49,6 +49,7 @@ public abstract class GT_MetaTileEntity_Hatch_FluidGenerator extends GT_MetaTile
 
     public abstract int getMaxTickTime();
 
+    @Override
     public synchronized String[] getDescription() {
         try {
             if (F == null || S == null) {
@@ -90,44 +91,52 @@ public abstract class GT_MetaTileEntity_Hatch_FluidGenerator extends GT_MetaTile
         return new String[] { "Broken Tooltip - Report on Github" };
     }
 
+    @Override
     public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
                 new GT_RenderedTexture((IIconContainer) Textures.BlockIcons.OVERLAY_MUFFLER) };
     }
 
+    @Override
     public ITexture[] getTexturesInactive(final ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
                 new GT_RenderedTexture((IIconContainer) Textures.BlockIcons.OVERLAY_MUFFLER) };
     }
 
+    @Override
     public boolean isSimpleMachine() {
         return true;
     }
 
-    public boolean isFacingValid(final byte aFacing) {
+    @Override
+    public boolean isFacingValid(final ForgeDirection facing) {
         return true;
     }
 
+    @Override
     public boolean isAccessAllowed(final EntityPlayer aPlayer) {
         return true;
     }
 
+    @Override
     public boolean isValidSlot(final int aIndex) {
         return false;
     }
 
+    @Override
     public abstract MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity);
 
-    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
+    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
-    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
+    @Override
     public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (!aBaseMetaTileEntity.isAllowedToWork()) {
@@ -164,10 +173,12 @@ public abstract class GT_MetaTileEntity_Hatch_FluidGenerator extends GT_MetaTile
 
     public abstract void generateParticles(final World aWorld, final String name);
 
+    @Override
     public int getTankPressure() {
         return 100;
     }
 
+    @Override
     public abstract int getCapacity();
 
     @Override

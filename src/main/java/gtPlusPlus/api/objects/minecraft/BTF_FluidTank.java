@@ -18,14 +18,17 @@ public class BTF_FluidTank extends FluidTank {
      * 
      * @author Alkalus/GregoriusT
      */
+    @Override
     public FluidStack getFluid() {
         return this.getDrainableStack();
     }
 
+    @Override
     public int getFluidAmount() {
         return this.getDrainableStack() != null ? this.getDrainableStack().amount : 0;
     }
 
+    @Override
     public NBTTagCompound writeToNBT(NBTTagCompound aNBT) {
         super.writeToNBT(aNBT);
         if (this.mFluid != null) {
@@ -34,6 +37,7 @@ public class BTF_FluidTank extends FluidTank {
         return aNBT;
     }
 
+    @Override
     public FluidTank readFromNBT(NBTTagCompound aNBT) {
         this.mFluid = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluid"));
         return this;
@@ -82,6 +86,7 @@ public class BTF_FluidTank extends FluidTank {
         return true;
     }
 
+    @Override
     public int fill(FluidStack aFluid, boolean doFill) {
         if (aFluid != null && aFluid.getFluid().getID() > 0
                 && aFluid.amount > 0
@@ -126,6 +131,7 @@ public class BTF_FluidTank extends FluidTank {
         }
     }
 
+    @Override
     public FluidStack drain(int maxDrain, boolean doDrain) {
         if (this.getDrainableStack() != null && this.canTankBeEmptied()) {
             if (this.getDrainableStack().amount <= 0 && this.isFluidChangingAllowed()) {

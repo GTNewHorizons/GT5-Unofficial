@@ -22,7 +22,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -77,9 +76,9 @@ public class GT_MetaTileEntity_RfConvertor extends GregtechMetaEnergyBuffer impl
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        return mTextures[Math.min(2, aSide) + (aSide == aFacing ? 3 : 0) + (aActive ? 0 : 6)][aColorIndex + 1];
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int aColorIndex, boolean aActive, boolean aRedstone) {
+        return mTextures[Math.min(2, side.ordinal()) + (side == facing ? 3 : 0) + (aActive ? 0 : 6)][aColorIndex + 1];
     }
 
     @Override
@@ -128,13 +127,13 @@ public class GT_MetaTileEntity_RfConvertor extends GregtechMetaEnergyBuffer impl
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
-        return !isOutputFacing(aSide);
+    public boolean isInputFacing(ForgeDirection side) {
+        return !isOutputFacing(side);
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing();
+    public boolean isOutputFacing(ForgeDirection side) {
+        return side == getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -149,10 +148,10 @@ public class GT_MetaTileEntity_RfConvertor extends GregtechMetaEnergyBuffer impl
                 aBaseMetaTileEntity.setActive(true);
             }
             if (this.getEUVar() < this.maxEUStore()) {
-                for (byte i = 0; i < 6
-                        && aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity(); i++) {
-                    if (isInputFacing(i)) {
-                        receiveEnergy(ForgeDirection.getOrientation(i), Integer.MAX_VALUE, false);
+                for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                    if (aBaseMetaTileEntity.getStoredEU() >= aBaseMetaTileEntity.getEUCapacity()) break;
+                    if (isInputFacing(side)) {
+                        receiveEnergy(side, Integer.MAX_VALUE, false);
                     }
                 }
             }
@@ -161,14 +160,14 @@ public class GT_MetaTileEntity_RfConvertor extends GregtechMetaEnergyBuffer impl
     }
 
     @Override
-    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
+    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
@@ -196,7 +195,7 @@ public class GT_MetaTileEntity_RfConvertor extends GregtechMetaEnergyBuffer impl
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             byte aTest = (byte) (aCurrentOutputAmperage + 1);
             if (aTest > 16 || aTest <= 0) {
@@ -216,7 +215,7 @@ public class GT_MetaTileEntity_RfConvertor extends GregtechMetaEnergyBuffer impl
 
     @Override
     public boolean canConnectEnergy(ForgeDirection from) {
-        if (isOutputFacing((byte) from.ordinal())) {
+        if (isOutputFacing(from)) {
             return false;
         }
         return true;
@@ -226,11 +225,11 @@ public class GT_MetaTileEntity_RfConvertor extends GregtechMetaEnergyBuffer impl
     public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
 
         // Cannot accept power on the output face.
-        if (!canConnectEnergy(from) || isOutputFacing((byte) from.ordinal())) {
+        if (!canConnectEnergy(from) || isOutputFacing(from)) {
             return 0;
         }
 
-        TileEntity tTileEntity = this.getBaseMetaTileEntity().getTileEntityAtSide((byte) from.ordinal());
+        TileEntity tTileEntity = this.getBaseMetaTileEntity().getTileEntityAtSide(from);
         if (tTileEntity == null) {
             return 0;
         }
@@ -256,15 +255,13 @@ public class GT_MetaTileEntity_RfConvertor extends GregtechMetaEnergyBuffer impl
             long aRemainingSpace = aMaxEU - aStoredEU;
             if (aRemainingSpace > 0) {
                 long tEU = 0;
+                final ForgeDirection toSide = from.getOpposite();
                 byte aSide = (byte) from.ordinal();
                 Logger.WARNING("Free: " + aRemainingSpace + "EU");
-                if (tTileEntity instanceof IEnergyProvider && ((IEnergyProvider) tTileEntity)
-                        .extractEnergy(ForgeDirection.getOrientation(GT_Utility.getOppositeSide(aSide)), 1, true)
-                        == 1) {
-                    tEU = (long) ((IEnergyProvider) tTileEntity).extractEnergy(
-                            ForgeDirection.getOrientation(GT_Utility.getOppositeSide(aSide)),
-                            (int) maxEUOutput() * 100 / GregTech_API.mRFtoEU,
-                            false);
+                if (tTileEntity instanceof IEnergyProvider
+                        && ((IEnergyProvider) tTileEntity).extractEnergy(toSide, 1, true) == 1) {
+                    tEU = (long) ((IEnergyProvider) tTileEntity)
+                            .extractEnergy(toSide, (int) maxEUOutput() * 100 / GregTech_API.mRFtoEU, false);
                     Logger.WARNING("Drained from IEnergyProvider Tile: " + (tEU * 100 / GregTech_API.mRFtoEU) + "");
                     tEU = tEU * GregTech_API.mRFtoEU / 100;
                 } else if (tTileEntity instanceof IEnergyStorage

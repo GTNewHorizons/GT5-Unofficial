@@ -61,107 +61,87 @@ public class TileBasicTank extends TileEntityBase implements IFluidHandler, IFlu
         return mTank.drain(maxDrain, doDrain);
     }
 
-    public boolean isLiquidInput(byte aSide) {
+    public boolean isLiquidInput(ForgeDirection side) {
         return true;
     }
 
-    public boolean isLiquidOutput(byte aSide) {
+    public boolean isLiquidOutput(ForgeDirection side) {
         return true;
     }
 
     @Override
-    public int fill(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
+    public int fill(ForgeDirection side, FluidStack aFluid, boolean doFill) {
         if (mTickTimer > 5 && canAccessData()
                 && (mRunningThroughTick || !mInputDisabled)
-                && (aSide == ForgeDirection.UNKNOWN || (this.isLiquidInput((byte) aSide.ordinal())
-                        && getCoverBehaviorAtSide((byte) aSide.ordinal()).letsFluidIn(
-                                (byte) aSide.ordinal(),
-                                getCoverIDAtSide((byte) aSide.ordinal()),
-                                getCoverDataAtSide((byte) aSide.ordinal()),
+                && (side == ForgeDirection.UNKNOWN
+                        || (this.isLiquidInput(side) && getCoverBehaviorAtSide(side).letsFluidIn(
+                                side,
+                                getCoverIDAtSide(side),
+                                getCoverDataAtSide(side),
                                 aFluid == null ? null : aFluid.getFluid(),
                                 this))))
-            return this.fillEx(aSide, aFluid, doFill);
+            return this.fillEx(side, aFluid, doFill);
         return 0;
     }
 
     @Override
-    public FluidStack drain(ForgeDirection aSide, int maxDrain, boolean doDrain) {
+    public FluidStack drain(ForgeDirection side, int maxDrain, boolean doDrain) {
         if (mTickTimer > 5 && canAccessData()
                 && (mRunningThroughTick || !mOutputDisabled)
-                && (aSide == ForgeDirection.UNKNOWN || (this.isLiquidOutput((byte) aSide.ordinal())
-                        && getCoverBehaviorAtSide((byte) aSide.ordinal()).letsFluidOut(
-                                (byte) aSide.ordinal(),
-                                getCoverIDAtSide((byte) aSide.ordinal()),
-                                getCoverDataAtSide((byte) aSide.ordinal()),
+                && (side == ForgeDirection.UNKNOWN
+                        || (this.isLiquidOutput(side) && getCoverBehaviorAtSide(side).letsFluidOut(
+                                side,
+                                getCoverIDAtSide(side),
+                                getCoverDataAtSide(side),
                                 this.getFluid() == null ? null : this.getFluid().getFluid(),
                                 this))))
-            return this.drainEx(aSide, maxDrain, doDrain);
+            return this.drainEx(side, maxDrain, doDrain);
         return null;
     }
 
     @Override
-    public FluidStack drain(ForgeDirection aSide, FluidStack aFluid, boolean doDrain) {
+    public FluidStack drain(ForgeDirection side, FluidStack aFluid, boolean doDrain) {
         if (mTickTimer > 5 && canAccessData()
                 && (mRunningThroughTick || !mOutputDisabled)
-                && (aSide == ForgeDirection.UNKNOWN || (this.isLiquidOutput((byte) aSide.ordinal())
-                        && getCoverBehaviorAtSide((byte) aSide.ordinal()).letsFluidOut(
-                                (byte) aSide.ordinal(),
-                                getCoverIDAtSide((byte) aSide.ordinal()),
-                                getCoverDataAtSide((byte) aSide.ordinal()),
+                && (side == ForgeDirection.UNKNOWN
+                        || (this.isLiquidOutput(side) && getCoverBehaviorAtSide(side).letsFluidOut(
+                                side,
+                                getCoverIDAtSide(side),
+                                getCoverDataAtSide(side),
                                 aFluid == null ? null : aFluid.getFluid(),
                                 this))))
-            return this.drainEx(aSide, aFluid, doDrain);
+            return this.drainEx(side, aFluid, doDrain);
         return null;
     }
 
     @Override
-    public boolean canFill(ForgeDirection aSide, Fluid aFluid) {
+    public boolean canFill(ForgeDirection side, Fluid aFluid) {
         if (mTickTimer > 5 && canAccessData()
                 && (mRunningThroughTick || !mInputDisabled)
-                && (aSide == ForgeDirection.UNKNOWN || (this.isLiquidInput((byte) aSide.ordinal())
-                        && getCoverBehaviorAtSide((byte) aSide.ordinal()).letsFluidIn(
-                                (byte) aSide.ordinal(),
-                                getCoverIDAtSide((byte) aSide.ordinal()),
-                                getCoverDataAtSide((byte) aSide.ordinal()),
-                                aFluid,
-                                this))))
-            return this.canFillEx(aSide, aFluid);
+                && (side == ForgeDirection.UNKNOWN || (this.isLiquidInput(side) && getCoverBehaviorAtSide(side)
+                        .letsFluidIn(side, getCoverIDAtSide(side), getCoverDataAtSide(side), aFluid, this))))
+            return this.canFillEx(side, aFluid);
         return false;
     }
 
     @Override
-    public boolean canDrain(ForgeDirection aSide, Fluid aFluid) {
+    public boolean canDrain(ForgeDirection side, Fluid aFluid) {
         if (mTickTimer > 5 && canAccessData()
                 && (mRunningThroughTick || !mOutputDisabled)
-                && (aSide == ForgeDirection.UNKNOWN || (this.isLiquidOutput((byte) aSide.ordinal())
-                        && getCoverBehaviorAtSide((byte) aSide.ordinal()).letsFluidOut(
-                                (byte) aSide.ordinal(),
-                                getCoverIDAtSide((byte) aSide.ordinal()),
-                                getCoverDataAtSide((byte) aSide.ordinal()),
-                                aFluid,
-                                this))))
-            return this.canDrainEx(aSide, aFluid);
+                && (side == ForgeDirection.UNKNOWN || (this.isLiquidOutput(side) && getCoverBehaviorAtSide(side)
+                        .letsFluidOut(side, getCoverIDAtSide(side), getCoverDataAtSide(side), aFluid, this))))
+            return this.canDrainEx(side, aFluid);
         return false;
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
-        if (canAccessData() && (aSide == ForgeDirection.UNKNOWN
-                || (this.isLiquidInput((byte) aSide.ordinal())
-                        && getCoverBehaviorAtSide((byte) aSide.ordinal()).letsFluidIn(
-                                (byte) aSide.ordinal(),
-                                getCoverIDAtSide((byte) aSide.ordinal()),
-                                getCoverDataAtSide((byte) aSide.ordinal()),
-                                null,
-                                this))
-                || (this.isLiquidOutput((byte) aSide.ordinal())
-                        && getCoverBehaviorAtSide((byte) aSide.ordinal()).letsFluidOut(
-                                (byte) aSide.ordinal(),
-                                getCoverIDAtSide((byte) aSide.ordinal()),
-                                getCoverDataAtSide((byte) aSide.ordinal()),
-                                null,
-                                this))))
-            return this.getTankInfoEx(aSide);
+    public FluidTankInfo[] getTankInfo(ForgeDirection side) {
+        if (canAccessData() && (side == ForgeDirection.UNKNOWN
+                || (this.isLiquidInput(side) && getCoverBehaviorAtSide(side)
+                        .letsFluidIn(side, getCoverIDAtSide(side), getCoverDataAtSide(side), null, this))
+                || (this.isLiquidOutput(side) && getCoverBehaviorAtSide(side)
+                        .letsFluidOut(side, getCoverIDAtSide(side), getCoverDataAtSide(side), null, this))))
+            return this.getTankInfoEx(side);
         return new FluidTankInfo[] {};
     }
 

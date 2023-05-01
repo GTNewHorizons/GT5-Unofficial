@@ -13,6 +13,7 @@ public class BaseCustomDamageSource extends EntityDamageSourceIndirect {
     /**
      * Return whether this damage source will have its damage amount scaled based on the current difficulty.
      */
+    @Override
     public boolean isDifficultyScaled() {
         return true;
     }

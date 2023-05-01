@@ -44,6 +44,7 @@ public class ModelGiantChicken extends ModelChicken {
     /**
      * Sets the models various rotation angles then renders the model.
      */
+    @Override
     public void render(Entity p_78088_1_, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_,
             float p_78088_6_, float p_78088_7_) {
         this.setRotationAngles(p_78088_2_, p_78088_3_, p_78088_4_, p_78088_5_, p_78088_6_, p_78088_7_, p_78088_1_);
@@ -92,6 +93,7 @@ public class ModelGiantChicken extends ModelChicken {
      * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
      * "far" arms and legs can swing at most.
      */
+    @Override
     public void setRotationAngles(float p_78087_1_, float p_78087_2_, float p_78087_3_, float p_78087_4_,
             float p_78087_5_, float p_78087_6_, Entity p_78087_7_) {
         this.head.rotateAngleX = p_78087_5_ / (180F / (float) Math.PI);

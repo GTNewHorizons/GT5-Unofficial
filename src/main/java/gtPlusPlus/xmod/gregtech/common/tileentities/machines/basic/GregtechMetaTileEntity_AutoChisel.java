@@ -3,8 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-
-import team.chisel.carving.Carving;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
@@ -25,6 +24,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import team.chisel.carving.Carving;
 
 public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMachine {
 
@@ -103,10 +103,10 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
     }
 
     @Override
-    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
             ItemStack aStack) {
         return hasValidCache(aStack, this.getSpecialSlot(), false) ? true
-                : super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack) && hasChiselResults(aStack);
+                : super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack) && hasChiselResults(aStack);
     }
 
     // lets make sure the user isn't trying to make something from a block that doesn't have this as a valid target

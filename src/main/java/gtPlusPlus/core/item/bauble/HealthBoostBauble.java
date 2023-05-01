@@ -12,9 +12,9 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
-import baubles.api.BaubleType;
-
 import com.google.common.collect.Multimap;
+
+import baubles.api.BaubleType;
 
 public class HealthBoostBauble extends BaseBauble {
 

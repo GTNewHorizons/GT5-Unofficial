@@ -133,14 +133,17 @@ public class CustomKineticRotor extends Item implements IKineticRotor {
         return (type == IKineticRotor.GearboxType.WIND) || (type == IKineticRotor.GearboxType.WATER);
     }
 
+    @Override
     public String getUnlocalizedName() {
         return "ic2." + super.getUnlocalizedName().substring(5);
     }
 
+    @Override
     public String getUnlocalizedName(ItemStack itemStack) {
         return this.getUnlocalizedName();
     }
 
+    @Override
     public String getItemStackDisplayName(ItemStack itemStack) {
         return StatCollector.translateToLocal(this.getUnlocalizedName(itemStack));
     }

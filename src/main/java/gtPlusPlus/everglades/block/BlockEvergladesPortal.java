@@ -41,14 +41,14 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
 
     @SideOnly(Side.CLIENT)
     @Override
-    public IIcon getIcon(int i, int par2) {
+    public IIcon getIcon(int ordinalSide, int meta) {
 
-        if (i == 0) return gor;
-        else if (i == 1) return dol;
-        else if (i == 2) return st1;
-        else if (i == 3) return st2;
-        else if (i == 4) return st4;
-        else if (i == 5) return st3;
+        if (ordinalSide == 0) return gor;
+        else if (ordinalSide == 1) return dol;
+        else if (ordinalSide == 2) return st1;
+        else if (ordinalSide == 3) return st2;
+        else if (ordinalSide == 4) return st4;
+        else if (ordinalSide == 5) return st3;
         else return gor;
     }
 

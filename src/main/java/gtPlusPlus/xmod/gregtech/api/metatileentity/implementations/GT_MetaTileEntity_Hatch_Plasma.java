@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -93,17 +94,19 @@ public class GT_MetaTileEntity_Hatch_Plasma extends GT_MetaTileEntity_Hatch_Outp
         }
     }
 
+    @Override
     public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture };
     }
 
+    @Override
     public ITexture[] getTexturesInactive(final ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture };
     }
 
-    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
-        if (aSide == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
+        if (side == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0) {
             for (Fluid f : mFluidsToUse) {
                 if (f != null) {
                     if (GT_Utility.getFluidForFilledItem(aStack, true).getFluid() == f) {
@@ -115,6 +118,7 @@ public class GT_MetaTileEntity_Hatch_Plasma extends GT_MetaTileEntity_Hatch_Outp
         return false;
     }
 
+    @Override
     public boolean isFluidInputAllowed(final FluidStack aFluid) {
         for (Fluid f : mFluidsToUse) {
             if (f != null) {
@@ -126,10 +130,12 @@ public class GT_MetaTileEntity_Hatch_Plasma extends GT_MetaTileEntity_Hatch_Outp
         return false;
     }
 
+    @Override
     public int getCapacity() {
         return this.mFluidCapacity;
     }
 
+    @Override
     public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return (MetaTileEntity) new GT_MetaTileEntity_Hatch_Plasma(this.mName, this.mDescription, this.mTextures);
     }
@@ -173,8 +179,8 @@ public class GT_MetaTileEntity_Hatch_Plasma extends GT_MetaTileEntity_Hatch_Outp
     private Field F1, F2;
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int aColorIndex, boolean aActive, boolean aRedstone) {
         byte a1 = 0, a2 = 0;
         try {
             if (F1 == null) {
@@ -195,14 +201,14 @@ public class GT_MetaTileEntity_Hatch_Plasma extends GT_MetaTileEntity_Hatch_Outp
         int textureIndex = a1 | a2 << 7;
         byte texturePointer = (byte) (a1 & 127);
 
-        if (aSide == 1 || aSide == 0) {
+        if (side == ForgeDirection.UP || side == ForgeDirection.DOWN) {
             ITexture g = textureIndex > 0 ? BlockIcons.casingTexturePages[a2][texturePointer]
                     : BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1];
 
             return new ITexture[] { g };
         }
 
-        return aSide != aFacing
+        return side != facing
                 ? (textureIndex > 0 ? new ITexture[] { BlockIcons.casingTexturePages[a2][texturePointer] }
                         : new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1] })
                 : (textureIndex > 0

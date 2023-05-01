@@ -73,13 +73,13 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
-            final int aSide) {
-        return getStaticIcon((byte) aSide, (byte) aWorld.getBlockMetadata(xCoord, yCoord, zCoord));
+            final int ordinalSide) {
+        return getStaticIcon((byte) ordinalSide, (byte) aWorld.getBlockMetadata(xCoord, yCoord, zCoord));
     }
 
     @Override
-    public IIcon getIcon(final int aSide, final int aMeta) {
-        return getStaticIcon((byte) aSide, (byte) aMeta);
+    public IIcon getIcon(final int ordinalSide, final int aMeta) {
+        return getStaticIcon((byte) ordinalSide, (byte) aMeta);
     }
 
     public static IIcon getStaticIcon(final byte aSide, final byte aMeta) {

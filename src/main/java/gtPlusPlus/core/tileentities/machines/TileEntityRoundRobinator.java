@@ -1,5 +1,6 @@
 package gtPlusPlus.core.tileentities.machines;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -19,9 +20,9 @@ import net.minecraft.tileentity.IHopper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Facing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
@@ -232,7 +233,7 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
         this.readFromNBT(tag);
     }
 
-    public boolean onRightClick(byte side, EntityPlayer player, int x, int y, int z) {
+    public boolean onRightClick(ForgeDirection side, EntityPlayer player, int x, int y, int z) {
         if (player != null && player.getHeldItem() == null) {
             if (!player.isSneaking() && !KeyboardUtils.isShiftKeyDown()) {
                 player.openGui(GTplusplus.instance, GuiHandler.GUI16, player.getEntityWorld(), x, y, z);
@@ -246,9 +247,9 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
         }
     }
 
-    public boolean onScrewdriverRightClick(byte side, EntityPlayer player, int x, int y, int z) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer player, int x, int y, int z) {
         try {
-            if (side < 2) {
+            if (side.offsetY != 0) {
                 // Top/Bottom
             } else {
                 if (toggleSide(side)) {
@@ -289,18 +290,18 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
 
     /**
      * Toggle active state of side
-     * 
-     * @param aSide - Forge Direction / Side
+     *
+     * @param side - Forge Direction / Side
      * @return - True if the side is now Active, false if now disabled.
      */
-    public boolean toggleSide(int aSide) {
-        setSideActive(!getSideActive(aSide), aSide);
-        return getSideActive(aSide);
+    public boolean toggleSide(ForgeDirection side) {
+        setSideActive(!getSideActive(side), side);
+        return getSideActive(side);
     }
 
-    public void setSideActive(boolean aActive, int aSide) {
+    public void setSideActive(boolean aActive, ForgeDirection side) {
         try {
-            if (aSide < 2) {} else {
+            if (side.offsetY != 0) {} else {
                 if (aData < 1111) {
                     aData = 1111;
                 } else if (aData > 2222) {
@@ -308,7 +309,7 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
                 }
                 String s = String.valueOf(aData);
                 StringBuilder aDataString = new StringBuilder(s);
-                int aIndex = aSide - 2;
+                int aIndex = side.ordinal() - 2;
                 if (aActive) {
                     aDataString.setCharAt(aIndex, '1');
                 } else {
@@ -322,10 +323,10 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
         }
     }
 
-    public boolean getSideActive(int aSide) {
+    public boolean getSideActive(ForgeDirection side) {
         this.markDirty();
         try {
-            if (aSide < 2) {
+            if (side.offsetY != 0) {
                 return false;
             } else {
                 if (aData < 1111) {
@@ -334,7 +335,7 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
                     aData = 2222;
                 }
                 String s = String.valueOf(aData);
-                int aIndex = aSide - 2;
+                int aIndex = side.ordinal() - 2;
                 char ch = s.charAt(aIndex);
                 if (ch == '1') {
                     return true;
@@ -371,10 +372,12 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
 
     private ItemStack[] aHopperInventory = new ItemStack[5];
 
+    @Override
     public int getSizeInventory() {
         return this.aHopperInventory.length;
     }
 
+    @Override
     public ItemStack getStackInSlot(int aSlot) {
         return this.aHopperInventory[aSlot];
     }
@@ -383,6 +386,7 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
      * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
      * new stack.
      */
+    @Override
     public ItemStack decrStackSize(int aSlot, int aMinimumSizeOfExistingStack) {
         if (this.aHopperInventory[aSlot] != null) {
             ItemStack itemstack;
@@ -409,6 +413,7 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
      * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
      * like when you close a workbench GUI.
      */
+    @Override
     public ItemStack getStackInSlotOnClosing(int aSlot) {
         if (this.aHopperInventory[aSlot] != null) {
             ItemStack itemstack = this.aHopperInventory[aSlot];
@@ -422,6 +427,7 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
     /**
      * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
      */
+    @Override
     public void setInventorySlotContents(int aSlot, ItemStack aStack) {
         this.aHopperInventory[aSlot] = aStack;
 
@@ -465,28 +471,33 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
         return true;
     }
 
+    private static final EnumSet<ForgeDirection> VALID_SIDES = EnumSet
+            .of(ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST);
+
     private boolean tryPushItemsIntoNeighbours() {
 
         boolean aDidPush = false;
 
-        for (int u = 2; u < 6; u++) {
-            if (!this.getSideActive(u)) {
-                Logger.WARNING("Not pushing on side " + u);
+        for (final ForgeDirection side : VALID_SIDES) {
+            final int ordinalSide = side.ordinal();
+            if (!this.getSideActive(side)) {
+                Logger.WARNING("Not pushing on side " + side);
                 continue;
             }
 
-            Logger.WARNING("Pushing on side " + u);
-            IInventory iinventory = this.getInventoryFromFacing(u);
+            Logger.WARNING("Pushing on side " + side);
+            IInventory iinventory = this.getInventoryFromFacing(side);
 
             if (iinventory == null) {
                 Logger.WARNING("No inventory found.");
                 continue;
             } else {
+                final ForgeDirection oppositeSide = side.getOpposite();
 
-                int i = Facing.oppositeSide[u];
-                Logger.WARNING("Using Opposite direction: " + i);
+                // int i = Facing.oppositeSide[u];
+                Logger.WARNING("Using Opposite direction: " + oppositeSide);
 
-                if (this.isInventoryFull(iinventory, i)) {
+                if (this.isInventoryFull(iinventory, oppositeSide.ordinal())) {
                     Logger.WARNING("Target is full, skipping.");
                     continue;
                 } else {
@@ -494,7 +505,10 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
                     for (int j = 0; j < this.getSizeInventory(); ++j) {
                         if (this.getStackInSlot(j) != null) {
                             ItemStack itemstack = this.getStackInSlot(j).copy();
-                            ItemStack itemstack1 = setStackInNeighbour(iinventory, this.decrStackSize(j, 1), i);
+                            ItemStack itemstack1 = setStackInNeighbour(
+                                    iinventory,
+                                    this.decrStackSize(j, 1),
+                                    ordinalSide);
                             if (itemstack1 == null || itemstack1.stackSize == 0) {
                                 iinventory.markDirty();
                                 aDidPush = true;
@@ -510,10 +524,10 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
         return aDidPush;
     }
 
-    private boolean isInventoryFull(IInventory aInv, int aSide) {
-        if (aInv instanceof ISidedInventory && aSide > -1) {
+    private boolean isInventoryFull(IInventory aInv, int ordinalSide) {
+        if (aInv instanceof ISidedInventory && ordinalSide > -1) {
             ISidedInventory isidedinventory = (ISidedInventory) aInv;
-            int[] aint = isidedinventory.getAccessibleSlotsFromSide(aSide);
+            int[] aint = isidedinventory.getAccessibleSlotsFromSide(ordinalSide);
 
             for (int l = 0; l < aint.length; ++l) {
                 ItemStack itemstack1 = isidedinventory.getStackInSlot(aint[l]);
@@ -536,19 +550,19 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
         return true;
     }
 
-    public static ItemStack setStackInNeighbour(IInventory aNeighbour, ItemStack aStack, int aSide) {
-        if (aNeighbour instanceof ISidedInventory && aSide > -1) {
+    public static ItemStack setStackInNeighbour(IInventory aNeighbour, ItemStack aStack, int ordinalSide) {
+        if (aNeighbour instanceof ISidedInventory && ordinalSide > -1) {
             ISidedInventory isidedinventory = (ISidedInventory) aNeighbour;
-            int[] aint = isidedinventory.getAccessibleSlotsFromSide(aSide);
+            int[] aint = isidedinventory.getAccessibleSlotsFromSide(ordinalSide);
 
             for (int l = 0; l < aint.length && aStack != null && aStack.stackSize > 0; ++l) {
-                aStack = tryMoveStack(aNeighbour, aStack, aint[l], aSide);
+                aStack = tryMoveStack(aNeighbour, aStack, aint[l], ordinalSide);
             }
         } else {
             int j = aNeighbour.getSizeInventory();
 
             for (int k = 0; k < j && aStack != null && aStack.stackSize > 0; ++k) {
-                aStack = tryMoveStack(aNeighbour, aStack, k, aSide);
+                aStack = tryMoveStack(aNeighbour, aStack, k, ordinalSide);
             }
         }
 
@@ -596,13 +610,12 @@ public class TileEntityRoundRobinator extends TileEntity implements ISidedInvent
         return aStack;
     }
 
-    private IInventory getInventoryFromFacing(int aSide) {
-        int i = aSide;
+    private IInventory getInventoryFromFacing(ForgeDirection side) {
         return tryFindInvetoryAtXYZ(
                 this.getWorldObj(),
-                (double) (this.xCoord + Facing.offsetsXForSide[i]),
-                (double) (this.yCoord + Facing.offsetsYForSide[i]),
-                (double) (this.zCoord + Facing.offsetsZForSide[i]));
+                this.xCoord + side.offsetX,
+                this.yCoord + side.offsetY,
+                this.zCoord + side.offsetZ);
     }
 
     public static IInventory tryFindInvetoryAtXYZ(World aWorld, double aX, double aY, double aZ) {

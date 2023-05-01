@@ -87,6 +87,7 @@ public class ItemGiantEgg extends BaseItemTickable {
         return mCorrectStemCells;
     }
 
+    @Override
     protected int getMaxTicks(ItemStack aStack) {
         if (aStack != null && aStack.hasTagCompound() && aStack.getTagCompound().hasKey("mEggAge")) {
             return NBTUtils.getInteger(aStack, "mEggAge");

@@ -30,6 +30,7 @@ public class VanillaBackgroundMusicFix implements IBugFix {
         }
     }
 
+    @Override
     public boolean isFixValid() {
         return enabled;
     }

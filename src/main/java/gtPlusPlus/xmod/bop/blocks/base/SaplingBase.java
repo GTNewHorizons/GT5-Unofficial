@@ -59,7 +59,7 @@ public class SaplingBase extends BlockSapling {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int someInt, int meta) {
         /*
-         * p_149691_2_ &= 7; return saplingTextures[MathHelper.clamp_int(p_149691_2_, 0, 5)];
+         * meta &= 7; return saplingTextures[MathHelper.clamp_int(meta, 0, 5)];
          */
         // return this.saplingTextures[meta % this.saplingTextures.length];
         try {

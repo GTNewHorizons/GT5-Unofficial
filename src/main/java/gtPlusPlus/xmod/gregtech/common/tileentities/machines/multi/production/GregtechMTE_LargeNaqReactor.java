@@ -30,7 +30,7 @@
  * "Top: Single row of "+mCasingName[0]+" along the middle (x12) ", "", "1x " + mHatchName +
  * " (Any bottom layer casing)", "1x " + "Maintenance Hatch" + " (Any bottom layer side casing)", "1x " + "Energy Hatch"
  * + " (Any top layer casing)", }; } public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide,
- * byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) { return aSide == aFacing ? new
+ * byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) { return side == facing ? new
  * ITexture[]{BlockIcons.getCasingTextureForId(TAE.getIndexFromPage(3, 0)), new GT_RenderedTexture(aActive ?
  * TexturesGtBlock.Overlay_Machine_Controller_Default_Active : TexturesGtBlock.Overlay_Machine_Controller_Default)} :
  * new ITexture[]{BlockIcons.getCasingTextureForId(TAE.getIndexFromPage(3, 0))}; } public GT_Recipe_Map getRecipeMap() {

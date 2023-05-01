@@ -65,13 +65,13 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
     }
 
     @Override
-    public boolean isFacingValid(final byte aFacing) {
+    public boolean isFacingValid(final ForgeDirection facing) {
         return true;
     }
 
     @Override
-    public boolean isOutputFacing(final byte aSide) {
-        return aSide == this.getBaseMetaTileEntity().getBackFacing();
+    public boolean isOutputFacing(final ForgeDirection side) {
+        return side == this.getBaseMetaTileEntity().getBackFacing();
     }
 
     @Override
@@ -140,7 +140,7 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer,
-            final byte aSide, final float aX, final float aY, final float aZ) {
+            final ForgeDirection side, final float aX, final float aY, final float aZ) {
 
         if (this.mOwner == null) {
             if (this.getBaseMetaTileEntity().getOwnerName() != null
@@ -153,8 +153,8 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
         }
 
         if (aPlayer.getUniqueID().compareTo(this.mOwner) == 0) {
-            if (aSide == this.getBaseMetaTileEntity().getFrontFacing()) {
-                final float[] tCoords = GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ);
+            if (side == this.getBaseMetaTileEntity().getFrontFacing()) {
+                final float[] tCoords = GT_Utility.getClickedFacingCoords(side, aX, aY, aZ);
                 switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
                     case 0:
                         // Utils.LOG_WARNING("Freq. -1 | " + this.mFrequency);
@@ -190,11 +190,11 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
     }
 
     @Override
-    public void onScrewdriverRightClick(final byte aSide, final EntityPlayer aPlayer, final float aX, final float aY,
-            final float aZ) {
+    public void onScrewdriverRightClick(final ForgeDirection side, final EntityPlayer aPlayer, final float aX,
+            final float aY, final float aZ) {
         if (aPlayer.getUniqueID().compareTo(this.mOwner) == 0) {
-            if (aSide == this.getBaseMetaTileEntity().getFrontFacing()) {
-                final float[] tCoords = GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ);
+            if (side == this.getBaseMetaTileEntity().getFrontFacing()) {
+                final float[] tCoords = GT_Utility.getClickedFacingCoords(side, aX, aY, aZ);
                 switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
                     case 0:
                         try {
@@ -232,8 +232,8 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
         }
     }
 
-    public boolean allowCoverOnSide(final byte aSide, final int aCoverID) {
-        return aSide != this.getBaseMetaTileEntity().getFrontFacing();
+    public boolean allowCoverOnSide(final ForgeDirection side, final int aCoverID) {
+        return side != this.getBaseMetaTileEntity().getFrontFacing();
     }
 
     public GT_MetaTileEntity_TesseractGenerator getTesseract(final int aFrequency, final boolean aWorkIrrelevant) {
@@ -324,30 +324,30 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(final int aSide) {
+    public int[] getAccessibleSlotsFromSide(final int ordinalSide) {
         final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
         if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
             return new int[0];
         }
-        return tTileEntity.getAccessibleSlotsFromSide(aSide);
+        return tTileEntity.getAccessibleSlotsFromSide(ordinalSide);
     }
 
     @Override
-    public boolean canInsertItem(final int aIndex, final ItemStack aStack, final int aSide) {
+    public boolean canInsertItem(final int aIndex, final ItemStack aStack, final int ordinalSide) {
         final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
         if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
             return false;
         }
-        return tTileEntity.canInsertItem(aIndex, aStack, aSide);
+        return tTileEntity.canInsertItem(aIndex, aStack, ordinalSide);
     }
 
     @Override
-    public boolean canExtractItem(final int aIndex, final ItemStack aStack, final int aSide) {
+    public boolean canExtractItem(final int aIndex, final ItemStack aStack, final int ordinalSide) {
         final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
         if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
             return false;
         }
-        return tTileEntity.canExtractItem(aIndex, aStack, aSide);
+        return tTileEntity.canExtractItem(aIndex, aStack, ordinalSide);
     }
 
     @Override
@@ -492,14 +492,14 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
     }
 
     @Override
-    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
+    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
@@ -509,9 +509,9 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
     }
 
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return aSide == aFacing
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
+            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return side == facing
                 ? new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
                         new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
                 : new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),

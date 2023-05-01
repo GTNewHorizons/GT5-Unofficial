@@ -6,7 +6,7 @@
  * @Override public String getMachineType() { return "Reactor"; }
  * @Override public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) { return new
  * GregtechMTE_FastNeutronReactor(this.mName); }
- * @Override public boolean isFacingValid(byte aFacing) { return aFacing > 1; }
+ * @Override public boolean isFacingValid(ForgeDirection facing) { return facing.offsetY == 0; }
  * @Override public boolean isCorrectMachinePart(ItemStack aStack) { return true; }
  * @Override public int getDamageToComponent(ItemStack aStack){ return 0; }
  * @Override public boolean checkRecipe(final ItemStack aStack) { this.mSuperEfficencyIncrease=0; if
@@ -36,7 +36,7 @@
  * "------------------------------------------", "Boiling Water Reactor", "Harness the power of Nuclear Fission",
  * "------------------------------------------", "Consult user manual for more information", }; }
  * @Override public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte
- * aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) { if (aSide == aFacing) { return new
+ * aFacing, final int aColorIndex, final boolean aActive, final boolean aRedstone) { if (side == facing) { return new
  * ITexture[]{Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(1)), new GT_RenderedTexture(aActive ?
  * Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE :
  * Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)}; } return new

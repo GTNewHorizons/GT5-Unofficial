@@ -102,6 +102,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
         return obfuscated;
     }
 
+    @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
         // Is this environment obfuscated? (Extra checks just in case some weird stuff happens during the check)
         final boolean obfuscated = checkObfuscated();

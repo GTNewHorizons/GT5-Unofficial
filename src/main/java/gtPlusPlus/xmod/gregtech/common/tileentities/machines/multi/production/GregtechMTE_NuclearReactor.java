@@ -16,6 +16,7 @@ import java.util.Collection;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -114,16 +115,16 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
     }
 
     @Override
-    public boolean allowCoverOnSide(final byte aSide, final GT_ItemStack aStack) {
-        return aSide != this.getBaseMetaTileEntity().getFrontFacing();
+    public boolean allowCoverOnSide(final ForgeDirection side, final GT_ItemStack aStack) {
+        return side != this.getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
+            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         boolean aWarmedUp = this.mEfficiency == this.getMaxEfficiency(null);
         if (!aBaseMetaTileEntity.isActive() || !aWarmedUp) {
-            if (aSide == aFacing) {
+            if (side == facing) {
                 if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12)),
                         TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR_ACTIVE)
                                 .extFacing().build() };
@@ -132,7 +133,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
             }
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(12)) };
         } else if (aBaseMetaTileEntity.isActive() && aWarmedUp) {
-            if (aSide == aFacing) {
+            if (side == facing) {
                 if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(13)),
                         TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR_ACTIVE)
                                 .extFacing().build() };

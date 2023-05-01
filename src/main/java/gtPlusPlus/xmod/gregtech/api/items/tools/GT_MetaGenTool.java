@@ -408,6 +408,7 @@ public abstract class GT_MetaGenTool extends GT_MetaGenerated_Tool {
         }
     }
 
+    @Override
     public boolean canWrench(final EntityPlayer player, final int x, final int y, final int z) {
         System.out.println("canWrench");
         if (player == null) {
@@ -423,6 +424,7 @@ public abstract class GT_MetaGenTool extends GT_MetaGenerated_Tool {
         return (tStats != null) && tStats.isWrench();
     }
 
+    @Override
     public void wrenchUsed(final EntityPlayer player, final int x, final int y, final int z) {
         if (player == null) {
             return;
@@ -436,14 +438,17 @@ public abstract class GT_MetaGenTool extends GT_MetaGenerated_Tool {
         }
     }
 
+    @Override
     public boolean canUse(final ItemStack stack, final EntityPlayer player, final int x, final int y, final int z) {
         return this.canWrench(player, x, y, z);
     }
 
+    @Override
     public void used(final ItemStack stack, final EntityPlayer player, final int x, final int y, final int z) {
         this.wrenchUsed(player, x, y, z);
     }
 
+    @Override
     public boolean shouldHideFacades(final ItemStack stack, final EntityPlayer player) {
         if (player == null) {
             return false;

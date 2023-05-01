@@ -11,18 +11,22 @@ import ic2.api.crops.ICropTile;
 
 public class Crop_Hemp extends BaseAestheticCrop {
 
+    @Override
     public int tier() {
         return 2;
     }
 
+    @Override
     public String name() {
         return "Hemp";
     }
 
+    @Override
     public String discoveredBy() {
         return "Alkalus";
     }
 
+    @Override
     public int growthDuration(ICropTile crop) {
         int ret = 550;
 
@@ -37,10 +41,12 @@ public class Crop_Hemp extends BaseAestheticCrop {
         return ret;
     }
 
+    @Override
     public String[] attributes() {
         return new String[] { "Green", "Soil", "Orange" };
     }
 
+    @Override
     public ItemStack getGain(ICropTile crop) {
 
         ItemStack ret = this.getDisplayItem();
@@ -51,6 +57,7 @@ public class Crop_Hemp extends BaseAestheticCrop {
         return ret;
     }
 
+    @Override
     public ItemStack getDisplayItem() {
         return ItemUtils.getSimpleStack(ModItems.itemRope, 0);
     }

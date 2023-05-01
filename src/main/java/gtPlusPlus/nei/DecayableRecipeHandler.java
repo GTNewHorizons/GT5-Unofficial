@@ -27,31 +27,38 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
 
     public static final String mNEIName = "Decayables";
 
+    @Override
     public String getRecipeName() {
         return StatCollector.translateToLocal("GTPP.container.decaychest.name");
     }
 
+    @Override
     public String getGuiTexture() {
         return GTPlusPlus.ID + ":textures/gui/nei/decayables.png";
     }
 
+    @Override
     public Class<? extends GuiContainer> getGuiClass() {
         return GUI_DecayablesChest.class;
     }
 
+    @Override
     public String getOverlayIdentifier() {
         return "GTPP_Decayables";
     }
 
+    @Override
     public int recipiesPerPage() {
         return 1;
     }
 
+    @Override
     public void loadTransferRects() {
         this.transferRects
                 .add(new RecipeTransferRect(new Rectangle(6, 3, 16, 16), getOverlayIdentifier(), new Object[0]));
     }
 
+    @Override
     public void loadCraftingRecipes(ItemStack result) {
         if (result == null || (!DustDecayable.class.isInstance(result.getItem())
                 && !BaseItemDustUnique.class.isInstance(result.getItem()))) {
@@ -76,6 +83,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
         }
     }
 
+    @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getOverlayIdentifier()) && this.getClass() == DecayableRecipeHandler.class) {
             final List<DecayableRecipe> recipes = DecayableRecipe.mRecipes;
@@ -93,6 +101,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
         }
     }
 
+    @Override
     public void loadUsageRecipes(ItemStack ingredient) {
         final List<DecayableRecipe> recipes = DecayableRecipe.mRecipes;
         if (ingredient != null) {
@@ -124,6 +133,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
         }
     }
 
+    @Override
     public void drawExtras(int recipeIndex) {
         DecayableRecipeNEI recipe = (DecayableRecipeNEI) this.arecipes.get(recipeIndex);
 
@@ -210,6 +220,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
             return this.input;
         }
 
+        @Override
         public PositionedStack getResult() {
             return this.output;
         }

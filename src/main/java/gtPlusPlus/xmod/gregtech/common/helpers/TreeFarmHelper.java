@@ -182,10 +182,8 @@ public class TreeFarmHelper {
     public static boolean cleanUp(final IGregTechTileEntity aBaseMetaTileEntity) {
         Logger.MACHINE_INFO("called cleanUp()");
         int cleanedUp = 0;
-        final int xDir = net.minecraftforge.common.util.ForgeDirection
-                .getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 11;
-        final int zDir = net.minecraftforge.common.util.ForgeDirection
-                .getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 11;
+        final int xDir = aBaseMetaTileEntity.getBackFacing().offsetX * 11;
+        final int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ * 11;
 
         for (int h = 1; h < 175; h++) {
             for (int i = -11; i <= 11; i++) {
@@ -450,10 +448,8 @@ public class TreeFarmHelper {
      */
 
     public static BlockPos checkForLogsInGrowArea(final IGregTechTileEntity aBaseMetaTileEntity) {
-        final int xDir = net.minecraftforge.common.util.ForgeDirection
-                .getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 7;
-        final int zDir = net.minecraftforge.common.util.ForgeDirection
-                .getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 7;
+        final int xDir = aBaseMetaTileEntity.getBackFacing().offsetX * 7;
+        final int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ * 7;
         for (int i = -7; i <= 7; i++) {
             for (int j = -7; j <= 7; j++) {
                 for (int h = 0; h <= 1; h++) {

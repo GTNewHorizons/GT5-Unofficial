@@ -54,18 +54,22 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
         }
     }
 
+    @Override
     public String getRecipeName() {
         return mNEIName;
     }
 
+    @Override
     public String getGuiTexture() {
         return GasSpargingRecipeMap.mNEIGUIPath;
     }
 
+    @Override
     public String getOverlayIdentifier() {
         return gregtech.api.util.GasSpargingRecipeMap.mUnlocalizedName;
     }
 
+    @Override
     public int recipiesPerPage() {
         return 1;
     }
@@ -77,6 +81,7 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
         GuiDraw.drawTexturedModalRect(-4, -8, 1, 3, 174, 68);
     }
 
+    @Override
     public void loadTransferRects() {
         this.transferRects
                 .add(new RecipeTransferRect(new Rectangle(72, 14, 22, 16), getOverlayIdentifier(), new Object[0]));
@@ -99,6 +104,7 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
         return new GasSpargingRecipeNEI(aRecipe);
     }
 
+    @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getOverlayIdentifier())) {
             arecipes.addAll(getCache());
@@ -107,6 +113,7 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
         }
     }
 
+    @Override
     public void loadCraftingRecipes(ItemStack aResult) {
         ItemData tPrefixMaterial = GT_OreDictUnificator.getAssociation(aResult);
 
@@ -133,6 +140,7 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
         }
     }
 
+    @Override
     public void loadUsageRecipes(ItemStack aInput) {
         ItemData tPrefixMaterial = GT_OreDictUnificator.getAssociation(aInput);
 
@@ -162,6 +170,7 @@ public class GT_NEI_LFTR_Sparging extends TemplateRecipeHandler {
         Minecraft.getMinecraft().fontRenderer.drawString(aString, aX, aY, aColor);
     }
 
+    @Override
     public void drawExtras(int aRecipeIndex) {
         final long tEUt = ((GasSpargingRecipeNEI) this.arecipes.get(aRecipeIndex)).mRecipe.mEUt;
         final long tDuration = ((GasSpargingRecipeNEI) this.arecipes.get(aRecipeIndex)).mRecipe.mDuration;

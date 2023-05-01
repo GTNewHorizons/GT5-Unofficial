@@ -47,18 +47,9 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
         GregtechItemList.Casing_RocketEngine.set(new ItemStack(this, 1, 11));
     }
 
-    // private static final LargeTurbineTextureHandler mTurbineTextures = new LargeTurbineTextureHandler();
-
-    /*
-     * @Override
-     * @SideOnly(Side.CLIENT) public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final
-     * int zCoord, final int aSide) { final GregtechMetaCasingBlocks4 i = this; return
-     * mTurbineTextures.handleCasingsGT(aWorld, xCoord, yCoord, zCoord, aSide, i); }
-     */
-
     @Override
-    public IIcon getIcon(final int aSide, final int aMeta) {
-        return getStaticIcon((byte) aSide, (byte) aMeta);
+    public IIcon getIcon(final int ordinalSide, final int aMeta) {
+        return getStaticIcon((byte) ordinalSide, (byte) aMeta);
     }
 
     public static IIcon getStaticIcon(final byte aSide, final byte aMeta) {

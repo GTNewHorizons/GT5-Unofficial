@@ -75,7 +75,8 @@ public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbs
         // GregtechItemList.Casing_LV.set(new ItemStack(this, 1, 15));
     }
 
-    public IIcon getIcon(int aSide, int aMeta) {
+    @Override
+    public IIcon getIcon(int ordinalSide, int aMeta) {
         if (aMeta < 10) {
             return TexturesGtBlock.TIERED_MACHINE_HULLS[aMeta].getIcon();
         }

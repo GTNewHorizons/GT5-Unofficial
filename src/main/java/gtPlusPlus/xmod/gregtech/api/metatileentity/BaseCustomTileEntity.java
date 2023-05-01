@@ -48,10 +48,12 @@ public class BaseCustomTileEntity extends BaseMetaTileEntity implements IBaseCus
         Logger.MACHINE_INFO("Created new BaseCustomTileEntity");
     }
 
+    @Override
     public boolean doesExplode() {
         return true;
     }
 
+    @Override
     public void writeToNBT(NBTTagCompound aNBT) {
         try {
             super.writeToNBT(aNBT);
@@ -70,6 +72,7 @@ public class BaseCustomTileEntity extends BaseMetaTileEntity implements IBaseCus
         }
     }
 
+    @Override
     public void doEnergyExplosion() {
         if (!doesExplode()) {
             Logger.INFO("Machine tried to explode, let's stop that. xo [doEnergyExplosion]");
@@ -87,6 +90,7 @@ public class BaseCustomTileEntity extends BaseMetaTileEntity implements IBaseCus
         }
     }
 
+    @Override
     public void doExplosion(long aAmount) {
 
         if (!doesExplode()) {
@@ -129,6 +133,7 @@ public class BaseCustomTileEntity extends BaseMetaTileEntity implements IBaseCus
         }
     }
 
+    @Override
     public void dropItems(ItemStack tItem) {
         if (tItem != null) {
             Random tRandom = new Random();
@@ -161,6 +166,7 @@ public class BaseCustomTileEntity extends BaseMetaTileEntity implements IBaseCus
         }
     }
 
+    @Override
     public ArrayList<ItemStack> getDrops() {
         ArrayList<ItemStack> aDrops = new ArrayList<ItemStack>();
         ItemStack rStack = new ItemStack(GregTech_API.sBlockMachines, 1, this.getMetaTileID());
@@ -193,6 +199,7 @@ public class BaseCustomTileEntity extends BaseMetaTileEntity implements IBaseCus
         return aDrops;
     }
 
+    @Override
     public boolean isTeleporterCompatible(Direction aSide) {
         return this.canAccessData() && this.mMetaTileEntity.isTeleporterCompatible();
     }

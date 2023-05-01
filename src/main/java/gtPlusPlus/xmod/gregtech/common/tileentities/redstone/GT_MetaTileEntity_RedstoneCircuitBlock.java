@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.redstone;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -77,8 +79,8 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
-        return !this.isOutputFacing(aSide);
+    public boolean isInputFacing(ForgeDirection side) {
+        return !this.isOutputFacing(side);
     }
 
     @Override
@@ -97,8 +99,8 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
-        return aSide == this.getOutputFacing();
+    public boolean isOutputFacing(ForgeDirection side) {
+        return side == this.getOutputFacing();
     }
 
     @Override
@@ -197,12 +199,12 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
     }
 
     private void resetRedstone() {
-        getBaseMetaTileEntity().setInternalOutputRedstoneSignal((byte) 0, (byte) 0);
-        getBaseMetaTileEntity().setInternalOutputRedstoneSignal((byte) 1, (byte) 0);
-        getBaseMetaTileEntity().setInternalOutputRedstoneSignal((byte) 2, (byte) 0);
-        getBaseMetaTileEntity().setInternalOutputRedstoneSignal((byte) 3, (byte) 0);
-        getBaseMetaTileEntity().setInternalOutputRedstoneSignal((byte) 4, (byte) 0);
-        getBaseMetaTileEntity().setInternalOutputRedstoneSignal((byte) 5, (byte) 0);
+        getBaseMetaTileEntity().setInternalOutputRedstoneSignal(ForgeDirection.DOWN, (byte) 0);
+        getBaseMetaTileEntity().setInternalOutputRedstoneSignal(ForgeDirection.UP, (byte) 0);
+        getBaseMetaTileEntity().setInternalOutputRedstoneSignal(ForgeDirection.NORTH, (byte) 0);
+        getBaseMetaTileEntity().setInternalOutputRedstoneSignal(ForgeDirection.SOUTH, (byte) 0);
+        getBaseMetaTileEntity().setInternalOutputRedstoneSignal(ForgeDirection.WEST, (byte) 0);
+        getBaseMetaTileEntity().setInternalOutputRedstoneSignal(ForgeDirection.EAST, (byte) 0);
     }
 
     public void changeGateData(int aIndex, int aValue) {
@@ -217,7 +219,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
 
     private void switchGate() {
         resetRedstone();
-        for (int i = 0; i < mGateData.length; i++) mGateData[i] = 0;
+        Arrays.fill(mGateData, 0);
         GT_CircuitryBehavior tBehaviour = GregTech_API.sCircuitryBehaviors.get(mGate);
         if (tBehaviour != null) try {
             tBehaviour.initParameters(mGateData, this);
@@ -283,16 +285,16 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
             return;
         }
         // Emit Redstone
-        for (byte i = 0; i < 6; i++) {
-            byte aRedstone = getBaseMetaTileEntity().getOutputRedstoneSignal(i);
-            this.getBaseMetaTileEntity().setInternalOutputRedstoneSignal(i, aRedstone);
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            byte aRedstone = getBaseMetaTileEntity().getOutputRedstoneSignal(side);
+            this.getBaseMetaTileEntity().setInternalOutputRedstoneSignal(side, aRedstone);
         }
     }
 
     @Override
     public final boolean hasRedstoneSignal() {
-        for (byte i = 0; i < 6; i++) {
-            if (getBaseMetaTileEntity().getOutputRedstoneSignal(i) > 0) {
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            if (getBaseMetaTileEntity().getOutputRedstoneSignal(side) > 0) {
                 return true;
             }
         }
@@ -324,15 +326,15 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
     }
 
     @Override
-    public byte getOutputFacing() {
+    public ForgeDirection getOutputFacing() {
         return getBaseMetaTileEntity().getBackFacing();
     }
 
     @Override
-    public boolean setRedstone(byte aStrength, byte aSide) {
-        if (getOutputRedstone(aSide) != aStrength) {
+    public boolean setRedstone(byte aStrength, ForgeDirection side) {
+        if (getOutputRedstone(side) != aStrength) {
             if (getBaseMetaTileEntity().decreaseStoredEnergyUnits(1, false)) {
-                getBaseMetaTileEntity().setInternalOutputRedstoneSignal(aSide, aStrength);
+                getBaseMetaTileEntity().setInternalOutputRedstoneSignal(side, aStrength);
                 getBaseMetaTileEntity().setErrorDisplayID(0);
                 return true;
             } else {
@@ -345,44 +347,45 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
 
     /*
      * @Override public int getTextureIndex(byte aSide, byte aFacing, boolean aActive, boolean aRedstone) { if (aSide ==
-     * getOutputFacing()) { if (aSide == 0) return aRedstone ? 56 : 54; if (aSide == 1) return aRedstone ? 53 : 52;
-     * return aRedstone ? 94 : 93; } if (aSide == 0) return aRedstone ? 60 : 59; if (aSide == 1) return aRedstone ? 58 :
-     * 57; return aRedstone ? 62 : 61; }
+     * getOutputFacing()) { if (side == ForgeDirection.DOWN) return aRedstone ? 56 : 54; if (side == ForgeDirection.UP)
+     * return aRedstone ? 53 : 52; return aRedstone ? 94 : 93; } if (side == ForgeDirection.DOWN) return aRedstone ? 60
+     * : 59; if (side == ForgeDirection.UP) return aRedstone ? 58 : 57; return aRedstone ? 62 : 61; }
      */
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return false;
     }
 
-    @Override
-    public byte getOutputRedstone(byte aSide) {
-        return getBaseMetaTileEntity().getOutputRedstoneSignal(aSide);
+    public byte getOutputRedstone(ForgeDirection side) {
+        return getBaseMetaTileEntity().getOutputRedstoneSignal(side);
     }
 
     @Override
-    public byte getInputRedstone(byte aSide) {
-        return getBaseMetaTileEntity().getInternalInputRedstoneSignal(aSide);
+    public byte getInputRedstone(ForgeDirection side) {
+        return getBaseMetaTileEntity().getInternalInputRedstoneSignal(side);
     }
 
     @Override
-    public Block getBlockAtSide(byte aSide) {
-        return getBaseMetaTileEntity().getBlockAtSide(aSide);
+    public Block getBlockAtSide(ForgeDirection side) {
+        return getBaseMetaTileEntity().getBlockAtSide(side);
     }
 
     @Override
-    public byte getMetaIDAtSide(byte aSide) {
-        return getBaseMetaTileEntity().getMetaIDAtSide(aSide);
+    public byte getMetaIDAtSide(ForgeDirection side) {
+        return getBaseMetaTileEntity().getMetaIDAtSide(side);
     }
 
     @Override
-    public TileEntity getTileEntityAtSide(byte aSide) {
-        return getBaseMetaTileEntity().getTileEntityAtSide(aSide);
+    public TileEntity getTileEntityAtSide(ForgeDirection side) {
+        return getBaseMetaTileEntity().getTileEntityAtSide(side);
     }
 
     @Override
@@ -391,18 +394,18 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
     }
 
     @Override
-    public GT_CoverBehavior getCover(byte aSide) {
-        return getBaseMetaTileEntity().getCoverBehaviorAtSide(aSide);
+    public GT_CoverBehavior getCover(ForgeDirection side) {
+        return getBaseMetaTileEntity().getCoverBehaviorAtSide(side);
     }
 
     @Override
-    public int getCoverID(byte aSide) {
-        return getBaseMetaTileEntity().getCoverIDAtSide(aSide);
+    public int getCoverID(ForgeDirection side) {
+        return getBaseMetaTileEntity().getCoverIDAtSide(side);
     }
 
     @Override
-    public int getCoverVariable(byte aSide) {
-        return getBaseMetaTileEntity().getCoverDataAtSide(aSide);
+    public int getCoverVariable(ForgeDirection side) {
+        return getBaseMetaTileEntity().getCoverDataAtSide(side);
     }
 
     @Override
@@ -429,11 +432,13 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
     }
 
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return this.mTextures[(aActive || hasRedstoneSignal() ? 5 : 0) + (aSide == aFacing ? 0
-                : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
-                        + 1];
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
+            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[(aActive || hasRedstoneSignal() ? 5 : 0)
+                + (side == facing ? 0
+                        : side == facing.getOpposite() ? 1
+                                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex
+                                        + 1];
     }
 
     private GT_RenderedTexture getBase() {

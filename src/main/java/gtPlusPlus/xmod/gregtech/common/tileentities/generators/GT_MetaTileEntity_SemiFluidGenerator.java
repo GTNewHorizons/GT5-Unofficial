@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
@@ -40,6 +41,7 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
         onConfigLoad();
     }
 
+    @Override
     public int getPollution() {
         return (int) (CORE.ConfigSwitches.basePollutionPerSecondSemiFluidGenerator
                 * CORE.ConfigSwitches.pollutionReleasedByTierSemiFluidGenerator[this.mTier]);
@@ -80,16 +82,16 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
-        return (aSide == getBaseMetaTileEntity().getFrontFacing());
+    public boolean isOutputFacing(ForgeDirection side) {
+        return (side == getBaseMetaTileEntity().getFrontFacing());
     }
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCover) {
-        if (aSide != this.getBaseMetaTileEntity().getFrontFacing()) {
+    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aCover) {
+        if (side != this.getBaseMetaTileEntity().getFrontFacing()) {
             return true;
         }
-        return super.allowCoverOnSide(aSide, aCover);
+        return super.allowCoverOnSide(side, aCover);
     }
 
     @Override

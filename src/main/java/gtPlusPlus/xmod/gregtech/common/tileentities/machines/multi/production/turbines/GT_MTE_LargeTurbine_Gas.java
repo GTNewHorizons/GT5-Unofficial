@@ -52,6 +52,7 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
         return 4000;
     }
 
+    @Override
     public int getFuelValue(FluidStack aLiquid) {
         if (aLiquid == null) {
             return 0;

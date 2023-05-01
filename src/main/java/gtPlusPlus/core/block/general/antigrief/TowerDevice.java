@@ -174,26 +174,26 @@ public class TowerDevice extends Block {
 
     public void sparkle(final World world, final int x, final int y, final int z, final Random rand) {
         final double offset = 0.0625D;
-        for (int side = 0; side < 6; side++) {
+        for (int ordinalSide = 0; ordinalSide < 6; ordinalSide++) {
             double rx = x + rand.nextFloat();
             double ry = y + rand.nextFloat();
             double rz = z + rand.nextFloat();
-            if ((side == 0) && (!world.getBlock(x, y + 1, z).isOpaqueCube())) {
+            if ((ordinalSide == 0) && (!world.getBlock(x, y + 1, z).isOpaqueCube())) {
                 ry = y + 1 + offset;
             }
-            if ((side == 1) && (!world.getBlock(x, y - 1, z).isOpaqueCube())) {
+            if ((ordinalSide == 1) && (!world.getBlock(x, y - 1, z).isOpaqueCube())) {
                 ry = (y + 0) - offset;
             }
-            if ((side == 2) && (!world.getBlock(x, y, z + 1).isOpaqueCube())) {
+            if ((ordinalSide == 2) && (!world.getBlock(x, y, z + 1).isOpaqueCube())) {
                 rz = z + 1 + offset;
             }
-            if ((side == 3) && (!world.getBlock(x, y, z - 1).isOpaqueCube())) {
+            if ((ordinalSide == 3) && (!world.getBlock(x, y, z - 1).isOpaqueCube())) {
                 rz = (z + 0) - offset;
             }
-            if ((side == 4) && (!world.getBlock(x + 1, y, z).isOpaqueCube())) {
+            if ((ordinalSide == 4) && (!world.getBlock(x + 1, y, z).isOpaqueCube())) {
                 rx = x + 1 + offset;
             }
-            if ((side == 5) && (!world.getBlock(x - 1, y, z).isOpaqueCube())) {
+            if ((ordinalSide == 5) && (!world.getBlock(x - 1, y, z).isOpaqueCube())) {
                 rx = (x + 0) - offset;
             }
             if ((rx < x) || (rx > (x + 1)) || (ry < 0.0D) || (ry > (y + 1)) || (rz < z) || (rz > (z + 1))) {

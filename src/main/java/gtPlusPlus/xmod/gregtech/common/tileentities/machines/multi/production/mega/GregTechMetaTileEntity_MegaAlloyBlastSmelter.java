@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
@@ -276,6 +277,7 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
         super.explodeMultiblock();
     }
 
+    @Override
     public List<GT_MetaTileEntity_Hatch> getExoticAndNormalEnergyHatchList() {
         List<GT_MetaTileEntity_Hatch> tHatches = new ArrayList<>();
         tHatches.addAll(mExoticEnergyHatches);
@@ -396,9 +398,9 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int aColorIndex, boolean aActive, boolean aRedstone) {
+        if (side == facing) {
             if (aActive) {
                 return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(15)),
                         TextureFactory.builder().addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active)
@@ -424,10 +426,10 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
     }
 
     @Override
-    public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             // Lock to single recipe
-            super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+            super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
         } else {
             inputSeparation = !inputSeparation;
             GT_Utility.sendChatToPlayer(

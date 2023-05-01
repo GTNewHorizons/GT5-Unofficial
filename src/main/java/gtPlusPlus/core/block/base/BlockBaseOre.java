@@ -8,6 +8,7 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
@@ -80,12 +81,12 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
     }
 
     @Override
-    public IIcon getIcon(IBlockAccess aIBlockAccess, int aX, int aY, int aZ, int aSide) {
+    public IIcon getIcon(IBlockAccess aIBlockAccess, int aX, int aY, int aZ, int ordinalSide) {
         return Blocks.stone.getIcon(0, 0);
     }
 
     @Override
-    public IIcon getIcon(int aSide, int aMeta) {
+    public IIcon getIcon(int ordinalSide, int aMeta) {
         return Blocks.stone.getIcon(0, 0);
     }
 
@@ -96,11 +97,13 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
     // .08 compat
     public static IIconContainer[] hiddenTextureArray;
 
-    public ITexture[] getTexture(byte arg0) {
-        return getTexture(null, arg0);
+    @Override
+    public ITexture[] getTexture(ForgeDirection side) {
+        return getTexture(null, side);
     }
 
-    public ITexture[] getTexture(Block block, byte side) {
+    @Override
+    public ITexture[] getTexture(Block block, ForgeDirection side) {
         if (this.blockMaterial != null) {
             GTPP_RenderedTexture aIconSet = new GTPP_RenderedTexture(
                     blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.mTextureIndex],
@@ -140,19 +143,6 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
             super(unlocalizedName, blockMaterial, vanillaMaterial, blockType, colour, miningLevel);
         }
 
-        /*
-         * @Override
-         * @SideOnly(Side.CLIENT) public void registerBlockIcons(final IIconRegister iIcon) { this.blockIcon =
-         * iIcon.registerIcon(GTPlusPlus.ID + ":" + this.thisBlock.getTexture()); //this.base =
-         * iIcon.registerIcon(GTPlusPlus.ID + ":" + "blockStone"); //this.overlay = iIcon.registerIcon(GTPlusPlus.ID +
-         * ":" + "blockOre_Overlay"); }
-         * @Override public int colorMultiplier(final IBlockAccess par1IBlockAccess, final int par2, final int par3,
-         * final int par4){ if (this.blockColour == 0){ return MathUtils.generateSingularRandomHexValue(); } return
-         * this.blockColour; }
-         * @Override public int getRenderColor(final int aMeta) { if (this.blockColour == 0){ return
-         * MathUtils.generateSingularRandomHexValue(); } return this.blockColour; }
-         */
-
         @Override
         public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
                 final int z) {
@@ -168,12 +158,12 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
         }
 
         @Override
-        public IIcon getIcon(IBlockAccess aIBlockAccess, int aX, int aY, int aZ, int aSide) {
+        public IIcon getIcon(IBlockAccess aIBlockAccess, int aX, int aY, int aZ, int ordinalSide) {
             return Blocks.stone.getIcon(0, 0);
         }
 
         @Override
-        public IIcon getIcon(int aSide, int aMeta) {
+        public IIcon getIcon(int ordinalSide, int aMeta) {
             return Blocks.stone.getIcon(0, 0);
         }
 
@@ -184,11 +174,13 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
         // .08 compat
         IIconContainer[] hiddenTextureArray;
 
-        public ITexture[] getTexture(byte arg0) {
-            return getTexture(null, arg0);
+        @Override
+        public ITexture[] getTexture(ForgeDirection side) {
+            return getTexture(null, side);
         }
 
-        public ITexture[] getTexture(Block block, byte side) {
+        @Override
+        public ITexture[] getTexture(Block block, ForgeDirection side) {
             if (this.blockMaterial != null) {
                 GTPP_RenderedTexture aIconSet = new GTPP_RenderedTexture(
                         blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.mTextureIndex],

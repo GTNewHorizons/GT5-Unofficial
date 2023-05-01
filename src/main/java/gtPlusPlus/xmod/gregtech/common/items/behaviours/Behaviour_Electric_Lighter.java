@@ -38,6 +38,7 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
 
     public Behaviour_Electric_Lighter() {}
 
+    @Override
     public boolean onLeftClickEntity(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity) {
         if (!aPlayer.worldObj.isRemote && aStack != null && aStack.stackSize == 1) {
             boolean rOutput = false;
@@ -61,8 +62,9 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
         }
     }
 
+    @Override
     public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-            int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+            int aY, int aZ, int ordinalSide, float hitX, float hitY, float hitZ) {
         if (!aWorld.isRemote && aStack != null && aStack.stackSize == 1) {
             if (aPlayer.isSneaking()) {
                 Logger.INFO("Changing Mode");
@@ -91,11 +93,12 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
                     // Lights Fires Mode
                     Logger.WARNING("Preparing Lighter a");
                     boolean rOutput = false;
-                    ForgeDirection tDirection = ForgeDirection.getOrientation(aSide);
+                    ForgeDirection tDirection = ForgeDirection.getOrientation(ordinalSide);
                     aX += tDirection.offsetX;
                     aY += tDirection.offsetY;
                     aZ += tDirection.offsetZ;
-                    if (GT_Utility.isBlockAir(aWorld, aX, aY, aZ) && aPlayer.canPlayerEdit(aX, aY, aZ, aSide, aStack)) {
+                    if (GT_Utility.isBlockAir(aWorld, aX, aY, aZ)
+                            && aPlayer.canPlayerEdit(aX, aY, aZ, ordinalSide, aStack)) {
                         Logger.WARNING("Preparing Lighter b");
                         if (this.prepare(aStack) || aPlayer.capabilities.isCreativeMode) {
                             Logger.WARNING("Preparing Lighter c");
@@ -121,7 +124,7 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
     }
 
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-            int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+            int aY, int aZ, int ordinalSide, float hitX, float hitY, float hitZ) {
         if (!aWorld.isRemote && aStack != null && aStack.stackSize == 1) {
             if (aPlayer.isSneaking()) {
                 Logger.INFO("Changing Mode");
@@ -150,11 +153,12 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
                     // Lights Fires Mode
                     Logger.WARNING("Preparing Lighter a");
                     boolean rOutput = false;
-                    ForgeDirection tDirection = ForgeDirection.getOrientation(aSide);
+                    ForgeDirection tDirection = ForgeDirection.getOrientation(ordinalSide);
                     aX += tDirection.offsetX;
                     aY += tDirection.offsetY;
                     aZ += tDirection.offsetZ;
-                    if (GT_Utility.isBlockAir(aWorld, aX, aY, aZ) && aPlayer.canPlayerEdit(aX, aY, aZ, aSide, aStack)) {
+                    if (GT_Utility.isBlockAir(aWorld, aX, aY, aZ)
+                            && aPlayer.canPlayerEdit(aX, aY, aZ, ordinalSide, aStack)) {
                         Logger.WARNING("Preparing Lighter b");
                         if (this.prepare(aStack) || aPlayer.capabilities.isCreativeMode) {
                             Logger.WARNING("Preparing Lighter c");
@@ -206,6 +210,7 @@ public class Behaviour_Electric_Lighter extends Behaviour_None {
 
     private void useUp(ItemStack aStack) {}
 
+    @Override
     public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         int aUses = 0;

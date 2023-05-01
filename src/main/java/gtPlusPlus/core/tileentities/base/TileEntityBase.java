@@ -167,6 +167,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
         }
     }
 
+    @Override
     public boolean isServerSide() {
         if (this.hasWorldObj()) {
             if (!this.getWorldObj().isRemote) {
@@ -176,6 +177,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
         return false;
     }
 
+    @Override
     public final boolean isClientSide() {
         return this.worldObj.isRemote;
     }
@@ -260,16 +262,13 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
      * following two Functions.
      */
     @Override
-    public int[] getAccessibleSlotsFromSide(int aSide) {
-        if (canAccessData() && (getCoverBehaviorAtSide((byte) aSide)
-                .letsItemsOut((byte) aSide, getCoverIDAtSide((byte) aSide), getCoverDataAtSide((byte) aSide), -1, this)
-                || getCoverBehaviorAtSide((byte) aSide).letsItemsIn(
-                        (byte) aSide,
-                        getCoverIDAtSide((byte) aSide),
-                        getCoverDataAtSide((byte) aSide),
-                        -1,
-                        this)))
-            return mInventory.getAccessibleSlotsFromSide(aSide);
+    public int[] getAccessibleSlotsFromSide(int ordinalSide) {
+        final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
+        if (canAccessData() && (getCoverBehaviorAtSide(side)
+                .letsItemsOut(side, getCoverIDAtSide(side), getCoverDataAtSide(side), -1, this)
+                || getCoverBehaviorAtSide(side)
+                        .letsItemsIn(side, getCoverIDAtSide(side), getCoverDataAtSide(side), -1, this)))
+            return mInventory.getAccessibleSlotsFromSide(ordinalSide);
         return new int[0];
     }
 
@@ -277,30 +276,24 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
      * Can put aStack into Slot at Side
      */
     @Override
-    public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
+    public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
+        final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
         return canAccessData() && (mRunningThroughTick || !mInputDisabled)
-                && getCoverBehaviorAtSide((byte) aSide).letsItemsIn(
-                        (byte) aSide,
-                        getCoverIDAtSide((byte) aSide),
-                        getCoverDataAtSide((byte) aSide),
-                        aIndex,
-                        this)
-                && mInventory.canInsertItem(aIndex, aStack, aSide);
+                && getCoverBehaviorAtSide(side)
+                        .letsItemsIn(side, getCoverIDAtSide(side), getCoverDataAtSide(side), aIndex, this)
+                && mInventory.canInsertItem(aIndex, aStack, ordinalSide);
     }
 
     /**
      * Can pull aStack out of Slot from Side
      */
     @Override
-    public boolean canExtractItem(int aIndex, ItemStack aStack, int aSide) {
+    public boolean canExtractItem(int aIndex, ItemStack aStack, int ordinalSide) {
+        final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
         return canAccessData() && (mRunningThroughTick || !mOutputDisabled)
-                && getCoverBehaviorAtSide((byte) aSide).letsItemsOut(
-                        (byte) aSide,
-                        getCoverIDAtSide((byte) aSide),
-                        getCoverDataAtSide((byte) aSide),
-                        aIndex,
-                        this)
-                && mInventory.canExtractItem(aIndex, aStack, aSide);
+                && getCoverBehaviorAtSide(side)
+                        .letsItemsOut(side, getCoverIDAtSide(side), getCoverDataAtSide(side), aIndex, this)
+                && mInventory.canExtractItem(aIndex, aStack, ordinalSide);
     }
 
     @Override
@@ -364,13 +357,13 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     @Override
-    public void issueCoverUpdate(byte aSide) {
+    public void issueCoverUpdate(ForgeDirection side) {
         this.issueClientUpdate();
     }
 
     @Override
-    public void receiveCoverData(byte coverSide, int coverID, int coverData) {
-        if ((coverSide >= 0 && coverSide < 6) && (mCoverSides[coverSide] == coverID))
+    public void receiveCoverData(ForgeDirection coverSide, int coverID, int coverData) {
+        if (coverSide != ForgeDirection.UNKNOWN && (mCoverSides[coverSide.ordinal()] == coverID))
             setCoverDataAtSide(coverSide, coverData);
     }
 
@@ -379,20 +372,24 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
         return this.mTickTimer;
     }
 
+    @Override
     public long getOutputAmperage() {
         return this.canAccessData() && this.mMetaTileEntity.isElectric() ? this.mMetaTileEntity.maxAmperesOut() : 0L;
     }
 
+    @Override
     public long getOutputVoltage() {
         return this.canAccessData() && this.mMetaTileEntity.isElectric() && this.mMetaTileEntity.isEnetOutput()
                 ? this.mMetaTileEntity.maxEUOutput()
                 : 0L;
     }
 
+    @Override
     public long getInputAmperage() {
         return this.canAccessData() && this.mMetaTileEntity.isElectric() ? this.mMetaTileEntity.maxAmperesIn() : 0L;
     }
 
+    @Override
     public long getInputVoltage() {
         return this.canAccessData() && this.mMetaTileEntity.isElectric() ? this.mMetaTileEntity.maxEUInput()
                 : 2147483647L;
@@ -417,23 +414,25 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     @Override
-    public boolean inputEnergyFrom(byte aSide) {
-        return aSide == 6 ? true
-                : (!this.isServerSide() ? this.isEnergyInputSide(aSide)
-                        : aSide >= 0 && aSide < 6 && this.mActiveEUInputs[aSide] && !this.mReleaseEnergy);
+    public boolean inputEnergyFrom(ForgeDirection side) {
+        return side == ForgeDirection.UNKNOWN ? true
+                : (!this.isServerSide() ? this.isEnergyInputSide(side)
+                        : side != ForgeDirection.UNKNOWN && this.mActiveEUInputs[side.ordinal()]
+                                && !this.mReleaseEnergy);
     }
 
     @Override
-    public boolean outputsEnergyTo(byte aSide) {
-        return aSide == 6 ? true
-                : (!this.isServerSide() ? this.isEnergyOutputSide(aSide)
-                        : aSide >= 0 && aSide < 6 && this.mActiveEUOutputs[aSide] || this.mReleaseEnergy);
+    public boolean outputsEnergyTo(ForgeDirection side) {
+        return side == ForgeDirection.UNKNOWN ? true
+                : (!this.isServerSide() ? this.isEnergyOutputSide(side)
+                        : side != ForgeDirection.UNKNOWN && this.mActiveEUOutputs[side.ordinal()]
+                                || this.mReleaseEnergy);
     }
 
-    private boolean isEnergyInputSide(byte aSide) {
-        if (aSide >= 0 && aSide < 6) {
-            if (!this.getCoverBehaviorAtSide(aSide)
-                    .letsEnergyIn(aSide, this.getCoverIDAtSide(aSide), this.getCoverDataAtSide(aSide), this)) {
+    private boolean isEnergyInputSide(ForgeDirection side) {
+        if (side != ForgeDirection.UNKNOWN) {
+            if (!this.getCoverBehaviorAtSide(side)
+                    .letsEnergyIn(side, this.getCoverIDAtSide(side), this.getCoverDataAtSide(side), this)) {
                 return false;
             }
 
@@ -442,17 +441,17 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
             }
 
             if (this.canAccessData() && this.mMetaTileEntity.isElectric() && this.mMetaTileEntity.isEnetInput()) {
-                return this.mMetaTileEntity.isInputFacing(aSide);
+                return this.mMetaTileEntity.isInputFacing(side);
             }
         }
 
         return false;
     }
 
-    private boolean isEnergyOutputSide(byte aSide) {
-        if (aSide >= 0 && aSide < 6) {
-            if (!this.getCoverBehaviorAtSide(aSide)
-                    .letsEnergyOut(aSide, this.getCoverIDAtSide(aSide), this.getCoverDataAtSide(aSide), this)) {
+    private boolean isEnergyOutputSide(ForgeDirection side) {
+        if (side != ForgeDirection.UNKNOWN) {
+            if (!this.getCoverBehaviorAtSide(side)
+                    .letsEnergyOut(side, this.getCoverIDAtSide(side), this.getCoverDataAtSide(side), this)) {
                 return false;
             }
 
@@ -461,18 +460,18 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
             }
 
             if (this.canAccessData() && this.mMetaTileEntity.isElectric() && this.mMetaTileEntity.isEnetOutput()) {
-                return this.mMetaTileEntity.isOutputFacing(aSide);
+                return this.mMetaTileEntity.isOutputFacing(side);
             }
         }
 
         return false;
     }
 
-    public boolean isOutputFacing(byte aSide) {
+    public boolean isOutputFacing(ForgeDirection side) {
         return false;
     }
 
-    public boolean isInputFacing(byte aSide) {
+    public boolean isInputFacing(ForgeDirection side) {
         return false;
     }
 
@@ -494,296 +493,354 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
         }
     }
 
+    @Override
     public final World getWorld() {
         return this.worldObj;
     }
 
+    @Override
     public final int getXCoord() {
         return this.xCoord;
     }
 
+    @Override
     public final short getYCoord() {
         return (short) this.yCoord;
     }
 
+    @Override
     public final int getZCoord() {
         return this.zCoord;
     }
 
-    public final int getOffsetX(byte aSide, int aMultiplier) {
-        return this.xCoord + ForgeDirection.getOrientation(aSide).offsetX * aMultiplier;
+    @Override
+    public final int getOffsetX(ForgeDirection side, int aMultiplier) {
+        return this.xCoord + side.offsetX * aMultiplier;
     }
 
-    public final short getOffsetY(byte aSide, int aMultiplier) {
-        return (short) (this.yCoord + ForgeDirection.getOrientation(aSide).offsetY * aMultiplier);
+    @Override
+    public final short getOffsetY(ForgeDirection side, int aMultiplier) {
+        return (short) (this.yCoord + side.offsetY * aMultiplier);
     }
 
-    public final int getOffsetZ(byte aSide, int aMultiplier) {
-        return this.zCoord + ForgeDirection.getOrientation(aSide).offsetZ * aMultiplier;
+    @Override
+    public final int getOffsetZ(ForgeDirection side, int aMultiplier) {
+        return this.zCoord + side.offsetZ * aMultiplier;
     }
 
+    @Override
     public final int getRandomNumber(int aRange) {
         return this.worldObj.rand.nextInt(aRange);
     }
 
+    @Override
     public final BiomeGenBase getBiome(int aX, int aZ) {
         return this.worldObj.getBiomeGenForCoords(aX, aZ);
     }
 
+    @Override
     public final BiomeGenBase getBiome() {
         return this.getBiome(this.xCoord, this.zCoord);
     }
 
+    @Override
     public final Block getBlockOffset(int aX, int aY, int aZ) {
         return this.getBlock(this.xCoord + aX, this.yCoord + aY, this.zCoord + aZ);
     }
 
-    public final Block getBlockAtSide(byte aSide) {
-        return this.getBlockAtSideAndDistance(aSide, 1);
+    @Override
+    public final Block getBlockAtSide(ForgeDirection side) {
+        return this.getBlockAtSideAndDistance(side, 1);
     }
 
-    public final Block getBlockAtSideAndDistance(byte aSide, int aDistance) {
+    @Override
+    public final Block getBlockAtSideAndDistance(ForgeDirection side, int aDistance) {
         return this.getBlock(
-                this.getOffsetX(aSide, aDistance),
-                this.getOffsetY(aSide, aDistance),
-                this.getOffsetZ(aSide, aDistance));
+                this.getOffsetX(side, aDistance),
+                this.getOffsetY(side, aDistance),
+                this.getOffsetZ(side, aDistance));
     }
 
+    @Override
     public final byte getMetaIDOffset(int aX, int aY, int aZ) {
         return this.getMetaID(this.xCoord + aX, this.yCoord + aY, this.zCoord + aZ);
     }
 
-    public final byte getMetaIDAtSide(byte aSide) {
-        return this.getMetaIDAtSideAndDistance(aSide, 1);
+    @Override
+    public final byte getMetaIDAtSide(ForgeDirection side) {
+        return this.getMetaIDAtSideAndDistance(side, 1);
     }
 
-    public final byte getMetaIDAtSideAndDistance(byte aSide, int aDistance) {
+    @Override
+    public final byte getMetaIDAtSideAndDistance(ForgeDirection side, int aDistance) {
         return this.getMetaID(
-                this.getOffsetX(aSide, aDistance),
-                this.getOffsetY(aSide, aDistance),
-                this.getOffsetZ(aSide, aDistance));
+                this.getOffsetX(side, aDistance),
+                this.getOffsetY(side, aDistance),
+                this.getOffsetZ(side, aDistance));
     }
 
+    @Override
     public final byte getLightLevelOffset(int aX, int aY, int aZ) {
         return this.getLightLevel(this.xCoord + aX, this.yCoord + aY, this.zCoord + aZ);
     }
 
-    public final byte getLightLevelAtSide(byte aSide) {
-        return this.getLightLevelAtSideAndDistance(aSide, 1);
+    @Override
+    public final byte getLightLevelAtSide(ForgeDirection side) {
+        return this.getLightLevelAtSideAndDistance(side, 1);
     }
 
-    public final byte getLightLevelAtSideAndDistance(byte aSide, int aDistance) {
+    @Override
+    public final byte getLightLevelAtSideAndDistance(ForgeDirection side, int aDistance) {
         return this.getLightLevel(
-                this.getOffsetX(aSide, aDistance),
-                this.getOffsetY(aSide, aDistance),
-                this.getOffsetZ(aSide, aDistance));
+                this.getOffsetX(side, aDistance),
+                this.getOffsetY(side, aDistance),
+                this.getOffsetZ(side, aDistance));
     }
 
+    @Override
     public final boolean getOpacityOffset(int aX, int aY, int aZ) {
         return this.getOpacity(this.xCoord + aX, this.yCoord + aY, this.zCoord + aZ);
     }
 
-    public final boolean getOpacityAtSide(byte aSide) {
-        return this.getOpacityAtSideAndDistance(aSide, 1);
+    @Override
+    public final boolean getOpacityAtSide(ForgeDirection side) {
+        return this.getOpacityAtSideAndDistance(side, 1);
     }
 
-    public final boolean getOpacityAtSideAndDistance(byte aSide, int aDistance) {
+    @Override
+    public final boolean getOpacityAtSideAndDistance(ForgeDirection side, int aDistance) {
         return this.getOpacity(
-                this.getOffsetX(aSide, aDistance),
-                this.getOffsetY(aSide, aDistance),
-                this.getOffsetZ(aSide, aDistance));
+                this.getOffsetX(side, aDistance),
+                this.getOffsetY(side, aDistance),
+                this.getOffsetZ(side, aDistance));
     }
 
+    @Override
     public final boolean getSkyOffset(int aX, int aY, int aZ) {
         return this.getSky(this.xCoord + aX, this.yCoord + aY, this.zCoord + aZ);
     }
 
-    public final boolean getSkyAtSide(byte aSide) {
-        return this.getSkyAtSideAndDistance(aSide, 1);
+    @Override
+    public final boolean getSkyAtSide(ForgeDirection side) {
+        return this.getSkyAtSideAndDistance(side, 1);
     }
 
-    public final boolean getSkyAtSideAndDistance(byte aSide, int aDistance) {
+    @Override
+    public final boolean getSkyAtSideAndDistance(ForgeDirection side, int aDistance) {
         return this.getSky(
-                this.getOffsetX(aSide, aDistance),
-                this.getOffsetY(aSide, aDistance),
-                this.getOffsetZ(aSide, aDistance));
+                this.getOffsetX(side, aDistance),
+                this.getOffsetY(side, aDistance),
+                this.getOffsetZ(side, aDistance));
     }
 
+    @Override
     public final boolean getAirOffset(int aX, int aY, int aZ) {
         return this.getAir(this.xCoord + aX, this.yCoord + aY, this.zCoord + aZ);
     }
 
-    public final boolean getAirAtSide(byte aSide) {
-        return this.getAirAtSideAndDistance(aSide, 1);
+    @Override
+    public final boolean getAirAtSide(ForgeDirection side) {
+        return this.getAirAtSideAndDistance(side, 1);
     }
 
-    public final boolean getAirAtSideAndDistance(byte aSide, int aDistance) {
+    @Override
+    public final boolean getAirAtSideAndDistance(ForgeDirection side, int aDistance) {
         return this.getAir(
-                this.getOffsetX(aSide, aDistance),
-                this.getOffsetY(aSide, aDistance),
-                this.getOffsetZ(aSide, aDistance));
+                this.getOffsetX(side, aDistance),
+                this.getOffsetY(side, aDistance),
+                this.getOffsetZ(side, aDistance));
     }
 
+    @Override
     public final TileEntity getTileEntityOffset(int aX, int aY, int aZ) {
         return this.getTileEntity(this.xCoord + aX, this.yCoord + aY, this.zCoord + aZ);
     }
 
-    public final TileEntity getTileEntityAtSideAndDistance(byte aSide, int aDistance) {
-        return aDistance == 1 ? this.getTileEntityAtSide(aSide)
+    @Override
+    public final TileEntity getTileEntityAtSideAndDistance(ForgeDirection side, int aDistance) {
+        return aDistance == 1 ? this.getTileEntityAtSide(side)
                 : this.getTileEntity(
-                        this.getOffsetX(aSide, aDistance),
-                        this.getOffsetY(aSide, aDistance),
-                        this.getOffsetZ(aSide, aDistance));
+                        this.getOffsetX(side, aDistance),
+                        this.getOffsetY(side, aDistance),
+                        this.getOffsetZ(side, aDistance));
     }
 
+    @Override
     public final IInventory getIInventory(int aX, int aY, int aZ) {
         TileEntity tTileEntity = this.getTileEntity(aX, aY, aZ);
         return tTileEntity instanceof IInventory ? (IInventory) tTileEntity : null;
     }
 
+    @Override
     public final IInventory getIInventoryOffset(int aX, int aY, int aZ) {
         TileEntity tTileEntity = this.getTileEntityOffset(aX, aY, aZ);
         return tTileEntity instanceof IInventory ? (IInventory) tTileEntity : null;
     }
 
-    public final IInventory getIInventoryAtSide(byte aSide) {
-        TileEntity tTileEntity = this.getTileEntityAtSide(aSide);
+    @Override
+    public final IInventory getIInventoryAtSide(ForgeDirection side) {
+        TileEntity tTileEntity = this.getTileEntityAtSide(side);
         return tTileEntity instanceof IInventory ? (IInventory) tTileEntity : null;
     }
 
-    public final IInventory getIInventoryAtSideAndDistance(byte aSide, int aDistance) {
-        TileEntity tTileEntity = this.getTileEntityAtSideAndDistance(aSide, aDistance);
+    @Override
+    public final IInventory getIInventoryAtSideAndDistance(ForgeDirection side, int aDistance) {
+        TileEntity tTileEntity = this.getTileEntityAtSideAndDistance(side, aDistance);
         return tTileEntity instanceof IInventory ? (IInventory) tTileEntity : null;
     }
 
+    @Override
     public final IFluidHandler getITankContainer(int aX, int aY, int aZ) {
         TileEntity tTileEntity = this.getTileEntity(aX, aY, aZ);
         return tTileEntity instanceof IFluidHandler ? (IFluidHandler) tTileEntity : null;
     }
 
+    @Override
     public final IFluidHandler getITankContainerOffset(int aX, int aY, int aZ) {
         TileEntity tTileEntity = this.getTileEntityOffset(aX, aY, aZ);
         return tTileEntity instanceof IFluidHandler ? (IFluidHandler) tTileEntity : null;
     }
 
-    public final IFluidHandler getITankContainerAtSide(byte aSide) {
-        TileEntity tTileEntity = this.getTileEntityAtSide(aSide);
+    @Override
+    public final IFluidHandler getITankContainerAtSide(ForgeDirection side) {
+        TileEntity tTileEntity = this.getTileEntityAtSide(side);
         return tTileEntity instanceof IFluidHandler ? (IFluidHandler) tTileEntity : null;
     }
 
-    public final IFluidHandler getITankContainerAtSideAndDistance(byte aSide, int aDistance) {
-        TileEntity tTileEntity = this.getTileEntityAtSideAndDistance(aSide, aDistance);
+    @Override
+    public final IFluidHandler getITankContainerAtSideAndDistance(ForgeDirection side, int aDistance) {
+        TileEntity tTileEntity = this.getTileEntityAtSideAndDistance(side, aDistance);
         return tTileEntity instanceof IFluidHandler ? (IFluidHandler) tTileEntity : null;
     }
 
+    @Override
     public final IGregTechTileEntity getIGregTechTileEntity(int aX, int aY, int aZ) {
         TileEntity tTileEntity = this.getTileEntity(aX, aY, aZ);
         return tTileEntity instanceof IGregTechTileEntity ? (IGregTechTileEntity) tTileEntity : null;
     }
 
+    @Override
     public final IGregTechTileEntity getIGregTechTileEntityOffset(int aX, int aY, int aZ) {
         TileEntity tTileEntity = this.getTileEntityOffset(aX, aY, aZ);
         return tTileEntity instanceof IGregTechTileEntity ? (IGregTechTileEntity) tTileEntity : null;
     }
 
-    public final IGregTechTileEntity getIGregTechTileEntityAtSide(byte aSide) {
-        TileEntity tTileEntity = this.getTileEntityAtSide(aSide);
+    @Override
+    public final IGregTechTileEntity getIGregTechTileEntityAtSide(ForgeDirection side) {
+        TileEntity tTileEntity = this.getTileEntityAtSide(side);
         return tTileEntity instanceof IGregTechTileEntity ? (IGregTechTileEntity) tTileEntity : null;
     }
 
-    public final IGregTechTileEntity getIGregTechTileEntityAtSideAndDistance(byte aSide, int aDistance) {
-        TileEntity tTileEntity = this.getTileEntityAtSideAndDistance(aSide, aDistance);
+    @Override
+    public final IGregTechTileEntity getIGregTechTileEntityAtSideAndDistance(ForgeDirection side, int aDistance) {
+        TileEntity tTileEntity = this.getTileEntityAtSideAndDistance(side, aDistance);
         return tTileEntity instanceof IGregTechTileEntity ? (IGregTechTileEntity) tTileEntity : null;
     }
 
+    @Override
     public final Block getBlock(int aX, int aY, int aZ) {
         return this.ignoreUnloadedChunks && this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ)
                 ? Blocks.air
                 : this.worldObj.getBlock(aX, aY, aZ);
     }
 
+    @Override
     public final byte getMetaID(int aX, int aY, int aZ) {
         return this.ignoreUnloadedChunks && this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ)
                 ? 0
                 : (byte) this.worldObj.getBlockMetadata(aX, aY, aZ);
     }
 
+    @Override
     public final byte getLightLevel(int aX, int aY, int aZ) {
         return this.ignoreUnloadedChunks && this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ)
                 ? 0
                 : (byte) ((int) (this.worldObj.getLightBrightness(aX, aY, aZ) * 15.0F));
     }
 
+    @Override
     public final boolean getSky(int aX, int aY, int aZ) {
         return this.ignoreUnloadedChunks && this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ)
                 ? true
                 : this.worldObj.canBlockSeeTheSky(aX, aY, aZ);
     }
 
+    @Override
     public final boolean getOpacity(int aX, int aY, int aZ) {
         return this.ignoreUnloadedChunks && this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ)
                 ? false
                 : GT_Utility.isOpaqueBlock(this.worldObj, aX, aY, aZ);
     }
 
+    @Override
     public final boolean getAir(int aX, int aY, int aZ) {
         return this.ignoreUnloadedChunks && this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ)
                 ? true
                 : GT_Utility.isBlockAir(this.worldObj, aX, aY, aZ);
     }
 
+    @Override
     public final TileEntity getTileEntity(int aX, int aY, int aZ) {
         return this.ignoreUnloadedChunks && this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ)
                 ? null
                 : this.worldObj.getTileEntity(aX, aY, aZ);
     }
 
-    public final TileEntity getTileEntityAtSide(byte aSide) {
-        if (aSide >= 0 && aSide < 6 && this.mBufferedTileEntities[aSide] != this) {
-            int tX = this.getOffsetX(aSide, 1);
-            short tY = this.getOffsetY(aSide, 1);
-            int tZ = this.getOffsetZ(aSide, 1);
+    @Override
+    public final TileEntity getTileEntityAtSide(ForgeDirection side) {
+        final int ordinalSide = side.ordinal();
+        if (side != ForgeDirection.UNKNOWN && this.mBufferedTileEntities[ordinalSide] != this) {
+            int tX = this.getOffsetX(side, 1);
+            short tY = this.getOffsetY(side, 1);
+            int tZ = this.getOffsetZ(side, 1);
             if (this.crossedChunkBorder(tX, tZ)) {
-                this.mBufferedTileEntities[aSide] = null;
+                this.mBufferedTileEntities[ordinalSide] = null;
                 if (this.ignoreUnloadedChunks && !this.worldObj.blockExists(tX, tY, tZ)) {
                     return null;
                 }
             }
 
-            if (this.mBufferedTileEntities[aSide] == null) {
-                this.mBufferedTileEntities[aSide] = this.worldObj.getTileEntity(tX, tY, tZ);
-                if (this.mBufferedTileEntities[aSide] == null) {
-                    this.mBufferedTileEntities[aSide] = this;
+            if (this.mBufferedTileEntities[ordinalSide] == null) {
+                this.mBufferedTileEntities[ordinalSide] = this.worldObj.getTileEntity(tX, tY, tZ);
+                if (this.mBufferedTileEntities[ordinalSide] == null) {
+                    this.mBufferedTileEntities[ordinalSide] = this;
                     return null;
                 } else {
-                    return this.mBufferedTileEntities[aSide];
+                    return this.mBufferedTileEntities[ordinalSide];
                 }
-            } else if (this.mBufferedTileEntities[aSide].isInvalid()) {
-                this.mBufferedTileEntities[aSide] = null;
-                return this.getTileEntityAtSide(aSide);
+            } else if (this.mBufferedTileEntities[ordinalSide].isInvalid()) {
+                this.mBufferedTileEntities[ordinalSide] = null;
+                return this.getTileEntityAtSide(side);
             } else {
-                return this.mBufferedTileEntities[aSide].xCoord == tX && this.mBufferedTileEntities[aSide].yCoord == tY
-                        && this.mBufferedTileEntities[aSide].zCoord == tZ ? this.mBufferedTileEntities[aSide] : null;
+                return this.mBufferedTileEntities[ordinalSide].xCoord == tX
+                        && this.mBufferedTileEntities[ordinalSide].yCoord == tY
+                        && this.mBufferedTileEntities[ordinalSide].zCoord == tZ
+                                ? this.mBufferedTileEntities[ordinalSide]
+                                : null;
             }
         } else {
             return null;
         }
     }
 
+    @Override
     public boolean isDead() {
         return this.isDead || this.isInvalidTileEntity();
     }
 
+    @Override
     public void validate() {
         this.clearNullMarkersFromTileEntityBuffer();
         super.validate();
     }
 
+    @Override
     public void invalidate() {
         this.clearNullMarkersFromTileEntityBuffer();
         super.invalidate();
     }
 
+    @Override
     public void onChunkUnload() {
         this.clearNullMarkersFromTileEntityBuffer();
         super.onChunkUnload();
@@ -794,6 +851,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
         this.clearNullMarkersFromTileEntityBuffer();
     }
 
+    @Override
     public final void sendBlockEvent(byte aID, byte aValue) {
         GT_Values.NW.sendPacketToAllPlayersInRange(
                 this.worldObj,
@@ -819,49 +877,51 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     @Override
-    public byte getInternalInputRedstoneSignal(byte aSide) {
-        return (byte) (getCoverBehaviorAtSide(aSide).getRedstoneInput(
-                aSide,
-                getInputRedstoneSignal(aSide),
-                getCoverIDAtSide(aSide),
-                getCoverDataAtSide(aSide),
+    public byte getInternalInputRedstoneSignal(ForgeDirection side) {
+        return (byte) (getCoverBehaviorAtSide(side).getRedstoneInput(
+                side,
+                getInputRedstoneSignal(side),
+                getCoverIDAtSide(side),
+                getCoverDataAtSide(side),
                 this) & 15);
     }
 
     @Override
-    public byte getInputRedstoneSignal(byte aSide) {
+    public byte getInputRedstoneSignal(ForgeDirection side) {
         return (byte) (worldObj
-                .getIndirectPowerLevelTo(getOffsetX(aSide, 1), getOffsetY(aSide, 1), getOffsetZ(aSide, 1), aSide) & 15);
+                .getIndirectPowerLevelTo(getOffsetX(side, 1), getOffsetY(side, 1), getOffsetZ(side, 1), side.ordinal())
+                & 15);
     }
 
     @Override
-    public byte getOutputRedstoneSignal(byte aSide) {
-        return getCoverBehaviorAtSide(aSide)
-                .manipulatesSidedRedstoneOutput(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this)
-                        ? mSidedRedstone[aSide]
-                        : getGeneralRS(aSide);
+    public byte getOutputRedstoneSignal(ForgeDirection side) {
+        return getCoverBehaviorAtSide(side)
+                .manipulatesSidedRedstoneOutput(side, getCoverIDAtSide(side), getCoverDataAtSide(side), this)
+                        ? mSidedRedstone[side.ordinal()]
+                        : getGeneralRS(side);
     }
 
     public boolean allowGeneralRedstoneOutput() {
         return false;
     }
 
-    public byte getGeneralRS(byte aSide) {
-        return allowGeneralRedstoneOutput() ? mSidedRedstone[aSide] : 0;
+    @Override
+    public byte getGeneralRS(ForgeDirection side) {
+        return allowGeneralRedstoneOutput() ? mSidedRedstone[side.ordinal()] : 0;
     }
 
     @Override
-    public void setInternalOutputRedstoneSignal(byte aSide, byte aStrength) {
-        if (!getCoverBehaviorAtSide(aSide)
-                .manipulatesSidedRedstoneOutput(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this))
-            setOutputRedstoneSignal(aSide, aStrength);
+    public void setInternalOutputRedstoneSignal(ForgeDirection side, byte aStrength) {
+        if (!getCoverBehaviorAtSide(side)
+                .manipulatesSidedRedstoneOutput(side, getCoverIDAtSide(side), getCoverDataAtSide(side), this))
+            setOutputRedstoneSignal(side, aStrength);
     }
 
     @Override
-    public void setOutputRedstoneSignal(byte aSide, byte aStrength) {
+    public void setOutputRedstoneSignal(ForgeDirection side, byte aStrength) {
         aStrength = (byte) Math.min(Math.max(0, aStrength), 15);
-        if (aSide >= 0 && aSide < 6 && mSidedRedstone[aSide] != aStrength) {
-            mSidedRedstone[aSide] = aStrength;
+        if (side != ForgeDirection.UNKNOWN && mSidedRedstone[side.ordinal()] != aStrength) {
+            mSidedRedstone[side.ordinal()] = aStrength;
             issueBlockUpdate();
         }
     }
@@ -877,69 +937,70 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     @Override
-    public GT_CoverBehavior getCoverBehaviorAtSide(byte aSide) {
-        return aSide >= 0 && aSide < mCoverBehaviors.length ? mCoverBehaviors[aSide] : GregTech_API.sNoBehavior;
+    public GT_CoverBehavior getCoverBehaviorAtSide(ForgeDirection side) {
+        return side != ForgeDirection.UNKNOWN ? mCoverBehaviors[side.ordinal()] : GregTech_API.sNoBehavior;
     }
 
     @Override
-    public void setCoverIDAtSide(byte aSide, int aID) {
-        if (setCoverIDAtSideNoUpdate(aSide, aID)) {
-            issueCoverUpdate(aSide);
+    public void setCoverIDAtSide(ForgeDirection side, int aID) {
+        if (setCoverIDAtSideNoUpdate(side, aID)) {
+            issueCoverUpdate(side);
             issueBlockUpdate();
         }
     }
 
     @Override
-    public boolean setCoverIDAtSideNoUpdate(byte aSide, int aID) {
-        if (aSide >= 0 && aSide < 6) {
-            mCoverSides[aSide] = aID;
-            mCoverData[aSide] = 0;
-            mCoverBehaviors[aSide] = GregTech_API.getCoverBehavior(aID);
+    public boolean setCoverIDAtSideNoUpdate(ForgeDirection side, int aID) {
+        if (side != ForgeDirection.UNKNOWN) {
+            final int ordinalSide = side.ordinal();
+            mCoverSides[ordinalSide] = aID;
+            mCoverData[ordinalSide] = 0;
+            mCoverBehaviors[ordinalSide] = GregTech_API.getCoverBehavior(aID);
             return true;
         }
         return false;
     }
 
     @Override
-    public void setCoverIdAndDataAtSide(byte aSide, int aId, ISerializableObject aData) {
-        setCoverIDAtSide(aSide, aId);
-        setCoverDataAtSide(aSide, aData);
+    public void setCoverIdAndDataAtSide(ForgeDirection side, int aId, ISerializableObject aData) {
+        setCoverIDAtSide(side, aId);
+        setCoverDataAtSide(side, aData);
     }
 
     @Override
-    public void setCoverItemAtSide(byte aSide, ItemStack aCover) {
-        GregTech_API.getCoverBehavior(aCover).placeCover(aSide, aCover, this);
+    public void setCoverItemAtSide(ForgeDirection side, ItemStack aCover) {
+        GregTech_API.getCoverBehavior(aCover).placeCover(side, aCover, this);
     }
 
     @Override
-    public int getCoverIDAtSide(byte aSide) {
-        if (aSide >= 0 && aSide < 6) return mCoverSides[aSide];
+    public int getCoverIDAtSide(ForgeDirection side) {
+        if (side != ForgeDirection.UNKNOWN) return mCoverSides[side.ordinal()];
         return 0;
     }
 
     @Override
-    public ItemStack getCoverItemAtSide(byte aSide) {
-        return GT_Utility.intToStack(getCoverIDAtSide(aSide));
+    public ItemStack getCoverItemAtSide(ForgeDirection side) {
+        return GT_Utility.intToStack(getCoverIDAtSide(side));
     }
 
     @Override
-    public boolean canPlaceCoverIDAtSide(byte aSide, int aID) {
-        return getCoverIDAtSide(aSide) == 0;
+    public boolean canPlaceCoverIDAtSide(ForgeDirection side, int aID) {
+        return getCoverIDAtSide(side) == 0;
     }
 
     @Override
-    public boolean canPlaceCoverItemAtSide(byte aSide, ItemStack aCover) {
-        return getCoverIDAtSide(aSide) == 0;
+    public boolean canPlaceCoverItemAtSide(ForgeDirection side, ItemStack aCover) {
+        return getCoverIDAtSide(side) == 0;
     }
 
     @Override
-    public void setCoverDataAtSide(byte aSide, int aData) {
-        if (aSide >= 0 && aSide < 6) mCoverData[aSide] = aData;
+    public void setCoverDataAtSide(ForgeDirection side, int aData) {
+        if (side != ForgeDirection.UNKNOWN) mCoverData[side.ordinal()] = aData;
     }
 
     @Override
-    public int getCoverDataAtSide(byte aSide) {
-        if (aSide >= 0 && aSide < 6) return mCoverData[aSide];
+    public int getCoverDataAtSide(ForgeDirection side) {
+        if (side != ForgeDirection.UNKNOWN) return mCoverData[side.ordinal()];
         return 0;
     }
 
@@ -975,29 +1036,29 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     @Override
-    public boolean dropCover(byte aSide, byte aDroppedSide, boolean aForced) {
-        if (getCoverBehaviorAtSide(aSide)
-                .onCoverRemoval(aSide, getCoverIDAtSide(aSide), mCoverData[aSide], this, aForced) || aForced) {
-            ItemStack tStack = getCoverBehaviorAtSide(aSide)
-                    .getDrop(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this);
+    public boolean dropCover(ForgeDirection side, ForgeDirection droppedSide, boolean aForced) {
+        if (getCoverBehaviorAtSide(side)
+                .onCoverRemoval(side, getCoverIDAtSide(side), mCoverData[side.ordinal()], this, aForced) || aForced) {
+            ItemStack tStack = getCoverBehaviorAtSide(side)
+                    .getDrop(side, getCoverIDAtSide(side), getCoverDataAtSide(side), this);
             if (tStack != null) {
                 tStack.setTagCompound(null);
                 EntityItem tEntity = new EntityItem(
                         worldObj,
-                        getOffsetX(aDroppedSide, 1) + 0.5,
-                        getOffsetY(aDroppedSide, 1) + 0.5,
-                        getOffsetZ(aDroppedSide, 1) + 0.5,
+                        getOffsetX(droppedSide, 1) + 0.5,
+                        getOffsetY(droppedSide, 1) + 0.5,
+                        getOffsetZ(droppedSide, 1) + 0.5,
                         tStack);
                 tEntity.motionX = 0;
                 tEntity.motionY = 0;
                 tEntity.motionZ = 0;
                 worldObj.spawnEntityInWorld(tEntity);
             }
-            setCoverIDAtSide(aSide, 0);
+            setCoverIDAtSide(side, 0);
             if (mMetaTileEntity.hasSidedRedstoneOutputBehavior()) {
-                setOutputRedstoneSignal(aSide, (byte) 0);
+                setOutputRedstoneSignal(side, (byte) 0);
             } else {
-                setOutputRedstoneSignal(aSide, (byte) 15);
+                setOutputRedstoneSignal(side, (byte) 15);
             }
             return true;
         }
@@ -1015,26 +1076,28 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     @Override
-    public byte getComparatorValue(byte aSide) {
-        return canAccessData() ? mMetaTileEntity.getComparatorValue(aSide) : 0;
+    public byte getComparatorValue(ForgeDirection side) {
+        return canAccessData() ? mMetaTileEntity.getComparatorValue(side) : 0;
     }
 
     @Override
-    public byte getStrongOutputRedstoneSignal(byte aSide) {
-        return aSide >= 0 && aSide < 6 && (mStrongRedstone & (1 << aSide)) != 0 ? (byte) (mSidedRedstone[aSide] & 15)
+    public byte getStrongOutputRedstoneSignal(ForgeDirection side) {
+        final int ordinalSide = side.ordinal();
+        return side != ForgeDirection.UNKNOWN && (mStrongRedstone & (1 << ordinalSide)) != 0
+                ? (byte) (mSidedRedstone[ordinalSide] & 15)
                 : 0;
     }
 
     @Override
-    public void setStrongOutputRedstoneSignal(byte aSide, byte aStrength) {
-        mStrongRedstone |= (1 << aSide);
-        setOutputRedstoneSignal(aSide, aStrength);
+    public void setStrongOutputRedstoneSignal(ForgeDirection side, byte aStrength) {
+        mStrongRedstone |= (1 << side.ordinal());
+        setOutputRedstoneSignal(side, aStrength);
     }
 
     @Override
-    public long injectEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
+    public long injectEnergyUnits(ForgeDirection side, long aVoltage, long aAmperage) {
         if (!canAccessData() || !mMetaTileEntity.isElectric()
-                || !inputEnergyFrom(aSide)
+                || !inputEnergyFrom(side)
                 || aAmperage <= 0
                 || aVoltage <= 0
                 || getStoredEU() >= getEUCapacity()
@@ -1059,9 +1122,9 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     @Override
-    public boolean drainEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
+    public boolean drainEnergyUnits(ForgeDirection side, long aVoltage, long aAmperage) {
         if (!canAccessData() || !mMetaTileEntity.isElectric()
-                || !outputsEnergyTo(aSide)
+                || !outputsEnergyTo(side)
                 || getStoredEU() - (aVoltage * aAmperage) < mMetaTileEntity.getMinimumStoredEU())
             return false;
         if (decreaseStoredEU(aVoltage * aAmperage, false)) {
@@ -1075,7 +1138,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
         return oOutput;
     }
 
-    public boolean isTeleporterCompatible(ForgeDirection aSide) {
+    public boolean isTeleporterCompatible(ForgeDirection side) {
         return false;
     }
 
@@ -1085,15 +1148,15 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     public double injectEnergyUnits(ForgeDirection aDirection, double aAmount) {
-        return injectEnergyUnits((byte) aDirection.ordinal(), (int) aAmount, 1) > 0 ? 0 : aAmount;
+        return injectEnergyUnits(aDirection, (int) aAmount, 1) > 0 ? 0 : aAmount;
     }
 
     public boolean acceptsEnergyFrom(TileEntity aEmitter, ForgeDirection aDirection) {
-        return inputEnergyFrom((byte) aDirection.ordinal());
+        return inputEnergyFrom(aDirection);
     }
 
     public boolean emitsEnergyTo(TileEntity aReceiver, ForgeDirection aDirection) {
-        return outputsEnergyTo((byte) aDirection.ordinal());
+        return outputsEnergyTo(aDirection);
     }
 
     public double getOfferedEnergy() {
@@ -1108,7 +1171,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     public int injectEnergy(ForgeDirection aForgeDirection, int aAmount) {
-        return injectEnergyUnits((byte) aForgeDirection.ordinal(), aAmount, 1) > 0 ? 0 : aAmount;
+        return injectEnergyUnits(aForgeDirection, aAmount, 1) > 0 ? 0 : aAmount;
     }
 
     public int addEnergy(int aEnergy) {
@@ -1153,15 +1216,15 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     public int injectEnergy(Direction aDirection, int aAmount) {
-        return injectEnergyUnits((byte) aDirection.toSideValue(), aAmount, 1) > 0 ? 0 : aAmount;
+        return injectEnergyUnits(aDirection.toForgeDirection(), aAmount, 1) > 0 ? 0 : aAmount;
     }
 
     public boolean acceptsEnergyFrom(TileEntity aReceiver, Direction aDirection) {
-        return inputEnergyFrom((byte) aDirection.toSideValue());
+        return inputEnergyFrom(aDirection.toForgeDirection());
     }
 
     public boolean emitsEnergyTo(TileEntity aReceiver, Direction aDirection) {
-        return outputsEnergyTo((byte) aDirection.toSideValue());
+        return outputsEnergyTo(aDirection.toForgeDirection());
     }
 
     @Override
@@ -1285,10 +1348,12 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
         this.mStoredEnergy = aEnergy;
     }
 
+    @Override
     public long getStoredEU() {
         return this.canAccessData() ? Math.min(this.mMetaTileEntity.getEUVar(), this.getEUCapacity()) : 0L;
     }
 
+    @Override
     public long getEUCapacity() {
         return this.canAccessData() ? this.mMetaTileEntity.maxEUStore() : 0L;
     }

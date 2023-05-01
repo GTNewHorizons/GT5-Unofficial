@@ -63,10 +63,12 @@ public class TOOL_Gregtech_ElectricSnips extends GT_Tool_WireCutter {
         return null;
     }
 
+    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return (IIconContainer) (aIsToolHead ? TexturesGtTools.ELECTRIC_SNIPS : ItemIcons.POWER_UNIT_MV);
     }
 
+    @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : Materials.TungstenSteel.mRGBa;
     }

@@ -5,11 +5,11 @@ import java.util.HashMap;
 
 import net.minecraft.init.Items;
 
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.xmod.sc2.modules.ModuleExoticSeeds;
 import vswe.stevescarts.Helpers.ComponentTypes;
 import vswe.stevescarts.Items.ModItems;
 import vswe.stevescarts.Modules.ModuleBase;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.xmod.sc2.modules.ModuleExoticSeeds;
 
 public class GppModuleData extends ModuleData {
 

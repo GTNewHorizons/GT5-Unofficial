@@ -48,6 +48,7 @@ public class BlockGenericSpawner extends BlockMobSpawner {
     /**
      * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
      */
+    @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_) {
         for (int i = 0; i < Math.max(1, TileEntityGenericSpawner.mSpawners.size()); ++i) {

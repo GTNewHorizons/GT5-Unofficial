@@ -10,18 +10,22 @@ import ic2.api.crops.ICropTile;
 
 public class Crop_Force extends BaseAestheticCrop {
 
+    @Override
     public int tier() {
         return 4;
     }
 
+    @Override
     public String name() {
         return "Force";
     }
 
+    @Override
     public String discoveredBy() {
         return "Alkalus";
     }
 
+    @Override
     public int growthDuration(ICropTile crop) {
         int ret = 800;
 
@@ -36,10 +40,12 @@ public class Crop_Force extends BaseAestheticCrop {
         return ret;
     }
 
+    @Override
     public String[] attributes() {
         return new String[] { "Power", "Soil", "Yellow", "Gold" };
     }
 
+    @Override
     public ItemStack getGain(ICropTile crop) {
         ItemStack ret = this.getDisplayItem();
         if (MathUtils.randInt(0, 10) > 8) {
@@ -48,6 +54,7 @@ public class Crop_Force extends BaseAestheticCrop {
         return ret;
     }
 
+    @Override
     public ItemStack getDisplayItem() {
         return STANDALONE.FORCE.getNugget(0);
     }

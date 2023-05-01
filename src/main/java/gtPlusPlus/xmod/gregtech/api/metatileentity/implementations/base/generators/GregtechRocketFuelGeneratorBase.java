@@ -7,6 +7,7 @@ import java.util.Collection;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.Textures;
@@ -63,11 +64,13 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
     }
 
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0
-                : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
-                        + 1];
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
+            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[(aActive ? 5 : 0)
+                + (side == facing ? 0
+                        : side == facing.getOpposite() ? 1
+                                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex
+                                        + 1];
     }
 
     @Override
@@ -124,8 +127,8 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
     }
 
     @Override
-    public boolean isFacingValid(final byte aSide) {
-        return aSide > 1;
+    public boolean isFacingValid(final ForgeDirection side) {
+        return side.offsetY == 0;
     }
 
     @Override
@@ -144,8 +147,8 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
     }
 
     @Override
-    public boolean isOutputFacing(final byte aSide) {
-        return this.getBaseMetaTileEntity().getFrontFacing() == aSide;
+    public boolean isOutputFacing(final ForgeDirection side) {
+        return this.getBaseMetaTileEntity().getFrontFacing() == side;
     }
 
     @Override
@@ -349,9 +352,9 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
     }
 
     @Override
-    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
-        return super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack) && ((this.getFuelValue(aStack) > 0)
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
+        return super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack) && ((this.getFuelValue(aStack) > 0)
                 || (this.getFuelValue(GT_Utility.getFluidForFilledItem(aStack, true)) > 0));
     }
 

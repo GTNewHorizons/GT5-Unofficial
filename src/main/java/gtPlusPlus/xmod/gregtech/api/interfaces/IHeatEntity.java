@@ -20,7 +20,9 @@ public interface IHeatEntity extends IHeatSource, IHeatSink {
 
     public void updateHeatEntity();
 
+    @Override
     public int maxrequestHeatTick(ForgeDirection directionFrom);
 
+    @Override
     public int requestHeat(ForgeDirection directionFrom, int requestheat);
 }

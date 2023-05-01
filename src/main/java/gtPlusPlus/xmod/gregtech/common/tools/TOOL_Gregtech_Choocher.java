@@ -105,6 +105,7 @@ public class TOOL_Gregtech_Choocher extends GT_Tool {
         return true;
     }
 
+    @Override
     public boolean isWrench() {
         return true;
     }

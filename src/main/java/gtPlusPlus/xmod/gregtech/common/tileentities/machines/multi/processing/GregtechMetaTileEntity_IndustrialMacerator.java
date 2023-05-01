@@ -272,9 +272,9 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
     public void onPreTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())
-                && (aBaseMetaTileEntity.getFrontFacing() != 1)
-                && (aBaseMetaTileEntity.getCoverIDAtSide((byte) 1) == 0)
-                && (!aBaseMetaTileEntity.getOpacityAtSide((byte) 1))) {
+                && (aBaseMetaTileEntity.getFrontFacing() != ForgeDirection.UP)
+                && (aBaseMetaTileEntity.getCoverIDAtSide(ForgeDirection.UP) == 0)
+                && (!aBaseMetaTileEntity.getOpacityAtSide(ForgeDirection.UP))) {
             final Random tRandom = aBaseMetaTileEntity.getWorld().rand;
             aBaseMetaTileEntity.getWorld().spawnParticle(
                     "smoke",

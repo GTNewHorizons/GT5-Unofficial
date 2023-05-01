@@ -42,6 +42,7 @@ public class GregtechMetaTileEntity_Adv_Implosion
         super(aName);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GregtechMetaTileEntity_Adv_Implosion(this.mName);
     }
@@ -130,18 +131,22 @@ public class GregtechMetaTileEntity_Adv_Implosion
         return 48;
     }
 
+    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GT_Recipe.GT_Recipe_Map.sImplosionRecipes;
     }
 
+    @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
     }
 
+    @Override
     public boolean checkRecipe(final ItemStack aStack) {
         return checkRecipeGeneric((GT_Utility.getTier(this.getMaxInputVoltage()) / 2 + 1), 100, 100);
     }
 
+    @Override
     public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
         super.startSoundLoop(aIndex, aX, aY, aZ);
         if (aIndex == 20) {
@@ -154,18 +159,22 @@ public class GregtechMetaTileEntity_Adv_Implosion
         return (String) GregTech_API.sSoundList.get(Integer.valueOf(5));
     }
 
+    @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return 10000;
     }
 
+    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return CORE.ConfigSwitches.pollutionPerSecondMultiAdvImplosion;
     }
 
+    @Override
     public int getDamageToComponent(ItemStack aStack) {
         return 0;
     }
 
+    @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }

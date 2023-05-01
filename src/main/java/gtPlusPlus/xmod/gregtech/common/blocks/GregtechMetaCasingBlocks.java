@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -63,15 +64,16 @@ public class GregtechMetaCasingBlocks extends GregtechMetaCasingBlocksAbstract {
     }
 
     @Override
-    public IIcon getIcon(final int aSide, final int aMeta) { // Texture ID's. case 0 == ID[57]
-        return CasingTextureHandler.getIcon(aSide, aMeta);
+    public IIcon getIcon(final int ordinalSide, final int aMeta) { // Texture ID's. case 0 == ID[57]
+        return CasingTextureHandler.getIcon(ordinalSide, aMeta);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
-            final int aSide) {
+            final int ordinalSide) {
         final GregtechMetaCasingBlocks i = this;
-        return CasingTextureHandler.handleCasingsGT(aWorld, xCoord, yCoord, zCoord, aSide, i);
+        return CasingTextureHandler
+                .handleCasingsGT(aWorld, xCoord, yCoord, zCoord, ForgeDirection.getOrientation(ordinalSide), i);
     }
 }

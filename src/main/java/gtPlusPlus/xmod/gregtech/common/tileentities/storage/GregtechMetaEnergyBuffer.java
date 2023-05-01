@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -41,11 +42,11 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
     }
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCover) {
-        if (aSide != this.getBaseMetaTileEntity().getFrontFacing()) {
+    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aCover) {
+        if (side != this.getBaseMetaTileEntity().getFrontFacing()) {
             return true;
         }
-        return super.allowCoverOnSide(aSide, aCover);
+        return super.allowCoverOnSide(side, aCover);
     }
 
     /*
@@ -71,11 +72,13 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
     }
 
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0
-                : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
-                        + 1];
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
+            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[(aActive ? 5 : 0)
+                + (side == facing ? 0
+                        : side == facing.getOpposite() ? 1
+                                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex
+                                        + 1];
     }
 
     public ITexture[] getFront(final byte aColor) {
@@ -153,7 +156,7 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 
     /*
      * @Override public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte
-     * aColorIndex, boolean aActive, boolean aRedstone) { return mTextures[aSide == aFacing ? 1 : 0][aColorIndex+1]; }
+     * aColorIndex, boolean aActive, boolean aRedstone) { return mTextures[side == facing ? 1 : 0][aColorIndex+1]; }
      */
 
     @Override
@@ -182,7 +185,7 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
     }
 
     @Override
-    public boolean isFacingValid(final byte aFacing) {
+    public boolean isFacingValid(final ForgeDirection facing) {
         return true;
     }
 
@@ -197,13 +200,13 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
     }
 
     @Override
-    public boolean isInputFacing(final byte aSide) {
-        return aSide != this.getBaseMetaTileEntity().getFrontFacing();
+    public boolean isInputFacing(final ForgeDirection side) {
+        return side != this.getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
-    public boolean isOutputFacing(final byte aSide) {
-        return aSide == this.getBaseMetaTileEntity().getFrontFacing();
+    public boolean isOutputFacing(final ForgeDirection side) {
+        return side == this.getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -334,14 +337,14 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
      */
 
     @Override
-    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
+    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
@@ -444,7 +447,7 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         byte aTest = (byte) (aCurrentOutputAmperage + 1);
         if (aTest > 16 || aTest <= 0) {
             aTest = 1;

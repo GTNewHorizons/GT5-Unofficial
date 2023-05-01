@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import mods.railcraft.api.core.items.IToolCrowbar;
-
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -37,6 +35,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ToolStats;
+import mods.railcraft.api.core.items.IToolCrowbar;
 
 /**
  * This is an example on how you can create a Tool ItemStack, in this case a Bismuth Wrench:
@@ -289,6 +288,7 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool
         }
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public void addAdditionalToolTips(final List aList, final ItemStack aStack, final EntityPlayer aPlayer) {
         final long tMaxDamage = getToolMaxDamage(aStack);

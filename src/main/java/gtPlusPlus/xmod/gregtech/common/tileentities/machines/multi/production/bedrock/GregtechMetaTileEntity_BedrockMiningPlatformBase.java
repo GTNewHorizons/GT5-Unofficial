@@ -84,20 +84,24 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
         return this.casingTextureIndex;
     }
 
+    @Override
     public int getAmountOfOutputs() {
         return 1;
     }
 
+    @Override
     public void saveNBTData(final NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setDouble("mProductionModifier", mProductionModifier);
     }
 
+    @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         this.mProductionModifier = aNBT.getDouble("mProductionModifier");
     }
 
+    @Override
     public boolean checkRecipe(final ItemStack aStack) {
         // this.setElectricityStats();
 
@@ -231,8 +235,8 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
 
     public boolean checkMultiblock(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
         this.updateCoordinates();
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+        int xDir = aBaseMetaTileEntity.getBackFacing().offsetX;
+        int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ;
         int tAmount = 0;
         if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
             return false;
@@ -261,11 +265,6 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
                             }
                             ++tAmount;
 
-                            /*
-                             * if (!isValidBlockForStructure(tTileEntity, 48, true, aBlock, aMeta, sBlockCasings4, 0)) {
-                             * Logger.INFO("Bad centrifuge casing"); return false; }
-                             */
-
                         }
                     }
                 }
@@ -278,7 +277,7 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
         this.xDrill = this.getBaseMetaTileEntity().getXCoord();
         this.yDrill = this.getBaseMetaTileEntity().getYCoord() - 1;
         this.zDrill = this.getBaseMetaTileEntity().getZCoord();
-        this.back = ForgeDirection.getOrientation((int) this.getBaseMetaTileEntity().getBackFacing());
+        this.back = this.getBaseMetaTileEntity().getBackFacing();
 
         // Middle
         this.xCenter[0] = this.xDrill + this.back.offsetX;
@@ -297,22 +296,27 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
         this.zCenter[4] = zCenter[0] - 1;
     }
 
+    @Override
     public boolean isCorrectMachinePart(final ItemStack aStack) {
         return true;
     }
 
+    @Override
     public int getMaxEfficiency(final ItemStack aStack) {
         return 10000;
     }
 
+    @Override
     public int getPollutionPerTick(final ItemStack aStack) {
         return 0;
     }
 
+    @Override
     public int getDamageToComponent(final ItemStack aStack) {
         return 0;
     }
 
+    @Override
     public boolean explodesOnComponentBreak(final ItemStack aStack) {
         return false;
     }

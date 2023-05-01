@@ -90,11 +90,13 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
     /**
      * Gets the block's texture. Args: side, meta
      */
+    @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
+    public IIcon getIcon(int ordinalSide, int meta) {
         return this.aTextureLower[0];
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess aAccess, int p_149673_2_, int p_149673_3_, int p_149673_4_, int p_149673_5_) {
         if (p_149673_5_ != 1 && p_149673_5_ != 0) {
@@ -136,6 +138,7 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
         }
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister p_149651_1_) {
         this.aTextureUpper = new IIcon[2];
@@ -146,6 +149,7 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
         this.aTextureLower[1] = new IconFlipped(this.aTextureLower[0], true, false);
     }
 
+    @Override
     public boolean getBlocksMovement(IBlockAccess aAccess, int aX, int aY, int aZ) {
         int l = this.getState(aAccess, aX, aY, aZ);
         return (l & 4) != 0;
@@ -154,6 +158,7 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
+    @Override
     public boolean renderAsNormalBlock() {
         return false;
     }
@@ -161,6 +166,7 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
     /**
      * The type of render function that is called for this block
      */
+    @Override
     public int getRenderType() {
         return 7;
     }
@@ -168,6 +174,7 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
     /**
      * Returns the bounding box of the wired rectangular prism to render.
      */
+    @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
         this.setBlockBoundsBasedOnState(aWorld, aX, aY, aZ);
@@ -178,6 +185,7 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
      * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
      * cleared to be reused)
      */
+    @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
         this.setBlockBoundsBasedOnState(aWorld, aX, aY, aZ);
         return super.getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
@@ -186,14 +194,17 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
     /**
      * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */
+    @Override
     public void setBlockBoundsBasedOnState(IBlockAccess aAccess, int aX, int aY, int aZ) {
         this.setBounds(this.getState(aAccess, aX, aY, aZ));
     }
 
+    @Override
     public int func_150013_e(IBlockAccess p_150013_1_, int p_150013_2_, int p_150013_3_, int p_150013_4_) {
         return this.getState(p_150013_1_, p_150013_2_, p_150013_3_, p_150013_4_) & 3;
     }
 
+    @Override
     public boolean func_150015_f(IBlockAccess p_150015_1_, int p_150015_2_, int p_150015_3_, int p_150015_4_) {
         return (this.getState(p_150015_1_, p_150015_2_, p_150015_3_, p_150015_4_) & 4) != 0;
     }
@@ -251,6 +262,7 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
     /**
      * Called upon block activation (right click on the block.)
      */
+    @Override
     public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int p_149727_6_,
             float p_149727_7_, float p_149727_8_, float p_149727_9_) {
         if (this.blockMaterial == Material.iron) {
@@ -273,6 +285,7 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
         }
     }
 
+    @Override
     public void func_150014_a(World aWorld, int aX, int aY, int aZ, boolean aFlag) {
         int l = this.getState(aWorld, aX, aY, aZ);
         boolean flag1 = (l & 4) != 0;
@@ -297,6 +310,7 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor Block
      */
+    @Override
     public void onNeighborBlockChange(World aWorld, int aX, int aY, int aZ, Block aNeighbour) {
         int l = aWorld.getBlockMetadata(aX, aY, aZ);
 
@@ -340,6 +354,7 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
         }
     }
 
+    @Override
     public Item getItemDropped(int p_149650_1_, Random aRand, int p_149650_3_) {
         if ((p_149650_1_ & 8) != 0) {
             return null;
@@ -356,6 +371,7 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
      * Ray traces through the blocks collision from start vector to end vector returning a ray trace hit. Args: world,
      * x, y, z, startVec, endVec
      */
+    @Override
     public MovingObjectPosition collisionRayTrace(World p_149731_1_, int p_149731_2_, int p_149731_3_, int p_149731_4_,
             Vec3 p_149731_5_, Vec3 p_149731_6_) {
         this.setBlockBoundsBasedOnState(p_149731_1_, p_149731_2_, p_149731_3_, p_149731_4_);
@@ -365,6 +381,7 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
     /**
      * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
      */
+    @Override
     public boolean canPlaceBlockAt(World aWorld, int aX, int aY, int aZ) {
         boolean aHeight = (aY < aWorld.getHeight() - 1);
         boolean aSolidTopSurface = World.doesBlockHaveSolidTopSurface(aWorld, aX, aY - 1, aZ);
@@ -383,6 +400,7 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
      * Returns the mobility information of the block, 0 = free, 1 = can't push but can move over, 2 = total immobility
      * and stop pistons
      */
+    @Override
     public int getMobilityFlag() {
         return 1;
     }
@@ -408,6 +426,7 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
     /**
      * Gets an item for the block being called on. Args: world, x, y, z
      */
+    @Override
     @SideOnly(Side.CLIENT)
     public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_) {
         Block b = mDoorMap.get(this.blockMaterial);
@@ -422,6 +441,7 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
     /**
      * Called when the block is attempted to be harvested
      */
+    @Override
     public void onBlockHarvested(World p_149681_1_, int p_149681_2_, int p_149681_3_, int p_149681_4_, int p_149681_5_,
             EntityPlayer p_149681_6_) {
         if (p_149681_6_.capabilities.isCreativeMode && (p_149681_5_ & 8) != 0

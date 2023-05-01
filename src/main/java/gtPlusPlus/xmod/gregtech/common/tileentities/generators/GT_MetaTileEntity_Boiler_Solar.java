@@ -61,9 +61,9 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return this.mTextures[aSide >= 2 ? ((byte) (aSide != aFacing ? 2 : 3)) : aSide][aColorIndex + 1];
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
+            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[side.offsetY == 0 ? ((byte) (side != facing ? 2 : 3)) : side.ordinal()][aColorIndex + 1];
     }
 
     @Override
@@ -102,18 +102,17 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
                 this.mLossTimer = 0;
             }
             if (this.mSteam != null) {
-                final byte i = aBaseMetaTileEntity.getFrontFacing();
-                final IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(i);
+                final ForgeDirection side = aBaseMetaTileEntity.getFrontFacing();
+                final IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(side);
                 if (tTileEntity != null) {
                     final FluidStack tDrained = aBaseMetaTileEntity
-                            .drain(ForgeDirection.getOrientation(i), Math.max(1, this.mSteam.amount / 2), false);
+                            .drain(side, Math.max(1, this.mSteam.amount / 2), false);
                     if (tDrained != null) {
-                        final int tFilledAmount = tTileEntity
-                                .fill(ForgeDirection.getOrientation(i).getOpposite(), tDrained, false);
+                        final int tFilledAmount = tTileEntity.fill(side.getOpposite(), tDrained, false);
                         if (tFilledAmount > 0) {
                             tTileEntity.fill(
-                                    ForgeDirection.getOrientation(i).getOpposite(),
-                                    aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(i), tFilledAmount, true),
+                                    side.getOpposite(),
+                                    aBaseMetaTileEntity.drain(side, tFilledAmount, true),
                                     true);
                         }
                     }
@@ -156,7 +155,7 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
                 final boolean bRain = aBaseMetaTileEntity.getWorld().isRaining()
                         && (aBaseMetaTileEntity.getBiome().rainfall > 0.0F);
                 this.mProcessingEnergy += (bRain && (aBaseMetaTileEntity.getWorld().skylightSubtracted >= 4))
-                        || !aBaseMetaTileEntity.getSkyAtSide((byte) 1) ? 0
+                        || !aBaseMetaTileEntity.getSkyAtSide(ForgeDirection.UP) ? 0
                                 : !bRain && aBaseMetaTileEntity.getWorld().isDaytime() ? 8 : 1;
             }
             if ((this.mTemperature < 500) && (this.mProcessingEnergy > 0) && ((aTick % 12L) == 0L)) {

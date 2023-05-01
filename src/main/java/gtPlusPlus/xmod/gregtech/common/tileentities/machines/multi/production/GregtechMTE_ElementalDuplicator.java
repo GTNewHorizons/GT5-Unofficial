@@ -18,6 +18,7 @@ import java.util.Collections;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -61,6 +62,7 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
         super(aName);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new GregtechMTE_ElementalDuplicator(this.mName);
     }
@@ -257,10 +259,12 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
         return CASING_TEXTURE_ID;
     }
 
+    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GTPP_Recipe_Map.sElementalDuplicatorRecipes;
     }
 
+    @Override
     public boolean isCorrectMachinePart(final ItemStack aStack) {
         return true;
     }
@@ -371,18 +375,22 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
         return 100;
     }
 
+    @Override
     public int getMaxEfficiency(final ItemStack aStack) {
         return 10000;
     }
 
+    @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return CORE.ConfigSwitches.pollutionPerSecondMultiMolecularTransformer;
     }
 
+    @Override
     public int getDamageToComponent(final ItemStack aStack) {
         return 0;
     }
 
+    @Override
     public boolean explodesOnComponentBreak(final ItemStack aStack) {
         return false;
     }
@@ -391,8 +399,8 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         // Fix GT bug
-        if (this.getBaseMetaTileEntity().getFrontFacing() != 1) {
-            this.getBaseMetaTileEntity().setFrontFacing((byte) 1);
+        if (this.getBaseMetaTileEntity().getFrontFacing() != ForgeDirection.UP) {
+            this.getBaseMetaTileEntity().setFrontFacing(ForgeDirection.UP);
         }
     }
 
@@ -435,6 +443,7 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
      * @param aInputs              the Item Inputs
      * @return the Recipe it has found or null for no matching Recipe
      */
+    @Override
     public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated,
             boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot,
             ItemStack... aInputs) {

@@ -35,8 +35,8 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
         this.mMaxTransferRate = aTransferRate * 1000;
     }
 
-    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            long aTimer) {
+    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
+            ICoverable aTileEntity, long aTimer) {
         if (aCoverVariable == 0) {
             return aCoverVariable;
         }
@@ -71,9 +71,9 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
         return aCoverVariable;
     }
 
-    public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
             EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ)[0] >= 0.5F) {
+        if (GT_Utility.getClickedFacingCoords(side, aX, aY, aZ)[0] >= 0.5F) {
             aCoverVariable += (mMaxTransferRate * (aPlayer.isSneaking() ? 0.1f : 0.01f));
         } else {
             aCoverVariable -= (mMaxTransferRate * (aPlayer.isSneaking() ? 0.1f : 0.01f));
@@ -90,11 +90,11 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
         return aCoverVariable;
     }
 
-    public boolean onCoverRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public boolean onCoverRightclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
             EntityPlayer aPlayer, float aX, float aY, float aZ) {
         boolean aShift = aPlayer.isSneaking();
         int aAmount = aShift ? 128 : 8;
-        if (GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ)[0] >= 0.5F) {
+        if (GT_Utility.getClickedFacingCoords(side, aX, aY, aZ)[0] >= 0.5F) {
             aCoverVariable += aAmount;
         } else {
             aCoverVariable -= aAmount;
@@ -108,47 +108,51 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
         GT_Utility.sendChatToPlayer(
                 aPlayer,
                 LangUtils.trans("322", "Overflow point: ") + aCoverVariable + trans("323", "L"));
-        aTileEntity.setCoverDataAtSide(aSide, aCoverVariable);
+        aTileEntity.setCoverDataAtSide(side, aCoverVariable);
         return true;
     }
 
-    public boolean letsRedstoneGoIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsRedstoneGoIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
-    public boolean letsRedstoneGoOut(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsRedstoneGoOut(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
-    public boolean letsEnergyIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
-    public boolean letsEnergyOut(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyOut(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
-    public boolean letsItemsIn(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    public boolean letsItemsIn(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
+            ICoverable aTileEntity) {
         return true;
     }
 
-    public boolean letsItemsOut(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    public boolean letsItemsOut(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
+            ICoverable aTileEntity) {
         return true;
     }
 
-    public boolean letsFluidIn(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    public boolean letsFluidIn(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
+            ICoverable aTileEntity) {
         return false;
     }
 
-    public boolean letsFluidOut(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    public boolean letsFluidOut(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
+            ICoverable aTileEntity) {
         return true;
     }
 
-    public boolean alwaysLookConnected(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean alwaysLookConnected(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
-    public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return 5;
     }
 

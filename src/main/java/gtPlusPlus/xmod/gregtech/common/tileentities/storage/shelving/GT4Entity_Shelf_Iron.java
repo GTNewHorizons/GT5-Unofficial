@@ -20,22 +20,27 @@ public class GT4Entity_Shelf_Iron extends GT4Entity_Shelf {
         return new GT4Entity_Shelf_Iron(this.mName, this.mDescription, this.mTextures);
     }
 
+    @Override
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { texSideCabinet };
     }
 
+    @Override
     public ITexture[] getBack(final byte aColor) {
         return new ITexture[] { texSide };
     }
 
+    @Override
     public ITexture[] getBottom(final byte aColor) {
         return new ITexture[] { texBottom };
     }
 
+    @Override
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { texTop };
     }
 
+    @Override
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] { texSide };
     }

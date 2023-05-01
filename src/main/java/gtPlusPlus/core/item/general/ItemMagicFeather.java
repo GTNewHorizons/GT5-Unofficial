@@ -68,6 +68,7 @@ public class ItemMagicFeather extends CoreItem {
         list.add("Range is beacon level * 10 + 10");
     }
 
+    @Override
     public boolean hasCustomEntity(ItemStack stack) {
         return true;
     }

@@ -118,6 +118,7 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
         return set(object);
     }
 
+    @Override
     public synchronized boolean add(V object) {
         return set(object) != null;
     }
@@ -130,6 +131,7 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
         return mInternalMap.put(mInternalID++, object);
     }
 
+    @Override
     public synchronized V get(int id) {
         return mInternalMap.get(id);
     }
@@ -138,6 +140,7 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
         return mInternalMap.values();
     }
 
+    @Override
     public synchronized int size() {
         return mInternalMap.size();
     }
@@ -154,10 +157,12 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
         return mInternalMap.containsValue(value);
     }
 
+    @Override
     public synchronized boolean isEmpty() {
         return mInternalMap.isEmpty();
     }
 
+    @Override
     public synchronized void clear() {
         this.mInternalID = 0;
         this.mInternalMap.clear();
@@ -165,6 +170,7 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
         return;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public V[] toArray() {
         V[] toR = (V[]) java.lang.reflect.Array.newInstance(mInternalMap.get(0).getClass(), mInternalMap.size());
@@ -178,6 +184,7 @@ public class AutoMap<V> implements Iterable<V>, Cloneable, Serializable, Collect
         return mInternalID;
     }
 
+    @Override
     public final synchronized boolean remove(Object value) {
         value.getClass();
         if (this.mInternalMap.containsValue(value)) {

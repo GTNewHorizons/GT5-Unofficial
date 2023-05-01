@@ -103,6 +103,7 @@ public class TOOL_Gregtech_ElectricButcherKnife extends GT_Tool {
         return false;
     }
 
+    @Override
     public boolean isWrench() {
         return false;
     }
@@ -123,10 +124,12 @@ public class TOOL_Gregtech_ElectricButcherKnife extends GT_Tool {
         return null;
     }
 
+    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return (IIconContainer) (aIsToolHead ? TexturesGtTools.ELECTRIC_BUTCHER_KNIFE : ItemIcons.POWER_UNIT_HV);
     }
 
+    @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa : Materials.RedSteel.mRGBa;
     }

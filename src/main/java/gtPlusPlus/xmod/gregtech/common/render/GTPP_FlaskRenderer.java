@@ -25,14 +25,17 @@ public final class GTPP_FlaskRenderer implements net.minecraftforge.client.IItem
         MinecraftForgeClient.registerItemRenderer(GregtechItemList.VOLUMETRIC_FLASK_32k.getItem(), this);
     }
 
+    @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
         return type != ItemRenderType.FIRST_PERSON_MAP;
     }
 
+    @Override
     public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, IItemRenderer.ItemRendererHelper helper) {
         return type == ItemRenderType.ENTITY;
     }
 
+    @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         GT_VolumetricFlask cell = (GT_VolumetricFlask) item.getItem();
 

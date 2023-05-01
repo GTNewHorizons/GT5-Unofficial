@@ -57,9 +57,9 @@ public class GregtechMetaCasingBlocksPipeGearbox extends GregtechMetaCasingBlock
     }
 
     @Override
-    public IIcon getIcon(final int aSide, final int aMeta) {
-        if ((aMeta >= 0) && (aMeta < 16)) {
-            switch (aMeta) {
+    public IIcon getIcon(final int ordinalSide, final int meta) {
+        if ((meta >= 0) && (meta < 16)) {
+            switch (meta) {
                 case 0:
                 case 1:
                 case 2:

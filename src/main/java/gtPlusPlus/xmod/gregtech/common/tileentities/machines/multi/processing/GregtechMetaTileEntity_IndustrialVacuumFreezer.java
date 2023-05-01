@@ -63,6 +63,7 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
         CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 10);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return (IMetaTileEntity) new GregtechMetaTileEntity_IndustrialVacuumFreezer(this.mName);
     }
@@ -175,14 +176,17 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
         return CASING_TEXTURE_ID;
     }
 
+    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GTPP_Recipe.GTPP_Recipe_Map.sAdvFreezerRecipes_GT;
     }
 
+    @Override
     public boolean isCorrectMachinePart(final ItemStack aStack) {
         return true;
     }
 
+    @Override
     public boolean checkRecipe(final ItemStack aStack) {
         return this.checkRecipeGeneric(4, 100, 100);
     }
@@ -197,18 +201,22 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
         return 100;
     }
 
+    @Override
     public int getMaxEfficiency(final ItemStack aStack) {
         return 10000;
     }
 
+    @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialVacuumFreezer;
     }
 
+    @Override
     public int getDamageToComponent(final ItemStack aStack) {
         return 0;
     }
 
+    @Override
     public boolean explodesOnComponentBreak(final ItemStack aStack) {
         return false;
     }

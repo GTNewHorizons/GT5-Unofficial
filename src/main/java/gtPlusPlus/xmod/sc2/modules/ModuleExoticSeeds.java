@@ -12,10 +12,10 @@ import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Modules.Addons.ModuleAddon;
 import vswe.stevescarts.Modules.ICropModule;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class ModuleExoticSeeds extends ModuleAddon implements ICropModule {
 

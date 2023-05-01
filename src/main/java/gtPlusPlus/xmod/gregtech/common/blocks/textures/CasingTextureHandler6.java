@@ -6,7 +6,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks6;
 
 public class CasingTextureHandler6 {
 
-    public static IIcon getIcon(final int aSide, final int aMeta) { // Texture ID's. case 0 == ID[57]
+    public static IIcon getIcon(final int ordinalSide, final int aMeta) { // Texture ID's. case 0 == ID[57]
         if ((aMeta >= 0) && (aMeta < 16)) {
             switch (aMeta) {
                 case 0:

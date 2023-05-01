@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.github.bartimaeusnek.bartworks.system.material.BW_NonMeta_MaterialItems;
+
 import Ic2ExpReactorPlanner.components.Condensator;
 import Ic2ExpReactorPlanner.components.CoolantCell;
 import Ic2ExpReactorPlanner.components.Exchanger;
@@ -20,9 +22,6 @@ import Ic2ExpReactorPlanner.components.Plating;
 import Ic2ExpReactorPlanner.components.ReactorItem;
 import Ic2ExpReactorPlanner.components.Reflector;
 import Ic2ExpReactorPlanner.components.Vent;
-
-import com.github.bartimaeusnek.bartworks.system.material.BW_NonMeta_MaterialItems;
-
 import gregtech.api.enums.ItemList;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_ModHandler;

@@ -12,13 +12,13 @@
  * "1x Maintenance Hatch (back centered)", "Sinter Furnace Casings for the rest (32 at least!)", "Causes " + 20 *
  * this.getPollutionPerTick(null) + " Pollution per second", CORE.GT_Tooltip.get() }; }
  * @Override public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte
- * aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) { if (aSide == aFacing) { return new
+ * aFacing, final int aColorIndex, final boolean aActive, final boolean aRedstone) { if (side == facing) { return new
  * ITexture[]{Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(7)), new GT_RenderedTexture(aActive ?
  * TexturesGtBlock.Overlay_Machine_Controller_Default_Active : TexturesGtBlock.Overlay_Machine_Controller_Default)}; }
  * return new ITexture[]{Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(7))}; }
  * @Override public GT_Recipe.GT_Recipe_Map getRecipeMap() { return GT_Recipe.GT_Recipe_Map.sWiremillRecipes; }
  * @Override public boolean isCorrectMachinePart(final ItemStack aStack) { return true; }
- * @Override public boolean isFacingValid(final byte aFacing) { return aFacing > 1; }
+ * @Override public boolean isFacingValid(final ForgeDirection facing) { return facing.offsetY == 0; }
  * @Override public boolean checkRecipe(final ItemStack aStack) { final ArrayList<ItemStack> tInputList =
  * this.getStoredInputs(); for (final ItemStack tInput : tInputList) { final long tVoltage = this.getMaxInputVoltage();
  * final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage)); final GT_Recipe tRecipe =
@@ -56,18 +56,19 @@
  * (controllerZ+k), Color.ORANGE); if (((i == 0) || (j == 0)) && ((k == 1) || (k == 2) || (k == 3))) {
  * //UtilsRendering.drawBlockInWorld((controllerX+i), (controllerY+k), (controllerZ+k), Color.TOMATO); if
  * ((this.getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k :
- * tSide == 3 ? k : i)) == this.getCasingBlock()) && (this.getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k :
- * tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == this.getCasingMeta())) { } else if
- * (!this.addToMachineList(this.getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k :
- * i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i))) &&
+ * tside == ForgeDirection.SOUTH ? k : i)) == this.getCasingBlock()) && (this.getBaseMetaTileEntity().getMetaID(tX +
+ * (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tside == ForgeDirection.SOUTH ? k : i)) ==
+ * this.getCasingMeta())) { } else if (!this.addToMachineList(this.getBaseMetaTileEntity().getIGregTechTileEntity(tX +
+ * (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tside == ForgeDirection.SOUTH ? k : i))) &&
  * (!this.addEnergyInputToMachineList(this.getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide
- * == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i))))) { Logger.INFO("False 2"); return false; } }
- * else if ((this.getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2
- * ? -k : tSide == 3 ? k : i)) == this.getCasingBlock()) && (this.getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k
- * : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == this.getCasingMeta())) { } else {
- * Logger.INFO("False 3"); return false; } } } } } if ((this.mOutputHatches.size() != 0) || (this.mInputHatches.size()
- * != 0)) { Logger.INFO("Use Busses, Not Hatches for Input/Output."); return false; } if ((this.mInputBusses.size() !=
- * 2) || (this.mOutputBusses.size() != 2)) { Logger.INFO("Incorrect amount of Input & Output busses."); return false; }
+ * == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tside == ForgeDirection.SOUTH ? k : i))))) { Logger.INFO("False 2");
+ * return false; } } else if ((this.getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY +
+ * j, tZ + (tSide == 2 ? -k : tside == ForgeDirection.SOUTH ? k : i)) == this.getCasingBlock()) &&
+ * (this.getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k :
+ * tside == ForgeDirection.SOUTH ? k : i)) == this.getCasingMeta())) { } else { Logger.INFO("False 3"); return false; }
+ * } } } } if ((this.mOutputHatches.size() != 0) || (this.mInputHatches.size() != 0)) {
+ * Logger.INFO("Use Busses, Not Hatches for Input/Output."); return false; } if ((this.mInputBusses.size() != 2) ||
+ * (this.mOutputBusses.size() != 2)) { Logger.INFO("Incorrect amount of Input & Output busses."); return false; }
  * this.mMaintenanceHatches.clear(); final IGregTechTileEntity tTileEntity =
  * this.getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance(this.getBaseMetaTileEntity().getBackFacing(),
  * 4); if ((tTileEntity != null) && (tTileEntity.getMetaTileEntity() != null)) { if ((tTileEntity.getMetaTileEntity()

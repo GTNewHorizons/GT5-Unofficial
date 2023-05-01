@@ -35,6 +35,7 @@ public class EntityLightningAttack extends EntityWitherSkull {
     /**
      * Called when this EntityFireball hits a block or entity.
      */
+    @Override
     protected void onImpact(MovingObjectPosition p_70227_1_) {
 
         if (!this.worldObj.isRemote) {

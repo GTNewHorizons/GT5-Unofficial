@@ -22,6 +22,7 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_F
         super(aName, aTier, aDescription, aTextures);
     }
 
+    @Override
     public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Hatch_AirIntake(this.mName, this.mTier, this.mDescription, this.mTextures);
     }
@@ -72,7 +73,7 @@ public class GT_MetaTileEntity_Hatch_AirIntake extends GT_MetaTileEntity_Hatch_F
         ran3 = GT_MetaTileEntity_Hatch_AirIntake.floatGen.nextFloat();
 
         final IGregTechTileEntity aMuffler = this.getBaseMetaTileEntity();
-        final ForgeDirection aDir = ForgeDirection.getOrientation((int) aMuffler.getFrontFacing());
+        final ForgeDirection aDir = aMuffler.getFrontFacing();
         final float xPos = aDir.offsetX * 0.76f + aMuffler.getXCoord() + 0.25f;
         float yPos = aDir.offsetY * 0.76f + aMuffler.getYCoord() + 0.65f;
         final float zPos = aDir.offsetZ * 0.76f + aMuffler.getZCoord() + 0.25f;

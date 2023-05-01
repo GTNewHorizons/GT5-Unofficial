@@ -24,6 +24,7 @@ public class GT_MetaTileEntity_ULV_SteamTurbine extends GT_MetaTileEntity_SteamT
         return Math.max(getEUVar(), V[1] * 80L + getMinimumStoredEU());
     }
 
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_ULV_SteamTurbine(this.mName, this.mDescriptionArray, this.mTextures);
     }

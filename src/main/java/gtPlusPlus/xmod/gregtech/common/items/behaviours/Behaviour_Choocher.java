@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_LanguageManager;
@@ -32,7 +33,7 @@ public class Behaviour_Choocher extends Behaviour_None {
 
     @Override
     public boolean onItemUseFirst(final GT_MetaBase_Item aItem, final ItemStack aStack, final EntityPlayer aPlayer,
-            final World aWorld, final int aX, final int aY, final int aZ, final int aSide, final float hitX,
+            final World aWorld, final int aX, final int aY, final int aZ, final ForgeDirection side, final float hitX,
             final float hitY, final float hitZ) {
         if (aWorld.isRemote) {
             return false;
@@ -53,11 +54,10 @@ public class Behaviour_Choocher extends Behaviour_None {
             return true;
         } else {
             if (inWrenchMode) {
-                return this.wrench
-                        .onItemUseFirst(aItem, aStack, aPlayer, aWorld, aSide, aSide, aSide, aSide, hitZ, hitZ, hitZ);
+                return this.wrench.onItemUseFirst(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, side, hitZ, hitZ, hitZ);
             } else {
                 return this.prospecting
-                        .onItemUseFirst(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);
+                        .onItemUseFirst(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, side, hitX, hitY, hitZ);
             }
         }
     }

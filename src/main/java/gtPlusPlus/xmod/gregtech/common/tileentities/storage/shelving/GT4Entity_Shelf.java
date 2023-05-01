@@ -4,6 +4,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -53,8 +54,8 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
-        return aFacing > 1;
+    public boolean isFacingValid(ForgeDirection facing) {
+        return facing.offsetY == 0;
     }
 
     @Override
@@ -84,12 +85,12 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
     }
 
     @Override
-    public boolean isOutputFacing(final byte aSide) {
-        return aSide != this.getBaseMetaTileEntity().getFrontFacing();
+    public boolean isOutputFacing(final ForgeDirection side) {
+        return side != this.getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
+    public boolean isInputFacing(ForgeDirection side) {
         return false;
     }
 
@@ -222,18 +223,18 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
     }
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack) {
-        // return aSide != getBaseMetaTileEntity().getFrontFacing();
+    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aStack) {
+        // return side != getBaseMetaTileEntity().getFrontFacing();
         return false;
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity p0, int p1, byte p2, ItemStack p3) {
+    public boolean allowPullStack(IGregTechTileEntity p0, int p1, ForgeDirection side, ItemStack p3) {
         return true;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity p0, int p1, byte p2, ItemStack p3) {
+    public boolean allowPutStack(IGregTechTileEntity p0, int p1, ForgeDirection side, ItemStack p3) {
         return false;
     }
 
@@ -260,15 +261,15 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
     }
 
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
+            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
 
-        ITexture[] tmp = this.mTextures[(aSide >= 2)
-                ? ((aSide != aFacing) ? 2
+        ITexture[] tmp = this.mTextures[(side.offsetY == 0)
+                ? ((side != facing) ? 2
                         : ((byte) this.mType == 0 ? 4
                                 : this.mType == 1 || this.mType == 2 ? 5 : this.mType == 3 ? 6 : 0))
-                : aSide][aColorIndex + 1];
-        if (aSide != aFacing && tmp.length == 2) {
+                : side.ordinal()][aColorIndex + 1];
+        if (side != facing && tmp.length == 2) {
             tmp = new ITexture[] { tmp[0] };
         }
         return tmp;
@@ -341,7 +342,7 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (KeyboardUtils.isCtrlKeyDown()) {
             if (!aPlayer.getDisplayName().equalsIgnoreCase(this.getBaseMetaTileEntity().getOwnerName())) {
                 PlayerUtils.messagePlayer(aPlayer, "Container is not yours to lock.");
@@ -354,7 +355,7 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
                 }
             }
         } else {
-            super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+            super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
         }
     }
 

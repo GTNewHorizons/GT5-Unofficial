@@ -135,15 +135,15 @@ public class GregtechMetaTileEntity_PowerSubStationController
     }
 
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-        if (aSide == aFacing) {
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
+            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(24)),
                     new GT_RenderedTexture(
                             aActive ? Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_ACTIVE
                                     : Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER) };
         }
-        if (aSide == this.getBaseMetaTileEntity().getBackFacing()) {
+        if (side == this.getBaseMetaTileEntity().getBackFacing()) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(24)),
                     mIsOutputtingPower ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[(int) this.getOutputTier()]
                             : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[(int) this.getInputTier()] };
@@ -791,13 +791,13 @@ public class GregtechMetaTileEntity_PowerSubStationController
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
-        return (aSide == this.getBaseMetaTileEntity().getBackFacing() && !mIsOutputtingPower);
+    public boolean isInputFacing(ForgeDirection side) {
+        return (side == this.getBaseMetaTileEntity().getBackFacing() && !mIsOutputtingPower);
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
-        return (aSide == this.getBaseMetaTileEntity().getBackFacing() && mIsOutputtingPower);
+    public boolean isOutputFacing(ForgeDirection side) {
+        return (side == this.getBaseMetaTileEntity().getBackFacing() && mIsOutputtingPower);
     }
 
     @Override
@@ -829,7 +829,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
     }
 
     @Override
-    public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mIsOutputtingPower = Utils.invertBoolean(mIsOutputtingPower);
         if (mIsOutputtingPower) {
             PlayerUtils.messagePlayer(aPlayer, "Sub-Station is now outputting power from the controller.");

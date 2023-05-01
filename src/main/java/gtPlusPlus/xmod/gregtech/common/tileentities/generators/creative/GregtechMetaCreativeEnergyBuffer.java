@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.reflect.Fields;
 
@@ -75,9 +76,9 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
     }
 
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return this.mTextures[aSide == aFacing ? 1 : 0][aColorIndex + 1];
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
+            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[side == facing ? 1 : 0][aColorIndex + 1];
     }
 
     @Override
@@ -155,14 +156,14 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
     }
 
     @Override
-    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
+    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
@@ -193,9 +194,9 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
     private static Fields.ClassFields<GregtechMetaCreativeEnergyBuffer>.Field<ITexture[][][]> mTexturesAccessor;
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (KeyboardUtils.isShiftKeyDown()) {
-            super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+            super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
         } else {
             if (this.mVoltageTier < (GT_Values.VN[9].equals("UHV") ? GT_Values.V.length - 1 : 9)) {
                 this.mVoltageTier++;

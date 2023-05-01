@@ -44,9 +44,10 @@ public class Machine_SuperJukebox extends BlockJukebox {
     /**
      * Gets the block's texture. Args: side, meta
      */
+    @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int aSide, int aMeta) {
-        return aSide == 1 ? this.mIcon : this.blockIcon;
+    public IIcon getIcon(int ordinalSide, int aMeta) {
+        return ordinalSide == 1 ? this.mIcon : this.blockIcon;
     }
 
     /**

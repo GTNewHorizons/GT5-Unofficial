@@ -30,6 +30,7 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -1423,14 +1424,14 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
     }
 
     @Override
-    public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
         clearRecipeMapForAllInputHatches();
-        onModeChangeByScrewdriver(aSide, aPlayer, aX, aY, aZ);
+        onModeChangeByScrewdriver(side, aPlayer, aX, aY, aZ);
         resetRecipeMapForAllInputHatches();
     }
 
-    public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {}
+    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {}
 
     /**
      * Enable Texture Casing Support if found in GT 5.09
@@ -1835,8 +1836,8 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
      * Custom Tool Handling
      */
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
-            float aY, float aZ) {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
+            float aX, float aY, float aZ) {
         // Do Things
         if (this.getBaseMetaTileEntity().isServerSide()) {
             // Logger.INFO("Right Clicked Controller.");
@@ -1850,18 +1851,18 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
                         // Plunger
                         if (OreDictionary.getOreName(id).equals("craftingToolPlunger")) {
                             // Logger.INFO("Is Plunger.");
-                            return onPlungerRightClick(aPlayer, aSide, aX, aY, aZ);
+                            return onPlungerRightClick(aPlayer, side, aX, aY, aZ);
                         }
                     }
                 }
             }
         }
         // Do Super
-        boolean aSuper = super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
+        boolean aSuper = super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
         return aSuper;
     }
 
-    public boolean onPlungerRightClick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
+    public boolean onPlungerRightClick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
         int aHatchIndex = 0;
         PlayerUtils.messagePlayer(aPlayer, "Trying to clear " + mOutputHatches.size() + " output hatches.");
         for (GT_MetaTileEntity_Hatch_Output hatch : this.mOutputHatches) {
@@ -1882,9 +1883,9 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
     }
 
     @Override
-    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-            float aZ) {
-        boolean tSuper = super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+            float aX, float aY, float aZ) {
+        boolean tSuper = super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ);
         if (aPlayer.isSneaking()) return tSuper;
         voidExcess = !voidExcess;
         aPlayer.addChatMessage(
@@ -1894,8 +1895,8 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
     }
 
     @Override
-    public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-            float aZ) {
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+            float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
@@ -2109,9 +2110,9 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int aColorIndex, boolean aActive, boolean aRedstone) {
+        if (side == facing) {
             if (aActive) return new ITexture[] { getCasingTexture(),
                     TextureFactory.builder().addIcon(getActiveOverlay()).extFacing().build() };
             return new ITexture[] { getCasingTexture(),

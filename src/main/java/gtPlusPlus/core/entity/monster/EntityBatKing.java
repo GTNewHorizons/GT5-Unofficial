@@ -76,6 +76,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityBat.class, 0, false));
     }
 
+    @Override
     protected void entityInit() {
         super.entityInit();
     }
@@ -83,6 +84,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     /**
      * Get this Entity's EnumCreatureAttribute
      */
+    @Override
     public EnumCreatureAttribute getCreatureAttribute() {
         return EnumCreatureAttribute.UNDEAD;
     }
@@ -90,6 +92,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     /**
      * Gets the pitch of living sounds in living entities.
      */
+    @Override
     protected float getSoundPitch() {
         return super.getSoundPitch() * 0.15F;
     }
@@ -97,6 +100,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     /**
      * Returns the sound this mob makes while it's alive.
      */
+    @Override
     protected String getLivingSound() {
         int aRand = MathUtils.randInt(0, 10);
         if (aRand < 6) {
@@ -111,6 +115,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     /**
      * Returns the sound this mob makes when it is hurt.
      */
+    @Override
     protected String getHurtSound() {
         return "mob.blaze.hit";
     }
@@ -118,6 +123,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     /**
      * Returns the sound this mob makes on death.
      */
+    @Override
     protected String getDeathSound() {
         return "mob.bat.death";
     }
@@ -125,10 +131,12 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     /**
      * Returns true if this entity should push and be pushed by other entities when colliding.
      */
+    @Override
     public boolean canBePushed() {
         return true;
     }
 
+    @Override
     protected void collideWithEntity(Entity aEntity) {
         if (aEntity != null) {
             if (aEntity instanceof EntityPlayer) {
@@ -137,8 +145,10 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
         }
     }
 
+    @Override
     protected void collideWithNearbyEntities() {}
 
+    @Override
     protected void applyEntityAttributes() {
 
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.maxHealth);
@@ -181,6 +191,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     /**
      * Returns true if the newer Entity AI code should be run
      */
+    @Override
     protected boolean isAIEnabled() {
         return true;
     }
@@ -188,6 +199,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     /**
      * Called to update the entity's position/logic.
      */
+    @Override
     public void onUpdate() {
         super.onUpdate();
         generateParticles(this);
@@ -263,6 +275,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
         }
     }
 
+    @Override
     protected void updateAITasks() {
         super.updateAITasks();
     }
@@ -301,6 +314,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
      * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
      * prevent them from trampling crops
      */
+    @Override
     protected boolean canTriggerWalking() {
         return false;
     }
@@ -308,6 +322,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     /**
      * Return whether this entity should NOT trigger a pressure plate or a tripwire.
      */
+    @Override
     public boolean doesEntityNotTriggerPressurePlate() {
         return true;
     }
@@ -315,6 +330,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     /**
      * Called when the entity is attacked.
      */
+    @Override
     public boolean attackEntityFrom(DamageSource p_70097_1_, float p_70097_2_) {
         if (this.isEntityInvulnerable()) {
             return false;
@@ -330,6 +346,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
+    @Override
     public void readEntityFromNBT(NBTTagCompound p_70037_1_) {
         super.readEntityFromNBT(p_70037_1_);
         if (p_70037_1_.hasKey("ExplosionPower", 99)) {
@@ -340,6 +357,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
+    @Override
     public void writeEntityToNBT(NBTTagCompound p_70014_1_) {
         super.writeEntityToNBT(p_70014_1_);
         p_70014_1_.setInteger("ExplosionPower", this.explosionStrength);
@@ -488,6 +506,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     /**
      * Returns the volume for the sounds this mob makes.
      */
+    @Override
     protected float getSoundVolume() {
         return 10.0F;
     }
@@ -495,6 +514,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     /**
      * Checks if the entity's current position is a valid location to spawn this entity.
      */
+    @Override
     public boolean getCanSpawnHere() {
         return super.getCanSpawnHere() && this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL;
     }
@@ -502,10 +522,12 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     /**
      * Will return how many at most can spawn in a chunk at once.
      */
+    @Override
     public int getMaxSpawnedInChunk() {
         return 1;
     }
 
+    @Override
     protected Item getDropItem() {
         return Items.gunpowder;
     }
@@ -514,6 +536,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
      * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
      * par2 - Level of Looting used to kill this mob.
      */
+    @Override
     protected void dropFewItems(boolean p_70628_1_, int p_70628_2_) {
         int j = this.rand.nextInt(2) + this.rand.nextInt(1 + p_70628_2_);
         int k;
@@ -660,17 +683,20 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     /**
      * Called when the mob is falling. Calculates and applies fall damage.
      */
+    @Override
     protected void fall(float p_70069_1_) {}
 
     /**
      * Takes in the distance the entity has fallen this tick and whether its on the ground to update the fall distance
      * and deal fall damage if landing on the ground. Args: distanceFallenThisTick, onGround
      */
+    @Override
     protected void updateFallState(double p_70064_1_, boolean p_70064_3_) {}
 
     /**
      * Moves the entity based on the specified heading. Args: strafe, forward
      */
+    @Override
     public void moveEntityWithHeading(float p_70612_1_, float p_70612_2_) {
         if (this.isInWater()) {
             this.moveFlying(p_70612_1_, p_70612_2_, 0.02F);
@@ -727,6 +753,7 @@ public class EntityBatKing extends EntityMob implements IRangedAttackMob {
     /**
      * returns true if this entity is by a ladder, false otherwise
      */
+    @Override
     public boolean isOnLadder() {
         return false;
     }

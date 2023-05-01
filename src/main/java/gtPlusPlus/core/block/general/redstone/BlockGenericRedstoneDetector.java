@@ -75,6 +75,7 @@ public class BlockGenericRedstoneDetector extends BlockGenericRedstone {
         return ItemUtils.simpleMetaStack(this, p_149644_1_, 1);
     }
 
+    @Override
     public void generateTextureArray(final IIconRegister iicon) {
         HashMap<Integer, HashMap<ForgeDirection, IIcon>> aTextures = new HashMap<Integer, HashMap<ForgeDirection, IIcon>>();
 
@@ -105,24 +106,24 @@ public class BlockGenericRedstoneDetector extends BlockGenericRedstone {
     }
 
     @Override
-    public IIcon getIcon(int side, int meta) {
+    public IIcon getIcon(int ordinalSide, int meta) {
         HashMap<ForgeDirection, IIcon> aTemp = getTextureArray().get(meta);
         if (aTemp != null) {
-            IIcon aSide = aTemp.get(ForgeDirection.getOrientation(side));
+            IIcon aSide = aTemp.get(ForgeDirection.getOrientation(ordinalSide));
             if (aSide != null) {
                 return aSide;
             } else {
                 // Smart calculate missing sides
-                if (side <= 1) {
+                if (ordinalSide <= 1) {
                     for (int ss = 0; ss < 2; ss++) {
-                        aSide = aTemp.get(ForgeDirection.getOrientation(side));
+                        aSide = aTemp.get(ForgeDirection.getOrientation(ordinalSide));
                         if (aSide != null) {
                             return aSide;
                         }
                     }
                 }
                 for (int ss = 2; ss < 6; ss++) {
-                    aSide = aTemp.get(ForgeDirection.getOrientation(side));
+                    aSide = aTemp.get(ForgeDirection.getOrientation(ordinalSide));
                     if (aSide != null) {
                         return aSide;
                     }

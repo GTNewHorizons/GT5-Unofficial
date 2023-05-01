@@ -23,6 +23,7 @@ public abstract class MetaTileEntityCustomPower extends CustomMetaTileBase {
         super(aStack, aInvSlotCount);
     }
 
+    @Override
     public long getMinimumStoredEU() {
         return 0L;
     }
@@ -31,6 +32,7 @@ public abstract class MetaTileEntityCustomPower extends CustomMetaTileBase {
         return this.getBaseCustomMetaTileEntity().doesExplode();
     }
 
+    @Override
     public void doExplosion(long aExplosionPower) {
 
         if (!doesExplode()) {

@@ -98,11 +98,13 @@ public class GregtechMetaTileEntity_PocketFusion extends GT_MetaTileEntity_Delux
     }
 
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0
-                : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
-                        + 1];
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
+            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[(aActive ? 5 : 0)
+                + (side == facing ? 0
+                        : side == facing.getOpposite() ? 1
+                                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex
+                                        + 1];
     }
 
     @Override
@@ -111,8 +113,8 @@ public class GregtechMetaTileEntity_PocketFusion extends GT_MetaTileEntity_Delux
     }
 
     @Override
-    public boolean isOutputFacing(final byte aSide) {
-        return aSide == this.getBaseMetaTileEntity().getBackFacing();
+    public boolean isOutputFacing(final ForgeDirection side) {
+        return side == this.getBaseMetaTileEntity().getBackFacing();
     }
 
     @Override
@@ -272,9 +274,9 @@ public class GregtechMetaTileEntity_PocketFusion extends GT_MetaTileEntity_Delux
         super.onPreTick(aBaseMetaTileEntity, aTick);
         onRunningTickMulti();
         if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())
-                && (aBaseMetaTileEntity.getFrontFacing() != 1)
-                && (aBaseMetaTileEntity.getCoverIDAtSide((byte) 1) == 0)
-                && (!aBaseMetaTileEntity.getOpacityAtSide((byte) 1))) {
+                && (aBaseMetaTileEntity.getFrontFacing() != ForgeDirection.UP)
+                && (aBaseMetaTileEntity.getCoverIDAtSide(ForgeDirection.UP) == 0)
+                && (!aBaseMetaTileEntity.getOpacityAtSide(ForgeDirection.UP))) {
             if (MathUtils.randInt(0, 4) == 4) {
                 final Random tRandom = aBaseMetaTileEntity.getWorld().rand;
                 aBaseMetaTileEntity.getWorld().spawnParticle(
@@ -535,19 +537,19 @@ public class GregtechMetaTileEntity_PocketFusion extends GT_MetaTileEntity_Delux
     }
 
     @Override
-    public boolean isLiquidInput(byte aSide) {
-        switch (aSide) {
-            case 0:
+    public boolean isLiquidInput(ForgeDirection side) {
+        switch (side) {
+            case DOWN:
                 return true;
-            case 1:
+            case UP:
                 return true;
-            case 2:
+            case NORTH:
                 return true;
-            case 3:
+            case SOUTH:
                 return false;
-            case 4:
+            case WEST:
                 return false;
-            case 5:
+            case EAST:
                 return false;
             default:
                 return false;
@@ -555,19 +557,19 @@ public class GregtechMetaTileEntity_PocketFusion extends GT_MetaTileEntity_Delux
     }
 
     @Override
-    public boolean isLiquidOutput(byte aSide) {
-        switch (aSide) {
-            case 0:
+    public boolean isLiquidOutput(ForgeDirection side) {
+        switch (side) {
+            case DOWN:
                 return false;
-            case 1:
+            case UP:
                 return false;
-            case 2:
+            case NORTH:
                 return false;
-            case 3:
+            case SOUTH:
                 return true;
-            case 4:
+            case WEST:
                 return true;
-            case 5:
+            case EAST:
                 return true;
             default:
                 return true;
@@ -655,19 +657,20 @@ public class GregtechMetaTileEntity_PocketFusion extends GT_MetaTileEntity_Delux
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
-            float aY, float aZ) {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
+            float aX, float aY, float aZ) {
         // TODO Auto-generated method stub
-        return super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
+        return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
+    public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
         return false;
     }
 

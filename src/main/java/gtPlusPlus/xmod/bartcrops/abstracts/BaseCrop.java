@@ -10,15 +10,16 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import speiger.src.crops.api.ICropCardInfo;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.ICropTile;
+import speiger.src.crops.api.ICropCardInfo;
 
 public abstract class BaseCrop extends CropCard implements ICropCardInfo {
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerSprites(IIconRegister iconRegister) {
         this.textures = new IIcon[this.maxSize()];
@@ -28,26 +29,32 @@ public abstract class BaseCrop extends CropCard implements ICropCardInfo {
         }
     }
 
+    @Override
     public float dropGainChance() {
         return (float) (Math.pow(0.95D, (double) ((float) this.tier())) * (double) 1f);
     }
 
+    @Override
     public boolean canCross(ICropTile crop) {
         return crop.getSize() == this.maxSize();
     }
 
+    @Override
     public int getrootslength(ICropTile crop) {
         return 3;
     }
 
+    @Override
     public String discoveredBy() {
         return "Alkalus";
     }
 
+    @Override
     public String owner() {
         return "Gtplusplus";
     }
 
+    @Override
     public List<String> getCropInformation() {
         List<String> ret = new ArrayList<String>();
         ret.add(Arrays.toString(this.attributes()));

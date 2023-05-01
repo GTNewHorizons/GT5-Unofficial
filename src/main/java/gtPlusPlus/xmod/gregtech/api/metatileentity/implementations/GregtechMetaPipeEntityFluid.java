@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.OrePrefixes;
@@ -60,9 +61,8 @@ public class GregtechMetaPipeEntityFluid extends GT_MetaPipeEntity_Fluid {
                 this.mGasProof);
     }
 
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections,
-            byte aColorIndex, boolean aConnected, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, byte aConnections,
+            int aColorIndex, boolean aConnected, boolean aRedstone) {
         float tThickNess = getThickNess();
         if (mDisableInput == 0)
             return new ITexture[] { aConnected ? getBaseTexture(tThickNess, mPipeAmount, mMaterial, aColorIndex)
@@ -70,12 +70,15 @@ public class GregtechMetaPipeEntityFluid extends GT_MetaPipeEntity_Fluid {
                             mMaterial.mIconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
                             Dyes.getModulation(aColorIndex, mMaterial.mRGBa)) };
         byte tMask = 0;
-        byte[][] sRestrictionArray = { { 2, 3, 5, 4 }, { 2, 3, 4, 5 }, { 1, 0, 4, 5 }, { 1, 0, 4, 5 }, { 1, 0, 2, 3 },
+        int[][] sRestrictionArray = { { 2, 3, 5, 4 }, { 2, 3, 4, 5 }, { 1, 0, 4, 5 }, { 1, 0, 4, 5 }, { 1, 0, 2, 3 },
                 { 1, 0, 2, 3 } };
-        if (aSide >= 0 && aSide < 6) {
-            for (byte i = 0; i < 4; i++) if (isInputDisabledAtSide(sRestrictionArray[aSide][i])) tMask |= 1 << i;
+        if (side != ForgeDirection.UNKNOWN) {
+            for (byte i = 0; i < 4; i++)
+                if (isInputDisabledAtSide(ForgeDirection.getOrientation(sRestrictionArray[side.ordinal()][i])))
+                    tMask |= 1 << i;
             // Full block size renderer flips side 5 and 2 textures, flip restrictor textures to compensate
-            if (aSide == 5 || aSide == 2) if (tMask > 3 && tMask < 12) tMask = (byte) (tMask ^ 12);
+            if (side == ForgeDirection.EAST || side == ForgeDirection.UP)
+                if (tMask > 3 && tMask < 12) tMask = (byte) (tMask ^ 12);
         }
         return new ITexture[] { aConnected ? getBaseTexture(tThickNess, mPipeAmount, mMaterial, aColorIndex)
                 : TextureFactory.of(
@@ -85,7 +88,7 @@ public class GregtechMetaPipeEntityFluid extends GT_MetaPipeEntity_Fluid {
     }
 
     protected static ITexture getBaseTexture(float aThickNess, int aPipeAmount, GT_Materials aMaterial,
-            byte aColorIndex) {
+            int aColorIndex) {
         if (aPipeAmount >= 9) return TextureFactory.of(
                 aMaterial.mIconSet.mTextures[OrePrefixes.pipeNonuple.mTextureIndex],
                 Dyes.getModulation(aColorIndex, aMaterial.mRGBa));

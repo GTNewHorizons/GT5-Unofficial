@@ -51,6 +51,7 @@ public class EntityGiantChickenBase extends EntityChicken {
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
     }
 
+    @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
@@ -61,6 +62,7 @@ public class EntityGiantChickenBase extends EntityChicken {
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
      */
+    @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
         this.field_70888_h = this.field_70886_e;
@@ -106,6 +108,7 @@ public class EntityGiantChickenBase extends EntityChicken {
     /**
      * Called when the mob is falling. Calculates and applies fall damage.
      */
+    @Override
     protected void fall(float p_70069_1_) {
 
         if (MathUtils.randInt(0, 10) <= 5) {
@@ -113,6 +116,7 @@ public class EntityGiantChickenBase extends EntityChicken {
         }
     }
 
+    @Override
     protected Item getDropItem() {
         return ModItems.itemBigEgg;
     }
@@ -121,6 +125,7 @@ public class EntityGiantChickenBase extends EntityChicken {
      * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
      * par2 - Level of Looting used to kill this mob.
      */
+    @Override
     protected void dropFewItems(boolean recentHit, int lootLevel) {
         int j = this.rand.nextInt(3) + this.rand.nextInt(1 + lootLevel);
 
@@ -146,6 +151,7 @@ public class EntityGiantChickenBase extends EntityChicken {
         }
     }
 
+    @Override
     public EntityGiantChickenBase createChild(EntityAgeable p_90011_1_) {
         return new EntityGiantChickenBase(this.worldObj);
     }
@@ -154,6 +160,7 @@ public class EntityGiantChickenBase extends EntityChicken {
      * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
      * the animal type)
      */
+    @Override
     public boolean isBreedingItem(ItemStack aStack) {
         return aStack != null && aStack.getItem() instanceof ItemGemShards;
     }
@@ -161,6 +168,7 @@ public class EntityGiantChickenBase extends EntityChicken {
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
+    @Override
     public void readEntityFromNBT(NBTTagCompound aNBT) {
         super.readEntityFromNBT(aNBT);
         timeUntilNextBigEgg = aNBT.getInteger("timeUntilNextBigEgg");
@@ -169,6 +177,7 @@ public class EntityGiantChickenBase extends EntityChicken {
     /**
      * Get the experience points the entity currently has.
      */
+    @Override
     protected int getExperiencePoints(EntityPlayer p_70693_1_) {
         return this.isChickenJockey() ? 20 : super.getExperiencePoints(p_70693_1_);
     }
@@ -176,6 +185,7 @@ public class EntityGiantChickenBase extends EntityChicken {
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
+    @Override
     public void writeEntityToNBT(NBTTagCompound aNBT) {
         super.writeEntityToNBT(aNBT);
         aNBT.setInteger("timeUntilNextBigEgg", timeUntilNextBigEgg);
@@ -184,10 +194,12 @@ public class EntityGiantChickenBase extends EntityChicken {
     /**
      * Determines if an entity can be despawned, used on idle far away entities
      */
+    @Override
     protected boolean canDespawn() {
         return this.isChickenJockey() && this.riddenByEntity == null;
     }
 
+    @Override
     public void updateRiderPosition() {
         super.updateRiderPosition();
         float f = MathHelper.sin(this.renderYawOffset * (float) Math.PI / 180.0F);

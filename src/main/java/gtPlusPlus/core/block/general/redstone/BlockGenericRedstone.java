@@ -270,7 +270,7 @@ public abstract class BlockGenericRedstone extends BlockContainer {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public abstract IIcon getIcon(final int side, final int meta);
+    public abstract IIcon getIcon(final int ordinalSide, final int meta);
 
     @Override
     public int damageDropped(final int damage) {
@@ -283,6 +283,7 @@ public abstract class BlockGenericRedstone extends BlockContainer {
     /**
      * Called whenever the block is added into the world. Args: world, x, y, z
      */
+    @Override
     public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
         TileEntityRedstoneHandler aThis = getTileEntity(aWorld, aX, aY, aZ);
 
@@ -299,6 +300,7 @@ public abstract class BlockGenericRedstone extends BlockContainer {
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor Block
      */
+    @Override
     public void onNeighborBlockChange(World aWorld, int aX, int aY, int aZ, Block p_149695_5_) {
 
         TileEntityRedstoneHandler aThis = getTileEntity(aWorld, aX, aY, aZ);
@@ -315,6 +317,7 @@ public abstract class BlockGenericRedstone extends BlockContainer {
     /**
      * Ticks the block if it's been scheduled
      */
+    @Override
     public void updateTick(World aWorld, int aX, int aY, int aZ, Random p_149674_5_) {
         TileEntityRedstoneHandler aTile = getTileEntity(aWorld, aX, aY, aZ);
         // Client side handling

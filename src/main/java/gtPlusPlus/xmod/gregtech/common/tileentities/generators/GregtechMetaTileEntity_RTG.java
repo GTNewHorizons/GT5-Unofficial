@@ -4,6 +4,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.Textures;
@@ -201,9 +202,9 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
-        return ((aSide > 1) && (aSide != getBaseMetaTileEntity().getFrontFacing())
-                && (aSide != getBaseMetaTileEntity().getBackFacing()));
+    public boolean isOutputFacing(ForgeDirection side) {
+        return ((side.offsetY == 0) && (side != getBaseMetaTileEntity().getFrontFacing())
+                && (side != getBaseMetaTileEntity().getBackFacing()));
     }
 
     @Override
@@ -292,6 +293,7 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
                 gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()] };
     }
 
+    @Override
     public int getPollution() {
         return 0;
     }

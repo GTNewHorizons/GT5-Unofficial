@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -86,16 +87,17 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
-            final int aSide) {
-        return LargeTurbineTextureHandler.handleCasingsGT(aWorld, xCoord, yCoord, zCoord, aSide, this);
+            final int ordinalSide) {
+        return LargeTurbineTextureHandler
+                .handleCasingsGT(aWorld, xCoord, yCoord, zCoord, ForgeDirection.getOrientation(ordinalSide), this);
     }
 
     @Override
-    public IIcon getIcon(final int aSide, final int aMeta) {
-        return getStaticIcon((byte) aSide, (byte) aMeta);
+    public IIcon getIcon(final int ordinalSide, final int aMeta) {
+        return getStaticIcon((byte) ordinalSide, (byte) aMeta);
     }
 
-    public static IIcon getStaticIcon(final byte aSide, final byte aMeta) {
+    public static IIcon getStaticIcon(final int ordinalSide, final byte aMeta) {
         switch (aMeta) {
             case 0:
                 return TexturesGtBlock.Casing_Redox_1.getIcon();

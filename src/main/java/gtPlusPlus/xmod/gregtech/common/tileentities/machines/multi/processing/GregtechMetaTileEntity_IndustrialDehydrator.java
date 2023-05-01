@@ -16,6 +16,7 @@ import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -61,6 +62,7 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends
         CASING_TEXTURE_ID = TAE.getIndexFromPage(3, 10);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GregtechMetaTileEntity_IndustrialDehydrator(mName);
     }
@@ -140,19 +142,23 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends
         return CASING_TEXTURE_ID;
     }
 
+    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return mDehydratorMode ? GTPP_Recipe.GTPP_Recipe_Map.sMultiblockChemicalDehydratorRecipes
                 : GTPP_Recipe.GTPP_Recipe_Map.sVacuumFurnaceRecipes;
     }
 
+    @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
     }
 
+    @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return 10000;
     }
 
+    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialDehydrator;
     }
@@ -172,6 +178,7 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends
         return 50;
     }
 
+    @Override
     public boolean checkRecipe(ItemStack aStack) {
         return checkRecipeGeneric(getMaxParallelRecipes(), getEuDiscountForParallelism(), 120);
     }
@@ -245,7 +252,7 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends
     }
 
     @Override
-    public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mDehydratorMode = Utils.invertBoolean(mDehydratorMode);
         String aMode = mDehydratorMode ? "Dehydrator" : "Vacuum Furnace";
         PlayerUtils.messagePlayer(aPlayer, "Mode: " + aMode);

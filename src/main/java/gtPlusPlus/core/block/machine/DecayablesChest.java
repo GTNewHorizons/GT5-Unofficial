@@ -65,6 +65,7 @@ public class DecayablesChest extends BlockContainer implements ITileTooltip {
      * Is this block (a) opaque and (b) a full 1m cube? This determines whether or not to render the shared face of two
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
+    @Override
     public boolean isOpaqueCube() {
         return false;
     }
@@ -72,6 +73,7 @@ public class DecayablesChest extends BlockContainer implements ITileTooltip {
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
+    @Override
     public boolean renderAsNormalBlock() {
         return false;
     }
@@ -79,6 +81,7 @@ public class DecayablesChest extends BlockContainer implements ITileTooltip {
     /**
      * The type of render function that is called for this block
      */
+    @Override
     @SideOnly(Side.CLIENT)
     public int getRenderType() {
         try {
@@ -94,6 +97,7 @@ public class DecayablesChest extends BlockContainer implements ITileTooltip {
     /**
      * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */
+    @Override
     public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_, int p_149719_3_,
             int p_149719_4_) {
         if (p_149719_1_.getBlock(p_149719_2_, p_149719_3_, p_149719_4_ - 1) == this) {
@@ -114,8 +118,8 @@ public class DecayablesChest extends BlockContainer implements ITileTooltip {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(final int p_149691_1_, final int p_149691_2_) {
-        return p_149691_1_ == 1 ? this.textureTop : (p_149691_1_ == 0 ? this.textureBottom : this.textureFront);
+    public IIcon getIcon(final int ordinalSide, final int meta) {
+        return ordinalSide == 1 ? this.textureTop : (ordinalSide == 0 ? this.textureBottom : this.textureFront);
     }
 
     @Override

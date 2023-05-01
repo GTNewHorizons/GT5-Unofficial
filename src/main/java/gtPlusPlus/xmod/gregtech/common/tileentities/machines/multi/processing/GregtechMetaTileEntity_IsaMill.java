@@ -25,6 +25,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -218,15 +219,15 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
             mFrontBlockPosCache.clear();
         }
         if (mFrontBlockPosCache.isEmpty()) {
-            byte tSide = aBaseMetaTileEntity.getBackFacing();
+            ForgeDirection tSide = aBaseMetaTileEntity.getBackFacing();
             int aTileX = aBaseMetaTileEntity.getXCoord();
             int aTileY = aBaseMetaTileEntity.getYCoord();
             int aTileZ = aBaseMetaTileEntity.getZCoord();
-            boolean xFacing = (tSide == 4 || tSide == 5);
-            boolean zFacing = (tSide == 2 || tSide == 3);
+            boolean xFacing = tSide.offsetX != 0;
+            boolean zFacing = tSide.offsetZ != 0;
 
             // Check Casings
-            int aDepthOffset = (tSide == 2 || tSide == 4) ? 1 : -1;
+            int aDepthOffset = (tSide == ForgeDirection.NORTH || tSide == ForgeDirection.WEST) ? 1 : -1;
             for (int aHorizontalOffset = -1; aHorizontalOffset < 2; aHorizontalOffset++) {
                 for (int aVerticalOffset = -1; aVerticalOffset < 2; aVerticalOffset++) {
                     int aX = !xFacing ? (aTileX + aHorizontalOffset) : (aTileX + aDepthOffset);
@@ -386,6 +387,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
         return 1;
     }
 
+    @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return 10000;
     }

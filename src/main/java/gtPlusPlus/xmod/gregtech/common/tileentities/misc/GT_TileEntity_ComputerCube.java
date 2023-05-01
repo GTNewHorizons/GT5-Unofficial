@@ -16,8 +16,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-
-import Ic2ExpReactorPlanner.SimulationData;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
@@ -31,6 +30,7 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import Ic2ExpReactorPlanner.SimulationData;
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -166,7 +166,7 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
     }
 
     @Override
-    public boolean isInputFacing(byte aDirection) {
+    public boolean isInputFacing(ForgeDirection aDirection) {
         return true;
     }
 
@@ -201,7 +201,7 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -798,11 +798,11 @@ public class GT_TileEntity_ComputerCube extends GT_MetaTileEntity_BasicTank impl
     }
 
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return this.mTextures[(aSide == aFacing ? 0
-                : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
-                        + 1];
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
+            final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
+        return this.mTextures[(side == facing ? 0
+                : side == facing.getOpposite() ? 1
+                        : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex + 1];
     }
 
     public ITexture[] getFront(final byte aColor) {

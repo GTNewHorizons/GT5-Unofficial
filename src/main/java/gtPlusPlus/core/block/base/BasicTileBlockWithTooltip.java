@@ -19,7 +19,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
+import appeng.core.CreativeTab;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -163,13 +165,13 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     @Override
     @SideOnly(Side.CLIENT)
-    public final IIcon getIcon(final int aSide, final int aMeta) {
-        return mSidedTextureArray.get(aMeta).get(aSide).getIcon();
+    public final IIcon getIcon(final int ordinalSide, final int aMeta) {
+        return mSidedTextureArray.get(aMeta).get(ForgeDirection.getOrientation(ordinalSide)).getIcon();
     }
 
     @Override
-    public IIcon getIcon(IBlockAccess aWorld, int aX, int aY, int aZ, int aSide) {
-        return super.getIcon(aWorld, aX, aY, aZ, aSide);
+    public IIcon getIcon(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
+        return super.getIcon(aWorld, aX, aY, aZ, ordinalSide);
     }
 
     @SideOnly(Side.CLIENT)
@@ -178,8 +180,8 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
         Logger.INFO("[TeTexture] Building Texture Maps for " + getTileEntityName() + ".");
 
         // Init on the Client side only, to prevent Field initialisers existing in the Server side bytecode.
-        mSidedTextureArray = new AutoMap<CubicObject<SafeTexture>>();
-        mSidedTexturePathArray = new AutoMap<CubicObject<String>>();
+        mSidedTextureArray = new AutoMap<>();
+        mSidedTexturePathArray = new AutoMap<>();
 
         // Store them in forge order
         // DOWN, UP, NORTH, SOUTH, WEST, EAST
@@ -325,10 +327,12 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
         return l;
     }
 
+    @Override
     public Item getItemDropped(int meta, Random rand, int p_149650_3_) {
         return ItemUtils.getSimpleStack(this, 1).getItem();
     }
 
+    @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
         drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));

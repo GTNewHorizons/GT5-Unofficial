@@ -9,6 +9,7 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -87,7 +88,7 @@ public class Container_RoundRobinator extends Container {
 
         if (!aPlayer.worldObj.isRemote) {
             if (aSlotIndex < 4) {
-                this.tile_entity.toggleSide(aSlotIndex + 2);
+                this.tile_entity.toggleSide(ForgeDirection.getOrientation(aSlotIndex + 2));
                 // Logger.INFO("Toggling side: "+(aSlotIndex+2)+" | Active:
                 // "+this.tile_entity.getSideActive(aSlotIndex+2)+" | Data:"+this.tile_entity.getDataString());
             }
@@ -110,6 +111,7 @@ public class Container_RoundRobinator extends Container {
         return par1EntityPlayer.getDistanceSq(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D) <= 64D;
     }
 
+    @Override
     public final void addCraftingToCrafters(ICrafting par1ICrafting) {
         try {
             super.addCraftingToCrafters(par1ICrafting);
@@ -118,6 +120,7 @@ public class Container_RoundRobinator extends Container {
         }
     }
 
+    @Override
     public final void removeCraftingFromCrafters(ICrafting par1ICrafting) {
         try {
             super.removeCraftingFromCrafters(par1ICrafting);
@@ -126,6 +129,7 @@ public class Container_RoundRobinator extends Container {
         }
     }
 
+    @Override
     public final void detectAndSendChanges() {
         try {
             super.detectAndSendChanges();
@@ -135,6 +139,7 @@ public class Container_RoundRobinator extends Container {
         }
     }
 
+    @Override
     public final void updateProgressBar(int par1, int par2) {
         try {
             super.updateProgressBar(par1, par2);

@@ -5,10 +5,12 @@ import ic2.api.crops.ICropTile;
 
 public abstract class BaseAestheticCrop extends BaseHarvestableCrop {
 
+    @Override
     public int tier() {
         return 1;
     }
 
+    @Override
     public int stat(int n) {
         switch (n) {
             case 0:
@@ -26,10 +28,12 @@ public abstract class BaseAestheticCrop extends BaseHarvestableCrop {
         }
     }
 
+    @Override
     public int growthDuration(ICropTile crop) {
         return CORE_Preloader.DEBUG_MODE ? 1 : 225;
     }
 
+    @Override
     public byte getSizeAfterHarvest(ICropTile crop) {
         return 1;
     }

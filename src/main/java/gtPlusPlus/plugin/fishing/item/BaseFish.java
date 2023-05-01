@@ -27,11 +27,13 @@ public class BaseFish extends ItemFood {
         this.isCooked = cooked;
     }
 
+    @Override
     public int func_150905_g(ItemStack p_150905_1_) {
         BaseFishTypes fishtype = BaseFishTypes.getFishTypeFromStackDamage(p_150905_1_);
         return this.isCooked && fishtype.isCooked() ? fishtype.func_150970_e() : fishtype.func_150975_c();
     }
 
+    @Override
     public float func_150906_h(ItemStack p_150906_1_) {
         BaseFishTypes fishtype = BaseFishTypes.getFishTypeFromStackDamage(p_150906_1_);
         return this.isCooked && fishtype.isCooked() ? fishtype.func_150977_f() : fishtype.func_150967_d();
@@ -40,12 +42,14 @@ public class BaseFish extends ItemFood {
     /**
      * Returns a string representing what this item does to a potion.
      */
+    @Override
     public String getPotionEffect(ItemStack p_150896_1_) {
         return BaseFishTypes.getFishTypeFromStackDamage(p_150896_1_) == BaseFishTypes.PUFFERFISH
                 ? PotionHelper.field_151423_m
                 : null;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister p_94581_1_) {
         BaseFishTypes[] afishtype = BaseFishTypes.values();
@@ -57,6 +61,7 @@ public class BaseFish extends ItemFood {
         }
     }
 
+    @Override
     protected void onFoodEaten(ItemStack fish, World world, EntityPlayer player) {
         BaseFishTypes fishtype = BaseFishTypes.getFishTypeFromStackDamage(fish);
 
@@ -72,6 +77,7 @@ public class BaseFish extends ItemFood {
     /**
      * Gets an icon index based on an item's damage value
      */
+    @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int dmg) {
         BaseFishTypes fishtype = BaseFishTypes.getFishTypeFromDamageValue(dmg);
@@ -81,6 +87,7 @@ public class BaseFish extends ItemFood {
     /**
      * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
      */
+    @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_) {
         BaseFishTypes[] afishtype = BaseFishTypes.values();
@@ -99,6 +106,7 @@ public class BaseFish extends ItemFood {
      * Returns the unlocalized name of this item. This version accepts an ItemStack so different stacks can have
      * different names based on their damage or NBT.
      */
+    @Override
     public String getUnlocalizedName(ItemStack p_77667_1_) {
         BaseFishTypes fishtype = BaseFishTypes.getFishTypeFromStackDamage(p_77667_1_);
         return this.getUnlocalizedName() + "."

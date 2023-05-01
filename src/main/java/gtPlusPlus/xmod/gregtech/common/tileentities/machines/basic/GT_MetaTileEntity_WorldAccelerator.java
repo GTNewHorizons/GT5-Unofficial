@@ -92,22 +92,26 @@ public class GT_MetaTileEntity_WorldAccelerator extends GT_MetaTileEntity_Tiered
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity pBaseMetaTileEntity, byte pSide, byte pFacing, byte pColorIndex,
-            boolean pActive, boolean pRedstone) {
-        if (mMode == 0) return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][pColorIndex + 1], (pSide < 2)
+    public ITexture[] getTexture(IGregTechTileEntity pBaseMetaTileEntity, ForgeDirection side, ForgeDirection sacing,
+            int pColorIndex, boolean pActive, boolean pRedstone) {
+        if (mMode == 0) return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][pColorIndex + 1],
+                (side.offsetY != 0) ? null
+                        : pActive ? new GT_RenderedTexture(_mGTIco_Norm_Active)
+                                : new GT_RenderedTexture(_mGTIco_Norm_Idle) };
+        else return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][pColorIndex + 1], (side.offsetY != 0)
                 ? null
-                : pActive ? new GT_RenderedTexture(_mGTIco_Norm_Active) : new GT_RenderedTexture(_mGTIco_Norm_Idle) };
-        else return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][pColorIndex + 1], (pSide < 2) ? null
                 : pActive ? new GT_RenderedTexture(_mGTIco_TE_Active) : new GT_RenderedTexture(_mGTIco_TE_Idle) };
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity pBaseMetaTileEntity, int pIndex, byte pSide, ItemStack pStack) {
+    public boolean allowPullStack(IGregTechTileEntity pBaseMetaTileEntity, int pIndex, ForgeDirection side,
+            ItemStack pStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity pBaseMetaTileEntity, int pIndex, byte pSide, ItemStack pStack) {
+    public boolean allowPutStack(IGregTechTileEntity pBaseMetaTileEntity, int pIndex, ForgeDirection side,
+            ItemStack pStack) {
         return false;
     }
 
@@ -136,7 +140,7 @@ public class GT_MetaTileEntity_WorldAccelerator extends GT_MetaTileEntity_Tiered
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -146,7 +150,7 @@ public class GT_MetaTileEntity_WorldAccelerator extends GT_MetaTileEntity_Tiered
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
+    public boolean isInputFacing(ForgeDirection side) {
         return true;
     }
 
@@ -178,7 +182,7 @@ public class GT_MetaTileEntity_WorldAccelerator extends GT_MetaTileEntity_Tiered
     private static String[] mModeStr = { "Blocks", "TileEntities" };
 
     @Override
-    public void onScrewdriverRightClick(byte pSide, EntityPlayer pPlayer, float pX, float pY, float pZ) {
+    public void onScrewdriverRightClick(ForgeDirection pSide, EntityPlayer pPlayer, float pX, float pY, float pZ) {
         mMode = (byte) (mMode == 0x00 ? 0x01 : 0x00);
         markDirty();
         PlayerUtils.messagePlayer(pPlayer, String.format("Switched mode to: %s", mModeStr[mMode]));
@@ -220,7 +224,7 @@ public class GT_MetaTileEntity_WorldAccelerator extends GT_MetaTileEntity_Tiered
             if (!pBaseMetaTileEntity.isActive()) getBaseMetaTileEntity().setActive(true);
 
             for (ForgeDirection tDir : ForgeDirection.VALID_DIRECTIONS) {
-                TileEntity tTile = pBaseMetaTileEntity.getTileEntityAtSide((byte) tDir.ordinal());
+                TileEntity tTile = pBaseMetaTileEntity.getTileEntityAtSide(tDir);
                 if (isTEBlackListed(tTile)) continue;
 
                 long tMaxTime = System.nanoTime() + 1000000;

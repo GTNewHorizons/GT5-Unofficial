@@ -97,11 +97,13 @@ public class FakeWorld implements IBlockAccess {
         return aOutput;
     }
 
+    @Override
     public Block getBlock(int x, int y, int z) {
         FakeBlockPos aPos = getBlockAtCoords(x, y, z);
         return aPos.getBlockAtPos();
     }
 
+    @Override
     public boolean isAirBlock(int x, int y, int z) {
         Block aBlock = getBlock(x, y, z);
         return aBlock == Blocks.air || aBlock.getMaterial() == Material.air;

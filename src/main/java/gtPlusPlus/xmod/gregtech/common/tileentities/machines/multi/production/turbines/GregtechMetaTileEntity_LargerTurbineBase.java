@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -537,6 +538,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
         return false;
     }
 
+    @Override
     public boolean doRandomMaintenanceDamage() {
         if (getMaxParallelRecipes() == 0 || getRepairStatus() == 0) {
             stopMachine();
@@ -592,6 +594,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
         return 1;
     }
 
+    @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return this.getMaxParallelRecipes() == 12 ? 10000 : 0;
     }
@@ -698,6 +701,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
         return true;
     }
 
+    @Override
     public boolean polluteEnvironment(int aPollutionLevel) {
         if (this.requiresMufflers()) {
             mPollution += aPollutionLevel * getPollutionMultiplier() * mufflerReduction;
@@ -740,7 +744,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
     }
 
     @Override
-    public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mFastMode = Utils.invertBoolean(mFastMode);
         if (mFastMode) {
             PlayerUtils.messagePlayer(aPlayer, "Running in Fast (48x) Mode.");
@@ -749,11 +753,10 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
         }
     }
 
-    @Override
-    public final ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing,
-            byte aColorIndex, boolean aActive, boolean aRedstone) {
+    public final ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side,
+            ForgeDirection facing, int aColorIndex, boolean aActive, boolean aRedstone) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1],
-                aFacing == aSide ? getFrontFacingTurbineTexture(aActive)
+                facing == side ? getFrontFacingTurbineTexture(aActive)
                         : Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()) };
     }
 
@@ -842,15 +845,16 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         // Fix GT bug
-        if (this.getBaseMetaTileEntity().getFrontFacing() != 1) {
+        if (this.getBaseMetaTileEntity().getFrontFacing() != ForgeDirection.UP) {
             log("Fixing Bad Facing. (GT Bug)");
-            this.getBaseMetaTileEntity().setFrontFacing((byte) 1);
+            this.getBaseMetaTileEntity().setFrontFacing(ForgeDirection.UP);
         }
     }
 
     /**
      * Called every tick the Machine runs
      */
+    @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (lEUt > 0) {
             addEnergyOutput((lEUt * mEfficiency) / 10000);
@@ -870,6 +874,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
         return false;
     }
 
+    @Override
     public boolean addEnergyOutputMultipleDynamos(long aEU, boolean aAllowMixedVoltageDynamos) {
         int injected = 0;
         long totalOutput = 0;

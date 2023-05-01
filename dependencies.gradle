@@ -1,7 +1,7 @@
 dependencies {
-    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.42.71:dev')
-    api("com.github.GTNewHorizons:bartworks:0.6.14:dev")
-    api("com.github.GTNewHorizons:TecTech:5.1.15-pre:dev")
+    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.43.02-pre:dev')
+    api("com.github.GTNewHorizons:bartworks:0.7.0-pre:dev")
+    api("com.github.GTNewHorizons:TecTech:5.2.0-pre:dev")
 
     implementation('curse.maven:cofh-core-69162:2388751')
     // https://www.curseforge.com/minecraft/mc-mods/advancedsolarpanels

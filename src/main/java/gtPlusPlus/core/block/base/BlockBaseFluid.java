@@ -66,8 +66,8 @@ public class BlockBaseFluid extends BlockFluidClassic {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        return side <= 1 ? this.textureArray[0] : this.textureArray[1];
+    public IIcon getIcon(int ordinalSide, int meta) {
+        return ordinalSide <= 1 ? this.textureArray[0] : this.textureArray[1];
     }
 
     @Override

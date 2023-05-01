@@ -226,16 +226,19 @@ public class BaseItemMetaFood extends ItemFood {
     }
 
     // Heal Amount
+    @Override
     public int func_150905_g(ItemStack aStack) {
         return mHealAmountMap.get(getMetaKey(aStack));
     }
 
     // Saturation Amount
+    @Override
     public float func_150906_h(ItemStack aStack) {
         return mSaturationAmountMap.get(getMetaKey(aStack));
     }
 
     // Whether wolves like this food, sadly doesn't support meta items
+    @Override
     public boolean isWolfsFavoriteMeat() {
         return false;
     }

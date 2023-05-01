@@ -41,8 +41,8 @@ public class MiningExplosives extends BlockTNT {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(final int p_149691_1_, final int p_149691_2_) {
-        return p_149691_1_ == 0 ? this.textureBottom : (p_149691_1_ == 1 ? this.textureTop : this.blockIcon);
+    public IIcon getIcon(final int ordinalSide, final int meta) {
+        return ordinalSide == 0 ? this.textureBottom : (ordinalSide == 1 ? this.textureTop : this.blockIcon);
     }
 
     /**

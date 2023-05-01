@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -53,31 +54,37 @@ public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachi
         return new String[] { this.mDescription, CORE.GT_Tooltip.get() };
     }
 
+    @Override
     public boolean isSimpleMachine() {
         return true;
     }
 
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
+    @Override
     public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
     }
 
+    @Override
     public boolean isValidSlot(int aIndex) {
         return true;
     }
 
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_TieredChest(this.mName, this.mTier, this.mDescription, this.mTextures);
     }
 
+    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (this.getBaseMetaTileEntity().isServerSide() && this.getBaseMetaTileEntity().isAllowedToWork()) {
             if (this.getItemCount() <= 0) {
@@ -126,31 +133,38 @@ public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachi
         return this.mItemCount;
     }
 
+    @Override
     public void setItemCount(int aCount) {
         this.mItemCount = aCount;
     }
 
+    @Override
     public int getProgresstime() {
         return this.mItemCount + (this.mInventory[0] == null ? 0 : this.mInventory[0].stackSize)
                 + (this.mInventory[1] == null ? 0 : this.mInventory[1].stackSize);
     }
 
+    @Override
     public int maxProgresstime() {
         return this.getMaxItemCount();
     }
 
+    @Override
     public int getMaxItemCount() {
         return (int) (Math.pow(6.0D, (double) this.mTier) * mStorageFactor - 128.0D);
     }
 
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return aIndex == 1;
     }
 
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return aIndex == 0 && (this.mInventory[0] == null || GT_Utility.areStacksEqual(this.mInventory[0], aStack));
     }
 
+    @Override
     public String[] getInfoData() {
         return this.mItemStack == null
                 ? new String[] { "Super Storage Chest", "Stored Items:", "No Items", Integer.toString(0),
@@ -159,10 +173,12 @@ public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachi
                         Integer.toString(this.mItemCount), Integer.toString(this.getMaxItemCount()) };
     }
 
+    @Override
     public boolean isGivingInformation() {
         return true;
     }
 
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mItemCount", this.mItemCount);
         if (this.mItemStack != null) {
@@ -170,6 +186,7 @@ public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachi
         }
     }
 
+    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         if (aNBT.hasKey("mItemCount")) {
             this.mItemCount = aNBT.getInteger("mItemCount");
@@ -180,17 +197,18 @@ public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachi
         }
     }
 
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        return aBaseMetaTileEntity.getFrontFacing() == 0 && aSide == 4
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int aColorIndex, boolean aActive, boolean aRedstone) {
+        return aBaseMetaTileEntity.getFrontFacing() == ForgeDirection.DOWN && side == ForgeDirection.WEST
                 ? new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
                         new GT_RenderedTexture(BlockIcons.OVERLAY_QCHEST) }
-                : (aSide == aBaseMetaTileEntity.getFrontFacing()
+                : (side == aBaseMetaTileEntity.getFrontFacing()
                         ? new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
                                 new GT_RenderedTexture(BlockIcons.OVERLAY_QCHEST) }
                         : new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1] });
     }
 
+    @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         return new ITexture[0][0][0];
     }

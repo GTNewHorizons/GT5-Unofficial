@@ -244,6 +244,7 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
         return CORE.ConfigSwitches.pollutionPerSecondMultiThermalBoiler;
     }
 
+    @Override
     public int getAmountOfOutputs() {
         return 7;
     }

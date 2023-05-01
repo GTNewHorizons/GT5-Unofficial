@@ -114,6 +114,7 @@ public class GregtechMetaTileEntity_SteamCompressor
         return 8;
     }
 
+    @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
     }

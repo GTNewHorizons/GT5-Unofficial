@@ -62,8 +62,8 @@ public class Machine_PestKiller extends BlockContainer implements ITileTooltip {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(final int aSide, final int p_149691_2_) {
-        return aSide == 1 ? this.textureTop : (aSide == 0 ? this.textureBottom : this.textureFront);
+    public IIcon getIcon(final int ordinalSide, final int meta) {
+        return ordinalSide == 1 ? this.textureTop : (ordinalSide == 0 ? this.textureBottom : this.textureFront);
     }
 
     @Override

@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -88,22 +89,26 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
         return new String[] { this.mDescription, CORE.GT_Tooltip.get() };
     }
 
+    @Override
     public boolean isSimpleMachine() {
         return true;
     }
 
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
+    @Override
     public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
     }
 
+    @Override
     public boolean isValidSlot(int aIndex) {
         return true;
     }
 
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_ConnectableCrate(this.mName, this.mTier, this.mDescription, this.mTextures);
     }
@@ -329,12 +334,12 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
         return checkSideForDataType(1, side);
     }
 
-    private boolean checkSideForDataType(int aType, int aSide) {
-        BlockPos mPosToCheck = aSide == SIDE_Up ? mCurrentPos.getUp()
-                : aSide == SIDE_Down ? mCurrentPos.getDown()
-                        : aSide == SIDE_XPos ? mCurrentPos.getXPos()
-                                : aSide == SIDE_XNeg ? mCurrentPos.getXNeg()
-                                        : aSide == SIDE_ZPos ? mCurrentPos.getZPos() : mCurrentPos.getZNeg();
+    private boolean checkSideForDataType(int aType, int ordinalSide) {
+        BlockPos mPosToCheck = ordinalSide == SIDE_Up ? mCurrentPos.getUp()
+                : ordinalSide == SIDE_Down ? mCurrentPos.getDown()
+                        : ordinalSide == SIDE_XPos ? mCurrentPos.getXPos()
+                                : ordinalSide == SIDE_XNeg ? mCurrentPos.getXNeg()
+                                        : ordinalSide == SIDE_ZPos ? mCurrentPos.getZPos() : mCurrentPos.getZNeg();
         GT_MetaTileEntity_ConnectableCrate g = getCrateAtBlockPos(mPosToCheck);
         if (g != null) {
             if (aType == 0) {
@@ -371,11 +376,13 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
         return null;
     }
 
+    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (this.getBaseMetaTileEntity().isServerSide() && this.getBaseMetaTileEntity().isAllowedToWork()) {
             if (this.getItemCount() <= 0) {
@@ -424,31 +431,38 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
         return this.mItemCount;
     }
 
+    @Override
     public void setItemCount(int aCount) {
         this.mItemCount = aCount;
     }
 
+    @Override
     public int getProgresstime() {
         return this.mItemCount + (this.mInventory[0] == null ? 0 : this.mInventory[0].stackSize)
                 + (this.mInventory[1] == null ? 0 : this.mInventory[1].stackSize);
     }
 
+    @Override
     public int maxProgresstime() {
         return this.getMaxItemCount();
     }
 
+    @Override
     public int getMaxItemCount() {
         return (int) (Math.pow(6.0D, (double) this.mTier) * mStorageFactor - 128.0D);
     }
 
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return aIndex == 1;
     }
 
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return aIndex == 0 && (this.mInventory[0] == null || GT_Utility.areStacksEqual(this.mInventory[0], aStack));
     }
 
+    @Override
     public String[] getInfoData() {
         return this.mItemStack == null
                 ? new String[] { "Super Storage Chest", "Stored Items:", "No Items", Integer.toString(0),
@@ -457,10 +471,12 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
                         Integer.toString(this.mItemCount), Integer.toString(this.getMaxItemCount()) };
     }
 
+    @Override
     public boolean isGivingInformation() {
         return true;
     }
 
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mItemCount", this.mItemCount);
         if (this.mItemStack != null) {
@@ -474,6 +490,7 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
         aNBT.setInteger("mConnectedCount", mConnectedCount);
     }
 
+    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         if (aNBT.hasKey("mItemCount")) {
             this.mItemCount = aNBT.getInteger("mItemCount");
@@ -499,17 +516,18 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
         }
     }
 
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        return aBaseMetaTileEntity.getFrontFacing() == 0 && aSide == 4
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int aColorIndex, boolean aActive, boolean aRedstone) {
+        return aBaseMetaTileEntity.getFrontFacing() == ForgeDirection.DOWN && side == ForgeDirection.WEST
                 ? new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.TEXTURE_CASING_AMAZON),
                         new GT_RenderedTexture(BlockIcons.OVERLAY_QCHEST) }
-                : (aSide == aBaseMetaTileEntity.getFrontFacing()
+                : (side == aBaseMetaTileEntity.getFrontFacing()
                         ? new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.TEXTURE_CASING_AMAZON),
                                 new GT_RenderedTexture(BlockIcons.OVERLAY_QCHEST) }
                         : new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.TEXTURE_CASING_AMAZON) });
     }
 
+    @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         return new ITexture[0][0][0];
     }

@@ -1,5 +1,7 @@
 package gtPlusPlus.api.interfaces;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
@@ -16,7 +18,7 @@ public interface ILazyCoverable extends ICoverable {
     }
 
     @Override
-    default byte getInputRedstoneSignal(byte arg0) {
+    default byte getInputRedstoneSignal(ForgeDirection side) {
         return 0;
     }
 
@@ -32,7 +34,7 @@ public interface ILazyCoverable extends ICoverable {
     }
 
     @Override
-    default boolean getRedstone(byte arg0) {
+    default boolean getRedstone(ForgeDirection side) {
         return false;
     }
 
@@ -67,23 +69,23 @@ public interface ILazyCoverable extends ICoverable {
     }
 
     @Override
-    default byte getOutputRedstoneSignal(byte arg0) {
+    default byte getOutputRedstoneSignal(ForgeDirection side) {
         return 0;
     }
 
     @Override
-    default void setOutputRedstoneSignal(byte arg0, byte arg1) {}
+    default void setOutputRedstoneSignal(ForgeDirection side, byte strength) {}
 
     @Override
-    default byte getStrongOutputRedstoneSignal(byte arg0) {
+    default byte getStrongOutputRedstoneSignal(ForgeDirection side) {
         return 0;
     }
 
     @Override
-    default void setStrongOutputRedstoneSignal(byte arg0, byte arg1) {}
+    default void setStrongOutputRedstoneSignal(ForgeDirection side, byte arg1) {}
 
     @Override
-    default byte getComparatorValue(byte arg0) {
+    default byte getComparatorValue(ForgeDirection side) {
         return 0;
     }
 
@@ -98,12 +100,12 @@ public interface ILazyCoverable extends ICoverable {
     }
 
     @Override
-    default IGregTechTileEntity getIGregTechTileEntityAtSide(byte arg0) {
+    default IGregTechTileEntity getIGregTechTileEntityAtSide(ForgeDirection side) {
         return null;
     }
 
     @Override
-    default IGregTechTileEntity getIGregTechTileEntityAtSideAndDistance(byte arg0, int arg1) {
+    default IGregTechTileEntity getIGregTechTileEntityAtSideAndDistance(ForgeDirection side, int arg1) {
         return null;
     }
 
@@ -118,12 +120,12 @@ public interface ILazyCoverable extends ICoverable {
     }
 
     @Override
-    default byte getMetaIDAtSide(byte arg0) {
+    default byte getMetaIDAtSide(ForgeDirection side) {
         return 0;
     }
 
     @Override
-    default byte getMetaIDAtSideAndDistance(byte arg0, int arg1) {
+    default byte getMetaIDAtSideAndDistance(ForgeDirection side, int arg1) {
         return 0;
     }
 

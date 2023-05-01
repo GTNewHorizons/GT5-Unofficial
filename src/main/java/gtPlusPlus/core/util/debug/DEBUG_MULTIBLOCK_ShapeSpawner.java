@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GT_Mod;
@@ -72,8 +73,8 @@ public abstract class DEBUG_MULTIBLOCK_ShapeSpawner extends MetaTileEntity {
     }
 
     @Override
-    public boolean allowCoverOnSide(final byte aSide, final GT_ItemStack aCoverID) {
-        return aSide != this.getBaseMetaTileEntity().getFrontFacing();
+    public boolean allowCoverOnSide(final ForgeDirection side, final GT_ItemStack aCoverID) {
+        return side != this.getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -82,7 +83,7 @@ public abstract class DEBUG_MULTIBLOCK_ShapeSpawner extends MetaTileEntity {
     }
 
     @Override
-    public boolean isFacingValid(final byte aFacing) {
+    public boolean isFacingValid(final ForgeDirection facing) {
         return true;
     }
 
@@ -934,14 +935,14 @@ public abstract class DEBUG_MULTIBLOCK_ShapeSpawner extends MetaTileEntity {
     }
 
     @Override
-    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
+    public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
-            final ItemStack aStack) {
+    public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
+            final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 

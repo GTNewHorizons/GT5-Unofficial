@@ -85,6 +85,7 @@ public class ThermalStorage implements IThermalStorage {
         }
     }
 
+    @Override
     public int receiveThermalEnergy(int arg0, boolean arg1) {
         int arg2 = Math.min(this.capacity - this.thermal_energy, Math.min(this.maxReceive, arg0));
         if (!arg1) {
@@ -94,6 +95,7 @@ public class ThermalStorage implements IThermalStorage {
         return arg2;
     }
 
+    @Override
     public int extractThermalEnergy(int arg0, boolean arg1) {
         int arg2 = Math.min(this.thermal_energy, Math.min(this.maxExtract, arg0));
         if (!arg1) {
@@ -103,10 +105,12 @@ public class ThermalStorage implements IThermalStorage {
         return arg2;
     }
 
+    @Override
     public int getThermalEnergyStored() {
         return this.thermal_energy;
     }
 
+    @Override
     public int getMaxThermalEnergyStored() {
         return this.capacity;
     }

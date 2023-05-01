@@ -95,20 +95,19 @@ public class GregtechMetaCondensor extends GregtechMetaBoilerBase implements IAd
                 this.mTemperature -= 1;
                 this.mLossTimer = 0;
             }
-            for (byte i = 1; (this.mSteam != null) && (i < 6); i = (byte) (i + 1)) {
-                if (i != aBaseMetaTileEntity.getFrontFacing()) {
-                    final IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(i);
+            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                if (this.mSteam == null) break;
+                if (side != aBaseMetaTileEntity.getFrontFacing()) {
+                    final IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(side);
                     if (tTileEntity != null) {
                         final FluidStack tDrained = aBaseMetaTileEntity
-                                .drain(ForgeDirection.getOrientation(i), Math.max(1, this.mSteam.amount / 2), false);
+                                .drain(side, Math.max(1, this.mSteam.amount / 2), false);
                         if (tDrained != null) {
-                            final int tFilledAmount = tTileEntity
-                                    .fill(ForgeDirection.getOrientation(i).getOpposite(), tDrained, false);
+                            final int tFilledAmount = tTileEntity.fill(side.getOpposite(), tDrained, false);
                             if (tFilledAmount > 0) {
                                 tTileEntity.fill(
-                                        ForgeDirection.getOrientation(i).getOpposite(),
-                                        aBaseMetaTileEntity
-                                                .drain(ForgeDirection.getOrientation(i), tFilledAmount, true),
+                                        side.getOpposite(),
+                                        aBaseMetaTileEntity.drain(side, tFilledAmount, true),
                                         true);
                             }
                         }

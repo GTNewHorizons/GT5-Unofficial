@@ -74,11 +74,11 @@ public class GregtechMetaCasingBlocks5 extends GregtechMetaCasingBlocksAbstract 
     }
 
     @Override
-    public IIcon getIcon(final int aSide, final int aMeta) {
-        return getStaticIcon(aSide, aMeta);
+    public IIcon getIcon(final int ordinalSide, final int aMeta) {
+        return getStaticIcon(ordinalSide, aMeta);
     }
 
-    public static IIcon getStaticIcon(final int aSide, final int aMeta) {
+    public static IIcon getStaticIcon(final int ordinalSide, final int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
             switch (aMeta) {
                 case 0:
@@ -96,22 +96,22 @@ public class GregtechMetaCasingBlocks5 extends GregtechMetaCasingBlocksAbstract 
                 case 6:
                     return TexturesGtBlock.TEXTURE_TECH_PANEL_H.getIcon();
                 case 7:
-                    if (aSide == 0 || aSide == 1) {
+                    if (ordinalSide == 0 || ordinalSide == 1) {
                         return TexturesGtBlock.Manipulator_Top.getIcon();
                     }
                     return TexturesGtBlock.NeutronPulseManipulator.getIcon();
                 case 8:
-                    if (aSide == 0 || aSide == 1) {
+                    if (ordinalSide == 0 || ordinalSide == 1) {
                         return TexturesGtBlock.Manipulator_Top.getIcon();
                     }
                     return TexturesGtBlock.CosmicFabricManipulator.getIcon();
                 case 9:
-                    if (aSide == 0 || aSide == 1) {
+                    if (ordinalSide == 0 || ordinalSide == 1) {
                         return TexturesGtBlock.Manipulator_Top.getIcon();
                     }
                     return TexturesGtBlock.InfinityInfusedManipulator.getIcon();
                 case 10:
-                    if (aSide == 0 || aSide == 1) {
+                    if (ordinalSide == 0 || ordinalSide == 1) {
                         return TexturesGtBlock.Manipulator_Top.getIcon();
                     }
                     return TexturesGtBlock.SpaceTimeContinuumRipper.getIcon();
@@ -124,7 +124,7 @@ public class GregtechMetaCasingBlocks5 extends GregtechMetaCasingBlocksAbstract 
                 case 14:
                     return TexturesGtBlock.SpaceTimeBendingCore.getIcon();
                 case 15:
-                    if (aSide == 0 || aSide == 1) {
+                    if (ordinalSide == 0 || ordinalSide == 1) {
                         return TexturesGtBlock.Blank.getIcon();
                     }
                     return TexturesGtBlock.ForceFieldGlass.getIcon();
@@ -136,8 +136,8 @@ public class GregtechMetaCasingBlocks5 extends GregtechMetaCasingBlocksAbstract 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
-            final int aSide) {
+            final int ordinalSide) {
         final GregtechMetaCasingBlocks5 i = this;
-        return mGrinderOverlayHandler.handleCasingsGT(aWorld, xCoord, yCoord, zCoord, aSide, i);
+        return mGrinderOverlayHandler.handleCasingsGT(aWorld, xCoord, yCoord, zCoord, ordinalSide, i);
     }
 }

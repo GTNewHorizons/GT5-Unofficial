@@ -160,7 +160,7 @@
  * this.mReleaseEnergy) { return false; } if (this.canAccessData() && this.isElectric() && this.isEnetInput()) { return
  * this.isInputFacing(aSide); } } return false; } private boolean isEnergyOutputSide(final byte aSide) { if (aSide >= 0
  * && aSide < 6) { if (this.isInvalid() || this.mReleaseEnergy) { return this.mReleaseEnergy; } if (this.canAccessData()
- * && this.isElectric() && this.isEnetOutput()) { return this.isOutputFacing(aSide); } } return false; } public boolean
+ * && this.isElectric() && this.isEnetOutput()) { return this.isOutputFacing(side); } } return false; } public boolean
  * isEnetInput() { return false; } public boolean isEnetOutput() { return false; }
  * @Override public boolean isGivingInformation() { return this.canAccessData() && this.isGivingInformation(); } public
  * boolean isInputFacing(final byte aSide) { return false; }

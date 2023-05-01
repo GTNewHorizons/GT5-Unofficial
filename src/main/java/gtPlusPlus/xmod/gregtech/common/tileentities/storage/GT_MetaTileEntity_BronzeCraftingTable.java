@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
@@ -30,7 +32,7 @@ public class GT_MetaTileEntity_BronzeCraftingTable extends GT_MetaTileEntity_Adv
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
+    public boolean isInputFacing(ForgeDirection side) {
         return false;
     }
 
@@ -41,7 +43,7 @@ public class GT_MetaTileEntity_BronzeCraftingTable extends GT_MetaTileEntity_Adv
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aStack) {
         return GregTech_API.getCoverBehavior(aStack.toStack()).isSimpleCover();
     }
 

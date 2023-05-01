@@ -48,10 +48,10 @@ public class BlockTankXpConverter extends BlockContainer {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(final int p_149691_1_, final int p_149691_2_) {
-        return p_149691_1_ == 1 ? this.textureTop
-                : (p_149691_1_ == 0 ? this.textureBottom
-                        : ((p_149691_1_ != 2) && (p_149691_1_ != 4) ? this.blockIcon : this.textureFront));
+    public IIcon getIcon(final int ordinalSide, final int meta) {
+        return ordinalSide == 1 ? this.textureTop
+                : (ordinalSide == 0 ? this.textureBottom
+                        : ((ordinalSide != 2) && (ordinalSide != 4) ? this.blockIcon : this.textureFront));
     }
 
     @Override

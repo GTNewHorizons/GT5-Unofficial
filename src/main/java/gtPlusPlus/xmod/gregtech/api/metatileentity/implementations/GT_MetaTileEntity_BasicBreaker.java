@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -47,6 +48,7 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
         super(aName, aTier, aSlotCount, aDescription, aTextures);
     }
 
+    @Override
     public String[] getDescription() {
         final String[] desc = new String[6];
         int tTier = this.mTier;
@@ -71,6 +73,7 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
         return desc;
     }
 
+    @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[2][17][];
 
@@ -87,11 +90,12 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
         return rTextures;
     }
 
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        return this.mTextures[aSide == aFacing ? 1 : 0][aColorIndex + 1];
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int aColorIndex, boolean aActive, boolean aRedstone) {
+        return this.mTextures[side == facing ? 1 : 0][aColorIndex + 1];
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_BasicBreaker(
                 this.mName,
@@ -101,103 +105,126 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
                 this.mInventory.length);
     }
 
+    @Override
     public boolean isSimpleMachine() {
         return false;
     }
 
+    @Override
     public boolean isElectric() {
         return true;
     }
 
+    @Override
     public boolean isValidSlot(int aIndex) {
         return true;
     }
 
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
+    @Override
     public boolean isEnetInput() {
         return true;
     }
 
+    @Override
     public boolean isEnetOutput() {
         return true;
     }
 
-    public boolean isInputFacing(byte aSide) {
-        return aSide != this.getBaseMetaTileEntity().getFrontFacing();
+    public boolean isInputFacing(ForgeDirection side) {
+        return side != this.getBaseMetaTileEntity().getFrontFacing();
     }
 
-    public boolean isOutputFacing(byte aSide) {
-        return aSide == this.getBaseMetaTileEntity().getFrontFacing();
+    public boolean isOutputFacing(ForgeDirection side) {
+        return side == this.getBaseMetaTileEntity().getFrontFacing();
     }
 
+    @Override
     public boolean isTeleporterCompatible() {
         return false;
     }
 
+    @Override
     public long getMinimumStoredEU() {
         return GT_Values.V[this.mTier] * 16L * 16;
     }
 
+    @Override
     public long maxEUStore() {
         return GT_Values.V[this.mTier] * 64L * 16;
     }
 
+    @Override
     public long maxEUInput() {
         return GT_Values.V[this.mTier] * 16;
     }
 
+    @Override
     public long maxEUOutput() {
         return GT_Values.V[this.mTier];
     }
 
+    @Override
     public long maxAmperesIn() {
         return 16;
     }
 
+    @Override
     public long maxAmperesOut() {
         return 16;
     }
 
+    @Override
     public int rechargerSlotStartIndex() {
         return 0;
     }
 
+    @Override
     public int dechargerSlotStartIndex() {
         return 0;
     }
 
+    @Override
     public int rechargerSlotCount() {
         return 0;
     }
 
+    @Override
     public int dechargerSlotCount() {
         return 0;
     }
 
+    @Override
     public int getProgresstime() {
         return (int) this.getBaseMetaTileEntity().getUniversalEnergyStored();
     }
 
+    @Override
     public int maxProgresstime() {
         return (int) this.getBaseMetaTileEntity().getUniversalEnergyCapacity();
     }
 
+    @Override
     public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
     }
 
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {}
 
+    @Override
     public void loadNBTData(NBTTagCompound aNBT) {}
 
+    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
 
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
@@ -212,14 +239,17 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
         }
     }
 
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return false;
     }
 
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return true;
     }
 
+    @Override
     public int getInventoryStackLimit() {
         return 1;
     }
@@ -271,14 +301,17 @@ public class GT_MetaTileEntity_BasicBreaker extends GTPP_MTE_TieredMachineBlock 
         return new long[] { tStored, tScale };
     }
 
+    @Override
     public String[] getInfoData() {
         return new String[] { "Tile Type: " + this.getTileEntityBaseType() };
     }
 
+    @Override
     public boolean isGivingInformation() {
         return true;
     }
 
+    @Override
     public boolean doesExplode() {
         return true;
     }

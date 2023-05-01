@@ -39,11 +39,13 @@ public class FakeBlockPos extends BlockPos {
         super(x, y, z, null);
     }
 
+    @Override
     public String getLocationString() {
         String S = "" + this.xPos + "@" + this.yPos + "@" + this.zPos;
         return S;
     }
 
+    @Override
     public String getUniqueIdentifier() {
         String S = "" + this.xPos
                 + "@"
@@ -95,6 +97,7 @@ public class FakeBlockPos extends BlockPos {
      * @param z Z coordinate of target.
      * @return square of distance
      */
+    @Override
     public int distanceFrom(int x, int y, int z) {
         int distanceX = this.xPos - x;
         int distanceY = this.yPos - y;
@@ -109,34 +112,42 @@ public class FakeBlockPos extends BlockPos {
         return isWithinRange(target.xPos, target.yPos, target.zPos, range);
     }
 
+    @Override
     public boolean isWithinRange(int x, int y, int z, int range) {
         return distanceFrom(x, y, z) <= (range * range);
     }
 
+    @Override
     public FakeBlockPos getUp() {
         return new FakeBlockPos(this.xPos, this.yPos + 1, this.zPos, this.dim);
     }
 
+    @Override
     public FakeBlockPos getDown() {
         return new FakeBlockPos(this.xPos, this.yPos - 1, this.zPos, this.dim);
     }
 
+    @Override
     public FakeBlockPos getXPos() {
         return new FakeBlockPos(this.xPos + 1, this.yPos, this.zPos, this.dim);
     }
 
+    @Override
     public FakeBlockPos getXNeg() {
         return new FakeBlockPos(this.xPos - 1, this.yPos, this.zPos, this.dim);
     }
 
+    @Override
     public FakeBlockPos getZPos() {
         return new FakeBlockPos(this.xPos, this.yPos, this.zPos + 1, this.dim);
     }
 
+    @Override
     public FakeBlockPos getZNeg() {
         return new FakeBlockPos(this.xPos, this.yPos, this.zPos - 1, this.dim);
     }
 
+    @Override
     public AutoMap<BlockPos> getSurroundingBlocks() {
         AutoMap<BlockPos> sides = new AutoMap<BlockPos>();
         sides.put(getUp());
@@ -148,6 +159,7 @@ public class FakeBlockPos extends BlockPos {
         return sides;
     }
 
+    @Override
     public Block getBlockAtPos() {
         return getBlockAtPos(this);
     }
@@ -160,6 +172,7 @@ public class FakeBlockPos extends BlockPos {
         return aBlockAtPos;
     }
 
+    @Override
     public int getMetaAtPos() {
         return getMetaAtPos(this);
     }
@@ -172,6 +185,7 @@ public class FakeBlockPos extends BlockPos {
         return aBlockMetaAtPos;
     }
 
+    @Override
     public boolean hasSimilarNeighbour() {
         return hasSimilarNeighbour(false);
     }
@@ -180,6 +194,7 @@ public class FakeBlockPos extends BlockPos {
      * @param strict - Does this check Meta Data?
      * @return - Does this block have a neighbour that is the same?
      */
+    @Override
     public boolean hasSimilarNeighbour(boolean strict) {
         for (BlockPos g : getSurroundingBlocks().values()) {
             if (getBlockAtPos(g) == getBlockAtPos()) {
@@ -195,6 +210,7 @@ public class FakeBlockPos extends BlockPos {
         return false;
     }
 
+    @Override
     public AutoMap<BlockPos> getSimilarNeighbour() {
         return getSimilarNeighbour(false);
     }
@@ -203,6 +219,7 @@ public class FakeBlockPos extends BlockPos {
      * @param strict - Does this check Meta Data?
      * @return - Does this block have a neighbour that is the same?
      */
+    @Override
     public AutoMap<BlockPos> getSimilarNeighbour(boolean strict) {
         AutoMap<BlockPos> sides = new AutoMap<BlockPos>();
         for (BlockPos g : getSurroundingBlocks().values()) {
@@ -219,6 +236,7 @@ public class FakeBlockPos extends BlockPos {
         return sides;
     }
 
+    @Override
     public Set<BlockPos> getValidNeighboursAndSelf() {
         AutoMap<BlockPos> h = getSimilarNeighbour(true);
         h.put(this);
