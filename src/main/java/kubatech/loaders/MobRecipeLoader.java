@@ -34,24 +34,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import kubatech.Tags;
-import kubatech.api.LoaderReference;
-import kubatech.api.helpers.EnderIOHelper;
-import kubatech.api.helpers.InfernalHelper;
-import kubatech.api.helpers.ProgressBarWrapper;
-import kubatech.api.mobhandler.MobDrop;
-import kubatech.api.network.LoadConfigPacket;
-import kubatech.api.utils.GSONUtils;
-import kubatech.api.utils.ModUtils;
-import kubatech.config.Config;
-import kubatech.config.OverridesConfig;
-import kubatech.nei.Mob_Handler;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber;
-import minetweaker.MineTweakerAPI;
-import minetweaker.api.entity.IEntityDefinition;
-import minetweaker.api.item.IItemStack;
-import minetweaker.mc1710.item.MCItemStack;
-
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -74,19 +56,35 @@ import net.minecraft.world.World;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import stanhebben.zenscript.value.IntRange;
-import thaumcraft.common.items.wands.ItemWandCasting;
-import atomicstryker.infernalmobs.common.InfernalMobsCore;
-import atomicstryker.infernalmobs.common.MobModifier;
-import atomicstryker.infernalmobs.common.mods.api.ModifierLoader;
-
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 
+import atomicstryker.infernalmobs.common.InfernalMobsCore;
+import atomicstryker.infernalmobs.common.MobModifier;
+import atomicstryker.infernalmobs.common.mods.api.ModifierLoader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_DummyWorld;
+import kubatech.Tags;
+import kubatech.api.LoaderReference;
+import kubatech.api.helpers.EnderIOHelper;
+import kubatech.api.helpers.InfernalHelper;
+import kubatech.api.helpers.ProgressBarWrapper;
+import kubatech.api.mobhandler.MobDrop;
+import kubatech.api.network.LoadConfigPacket;
+import kubatech.api.utils.GSONUtils;
+import kubatech.api.utils.ModUtils;
+import kubatech.config.Config;
+import kubatech.config.OverridesConfig;
+import kubatech.nei.Mob_Handler;
+import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber;
+import minetweaker.MineTweakerAPI;
+import minetweaker.api.entity.IEntityDefinition;
+import minetweaker.api.item.IItemStack;
+import minetweaker.mc1710.item.MCItemStack;
+import stanhebben.zenscript.value.IntRange;
+import thaumcraft.common.items.wands.ItemWandCasting;
 
 public class MobRecipeLoader {
 

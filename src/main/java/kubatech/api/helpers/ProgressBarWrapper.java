@@ -24,11 +24,11 @@ import static kubatech.api.utils.ModUtils.isClientSided;
 
 import java.io.IOException;
 
-import kubatech.Tags;
-import kubatech.api.LoaderReference;
 import alexiil.mods.load.ProgressDisplayer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.ProgressManager;
+import kubatech.Tags;
+import kubatech.api.LoaderReference;
 
 @SuppressWarnings("deprecation")
 public class ProgressBarWrapper {

@@ -24,10 +24,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-import kubatech.api.utils.ModUtils;
-import kubatech.loaders.ItemLoader;
-import kubatech.loaders.item.ItemProxy;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,6 +38,10 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.AchievementPage;
+
+import kubatech.api.utils.ModUtils;
+import kubatech.loaders.ItemLoader;
+import kubatech.loaders.item.ItemProxy;
 
 public class TeaCollection extends ItemProxy {
 

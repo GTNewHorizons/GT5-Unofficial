@@ -25,8 +25,6 @@ import static kubatech.kubatech.KT;
 import java.util.HashMap;
 import java.util.List;
 
-import kubatech.loaders.ItemLoader;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -39,6 +37,7 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import kubatech.loaders.ItemLoader;
 
 public class KubaItems extends Item {
 

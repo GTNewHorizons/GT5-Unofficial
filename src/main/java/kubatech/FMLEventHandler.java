@@ -20,14 +20,13 @@
 
 package kubatech;
 
-import kubatech.api.helpers.UUIDFinder;
-import kubatech.api.network.LoadConfigPacket;
-import kubatech.savedata.PlayerDataManager;
-
 import net.minecraft.entity.player.EntityPlayerMP;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
+import kubatech.api.helpers.UUIDFinder;
+import kubatech.api.network.LoadConfigPacket;
+import kubatech.savedata.PlayerDataManager;
 
 public class FMLEventHandler {
 

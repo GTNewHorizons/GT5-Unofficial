@@ -20,11 +20,11 @@
 
 package kubatech.loaders;
 
-import kubatech.Tags;
-import minetweaker.MineTweakerImplementationAPI;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import kubatech.Tags;
+import minetweaker.MineTweakerImplementationAPI;
 
 public class MTLoader {
 

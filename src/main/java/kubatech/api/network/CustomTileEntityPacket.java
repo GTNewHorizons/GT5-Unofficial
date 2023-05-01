@@ -22,10 +22,6 @@ package kubatech.api.network;
 
 import java.nio.charset.StandardCharsets;
 
-import kubatech.api.tileentity.CustomTileEntityPacketHandler;
-import kubatech.api.utils.ModUtils;
-import kubatech.kubatech;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -38,6 +34,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import kubatech.api.tileentity.CustomTileEntityPacketHandler;
+import kubatech.api.utils.ModUtils;
+import kubatech.kubatech;
 
 public class CustomTileEntityPacket implements IMessage {
 

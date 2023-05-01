@@ -30,18 +30,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-import kubatech.Tags;
-import kubatech.api.LoaderReference;
-import kubatech.api.helpers.InfernalHelper;
-import kubatech.api.mobhandler.MobDrop;
-import kubatech.api.utils.FastRandom;
-import kubatech.api.utils.MobUtils;
-import kubatech.api.utils.ModUtils;
-import kubatech.config.Config;
-import kubatech.kubatech;
-import kubatech.loaders.MobRecipeLoader;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -75,6 +63,17 @@ import cpw.mods.fml.common.event.FMLInterModComms;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
 import gregtech.api.util.GT_Utility;
+import kubatech.Tags;
+import kubatech.api.LoaderReference;
+import kubatech.api.helpers.InfernalHelper;
+import kubatech.api.mobhandler.MobDrop;
+import kubatech.api.utils.FastRandom;
+import kubatech.api.utils.MobUtils;
+import kubatech.api.utils.ModUtils;
+import kubatech.config.Config;
+import kubatech.kubatech;
+import kubatech.loaders.MobRecipeLoader;
+import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber;
 
 public class Mob_Handler extends TemplateRecipeHandler {
 

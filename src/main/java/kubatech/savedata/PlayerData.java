@@ -20,9 +20,9 @@
 
 package kubatech.savedata;
 
-import kubatech.api.tea.TeaNetwork;
-
 import net.minecraft.nbt.NBTTagCompound;
+
+import kubatech.api.tea.TeaNetwork;
 
 public class PlayerData {
 

@@ -4,11 +4,11 @@ import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.UUID;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import kubatech.savedata.PlayerData;
 import kubatech.savedata.PlayerDataManager;
 import kubatech.tileentity.TeaStorageTile;
-
-import net.minecraft.nbt.NBTTagCompound;
 
 public class TeaNetwork {
 

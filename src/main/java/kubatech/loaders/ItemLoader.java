@@ -22,10 +22,10 @@ package kubatech.loaders;
 
 import static kubatech.api.enums.ItemList.*;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import kubatech.loaders.item.ItemProxy;
 import kubatech.loaders.item.KubaItems;
 import kubatech.loaders.item.items.*;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemLoader {
 

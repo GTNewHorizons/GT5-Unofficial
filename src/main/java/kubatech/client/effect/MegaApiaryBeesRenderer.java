@@ -22,8 +22,6 @@ package kubatech.client.effect;
 
 import static net.minecraft.client.renderer.entity.RenderManager.*;
 
-import kubatech.api.enums.ItemList;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -35,6 +33,8 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+
+import kubatech.api.enums.ItemList;
 
 public class MegaApiaryBeesRenderer extends EntityFX {
 

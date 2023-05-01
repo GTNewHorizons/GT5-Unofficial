@@ -24,10 +24,6 @@ import static kubatech.api.enums.ItemList.LegendaryRedTea;
 
 import java.util.List;
 
-import kubatech.api.enums.ItemList;
-import kubatech.api.network.CustomTileEntityPacket;
-import kubatech.api.network.LoadConfigPacket;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -40,6 +36,9 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
+import kubatech.api.enums.ItemList;
+import kubatech.api.network.CustomTileEntityPacket;
+import kubatech.api.network.LoadConfigPacket;
 
 @SuppressWarnings("unused")
 @Mod(

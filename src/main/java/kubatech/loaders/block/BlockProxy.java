@@ -24,8 +24,6 @@ import static kubatech.loaders.block.KubaBlock.defaultTileEntityUI;
 
 import java.util.List;
 
-import kubatech.Tags;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -37,6 +35,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
+
+import kubatech.Tags;
 
 public class BlockProxy {
 

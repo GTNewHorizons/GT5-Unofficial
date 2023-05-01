@@ -1,7 +1,5 @@
 package kubatech.mixin.mixins.minecraft;
 
-import kubatech.loaders.BlockLoader;
-
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 
@@ -9,6 +7,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import kubatech.loaders.BlockLoader;
 
 @SuppressWarnings("unused")
 @Mixin(value = World.class)

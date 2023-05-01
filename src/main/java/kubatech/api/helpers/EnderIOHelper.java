@@ -20,13 +20,12 @@
 
 package kubatech.api.helpers;
 
-import kubatech.api.LoaderReference;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.boss.IBossDisplayData;
 
 import crazypants.enderio.EnderIO;
+import kubatech.api.LoaderReference;
 
 public class EnderIOHelper {
 

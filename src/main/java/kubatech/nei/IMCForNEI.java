@@ -20,12 +20,11 @@
 
 package kubatech.nei;
 
-import kubatech.Tags;
-import kubatech.api.LoaderReference;
-
 import net.minecraft.nbt.NBTTagCompound;
 
 import cpw.mods.fml.common.event.FMLInterModComms;
+import kubatech.Tags;
+import kubatech.api.LoaderReference;
 
 public class IMCForNEI {
 

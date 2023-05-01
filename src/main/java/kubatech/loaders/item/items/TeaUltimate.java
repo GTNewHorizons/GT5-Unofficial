@@ -27,12 +27,6 @@ import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.util.concurrent.atomic.AtomicReference;
 
-import kubatech.api.enums.ItemList;
-import kubatech.api.tea.TeaNetwork;
-import kubatech.api.utils.ModUtils;
-import kubatech.api.utils.StringUtils;
-import kubatech.loaders.item.IItemProxyGUI;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,8 +37,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-import codechicken.nei.NEIClientUtils;
-
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
@@ -53,6 +45,13 @@ import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.*;
+
+import codechicken.nei.NEIClientUtils;
+import kubatech.api.enums.ItemList;
+import kubatech.api.tea.TeaNetwork;
+import kubatech.api.utils.ModUtils;
+import kubatech.api.utils.StringUtils;
+import kubatech.loaders.item.IItemProxyGUI;
 
 public class TeaUltimate extends TeaCollection implements IItemProxyGUI {
 

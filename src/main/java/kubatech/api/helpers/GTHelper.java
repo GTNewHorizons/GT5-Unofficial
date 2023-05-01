@@ -23,9 +23,9 @@ package kubatech.api.helpers;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
 import static kubatech.api.Variables.ln4;
 
-import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 
 public class GTHelper {
 

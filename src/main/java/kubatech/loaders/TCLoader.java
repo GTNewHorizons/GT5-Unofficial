@@ -25,15 +25,15 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
-import kubatech.api.LoaderReference;
-import kubatech.api.enums.ItemList;
-import kubatech.api.utils.ItemID;
-import kubatech.loaders.item.items.TeaUltimate;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import kubatech.api.LoaderReference;
+import kubatech.api.enums.ItemList;
+import kubatech.api.utils.ItemID;
+import kubatech.loaders.item.items.TeaUltimate;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
@@ -42,7 +42,6 @@ import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TCLoader {
 

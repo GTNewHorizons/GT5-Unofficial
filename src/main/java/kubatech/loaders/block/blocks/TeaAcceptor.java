@@ -22,16 +22,16 @@ package kubatech.loaders.block.blocks;
 
 import java.util.List;
 
-import kubatech.loaders.block.BlockProxy;
-import kubatech.loaders.block.IProxyTileEntityProvider;
-import kubatech.tileentity.TeaAcceptorTile;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import kubatech.loaders.block.BlockProxy;
+import kubatech.loaders.block.IProxyTileEntityProvider;
+import kubatech.tileentity.TeaAcceptorTile;
 
 public class TeaAcceptor extends BlockProxy implements IProxyTileEntityProvider {
 

@@ -22,8 +22,6 @@ package kubatech.loaders.item;
 
 import java.util.List;
 
-import kubatech.Tags;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,6 +38,8 @@ import com.gtnewhorizons.modularui.common.builder.UIBuilder;
 import com.gtnewhorizons.modularui.common.builder.UIInfo;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularGui;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
+
+import kubatech.Tags;
 
 public class ItemProxy {
 

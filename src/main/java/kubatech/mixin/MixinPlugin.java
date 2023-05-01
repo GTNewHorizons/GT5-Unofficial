@@ -14,8 +14,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import kubatech.Tags;
-
 import net.minecraft.launchwrapper.Launch;
 
 import org.apache.logging.log4j.LogManager;
@@ -25,6 +23,8 @@ import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
 import com.gtnewhorizon.gtnhmixins.MinecraftURLClassPath;
+
+import kubatech.Tags;
 
 @SuppressWarnings("unused")
 public class MixinPlugin implements IMixinConfigPlugin {

@@ -30,17 +30,6 @@ import static kubatech.api.Variables.StructureHologram;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-import kubatech.Tags;
-import kubatech.api.LoaderReference;
-import kubatech.api.helpers.ReflectionHelper;
-import kubatech.api.implementations.KubaTechGTMultiBlockBase;
-import kubatech.api.network.CustomTileEntityPacket;
-import kubatech.api.tileentity.CustomTileEntityPacketHandler;
-import kubatech.api.utils.FastRandom;
-import kubatech.api.utils.ItemID;
-import kubatech.client.effect.EntityRenderer;
-import kubatech.loaders.MobRecipeLoader;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
@@ -64,16 +53,9 @@ import net.minecraft.world.WorldProviderHell;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-
-import WayofTime.alchemicalWizardry.api.alchemy.energy.ReagentRegistry;
-import WayofTime.alchemicalWizardry.api.event.RitualRunEvent;
-import WayofTime.alchemicalWizardry.api.rituals.Rituals;
-import WayofTime.alchemicalWizardry.api.soulNetwork.SoulNetworkHandler;
-import WayofTime.alchemicalWizardry.api.tile.IBloodAltar;
-import WayofTime.alchemicalWizardry.common.rituals.RitualEffectWellOfSuffering;
-import WayofTime.alchemicalWizardry.common.tileEntity.TEMasterStone;
 
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.google.common.collect.Multimap;
@@ -90,6 +72,13 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.*;
 import com.mojang.authlib.GameProfile;
 
+import WayofTime.alchemicalWizardry.api.alchemy.energy.ReagentRegistry;
+import WayofTime.alchemicalWizardry.api.event.RitualRunEvent;
+import WayofTime.alchemicalWizardry.api.rituals.Rituals;
+import WayofTime.alchemicalWizardry.api.soulNetwork.SoulNetworkHandler;
+import WayofTime.alchemicalWizardry.api.tile.IBloodAltar;
+import WayofTime.alchemicalWizardry.common.rituals.RitualEffectWellOfSuffering;
+import WayofTime.alchemicalWizardry.common.tileEntity.TEMasterStone;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -107,6 +96,16 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import kubatech.Tags;
+import kubatech.api.LoaderReference;
+import kubatech.api.helpers.ReflectionHelper;
+import kubatech.api.implementations.KubaTechGTMultiBlockBase;
+import kubatech.api.network.CustomTileEntityPacket;
+import kubatech.api.tileentity.CustomTileEntityPacketHandler;
+import kubatech.api.utils.FastRandom;
+import kubatech.api.utils.ItemID;
+import kubatech.client.effect.EntityRenderer;
+import kubatech.loaders.MobRecipeLoader;
 
 public class GT_MetaTileEntity_ExtremeExterminationChamber
     extends KubaTechGTMultiBlockBase<GT_MetaTileEntity_ExtremeExterminationChamber>
@@ -286,9 +285,9 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+        int colorIndex, boolean aActive, boolean aRedstone) {
+        if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
@@ -363,7 +362,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (this.mMaxProgresstime > 0) {
             GT_Utility.sendChatToPlayer(aPlayer, "Can't change mode when running !");
             return;
@@ -388,9 +387,9 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     }
 
     @Override
-    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-        float aZ) {
-        if (super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ)) return true;
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ) {
+        if (super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) return true;
         mAnimationEnabled = !mAnimationEnabled;
         GT_Utility.sendChatToPlayer(aPlayer, "Animations are " + (mAnimationEnabled ? "enabled" : "disabled"));
         return true;

@@ -22,10 +22,6 @@ package kubatech.client.effect;
 
 import static net.minecraft.client.renderer.entity.RenderManager.*;
 
-import kubatech.Tags;
-import kubatech.api.utils.MobUtils;
-import kubatech.config.Config;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -44,6 +40,9 @@ import org.lwjgl.util.glu.GLU;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import kubatech.Tags;
+import kubatech.api.utils.MobUtils;
+import kubatech.config.Config;
 
 @SideOnly(Side.CLIENT)
 public class EntityRenderer extends EntityFX {

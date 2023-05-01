@@ -22,9 +22,9 @@ package kubatech.nei;
 
 import static kubatech.api.enums.ItemList.*;
 
-import kubatech.Tags;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
+import kubatech.Tags;
 
 public class NEI_Config implements IConfigureNEI {
 

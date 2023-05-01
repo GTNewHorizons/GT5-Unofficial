@@ -23,10 +23,10 @@ package kubatech.tileentity;
 import java.math.BigInteger;
 import java.util.UUID;
 
-import kubatech.api.tea.TeaNetwork;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+
+import kubatech.api.tea.TeaNetwork;
 
 public class TeaStorageTile extends TileEntity {
 

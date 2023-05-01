@@ -22,9 +22,9 @@ package kubatech.config;
 
 import java.io.File;
 
-import kubatech.Tags;
-
 import net.minecraftforge.common.config.Configuration;
+
+import kubatech.Tags;
 
 public class Config {
 

@@ -22,17 +22,17 @@ package kubatech.commands;
 
 import static kubatech.commands.CommandConfig.Translations.*;
 
-import kubatech.api.network.LoadConfigPacket;
-import kubatech.config.Config;
-import kubatech.kubatech;
-import kubatech.loaders.MobRecipeLoader;
-
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
+
+import kubatech.api.network.LoadConfigPacket;
+import kubatech.config.Config;
+import kubatech.kubatech;
+import kubatech.loaders.MobRecipeLoader;
 
 public class CommandConfig extends CommandBase {
 

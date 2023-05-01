@@ -28,20 +28,12 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 
-import kubatech.api.enums.ItemList;
-import kubatech.api.tea.TeaNetwork;
-import kubatech.api.utils.StringUtils;
-import kubatech.loaders.ItemLoader;
-import kubatech.loaders.block.KubaBlock;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-
-import codechicken.nei.NEIClientUtils;
 
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.Text;
@@ -54,6 +46,13 @@ import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+
+import codechicken.nei.NEIClientUtils;
+import kubatech.api.enums.ItemList;
+import kubatech.api.tea.TeaNetwork;
+import kubatech.api.utils.StringUtils;
+import kubatech.loaders.ItemLoader;
+import kubatech.loaders.block.KubaBlock;
 
 public class TeaAcceptorTile extends TileEntity
     implements IInventory, ITileWithModularUI, KubaBlock.IModularUIProvider {

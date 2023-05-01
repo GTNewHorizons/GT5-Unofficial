@@ -20,6 +20,10 @@
 
 package kubatech.loaders;
 
+import net.minecraft.block.material.Material;
+import net.minecraft.item.ItemBlock;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 import kubatech.api.enums.ItemList;
 import kubatech.loaders.block.KubaBlock;
 import kubatech.loaders.block.KubaItemBlock;
@@ -27,11 +31,6 @@ import kubatech.loaders.block.blocks.TeaAcceptor;
 import kubatech.loaders.block.blocks.TeaStorage;
 import kubatech.tileentity.TeaAcceptorTile;
 import kubatech.tileentity.TeaStorageTile;
-
-import net.minecraft.block.material.Material;
-import net.minecraft.item.ItemBlock;
-
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BlockLoader {
 

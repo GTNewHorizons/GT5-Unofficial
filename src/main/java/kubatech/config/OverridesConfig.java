@@ -29,13 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import kubatech.Tags;
-import kubatech.api.ConstructableItemStack;
-import kubatech.api.LoaderReference;
-import kubatech.api.helpers.ReflectionHelper;
-import kubatech.api.mobhandler.MobDrop;
-import kubatech.api.utils.GSONUtils;
-
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Items;
@@ -55,6 +48,12 @@ import com.google.gson.reflect.TypeToken;
 import cpw.mods.fml.common.registry.GameRegistry;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import kubatech.Tags;
+import kubatech.api.ConstructableItemStack;
+import kubatech.api.LoaderReference;
+import kubatech.api.helpers.ReflectionHelper;
+import kubatech.api.mobhandler.MobDrop;
+import kubatech.api.utils.GSONUtils;
 
 public class OverridesConfig {
 

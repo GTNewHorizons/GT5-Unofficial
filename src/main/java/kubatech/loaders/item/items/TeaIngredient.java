@@ -22,11 +22,11 @@ package kubatech.loaders.item.items;
 
 import java.util.List;
 
-import kubatech.loaders.item.ItemProxy;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+
+import kubatech.loaders.item.ItemProxy;
 
 public class TeaIngredient extends ItemProxy {
 

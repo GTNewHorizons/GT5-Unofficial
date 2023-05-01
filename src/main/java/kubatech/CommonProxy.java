@@ -23,6 +23,10 @@ package kubatech;
 import static kubatech.loaders.BlockLoader.registerBlocks;
 import static kubatech.loaders.ItemLoader.registerItems;
 
+import net.minecraftforge.common.MinecraftForge;
+
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.event.*;
 import kubatech.api.LoaderReference;
 import kubatech.commands.*;
 import kubatech.config.Config;
@@ -30,11 +34,6 @@ import kubatech.loaders.MTLoader;
 import kubatech.loaders.RecipeLoader;
 import kubatech.loaders.TCLoader;
 import kubatech.savedata.PlayerDataManager;
-
-import net.minecraftforge.common.MinecraftForge;
-
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.event.*;
 
 public class CommonProxy {
 

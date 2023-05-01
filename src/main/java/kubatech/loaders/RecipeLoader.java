@@ -24,13 +24,6 @@ import static kubatech.api.enums.ItemList.*;
 
 import java.lang.reflect.InvocationTargetException;
 
-import kubatech.Tags;
-import kubatech.api.LoaderReference;
-import kubatech.api.enums.ItemList;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_MegaIndustrialApiary;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -50,6 +43,12 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
+import kubatech.Tags;
+import kubatech.api.LoaderReference;
+import kubatech.api.enums.ItemList;
+import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber;
+import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse;
+import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_MegaIndustrialApiary;
 
 public class RecipeLoader {
 

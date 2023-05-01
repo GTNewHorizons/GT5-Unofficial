@@ -25,13 +25,13 @@ import static kubatech.commands.CommandTea.Translations.*;
 import java.math.BigInteger;
 import java.util.UUID;
 
-import kubatech.api.helpers.UUIDFinder;
-import kubatech.api.tea.TeaNetwork;
-
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
+
+import kubatech.api.helpers.UUIDFinder;
+import kubatech.api.tea.TeaNetwork;
 
 public class CommandTea extends CommandBase {
 

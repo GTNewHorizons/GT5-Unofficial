@@ -23,9 +23,9 @@ package kubatech.api;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-import kubatech.api.utils.StringUtils;
-
 import net.minecraft.util.EnumChatFormatting;
+
+import kubatech.api.utils.StringUtils;
 
 public class Variables {
 

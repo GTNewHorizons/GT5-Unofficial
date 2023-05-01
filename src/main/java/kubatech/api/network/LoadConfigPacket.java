@@ -24,14 +24,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import kubatech.config.Config;
-import kubatech.config.OverridesConfig;
-import kubatech.kubatech;
-import kubatech.loaders.MobRecipeLoader;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import kubatech.config.Config;
+import kubatech.config.OverridesConfig;
+import kubatech.kubatech;
+import kubatech.loaders.MobRecipeLoader;
 
 public class LoadConfigPacket implements IMessage {
 

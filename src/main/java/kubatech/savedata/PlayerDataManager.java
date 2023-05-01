@@ -24,8 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import kubatech.api.helpers.UUIDFinder;
-
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -33,6 +31,7 @@ import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.event.world.WorldEvent;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import kubatech.api.helpers.UUIDFinder;
 
 public class PlayerDataManager extends WorldSavedData {
 

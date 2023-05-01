@@ -4,9 +4,6 @@ import static kubatech.loaders.MobRecipeLoader.randomEnchantmentDetectedString;
 
 import java.util.Random;
 
-import kubatech.api.utils.FastRandom;
-import kubatech.loaders.MobRecipeLoader;
-
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagInt;
@@ -16,6 +13,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import kubatech.api.utils.FastRandom;
+import kubatech.loaders.MobRecipeLoader;
 
 @SuppressWarnings("unused")
 @Mixin(value = EnchantmentHelper.class)

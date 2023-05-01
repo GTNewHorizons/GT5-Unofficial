@@ -26,12 +26,11 @@ import java.util.*;
 
 import javax.xml.bind.DatatypeConverter;
 
-import kubatech.kubatech;
-
 import net.minecraft.launchwrapper.Launch;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
+import kubatech.kubatech;
 
 public class ModUtils {
 

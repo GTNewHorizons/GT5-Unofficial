@@ -27,8 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.Function;
 
-import kubatech.loaders.BlockLoader;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -50,6 +48,8 @@ import com.gtnewhorizons.modularui.common.builder.UIBuilder;
 import com.gtnewhorizons.modularui.common.builder.UIInfo;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularGui;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
+
+import kubatech.loaders.BlockLoader;
 
 public class KubaBlock extends Block {
 
