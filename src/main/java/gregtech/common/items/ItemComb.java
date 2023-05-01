@@ -12,9 +12,11 @@ import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -104,6 +106,11 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
     public String getItemStackDisplayName(ItemStack stack) {
         return CombType.valueOf(stack.getItemDamage())
             .getName();
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean debugInfo) {
+        tooltip.add(EnumChatFormatting.DARK_RED + "Forestry can't process it");
     }
 
     @Override
