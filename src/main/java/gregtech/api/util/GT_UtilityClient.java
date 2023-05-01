@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.google.common.collect.Lists;
+
 import cpw.mods.fml.relauncher.ReflectionHelper;
 
 public class GT_UtilityClient {

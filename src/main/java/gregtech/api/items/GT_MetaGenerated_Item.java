@@ -21,8 +21,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-import squeek.applecore.api.food.FoodValues;
-import squeek.applecore.api.food.IEdible;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -43,6 +41,8 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
+import squeek.applecore.api.food.FoodValues;
+import squeek.applecore.api.food.IEdible;
 
 /**
  * @author Gregorius Techneticies

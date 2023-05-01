@@ -23,9 +23,6 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
-import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
-import mods.railcraft.common.items.RailcraftToolItems;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.init.Blocks;
@@ -45,10 +42,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import appeng.util.ReadableNumberConverter;
-import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.PositionedStack;
-
 import com.google.common.collect.Iterables;
 import com.gtnewhorizons.modularui.api.GlStateManager;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
@@ -64,6 +57,9 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import appeng.util.ReadableNumberConverter;
+import codechicken.lib.gui.GuiDraw;
+import codechicken.nei.PositionedStack;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import gnu.trove.map.TByteObjectMap;
@@ -98,6 +94,8 @@ import gregtech.nei.HeatingCoilSpecialValueFormatter;
 import gregtech.nei.INEISpecialInfoFormatter;
 import gregtech.nei.NEIRecipeInfo;
 import ic2.core.Ic2Items;
+import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
+import mods.railcraft.common.items.RailcraftToolItems;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!

@@ -13,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-import speiger.src.crops.api.ICropCardInfo;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
@@ -25,6 +24,7 @@ import gregtech.common.blocks.GT_TileEntity_Ores;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.Crops;
 import ic2.api.crops.ICropTile;
+import speiger.src.crops.api.ICropCardInfo;
 
 public class GT_BaseCrop extends CropCard implements ICropCardInfo {
 

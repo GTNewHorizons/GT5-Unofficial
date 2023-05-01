@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+
 import gregtech.api.interfaces.tileentity.ICoverable;
 
 public class GT_CoverUIBuildContext extends UIBuildContext {

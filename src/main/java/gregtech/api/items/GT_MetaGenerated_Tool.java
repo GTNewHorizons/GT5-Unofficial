@@ -9,9 +9,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import mods.railcraft.api.core.items.IToolCrowbar;
-import mrtjp.projectred.api.IScrewdriver;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -57,6 +54,8 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tools.GT_Tool_Turbine;
+import mods.railcraft.api.core.items.IToolCrowbar;
+import mrtjp.projectred.api.IScrewdriver;
 
 /**
  * This is an example on how you can create a Tool ItemStack, in this case a Bismuth Wrench:

@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+
 import gregtech.api.enums.SteamVariant;
 
 public class FallbackableSteamTexture {

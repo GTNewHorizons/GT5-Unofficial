@@ -2,10 +2,9 @@ package gregtech.nei;
 
 import net.minecraft.client.Minecraft;
 
-import codechicken.nei.recipe.TemplateRecipeHandler;
-
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 
+import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.util.GT_Recipe;
 

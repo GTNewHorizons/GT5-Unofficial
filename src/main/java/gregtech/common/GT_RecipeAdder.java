@@ -10,9 +10,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
-import mods.railcraft.common.items.RailcraftToolItems;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -35,6 +32,8 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
 import ic2.core.init.MainConfig;
 import ic2.core.util.ConfigUtil;
+import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
+import mods.railcraft.common.items.RailcraftToolItems;
 
 public class GT_RecipeAdder implements IGT_RecipeAdder {
 
