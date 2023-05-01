@@ -10,12 +10,12 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import goodgenerator.crossmod.thaumcraft.LargeEssentiaEnergyData;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.aspects.IEssentiaTransport;
-import goodgenerator.crossmod.thaumcraft.LargeEssentiaEnergyData;
 
 public class EssentiaHatch extends TileEntity implements IAspectContainer, IEssentiaTransport {
 

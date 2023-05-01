@@ -41,60 +41,12 @@ public class BlockRenderHandler implements ISimpleBlockRenderingHandler {
             ITextureBlock tc = (ITextureBlock) aBlock;
             aBlock.setBlockBoundsForItemRender();
             aRenderer.setRenderBoundsFromBlock(aBlock);
-            renderNegativeYFacing(
-                    null,
-                    aRenderer,
-                    aBlock,
-                    0,
-                    0,
-                    0,
-                    tc.getTexture(aBlock, metadata, (byte) DOWN.ordinal()),
-                    true);
-            renderPositiveYFacing(
-                    null,
-                    aRenderer,
-                    aBlock,
-                    0,
-                    0,
-                    0,
-                    tc.getTexture(aBlock, metadata, (byte) UP.ordinal()),
-                    true);
-            renderNegativeZFacing(
-                    null,
-                    aRenderer,
-                    aBlock,
-                    0,
-                    0,
-                    0,
-                    tc.getTexture(aBlock, metadata, (byte) NORTH.ordinal()),
-                    true);
-            renderPositiveZFacing(
-                    null,
-                    aRenderer,
-                    aBlock,
-                    0,
-                    0,
-                    0,
-                    tc.getTexture(aBlock, metadata, (byte) SOUTH.ordinal()),
-                    true);
-            renderNegativeXFacing(
-                    null,
-                    aRenderer,
-                    aBlock,
-                    0,
-                    0,
-                    0,
-                    tc.getTexture(aBlock, metadata, (byte) WEST.ordinal()),
-                    true);
-            renderPositiveXFacing(
-                    null,
-                    aRenderer,
-                    aBlock,
-                    0,
-                    0,
-                    0,
-                    tc.getTexture(aBlock, metadata, (byte) EAST.ordinal()),
-                    true);
+            renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, tc.getTexture(aBlock, metadata, DOWN), true);
+            renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, tc.getTexture(aBlock, metadata, UP), true);
+            renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, tc.getTexture(aBlock, metadata, NORTH), true);
+            renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, tc.getTexture(aBlock, metadata, SOUTH), true);
+            renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, tc.getTexture(aBlock, metadata, WEST), true);
+            renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, tc.getTexture(aBlock, metadata, EAST), true);
         }
 
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
@@ -120,7 +72,7 @@ public class BlockRenderHandler implements ISimpleBlockRenderingHandler {
                     aX,
                     aY,
                     aZ,
-                    tc.getTexture(aBlock, (byte) DOWN.ordinal(), aWorld, aX, aY, aZ),
+                    tc.getTexture(aBlock, DOWN, aWorld, aX, aY, aZ),
                     true);
             renderPositiveYFacing(
                     aWorld,
@@ -129,7 +81,7 @@ public class BlockRenderHandler implements ISimpleBlockRenderingHandler {
                     aX,
                     aY,
                     aZ,
-                    tc.getTexture(aBlock, (byte) UP.ordinal(), aWorld, aX, aY, aZ),
+                    tc.getTexture(aBlock, UP, aWorld, aX, aY, aZ),
                     true);
             renderNegativeZFacing(
                     aWorld,
@@ -138,7 +90,7 @@ public class BlockRenderHandler implements ISimpleBlockRenderingHandler {
                     aX,
                     aY,
                     aZ,
-                    tc.getTexture(aBlock, (byte) NORTH.ordinal(), aWorld, aX, aY, aZ),
+                    tc.getTexture(aBlock, NORTH, aWorld, aX, aY, aZ),
                     true);
             renderPositiveZFacing(
                     aWorld,
@@ -147,7 +99,7 @@ public class BlockRenderHandler implements ISimpleBlockRenderingHandler {
                     aX,
                     aY,
                     aZ,
-                    tc.getTexture(aBlock, (byte) SOUTH.ordinal(), aWorld, aX, aY, aZ),
+                    tc.getTexture(aBlock, SOUTH, aWorld, aX, aY, aZ),
                     true);
             renderNegativeXFacing(
                     aWorld,
@@ -156,7 +108,7 @@ public class BlockRenderHandler implements ISimpleBlockRenderingHandler {
                     aX,
                     aY,
                     aZ,
-                    tc.getTexture(aBlock, (byte) WEST.ordinal(), aWorld, aX, aY, aZ),
+                    tc.getTexture(aBlock, WEST, aWorld, aX, aY, aZ),
                     true);
             renderPositiveXFacing(
                     aWorld,
@@ -165,7 +117,7 @@ public class BlockRenderHandler implements ISimpleBlockRenderingHandler {
                     aX,
                     aY,
                     aZ,
-                    tc.getTexture(aBlock, (byte) EAST.ordinal(), aWorld, aX, aY, aZ),
+                    tc.getTexture(aBlock, EAST, aWorld, aX, aY, aZ),
                     true);
         }
         return false;

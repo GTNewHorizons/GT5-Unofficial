@@ -5,12 +5,12 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
-import thaumcraft.api.aspects.Aspect;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import thaumcraft.api.aspects.Aspect;
 
 public class LargeEssentiaEnergyData {
 

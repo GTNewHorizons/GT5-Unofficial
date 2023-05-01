@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -77,7 +78,7 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -87,8 +88,8 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
-            float aY, float aZ) {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
+            float aX, float aY, float aZ) {
         GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
@@ -128,9 +129,13 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (isOn) {
-            for (byte i = 0; i < 6; i++) aBaseMetaTileEntity.setInternalOutputRedstoneSignal(i, (byte) 15);
+            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 15);
+            }
         } else {
-            for (byte i = 0; i < 6; i++) aBaseMetaTileEntity.setInternalOutputRedstoneSignal(i, (byte) 0);
+            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 0);
+            }
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
@@ -141,12 +146,14 @@ public class NeutronSensor extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection Side,
+            ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return false;
     }
 

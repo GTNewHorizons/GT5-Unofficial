@@ -137,8 +137,8 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
     public abstract int getMaxPara();
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack) {
-        return aSide != getBaseMetaTileEntity().getFrontFacing();
+    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aStack) {
+        return side != getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -195,8 +195,8 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
         } else if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && !this.isLoadedChunk) {
             // load a 3x3 area when machine is running
             GT_ChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
-            int offX = ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()).offsetX;
-            int offZ = ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()).offsetZ;
+            int offX = aBaseMetaTileEntity.getFrontFacing().offsetX;
+            int offZ = aBaseMetaTileEntity.getFrontFacing().offsetZ;
             GT_ChunkManager.requestChunkLoad(
                     (TileEntity) aBaseMetaTileEntity,
                     new ChunkCoordIntPair(getChunkX() + offX, getChunkZ() + offZ));
@@ -364,9 +364,9 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing)
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int colorIndex, boolean aActive, boolean aRedstone) {
+        if (side == facing)
             return new ITexture[] { TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS).extFacing().build(),
                     getTextureOverlay() };
         if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(52) };

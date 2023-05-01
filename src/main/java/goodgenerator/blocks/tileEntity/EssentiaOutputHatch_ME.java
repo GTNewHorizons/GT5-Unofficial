@@ -3,10 +3,6 @@ package goodgenerator.blocks.tileEntity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumicenergistics.api.grid.IEssentiaGrid;
-import thaumicenergistics.api.grid.IMEEssentiaMonitor;
 import appeng.api.config.Actionable;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGrid;
@@ -21,6 +17,10 @@ import appeng.tile.TileEvent;
 import appeng.tile.events.TileEventType;
 import cpw.mods.fml.common.Optional;
 import goodgenerator.util.ItemRefer;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
+import thaumicenergistics.api.grid.IEssentiaGrid;
+import thaumicenergistics.api.grid.IMEEssentiaMonitor;
 
 @Optional.InterfaceList(
         value = {

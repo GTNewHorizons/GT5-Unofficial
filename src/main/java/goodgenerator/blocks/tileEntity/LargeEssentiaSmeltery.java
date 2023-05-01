@@ -17,12 +17,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.visnet.VisNetHandler;
-import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
-
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
@@ -45,6 +39,11 @@ import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.visnet.VisNetHandler;
+import thaumcraft.common.config.ConfigBlocks;
+import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
 public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         implements IConstructable, ISurvivalConstructable {
@@ -224,9 +223,9 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int colorIndex, boolean aActive, boolean aRedstone) {
+        if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
                     TextureFactory.of(textureFontOn),
                     TextureFactory.builder().addIcon(textureFontOn_Glow).glow().build() };
@@ -457,8 +456,7 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
                 int y = mufflerHatch.getBaseMetaTileEntity().getYCoord();
                 int z = mufflerHatch.getBaseMetaTileEntity().getZCoord();
 
-                ForgeDirection facing = ForgeDirection
-                        .getOrientation(mufflerHatch.getBaseMetaTileEntity().getFrontFacing());
+                ForgeDirection facing = mufflerHatch.getBaseMetaTileEntity().getFrontFacing();
                 switch (facing) {
                     case SOUTH:
                         z += 1;

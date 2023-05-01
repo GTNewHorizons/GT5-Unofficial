@@ -18,8 +18,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.IEssentiaContainerItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import goodgenerator.blocks.tileEntity.EssentiaHatch;
@@ -28,6 +26,8 @@ import goodgenerator.blocks.tileEntity.EssentiaOutputHatch_ME;
 import goodgenerator.main.GoodGenerator;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_Utility;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.IEssentiaContainerItem;
 
 public class TEBlock extends BlockContainer {
 

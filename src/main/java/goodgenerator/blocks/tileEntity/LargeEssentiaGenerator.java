@@ -13,11 +13,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
-
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.common.config.ConfigBlocks;
 
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
@@ -48,6 +45,9 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.common.config.ConfigBlocks;
 
 public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         implements IConstructable, ISurvivalConstructable {
@@ -119,11 +119,11 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
     }
 
     @Override
-    public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-            float aZ) {
-        if (aWrenchingSide == 0 || aWrenchingSide == 1) return false;
-        if (getBaseMetaTileEntity().isValidFacing(aWrenchingSide)) {
-            getBaseMetaTileEntity().setFrontFacing(aWrenchingSide);
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX,
+            float aY, float aZ) {
+        if (wrenchingSide.offsetY != 0) return false;
+        if (getBaseMetaTileEntity().isValidFacing(wrenchingSide)) {
+            getBaseMetaTileEntity().setFrontFacing(wrenchingSide);
             return true;
         }
         return false;
@@ -492,9 +492,9 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
 
     @Override
     @SuppressWarnings("ALL")
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int colorIndex, boolean aActive, boolean aRedstone) {
+        if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1536),
                     new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_DRAGONEGG), TextureFactory.builder()
                             .addIcon(Textures.BlockIcons.MACHINE_CASING_DRAGONEGG_GLOW).glow().build() };
