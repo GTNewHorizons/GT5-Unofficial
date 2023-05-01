@@ -1155,6 +1155,18 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     public void gridChanged() {}
 
+    @Override
+    public ItemStack getMachineCraftingIcon() {
+        final IGregTechTileEntity mte = getBaseMetaTileEntity();
+        if (mte == null) {
+            return null;
+        }
+        return mte.getDrops()
+            .stream()
+            .findAny()
+            .orElse(null);
+    }
+
     // === Waila compat ===
 
     @Override

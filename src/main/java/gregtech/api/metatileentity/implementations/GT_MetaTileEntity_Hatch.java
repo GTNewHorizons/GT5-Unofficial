@@ -1,7 +1,9 @@
 package gregtech.api.metatileentity.implementations;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import appeng.api.crafting.ICraftingIconProvider;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -10,7 +12,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 /**
  * Handles texture changes internally. No special calls are necessary other than updateTexture in add***ToMachineList.
  */
-public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTank {
+public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTank implements ICraftingIconProvider {
 
     public enum ConnectionType {
         CABLE,
@@ -26,6 +28,8 @@ public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTan
 
     private byte mTexturePage = 0;
     private byte actualTexture = 0;
+
+    private ItemStack ae2CraftingIcon;
 
     public GT_MetaTileEntity_Hatch(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
         String aDescription, ITexture... aTextures) {
@@ -114,6 +118,19 @@ public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTan
     public final void updateTexture(int id) {
         onValueUpdate((byte) id);
         onTexturePageUpdate((byte) (id >> 7));
+    }
+
+    /**
+     * Sets the icon for the owning multiblock used for AE2 crafting display of attached interfaces, called on add to
+     * machine list
+     */
+    public final void updateCraftingIcon(ItemStack icon) {
+        this.ae2CraftingIcon = icon;
+    }
+
+    @Override
+    public ItemStack getMachineCraftingIcon() {
+        return this.ae2CraftingIcon;
     }
 
     /**
