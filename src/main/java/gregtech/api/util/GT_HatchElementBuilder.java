@@ -492,7 +492,7 @@ public class GT_HatchElementBuilder<T> {
                         // find the first facing available, but prefer a facing that isn't up/down
                         for (ForgeDirection facing : allowed) {
                             result = facing;
-                            if (facing.offsetY == 0) break;
+                            if (facing.ordinal() > 1) break;
                         }
                         assert result != null;
                         ((IGregTechTileEntity) tileEntity).setFrontFacing(result);

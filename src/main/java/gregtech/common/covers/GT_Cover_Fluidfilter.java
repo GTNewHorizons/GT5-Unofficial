@@ -120,6 +120,7 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
     @Override
     protected boolean onCoverRightClickImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable,
         ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (side == ForgeDirection.UNKNOWN) return false;
         if (((aX > 0.375D) && (aX < 0.625D)) || ((side.offsetX != 0) && ((aY > 0.375D) && (aY < 0.625D)))
             || ((side.offsetY != 0) && ((aZ > 0.375D) && (aZ < 0.625D)))
             || (side.offsetZ != 0)) {

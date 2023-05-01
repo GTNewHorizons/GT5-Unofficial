@@ -129,7 +129,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return facing.offsetY == 0;
+        return facing.ordinal() > 1;
     }
 
     @Override
@@ -206,7 +206,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
     @Override
     public IAlignmentLimits getAlignmentLimits() {
-        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && f.isNotFlipped();
+        return (d, r, f) -> d.ordinal() > 1 && r.isNotRotated() && f.isNotFlipped();
     }
 
     private boolean checkMachine() {
