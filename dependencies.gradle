@@ -1,35 +1,35 @@
 // Add your dependencies here
 
 dependencies {
-    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.43.02-pre:dev')
-    api("com.github.GTNewHorizons:TecTech:5.2.0-pre:dev")
-    implementation("com.github.GTNewHorizons:TinkersConstruct:1.9.26-GTNH:dev")
+    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.43.07:dev')
+    api("com.github.GTNewHorizons:TecTech:5.2.1:dev")
+    implementation("com.github.GTNewHorizons:TinkersConstruct:1.9.29-GTNH:dev")
 
     api("com.github.GTNewHorizons:GalacticGregGT5:1.0.8:dev") {
         exclude group:"com.github.GTNewHorizons", module:"bartworks"
     }
 
     api("com.github.GTNewHorizons:Galacticraft:3.0.68-GTNH:dev")
-    api("com.github.GTNewHorizons:ModularUI:1.1.2:dev")
+    api("com.github.GTNewHorizons:ModularUI:1.1.3:dev")
 
-    api("com.github.GTNewHorizons:Avaritia:1.37:dev")
+    api("com.github.GTNewHorizons:Avaritia:1.39:dev")
 
     compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.23:deobf") {transitive = false}
     compileOnly("com.github.GTNewHorizons:AppleCore:3.2.10:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:ForestryMC:4.6.5:api") {
+    compileOnly("com.github.GTNewHorizons:ForestryMC:4.6.7:api") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:Railcraft:9.14.1:api") {
         transitive = false
     }
 
-    compileOnly("com.github.GTNewHorizons:EnderIO:2.4.10:api") {
+    compileOnly("com.github.GTNewHorizons:EnderIO:2.4.11:api") {
         transitive = false
     }
 
-    compileOnly("com.github.GTNewHorizons:OpenComputers:1.9.1-GTNH:api") {
+    compileOnly("com.github.GTNewHorizons:OpenComputers:1.9.4-GTNH:api") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:BuildCraft:7.1.33:dev") {
