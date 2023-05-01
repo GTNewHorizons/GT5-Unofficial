@@ -38,12 +38,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.AspectSourceHelper;
-import thaumcraft.api.aspects.IAspectContainer;
-import thaumcraft.api.visnet.VisNetHandler;
-
 import com.google.common.base.Enums;
 
 import cpw.mods.fml.relauncher.Side;
@@ -62,6 +56,11 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.AspectSourceHelper;
+import thaumcraft.api.aspects.IAspectContainer;
+import thaumcraft.api.visnet.VisNetHandler;
 
 interface MagicalEnergyBBListener {
 

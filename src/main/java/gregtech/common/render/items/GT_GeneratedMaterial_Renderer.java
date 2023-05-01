@@ -10,10 +10,9 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
 
-import codechicken.lib.render.TextureUtils;
-
 import com.mitchej123.hodgepodge.textures.IPatchedTextureAtlasSprite;
 
+import codechicken.lib.render.TextureUtils;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.util.GT_Utility;

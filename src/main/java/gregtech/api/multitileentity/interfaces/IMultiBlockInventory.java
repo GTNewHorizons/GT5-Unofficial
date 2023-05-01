@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
+
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 
 public interface IMultiBlockInventory {

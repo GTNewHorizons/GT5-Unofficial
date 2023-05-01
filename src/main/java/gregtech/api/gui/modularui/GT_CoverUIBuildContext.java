@@ -3,6 +3,7 @@ package gregtech.api.gui.modularui;
 import net.minecraft.entity.player.EntityPlayer;
 
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+
 import gregtech.api.interfaces.tileentity.ICoverable;
 
 public class GT_CoverUIBuildContext extends UIBuildContext {

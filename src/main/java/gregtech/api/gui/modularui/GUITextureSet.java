@@ -5,6 +5,7 @@ import java.util.function.Function;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
+
 import gregtech.api.enums.SteamVariant;
 
 /**
