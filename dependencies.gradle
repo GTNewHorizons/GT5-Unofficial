@@ -1,22 +1,22 @@
 // Add your dependencies here
 
 dependencies {
-    compile('com.github.GTNewHorizons:GT5-Unofficial:5.09.42.87:dev')
-    compile('com.github.GTNewHorizons:NewHorizonsCoreMod:2.0.22:dev')
-    compile('com.github.GTNewHorizons:StructureLib:1.1.3:dev')
-    compile('com.github.GTNewHorizons:GTplusplus:1.9.0-pre:dev')
-    compile('com.github.GTNewHorizons:GoodGenerator:0.5.11:dev')
-    compile('com.github.GTNewHorizons:TecTech:5.2.0-pre:dev')
+    compile('com.github.GTNewHorizons:GT5-Unofficial:5.09.43.07:dev')
+    compile('com.github.GTNewHorizons:NewHorizonsCoreMod:2.1.0:dev')
+    compile('com.github.GTNewHorizons:StructureLib:1.2.6:dev')
+    compile('com.github.GTNewHorizons:GTplusplus:1.9.1:dev')
+    compile('com.github.GTNewHorizons:GoodGenerator:0.6.1:dev')
+    compile('com.github.GTNewHorizons:TecTech:5.2.1:dev')
     compile('com.github.GTNewHorizons:ForestryMC:4.6.7:dev')
-    compile('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-96-GTNH:dev')
-    compile('com.github.GTNewHorizons:bartworks:0.7.0-pre:dev')
-    compile('com.github.GTNewHorizons:BuildCraft:7.1.27:dev')
-    compile('com.github.GTNewHorizons:NotEnoughItems:2.3.15-GTNH:dev')
+    compile('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-197-GTNH:dev')
+    compile('com.github.GTNewHorizons:bartworks:0.7.1:dev')
+    compile('com.github.GTNewHorizons:BuildCraft:7.1.33:dev')
+    compile('com.github.GTNewHorizons:NotEnoughItems:2.3.46-GTNH:dev')
 
     compile('net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev')
 
-    compileOnly('com.github.GTNewHorizons:EnderCore:0.2.10:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:AppleCore:3.1.9:dev') {transitive = false}
+    compileOnly('com.github.GTNewHorizons:EnderCore:0.2.13:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:AppleCore:3.1.10:dev') {transitive = false}
     compileOnly('com.github.GTNewHorizons:Railcraft:9.14.1:dev') {transitive = false}
     compileOnly('com.github.GTNewHorizons:EnderIO:2.4.11:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:ExtraCells2:2.5.33:dev') {transitive=false}
@@ -24,15 +24,15 @@ dependencies {
     compileOnly('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev') {transitive=false}
 
     //compile('com.github.GTNewHorizons:GalacticGregGT5:1.0.8:dev')
-    //compile('com.github.GTNewHorizons:TecTech:5.0.61:dev')
-    //compile('com.github.GTNewHorizons:Galacticraft:3.0.44-GTNH:dev')
+    //compile('com.github.GTNewHorizons:TecTech:5.2.1:dev')
+    //compile('com.github.GTNewHorizons:Galacticraft:3.0.68-GTNH:dev')
 
-    //compileOnly('com.github.GTNewHorizons:Avaritia:1.28)
+    //compileOnly('com.github.GTNewHorizons:Avaritia:1.39)
 
-    //compile files('ThaumicTinkerer-1.7.10-2.5-4-dev.jar')
+    //compile files('ThaumicTinkerer-1.7.10-2.7-0-dev.jar')
 
-    //runtimeOnly('com.github.GTNewHorizons:Baubles:1.0.1.14:dev')
-    //runtimeOnly('com.github.GTNewHorizons:Yamcl:0.5.82:dev')
+    //runtimeOnly('com.github.GTNewHorizons:Baubles:1.0.1.16:dev')
+    //runtimeOnly('com.github.GTNewHorizons:Yamcl:0.5.86:dev')
     runtimeOnly('curse.maven:cofh-core-69162:2388751') //for GT++
     runtimeOnly('curse.maven:advsolar-362768:2885953') //for GT++
 }
