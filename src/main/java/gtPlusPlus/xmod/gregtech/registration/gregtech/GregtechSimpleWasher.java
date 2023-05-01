@@ -3,6 +3,8 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTPP_Recipe;
@@ -53,20 +55,13 @@ public class GregtechSimpleWasher {
 
             dustClean = GT_OreDictUnificator.get(OrePrefixes.dust, v, 1L);
             dustDirty = GT_OreDictUnificator.get(OrePrefixes.dustImpure, v, 1L);
-            if (dustClean != null && dustDirty != null) {
-                GTPP_Recipe aRecipe = new GTPP_Recipe(
-                        false,
-                        new ItemStack[] { dustDirty },
-                        new ItemStack[] { dustClean },
-                        null,
-                        new int[] {},
-                        new FluidStack[] { FluidUtils.getFluidStack("water", 100) },
-                        new FluidStack[] {},
-                        5,
-                        8,
-                        0);
-                GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes.addRecipe(aRecipe);
-            }
+            addSimpleWashRecipe(dustDirty, dustClean);
+        }
+
+        for (Werkstoff v : Werkstoff.werkstoffHashSet) {
+            dustClean = v.get(OrePrefixes.dust);
+            dustDirty = v.get(OrePrefixes.dustImpure);
+            addSimpleWashRecipe(dustDirty, dustClean);
         }
 
         if (GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes.mRecipeList.size() > mRecipeCount) {
@@ -83,25 +78,35 @@ public class GregtechSimpleWasher {
         for (Materials v : Materials.values()) {
             crushedClean = GT_OreDictUnificator.get(OrePrefixes.crushedPurified, v, 1L);
             crushedDirty = GT_OreDictUnificator.get(OrePrefixes.crushed, v, 1L);
-            if (crushedClean != null && crushedDirty != null) {
-                GTPP_Recipe aRecipe = new GTPP_Recipe(
-                        false,
-                        new ItemStack[] { crushedDirty },
-                        new ItemStack[] { crushedClean },
-                        null,
-                        new int[] {},
-                        new FluidStack[] { FluidUtils.getFluidStack("water", 100) },
-                        new FluidStack[] {},
-                        5,
-                        8,
-                        0);
-                GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes.addRecipe(aRecipe);
-            }
+            addSimpleWashRecipe(crushedDirty, crushedClean);
+        }
+
+        for (Werkstoff v : Werkstoff.werkstoffHashSet) {
+            crushedClean = v.get(OrePrefixes.crushedPurified);
+            crushedDirty = v.get(OrePrefixes.crushed);
+            addSimpleWashRecipe(crushedDirty, crushedClean);
         }
 
         if (GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes.mRecipeList.size() > mRecipeCount) {
             return true;
         }
         return false;
+    }
+
+    private static void addSimpleWashRecipe(ItemStack aInput, ItemStack aOutput) {
+        if (aInput != null && aOutput != null) {
+            GTPP_Recipe aRecipe = new GTPP_Recipe(
+                    false,
+                    new ItemStack[] { aInput },
+                    new ItemStack[] { aOutput },
+                    null,
+                    new int[] {},
+                    new FluidStack[] { FluidUtils.getFluidStack("water", 100) },
+                    new FluidStack[] {},
+                    5,
+                    8,
+                    0);
+            GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes.addRecipe(aRecipe);
+        }
     }
 }
