@@ -298,7 +298,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return facing.offsetY == 0 || facing.offsetY == 0;
+        return mMainFacing.offsetY == 0 || facing.offsetY == 0;
     }
 
     @Override
