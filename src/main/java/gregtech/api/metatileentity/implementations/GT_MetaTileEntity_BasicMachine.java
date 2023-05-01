@@ -22,9 +22,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -78,6 +75,8 @@ import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
 import gregtech.common.power.BasicMachineEUPower;
 import gregtech.common.power.Power;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!

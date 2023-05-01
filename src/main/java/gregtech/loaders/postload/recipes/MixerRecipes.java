@@ -10,8 +10,6 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
-import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -22,6 +20,7 @@ import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 
 public class MixerRecipes implements Runnable {
 

@@ -18,10 +18,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import appeng.core.CreativeTab;
-
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 
+import appeng.core.CreativeTab;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;

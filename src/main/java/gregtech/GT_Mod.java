@@ -30,10 +30,9 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import appeng.api.AEApi;
-
 import com.google.common.base.Stopwatch;
 
+import appeng.api.AEApi;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;

@@ -3,14 +3,13 @@ package gregtech.common.gui.modularui.widget;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.inventory.Slot;
 
-import appeng.client.render.AppEngRenderItem;
-import appeng.core.AELog;
-import appeng.util.Platform;
-
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularGui;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import appeng.client.render.AppEngRenderItem;
+import appeng.core.AELog;
+import appeng.util.Platform;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

@@ -1,16 +1,15 @@
 package gregtech.api.util;
 
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import gregtech.api.GregTech_API;
 import micdoodle8.mods.galacticraft.api.power.EnergySource;
 import micdoodle8.mods.galacticraft.api.power.EnergySource.EnergySourceAdjacent;
 import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
-
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import gregtech.api.GregTech_API;
 
 public class GT_GC_Compat {
 

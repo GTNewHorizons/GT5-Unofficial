@@ -12,9 +12,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,6 +56,8 @@ import gregtech.api.util.ISerializableObject;
 import gregtech.common.GT_Client;
 import gregtech.common.covers.CoverInfo;
 import gregtech.common.covers.GT_Cover_Fluidfilter;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class CoverableTileEntity extends BaseTileEntity implements ICoverable, IGregtechWailaProvider {
 

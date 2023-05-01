@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import com.google.common.collect.ImmutableMap;
+
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-
-import com.google.common.collect.ImmutableMap;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.enums.GT_Values;

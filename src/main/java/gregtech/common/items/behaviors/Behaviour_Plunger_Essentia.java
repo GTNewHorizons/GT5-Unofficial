@@ -8,12 +8,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import thaumcraft.api.aspects.IEssentiaTransport;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
+import thaumcraft.api.aspects.IEssentiaTransport;
 
 public class Behaviour_Plunger_Essentia extends Behaviour_None {
 

@@ -88,10 +88,6 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
-import buildcraft.api.transport.IPipeTile;
-import cofh.api.energy.IEnergyReceiver;
-import cofh.api.transport.IItemDuct;
-
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
@@ -101,6 +97,9 @@ import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.mojang.authlib.GameProfile;
 
+import buildcraft.api.transport.IPipeTile;
+import cofh.api.energy.IEnergyReceiver;
+import cofh.api.transport.IItemDuct;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;

@@ -34,9 +34,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -55,6 +52,8 @@ import gregtech.api.items.GT_Block_LongDistancePipe;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull_NonElectric;
 import gregtech.api.util.GT_Utility;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_MetaTileEntity_BasicHull_NonElectric {
 
