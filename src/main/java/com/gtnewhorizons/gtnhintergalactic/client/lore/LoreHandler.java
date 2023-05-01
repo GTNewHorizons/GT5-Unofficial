@@ -15,6 +15,7 @@ import net.minecraft.util.WeightedRandom;
 import org.apache.commons.lang3.StringUtils;
 
 import com.gtnewhorizons.gtnhintergalactic.GTNHIntergalactic;
+
 import gregtech.api.objects.XSTR;
 
 /**

@@ -3,6 +3,7 @@ package com.gtnewhorizons.gtnhintergalactic.block;
 import net.minecraft.block.Block;
 
 import com.gtnewhorizons.gtnhintergalactic.item.ItemBlockSpaceElevatorCable;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**

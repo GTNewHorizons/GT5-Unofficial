@@ -5,8 +5,6 @@ import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 import java.util.ArrayList;
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -29,6 +27,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**
  * Space Pump project module of the Space Elevator

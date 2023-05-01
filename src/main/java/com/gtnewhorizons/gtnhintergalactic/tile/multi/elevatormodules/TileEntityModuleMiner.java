@@ -8,8 +8,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -48,6 +46,7 @@ import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 import gregtech.common.power.BasicMachineEUPower;
 import gregtech.common.power.Power;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
 

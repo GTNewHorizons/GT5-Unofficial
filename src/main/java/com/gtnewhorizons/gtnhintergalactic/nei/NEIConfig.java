@@ -1,10 +1,10 @@
 package com.gtnewhorizons.gtnhintergalactic.nei;
 
-import codechicken.nei.api.API;
-import codechicken.nei.api.IConfigureNEI;
-
 import com.gtnewhorizons.gtnhintergalactic.Tags;
 import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
+
+import codechicken.nei.api.API;
+import codechicken.nei.api.IConfigureNEI;
 import gregtech.api.util.GT_Recipe;
 
 public class NEIConfig implements IConfigureNEI {

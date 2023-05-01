@@ -5,8 +5,6 @@ import java.util.*;
 import java.util.List;
 import java.util.function.Supplier;
 
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -26,6 +24,7 @@ import gregtech.common.GT_RecipeAdder;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.nei.NEIRecipeInfo;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**
  * GT recipe adder of GTNH-Intergalactic

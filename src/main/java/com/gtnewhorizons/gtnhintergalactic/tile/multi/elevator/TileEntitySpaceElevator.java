@@ -6,11 +6,6 @@ import static net.minecraft.util.EnumChatFormatting.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -64,6 +59,10 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 
 /**
  * Space Elevator multiblock used to start space projects for end game crafts
@@ -581,8 +580,8 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
             } else if (!isLoadedChunk) {
                 // load a 3x3 area when machine is running
                 GT_ChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
-                int offX = ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()).offsetX;
-                int offZ = ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()).offsetZ;
+                int offX = aBaseMetaTileEntity.getFrontFacing().offsetX;
+                int offZ = aBaseMetaTileEntity.getFrontFacing().offsetZ;
                 for (int i = -1; i < 2; i++) {
                     for (int j = -1; j < 2; j++) {
                         GT_ChunkManager.requestChunkLoad(
@@ -720,17 +719,17 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
      * Get the texture of this controller
      *
      * @param aBaseMetaTileEntity This
-     * @param aSide               Side for which the texture will be gotten
-     * @param aFacing             Facing side of the controller
-     * @param aColorIndex         Color index
+     * @param side                Side for which the texture will be gotten
+     * @param facing              Facing side of the controller
+     * @param colorIndex          Color index
      * @param aActive             Flag if the controller is active
      * @param aRedstone           Flag if Redstone is present
      * @return Texture array of this controller
      */
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int colorIndex, boolean aActive, boolean aRedstone) {
+        if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_BASE),
                     new TT_RenderedExtendedFacingTexture(
                             aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON

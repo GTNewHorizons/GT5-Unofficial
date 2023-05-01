@@ -1,9 +1,8 @@
 package com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules;
 
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
@@ -22,6 +21,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**
  * Base class for modules of the Space Elevator
@@ -334,17 +334,17 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
      * Get the texture of this controller
      *
      * @param aBaseMetaTileEntity This
-     * @param aSide               Side for which the texture will be gotten
-     * @param aFacing             Facing side of the controller
-     * @param aColorIndex         Color index
+     * @param side                Side for which the texture will be gotten
+     * @param facing              Facing side of the controller
+     * @param colorIndex          Color index
      * @param aActive             Flag if the controller is active
      * @param aRedstone           Flag if Redstone is present
      * @return Texture array of this controller
      */
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int colorIndex, boolean aActive, boolean aRedstone) {
+        if (side == facing) {
             return new ITexture[] {
                     Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),
                     new TT_RenderedExtendedFacingTexture(

@@ -19,6 +19,7 @@ import com.gtnewhorizons.gtnhintergalactic.GTNHIntergalactic;
 import com.gtnewhorizons.gtnhintergalactic.block.BlockSpaceElevatorCable;
 import com.gtnewhorizons.gtnhintergalactic.config.Config;
 import com.gtnewhorizons.gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**
