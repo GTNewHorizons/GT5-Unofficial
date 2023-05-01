@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
@@ -92,7 +93,7 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch i
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -107,13 +108,15 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch i
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aSide == aBaseMetaTileEntity.getFrontFacing();
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
+        return side == aBaseMetaTileEntity.getFrontFacing();
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aSide == aBaseMetaTileEntity.getFrontFacing();
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
+        return side == aBaseMetaTileEntity.getFrontFacing();
     }
 
     @Override

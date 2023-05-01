@@ -21,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -99,8 +100,8 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     }
 
     @Override
-    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-            float aZ) {
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+            float aX, float aY, float aZ) {
         if (overdriveToggle) {
             overdriveToggle = false;
             PlayerChatHelper
@@ -114,7 +115,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             if (histSettingHigh < histHighLimit) {
                 histSettingHigh++;
@@ -143,8 +144,8 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     }
 
     @Override
-    public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-            float aZ) {
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+            float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             if (transferRadius > transferRadiusMin) {
                 transferRadius--;
@@ -190,8 +191,8 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     }
 
     @Override
-    public boolean isFacingValid(byte aSide) {
-        return aSide != 1;
+    public boolean isFacingValid(ForgeDirection side) {
+        return side != ForgeDirection.UP;
     } // Prevents output at the top side
 
     @Override
@@ -209,9 +210,9 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        return this.mTextures[aSide == aFacing ? 2 : aSide == 1 ? 1 : 0][aColorIndex + 1];
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int colorIndex, boolean aActive, boolean aRedstone) {
+        return this.mTextures[side == facing ? 2 : side == ForgeDirection.UP ? 1 : 0][colorIndex + 1];
     }
 
     @Override
@@ -385,6 +386,6 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
     @Override
     public boolean teslaInjectEnergy(long teslaVoltageInjected) {
-        return this.getBaseMetaTileEntity().injectEnergyUnits((byte) 1, teslaVoltageInjected, 1L) > 0L;
+        return this.getBaseMetaTileEntity().injectEnergyUnits(ForgeDirection.UP, teslaVoltageInjected, 1L) > 0L;
     }
 }

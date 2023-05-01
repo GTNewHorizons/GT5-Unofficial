@@ -55,7 +55,7 @@ public final class DebugElementalInstanceContainer_EM extends Item implements IE
 
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-            int aSide, float hitX, float hitY, float hitZ) {
+            int ordinalSide, float hitX, float hitY, float hitZ) {
         NBTTagCompound tNBT = aStack.getTagCompound();
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (aPlayer instanceof EntityPlayerMP) {

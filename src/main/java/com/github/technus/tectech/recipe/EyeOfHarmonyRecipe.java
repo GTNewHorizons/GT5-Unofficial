@@ -21,10 +21,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import pers.gwyog.gtneioreplugin.plugin.block.BlockDimensionDisplay;
-import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
-import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
-
 import com.github.technus.tectech.util.ItemStackLong;
 
 import gnu.trove.map.TMap;
@@ -34,6 +30,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
+import pers.gwyog.gtneioreplugin.plugin.block.BlockDimensionDisplay;
+import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
+import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class EyeOfHarmonyRecipe {

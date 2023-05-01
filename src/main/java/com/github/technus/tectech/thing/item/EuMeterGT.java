@@ -17,6 +17,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
@@ -43,7 +44,8 @@ public class EuMeterGT extends Item {
 
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-            int aSide, float hitX, float hitY, float hitZ) {
+            int ordinalSide, float hitX, float hitY, float hitZ) {
+        final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity == null || aPlayer instanceof FakePlayer) {
             return aPlayer instanceof EntityPlayerMP;
@@ -69,7 +71,7 @@ public class EuMeterGT extends Item {
                                 + " D:"
                                 + aWorld.provider.dimensionId
                                 + " S:"
-                                + aSide
+                                + ordinalSide
                                 + " -----");
                 GT_Utility.sendChatToPlayer(
                         aPlayer,
@@ -128,17 +130,17 @@ public class EuMeterGT extends Item {
                 GT_Utility.sendChatToPlayer(
                         aPlayer,
                         translateToLocalFormatted("tt.keyphrase.Side_capabilities", clientLocale) + ": "
-                                + (((BaseMetaTileEntity) tTileEntity).inputEnergyFrom((byte) aSide)
+                                + (((BaseMetaTileEntity) tTileEntity).inputEnergyFrom(side)
                                         ? translateToLocalFormatted("tt.keyword.input", clientLocale) + " "
                                         : "")
-                                + (((BaseMetaTileEntity) tTileEntity).outputsEnergyTo((byte) aSide)
+                                + (((BaseMetaTileEntity) tTileEntity).outputsEnergyTo(side)
                                         ? translateToLocalFormatted("tt.keyword.output", clientLocale)
                                         : ""));
                 return true;
             } else if (tTileEntity instanceof BaseMetaPipeEntity) {
                 if (((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable) {
                     ArrayList<String> tList = new ArrayList<>();
-                    GT_Utility.getCoordinateScan(tList, aPlayer, aWorld, 1, aX, aY, aZ, aSide, hitX, hitY, hitZ);
+                    GT_Utility.getCoordinateScan(tList, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ);
                     for (String str : tList) {
                         GT_Utility.sendChatToPlayer(aPlayer, str);
                     }

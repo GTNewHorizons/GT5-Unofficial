@@ -30,7 +30,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
 
 /**
@@ -67,21 +66,23 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections,
-            byte aColorIndex, boolean aConnected, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
+            int colorIndex, boolean aConnected, boolean aRedstone) {
         return new ITexture[] { new GT_RenderedTexture(EMpipe),
                 new GT_RenderedTexture(
                         getActive() ? EMbarActive : EMbar,
-                        Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA())) };
+                        Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, byte b, ItemStack itemStack) {
+    public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
+            ItemStack itemStack) {
         return false;
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, byte b, ItemStack itemStack) {
+    public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
+            ItemStack itemStack) {
         return false;
     }
 
@@ -96,7 +97,7 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
     }
 
     @Override
-    public boolean renderInside(byte b) {
+    public boolean renderInside(ForgeDirection side) {
         return false;
     }
 
@@ -150,16 +151,16 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
                 if (aBaseMetaTileEntity.getColorization() < 0) {
                     return;
                 }
-                for (byte b0 = 0, b1; b0 < 6; b0++) {
-                    b1 = GT_Utility.getOppositeSide(b0);
-                    TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(b0);
+                for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                    final ForgeDirection oppositeSide = side.getOpposite();
+                    TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(side);
                     if (tTileEntity instanceof IConnectsToDataPipe) {
                         byte tColor = ((IConnectsToDataPipe) tTileEntity).getColorization();
                         if (tColor != myColor) {
                             continue;
                         }
-                        if (((IConnectsToDataPipe) tTileEntity).canConnectData(b1)) {
-                            mConnections |= 1 << b0;
+                        if (((IConnectsToDataPipe) tTileEntity).canConnectData(oppositeSide)) {
+                            mConnections |= 1 << side.ordinal();
                             connectionCount++;
                         }
                     } else if (tTileEntity instanceof IGregTechTileEntity) {
@@ -169,8 +170,8 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
                             if (tColor != myColor) {
                                 continue;
                             }
-                            if (((IConnectsToDataPipe) meta).canConnectData(b1)) {
-                                mConnections |= 1 << b0;
+                            if (((IConnectsToDataPipe) meta).canConnectData(oppositeSide)) {
+                                mConnections |= 1 << side.ordinal();
                                 connectionCount++;
                             }
                         }
@@ -183,7 +184,7 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
     }
 
     @Override
-    public boolean canConnectData(byte side) {
+    public boolean canConnectData(ForgeDirection side) {
         return true;
     }
 
@@ -192,25 +193,24 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
         if (connectionCount != 2) {
             return null;
         }
-        for (byte b = 0; b < 6; b++) {
-            if ((mConnections & 1 << b) == 0) {
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            if ((mConnections & 1 << side.ordinal()) == 0) {
                 continue; // if not connected continue
             }
-            TileEntity next = getBaseMetaTileEntity().getTileEntityAtSide(b);
+            TileEntity next = getBaseMetaTileEntity().getTileEntityAtSide(side);
             if (next instanceof IConnectsToDataPipe && next != source) {
-                if (((IConnectsToDataPipe) next).isDataInputFacing(GT_Utility.getOppositeSide(b))) {
+                if (((IConnectsToDataPipe) next).isDataInputFacing(side.getOpposite())) {
                     return (IConnectsToDataPipe) next;
                 }
             } else if (next instanceof IGregTechTileEntity) {
                 IMetaTileEntity meta = ((IGregTechTileEntity) next).getMetaTileEntity();
-                if (meta instanceof IConnectsToDataPipe && meta != source) {
-                    if (meta instanceof GT_MetaTileEntity_Pipe_Data
-                            && ((GT_MetaTileEntity_Pipe_Data) meta).connectionCount == 2) {
-                        ((GT_MetaTileEntity_Pipe_Data) meta).markUsed();
-                        return (IConnectsToDataPipe) meta;
+                if (meta instanceof IConnectsToDataPipe connecsToPipe && meta != source) {
+                    if (meta instanceof GT_MetaTileEntity_Pipe_Data pipeData && pipeData.connectionCount == 2) {
+                        pipeData.markUsed();
+                        return connecsToPipe;
                     }
-                    if (((IConnectsToDataPipe) meta).isDataInputFacing(GT_Utility.getOppositeSide(b))) {
-                        return (IConnectsToDataPipe) meta;
+                    if (connecsToPipe.isDataInputFacing(side.getOpposite())) {
+                        return connecsToPipe;
                     }
                 }
             }
@@ -228,27 +228,27 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
         float tSide4 = tSpace;
         float tSide5 = 1f - tSpace;
 
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 0) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.DOWN) != 0) {
             tSide0 = tSide2 = tSide4 = 0;
             tSide3 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 1) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.UP) != 0) {
             tSide2 = tSide4 = 0;
             tSide1 = tSide3 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 2) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.NORTH) != 0) {
             tSide0 = tSide2 = tSide4 = 0;
             tSide1 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 3) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.SOUTH) != 0) {
             tSide0 = tSide4 = 0;
             tSide1 = tSide3 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 4) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.WEST) != 0) {
             tSide0 = tSide2 = tSide4 = 0;
             tSide1 = tSide3 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 5) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.EAST) != 0) {
             tSide0 = tSide2 = 0;
             tSide1 = tSide3 = tSide5 = 1;
         }
@@ -286,7 +286,7 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
     }
 
     @Override
-    public boolean isDataInputFacing(byte side) {
+    public boolean isDataInputFacing(ForgeDirection side) {
         return true;
     }
 
@@ -312,4 +312,5 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements IConn
     public boolean getActive() {
         return active;
     }
+
 }

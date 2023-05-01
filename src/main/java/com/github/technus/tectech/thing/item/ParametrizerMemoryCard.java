@@ -53,7 +53,7 @@ public final class ParametrizerMemoryCard extends Item {
 
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-            int aSide, float hitX, float hitY, float hitZ) {
+            int ordinalSide, float hitX, float hitY, float hitZ) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (!(aPlayer instanceof EntityPlayerMP)) return false;
         if (!(tTileEntity instanceof IGregTechTileEntity)) return false;

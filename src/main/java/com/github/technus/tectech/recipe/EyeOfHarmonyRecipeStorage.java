@@ -13,18 +13,17 @@ import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import pers.gwyog.gtneioreplugin.plugin.block.BlockDimensionDisplay;
-import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
-import pers.gwyog.gtneioreplugin.util.DimensionHelper;
-import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
-import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
-
 import com.github.technus.tectech.util.ItemStackLong;
 import com.google.common.math.LongMath;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
+import pers.gwyog.gtneioreplugin.plugin.block.BlockDimensionDisplay;
+import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
+import pers.gwyog.gtneioreplugin.util.DimensionHelper;
+import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
+import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
 
 public class EyeOfHarmonyRecipeStorage {
 

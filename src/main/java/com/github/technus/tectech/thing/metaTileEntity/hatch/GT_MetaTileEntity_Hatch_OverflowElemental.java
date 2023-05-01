@@ -120,7 +120,7 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -152,12 +152,14 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return false;
     }
 
@@ -203,9 +205,9 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
         float yPos = mte.getYCoord() + 0.5f;
         float zPos = mte.getZCoord() + 0.5f;
 
-        int xDirShift = ForgeDirection.getOrientation(mte.getFrontFacing()).offsetX;
-        int yDirShift = ForgeDirection.getOrientation(mte.getFrontFacing()).offsetY;
-        int zDirShift = ForgeDirection.getOrientation(mte.getFrontFacing()).offsetZ;
+        int xDirShift = mte.getFrontFacing().offsetX;
+        int yDirShift = mte.getFrontFacing().offsetY;
+        int zDirShift = mte.getFrontFacing().offsetZ;
 
         AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(
                 xPos - .5 + xDirShift,

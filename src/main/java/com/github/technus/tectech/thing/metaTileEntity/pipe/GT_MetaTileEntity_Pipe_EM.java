@@ -31,7 +31,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
 
 /**
@@ -68,21 +67,23 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections,
-            byte aColorIndex, boolean aConnected, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
+            int colorIndex, boolean aConnected, boolean aRedstone) {
         return new ITexture[] { new GT_RenderedTexture(EMpipe),
                 new GT_RenderedTexture(
                         getActive() ? EMCandyActive : EMcandy,
-                        Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA())) };
+                        Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, byte b, ItemStack itemStack) {
+    public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
+            ItemStack itemStack) {
         return false;
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, byte b, ItemStack itemStack) {
+    public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
+            ItemStack itemStack) {
         return false;
     }
 
@@ -97,7 +98,7 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
     }
 
     @Override
-    public boolean renderInside(byte b) {
+    public boolean renderInside(ForgeDirection side) {
         return false;
     }
 
@@ -151,12 +152,12 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
                 if (aBaseMetaTileEntity.getColorization() < 0) {
                     return;
                 }
-                for (byte b0 = 0, b1; b0 < 6; b0++) {
-                    b1 = GT_Utility.getOppositeSide(b0);
+                for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                    final ForgeDirection oppositeSide = side.getOpposite();
                     // if (!aBaseMetaTileEntity.getCoverBehaviorAtSide(b0).alwaysLookConnected(b0,
                     // aBaseMetaTileEntity.getCoverIDAtSide(b0), aBaseMetaTileEntity.getCoverDataAtSide(b0),
                     // aBaseMetaTileEntity)) {
-                    TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(b0);
+                    TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(side);
                     if (tTileEntity instanceof IColoredTileEntity) {
                         // if (aBaseMetaTileEntity.getColorization() >= 0) {
                         byte tColor = ((IColoredTileEntity) tTileEntity).getColorization();
@@ -166,14 +167,14 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
                         // }
                     }
                     if (tTileEntity instanceof IConnectsToElementalPipe
-                            && ((IConnectsToElementalPipe) tTileEntity).canConnect(b1)) {
-                        mConnections |= 1 << b0;
+                            && ((IConnectsToElementalPipe) tTileEntity).canConnect(oppositeSide)) {
+                        mConnections |= 1 << side.ordinal();
                         connectionCount++;
                     } else if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity)
                             .getMetaTileEntity() instanceof IConnectsToElementalPipe) {
                                 if (((IConnectsToElementalPipe) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())
-                                        .canConnect(b1)) {
-                                    mConnections |= 1 << b0;
+                                        .canConnect(oppositeSide)) {
+                                    mConnections |= 1 << side.ordinal();
                                     connectionCount++;
                                 }
                             }
@@ -185,7 +186,7 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
     }
 
     @Override
-    public boolean canConnect(byte side) {
+    public boolean canConnect(ForgeDirection side) {
         return true;
     }
 
@@ -199,27 +200,27 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
         float tSide4 = tSpace;
         float tSide5 = 1f - tSpace;
 
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 0) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.DOWN) != 0) {
             tSide0 = tSide2 = tSide4 = 0;
             tSide3 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 1) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.UP) != 0) {
             tSide2 = tSide4 = 0;
             tSide1 = tSide3 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 2) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.NORTH) != 0) {
             tSide0 = tSide2 = tSide4 = 0;
             tSide1 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 3) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.SOUTH) != 0) {
             tSide0 = tSide4 = 0;
             tSide1 = tSide3 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 4) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.WEST) != 0) {
             tSide0 = tSide2 = tSide4 = 0;
             tSide1 = tSide3 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 5) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.EAST) != 0) {
             tSide0 = tSide2 = 0;
             tSide1 = tSide3 = tSide5 = 1;
         }

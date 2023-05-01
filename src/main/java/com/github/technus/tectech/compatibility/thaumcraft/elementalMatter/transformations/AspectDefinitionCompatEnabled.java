@@ -9,12 +9,12 @@ import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatte
 
 import java.util.ArrayList;
 
-import thaumcraft.api.aspects.Aspect;
-
 import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMComplexAspectDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
+
+import thaumcraft.api.aspects.Aspect;
 
 /**
  * Created by Tec on 21.05.2017.

@@ -16,13 +16,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
-import thaumcraft.client.fx.bolt.FXLightningBolt;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import eu.usrv.yamcore.network.client.AbstractClientMessageHandler;
 import io.netty.buffer.ByteBuf;
+import thaumcraft.client.fx.bolt.FXLightningBolt;
 
 // TODO Re-work how sparks are distributed
 public class RendererMessage implements IMessage {

@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OverflowElemental;
@@ -78,10 +79,10 @@ public class GT_MetaTileEntity_DebugPollutor extends GT_MetaTileEntity_TieredMac
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        return new ITexture[] { MACHINE_CASINGS_TT[mTier][aColorIndex + 1],
-                aSide != aFacing
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int colorIndex, boolean aActive, boolean aRedstone) {
+        return new ITexture[] { MACHINE_CASINGS_TT[mTier][colorIndex + 1],
+                side != facing
                         ? aActive ? new GT_RenderedTexture(GT_MetaTileEntity_Hatch_OverflowElemental.MufflerEM)
                                 : new GT_RenderedTexture(GT_MetaTileEntity_Hatch_OverflowElemental.MufflerEMidle)
                         : POLLUTOR };
@@ -93,12 +94,14 @@ public class GT_MetaTileEntity_DebugPollutor extends GT_MetaTileEntity_TieredMac
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, byte b, ItemStack itemStack) {
+    public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
+            ItemStack itemStack) {
         return false;
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, byte b, ItemStack itemStack) {
+    public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
+            ItemStack itemStack) {
         return false;
     }
 
@@ -131,10 +134,10 @@ public class GT_MetaTileEntity_DebugPollutor extends GT_MetaTileEntity_TieredMac
                 GT_Pollution.addPollution(aBaseMetaTileEntity, pollution);
             }
         } else if (aBaseMetaTileEntity.isClientSide() && aBaseMetaTileEntity.isActive()) {
-            for (byte i = 0; i < 6; i++) {
-                if (i != aBaseMetaTileEntity.getFrontFacing()) {
-                    TecTech.proxy.em_particle(aBaseMetaTileEntity, i);
-                    TecTech.proxy.pollutor_particle(aBaseMetaTileEntity, i);
+            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                if (side != aBaseMetaTileEntity.getFrontFacing()) {
+                    TecTech.proxy.em_particle(aBaseMetaTileEntity, side);
+                    TecTech.proxy.pollutor_particle(aBaseMetaTileEntity, side);
                 }
             }
         }
@@ -147,7 +150,7 @@ public class GT_MetaTileEntity_DebugPollutor extends GT_MetaTileEntity_TieredMac
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 

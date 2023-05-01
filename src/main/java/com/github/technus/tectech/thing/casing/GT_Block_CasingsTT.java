@@ -129,22 +129,22 @@ public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
     }
 
     @Override
-    public IIcon getIcon(int aSide, int aMeta) {
+    public IIcon getIcon(int ordinalSide, int aMeta) {
         switch (aMeta) {
             case 0:
                 return eM0;
             case 1:
-                if (aSide < 2) {
+                if (ordinalSide < 2) {
                     return eM1;
                 }
                 return eM1s;
             case 2:
-                if (aSide < 2) {
+                if (ordinalSide < 2) {
                     return eM2;
                 }
                 return eM2s;
             case 3:
-                if (aSide < 2) {
+                if (ordinalSide < 2) {
                     return eM3;
                 }
                 return eM3s;
@@ -155,7 +155,7 @@ public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
             case 6:
                 return eM6;
             case 7:
-                if (aSide < 2) {
+                if (ordinalSide < 2) {
                     return eM7;
                 }
                 return eM7s;
@@ -174,7 +174,7 @@ public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
             case 14:
                 return eM14;
             case 15:
-                return debug[aSide];
+                return debug[ordinalSide];
             default:
                 return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         }
@@ -182,9 +182,9 @@ public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int aSide) {
+    public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int ordinalSide) {
         int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
-        return getIcon(aSide, tMeta);
+        return getIcon(ordinalSide, tMeta);
     }
 
     @Override

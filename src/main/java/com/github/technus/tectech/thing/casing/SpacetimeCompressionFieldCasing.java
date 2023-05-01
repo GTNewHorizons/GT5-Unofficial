@@ -79,7 +79,7 @@ public class SpacetimeCompressionFieldCasing extends GT_Block_Casings_Abstract {
     }
 
     @Override
-    public IIcon getIcon(int aSide, int aMeta) {
+    public IIcon getIcon(int ordinalSide, int aMeta) {
         switch (aMeta) {
             case 0:
                 return textureTier0;
@@ -106,9 +106,9 @@ public class SpacetimeCompressionFieldCasing extends GT_Block_Casings_Abstract {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int aSide) {
+    public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int ordinalSide) {
         int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
-        return getIcon(aSide, tMeta);
+        return getIcon(ordinalSide, tMeta);
     }
 
     @Override

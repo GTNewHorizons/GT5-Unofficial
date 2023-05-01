@@ -5,19 +5,18 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-import openmodularturrets.entity.projectiles.LaserProjectile;
-import openmodularturrets.entity.projectiles.damagesources.NormalDamageSource;
-import openmodularturrets.handler.ConfigHandler;
-import openmodularturrets.tileentity.turretbase.TurretBase;
-import openmodularturrets.util.PlayerUtil;
-import openmodularturrets.util.TurretHeadUtil;
-
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMHadronDefinition;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.util.GT_Utility;
+import openmodularturrets.entity.projectiles.LaserProjectile;
+import openmodularturrets.entity.projectiles.damagesources.NormalDamageSource;
+import openmodularturrets.handler.ConfigHandler;
+import openmodularturrets.tileentity.turretbase.TurretBase;
+import openmodularturrets.util.PlayerUtil;
+import openmodularturrets.util.TurretHeadUtil;
 
 /**
  * Created by Bass on 27/07/2017.

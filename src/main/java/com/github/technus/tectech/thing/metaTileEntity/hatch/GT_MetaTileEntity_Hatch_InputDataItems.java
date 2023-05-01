@@ -16,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
@@ -73,7 +74,7 @@ public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Ha
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -97,12 +98,14 @@ public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Ha
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return false;
     }
 
@@ -112,22 +115,22 @@ public class GT_MetaTileEntity_Hatch_InputDataItems extends GT_MetaTileEntity_Ha
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
+    public boolean isOutputFacing(ForgeDirection side) {
         return false;
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing();
+    public boolean isInputFacing(ForgeDirection side) {
+        return side == getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
-    public boolean isDataInputFacing(byte side) {
+    public boolean isDataInputFacing(ForgeDirection side) {
         return isInputFacing(side);
     }
 
     @Override
-    public boolean canConnectData(byte side) {
+    public boolean canConnectData(ForgeDirection side) {
         return isInputFacing(side);
     }
 

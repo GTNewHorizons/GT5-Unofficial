@@ -4,14 +4,14 @@ import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatte
 
 import net.minecraft.tileentity.TileEntity;
 
+import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.common.tiles.TileEssentiaReservoir;
 import thaumcraft.common.tiles.TileJarFillable;
-
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 
 /**
  * Created by Tec on 21.05.2017.

@@ -10,10 +10,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import openmodularturrets.tileentity.turretbase.TurretBase;
-
 import com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turret.TileTurretHeadEM;
+
 import cpw.mods.fml.common.registry.GameRegistry;
+import openmodularturrets.tileentity.turretbase.TurretBase;
 
 /**
  * Created by Tec on 27/07/2017.

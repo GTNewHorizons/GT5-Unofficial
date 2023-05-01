@@ -4,6 +4,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.technus.tectech.mechanics.dataTransport.QuantumDataPacket;
 import com.github.technus.tectech.mechanics.pipe.IConnectsToDataPipe;
@@ -15,7 +16,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GT_Utility;
 
 /**
  * Created by danie_000 on 27.10.2016.
@@ -45,12 +45,12 @@ public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing();
+    public boolean isOutputFacing(ForgeDirection side) {
+        return side == getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
+    public boolean isInputFacing(ForgeDirection side) {
         return false;
     }
 
@@ -60,7 +60,7 @@ public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_
     }
 
     @Override
-    public boolean isDataInputFacing(byte side) {
+    public boolean isDataInputFacing(ForgeDirection side) {
         return isInputFacing(side);
     }
 
@@ -70,7 +70,7 @@ public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_
     }
 
     @Override
-    public boolean canConnectData(byte side) {
+    public boolean canConnectData(ForgeDirection side) {
         return isOutputFacing(side);
     }
 
@@ -106,10 +106,9 @@ public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_
             return (IConnectsToDataPipe) meta;
         } else if (meta instanceof GT_MetaTileEntity_Hatch_InputData
                 && ((GT_MetaTileEntity_Hatch_InputData) meta).getColorization() == color
-                && ((GT_MetaTileEntity_Hatch_InputData) meta)
-                        .canConnectData(GT_Utility.getOppositeSide(base.getFrontFacing()))) {
-                            return (IConnectsToDataPipe) meta;
-                        }
+                && ((GT_MetaTileEntity_Hatch_InputData) meta).canConnectData(base.getFrontFacing().getOpposite())) {
+                    return (IConnectsToDataPipe) meta;
+                }
         return null;
     }
 }

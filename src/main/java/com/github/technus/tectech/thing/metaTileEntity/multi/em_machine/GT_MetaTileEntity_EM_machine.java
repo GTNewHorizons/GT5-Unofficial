@@ -19,7 +19,6 @@ import java.util.function.Supplier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
@@ -367,12 +366,9 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
                 setCurrentBehaviour();
             }
             if (aBaseMetaTileEntity.isActive()) {
-                int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2
-                        + aBaseMetaTileEntity.getXCoord();
-                int yDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetY * 2
-                        + aBaseMetaTileEntity.getYCoord();
-                int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2
-                        + aBaseMetaTileEntity.getZCoord();
+                int xDir = aBaseMetaTileEntity.getBackFacing().offsetX * 2 + aBaseMetaTileEntity.getXCoord();
+                int yDir = aBaseMetaTileEntity.getBackFacing().offsetY * 2 + aBaseMetaTileEntity.getYCoord();
+                int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ * 2 + aBaseMetaTileEntity.getZCoord();
                 aBaseMetaTileEntity.getWorld().markBlockRangeForRenderUpdate(xDir, yDir, zDir, xDir, yDir, zDir);
             }
         }

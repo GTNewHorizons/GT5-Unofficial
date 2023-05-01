@@ -552,9 +552,9 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     protected GT_MetaTileEntity_EM_collider getPartner() {
         IGregTechTileEntity iGregTechTileEntity = getBaseMetaTileEntity();
-        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 4;
-        int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY * 4;
-        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * 4;
+        int xDir = iGregTechTileEntity.getBackFacing().offsetX * 4;
+        int yDir = iGregTechTileEntity.getBackFacing().offsetY * 4;
+        int zDir = iGregTechTileEntity.getBackFacing().offsetZ * 4;
         IGregTechTileEntity gregTechBaseTileEntity = iGregTechTileEntity.getIGregTechTileEntityOffset(xDir, yDir, zDir);
         if (gregTechBaseTileEntity != null) {
             IMetaTileEntity gregTechMetaTileEntity = gregTechBaseTileEntity.getMetaTileEntity();
@@ -568,7 +568,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     protected final boolean isMaster() {
-        return getBaseMetaTileEntity().getFrontFacing() % 2 == 0;
+        return getBaseMetaTileEntity().getFrontFacing().ordinal() % 2 == 0;
     }
 
     private void makeEU(double massDiff) {
@@ -600,8 +600,8 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 2;
-        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * 2;
+        int xDir = iGregTechTileEntity.getBackFacing().offsetX * 2;
+        int zDir = iGregTechTileEntity.getBackFacing().offsetZ * 2;
         if (iGregTechTileEntity.getBlockOffset(xDir, 0, zDir) != sBlockCasingsTT) {
             eTier = 0;
             return false;
@@ -761,10 +761,10 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
-            if (aFacing % 2 == 0) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int colorIndex, boolean aActive, boolean aRedstone) {
+        if (side == facing) {
+            if (facing.ordinal() % 2 == 0) {
                 return new ITexture[] { Textures.BlockIcons.casingTexturePages[texturePage][4],
                         new TT_RenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF) };
             } else {
@@ -842,9 +842,9 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     @Override
     public void construct(ItemStack trigger, boolean hintsOnly) {
         IGregTechTileEntity iGregTechTileEntity = getBaseMetaTileEntity();
-        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX * 4;
-        int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY * 4;
-        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ * 4;
+        int xDir = iGregTechTileEntity.getBackFacing().offsetX * 4;
+        int yDir = iGregTechTileEntity.getBackFacing().offsetY * 4;
+        int zDir = iGregTechTileEntity.getBackFacing().offsetZ * 4;
         if (hintsOnly) {
             StructureLibAPI.hintParticle(
                     iGregTechTileEntity.getWorld(),

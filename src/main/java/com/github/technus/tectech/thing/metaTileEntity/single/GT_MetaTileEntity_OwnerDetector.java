@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
@@ -71,9 +72,9 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        return new ITexture[] { MACHINE_CASINGS_TT[mTier][aColorIndex + 1], aActive ? OWNER_ONLINE : OWNER_OFFLINE };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int colorIndex, boolean aActive, boolean aRedstone) {
+        return new ITexture[] { MACHINE_CASINGS_TT[mTier][colorIndex + 1], aActive ? OWNER_ONLINE : OWNER_OFFLINE };
     }
 
     @Override
@@ -82,12 +83,14 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, byte b, ItemStack itemStack) {
+    public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
+            ItemStack itemStack) {
         return false;
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, byte b, ItemStack itemStack) {
+    public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
+            ItemStack itemStack) {
         return false;
     }
 
@@ -128,14 +131,14 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
             aBaseMetaTileEntity.setActive(detected);
             aBaseMetaTileEntity.setGenericRedstoneOutput(detected);
             byte value = (byte) (detected ? 15 : 0);
-            for (byte b = 0; b < 6; b++) {
-                aBaseMetaTileEntity.setStrongOutputRedstoneSignal(b, value);
+            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                aBaseMetaTileEntity.setStrongOutputRedstoneSignal(side, value);
             }
         }
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         String clientLocale;
         try {
             EntityPlayerMP player = (EntityPlayerMP) aPlayer;
@@ -151,7 +154,7 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -176,12 +179,12 @@ public class GT_MetaTileEntity_OwnerDetector extends GT_MetaTileEntity_TieredMac
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
+    public boolean isInputFacing(ForgeDirection side) {
         return false;
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
+    public boolean isOutputFacing(ForgeDirection side) {
         return false;
     }
 

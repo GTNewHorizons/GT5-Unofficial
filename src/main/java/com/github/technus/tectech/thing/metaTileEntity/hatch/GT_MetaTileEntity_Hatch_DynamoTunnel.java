@@ -8,6 +8,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.technus.tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Energy;
@@ -65,7 +66,7 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -75,8 +76,8 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing();
+    public boolean isOutputFacing(ForgeDirection side) {
+        return side == getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -120,12 +121,14 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return false;
     }
 
@@ -152,8 +155,8 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
         if (color < 0) {
             return;
         }
-        byte front = aBaseMetaTileEntity.getFrontFacing();
-        byte opposite = GT_Utility.getOppositeSide(front);
+        final ForgeDirection front = aBaseMetaTileEntity.getFrontFacing();
+        final ForgeDirection opposite = front.getOpposite();
         for (short dist = 1; dist < 1000; dist++) {
             IGregTechTileEntity tGTTileEntity = aBaseMetaTileEntity
                     .getIGregTechTileEntityAtSideAndDistance(front, dist);
@@ -201,7 +204,7 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
     }
 
     @Override
-    public boolean canConnect(byte side) {
+    public boolean canConnect(ForgeDirection side) {
         return isOutputFacing(side);
     }
 }

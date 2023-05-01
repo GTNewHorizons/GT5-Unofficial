@@ -124,10 +124,10 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
     }
 
     @Override
-    public IIcon getIcon(int aSide, int aMeta) {
+    public IIcon getIcon(int ordinalSide, int aMeta) {
         switch (aMeta) {
             case 0:
-                switch (aSide) {
+                switch (ordinalSide) {
                     case 0:
                     case 1:
                         return tM0[0];
@@ -135,7 +135,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
                         return tM0[1];
                 }
             case 1:
-                switch (aSide) {
+                switch (ordinalSide) {
                     case 0:
                     case 1:
                         return tM1[0];
@@ -143,7 +143,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
                         return tM1[1];
                 }
             case 2:
-                switch (aSide) {
+                switch (ordinalSide) {
                     case 0:
                     case 1:
                         return tM2[0];
@@ -151,7 +151,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
                         return tM2[1];
                 }
             case 3:
-                switch (aSide) {
+                switch (ordinalSide) {
                     case 0:
                     case 1:
                         return tM3[0];
@@ -159,7 +159,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
                         return tM3[1];
                 }
             case 4:
-                switch (aSide) {
+                switch (ordinalSide) {
                     case 0:
                     case 1:
                         return tM4[0];
@@ -167,7 +167,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
                         return tM4[1];
                 }
             case 5:
-                switch (aSide) {
+                switch (ordinalSide) {
                     case 0:
                     case 1:
                         return tM5[0];
@@ -175,7 +175,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
                         return tM5[1];
                 }
             case 6:
-                switch (aSide) {
+                switch (ordinalSide) {
                     case 0:
                     case 1:
                         return tM6[0];
@@ -185,7 +185,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
             case 7:
                 return tM7;
             case 8:
-                switch (aSide) {
+                switch (ordinalSide) {
                     case 0:
                     case 1:
                         return tM8[0];
@@ -193,7 +193,7 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
                         return tM8[1];
                 }
             case 9:
-                switch (aSide) {
+                switch (ordinalSide) {
                     case 0:
                     case 1:
                         return tM9[0];
@@ -213,9 +213,9 @@ public class GT_Block_CasingsBA0 extends GT_Block_Casings_Abstract {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int aSide) {
+    public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int ordinalSide) {
         int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
-        return getIcon(aSide, tMeta);
+        return getIcon(ordinalSide, tMeta);
     }
 
     @Override

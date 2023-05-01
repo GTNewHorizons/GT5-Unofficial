@@ -22,6 +22,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
@@ -261,14 +262,14 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int colorIndex, boolean aActive, boolean aRedstone) {
+        if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][49],
                     new TT_RenderedExtendedFacingTexture(
                             aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE
                                     : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE) };
-        } else if (aSide == GT_Utility.getOppositeSide(aFacing)) {
+        } else if (side == facing.getOpposite()) {
             return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][49],
                     aActive ? Textures.BlockIcons.casingTexturePages[0][52]
                             : Textures.BlockIcons.casingTexturePages[0][53] };

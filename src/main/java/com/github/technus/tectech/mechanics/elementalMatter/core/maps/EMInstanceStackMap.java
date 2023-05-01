@@ -21,6 +21,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefini
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import com.github.technus.tectech.util.TT_Utility;
+
 import gregtech.api.util.GT_Utility;
 
 /**

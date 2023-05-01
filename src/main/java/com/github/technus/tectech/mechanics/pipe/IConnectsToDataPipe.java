@@ -1,15 +1,17 @@
 package com.github.technus.tectech.mechanics.pipe;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 /**
  * Created by Tec on 26.02.2017.
  */
 public interface IConnectsToDataPipe {
 
-    boolean canConnectData(byte side);
+    boolean canConnectData(ForgeDirection side);
 
     IConnectsToDataPipe getNext(IConnectsToDataPipe source);
 
-    boolean isDataInputFacing(byte side);
+    boolean isDataInputFacing(ForgeDirection side);
 
     byte getColorization();
 }

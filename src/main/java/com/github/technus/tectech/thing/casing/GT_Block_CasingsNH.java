@@ -52,11 +52,11 @@ public class GT_Block_CasingsNH extends GT_Block_Casings_Abstract {
     }
 
     @Override
-    public IIcon getIcon(int aSide, int aMeta) {
-        if (aSide == 0) {
+    public IIcon getIcon(int ordinalSide, int aMeta) {
+        if (ordinalSide == 0) {
             return MACHINECASINGS_BOTTOM_TT[aMeta].getIcon();
         }
-        if (aSide == 1) {
+        if (ordinalSide == 1) {
             return MACHINECASINGS_TOP_TT[aMeta].getIcon();
         }
         return MACHINECASINGS_SIDE_TT[aMeta].getIcon();

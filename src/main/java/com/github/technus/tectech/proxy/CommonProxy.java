@@ -6,6 +6,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -14,9 +15,9 @@ public class CommonProxy implements IGuiHandler {
 
     public void registerRenderInfo() {}
 
-    public void em_particle(IGregTechTileEntity aMuffler, byte facing) {} // CUTE!
+    public void em_particle(IGregTechTileEntity aMuffler, ForgeDirection facing) {} // CUTE!
 
-    public void pollutor_particle(IGregTechTileEntity aPollutor, byte facing) {} // CUTE!
+    public void pollutor_particle(IGregTechTileEntity aPollutor, ForgeDirection facing) {} // CUTE!
 
     public void em_particle(World w, double x, double y, double z) {}
 

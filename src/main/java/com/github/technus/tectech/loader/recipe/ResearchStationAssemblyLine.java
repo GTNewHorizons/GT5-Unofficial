@@ -32,9 +32,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import vexatos.tgregworks.reference.PartTypes;
-import vexatos.tgregworks.util.TGregUtils;
-
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 
@@ -45,6 +42,8 @@ import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import vexatos.tgregworks.reference.PartTypes;
+import vexatos.tgregworks.util.TGregUtils;
 
 public class ResearchStationAssemblyLine implements Runnable {
 

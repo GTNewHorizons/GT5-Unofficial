@@ -6,6 +6,7 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.Behaviou
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.Behaviour_ElectromagneticSeparator;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.Behaviour_Recycler;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine;
+
 import gregtech.api.enums.ItemList;
 
 public class MachineEMBehaviours implements Runnable {

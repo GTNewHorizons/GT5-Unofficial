@@ -3,11 +3,11 @@ package com.github.technus.tectech.compatibility.openmodularturrets.blocks.turre
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
-import openmodularturrets.client.render.models.ModelLaserTurret;
-
 import org.lwjgl.opengl.GL11;
 
 import com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turret.TileTurretHeadEM;
+
+import openmodularturrets.client.render.models.ModelLaserTurret;
 
 /**
  * Created by Tec on 30.07.2017.

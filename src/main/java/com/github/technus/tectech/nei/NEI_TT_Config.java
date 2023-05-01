@@ -1,8 +1,8 @@
 package com.github.technus.tectech.nei;
 
-import codechicken.nei.api.IConfigureNEI;
-
 import com.github.technus.tectech.recipe.TT_recipe;
+
+import codechicken.nei.api.IConfigureNEI;
 import cpw.mods.fml.common.FMLCommonHandler;
 
 public class NEI_TT_Config implements IConfigureNEI { // must be NEI*Config

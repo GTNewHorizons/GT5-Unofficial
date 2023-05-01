@@ -29,7 +29,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -124,7 +123,7 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         int meta = iGregTechTileEntity
-                .getMetaIDAtSideAndDistance(GT_Utility.getOppositeSide(iGregTechTileEntity.getFrontFacing()), 2);
+                .getMetaIDAtSideAndDistance(iGregTechTileEntity.getFrontFacing().getOpposite(), 2);
         if (meta == 4) {
             return structureCheck_EM("main", 1, 1, 0);
         } else if (meta == 5) {

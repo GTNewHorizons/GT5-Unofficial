@@ -38,12 +38,13 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
 
     public GT_Cover_TM_EnderFluidLink() {}
 
-    private void transferFluid(IFluidHandler source, byte sSide, IFluidHandler target, byte tSide, int amount) {
-        FluidStack fluidStack = source.drain(ForgeDirection.getOrientation(sSide), amount, false);
+    private void transferFluid(IFluidHandler source, ForgeDirection side, IFluidHandler target, ForgeDirection tSide,
+            int amount) {
+        FluidStack fluidStack = source.drain(side, amount, false);
 
         if (fluidStack != null) {
-            int fluidTransferred = target.fill(ForgeDirection.getOrientation(tSide), fluidStack, true);
-            source.drain(ForgeDirection.getOrientation(sSide), fluidTransferred, true);
+            int fluidTransferred = target.fill(tSide, fluidStack, true);
+            source.drain(side, fluidTransferred, true);
         }
     }
 
@@ -56,38 +57,40 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
     }
 
     @Override
-    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            long aTimer) {
+    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
+            ICoverable aTileEntity, long aTimer) {
         if ((aTileEntity instanceof IFluidHandler)) {
             IFluidHandler fluidHandlerSelf = (IFluidHandler) aTileEntity;
             IFluidHandler fluidHandlerEnder = getEnderFluidContainer(getEnderLinkTag((IFluidHandler) aTileEntity));
 
             if (testBit(aCoverVariable, IMPORT_EXPORT_MASK)) {
-                transferFluid(fluidHandlerEnder, (byte) 6, fluidHandlerSelf, aSide, L_PER_TICK);
+                transferFluid(fluidHandlerEnder, ForgeDirection.UNKNOWN, fluidHandlerSelf, side, L_PER_TICK);
             } else {
-                transferFluid(fluidHandlerSelf, aSide, fluidHandlerEnder, (byte) 6, L_PER_TICK);
+                transferFluid(fluidHandlerSelf, side, fluidHandlerEnder, ForgeDirection.UNKNOWN, L_PER_TICK);
             }
         }
         return aCoverVariable;
     }
 
     @Override
-    public String getDescription(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public String getDescription(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return "";
     }
 
     @Override
-    public boolean letsFluidIn(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    public boolean letsFluidIn(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
+            ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsFluidOut(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    public boolean letsFluidOut(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
+            ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
             EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int newCoverVariable = toggleBit(aCoverVariable, IMPORT_EXPORT_MASK);
 
@@ -100,7 +103,7 @@ public class GT_Cover_TM_EnderFluidLink extends GT_CoverBehavior {
     }
 
     @Override
-    public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         // Runs each tick
         return 1;
     }

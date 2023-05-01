@@ -7,16 +7,16 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-import openmodularturrets.entity.projectiles.TurretProjectile;
-import openmodularturrets.handler.ConfigHandler;
-import openmodularturrets.tileentity.turrets.TurretHead;
-import openmodularturrets.util.TurretHeadUtil;
-
 import com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles.projectileEM;
 import com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turretbase.TileTurretBaseEM;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
 import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
+
+import openmodularturrets.entity.projectiles.TurretProjectile;
+import openmodularturrets.handler.ConfigHandler;
+import openmodularturrets.tileentity.turrets.TurretHead;
+import openmodularturrets.util.TurretHeadUtil;
 
 /**
  * Created by Bass on 27/07/2017.

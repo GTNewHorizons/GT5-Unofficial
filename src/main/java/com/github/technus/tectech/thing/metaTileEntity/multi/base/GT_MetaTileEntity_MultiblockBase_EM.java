@@ -34,6 +34,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
@@ -509,17 +510,17 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
      * actually use textures
      *
      * @param aBaseMetaTileEntity
-     * @param aSide
+     * @param side
      * @param aFacing
-     * @param aColorIndex
+     * @param colorIndex
      * @param aActive
      * @param aRedstone
      * @return
      */
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int colorIndex, boolean aActive, boolean aRedstone) {
+        if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.casingTexturePages[texturePage][4],
                     new TT_RenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF) };
         }

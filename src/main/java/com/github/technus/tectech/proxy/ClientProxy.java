@@ -55,11 +55,10 @@ public class ClientProxy extends CommonProxy {
     }
 
     @Override
-    public void em_particle(IGregTechTileEntity aMuffler, byte facing) { // CUTE!
-        ForgeDirection aDir = ForgeDirection.getOrientation(facing);
-        float xPos = aDir.offsetX * 0.76F + aMuffler.getXCoord() + 0.25F;
-        float yPos = aDir.offsetY * 0.76F + aMuffler.getYCoord() + 0.25F;
-        float zPos = aDir.offsetZ * 0.76F + aMuffler.getZCoord() + 0.25F;
+    public void em_particle(IGregTechTileEntity aMuffler, ForgeDirection facing) { // CUTE!
+        float xPos = facing.offsetX * 0.76F + aMuffler.getXCoord() + 0.25F;
+        float yPos = facing.offsetY * 0.76F + aMuffler.getYCoord() + 0.25F;
+        float zPos = facing.offsetZ * 0.76F + aMuffler.getZCoord() + 0.25F;
 
         EntityFX particle = new WeightlessParticleFX(
                 aMuffler.getWorld(),
@@ -74,23 +73,22 @@ public class ClientProxy extends CommonProxy {
     }
 
     @Override
-    public void pollutor_particle(IGregTechTileEntity aMuffler, byte facing) {
-        ForgeDirection aDir = ForgeDirection.getOrientation(facing);
-        float xPos = aDir.offsetX * 0.76F + aMuffler.getXCoord() + 0.25F;
-        float yPos = aDir.offsetY * 0.76F + aMuffler.getYCoord() + 0.25F;
-        float zPos = aDir.offsetZ * 0.76F + aMuffler.getZCoord() + 0.25F;
+    public void pollutor_particle(IGregTechTileEntity aMuffler, ForgeDirection facing) {
+        float xPos = facing.offsetX * 0.76F + aMuffler.getXCoord() + 0.25F;
+        float yPos = facing.offsetY * 0.76F + aMuffler.getYCoord() + 0.25F;
+        float zPos = facing.offsetZ * 0.76F + aMuffler.getZCoord() + 0.25F;
 
-        float ySpd = aDir.offsetY * 0.1F + 0.2F + 0.1F * (float) RANDOM.nextGaussian();
+        float ySpd = facing.offsetY * 0.1F + 0.2F + 0.1F * (float) RANDOM.nextGaussian();
         float xSpd;
         float zSpd;
 
-        if (aDir.offsetY == -1) {
+        if (facing.offsetY == -1) {
             float temp = RANDOM.nextFloat() * 2 * (float) Math.PI;
             xSpd = (float) Math.sin(temp) * 0.1F * (float) RANDOM.nextGaussian();
             zSpd = (float) Math.cos(temp) * 0.1F * (float) RANDOM.nextGaussian();
         } else {
-            xSpd = aDir.offsetX * (0.1F + 0.2F * (float) RANDOM.nextGaussian());
-            zSpd = aDir.offsetZ * (0.1F + 0.2F * (float) RANDOM.nextGaussian());
+            xSpd = facing.offsetX * (0.1F + 0.2F * (float) RANDOM.nextGaussian());
+            zSpd = facing.offsetZ * (0.1F + 0.2F * (float) RANDOM.nextGaussian());
         }
         aMuffler.getWorld().spawnParticle(
                 "largesmoke",

@@ -7,12 +7,12 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import openmodularturrets.blocks.turretbases.BlockAbstractTurretBase;
-import openmodularturrets.handler.ConfigHandler;
-
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turretbase.TileTurretBaseEM;
+
 import cpw.mods.fml.common.registry.GameRegistry;
+import openmodularturrets.blocks.turretbases.BlockAbstractTurretBase;
+import openmodularturrets.handler.ConfigHandler;
 
 /**
  * Created by Tec on 27/07/2017.

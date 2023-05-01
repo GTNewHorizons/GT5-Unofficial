@@ -21,7 +21,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
@@ -584,12 +583,9 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isActive() && (aTick & 0x2) == 0 && aBaseMetaTileEntity.isClientSide()) {
-            int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 4
-                    + aBaseMetaTileEntity.getXCoord();
-            int yDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetY * 4
-                    + aBaseMetaTileEntity.getYCoord();
-            int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 4
-                    + aBaseMetaTileEntity.getZCoord();
+            int xDir = aBaseMetaTileEntity.getBackFacing().offsetX * 4 + aBaseMetaTileEntity.getXCoord();
+            int yDir = aBaseMetaTileEntity.getBackFacing().offsetY * 4 + aBaseMetaTileEntity.getYCoord();
+            int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ * 4 + aBaseMetaTileEntity.getZCoord();
             aBaseMetaTileEntity.getWorld().markBlockRangeForRenderUpdate(xDir, yDir, zDir, xDir, yDir, zDir);
         }
     }

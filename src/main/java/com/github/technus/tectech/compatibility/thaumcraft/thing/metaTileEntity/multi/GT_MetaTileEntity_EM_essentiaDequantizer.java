@@ -18,8 +18,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
-import thaumcraft.api.aspects.Aspect;
-
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
@@ -35,6 +33,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import thaumcraft.api.aspects.Aspect;
 
 /**
  * Created by danie_000 on 17.12.2016.

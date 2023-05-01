@@ -1,10 +1,13 @@
 package com.github.technus.tectech.mechanics.avr;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.github.technus.avrClone.AvrCore;
 import com.github.technus.avrClone.registerPackages.IInterrupt;
 import com.github.technus.avrClone.registerPackages.IRegister;
 import com.github.technus.avrClone.registerPackages.IRegisterBit;
 import com.github.technus.avrClone.registerPackages.RegisterPackageSync;
+
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public class SidedRedstone extends RegisterPackageSync<IGregTechTileEntity, SidedRedstone> {
@@ -26,10 +29,10 @@ public class SidedRedstone extends RegisterPackageSync<IGregTechTileEntity, Side
     public void preSync(AvrCore core, IGregTechTileEntity iGregTechTileEntity) {
         int addr = this.getOffset();
         int sides = 0;
-        for (byte i = 0; i < 6; i++) {
-            int val = iGregTechTileEntity.getInternalInputRedstoneSignal(i);
-            sides |= (val > 0 ? 1 : 0) << i;
-            core.setDataValue(addr++, iGregTechTileEntity.getInputRedstoneSignal(i));
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            int val = iGregTechTileEntity.getInternalInputRedstoneSignal(side);
+            sides |= (val > 0 ? 1 : 0) << side.ordinal();
+            core.setDataValue(addr++, iGregTechTileEntity.getInputRedstoneSignal(side));
             core.setDataValue(addr++, val);
             addr++;
         }
@@ -70,9 +73,9 @@ public class SidedRedstone extends RegisterPackageSync<IGregTechTileEntity, Side
     @Override
     public void postSync(AvrCore core, IGregTechTileEntity iGregTechTileEntity) {
         int addr = this.getOffset();
-        for (byte i = 0; i < 6; i++) {
-            iGregTechTileEntity.setOutputRedstoneSignal(i, (byte) core.getDataValue(addr)); // allows edge detection
-                                                                                            // hack?
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            iGregTechTileEntity.setOutputRedstoneSignal(side, (byte) core.getDataValue(addr)); // allows edge detection
+                                                                                               // hack?
             addr += 3;
         }
     }

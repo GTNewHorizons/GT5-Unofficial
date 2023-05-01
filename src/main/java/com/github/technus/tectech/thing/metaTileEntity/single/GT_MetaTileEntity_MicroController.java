@@ -6,6 +6,7 @@ import static com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTile
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.technus.avrClone.AvrCore;
 import com.github.technus.avrClone.instructions.ExecutionEvent;
@@ -159,33 +160,35 @@ public class GT_MetaTileEntity_MicroController extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, byte b, ItemStack itemStack) {
+    public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
+            ItemStack itemStack) {
         return true;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, byte b, ItemStack itemStack) {
+    public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
+            ItemStack itemStack) {
         return true;
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int colorIndex, boolean aActive, boolean aRedstone) {
         if (aBaseMetaTileEntity.getWorld() == null) {
-            if (aSide == aFacing) {
-                return new ITexture[] { MACHINE_CASINGS_TT[mTier][aColorIndex + 1],
+            if (side == facing) {
+                return new ITexture[] { MACHINE_CASINGS_TT[mTier][colorIndex + 1],
                         aActive ? READER_ONLINE : READER_OFFLINE };
             }
-            return new ITexture[] { MACHINE_CASINGS_TT[mTier][aColorIndex + 1] };
+            return new ITexture[] { MACHINE_CASINGS_TT[mTier][colorIndex + 1] };
         }
-        if (aSide == aBaseMetaTileEntity.getFrontFacing()) {
-            return new ITexture[] { MACHINE_CASINGS_TT[mTier][aColorIndex + 1],
+        if (side == aBaseMetaTileEntity.getFrontFacing()) {
+            return new ITexture[] { MACHINE_CASINGS_TT[mTier][colorIndex + 1],
                     aActive ? READER_ONLINE : READER_OFFLINE };
-        } else if (aSide == aFacing) {
-            return new ITexture[] { MACHINE_CASINGS_TT[mTier][aColorIndex + 1],
+        } else if (side == facing) {
+            return new ITexture[] { MACHINE_CASINGS_TT[mTier][colorIndex + 1],
                     new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
         }
-        return new ITexture[] { MACHINE_CASINGS_TT[mTier][aColorIndex + 1] };
+        return new ITexture[] { MACHINE_CASINGS_TT[mTier][colorIndex + 1] };
     }
 
     @Override

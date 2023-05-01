@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -132,12 +133,14 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return false;
     }
 
@@ -182,7 +185,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -197,7 +200,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
     }
 
     @Override
-    public boolean isLiquidInput(byte aSide) {
+    public boolean isLiquidInput(ForgeDirection side) {
         return false;
     }
 

@@ -4,6 +4,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.technus.tectech.mechanics.dataTransport.QuantumDataPacket;
 import com.github.technus.tectech.mechanics.pipe.IConnectsToDataPipe;
@@ -48,17 +49,17 @@ public class GT_MetaTileEntity_Hatch_InputData extends GT_MetaTileEntity_Hatch_D
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing();
+    public boolean isInputFacing(ForgeDirection side) {
+        return side == getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
-    public boolean isDataInputFacing(byte side) {
+    public boolean isDataInputFacing(ForgeDirection side) {
         return isInputFacing(side);
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
+    public boolean isOutputFacing(ForgeDirection side) {
         return false;
     }
 
@@ -68,7 +69,7 @@ public class GT_MetaTileEntity_Hatch_InputData extends GT_MetaTileEntity_Hatch_D
     }
 
     @Override
-    public boolean canConnectData(byte side) {
+    public boolean canConnectData(ForgeDirection side) {
         return isInputFacing(side);
     }
 

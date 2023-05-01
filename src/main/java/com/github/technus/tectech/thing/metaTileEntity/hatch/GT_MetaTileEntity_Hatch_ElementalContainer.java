@@ -18,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -159,11 +160,11 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                                 .getIGregTechTileEntityAtSide(aBaseMetaTileEntity.getBackFacing());
                         if (tGTTileEntity == null || !(tGTTileEntity
                                 .getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_OverflowElemental)) {
-                            tGTTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide((byte) 0);
+                            tGTTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(ForgeDirection.DOWN);
                         }
                         if (tGTTileEntity == null || !(tGTTileEntity
                                 .getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_OverflowElemental)) {
-                            tGTTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide((byte) 1);
+                            tGTTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(ForgeDirection.UP);
                         }
                         if (tGTTileEntity != null && tGTTileEntity
                                 .getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_OverflowElemental) {
@@ -226,7 +227,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -236,7 +237,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     }
 
     @Override
-    public boolean isLiquidInput(byte aSide) {
+    public boolean isLiquidInput(ForgeDirection side) {
         return false;
     }
 
@@ -246,12 +247,14 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return false;
     }
 

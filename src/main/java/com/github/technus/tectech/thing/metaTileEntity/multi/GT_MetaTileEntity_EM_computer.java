@@ -26,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.technus.tectech.mechanics.dataTransport.QuantumDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
@@ -384,9 +385,9 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int colorIndex, boolean aActive, boolean aRedstone) {
+        if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.casingTexturePages[texturePage][3],
                     new TT_RenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF) };
         }

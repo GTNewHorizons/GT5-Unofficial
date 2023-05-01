@@ -17,6 +17,10 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
 
+import com.github.technus.tectech.Reference;
+import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.recipe.TT_recipe;
+
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.ItemList;
 import codechicken.nei.PositionedStack;
@@ -24,11 +28,6 @@ import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-
-import com.github.technus.tectech.Reference;
-import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.recipe.TT_recipe;
-
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;

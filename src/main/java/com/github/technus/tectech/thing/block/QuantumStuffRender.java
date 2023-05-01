@@ -10,6 +10,7 @@ import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
 import com.github.technus.tectech.TecTech;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**

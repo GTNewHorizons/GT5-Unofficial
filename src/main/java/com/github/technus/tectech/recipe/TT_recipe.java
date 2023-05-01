@@ -20,9 +20,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
-import appeng.util.ReadableNumberConverter;
-import codechicken.nei.PositionedStack;
-
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
 import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
@@ -34,6 +31,8 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
+import appeng.util.ReadableNumberConverter;
+import codechicken.nei.PositionedStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.util.GT_LanguageManager;

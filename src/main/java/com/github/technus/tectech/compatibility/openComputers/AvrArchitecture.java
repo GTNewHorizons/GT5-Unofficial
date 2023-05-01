@@ -6,16 +6,6 @@ import java.io.IOException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import li.cil.oc.Settings;
-import li.cil.oc.api.Driver;
-import li.cil.oc.api.driver.Item;
-import li.cil.oc.api.driver.item.Memory;
-import li.cil.oc.api.machine.Architecture;
-import li.cil.oc.api.machine.ExecutionResult;
-import li.cil.oc.api.machine.Machine;
-import li.cil.oc.api.machine.Signal;
-import li.cil.oc.common.SaveHandler;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -31,6 +21,16 @@ import com.github.technus.avrClone.memory.RemovableMemory;
 import com.github.technus.avrClone.memory.program.ProgramMemory;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.util.Converter;
+
+import li.cil.oc.Settings;
+import li.cil.oc.api.Driver;
+import li.cil.oc.api.driver.Item;
+import li.cil.oc.api.driver.item.Memory;
+import li.cil.oc.api.machine.Architecture;
+import li.cil.oc.api.machine.ExecutionResult;
+import li.cil.oc.api.machine.Machine;
+import li.cil.oc.api.machine.Signal;
+import li.cil.oc.common.SaveHandler;
 
 @Architecture.Name("AVR 32Bit Clone")
 @Architecture.NoMemoryRequirements

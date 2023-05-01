@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.technus.tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
@@ -83,7 +84,7 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
     }
 
     @Override
-    public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         LASER = !LASER;
         GT_Utility.sendChatToPlayer(
                 aPlayer,
@@ -98,10 +99,10 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        return new ITexture[] { MACHINE_CASINGS_TT[mTier][aColorIndex + 1],
-                aSide != aFacing
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int colorIndex, boolean aActive, boolean aRedstone) {
+        return new ITexture[] { MACHINE_CASINGS_TT[mTier][colorIndex + 1],
+                side != facing
                         ? LASER ? (aActive ? OVERLAYS_ENERGY_OUT_LASER_TT[mTier] : OVERLAYS_ENERGY_IN_LASER_TT[mTier])
                                 : (aActive ? OVERLAYS_ENERGY_OUT_POWER_TT[mTier] : OVERLAYS_ENERGY_IN_POWER_TT[mTier])
                         : GENNY };
@@ -113,12 +114,14 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, byte b, ItemStack itemStack) {
+    public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
+            ItemStack itemStack) {
         return false;
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, byte b, ItemStack itemStack) {
+    public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
+            ItemStack itemStack) {
         return false;
     }
 
@@ -172,7 +175,7 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -197,13 +200,13 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
-        return !producing && aSide != getBaseMetaTileEntity().getFrontFacing();
+    public boolean isInputFacing(ForgeDirection side) {
+        return !producing && side != getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
-        return producing && aSide != getBaseMetaTileEntity().getFrontFacing();
+    public boolean isOutputFacing(ForgeDirection side) {
+        return producing && side != getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -247,14 +250,14 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
     }
 
     @Override
-    public boolean canConnect(byte side) {
+    public boolean canConnect(ForgeDirection side) {
         return LASER && side != getBaseMetaTileEntity().getFrontFacing();
     }
 
     private void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
-        for (byte face = 0; face < 6; face++) {
+        for (final ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
             if (face == aBaseMetaTileEntity.getFrontFacing()) continue;
-            byte opposite = GT_Utility.getOppositeSide(face);
+            final ForgeDirection opposite = face.getOpposite();
             for (short dist = 1; dist < 1000; dist++) {
                 IGregTechTileEntity tGTTileEntity = aBaseMetaTileEntity
                         .getIGregTechTileEntityAtSideAndDistance(face, dist);
