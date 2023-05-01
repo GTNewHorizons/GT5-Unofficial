@@ -48,8 +48,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import client.gui.KT_UITextures;
-
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
@@ -73,6 +71,7 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import common.Blocks;
 
+import client.gui.KT_UITextures;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -517,11 +516,11 @@ public class GTMTE_LapotronicSuperCapacitor
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side,
+            ForgeDirection forgeDirectionacing, int colorIndex, boolean aActive, boolean aRedstone) {
         ITexture[] sTexture = new ITexture[] {
                 TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
-        if (aSide == aFacing && aActive) {
+        if (side == forgeDirectionacing && aActive) {
             sTexture = new ITexture[] { TextureFactory
                     .of(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW, Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
         }
@@ -816,8 +815,8 @@ public class GTMTE_LapotronicSuperCapacitor
 
         IGregTechTileEntity tBMTE = this.getBaseMetaTileEntity();
 
-        tBMTE.injectEnergyUnits((byte) ForgeDirection.UNKNOWN.ordinal(), inputLastTick, 1L);
-        tBMTE.drainEnergyUnits((byte) ForgeDirection.UNKNOWN.ordinal(), outputLastTick, 1L);
+        tBMTE.injectEnergyUnits(ForgeDirection.UNKNOWN, inputLastTick, 1L);
+        tBMTE.drainEnergyUnits(ForgeDirection.UNKNOWN, outputLastTick, 1L);
 
         // Add I/O values to Queues
         if (energyInputValues.size() > DURATION_AVERAGE_TICKS) {
@@ -1054,7 +1053,7 @@ public class GTMTE_LapotronicSuperCapacitor
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (canUseWireless()) {
             wireless_mode = !wireless_mode;
             GT_Utility.sendChatToPlayer(aPlayer, "Wireless network mode " + (wireless_mode ? "enabled." : "disabled."));

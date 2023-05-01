@@ -9,6 +9,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import common.tileentities.TE_SpaceElevatorTether;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class Block_SpaceElevatorTether extends BaseGTUpdateableBlock {

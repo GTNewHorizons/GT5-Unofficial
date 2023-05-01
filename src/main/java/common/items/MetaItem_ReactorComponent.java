@@ -2,8 +2,6 @@ package common.items;
 
 import java.util.List;
 
-import kekztech.KekzCore;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,6 +13,7 @@ import net.minecraft.util.IIcon;
 
 import org.lwjgl.input.Keyboard;
 
+import kekztech.KekzCore;
 import reactor.items.CoolantCell;
 import reactor.items.FuelRod;
 import reactor.items.HeatExchanger;

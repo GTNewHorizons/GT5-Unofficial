@@ -2,8 +2,6 @@ package common.items;
 
 import java.util.List;
 
-import kekztech.KekzCore;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -11,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import kekztech.KekzCore;
 
 public class ErrorItem extends Item {
 

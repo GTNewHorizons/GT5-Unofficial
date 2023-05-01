@@ -1,14 +1,13 @@
 package client;
 
-import client.renderer.TESR_BeamTransmitter;
-import client.renderer.TESR_SECapacitor;
-import client.renderer.TESR_SETether;
-
 import common.CommonProxy;
 import common.tileentities.TE_BeamTransmitter;
 import common.tileentities.TE_SpaceElevatorCapacitor;
 import common.tileentities.TE_SpaceElevatorTether;
 
+import client.renderer.TESR_BeamTransmitter;
+import client.renderer.TESR_SECapacitor;
+import client.renderer.TESR_SETether;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;

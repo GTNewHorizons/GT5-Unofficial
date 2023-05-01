@@ -1,7 +1,5 @@
 package common;
 
-import kekztech.KekzCore;
-
 import net.minecraft.block.Block;
 
 import common.blocks.Block_GDCUnit;
@@ -11,6 +9,8 @@ import common.blocks.Block_LargeHexPlate;
 import common.blocks.Block_TFFTStorageField;
 import common.blocks.Block_ThaumiumReinforcedJar;
 import common.blocks.Block_YSZUnit;
+
+import kekztech.KekzCore;
 
 public class Blocks {
 

@@ -2,8 +2,6 @@ package common.blocks;
 
 import java.util.List;
 
-import kekztech.KekzCore;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -22,6 +20,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
+import kekztech.KekzCore;
 
 public class Block_TFFTStorageField extends BaseGTUpdateableBlock {
 

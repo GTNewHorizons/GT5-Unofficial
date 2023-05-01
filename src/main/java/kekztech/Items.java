@@ -5,10 +5,10 @@ import java.util.Arrays;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import util.Util;
-
 import common.items.MetaItem_CraftingComponent;
 import common.items.MetaItem_ReactorComponent;
+
+import util.Util;
 
 public enum Items {
 

@@ -1,9 +1,8 @@
 package common;
 
-import kekztech.KekzCore;
-
 import net.minecraft.item.ItemStack;
 
+import kekztech.KekzCore;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchItem;

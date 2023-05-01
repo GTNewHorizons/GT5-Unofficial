@@ -2,8 +2,6 @@ package common.items;
 
 import java.util.List;
 
-import kekztech.KekzCore;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import kekztech.KekzCore;
 
 public class MetaItem_CraftingComponent extends Item {
 
