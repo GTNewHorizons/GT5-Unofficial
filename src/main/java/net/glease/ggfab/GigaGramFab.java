@@ -19,7 +19,6 @@ public class GigaGramFab {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         if ((Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment"))
-            new DevEnvFixer().run();
         GregTech_API.sAfterGTPreload.add(() -> {
             GGItemList.AdvAssLine.set(new MTE_AdvAssLine(13532, "ggfab.machine.adv_assline", "Advanced Assembly Line").getStackForm(1));
             GGItemList.LinkedInputBus.set(new MTE_LinkedInputBus(13533, "ggfab.machine.linked_input_bus", "Linked Input Bus", 5).getStackForm(1));

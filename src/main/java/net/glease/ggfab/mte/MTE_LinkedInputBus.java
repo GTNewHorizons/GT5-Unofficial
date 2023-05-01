@@ -28,6 +28,7 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.*;
 
@@ -148,7 +149,7 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus {
     }
 
     @Override
-    public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
+    public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
         return isValidSlot(aIndex)
                 && aStack != null
                 && mChannel != null
@@ -156,12 +157,12 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus {
                 && aIndex > getCircuitSlot()
                 && aIndex < SIZE_INVENTORY + 1
                 && (mRealInventory.stacks[aIndex - 1] == null || GT_Utility.areStacksEqual(aStack, mRealInventory.stacks[aIndex - 1]))
-                && allowPutStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
+                && allowPutStack(getBaseMetaTileEntity(), aIndex, ForgeDirection.getOrientation(ordinalSide), aStack);
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing()
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side, ItemStack aStack) {
+        return side == getBaseMetaTileEntity().getFrontFacing()
                 && aIndex != getCircuitSlot()
                 && (mRecipeMap == null || disableFilter || mRecipeMap.containsInput(aStack))
                 && (mRealInventory.disableLimited || limitedAllowPutStack(aIndex, aStack));
@@ -311,13 +312,13 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus {
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (!getBaseMetaTileEntity()
-                .getCoverBehaviorAtSideNew(aSide)
+                .getCoverBehaviorAtSideNew(side)
                 .isGUIClickable(
-                        aSide,
-                        getBaseMetaTileEntity().getCoverIDAtSide(aSide),
-                        getBaseMetaTileEntity().getComplexCoverDataAtSide(aSide),
+                        side,
+                        getBaseMetaTileEntity().getCoverIDAtSide(side),
+                        getBaseMetaTileEntity().getComplexCoverDataAtSide(side),
                         getBaseMetaTileEntity())) return;
         if (aPlayer.isSneaking()) {
             if (this.mRealInventory == null) {
@@ -346,10 +347,12 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus {
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
-        if (!(aPlayer instanceof EntityPlayerMP)) return super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
+        if (!(aPlayer instanceof EntityPlayerMP)) return super.onRightclick(aBaseMetaTileEntity, aPlayer,
+                side, aX, aY, aZ);
         ItemStack stick = aPlayer.inventory.getCurrentItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(stick, true, true)) return super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
+        if (!ItemList.Tool_DataStick.isStackEqual(stick, true, true)) return super.onRightclick(aBaseMetaTileEntity, aPlayer,
+                side, aX, aY, aZ);
         if (!stick.hasTagCompound() || !"linkedinputbus".equals(stick.stackTagCompound.getString("ggfab.type"))) {
             aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.no_data"));
             return true;
