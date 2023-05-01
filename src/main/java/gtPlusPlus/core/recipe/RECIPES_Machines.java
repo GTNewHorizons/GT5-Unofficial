@@ -120,6 +120,9 @@ public class RECIPES_Machines {
     public static ItemStack RECIPE_LFTROuterCasing;
     public static ItemStack RECIPE_LFTRInnerCasing;
 
+    // Nuclear Salt Processing Plant
+    public static ItemStack RECIPE_SaltPlantController;
+
     // Milling
     public static ItemStack RECIPE_ISAMill_Controller;
     public static ItemStack RECIPE_ISAMill_Gearbox;
@@ -2451,6 +2454,21 @@ public class RECIPES_Machines {
                     ALLOY.HS188A.getPlateDouble(1),
                     CI.getFieldGenerator(5, 1),
                     GregtechItemList.ReactorProcessingUnit_ZPM.get(1));
+
+            // Nuclear Salt Processing Plant Controller
+            RECIPE_SaltPlantController = GregtechItemList.Nuclear_Salt_Processing_Plant.get(1);
+
+            RecipeUtils.addShapedGregtechRecipe(
+                    "plateOsmiridium",
+                    GregtechItemList.ReactorProcessingUnit_IV.get(1),
+                    "plateOsmiridium",
+                    "plateRuridit",
+                    CI.getTieredCircuitOreDictName(7),
+                    "plateRuridit",
+                    "plateOsmiridium",
+                    GregtechItemList.ColdTrap_IV.get(1),
+                    "plateOsmiridium",
+                    RECIPE_SaltPlantController);
         }
 
         // Shelves

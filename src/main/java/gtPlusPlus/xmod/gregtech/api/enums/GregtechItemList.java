@@ -309,6 +309,9 @@ public enum GregtechItemList implements GregtechItemContainer {
     Casing_Reactor_I,
     Casing_Reactor_II,
 
+    // Nuclear Salt Processing Plant
+    Nuclear_Salt_Processing_Plant,
+
     // Multitank
     /* Industrial_MultiTank, */
     Industrial_MultiTankDense,

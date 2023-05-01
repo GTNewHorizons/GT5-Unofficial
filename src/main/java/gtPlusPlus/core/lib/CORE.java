@@ -192,6 +192,7 @@ public class CORE {
         public static boolean enableMultiblock_MultiTank = true;
         public static boolean enableMultiblock_PowerSubstation = true;
         public static boolean enableMultiblock_LiquidFluorideThoriumReactor = true;
+        public static boolean enableMultiblock_NuclearSaltProcessingPlant = true;
         public static boolean enableMultiblock_NuclearFuelRefinery = true;
         public static boolean enableMultiblock_TreeFarmer = true;
         public static boolean enableMultiblock_IndustrialSifter = true;

@@ -188,9 +188,8 @@ public class RecipeLoader_NuclearFuelProcessing {
                 new ItemStack[] { ELEMENT.getInstance().FLUORINE.getCell(1), FLUORIDES.URANIUM_HEXAFLUORIDE.getCell(2),
                         ELEMENT.getInstance().PHOSPHORUS.getDust(1), ELEMENT.getInstance().PHOSPHORUS.getDust(1),
                         ELEMENT.getInstance().PHOSPHORUS.getDust(1), ELEMENT.getInstance().PHOSPHORUS.getDust(1),
-                        ELEMENT.getInstance().PHOSPHORUS.getDust(1), ELEMENT.getInstance().PHOSPHORUS.getDust(1),
-                        ELEMENT.getInstance().PHOSPHORUS.getDust(1) },
-                new int[] { 10000, 10000, 5000, 5000, 5000, 5000, 5000, 5000, 5000 },
+                        ELEMENT.getInstance().PHOSPHORUS.getDust(1), ELEMENT.getInstance().PHOSPHORUS.getDust(1) },
+                new int[] { 10000, 10000, 5000, 5000, 5000, 5000, 5000, 5000 },
                 FLUORIDES.SODIUM_FLUORIDE.getFluidStack(2000),
                 20 * 60 * 10,
                 MaterialUtils.getVoltageForTier(4));

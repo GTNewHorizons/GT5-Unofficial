@@ -89,6 +89,7 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIsaMill;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechLFTR;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechLargeTurbinesAndHeatExchanger;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechMolecularTransformer;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechNuclearSaltProcessingPlant;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechPollutionDevices;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechPowerBreakers;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechPowerSubStation;
@@ -149,6 +150,7 @@ public class COMPAT_HANDLER {
         GregtechGeneratorsULV.run();
         GregtechEnergyBuffer.run();
         GregtechLFTR.run();
+        GregtechNuclearSaltProcessingPlant.run();
         GregtechSteamCondenser.run();
         GregtechSafeBlock.run();
         GregtechIronBlastFurnace.run();

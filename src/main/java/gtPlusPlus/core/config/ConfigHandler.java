@@ -58,6 +58,7 @@ import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_LiquidFlu
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_MatterFabricator;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_MultiTank;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_NuclearFuelRefinery;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_NuclearSaltProcessingPlant;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_PowerSubstation;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_ThermalBoiler;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableOldGTcircuits;
@@ -346,6 +347,11 @@ public class ConfigHandler {
                 GregTech.ID,
                 true,
                 "Refines molten chemicals into nuclear fuels.");
+        enableMultiblock_NuclearSaltProcessingPlant = config.getBoolean(
+                "enableMultiblockNuclearSaltProcessingPlant",
+                GregTech.ID,
+                true,
+                "Reprocesses depleted nuclear salts into useful chemicals.");
         enableMultiblock_IndustrialSifter = config
                 .getBoolean("enableMultiblock_IndustrialSifter", GregTech.ID, true, "Large scale sifting.");
         enableMultiblock_LargeAutoCrafter = config.getBoolean(

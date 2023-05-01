@@ -317,6 +317,23 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
                                     "Total: " + MathUtils.formatNumbers(tDuration * tEUt * 4) + " EU");
                         });
 
+        public static final GT_Recipe_Map sNuclearSaltProcessingPlantRecipes = new GT_Recipe_Map_LargeNEI(
+                new HashSet<>(50),
+                "gtpp.recipe.nuclearsaltprocessingplant",
+                "Nuclear Salt Processing Plant",
+                null,
+                RES_PATH_GUI + "basicmachines/FissionFuel",
+                0,
+                6,
+                0,
+                0,
+                1,
+                "",
+                0,
+                "",
+                true,
+                true).setUsualFluidInputCount(2).setUsualFluidOutputCount(3);
+
         // Ore Milling Map
         public static final GT_Recipe_Map sOreMillRecipes = new GT_Recipe_Map(
                 new HashSet<>(10000),

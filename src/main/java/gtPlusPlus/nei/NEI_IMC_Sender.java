@@ -56,6 +56,9 @@ public class NEI_IMC_Sender {
         sendCatalyst("gtpp.recipe.reactorprocessingunit", "gregtech:gt.blockmachines:31031");
         sendCatalyst("gtpp.recipe.reactorprocessingunit", "gregtech:gt.blockmachines:31032");
 
+        sendHandler("gtpp.recipe.nuclearsaltprocessingplant", "gregtech:gt.blockmachines:749");
+        sendCatalyst("gtpp.recipe.nuclearsaltprocessingplant", "gregtech:gt.blockmachines:749");
+
         sendHandler("gtpp.recipe.treefarm", "gregtech:gt.blockmachines:836");
         sendCatalyst("gtpp.recipe.treefarm", "gregtech:gt.blockmachines:836");
 
