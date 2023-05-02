@@ -324,7 +324,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (sideDirection.offsetY != 0) {
+        if ((sideDirection.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) != 0) {
             return new ITexture[] { TextureFactory.of(BLOCK_PLASCRETE), active
                 ? TextureFactory.of(
                     TextureFactory.of(OVERLAY_TOP_CLEANROOM_ACTIVE),

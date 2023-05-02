@@ -244,7 +244,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         final int textureIndex;
-        if (mMainFacing.offsetY != 0) { // UP or DOWN
+        if ((mMainFacing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) != 0) { // UP or DOWN
             if (sideDirection == facingDirection) {
                 textureIndex = active ? 2 : 3;
             } else {
@@ -730,7 +730,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     protected void doDisplayThings() {
-        if (mMainFacing.offsetY != 0 && getBaseMetaTileEntity().getFrontFacing().offsetY == 0) {
+        if ((mMainFacing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) != 0
+            && getBaseMetaTileEntity().getFrontFacing().offsetY == 0) {
             mMainFacing = getBaseMetaTileEntity().getFrontFacing();
         }
         if ((mMainFacing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0 && !mHasBeenUpdated) {

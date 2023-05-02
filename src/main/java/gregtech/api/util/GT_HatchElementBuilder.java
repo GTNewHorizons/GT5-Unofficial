@@ -481,7 +481,10 @@ public class GT_HatchElementBuilder<T> {
                         // explicitly rejected, probably obstructed by another slice
                         if (mDisallowedDirection.contains(direction)) continue;
                         ForgeDirection rotated = env.getFacing()
-                            .getWorldDirection(direction.offsetY != 0 ? direction.getOpposite() : direction);
+                            .getWorldDirection(
+                                (direction.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) != 0
+                                    ? direction.getOpposite()
+                                    : direction);
                         allowed.add(rotated);
                     }
                 }

@@ -122,7 +122,7 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
         ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (side == ForgeDirection.UNKNOWN) return false;
         if (((aX > 0.375D) && (aX < 0.625D)) || ((side.offsetX != 0) && ((aY > 0.375D) && (aY < 0.625D)))
-            || ((side.offsetY != 0) && ((aZ > 0.375D) && (aZ < 0.625D)))
+            || (side.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) != 0 && aZ > 0.375D && aZ < 0.625D
             || (side.offsetZ != 0)) {
             final ItemStack tStack = aPlayer.inventory.getCurrentItem();
             if (tStack == null) return true;
