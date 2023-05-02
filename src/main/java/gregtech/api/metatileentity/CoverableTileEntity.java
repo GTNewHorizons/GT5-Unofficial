@@ -419,7 +419,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public void setStrongOutputRedstoneSignal(ForgeDirection side, byte strength) {
-        mStrongRedstone |= (1 << side.ordinal());
+        mStrongRedstone |= side.flag;
         setOutputRedstoneSignal(side, strength);
     }
 

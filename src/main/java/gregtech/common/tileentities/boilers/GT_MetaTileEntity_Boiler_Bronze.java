@@ -102,7 +102,7 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
 
             final ForgeDirection frontFacing = aBaseMetaTileEntity.getFrontFacing();
 
-            if ((frontFacing.offsetX != 0 || frontFacing.offsetZ != 0)
+            if ((frontFacing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0
                 && aBaseMetaTileEntity.getCoverIDAtSide(frontFacing) == 0
                 && !aBaseMetaTileEntity.getOpacityAtSide(frontFacing)) {
 

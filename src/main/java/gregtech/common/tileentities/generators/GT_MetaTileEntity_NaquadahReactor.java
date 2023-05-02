@@ -37,7 +37,8 @@ public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGe
     @Override
     public boolean isOutputFacing(ForgeDirection side) {
         if (side == ForgeDirection.UNKNOWN) return false;
-        return ((side.offsetX != 0 || side.offsetZ != 0)) && (side != getBaseMetaTileEntity().getFrontFacing())
+        return ((side.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0)
+            && (side != getBaseMetaTileEntity().getFrontFacing())
             && (side != getBaseMetaTileEntity().getBackFacing());
     }
 

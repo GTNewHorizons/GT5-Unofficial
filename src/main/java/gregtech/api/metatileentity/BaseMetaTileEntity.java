@@ -1558,13 +1558,12 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
                                 yCoord,
                                 zCoord);
                         } else if (GT_ModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
-                            mStrongRedstone ^= (1 << tSide.ordinal());
+                            mStrongRedstone ^= tSide.flag;
                             GT_Utility.sendChatToPlayer(
                                 aPlayer,
                                 GT_Utility.trans("091", "Redstone Output at Side ") + tSide
                                     + GT_Utility.trans("092", " set to: ")
-                                    + ((mStrongRedstone & (1 << tSide.ordinal())) != 0
-                                        ? GT_Utility.trans("093", "Strong")
+                                    + ((mStrongRedstone & tSide.flag) != 0 ? GT_Utility.trans("093", "Strong")
                                         : GT_Utility.trans("094", "Weak")));
                             GT_Utility.sendSoundToPlayers(
                                 worldObj,

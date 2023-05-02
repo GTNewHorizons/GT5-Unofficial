@@ -101,7 +101,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return (facing.offsetX != 0 || facing.offsetZ != 0);
+        return (facing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0;
     }
 
     @Override

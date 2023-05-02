@@ -5,7 +5,6 @@
 
 package gregtech.common;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.calculateMaxPlasmaTurbineEfficiency;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GregTech;
@@ -327,20 +326,19 @@ public class GT_Client extends GT_Proxy implements Runnable {
             .getTileEntity(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
 
         // draw connection indicators
-        byte tConnections = 0;
-        if (tTile instanceof ICoverable) {
+        int tConnections = 0;
+        if (tTile instanceof ICoverable iCoverable) {
             if (showCoverConnections) {
                 for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
-                    if (((ICoverable) tTile).getCoverIDAtSide(tSide) > 0)
-                        tConnections = (byte) (tConnections + (1 << tSide.ordinal()));
+                    if (iCoverable.getCoverIDAtSide(tSide) != 0) tConnections |= tSide.flag;
                 }
             } else if (tTile instanceof BaseMetaPipeEntity) tConnections = ((BaseMetaPipeEntity) tTile).mConnections;
         }
 
-        if (tConnections > 0) {
-            for (byte tSide : ALL_VALID_SIDES) {
-                if ((tConnections & (1 << tSide)) != 0) {
-                    switch (GRID_SWITCH_TABLE[aEvent.target.sideHit][tSide]) {
+        if (tConnections != 0) {
+            for (ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
+                if ((tConnections & tSide.flag) != 0) {
+                    switch (GRID_SWITCH_TABLE[aEvent.target.sideHit][tSide.ordinal()]) {
                         case 0 -> {
                             GL11.glVertex3d(+.25D, .0D, +.25D);
                             GL11.glVertex3d(-.25D, .0D, -.25D);

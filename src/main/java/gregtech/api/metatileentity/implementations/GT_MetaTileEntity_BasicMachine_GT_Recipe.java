@@ -672,7 +672,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
 
                     final ForgeDirection mainFacing = this.mMainFacing;
 
-                    if ((mainFacing.offsetX != 0 || mainFacing.offsetZ != 0)
+                    if ((mainFacing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0
                         && aBaseMetaTileEntity.getCoverIDAtSide(mainFacing) == 0
                         && !aBaseMetaTileEntity.getOpacityAtSide(mainFacing)) {
 

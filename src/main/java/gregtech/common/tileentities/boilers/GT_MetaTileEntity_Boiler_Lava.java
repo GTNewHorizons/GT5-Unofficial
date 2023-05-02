@@ -90,7 +90,7 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         final ForgeDirection rearDirection = facingDirection.getOpposite();
         final ITexture[] tmp;
-        if ((sideDirection.offsetX != 0 || sideDirection.offsetZ != 0)) {
+        if ((sideDirection.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0) {
             if (sideDirection == facingDirection) {
                 if (active) tmp = mTextures[4][colorIndex + 1];
                 else tmp = mTextures[3][colorIndex + 1];
@@ -320,7 +320,7 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
 
             final ForgeDirection frontFacing = aBaseMetaTileEntity.getFrontFacing();
 
-            if ((frontFacing.offsetX != 0 || frontFacing.offsetZ != 0)
+            if ((frontFacing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0
                 && aBaseMetaTileEntity.getCoverIDAtSide(frontFacing) == 0
                 && !aBaseMetaTileEntity.getOpacityAtSide(frontFacing)) {
 

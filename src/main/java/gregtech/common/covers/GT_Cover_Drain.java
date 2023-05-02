@@ -79,7 +79,7 @@ public class GT_Cover_Drain extends GT_CoverBehavior {
                                 false);
                         }
                     if ((tLiquid != null) && (tLiquid.getFluid() != null)
-                        && (((side.offsetX != 0 || side.offsetZ != 0))
+                        && ((side.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0 // Horizontal
                             || ((side == ForgeDirection.DOWN) && (tLiquid.getFluid()
                                 .getDensity() <= 0))
                             || ((side == ForgeDirection.UP) && (tLiquid.getFluid()

@@ -68,8 +68,15 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_ClientPreference;
+import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.GT_TooltipDataCache;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GT_Waila;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
 import gregtech.common.power.BasicMachineEUPower;
@@ -190,7 +197,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     protected boolean isValidMainFacing(ForgeDirection side) {
-        return (side.offsetX != 0 || side.offsetZ != 0); // Neither DOWN nor UP
+        return (side.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0; // Horizontal
     }
 
     public boolean setMainFacing(ForgeDirection side) {
@@ -298,7 +305,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return (mMainFacing.offsetX != 0 || mMainFacing.offsetZ != 0) || (facing.offsetX != 0 || facing.offsetZ != 0);
+        // Either mMainFacing or mMainFacing is horizontal
+        return (mMainFacing.flag & facing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0;
     }
 
     @Override
@@ -725,7 +733,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         if (mMainFacing.offsetY != 0 && getBaseMetaTileEntity().getFrontFacing().offsetY == 0) {
             mMainFacing = getBaseMetaTileEntity().getFrontFacing();
         }
-        if ((mMainFacing.offsetX != 0 || mMainFacing.offsetZ != 0) && !mHasBeenUpdated) {
+        if ((mMainFacing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0 && !mHasBeenUpdated) {
             mHasBeenUpdated = true;
             getBaseMetaTileEntity().setFrontFacing(getBaseMetaTileEntity().getBackFacing());
         }
