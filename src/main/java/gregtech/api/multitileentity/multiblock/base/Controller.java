@@ -4,7 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.*;
-import static gregtech.loaders.preload.GT_Loader_MultiTileEntities.COMPONENT_CASING_REGISTRY;
+import static gregtech.loaders.preload.GT_Loader_MultiTileEntities.COMPONENT_CASING_REGISTRY_NAME;
 import static mcp.mobius.waila.api.SpecialChars.*;
 
 import java.lang.ref.WeakReference;
@@ -835,146 +835,146 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     protected <S> IStructureElementChain<S> addMotorCasings(int modes) {
         return ofChain(
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, LV_Motor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, MV_Motor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, HV_Motor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, EV_Motor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, IV_Motor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, LuV_Motor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, ZPM_Motor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UV_Motor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UHV_Motor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UEV_Motor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UIV_Motor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UMV_Motor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UXV_Motor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, MAX_Motor.getId(), modes));
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, LV_Motor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, MV_Motor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, HV_Motor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, EV_Motor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, IV_Motor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, LuV_Motor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, ZPM_Motor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UV_Motor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UHV_Motor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UEV_Motor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UIV_Motor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UMV_Motor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UXV_Motor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, MAX_Motor.getId(), modes));
     }
 
     protected <S> IStructureElementChain<S> addPumpCasings(int modes) {
         return ofChain(
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, LV_Pump.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, MV_Pump.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, HV_Pump.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, EV_Pump.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, IV_Pump.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, LuV_Pump.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, ZPM_Pump.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UV_Pump.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UHV_Pump.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UEV_Pump.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UIV_Pump.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UMV_Pump.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UXV_Pump.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, MAX_Pump.getId(), modes));
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, LV_Pump.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, MV_Pump.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, HV_Pump.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, EV_Pump.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, IV_Pump.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, LuV_Pump.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, ZPM_Pump.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UV_Pump.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UHV_Pump.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UEV_Pump.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UIV_Pump.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UMV_Pump.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UXV_Pump.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, MAX_Pump.getId(), modes));
     }
 
     protected <S> IStructureElementChain<S> addPistonCasings(int modes) {
         return ofChain(
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, LV_Piston.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, MV_Piston.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, HV_Piston.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, EV_Piston.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, IV_Piston.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, LuV_Piston.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, ZPM_Piston.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UV_Piston.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UHV_Piston.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UEV_Piston.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UIV_Piston.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UMV_Piston.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UXV_Piston.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, MAX_Piston.getId(), modes));
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, LV_Piston.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, MV_Piston.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, HV_Piston.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, EV_Piston.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, IV_Piston.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, LuV_Piston.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, ZPM_Piston.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UV_Piston.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UHV_Piston.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UEV_Piston.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UIV_Piston.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UMV_Piston.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UXV_Piston.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, MAX_Piston.getId(), modes));
     }
 
     protected <S> IStructureElementChain<S> addConveyorCasings(int modes) {
         return ofChain(
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, LV_Conveyor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, MV_Conveyor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, HV_Conveyor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, EV_Conveyor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, IV_Conveyor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, LuV_Conveyor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, ZPM_Conveyor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UV_Conveyor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UHV_Conveyor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UEV_Conveyor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UIV_Conveyor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UMV_Conveyor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UXV_Conveyor.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, MAX_Conveyor.getId(), modes));
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, LV_Conveyor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, MV_Conveyor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, HV_Conveyor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, EV_Conveyor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, IV_Conveyor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, LuV_Conveyor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, ZPM_Conveyor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UV_Conveyor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UHV_Conveyor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UEV_Conveyor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UIV_Conveyor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UMV_Conveyor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UXV_Conveyor.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, MAX_Conveyor.getId(), modes));
     }
 
     protected <S> IStructureElementChain<S> addRobotArmCasings(int modes) {
         return ofChain(
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, LV_RobotArm.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, MV_RobotArm.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, HV_RobotArm.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, EV_RobotArm.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, IV_RobotArm.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, LuV_RobotArm.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, ZPM_RobotArm.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UV_RobotArm.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UHV_RobotArm.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UEV_RobotArm.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UIV_RobotArm.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UMV_RobotArm.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UXV_RobotArm.getId(), modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, MAX_RobotArm.getId(), modes));
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, LV_RobotArm.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, MV_RobotArm.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, HV_RobotArm.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, EV_RobotArm.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, IV_RobotArm.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, LuV_RobotArm.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, ZPM_RobotArm.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UV_RobotArm.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UHV_RobotArm.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UEV_RobotArm.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UIV_RobotArm.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UMV_RobotArm.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UXV_RobotArm.getId(), modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, MAX_RobotArm.getId(), modes));
     }
 
     protected <S> IStructureElementChain<S> addSensorCasings(int Modes) {
         return ofChain(
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, LV_Sensor.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, MV_Sensor.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, HV_Sensor.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, EV_Sensor.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, IV_Sensor.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, LuV_Sensor.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, ZPM_Sensor.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UV_Sensor.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UHV_Sensor.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UEV_Sensor.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UIV_Sensor.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UMV_Sensor.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UXV_Sensor.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, MAX_Sensor.getId(), Modes));
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, LV_Sensor.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, MV_Sensor.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, HV_Sensor.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, EV_Sensor.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, IV_Sensor.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, LuV_Sensor.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, ZPM_Sensor.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UV_Sensor.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UHV_Sensor.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UEV_Sensor.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UIV_Sensor.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UMV_Sensor.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UXV_Sensor.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, MAX_Sensor.getId(), Modes));
     }
 
     protected <S> IStructureElementChain<S> addEmitterCasings(int Modes) {
         return ofChain(
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, LV_Emitter.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, MV_Emitter.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, HV_Emitter.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, EV_Emitter.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, IV_Emitter.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, LuV_Emitter.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, ZPM_Emitter.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UV_Emitter.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UHV_Emitter.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UEV_Emitter.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UIV_Emitter.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UMV_Emitter.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UXV_Emitter.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, MAX_Emitter.getId(), Modes));
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, LV_Emitter.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, MV_Emitter.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, HV_Emitter.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, EV_Emitter.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, IV_Emitter.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, LuV_Emitter.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, ZPM_Emitter.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UV_Emitter.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UHV_Emitter.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UEV_Emitter.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UIV_Emitter.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UMV_Emitter.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UXV_Emitter.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, MAX_Emitter.getId(), Modes));
     }
 
     protected <S> IStructureElementChain<S> addFieldGeneratorCasings(int Modes) {
         return ofChain(
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, LV_FieldGenerator.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, MV_FieldGenerator.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, HV_FieldGenerator.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, EV_FieldGenerator.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, IV_FieldGenerator.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, LuV_FieldGenerator.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, ZPM_FieldGenerator.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UV_FieldGenerator.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UHV_FieldGenerator.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UEV_FieldGenerator.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UIV_FieldGenerator.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UMV_FieldGenerator.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, UXV_FieldGenerator.getId(), Modes),
-            addMultiTileCasing(COMPONENT_CASING_REGISTRY, MAX_FieldGenerator.getId(), Modes));
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, LV_FieldGenerator.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, MV_FieldGenerator.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, HV_FieldGenerator.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, EV_FieldGenerator.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, IV_FieldGenerator.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, LuV_FieldGenerator.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, ZPM_FieldGenerator.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UV_FieldGenerator.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UHV_FieldGenerator.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UEV_FieldGenerator.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UIV_FieldGenerator.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UMV_FieldGenerator.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, UXV_FieldGenerator.getId(), Modes),
+            addMultiTileCasing(COMPONENT_CASING_REGISTRY_NAME, MAX_FieldGenerator.getId(), Modes));
     }
 
     protected void registerSpecialCasings(MultiBlockPart part) {
