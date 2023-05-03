@@ -542,11 +542,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 .setPos(80, 10))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullItemList, this::setAutoPullItemList))
             .widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 1)
-                    .startFromSlot(getManualSlot())
-                    .endAtSlot(getManualSlot())
-                    .background(getGUITextureSet().getItemSlot())
-                    .build()
+                new SlotWidget(inventoryHandler, getManualSlot()).setBackground(getGUITextureSet().getItemSlot())
                     .setPos(79, 45));
     }
 
