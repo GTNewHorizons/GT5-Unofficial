@@ -22,7 +22,6 @@ import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 
 import appeng.core.CreativeTab;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.multitileentity.base.MultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
@@ -70,8 +69,6 @@ public class MultiTileEntityRegistry {
      * @param aNameInternal the internal Name of the Item
      */
     public MultiTileEntityRegistry(String aNameInternal, MultiTileEntityBlockInternal aBlock) {
-        if (!GregTech_API.sPreloadStarted || GregTech_API.sPreloadFinished) throw new IllegalStateException(
-            "The MultiTileEntity Registry must be initialised during Preload Phase and not before");
         mNameInternal = aNameInternal;
         mBlock = aBlock;
         GT_FML_LOGGER.info(aNameInternal + " " + Block.getIdFromBlock(aBlock) + "This is the answer");
