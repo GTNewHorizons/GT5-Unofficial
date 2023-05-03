@@ -78,7 +78,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
             aName,
             aNameRegional,
             1,
-            SLOT_COUNT * 2 + 1,
+            SLOT_COUNT * 2 + 2,
             new String[] { "Advanced item input for Multiblocks", "Retrieves directly from ME",
                 "Keeps 16 item types in stock",
                 "Auto-Pull from ME mode will automatically stock the first 16 items in the ME system, updated every 5 seconds.",
@@ -90,7 +90,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
     public GT_MetaTileEntity_Hatch_InputBus_ME(String aName, int aTier, String[] aDescription,
         ITexture[][][] aTextures) {
-        super(aName, aTier, SLOT_COUNT * 2 + 1, aDescription, aTextures);
+        super(aName, aTier, SLOT_COUNT * 2 + 2, aDescription, aTextures);
         disableSort = true;
     }
 
@@ -237,7 +237,10 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     }
 
     @Override
-    public void updateSlots() {}
+    public void updateSlots() {
+        if (mInventory[getManualSlot()] != null && mInventory[getManualSlot()].stackSize <= 0)
+            mInventory[getManualSlot()] = null;
+    }
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
@@ -293,6 +296,10 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         aPlayer.addChatMessage(new ChatComponentText("Saved Config to Data Stick"));
     }
 
+    private int getManualSlot() {
+        return SLOT_COUNT * 2 + 1;
+    }
+
     @Override
     public int getCircuitSlot() {
         return SLOT_COUNT * 2;
@@ -305,12 +312,12 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
     @Override
     public int getCircuitSlotY() {
-        return 63;
+        return 64;
     }
 
     @Override
     public boolean setStackToZeroInsteadOfNull(int aIndex) {
-        return true;
+        return aIndex != getManualSlot();
     }
 
     @Override
@@ -320,7 +327,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         if (aIndex >= SLOT_COUNT && aIndex < SLOT_COUNT * 2)
             // Display slots
             return null;
-        if (aIndex == getCircuitSlot()) return mInventory[aIndex];
+        if (aIndex == getCircuitSlot() || aIndex == getManualSlot()) return mInventory[aIndex];
         if (GregTech_API.mAE2 && mInventory[aIndex] != null) {
             AENetworkProxy proxy = getProxy();
             if (proxy == null) {
@@ -453,7 +460,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        return false;
+        return aIndex == getManualSlot();
     }
 
     @Override
@@ -506,7 +513,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                     .setPos(97, 9))
             .widget(
                 new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_DOUBLE)
-                    .setPos(82, 40)
+                    .setPos(82, 30)
                     .setSize(12, 12))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (clickData.mouseButton == 0) {
@@ -530,7 +537,10 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                         "Right-Click to edit minimum stack size for item pulling."))
                 .setSize(16, 16)
                 .setPos(80, 10))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullItemList, this::setAutoPullItemList));
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullItemList, this::setAutoPullItemList))
+            .widget(
+                new SlotWidget(inventoryHandler, getManualSlot()).setBackground(getGUITextureSet().getItemSlot())
+                    .setPos(79, 45));
     }
 
     protected ModularWindow createStackSizeConfigurationWindow(final EntityPlayer player) {
