@@ -71,8 +71,8 @@ public class MultiTileEntityRegistry {
      * @param aNameInternal the internal Name of the Item
      */
     public MultiTileEntityRegistry(String aNameInternal, MultiTileEntityBlockInternal aBlock) {
-        if (Loader.instance()
-            .isInState(LoaderState.POSTINITIALIZATION)) {
+        if (!Loader.instance()
+            .isInState(LoaderState.PREINITIALIZATION)) {
             throw new IllegalStateException(
                 "The MultiTileEntity Registry must be initialized during Preload Phase and not before");
         }
