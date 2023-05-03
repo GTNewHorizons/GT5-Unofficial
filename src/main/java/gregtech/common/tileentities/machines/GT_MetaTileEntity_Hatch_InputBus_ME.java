@@ -329,8 +329,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         if (aIndex >= SLOT_COUNT && aIndex < SLOT_COUNT * 2)
             // Display slots
             return null;
-        if (aIndex == getCircuitSlot()) return mInventory[aIndex];
-        if (aIndex == getManualSlot()) return mInventory[aIndex];
+        if (aIndex == getCircuitSlot() || aIndex == getManualSlot()) return mInventory[aIndex];
         if (GregTech_API.mAE2 && mInventory[aIndex] != null) {
             AENetworkProxy proxy = getProxy();
             if (proxy == null) {
@@ -463,7 +462,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        return false;
+        return aIndex == getManualSlot();
     }
 
     @Override
