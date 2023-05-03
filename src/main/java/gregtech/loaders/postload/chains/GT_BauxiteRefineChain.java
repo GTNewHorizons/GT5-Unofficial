@@ -74,7 +74,7 @@ public class GT_BauxiteRefineChain {
                 Materials.Quicklime.getDust(1),
                 Materials.SiliconDioxide.getDust(1),
                 Materials.Iron.getDust(1))
-            .outputChances(8000, 6000, 2000, 9000, 8000)
+            .outputChances(8000, 3000, 2000, 9000, 8000)
             .noFluidInputs()
             .noFluidOutputs()
             .duration(2 * SECONDS)
@@ -109,7 +109,7 @@ public class GT_BauxiteRefineChain {
                 Materials.Tantalum.getDust(1),
                 Materials.Manganese.getDust(1),
                 Materials.Magnesium.getDust(1))
-            .outputChances(8000, 1000, 2000, 5000, 6000)
+            .outputChances(8000, 500, 2000, 5000, 6000)
             .noFluidInputs()
             .noFluidOutputs()
             .duration(2 * SECONDS)
@@ -194,7 +194,7 @@ public class GT_BauxiteRefineChain {
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Vanadium, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Magnesium, 1))
-            .outputChances(10000, 10000, 2000, 2000, 2000)
+            .outputChances(10000, 5000, 2000, 2000, 2000)
             .fluidInputs(MaterialsOreAlum.RubyJuice.getFluid(1000))
             .fluidOutputs(Materials.HydrochloricAcid.getFluid(1000))
             .duration(2 * SECONDS + 5 * TICKS)
