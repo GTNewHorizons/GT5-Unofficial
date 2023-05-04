@@ -306,7 +306,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
         // Either mMainFacing or mMainFacing is horizontal
-        return (mMainFacing.flag & facing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0;
+        return ((facing.flag | mMainFacing.flag) & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0;
     }
 
     @Override
