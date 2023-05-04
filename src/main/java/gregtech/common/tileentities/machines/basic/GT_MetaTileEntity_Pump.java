@@ -805,7 +805,8 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
-            (sideDirection.offsetY != 0) ? TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT)
+            (sideDirection.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) != 0
+                ? TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT)
                 : TextureFactory.of(Textures.BlockIcons.OVERLAY_ADV_PUMP) };
     }
 

@@ -48,7 +48,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return facing.offsetY == 0;
+        return (facing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0;
     }
 
     @Override

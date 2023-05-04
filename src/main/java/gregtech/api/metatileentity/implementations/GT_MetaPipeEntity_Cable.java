@@ -2,6 +2,11 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
+import static net.minecraftforge.common.util.ForgeDirection.EAST;
+import static net.minecraftforge.common.util.ForgeDirection.NORTH;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.UP;
+import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -511,34 +516,34 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
             spaceDown = spaceNorth = spaceWest = 0;
             spaceSouth = spaceEast = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.UP) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(UP) != 0) {
             spaceNorth = spaceWest = 0;
             spaceUp = spaceSouth = spaceEast = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.NORTH) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(NORTH) != 0) {
             spaceDown = spaceNorth = spaceWest = 0;
             spaceUp = spaceEast = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.SOUTH) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(SOUTH) != 0) {
             spaceDown = spaceWest = 0;
             spaceUp = spaceSouth = spaceEast = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.WEST) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(WEST) != 0) {
             spaceDown = spaceNorth = spaceWest = 0;
             spaceUp = spaceSouth = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.EAST) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(EAST) != 0) {
             spaceDown = spaceNorth = 0;
             spaceUp = spaceSouth = spaceEast = 1;
         }
 
         byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
-        if ((tConn & (1 << DOWN.ordinal())) != 0) spaceDown = 0f;
-        if ((tConn & (1 << ForgeDirection.UP.ordinal())) != 0) spaceUp = 1f;
-        if ((tConn & (1 << ForgeDirection.NORTH.ordinal())) != 0) spaceNorth = 0f;
-        if ((tConn & (1 << ForgeDirection.SOUTH.ordinal())) != 0) spaceSouth = 1f;
-        if ((tConn & (1 << ForgeDirection.WEST.ordinal())) != 0) spaceWest = 0f;
-        if ((tConn & (1 << ForgeDirection.EAST.ordinal())) != 0) spaceEast = 1f;
+        if ((tConn & DOWN.flag) != 0) spaceDown = 0f;
+        if ((tConn & UP.flag) != 0) spaceUp = 1f;
+        if ((tConn & NORTH.flag) != 0) spaceNorth = 0f;
+        if ((tConn & SOUTH.flag) != 0) spaceSouth = 1f;
+        if ((tConn & WEST.flag) != 0) spaceWest = 0f;
+        if ((tConn & EAST.flag) != 0) spaceEast = 1f;
 
         return AxisAlignedBB.getBoundingBox(
             aX + spaceWest,

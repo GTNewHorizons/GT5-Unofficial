@@ -913,13 +913,13 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     }
 
     private void connectAtSide(ForgeDirection side) {
-        mConnections |= (1 << side.ordinal());
+        mConnections |= side.flag;
     }
 
     @Override
     public void disconnect(ForgeDirection side) {
         if (side == ForgeDirection.UNKNOWN) return;
-        mConnections &= ~(1 << side.ordinal());
+        mConnections &= ~side.flag;
         final ForgeDirection oppositeSide = side.getOpposite();
         IGregTechTileEntity tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntityAtSide(side);
         IMetaTileEntity tPipe = tTileEntity == null ? null : tTileEntity.getMetaTileEntity();
@@ -934,7 +934,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 
     @Override
     public boolean isConnectedAtSide(ForgeDirection sideDirection) {
-        return (mConnections & (1 << sideDirection.ordinal())) != 0;
+        return (mConnections & sideDirection.flag) != 0;
     }
 
     public boolean letsIn(GT_CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,

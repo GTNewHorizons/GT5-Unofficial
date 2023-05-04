@@ -428,7 +428,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
             final IGregTechTileEntity gTank = tTank instanceof IGregTechTileEntity ? (IGregTechTileEntity) tTank : null;
 
             if (isConnectedAtSide(side) && tTank != null
-                && (mLastReceivedFrom & (1 << side.ordinal())) == 0
+                && (mLastReceivedFrom & side.flag) == 0
                 && getBaseMetaTileEntity().getCoverInfoAtSide(side)
                     .letsFluidOut(tFluid.getFluid())
                 && (gTank == null || gTank.getCoverInfoAtSide(oppositeSide)
@@ -478,7 +478,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         float aX, float aY, float aZ) {
         if (GT_Mod.gregtechproxy.gt6Pipe) {
             final ForgeDirection tSide = GT_Utility.determineWrenchingSide(side, aX, aY, aZ);
-            final byte tMask = (byte) (1 << tSide.ordinal());
+            final byte tMask = (byte) (tSide.flag);
             if (entityPlayer.isSneaking()) {
                 if (isInputDisabledAtSide(tSide)) {
                     mDisableInput &= ~tMask;
@@ -798,7 +798,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     }
 
     public boolean isInputDisabledAtSide(ForgeDirection side) {
-        return (mDisableInput & (1 << side.ordinal())) != 0;
+        return (mDisableInput & side.flag) != 0;
     }
 
     @Override
@@ -843,12 +843,12 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         }
 
         final byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
-        if ((tConn & (1 << ForgeDirection.DOWN.ordinal())) != 0) tSide0 = 0f;
-        if ((tConn & (1 << ForgeDirection.UP.ordinal())) != 0) tSide1 = 1f;
-        if ((tConn & (1 << ForgeDirection.NORTH.ordinal())) != 0) tSide2 = 0f;
-        if ((tConn & (1 << ForgeDirection.SOUTH.ordinal())) != 0) tSide3 = 1f;
-        if ((tConn & (1 << ForgeDirection.WEST.ordinal())) != 0) tSide4 = 0f;
-        if ((tConn & (1 << ForgeDirection.EAST.ordinal())) != 0) tSide5 = 1f;
+        if ((tConn & ForgeDirection.DOWN.flag) != 0) tSide0 = 0f;
+        if ((tConn & ForgeDirection.UP.flag) != 0) tSide1 = 1f;
+        if ((tConn & ForgeDirection.NORTH.flag) != 0) tSide2 = 0f;
+        if ((tConn & ForgeDirection.SOUTH.flag) != 0) tSide3 = 1f;
+        if ((tConn & ForgeDirection.WEST.flag) != 0) tSide4 = 0f;
+        if ((tConn & ForgeDirection.EAST.flag) != 0) tSide5 = 1f;
 
         return AxisAlignedBB
             .getBoundingBox(aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
