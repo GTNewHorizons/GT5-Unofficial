@@ -24,7 +24,7 @@
 dependencies {
     api("com.github.GTNewHorizons:StructureLib:1.2.1:dev")
 
-    api("com.github.GTNewHorizons:NotEnoughItems:2.3.28-GTNH:dev")
+    api("com.github.GTNewHorizons:NotEnoughItems:2.3.46-GTNH:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.0.12:dev")
     api("com.github.GTNewHorizons:ModularUI:1.1.2:dev")
     api("com.github.GTNewHorizons:waila:1.5.23:dev")

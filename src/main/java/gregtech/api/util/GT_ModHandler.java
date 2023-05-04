@@ -1566,12 +1566,12 @@ public class GT_ModHandler {
         boolean aNotRemoveShapelessRecipes, boolean aOnlyRemoveNativeHandlers) {
         if (aOutput == null) return false;
         boolean rReturn = false;
-        ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
+        final ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
         aOutput = GT_OreDictUnificator.get(aOutput);
         int tList_sS = tList.size();
         for (int i = 0; i < tList_sS; i++) {
-            IRecipe tRecipe = tList.get(i);
+            final IRecipe tRecipe = tList.get(i);
             if (aNotRemoveShapelessRecipes
                 && (tRecipe instanceof ShapelessRecipes || tRecipe instanceof ShapelessOreRecipe)) continue;
             if (aOnlyRemoveNativeHandlers) {
