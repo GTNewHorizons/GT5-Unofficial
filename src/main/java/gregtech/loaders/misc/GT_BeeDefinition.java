@@ -298,9 +298,10 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }),
     DIAMOND(GT_BranchDefinition.GEM, "Diamond", false, new Color(0xCCFFFF), new Color(0xA3CCCC), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f);
-        beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.DIAMOND), 0.15f);
-        beeSpecies.setHumidity(EnumHumidity.NORMAL);
-        beeSpecies.setTemperature(HOT);
+        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.DIAMOND), 0.15f);
+        beeSpecies.addSpecialty(Materials.Graphite.getDust(1), 0.35f);
+        beeSpecies.setHumidity(ARID);
+        beeSpecies.setTemperature(HELLISH);
         beeSpecies.setHasEffect();
     }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER), dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(CERTUS, COAL, 3);
