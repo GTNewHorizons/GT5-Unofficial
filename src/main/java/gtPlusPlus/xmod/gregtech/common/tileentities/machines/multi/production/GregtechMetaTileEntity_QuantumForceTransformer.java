@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
 import static gregtech.api.enums.GT_HatchElement.InputBus;
@@ -179,20 +180,24 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                                     "      A A      " }, })
             .addElement(
                     'A',
-                    StructureUtility.ofBlocksTiered(
-                            craftingTierConverter(),
-                            getAllCraftingTiers(),
-                            0,
-                            GregtechMetaTileEntity_QuantumForceTransformer::setCraftingTier,
-                            GregtechMetaTileEntity_QuantumForceTransformer::getCraftingTier))
+                    withChannel(
+                            "manipulator",
+                            StructureUtility.ofBlocksTiered(
+                                    craftingTierConverter(),
+                                    getAllCraftingTiers(),
+                                    0,
+                                    GregtechMetaTileEntity_QuantumForceTransformer::setCraftingTier,
+                                    GregtechMetaTileEntity_QuantumForceTransformer::getCraftingTier)))
             .addElement(
                     'B',
-                    StructureUtility.ofBlocksTiered(
-                            focusingTierConverter(),
-                            getAllFocusingTiers(),
-                            0,
-                            GregtechMetaTileEntity_QuantumForceTransformer::setFocusingTier,
-                            GregtechMetaTileEntity_QuantumForceTransformer::getFocusingTier))
+                    withChannel(
+                            "shielding",
+                            StructureUtility.ofBlocksTiered(
+                                    focusingTierConverter(),
+                                    getAllFocusingTiers(),
+                                    0,
+                                    GregtechMetaTileEntity_QuantumForceTransformer::setFocusingTier,
+                                    GregtechMetaTileEntity_QuantumForceTransformer::getFocusingTier)))
             .addElement('C', ofBlock(ModBlocks.blockCasings4Misc, 4))
             .addElement('D', ofBlock(ModBlocks.blockCasings2Misc, 12))
             .addElement('E', lazy(t -> ofBlock(t.getCasingBlock1(), t.getCasingMeta1())))
