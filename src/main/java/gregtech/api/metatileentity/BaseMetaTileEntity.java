@@ -98,7 +98,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     private byte mColor = 0, oColor = 0, oStrongRedstone = 0, oRedstoneData = 63, oTextureData = 0, oUpdateData = 0,
         oTexturePage = 0;
     private byte oLightValueClient = 0, oLightValue = -1, mLightValue = 0, mOtherUpgrades = 0, mWorkData = 0;
-    private ForgeDirection mFacing, oFacing;
+    private ForgeDirection mFacing = ForgeDirection.UNKNOWN, oFacing = ForgeDirection.UNKNOWN;
     private int mDisplayErrorCode = 0, oX = 0, oY = 0, oZ = 0, mTimeStatisticsIndex = 0, mLagWarningCount = 0;
     private long oOutput = 0, mAcceptedAmperes = Long.MAX_VALUE;
     private long mLastCheckTick = 0;
