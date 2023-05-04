@@ -74,7 +74,7 @@ public class GT_BauxiteRefineChain {
                 Materials.Quicklime.getDust(1),
                 Materials.SiliconDioxide.getDust(1),
                 Materials.Iron.getDust(1))
-            .outputChances(8000, 6000, 2000, 9000, 8000)
+            .outputChances(8000, 3000, 2000, 9000, 8000)
             .noFluidInputs()
             .noFluidOutputs()
             .duration(2 * SECONDS)
@@ -109,7 +109,7 @@ public class GT_BauxiteRefineChain {
                 Materials.Tantalum.getDust(1),
                 Materials.Manganese.getDust(1),
                 Materials.Magnesium.getDust(1))
-            .outputChances(8000, 1000, 2000, 5000, 6000)
+            .outputChances(8000, 500, 2000, 5000, 6000)
             .noFluidInputs()
             .noFluidOutputs()
             .duration(2 * SECONDS)
@@ -161,10 +161,10 @@ public class GT_BauxiteRefineChain {
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(
                 Materials.Aluminiumhydroxide.getDust(3),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Vanadium, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Magnesium, 1))
-            .outputChances(10000, 2000, 2000, 2000)
+                Materials.Iron.getDust(1),
+                Materials.Vanadium.getDust(1),
+                Materials.Magnesium.getDust(1))
+            .outputChances(10000, 300, 200, 200)
             .fluidInputs(MaterialsOreAlum.SapphireJuice.getFluid(1000))
             .fluidOutputs(Materials.HydrochloricAcid.getFluid(1000))
             .duration(2 * SECONDS + 5 * TICKS)
@@ -175,11 +175,11 @@ public class GT_BauxiteRefineChain {
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(
                 Materials.Aluminiumhydroxide.getDust(3),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Vanadium, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Manganese, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Beryllium, 1))
-            .outputChances(10000, 2000, 2000, 2000, 2000)
+                Materials.Iron.getDust(1),
+                Materials.Vanadium.getDust(1),
+                Materials.Manganese.getDust(1),
+                Materials.Beryllium.getDust(1))
+            .outputChances(10000, 300, 200, 200, 200)
             .fluidInputs(MaterialsOreAlum.GreenSapphireJuice.getFluid(1000))
             .fluidOutputs(Materials.HydrochloricAcid.getFluid(1000))
             .duration(2 * SECONDS + 5 * TICKS)
@@ -190,11 +190,11 @@ public class GT_BauxiteRefineChain {
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(
                 Materials.Aluminiumhydroxide.getDust(3),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Vanadium, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Magnesium, 1))
-            .outputChances(10000, 10000, 2000, 2000, 2000)
+                Materials.Chrome.getDust(1),
+                Materials.Iron.getDust(1),
+                Materials.Vanadium.getDust(1),
+                Materials.Magnesium.getDust(1))
+            .outputChances(10000, 5000, 300, 200, 200)
             .fluidInputs(MaterialsOreAlum.RubyJuice.getFluid(1000))
             .fluidOutputs(Materials.HydrochloricAcid.getFluid(1000))
             .duration(2 * SECONDS + 5 * TICKS)
@@ -206,11 +206,11 @@ public class GT_BauxiteRefineChain {
             .itemOutputs(
                 Materials.Aluminiumoxide.getDust(1),
                 Materials.Magnesia.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Silver, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Calcite, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Vanadium, 1))
-            .outputChances(5000, 4000, 2000, 2000, 2000, 2000)
+                Materials.Silver.getDust(1),
+                Materials.Iron.getDust(1),
+                Materials.Calcite.getDust(1),
+                Materials.Vanadium.getDust(1))
+            .outputChances(5000, 4000, 300, 300, 300, 200)
             .fluidInputs(Materials.NitricAcid.getFluid(10))
             .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(10))
             .duration(2 * SECONDS + 5 * TICKS)
@@ -222,11 +222,11 @@ public class GT_BauxiteRefineChain {
             .itemOutputs(
                 Materials.Aluminiumoxide.getDust(1),
                 Materials.Iron.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Gold, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Chrome, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Calcite, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Vanadium, 1))
-            .outputChances(5000, 4000, 2000, 2000, 2000, 2000)
+                Materials.Gold.getDust(1),
+                Materials.Calcite.getDust(1),
+                Materials.Chrome.getDust(1),
+                Materials.Vanadium.getDust(1))
+            .outputChances(5000, 4000, 300, 300, 200, 200)
             .fluidInputs(Materials.NitricAcid.getFluid(10))
             .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(10))
             .duration(2 * SECONDS + 5 * TICKS)
@@ -238,11 +238,11 @@ public class GT_BauxiteRefineChain {
             .itemOutputs(
                 Materials.Aluminiumoxide.getDust(1),
                 Materials.Pyrolusite.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Tantalum, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Calcite, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Magnesium, 1))
-            .outputChances(5000, 4000, 2000, 2000, 2000, 2000)
+                Materials.Iron.getDust(1),
+                Materials.Calcite.getDust(1),
+                Materials.Magnesium.getDust(1),
+                Materials.Tantalum.getDust(1))
+            .outputChances(5000, 4000, 300, 300, 300, 200)
             .fluidInputs(Materials.NitricAcid.getFluid(10))
             .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(10))
             .duration(2 * SECONDS + 5 * TICKS)
@@ -254,11 +254,11 @@ public class GT_BauxiteRefineChain {
             .itemOutputs(
                 Materials.Quicklime.getDust(1),
                 Materials.Iron.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Rutile, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Gold, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Aluminiumoxide, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Vanadium, 1))
-            .outputChances(5000, 4000, 2000, 2000, 2000, 2000)
+                Materials.Aluminiumoxide.getDust(1),
+                Materials.Gold.getDust(1),
+                Materials.Vanadium.getDust(1),
+                Materials.Rutile.getDust(1))
+            .outputChances(5000, 4000, 300, 300, 200, 200)
             .fluidInputs(Materials.NitricAcid.getFluid(10))
             .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(10))
             .duration(2 * SECONDS + 5 * TICKS)
@@ -270,27 +270,11 @@ public class GT_BauxiteRefineChain {
             .itemOutputs(
                 Materials.Quicklime.getDust(1),
                 Materials.Chrome.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Silver, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Aluminiumoxide, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Manganese, 1))
-            .outputChances(5000, 1000, 2000, 2000, 2000, 2000)
-            .fluidInputs(Materials.NitricAcid.getFluid(10))
-            .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(10))
-            .duration(2 * SECONDS + 5 * TICKS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(sCentrifugeRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(Materials.Uvarovite.getDust(1))
-            .itemOutputs(
-                Materials.Quicklime.getDust(1),
-                Materials.Chrome.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Silver, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Aluminiumoxide, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Manganese, 1))
-            .outputChances(5000, 1000, 2000, 2000, 2000, 2000)
+                Materials.Iron.getDust(1),
+                Materials.Silver.getDust(1),
+                Materials.Aluminiumoxide.getDust(1),
+                Materials.Manganese.getDust(1))
+            .outputChances(5000, 1000, 300, 300, 200, 200)
             .fluidInputs(Materials.NitricAcid.getFluid(10))
             .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(10))
             .duration(2 * SECONDS + 5 * TICKS)
@@ -302,11 +286,11 @@ public class GT_BauxiteRefineChain {
             .itemOutputs(
                 Materials.Quicklime.getDust(1),
                 Materials.Aluminiumoxide.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Gold, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Calcite, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Vanadium, 1))
-            .outputChances(5000, 4000, 2000, 2000, 2000, 2000)
+                Materials.Iron.getDust(1),
+                Materials.Gold.getDust(1),
+                Materials.Calcite.getDust(1),
+                Materials.Vanadium.getDust(1))
+            .outputChances(5000, 4000, 300, 300, 300, 200)
             .fluidInputs(Materials.NitricAcid.getFluid(10))
             .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(10))
             .duration(2 * SECONDS + 5 * TICKS)
