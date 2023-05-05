@@ -58,6 +58,7 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -190,8 +191,13 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implem
                     this.colorForGUI = new short[] { 0x37, 0x37, 0x37 };
                     return;
                 } else {
-                    Materials mat = GT_OreDictUnificator.getAssociation(lStack).mMaterial.mMaterial;
-                    this.colorForGUI = new short[] { mat.getRGBA()[0], mat.getRGBA()[1], mat.getRGBA()[2] };
+                    ItemData itemData = GT_OreDictUnificator.getAssociation(lStack);
+                    if (itemData != null) {
+                        Materials mat = itemData.mMaterial.mMaterial;
+                        this.colorForGUI = new short[] { mat.getRGBA()[0], mat.getRGBA()[1], mat.getRGBA()[2] };
+                    } else {
+                        this.colorForGUI = new short[] { 0x37, 0x37, 0x37 };
+                    }
                 }
 
                 if (this.lastFail && GT_Utility.areStacksEqual(this.lastUsedItem, lStack, true)) {
