@@ -82,6 +82,7 @@ import gregtech.crossmod.Waila;
 import gregtech.loaders.load.GT_CoverBehaviorLoader;
 import gregtech.loaders.load.GT_FuelLoader;
 import gregtech.loaders.load.GT_ItemIterator;
+import gregtech.loaders.load.GT_Loader_MetaTileEntities_Recipes;
 import gregtech.loaders.load.GT_SonictronLoader;
 import gregtech.loaders.misc.GT_Achievements;
 import gregtech.loaders.misc.GT_Bees;
@@ -326,6 +327,8 @@ public class GT_Mod implements IGT_Mod {
                 return false;
             }
         }, true);
+
+        new GT_Loader_MetaTileEntities_Recipes().run();
 
         if (gregtechproxy.mSortToTheEnd) {
             new GT_ItemIterator().run();
