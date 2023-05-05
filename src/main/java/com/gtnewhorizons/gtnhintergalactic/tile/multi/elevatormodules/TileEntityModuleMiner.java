@@ -75,6 +75,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
     protected static String IS_WHITELISTED_NBT_TAG = "isWhitelisted";
     /** String of the NBT tag that saves the whitelist */
     protected static String WHITELIST_NBT_TAG = "whitelist";
+    /** Flag if the user modified the whitelist */
+    protected boolean wasWhitelistOpened;
 
     protected static final ISpaceProject ASTEROID_OUTPOST = SpaceProjectManager.getProject("AsteroidOutput");
 
@@ -187,6 +189,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
         if (whiteListHandler != null) {
             whiteListHandler.deserializeNBT(aNBT.getCompoundTag(WHITELIST_NBT_TAG));
         }
+        generateOreConfigurationList();
     }
 
     /**
@@ -554,6 +557,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
         super.addUIWidgets(builder, buildContext);
         builder.widget(new FakeSyncWidget.BooleanSyncer(() -> isWhitelisted, val -> isWhitelisted = val));
         buildContext.addSyncedWindow(WHITELIST_WINDOW_ID, this::createWhitelistConfigWindow);
+        buildContext.addCloseListener(() -> {
+            if (wasWhitelistOpened) {
+                generateOreConfigurationList();
+                wasWhitelistOpened = false;
+            }
+        });
     }
 
     /**
@@ -563,15 +572,13 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
      * @return Window object
      */
     protected ModularWindow createWhitelistConfigWindow(final EntityPlayer player) {
+        wasWhitelistOpened = true;
         return ModularWindow.builder(158, 180).setBackground(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
                 .setGuiTint(getGUIColorization())
                 // Toggle white-/blacklist
                 .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                     TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
                     isWhitelisted = !isWhitelisted;
-                    if (!widget.isClient()) {
-                        generateOreConfigurationList();
-                    }
                 }).setPlayClickSound(false).setBackground(() -> {
                     List<UITexture> ret = new ArrayList<>();
                     ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
@@ -591,7 +598,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
                                 whiteListHandler.setStackInSlot(i, null);
                             }
                         }
-                        generateOreConfigurationList();
                     }
                 }).setPlayClickSound(false)
                         .setBackground(TecTechUITextures.BUTTON_STANDARD_16x16, IG_UITextures.OVERLAY_BUTTON_CROSS)
@@ -608,7 +614,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
                                 whiteListHandler.setStackInSlot(i++, copy);
                             }
                         }
-                        generateOreConfigurationList();
+
                     }
                 }).setPlayClickSound(false)
                         .setBackground(TecTechUITextures.BUTTON_STANDARD_16x16, IG_UITextures.OVERLAY_BUTTON_CONFIGURE)
