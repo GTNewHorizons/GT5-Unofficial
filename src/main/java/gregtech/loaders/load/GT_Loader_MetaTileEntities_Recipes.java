@@ -47,6 +47,8 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
     private static final long bitsd = GT_ModHandler.RecipeBits.DISMANTLEABLE | bits;
 
     private static void run1() {
+        Materials LuVMat2 = BartWorks.isModLoaded() ? Materials.get("Rhodium-PlatedPalladium") : Materials.Chrome;
+
         GT_ModHandler.addCraftingRecipe(
             ItemList.Casing_Pipe_Polytetrafluoroethylene.get(1L),
             bits,
@@ -90,7 +92,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addCraftingRecipe(
             ItemList.Casing_LuV.get(1L),
             bits,
-            new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P', OrePrefixes.plate.get(Materials.Chrome) });
+            new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P', OrePrefixes.plate.get(LuVMat2) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Casing_ZPM.get(1L),
             bits,
@@ -409,7 +411,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             ItemList.Hull_LuV.get(1L),
             GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { aTextCableHull, 'M', ItemList.Casing_LuV, 'C',
-                OrePrefixes.cableGt01.get(Materials.VanadiumGallium), 'H', OrePrefixes.plate.get(Materials.Chrome), 'P',
+                OrePrefixes.cableGt01.get(Materials.VanadiumGallium), 'H', OrePrefixes.plate.get(LuVMat2), 'P',
                 OrePrefixes.plate.get(Materials.Polytetrafluoroethylene) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Hull_ZPM.get(1L),
@@ -482,8 +484,8 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 ItemList.Hull_LuV.get(1L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
                 new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_LuV, 'C',
-                    OrePrefixes.cableGt01.get(Materials.VanadiumGallium), 'H', OrePrefixes.plate.get(Materials.Chrome),
-                    'P', OrePrefixes.plate.get(Materials.Polytetrafluoroethylene) });
+                    OrePrefixes.cableGt01.get(Materials.VanadiumGallium), 'H', OrePrefixes.plate.get(LuVMat2), 'P',
+                    OrePrefixes.plate.get(Materials.Polytetrafluoroethylene) });
             GT_ModHandler.addCraftingRecipe(
                 ItemList.Hull_ZPM.get(1L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
