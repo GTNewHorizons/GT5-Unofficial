@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.m
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
 import static gregtech.api.enums.GT_HatchElement.InputBus;
@@ -113,13 +114,18 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
                                     "   AAAAA   ", "   AAAAA   ", "   CCCCC   ", "   ZZZZZ   " } })
             .addElement(
                     'B',
-                    ofChain(
-                            onElementPass(
-                                    te -> te.hasNormalCoils = false,
-                                    ofCoil(
-                                            GregTechMetaTileEntity_MegaAlloyBlastSmelter::setCoilLevel,
-                                            GregTechMetaTileEntity_MegaAlloyBlastSmelter::getCoilLevel)),
-                            onElementPass(te -> te.hasNormalCoils = true, ofBlock(ModBlocks.blockCasingsMisc, 14))))
+                    withChannel(
+                            "coil",
+                            ofChain(
+                                    onElementPass(
+                                            te -> te.hasNormalCoils = false,
+                                            ofCoil(
+                                                    GregTechMetaTileEntity_MegaAlloyBlastSmelter::setCoilLevel,
+                                                    GregTechMetaTileEntity_MegaAlloyBlastSmelter::getCoilLevel)),
+                                    onElementPass(
+                                            te -> te.hasNormalCoils = true,
+                                            ofBlock(ModBlocks.blockCasingsMisc, 14)))))
+
             .addElement(
                     'Z',
                     buildHatchAdder(GregTechMetaTileEntity_MegaAlloyBlastSmelter.class)
@@ -133,7 +139,11 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
                             .buildAndChain(ofBlock(ModBlocks.blockCasingsMisc, 15)))
             .addElement('D', ofBlock(ModBlocks.blockCasingsMisc, 15))
             .addElement('C', ofBlock(ModBlocks.blockCasingsMisc, 14))
-            .addElement('A', BorosilicateGlass.ofBoroGlass((byte) -1, (te, t) -> te.glassTier = t, te -> te.glassTier))
+            .addElement(
+                    'A',
+                    withChannel(
+                            "glass",
+                            BorosilicateGlass.ofBoroGlass((byte) -1, (te, t) -> te.glassTier = t, te -> te.glassTier)))
             .addElement('F', Muffler.newAny(TAE.GTPP_INDEX(15), 3)).build();
 
     public GregTechMetaTileEntity_MegaAlloyBlastSmelter(int aID, String aName, String aNameRegional) {

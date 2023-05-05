@@ -1,4 +1,4 @@
-//version: 1682280358
+//version: 1683056771
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -69,8 +69,11 @@ plugins {
     id 'com.diffplug.spotless' version '6.13.0' apply false // 6.13.0 is the last jvm8 supporting version
     id 'com.modrinth.minotaur' version '2.+' apply false
     id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
-    id 'com.gtnewhorizons.retrofuturagradle' version '1.3.2'
+    id 'com.gtnewhorizons.retrofuturagradle' version '1.3.7'
 }
+
+print("You might want to check out './gradlew :faq' if your build fails.")
+
 boolean settingsupdated = verifySettingsGradle()
 settingsupdated = verifyGitAttributes() || settingsupdated
 if (settingsupdated)
@@ -1252,6 +1255,19 @@ if (!project.getGradle().startParameter.isOffline() && !Boolean.getBoolean('DISA
     }
 }
 
+// If you want to add more cases to this task, implement them as arguments if total amount to print gets too large
+tasks.register('faq') {
+    group = 'GTNH Buildscript'
+    description = 'Prints frequently asked questions about building a project'
+
+    doLast {
+        print("If your build fails to fetch dependencies, they might have been deleted and replaced by newer " +
+            "versions.\nCheck if the versions you try to fetch are still on the distributing sites.\n" +
+            "The links can be found in repositories.gradle and build.gradle:repositories, " +
+            "not build.gradle:buildscript.repositories - this one is for gradle plugin metadata.")
+    }
+}
+
 static URL availableBuildScriptUrl() {
     new URL("https://raw.githubusercontent.com/GTNewHorizons/ExampleMod1.7.10/master/build.gradle")
 }
@@ -1475,6 +1491,3 @@ def getSecondaryArtifacts() {
     if (apiPackage) secondaryArtifacts += [apiJar]
     return secondaryArtifacts
 }
-
-sourceCompatibility = JavaVersion.VERSION_16
-targetCompatibility = JavaVersion.VERSION_16
