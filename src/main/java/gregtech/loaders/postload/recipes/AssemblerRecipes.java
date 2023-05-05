@@ -36,6 +36,9 @@ public class AssemblerRecipes implements Runnable {
         this.loadOutputHatchesRecipes();
         this.withIC2NuclearControl();
 
+        Materials LuVMat = BartWorks.isModLoaded() ? Materials.get("Ruridit") : Materials.Osmiridium;
+        Materials LuVMat2 = BartWorks.isModLoaded() ? Materials.get("Rhodium-PlatedPalladium") : Materials.Chrome;
+
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1),
@@ -1580,7 +1583,6 @@ public class AssemblerRecipes implements Runnable {
             .eut(TierEU.RECIPE_IV)
             .addTo(sAssemblerRecipes);
 
-        Materials LuVMat = BartWorks.isModLoaded() ? Materials.get("Ruridit") : Materials.Osmiridium;
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.SamariumMagnetic, 1),
@@ -2090,9 +2092,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Chrome, 8),
-                GT_Utility.getIntegratedCircuit(8))
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, LuVMat2, 8), GT_Utility.getIntegratedCircuit(8))
             .itemOutputs(ItemList.Casing_LuV.get(1))
             .noFluidInputs()
             .noFluidOutputs()

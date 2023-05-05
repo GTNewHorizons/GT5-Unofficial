@@ -397,7 +397,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 3    -> OrePrefixes.rotor.get(Materials.Steel);
                         case 4    -> OrePrefixes.rotor.get(Materials.StainlessSteel);
                         case 5    -> OrePrefixes.rotor.get(Materials.TungstenSteel);
-                        case 6    -> OrePrefixes.rotor.get(Materials.Chrome);
+                        case 6    -> OrePrefixes.rotor.get(BartWorks.isModLoaded() ? Materials.get("Rhodium-PlatedPalladium") : Materials.Chrome);
                         case 7    -> OrePrefixes.rotor.get(Materials.Iridium);
                         default   -> OrePrefixes.rotor.get(Materials.Osmium);
                     };
