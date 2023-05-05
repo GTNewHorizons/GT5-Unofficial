@@ -6,7 +6,6 @@ import java.util.HashMap;
 
 import net.minecraft.item.ItemStack;
 
-import com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.LuVTierEnhancer;
 import common.recipeLoaders.AlloySmelter;
 import common.recipeLoaders.Assembler;
 import common.recipeLoaders.AssemblyLine;
@@ -35,8 +34,6 @@ public class Recipes {
 
     public static void postInit() {
         KekzCore.LOGGER.info("Registering recipes...");
-
-        LuVTierEnhancer.addToBlackListForOsmiridiumReplacement(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2));
 
         new AlloySmelter().run();
         new Assembler().run();
