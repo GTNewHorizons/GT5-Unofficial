@@ -320,7 +320,7 @@ public class Assembler implements Runnable {
             {
                 // Dynamo EV 16A
                 GT_Values.RA.addAssemblerRecipe(
-                        new ItemStack[] { CustomItemList.eM_dynamoMulti4_EV.get(1),
+                        new ItemStack[] { ItemList.Transformer_IV_EV.get(1), CustomItemList.eM_dynamoMulti4_EV.get(1),
                                 GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Aluminium, 2),
                                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 4) },
                         Materials.Electrum.getMolten(144),
@@ -437,7 +437,8 @@ public class Assembler implements Runnable {
             {
                 // Dynamo EV 64A
                 GT_Values.RA.addAssemblerRecipe(
-                        new ItemStack[] { CustomItemList.eM_dynamoMulti16_EV.get(1),
+                        new ItemStack[] { getItemContainer("WetTransformer_IV_EV").get(1),
+                                CustomItemList.eM_dynamoMulti16_EV.get(1),
                                 GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.Aluminium, 2),
                                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 6) },
                         Materials.Tungsten.getMolten(144),
@@ -674,7 +675,7 @@ public class Assembler implements Runnable {
             {
                 // Energy Hatch EV 16A
                 GT_Values.RA.addAssemblerRecipe(
-                        new ItemStack[] { CustomItemList.eM_energyMulti4_EV.get(1),
+                        new ItemStack[] { ItemList.Transformer_IV_EV.get(1), CustomItemList.eM_energyMulti4_EV.get(1),
                                 GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Aluminium, 2),
                                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 4) },
                         Materials.Electrum.getMolten(144),
@@ -794,7 +795,8 @@ public class Assembler implements Runnable {
             {
                 // Energy Hatch EV 64A
                 GT_Values.RA.addAssemblerRecipe(
-                        new ItemStack[] { CustomItemList.eM_energyMulti16_EV.get(1),
+                        new ItemStack[] { getItemContainer("WetTransformer_IV_EV").get(1),
+                                CustomItemList.eM_energyMulti16_EV.get(1),
                                 GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.Aluminium, 2),
                                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 6) },
                         Materials.Tungsten.getMolten(144),
