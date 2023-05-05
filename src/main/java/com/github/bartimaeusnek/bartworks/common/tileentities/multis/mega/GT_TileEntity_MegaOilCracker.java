@@ -18,6 +18,7 @@ import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.ge
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
@@ -105,7 +106,12 @@ public class GT_TileEntity_MegaOilCracker extends GT_TileEntity_MegaMultiBlockBa
                                             "ppmmmmmmmmmpp" }, }))
             .addElement(
                     'c',
-                    ofCoil(GT_TileEntity_MegaOilCracker::setCoilLevel, GT_TileEntity_MegaOilCracker::getCoilLevel))
+                    withChannel(
+                            "coil",
+                            ofCoil(
+                                    GT_TileEntity_MegaOilCracker::setCoilLevel,
+                                    GT_TileEntity_MegaOilCracker::getCoilLevel)))
+
             .addElement('p', ofBlock(GregTech_API.sBlockCasings4, 1))
             .addElement(
                     'l',
@@ -126,12 +132,14 @@ public class GT_TileEntity_MegaOilCracker extends GT_TileEntity_MegaMultiBlockBa
                             .newAny(CASING_INDEX, 4))
             .addElement(
                     'g',
-                    BorosilicateGlass.ofBoroGlass(
-                            (byte) 0,
-                            (byte) 1,
-                            Byte.MAX_VALUE,
-                            (te, t) -> te.glasTier = t,
-                            te -> te.glasTier))
+                    withChannel(
+                            "glass",
+                            BorosilicateGlass.ofBoroGlass(
+                                    (byte) 0,
+                                    (byte) 1,
+                                    Byte.MAX_VALUE,
+                                    (te, t) -> te.glasTier = t,
+                                    te -> te.glasTier)))
             .build();
     private byte glasTier;
     private HeatingCoilLevel heatLevel;
