@@ -333,4 +333,14 @@ class GT_OverclockCalculator_UnitTest {
         assertEquals(1024 >> 3, calculator.getDuration(), messageDuration);
         assertEquals(correctConsumption, calculator.getConsumption(), messageEUt);
     }
+
+    @Test
+    void ulvRecipeStopsWhenOneTicked_Test() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(VP[0])
+            .setEUt(V[6])
+            .setDuration(1)
+            .calculate();
+        assertEquals(1, calculator.getDuration(), messageDuration);
+        assertEquals(VP[0], calculator.getConsumption(), messageEUt);
+    }
 }

@@ -233,6 +233,9 @@ public class GT_OverclockCalculator {
                 .ceil(mRecipeEUt * mParallel * mRecipeAmps * mEUtDiscount * heatDiscountMultiplier))
                 << mEUtIncreasePerOC;
             while (tTierDifference > 0 && tNextConsumption < mEUt * mAmps) {
+                if (mDuration <= 1) {
+                    break;
+                }
                 mRecipeEUt <<= mEUtIncreasePerOC;
                 mDuration >>= mDurationDecreasePerOC;
                 tNextConsumption <<= mEUtIncreasePerOC;
