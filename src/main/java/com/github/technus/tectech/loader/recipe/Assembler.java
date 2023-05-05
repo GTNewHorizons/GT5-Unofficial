@@ -24,6 +24,7 @@ public class Assembler implements Runnable {
 
     @Override
     public void run() {
+
         cleanroomRecipes();
 
         for (int i = 0; i <= 15; i++) {
@@ -231,7 +232,10 @@ public class Assembler implements Runnable {
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] { ItemList.Hatch_Dynamo_LuV.get(1),
                                 GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.VanadiumGallium, 2),
-                                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Chrome, 2) },
+                                GT_OreDictUnificator.get(
+                                        OrePrefixes.plate,
+                                        getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
+                                        2) },
                         Materials.Silver.getMolten(288),
                         CustomItemList.eM_dynamoMulti4_LuV.get(1),
                         100,
@@ -343,7 +347,10 @@ public class Assembler implements Runnable {
                         new ItemStack[] { ItemList.Transformer_ZPM_LuV.get(1),
                                 CustomItemList.eM_dynamoMulti4_LuV.get(1),
                                 GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.VanadiumGallium, 2),
-                                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Chrome, 4) },
+                                GT_OreDictUnificator.get(
+                                        OrePrefixes.plate,
+                                        getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
+                                        4) },
                         Materials.Electrum.getMolten(288),
                         CustomItemList.eM_dynamoMulti16_LuV.get(1),
                         200,
@@ -462,7 +469,10 @@ public class Assembler implements Runnable {
                         new ItemStack[] { getItemContainer("WetTransformer_ZPM_LuV").get(1),
                                 CustomItemList.eM_dynamoMulti16_LuV.get(1),
                                 GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.VanadiumGallium, 2),
-                                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Chrome, 6) },
+                                GT_OreDictUnificator.get(
+                                        OrePrefixes.plate,
+                                        getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
+                                        6) },
                         Materials.Tungsten.getMolten(288),
                         CustomItemList.eM_dynamoMulti64_LuV.get(1),
                         400,
@@ -2508,7 +2518,7 @@ public class Assembler implements Runnable {
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Enderium, 4),
                         ItemList.Sensor_LuV.get(1), ItemList.Emitter_LuV.get(1), ItemList.Electric_Pump_LuV.get(1), },
-                Materials.Chrome.getMolten(288),
+                getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome).getMolten(288),
                 CustomItemList.enderLinkFluidCover.getWithDamage(1, 0),
                 320,
                 30720);
