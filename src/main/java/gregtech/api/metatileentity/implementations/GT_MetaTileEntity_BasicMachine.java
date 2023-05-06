@@ -215,6 +215,20 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     @Override
+    public void onFacingChange() {
+        super.onFacingChange();
+        // Set up the correct facing (front towards player, output opposite) client-side before the server packet
+        // arrives
+        if (mMainFacing == UNKNOWN) {
+            IGregTechTileEntity te = getBaseMetaTileEntity();
+            if (te != null && te.getWorld().isRemote) {
+                mMainFacing = te.getFrontFacing();
+                te.setFrontFacing(te.getBackFacing());
+            }
+        }
+    }
+
+    @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[14][17][];
         aTextures = Arrays.copyOf(aTextures, 14);
