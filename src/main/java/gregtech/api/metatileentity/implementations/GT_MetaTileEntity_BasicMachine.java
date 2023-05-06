@@ -1222,18 +1222,36 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             boolean isActive = tag.getBoolean("isActiveSingleBlock");
             if (isActive) {
                 int mEUt = tag.getInteger("eut");
-                if (mEUt > 0) {
-                    currenttip.add(
-                        StatCollector.translateToLocalFormatted(
-                            "GT5U.waila.energy.use",
-                            GT_Utility.formatNumbers(mEUt),
-                            GT_Utility.getColoredTierNameFromVoltage(mEUt)));
-                } else if (mEUt < 0) {
-                    currenttip.add(
-                        StatCollector.translateToLocalFormatted(
-                            "GT5U.waila.energy.produce",
-                            GT_Utility.formatNumbers(-mEUt),
-                            GT_Utility.getColoredTierNameFromVoltage(-mEUt)));
+                if (!isSteampowered()) {
+                    if (mEUt > 0) {
+                        currenttip.add(
+                            StatCollector.translateToLocalFormatted(
+                                "GT5U.waila.energy.use_with_amperage",
+                                GT_Utility.formatNumbers(mEUt),
+                                GT_Utility.getAmperageForTier(mEUt, (byte) getInputTier()),
+                                GT_Utility.getColoredTierNameFromTier((byte) getInputTier())));
+                    } else if (mEUt < 0) {
+                        currenttip.add(
+                            StatCollector.translateToLocalFormatted(
+                                "GT5U.waila.energy.produce_with_amperage",
+                                GT_Utility.formatNumbers(-mEUt),
+                                GT_Utility.getAmperageForTier(-mEUt, (byte) getOutputTier()),
+                                GT_Utility.getColoredTierNameFromTier((byte) getOutputTier())));
+                    }
+                } else {
+                    if (mEUt > 0) {
+                        currenttip.add(
+                            StatCollector.translateToLocalFormatted(
+                                "GT5U.waila.energy.use",
+                                GT_Utility.formatNumbers(mEUt),
+                                GT_Utility.getColoredTierNameFromVoltage(mEUt)));
+                    } else if (mEUt < 0) {
+                        currenttip.add(
+                            StatCollector.translateToLocalFormatted(
+                                "GT5U.waila.energy.produce",
+                                GT_Utility.formatNumbers(-mEUt),
+                                GT_Utility.getColoredTierNameFromVoltage(-mEUt)));
+                    }
                 }
             }
             currenttip.add(

@@ -465,6 +465,10 @@ public class GT_Utility {
         return (byte) (V.length - 1);
     }
 
+    public static long getAmperageForTier(long voltage, byte tier) {
+        return ceilDiv(voltage, GT_Values.V[tier]);
+    }
+
     public static String getColoredTierNameFromVoltage(long voltage) {
         return getColoredTierNameFromTier(getTier(voltage));
     }

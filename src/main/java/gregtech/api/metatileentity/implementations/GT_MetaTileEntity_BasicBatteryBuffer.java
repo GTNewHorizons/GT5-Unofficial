@@ -348,14 +348,16 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
         long avgOut = tag.getLong("AvgOut");
         currenttip.add(
             StatCollector.translateToLocalFormatted(
-                "GT5U.waila.energy.avg_in",
+                "GT5U.waila.energy.avg_in_with_amperage",
                 GT_Utility.formatNumbers(avgIn),
-                GT_Utility.getColoredTierNameFromVoltage(avgIn)));
+                GT_Utility.getAmperageForTier(avgIn, (byte) getInputTier()),
+                GT_Utility.getColoredTierNameFromTier((byte) getInputTier())));
         currenttip.add(
             StatCollector.translateToLocalFormatted(
-                "GT5U.waila.energy.avg_out",
+                "GT5U.waila.energy.avg_out_with_amperage",
                 GT_Utility.formatNumbers(avgOut),
-                GT_Utility.getColoredTierNameFromVoltage(avgOut)));
+                GT_Utility.getAmperageForTier(avgOut, (byte) getOutputTier()),
+                GT_Utility.getColoredTierNameFromTier((byte) getOutputTier())));
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 

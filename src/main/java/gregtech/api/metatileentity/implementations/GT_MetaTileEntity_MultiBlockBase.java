@@ -799,6 +799,20 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return rVoltage;
     }
 
+    public long getInputVoltageTier() {
+        long rTier = 0;
+        if (mEnergyHatches.size() > 0) {
+            rTier = mEnergyHatches.get(0)
+                .getInputTier();
+            for (int i = 1; i < mEnergyHatches.size(); i++) {
+                if (mEnergyHatches.get(i)
+                    .getInputTier() != rTier) return 0;
+            }
+        }
+
+        return rTier;
+    }
+
     /**
      * Calcualtes the overclockedness using long integers
      *
@@ -1391,19 +1405,38 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
         boolean isActive = tag.getBoolean("isActive");
         if (isActive) {
+            long energyTier = tag.getLong("energyTier");
             long actualEnergyUsage = tag.getLong("energyUsage");
-            if (actualEnergyUsage > 0) {
-                currentTip.add(
-                    StatCollector.translateToLocalFormatted(
-                        "GT5U.waila.energy.use",
-                        GT_Utility.formatNumbers(actualEnergyUsage),
-                        GT_Utility.getColoredTierNameFromVoltage(actualEnergyUsage)));
-            } else if (actualEnergyUsage < 0) {
-                currentTip.add(
-                    StatCollector.translateToLocalFormatted(
-                        "GT5U.waila.energy.produce",
-                        GT_Utility.formatNumbers(-actualEnergyUsage),
-                        GT_Utility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
+            if (energyTier > 0) {
+                if (actualEnergyUsage > 0) {
+                    currentTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.waila.energy.use_with_amperage",
+                            GT_Utility.formatNumbers(actualEnergyUsage),
+                            GT_Utility.getAmperageForTier(actualEnergyUsage, (byte) energyTier),
+                            GT_Utility.getColoredTierNameFromTier((byte) energyTier)));
+                } else if (actualEnergyUsage < 0) {
+                    currentTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.waila.energy.produce_with_amperage",
+                            GT_Utility.formatNumbers(-actualEnergyUsage),
+                            GT_Utility.getAmperageForTier(-actualEnergyUsage, (byte) energyTier),
+                            GT_Utility.getColoredTierNameFromTier((byte) energyTier)));
+                }
+            } else {
+                if (actualEnergyUsage > 0) {
+                    currentTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.waila.energy.use",
+                            GT_Utility.formatNumbers(actualEnergyUsage),
+                            GT_Utility.getColoredTierNameFromVoltage(actualEnergyUsage)));
+                } else if (actualEnergyUsage < 0) {
+                    currentTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.waila.energy.produce",
+                            GT_Utility.formatNumbers(-actualEnergyUsage),
+                            GT_Utility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
+                }
             }
         }
         currentTip.add(
@@ -1429,6 +1462,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             if (tileEntity.isActive()) {
                 if (mEUt < 0) tag.setLong("energyUsage", getActualEnergyUsage());
                 else tag.setLong("energyUsage", (long) -mEUt * mEfficiency / 10000);
+                tag.setLong("energyTier", getInputVoltageTier());
             }
         }
     }
