@@ -197,6 +197,9 @@ import gregtech.common.tileentities.storage.*;
 // 748
 // 749
 
+// TODO Some GT MetaTileEntity registrations are done in load/GT_Loader_MetaTileEntities_Recipes.java due to joint
+// registration+recipe methods, they should be split and brought here to register all in preload.
+
 public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRCUIT RECIPES AND USAGES
 
     private static final String aTextWire1 = "wire.";
