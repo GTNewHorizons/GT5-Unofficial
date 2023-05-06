@@ -1,7 +1,9 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBenderRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
@@ -44,15 +46,15 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 if (aMaterial.mStandardMoltenFluid != null
                     && !(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
                     // Fluid solidifier recipes
-                    {
-                        GT_Values.RA.addFluidSolidifierRecipe(
-                            ItemList.Shape_Mold_Ingot.get(0L),
-                            aMaterial.getMolten(144L),
-                            GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
-                            32,
-                            calculateRecipeEU(aMaterial, 8));
-                    }
 
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(ItemList.Shape_Mold_Ingot.get(0L))
+                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L))
+                        .fluidInputs(aMaterial.getMolten(144L))
+                        .noFluidOutputs()
+                        .duration(32 * TICKS)
+                        .eut(calculateRecipeEU(aMaterial, 8))
+                        .addTo(sFluidSolidficationRecipes);
                 }
             // Reverse recipes
             {
