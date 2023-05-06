@@ -6,6 +6,7 @@ import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLatheRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -183,13 +184,18 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 if (aNoWorking) {
                     if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                         // Lathe recipes
-                        {
-                            GT_Values.RA.addLatheRecipe(
-                                GT_Utility.copyAmount(1L, aStack),
-                                GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L),
-                                GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 2L),
-                                (int) Math.max(aMaterialMass, 1L),
-                                calculateRecipeEU(aMaterial, 16));
+                        if (GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L) != null
+                            && GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                                .itemOutputs(
+                                    GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L),
+                                    GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 2L))
+                                .noFluidInputs()
+                                .noFluidOutputs()
+                                .duration(((int) Math.max(aMaterialMass, 1L)) * TICKS)
+                                .eut(calculateRecipeEU(aMaterial, 16))
+                                .addTo(sLatheRecipes);
                         }
                     }
                 } else {
@@ -287,13 +293,18 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
 
                 if (!aNoWorking) {
                     // Lathe recipes
-                    {
-                        GT_Values.RA.addLatheRecipe(
-                            GT_Utility.copyAmount(1L, aStack),
-                            GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1L),
-                            (int) Math.max(aMaterialMass, 1L),
-                            8);
+                    if (GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L) != null
+                        && GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1L) != null) {
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                            .itemOutputs(
+                                GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L),
+                                GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1L))
+                            .noFluidInputs()
+                            .noFluidOutputs()
+                            .duration(((int) Math.max(aMaterialMass, 1L)) * TICKS)
+                            .eut(8)
+                            .addTo(sLatheRecipes);
                     }
 
                     if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
@@ -380,13 +391,18 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
 
                 if (!aNoWorking) {
                     // Lathe recipes
-                    {
-                        GT_Values.RA.addLatheRecipe(
-                            GT_Utility.copyAmount(1L, aStack),
-                            GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 2L),
-                            GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L),
-                            (int) Math.max(aMaterialMass, 1L),
-                            12);
+                    if (GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L) != null
+                        && GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L) != null) {
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                            .itemOutputs(
+                                GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 2L),
+                                GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L))
+                            .noFluidInputs()
+                            .noFluidOutputs()
+                            .duration(((int) Math.max(aMaterialMass, 1L)) * TICKS)
+                            .eut(12)
+                            .addTo(sLatheRecipes);
                     }
 
                     if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
@@ -451,14 +467,20 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
 
                 if (!aNoWorking) {
                     // Lathe recipes
-                    {
-                        GT_Values.RA.addLatheRecipe(
-                            GT_Utility.copyAmount(1L, aStack),
-                            GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L),
-                            GT_OreDictUnificator
-                                .getDust(aMaterial, aPrefix.mMaterialAmount - OrePrefixes.stickLong.mMaterialAmount),
-                            (int) Math.max(aMaterialMass * 5L, 1L),
-                            16);
+                    if (GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L) != null
+                        && GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L) != null) {
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                            .itemOutputs(
+                                GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L),
+                                GT_OreDictUnificator.getDust(
+                                    aMaterial,
+                                    aPrefix.mMaterialAmount - OrePrefixes.stickLong.mMaterialAmount))
+                            .noFluidInputs()
+                            .noFluidOutputs()
+                            .duration(((int) Math.max(aMaterialMass * 5L, 1L)) * TICKS)
+                            .eut(16)
+                            .addTo(sLatheRecipes);
                     }
 
                     if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
