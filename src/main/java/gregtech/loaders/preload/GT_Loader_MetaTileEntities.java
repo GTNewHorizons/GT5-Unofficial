@@ -206,15 +206,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     private static final String aTextCable1 = "cable.";
     private static final String aTextWire2 = " Wire";
     private static final String aTextCable2 = " Cable";
-    private static final String aTextPlate = "PPP";
-    private static final String aTextPlateWrench = "PwP";
-    private static final String aTextPlateMotor = "PMP";
-    private static final String aTextCableHull = "CMC";
-    private static final String aTextWireHull = "WMW";
-    private static final String aTextWireChest = "WTW";
-    private static final String aTextWireCoil = "WCW";
-    private static final String aTextMotorWire = "EWE";
-    private static final String aTextWirePump = "WPW";
     public static final String imagination = EnumChatFormatting.RESET + "You just need "
         + EnumChatFormatting.DARK_PURPLE
         + "I"
@@ -240,9 +231,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         + "n"
         + EnumChatFormatting.RESET
         + " to use this.";
-    private static final long bits = GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE
-        | GT_ModHandler.RecipeBits.BUFFERED;
-    private static final long bitsd = GT_ModHandler.RecipeBits.DISMANTLEABLE | bits;
 
     private static void run1() {
 
@@ -376,24 +364,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hatch_Dynamo_MAX.set(
             new GT_MetaTileEntity_Hatch_Dynamo(39, "hatch.dynamo.tier.09", "UHV Dynamo Hatch", 9).getStackForm(1L));
 
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Hatch_Dynamo_ULV.get(1L),
-            bitsd,
-            new Object[] { "XOL", "SMP", "XOL", 'M', ItemList.Hull_ULV, 'S', OrePrefixes.spring.get(Materials.Lead),
-                'X', OrePrefixes.circuit.get(Materials.Primitive), 'O', ItemList.ULV_Coil, 'L',
-                OrePrefixes.cell.get(Materials.Lubricant), 'P', OrePrefixes.rotor.get(Materials.Lead) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Hatch_Dynamo_LV.get(1L),
-            bitsd,
-            new Object[] { "XOL", "SMP", "XOL", 'M', ItemList.Hull_LV, 'S', OrePrefixes.spring.get(Materials.Tin), 'X',
-                OrePrefixes.circuit.get(Materials.Basic), 'O', ItemList.LV_Coil, 'L',
-                OrePrefixes.cell.get(Materials.Lubricant), 'P', ItemList.Electric_Pump_LV });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Hatch_Dynamo_MV.get(1L),
-            bitsd,
-            new Object[] { "XOL", "SMP", "XOL", 'M', ItemList.Hull_MV, 'S', OrePrefixes.spring.get(Materials.Copper),
-                'X', ItemList.Circuit_Chip_ULPIC, 'O', ItemList.MV_Coil, 'L', OrePrefixes.cell.get(Materials.Lubricant),
-                'P', ItemList.Electric_Pump_MV });
         // 1234
         ItemList.Hatch_Energy_ULV.set(
             new GT_MetaTileEntity_Hatch_Energy(40, "hatch.energy.tier.00", "ULV Energy Hatch", 0).getStackForm(1L));
@@ -1898,9 +1868,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private static void run4() {
-        long bits = GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
-            | GT_ModHandler.RecipeBits.REVERSIBLE
-            | GT_ModHandler.RecipeBits.BUFFERED;
         for (int i = 0; i < GregTech_API.sGeneratedMaterials.length; i++) {
             if (((GregTech_API.sGeneratedMaterials[i] != null)
                 && ((GregTech_API.sGeneratedMaterials[i].mTypes & 0x2) != 0))

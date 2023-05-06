@@ -28,10 +28,6 @@ import ic2.core.Ic2Items;
 
 public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
 
-    private static final String aTextWire1 = "wire.";
-    private static final String aTextCable1 = "cable.";
-    private static final String aTextWire2 = " Wire";
-    private static final String aTextCable2 = " Cable";
     private static final String aTextPlate = "PPP";
     private static final String aTextPlateWrench = "PwP";
     private static final String aTextPlateMotor = "PMP";
