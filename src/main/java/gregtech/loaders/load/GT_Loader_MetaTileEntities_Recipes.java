@@ -2,6 +2,7 @@ package gregtech.loaders.load;
 
 import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -7111,7 +7112,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 .fluidInputs(Materials.StainlessSteel.getMolten(864L))
                 .noFluidOutputs()
                 .duration(60 * SECONDS)
-                .eut(120)
+                .eut(TierEU.RECIPE_MV)
                 .addTo(sAssemblerRecipes);
         } else {
             if (NotEnoughItems.isModLoaded()) {

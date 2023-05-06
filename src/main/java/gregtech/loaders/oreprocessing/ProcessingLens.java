@@ -35,7 +35,7 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                     .noFluidInputs()
                     .noFluidOutputs()
                     .duration(60 * SECONDS)
-                    .eut(30)
+                    .eut(TierEU.RECIPE_LV)
                     .addTo(sLatheRecipes);
 
                 GT_Values.RA.stdBuilder()
@@ -69,7 +69,7 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(60 * SECONDS)
-                        .eut(120)
+                        .eut(TierEU.RECIPE_MV)
                         .addTo(sLatheRecipes);
                 }
                 if (GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1L) != null) {
@@ -81,7 +81,7 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(120 * SECONDS)
-                        .eut(30)
+                        .eut(TierEU.RECIPE_LV)
                         .addTo(sLatheRecipes);
                 }
                 final ITexture lensCoverTexture = TextureFactory
