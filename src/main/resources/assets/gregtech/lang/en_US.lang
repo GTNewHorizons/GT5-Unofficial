@@ -333,10 +333,12 @@ nei.options.tools.dump.gt5u.mode.1=Used
 GT5U.waila.cover=Cover (%s): %s
 GT5U.waila.cover.current_facing=Current Facing
 GT5U.waila.energy.stored=Stored: §a%s§r EU / §e%s§r EU
-GT5U.waila.energy.avg_in=Average Input: §a%s§r EU/t (%s)
-GT5U.waila.energy.avg_out=Average Output: §c%s§r EU/t (%s)
+GT5U.waila.energy.avg_in_with_amperage=Average Input: §a%s§r EU/t (%sA %s)
+GT5U.waila.energy.avg_out_with_amperage=Average Output: §c%s§r EU/t (%sA %s)
 GT5U.waila.energy.use=Probably uses: §e%s§r EU/t (%s)
+GT5U.waila.energy.use_with_amperage=Probably uses: §e%s§r EU/t (%sA %s)
 GT5U.waila.energy.produce=Probably generates: §a%s§r EU/t (%s)
+GT5U.waila.energy.produce_with_amperage=Probably generates: §a%s§r EU/t (%sA %s)
 
 achievement.flintpick=First Tools
 achievement.flintpick.desc=Craft a flint pick
