@@ -17,6 +17,9 @@ import static gregtech.api.metatileentity.BaseTileEntity.STALLED_VENT_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.metatileentity.BaseTileEntity.UNUSED_SLOT_TOOLTIP;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
+import static net.minecraftforge.common.util.ForgeDirection.DOWN;
+import static net.minecraftforge.common.util.ForgeDirection.UNKNOWN;
+import static net.minecraftforge.common.util.ForgeDirection.UP;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -68,8 +71,15 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_ClientPreference;
+import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.GT_TooltipDataCache;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GT_Waila;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
 import gregtech.common.power.BasicMachineEUPower;
@@ -101,7 +111,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public boolean mDisableFilter = true;
     public boolean mDisableMultiStack = true;
     public int mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
-    public ForgeDirection mMainFacing = ForgeDirection.UNKNOWN;
+    public ForgeDirection mMainFacing = ForgeDirection.WEST;
     public FluidStack mOutputFluid;
     public String mGUIName, mNEIName;
     protected final Power mPower;
@@ -190,7 +200,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     protected boolean isValidMainFacing(ForgeDirection side) {
-        return side.offsetY == 0; // Neither DOWN nor UP
+        return (side.flag & (UP.flag | DOWN.flag | UNKNOWN.flag)) == 0; // Horizontal
     }
 
     public boolean setMainFacing(ForgeDirection side) {
@@ -202,6 +212,20 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         onFacingChange();
         onMachineBlockUpdate();
         return true;
+    }
+
+    @Override
+    public void onFacingChange() {
+        super.onFacingChange();
+        // Set up the correct facing (front towards player, output opposite) client-side before the server packet
+        // arrives
+        if (mMainFacing == UNKNOWN) {
+            IGregTechTileEntity te = getBaseMetaTileEntity();
+            if (te != null && te.getWorld().isRemote) {
+                mMainFacing = te.getFrontFacing();
+                te.setFrontFacing(te.getBackFacing());
+            }
+        }
     }
 
     @Override
@@ -237,7 +261,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         final int textureIndex;
-        if (mMainFacing.offsetY != 0) { // UP or DOWN
+        if ((mMainFacing.flag & (UP.flag | DOWN.flag)) != 0) { // UP or DOWN
             if (sideDirection == facingDirection) {
                 textureIndex = active ? 2 : 3;
             } else {
@@ -298,7 +322,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return facing.offsetY == 0 || facing.offsetY == 0;
+        // Either mMainFacing or mMainFacing is horizontal
+        return ((facing.flag | mMainFacing.flag) & ~(UP.flag | DOWN.flag | UNKNOWN.flag)) != 0;
     }
 
     @Override
@@ -525,7 +550,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public void initDefaultModes(NBTTagCompound aNBT) {
         mMainFacing = ForgeDirection.UNKNOWN;
         if (!getBaseMetaTileEntity().getWorld().isRemote) {
-            GT_ClientPreference tPreference = GT_Mod.gregtechproxy
+            final GT_ClientPreference tPreference = GT_Mod.gregtechproxy
                 .getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
             if (tPreference != null) {
                 mDisableFilter = !tPreference.isSingleBlockInitialFilterEnabled();
@@ -722,10 +747,10 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     protected void doDisplayThings() {
-        if (mMainFacing.offsetY != 0 && getBaseMetaTileEntity().getFrontFacing().offsetY == 0) {
+        if (!isValidMainFacing(mMainFacing) && isValidMainFacing(getBaseMetaTileEntity().getFrontFacing())) {
             mMainFacing = getBaseMetaTileEntity().getFrontFacing();
         }
-        if (mMainFacing.offsetY == 0 && !mHasBeenUpdated) {
+        if (isValidMainFacing(mMainFacing) && !mHasBeenUpdated) {
             mHasBeenUpdated = true;
             getBaseMetaTileEntity().setFrontFacing(getBaseMetaTileEntity().getBackFacing());
         }

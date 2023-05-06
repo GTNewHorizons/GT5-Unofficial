@@ -497,12 +497,12 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
         }
 
         final byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
-        if ((tConn & (1 << ForgeDirection.DOWN.ordinal())) != 0) spaceDown = 0f;
-        if ((tConn & (1 << ForgeDirection.UP.ordinal())) != 0) spaceUp = 1f;
-        if ((tConn & (1 << ForgeDirection.NORTH.ordinal())) != 0) spaceNorth = 0f;
-        if ((tConn & (1 << ForgeDirection.SOUTH.ordinal())) != 0) spaceSouth = 1f;
-        if ((tConn & (1 << ForgeDirection.WEST.ordinal())) != 0) spaceWest = 0f;
-        if ((tConn & (1 << ForgeDirection.EAST.ordinal())) != 0) spaceEast = 1f;
+        if ((tConn & ForgeDirection.DOWN.flag) != 0) spaceDown = 0f;
+        if ((tConn & ForgeDirection.UP.flag) != 0) spaceUp = 1f;
+        if ((tConn & ForgeDirection.NORTH.flag) != 0) spaceNorth = 0f;
+        if ((tConn & ForgeDirection.SOUTH.flag) != 0) spaceSouth = 1f;
+        if ((tConn & ForgeDirection.WEST.flag) != 0) spaceWest = 0f;
+        if ((tConn & ForgeDirection.EAST.flag) != 0) spaceEast = 1f;
 
         return AxisAlignedBB.getBoundingBox(
             aX + spaceWest,

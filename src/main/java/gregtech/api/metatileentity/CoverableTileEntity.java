@@ -419,7 +419,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public void setStrongOutputRedstoneSignal(ForgeDirection side, byte strength) {
-        mStrongRedstone |= (1 << side.ordinal());
+        mStrongRedstone |= side.flag;
         setOutputRedstoneSignal(side, strength);
     }
 
@@ -584,6 +584,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
      * @param aList - List to add the information to
      */
     public static void addInstalledCoversInformation(NBTTagCompound aNBT, List<String> aList) {
+        if (aNBT == null || aList == null) return;
         final NBTTagList tList = aNBT.getTagList(GT_Values.NBT.COVERS, 10);
         for (byte i = 0; i < tList.tagCount(); i++) {
             final NBTTagCompound tNBT = tList.getCompoundTagAt(i);

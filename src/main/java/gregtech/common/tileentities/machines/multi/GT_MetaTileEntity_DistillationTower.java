@@ -279,7 +279,8 @@ public class GT_MetaTileEntity_DistillationTower extends
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
         // don't rotate a freaking tower, it won't work
-        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
+        return (d, r, f) -> (d.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0 && r.isNotRotated()
+            && !f.isVerticallyFliped();
     }
 
     @Override
