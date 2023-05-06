@@ -164,7 +164,7 @@ public class XSTR extends Random {
      * one {@code int} value in the specified range is pseudorandomly generated and returned. All {@code bound} possible
      * {@code int} values are produced with (approximately) equal probability. The method {@code nextInt(int bound)} is
      * implemented by class {@code Random} as if by:
-     * 
+     *
      * <pre>
      *  {@code
      * public int nextInt(int bound) {
@@ -184,7 +184,7 @@ public class XSTR extends Random {
      * </pre>
      *
      * <p>
-     * The hedge "approx imately" is used in the foregoing description only because the next method is only
+     * The hedge "approximately" is used in the foregoing description only because the next method is only
      * approximately an unbiased source of independently chosen bits. If it were a perfect source of randomly chosen
      * bits, then the algorithm shown would choose {@code int} values from the stated range with perfect uniformity.
      * <p>
