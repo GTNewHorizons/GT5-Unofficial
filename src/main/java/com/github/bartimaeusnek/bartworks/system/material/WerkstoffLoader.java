@@ -1468,6 +1468,7 @@ public class WerkstoffLoader {
         WerkstoffAdderRegistry.run();
         addSubTags();
         addItemsForGeneration();
+        addBridgeSubTags();
         runAdditionalOreDict();
         long timepost = System.nanoTime();
         MainMod.LOGGER.info(
@@ -1598,6 +1599,12 @@ public class WerkstoffLoader {
                 W.add(SubTag.CRYSTALLISABLE);
             }
         }
+    }
+
+    private static void addBridgeSubTags() {
+        // add specific GT materials subtags to various werkstoff bridgematerials
+
+        SubTag.METAL.addTo(LuVTierMaterial.getBridgeMaterial());
     }
 
     public static long toGenerateGlobal;

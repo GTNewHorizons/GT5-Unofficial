@@ -162,12 +162,14 @@ public final class MainMod {
         WerkstoffLoader.runInit();
 
         ItemRegistry.run();
-        RecipeLoader.run();
         IMCForNEI.IMCSender();
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent postinit) {
+
+        RecipeLoader.run();
+
         NetworkRegistry.INSTANCE.registerGuiHandler(MainMod.instance, MainMod.GH);
         if (ConfigHandler.BioLab) {
             GTNHBlocks.run();

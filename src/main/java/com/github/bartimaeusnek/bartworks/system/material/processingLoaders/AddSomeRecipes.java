@@ -24,11 +24,9 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_OreDictUnificator;
 
-public class AfterLuVTierEnhacement {
+public class AddSomeRecipes implements Runnable {
 
-    private AfterLuVTierEnhacement() {}
-
-    public static void run() {
+    public void run() {
 
         GT_Values.RA.addCentrifugeRecipe(
                 BW_NonMeta_MaterialItems.Depleted_Tiberium_1.get(1),

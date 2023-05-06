@@ -47,7 +47,6 @@ import com.github.bartimaeusnek.bartworks.common.loaders.FluidLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.system.material.BW_NonMeta_MaterialItems;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.BW_Meta_Items;
-import com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.LuVTierEnhancer;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
@@ -634,7 +633,7 @@ public class AdditionalRecipes {
                 100,
                 BW_Util.getMachineVoltageFromTier(6));
 
-        GregTech_API.sAfterGTPostload.add(new LuVTierEnhancer());
+        GregTech_API.sAfterGTPostload.add(new AddSomeRecipes());
         AdditionalRecipes.oldGThelperMethod();
     }
 
