@@ -1,8 +1,12 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBenderRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCutterRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLatheRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
@@ -29,19 +33,77 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                 new Object[] { " s ", "fPx", 'P', OrePrefixes.stick.get(aMaterial) });
         }
         if (!aMaterial.contains(gregtech.api.enums.SubTag.NO_WORKING)) {
-            GT_Values.RA.addLatheRecipe(
-                aMaterial.contains(SubTag.CRYSTAL) ? GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L)
-                    : GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial.mMacerateInto, 2L),
-                (int) Math.max(aMaterial.getMass() * 5L, 1L),
-                calculateRecipeEU(aMaterial, 16));
-            GT_Values.RA.addCutterRecipe(
-                GT_Utility.copyAmount(1L, aStack),
-                GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 4L),
-                null,
-                (int) Math.max(aMaterial.getMass() * 2L, 1L),
-                calculateRecipeEU(aMaterial, 4));
+
+            if ((aMaterial.contains(SubTag.CRYSTAL) ? GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L)
+                : GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L)) != null
+                && GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial.mMacerateInto, 1L) != null) {
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                        aMaterial.contains(SubTag.CRYSTAL) ? GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L)
+                            : GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L))
+                    .itemOutputs(
+                        GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial.mMacerateInto, 2L))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(((int) Math.max(aMaterial.getMass() * 5L, 1L)) * TICKS)
+                    .eut(calculateRecipeEU(aMaterial, 16))
+                    .addTo(sLatheRecipes);
+            }
+
+            if (GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L) != null) {
+
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 4L))
+                    .fluidInputs(
+                        Materials.Water.getFluid(
+                            Math.max(
+                                4,
+                                Math.min(
+                                    1000,
+                                    2 * ((int) Math.max(aMaterial.getMass() * 2L, 1L))
+                                        * calculateRecipeEU(aMaterial, 4)
+                                        / 320))))
+                    .noFluidOutputs()
+                    .duration(2 * ((int) Math.max(aMaterial.getMass() * 2L, 1L)) * TICKS)
+                    .eut(calculateRecipeEU(aMaterial, 4))
+                    .addTo(sCutterRecipes);
+
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 4L))
+                    .fluidInputs(
+                        GT_ModHandler.getDistilledWater(
+                            Math.max(
+                                3,
+                                Math.min(
+                                    750,
+                                    2 * ((int) Math.max(aMaterial.getMass() * 2L, 1L))
+                                        * calculateRecipeEU(aMaterial, 4)
+                                        / 426))))
+                    .noFluidOutputs()
+                    .duration(2 * ((int) Math.max(aMaterial.getMass() * 2L, 1L)) * TICKS)
+                    .eut(calculateRecipeEU(aMaterial, 4))
+                    .addTo(sCutterRecipes);
+
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 4L))
+                    .fluidInputs(
+                        Materials.Lubricant.getFluid(
+                            Math.max(
+                                1,
+                                Math.min(
+                                    250,
+                                    ((int) Math.max(aMaterial.getMass() * 2L, 1L)) * calculateRecipeEU(aMaterial, 4)
+                                        / 1280))))
+                    .noFluidOutputs()
+                    .duration(((int) Math.max(aMaterial.getMass() * 2L, 1L)) * TICKS)
+                    .eut(calculateRecipeEU(aMaterial, 4))
+                    .addTo(sCutterRecipes);
+            }
+
             if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)) {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GT_ModHandler.addCraftingRecipe(
@@ -81,12 +143,15 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(sHammerRecipes);
             }
         }
-        GT_Values.RA.addAssemblerRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
-            GT_Utility.getIntegratedCircuit(2),
-            Materials.SeedOil.getFluid(50L),
-            ItemList.FR_Stick.get(1L),
-            16,
-            8);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
+                GT_Utility.getIntegratedCircuit(2))
+            .itemOutputs(ItemList.FR_Stick.get(1L))
+            .fluidInputs(Materials.SeedOil.getFluid(50L))
+            .noFluidOutputs()
+            .duration(16 * TICKS)
+            .eut(8)
+            .addTo(sAssemblerRecipes);
     }
 }

@@ -1,6 +1,8 @@
 package gregtech.loaders.load;
 
 import static gregtech.api.enums.Mods.*;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -7098,16 +7100,20 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 new Object[] { "FFF", "RHR", "MCM", 'H', ItemList.Hull_HV, 'F', ItemList.Component_Filter, 'R',
                     OrePrefixes.rotor.get(Materials.StainlessSteel), 'M', ItemList.Electric_Motor_HV, 'C',
                     OrePrefixes.circuit.get(Materials.Advanced) });
-            GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] { ItemList.Hull_HV.get(1L), ItemList.Component_Filter.get(2L),
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_HV.get(1L),
+                    ItemList.Component_Filter.get(2L),
                     GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1L),
                     ItemList.Electric_Motor_HV.get(1L),
                     GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
-                    GT_Utility.getIntegratedCircuit(1) },
-                Materials.StainlessSteel.getMolten(864L),
-                ItemList.Machine_Multi_Cleanroom.get(1L),
-                1200,
-                120);
+                    GT_Utility.getIntegratedCircuit(1))
+                .itemOutputs(ItemList.Machine_Multi_Cleanroom.get(1L))
+                .fluidInputs(Materials.StainlessSteel.getMolten(864L))
+                .noFluidOutputs()
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(sAssemblerRecipes);
         } else {
             if (NotEnoughItems.isModLoaded()) {
                 API.hideItem(ItemList.Machine_Multi_Cleanroom.get(1L));
@@ -7368,27 +7374,39 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         }
 
         // high pressure fluid pipes
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.TungstenSteel, 1L),
-                ItemList.Electric_Pump_EV.get(1L), GT_Utility.getIntegratedCircuit(5) },
-            GT_Values.NF,
-            GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Ultimate, 1L),
-            300,
-            1920);
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.TungstenSteel, 1L),
-                ItemList.Electric_Pump_IV.get(1L), GT_Utility.getIntegratedCircuit(5) },
-            GT_Values.NF,
-            GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Ultimate, 1L),
-            400,
-            4096);
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.TungstenSteel, 1L),
-                ItemList.Electric_Pump_IV.get(2L), GT_Utility.getIntegratedCircuit(5) },
-            GT_Values.NF,
-            GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Ultimate, 1L),
-            600,
-            7680);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.TungstenSteel, 1L),
+                ItemList.Electric_Pump_EV.get(1L),
+                GT_Utility.getIntegratedCircuit(5))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Ultimate, 1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(sAssemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.TungstenSteel, 1L),
+                ItemList.Electric_Pump_IV.get(1L),
+                GT_Utility.getIntegratedCircuit(5))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Ultimate, 1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(20 * SECONDS)
+            .eut(4096)
+            .addTo(sAssemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.TungstenSteel, 1L),
+                ItemList.Electric_Pump_IV.get(2L),
+                GT_Utility.getIntegratedCircuit(5))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Ultimate, 1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(sAssemblerRecipes);
 
         GT_ModHandler.addCraftingRecipe(
             ItemList.Automation_ChestBuffer_ULV.get(1L),

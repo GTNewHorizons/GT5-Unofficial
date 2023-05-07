@@ -1,5 +1,9 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sExtruderRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
@@ -36,41 +40,58 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                             'R', OrePrefixes.ring.get(aMaterial), 'S', OrePrefixes.screw.get(aMaterial) });
                 }
 
-                GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] { tPlate.copy(), tRing.copy(), GT_Utility.getIntegratedCircuit(4) },
-                    Materials.Tin.getMolten(32),
-                    GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L),
-                    (int) Math.max(aMaterial.getMass(), 1L),
-                    calculateRecipeEU(aMaterial, 24));
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(tPlate.copy(), tRing.copy(), GT_Utility.getIntegratedCircuit(4))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
+                    .fluidInputs(Materials.Tin.getMolten(32))
+                    .noFluidOutputs()
+                    .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
+                    .eut(calculateRecipeEU(aMaterial, 24))
+                    .addTo(sAssemblerRecipes);
 
-                GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] { tPlate.copy(), tRing.copy(), GT_Utility.getIntegratedCircuit(4) },
-                    Materials.Lead.getMolten(48),
-                    GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L),
-                    (int) Math.max(aMaterial.getMass(), 1L),
-                    calculateRecipeEU(aMaterial, 24));
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(tPlate.copy(), tRing.copy(), GT_Utility.getIntegratedCircuit(4))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
+                    .fluidInputs(Materials.Lead.getMolten(48))
+                    .noFluidOutputs()
+                    .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
+                    .eut(calculateRecipeEU(aMaterial, 24))
+                    .addTo(sAssemblerRecipes);
 
-                GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] { tPlate.copy(), tRing.copy(), GT_Utility.getIntegratedCircuit(4) },
-                    Materials.SolderingAlloy.getMolten(16),
-                    GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L),
-                    (int) Math.max(aMaterial.getMass(), 1L),
-                    calculateRecipeEU(aMaterial, 24));
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(tPlate.copy(), tRing.copy(), GT_Utility.getIntegratedCircuit(4))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
+                    .fluidInputs(Materials.SolderingAlloy.getMolten(16))
+                    .noFluidOutputs()
+                    .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
+                    .eut(calculateRecipeEU(aMaterial, 24))
+                    .addTo(sAssemblerRecipes);
             }
-            GT_Values.RA.addExtruderRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 5L),
-                ItemList.Shape_Extruder_Rotor.get(0L),
-                GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L),
-                (int) Math.max(aMaterial.getMass(), 1L),
-                calculateRecipeEU(aMaterial, 24));
 
-            if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
-                GT_Values.RA.addFluidSolidifierRecipe(
-                    ItemList.Shape_Mold_Rotor.get(0L),
-                    aMaterial.getMolten(612L),
-                    GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L),
-                    (int) Math.max(aMaterial.getMass(), 1L),
-                    calculateRecipeEU(aMaterial, 24));
+            if (GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                        GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 5L),
+                        ItemList.Shape_Extruder_Rotor.get(0L))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
+                    .eut(calculateRecipeEU(aMaterial, 24))
+                    .addTo(sExtruderRecipes);
+            }
+            if (aMaterial.mStandardMoltenFluid != null) {
+                if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
+
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(ItemList.Shape_Mold_Rotor.get(0L))
+                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
+                        .fluidInputs(aMaterial.getMolten(612L))
+                        .noFluidOutputs()
+                        .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
+                        .eut(calculateRecipeEU(aMaterial, 24))
+                        .addTo(sFluidSolidficationRecipes);
+                }
             }
         }
     }
