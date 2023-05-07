@@ -493,7 +493,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public void receiveCoverData(ForgeDirection coverSide, int aCoverID, int aCoverData) {
-        if (coverSide != ForgeDirection.UNKNOWN) return;
+        if (coverSide == ForgeDirection.UNKNOWN) return;
         final CoverInfo oldCoverInfo = getCoverInfoAtSide(coverSide);
         if (!oldCoverInfo.isValid()) return;
 
@@ -504,7 +504,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     @Override
     public void receiveCoverData(ForgeDirection coverSide, int aCoverID, ISerializableObject aCoverData,
         EntityPlayerMP aPlayer) {
-        if (coverSide != ForgeDirection.UNKNOWN) return;
+        if (coverSide == ForgeDirection.UNKNOWN) return;
 
         final CoverInfo oldCoverInfo = getCoverInfoAtSide(coverSide);
 
