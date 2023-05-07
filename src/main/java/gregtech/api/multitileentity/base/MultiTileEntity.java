@@ -72,14 +72,14 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     private ITexture backOverlayTexture = null;
     private ITexture frontOverlayTexture = null;
 
-    // Makes a Bounding Box without having to constantly specify the Offset Coordinates.
+    // A Bounding Box without having to constantly specify the Offset Coordinates.
     protected static final float[] PX_BOX = { 0, 0, 0, 1, 1, 1 };
 
     public Materials material = Materials._NULL;
     protected final boolean isTicking; // If this TileEntity is ticking at all
 
-    // This Variable checks if this TileEntity should refresh when the Block is being set. That way you
-    // can turn this check off any time you need it.
+    // Checks if this TileEntity should refresh when the Block is being set.
+    // This way you can toggle this check at any time.
     protected boolean shouldRefresh = true;
 
     protected boolean needsBlockUpdate = false; // This Variable is for a buffered Block Update.
@@ -207,12 +207,12 @@ public abstract class MultiTileEntity extends CoverableTileEntity
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
-        // Check if this is a World/Chunk Loading Process calling readFromNBT.
+        // Check if it is a World/Chunk-Loading Process calling readFromNBT
         if (mteID == GT_Values.W || mteRegistry == GT_Values.W) {
-            // Yes it is, so read the ID Tags first.
+            // Read the ID Tags first
             mteID = nbt.getShort(NBT.MTE_ID);
             mteRegistry = nbt.getShort(NBT.MTE_REG);
-            // And add additional Default Parameters, in case the Mod updated with new ones.
+            // Add additional Default Parameters in case the Mod updated with new ones
             final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry.getRegistry(mteRegistry);
             if (tRegistry != null) {
                 final MultiTileEntityClassContainer tClass = tRegistry.getClassContainer(mteID);

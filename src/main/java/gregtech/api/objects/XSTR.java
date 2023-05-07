@@ -164,7 +164,7 @@ public class XSTR extends Random {
      * one {@code int} value in the specified range is pseudorandomly generated and returned. All {@code bound} possible
      * {@code int} values are produced with (approximately) equal probability. The method {@code nextInt(int bound)} is
      * implemented by class {@code Random} as if by:
-     * 
+     *
      * <pre>
      *  {@code
      * public int nextInt(int bound) {
@@ -184,9 +184,9 @@ public class XSTR extends Random {
      * </pre>
      *
      * <p>
-     * The hedge "approx imately" is used in the foregoing description only because the next method is only
-     * approximately an unbiased source of independently chosen bits. If it were a perfect source of randomly chosen
-     * bits, then the algorithm shown would choose {@code int} values from the stated range with perfect uniformity.
+     * The next method is only approximately an unbiased source of independently chosen bits. If it were a perfect
+     * source of randomly chosen bits, then the algorithm shown would choose {@code int} values from the stated range
+     * with perfect uniformity.
      * <p>
      * The algorithm is slightly tricky. It rejects values that would result in an uneven distribution (due to the fact
      * that 2^31 is not divisible by n). The probability of a value being rejected depends on n. The worst case is
@@ -208,15 +208,6 @@ public class XSTR extends Random {
      */
     @Override
     public int nextInt(int bound) {
-        // if (bound <= 0) {
-        // throw new RuntimeException("BadBound");
-        // }
-
-        /*
-         * int r = next(31); int m = bound - 1; if ((bound & m) == 0) // i.e., bound is a power of 2 { r = (int) ((bound
-         * * (long) r) >> 31); } else { for (int u = r; u - (r = u % bound) + m < 0; u = next(31)) ; } return r;
-         */
-        // speedup, new nextInt ~+40%
         last = seed ^ (seed << 21);
         last ^= (last >>> 35);
         last ^= (last << 4);
