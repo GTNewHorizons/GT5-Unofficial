@@ -102,6 +102,9 @@ import gregtech.common.tileentities.casings.upgrade.Inventory;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+/**
+ * Multi Tile Entities - or MuTEs - don't have dedicated hatches, but their casings can become hatches.
+ */
 public abstract class Controller<T extends Controller<T>> extends MultiTileBasicMachine implements IAlignment,
     IConstructable, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable {
 
