@@ -184,9 +184,9 @@ public class XSTR extends Random {
      * </pre>
      *
      * <p>
-     * The hedge "approximately" is used in the foregoing description only because the next method is only
-     * approximately an unbiased source of independently chosen bits. If it were a perfect source of randomly chosen
-     * bits, then the algorithm shown would choose {@code int} values from the stated range with perfect uniformity.
+     * The next method is only approximately an unbiased source of independently chosen bits. If it were a perfect
+     * source of randomly chosen bits, then the algorithm shown would choose {@code int} values from the stated range
+     * with perfect uniformity.
      * <p>
      * The algorithm is slightly tricky. It rejects values that would result in an uneven distribution (due to the fact
      * that 2^31 is not divisible by n). The probability of a value being rejected depends on n. The worst case is
