@@ -61,9 +61,6 @@ import gregtech.common.render.MultiTileBasicRender;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-/**
- * Multi Tile Entities - or MuTEs - don't have dedicated hatches, but their casings can become hatches.
- */
 public abstract class MultiTileEntity extends CoverableTileEntity
     implements IMultiTileEntity.IMTE_BreakBlock, MultiTileBasicRender {
 
