@@ -519,7 +519,6 @@ public class GT_Values {
     public static final Set<String> mCTMEnabledBlock = new HashSet<>();
     public static final Set<String> mCTMDisabledBlock = new HashSet<>();
 
-    public static boolean updateFluidDisplayItems = true;
     public static final int STEAM_PER_WATER = 160;
     /**
      * If true, then digital chest with AE2 storage bus will be accessible only through AE2

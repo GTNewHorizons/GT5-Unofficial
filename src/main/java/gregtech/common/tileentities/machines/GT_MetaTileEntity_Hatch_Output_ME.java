@@ -146,9 +146,6 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
     }
 
     @Override
-    public void updateFluidDisplayItem() {}
-
-    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         // Don't allow to lock fluid in me fluid hatch
         if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)

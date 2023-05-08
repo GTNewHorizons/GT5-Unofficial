@@ -686,6 +686,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         return 0;
     }
 
+    /**
+     * Actual fluid capacity. If your machine has void-overflow feature, you'll want to override this method to make
+     * sure correct capacity is shown on GUI.
+     */
+    public int getRealCapacity() {
+        return getCapacity();
+    }
+
     @Override
     public void onMachineBlockUpdate() {
         /* Do nothing */

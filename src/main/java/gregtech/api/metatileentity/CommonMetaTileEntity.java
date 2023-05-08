@@ -15,6 +15,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import appeng.api.crafting.ICraftingIconProvider;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -83,7 +84,12 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity
                 final NBTTagCompound tTag = tItemList.getCompoundTagAt(i);
                 final int tSlot = migrateInventoryIndex(tTag.getInteger("IntSlot"), nbtVersion);
                 if (tSlot >= 0 && tSlot < getMetaTileEntity().getRealInventory().length) {
-                    getMetaTileEntity().getRealInventory()[tSlot] = GT_Utility.loadItem(tTag);
+                    ItemStack loadedStack = GT_Utility.loadItem(tTag);
+                    // We move away from fluid display item in TEs
+                    if (loadedStack != null && loadedStack.getItem() == ItemList.Display_Fluid.getItem()) {
+                        loadedStack = null;
+                    }
+                    getMetaTileEntity().getRealInventory()[tSlot] = loadedStack;
                 }
             }
 
