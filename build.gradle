@@ -1,4 +1,4 @@
-//version: 1675110695
+//version: 1683373797
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -6,27 +6,28 @@
  */
 
 
-import com.diffplug.blowdryer.Blowdryer
-import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import com.gtnewhorizons.retrofuturagradle.ObfuscationAttribute
 import com.gtnewhorizons.retrofuturagradle.mcp.ReobfuscatedJar
+import com.gtnewhorizons.retrofuturagradle.minecraft.RunMinecraftTask
+import com.gtnewhorizons.retrofuturagradle.util.Distribution
 import com.matthewprenger.cursegradle.CurseArtifact
 import com.matthewprenger.cursegradle.CurseRelation
 import com.modrinth.minotaur.dependencies.ModDependency
 import com.modrinth.minotaur.dependencies.VersionDependency
 import org.gradle.internal.logging.text.StyledTextOutput.Style
 import org.gradle.internal.logging.text.StyledTextOutputFactory
-import org.jetbrains.gradle.ext.*
+import org.gradle.internal.xml.XmlTransformer
+import org.jetbrains.gradle.ext.Application
+import org.jetbrains.gradle.ext.Gradle
 
+import javax.inject.Inject
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
-import java.util.zip.ZipEntry
-import java.util.zip.ZipOutputStream
 
 buildscript {
     repositories {
-        mavenLocal()
         mavenCentral()
 
         maven {
@@ -47,6 +48,8 @@ buildscript {
             name 'Scala CI dependencies'
             url 'https://repo1.maven.org/maven2/'
         }
+
+        mavenLocal()
     }
 }
 plugins {
@@ -58,22 +61,26 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.8.0' apply false
     id 'org.jetbrains.kotlin.kapt' version '1.8.0' apply false
     id 'com.google.devtools.ksp' version '1.8.0-1.0.9' apply false
-    id 'org.ajoberstar.grgit' version '4.1.1' // 4.1.1 is the last jvm8 supporting version ,unused, available for addon.gradle
-    id 'com.github.johnrengelman.shadow' version '7.1.2' apply false
-    id 'com.palantir.git-version' version '0.13.0' apply false // 0.13.0 is the last jvm8 supporting version
-    id 'de.undercouch.download' version '5.3.0'
+    id 'org.ajoberstar.grgit' version '4.1.1' // 4.1.1 is the last jvm8 supporting version, unused, available for addon.gradle
+    id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
+    id 'com.palantir.git-version' version '3.0.0' apply false
+    id 'de.undercouch.download' version '5.4.0'
     id 'com.github.gmazzo.buildconfig' version '3.1.0' apply false // Unused, available for addon.gradle
-    id 'com.diffplug.spotless' version '6.7.2' apply false
+    id 'com.diffplug.spotless' version '6.13.0' apply false // 6.13.0 is the last jvm8 supporting version
     id 'com.modrinth.minotaur' version '2.+' apply false
     id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
-    id 'com.gtnewhorizons.retrofuturagradle' version '1.1.2'
+    id 'com.gtnewhorizons.retrofuturagradle' version '1.3.7'
 }
+
+print("You might want to check out './gradlew :faq' if your build fails.\n")
+
 boolean settingsupdated = verifySettingsGradle()
 settingsupdated = verifyGitAttributes() || settingsupdated
 if (settingsupdated)
     throw new GradleException("Settings has been updated, please re-run task.")
 
-if (project.file('.git/HEAD').isFile()) {
+// In submodules, .git is a file pointing to the real git dir
+if (project.file('.git/HEAD').isFile() || project.file('.git').isFile()) {
     apply plugin: 'com.palantir.git-version'
 }
 
@@ -122,7 +129,10 @@ propertyDefaultIfUnset("gradleTokenGroupName", "")
 propertyDefaultIfUnset("enableModernJavaSyntax", false) // On by default for new projects only
 propertyDefaultIfUnset("enableGenericInjection", false) // On by default for new projects only
 
-project.extensions.add(Blowdryer, "Blowdryer", Blowdryer) // Make blowdryer available in "apply from:" scripts
+// this is meant to be set using the user wide property file. by default we do nothing.
+propertyDefaultIfUnset("ideaOverrideBuildType", "") // Can be nothing, "gradle" or "idea"
+
+project.extensions.add(com.diffplug.blowdryer.Blowdryer, "Blowdryer", com.diffplug.blowdryer.Blowdryer) // Make blowdryer available in "apply from:" scripts
 if (!disableSpotless) {
     apply plugin: 'com.diffplug.spotless'
     apply from: Blowdryer.file('spotless.gradle')
@@ -143,11 +153,19 @@ java {
         } else {
             languageVersion.set(projectJavaVersion)
         }
-        vendor.set(JvmVendorSpec.ADOPTIUM)
+        vendor.set(JvmVendorSpec.AZUL)
     }
     if (!noPublishedSources) {
         withSourcesJar()
     }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
+
+tasks.withType(ScalaCompile).configureEach {
+    options.encoding = "UTF-8"
 }
 
 pluginManager.withPlugin('org.jetbrains.kotlin.jvm') {
@@ -183,14 +201,34 @@ configurations {
         canBeConsumed = false
         canBeResolved = false
     }
+
+    create("devOnlyNonPublishable") {
+        description = "Runtime and compiletime dependencies that are not published alongside the jar (compileOnly + runtimeOnlyNonPublishable)"
+        canBeConsumed = false
+        canBeResolved = false
+    }
+    compileOnly.extendsFrom(devOnlyNonPublishable)
+    runtimeOnlyNonPublishable.extendsFrom(devOnlyNonPublishable)
 }
 
 if (enableModernJavaSyntax.toBoolean()) {
+    repositories {
+        mavenCentral {
+            mavenContent {
+                includeGroup("me.eigenraven.java8unsupported")
+            }
+        }
+    }
+
     dependencies {
         annotationProcessor 'com.github.bsideup.jabel:jabel-javac-plugin:1.0.0'
+        // workaround for https://github.com/bsideup/jabel/issues/174
+        annotationProcessor 'net.java.dev.jna:jna-platform:5.13.0'
         compileOnly('com.github.bsideup.jabel:jabel-javac-plugin:1.0.0') {
             transitive = false // We only care about the 1 annotation class
         }
+        // Allow using jdk.unsupported classes like sun.misc.Unsafe in the compiled code, working around JDK-8206937.
+        patchedMinecraft('me.eigenraven.java8unsupported:java-8-unsupported-shim:1.0.0')
     }
 
     tasks.withType(JavaCompile).configureEach {
@@ -202,7 +240,7 @@ if (enableModernJavaSyntax.toBoolean()) {
 
         javaCompiler.set(javaToolchains.compilerFor {
             languageVersion.set(JavaLanguageVersion.of(17))
-            vendor.set(JvmVendorSpec.ADOPTIUM)
+            vendor.set(JvmVendorSpec.AZUL)
         })
     }
 }
@@ -234,12 +272,14 @@ if (apiPackage) {
 }
 
 if (accessTransformersFile) {
-    String targetFile = "src/main/resources/META-INF/" + accessTransformersFile
-    if (!getFile(targetFile).exists()) {
-        throw new GradleException("Could not resolve \"accessTransformersFile\"! Could not find " + targetFile)
+    for (atFile in accessTransformersFile.split(",")) {
+        String targetFile = "src/main/resources/META-INF/" + atFile.trim()
+        if (!getFile(targetFile).exists()) {
+            throw new GradleException("Could not resolve \"accessTransformersFile\"! Could not find " + targetFile)
+        }
+        tasks.deobfuscateMergedJarToSrg.accessTransformerFiles.from(targetFile)
+        tasks.srgifyBinpatchedJar.accessTransformerFiles.from(targetFile)
     }
-    tasks.deobfuscateMergedJarToSrg.accessTransformerFiles.from(targetFile)
-    tasks.srgifyBinpatchedJar.accessTransformerFiles.from(targetFile)
 } else {
     boolean atsFound = false
     for (File at : sourceSets.getByName("main").resources.files) {
@@ -367,12 +407,14 @@ minecraft {
         injectMissingGenerics.set(true)
     }
 
+    username = developmentEnvironmentUserName.toString()
+
+    lwjgl3Version = "3.3.2"
+
     // Enable assertions in the current mod
     extraRunJvmArguments.add("-ea:${modGroup}")
 
     if (usesMixins.toBoolean() || forceEnableMixins.toBoolean()) {
-        extraTweakClasses.add("org.spongepowered.asm.launch.MixinTweaker")
-
         if (usesMixinDebug.toBoolean()) {
             extraRunJvmArguments.addAll([
                 "-Dmixin.debug.countInjections=true",
@@ -398,6 +440,16 @@ configurations.configureEach {
             if (dep.group == "net.industrial-craft" && dep.name == "industrialcraft-2") {
                 // https://www.curseforge.com/minecraft/mc-mods/industrial-craft/files/2353971
                 project.dependencies.reobfJarConfiguration("curse.maven:ic2-242638:2353971")
+            }
+        }
+    }
+    def obfuscationAttr = it.attributes.getAttribute(ObfuscationAttribute.OBFUSCATION_ATTRIBUTE)
+    if (obfuscationAttr != null && obfuscationAttr.name == ObfuscationAttribute.SRG) {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            // Remap CoFH core cursemaven dev jar to the obfuscated version for runObfClient/Server
+            if (details.requested.group == 'curse.maven' && details.requested.name.endsWith('-69162') && details.requested.version == '2388751') {
+                details.useVersion '2388750'
+                details.because 'Pick obfuscated jar'
             }
         }
     }
@@ -430,8 +482,9 @@ repositories.configureEach { repo ->
 apply from: 'repositories.gradle'
 
 configurations {
+    runtimeClasspath.extendsFrom(runtimeOnlyNonPublishable)
+    testRuntimeClasspath.extendsFrom(runtimeOnlyNonPublishable)
     for (config in [compileClasspath, runtimeClasspath, testCompileClasspath, testRuntimeClasspath]) {
-        config.extendsFrom(runtimeOnlyNonPublishable)
         if (usesShadowedDependencies.toBoolean()) {
             config.extendsFrom(shadowImplementation)
             // TODO: remove Compile after all uses are refactored to Implementation
@@ -476,12 +529,11 @@ repositories {
         url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
         allowInsecureProtocol = true
     }
-    if (usesMixins.toBoolean() || forceEnableMixins.toBoolean()) {
-        if (usesMixinDebug.toBoolean()) {
-            maven {
-                name = "Fabric Maven"
-                url = "https://maven.fabricmc.net/"
-            }
+    maven {
+        name 'sonatype'
+        url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        content {
+            includeGroup "org.lwjgl"
         }
     }
     if (includeWellKnownRepositories.toBoolean()) {
@@ -515,26 +567,46 @@ repositories {
     }
 }
 
+def mixinProviderGroup = "io.github.legacymoddingmc"
+def mixinProviderModule = "unimixins"
+def mixinProviderVersion = "0.1.6"
+def mixinProviderSpecNoClassifer = "${mixinProviderGroup}:${mixinProviderModule}:${mixinProviderVersion}"
+def mixinProviderSpec = "${mixinProviderSpecNoClassifer}:dev"
+
 dependencies {
     if (usesMixins.toBoolean()) {
         annotationProcessor('org.ow2.asm:asm-debug-all:5.0.3')
         annotationProcessor('com.google.guava:guava:24.1.1-jre')
         annotationProcessor('com.google.code.gson:gson:2.8.6')
-        annotationProcessor('com.gtnewhorizon:gtnhmixins:2.1.10:processor')
+        annotationProcessor(mixinProviderSpec)
         if (usesMixinDebug.toBoolean()) {
             runtimeOnlyNonPublishable('org.jetbrains:intellij-fernflower:1.2.1.16')
         }
     }
-    if (usesMixins.toBoolean() || forceEnableMixins.toBoolean()) {
-        implementation('com.gtnewhorizon:gtnhmixins:2.1.10')
+    if (usesMixins.toBoolean()) {
+        implementation(mixinProviderSpec)
+    } else if (forceEnableMixins.toBoolean()) {
+        runtimeOnlyNonPublishable(mixinProviderSpec)
     }
 }
 
 pluginManager.withPlugin('org.jetbrains.kotlin.kapt') {
     if (usesMixins.toBoolean()) {
         dependencies {
-            kapt('com.gtnewhorizon:gtnhmixins:2.1.10:processor')
+            kapt(mixinProviderSpec)
         }
+    }
+}
+
+// Replace old mixin mods with unimixins
+// https://docs.gradle.org/8.0.2/userguide/resolution_rules.html#sec:substitution_with_classifier
+configurations.all {
+    resolutionStrategy.dependencySubstitution {
+        substitute module('com.gtnewhorizon:gtnhmixins') using module(mixinProviderSpecNoClassifer) withClassifier("dev") because("Unimixins replaces other mixin mods")
+        substitute module('com.github.GTNewHorizons:Mixingasm') using module(mixinProviderSpecNoClassifer) withClassifier("dev") because("Unimixins replaces other mixin mods")
+        substitute module('com.github.GTNewHorizons:SpongePoweredMixin') using module(mixinProviderSpecNoClassifer) withClassifier("dev") because("Unimixins replaces other mixin mods")
+        substitute module('com.github.GTNewHorizons:SpongeMixins') using module(mixinProviderSpecNoClassifer) withClassifier("dev") because("Unimixins replaces other mixin mods")
+        substitute module('io.github.legacymoddingmc:unimixins') using module(mixinProviderSpecNoClassifer) withClassifier("dev") because("Our previous unimixins upload was missing the dev classifier")
     }
 }
 
@@ -633,7 +705,144 @@ tasks.named("processResources", ProcessResources).configure {
 
     if (usesMixins.toBoolean()) {
         from refMap
+        dependsOn("compileJava", "compileScala")
     }
+}
+
+ext.java17Toolchain = (JavaToolchainSpec spec) -> {
+    spec.languageVersion.set(JavaLanguageVersion.of(17))
+    spec.vendor.set(JvmVendorSpec.matching("jetbrains"))
+}
+
+ext.java17DependenciesCfg = configurations.create("java17Dependencies") {
+    extendsFrom(configurations.getByName("runtimeClasspath")) // Ensure consistent transitive dependency resolution
+    canBeConsumed = false
+}
+ext.java17PatchDependenciesCfg = configurations.create("java17PatchDependencies") {
+    canBeConsumed = false
+}
+
+dependencies {
+    def lwjgl3ifyVersion = '1.3.5'
+    def asmVersion = '9.4'
+    if (modId != 'lwjgl3ify') {
+        java17Dependencies("com.github.GTNewHorizons:lwjgl3ify:${lwjgl3ifyVersion}")
+    }
+    if (modId != 'hodgepodge') {
+        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.2.8')
+    }
+
+    java17PatchDependencies('net.minecraft:launchwrapper:1.15') {transitive = false}
+    java17PatchDependencies("org.ow2.asm:asm:${asmVersion}")
+    java17PatchDependencies("org.ow2.asm:asm-commons:${asmVersion}")
+    java17PatchDependencies("org.ow2.asm:asm-tree:${asmVersion}")
+    java17PatchDependencies("org.ow2.asm:asm-analysis:${asmVersion}")
+    java17PatchDependencies("org.ow2.asm:asm-util:${asmVersion}")
+    java17PatchDependencies('org.ow2.asm:asm-deprecated:7.1')
+    java17PatchDependencies("org.apache.commons:commons-lang3:3.12.0")
+    java17PatchDependencies("com.github.GTNewHorizons:lwjgl3ify:${lwjgl3ifyVersion}:forgePatches") {transitive = false}
+}
+
+ext.java17JvmArgs = [
+    // Java 9+ support
+    "--illegal-access=warn",
+    "-Djava.security.manager=allow",
+    "-Dfile.encoding=UTF-8",
+    "--add-opens", "java.base/jdk.internal.loader=ALL-UNNAMED",
+    "--add-opens", "java.base/java.net=ALL-UNNAMED",
+    "--add-opens", "java.base/java.nio=ALL-UNNAMED",
+    "--add-opens", "java.base/java.io=ALL-UNNAMED",
+    "--add-opens", "java.base/java.lang=ALL-UNNAMED",
+    "--add-opens", "java.base/java.lang.reflect=ALL-UNNAMED",
+    "--add-opens", "java.base/java.text=ALL-UNNAMED",
+    "--add-opens", "java.base/java.util=ALL-UNNAMED",
+    "--add-opens", "java.base/jdk.internal.reflect=ALL-UNNAMED",
+    "--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED",
+    "--add-opens", "jdk.naming.dns/com.sun.jndi.dns=ALL-UNNAMED,java.naming",
+    "--add-opens", "java.desktop/sun.awt.image=ALL-UNNAMED",
+    "--add-modules", "jdk.dynalink",
+    "--add-opens", "jdk.dynalink/jdk.dynalink.beans=ALL-UNNAMED",
+    "--add-modules", "java.sql.rowset",
+    "--add-opens", "java.sql.rowset/javax.sql.rowset.serial=ALL-UNNAMED"
+]
+
+ext.hotswapJvmArgs = [
+    // DCEVM advanced hot reload
+    "-XX:+AllowEnhancedClassRedefinition",
+    "-XX:HotswapAgent=fatjar"
+]
+
+ext.setupHotswapAgentTask = tasks.register("setupHotswapAgent") {
+    group = "GTNH Buildscript"
+    description = "Installs a recent version of HotSwapAgent into the Java 17 JetBrains runtime directory"
+    def hsaUrl = 'https://github.com/HotswapProjects/HotswapAgent/releases/download/1.4.2-SNAPSHOT/hotswap-agent-1.4.2-SNAPSHOT.jar'
+    def targetFolderProvider = javaToolchains.launcherFor(java17Toolchain).map {it.metadata.installationPath.dir("lib/hotswap")}
+    def targetFilename = "hotswap-agent.jar"
+    onlyIf {
+        !targetFolderProvider.get().file(targetFilename).asFile.exists()
+    }
+    doLast {
+        def targetFolder = targetFolderProvider.get()
+        targetFolder.asFile.mkdirs()
+        download.run {
+            src hsaUrl
+            dest targetFolder.file(targetFilename).asFile
+            overwrite false
+            tempAndMove true
+        }
+    }
+}
+
+public abstract class RunHotswappableMinecraftTask extends RunMinecraftTask {
+    // IntelliJ doesn't seem to allow commandline arguments so we also support an env variable
+    private boolean enableHotswap = Boolean.valueOf(System.getenv("HOTSWAP"));
+
+    @Input
+    public boolean getEnableHotswap() { return enableHotswap }
+    @Option(option = "hotswap", description = "Enables HotSwapAgent for enhanced class reloading under a debugger")
+    public boolean setEnableHotswap(boolean enable) { enableHotswap = enable }
+
+    @Inject
+    public RunHotswappableMinecraftTask(Distribution side, String superTask, org.gradle.api.invocation.Gradle gradle) {
+        super(side, gradle)
+
+        this.lwjglVersion = 3
+        this.javaLauncher = project.javaToolchains.launcherFor(project.java17Toolchain)
+        this.extraJvmArgs.addAll(project.java17JvmArgs)
+        this.extraJvmArgs.addAll(project.provider(() -> enableHotswap ? project.hotswapJvmArgs : []))
+
+        this.classpath(project.java17PatchDependenciesCfg)
+        if (side == Distribution.CLIENT) {
+            this.classpath(project.minecraftTasks.lwjgl3Configuration)
+        }
+        // Use a raw provider instead of map to not create a dependency on the task
+        this.classpath(project.provider(() -> project.tasks.named(superTask, RunMinecraftTask).get().classpath))
+        this.classpath.filter { file ->
+            !file.path.contains("2.9.4-nightly-20150209") // Remove lwjgl2
+        }
+        this.classpath(project.java17DependenciesCfg)
+    }
+}
+
+def runClient17Task = tasks.register("runClient17", RunHotswappableMinecraftTask, Distribution.CLIENT, "runClient")
+runClient17Task.configure {
+    setup(project)
+    group = "Modded Minecraft"
+    description = "Runs the modded client using Java 17, lwjgl3ify and Hodgepodge"
+    dependsOn(setupHotswapAgentTask, mcpTasks.launcherSources.classesTaskName, minecraftTasks.taskDownloadVanillaAssets, mcpTasks.taskPackagePatchedMc, 'jar')
+    mainClass = "GradleStart"
+    username = minecraft.username
+    userUUID = minecraft.userUUID
+}
+
+def runServer17Task = tasks.register("runServer17", RunHotswappableMinecraftTask, Distribution.DEDICATED_SERVER, "runServer")
+runServer17Task.configure {
+    setup(project)
+    group = "Modded Minecraft"
+    description = "Runs the modded server using Java 17, lwjgl3ify and Hodgepodge"
+    dependsOn(setupHotswapAgentTask, mcpTasks.launcherSources.classesTaskName, minecraftTasks.taskDownloadVanillaAssets, mcpTasks.taskPackagePatchedMc, 'jar')
+    mainClass = "GradleStartServer"
+    extraArgs.add("nogui")
 }
 
 def getManifestAttributes() {
@@ -667,11 +876,6 @@ tasks.named("jar", Jar).configure {
 }
 
 if (usesShadowedDependencies.toBoolean()) {
-    tasks.register('relocateShadowJar', ConfigureShadowRelocation) {
-        target = tasks.shadowJar
-        prefix = modGroup + ".shadow"
-        enabled = minimizeShadowedDependencies.toBoolean()
-    }
     tasks.named("shadowJar", ShadowJar).configure {
         manifest {
             attributes(getManifestAttributes())
@@ -686,8 +890,9 @@ if (usesShadowedDependencies.toBoolean()) {
             project.configurations.shadeCompile
         ]
         archiveClassifier.set('dev')
-        if (minimizeShadowedDependencies.toBoolean()) {
-            dependsOn(relocateShadowJar)
+        if (relocateShadowedDependencies.toBoolean()) {
+            relocationPrefix = modGroup + ".shadow"
+            enableRelocation = true
         }
     }
     configurations.runtimeElements.outgoing.artifacts.clear()
@@ -705,7 +910,7 @@ if (usesShadowedDependencies.toBoolean()) {
     javaComponent.withVariantsFromConfiguration(configurations.shadowRuntimeElements) {
         skip()
     }
-    for (runTask in ["runClient", "runServer"]) {
+    for (runTask in ["runClient", "runServer", "runClient17", "runServer17"]) {
         tasks.named(runTask).configure {
             dependsOn("shadowJar")
         }
@@ -743,15 +948,43 @@ idea {
     module {
         downloadJavadoc = true
         downloadSources = true
+        inheritOutputDirs = true
     }
     project {
         settings {
+            if (ideaOverrideBuildType != "") {
+                delegateActions {
+                    if ("gradle".equalsIgnoreCase(ideaOverrideBuildType)) {
+                        delegateBuildRunToGradle = true
+                        testRunner = org.jetbrains.gradle.ext.ActionDelegationConfig.TestRunner.GRADLE
+                    } else if ("idea".equalsIgnoreCase(ideaOverrideBuildType)) {
+                        delegateBuildRunToGradle = false
+                        testRunner = org.jetbrains.gradle.ext.ActionDelegationConfig.TestRunner.PLATFORM
+                    } else {
+                        throw GradleScriptException('Accepted value for ideaOverrideBuildType is one of gradle or idea.')
+                    }
+                }
+            }
             runConfigurations {
                 "1. Run Client"(Gradle) {
                     taskNames = ["runClient"]
                 }
                 "2. Run Server"(Gradle) {
                     taskNames = ["runServer"]
+                }
+                "1a. Run Client (Java 17)"(Gradle) {
+                    taskNames = ["runClient17"]
+                }
+                "2a. Run Server (Java 17)"(Gradle) {
+                    taskNames = ["runServer17"]
+                }
+                "1b. Run Client (Java 17, Hotswap)"(Gradle) {
+                    taskNames = ["runClient17"]
+                    envs = ["HOTSWAP": "true"]
+                }
+                "2b. Run Server (Java 17, Hotswap)"(Gradle) {
+                    taskNames = ["runServer17"]
+                    envs = ["HOTSWAP": "true"]
                 }
                 "3. Run Obfuscated Client"(Gradle) {
                     taskNames = ["runObfClient"]
@@ -770,7 +1003,7 @@ idea {
                 }
                 "Run Client (IJ Native)"(Application) {
                     mainClass = "GradleStart"
-                    moduleName = project.name + ".main"
+                    moduleName = project.name + ".ideVirtualMain"
                     afterEvaluate {
                         workingDirectory = tasks.runClient.workingDir.absolutePath
                         programParameters = tasks.runClient.calculateArgs(project).collect { '"' + it + '"' }.join(' ')
@@ -781,7 +1014,7 @@ idea {
                 }
                 "Run Server (IJ Native)"(Application) {
                     mainClass = "GradleStartServer"
-                    moduleName = project.name + ".main"
+                    moduleName = project.name + ".ideVirtualMain"
                     afterEvaluate {
                         workingDirectory = tasks.runServer.workingDir.absolutePath
                         programParameters = tasks.runServer.calculateArgs(project).collect { '"' + it + '"' }.join(' ')
@@ -793,9 +1026,55 @@ idea {
             }
             compiler.javac {
                 afterEvaluate {
+                    javacAdditionalOptions = "-encoding utf8"
                     moduleJavacAdditionalOptions = [
                         (project.name + ".main"): tasks.compileJava.options.compilerArgs.collect { '"' + it + '"' }.join(' ')
                     ]
+                }
+            }
+            withIDEADir { File ideaDir ->
+                if (!ideaDir.path.contains(".idea")) {
+                    // If an .ipr file exists, the project root directory is passed here instead of the .idea subdirectory
+                    ideaDir = new File(ideaDir, ".idea")
+                }
+                if (ideaDir.isDirectory()) {
+                    def miscFile = new File(ideaDir, "misc.xml")
+                    if (miscFile.isFile()) {
+                        boolean dirty = false
+                        def miscTransformer = new XmlTransformer()
+                        miscTransformer.addAction { root ->
+                            Node rootNode = root.asNode()
+                            def rootManager = rootNode
+                                .component.find { it.@name == 'ProjectRootManager' }
+                            if (!rootManager) {
+                                rootManager = rootNode.appendNode('component', ['name': 'ProjectRootManager', 'version': '2'])
+                                dirty = true
+                            }
+                            def output = rootManager.output
+                            if (!output) {
+                                output = rootManager.appendNode('output')
+                                dirty = true
+                            }
+                            if (!output.@url) {
+                                // Only modify the output url if it doesn't yet have one, or if the existing one is blank somehow.
+                                // This is a sensible default for most setups
+                                output.@url = 'file://$PROJECT_DIR$/build/ideaBuild'
+                                dirty = true
+                            }
+                        }
+                        def result = miscTransformer.transform(miscFile.text)
+                        if (dirty) {
+                            miscFile.write(result)
+                        }
+                    } else {
+                        miscFile.text = """<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectRootManager" version="2">
+    <output url="file://\$PROJECT_DIR\$/out" />
+  </component>
+</project>
+"""
+                    }
                 }
             }
         }
@@ -867,7 +1146,7 @@ if (modrinthProjectId.size() != 0 && System.getenv("MODRINTH_TOKEN") != null) {
         }
     }
     if (usesMixins.toBoolean()) {
-        addModrinthDep("required", "project", "gtnhmixins")
+        addModrinthDep("required", "project", "unimixins")
     }
     tasks.modrinth.dependsOn(build)
     tasks.publish.dependsOn(tasks.modrinth)
@@ -911,7 +1190,7 @@ if (curseForgeProjectId.size() != 0 && System.getenv("CURSEFORGE_TOKEN") != null
         }
     }
     if (usesMixins.toBoolean()) {
-        addCurseForgeRelation("requiredDependency", "gtnhmixins")
+        addCurseForgeRelation("requiredDependency", "unimixins")
     }
     tasks.curseforge.dependsOn(build)
     tasks.publish.dependsOn(tasks.curseforge)
@@ -945,9 +1224,20 @@ def addCurseForgeRelation(String type, String name) {
 }
 
 // Updating
+
+def buildscriptGradleVersion = "8.1.1"
+
+tasks.named('wrapper', Wrapper).configure {
+    gradleVersion = buildscriptGradleVersion
+}
+
 tasks.register('updateBuildScript') {
     group = 'GTNH Buildscript'
     description = 'Updates the build script to the latest version'
+
+    if (gradle.gradleVersion != buildscriptGradleVersion && !Boolean.getBoolean('DISABLE_BUILDSCRIPT_GRADLE_UPDATE')) {
+        dependsOn('wrapper')
+    }
 
     doLast {
         if (performBuildScriptUpdate()) return
@@ -961,6 +1251,22 @@ if (!project.getGradle().startParameter.isOffline() && !Boolean.getBoolean('DISA
         performBuildScriptUpdate()
     } else {
         out.style(Style.SuccessHeader).println("Build script update available! Run 'gradle updateBuildScript'")
+        if (gradle.gradleVersion != buildscriptGradleVersion) {
+            out.style(Style.SuccessHeader).println("updateBuildScript can update gradle from ${gradle.gradleVersion} to ${buildscriptGradleVersion}\n")
+        }
+    }
+}
+
+// If you want to add more cases to this task, implement them as arguments if total amount to print gets too large
+tasks.register('faq') {
+    group = 'GTNH Buildscript'
+    description = 'Prints frequently asked questions about building a project'
+
+    doLast {
+        print("If your build fails to fetch dependencies, they might have been deleted and replaced by newer " +
+            "versions.\nCheck if the versions you try to fetch are still on the distributing sites.\n" +
+            "The links can be found in repositories.gradle and build.gradle:repositories, " +
+            "not build.gradle:buildscript.repositories - this one is for gradle plugin metadata.")
     }
 }
 
@@ -1101,7 +1407,7 @@ static int replaceParams(File file, Map<String, String> params) {
     return 0
 }
 
-// Dependency Deobfuscation
+// Dependency Deobfuscation (Deprecated, use the new RFG API documented in dependencies.gradle)
 
 def deobf(String sourceURL) {
     try {
@@ -1143,11 +1449,7 @@ def deobfMaven(String repoURL, String mavenDep) {
 }
 
 def deobfCurse(String curseDep) {
-    try {
-        return deobfMaven("https://www.cursemaven.com/", "curse.maven:$curseDep")
-    } catch (Exception ignored) {
-        out.style(Style.Failure).println("Failed to get $curseDep from cursemaven.")
-    }
+    return dependencies.rfg.deobf("curse.maven:$curseDep")
 }
 
 // The method above is to be preferred. Use this method if the filename is not at the end of the URL.
@@ -1155,34 +1457,7 @@ def deobf(String sourceURL, String rawFileName) {
     String bon2Version = "2.5.1"
     String fileName = URLDecoder.decode(rawFileName, "UTF-8")
     String cacheDir = "$project.gradle.gradleUserHomeDir/caches"
-    String bon2Dir = "$cacheDir/forge_gradle/deobf"
-    String bon2File = "$bon2Dir/BON2-${bon2Version}.jar"
     String obfFile = "$cacheDir/modules-2/files-2.1/${fileName}.jar"
-    String deobfFile = "$cacheDir/modules-2/files-2.1/${fileName}-deobf.jar"
-
-    if (file(deobfFile).exists()) {
-        return files(deobfFile)
-    }
-
-    String mappingsVer
-    String remoteMappings = project.hasProperty('remoteMappings') ? project.remoteMappings : 'https://raw.githubusercontent.com/MinecraftForge/FML/1.7.10/conf/'
-    if (remoteMappings) {
-        String id = "${forgeVersion.split("\\.")[3]}-$minecraftVersion"
-        String mappingsZIP = "$cacheDir/forge_gradle/maven_downloader/de/oceanlabs/mcp/mcp_snapshot_nodoc/$id/mcp_snapshot_nodoc-${id}.zip"
-
-        zipMappings(mappingsZIP, remoteMappings, bon2Dir)
-
-        mappingsVer = "snapshot_$id"
-    } else {
-        mappingsVer = "${channel}_$mappingsVersion"
-    }
-
-    download.run {
-        src "http://jenkins.usrv.eu:8081/nexus/content/repositories/releases/com/github/parker8283/BON2/$bon2Version-CUSTOM/BON2-$bon2Version-CUSTOM-all.jar"
-        dest bon2File
-        quiet true
-        overwrite false
-    }
 
     download.run {
         src sourceURL
@@ -1190,50 +1465,8 @@ def deobf(String sourceURL, String rawFileName) {
         quiet true
         overwrite false
     }
-
-    exec {
-        commandLine 'java', '-jar', bon2File, '--inputJar', obfFile, '--outputJar', deobfFile, '--mcVer', minecraftVersion, '--mappingsVer', mappingsVer, '--notch'
-        workingDir bon2Dir
-        standardOutput = new FileOutputStream("${deobfFile}.log")
-    }
-
-    return files(deobfFile)
+    return dependencies.rfg.deobf(files(obfFile))
 }
-
-def zipMappings(String zipPath, String url, String bon2Dir) {
-    File zipFile = new File(zipPath)
-    if (zipFile.exists()) {
-        return
-    }
-
-    String fieldsCache = "$bon2Dir/data/fields.csv"
-    String methodsCache = "$bon2Dir/data/methods.csv"
-
-    download.run {
-        src "${url}fields.csv"
-        dest fieldsCache
-        quiet true
-    }
-    download.run {
-        src "${url}methods.csv"
-        dest methodsCache
-        quiet true
-    }
-
-    zipFile.getParentFile().mkdirs()
-    ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile))
-
-    zos.putNextEntry(new ZipEntry("fields.csv"))
-    Files.copy(Paths.get(fieldsCache), zos)
-    zos.closeEntry()
-
-    zos.putNextEntry(new ZipEntry("methods.csv"))
-    Files.copy(Paths.get(methodsCache), zos)
-    zos.closeEntry()
-
-    zos.close()
-}
-
 // Helper methods
 
 def checkPropertyExists(String propertyName) {

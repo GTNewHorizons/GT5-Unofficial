@@ -11,19 +11,18 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
-import bloodasp.galacticgreg.GT_TileEntity_Ores_Space;
-import bloodasp.galacticgreg.api.Enums;
-import bloodasp.galacticgreg.api.ModDBMDef;
-import bloodasp.galacticgreg.api.ModDimensionDef;
-import bloodasp.galacticgreg.dynconfig.DynamicOreMixWorldConfig;
-import bloodasp.galacticgreg.registry.GalacticGregRegistry;
-
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGeneratedOreTE;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Ores;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_SmallOres;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_OreLayer;
 
+import bloodasp.galacticgreg.GT_TileEntity_Ores_Space;
+import bloodasp.galacticgreg.api.Enums;
+import bloodasp.galacticgreg.api.ModDBMDef;
+import bloodasp.galacticgreg.api.ModDimensionDef;
+import bloodasp.galacticgreg.dynconfig.DynamicOreMixWorldConfig;
+import bloodasp.galacticgreg.registry.GalacticGregRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
