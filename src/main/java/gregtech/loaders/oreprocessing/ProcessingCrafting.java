@@ -3,6 +3,7 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.BuildCraftSilicon;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -30,20 +31,25 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
         switch (aOreDictName) {
-            case "craftingQuartz" -> GT_Values.RA.addAssemblerRecipe(
-                new ItemStack(Blocks.redstone_torch, 3, 32767),
-                GT_Utility.copyAmount(1L, aStack),
-                Materials.Concrete.getMolten(144L),
-                new ItemStack(net.minecraft.init.Items.comparator, 1, 0),
-                800,
-                1);
+            case "craftingQuartz" -> {
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(new ItemStack(Blocks.redstone_torch, 3, 32767), GT_Utility.copyAmount(1L, aStack))
+                    .itemOutputs(new ItemStack(net.minecraft.init.Items.comparator, 1, 0))
+                    .fluidInputs(Materials.Concrete.getMolten(144L))
+                    .noFluidOutputs()
+                    .duration(2 * SECONDS)
+                    .eut(20)
+                    .addTo(sAssemblerRecipes);
+            }
             case "craftingWireCopper", "craftingWireTin" -> {
-                GT_Values.RA.addAssemblerRecipe(
-                    ItemList.Circuit_Basic.get(1L),
-                    GT_Utility.copyAmount(1L, aStack),
-                    GT_ModHandler.getIC2Item("frequencyTransmitter", 1L),
-                    800,
-                    1);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(ItemList.Circuit_Basic.get(1L), GT_Utility.copyAmount(1L, aStack))
+                    .itemOutputs(GT_ModHandler.getIC2Item("frequencyTransmitter", 1L))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(2 * SECONDS)
+                    .eut(20)
+                    .addTo(sAssemblerRecipes);
             }
             case "craftingLensBlue" -> {
 
