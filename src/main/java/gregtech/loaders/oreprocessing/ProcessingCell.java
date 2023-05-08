@@ -2,6 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sVacuumRecipes;
 
 import java.util.ArrayList;
 
@@ -178,10 +179,16 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             : null,
                         (int) Math.max(1024L, 1024L * aMaterial.getMass()),
                         4);
-                    GT_Values.RA.addVacuumFreezerRecipe(
-                        GT_Utility.copyAmount(1L, aStack),
-                        GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L),
-                        (int) Math.max(aMaterial.getMass() * 2L, 1L));
+                    if (GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L) != null) {
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L))
+                            .noFluidInputs()
+                            .noFluidOutputs()
+                            .duration(((int) Math.max(aMaterial.getMass() * 2L, 1L)) * TICKS)
+                            .eut(TierEU.RECIPE_MV)
+                            .addTo(sVacuumRecipes);
+                    }
                 }
             }
             default -> {}

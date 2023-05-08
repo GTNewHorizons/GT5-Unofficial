@@ -3,6 +3,7 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBenderRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sVacuumRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
@@ -309,14 +310,17 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 break;
 
             case ingotHot:
-                if (aMaterial.mAutoGenerateVacuumFreezerRecipes) {
+                if (aMaterial.mAutoGenerateVacuumFreezerRecipes
+                    && GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
                     // Vacuum freezer recipes
-                    {
-                        GT_Values.RA.addVacuumFreezerRecipe(
-                            GT_Utility.copyAmount(1L, aStack),
-                            GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
-                            (int) Math.max(aMaterialMass * 3L, 1L));
-                    }
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L))
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(((int) Math.max(aMaterialMass * 3L, 1L)) * TICKS)
+                        .eut(TierEU.RECIPE_MV)
+                        .addTo(sVacuumRecipes);
                 }
                 break;
 
