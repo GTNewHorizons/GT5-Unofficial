@@ -44,6 +44,26 @@ public class MaterialsBotania {
                 new TC_AspectStack(TC_Aspects.TERRA, 1),
                 new TC_AspectStack(TC_Aspects.PRAECANTATIO, 1)))
         .constructMaterial();
+    public static Materials MagicMithrill = new MaterialBuilder(210, TextureSet.SET_METALLIC, "Magic Mithrill")
+        .setName("MagicMithrill")
+        .setRGBA(15, 232, 198, 1)
+        .addDustItems()
+        .addMetalItems()
+        .addToolHeadItems()
+        .addGearItems()
+        .setToolSpeed(40.0F)
+        .setDurability(1000000)
+        .setToolQuality(12)
+        .setMeltingPoint(5400)
+        .setBlastFurnaceTemp(5400)
+        .setBlastFurnaceRequired(true)
+        .setAspects(
+            Arrays.asList(
+                new TC_AspectStack(TC_Aspects.METALLUM, 12),
+                new TC_AspectStack(TC_Aspects.TERRA, 10),
+                new TC_AspectStack(TC_Aspects.GELUM, 10),
+                new TC_AspectStack(TC_Aspects.PRAECANTATIO, 10)))
+        .constructMaterial();
     public static Materials ElvenElementium = new MaterialBuilder(203, TextureSet.SET_METALLIC, "Elven Elementium")
         .setName("ElvenElementium")
         .setRGBA(219, 37, 205, 255)
@@ -200,6 +220,7 @@ public class MaterialsBotania {
         Livingrock.mChemicalFormula = "Lv";
         Terrasteel.mChemicalFormula = "Tr";
         ElvenElementium.mChemicalFormula = "Ef";
+        MagicMithrill.mChemicalFormula = "Mi";
 
         Livingrock.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Livingwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
@@ -212,9 +233,11 @@ public class MaterialsBotania {
         ingot.mNotGeneratedItems.add(Terrasteel);
         ingot.mNotGeneratedItems.add(ElvenElementium);
         ingot.mNotGeneratedItems.add(GaiaSpirit);
+        ingot.mNotGeneratedItems.add(MagicMithrill);
         nugget.mNotGeneratedItems.add(Manasteel);
         nugget.mNotGeneratedItems.add(Terrasteel);
         nugget.mNotGeneratedItems.add(ElvenElementium);
+        nugget.mNotGeneratedItems.add(MagicMithrill);
         gem.mNotGeneratedItems.add(ManaDiamond);
         gem.mNotGeneratedItems.add(BotaniaDragonstone);
 
