@@ -15,13 +15,14 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.tiered;
 
 import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
 
 public class GT_MetaTileEntity_CompressedFluidHatch extends GT_MetaTileEntity_Hatch_Input {
 
@@ -55,7 +56,7 @@ public class GT_MetaTileEntity_CompressedFluidHatch extends GT_MetaTileEntity_Ha
     }
 
     @Override
-    protected FluidDisplaySlotWidget createDrainableFluidSlot() {
-        return super.createDrainableFluidSlot().setEmptyCanFillFilter(f -> f == Materials.LiquidAir.mFluid);
+    protected FluidSlotWidget createFluidSlot() {
+        return super.createFluidSlot().setFilter(f -> f == Materials.LiquidAir.mFluid);
     }
 }

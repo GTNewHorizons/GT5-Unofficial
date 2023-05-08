@@ -17,7 +17,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
 
 public class GT_MetaTileEntity_HumongousInputHatch extends GT_MetaTileEntity_Hatch_Input {
 
@@ -43,10 +42,5 @@ public class GT_MetaTileEntity_HumongousInputHatch extends GT_MetaTileEntity_Hat
                 this.mTier,
                 this.mDescriptionArray,
                 this.mTextures);
-    }
-
-    @Override
-    protected FluidDisplaySlotWidget createDrainableFluidSlot() {
-        return super.createDrainableFluidSlot();
     }
 }
