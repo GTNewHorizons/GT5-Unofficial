@@ -78,10 +78,6 @@ public class BTF_FluidTank extends FluidTank {
         return this.mFluid;
     }
 
-    public FluidStack getDisplayedFluid() {
-        return this.getDrainableStack();
-    }
-
     public boolean isFluidChangingAllowed() {
         return true;
     }
