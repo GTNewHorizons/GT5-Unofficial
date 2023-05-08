@@ -4,8 +4,6 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
-import static gregtech.api.metatileentity.BaseTileEntity.FLUID_INPUT_TOOLTIP;
-import static gregtech.api.metatileentity.BaseTileEntity.FLUID_OUTPUT_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.FLUID_TRANSFER_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.ITEM_TRANSFER_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.NEI_TRANSFER_STEAM_TOOLTIP;
@@ -48,16 +46,16 @@ import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.GT_Container_BasicMachine;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
@@ -81,7 +79,6 @@ import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
 import gregtech.common.gui.modularui.UIHelper;
-import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
 import gregtech.common.power.BasicMachineEUPower;
 import gregtech.common.power.Power;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
@@ -123,6 +120,10 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     protected GT_Recipe mLastRecipe = null;
 
     private FluidStack mFluidOut;
+    protected final FluidStackTank fluidOutputTank = new FluidStackTank(
+        () -> mFluidOut,
+        fluidStack -> mFluidOut = fluidStack,
+        this::getCapacity);
 
     /**
      * @param aOverlays 0 = SideFacingActive 1 = SideFacingInactive 2 = FrontFacingActive 3 = FrontFacingInactive 4 =
@@ -482,11 +483,6 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     @Override
-    public FluidStack getDisplayedFluid() {
-        return displaysOutputFluid() ? getDrainableStack() : null;
-    }
-
-    @Override
     public FluidStack getDrainableStack() {
         return mFluidOut;
     }
@@ -756,29 +752,6 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         }
     }
 
-    @Override
-    public void updateFluidDisplayItem() {
-        updateFluidOutputDisplayItem();
-        updateFluidInputDisplayItem();
-    }
-
-    public void updateFluidOutputDisplayItem() {
-        super.updateFluidDisplayItem();
-    }
-
-    public void updateFluidInputDisplayItem() {
-        if (displaysInputFluid()) {
-            int tDisplayStackSlot = OTHER_SLOT_COUNT + mInputSlotCount + mOutputItems.length;
-            if (getFillableStack() == null) {
-                if (ItemList.Display_Fluid.isStackEqual(mInventory[tDisplayStackSlot], true, true))
-                    mInventory[tDisplayStackSlot] = null;
-            } else {
-                mInventory[tDisplayStackSlot] = GT_Utility
-                    .getFluidDisplayStack(getFillableStack(), true, !displaysStackSize());
-            }
-        }
-    }
-
     protected boolean hasEnoughEnergyToCheckRecipe() {
         return getBaseMetaTileEntity().isUniversalEnergyStored(getMinimumStoredEU() / 2);
     }
@@ -861,14 +834,6 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             break;
         }
         return rIsEmpty;
-    }
-
-    protected boolean displaysInputFluid() {
-        return true;
-    }
-
-    protected boolean displaysOutputFluid() {
-        return true;
     }
 
     @Override
@@ -1440,38 +1405,13 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             .setPos(pos);
     }
 
-    protected FluidDisplaySlotWidget createFluidInputSlot(IDrawable[] backgrounds, Pos2d pos) {
-        return (FluidDisplaySlotWidget) new FluidDisplaySlotWidget(
-            inventoryHandler,
-            OTHER_SLOT_COUNT + mInputSlotCount + mOutputItems.length)
-                .setFluidAccessConstructor(() -> constructFluidAccess(true))
-                .setIHasFluidDisplay(this)
-                .setCanDrain(true)
-                .setCanFill(true)
-                .setActionRealClick(FluidDisplaySlotWidget.Action.TRANSFER)
-                .setBeforeRealClick((clickData, widget) -> {
-                    if (NetworkUtils.isClient()) {
-                        // propagate display item content to
-                        // actual fluid stored in this tank
-                        setFillableStack(
-                            GT_Utility.getFluidFromDisplayStack(
-                                widget.getMcSlot()
-                                    .getStack()));
-                    }
-                    return true;
-                })
-                .setUpdateFluidDisplayItem(this::updateFluidInputDisplayItem)
-                .setGTTooltip(() -> mTooltipCache.getData(FLUID_INPUT_TOOLTIP, GT_Utility.formatNumbers(getCapacity())))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setBackground(backgrounds)
-                .setPos(pos);
+    protected FluidSlotWidget createFluidInputSlot(IDrawable[] backgrounds, Pos2d pos) {
+        return (FluidSlotWidget) new FluidSlotWidget(fluidTank).setBackground(backgrounds)
+            .setPos(pos);
     }
 
-    protected FluidDisplaySlotWidget createFluidOutputSlot(IDrawable[] backgrounds, Pos2d pos) {
-        return (FluidDisplaySlotWidget) createDrainableFluidSlot()
-            .setUpdateFluidDisplayItem(this::updateFluidOutputDisplayItem)
-            .setGTTooltip(() -> mTooltipCache.getData(FLUID_OUTPUT_TOOLTIP, GT_Utility.formatNumbers(getCapacity())))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+    protected FluidSlotWidget createFluidOutputSlot(IDrawable[] backgrounds, Pos2d pos) {
+        return (FluidSlotWidget) new FluidSlotWidget(fluidOutputTank).setInteraction(true, false)
             .setBackground(backgrounds)
             .setPos(pos);
     }

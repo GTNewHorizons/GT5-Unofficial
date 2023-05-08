@@ -13,6 +13,7 @@ import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
@@ -28,7 +29,6 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
-import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
 import gregtech.common.power.Power;
 import gregtech.common.power.SteamPower;
 
@@ -370,12 +370,12 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
-    protected FluidDisplaySlotWidget createFluidInputSlot(IDrawable[] backgrounds, Pos2d pos) {
+    protected FluidSlotWidget createFluidInputSlot(IDrawable[] backgrounds, Pos2d pos) {
         return null;
     }
 
     @Override
-    protected FluidDisplaySlotWidget createFluidOutputSlot(IDrawable[] backgrounds, Pos2d pos) {
+    protected FluidSlotWidget createFluidOutputSlot(IDrawable[] backgrounds, Pos2d pos) {
         return null;
     }
 }
