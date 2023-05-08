@@ -1911,7 +1911,11 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .withStateAndTemperature(LIQUID, 255)
             .buildAndRegister()
             .registerPContainers(ItemList.ThermosCan_Ice_Tea.get(1L), ItemList.ThermosCan_Empty.get(1L));
-        GT_FluidFactory.builder("liquid_sodium").withLocalizedName("Liquid Sodium").withStateAndTemperature(LIQUID, 495).buildAndRegister().configureMaterials(Materials.Sodium);
+        GT_FluidFactory.builder("liquid_sodium")
+            .withLocalizedName("Liquid Sodium")
+            .withStateAndTemperature(LIQUID, 495)
+            .buildAndRegister()
+            .configureMaterials(Materials.Sodium);
 
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
