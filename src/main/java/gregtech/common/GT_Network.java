@@ -22,7 +22,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.net.*;
 import gregtech.common.blocks.GT_Packet_Ores;
 import gregtech.common.net.MessageSetFlaskCapacity;
-import gregtech.common.net.MessageUpdateFluidDisplayItem;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler;
@@ -48,13 +47,13 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
             new MessageSetFlaskCapacity(), // 5
             new GT_Packet_TileEntityCover(), // 6
             new GT_Packet_TileEntityCoverGUI(), // 7
-            new MessageUpdateFluidDisplayItem(), // 8
+            // 8
             new GT_Packet_ClientPreference(), // 9
             new GT_Packet_WirelessRedstoneCover(), // 10
             new GT_Packet_TileEntityCoverNew(), // 11
             new GT_Packet_SetConfigurationCircuit(), // 12
             new GT_Packet_UpdateItem(), // 13
-            new GT_Packet_SetLockedFluid(), // 14
+            // 14
             new GT_Packet_GtTileEntityGuiRequest(), // 15
             new GT_Packet_SendCoverData(), // 16
             new GT_Packet_RequestCoverData(), // 17
@@ -64,7 +63,8 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
 
     public GT_Network(String channelName, GT_Packet... packetTypes) {
         this.mChannel = NetworkRegistry.INSTANCE.newChannel(channelName, this, new HandlerShared());
-        this.mSubChannels = new GT_Packet[packetTypes.length];
+        final int lastPId = packetTypes[packetTypes.length - 1].getPacketID();
+        this.mSubChannels = new GT_Packet[lastPId + 1];
         for (GT_Packet packetType : packetTypes) {
             final int pId = packetType.getPacketID();
             if (this.mSubChannels[pId] == null) this.mSubChannels[pId] = packetType;

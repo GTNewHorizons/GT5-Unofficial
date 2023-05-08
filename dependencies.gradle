@@ -26,7 +26,7 @@ dependencies {
 
     api("com.github.GTNewHorizons:NotEnoughItems:2.3.46-GTNH:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.0.13:dev")
-    api("com.github.GTNewHorizons:ModularUI:1.1.2:dev")
+    api("com.github.GTNewHorizons:ModularUI:1.1.7:dev")
     api("com.github.GTNewHorizons:waila:1.5.24:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-197-GTNH:dev")
     implementation("com.github.GTNewHorizons:Eternal-Singularity:1.1.0:dev")

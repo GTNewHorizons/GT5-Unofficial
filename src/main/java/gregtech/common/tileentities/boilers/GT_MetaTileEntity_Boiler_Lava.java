@@ -453,11 +453,6 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    public FluidStack getDisplayedFluid() {
-        return lavaTank.getFluid();
-    }
-
-    @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection side) {
         return new FluidTankInfo[] { super.getTankInfo(side)[0],
             new FluidTankInfo(this.lavaTank.getFluid(), this.lavaTank.getCapacity()),

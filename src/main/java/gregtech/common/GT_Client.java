@@ -30,7 +30,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
@@ -56,9 +55,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
-import gregtech.api.interfaces.IHasFluidDisplayItem;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -77,7 +74,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
-import gregtech.common.net.MessageUpdateFluidDisplayItem;
 import gregtech.common.render.*;
 import gregtech.common.render.items.GT_MetaGenerated_Item_Renderer;
 import gregtech.common.tileentities.debug.GT_MetaTileEntity_AdvDebugStructureWriter;
@@ -165,9 +161,6 @@ public class GT_Client extends GT_Proxy implements Runnable {
     private long afterSomeTime;
 
     private boolean mAnimationDirection;
-    private int mLastUpdatedBlockX;
-    private int mLastUpdatedBlockY;
-    private int mLastUpdatedBlockZ;
     private GT_ClientPreference mPreference;
     private boolean mFirstTick = false;
     public static final int ROTATION_MARKER_RESOLUTION = 120;
@@ -725,28 +718,6 @@ public class GT_Client extends GT_Proxy implements Runnable {
                 }
             }
             if (!GregTech_API.mServerStarted) GregTech_API.mServerStarted = true;
-            if (GT_Values.updateFluidDisplayItems) {
-                final MovingObjectPosition trace = Minecraft.getMinecraft().objectMouseOver;
-                if (trace != null && trace.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK
-                    && (mLastUpdatedBlockX != trace.blockX && mLastUpdatedBlockY != trace.blockY
-                        && mLastUpdatedBlockZ != trace.blockZ || afterSomeTime % 10 == 0)) {
-                    mLastUpdatedBlockX = trace.blockX;
-                    mLastUpdatedBlockY = trace.blockY;
-                    mLastUpdatedBlockZ = trace.blockZ;
-                    final TileEntity tileEntity = aEvent.player.worldObj
-                        .getTileEntity(trace.blockX, trace.blockY, trace.blockZ);
-                    if (tileEntity instanceof IGregTechTileEntity gtTile) {
-                        if (gtTile.getMetaTileEntity() instanceof IHasFluidDisplayItem) {
-                            GT_Values.NW.sendToServer(
-                                new MessageUpdateFluidDisplayItem(
-                                    trace.blockX,
-                                    trace.blockY,
-                                    trace.blockZ,
-                                    gtTile.getWorld().provider.dimensionId));
-                        }
-                    }
-                }
-            }
         }
     }
 

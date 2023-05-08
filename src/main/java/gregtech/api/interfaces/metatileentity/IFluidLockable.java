@@ -23,7 +23,5 @@ public interface IFluidLockable {
 
     boolean isFluidLocked();
 
-    boolean allowChangingLockedFluid(String name);
-
-    default void onFluidLockPacketReceived(String name) {}
+    boolean acceptsFluidLock(String name);
 }

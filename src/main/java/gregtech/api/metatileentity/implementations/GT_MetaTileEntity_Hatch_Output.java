@@ -16,7 +16,6 @@ import net.minecraftforge.fluids.*;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
@@ -32,7 +31,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
+import gregtech.common.gui.modularui.widget.FluidLockWidget;
 
 public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch implements IFluidLockable, IAddUIWidgets {
 
@@ -192,21 +191,6 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
 
     public int getLockedDisplaySlot() {
         return 3;
-    }
-
-    @Override
-    public void updateFluidDisplayItem() {
-        super.updateFluidDisplayItem();
-        if (lockedFluidName == null || mMode < 8) mInventory[getLockedDisplaySlot()] = null;
-        else {
-            FluidStack tLockedFluid = FluidRegistry.getFluidStack(lockedFluidName, 1);
-            // Because getStackDisplaySlot() only allow return one int, this place I only can manually set.
-            if (tLockedFluid != null) {
-                mInventory[getLockedDisplaySlot()] = GT_Utility.getFluidDisplayStack(tLockedFluid, false, true);
-            } else {
-                mInventory[getLockedDisplaySlot()] = null;
-            }
-        }
     }
 
     @Override
@@ -415,7 +399,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
     }
 
     @Override
-    public boolean allowChangingLockedFluid(String name) {
+    public boolean acceptsFluidLock(String name) {
         return true;
     }
 
@@ -484,41 +468,18 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
             new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
                 .setPos(98, 16)
                 .setSize(71, 45))
-            .widget(
-                new FluidDisplaySlotWidget(inventoryHandler, getLockedDisplaySlot()).setIHasFluidDisplay(this)
-                    .setActionRealClick(FluidDisplaySlotWidget.Action.LOCK)
-                    .setActionDragAndDrop(FluidDisplaySlotWidget.Action.LOCK)
-                    .setBeforeClick((clickData, widget) -> {
-                        if (NetworkUtils.isClient()) {
-                            // propagate
-                            // display
-                            // item
-                            // content to
-                            // actual
-                            // fluid
-                            // stored in
-                            // this tank
-                            setDrainableStack(GT_Utility.getFluidFromDisplayStack(mInventory[getStackDisplaySlot()]));
-                        }
-                        return true;
-                    })
-                    .setBackground(GT_UITextures.TRANSPARENT)
-                    .setPos(149, 41))
+            .widget(new FluidLockWidget(this).setPos(149, 41))
             .widget(
                 new TextWidget("Locked Fluid").setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(101, 20))
             .widget(TextWidget.dynamicString(() -> {
-                final ItemStack lockedDisplayStack = mInventory[getLockedDisplaySlot()];
-                return lockedDisplayStack == null ? "None" : lockedDisplayStack.getDisplayName();
+                FluidStack fluidStack = FluidRegistry.getFluidStack(lockedFluidName, 1);
+                return fluidStack != null ? fluidStack.getLocalizedName() : "None";
             })
-                .setSynced(false)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setTextAlignment(Alignment.CenterLeft)
                 .setMaxWidth(65)
                 .setPos(101, 30))
-            // #updateFluidDisplayItem invalidates locked fluid slot
-            // if lockedFluidName == null or mMode is incorrect
-            .widget(new FakeSyncWidget.StringSyncer(() -> lockedFluidName, val -> lockedFluidName = val))
             .widget(new FakeSyncWidget.ByteSyncer(() -> mMode, val -> mMode = val));
     }
 }
