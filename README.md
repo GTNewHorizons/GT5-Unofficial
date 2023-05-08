@@ -8,11 +8,9 @@ This mod:
 - is still WiP (Not anymore!)
 - is not maintained by BloodAsp, so don't contact him about bugs, use the issue tracker here
 
-You can build it for yourself, but if you just feel lazy (As I do most times), feel free to grab a compiled version
-for either master (will try to keep that branch stable) or dev (cutting edge features!) here:
+You can build it for yourself, but if you just feel lazy (As I do most times), feel free to grab a compiled version here:
 
-Master: [![Build Status](http://jenkins.usrv.eu:8081/buildStatus/icon?job=GalacticGreg GT5)](http://jenkins.usrv.eu:8081/job/GalacticGreg%20GT5/)
-Dev: [![Build Status](http://jenkins.usrv.eu:8081/buildStatus/icon?job=GalacticGreg GT5 - DeveloperBranch)](http://jenkins.usrv.eu:8081/job/GalacticGreg%20GT5%20-%20DeveloperBranch/)
+[![Build Status](http://jenkins.usrv.eu:8080/buildStatus/icon?job=GalacticGreg)](http://jenkins.usrv.eu:8080/job/GalacticGreg/)
 
 
 
