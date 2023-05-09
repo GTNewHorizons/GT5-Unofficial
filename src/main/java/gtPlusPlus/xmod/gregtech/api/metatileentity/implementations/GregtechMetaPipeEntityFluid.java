@@ -61,7 +61,8 @@ public class GregtechMetaPipeEntityFluid extends GT_MetaPipeEntity_Fluid {
                 this.mGasProof);
     }
 
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, byte aConnections,
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
             int aColorIndex, boolean aConnected, boolean aRedstone) {
         float tThickNess = getThickNess();
         if (mDisableInput == 0)
@@ -69,16 +70,16 @@ public class GregtechMetaPipeEntityFluid extends GT_MetaPipeEntity_Fluid {
                     : TextureFactory.of(
                             mMaterial.mIconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
                             Dyes.getModulation(aColorIndex, mMaterial.mRGBa)) };
-        byte tMask = 0;
+        int tMask = 0;
         int[][] sRestrictionArray = { { 2, 3, 5, 4 }, { 2, 3, 4, 5 }, { 1, 0, 4, 5 }, { 1, 0, 4, 5 }, { 1, 0, 2, 3 },
                 { 1, 0, 2, 3 } };
         if (side != ForgeDirection.UNKNOWN) {
-            for (byte i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
                 if (isInputDisabledAtSide(ForgeDirection.getOrientation(sRestrictionArray[side.ordinal()][i])))
                     tMask |= 1 << i;
             // Full block size renderer flips side 5 and 2 textures, flip restrictor textures to compensate
             if (side == ForgeDirection.EAST || side == ForgeDirection.UP)
-                if (tMask > 3 && tMask < 12) tMask = (byte) (tMask ^ 12);
+                if (tMask > 3 && tMask < 12) tMask = (tMask ^ 12);
         }
         return new ITexture[] { aConnected ? getBaseTexture(tThickNess, mPipeAmount, mMaterial, aColorIndex)
                 : TextureFactory.of(
