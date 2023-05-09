@@ -1,4 +1,4 @@
-//version: 1683373797
+//version: 1683563728
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -1266,7 +1266,9 @@ tasks.register('faq') {
         print("If your build fails to fetch dependencies, they might have been deleted and replaced by newer " +
             "versions.\nCheck if the versions you try to fetch are still on the distributing sites.\n" +
             "The links can be found in repositories.gradle and build.gradle:repositories, " +
-            "not build.gradle:buildscript.repositories - this one is for gradle plugin metadata.")
+            "not build.gradle:buildscript.repositories - this one is for gradle plugin metadata.\n\n" +
+            "If your build fails to recognize the syntax of new Java versions, enable Jabel in your " +
+            "gradle.properties. See how it's done in GTNH ExampleMod/gradle.properties.")
     }
 }
 
