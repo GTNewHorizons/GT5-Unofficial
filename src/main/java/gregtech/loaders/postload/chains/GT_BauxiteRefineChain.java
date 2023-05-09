@@ -74,7 +74,7 @@ public class GT_BauxiteRefineChain {
                 Materials.Quicklime.getDust(1),
                 Materials.SiliconDioxide.getDust(1),
                 Materials.Iron.getDust(1))
-            .outputChances(8000, 3000, 2000, 9000, 8000)
+            .outputChances(10000, 3000, 2000, 9000, 8000)
             .noFluidInputs()
             .noFluidOutputs()
             .duration(2 * SECONDS)
@@ -83,8 +83,8 @@ public class GT_BauxiteRefineChain {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Ilmenite, 1))
-            .itemOutputs(Materials.Rutile.getDust(1), MaterialsOreAlum.IlmeniteSlag.getDust(1))
-            .outputChances(8500, 3000)
+            .itemOutputs(Materials.Rutile.getDust(2), MaterialsOreAlum.IlmeniteSlag.getDust(1))
+            .outputChances(10000, 3000)
             .fluidInputs(Materials.SulfuricAcid.getFluid(1000))
             .fluidOutputs(new FluidStack(ItemList.sGreenVitriol, 2000))
             .duration(21 * SECONDS)
@@ -93,8 +93,8 @@ public class GT_BauxiteRefineChain {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Ilmenite, 1))
-            .itemOutputs(Materials.Rutile.getDust(1), MaterialsOreAlum.IlmeniteSlag.getDust(1))
-            .outputChances(8500, 6000)
+            .itemOutputs(Materials.Rutile.getDust(2), MaterialsOreAlum.IlmeniteSlag.getDust(1))
+            .outputChances(10000, 6000)
             .fluidInputs(Materials.SulfuricAcid.getFluid(1000))
             .fluidOutputs(new FluidStack(ItemList.sGreenVitriol, 2000))
             .duration(21 * SECONDS)
