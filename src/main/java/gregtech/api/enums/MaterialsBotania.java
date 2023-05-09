@@ -44,8 +44,7 @@ public class MaterialsBotania {
                 new TC_AspectStack(TC_Aspects.TERRA, 1),
                 new TC_AspectStack(TC_Aspects.PRAECANTATIO, 1)))
         .constructMaterial();
-    public static Materials MagicMithrill = new MaterialBuilder(210, TextureSet.SET_METALLIC, "Magic Mithrill")
-        .setName("MagicMithrill")
+    public static Materials Ithildin = new MaterialBuilder(210, TextureSet.SET_METALLIC, "Ithildin").setName("Ithildin")
         .setRGBA(15, 232, 198, 1)
         .addDustItems()
         .addMetalItems()
@@ -54,8 +53,8 @@ public class MaterialsBotania {
         .setToolSpeed(40.0F)
         .setDurability(1000000)
         .setToolQuality(12)
-        .setMeltingPoint(5400)
-        .setBlastFurnaceTemp(5400)
+        .setMeltingPoint(8400)
+        .setBlastFurnaceTemp(8400)
         .setBlastFurnaceRequired(true)
         .setAspects(
             Arrays.asList(
@@ -220,7 +219,7 @@ public class MaterialsBotania {
         Livingrock.mChemicalFormula = "Lv";
         Terrasteel.mChemicalFormula = "Tr";
         ElvenElementium.mChemicalFormula = "Ef";
-        MagicMithrill.mChemicalFormula = "Mi";
+        Ithildin.mChemicalFormula = "It";
 
         Livingrock.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Livingwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
@@ -233,11 +232,11 @@ public class MaterialsBotania {
         ingot.mNotGeneratedItems.add(Terrasteel);
         ingot.mNotGeneratedItems.add(ElvenElementium);
         ingot.mNotGeneratedItems.add(GaiaSpirit);
-        ingot.mNotGeneratedItems.add(MagicMithrill);
+        ingot.mNotGeneratedItems.add(Ithildin);
         nugget.mNotGeneratedItems.add(Manasteel);
         nugget.mNotGeneratedItems.add(Terrasteel);
         nugget.mNotGeneratedItems.add(ElvenElementium);
-        nugget.mNotGeneratedItems.add(MagicMithrill);
+        nugget.mNotGeneratedItems.add(Ithildin);
         gem.mNotGeneratedItems.add(ManaDiamond);
         gem.mNotGeneratedItems.add(BotaniaDragonstone);
 
