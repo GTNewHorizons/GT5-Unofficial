@@ -753,11 +753,11 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private void calculateHydrogenHeliumInputExcessValues(final long hydrogenRecipeRequirement,
             final long heliumRecipeRequirement) {
 
-        long hydrogenStored = validFluidMap.get(Materials.Hydrogen.getGas(1L));
-        long heliumStored = validFluidMap.get(Materials.Helium.getGas(1L));
+        double hydrogenStored = validFluidMap.get(Materials.Hydrogen.getGas(1L));
+        double heliumStored = validFluidMap.get(Materials.Helium.getGas(1L));
 
-        double hydrogenExcessPercentage = abs(1 - hydrogenStored / hydrogenRecipeRequirement);
-        double heliumExcessPercentage = abs(1 - heliumStored / heliumRecipeRequirement);
+        double hydrogenExcessPercentage = hydrogenStored / hydrogenRecipeRequirement - 1;
+        double heliumExcessPercentage = heliumStored / heliumRecipeRequirement - 1;
 
         hydrogenOverflowProbabilityAdjustment = 1 - exp(-pow(30 * hydrogenExcessPercentage, 2));
         heliumOverflowProbabilityAdjustment = 1 - exp(-pow(30 * heliumExcessPercentage, 2));
@@ -942,7 +942,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addInfo(
                         "Going over a recipe requirement on hydrogen or helium has a penalty on yield and recipe chance.")
                 .addInfo("All stored hydrogen and helium is consumed during a craft. The associated formulas are:")
-                .addInfo(GREEN + "percentageOverflow = abs(1 - fluidStored/recipeRequirement)")
+                .addInfo(GREEN + "percentageOverflow = fluidStored/recipeRequirement - 1")
                 .addInfo(GREEN + "adjustmentValue = 1 - exp(-(30 * percentageOverflow)^2)")
                 .addInfo("The value of adjustmentValue is then subtracted from the total yield and recipe chance.")
                 .addInfo(TOOLTIP_BAR)
