@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -475,6 +476,17 @@ public class GT_Utility {
 
     public static String getColoredTierNameFromTier(byte tier) {
         return GT_Values.TIER_COLORS[tier] + GT_Values.VN[tier] + EnumChatFormatting.RESET;
+    }
+
+    @Nonnull
+    public static String getTierNameWithParentheses(long voltage) {
+        byte tier = getTier(voltage);
+        if (tier < 0) {
+            return "";
+        } else if (tier >= GT_Values.VN.length - 1) {
+            return " (MAX+)";
+        }
+        return " (" + GT_Values.VN[tier] + ")";
     }
 
     public static void sendChatToPlayer(EntityPlayer aPlayer, String aChatMessage) {

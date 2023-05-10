@@ -2069,8 +2069,14 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 setUsualFluidInputCount(20);
                 setUsualFluidOutputCount(1);
                 setProgressBarPos(86, 44);
-                setLogoPos(87, 81);
-                setNEIBackgroundSize(172, 125);
+                setNEITransferRect(
+                    new Rectangle(
+                        progressBarPos.x - (16 / 2),
+                        progressBarPos.y,
+                        progressBarSize.width + 16,
+                        progressBarSize.height));
+                setLogoPos(87, 99);
+                setNEIBackgroundSize(172, 118);
             }
 
             @Override
@@ -2098,7 +2104,12 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         + formatNumbers(1000L * recipeInfo.recipe.mDuration / 100L * recipeInfo.recipe.mEUt)
                         + " EU");
                 // 1000 / (20 ticks * 5 seconds) = 10L/t. 10L/t * x EU/L = 10 * x EU/t.
-                drawNEIText(recipeInfo, "Average: " + formatNumbers(10L * recipeInfo.recipe.mEUt) + " EU/t");
+                long averageUsage = 10L * recipeInfo.recipe.mEUt;
+                drawNEIText(
+                    recipeInfo,
+                    "Average: " + formatNumbers(averageUsage)
+                        + " EU/t"
+                        + GT_Utility.getTierNameWithParentheses(averageUsage));
             }
         }
 
