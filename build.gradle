@@ -1,4 +1,4 @@
-//version: 1682616243
+//version: 1683563728
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -71,6 +71,9 @@ plugins {
     id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
     id 'com.gtnewhorizons.retrofuturagradle' version '1.3.7'
 }
+
+print("You might want to check out './gradlew :faq' if your build fails.\n")
+
 boolean settingsupdated = verifySettingsGradle()
 settingsupdated = verifyGitAttributes() || settingsupdated
 if (settingsupdated)
@@ -219,6 +222,8 @@ if (enableModernJavaSyntax.toBoolean()) {
 
     dependencies {
         annotationProcessor 'com.github.bsideup.jabel:jabel-javac-plugin:1.0.0'
+        // workaround for https://github.com/bsideup/jabel/issues/174
+        annotationProcessor 'net.java.dev.jna:jna-platform:5.13.0'
         compileOnly('com.github.bsideup.jabel:jabel-javac-plugin:1.0.0') {
             transitive = false // We only care about the 1 annotation class
         }
@@ -1249,6 +1254,21 @@ if (!project.getGradle().startParameter.isOffline() && !Boolean.getBoolean('DISA
         if (gradle.gradleVersion != buildscriptGradleVersion) {
             out.style(Style.SuccessHeader).println("updateBuildScript can update gradle from ${gradle.gradleVersion} to ${buildscriptGradleVersion}\n")
         }
+    }
+}
+
+// If you want to add more cases to this task, implement them as arguments if total amount to print gets too large
+tasks.register('faq') {
+    group = 'GTNH Buildscript'
+    description = 'Prints frequently asked questions about building a project'
+
+    doLast {
+        print("If your build fails to fetch dependencies, they might have been deleted and replaced by newer " +
+            "versions.\nCheck if the versions you try to fetch are still on the distributing sites.\n" +
+            "The links can be found in repositories.gradle and build.gradle:repositories, " +
+            "not build.gradle:buildscript.repositories - this one is for gradle plugin metadata.\n\n" +
+            "If your build fails to recognize the syntax of new Java versions, enable Jabel in your " +
+            "gradle.properties. See how it's done in GTNH ExampleMod/gradle.properties.")
     }
 }
 
