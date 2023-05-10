@@ -5,6 +5,7 @@ import net.minecraft.world.World;
 
 import com.detrav.events.DetravLoginEventHandler;
 import com.detrav.gui.DetravScannerGUI;
+
 import cpw.mods.fml.common.network.IGuiHandler;
 
 /**
