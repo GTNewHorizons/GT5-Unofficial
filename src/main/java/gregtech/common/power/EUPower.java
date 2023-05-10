@@ -1,6 +1,5 @@
 package gregtech.common.power;
 
-import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Utility;
 
 public class EUPower extends Power {
@@ -44,10 +43,7 @@ public class EUPower extends Power {
     @Override
     public String getVoltageString() {
         String voltageDescription = GT_Utility.formatNumbers(originalVoltage) + " EU/t";
-        byte recipeTier = GT_Utility.getTier(originalVoltage);
-        if (recipeTier >= 0 && recipeTier < 16) {
-            voltageDescription += " (" + GT_Values.VN[recipeTier] + ")";
-        }
+        voltageDescription += GT_Utility.getTierNameWithParentheses(originalVoltage);
         return voltageDescription;
     }
 

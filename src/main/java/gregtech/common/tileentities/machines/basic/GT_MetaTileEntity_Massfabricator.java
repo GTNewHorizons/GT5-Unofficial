@@ -8,7 +8,6 @@ import java.util.Arrays;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
@@ -240,10 +239,7 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
         public String getVoltageString() {
             long voltage = V[1];
             String voltageDescription = GT_Utility.formatNumbers(voltage) + " EU";
-            byte recipeTier = GT_Utility.getTier(voltage);
-            if (recipeTier >= 0 && recipeTier < 16) {
-                voltageDescription += " (" + GT_Values.VN[recipeTier] + ")";
-            }
+            voltageDescription += GT_Utility.getTierNameWithParentheses(voltage);
             return voltageDescription;
         }
 
