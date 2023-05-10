@@ -11,6 +11,7 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
 import com.detrav.gui.textures.DetravMapTexture;
+
 import gregtech.api.util.GT_Utility;
 
 /**
