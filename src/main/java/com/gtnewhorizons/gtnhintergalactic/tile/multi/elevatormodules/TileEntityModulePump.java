@@ -44,6 +44,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
 
     Parameters.Group.ParameterIn[] gasTypeSettings;
     Parameters.Group.ParameterIn[] planetTypeSettings;
+    Parameters.Group.ParameterIn batchSetting;
 
     /** Name of the planet type setting */
     private static final INameFunction<TileEntityModulePump> PLANET_TYPE_SETTING_NAME = (base,
@@ -66,6 +67,12 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
     /** Status of the parallel setting */
     private static final IStatusFunction<TileEntityModulePump> PARALLEL_STATUS = (base, p) -> LedStatus
             .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getParallels());
+    /** Name of the batch setting */
+    private static final INameFunction<TileEntityModulePump> BATCH_SETTING_NAME = (base, p) -> GCCoreUtil
+            .translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.3"); // Batch size
+    /** Status of the batch setting */
+    private static final IStatusFunction<TileEntityModulePump> BATCH_STATUS = (base, p) -> LedStatus
+            .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 32, 128);
 
     /**
      * Create new Space Pump module
@@ -108,12 +115,13 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
 
         List<FluidStack> outputs = new ArrayList<>();
         int usedEUt = 0;
+        int batchSize = (int) Math.min(Math.max(batchSetting.get(), 1.0D), 128.0D);
         for (int i = 0; i < getParallelRecipes(); i++) {
             FluidStack fluid = SpacePumpingRecipes.RECIPES
                     .get(Pair.of((int) planetTypeSettings[i].get(), (int) gasTypeSettings[i].get()));
             if (fluid != null) {
                 fluid = fluid.copy();
-                fluid.amount = fluid.amount * Math.min((int) parallelSettings[i].get(), getParallels());
+                fluid.amount = fluid.amount * Math.min((int) parallelSettings[i].get(), getParallels()) * batchSize;
                 usedEUt += ENERGY_CONSUMPTION * Math.min((int) parallelSettings[i].get(), getParallels());
                 outputs.add(fluid);
             }
@@ -123,7 +131,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         mOutputFluids = outputs.toArray(new FluidStack[0]);
         eAmpereFlow = 1;
         mEfficiencyIncrease = 10000;
-        mMaxProgresstime = 20;
+        mMaxProgresstime = 20 * batchSize;
 
         return outputs.size() > 0;
     }
@@ -160,6 +168,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
             parallelSettings[i] = parametrization.getGroup(i * 2 + 1, false)
                     .makeInParameter(0, getParallels(), PARALLEL_SETTING_NAME, PARALLEL_STATUS);
         }
+        batchSetting = parametrization.getGroup(9, false).makeInParameter(1, 1, BATCH_SETTING_NAME, BATCH_STATUS);
     }
 
     /**

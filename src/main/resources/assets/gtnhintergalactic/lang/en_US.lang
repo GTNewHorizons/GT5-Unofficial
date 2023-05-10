@@ -209,6 +209,7 @@ gt.blockmachines.multimachine.project.ig.pump.t2.desc4=Processes up to 4 differe
 gt.blockmachines.multimachine.project.ig.pump.cfgi.0=Planet Type
 gt.blockmachines.multimachine.project.ig.pump.cfgi.1=Gas Type
 gt.blockmachines.multimachine.project.ig.pump.cfgi.2=Parallels
+gt.blockmachines.multimachine.project.ig.pump.cfgi.3=Batch Size
 
 # Module Manager
 gt.blockmachines.multimachine.project.ig.manager.t1.name=Space Project Manager
