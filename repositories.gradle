@@ -2,31 +2,4 @@
 
 repositories {
     mavenLocal()
-    maven {
-        name = "GTNH Maven"
-        url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
-    }
-    maven {
-        name = "ic2"
-        url = "https://maven.ic2.player.to/"
-        metadataSources {
-            mavenPom()
-            artifact()
-        }
-    }
-    maven {
-        name = "ic2"
-        url = "https://maven2.ic2.player.to/"
-        metadataSources {
-            mavenPom()
-            artifact()
-        }
-    }
-    maven {
-        name "MMD Maven"
-        url "https://maven.mcmoddev.com/"
-    }
-    maven {
-        url "https://cursemaven.com"
-    }
 }
