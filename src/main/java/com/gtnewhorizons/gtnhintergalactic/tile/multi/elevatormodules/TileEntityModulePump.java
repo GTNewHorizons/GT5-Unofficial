@@ -145,10 +145,12 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                     parallels = Math.min(parallels, outputSpace / fluid.amount);
                     batchSize = Math.min(batchSize, outputSpace / (fluid.amount * parallels));
                 }
-                fluid = fluid.copy();
-                fluid.amount = fluid.amount * parallels * batchSize;
-                usedEUt += ENERGY_CONSUMPTION * parallels;
-                outputs.add(fluid);
+                if (parallels > 0 && batchSize > 0) {
+                    fluid = fluid.copy();
+                    fluid.amount = fluid.amount * parallels * batchSize;
+                    usedEUt += ENERGY_CONSUMPTION * parallels;
+                    outputs.add(fluid);
+                }
             }
         }
 
