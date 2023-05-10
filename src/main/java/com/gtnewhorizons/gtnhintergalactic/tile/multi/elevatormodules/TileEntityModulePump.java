@@ -26,7 +26,9 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**
@@ -74,6 +76,9 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
     private static final IStatusFunction<TileEntityModulePump> BATCH_STATUS = (base, p) -> LedStatus
             .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 32, 128);
 
+    /** Flag if this machine has an ME output hatch, will be updated in the structure check */
+    protected boolean hasMeOutputHatch = false;
+
     /**
      * Create new Space Pump module
      *
@@ -120,9 +125,29 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
             FluidStack fluid = SpacePumpingRecipes.RECIPES
                     .get(Pair.of((int) planetTypeSettings[i].get(), (int) gasTypeSettings[i].get()));
             if (fluid != null) {
+                GT_MetaTileEntity_Hatch_Output targetOutput = null;
+                if (!hasMeOutputHatch && !eSafeVoid) {
+                    for (GT_MetaTileEntity_Hatch_Output output : mOutputHatches) {
+                        if (output.mFluid != null && output.mFluid.getFluid() != null
+                                && output.getLockedFluidName().equals(fluid.getFluid().getName())
+                                && output.mFluid.getFluid().equals(fluid.getFluid())) {
+                            targetOutput = output;
+                            break;
+                        }
+                    }
+                }
+                int parallels = Math.min((int) parallelSettings[i].get(), getParallels());
+                if (targetOutput != null) {
+                    int outputSpace = targetOutput.getCapacity() - targetOutput.getFluidAmount();
+                    if (outputSpace < fluid.amount) {
+                        continue;
+                    }
+                    parallels = Math.min(parallels, outputSpace / fluid.amount);
+                    batchSize = Math.min(batchSize, outputSpace / (fluid.amount * parallels));
+                }
                 fluid = fluid.copy();
-                fluid.amount = fluid.amount * Math.min((int) parallelSettings[i].get(), getParallels()) * batchSize;
-                usedEUt += ENERGY_CONSUMPTION * Math.min((int) parallelSettings[i].get(), getParallels());
+                fluid.amount = fluid.amount * parallels * batchSize;
+                usedEUt += ENERGY_CONSUMPTION * parallels;
                 outputs.add(fluid);
             }
         }
@@ -134,6 +159,28 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         mMaxProgresstime = 20 * batchSize;
 
         return outputs.size() > 0;
+    }
+
+    /**
+     * Check if the structure of this machine is valid
+     *
+     * @param aBaseMetaTileEntity This
+     * @param aStack              Item stack present in the controller GUI
+     * @return True if valid, else false
+     */
+    @Override
+    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        boolean state = super.checkMachine_EM(aBaseMetaTileEntity, aStack);
+        hasMeOutputHatch = false;
+        if (state) {
+            for (GT_MetaTileEntity_Hatch_Output output : mOutputHatches) {
+                if (output instanceof GT_MetaTileEntity_Hatch_Output_ME) {
+                    hasMeOutputHatch = true;
+                    break;
+                }
+            }
+        }
+        return state;
     }
 
     /**
@@ -314,6 +361,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                     // never easier
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc3"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc4"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT2")).addSeparator()
                     .beginStructureBlock(1, 5, 2, false)
                     .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
@@ -408,7 +456,8 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc3"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT3"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc4"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc4"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc5"))
                     .addSeparator().beginStructureBlock(1, 5, 2, false)
                     .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
                     .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
