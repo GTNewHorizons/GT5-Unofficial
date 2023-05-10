@@ -41,6 +41,13 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_MultiblockBase_EM
         implements ISurvivalConstructable {
 
+    @Override
+    public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
+        if (!mMachine) {
+            aBaseMetaTileEntity.disableWorking();
+        }
+    }
+
     // region structure
     private static final String[] description = new String[] {
             EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
@@ -210,6 +217,6 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
 
     @Override
     public boolean isAllowedToWorkButtonEnabled() {
-        return false;
+        return true;
     }
 }
