@@ -456,6 +456,7 @@ public enum ItemList implements IItemContainer {
 
     Tesseract,
     EnergisedTesseract,
+    Timepiece,
 
     Steam_Valve_LV,
     Steam_Valve_MV,
