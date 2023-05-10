@@ -178,7 +178,8 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
     public void gridChanged() {}
 
     private void flushCachedStack() {
-        lastOutputFailed = false;
+        if (fluidCache.isEmpty()) return;
+        lastOutputFailed = true;
         AENetworkProxy proxy = getProxy();
         if (proxy == null) {
             lastOutputFailed = true;
@@ -191,10 +192,10 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
                 if (s.getStackSize() == 0) continue;
                 IAEFluidStack rest = fluidAEInsert(proxy.getEnergy(), sg, s, getRequest());
                 if (rest != null && rest.getStackSize() > 0) {
-                    lastOutputFailed = true;
                     s.setStackSize(rest.getStackSize());
-                    break;
+                    continue;
                 }
+                lastOutputFailed = false;
                 s.setStackSize(0);
             }
         } catch (final GridAccessException ignored) {
