@@ -695,6 +695,7 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc4"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc5"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc6"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc7"))
                 .addInfo(GCCoreUtil.translate("ig.elevator.structure.TooComplex"))
                 .addInfo(buildAddedBy(LIGHT_PURPLE + "minecraft7771"))
                 .addInfo(GCCoreUtil.translate("ig.structure.moreContributors")).addSeparator()
