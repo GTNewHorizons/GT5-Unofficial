@@ -39,8 +39,6 @@ import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
 import gtPlusPlus.xmod.gregtech.api.world.GTPP_Worldgen;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
-import gtPlusPlus.xmod.gregtech.common.computer.GT_ComputerCube_Setup;
-import gtPlusPlus.xmod.gregtech.common.computer.GT_Computercube_Description;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.GregtechMTE_ElementalDuplicator;
 import gtPlusPlus.xmod.gregtech.loaders.Gregtech_Blocks;
@@ -127,8 +125,6 @@ public class HANDLER_GT {
         CokeAndPyrolyseOven.onLoadComplete();
         generateElementalDuplicatorRecipes();
         Meta_GT_Proxy.fixIC2FluidNames();
-        GT_Computercube_Description.addStandardDescriptions();
-        GT_ComputerCube_Setup.init();
         RecipeLoader_AlgaeFarm.generateRecipes();
         if (AdvancedSolarPanel.isModLoaded()) {
             RecipeLoader_MolecularTransformer.run();

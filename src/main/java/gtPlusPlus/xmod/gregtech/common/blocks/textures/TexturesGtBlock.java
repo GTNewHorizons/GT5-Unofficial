@@ -580,7 +580,6 @@ public class TexturesGtBlock {
 
     public static final CustomIcon Casing_Electric_Auto_Workbench_Side = new CustomIcon(
             "TileEntities/gt4/OVERLAY_SIDE_CABINET");
-    public static final CustomIcon Casing_Computer_Cube = new CustomIcon("TileEntities/gt4/computer");
 
     public static final CustomIcon Casing_CropHarvester_Cutter = new CustomIcon("TileEntities/gt4/OVERLAY_CROP");
     public static final CustomIcon Casing_CropHarvester_Boxes = new CustomIcon("TileEntities/gt4/OVERLAY_BOXES");

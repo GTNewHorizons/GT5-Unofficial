@@ -110,14 +110,7 @@ public enum GregtechOrePrefixes {
                                                                                                                     // by
                                                                                                                     // Calclavia
     chipset("Chipsets", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced
-                                                                                                                    // by
-                                                                                                                    // Buildcraft
-    computer("Computers", "", "", true, true, false, false, true, false, false, false, false, false, 0, -1, 64, -1),; // A
-                                                                                                                      // whole
-                                                                                                                      // Computer.
-                                                                                                                      // "computerMaster"
-                                                                                                                      // =
-                                                                                                                      // ComputerCube
+    ;
 
     public static volatile int VERSION = 508;
 
@@ -208,8 +201,6 @@ public enum GregtechOrePrefixes {
                 getTcAspectStack(TC_Aspects.ITER.name(), 2).addToAspectList(this.mAspects);
             } else if (this.name().startsWith("circuit")) {
                 getTcAspectStack("COGNITIO", 1);
-            } else if (this.name().startsWith("computer")) {
-                getTcAspectStack("COGNITIO", 4).addToAspectList(this.mAspects);
             } else if (this.name().startsWith("battery")) {
                 getTcAspectStack(TC_Aspects.ELECTRUM.name(), 1).addToAspectList(this.mAspects);
             }

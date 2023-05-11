@@ -29,8 +29,6 @@ public class GTPP_UITextures {
 
     public static final UITexture BUTTON_STANDARD_BRONZE = UITexture
             .fullImage(GTPlusPlus.ID, "gui/button/standard_bronze");
-    public static final UITexture BUTTON_STANDARD_16x16 = UITexture
-            .fullImage(GTPlusPlus.ID, "gui/button/standard_16x16");
 
     public static final UITexture OVERLAY_SLOT_WEED_EX = UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_slot/weed_ex");
     public static final UITexture OVERLAY_SLOT_FERTILIZER = UITexture
@@ -74,8 +72,6 @@ public class GTPP_UITextures {
             .fullImage(GTPlusPlus.ID, "gui/progressbar/boiler_empty");
     public static final UITexture PROGRESSBAR_FUEL = UITexture.fullImage(GTPlusPlus.ID, "gui/progressbar/fuel");
     public static final UITexture PROGRESSBAR_ARROW_2 = UITexture.fullImage(GTPlusPlus.ID, "gui/progressbar/arrow_2");
-    public static final UITexture PROGRESSBAR_COMPUTER_ENERGY = UITexture
-            .fullImage(GTPlusPlus.ID, "gui/progressbar/computer_energy");
     public static final UITexture PROGRESSBAR_PSS_ENERGY = UITexture
             .fullImage(GTPlusPlus.ID, "gui/progressbar/pss_energy");
 
@@ -100,16 +96,6 @@ public class GTPP_UITextures {
     public static final UITexture[] OVERLAY_BUTTON_MODE = IntStream.range(0, 10) // GT_MetaTileEntity_ElectricAutoWorkbench#MAX_MODES
             .mapToObj(i -> UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_button/mode_" + i))
             .collect(Collectors.toList()).toArray(new UITexture[0]);
-    public static final UITexture OVERLAY_BUTTON_COMPUTER_MODE = UITexture
-            .fullImage(GTPlusPlus.ID, "gui/overlay_button/computer_mode");
-    public static final UITexture OVERLAY_BUTTON_SAVE = UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_button/save");
-    public static final UITexture OVERLAY_BUTTON_LOAD = UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_button/load");
-    public static final UITexture OVERLAY_BUTTON_NUCLEAR_SWITCH = UITexture
-            .fullImage(GTPlusPlus.ID, "gui/overlay_button/nuclear_switch");
-    public static final UITexture OVERLAY_BUTTON_ARROW_LEFT = UITexture
-            .fullImage(GTPlusPlus.ID, "gui/overlay_button/arrow_left");
-    public static final UITexture OVERLAY_BUTTON_ARROW_RIGHT = UITexture
-            .fullImage(GTPlusPlus.ID, "gui/overlay_button/arrow_right");
     public static final UITexture[] OVERLAY_BUTTON_DIRECTION = new UITexture[] {
             UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_button/bottom"),
             UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_button/top"),
@@ -139,14 +125,6 @@ public class GTPP_UITextures {
             .fullImage(GTPlusPlus.ID, "gui/picture/workbench_circle");
     public static final UITexture PICTURE_ARROW_WHITE_DOWN = UITexture
             .fullImage(GTPlusPlus.ID, "gui/picture/arrow_white_down");
-    public static final UITexture PICTURE_V202 = UITexture.fullImage(GTPlusPlus.ID, "gui/picture/v202");
-    public static final UITexture PICTURE_COMPUTER_TOP = UITexture.fullImage(GTPlusPlus.ID, "gui/picture/computer_top");
-    public static final UITexture PICTURE_COMPUTER_GRID = UITexture
-            .fullImage(GTPlusPlus.ID, "gui/picture/computer_grid");
-    public static final UITexture PICTURE_ARROWS_SEPARATE = UITexture
-            .fullImage(GTPlusPlus.ID, "gui/picture/arrows_separate");
-    public static final UITexture PICTURE_ARROWS_FUSION = UITexture
-            .fullImage(GTPlusPlus.ID, "gui/picture/arrows_fusion");
     public static final UITexture PICTURE_REDSTONE_CIRCUIT_SCREEN = UITexture
             .fullImage(GTPlusPlus.ID, "gui/picture/redstone_circuit_screen");
     public static final UITexture PICTURE_ELECTRICITY_ERROR = UITexture

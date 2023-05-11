@@ -274,8 +274,6 @@ public class RECIPES_Machines {
         multiSolarTower();
         multiElementalDuplicator();
 
-        computerCube();
-
         resonanceChambers();
         modulators();
     }
@@ -311,18 +309,6 @@ public class RECIPES_Machines {
                 GregtechItemList.Casing_XL_HeatExchanger.get(1),
                 20 * 5,
                 MaterialUtils.getVoltageForTier(6));
-    }
-
-    private static void computerCube() {
-
-        CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { CI.getNumberedAdvancedCircuit(20), CI.getTieredGTPPMachineCasing(4, 1),
-                        CI.getCircuit(4, 8), CI.getFieldGenerator(2, 4), CI.getDoublePlate(4, 8),
-                        CI.getRobotArm(4, 8) },
-                Materials.Redstone.getMolten(144 * 32),
-                GregtechItemList.Gregtech_Computer_Cube_Machine.get(1),
-                20 * 60 * 10,
-                MaterialUtils.getVoltageForTier(4));
     }
 
     private static void gt4FarmManager() {

@@ -162,7 +162,6 @@ public enum GregtechItemList implements GregtechItemContainer {
 
     // Computer Cube
     Gregtech_Computer_Cube,
-    Gregtech_Computer_Cube_Machine,
 
     // Casings for batteries
     Battery_Casing_Gem_1,
