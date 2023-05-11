@@ -1352,8 +1352,8 @@ public enum OrePrefixes {
                     || aMaterial == Materials.YttriumBariumCuprate
                     || aMaterial == Materials.BloodInfusedIron
                     || aMaterial == MaterialsUEVplus.Universium
-                    || aMaterial == MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter))
-                    wireFine.mDisabledItems.add(aMaterial);
+                    || aMaterial == MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter
+                    || aMaterial == MaterialsUEVplus.Eternity)) wireFine.mDisabledItems.add(aMaterial);
                 // Gears
                 if (!enableUnusedGears && !(aMaterial == Materials.Aluminium || aMaterial == Materials.Titanium
                     || aMaterial == Materials.Iron

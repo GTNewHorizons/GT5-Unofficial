@@ -1882,6 +1882,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         CertusQuartzCharged.mChemicalFormula = "SiO\u2082";
         MaterialsUEVplus.SpaceTime.mChemicalFormula = "Reality itself distilled into physical form";
         MaterialsUEVplus.Universium.mChemicalFormula = "A tear into the space beyond space";
+        MaterialsUEVplus.Eternity.mChemicalFormula = "En\u29BC";
         Longasssuperconductornameforuvwire.mChemicalFormula = "Nq*\u2084(Ir\u2083Os)\u2083EuSm";
         Longasssuperconductornameforuhvwire.mChemicalFormula = "D\u2086(SpNt)\u2087Tn\u2085Am\u2086";
         SuperconductorUEVBase.mChemicalFormula = "D*\u2085If*\u2085(\u2726\u25C6\u2726)(\u26B7\u2699\u26B7 Ni4Ti6)";
@@ -2160,7 +2161,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             Bedrockium,
             EnrichedHolmium,
             TengamPurified,
-            TengamAttuned);
+            TengamAttuned,
+            MaterialsUEVplus.Eternity);
 
         SubTag.FOOD.addTo(
             MeatRaw,
@@ -2429,6 +2431,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Infinity.renderer = new InfinityRenderer();
         CosmicNeutronium.renderer = new CosmicNeutroniumRenderer();
         MaterialsUEVplus.Universium.renderer = new UniversiumRenderer();
+        MaterialsUEVplus.Eternity.renderer = new InfinityRenderer();
     }
 
     private static void fillGeneratedMaterialsMap() {
@@ -2521,6 +2524,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
         if (aMaterial == MaterialsUEVplus.TranscendentMetal) {
             aMaterial.mHandleMaterial = Materials.DraconiumAwakened;
+        }
+
+        if (aMaterial == MaterialsUEVplus.Eternity) {
+            aMaterial.mHandleMaterial = MaterialsUEVplus.SpaceTime;
         }
     }
 

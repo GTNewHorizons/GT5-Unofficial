@@ -900,6 +900,8 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         ItemList.Optically_Perfected_CPU.set(addItem(726, "Optically Perfected CPU", "Perfected CPU!", o));
         ItemList.Optically_Compatible_Memory.set(addItem(725, "Optically Compatible Memory", "Its in the name!", o));
 
+        ItemList.Timepiece.set(addItem(757, "Timepiece", "Beware of the kid with the hat", o));
+
         int whiteDwarfIDs = 729;
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(
