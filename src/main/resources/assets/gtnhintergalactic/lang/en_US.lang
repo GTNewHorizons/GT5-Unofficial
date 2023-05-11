@@ -205,10 +205,12 @@ gt.blockmachines.multimachine.project.ig.pump.desc0=Module that adds Space Pumpi
 gt.blockmachines.multimachine.project.ig.pump.t1.desc1=Sucking up entire gas planets was never easier
 gt.blockmachines.multimachine.project.ig.pump.t2.desc1=Literally sucks
 gt.blockmachines.multimachine.project.ig.pump.desc3=Set Planet and Gas Type determine pumped fluid
-gt.blockmachines.multimachine.project.ig.pump.t2.desc4=Processes up to 4 different recipes at once
+gt.blockmachines.multimachine.project.ig.pump.desc4=Can be void protected by locking output hatches
+gt.blockmachines.multimachine.project.ig.pump.t2.desc5=Processes up to 4 different recipes at once
 gt.blockmachines.multimachine.project.ig.pump.cfgi.0=Planet Type
 gt.blockmachines.multimachine.project.ig.pump.cfgi.1=Gas Type
 gt.blockmachines.multimachine.project.ig.pump.cfgi.2=Parallels
+gt.blockmachines.multimachine.project.ig.pump.cfgi.3=Batch Size
 
 # Module Manager
 gt.blockmachines.multimachine.project.ig.manager.t1.name=Space Project Manager
