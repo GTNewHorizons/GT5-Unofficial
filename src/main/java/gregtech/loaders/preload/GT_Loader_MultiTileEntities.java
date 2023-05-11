@@ -25,6 +25,7 @@ import gregtech.common.tileentities.casings.functional.Sensor;
 import gregtech.common.tileentities.casings.upgrade.Inventory;
 import gregtech.common.tileentities.machines.multiblock.AdvChemicalReactor;
 import gregtech.common.tileentities.machines.multiblock.CokeOven;
+import gregtech.common.tileentities.machines.multiblock.DistillationTower;
 import gregtech.common.tileentities.machines.multiblock.Macerator;
 
 public class GT_Loader_MultiTileEntities implements Runnable {
@@ -93,6 +94,15 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .outputInventorySize(16)
             .tankCapacity(128000L)
             .register();
+        MACHINE_REGISTRY.create(2, DistillationTower.class)
+            .name("Distillation Tower")
+            .category("MultiblockController")
+            .setBlock(MACHINE_BLOCK)
+            .textureFolder("distillationTower")
+            .inputInventorySize(16)
+            .outputInventorySize(16)
+            .tankCapacity(128000L)
+            .register();
     }
 
     private static void registerCasings() {
@@ -108,6 +118,12 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .category("MultiBlock Casing")
             .setBlock(CASING_BLOCK)
             .textureFolder("advChemicalReactor")
+            .register();
+        CASING_REGISTRY.create(Distillation.getId(), BasicCasing.class)
+            .name("Distillation Casing")
+            .category("MultiBlock Casing")
+            .setBlock(CASING_BLOCK)
+            .textureFolder("distillationTower")
             .register();
         CASING_REGISTRY.create(18000, BasicCasing.class)
             .name("Test Casing")

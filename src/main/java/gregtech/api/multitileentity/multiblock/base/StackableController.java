@@ -9,6 +9,7 @@ public abstract class StackableController<T extends StackableController<T>> exte
     protected static String STACKABLE_TOP = "STACKABLE_TOP";
     protected static String STACKABLE_MIDDLE = "STACKABLE_MIDDLE";
     protected static String STACKABLE_BOTTOM = "STACKABLE_BOTTOM";
+    protected int stackCount = 0;
 
     /**
      * construct implementation for stackable multi-blocks
@@ -19,16 +20,16 @@ public abstract class StackableController<T extends StackableController<T>> exte
         final int stackCount = Math.min(blueprintCount, getMaxStacks());
 
         buildState.startBuilding(getStartingStructureOffset());
-        buildPiece(STACKABLE_BOTTOM, trigger, hintsOnly, buildState.getCurrentOffset());
+        buildPiece(getStackableBottom(), trigger, hintsOnly, buildState.getCurrentOffset());
         buildState.addOffset(getStartingStackOffset());
 
         for (int i = 0; i < stackCount; i++) {
-            buildPiece(STACKABLE_MIDDLE, trigger, hintsOnly, buildState.getCurrentOffset());
+            buildPiece(getStackableMiddle(i), trigger, hintsOnly, buildState.getCurrentOffset());
             buildState.addOffset(getPerStackOffset());
         }
         if (hasTop()) {
             buildState.addOffset(getAfterLastStackOffset());
-            buildPiece(STACKABLE_TOP, trigger, hintsOnly, buildState.stopBuilding());
+            buildPiece(getStackableTop(), trigger, hintsOnly, buildState.stopBuilding());
         } else {
             buildState.stopBuilding();
         }
@@ -85,15 +86,15 @@ public abstract class StackableController<T extends StackableController<T>> exte
      */
     @Override
     public boolean checkMachine() {
-        int stackCount = 0;
+        stackCount = 0;
 
         buildState.startBuilding(getStartingStructureOffset());
-        if (!checkPiece(STACKABLE_BOTTOM, buildState.getCurrentOffset())) return buildState.failBuilding();
+        if (!checkPiece(getStackableBottom(), buildState.getCurrentOffset())) return buildState.failBuilding();
 
         buildState.addOffset(getStartingStackOffset());
 
         for (int i = 0; i < getMaxStacks(); i++) {
-            if (checkPiece(STACKABLE_MIDDLE, buildState.getCurrentOffset())) {
+            if (checkPiece(getStackableMiddle(i), buildState.getCurrentOffset())) {
                 buildState.addOffset(getPerStackOffset());
                 stackCount++;
             } else {
@@ -103,9 +104,21 @@ public abstract class StackableController<T extends StackableController<T>> exte
         if (stackCount < getMinStacks()) return buildState.failBuilding();
 
         buildState.addOffset(getAfterLastStackOffset());
-        if (!checkPiece(STACKABLE_TOP, buildState.stopBuilding())) {
+        if (!checkPiece(getStackableTop(), buildState.stopBuilding())) {
             return buildState.failBuilding();
         }
         return super.checkMachine();
+    }
+
+    protected String getStackableTop() {
+        return STACKABLE_TOP;
+    }
+
+    protected String getStackableMiddle(int stackIndex) {
+        return STACKABLE_MIDDLE;
+    }
+
+    protected String getStackableBottom() {
+        return STACKABLE_BOTTOM;
     }
 }
