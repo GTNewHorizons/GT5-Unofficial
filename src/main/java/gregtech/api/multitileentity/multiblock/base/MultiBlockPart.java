@@ -537,7 +537,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
     @Override
     public PowerLogic getPowerLogic(ForgeDirection side) {
-        if (facing == side) {
+        if (facing != side) {
             return null;
         }
 
