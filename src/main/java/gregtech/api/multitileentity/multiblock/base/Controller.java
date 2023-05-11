@@ -10,7 +10,6 @@ import static mcp.mobius.waila.api.SpecialChars.*;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -155,11 +154,12 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         new LinkedList<>());
 
     // A list for each purpose that a casing can register to, to be ticked
-    protected List<LinkedList<WeakReference<IMultiBlockPart>>> registeredTickableParts;
+    protected List<LinkedList<WeakReference<IMultiBlockPart>>> registeredTickableParts = new ArrayList<>();
 
     public Controller() {
-        registeredTickableParts = new ArrayList<>(
-            Collections.nCopies(MultiTileCasingPurpose.values().length, new LinkedList<>()));
+        for (int i = 0; i < MultiTileCasingPurpose.values().length; i++) {
+            registeredTickableParts.add(new LinkedList<>());
+        }
     }
 
     /** Registry ID of the required casing */
