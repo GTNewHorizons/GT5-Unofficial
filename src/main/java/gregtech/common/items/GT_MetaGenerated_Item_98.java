@@ -48,11 +48,16 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
      * leave a comment mentioning the old ID, so that we don't re-use it for a new fluid.
      */
     public enum FluidCell {
-        // Next unused ID: 22
+        // Next unused ID: 27
 
         // GregTech
         DRILLING_FLUID(5, "liquid_drillingfluid", CellType.REGULAR),
         SQUID_INK(6, "squidink", CellType.SMALL),
+        BLUE_VITRIOL(22, "solution.bluevitriol", CellType.REGULAR),
+        NICKEL_SULFATE(23, "solution.nickelsulfate", CellType.REGULAR),
+        GREEN_VITRIOL(24, "solution.greenvitriol", CellType.REGULAR),
+        INDIUM_CONCENTRATE(25, "indiumconcentrate", CellType.REGULAR),
+        LEAD_ZINC_SOLUTION(26, "leadzincsolution", CellType.REGULAR),
 
         // New Horizons Core Mod
         UNKNOWN_NUTRIENT_AGAR(7, "unknownnutrientagar", CellType.REGULAR),
@@ -119,7 +124,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
 
         /**
          * Get a copy of this stack with stack size 1.
-         *
+         * <p>
          * Always returns non-null stack even if the fluid referenced doesn't exist, so don't assume it's always valid.
          */
         public ItemStack get() {
@@ -129,9 +134,9 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
 
         /**
          * Get a copy of this cell WITHOUT copy.
-         *
+         * <p>
          * Always returns non-null stack even if the fluid referenced doesn't exist, so don't assume it's always valid.
-         *
+         * <p>
          * Use with caution.
          */
         public ItemStack getNoCopy() {
@@ -141,7 +146,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
 
         /**
          * Get a copy of this cell with specified stack size.
-         *
+         * <p>
          * Always returns non-null stack even if the fluid referenced doesn't exist, so don't assume it's always valid.
          */
         public ItemStack get(int aStackSize) {
