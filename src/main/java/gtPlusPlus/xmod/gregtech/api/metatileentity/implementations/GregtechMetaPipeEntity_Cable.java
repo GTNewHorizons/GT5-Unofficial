@@ -90,12 +90,13 @@ public class GregtechMetaPipeEntity_Cable extends GT_MetaPipeEntity_Cable implem
                 this.vRGB);
     }
 
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, byte aConnections,
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
             int aColorIndex, boolean aConnected, boolean aRedstone) {
         return getTextureGTNH(aBaseMetaTileEntity, side, aConnections, aColorIndex, aConnected, aRedstone);
     }
 
-    private ITexture[] getTextureGTNH(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection aSide, byte aConnections,
+    private ITexture[] getTextureGTNH(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection aSide, int aConnections,
             int aColorIndex, boolean aConnected, boolean aRedstone) {
 
         Materials wireMaterial = mMaterial;
