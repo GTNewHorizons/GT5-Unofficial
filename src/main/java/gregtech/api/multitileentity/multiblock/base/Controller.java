@@ -652,7 +652,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             }
             if (checkStructure(false)) {
                 runMachine(tick);
-                pushOutputs(tick);
+                pushItemOutputs(tick);
+                pushFluidOutputs(tick);
 
             } else {
                 stopMachine(false);
@@ -662,9 +663,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         }
     }
 
-    protected void pushOutputs(long tick) {
+    protected void pushItemOutputs(long tick) {
         if (tick % AUTO_OUTPUT_FREQUENCY_TICK != 0) return;
-        // Auto push items
         final LinkedList<WeakReference<IMultiBlockPart>> registeredItemOutputs = registeredTickableParts
             .get(MultiTileCasingPurpose.ItemOutput.ordinal());
         final Iterator<WeakReference<IMultiBlockPart>> itemOutputIterator = registeredItemOutputs.iterator();
@@ -674,7 +674,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 itemOutputIterator.remove();
                 continue;
             }
-            if (!part.tick(mTickTimer)) {
+            if (!part.shouldTick(mTickTimer)) {
                 itemOutputIterator.remove();
             } else {
                 final IInventory facingInventory = part.getIInventoryAtSide(part.getFrontFacing());
@@ -698,7 +698,10 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 }
             }
         }
-        // Auto push fluids
+    }
+
+    protected void pushFluidOutputs(long tick) {
+        if (tick % AUTO_OUTPUT_FREQUENCY_TICK != 0) return;
         final LinkedList<WeakReference<IMultiBlockPart>> registeredFluidOutputs = registeredTickableParts
             .get(MultiTileCasingPurpose.FluidOutput.ordinal());
         final Iterator<WeakReference<IMultiBlockPart>> fluidOutputIterator = registeredFluidOutputs.iterator();
@@ -708,7 +711,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 fluidOutputIterator.remove();
                 continue;
             }
-            if (!part.tick(mTickTimer)) {
+            if (!part.shouldTick(mTickTimer)) {
                 fluidOutputIterator.remove();
             } else {
                 IFluidHandler targetTank = part.getITankContainerAtSide(part.getFrontFacing());

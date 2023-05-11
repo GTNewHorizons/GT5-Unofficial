@@ -575,7 +575,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     @Override
-    public boolean tick(long tickTimer) {
+    public boolean shouldTick(long tickTimer) {
         return modeSelected(ITEM_OUT, FLUID_OUT);
     }
 

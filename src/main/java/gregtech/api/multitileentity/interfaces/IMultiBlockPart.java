@@ -17,5 +17,5 @@ public interface IMultiBlockPart extends IMultiTileEntity {
 
     boolean tickCoverAtSide(ForgeDirection side, long aTickTimer);
 
-    boolean tick(long tickTimer);
+    boolean shouldTick(long tickTimer);
 }
