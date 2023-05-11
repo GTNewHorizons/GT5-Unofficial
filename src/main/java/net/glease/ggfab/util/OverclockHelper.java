@@ -3,6 +3,7 @@ package net.glease.ggfab.util;
 import gregtech.api.util.GT_Utility;
 
 public class OverclockHelper {
+
     public static OverclockOutput normalOverclock(long recipeEUt, int duration, long inputVoltage, boolean perfectOC) {
         if (recipeEUt > inputVoltage) return null;
         int recipeTier = Math.max(1, GT_Utility.getTier(recipeEUt)); // ULV no overclock
@@ -16,7 +17,8 @@ public class OverclockHelper {
         return new OverclockOutput(recipeEUt, duration);
     }
 
-    public static OverclockOutput laserOverclock(long recipeEUt, int duration, long inputEUt, float penaltyIncreaseFactor) {
+    public static OverclockOutput laserOverclock(long recipeEUt, int duration, long inputEUt,
+            float penaltyIncreaseFactor) {
         if (recipeEUt > inputEUt) return null;
         float currentPenalty = 4 + penaltyIncreaseFactor;
         // 2/(n+k) overclock until energy hatch is crying
@@ -30,6 +32,7 @@ public class OverclockHelper {
     }
 
     public static final class OverclockOutput {
+
         private final long mEUt;
         private final int mDuration;
 

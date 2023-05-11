@@ -1,21 +1,32 @@
 package net.glease.ggfab.util;
 
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import java.util.StringJoiner;
+
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.StringJoiner;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public class GGUtils {
+
     public static boolean isValidTile(IGregTechTileEntity tile) {
-        return tile != null && !tile.isDead() && tile.getMetaTileEntity() != null && tile.getMetaTileEntity().getBaseMetaTileEntity() == tile;
+        return tile != null && !tile.isDead()
+                && tile.getMetaTileEntity() != null
+                && tile.getMetaTileEntity().getBaseMetaTileEntity() == tile;
     }
+
     public static boolean isValidTile(IMetaTileEntity mte) {
-        return mte != null && mte.getBaseMetaTileEntity() != null && mte.getBaseMetaTileEntity().getMetaTileEntity() == mte && !mte.getBaseMetaTileEntity().isDead();
+        return mte != null && mte.getBaseMetaTileEntity() != null
+                && mte.getBaseMetaTileEntity().getMetaTileEntity() == mte
+                && !mte.getBaseMetaTileEntity().isDead();
     }
+
     public static ChunkCoordinates translate(ChunkCoordinates origin, ForgeDirection direction) {
-        return new ChunkCoordinates(origin.posX + direction.offsetX, origin.posY + direction.offsetY, origin.posZ + direction.offsetZ);
+        return new ChunkCoordinates(
+                origin.posX + direction.offsetX,
+                origin.posY + direction.offsetY,
+                origin.posZ + direction.offsetZ);
     }
 
     public static String formatTileInfo(String prefix, IMetaTileEntity mte, String delimiter, String suffix) {

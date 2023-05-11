@@ -1,19 +1,21 @@
 package net.glease.ggfab;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.interfaces.IIconContainer;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
+import gregtech.api.GregTech_API;
+import gregtech.api.interfaces.IIconContainer;
+
 public enum BlockIcons implements IIconContainer, Runnable {
+
     OVERLAY_FRONT_ADV_ASSLINE_ACTIVE,
     OVERLAY_FRONT_ADV_ASSLINE_ACTIVE_GLOW,
     OVERLAY_FRONT_ADV_ASSLINE_STUCK,
     OVERLAY_FRONT_ADV_ASSLINE_STUCK_GLOW,
     OVERLAY_FRONT_ADV_ASSLINE,
-    OVERLAY_FRONT_ADV_ASSLINE_GLOW,
-    ;
+    OVERLAY_FRONT_ADV_ASSLINE_GLOW,;
+
     public static final String RES_PATH = GGConstants.MODID + ":";
     private IIcon mIcon;
 
