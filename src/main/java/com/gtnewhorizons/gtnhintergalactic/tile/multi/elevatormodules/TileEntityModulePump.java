@@ -120,11 +120,13 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
 
         List<FluidStack> outputs = new ArrayList<>();
         int usedEUt = 0;
-        int batchSize = (int) Math.min(Math.max(batchSetting.get(), 1.0D), 128.0D);
+        // We store the highest batch size as time multiplier
+        int maxBatchSize = (int) Math.min(Math.max(batchSetting.get(), 1.0D), 128.0D);
         for (int i = 0; i < getParallelRecipes(); i++) {
             FluidStack fluid = SpacePumpingRecipes.RECIPES
                     .get(Pair.of((int) planetTypeSettings[i].get(), (int) gasTypeSettings[i].get()));
             if (fluid != null) {
+                int batchSize = (int) Math.min(Math.max(batchSetting.get(), 1.0D), 128.0D);
                 GT_MetaTileEntity_Hatch_Output targetOutput = null;
                 if (!hasMeOutputHatch && !eSafeVoid) {
                     for (GT_MetaTileEntity_Hatch_Output output : mOutputHatches) {
@@ -144,6 +146,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                     }
                     parallels = Math.min(parallels, outputSpace / fluid.amount);
                     batchSize = Math.min(batchSize, outputSpace / (fluid.amount * parallels));
+                    maxBatchSize = Math.max(maxBatchSize, batchSize);
                 }
                 if (parallels > 0 && batchSize > 0) {
                     fluid = fluid.copy();
@@ -158,7 +161,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         mOutputFluids = outputs.toArray(new FluidStack[0]);
         eAmpereFlow = 1;
         mEfficiencyIncrease = 10000;
-        mMaxProgresstime = 20 * batchSize;
+        mMaxProgresstime = 20 * maxBatchSize;
 
         return outputs.size() > 0;
     }
