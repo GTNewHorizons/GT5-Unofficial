@@ -71,7 +71,7 @@ public class GregtechMetaPipeEntityFluid extends GT_MetaPipeEntity_Fluid {
                             mMaterial.mIconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
                             Dyes.getModulation(aColorIndex, mMaterial.mRGBa)) };
         int tMask = 0;
-        int[][] sRestrictionArray = { { 2, 3, 5, 4 }, { 2, 3, 4, 5 }, { 1, 0, 4, 5 }, { 1, 0, 4, 5 }, { 1, 0, 2, 3 },
+        int[][] sRestrictionArray = { { 2, 3, 5, 4 }, { 2, 3, 5, 4 }, { 1, 0, 5, 4 }, { 1, 0, 4, 5 }, { 1, 0, 2, 3 },
                 { 1, 0, 2, 3 } };
         if (side != ForgeDirection.UNKNOWN) {
             for (int i = 0; i < 4; i++)
