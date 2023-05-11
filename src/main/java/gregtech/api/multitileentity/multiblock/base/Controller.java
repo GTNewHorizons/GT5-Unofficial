@@ -405,6 +405,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
         // Only trigger an update if forced (from onPostTick, generally), or if the structure has changed
         if ((structureChanged || aForceReset)) {
+            functionalCasings.clear();
+            upgradeCasings.clear();
             structureOkay = checkMachine();
         }
         structureChanged = false;
@@ -417,8 +419,6 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     public final boolean checkPiece(String piece, Vec3Impl offset) {
-        functionalCasings.clear();
-        upgradeCasings.clear();
         return checkPiece(piece, offset.get0(), offset.get1(), offset.get2());
     }
 
