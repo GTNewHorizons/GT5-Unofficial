@@ -57,7 +57,7 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
     protected static final String STRUCTURE_PIECE_T4 = "T4";
     protected static final String STRUCTURE_PIECE_T5_6 = "T5_6";
     protected static final String STRUCTURE_PIECE_T7_8 = "T7_8";
-    protected static final Vec3Impl STRUCTURE_OFFSET = new Vec3Impl(3, 1, 0);
+    protected static final Vec3Impl STRUCTURE_OFFSET_T1 = new Vec3Impl(3, 1, 0);
     protected static final Vec3Impl STRUCTURE_OFFSET_T2 = new Vec3Impl(1, 4, -3);
     protected static final Vec3Impl STRUCTURE_OFFSET_T3 = new Vec3Impl(8, 0, 5);
     protected static final Vec3Impl STRUCTURE_OFFSET_T4 = new Vec3Impl(-14, 0, 0);
@@ -182,6 +182,7 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
             .addInfo("Can do multiple different recipes at once")
             .addInfo("By using the whitelist filter a recipe can push its output")
             .addInfo("to a different recipes input to chain them")
+            .addInfo("Disclaimer: Still WIP - Use at your own risk")
             .addInfo(GT_Values.Authorminecraft7771)
             .addSeparator()
             .beginStructureBlock(5, 3, 3, false)
@@ -197,7 +198,7 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
 
     @Override
     public Vec3Impl getStartingStructureOffset() {
-        return STRUCTURE_OFFSET;
+        return STRUCTURE_OFFSET_T1;
     }
 
     @Override
