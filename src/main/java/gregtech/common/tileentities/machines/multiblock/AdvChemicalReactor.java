@@ -53,8 +53,18 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
     private static IStructureDefinition<AdvChemicalReactor> STRUCTURE_DEFINITION = null;
     protected static final String STRUCTURE_PIECE_T1 = "T1";
     protected static final String STRUCTURE_PIECE_T2 = "T2";
+    protected static final String STRUCTURE_PIECE_T3 = "T3";
+    protected static final String STRUCTURE_PIECE_T4 = "T4";
+    protected static final String STRUCTURE_PIECE_T5_6 = "T5_6";
+    protected static final String STRUCTURE_PIECE_T7_8 = "T7_8";
     protected static final Vec3Impl STRUCTURE_OFFSET = new Vec3Impl(3, 1, 0);
     protected static final Vec3Impl STRUCTURE_OFFSET_T2 = new Vec3Impl(1, 4, -3);
+    protected static final Vec3Impl STRUCTURE_OFFSET_T3 = new Vec3Impl(8, 0, 5);
+    protected static final Vec3Impl STRUCTURE_OFFSET_T4 = new Vec3Impl(-14, 0, 0);
+    protected static final Vec3Impl STRUCTURE_OFFSET_T5 = new Vec3Impl(14, 0, -6);
+    protected static final Vec3Impl STRUCTURE_OFFSET_T6 = new Vec3Impl(-16, 0, 0);
+    protected static final Vec3Impl STRUCTURE_OFFSET_T7 = new Vec3Impl(16, 0, 15);
+    protected static final Vec3Impl STRUCTURE_OFFSET_T8 = new Vec3Impl(-16, 0, 0);
     protected static final int PROCESS_WINDOW_BASE_ID = 100;
     protected static final int ITEM_WHITELIST_SLOTS = 8;
     protected static final int FLUID_WHITELIST_SLOTS = 8;
@@ -199,6 +209,30 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
             buildState.addOffset(STRUCTURE_OFFSET_T2);
             if (!checkPiece(STRUCTURE_PIECE_T2, buildState.getCurrentOffset())) return buildState.failBuilding();
         }
+        if (maxComplexParallels > 2) {
+            buildState.addOffset(STRUCTURE_OFFSET_T3);
+            if (!checkPiece(STRUCTURE_PIECE_T3, buildState.getCurrentOffset())) return buildState.failBuilding();
+        }
+        if (maxComplexParallels > 3) {
+            buildState.addOffset(STRUCTURE_OFFSET_T4);
+            if (!checkPiece(STRUCTURE_PIECE_T4, buildState.getCurrentOffset())) return buildState.failBuilding();
+        }
+        if (maxComplexParallels > 4) {
+            buildState.addOffset(STRUCTURE_OFFSET_T5);
+            if (!checkPiece(STRUCTURE_PIECE_T5_6, buildState.getCurrentOffset())) return buildState.failBuilding();
+        }
+        if (maxComplexParallels > 5) {
+            buildState.addOffset(STRUCTURE_OFFSET_T6);
+            if (!checkPiece(STRUCTURE_PIECE_T5_6, buildState.getCurrentOffset())) return buildState.failBuilding();
+        }
+        if (maxComplexParallels > 6) {
+            buildState.addOffset(STRUCTURE_OFFSET_T7);
+            if (!checkPiece(STRUCTURE_PIECE_T7_8, buildState.getCurrentOffset())) return buildState.failBuilding();
+        }
+        if (maxComplexParallels > 7) {
+            buildState.addOffset(STRUCTURE_OFFSET_T8);
+            if (!checkPiece(STRUCTURE_PIECE_T7_8, buildState.getCurrentOffset())) return buildState.failBuilding();
+        }
         buildState.stopBuilding();
         return super.checkMachine();
     }
@@ -211,6 +245,31 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
             buildState.addOffset(STRUCTURE_OFFSET_T2);
             buildPiece(STRUCTURE_PIECE_T2, trigger, hintsOnly, buildState.getCurrentOffset());
         }
+        if (maxComplexParallels > 2) {
+            buildState.addOffset(STRUCTURE_OFFSET_T3);
+            buildPiece(STRUCTURE_PIECE_T3, trigger, hintsOnly, buildState.getCurrentOffset());
+        }
+        if (maxComplexParallels > 3) {
+            buildState.addOffset(STRUCTURE_OFFSET_T4);
+            buildPiece(STRUCTURE_PIECE_T4, trigger, hintsOnly, buildState.getCurrentOffset());
+        }
+        if (maxComplexParallels > 4) {
+            buildState.addOffset(STRUCTURE_OFFSET_T5);
+            buildPiece(STRUCTURE_PIECE_T5_6, trigger, hintsOnly, buildState.getCurrentOffset());
+        }
+        if (maxComplexParallels > 5) {
+            buildState.addOffset(STRUCTURE_OFFSET_T6);
+            buildPiece(STRUCTURE_PIECE_T5_6, trigger, hintsOnly, buildState.getCurrentOffset());
+        }
+        if (maxComplexParallels > 6) {
+            buildState.addOffset(STRUCTURE_OFFSET_T7);
+            buildPiece(STRUCTURE_PIECE_T7_8, trigger, hintsOnly, buildState.getCurrentOffset());
+        }
+        if (maxComplexParallels > 7) {
+            buildState.addOffset(STRUCTURE_OFFSET_T8);
+            buildPiece(STRUCTURE_PIECE_T7_8, trigger, hintsOnly, buildState.getCurrentOffset());
+        }
+
         buildState.stopBuilding();
     }
 
@@ -234,6 +293,50 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
                         { "  BBB  ", " C   C ", " C   C ", " C   C ", " C   C ", " C   C ", "BCPPPCB" },
                         { "   C   ", "  CGC  ", "  CGC  ", "  CGC  ", "  CGC  ", "  CGC  ", " BCCCB " },
                         { "       ", "       ", "       ", "       ", "       ", "       ", "  BBB  " } })
+                .addShape(
+                    STRUCTURE_PIECE_T3,
+                    new String[][] {
+                        { "         ", "         ", "         ", "         ", "         ", "         ", "  BBB    " },
+                        { "   C     ", "  CGC    ", "  CGC    ", "  CGC    ", "  CGC    ", "  CGC    ", " BCCCB   " },
+                        { "  BBB    ", " C   C   ", " C   C   ", " C   C   ", " C   C   ", " C   CFFF", "BCPPPCBBB" },
+                        { " CBBBC   ", " G W G   ", " G W G   ", " G W G   ", " G W G   ", " G W G   ", "BCPCPCB  " },
+                        { "  BBB    ", " C   C   ", " C   C   ", " C   C   ", " C   C   ", " C   CFFF", "BCPPPCBBB" },
+                        { "   C     ", "  CGC    ", "  CGC    ", "  CGC    ", "  CGC    ", "  CGC    ", " BCCCB   " },
+                        { "         ", "         ", "         ", "         ", "         ", "         ", "  BBB    " } })
+                .addShape(
+                    STRUCTURE_PIECE_T4,
+                    new String[][] {
+                        { "         ", "         ", "         ", "         ", "         ", "         ", "    BBB  " },
+                        { "     C   ", "    CGC  ", "    CGC  ", "    CGC  ", "    CGC  ", "    CGC  ", "   BCCCB " },
+                        { "    BBB  ", "   C   C ", "   C   C ", "   C   C ", "   C   C ", "FFFC   C ", "BBBCPPPCB" },
+                        { "   CBBBC ", "   G W G ", "   G W G ", "   G W G ", "   G W G ", "   G W G ", "  BCPCPCB" },
+                        { "    BBB  ", "   C   C ", "   C   C ", "   C   C ", "   C   C ", "FFFC   C ", "BBBCPPPCB" },
+                        { "     C   ", "    CGC  ", "    CGC  ", "    CGC  ", "    CGC  ", "    CGC  ", "   BCCCB " },
+                        { "         ", "         ", "         ", "         ", "         ", "         ", "    BBB  " } })
+                .addShape(
+                    STRUCTURE_PIECE_T5_6,
+                    new String[][] { { "       ", "       ", "       ", "       ", "       ", "  F F  ", "       " },
+                        { "       ", "       ", "       ", "       ", "       ", "  F F  ", "  B B  " },
+                        { "       ", "       ", "       ", "       ", "       ", "  F F  ", "  B B  " },
+                        { "       ", "       ", "       ", "       ", "       ", "  F F  ", "  BBB  " },
+                        { "   C   ", "  CGC  ", "  CGC  ", "  CGC  ", "  CGC  ", "  CGC  ", " BCCCB " },
+                        { "  BBB  ", " C   C ", " C   C ", " C   C ", " C   C ", " C   C ", "BCPPPCB" },
+                        { " CBBBC ", " G W G ", " G W G ", " G W G ", " G W G ", " G W G ", "BCPCPCB" },
+                        { "  BBB  ", " C   C ", " C   C ", " C   C ", " C   C ", " C   C ", "BCPPPCB" },
+                        { "   C   ", "  CGC  ", "  CGC  ", "  CGC  ", "  CGC  ", "  CGC  ", " BCCCB " },
+                        { "       ", "       ", "       ", "       ", "       ", "       ", "  BBB  " } })
+                .addShape(
+                    STRUCTURE_PIECE_T7_8,
+                    new String[][] { { "       ", "       ", "       ", "       ", "       ", "       ", "  BBB  " },
+                        { "   C   ", "  CGC  ", "  CGC  ", "  CGC  ", "  CGC  ", "  CGC  ", " BCCCB " },
+                        { "  BBB  ", " C   C ", " C   C ", " C   C ", " C   C ", " C   C ", "BCPPPCB" },
+                        { " CBBBC ", " G W G ", " G W G ", " G W G ", " G W G ", " G W G ", "BCPCPCB" },
+                        { "  BBB  ", " C   C ", " C   C ", " C   C ", " C   C ", " C   C ", "BCPPPCB" },
+                        { "   C   ", "  CGC  ", "  CGC  ", "  CGC  ", "  CGC  ", "  CGC  ", " BCCCB " },
+                        { "       ", "       ", "       ", "       ", "       ", "  F F  ", "  BBB  " },
+                        { "       ", "       ", "       ", "       ", "       ", "  F F  ", "  B B  " },
+                        { "       ", "       ", "       ", "       ", "       ", "  F F  ", "  B B  " },
+                        { "       ", "       ", "       ", "       ", "       ", "  F F  ", "       " } })
                 .addElement(
                     'C',
                     addMultiTileCasing(
@@ -363,7 +466,7 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
                     .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_WHITELIST)
                     .setSize(18, 18)
                     .setEnabled((widget -> processIndex < maxComplexParallels))
-                    .setPos(20 * i + 18, 18));
+                    .setPos(20 * (i % 4) + 18, 18 + (i / 4) * 20));
         }
         child.addChild(
             new TextFieldWidget().setGetterInt(() -> maxComplexParallels)
