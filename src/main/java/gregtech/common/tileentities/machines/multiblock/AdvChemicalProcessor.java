@@ -48,9 +48,9 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.common.tileentities.casings.upgrade.Inventory;
 
-public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalReactor> {
+public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalProcessor> {
 
-    private static IStructureDefinition<AdvChemicalReactor> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<AdvChemicalProcessor> STRUCTURE_DEFINITION = null;
     protected static final String STRUCTURE_PIECE_T1 = "T1";
     protected static final String STRUCTURE_PIECE_T2 = "T2";
     protected static final String STRUCTURE_PIECE_T3 = "T3";
@@ -75,7 +75,7 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
     protected final ArrayList<ArrayList<IFluidTank>> processFluidWhiteLists = new ArrayList<>(MAX_PROCESSES);
     protected boolean wasWhitelistOpened = false;
 
-    public AdvChemicalReactor() {
+    public AdvChemicalProcessor() {
         super();
         for (int i = 0; i < MAX_PROCESSES; i++) {
             processWhitelists.add(null);
@@ -176,7 +176,7 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Chemical Reactor")
-            .addInfo("Controller block for the Advanced Chemical Reactor")
+            .addInfo("Controller block for the Advanced Chemical Processor")
             .addInfo("Does not lose efficiency when overclocked")
             .addInfo("Accepts fluids instead of fluid cells")
             .addInfo("Can do multiple different recipes at once")
@@ -275,9 +275,9 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
     }
 
     @Override
-    public IStructureDefinition<AdvChemicalReactor> getStructureDefinition() {
+    public IStructureDefinition<AdvChemicalProcessor> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<AdvChemicalReactor>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<AdvChemicalProcessor>builder()
                 .addShape(
                     STRUCTURE_PIECE_T1,
                     transpose(
@@ -348,7 +348,7 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
                 .addElement('T', addMotorCasings(NOTHING))
                 .addElement(
                     'W',
-                    GT_StructureUtility.ofCoil(AdvChemicalReactor::setCoilTier, AdvChemicalReactor::getCoilTier))
+                    GT_StructureUtility.ofCoil(AdvChemicalProcessor::setCoilTier, AdvChemicalProcessor::getCoilTier))
                 .addElement('B', ofBlock(GregTech_API.sBlockCasings4, 1))
                 .addElement('F', GT_StructureUtility.ofFrame(Materials.Steel))
                 .addElement(
@@ -534,7 +534,7 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
 
     @Override
     public String getLocalName() {
-        return "Advanced Chemical Reactor";
+        return "Advanced Chemical Processor";
     }
 
     public void setCoilTier(HeatingCoilLevel coilTier) {
