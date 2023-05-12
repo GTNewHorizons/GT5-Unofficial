@@ -18,7 +18,7 @@ public class WallShareablePart extends MultiBlockPart {
     public void setTarget(IMultiBlockController aTarget, int aAllowedModes) {
         if (targets.size() > 1 || targetPositions.size() > 1) {
             mAllowedModes = 0;
-            mMode = 0;
+            setMode((byte) 0);
         } else {
             mAllowedModes = aAllowedModes;
         }

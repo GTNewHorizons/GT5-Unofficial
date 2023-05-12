@@ -9,6 +9,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import gregtech.api.logic.PowerLogic;
+import gregtech.api.multitileentity.enums.MultiTileCasingPurpose;
 
 public interface IMultiBlockController extends IMultiTileEntity, IMultiBlockFluidHandler, IMultiBlockInventory {
 
@@ -31,6 +32,10 @@ public interface IMultiBlockController extends IMultiTileEntity, IMultiBlockFlui
     void registerCoveredPartOnSide(final ForgeDirection side, IMultiBlockPart part);
 
     void unregisterCoveredPartOnSide(final ForgeDirection side, IMultiBlockPart part);
+
+    void registerCaseWithPurpose(MultiTileCasingPurpose purpose, IMultiBlockPart part);
+
+    void unregisterCaseWithPurpose(MultiTileCasingPurpose purpose, IMultiBlockPart part);
 
     void registerInventory(String aName, String aID, int aInventorySize, int aType);
 

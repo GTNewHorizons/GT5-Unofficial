@@ -14,10 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -50,6 +47,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.multitileentity.base.NonTickableMultiTileEntity;
+import gregtech.api.multitileentity.enums.MultiTileCasingPurpose;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_BreakBlock;
@@ -69,6 +67,8 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
     protected final List<Integer> BASIC_MODES = new ArrayList<>(
         Arrays.asList(NOTHING, ENERGY_IN, ENERGY_OUT, FLUID_IN, FLUID_OUT, ITEM_IN, ITEM_OUT));
+
+    protected Set<MultiTileCasingPurpose> registeredPurposes = new HashSet<>();
 
     protected ChunkCoordinates mTargetPos = null;
     protected IMultiBlockController target = null;
@@ -111,10 +111,34 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     public void setTarget(IMultiBlockController aTarget, int aAllowedModes) {
+        if (target != null && target != aTarget) {
+            for (MultiTileCasingPurpose purpose : registeredPurposes) {
+                unregisterPurpose(purpose);
+            }
+        }
         target = aTarget;
         mTargetPos = (target == null ? null : target.getCoords());
         mAllowedModes = aAllowedModes;
-        if (target != null) registerCovers(target);
+        if (target != null) {
+            registerCovers(target);
+            registerPurposes();
+        }
+    }
+
+    protected void registerPurpose(MultiTileCasingPurpose purpose) {
+        IMultiBlockController target = getTarget(false);
+        if (target != null) {
+            target.registerCaseWithPurpose(purpose, this);
+            registeredPurposes.add(purpose);
+        }
+    }
+
+    protected void unregisterPurpose(MultiTileCasingPurpose purpose) {
+        IMultiBlockController target = getTarget(false);
+        if (target != null) {
+            target.unregisterCaseWithPurpose(purpose, this);
+        }
+        registeredPurposes.remove(purpose);
     }
 
     @Override
@@ -152,9 +176,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
             if (worldObj.blockExists(mTargetPos.posX, mTargetPos.posY, mTargetPos.posZ)) {
                 final TileEntity te = worldObj.getTileEntity(mTargetPos.posX, mTargetPos.posY, mTargetPos.posZ);
                 if (te instanceof IMultiBlockController) {
-                    target = (IMultiBlockController) te;
-                    // Register our covers with the controller
-                    registerCovers(target);
+                    setTarget((IMultiBlockController) te, mAllowedModes);
                 } else {
                     mTargetPos = null;
                 }
@@ -172,6 +194,12 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
             if (coverInfo.isValid() && coverInfo.getTickRate() > 0) {
                 controller.registerCoveredPartOnSide(side, this);
             }
+        }
+    }
+
+    protected void registerPurposes() {
+        for (MultiTileCasingPurpose purpose : registeredPurposes) {
+            registerPurpose(purpose);
         }
     }
 
@@ -209,7 +237,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     @Override
     public void readMultiTileNBT(NBTTagCompound aNBT) {
         if (aNBT.hasKey(NBT.ALLOWED_MODES)) mAllowedModes = aNBT.getInteger(NBT.ALLOWED_MODES);
-        if (aNBT.hasKey(NBT.MODE)) mMode = aNBT.getByte(NBT.MODE);
+        if (aNBT.hasKey(NBT.MODE)) setMode(aNBT.getByte(NBT.MODE));
         if (aNBT.hasKey(NBT.TARGET)) {
             mTargetPos = new ChunkCoordinates(
                 aNBT.getInteger(NBT.TARGET_X),
@@ -224,6 +252,12 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         }
         if (aNBT.hasKey(NBT.LOCKED_FLUID)) {
             configurationTank.readFromNBT(aNBT, NBT.LOCKED_FLUID);
+        }
+        if (modeSelected(ITEM_OUT)) {
+            registeredPurposes.add(MultiTileCasingPurpose.ItemOutput);
+        }
+        if (modeSelected(FLUID_OUT)) {
+            registeredPurposes.add(MultiTileCasingPurpose.FluidOutput);
         }
     }
 
@@ -282,7 +316,20 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
     @Override
     public void setMode(byte aMode) {
+        if (aMode == mMode) return;
+        if (modeSelected(FLUID_OUT)) {
+            unregisterPurpose(MultiTileCasingPurpose.FluidOutput);
+        }
+        if (modeSelected(ITEM_OUT)) {
+            unregisterPurpose(MultiTileCasingPurpose.ItemOutput);
+        }
         mMode = aMode;
+        if (modeSelected(FLUID_OUT)) {
+            registerPurpose(MultiTileCasingPurpose.FluidOutput);
+        }
+        if (modeSelected(ITEM_OUT)) {
+            registerPurpose(MultiTileCasingPurpose.ItemOutput);
+        }
     }
 
     @Override
@@ -425,7 +472,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         if (mMode == NOTHING) {
             facing = wrenchSide;
         }
-        mMode = getNextAllowedMode(BASIC_MODES);
+        setMode(getNextAllowedMode(BASIC_MODES));
         if (aPlayer.isSneaking()) {
             facing = wrenchSide;
         }
@@ -531,6 +578,11 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
             return controller.getTankInfo(this, aDirection);
 
         return GT_Values.emptyFluidTankInfo;
+    }
+
+    @Override
+    public boolean shouldTick(long tickTimer) {
+        return modeSelected(ITEM_OUT, FLUID_OUT);
     }
 
     // #region Energy - Depending on the part type - proxy to the multiblock controller, if we have one
