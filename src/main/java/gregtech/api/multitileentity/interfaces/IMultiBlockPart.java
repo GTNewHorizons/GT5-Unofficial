@@ -13,5 +13,9 @@ public interface IMultiBlockPart extends IMultiTileEntity {
 
     int getLockedInventoryIndex();
 
+    String getLockedInventory();
+
     boolean tickCoverAtSide(ForgeDirection side, long aTickTimer);
+
+    boolean shouldTick(long tickTimer);
 }

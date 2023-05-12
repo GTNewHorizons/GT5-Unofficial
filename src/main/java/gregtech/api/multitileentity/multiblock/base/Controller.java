@@ -3,6 +3,7 @@ package gregtech.api.multitileentity.multiblock.base;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.*;
+import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 import static gregtech.loaders.preload.GT_Loader_MultiTileEntities.COMPONENT_CASING_REGISTRY_NAME;
 import static mcp.mobius.waila.api.SpecialChars.*;
 
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -32,6 +34,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -87,6 +90,7 @@ import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.multitileentity.MultiTileEntityContainer;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
+import gregtech.api.multitileentity.enums.MultiTileCasingPurpose;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
@@ -109,6 +113,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     IConstructable, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable {
 
     public static final String ALL_INVENTORIES_NAME = "all";
+    protected static final int AUTO_OUTPUT_FREQUENCY_TICK = 20;
 
     private static final Map<Integer, GT_Multiblock_Tooltip_Builder> tooltip = new ConcurrentHashMap<>();
     private final List<UpgradeCasing> upgradeCasings = new ArrayList<>();
@@ -147,6 +152,15 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         new LinkedList<>(),
         new LinkedList<>(),
         new LinkedList<>());
+
+    // A list for each purpose that a casing can register to, to be ticked
+    protected List<LinkedList<WeakReference<IMultiBlockPart>>> registeredTickableParts = new ArrayList<>();
+
+    public Controller() {
+        for (int i = 0; i < MultiTileCasingPurpose.values().length; i++) {
+            registeredTickableParts.add(new LinkedList<>());
+        }
+    }
 
     /** Registry ID of the required casing */
     public abstract short getCasingRegistryID();
@@ -568,6 +582,31 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     @Override
+    public void registerCaseWithPurpose(MultiTileCasingPurpose purpose, IMultiBlockPart part) {
+        final LinkedList<WeakReference<IMultiBlockPart>> tickableParts = registeredTickableParts.get(purpose.ordinal());
+        final Iterator<WeakReference<IMultiBlockPart>> it = tickableParts.iterator();
+        while (it.hasNext()) {
+            final IMultiBlockPart next = (it.next()).get();
+            if (next == null) {
+                it.remove();
+            } else if (next == part) {
+                return;
+            }
+        }
+        tickableParts.add(new WeakReference<>(part));
+    }
+
+    @Override
+    public void unregisterCaseWithPurpose(MultiTileCasingPurpose purpose, IMultiBlockPart part) {
+        final LinkedList<WeakReference<IMultiBlockPart>> tickableParts = registeredTickableParts.get(purpose.ordinal());
+        final Iterator<WeakReference<IMultiBlockPart>> it = tickableParts.iterator();
+        while (it.hasNext()) {
+            final IMultiBlockPart next = (it.next()).get();
+            if (next == null || next == part) it.remove();
+        }
+    }
+
+    @Override
     public void onFirstTick(boolean isServerSide) {
         super.onFirstTick(isServerSide);
         if (isServerSide) {
@@ -613,11 +652,87 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             }
             if (checkStructure(false)) {
                 runMachine(tick);
+                pushItemOutputs(tick);
+                pushFluidOutputs(tick);
+
             } else {
                 stopMachine(false);
             }
         } else {
             doActivitySound(getActivitySoundLoop());
+        }
+    }
+
+    protected void pushItemOutputs(long tick) {
+        if (tick % AUTO_OUTPUT_FREQUENCY_TICK != 0) return;
+        final LinkedList<WeakReference<IMultiBlockPart>> registeredItemOutputs = registeredTickableParts
+            .get(MultiTileCasingPurpose.ItemOutput.ordinal());
+        final Iterator<WeakReference<IMultiBlockPart>> itemOutputIterator = registeredItemOutputs.iterator();
+        while (itemOutputIterator.hasNext()) {
+            final IMultiBlockPart part = (itemOutputIterator.next()).get();
+            if (part == null) {
+                itemOutputIterator.remove();
+                continue;
+            }
+            if (!part.shouldTick(mTickTimer)) {
+                itemOutputIterator.remove();
+            } else {
+                final IInventory facingInventory = part.getIInventoryAtSide(part.getFrontFacing());
+                if (facingInventory != null) {
+                    moveMultipleItemStacks(
+                        part,
+                        facingInventory,
+                        part.getFrontFacing(),
+                        part.getBackFacing(),
+                        null,
+                        false,
+                        (byte) 64,
+                        (byte) 1,
+                        (byte) 64,
+                        (byte) 1,
+                        part.getSizeInventory());
+                    for (int i = 0; i < part.getSizeInventory(); i++) {
+                        if (part.getStackInSlot(i) != null && part.getStackInSlot(i).stackSize <= 0)
+                            part.setInventorySlotContents(i, null);
+                    }
+                }
+            }
+        }
+    }
+
+    protected void pushFluidOutputs(long tick) {
+        if (tick % AUTO_OUTPUT_FREQUENCY_TICK != 0) return;
+        final LinkedList<WeakReference<IMultiBlockPart>> registeredFluidOutputs = registeredTickableParts
+            .get(MultiTileCasingPurpose.FluidOutput.ordinal());
+        final Iterator<WeakReference<IMultiBlockPart>> fluidOutputIterator = registeredFluidOutputs.iterator();
+        while (fluidOutputIterator.hasNext()) {
+            final IMultiBlockPart part = (fluidOutputIterator.next()).get();
+            if (part == null) {
+                fluidOutputIterator.remove();
+                continue;
+            }
+            if (!part.shouldTick(mTickTimer)) {
+                fluidOutputIterator.remove();
+            } else {
+                IFluidHandler targetTank = part.getITankContainerAtSide(part.getFrontFacing());
+                FluidTankGT[] controllerTanks = multiBlockOutputTank
+                    .getOrDefault(part.getLockedInventory(), getOutputTanks());
+                if (targetTank != null && controllerTanks != null) {
+                    for (FluidTankGT tank : controllerTanks) {
+                        if (tank.get() == null) continue;
+                        FluidStack tDrained = part.drain(part.getFrontFacing(), Math.max(1, tank.get().amount), false);
+                        if (tDrained != null) {
+                            int tFilledAmount = targetTank.fill(part.getBackFacing(), tDrained, false);
+                            if (tFilledAmount > 0) {
+                                targetTank.fill(
+                                    part.getBackFacing(),
+                                    part.drain(part.getFrontFacing(), tFilledAmount, true),
+                                    true);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
