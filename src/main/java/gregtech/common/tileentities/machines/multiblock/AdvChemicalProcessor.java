@@ -25,16 +25,19 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.enums.Materials;
 import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.logic.ComplexParallelProcessingLogic;
@@ -45,23 +48,34 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.common.tileentities.casings.upgrade.Inventory;
 
-public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalReactor> {
+public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalProcessor> {
 
-    private static IStructureDefinition<AdvChemicalReactor> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<AdvChemicalProcessor> STRUCTURE_DEFINITION = null;
     protected static final String STRUCTURE_PIECE_T1 = "T1";
-    protected static final Vec3Impl STRUCTURE_OFFSET = new Vec3Impl(3, 1, 0);
+    protected static final String STRUCTURE_PIECE_T2 = "T2";
+    protected static final String STRUCTURE_PIECE_T3 = "T3";
+    protected static final String STRUCTURE_PIECE_T4 = "T4";
+    protected static final String STRUCTURE_PIECE_T5_6 = "T5_6";
+    protected static final String STRUCTURE_PIECE_T7_8 = "T7_8";
+    protected static final Vec3Impl STRUCTURE_OFFSET_T1 = new Vec3Impl(3, 1, 0);
+    protected static final Vec3Impl STRUCTURE_OFFSET_T2 = new Vec3Impl(1, 4, -3);
+    protected static final Vec3Impl STRUCTURE_OFFSET_T3 = new Vec3Impl(8, 0, 5);
+    protected static final Vec3Impl STRUCTURE_OFFSET_T4 = new Vec3Impl(-14, 0, 0);
+    protected static final Vec3Impl STRUCTURE_OFFSET_T5 = new Vec3Impl(14, 0, -6);
+    protected static final Vec3Impl STRUCTURE_OFFSET_T6 = new Vec3Impl(-16, 0, 0);
+    protected static final Vec3Impl STRUCTURE_OFFSET_T7 = new Vec3Impl(16, 0, 15);
+    protected static final Vec3Impl STRUCTURE_OFFSET_T8 = new Vec3Impl(-16, 0, 0);
     protected static final int PROCESS_WINDOW_BASE_ID = 100;
     protected static final int ITEM_WHITELIST_SLOTS = 8;
     protected static final int FLUID_WHITELIST_SLOTS = 8;
-    protected static final int MAX_PROCESSES = 4;
-    protected int numberOfProcessors = MAX_PROCESSES; // TODO: Set this value depending on structure
+    protected static final int MAX_PROCESSES = 8;
     protected HeatingCoilLevel coilTier;
     protected final ArrayList<HashSet<String>> processWhitelists = new ArrayList<>(MAX_PROCESSES);
     protected final ArrayList<ItemStackHandler> processWhitelistInventoryHandlers = new ArrayList<>(MAX_PROCESSES);
     protected final ArrayList<ArrayList<IFluidTank>> processFluidWhiteLists = new ArrayList<>(MAX_PROCESSES);
     protected boolean wasWhitelistOpened = false;
 
-    public AdvChemicalReactor() {
+    public AdvChemicalProcessor() {
         super();
         for (int i = 0; i < MAX_PROCESSES; i++) {
             processWhitelists.add(null);
@@ -75,11 +89,13 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
         processingLogic = new ComplexParallelProcessingLogic(
             GT_Recipe.GT_Recipe_Map_LargeChemicalReactor.sChemicalRecipes,
             MAX_PROCESSES);
+        setMaxComplexParallels(1, false);
     }
 
     @Override
     public void readMultiTileNBT(NBTTagCompound nbt) {
         super.readMultiTileNBT(nbt);
+        setMaxComplexParallels(nbt.getInteger("processors"), false);
         final NBTTagCompound processWhiteLists = nbt.getCompoundTag("whiteLists");
         long capacity = 1000;
         if (nbt.hasKey(GT_Values.NBT.TANK_CAPACITY)) {
@@ -122,6 +138,7 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
     @Override
     public void writeMultiTileNBT(NBTTagCompound nbt) {
         super.writeMultiTileNBT(nbt);
+        nbt.setInteger("processors", maxComplexParallels);
         final NBTTagCompound processWhiteLists = new NBTTagCompound();
         for (int i = 0; i < MAX_PROCESSES; i++) {
             processWhiteLists.setTag(
@@ -159,12 +176,13 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Chemical Reactor")
-            .addInfo("Controller block for the Advanced Chemical Reactor")
+            .addInfo("Controller block for the Advanced Chemical Processor")
             .addInfo("Does not lose efficiency when overclocked")
             .addInfo("Accepts fluids instead of fluid cells")
             .addInfo("Can do multiple different recipes at once")
             .addInfo("By using the whitelist filter a recipe can push its output")
             .addInfo("to a different recipes input to chain them")
+            .addInfo("Disclaimer: Still WIP - Use at your own risk")
             .addInfo(GT_Values.Authorminecraft7771)
             .addSeparator()
             .beginStructureBlock(5, 3, 3, false)
@@ -180,33 +198,146 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
 
     @Override
     public Vec3Impl getStartingStructureOffset() {
-        return STRUCTURE_OFFSET;
+        return STRUCTURE_OFFSET_T1;
     }
 
     @Override
     public boolean checkMachine() {
         setCoilTier(HeatingCoilLevel.None);
-        setMaxComplexParallels(MAX_PROCESSES);
         buildState.startBuilding(getStartingStructureOffset());
-        boolean result = checkPiece(STRUCTURE_PIECE_T1, buildState.stopBuilding());
-        return result && super.checkMachine();
+        if (!checkPiece(STRUCTURE_PIECE_T1, buildState.getCurrentOffset())) return buildState.failBuilding();
+        if (maxComplexParallels > 1) {
+            buildState.addOffset(STRUCTURE_OFFSET_T2);
+            if (!checkPiece(STRUCTURE_PIECE_T2, buildState.getCurrentOffset())) return buildState.failBuilding();
+        }
+        if (maxComplexParallels > 2) {
+            buildState.addOffset(STRUCTURE_OFFSET_T3);
+            if (!checkPiece(STRUCTURE_PIECE_T3, buildState.getCurrentOffset())) return buildState.failBuilding();
+        }
+        if (maxComplexParallels > 3) {
+            buildState.addOffset(STRUCTURE_OFFSET_T4);
+            if (!checkPiece(STRUCTURE_PIECE_T4, buildState.getCurrentOffset())) return buildState.failBuilding();
+        }
+        if (maxComplexParallels > 4) {
+            buildState.addOffset(STRUCTURE_OFFSET_T5);
+            if (!checkPiece(STRUCTURE_PIECE_T5_6, buildState.getCurrentOffset())) return buildState.failBuilding();
+        }
+        if (maxComplexParallels > 5) {
+            buildState.addOffset(STRUCTURE_OFFSET_T6);
+            if (!checkPiece(STRUCTURE_PIECE_T5_6, buildState.getCurrentOffset())) return buildState.failBuilding();
+        }
+        if (maxComplexParallels > 6) {
+            buildState.addOffset(STRUCTURE_OFFSET_T7);
+            if (!checkPiece(STRUCTURE_PIECE_T7_8, buildState.getCurrentOffset())) return buildState.failBuilding();
+        }
+        if (maxComplexParallels > 7) {
+            buildState.addOffset(STRUCTURE_OFFSET_T8);
+            if (!checkPiece(STRUCTURE_PIECE_T7_8, buildState.getCurrentOffset())) return buildState.failBuilding();
+        }
+        buildState.stopBuilding();
+        return super.checkMachine();
     }
 
     @Override
     public void construct(ItemStack trigger, boolean hintsOnly) {
         buildState.startBuilding(getStartingStructureOffset());
-        buildPiece(STRUCTURE_PIECE_T1, trigger, hintsOnly, buildState.stopBuilding());
+        buildPiece(STRUCTURE_PIECE_T1, trigger, hintsOnly, buildState.getCurrentOffset());
+        if (maxComplexParallels > 1) {
+            buildState.addOffset(STRUCTURE_OFFSET_T2);
+            buildPiece(STRUCTURE_PIECE_T2, trigger, hintsOnly, buildState.getCurrentOffset());
+        }
+        if (maxComplexParallels > 2) {
+            buildState.addOffset(STRUCTURE_OFFSET_T3);
+            buildPiece(STRUCTURE_PIECE_T3, trigger, hintsOnly, buildState.getCurrentOffset());
+        }
+        if (maxComplexParallels > 3) {
+            buildState.addOffset(STRUCTURE_OFFSET_T4);
+            buildPiece(STRUCTURE_PIECE_T4, trigger, hintsOnly, buildState.getCurrentOffset());
+        }
+        if (maxComplexParallels > 4) {
+            buildState.addOffset(STRUCTURE_OFFSET_T5);
+            buildPiece(STRUCTURE_PIECE_T5_6, trigger, hintsOnly, buildState.getCurrentOffset());
+        }
+        if (maxComplexParallels > 5) {
+            buildState.addOffset(STRUCTURE_OFFSET_T6);
+            buildPiece(STRUCTURE_PIECE_T5_6, trigger, hintsOnly, buildState.getCurrentOffset());
+        }
+        if (maxComplexParallels > 6) {
+            buildState.addOffset(STRUCTURE_OFFSET_T7);
+            buildPiece(STRUCTURE_PIECE_T7_8, trigger, hintsOnly, buildState.getCurrentOffset());
+        }
+        if (maxComplexParallels > 7) {
+            buildState.addOffset(STRUCTURE_OFFSET_T8);
+            buildPiece(STRUCTURE_PIECE_T7_8, trigger, hintsOnly, buildState.getCurrentOffset());
+        }
+
+        buildState.stopBuilding();
     }
 
     @Override
-    public IStructureDefinition<AdvChemicalReactor> getStructureDefinition() {
+    public IStructureDefinition<AdvChemicalProcessor> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<AdvChemicalReactor>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<AdvChemicalProcessor>builder()
                 .addShape(
                     STRUCTURE_PIECE_T1,
                     transpose(
                         new String[][] { { "CPCPC", "CCCCC", "CPCPC" }, { "CGC~C", "GWWWC", "CGCCC" },
                             { "CPCPC", "CTTTC", "CPCPC" } }))
+                .addShape(
+                    STRUCTURE_PIECE_T2,
+                    new String[][] { { "       ", "       ", "       ", "       ", "       ", "  F F  ", "  B B  " },
+                        { "       ", "       ", "       ", "       ", "       ", "  F F  ", "  B B  " },
+                        { "       ", "       ", "       ", "       ", "       ", "  F F  ", "  BBB  " },
+                        { "   C   ", "  CGC  ", "  CGC  ", "  CGC  ", "  CGC  ", "  CGC  ", " BCCCB " },
+                        { "  BBB  ", " C   C ", " C   C ", " C   C ", " C   C ", " C   C ", "BCPPPCB" },
+                        { " CBBBC ", " G W G ", " G W G ", " G W G ", " G W G ", " G W G ", "BCPCPCB" },
+                        { "  BBB  ", " C   C ", " C   C ", " C   C ", " C   C ", " C   C ", "BCPPPCB" },
+                        { "   C   ", "  CGC  ", "  CGC  ", "  CGC  ", "  CGC  ", "  CGC  ", " BCCCB " },
+                        { "       ", "       ", "       ", "       ", "       ", "       ", "  BBB  " } })
+                .addShape(
+                    STRUCTURE_PIECE_T3,
+                    new String[][] {
+                        { "         ", "         ", "         ", "         ", "         ", "         ", "  BBB    " },
+                        { "   C     ", "  CGC    ", "  CGC    ", "  CGC    ", "  CGC    ", "  CGC    ", " BCCCB   " },
+                        { "  BBB    ", " C   C   ", " C   C   ", " C   C   ", " C   C   ", " C   CFFF", "BCPPPCBBB" },
+                        { " CBBBC   ", " G W G   ", " G W G   ", " G W G   ", " G W G   ", " G W G   ", "BCPCPCB  " },
+                        { "  BBB    ", " C   C   ", " C   C   ", " C   C   ", " C   C   ", " C   CFFF", "BCPPPCBBB" },
+                        { "   C     ", "  CGC    ", "  CGC    ", "  CGC    ", "  CGC    ", "  CGC    ", " BCCCB   " },
+                        { "         ", "         ", "         ", "         ", "         ", "         ", "  BBB    " } })
+                .addShape(
+                    STRUCTURE_PIECE_T4,
+                    new String[][] {
+                        { "         ", "         ", "         ", "         ", "         ", "         ", "    BBB  " },
+                        { "     C   ", "    CGC  ", "    CGC  ", "    CGC  ", "    CGC  ", "    CGC  ", "   BCCCB " },
+                        { "    BBB  ", "   C   C ", "   C   C ", "   C   C ", "   C   C ", "FFFC   C ", "BBBCPPPCB" },
+                        { "   CBBBC ", "   G W G ", "   G W G ", "   G W G ", "   G W G ", "   G W G ", "  BCPCPCB" },
+                        { "    BBB  ", "   C   C ", "   C   C ", "   C   C ", "   C   C ", "FFFC   C ", "BBBCPPPCB" },
+                        { "     C   ", "    CGC  ", "    CGC  ", "    CGC  ", "    CGC  ", "    CGC  ", "   BCCCB " },
+                        { "         ", "         ", "         ", "         ", "         ", "         ", "    BBB  " } })
+                .addShape(
+                    STRUCTURE_PIECE_T5_6,
+                    new String[][] { { "       ", "       ", "       ", "       ", "       ", "  F F  ", "       " },
+                        { "       ", "       ", "       ", "       ", "       ", "  F F  ", "  B B  " },
+                        { "       ", "       ", "       ", "       ", "       ", "  F F  ", "  B B  " },
+                        { "       ", "       ", "       ", "       ", "       ", "  F F  ", "  BBB  " },
+                        { "   C   ", "  CGC  ", "  CGC  ", "  CGC  ", "  CGC  ", "  CGC  ", " BCCCB " },
+                        { "  BBB  ", " C   C ", " C   C ", " C   C ", " C   C ", " C   C ", "BCPPPCB" },
+                        { " CBBBC ", " G W G ", " G W G ", " G W G ", " G W G ", " G W G ", "BCPCPCB" },
+                        { "  BBB  ", " C   C ", " C   C ", " C   C ", " C   C ", " C   C ", "BCPPPCB" },
+                        { "   C   ", "  CGC  ", "  CGC  ", "  CGC  ", "  CGC  ", "  CGC  ", " BCCCB " },
+                        { "       ", "       ", "       ", "       ", "       ", "       ", "  BBB  " } })
+                .addShape(
+                    STRUCTURE_PIECE_T7_8,
+                    new String[][] { { "       ", "       ", "       ", "       ", "       ", "       ", "  BBB  " },
+                        { "   C   ", "  CGC  ", "  CGC  ", "  CGC  ", "  CGC  ", "  CGC  ", " BCCCB " },
+                        { "  BBB  ", " C   C ", " C   C ", " C   C ", " C   C ", " C   C ", "BCPPPCB" },
+                        { " CBBBC ", " G W G ", " G W G ", " G W G ", " G W G ", " G W G ", "BCPCPCB" },
+                        { "  BBB  ", " C   C ", " C   C ", " C   C ", " C   C ", " C   C ", "BCPPPCB" },
+                        { "   C   ", "  CGC  ", "  CGC  ", "  CGC  ", "  CGC  ", "  CGC  ", " BCCCB " },
+                        { "       ", "       ", "       ", "       ", "       ", "  F F  ", "  BBB  " },
+                        { "       ", "       ", "       ", "       ", "       ", "  F F  ", "  B B  " },
+                        { "       ", "       ", "       ", "       ", "       ", "  F F  ", "  B B  " },
+                        { "       ", "       ", "       ", "       ", "       ", "  F F  ", "       " } })
                 .addElement(
                     'C',
                     addMultiTileCasing(
@@ -217,7 +348,9 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
                 .addElement('T', addMotorCasings(NOTHING))
                 .addElement(
                     'W',
-                    GT_StructureUtility.ofCoil(AdvChemicalReactor::setCoilTier, AdvChemicalReactor::getCoilTier))
+                    GT_StructureUtility.ofCoil(AdvChemicalProcessor::setCoilTier, AdvChemicalProcessor::getCoilTier))
+                .addElement('B', ofBlock(GregTech_API.sBlockCasings4, 1))
+                .addElement('F', GT_StructureUtility.ofFrame(Materials.Steel))
                 .addElement(
                     'G',
                     ofChain(
@@ -228,6 +361,12 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
                 .build();
         }
         return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    protected void setMaxComplexParallels(int parallel, boolean stopMachine) {
+        super.setMaxComplexParallels(parallel, stopMachine);
+        onStructureChange();
     }
 
     @Override
@@ -327,8 +466,19 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
                         })
                     .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_WHITELIST)
                     .setSize(18, 18)
-                    .setPos(20 * i + 18, 18));
+                    .setEnabled((widget -> processIndex < maxComplexParallels))
+                    .setPos(20 * (i % 4) + 18, 18 + (i / 4) * 20));
         }
+        child.addChild(
+            new TextFieldWidget().setGetterInt(() -> maxComplexParallels)
+                .setSetterInt(parallel -> setMaxComplexParallels(parallel, true))
+                .setNumbers(1, MAX_PROCESSES)
+                .setTextColor(Color.WHITE.normal)
+                .setTextAlignment(Alignment.Center)
+                .addTooltip("Tier")
+                .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+                .setSize(18, 18)
+                .setPos(130, 85));
         return child;
     }
 
@@ -384,7 +534,7 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
 
     @Override
     public String getLocalName() {
-        return "Advanced Chemical Reactor";
+        return "Advanced Chemical Processor";
     }
 
     public void setCoilTier(HeatingCoilLevel coilTier) {

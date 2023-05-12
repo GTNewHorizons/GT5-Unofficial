@@ -1,8 +1,7 @@
 package gregtech.api.multitileentity.multiblock.base;
 
-import static mcp.mobius.waila.api.SpecialChars.*;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.LongStream;
 
@@ -36,9 +35,9 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
         isSimpleMachine = false;
     }
 
-    protected void setMaxComplexParallels(int parallel) {
+    protected void setMaxComplexParallels(int parallel, boolean stopMachine) {
         if (parallel != maxComplexParallels) {
-            if (maxComplexParallels != 0) {
+            if (maxComplexParallels != 0 && stopMachine) {
                 stopMachine(false);
             }
             maxProgressTimes = new long[parallel];
@@ -159,9 +158,7 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
     @Override
     protected void stopMachine(boolean powerShutDown) {
         super.stopMachine(powerShutDown);
-        for (int i = 0; i < maxComplexParallels; i++) {
-            maxProgressTimes[i] = 0;
-        }
+        Arrays.fill(maxProgressTimes, 0);
     }
 
     protected void setDuration(int index, long duration) {
