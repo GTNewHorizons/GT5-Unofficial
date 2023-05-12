@@ -323,7 +323,7 @@ public class GT_RecipeRegistrator {
             if (GT_OreDictUnificator.getIngotOrDust(aData.mMaterial) != null) {
                 outputs.add(GT_OreDictUnificator.getIngotOrDust(aData.mMaterial));
             }
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < 8; i++) {
                 if (GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(i)) != null) {
                     outputs.add(GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(i)));
                 }
