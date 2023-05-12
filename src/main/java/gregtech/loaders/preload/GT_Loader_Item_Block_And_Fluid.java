@@ -1246,15 +1246,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     Materials.FierySteel.getFluid(250L),
                     ItemList.TF_Vial_FieryBlood.get(1L),
                     ItemList.Bottle_Empty.get(1L)));
-
-            GT_FluidFactory.builder("liquid_sodium")
-                .withLocalizedName("Liquid Sodium")
-                .withStateAndTemperature(LIQUID, 495)
-                .buildAndRegister()
-                .configureMaterials(Materials.Sodium)
-                .registerBContainers(
-                    GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Sodium, 1L),
-                    ItemList.Cell_Empty.get(1L));
         }
 
         FluidContainerRegistry.registerFluidContainer(
@@ -1916,7 +1907,10 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .withLocalizedName("Liquid Sodium")
             .withStateAndTemperature(LIQUID, 495)
             .buildAndRegister()
-            .configureMaterials(Materials.Sodium);
+            .configureMaterials(Materials.Sodium)
+            .registerBContainers(
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Sodium, 1L),
+                ItemList.Cell_Empty.get(1L));
 
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
