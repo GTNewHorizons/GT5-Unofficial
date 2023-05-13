@@ -7,6 +7,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 import gtPlusPlus.core.inventories.BaseInventoryBackpack;
+import gtPlusPlus.core.slots.SlotBlockedInv;
 import gtPlusPlus.core.slots.SlotItemBackpackInv;
 
 public class Container_BackpackBase extends Container {
@@ -63,7 +64,11 @@ public class Container_BackpackBase extends Container {
 
         // PLAYER ACTION BAR - uses default locations for standard action bar texture file
         for (i = 0; i < 9; ++i) {
-            this.addSlotToContainer(new Slot(inventoryPlayer, i, 8 + (i * 18), 142));
+            if (i == par1Player.inventory.currentItem) {
+                this.addSlotToContainer(new SlotBlockedInv(inventoryPlayer, i, 8 + (i * 18), 142));
+            } else {
+                this.addSlotToContainer(new Slot(inventoryPlayer, i, 8 + (i * 18), 142));
+            }
         }
     }
 
@@ -164,6 +169,16 @@ public class Container_BackpackBase extends Container {
         if ((slot >= 0) && (this.getSlot(slot) != null) && (this.getSlot(slot).getStack() == player.getHeldItem())) {
             return null;
         }
+
+        // Keybind for moving from hotbar slot to hovered slot, make we don't move the currently held backpack.
+        if (flag == 2 && button >= 0 && button < 9) {
+            int hotbarIndex = HOTBAR_START + button;
+            Slot hotbarSlot = getSlot(hotbarIndex);
+            if (hotbarSlot instanceof SlotBlockedInv) {
+                return null;
+            }
+        }
+
         return super.slotClick(slot, button, flag, player);
     }
 }

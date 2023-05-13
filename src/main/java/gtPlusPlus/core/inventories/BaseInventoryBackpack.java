@@ -28,7 +28,7 @@ public class BaseInventoryBackpack implements IInventory {
     protected String uniqueID;
 
     /**
-     * @param itemstack - the ItemStack to which this inventory belongs
+     * @param stack - the ItemStack to which this inventory belongs
      */
     public BaseInventoryBackpack(final ItemStack stack) {
         this.invItem = stack;
