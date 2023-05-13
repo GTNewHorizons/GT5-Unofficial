@@ -12,6 +12,7 @@ import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Mods;
 import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
+import gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing;
 import gregtech.api.multitileentity.multiblock.base.WallShareablePart;
 import gregtech.api.multitileentity.multiblock.casing.BasicCasing;
 import gregtech.common.tileentities.casings.functional.Conveyor;
@@ -22,6 +23,7 @@ import gregtech.common.tileentities.casings.functional.Piston;
 import gregtech.common.tileentities.casings.functional.Pump;
 import gregtech.common.tileentities.casings.functional.RobotArm;
 import gregtech.common.tileentities.casings.functional.Sensor;
+import gregtech.common.tileentities.casings.upgrade.Cleanroom;
 import gregtech.common.tileentities.casings.upgrade.Inventory;
 import gregtech.common.tileentities.machines.multiblock.AdvChemicalProcessor;
 import gregtech.common.tileentities.machines.multiblock.CokeOven;
@@ -30,6 +32,7 @@ import gregtech.common.tileentities.machines.multiblock.Macerator;
 public class GT_Loader_MultiTileEntities implements Runnable {
 
     public static final String COMPONENT_CASING_REGISTRY_NAME = "gt.multitileentity.component.casings";
+    public static final String UPGRADE_CASING_REGISTRY_NAME = "gt.multitileentity.upgrade.casings";
     public static final String CASING_REGISTRY_NAME = "gt.multitileentity.casings";
     public static final String MACHINE_REGISTRY_NAME = "gt.multitileentity.controllers";
     public static final MultiTileEntityRegistry MACHINE_REGISTRY = new MultiTileEntityRegistry(MACHINE_REGISTRY_NAME);
@@ -40,6 +43,10 @@ public class GT_Loader_MultiTileEntities implements Runnable {
         .getOrCreate("GregTech", "casing", Material.iron, Block.soundTypeMetal, "wrench", 0, 0, 15, true, true);
     public static final MultiTileEntityRegistry COMPONENT_CASING_REGISTRY = new MultiTileEntityRegistry(
         COMPONENT_CASING_REGISTRY_NAME);
+
+    public static final MultiTileEntityRegistry UPGRADE_CASING_REGISTRY = new MultiTileEntityRegistry(
+        UPGRADE_CASING_REGISTRY_NAME);
+
     public static final MultiTileEntityBlock COMPONENT_CASING_BLOCK = MultiTileEntityBlock.getOrCreate(
         "GregTech",
         "componentCasing",
@@ -147,6 +154,14 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .textureFolder("macerator")
             .upgradeInventorySize(24)
             .tier(2)
+            .register();
+
+        UPGRADE_CASING_REGISTRY.create(GT_MultiTileUpgradeCasing.Cleanroom.getId(), Cleanroom.class)
+            .name("Cleanroom Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("cleanroom")
+            .tier(1)
             .register();
     }
 

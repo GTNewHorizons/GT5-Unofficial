@@ -143,6 +143,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     /** If this is set to true, the machine will get default WAILA behavior */
     protected boolean isSimpleMachine = true;
 
+    protected boolean isCleanroom = false;
+
     // A list of sides
     // Each side has a list of parts that have a cover that need to be ticked
     protected List<LinkedList<WeakReference<IMultiBlockPart>>> registeredCoveredParts = Arrays.asList(
@@ -734,6 +736,11 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 }
             }
         }
+    }
+
+    @Override
+    public void setCleanroom(boolean cleanroom) {
+        isCleanroom = cleanroom;
     }
 
     protected void clearSpecialLists() {

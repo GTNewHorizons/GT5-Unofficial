@@ -5,6 +5,7 @@ import java.util.stream.LongStream;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.GT_Mod;
 import gregtech.api.multitileentity.multiblock.base.Controller;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
@@ -24,6 +25,7 @@ public class ComplexParallelProcessingLogic {
     protected final long[] eut;
     protected final long[] durations;
     protected boolean[] isVoidProtected;
+    protected boolean isCleanroom;
 
     public ComplexParallelProcessingLogic(int maxComplexParallels) {
         this(null, maxComplexParallels);
@@ -85,6 +87,11 @@ public class ComplexParallelProcessingLogic {
         return this;
     }
 
+    public ComplexParallelProcessingLogic setIsCleanroom(boolean isCleanroom) {
+        this.isCleanroom = isCleanroom;
+        return this;
+    }
+
     public ComplexParallelProcessingLogic clear() {
         for (int i = 0; i < maxComplexParallels; i++) {
             outputItems[i] = null;
@@ -115,6 +122,10 @@ public class ComplexParallelProcessingLogic {
         GT_Recipe recipe = recipeMap
             .findRecipe(tileEntity, false, false, availableEut[index], inputFluids[index], inputItems[index]);
         if (recipe == null) {
+            return false;
+        }
+
+        if (recipe.mSpecialValue == -200 && GT_Mod.gregtechproxy.mEnableCleanroom && !isCleanroom) {
             return false;
         }
 

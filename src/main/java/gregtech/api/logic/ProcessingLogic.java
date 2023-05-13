@@ -16,6 +16,7 @@ public abstract class ProcessingLogic {
     protected FluidStack[] currentOutputFluids;
     protected long eut;
     protected long duration;
+    protected boolean isCleanroom;
 
     public ProcessingLogic() {}
 
@@ -46,6 +47,11 @@ public abstract class ProcessingLogic {
 
     public ProcessingLogic setCurrentOutputFluids(FluidStack... currentOutputFluids) {
         this.currentOutputFluids = currentOutputFluids;
+        return this;
+    }
+
+    public ProcessingLogic setIsCleanroom(boolean isCleanroom) {
+        this.isCleanroom = isCleanroom;
         return this;
     }
 

@@ -4,6 +4,7 @@ import static com.google.common.primitives.Ints.saturatedCast;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Mods.*;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.*;
+import static gregtech.loaders.preload.GT_Loader_MultiTileEntities.UPGRADE_CASING_REGISTRY_NAME;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,6 +43,7 @@ import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.logic.ComplexParallelProcessingLogic;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
+import gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing;
 import gregtech.api.multitileentity.multiblock.base.ComplexParallelController;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -281,7 +283,7 @@ public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalP
                 .addShape(
                     STRUCTURE_PIECE_T1,
                     transpose(
-                        new String[][] { { "CPCPC", "CCCCC", "CPCPC" }, { "CGC~C", "GWWWC", "CGCCC" },
+                        new String[][] { { "CPCPC", "CCCCC", "CPCPC" }, { "CGC~C", "GWWWU", "CGCCC" },
                             { "CPCPC", "CTTTC", "CPCPC" } }))
                 .addShape(
                     STRUCTURE_PIECE_T2,
@@ -358,6 +360,17 @@ public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalP
                         ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks", 0, true),
                         ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks2", 0, true),
                         ofBlockUnlocalizedName(Thaumcraft.ID, "blockCosmeticOpaque", 2, false)))
+                .addElement(
+                    'U',
+                    ofChain(
+                        addMultiTileCasing(
+                            UPGRADE_CASING_REGISTRY_NAME,
+                            GT_MultiTileUpgradeCasing.Cleanroom.getId(),
+                            NOTHING),
+                        addMultiTileCasing(
+                            "gt.multitileentity.casings",
+                            getCasingMeta(),
+                            FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN)))
                 .build();
         }
         return STRUCTURE_DEFINITION;
