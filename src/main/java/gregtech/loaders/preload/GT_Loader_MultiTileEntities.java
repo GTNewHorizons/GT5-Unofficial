@@ -3,16 +3,15 @@ package gregtech.loaders.preload;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.multitileentity.enums.GT_MultiTileCasing.*;
 import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.*;
+import static gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing.*;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Mods;
 import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
-import gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing;
 import gregtech.api.multitileentity.multiblock.base.WallShareablePart;
 import gregtech.api.multitileentity.multiblock.casing.BasicCasing;
 import gregtech.common.tileentities.casings.functional.Conveyor;
@@ -25,6 +24,7 @@ import gregtech.common.tileentities.casings.functional.RobotArm;
 import gregtech.common.tileentities.casings.functional.Sensor;
 import gregtech.common.tileentities.casings.upgrade.Cleanroom;
 import gregtech.common.tileentities.casings.upgrade.Inventory;
+import gregtech.common.tileentities.casings.upgrade.Tank;
 import gregtech.common.tileentities.machines.multiblock.AdvChemicalProcessor;
 import gregtech.common.tileentities.machines.multiblock.CokeOven;
 import gregtech.common.tileentities.machines.multiblock.Macerator;
@@ -137,26 +137,264 @@ public class GT_Loader_MultiTileEntities implements Runnable {
         registerSensorCasings();
         registerFieldGeneratorCasings();
 
-        COMPONENT_CASING_REGISTRY.create(20001, Inventory.class)
+        UPGRADE_CASING_REGISTRY.create(ULV_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade ULV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(1)
+            .tier(0)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(LV_Inventory.getId(), Inventory.class)
             .name("Inventory Upgrade LV")
             .category("MultiBlock Upgrade Casing")
             .setBlock(COMPONENT_CASING_BLOCK)
-            .material(MaterialsUEVplus.SpaceTime)
-            .textureFolder("macerator")
-            .upgradeInventorySize(16)
+            .textureFolder("inventory")
+            .upgradeInventorySize(4)
             .tier(1)
             .register();
-        COMPONENT_CASING_REGISTRY.create(20002, Inventory.class)
+        UPGRADE_CASING_REGISTRY.create(MV_Inventory.getId(), Inventory.class)
             .name("Inventory Upgrade MV")
             .category("MultiBlock Upgrade Casing")
             .setBlock(COMPONENT_CASING_BLOCK)
-            .material(Materials.Neutronium)
-            .textureFolder("macerator")
-            .upgradeInventorySize(24)
+            .textureFolder("inventory")
+            .upgradeInventorySize(8)
             .tier(2)
             .register();
+        UPGRADE_CASING_REGISTRY.create(HV_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade HV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(16)
+            .tier(3)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(EV_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade EV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(32)
+            .tier(4)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(IV_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade IV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(64)
+            .tier(5)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(LuV_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade LuV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(128)
+            .tier(6)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(ZPM_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade ZPM")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(256)
+            .tier(7)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UV_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade UV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(256)
+            .tier(8)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UHV_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade UHV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(256)
+            .tier(9)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UEV_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade UEV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(256)
+            .tier(10)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UIV_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade UIV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(256)
+            .tier(11)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UMV_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade UMV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(256)
+            .tier(12)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UXV_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade UXV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(256)
+            .tier(13)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(MAX_Inventory.getId(), Inventory.class)
+            .name("Inventory Upgrade MAX")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("inventory")
+            .upgradeInventorySize(256)
+            .tier(14)
+            .register();
 
-        UPGRADE_CASING_REGISTRY.create(GT_MultiTileUpgradeCasing.Cleanroom.getId(), Cleanroom.class)
+        UPGRADE_CASING_REGISTRY.create(ULV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade ULV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .tankCapacity(8_000L)
+            .upgradeTankCount(1)
+            .tier(0)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(LV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade LV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .tankCapacity(16_000L)
+            .upgradeTankCount(2)
+            .tier(1)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(MV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade MV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .tankCapacity(32_000L)
+            .upgradeTankCount(4)
+            .tier(2)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(HV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade HV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .tankCapacity(64_000L)
+            .upgradeTankCount(6)
+            .tier(3)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(EV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade EV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .tankCapacity(128_000L)
+            .upgradeTankCount(8)
+            .tier(4)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(IV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade IV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .tankCapacity(256_000L)
+            .upgradeTankCount(10)
+            .tier(5)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(LuV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade LuV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .tankCapacity(512_000L)
+            .upgradeTankCount(12)
+            .tier(6)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(ZPM_Tank.getId(), Tank.class)
+            .name("Tank Upgrade ZPM")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .tankCapacity(1_024_000L)
+            .upgradeTankCount(14)
+            .tier(7)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade UV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .tankCapacity(2_048_000L)
+            .upgradeTankCount(16)
+            .tier(8)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UHV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade UHV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .tankCapacity(4_096_000L)
+            .upgradeTankCount(16)
+            .tier(9)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UEV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade UEV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .tankCapacity(8_192_000L)
+            .upgradeTankCount(16)
+            .tier(10)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UIV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade UIV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .tankCapacity(16_384_000L)
+            .upgradeTankCount(16)
+            .tier(11)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UMV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade UMV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .tankCapacity(32_768_000L)
+            .upgradeTankCount(16)
+            .tier(12)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(UXV_Tank.getId(), Tank.class)
+            .name("Tank Upgrade UXV")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .tankCapacity(65_536_000L)
+            .upgradeTankCount(16)
+            .tier(13)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(MAX_Tank.getId(), Tank.class)
+            .name("Tank Upgrade MAX")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("tank")
+            .tankCapacity(131_072_000L)
+            .upgradeTankCount(16)
+            .tier(14)
+            .register();
+
+        UPGRADE_CASING_REGISTRY.create(Cleanroom.getId(), Cleanroom.class)
             .name("Cleanroom Upgrade")
             .category("MultiBlock Upgrade Casing")
             .setBlock(COMPONENT_CASING_BLOCK)

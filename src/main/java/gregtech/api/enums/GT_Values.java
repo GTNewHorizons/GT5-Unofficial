@@ -335,6 +335,7 @@ public class GT_Values {
             UPGRADE_INVENTORIES_INPUT = "gt.invlist.upg.in", // NBT List
             UPGRADE_INVENTORIES_OUTPUT = "gt.invlist.upg.out", // NBT List
             UPGRADE_TANK_CAPACITY = "gt.tank.cap.upg", // Long
+            UPGRADE_TANK_COUNT = "gt.tank.ct.upg", // Int
             UPGRADE_TANK_CAPACITY_MULTIPLIER = "gt.tank.cap.mult.upg", // Long
             UPGRADE_TANK_UUID = "gt.tankuuid.upg", // String
             UPGRADE_TANK_NAME = "gt.tankname.upg", // String
