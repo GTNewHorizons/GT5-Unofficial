@@ -1,9 +1,16 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBrewingRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sSlicerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -33,87 +40,140 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                 .addTo(sCompressorRecipes);
         }
 
+        Fluid[] waterArray;
+
+        if (IndustrialCraft2.isModLoaded()) {
+            waterArray = new Fluid[] { FluidRegistry.WATER, GT_ModHandler.getDistilledWater(1L)
+                .getFluid() };
+        } else {
+            waterArray = new Fluid[] { FluidRegistry.WATER };
+        }
+
         switch (aOreDictName) {
             case "cropTea" -> {
-                GT_Values.RA.addBrewingRecipe(aStack, FluidRegistry.WATER, FluidRegistry.getFluid("potion.tea"), false);
-                GT_Values.RA.addBrewingRecipe(
-                    aStack,
-                    GT_ModHandler.getDistilledWater(1L)
-                        .getFluid(),
-                    FluidRegistry.getFluid("potion.tea"),
-                    false);
+                for (Fluid tFluid : waterArray) {
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(aStack)
+                        .noItemOutputs()
+                        .fluidInputs(new FluidStack(tFluid, 750))
+                        .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.tea"), 750))
+                        .duration(6 * SECONDS + 8 * TICKS)
+                        .eut(4)
+                        .addTo(sBrewingRecipes);
+                }
             }
             case "cropGrape" -> {
-                GT_Values.RA
-                    .addBrewingRecipe(aStack, FluidRegistry.WATER, FluidRegistry.getFluid("potion.grapejuice"), false);
-                GT_Values.RA.addBrewingRecipe(
-                    aStack,
-                    GT_ModHandler.getDistilledWater(1L)
-                        .getFluid(),
-                    FluidRegistry.getFluid("potion.grapejuice"),
-                    false);
+                for (Fluid tFluid : waterArray) {
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(aStack)
+                        .noItemOutputs()
+                        .fluidInputs(new FluidStack(tFluid, 750))
+                        .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.grapejuice"), 750))
+                        .duration(6 * SECONDS + 8 * TICKS)
+                        .eut(4)
+                        .addTo(sBrewingRecipes);
+                }
             }
-            case "cropChilipepper" -> GT_ModHandler
-                .addPulverisationRecipe(aStack, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chili, 1L));
-            case "cropCoffee" -> GT_ModHandler
-                .addPulverisationRecipe(aStack, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coffee, 1L));
+            case "cropChilipepper" -> GT_Values.RA.stdBuilder()
+                .itemInputs(aStack)
+                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chili, 1L))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(20 * SECONDS)
+                .eut(2)
+                .addTo(sMaceratorRecipes);
+            case "cropCoffee" -> GT_Values.RA.stdBuilder()
+                .itemInputs(aStack)
+                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coffee, 1L))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(20 * SECONDS)
+                .eut(2)
+                .addTo(sMaceratorRecipes);
             case "cropPotato" -> {
-                GT_Values.RA.addSlicerRecipe(
-                    aStack,
-                    ItemList.Shape_Slicer_Flat.get(0L),
-                    ItemList.Food_Raw_PotatoChips.get(1L),
-                    64,
-                    4);
-                GT_Values.RA.addSlicerRecipe(
-                    aStack,
-                    ItemList.Shape_Slicer_Stripes.get(0L),
-                    ItemList.Food_Raw_Fries.get(1L),
-                    64,
-                    4);
-                GT_Values.RA
-                    .addBrewingRecipe(aStack, FluidRegistry.WATER, FluidRegistry.getFluid("potion.potatojuice"), true);
-                GT_Values.RA.addBrewingRecipe(
-                    aStack,
-                    GT_ModHandler.getDistilledWater(1L)
-                        .getFluid(),
-                    FluidRegistry.getFluid("potion.potatojuice"),
-                    true);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(aStack, ItemList.Shape_Slicer_Flat.get(0))
+                    .itemOutputs(ItemList.Food_Raw_PotatoChips.get(1L))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(3 * SECONDS + 4 * TICKS)
+                    .eut(4)
+                    .addTo(sSlicerRecipes);
+
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(aStack, ItemList.Shape_Slicer_Stripes.get(0L))
+                    .itemOutputs(ItemList.Food_Raw_Fries.get(1L))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(3 * SECONDS + 4 * TICKS)
+                    .eut(4)
+                    .addTo(sSlicerRecipes);
+
+                for (Fluid tFluid : waterArray) {
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(aStack)
+                        .noItemOutputs()
+                        .fluidInputs(new FluidStack(tFluid, 750))
+                        .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.potatojuice"), 750))
+                        .duration(6 * SECONDS + 8 * TICKS)
+                        .eut(4)
+                        .addTo(sBrewingRecipes);
+                }
             }
             case "cropLemon" -> {
-                GT_Values.RA.addSlicerRecipe(
-                    aStack,
-                    ItemList.Shape_Slicer_Flat.get(0L),
-                    ItemList.Food_Sliced_Lemon.get(4L),
-                    64,
-                    4);
-                GT_Values.RA
-                    .addBrewingRecipe(aStack, FluidRegistry.WATER, FluidRegistry.getFluid("potion.lemonjuice"), false);
-                GT_Values.RA.addBrewingRecipe(
-                    aStack,
-                    GT_ModHandler.getDistilledWater(1L)
-                        .getFluid(),
-                    FluidRegistry.getFluid("potion.lemonjuice"),
-                    false);
-                GT_Values.RA.addBrewingRecipe(
-                    aStack,
-                    FluidRegistry.getFluid("potion.vodka"),
-                    FluidRegistry.getFluid("potion.leninade"),
-                    true);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(aStack, ItemList.Shape_Slicer_Flat.get(0))
+                    .itemOutputs(ItemList.Food_Sliced_Lemon.get(4L))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(3 * SECONDS + 4 * TICKS)
+                    .eut(4)
+                    .addTo(sSlicerRecipes);
+
+                for (Fluid tFluid : waterArray) {
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(aStack)
+                        .noItemOutputs()
+                        .fluidInputs(new FluidStack(tFluid, 750))
+                        .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.lemonjuice"), 750))
+                        .duration(6 * SECONDS + 8 * TICKS)
+                        .eut(4)
+                        .addTo(sBrewingRecipes);
+                }
+
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(aStack)
+                    .noItemOutputs()
+                    .fluidInputs(new FluidStack(FluidRegistry.getFluid("potion.vodka"), 750))
+                    .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.leninade"), 750))
+                    .duration(6 * SECONDS + 8 * TICKS)
+                    .eut(4)
+                    .addTo(sBrewingRecipes);
             }
-            case "cropTomato" -> GT_Values.RA.addSlicerRecipe(
-                aStack,
-                ItemList.Shape_Slicer_Flat.get(0L),
-                ItemList.Food_Sliced_Tomato.get(4L),
-                64,
-                4);
-            case "cropCucumber" -> GT_Values.RA.addSlicerRecipe(
-                aStack,
-                ItemList.Shape_Slicer_Flat.get(0L),
-                ItemList.Food_Sliced_Cucumber.get(4L),
-                64,
-                4);
-            case "cropOnion" -> GT_Values.RA
-                .addSlicerRecipe(aStack, ItemList.Shape_Slicer_Flat.get(0L), ItemList.Food_Sliced_Onion.get(4L), 64, 4);
+            case "cropTomato" -> GT_Values.RA.stdBuilder()
+                .itemInputs(aStack, ItemList.Shape_Slicer_Flat.get(0))
+                .itemOutputs(ItemList.Food_Sliced_Tomato.get(4L))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(3 * SECONDS + 4 * TICKS)
+                .eut(4)
+                .addTo(sSlicerRecipes);
+            case "cropCucumber" -> GT_Values.RA.stdBuilder()
+                .itemInputs(aStack, ItemList.Shape_Slicer_Flat.get(0))
+                .itemOutputs(ItemList.Food_Sliced_Cucumber.get(4L))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(3 * SECONDS + 4 * TICKS)
+                .eut(4)
+                .addTo(sSlicerRecipes);
+            case "cropOnion" -> GT_Values.RA.stdBuilder()
+                .itemInputs(aStack, ItemList.Shape_Slicer_Flat.get(0))
+                .itemOutputs(ItemList.Food_Sliced_Onion.get(4L))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(3 * SECONDS + 4 * TICKS)
+                .eut(4)
+                .addTo(sSlicerRecipes);
         }
     }
 }
