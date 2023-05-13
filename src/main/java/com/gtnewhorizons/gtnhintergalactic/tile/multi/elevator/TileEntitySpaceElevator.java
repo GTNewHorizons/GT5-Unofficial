@@ -819,10 +819,9 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
         builder.widget(
                 new CycleButtonWidget().setToggle(() -> isExtensionEnabled, val -> isExtensionEnabled = val)
                         .setPlayClickSound(true)
-                        .setVariableBackgroundGetter(
-                                (state) -> new UITexture[] {
-                                        state > 0 ? IG_UITextures.OVERLAY_BUTTON_SPACE_ELEVATOR_EXTENSION_ENABLED
-                                                : IG_UITextures.OVERLAY_BUTTON_SPACE_ELEVATOR_EXTENSION_DISABLED })
+                        .setTextureGetter(
+                                (state) -> state > 0 ? IG_UITextures.OVERLAY_BUTTON_SPACE_ELEVATOR_EXTENSION_ENABLED
+                                        : IG_UITextures.OVERLAY_BUTTON_SPACE_ELEVATOR_EXTENSION_DISABLED)
                         .setPos(115, 155).setSize(16, 16)
                         .addTooltip(StatCollector.translateToLocal("ig.button.extension"))
                         .setTooltipShowUpDelay(TOOLTIP_DELAY));
