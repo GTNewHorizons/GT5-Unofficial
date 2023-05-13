@@ -464,7 +464,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 106,
                 "Leninade",
                 "Let the Communism flow through you!",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     2,
                     0.2F,
