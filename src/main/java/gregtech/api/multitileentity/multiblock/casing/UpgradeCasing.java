@@ -16,9 +16,12 @@ public abstract class UpgradeCasing extends MultiBlockPart {
     }
 
     @Override
-    public void setTarget(IMultiBlockController aTarget, int aAllowedModes) {
-        super.setTarget(aTarget, aAllowedModes);
-        if (target != null) customWork(target);
+    public void setTarget(IMultiBlockController newTarget, int aAllowedModes) {
+        super.setTarget(newTarget, aAllowedModes);
+
+        if (newTarget != null) {
+            customWork(newTarget);
+        }
     }
 
     @Override
