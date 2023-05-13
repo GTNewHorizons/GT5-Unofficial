@@ -1170,11 +1170,11 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     protected IFluidTank getFluidTankFillable(MultiBlockPart aPart, ForgeDirection side, FluidStack aFluidToFill) {
-        return getFluidTankFillable(side, aFluidToFill);
+        return getFluidTankFillable(aPart.getFrontFacing(), side, aFluidToFill);
     }
 
     protected IFluidTank getFluidTankDrainable(MultiBlockPart aPart, ForgeDirection side, FluidStack aFluidToDrain) {
-        return getFluidTankDrainable(side, aFluidToDrain);
+        return getFluidTankDrainable(aPart.getFrontFacing(), side, aFluidToDrain);
     }
 
     protected IFluidTank[] getFluidTanks(MultiBlockPart aPart, ForgeDirection side) {
