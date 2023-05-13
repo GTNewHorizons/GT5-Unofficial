@@ -1795,6 +1795,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                         ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
                         GT_UITextures.PICTURE_ITEM_IN.withFixedSize(16, 16)
                             .withOffset(2, 4))
+                    .addTooltip("Item Input Inventory")
                     .setPos(20 * (page - 1), -20))
                 .addPage(
                     new MultiChildWidget().addChild(getItemInventoryInputGUI())
@@ -1815,6 +1816,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                         ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
                         GT_UITextures.PICTURE_ITEM_OUT.withFixedSize(16, 16)
                             .withOffset(2, 4))
+                    .addTooltip("Item Output Inventory")
                     .setPos(20 * (page - 1), -20))
                 .addPage(
                     new MultiChildWidget().addChild(getItemInventoryOutputGUI())
@@ -1835,6 +1837,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                         ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
                         GT_UITextures.PICTURE_FLUID_IN.withFixedSize(16, 16)
                             .withOffset(2, 4))
+                    .addTooltip("Fluid Input Inventory")
                     .setPos(20 * (page - 1), -20))
                 .addPage(
                     new MultiChildWidget().addChild(getFluidInventoryInputGUI())
@@ -1855,6 +1858,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                         ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
                         GT_UITextures.PICTURE_FLUID_OUT.withFixedSize(16, 16)
                             .withOffset(2, 4))
+                    .addTooltip("Fluid Output Inventory")
                     .setPos(20 * (page - 1), -20))
                 .addPage(
                     new MultiChildWidget().addChild(getFluidInventoryOutputGUI())
