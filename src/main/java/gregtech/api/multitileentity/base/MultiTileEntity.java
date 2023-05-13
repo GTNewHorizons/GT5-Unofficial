@@ -17,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
@@ -831,6 +832,10 @@ public abstract class MultiTileEntity extends CoverableTileEntity
                     aZ)) return true;
 
                 if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
+
+                if (aPlayer.getHeldItem() != null && aPlayer.getHeldItem().getItem() instanceof ItemBlock) {
+                    return false;
+                }
 
                 return openModularUi(aPlayer, side);
             }
