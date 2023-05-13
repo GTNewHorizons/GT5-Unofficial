@@ -319,27 +319,29 @@ public class GT_RecipeRegistrator {
             }
             recipeBuilder.addTo(UniversalArcFurnace);
         } else {
-            GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
-
-            recipeBuilder.itemInputs(aStack)
-                .itemOutputs(
-                    GT_OreDictUnificator.getIngotOrDust(aData.mMaterial),
-                    GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(0)),
-                    GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(1)),
-                    GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(2)),
-                    GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(3)),
-                    GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(5)),
-                    GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(6)),
-                    GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(7)),
-                    GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(8)))
-                .fluidInputs(Materials.Oxygen.getGas((int) Math.max(16, tAmount / M)))
-                .noFluidOutputs()
-                .duration(((int) Math.max(16, tAmount / M)) * TICKS)
-                .eut(90);
-            if (tHide) {
-                recipeBuilder.hidden();
+            ArrayList<ItemStack> outputs = new ArrayList<ItemStack>();
+            if (GT_OreDictUnificator.getIngotOrDust(aData.mMaterial) != null) {
+                outputs.add(GT_OreDictUnificator.getIngotOrDust(aData.mMaterial));
             }
-            recipeBuilder.addTo(UniversalArcFurnace);
+            for (int i = 0; i < 8; i++) {
+                if (GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(i)) != null) {
+                    outputs.add(GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(i)));
+                }
+            }
+            if (outputs.size() != 0) {
+                ItemStack[] outputsArray = outputs.toArray(new ItemStack[outputs.size()]);
+                GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                recipeBuilder.itemInputs(aStack)
+                    .itemOutputs(outputsArray)
+                    .fluidInputs(Materials.Oxygen.getGas((int) Math.max(16, tAmount / M)))
+                    .noFluidOutputs()
+                    .duration(((int) Math.max(16, tAmount / M)) * TICKS)
+                    .eut(90);
+                if (tHide) {
+                    recipeBuilder.hidden();
+                }
+                recipeBuilder.addTo(UniversalArcFurnace);
+            }
         }
     }
 
