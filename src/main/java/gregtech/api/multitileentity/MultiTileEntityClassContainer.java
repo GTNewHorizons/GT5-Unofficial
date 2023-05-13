@@ -152,6 +152,11 @@ public class MultiTileEntityClassContainer {
         return this;
     }
 
+    public MultiTileEntityClassContainer upgradeTankCapacity(Long aCapacity) {
+        mParameters.setLong(NBT.UPGRADE_TANK_CAPACITY, aCapacity);
+        return this;
+    }
+
     @SuppressWarnings("unused")
     public MultiTileEntityClassContainer setNBT(String key, Object val) {
         return setNBT(new Tuple(key, val));

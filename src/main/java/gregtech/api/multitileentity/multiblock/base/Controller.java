@@ -266,7 +266,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 // We assume all tanks in the tank-array are equally sized
                 tTag.setLong(NBT.UPGRADE_TANK_CAPACITY, tanks[0].capacity());
                 tTag.setLong(NBT.UPGRADE_TANK_CAPACITY_MULTIPLIER, tanks[0].getCapacityMultiplier());
-                tTag.setInteger(NBT.UPGRADE_TANKS_COUNT, tanks.length);
+                tTag.setInteger(NBT.UPGRADE_TANK_COUNT, tanks.length);
                 for (int i = 0; i < tanks.length; i++) {
                     tanks[i].writeToNBT(tTag, NBT.UPGRADE_TANKS_PREFIX + i);
                 }
@@ -282,7 +282,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 // We assume all tanks in the tank-array are equally sized
                 tTag.setLong(NBT.UPGRADE_TANK_CAPACITY, tanks[0].capacity());
                 tTag.setLong(NBT.UPGRADE_TANK_CAPACITY_MULTIPLIER, tanks[0].getCapacityMultiplier());
-                tTag.setInteger(NBT.UPGRADE_TANKS_COUNT, tanks.length);
+                tTag.setInteger(NBT.UPGRADE_TANK_COUNT, tanks.length);
                 for (int i = 0; i < tanks.length; i++) {
                     tanks[i].writeToNBT(tTag, NBT.UPGRADE_TANKS_PREFIX + i);
                 }
@@ -352,7 +352,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             String tankName = nbtTank.getString(NBT.UPGRADE_TANK_NAME);
             long capacity = nbtTank.getLong(NBT.UPGRADE_TANK_CAPACITY);
             long capacityMultiplier = nbtTank.getLong(NBT.UPGRADE_TANK_CAPACITY_MULTIPLIER);
-            int count = nbtTank.getInteger(NBT.UPGRADE_TANKS_COUNT);
+            int count = nbtTank.getInteger(NBT.UPGRADE_TANK_COUNT);
             FluidTankGT[] tanks = new FluidTankGT[count];
             for (int j = 0; j < count; j++) {
                 tanks[j] = new FluidTankGT(capacity).setCapacityMultiplier(capacityMultiplier)
@@ -368,7 +368,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             String tankName = nbtTank.getString(NBT.UPGRADE_TANK_NAME);
             long capacity = nbtTank.getLong(NBT.UPGRADE_TANK_CAPACITY);
             long capacityMultiplier = nbtTank.getLong(NBT.UPGRADE_TANK_CAPACITY_MULTIPLIER);
-            int count = nbtTank.getInteger(NBT.UPGRADE_TANKS_COUNT);
+            int count = nbtTank.getInteger(NBT.UPGRADE_TANK_COUNT);
             FluidTankGT[] tanks = new FluidTankGT[count];
             for (int j = 0; j < count; j++) {
                 tanks[j] = new FluidTankGT(capacity).setCapacityMultiplier(capacityMultiplier)

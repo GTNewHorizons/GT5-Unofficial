@@ -341,7 +341,6 @@ public class GT_Values {
             UPGRADE_TANK_NAME = "gt.tankname.upg", // String
             UPGRADE_TANKS_INPUT = "gt.tanklist.upg.in", // NBT List
             UPGRADE_TANKS_OUTPUT = "gt.tanklist.upg.out", // NBT List
-            UPGRADE_TANKS_COUNT = "gt.tankcount.upg", // Int
             UPGRADE_TANKS_PREFIX = "gt.tank.upg", // NBT Tag
             SEPARATE_INPUTS = "gt.separate.inputs", // Boolean
             VOID_EXCESS = "gt.void.excess", // Boolean

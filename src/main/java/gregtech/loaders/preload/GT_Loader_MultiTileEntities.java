@@ -263,7 +263,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .category("MultiBlock Upgrade Casing")
             .setBlock(COMPONENT_CASING_BLOCK)
             .textureFolder("tank")
-            .tankCapacity(8_000L)
+            .upgradeTankCapacity(8_000L)
             .upgradeTankCount(1)
             .tier(0)
             .register();
@@ -272,7 +272,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .category("MultiBlock Upgrade Casing")
             .setBlock(COMPONENT_CASING_BLOCK)
             .textureFolder("tank")
-            .tankCapacity(16_000L)
+            .upgradeTankCapacity(16_000L)
             .upgradeTankCount(2)
             .tier(1)
             .register();
@@ -281,7 +281,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .category("MultiBlock Upgrade Casing")
             .setBlock(COMPONENT_CASING_BLOCK)
             .textureFolder("tank")
-            .tankCapacity(32_000L)
+            .upgradeTankCapacity(32_000L)
             .upgradeTankCount(4)
             .tier(2)
             .register();
@@ -290,7 +290,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .category("MultiBlock Upgrade Casing")
             .setBlock(COMPONENT_CASING_BLOCK)
             .textureFolder("tank")
-            .tankCapacity(64_000L)
+            .upgradeTankCapacity(64_000L)
             .upgradeTankCount(6)
             .tier(3)
             .register();
@@ -299,7 +299,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .category("MultiBlock Upgrade Casing")
             .setBlock(COMPONENT_CASING_BLOCK)
             .textureFolder("tank")
-            .tankCapacity(128_000L)
+            .upgradeTankCapacity(128_000L)
             .upgradeTankCount(8)
             .tier(4)
             .register();
@@ -308,7 +308,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .category("MultiBlock Upgrade Casing")
             .setBlock(COMPONENT_CASING_BLOCK)
             .textureFolder("tank")
-            .tankCapacity(256_000L)
+            .upgradeTankCapacity(256_000L)
             .upgradeTankCount(10)
             .tier(5)
             .register();
@@ -317,7 +317,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .category("MultiBlock Upgrade Casing")
             .setBlock(COMPONENT_CASING_BLOCK)
             .textureFolder("tank")
-            .tankCapacity(512_000L)
+            .upgradeTankCapacity(512_000L)
             .upgradeTankCount(12)
             .tier(6)
             .register();
@@ -326,7 +326,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .category("MultiBlock Upgrade Casing")
             .setBlock(COMPONENT_CASING_BLOCK)
             .textureFolder("tank")
-            .tankCapacity(1_024_000L)
+            .upgradeTankCapacity(1_024_000L)
             .upgradeTankCount(14)
             .tier(7)
             .register();
@@ -335,7 +335,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .category("MultiBlock Upgrade Casing")
             .setBlock(COMPONENT_CASING_BLOCK)
             .textureFolder("tank")
-            .tankCapacity(2_048_000L)
+            .upgradeTankCapacity(2_048_000L)
             .upgradeTankCount(16)
             .tier(8)
             .register();
@@ -344,7 +344,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .category("MultiBlock Upgrade Casing")
             .setBlock(COMPONENT_CASING_BLOCK)
             .textureFolder("tank")
-            .tankCapacity(4_096_000L)
+            .upgradeTankCapacity(4_096_000L)
             .upgradeTankCount(16)
             .tier(9)
             .register();
@@ -353,7 +353,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .category("MultiBlock Upgrade Casing")
             .setBlock(COMPONENT_CASING_BLOCK)
             .textureFolder("tank")
-            .tankCapacity(8_192_000L)
+            .upgradeTankCapacity(8_192_000L)
             .upgradeTankCount(16)
             .tier(10)
             .register();
@@ -362,7 +362,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .category("MultiBlock Upgrade Casing")
             .setBlock(COMPONENT_CASING_BLOCK)
             .textureFolder("tank")
-            .tankCapacity(16_384_000L)
+            .upgradeTankCapacity(16_384_000L)
             .upgradeTankCount(16)
             .tier(11)
             .register();
@@ -371,7 +371,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .category("MultiBlock Upgrade Casing")
             .setBlock(COMPONENT_CASING_BLOCK)
             .textureFolder("tank")
-            .tankCapacity(32_768_000L)
+            .upgradeTankCapacity(32_768_000L)
             .upgradeTankCount(16)
             .tier(12)
             .register();
@@ -380,7 +380,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .category("MultiBlock Upgrade Casing")
             .setBlock(COMPONENT_CASING_BLOCK)
             .textureFolder("tank")
-            .tankCapacity(65_536_000L)
+            .upgradeTankCapacity(65_536_000L)
             .upgradeTankCount(16)
             .tier(13)
             .register();
@@ -389,7 +389,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .category("MultiBlock Upgrade Casing")
             .setBlock(COMPONENT_CASING_BLOCK)
             .textureFolder("tank")
-            .tankCapacity(131_072_000L)
+            .upgradeTankCapacity(131_072_000L)
             .upgradeTankCount(16)
             .tier(14)
             .register();
