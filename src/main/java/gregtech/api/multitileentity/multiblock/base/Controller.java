@@ -935,7 +935,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 }
                 if (world.setBlock(x, y, z, tContainer.mBlock, 15 - tContainer.mBlockMetaData, 2)) {
                     tContainer.setMultiTile(world, x, y, z);
-                    ((MultiBlockPart) te).setTarget(Controller.this, modes);
+                    ((MultiBlockPart) te).setTarget((IMultiBlockController) t, modes);
 
                     ((Controller<?>) t).registerSpecialCasings((MultiBlockPart) te);
                 }
