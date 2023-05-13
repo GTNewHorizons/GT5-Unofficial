@@ -170,7 +170,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
         if (!worldObj.blockExists(targetPosition.posX, targetPosition.posY, targetPosition.posZ)) {
             return null;
-        } 
+        }
         final TileEntity te = worldObj.getTileEntity(targetPosition.posX, targetPosition.posY, targetPosition.posZ);
         IMultiBlockController target = null;
         if (te instanceof IMultiBlockController targetFound) {
@@ -179,7 +179,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
             targetPosition = null;
             return null;
         }
-    
+
         if (aCheckValidity) {
             return target != null && target.checkStructure(false) ? target : null;
         }

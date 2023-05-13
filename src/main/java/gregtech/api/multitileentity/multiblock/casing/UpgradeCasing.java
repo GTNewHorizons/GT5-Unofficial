@@ -21,7 +21,7 @@ public abstract class UpgradeCasing extends MultiBlockPart {
 
         if (newTarget != null) {
             customWork(newTarget);
-        } 
+        }
     }
 
     @Override

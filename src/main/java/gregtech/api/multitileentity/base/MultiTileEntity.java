@@ -833,7 +833,8 @@ public abstract class MultiTileEntity extends CoverableTileEntity
 
                 if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
 
-                if (aPlayer.getHeldItem() != null && aPlayer.getHeldItem().getItem() instanceof ItemBlock) {
+                if (aPlayer.getHeldItem() != null && aPlayer.getHeldItem()
+                    .getItem() instanceof ItemBlock) {
                     return false;
                 }
 
