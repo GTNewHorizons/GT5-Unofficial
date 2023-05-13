@@ -1,6 +1,8 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
@@ -77,16 +79,22 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         new Object[] { "DhD", "D D", "DwD", 'D', OrePrefixes.plateDouble.get(aMaterial) });
                 }
             }
-            case pipeRestrictiveHuge, pipeRestrictiveLarge, pipeRestrictiveMedium, pipeRestrictiveSmall, pipeRestrictiveTiny -> RA
-                .addAssemblerRecipe(
-                    GT_OreDictUnificator.get(aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true),
-                    GT_OreDictUnificator.get(
-                        OrePrefixes.ring,
-                        Materials.Steel,
-                        aPrefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.mMaterialAmount),
-                    GT_Utility.copyAmount(1L, aStack),
-                    (int) (aPrefix.mSecondaryMaterial.mAmount * 400L / OrePrefixes.ring.mMaterialAmount),
-                    4);
+            case pipeRestrictiveHuge, pipeRestrictiveLarge, pipeRestrictiveMedium, pipeRestrictiveSmall, pipeRestrictiveTiny -> {
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                        GT_OreDictUnificator.get(
+                            OrePrefixes.ring,
+                            Materials.Steel,
+                            aPrefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.mMaterialAmount),
+                        GT_OreDictUnificator.get(aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true))
+                    .itemOutputs(GT_Utility.copyAmount(1L, aStack))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(
+                        ((int) (aPrefix.mSecondaryMaterial.mAmount * 400L / OrePrefixes.ring.mMaterialAmount)) * TICKS)
+                    .eut(4)
+                    .addTo(sAssemblerRecipes);
+            }
             case pipeQuadruple -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
@@ -96,12 +104,16 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         new Object[] { "MM ", "MM ", "   ", 'M',
                             GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 1) });
                 }
-                RA.addAssemblerRecipe(
-                    GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 4),
-                    GT_Utility.getIntegratedCircuit(9),
-                    GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
-                    60,
-                    calculateRecipeEU(aMaterial, 4));
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                        GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 4),
+                        GT_Utility.getIntegratedCircuit(9))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(3 * SECONDS)
+                    .eut(calculateRecipeEU(aMaterial, 4))
+                    .addTo(sAssemblerRecipes);
             }
             case pipeNonuple -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
@@ -112,12 +124,16 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         new Object[] { "PPP", "PPP", "PPP", 'P', GT_OreDictUnificator
                             .get(aOreDictName.replaceFirst("Nonuple", "Small"), null, 1L, false, true) });
                 }
-                RA.addAssemblerRecipe(
-                    GT_OreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 9),
-                    GT_Utility.getIntegratedCircuit(9),
-                    GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, aMaterial, 1),
-                    60,
-                    calculateRecipeEU(aMaterial, 8));
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                        GT_OreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 9),
+                        GT_Utility.getIntegratedCircuit(9))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, aMaterial, 1))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(3 * SECONDS)
+                    .eut(calculateRecipeEU(aMaterial, 8))
+                    .addTo(sAssemblerRecipes);
             }
             default -> {}
         }
