@@ -88,7 +88,7 @@ public interface IMultiTileEntity
 
     void sendClientData(EntityPlayerMP aPlayer);
 
-    boolean receiveClientEvent(int aEventID, int aValue);
+    boolean receiveClientData(int aEventID, int aValue);
 
     void setShouldRefresh(boolean aShouldRefresh);
 

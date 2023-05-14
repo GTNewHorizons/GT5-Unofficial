@@ -1068,7 +1068,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public boolean receiveClientEvent(int aEventID, int aValue) {
+    public boolean receiveClientData(int aEventID, int aValue) {
         super.receiveClientEvent(aEventID, aValue);
         if (isClientSide()) {
             issueTextureUpdate();
