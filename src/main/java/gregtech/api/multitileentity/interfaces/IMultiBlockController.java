@@ -11,7 +11,8 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.multitileentity.enums.MultiTileCasingPurpose;
 
-public interface IMultiBlockController extends IMultiTileEntity, IMultiBlockFluidHandler, IMultiBlockInventory {
+public interface IMultiBlockController
+    extends IMultiTileEntity, IMultiBlockFluidHandler, IMultiBlockInventory, UpgradableMuTE {
 
     boolean checkStructure(boolean aForceReset);
 

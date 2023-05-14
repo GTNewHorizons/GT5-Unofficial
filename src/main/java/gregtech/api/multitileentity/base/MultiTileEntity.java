@@ -712,6 +712,8 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     public boolean onPlaced(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
         ForgeDirection side, float aHitX, float aHitY, float aHitZ) {
         facing = getSideForPlayerPlacing(aPlayer, facing, getValidFacings());
+        setOwnerUuid(aPlayer.getUniqueID());
+        setOwnerName(aPlayer.getDisplayName());
         onFacingChange();
         return true;
     }
