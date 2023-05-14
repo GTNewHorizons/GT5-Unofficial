@@ -1,5 +1,6 @@
 package common.tileentities;
 
+import static com.github.bartimaeusnek.bartworks.util.BW_Util.ofGlassTieredMixed;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUnlocalizedName;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -11,6 +12,7 @@ import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static java.lang.Math.min;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.math.BigInteger;
 import java.text.MessageFormat;
@@ -31,7 +33,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
-import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -198,6 +199,21 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
     private static final String STRUCTURE_PIECE_MID = "mid";
     private static final String STRUCTURE_PIECE_BOTTOM = "bottom";
 
+    @Override
+    public String[] getStructureDescription(ItemStack stackSize) {
+        return description;
+    }
+
+    private static final String[] description = new String[] {
+            translateToLocal("tile.kekztech_tfftstoragefield_block.hint.1"), // Casing
+            translateToLocal("tile.kekztech_tfftstoragefield_block.hint.2"), // Casing, Maintenance Hatch, T.F.F.T Multi
+                                                                             // I/O Hatch, Input/Output Hatch, Energy
+                                                                             // Hatch
+            translateToLocal("tile.kekztech_tfftstoragefield_block.hint.3"), // Glass, T.F.F.T Multi I/O Hatch,
+                                                                             // Input/Output Hatch
+            translateToLocal("tile.kekztech_tfftstoragefield_block.hint.4"), // Glass
+    };
+
     // height channel for height
     // field channel for field
     private static final IStructureDefinition<GTMTE_TFFT> STRUCTURE_DEFINITION = IStructureDefinition
@@ -231,15 +247,13 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
                     buildHatchAdder(GTMTE_TFFT.class)
                             .atLeast(InputHatch.or(TFFTMultiHatch.INSTANCE), OutputHatch.or(TFFTMultiHatch.INSTANCE))
                             .casingIndex(CASING_TEXTURE_ID_2).dot(3).buildAndChain(
-                                    ofBlockUnlocalizedName("IC2", "blockAlloyGlass", 0, true),
                                     ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false),
-                                    BorosilicateGlass.ofBoroGlassAnyTier()))
+                                    ofGlassTieredMixed((byte) 4, (byte) 127, 3)))
             .addElement(
                     'g',
                     ofChain(
-                            ofBlockUnlocalizedName("IC2", "blockAlloyGlass", 0, true),
                             ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false),
-                            BorosilicateGlass.ofBoroGlassAnyTier()))
+                            ofGlassTieredMixed((byte) 4, (byte) 127, 4)))
             .addElement('f', ofChain(TFFTStorageFieldElement.INSTANCE)).build();
 
     public final FluidTankGT[] STORE = new FluidTankGT[MAX_DISTINCT_FLUIDS];
@@ -308,9 +322,7 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
                 .addCasingInfo("T.F.F.T Casing", MIN_CASING_AMOUNT)
                 .addOtherStructurePart("Storage Field Blocks (Tier I-X)", "Inner 3xhx3 solid pillar")
                 .addStructureInfo("Energy hatch is not required when running cost is 0")
-                .addOtherStructurePart(
-                        "Borosilicate Glass(any)/Warded Glass/Reinforced Glass",
-                        "Outer 5xhx5 glass shell")
+                .addOtherStructurePart("EV+ Tier Glass/Warded Glass/Reinforced Glass", "Outer 5xhx5 glass shell")
                 .addMaintenanceHatch("Any top or bottom casing").addEnergyHatch("Any top or bottom casing")
                 .addInputHatch("Instead of any casing or glass, has to touch storage field block")
                 .addOutputHatch("Instead of any casing or glass, has to touch storage field block")
