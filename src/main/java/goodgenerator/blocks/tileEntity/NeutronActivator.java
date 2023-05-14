@@ -1,6 +1,5 @@
 package goodgenerator.blocks.tileEntity;
 
-import static com.github.bartimaeusnek.bartworks.util.BW_Util.ofGlassTieredMixed;
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
@@ -48,6 +47,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
@@ -224,8 +224,7 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                                             NeutronActivator::onCasingFound,
                                             ofBlock(GregTech_API.sBlockCasings4, 1))))
                     .addElement('D', ofBlock(GregTech_API.sBlockCasings2, 6)).addElement('F', ofFrame(Materials.Steel))
-                    .addElement('G', ofGlassTieredMixed((byte) 4, (byte) 127, 3))
-                    .addElement(
+                    .addElement('G', Glasses.chainAllGlasses()).addElement(
                             'P',
                             ofBlock(Loaders.speedingPipe, 0))
                     .addElement(
