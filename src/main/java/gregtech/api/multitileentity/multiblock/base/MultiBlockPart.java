@@ -572,9 +572,9 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
         final CoverInfo coverInfo = getCoverInfoAtSide(aDirection);
 
-        if ((controller.isLiquidInput(aDirection) && coverInfo.letsFluidIn(null, controller))
+        if (coverInfo.letsFluidIn(null, controller)
             || (controller.isLiquidOutput(aDirection) && coverInfo.letsFluidOut(null, controller)))
-            return controller.getTankInfo(this, aDirection);
+            return controller.getTankInfo(this, ForgeDirection.UNKNOWN);
 
         return GT_Values.emptyFluidTankInfo;
     }

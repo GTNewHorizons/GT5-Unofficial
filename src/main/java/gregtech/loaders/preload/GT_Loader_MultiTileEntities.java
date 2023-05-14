@@ -95,11 +95,11 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .outputInventorySize(1)
             .register();
         MACHINE_REGISTRY.create(1, AdvChemicalProcessor.class)
-            .name("Advanced Chemical Reactor")
+            .name("Advanced Chemical Processor")
             .category("MultiblockController")
             .setBlock(MACHINE_BLOCK)
             // TODO: Texture
-            .textureFolder("advChemicalReactor")
+            .textureFolder("advChemicalProcessor")
             .inputInventorySize(16)
             .outputInventorySize(16)
             .tankCapacity(128000L)
@@ -127,7 +127,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .name("Chemical Casing")
             .category("MultiBlock Casing")
             .setBlock(CASING_BLOCK)
-            .textureFolder("advChemicalReactor")
+            .textureFolder("advChemicalProcessor")
             .register();
         CASING_REGISTRY.create(Distillation.getId(), BasicCasing.class)
             .name("Distillation Casing")
