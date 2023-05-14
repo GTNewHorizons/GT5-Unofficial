@@ -9,19 +9,18 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
 public class GenericProcessingLogic extends ProcessingLogic {
 
-
     public GenericProcessingLogic(GT_Recipe_Map recipeMap) {
         super();
         setRecipeMap(recipeMap);
     }
+
     @Override
     public boolean process() {
         if (recipeMap == null) {
             return false;
         }
 
-        GT_Recipe recipe = recipeMap
-            .findRecipe(controller, false, false, voltage, inputFluids, inputItems);
+        GT_Recipe recipe = recipeMap.findRecipe(controller, false, false, voltage, inputFluids, inputItems);
 
         if (recipe == null) {
             return false;
@@ -70,5 +69,5 @@ public class GenericProcessingLogic extends ProcessingLogic {
 
         return true;
     }
-    
+
 }

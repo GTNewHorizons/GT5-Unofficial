@@ -2,7 +2,7 @@ package gregtech.api.logic;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import gregtech.api.multitileentity.interfaces.IMultiBlockController;
+
 import gregtech.api.multitileentity.multiblock.base.Controller;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
