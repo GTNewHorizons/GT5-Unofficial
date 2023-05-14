@@ -63,7 +63,7 @@ public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> 
         buildPiece(STRUCTURE_PIECE_BASE, trigger, hintsOnly, buildState.getCurrentOffset());
         buildState.addOffset(getMegaPositionOffset());
 
-        if (stackCount >= 2) {
+        if (stackCount >= 1) {
             buildPiece(STACKABLE_BOTTOM, trigger, hintsOnly, buildState.getCurrentOffset());
             buildState.addOffset(getStartingStackOffset());
 
@@ -79,8 +79,6 @@ public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> 
         } else {
             buildState.stopBuilding();
         }
-
-
     }
 
     @Override
@@ -91,7 +89,7 @@ public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> 
                     STRUCTURE_PIECE_BASE,
                     transpose(
                         new String[][]{
-                            {" AAA ","AAAAA","AAAAA","AAAAA"},
+                            {" AAA ","AAAAA","AEEEA","AAAAA"},
                             {" AAA ","A   A","A   A","AAAAA"},
                             {" A~A ","A   A","A   A","AAAAA"},
                             {" AAA ","A   A","A   A","AAAAA"},
@@ -162,6 +160,7 @@ public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> 
                         FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN))
                 .addElement('C', ofBlock(GregTech_API.sBlockCasings4, 1))
                 .addElement('D', GT_StructureUtility.ofFrame(Materials.Steel))
+                .addElement('E', addMotorCasings(NOTHING))
                 .build();
         }
         return STRUCTURE_DEFINITION_MEGA;
@@ -204,7 +203,7 @@ public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> 
 
     @Override
     public int getMinStacks() {
-        return 1;
+        return 0;
     }
 
     @Override
