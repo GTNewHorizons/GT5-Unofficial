@@ -90,7 +90,9 @@ public class PowerLogic implements IGlobalWirelessEnergy {
     public boolean removeEnergyUnsafe(long totalEURemoved) {
         if (canUseWireless) {
             if (storedEnergy < energyCapacity * wirelessChargeFactor) {
-                addEUToGlobalEnergyMap(owner, -(energyCapacity - storedEnergy));
+                if (addEUToGlobalEnergyMap(owner, -(energyCapacity - storedEnergy))) {
+                    storedEnergy = energyCapacity;
+                }
             }
         }
         if (storedEnergy - totalEURemoved < 0) {

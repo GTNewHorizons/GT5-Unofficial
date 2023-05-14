@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -110,7 +111,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * Multi Tile Entities - or MuTEs - don't have dedicated hatches, but their casings can become hatches.
  */
 public abstract class Controller<T extends Controller<T>> extends MultiTileBasicMachine implements IAlignment,
-    IConstructable, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable {
+    IConstructable, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable, IGlobalWirelessEnergy {
 
     public static final String ALL_INVENTORIES_NAME = "all";
     protected static final int AUTO_OUTPUT_FREQUENCY_TICK = 20;
@@ -745,6 +746,9 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     @Override
     public void setWirelessSupport(boolean canUse) {
+        if (canUse) {
+            strongCheckOrAddUser(getOwnerUuid(), getOwnerName());
+        }
         canUseWireless = canUse;
     }
 
