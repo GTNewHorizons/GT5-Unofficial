@@ -23,7 +23,7 @@ import gregtech.common.tileentities.casings.functional.Pump;
 import gregtech.common.tileentities.casings.functional.RobotArm;
 import gregtech.common.tileentities.casings.functional.Sensor;
 import gregtech.common.tileentities.casings.upgrade.Inventory;
-import gregtech.common.tileentities.machines.multiblock.AdvChemicalReactor;
+import gregtech.common.tileentities.machines.multiblock.AdvChemicalProcessor;
 import gregtech.common.tileentities.machines.multiblock.CokeOven;
 import gregtech.common.tileentities.machines.multiblock.DistillationTower;
 import gregtech.common.tileentities.machines.multiblock.Macerator;
@@ -84,7 +84,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .inputInventorySize(1)
             .outputInventorySize(1)
             .register();
-        MACHINE_REGISTRY.create(1, AdvChemicalReactor.class)
+        MACHINE_REGISTRY.create(1, AdvChemicalProcessor.class)
             .name("Advanced Chemical Reactor")
             .category("MultiblockController")
             .setBlock(MACHINE_BLOCK)
