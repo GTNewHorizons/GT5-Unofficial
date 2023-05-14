@@ -27,10 +27,10 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
-public class ExtensibleCokeFoundry extends StackableController<ExtensibleCokeFoundry> {
-    private static IStructureDefinition<ExtensibleCokeFoundry> STRUCTURE_DEFINITION = null;
+public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> {
+    private static IStructureDefinition<LayeredCokeFoundry> STRUCTURE_DEFINITION = null;
 
-    public ExtensibleCokeFoundry() {
+    public LayeredCokeFoundry() {
         super();
     }
 
@@ -40,9 +40,9 @@ public class ExtensibleCokeFoundry extends StackableController<ExtensibleCokeFou
     }
 
     @Override
-    public IStructureDefinition<ExtensibleCokeFoundry> getStructureDefinition() {
+    public IStructureDefinition<LayeredCokeFoundry> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<ExtensibleCokeFoundry>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<LayeredCokeFoundry>builder()
                 .addShape(STACKABLE_TOP, transpose(new String[][] { { " CCC ", "CCCCC", "CCCCC", "CCCCC", " CCC " }, }))
                 .addShape(
                     STACKABLE_MIDDLE,
@@ -86,7 +86,7 @@ public class ExtensibleCokeFoundry extends StackableController<ExtensibleCokeFou
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Coke Oven")
-            .addInfo("Controller for the Extensible Coke Foundry")
+            .addInfo("Controller for the Layered Coke Foundry")
             .addSeparator()
             .beginVariableStructureBlock(7, 9, 2 + getMinStacks(), 2 + getMaxStacks(), 7, 9, true)
             .addController("Bottom Front Center")

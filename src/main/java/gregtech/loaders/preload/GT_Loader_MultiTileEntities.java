@@ -26,7 +26,7 @@ import gregtech.common.tileentities.casings.upgrade.Inventory;
 import gregtech.common.tileentities.machines.multiblock.AdvChemicalProcessor;
 import gregtech.common.tileentities.machines.multiblock.CokeOven;
 import gregtech.common.tileentities.machines.multiblock.Macerator;
-import gregtech.common.tileentities.machines.multiblock.ExtensibleCokeFoundry;
+import gregtech.common.tileentities.machines.multiblock.LayeredCokeFoundry;
 
 public class GT_Loader_MultiTileEntities implements Runnable {
 
@@ -94,8 +94,8 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .outputInventorySize(16)
             .tankCapacity(128000L)
             .register();
-        MACHINE_REGISTRY.create(3, ExtensibleCokeFoundry.class)
-            .name("Extensible Coke Foundry")
+        MACHINE_REGISTRY.create(3, LayeredCokeFoundry.class)
+            .name("Layered Coke Foundry")
             .category("Multiblock Controller")
             .setBlock(MACHINE_BLOCK)
             .material(Materials.Iron)
