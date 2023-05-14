@@ -67,7 +67,7 @@ public class DistillationTower extends StackableController<DistillationTower> {
         if (STRUCTURE_DEFINITION_MEGA == null) {
             STRUCTURE_DEFINITION_MEGA = StructureDefinition.<DistillationTower>builder()
                 .addShape(
-                    STACKABLE_BOTTOM,
+                    STACKABLE_START,
                     transpose(
                         // spotless:off
                         new String[][]{
@@ -78,7 +78,7 @@ public class DistillationTower extends StackableController<DistillationTower> {
                             {"     CCCCC         ","     CCCCC         ","     CCCCC         ","                   ","  CCCCCCCCCCC      ","  CAAAAAAAAAC      ","CCCACCCCCCCACCC    ","CAACAAAAAAACAAC    ","CACAADDDDDAACAC    ","CACADDDDDDDACACCCCC","CACADDAAADDACACCCCC","CACADDAAADDACACCCCC","CACADDAAADDACACCCCC","CACADDDDDDDACACCCCC","CACAADDDDDAACAC    ","CAACAAAAAAACAAC    ","CCCACCCCCCCACCC    ","  CAAAAAAAAAC      ","  CCCCCCCCCCC      "}
                         }))
                 .addShape(
-                    STACKABLE_TOP,
+                    STACKABLE_STOP,
                     transpose(
                         new String[][]{
                             {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","      CCC          ","      CCC          ","      CCC          ","                   ","                   ","                   ","                   ","                   ","                   "},

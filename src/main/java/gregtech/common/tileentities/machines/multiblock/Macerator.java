@@ -44,12 +44,12 @@ public class Macerator extends StackableController<Macerator> {
     public IStructureDefinition<Macerator> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<Macerator>builder()
-                .addShape(STACKABLE_TOP, transpose(new String[][] { { " CCC ", "CCCCC", "CCCCC", "CCCCC", " CCC " }, }))
+                .addShape(STACKABLE_STOP, transpose(new String[][] { { " CCC ", "CCCCC", "CCCCC", "CCCCC", " CCC " }, }))
                 .addShape(
                     STACKABLE_MIDDLE,
                     transpose(new String[][] { { "  BBB  ", " B---B ", "DC---CD", " B---B ", "  BBB  " }, }))
                 .addShape(
-                    STACKABLE_BOTTOM,
+                    STACKABLE_START,
                     transpose(new String[][] { { " G~F ", "AAAAA", "AAAAA", "AAAAA", " AAA " }, }))
                 .addElement('A', ofChain(addMultiTileCasing("gt.multitileentity.casings", getCasingMeta(), ENERGY_IN)))
                 .addElement(

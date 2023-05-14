@@ -6,9 +6,9 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 public abstract class StackableController<T extends StackableController<T>> extends PowerController<T> {
 
-    protected static String STACKABLE_TOP = "STACKABLE_TOP";
+    protected static String STACKABLE_STOP = "STACKABLE_STOP";
     protected static String STACKABLE_MIDDLE = "STACKABLE_MIDDLE";
-    protected static String STACKABLE_BOTTOM = "STACKABLE_BOTTOM";
+    protected static String STACKABLE_START = "STACKABLE_START";
     protected int stackCount = 0;
 
     /**
@@ -20,7 +20,7 @@ public abstract class StackableController<T extends StackableController<T>> exte
         final int stackCount = Math.min(blueprintCount, getMaxStacks());
 
         buildState.startBuilding(getStartingStructureOffset());
-        buildPiece(getStackableBottom(), trigger, hintsOnly, buildState.getCurrentOffset());
+        buildPiece(getStackableStart(), trigger, hintsOnly, buildState.getCurrentOffset());
         buildState.addOffset(getStartingStackOffset());
 
         for (int i = 0; i < stackCount; i++) {
@@ -29,7 +29,7 @@ public abstract class StackableController<T extends StackableController<T>> exte
         }
         if (hasTop()) {
             buildState.addOffset(getAfterLastStackOffset());
-            buildPiece(getStackableTop(), trigger, hintsOnly, buildState.stopBuilding());
+            buildPiece(getStackableStop(), trigger, hintsOnly, buildState.stopBuilding());
         } else {
             buildState.stopBuilding();
         }
@@ -89,7 +89,7 @@ public abstract class StackableController<T extends StackableController<T>> exte
         stackCount = 0;
 
         buildState.startBuilding(getStartingStructureOffset());
-        if (!checkPiece(getStackableBottom(), buildState.getCurrentOffset())) return buildState.failBuilding();
+        if (!checkPiece(getStackableStart(), buildState.getCurrentOffset())) return buildState.failBuilding();
 
         buildState.addOffset(getStartingStackOffset());
 
@@ -104,21 +104,21 @@ public abstract class StackableController<T extends StackableController<T>> exte
         if (stackCount < getMinStacks()) return buildState.failBuilding();
 
         buildState.addOffset(getAfterLastStackOffset());
-        if (!checkPiece(getStackableTop(), buildState.stopBuilding())) {
+        if (!checkPiece(getStackableStop(), buildState.stopBuilding())) {
             return buildState.failBuilding();
         }
         return super.checkMachine();
     }
 
-    protected String getStackableTop() {
-        return STACKABLE_TOP;
+    protected String getStackableStop() {
+        return STACKABLE_STOP;
     }
 
     protected String getStackableMiddle(int stackIndex) {
         return STACKABLE_MIDDLE;
     }
 
-    protected String getStackableBottom() {
-        return STACKABLE_BOTTOM;
+    protected String getStackableStart() {
+        return STACKABLE_START;
     }
 }
