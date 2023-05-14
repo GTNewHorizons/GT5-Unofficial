@@ -631,13 +631,13 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
         }
     }
     //
-    // te.receiveClientEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, aTextureData);
+    // te.receiveClientData(GregTechTileClientEvents.CHANGE_COMMON_DATA, aTextureData);
     //
-    // te.receiveClientEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aUpdateData & 0x7F);
-    // te.receiveClientEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aTexturePage | 0x80);
+    // te.receiveClientData(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aUpdateData & 0x7F);
+    // te.receiveClientData(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aTexturePage | 0x80);
     //
-    // te.receiveClientEvent(GregTechTileClientEvents.CHANGE_COLOR, aColorData);
-    // te.receiveClientEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, aRedstoneData);
+    // te.receiveClientData(GregTechTileClientEvents.CHANGE_COLOR, aColorData);
+    // te.receiveClientData(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, aRedstoneData);
 
     @Override
     public final TileEntity createTileEntity(World aWorld, int aMeta) {

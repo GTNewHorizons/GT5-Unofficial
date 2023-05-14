@@ -253,7 +253,7 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
                     mteBlock.receiveCoverData(mte, mC0, mC1, mC2, mC3, mC4, mC5);
                 }
                 if ((features & REDSTONE) == REDSTONE) {
-                    mte.receiveClientEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, mRedstone);
+                    mte.receiveClientData(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, mRedstone);
                 }
 
                 if ((features & MODES) == MODES && mte instanceof IMultiTileEntity.IMTE_HasModes mteModes) {
