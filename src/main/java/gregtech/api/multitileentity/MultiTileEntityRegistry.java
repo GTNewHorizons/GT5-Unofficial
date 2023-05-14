@@ -80,7 +80,7 @@ public class MultiTileEntityRegistry {
         mBlock = aBlock;
         GT_FML_LOGGER.info(aNameInternal + " " + Block.getIdFromBlock(aBlock) + "This is the answer");
         mBlock.mMultiTileEntityRegistry = this;
-        REGISTRIES.put(new ItemStack(Item.getItemFromBlock(aBlock), 1, GT_Values.W), this);
+        REGISTRIES.put(new ItemStack(Item.getItemById(Block.getIdFromBlock(aBlock)), 1, GT_Values.W), this);
         NAMED_REGISTRIES.put(mNameInternal, this);
     }
 
