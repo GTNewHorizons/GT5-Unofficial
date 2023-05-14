@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multiblock;
 
 import static com.google.common.primitives.Ints.saturatedCast;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.Mods.*;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.*;
 
 import java.util.ArrayList;
@@ -40,6 +39,7 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.logic.ComplexParallelProcessingLogic;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.ComplexParallelController;
+import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
@@ -218,13 +218,7 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
                 .addElement(
                     'W',
                     GT_StructureUtility.ofCoil(AdvChemicalReactor::setCoilTier, AdvChemicalReactor::getCoilTier))
-                .addElement(
-                    'G',
-                    ofChain(
-                        ofBlockUnlocalizedName(IndustrialCraft2.ID, "blockAlloyGlass", 0, true),
-                        ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks", 0, true),
-                        ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks2", 0, true),
-                        ofBlockUnlocalizedName(Thaumcraft.ID, "blockCosmeticOpaque", 2, false)))
+                .addElement('G', Glasses.chainAllGlasses())
                 .build();
         }
         return STRUCTURE_DEFINITION;
