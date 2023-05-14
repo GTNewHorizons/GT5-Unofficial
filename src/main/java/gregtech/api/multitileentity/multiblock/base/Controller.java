@@ -313,16 +313,19 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
      * NOTE: If using `buildState` be sure to `startBuilding()` and either `endBuilding()` or `failBuilding()`
      */
     public boolean checkMachine() {
+        calculateTier();
+        return tier > 0;
+    }
+
+    protected void calculateTier() {
         double sum = 0;
         if (functionalCasings == null || functionalCasings.size() == 0) {
-            return false;
+            return;
         }
         for (FunctionalCasing casing : functionalCasings) {
             sum += casing.getPartTier() * casing.getPartModifier();
         }
-        tier = (int) Math.floor(sum / functionalCasings.size());
-        // Maximum Energy stores will have a cap of 2 minute work time of current voltage
-        return tier > 0;
+        tier = (int) Math.min(Math.floor(sum / functionalCasings.size()), 14);
     }
 
     @Override
