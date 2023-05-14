@@ -542,7 +542,7 @@ public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalP
 
     @Override
     public String getTileEntityName() {
-        return "gt.multitileentity.multiblock.advchemicalreactor";
+        return "gt.multitileentity.multiblock.advchemicalprocessor";
     }
 
     @Override
