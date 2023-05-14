@@ -224,7 +224,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     // Phosphorus bee, Humidity: normal, Temperature: Hot, Parents: Apatite & Ash, Mutationrate: 12%, Combrate: 55%
     PHOSPHORUS(GT_BranchDefinition.ORGANIC, "Phosphorus", false, new Color(0xFFC826), new Color(0xC1C1F6),
         beeSpecies -> {
-            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.PHOSPHORUS), 0.55f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.PHOSPHORUS), 0.35f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setTemperature(HOT);
             beeSpecies.setNocturnal();
@@ -2342,7 +2342,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }),
     // Oxygen bee, Humidity: normal, Temperature: Icy, Parents: Space & Callisto, Mutationrate: 15%, Combrate: 50%
     OXYGEN(GT_BranchDefinition.NOBLEGAS, "Oxygen", false, new Color(0xFFFFFF), new Color(0x8F8FFF), beeSpecies -> {
-        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.OXYGEN), 0.35f);
+        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.OXYGEN), 0.45f);
+        beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.HYDROGEN), 0.20f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(ICY);
         beeSpecies.setNocturnal();
@@ -2353,7 +2354,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }),
     // Hydrogen bee, Humidity: normal, Temperature: Icy, Parents: Oxygen & Watery, Mutationrate: 15%, Combrate: 50%
     HYDROGEN(GT_BranchDefinition.NOBLEGAS, "Oxygen", false, new Color(0xFFFFFF), new Color(0xFF1493), beeSpecies -> {
-        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.HYDROGEN), 0.35f);
+        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.HYDROGEN), 0.45f);
+        beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.NITROGEN), 0.20f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(ICY);
         beeSpecies.setNocturnal();
@@ -2364,7 +2366,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }),
     // Nitrogen bee, Humidity: normal, Temperature: Icy, Parents: Oxygen & Hydrogen, Mutationrate: 15%, Combrate: 50%
     NITROGEN(GT_BranchDefinition.NOBLEGAS, "Nitrogen", false, new Color(0xFFC832), new Color(0xA52A2A), beeSpecies -> {
-        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.NITROGEN), 0.35f);
+        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.NITROGEN), 0.45f);
+        beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.FLUORINE), 0.20f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(ICY);
         beeSpecies.setNocturnal();
@@ -2375,7 +2378,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }),
     // Fluorine bee, Humidity: normal, Temperature: Icy, Parents: Nitrogen & Hydrogen, Mutationrate: 15%, Combrate: 50%
     FLUORINE(GT_BranchDefinition.NOBLEGAS, "Fluorine", false, new Color(0x86AFF0), new Color(0xFF6D00), beeSpecies -> {
-        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.FLUORINE), 0.35f);
+        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.FLUORINE), 0.45f);
+        beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.OXYGEN), 0.20f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(ICY);
         beeSpecies.setNocturnal();

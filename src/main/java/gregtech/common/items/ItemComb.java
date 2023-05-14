@@ -165,9 +165,9 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             50 * 100);
         addCentrifugeToItemStack(
             CombType.PHOSPHORUS,
-            new ItemStack[] { Materials.Phosphorus.getDust(3), Materials.TricalciumPhosphate.getDust(2),
+            new ItemStack[] { Materials.Phosphorus.getDust(1), Materials.TricalciumPhosphate.getDust(2),
                 ItemList.FR_Wax.get(1) },
-            new int[] { 100 * 100, 75 * 100, 100 * 100 },
+            new int[] { 100 * 100, 100 * 100, 100 * 100 },
             Voltage.HV);
         addCentrifugeToItemStack(
             CombType.MICA,
@@ -1537,10 +1537,10 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         // (Noble)gas Line
         addFluidExtractorProcess(CombType.HELIUM, Materials.Helium.getGas(250), Voltage.HV);
         addFluidExtractorProcess(CombType.ARGON, Materials.Argon.getGas(250), Voltage.MV);
-        addFluidExtractorProcess(CombType.NITROGEN, Materials.Nitrogen.getGas(250), Voltage.MV);
-        addFluidExtractorProcess(CombType.HYDROGEN, Materials.Hydrogen.getGas(250), Voltage.MV);
+        addFluidExtractorProcess(CombType.NITROGEN, Materials.Nitrogen.getGas(500), Voltage.MV);
+        addFluidExtractorProcess(CombType.HYDROGEN, Materials.Hydrogen.getGas(500), Voltage.MV);
         addFluidExtractorProcess(CombType.FLUORINE, Materials.Fluorine.getGas(250), Voltage.MV);
-        addFluidExtractorProcess(CombType.OXYGEN, Materials.Oxygen.getGas(250), Voltage.MV);
+        addFluidExtractorProcess(CombType.OXYGEN, Materials.Oxygen.getGas(500), Voltage.MV);
         // Organic part 2, unknown liquid
         // yes, unknowwater. Its not my typo, its how it is spelled. Stupid game.
         addFluidExtractorProcess(CombType.UNKNOWNWATER, FluidRegistry.getFluidStack("unknowwater", 250), Voltage.ZPM);
