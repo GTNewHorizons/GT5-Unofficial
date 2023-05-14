@@ -194,8 +194,8 @@ public class GT_RecipeRegistrator {
         // }
         RA.addFluidSmelterRecipe(
             GT_Utility.copyAmount(1, aStack),
-            aByproduct == null
-                || (tData != null && tData.hasValidPrefixData() && tData.mPrefix == OrePrefixes.toolHeadDrill)
+            aByproduct
+                == null
                     ? null
                     : aByproduct.mMaterial.contains(SubTag.NO_SMELTING) || !aByproduct.mMaterial.contains(SubTag.METAL)
                         ? aByproduct.mMaterial.contains(SubTag.FLAMMABLE)
@@ -305,11 +305,20 @@ public class GT_RecipeRegistrator {
             tAmount += tMaterial.mAmount * tMaterial.mMaterial.getMass();
 
         boolean tHide = !tIron && GT_Mod.gregtechproxy.mHideRecyclingRecipes;
-        if (aData.mPrefix == OrePrefixes.toolHeadDrill) {
+        ArrayList<ItemStack> outputs = new ArrayList<ItemStack>();
+        if (GT_OreDictUnificator.getIngotOrDust(aData.mMaterial) != null) {
+            outputs.add(GT_OreDictUnificator.getIngotOrDust(aData.mMaterial));
+        }
+        for (int i = 0; i < 8; i++) {
+            if (GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(i)) != null) {
+                outputs.add(GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(i)));
+            }
+        }
+        if (outputs.size() != 0) {
+            ItemStack[] outputsArray = outputs.toArray(new ItemStack[outputs.size()]);
             GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
-
             recipeBuilder.itemInputs(aStack)
-                .itemOutputs(GT_OreDictUnificator.getIngotOrDust(aData.mMaterial))
+                .itemOutputs(outputsArray)
                 .fluidInputs(Materials.Oxygen.getGas((int) Math.max(16, tAmount / M)))
                 .noFluidOutputs()
                 .duration(((int) Math.max(16, tAmount / M)) * TICKS)
@@ -318,31 +327,8 @@ public class GT_RecipeRegistrator {
                 recipeBuilder.hidden();
             }
             recipeBuilder.addTo(UniversalArcFurnace);
-        } else {
-            ArrayList<ItemStack> outputs = new ArrayList<ItemStack>();
-            if (GT_OreDictUnificator.getIngotOrDust(aData.mMaterial) != null) {
-                outputs.add(GT_OreDictUnificator.getIngotOrDust(aData.mMaterial));
-            }
-            for (int i = 0; i < 8; i++) {
-                if (GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(i)) != null) {
-                    outputs.add(GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(i)));
-                }
-            }
-            if (outputs.size() != 0) {
-                ItemStack[] outputsArray = outputs.toArray(new ItemStack[outputs.size()]);
-                GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
-                recipeBuilder.itemInputs(aStack)
-                    .itemOutputs(outputsArray)
-                    .fluidInputs(Materials.Oxygen.getGas((int) Math.max(16, tAmount / M)))
-                    .noFluidOutputs()
-                    .duration(((int) Math.max(16, tAmount / M)) * TICKS)
-                    .eut(90);
-                if (tHide) {
-                    recipeBuilder.hidden();
-                }
-                recipeBuilder.addTo(UniversalArcFurnace);
-            }
         }
+
     }
 
     public static void registerReverseMacerating(ItemStack aStack, Materials aMaterial, long aMaterialAmount,
@@ -374,26 +360,16 @@ public class GT_RecipeRegistrator {
         for (MaterialStack tMaterial : aData.getAllMaterialStacks())
             tAmount += tMaterial.mAmount * tMaterial.mMaterial.getMass();
         boolean tHide = (aData.mMaterial.mMaterial != Materials.Iron) && (GT_Mod.gregtechproxy.mHideRecyclingRecipes);
-        if (aData.mPrefix == OrePrefixes.toolHeadDrill) {
-            RA.addPulveriserRecipe(
-                aStack,
-                new ItemStack[] { GT_OreDictUnificator.getDust(aData.mMaterial) },
-                null,
-                aData.mMaterial.mMaterial == Materials.Marble ? 1 : (int) Math.max(16, tAmount / M),
-                4,
-                tHide);
-        } else {
-            RA.addPulveriserRecipe(
-                aStack,
-                new ItemStack[] { GT_OreDictUnificator.getDust(aData.mMaterial),
-                    GT_OreDictUnificator.getDust(aData.getByProduct(0)),
-                    GT_OreDictUnificator.getDust(aData.getByProduct(1)),
-                    GT_OreDictUnificator.getDust(aData.getByProduct(2)) },
-                null,
-                aData.mMaterial.mMaterial == Materials.Marble ? 1 : (int) Math.max(16, tAmount / M),
-                4,
-                tHide);
-        }
+        RA.addPulveriserRecipe(
+            aStack,
+            new ItemStack[] { GT_OreDictUnificator.getDust(aData.mMaterial),
+                GT_OreDictUnificator.getDust(aData.getByProduct(0)),
+                GT_OreDictUnificator.getDust(aData.getByProduct(1)),
+                GT_OreDictUnificator.getDust(aData.getByProduct(2)) },
+            null,
+            aData.mMaterial.mMaterial == Materials.Marble ? 1 : (int) Math.max(16, tAmount / M),
+            4,
+            tHide);
 
         if (!aAllowHammer) {
             return;
