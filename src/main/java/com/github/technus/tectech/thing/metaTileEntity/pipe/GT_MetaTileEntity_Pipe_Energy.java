@@ -30,6 +30,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.PowerLogic;
+import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GT_RenderedTexture;
@@ -160,6 +162,14 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
                             continue;
                         }
                         // }
+                    }
+                    if (tTileEntity instanceof PowerLogicHost) {
+                        PowerLogic logic = ((PowerLogicHost) tTileEntity).getPowerLogic(oppositeSide);
+                        if (logic != null && logic.canUseLaser()) {
+                            mConnections |= 1 << side.ordinal();
+                            connectionCount++;
+                            continue;
+                        }
                     }
                     if (tTileEntity instanceof IConnectsToEnergyTunnel
                             && ((IConnectsToEnergyTunnel) tTileEntity).canConnect(oppositeSide)) {

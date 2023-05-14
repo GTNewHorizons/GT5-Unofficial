@@ -28,3 +28,4 @@ whitelist.json
 src/main/resources/mixins.*.json
 *.bat
 .vscode/settings.json
+.factorypath

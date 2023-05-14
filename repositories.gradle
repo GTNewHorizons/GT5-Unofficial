@@ -2,6 +2,7 @@
 
 repositories {
     ivy {
+        mavenLocal()
         url 'https://files.vexatos.com/'
         patternLayout {
             artifact "[module]/[artifact]-[revision](-[classifier])(.[ext])"

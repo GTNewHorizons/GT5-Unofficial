@@ -18,6 +18,8 @@ import com.github.technus.tectech.util.TT_Utility;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.PowerLogic;
+import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Utility;
 
@@ -158,6 +160,7 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
         final ForgeDirection front = aBaseMetaTileEntity.getFrontFacing();
         final ForgeDirection opposite = front.getOpposite();
         for (short dist = 1; dist < 1000; dist++) {
+
             IGregTechTileEntity tGTTileEntity = aBaseMetaTileEntity
                     .getIGregTechTileEntityAtSideAndDistance(front, dist);
             if (tGTTileEntity != null && tGTTileEntity.getColorization() == color) {
@@ -195,6 +198,15 @@ public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatc
                         return;
                     }
                 } else {
+                    if (tGTTileEntity instanceof PowerLogicHost) {
+                        PowerLogic logic = ((PowerLogicHost) tGTTileEntity).getPowerLogic(opposite);
+                        if (logic == null || !logic.canUseLaser() || opposite != tGTTileEntity.getFrontFacing()) {
+                            return;
+                        }
+
+                        long ampsUsed = logic.injectEnergy(maxEUOutput(), Amperes);
+                        setEUVar(aBaseMetaTileEntity.getStoredEU() - ampsUsed * maxEUOutput());
+                    }
                     return;
                 }
             } else {
