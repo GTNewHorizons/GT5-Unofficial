@@ -72,16 +72,12 @@ public class Inventory extends UpgradeCasing {
     }
 
     @Override
-    protected void onBaseTEDestroyed() {
-        super.onBaseTEDestroyed();
-        unregisterInventories();
-    }
-
-    private void unregisterInventories() {
+    public boolean breakBlock() {
         final IMultiBlockController controller = getTarget(false);
         if (controller != null) {
             controller.unregisterInventory(mInventoryName, mInventoryID.toString(), mType);
         }
+        return super.breakBlock();
     }
 
     @Override
