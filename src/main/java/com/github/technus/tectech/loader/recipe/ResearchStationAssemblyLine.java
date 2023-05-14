@@ -34,6 +34,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
+import com.rwtema.extrautils.ExtraUtils;
 
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
@@ -54,10 +55,9 @@ public class ResearchStationAssemblyLine implements Runnable {
         itemPartsUIVAsslineRecipes();
         itemPartsUMVAsslineRecipes();
         itemPartsUXVAsslineRecipes();
-
         addWirelessEnergyRecipes();
 
-        if (TinkersGregworks.isModLoaded()) {
+        if (TinkersGregworks.isModLoaded() && GoodGenerator.isModLoaded() && ExtraUtilities.isModLoaded()) {
             addEOHRecipes();
         }
 
@@ -2586,14 +2586,18 @@ public class ResearchStationAssemblyLine implements Runnable {
     }
 
     private void addEOHRecipes() {
-
         Fluid solderUEV = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null
                 ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
                 : FluidRegistry.getFluid("molten.solderingalloy");
-
-        ItemStack largeShirabonPlate = TinkersGregworks.isModLoaded()
-                ? TGregUtils.newItemStack(Materials.get("Shirabon"), PartTypes.LargePlate, 1)
-                : GT_OreDictUnificator.get("plateDenseShirabon", 1);
+        ItemStack largeShirabonPlate = TGregUtils.newItemStack(Materials.get("Shirabon"), PartTypes.LargePlate, 1);
+        ItemStack largeInfinityPlate = TGregUtils.newItemStack(Materials.Infinity, PartTypes.LargePlate, 1);
+        ItemStack largeBedrockiumPlate = getModItem(
+                TinkerConstruct.ID,
+                "heavyPlate",
+                1,
+                ExtraUtils.tcon_bedrock_material_id);
+        ItemStack largeCosmicNeutroniumPlate = TGregUtils
+                .newItemStack(Materials.CosmicNeutronium, PartTypes.LargePlate, 1);
 
         final FluidStack[] specialFluid = new FluidStack[] { MaterialsUEVplus.SpaceTime.getMolten(1_440),
                 MaterialsUEVplus.SpaceTime.getMolten(1_440), MaterialsUEVplus.SpaceTime.getMolten(1_440),
@@ -2666,16 +2670,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                             getModItem(Avaritia.ID, "Resource_Block", 64, 0),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 64),
                             GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 48),
-
-                            // Large Bedrockium Plate
-                            getModItem(TinkerConstruct.ID, "heavyPlate", 1, 315),
-                            // Large Cosmic Neutronium Plate
-                            getModItem(TinkerConstruct.ID, "heavyPlate", 1, 1671),
-                            // Large Shirabon Plate
-                            largeShirabonPlate,
-                            // Large Infinity Plate
-                            getModItem(TinkerConstruct.ID, "heavyPlate", 1, 1669),
-
+                            largeBedrockiumPlate, largeCosmicNeutroniumPlate, largeShirabonPlate, largeInfinityPlate,
                             // UV Solar panel
                             getModItem(SuperSolarPanels.ID, "PhotonicSolarPanel", 1, 0),
                             ItemList.Quantum_Chest_IV.get(1),
@@ -3158,16 +3153,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                             getModItem(Avaritia.ID, "Resource_Block", 64, 0),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 64),
                             GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 48),
-
                             // Large Bedrockium Plate
-                            getModItem(TinkerConstruct.ID, "heavyPlate", 1, 315),
-                            // Large Cosmic Neutronium Plate
-                            getModItem(TinkerConstruct.ID, "heavyPlate", 1, 1671),
-                            // Large Shirabon Plate
-                            largeShirabonPlate,
-                            // Large Infinity Plate
-                            getModItem(TinkerConstruct.ID, "heavyPlate", 1, 1669),
-
+                            largeBedrockiumPlate, largeCosmicNeutroniumPlate, largeShirabonPlate, largeInfinityPlate,
                             // UV Solar panel
                             getModItem(SuperSolarPanels.ID, "PhotonicSolarPanel", 1, 0),
                             // Ultimate Time Anomaly.

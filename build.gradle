@@ -1,4 +1,4 @@
-//version: 1683056771
+//version: 1683705740
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -69,10 +69,10 @@ plugins {
     id 'com.diffplug.spotless' version '6.13.0' apply false // 6.13.0 is the last jvm8 supporting version
     id 'com.modrinth.minotaur' version '2.+' apply false
     id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
-    id 'com.gtnewhorizons.retrofuturagradle' version '1.3.7'
+    id 'com.gtnewhorizons.retrofuturagradle' version '1.3.11'
 }
 
-print("You might want to check out './gradlew :faq' if your build fails.")
+print("You might want to check out './gradlew :faq' if your build fails.\n")
 
 boolean settingsupdated = verifySettingsGradle()
 settingsupdated = verifyGitAttributes() || settingsupdated
@@ -222,6 +222,8 @@ if (enableModernJavaSyntax.toBoolean()) {
 
     dependencies {
         annotationProcessor 'com.github.bsideup.jabel:jabel-javac-plugin:1.0.0'
+        // workaround for https://github.com/bsideup/jabel/issues/174
+        annotationProcessor 'net.java.dev.jna:jna-platform:5.13.0'
         compileOnly('com.github.bsideup.jabel:jabel-javac-plugin:1.0.0') {
             transitive = false // We only care about the 1 annotation class
         }
@@ -567,9 +569,10 @@ repositories {
 
 def mixinProviderGroup = "io.github.legacymoddingmc"
 def mixinProviderModule = "unimixins"
-def mixinProviderVersion = "0.1.6"
+def mixinProviderVersion = "0.1.7.1"
 def mixinProviderSpecNoClassifer = "${mixinProviderGroup}:${mixinProviderModule}:${mixinProviderVersion}"
 def mixinProviderSpec = "${mixinProviderSpecNoClassifer}:dev"
+ext.mixinProviderSpec = mixinProviderSpec
 
 dependencies {
     if (usesMixins.toBoolean()) {
@@ -819,6 +822,18 @@ public abstract class RunHotswappableMinecraftTask extends RunMinecraftTask {
             !file.path.contains("2.9.4-nightly-20150209") // Remove lwjgl2
         }
         this.classpath(project.java17DependenciesCfg)
+    }
+
+    public void setup(Project project) {
+        super.setup(project)
+        if (project.usesMixins.toBoolean()) {
+            this.extraJvmArgs.addAll(project.provider(() -> {
+                def mixinCfg = project.configurations.detachedConfiguration(project.dependencies.create(project.mixinProviderSpec))
+                mixinCfg.canBeConsumed = false
+                mixinCfg.transitive = false
+                enableHotswap ? ["-javaagent:" + mixinCfg.singleFile.absolutePath] : []
+            }))
+        }
     }
 }
 
@@ -1264,7 +1279,9 @@ tasks.register('faq') {
         print("If your build fails to fetch dependencies, they might have been deleted and replaced by newer " +
             "versions.\nCheck if the versions you try to fetch are still on the distributing sites.\n" +
             "The links can be found in repositories.gradle and build.gradle:repositories, " +
-            "not build.gradle:buildscript.repositories - this one is for gradle plugin metadata.")
+            "not build.gradle:buildscript.repositories - this one is for gradle plugin metadata.\n\n" +
+            "If your build fails to recognize the syntax of new Java versions, enable Jabel in your " +
+            "gradle.properties. See how it's done in GTNH ExampleMod/gradle.properties.")
     }
 }
 

@@ -16,4 +16,14 @@ dependencies {
     compileOnly('curse.maven:cofh-lib-220333:2388748') {transitive=false}
     compileOnly('curse.maven:computercraft-67504:2269339') {transitive=false}
     compileOnly('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev') {transitive=false}
+    compileOnly("curse.maven:extra-utilities-225561:2264384") {transitive = false}
+
+    // for testing EOH recipes
+    //runtimeOnlyNonPublishable("TGregworks:TGregworks:1.7.10-GTNH-1.0.23:deobf")
+    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TinkersConstruct:1.9.31-GTNH:dev')
+    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:NewHorizonsCoreMod:2.1.18:dev')
+    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:GoodGenerator:0.6.2:dev') {
+    //    exclude group: "com.github.GTNewHorizons", module: "TecTech"
+    //}
+    //runtimeOnlyNonPublishable("curse.maven:extra-utilities-225561:2264384") {transitive = false}
 }
