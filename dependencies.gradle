@@ -59,6 +59,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.4.16:dev") { transitive = false }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Hodgepodge:2.2.8:dev") { transitive = false }
+    compileOnly('com.github.GTNewHorizons:Botania:1.9.22-GTNH:dev') { transitive = false }
 
     compileOnly("com.google.auto.value:auto-value-annotations:1.10.1") { transitive = false }
     annotationProcessor("com.google.auto.value:auto-value:1.10.1")

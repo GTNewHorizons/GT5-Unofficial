@@ -2,9 +2,6 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.enums.Mods.BartWorks;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
@@ -41,6 +38,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMul
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -76,15 +74,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
                     { "EEEEEE     ", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEE     " } }))
         .addElement('i', ofBlock(GregTech_API.sBlockCasings8, 7))
         .addElement('s', ofBlock(GregTech_API.sBlockCasings4, 1))
-        .addElement(
-            'g',
-            ofChain(
-                ofBlockUnlocalizedName(IndustrialCraft2.ID, "blockAlloyGlass", 0, true),
-                ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks", 0, true),
-                ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks2", 0, true),
-                // warded
-                // glass
-                ofBlockUnlocalizedName(Thaumcraft.ID, "blockCosmeticOpaque", 2, false)))
+        .addElement('g', Glasses.chainAllGlasses())
         .addElement('x', ofBlock(GregTech_API.sBlockCasings2, 3))
         .addElement('p', ofBlock(GregTech_API.sBlockCasings2, 15))
         .addElement('t', ofFrame(Materials.TungstenSteel))
