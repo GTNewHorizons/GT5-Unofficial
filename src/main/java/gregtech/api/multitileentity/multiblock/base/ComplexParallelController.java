@@ -125,6 +125,7 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
             .setVoidProtection(index, isVoidProtectionEnabled(index))
             .setEut(index, getEutForComplexParallel(index))
             .setPerfectOverclock(hasPerfectOverclock())
+            .setIsCleanroom(isCleanroom)
             .process(index);
         setDuration(index, processingLogic.getDuration(index));
         setEut(processingLogic.getTotalEU());
