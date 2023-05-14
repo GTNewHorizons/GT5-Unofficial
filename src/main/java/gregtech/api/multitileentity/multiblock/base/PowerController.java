@@ -48,12 +48,16 @@ public abstract class PowerController<T extends PowerController<T>> extends Cont
     @Override
     public boolean checkMachine() {
         boolean result = super.checkMachine();
+        updatePowerLogic();
+        return result;
+    }
+
+    protected void updatePowerLogic() {
         power.setEnergyCapacity(GT_Values.V[tier] * 2 * MINUTE);
         power.setAmperage(amperage);
         power.setMaxVoltage(GT_Values.V[tier]);
         power.setCanUseLaser(canUseLaser);
         power.setCanUseWireless(canUseWireless, getOwnerUuid());
-        return result;
     }
 
     @Override
