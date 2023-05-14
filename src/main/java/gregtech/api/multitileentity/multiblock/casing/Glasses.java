@@ -8,7 +8,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureElementChain;
 
 public class Glasses {
 
-    /** support all HV+ glasses for multiblock structure **/
+    /** support all Bart, Botania, Ic2, Thaumcraft  glasses for multiblock structure **/
     public static <T> IStructureElementChain<T> chainAllGlasses() {
         return ofChain(
             // IndustrialCraft2 glass
