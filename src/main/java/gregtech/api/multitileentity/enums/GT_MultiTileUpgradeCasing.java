@@ -34,7 +34,19 @@ public enum GT_MultiTileUpgradeCasing {
     UXV_Tank(27),
     UMV_Tank(28),
     MAX_Tank(29),
-    Cleanroom(30),
+    Amp_4(30),
+    Amp_16(31),
+    Amp_64(32),
+    Amp_256(33),
+    Amp_1_024(34),
+    Amp_4_096(35),
+    Amp_16_384(36),
+    Amp_65_536(37),
+    Amp_262_144(38),
+    Amp_1_048_576(39),
+    Laser(40),
+    Wireless(41),
+    Cleanroom(42),
     NONE(GT_Values.W);
 
     private final int meta;

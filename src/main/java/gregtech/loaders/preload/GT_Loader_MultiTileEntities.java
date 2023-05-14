@@ -22,9 +22,12 @@ import gregtech.common.tileentities.casings.functional.Piston;
 import gregtech.common.tileentities.casings.functional.Pump;
 import gregtech.common.tileentities.casings.functional.RobotArm;
 import gregtech.common.tileentities.casings.functional.Sensor;
+import gregtech.common.tileentities.casings.upgrade.Ampere;
 import gregtech.common.tileentities.casings.upgrade.Cleanroom;
 import gregtech.common.tileentities.casings.upgrade.Inventory;
+import gregtech.common.tileentities.casings.upgrade.Laser;
 import gregtech.common.tileentities.casings.upgrade.Tank;
+import gregtech.common.tileentities.casings.upgrade.Wireless;
 import gregtech.common.tileentities.machines.multiblock.AdvChemicalProcessor;
 import gregtech.common.tileentities.machines.multiblock.CokeOven;
 import gregtech.common.tileentities.machines.multiblock.Macerator;
@@ -394,12 +397,107 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .tier(14)
             .register();
 
+        UPGRADE_CASING_REGISTRY.create(Amp_4.getId(), Ampere.class)
+            .name("Amperage Upgrade (4 A)")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("amperage")
+            .upgradeAmperage(4)
+            .tier(1)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Amp_16.getId(), Ampere.class)
+            .name("Amperage Upgrade (16 A)")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("amperage")
+            .upgradeAmperage(16)
+            .tier(2)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Amp_64.getId(), Ampere.class)
+            .name("Amperage Upgrade (64 A)")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("amperage")
+            .upgradeAmperage(64)
+            .tier(3)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Amp_256.getId(), Ampere.class)
+            .name("Amperage Upgrade (256 A)")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("amperage")
+            .upgradeAmperage(256)
+            .tier(4)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Amp_1_024.getId(), Ampere.class)
+            .name("Amperage Upgrade (1,024 A)")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("amperage")
+            .upgradeAmperage(1_024)
+            .tier(5)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Amp_4_096.getId(), Ampere.class)
+            .name("Amperage Upgrade (4,096 A)")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("amperage")
+            .upgradeAmperage(4_096)
+            .tier(6)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Amp_16_384.getId(), Ampere.class)
+            .name("Amperage Upgrade (16,384 A)")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("amperage")
+            .upgradeAmperage(16_384)
+            .tier(7)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Amp_65_536.getId(), Ampere.class)
+            .name("Amperage Upgrade (65,536 A)")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("amperage")
+            .upgradeAmperage(65_536)
+            .tier(8)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Amp_262_144.getId(), Ampere.class)
+            .name("Amperage Upgrade (262,144 A)")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("amperage")
+            .upgradeAmperage(262_144)
+            .tier(9)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Amp_1_048_576.getId(), Ampere.class)
+            .name("Amperage Upgrade (1,048,576 A)")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("amperage")
+            .upgradeAmperage(1_048_576)
+            .tier(10)
+            .register();
+
         UPGRADE_CASING_REGISTRY.create(Cleanroom.getId(), Cleanroom.class)
             .name("Cleanroom Upgrade")
             .category("MultiBlock Upgrade Casing")
             .setBlock(COMPONENT_CASING_BLOCK)
             .textureFolder("cleanroom")
             .tier(1)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Laser.getId(), Laser.class)
+            .name("Laser Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("laser")
+            .tier(8)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Wireless.getId(), Wireless.class)
+            .name("Wireless Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("wireless")
+            .tier(11)
             .register();
     }
 

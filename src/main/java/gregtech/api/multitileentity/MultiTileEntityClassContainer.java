@@ -157,6 +157,11 @@ public class MultiTileEntityClassContainer {
         return this;
     }
 
+    public MultiTileEntityClassContainer upgradeAmperage(long amperage) {
+        mParameters.setLong(NBT.UPGRADE_AMPERAGE, amperage);
+        return this;
+    }
+
     @SuppressWarnings("unused")
     public MultiTileEntityClassContainer setNBT(String key, Object val) {
         return setNBT(new Tuple(key, val));

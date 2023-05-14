@@ -342,6 +342,7 @@ public class GT_Values {
             UPGRADE_TANKS_INPUT = "gt.tanklist.upg.in", // NBT List
             UPGRADE_TANKS_OUTPUT = "gt.tanklist.upg.out", // NBT List
             UPGRADE_TANKS_PREFIX = "gt.tank.upg", // NBT Tag
+            UPGRADE_AMPERAGE = "gt.amp.upg", // Long
             SEPARATE_INPUTS = "gt.separate.inputs", // Boolean
             VOID_EXCESS = "gt.void.excess", // Boolean
             BATCH_MODE = "gt.batch.mode", // Boolean

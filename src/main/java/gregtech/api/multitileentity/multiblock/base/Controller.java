@@ -743,6 +743,21 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         isCleanroom = cleanroom;
     }
 
+    @Override
+    public void setWirelessSupport(boolean canUse) {
+        canUseWireless = canUse;
+    }
+
+    @Override
+    public void setLaserSupport(boolean canUse) {
+        canUseLaser = canUse;
+    }
+
+    @Override
+    public void setMaxAmperage(long amperage) {
+        this.amperage = amperage;
+    }
+
     protected void clearSpecialLists() {
         upgradeCasings.clear();
     }
