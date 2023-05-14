@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -85,6 +84,7 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IDescribable;
+import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
@@ -110,8 +110,9 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 /**
  * Multi Tile Entities - or MuTEs - don't have dedicated hatches, but their casings can become hatches.
  */
-public abstract class Controller<T extends Controller<T>> extends MultiTileBasicMachine implements IAlignment,
-    IConstructable, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable, IGlobalWirelessEnergy {
+public abstract class Controller<T extends Controller<T>> extends MultiTileBasicMachine
+    implements IAlignment, IConstructable, IMultiBlockController, IDescribable, IMTE_AddToolTips,
+    ISurvivalConstructable, IGlobalWirelessEnergy {
 
     public static final String ALL_INVENTORIES_NAME = "all";
     protected static final int AUTO_OUTPUT_FREQUENCY_TICK = 20;
