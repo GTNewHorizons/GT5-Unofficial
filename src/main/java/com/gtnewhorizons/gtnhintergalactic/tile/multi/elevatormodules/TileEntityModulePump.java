@@ -5,25 +5,30 @@ import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.gtnewhorizons.gtnhintergalactic.Tags;
 import com.gtnewhorizons.gtnhintergalactic.recipe.SpacePumpingRecipes;
+import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
@@ -263,6 +268,44 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                                             gasTypeSettings[fluidIndex].id / 10,
                                             gasTypeSettings[fluidIndex].get())));
         }
+    }
+
+    /** Texture that will be displayed on the side of the module */
+    protected static Textures.BlockIcons.CustomIcon engraving;
+
+    /**
+     * Get the texture of this controller
+     *
+     * @param aBaseMetaTileEntity This
+     * @param side                Side for which the texture will be gotten
+     * @param facing              Facing side of the controller
+     * @param colorIndex          Color index
+     * @param aActive             Flag if the controller is active
+     * @param aRedstone           Flag if Redstone is present
+     * @return Texture array of this controller
+     */
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int colorIndex, boolean aActive, boolean aRedstone) {
+        if (side == facing) {
+            return new ITexture[] {
+                    Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),
+                    new TT_RenderedExtendedFacingTexture(
+                            aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON
+                                    : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF) };
+        } else if (facing.getRotation(ForgeDirection.UP) == side || facing.getRotation(ForgeDirection.DOWN) == side) {
+            return new ITexture[] {
+                    Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),
+                    new TT_RenderedExtendedFacingTexture(engraving) };
+        }
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE) };
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister aBlockIconRegister) {
+        engraving = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_SIDE_PUMP_MODULE");
+        super.registerIcons(aBlockIconRegister);
     }
 
     /**

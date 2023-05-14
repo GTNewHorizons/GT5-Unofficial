@@ -8,24 +8,29 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.gui.TecTechUITextures;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.gtnewhorizons.gtnhintergalactic.Tags;
 import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IG_Recipe;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IG_RecipeAdder;
 import com.gtnewhorizons.gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
+import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
@@ -34,8 +39,12 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.*;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.XSTR;
@@ -75,8 +84,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
     protected static String IS_WHITELISTED_NBT_TAG = "isWhitelisted";
     /** String of the NBT tag that saves the whitelist */
     protected static String WHITELIST_NBT_TAG = "whitelist";
-    /** Flag if the user modified the whitelist */
-    protected boolean wasWhitelistOpened;
+    /** Flag if the user modified the filter */
+    protected boolean wasFilterModified;
 
     protected static final ISpaceProject ASTEROID_OUTPOST = SpaceProjectManager.getProject("AsteroidOutput");
 
@@ -557,12 +566,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
         super.addUIWidgets(builder, buildContext);
         builder.widget(new FakeSyncWidget.BooleanSyncer(() -> isWhitelisted, val -> isWhitelisted = val));
         buildContext.addSyncedWindow(WHITELIST_WINDOW_ID, this::createWhitelistConfigWindow);
-        buildContext.addCloseListener(() -> {
-            if (wasWhitelistOpened) {
-                generateOreConfigurationList();
-                wasWhitelistOpened = false;
-            }
-        });
     }
 
     /**
@@ -572,13 +575,13 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
      * @return Window object
      */
     protected ModularWindow createWhitelistConfigWindow(final EntityPlayer player) {
-        wasWhitelistOpened = true;
         return ModularWindow.builder(158, 180).setBackground(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
                 .setGuiTint(getGUIColorization())
                 // Toggle white-/blacklist
                 .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                     TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
                     isWhitelisted = !isWhitelisted;
+                    wasFilterModified = true;
                 }).setPlayClickSound(false).setBackground(() -> {
                     List<UITexture> ret = new ArrayList<>();
                     ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
@@ -592,6 +595,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
                 // Clear list
                 .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                     TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+                    wasFilterModified = true;
                     if (!widget.isClient()) {
                         if (whiteListHandler != null) {
                             for (int i = 0; i < whiteListHandler.getSlots(); i++) {
@@ -605,6 +609,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
                 // Configure from bus
                 .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                     TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+                    wasFilterModified = true;
                     if (!widget.isClient()) {
                         int i = 0;
                         for (ItemStack itemStack : getStoredInputs()) {
@@ -622,6 +627,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
                 // List
                 .widget(
                         SlotGroup.ofItemHandler(whiteListHandler, 8).startFromSlot(0).endAtSlot(WHITELIST_SIZE - 1)
+                                .applyForWidget(
+                                        slotWidget -> slotWidget.setChangeListener(() -> wasFilterModified = true))
                                 .phantom(true).background(getGUITextureSet().getItemSlot()).build().setPos(7, 27))
                 .build();
     }
@@ -657,10 +664,52 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
                                         modeSetting.get())));
     }
 
+    /** Texture that will be displayed on the side of the module */
+    protected static Textures.BlockIcons.CustomIcon engraving;
+
+    /**
+     * Get the texture of this controller
+     *
+     * @param aBaseMetaTileEntity This
+     * @param side                Side for which the texture will be gotten
+     * @param facing              Facing side of the controller
+     * @param colorIndex          Color index
+     * @param aActive             Flag if the controller is active
+     * @param aRedstone           Flag if Redstone is present
+     * @return Texture array of this controller
+     */
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int colorIndex, boolean aActive, boolean aRedstone) {
+        if (side == facing) {
+            return new ITexture[] {
+                    Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),
+                    new TT_RenderedExtendedFacingTexture(
+                            aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON
+                                    : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF) };
+        } else if (facing.getRotation(ForgeDirection.UP) == side || facing.getRotation(ForgeDirection.DOWN) == side) {
+            return new ITexture[] {
+                    Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),
+                    new TT_RenderedExtendedFacingTexture(engraving) };
+        }
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE) };
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister aBlockIconRegister) {
+        engraving = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_SIDE_MINER_MODULE");
+        super.registerIcons(aBlockIconRegister);
+    }
+
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (!super.checkMachine_EM(aBaseMetaTileEntity, aStack)) {
             return false;
+        }
+        if (wasFilterModified) {
+            wasFilterModified = false;
+            generateOreConfigurationList();
         }
         if (SpaceProjectManager.teamHasProject(getBaseMetaTileEntity().getOwnerUuid(), ASTEROID_OUTPOST)) {
             ISpaceProject proj = SpaceProjectManager
