@@ -6,6 +6,7 @@ public enum GT_MultiTileCasing {
 
     CokeOven(0),
     Chemical(1),
+    Distillation(2),
     NONE(GT_Values.W);
 
     private final int meta;

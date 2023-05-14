@@ -44,6 +44,7 @@ import gregtech.api.multitileentity.base.NonTickableMultiTileEntity;
 import gregtech.api.multitileentity.enums.MultiTileCasingPurpose;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
+import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_BreakBlock;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_HasModes;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
@@ -54,7 +55,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MultiBlockPart extends NonTickableMultiTileEntity
-    implements IMultiBlockPart, IMTE_BreakBlock, IMTE_HasModes, PowerLogicHost {
+    implements IMultiBlockPart, IMTE_BreakBlock, IMTE_HasModes, PowerLogicHost, IMultiTileEntity.IMTE_AddToolTips {
 
     public static final int NOTHING = 0, ENERGY_IN = B[0], ENERGY_OUT = B[1], FLUID_IN = B[2], FLUID_OUT = B[3],
         ITEM_IN = B[4], ITEM_OUT = B[5];
@@ -571,9 +572,9 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
         final CoverInfo coverInfo = getCoverInfoAtSide(aDirection);
 
-        if ((controller.isLiquidInput(aDirection) && coverInfo.letsFluidIn(null, controller))
+        if (coverInfo.letsFluidIn(null, controller)
             || (controller.isLiquidOutput(aDirection) && coverInfo.letsFluidOut(null, controller)))
-            return controller.getTankInfo(this, aDirection);
+            return controller.getTankInfo(this, ForgeDirection.UNKNOWN);
 
         return GT_Values.emptyFluidTankInfo;
     }
@@ -940,5 +941,10 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         } else {
             super.addGregTechLogo(builder);
         }
+    }
+
+    @Override
+    public void addToolTips(List<String> list, ItemStack stack, boolean f3_h) {
+        list.add("A MultiTileEntity Casing");
     }
 }

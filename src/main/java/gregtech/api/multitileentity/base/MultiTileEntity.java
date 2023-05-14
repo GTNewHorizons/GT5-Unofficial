@@ -709,6 +709,8 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     public boolean onPlaced(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
         ForgeDirection side, float aHitX, float aHitY, float aHitZ) {
         facing = getSideForPlayerPlacing(aPlayer, facing, getValidFacings());
+        setOwnerUuid(aPlayer.getUniqueID());
+        setOwnerName(aPlayer.getDisplayName());
         onFacingChange();
         return true;
     }
@@ -1026,7 +1028,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public boolean receiveClientEvent(int aEventID, int aValue) {
+    public boolean receiveClientData(int aEventID, int aValue) {
         super.receiveClientEvent(aEventID, aValue);
         if (isClientSide()) {
             issueTextureUpdate();

@@ -1,7 +1,9 @@
 package gregtech.common.tileentities.casings.upgrade;
 
+import java.util.List;
 import java.util.UUID;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -105,5 +107,12 @@ public class Inventory extends UpgradeCasing {
         String name = getInventoryName();
         packet.setInventoryName(name);
         return packet;
+    }
+
+    @Override
+    public void addToolTips(List<String> list, ItemStack stack, boolean f3_h) {
+        super.addToolTips(list, stack, f3_h);
+        list.add("Adds another item inventory");
+        list.add("Inventory size: " + mInventorySize);
     }
 }

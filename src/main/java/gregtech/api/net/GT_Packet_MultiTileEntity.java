@@ -246,14 +246,14 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
             if (tBlock instanceof MultiTileEntityBlock mteBlock) {
                 final IMultiTileEntity mte = mteBlock.receiveMultiTileEntityData(aWorld, mX, mY, mZ, mRID, mID);
                 if (mte == null) return;
-                mte.receiveClientEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, mCommonData);
-                mte.receiveClientEvent(GregTechTileClientEvents.CHANGE_COLOR, mColor);
+                mte.receiveClientData(GregTechTileClientEvents.CHANGE_COMMON_DATA, mCommonData);
+                mte.receiveClientData(GregTechTileClientEvents.CHANGE_COLOR, mColor);
 
                 if ((features & COVERS) == COVERS) {
                     mteBlock.receiveCoverData(mte, mC0, mC1, mC2, mC3, mC4, mC5);
                 }
                 if ((features & REDSTONE) == REDSTONE) {
-                    mte.receiveClientEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, mRedstone);
+                    mte.receiveClientData(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, mRedstone);
                 }
 
                 if ((features & MODES) == MODES && mte instanceof IMultiTileEntity.IMTE_HasModes mteModes) {

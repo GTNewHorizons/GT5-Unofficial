@@ -3,6 +3,7 @@ package gregtech.api.logic;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.multitileentity.multiblock.base.Controller;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
 public abstract class ProcessingLogic {
@@ -14,8 +15,13 @@ public abstract class ProcessingLogic {
     protected FluidStack[] inputFluids;
     protected FluidStack[] outputFluids;
     protected FluidStack[] currentOutputFluids;
+    protected long voltage;
+    protected long ampere;
     protected long eut;
     protected long duration;
+    protected boolean isCleanroom, voidProtection, perfectOverclock;
+    protected Controller<?> controller;
+    protected int maxParallel = 1;
 
     public ProcessingLogic() {}
 
@@ -49,6 +55,11 @@ public abstract class ProcessingLogic {
         return this;
     }
 
+    public ProcessingLogic setIsCleanroom(boolean isCleanroom) {
+        this.isCleanroom = isCleanroom;
+        return this;
+    }
+
     public ProcessingLogic setRecipeMap(GT_Recipe_Map recipeMap) {
         this.recipeMap = recipeMap;
         return this;
@@ -64,6 +75,36 @@ public abstract class ProcessingLogic {
         return this;
     }
 
+    public ProcessingLogic setAmperage(long ampere) {
+        this.ampere = ampere;
+        return this;
+    }
+
+    public ProcessingLogic setVoltage(long voltage) {
+        this.voltage = voltage;
+        return this;
+    }
+
+    public ProcessingLogic setController(Controller<?> controller) {
+        this.controller = controller;
+        return this;
+    }
+
+    public ProcessingLogic setVoidProtection(boolean voidProtection) {
+        this.voidProtection = voidProtection;
+        return this;
+    }
+
+    public ProcessingLogic setPerfectOverclock(boolean perfectOverclock) {
+        this.perfectOverclock = perfectOverclock;
+        return this;
+    }
+
+    public ProcessingLogic setMaxParallel(int maxParallel) {
+        this.maxParallel = maxParallel;
+        return this;
+    }
+
     /**
      * Clears everything stored in the Processing Logic other than the Recipe map used
      */
@@ -74,6 +115,10 @@ public abstract class ProcessingLogic {
         this.outputFluids = null;
         this.eut = 0;
         this.duration = 0;
+        this.voltage = 0;
+        this.ampere = 0;
+        this.controller = null;
+        this.maxParallel = 1;
         return this;
     }
 

@@ -1,5 +1,7 @@
 package gregtech.api.multitileentity.multiblock.base;
 
+import static gregtech.api.enums.TickTime.MINUTE;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -46,10 +48,16 @@ public abstract class PowerController<T extends PowerController<T>> extends Cont
     @Override
     public boolean checkMachine() {
         boolean result = super.checkMachine();
-        power.setEnergyCapacity(GT_Values.V[tier] * 2 * 60 * 20);
-        power.setAmperage(2);
-        power.setMaxVoltage(GT_Values.V[tier]);
+        updatePowerLogic();
         return result;
+    }
+
+    protected void updatePowerLogic() {
+        power.setEnergyCapacity(GT_Values.V[tier] * 2 * MINUTE);
+        power.setAmperage(amperage);
+        power.setMaxVoltage(GT_Values.V[tier]);
+        power.setCanUseLaser(canUseLaser);
+        power.setCanUseWireless(canUseWireless, getOwnerUuid());
     }
 
     @Override
