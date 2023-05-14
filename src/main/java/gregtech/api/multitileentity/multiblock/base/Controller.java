@@ -952,6 +952,10 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             @Override
             public boolean placeBlock(S t, World world, int x, int y, int z, ItemStack trigger) {
                 final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry.getRegistry(registryID);
+                if (tRegistry == null) {
+                    GT_FML_LOGGER.error("NULL REGISTRY");
+                    return false;
+                }
                 final MultiTileEntityContainer tContainer = tRegistry
                     .getNewTileEntityContainer(world, x, y, z, meta, null);
                 if (tContainer == null) {
