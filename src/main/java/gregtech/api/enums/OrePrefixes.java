@@ -970,7 +970,6 @@ public enum OrePrefixes {
         oreRich.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount * 2);
         ore.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount);
         crushed.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount);
-        toolHeadDrill.mSecondaryMaterial = new MaterialStack(Materials.Steel, plate.mMaterialAmount * 4);
         toolHeadChainsaw.mSecondaryMaterial = new MaterialStack(
             Materials.Steel,
             plate.mMaterialAmount * 4 + ring.mMaterialAmount * 2);
