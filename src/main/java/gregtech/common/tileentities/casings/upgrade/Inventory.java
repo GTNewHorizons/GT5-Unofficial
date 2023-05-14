@@ -56,9 +56,12 @@ public class Inventory extends UpgradeCasing {
         } else {
             mInventoryID = UUID.randomUUID();
         }
+        if (aNBT.hasKey(NBT.UPGRADE_INVENTORY_NAME)) {
+            mInventoryName = aNBT.getString(NBT.UPGRADE_INVENTORY_NAME);
+        } else {
+            mInventoryName = "inventory";
+        }
         mInventorySize = aNBT.getInteger(NBT.UPGRADE_INVENTORY_SIZE);
-        mInventoryName = aNBT.getString(NBT.UPGRADE_INVENTORY_NAME);
-
     }
 
     @Override
