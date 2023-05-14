@@ -88,7 +88,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     protected boolean isElectric = true;
     protected boolean isSteam = false;
     protected boolean acceptsFuel = false;
-    protected boolean isWireless = false;
+    protected boolean canUseWireless = false;
+    protected boolean canUseLaser = false;
     protected byte soundEvent = 0;
     protected int soundEventValue = 0;
 
@@ -761,12 +762,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         this.acceptsFuel = acceptsFuel;
     }
 
-    protected boolean isWireless() {
-        return isWireless;
-    }
-
-    protected void setWireless(boolean isWireless) {
-        this.isWireless = isWireless;
+    protected boolean canUseWireless() {
+        return canUseWireless;
     }
 
     protected boolean drainEut(long eut) {

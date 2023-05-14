@@ -47,6 +47,7 @@ import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.logic.ComplexParallelProcessingLogic;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
+import gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing;
 import gregtech.api.multitileentity.multiblock.base.ComplexParallelController;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -290,7 +291,7 @@ public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalP
                 .addShape(
                     STRUCTURE_PIECE_T1,
                     transpose(
-                        new String[][] { { "CPCPC", "CCCCC", "CPCPC" }, { "CGC~C", "GWWWC", "CGCCC" },
+                        new String[][] { { "CPCPC", "CCCCC", "CPCPC" }, { "CGC~C", "GWWWU", "CGCCC" },
                             { "CPCPC", "CTTTC", "CPCPC" } }))
                 .addShape(
                     STRUCTURE_PIECE_T2,
@@ -359,9 +360,19 @@ public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalP
                     'W',
                     GT_StructureUtility.ofCoil(AdvChemicalReactor::setCoilTier, AdvChemicalReactor::getCoilTier))
                 .addElement('G', Glasses.chainAllGlasses())
-                    GT_StructureUtility.ofCoil(AdvChemicalProcessor::setCoilTier, AdvChemicalProcessor::getCoilTier))
                 .addElement('B', ofBlock(GregTech_API.sBlockCasings4, 1))
                 .addElement('F', GT_StructureUtility.ofFrame(Materials.Steel))
+                .addElement(
+                    'U',
+                    ofChain(
+                        addMultiTileCasing(
+                            UPGRADE_CASING_REGISTRY_NAME,
+                            GT_MultiTileUpgradeCasing.Wireless.getId(),
+                            NOTHING),
+                        addMultiTileCasing(
+                            "gt.multitileentity.casings",
+                            getCasingMeta(),
+                            FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN)))
                 .build();
         }
         return STRUCTURE_DEFINITION;

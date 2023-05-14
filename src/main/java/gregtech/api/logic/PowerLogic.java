@@ -1,21 +1,27 @@
 package gregtech.api.logic;
 
+import java.util.UUID;
+
 import net.minecraft.nbt.NBTTagCompound;
 
 import gregtech.api.enums.GT_Values.NBT;
+import gregtech.api.interfaces.IGlobalWirelessEnergy;
 
-public class PowerLogic {
+public class PowerLogic implements IGlobalWirelessEnergy {
 
     public static int NONE = 0;
     public static int RECEIVER = 1;
     public static int EMITTER = 2;
     public static int BOTH = RECEIVER | EMITTER;
+    private static float wirelessChargeFactor = 0.5F;
     private long storedEnergy = 0;
     private long energyCapacity = 0;
     private long voltage = 0;
     private long amperage = 0;
     private int type = 0;
     private boolean canUseLaser = false;
+    private boolean canUseWireless = false;
+    private UUID owner;
 
     public PowerLogic() {}
 
@@ -39,13 +45,14 @@ public class PowerLogic {
         return this;
     }
 
-    public PowerLogic disableLaser() {
-        canUseLaser = false;
+    public PowerLogic setCanUseLaser(boolean canUse) {
+        canUseLaser = canUse;
         return this;
     }
 
-    public PowerLogic enableLaser() {
-        canUseLaser = true;
+    public PowerLogic setCanUseWireless(boolean canUse, UUID owner) {
+        canUseWireless = canUse;
+        this.owner = owner;
         return this;
     }
 
@@ -71,6 +78,7 @@ public class PowerLogic {
     }
 
     public long injectEnergy(long voltage, long availableAmperage) {
+        if (canUseWireless) return 0;
         long usedAmperes = 0;
         while (addEnergy(voltage, 1) && usedAmperes < amperage) {
             usedAmperes++;
@@ -80,6 +88,13 @@ public class PowerLogic {
     }
 
     public boolean removeEnergyUnsafe(long totalEURemoved) {
+        if (canUseWireless) {
+            if (storedEnergy < energyCapacity * wirelessChargeFactor) {
+                if (addEUToGlobalEnergyMap(owner, -(energyCapacity - storedEnergy))) {
+                    storedEnergy = energyCapacity;
+                }
+            }
+        }
         if (storedEnergy - totalEURemoved < 0) {
             return false;
         }

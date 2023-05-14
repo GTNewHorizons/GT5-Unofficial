@@ -54,6 +54,7 @@ public class ProcessingLogic {
     protected float euModifier = 1.0f;
     protected float speedBoost = 1.0f;
     protected boolean amperageOC = true;
+    protected boolean isCleanroom;
 
     public ProcessingLogic() {}
 
@@ -116,6 +117,10 @@ public class ProcessingLogic {
     public ProcessingLogic setRecipeLocking(IRecipeLockable recipeLockableMachine, boolean isRecipeLocked) {
         this.recipeLockableMachine = recipeLockableMachine;
         this.isRecipeLocked = isRecipeLocked;
+    }
+
+    public ProcessingLogic setIsCleanroom(boolean isCleanroom) {
+        this.isCleanroom = isCleanroom;
         return this;
     }
 

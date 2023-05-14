@@ -337,13 +337,14 @@ public class GT_Values {
             UPGRADE_INVENTORIES_INPUT = "gt.invlist.upg.in", // NBT List
             UPGRADE_INVENTORIES_OUTPUT = "gt.invlist.upg.out", // NBT List
             UPGRADE_TANK_CAPACITY = "gt.tank.cap.upg", // Long
+            UPGRADE_TANK_COUNT = "gt.tank.ct.upg", // Int
             UPGRADE_TANK_CAPACITY_MULTIPLIER = "gt.tank.cap.mult.upg", // Long
             UPGRADE_TANK_UUID = "gt.tankuuid.upg", // String
             UPGRADE_TANK_NAME = "gt.tankname.upg", // String
             UPGRADE_TANKS_INPUT = "gt.tanklist.upg.in", // NBT List
             UPGRADE_TANKS_OUTPUT = "gt.tanklist.upg.out", // NBT List
-            UPGRADE_TANKS_COUNT = "gt.tankcount.upg", // Int
             UPGRADE_TANKS_PREFIX = "gt.tank.upg", // NBT Tag
+            UPGRADE_AMPERAGE = "gt.amp.upg", // Long
             SEPARATE_INPUTS = "gt.separate.inputs", // Boolean
             VOIDING_MODE = "gt.voiding.mode", // String
             BATCH_MODE = "gt.batch.mode", // Boolean

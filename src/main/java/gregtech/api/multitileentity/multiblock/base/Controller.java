@@ -84,6 +84,7 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.modularui.ControllerWithOptionalFeatures;
+import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
@@ -114,7 +115,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  */
 public abstract class Controller<T extends Controller<T>> extends MultiTileBasicMachine
     implements IAlignment, IConstructable, IMultiBlockController, IDescribable, IMTE_AddToolTips,
-    ISurvivalConstructable, ControllerWithOptionalFeatures {
+    ISurvivalConstructable, ControllerWithOptionalFeatures, IGlobalWirelessEnergy {
 
     public static final String ALL_INVENTORIES_NAME = "all";
     protected static final int AUTO_OUTPUT_FREQUENCY_TICK = 20;
@@ -146,6 +147,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     protected boolean recipeLock = getDefaultRecipeLockingMode();
     /** If this is set to true, the machine will get default WAILA behavior */
     protected boolean isSimpleMachine = true;
+
+    protected boolean isCleanroom = false;
 
     // A list of sides
     // Each side has a list of parts that have a cover that need to be ticked
@@ -268,7 +271,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 // We assume all tanks in the tank-array are equally sized
                 tTag.setLong(NBT.UPGRADE_TANK_CAPACITY, tanks[0].capacity());
                 tTag.setLong(NBT.UPGRADE_TANK_CAPACITY_MULTIPLIER, tanks[0].getCapacityMultiplier());
-                tTag.setInteger(NBT.UPGRADE_TANKS_COUNT, tanks.length);
+                tTag.setInteger(NBT.UPGRADE_TANK_COUNT, tanks.length);
                 for (int i = 0; i < tanks.length; i++) {
                     tanks[i].writeToNBT(tTag, NBT.UPGRADE_TANKS_PREFIX + i);
                 }
@@ -284,7 +287,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 // We assume all tanks in the tank-array are equally sized
                 tTag.setLong(NBT.UPGRADE_TANK_CAPACITY, tanks[0].capacity());
                 tTag.setLong(NBT.UPGRADE_TANK_CAPACITY_MULTIPLIER, tanks[0].getCapacityMultiplier());
-                tTag.setInteger(NBT.UPGRADE_TANKS_COUNT, tanks.length);
+                tTag.setInteger(NBT.UPGRADE_TANK_COUNT, tanks.length);
                 for (int i = 0; i < tanks.length; i++) {
                     tanks[i].writeToNBT(tTag, NBT.UPGRADE_TANKS_PREFIX + i);
                 }
@@ -354,7 +357,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             String tankName = nbtTank.getString(NBT.UPGRADE_TANK_NAME);
             long capacity = nbtTank.getLong(NBT.UPGRADE_TANK_CAPACITY);
             long capacityMultiplier = nbtTank.getLong(NBT.UPGRADE_TANK_CAPACITY_MULTIPLIER);
-            int count = nbtTank.getInteger(NBT.UPGRADE_TANKS_COUNT);
+            int count = nbtTank.getInteger(NBT.UPGRADE_TANK_COUNT);
             FluidTankGT[] tanks = new FluidTankGT[count];
             for (int j = 0; j < count; j++) {
                 tanks[j] = new FluidTankGT(capacity).setCapacityMultiplier(capacityMultiplier)
@@ -370,7 +373,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             String tankName = nbtTank.getString(NBT.UPGRADE_TANK_NAME);
             long capacity = nbtTank.getLong(NBT.UPGRADE_TANK_CAPACITY);
             long capacityMultiplier = nbtTank.getLong(NBT.UPGRADE_TANK_CAPACITY_MULTIPLIER);
-            int count = nbtTank.getInteger(NBT.UPGRADE_TANKS_COUNT);
+            int count = nbtTank.getInteger(NBT.UPGRADE_TANK_COUNT);
             FluidTankGT[] tanks = new FluidTankGT[count];
             for (int j = 0; j < count; j++) {
                 tanks[j] = new FluidTankGT(capacity).setCapacityMultiplier(capacityMultiplier)
@@ -738,6 +741,29 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 }
             }
         }
+    }
+
+    @Override
+    public void setCleanroom(boolean cleanroom) {
+        isCleanroom = cleanroom;
+    }
+
+    @Override
+    public void setWirelessSupport(boolean canUse) {
+        if (canUse) {
+            strongCheckOrAddUser(getOwnerUuid(), getOwnerName());
+        }
+        canUseWireless = canUse;
+    }
+
+    @Override
+    public void setLaserSupport(boolean canUse) {
+        canUseLaser = canUse;
+    }
+
+    @Override
+    public void setMaxAmperage(long amperage) {
+        this.amperage = amperage;
     }
 
     protected void clearSpecialLists() {
