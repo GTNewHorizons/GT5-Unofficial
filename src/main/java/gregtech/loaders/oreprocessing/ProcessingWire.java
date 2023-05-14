@@ -303,7 +303,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     .eut(TierEU.RECIPE_LV)
                     .addTo(sAlloySmelterRecipes);
             }
-            case "Iron", "Nickel", "Cupronickel", "Copper", "AnnealedCopper", "Kanthal", "Gold", "Electrum", "Silver", "Blue Alloy", "Nichrome", "Steel", "BlackSteel", "Titanium", "Aluminium", "BlueAlloy":
+            case "Iron", "Nickel", "Cupronickel", "Copper", "AnnealedCopper", "Kanthal", "Gold", "Electrum", "Silver", "Nichrome", "Steel", "BlackSteel", "Titanium", "Aluminium", "BlueAlloy", "NetherStar":
             // Assembler recipes
             {
                 if (GT_OreDictUnificator.get(correspondingCable, aMaterial, 1L) != null) {
