@@ -136,7 +136,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     private boolean structureOkay = false, structureChanged = false;
     private ExtendedFacing extendedFacing = ExtendedFacing.DEFAULT;
     private IAlignmentLimits limits = getInitialAlignmentLimits();
-    private String inventoryName;
+    protected String inventoryName;
     private String tankName;
     protected boolean separateInputs = false;
     protected boolean voidExcess = false;
