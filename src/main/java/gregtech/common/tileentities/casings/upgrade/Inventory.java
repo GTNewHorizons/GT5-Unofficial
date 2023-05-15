@@ -101,6 +101,11 @@ public class Inventory extends UpgradeCasing {
     }
 
     @Override
+    protected boolean canOpenControllerGui() {
+        return false;
+    }
+
+    @Override
     public GT_Packet_MultiTileEntity getClientDataPacket() {
         final GT_Packet_MultiTileEntity packet = super.getClientDataPacket();
         String name = getInventoryName();

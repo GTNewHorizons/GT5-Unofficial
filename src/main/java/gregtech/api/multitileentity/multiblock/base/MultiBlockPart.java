@@ -920,7 +920,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
             issueClientUpdate();
         }
         System.out.println("MultiBlockPart::createWindow");
-        if (modeSelected(NOTHING, ENERGY_IN, ENERGY_OUT) || mMode == NOTHING) {
+        if ((modeSelected(NOTHING, ENERGY_IN, ENERGY_OUT) || mMode == NOTHING) && canOpenControllerGui()) {
             IMultiBlockController controller = getTarget(false);
             if (controller == null) {
                 return super.createWindow(buildContext);
@@ -928,6 +928,10 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
             return controller.createWindowGUI(buildContext);
         }
         return super.createWindow(buildContext);
+    }
+
+    protected boolean canOpenControllerGui() {
+        return true;
     }
 
     @Override
