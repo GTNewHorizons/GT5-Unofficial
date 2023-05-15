@@ -28,6 +28,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_Utility;
@@ -168,9 +169,9 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             if (tDustStack != null) {
                                 tDustStack.stackSize = ((int) (tDustStack.stackSize * tDensityMultiplier));
                                 while ((tDustStack.stackSize > 64) && (tList.size() < 6)
-                                    && (tCapsuleCount + GT_ModHandler.getCapsuleCellContainerCount(tDustStack) * 64
+                                    && (tCapsuleCount + GT_ModHandler.getCapsuleCellContainerCount(tDustStack) * 64L
                                         <= 64L)) {
-                                    tCapsuleCount += GT_ModHandler.getCapsuleCellContainerCount(tDustStack) * 64;
+                                    tCapsuleCount += GT_ModHandler.getCapsuleCellContainerCount(tDustStack) * 64L;
                                     tList.add(GT_Utility.copyAmount(64L, tDustStack));
                                     tDustStack.stackSize -= 64;
                                 }
@@ -201,40 +202,59 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             }
                         }
                         if ((aMaterial.mExtraData & 0x1) != 0) {
-                            ItemStack cells = tCapsuleCount > 0L ? ItemList.Cell_Empty.get(tCapsuleCount) : null;
-
-                            GT_Values.RA.stdBuilder()
-                                .itemInputs(GT_Utility.copyAmount(tItemAmount, aStack), cells)
-                                .itemOutputs(
-                                    tList.size() < 1 ? null : tList.get(0),
-                                    tList.size() < 2 ? null : tList.get(1),
-                                    tList.size() < 3 ? null : tList.get(2),
-                                    tList.size() < 4 ? null : tList.get(3),
-                                    tList.size() < 5 ? null : tList.get(4),
-                                    tList.size() < 6 ? null : tList.get(5))
-                                .noFluidInputs()
-                                .fluidOutputs(tFluid)
-                                .duration(Math.max(1L, Math.abs(aMaterial.getProtons() * 2L * tItemAmount)))
-                                .eut(Math.min(4, tList.size()) * 30)
-                                .addTo(sElectrolyzerRecipes);
+                            if (tList.size() > 0 || tFluid != null) {
+                                GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                                if (tCapsuleCount > 0L) {
+                                    recipeBuilder.itemInputs(
+                                        GT_Utility.copyAmount(tItemAmount, aStack),
+                                        ItemList.Cell_Empty.get(tCapsuleCount));
+                                } else {
+                                    recipeBuilder.itemInputs(GT_Utility.copyAmount(tItemAmount, aStack));
+                                }
+                                if (tList.size() > 0) {
+                                    ItemStack[] outputsArray = tList.toArray(new ItemStack[Math.min(tList.size(), 6)]);
+                                    recipeBuilder.itemOutputs(outputsArray);
+                                } else {
+                                    recipeBuilder.noItemOutputs();
+                                }
+                                recipeBuilder.noFluidInputs();
+                                if (tFluid != null) {
+                                    recipeBuilder.fluidOutputs(tFluid);
+                                } else {
+                                    recipeBuilder.noFluidOutputs();
+                                }
+                                recipeBuilder
+                                    .duration(Math.max(1L, Math.abs(aMaterial.getProtons() * 2L * tItemAmount)))
+                                    .eut(Math.min(4, tList.size()) * 30)
+                                    .addTo(sElectrolyzerRecipes);
+                            }
                         }
                         if ((aMaterial.mExtraData & 0x2) != 0) {
-                            GT_Values.RA.stdBuilder()
-                                .itemInputs(
-                                    GT_Utility.copyAmount(tItemAmount, aStack),
-                                    tCapsuleCount > 0L ? ItemList.Cell_Empty.get(tCapsuleCount) : null)
-                                .itemOutputs(
-                                    tList.size() < 1 ? null : tList.get(0),
-                                    tList.size() < 2 ? null : tList.get(1),
-                                    tList.size() < 3 ? null : tList.get(2),
-                                    tList.size() < 4 ? null : tList.get(3),
-                                    tList.size() < 5 ? null : tList.get(4),
-                                    tList.size() < 6 ? null : tList.get(5))
-                                .noFluidInputs()
-                                .fluidOutputs(tFluid)
-                                .duration(Math.max(1L, Math.abs(aMaterial.getMass() * 4L * tItemAmount)))
-                                .eut(Math.min(4, tList.size()) * 5)
-                                .addTo(sCentrifugeRecipes);
+                            if (tList.size() > 0 || tFluid != null) {
+                                GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                                if (tCapsuleCount > 0L) {
+                                    recipeBuilder.itemInputs(
+                                        GT_Utility.copyAmount(tItemAmount, aStack),
+                                        ItemList.Cell_Empty.get(tCapsuleCount));
+                                } else {
+                                    recipeBuilder.itemInputs(GT_Utility.copyAmount(tItemAmount, aStack));
+                                }
+                                if (tList.size() > 0) {
+                                    ItemStack[] outputsArray = tList.toArray(new ItemStack[Math.min(tList.size(), 6)]);
+                                    recipeBuilder.itemOutputs(outputsArray);
+                                } else {
+                                    recipeBuilder.noItemOutputs();
+                                }
+                                recipeBuilder.noFluidInputs();
+                                if (tFluid != null) {
+                                    recipeBuilder.fluidOutputs(tFluid);
+                                } else {
+                                    recipeBuilder.noFluidOutputs();
+                                }
+                                recipeBuilder.duration(Math.max(1L, Math.abs(aMaterial.getMass() * 4L * tItemAmount)))
+                                    .eut(Math.min(4, tList.size()) * 5)
+                                    .addTo(sCentrifugeRecipes);
+                            }
                         }
                     }
                 }
