@@ -182,7 +182,6 @@ public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> 
             }
             if (stackCount < getMinStacks()) return buildState.failBuilding();
 
-            buildState.addOffset(getAfterLastStackOffset());
             if (!checkPiece(getStackableStop(), buildState.stopBuilding())) {
                 return buildState.failBuilding();
             }
@@ -269,7 +268,7 @@ public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> 
     }
 
     private boolean processRecipe(ItemStack[] aItemInputs, String aInventory) {
-        GT_Recipe_Map tRecipeMap = GT_Recipe_Map.sBenderRecipes;
+        GT_Recipe_Map tRecipeMap = GT_Recipe_Map.sPyrolyseRecipes;
         GT_Recipe tRecipe = tRecipeMap.findRecipe(this, false, TierEU.IV, null, aItemInputs);
         if (tRecipe == null) {
             return false;
