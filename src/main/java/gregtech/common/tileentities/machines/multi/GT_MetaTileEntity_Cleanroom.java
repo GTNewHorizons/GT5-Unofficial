@@ -403,6 +403,12 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
     private static final String category = "cleanroom_allowed_blocks";
 
     private static void setDefaultConfigValues(Configuration cfg) {
+        cfg.get("cleanroom_allowed_blocks.manaGlass", "Name", "tile.manaGlass");
+        cfg.get("cleanroom_allowed_blocks.manaGlass", "Percentage", 50);
+        cfg.get("cleanroom_allowed_blocks.elfGlass", "Name", "tile.elfGlass");
+        cfg.get("cleanroom_allowed_blocks.elfGlass", "Percentage", 50);
+        cfg.get("cleanroom_allowed_blocks.hourglass", "Name", "tile.hourglass");
+        cfg.get("cleanroom_allowed_blocks.hourglass", "Percentage", 50);
         cfg.get("cleanroom_allowed_blocks.reinforced_glass", "Name", "blockAlloyGlass");
         cfg.get("cleanroom_allowed_blocks.reinforced_glass", "Percentage", 5);
         cfg.get("cleanroom_allowed_blocks.bw_reinforced_glass_0", "Name", "BW_GlasBlocks");
