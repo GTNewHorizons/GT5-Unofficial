@@ -305,8 +305,8 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     @Override
     public void setTargetPos(ChunkCoordinates aTargetPos) {
         targetPosition = aTargetPos;
-        IMultiBlockController mTarget = getTarget(false);
-        setTarget(mTarget, allowedModes);
+        IMultiBlockController target = getTarget(false);
+        setTarget(target, allowedModes);
     }
 
     @Override

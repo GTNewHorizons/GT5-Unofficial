@@ -365,7 +365,7 @@ public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalP
                     ofChain(
                         addMultiTileCasing(
                             UPGRADE_CASING_REGISTRY_NAME,
-                            GT_MultiTileUpgradeCasing.Wireless.getId(),
+                            GT_MultiTileUpgradeCasing.IV_Inventory.getId(),
                             NOTHING),
                         addMultiTileCasing(
                             "gt.multitileentity.casings",

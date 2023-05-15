@@ -18,29 +18,41 @@ import gregtech.api.net.GT_Packet_MultiTileEntity;
 
 public class Inventory extends UpgradeCasing {
 
-    public UUID mInventoryID;
+    public UUID inventoryID;
     public static final int INPUT = 0;
     public static final int OUTPUT = 1;
     public static final int BOTH = 2;
-    private String mInventoryName = "inventory";
-    private int mInventorySize;
-    private int mType = BOTH;
+    private String inventoryName = "inventory";
+    private int inventorySize;
+    private int type = BOTH;
+    private boolean wasBroken;
 
-    public String getInventoryName() {
-        return mInventoryName;
+    public String getCustomInventoryName() {
+        return inventoryName;
+    }
+
+    public String getInventoryID() {
+        return inventoryID.toString();
     }
 
     public void setInventoryName(String aInventoryName) {
-        mInventoryName = aInventoryName;
+        inventoryName = aInventoryName;
+    }
+
+    public int getType() {
+        return type;
     }
 
     @Override
     protected void customWork(IMultiBlockController aTarget) {
-        int tInvSize = mInventorySize;
-        if (mType == BOTH) {
+        int tInvSize = inventorySize;
+        if (type == BOTH) {
             tInvSize /= 2;
         }
-        aTarget.registerInventory(mInventoryName, mInventoryID.toString(), tInvSize, mType);
+        aTarget.registerInventory(inventoryName, inventoryID.toString(), tInvSize, type);
+        if (isServerSide()) {
+            issueClientUpdate();
+        }
     }
 
     @Override
@@ -52,30 +64,30 @@ public class Inventory extends UpgradeCasing {
     public void readMultiTileNBT(NBTTagCompound aNBT) {
         super.readMultiTileNBT(aNBT);
         if (aNBT.hasKey(NBT.UPGRADE_INVENTORY_UUID)) {
-            mInventoryID = UUID.fromString(aNBT.getString(NBT.UPGRADE_INVENTORY_UUID));
+            inventoryID = UUID.fromString(aNBT.getString(NBT.UPGRADE_INVENTORY_UUID));
         } else {
-            mInventoryID = UUID.randomUUID();
+            inventoryID = UUID.randomUUID();
         }
         if (aNBT.hasKey(NBT.UPGRADE_INVENTORY_NAME)) {
-            mInventoryName = aNBT.getString(NBT.UPGRADE_INVENTORY_NAME);
+            inventoryName = aNBT.getString(NBT.UPGRADE_INVENTORY_NAME);
         } else {
-            mInventoryName = "inventory";
+            inventoryName = "inventory";
         }
-        mInventorySize = aNBT.getInteger(NBT.UPGRADE_INVENTORY_SIZE);
+        inventorySize = aNBT.getInteger(NBT.UPGRADE_INVENTORY_SIZE);
     }
 
     @Override
     public void writeMultiTileNBT(NBTTagCompound aNBT) {
         super.writeMultiTileNBT(aNBT);
-        aNBT.setString(NBT.UPGRADE_INVENTORY_UUID, mInventoryID.toString());
-        aNBT.setString(NBT.UPGRADE_INVENTORY_NAME, mInventoryName);
+        aNBT.setString(NBT.UPGRADE_INVENTORY_UUID, inventoryID.toString());
+        aNBT.setString(NBT.UPGRADE_INVENTORY_NAME, inventoryName);
     }
 
     @Override
     public boolean breakBlock() {
         final IMultiBlockController controller = getTarget(false);
         if (controller != null) {
-            controller.unregisterInventory(mInventoryName, mInventoryID.toString(), mType);
+            controller.unregisterInventory(inventoryName, inventoryID.toString(), type);
         }
         return super.breakBlock();
     }
@@ -88,12 +100,12 @@ public class Inventory extends UpgradeCasing {
     @Override
     public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new TextFieldWidget().setGetter(() -> mInventoryName)
+            new TextFieldWidget().setGetter(() -> inventoryName)
                 .setSetter((val) -> {
-                    mInventoryName = val;
+                    inventoryName = val;
                     final IMultiBlockController controller = getTarget(false);
                     if (controller != null) {
-                        controller.changeInventoryName(mInventoryName, mInventoryID.toString(), mType);
+                        controller.changeInventoryName(inventoryName, inventoryID.toString(), type);
                     }
                 })
                 .setSize(100, 25)
@@ -108,7 +120,7 @@ public class Inventory extends UpgradeCasing {
     @Override
     public GT_Packet_MultiTileEntity getClientDataPacket() {
         final GT_Packet_MultiTileEntity packet = super.getClientDataPacket();
-        String name = getInventoryName();
+        String name = getCustomInventoryName();
         packet.setInventoryName(name);
         return packet;
     }
@@ -117,6 +129,6 @@ public class Inventory extends UpgradeCasing {
     public void addToolTips(List<String> list, ItemStack stack, boolean f3_h) {
         super.addToolTips(list, stack, f3_h);
         list.add("Adds another item inventory");
-        list.add("Inventory size: " + mInventorySize);
+        list.add("Inventory size: " + inventorySize);
     }
 }

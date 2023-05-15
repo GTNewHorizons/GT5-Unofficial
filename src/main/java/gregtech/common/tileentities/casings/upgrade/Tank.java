@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.casings.upgrade;
 
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,6 +15,12 @@ public class Tank extends UpgradeCasing {
 
     private int tankCount;
     private int tankCapacity;
+    public UUID tankID;
+    public static final int INPUT = 0;
+    public static final int OUTPUT = 1;
+    public static final int BOTH = 2;
+    private String tankName = "tank";
+    private int type = BOTH;
 
     @Override
     protected void customWork(IMultiBlockController aTarget) {
@@ -23,6 +30,18 @@ public class Tank extends UpgradeCasing {
     @Override
     public String getTileEntityName() {
         return "gt.multitileentity.multiblock.tank";
+    }
+
+    public String getCustomTankName() {
+        return tankName;
+    }
+
+    public String getTankID() {
+        return tankID.toString();
+    }
+
+    public int getType() {
+        return type;
     }
 
     @Override
