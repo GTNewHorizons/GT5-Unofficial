@@ -38,7 +38,6 @@ public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> 
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_START = new Vec3Impl(0, 0, -3);
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_STACK = new Vec3Impl(0, 0, -2);
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_STOP = new Vec3Impl(0, 0, -1);
-    private boolean isMega = true;
 
     public LayeredCokeFoundry() {
         super();
@@ -64,7 +63,7 @@ public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> 
         buildState.addOffset(getMegaPositionOffset());
 
         if (stackCount >= 1) {
-            buildPiece(STACKABLE_BOTTOM, trigger, hintsOnly, buildState.getCurrentOffset());
+            buildPiece(STACKABLE_START, trigger, hintsOnly, buildState.getCurrentOffset());
             buildState.addOffset(getStartingStackOffset());
 
             for (int i = 0; i < stackCount; i++) {
@@ -72,13 +71,11 @@ public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> 
                 buildState.addOffset(getPerStackOffset());
             }
             if (hasTop()) {
-                buildPiece(STACKABLE_TOP, trigger, hintsOnly, buildState.stopBuilding());
-            } else {
-                buildState.stopBuilding();
+                buildPiece(STACKABLE_STOP, trigger, hintsOnly, buildState.getCurrentOffset());
             }
-        } else {
-            buildState.stopBuilding();
         }
+
+        buildState.stopBuilding();
     }
 
     @Override
@@ -96,7 +93,7 @@ public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> 
                             {" AAA ","AAAAA","AAAAA","AAAAA"}
                         }))
                 .addShape(
-                    STACKABLE_TOP,
+                    STACKABLE_STOP,
                     transpose(
                         new String[][]{
                             {"ADADADADADADA","AAAAAAAAAAAAA"},
@@ -130,7 +127,7 @@ public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> 
                             {"AAAAAAAAAAAAA","AAAAAAAAAAAAA"}
                         }))
                 .addShape(
-                    STACKABLE_BOTTOM,
+                    STACKABLE_START,
                     transpose(
                         new String[][]{
                             {"AAAAAAAAAAAAA","ADADADADADADA","AAAAAAAAAAAAA"},
@@ -166,6 +163,36 @@ public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> 
         return STRUCTURE_DEFINITION_MEGA;
     }
 
+    public boolean checkMachine() {
+        stackCount = 0;
+
+        buildState.startBuilding(getStartingStructureOffset());
+        if (!checkPiece(STRUCTURE_PIECE_BASE, buildState.getCurrentOffset())) return buildState.failBuilding();
+
+        buildState.addOffset(getMegaPositionOffset());
+        if (checkPiece(STACKABLE_START, buildState.getCurrentOffset())){
+            buildState.addOffset(getStartingStackOffset());
+            for (int i = 0; i < getMaxStacks(); i++) {
+                if (checkPiece(getStackableMiddle(i), buildState.getCurrentOffset())) {
+                    buildState.addOffset(getPerStackOffset());
+                    stackCount++;
+                } else {
+                    break;
+                }
+            }
+            if (stackCount < getMinStacks()) return buildState.failBuilding();
+
+            buildState.addOffset(getAfterLastStackOffset());
+            if (!checkPiece(getStackableStop(), buildState.stopBuilding())) {
+                return buildState.failBuilding();
+            }
+        }
+
+        calculateTier();
+        updatePowerLogic();
+        return tier > 0;
+    }
+
     @Override
     public short getCasingRegistryID() {
         return 0;
@@ -174,11 +201,6 @@ public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> 
     @Override
     public int getCasingMeta() {
         return 18000;
-    }
-
-    @Override
-    public boolean hasTop() {
-        return true;
     }
 
     @Override
