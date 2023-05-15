@@ -87,6 +87,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         // issueClientUpdate();
         IMultiBlockController controller = getTarget(false);
         if (modeSelected(ITEM_IN) || modeSelected(ITEM_OUT)) {
+            mLockedInventoryIndex = validateAndGetIndex(controller, mLockedInventoryIndex);
             if (!getNameOfInventoryFromIndex(controller, mLockedInventoryIndex).equals(mLockedInventory)) {
                 mLockedInventory = getNameOfInventoryFromIndex(controller, mLockedInventoryIndex);
                 if (mLockedInventory.equals(Controller.ALL_INVENTORIES_NAME)) {
@@ -797,6 +798,14 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
             return invNames.get(0);
         }
         return invNames.get(index);
+    }
+
+    protected int validateAndGetIndex(final IMultiBlockController controller, int index) {
+        final List<String> invNames = controller.getInventoryIDs(this);
+        if (index >= invNames.size()) {
+            return 0;
+        }
+        return index;
     }
 
     protected String getNameOfTankArrayFromIndex(final IMultiBlockController controller, int index) {
