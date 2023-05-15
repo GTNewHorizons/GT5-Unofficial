@@ -10,8 +10,12 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHIN
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.logic.interfaces.PollutionLogicHost;
+import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.util.GT_StructureUtility;
+import gregtech.common.tileentities.machines.multiblock.logic.CokeOvenProcessingLogic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -29,8 +33,9 @@ import gregtech.api.multitileentity.multiblock.base.StackableController;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.common.tileentities.machines.multiblock.logic.GenericProcessingLogic;
 
-public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> {
+public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> implements ProcessingLogicHost {
     private static IStructureDefinition<LayeredCokeFoundry> STRUCTURE_DEFINITION_MEGA = null;
     protected static final String STRUCTURE_PIECE_BASE = "T1";
     private static final Vec3Impl STRUCTURE_OFFSET_BASE = new Vec3Impl(2, 2, 0);
@@ -38,7 +43,7 @@ public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> 
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_START = new Vec3Impl(0, 0, -3);
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_STACK = new Vec3Impl(0, 0, -2);
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_STOP = new Vec3Impl(0, 0, -1);
-
+    private final ProcessingLogic PROCESSING_LOGIC = new GenericProcessingLogic(GT_Recipe_Map.sPyrolyseRecipes);
     public LayeredCokeFoundry() {
         super();
     }
@@ -251,43 +256,15 @@ public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> 
         return STRUCTURE_OFFSET_MEGA_STOP;
     }
 
-    @Override
-    protected boolean checkRecipe() {
-        if (isSeparateInputs()) {
-            for (Pair<ItemStack[], String> tItemInputs : getItemInputsForEachInventory()) {
-                if (processRecipe(tItemInputs.getLeft(), tItemInputs.getRight())) {
-                    return true;
-                }
-            }
-            return false;
-        } else {
-            ItemStack[] tItemInputs = getInventoriesForInput().getStacks()
-                .toArray(new ItemStack[0]);
-            return processRecipe(tItemInputs, null);
-        }
-    }
-
-    private boolean processRecipe(ItemStack[] aItemInputs, String aInventory) {
-        GT_Recipe_Map tRecipeMap = GT_Recipe_Map.sPyrolyseRecipes;
-        GT_Recipe tRecipe = tRecipeMap.findRecipe(this, false, TierEU.IV, null, aItemInputs);
-        if (tRecipe == null) {
-            return false;
-        }
-
-        if (!tRecipe.isRecipeInputEqual(true, false, 1, null, aItemInputs)) {
-            return false;
-        }
-
-        setDuration(tRecipe.mDuration);
-        setEut(tRecipe.mEUt);
-
-        setItemOutputs(aInventory, tRecipe.mOutputs);
-        return true;
-    }
 
     @SideOnly(Side.CLIENT)
     @Override
     protected ResourceLocation getActivitySoundLoop() {
         return SoundResource.IC2_MACHINES_MACERATOR_OP.resourceLocation;
+    }
+
+    @Override
+    public ProcessingLogic getProcessingLogic() {
+        return PROCESSING_LOGIC;
     }
 }
