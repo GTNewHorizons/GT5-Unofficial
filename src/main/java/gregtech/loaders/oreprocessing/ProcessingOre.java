@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -161,8 +160,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                         null,
                         null,
                         GT_Utility.mul(aMultiplier * 3 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                        ItemList.TE_Slag
-                            .get(1L, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L)),
+                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L),
                         tSmeltInto.stackSize * 500,
                         120,
                         1500);
@@ -172,8 +170,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                         null,
                         null,
                         GT_Utility.mul(aMultiplier * 3 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                        ItemList.TE_Slag
-                            .get(1L, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L)),
+                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L),
                         tSmeltInto.stackSize * 500,
                         120,
                         1500);
@@ -186,8 +183,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                         null,
                         null,
                         GT_Utility.mul(aMultiplier * 2 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                        ItemList.TE_Slag
-                            .get(1L, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L)),
+                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L),
                         tSmeltInto.stackSize * 500,
                         120,
                         1500);
@@ -197,8 +193,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                         null,
                         null,
                         GT_Utility.mul(aMultiplier * 2 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                        ItemList.TE_Slag
-                            .get(1L, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L)),
+                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L),
                         tSmeltInto.stackSize * 500,
                         120,
                         1500);
