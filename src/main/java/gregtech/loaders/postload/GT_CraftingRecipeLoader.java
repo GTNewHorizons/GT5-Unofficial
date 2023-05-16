@@ -1823,11 +1823,6 @@ public class GT_CraftingRecipeLoader implements Runnable {
             GT_ModHandler.getIC2Item("miningPipe", 1),
             GT_ModHandler.RecipeBits.BUFFERED,
             new Object[] { "hPf", 'P', OrePrefixes.pipeSmall.get(Materials.Steel) });
-        GT_Values.RA.addWiremillRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Steel, 1),
-            GT_ModHandler.getIC2Item("miningPipe", 1),
-            200,
-            16);
 
         GT_ModHandler.addCraftingRecipe(
             GT_ModHandler.getIC2Item("luminator", 16L),
