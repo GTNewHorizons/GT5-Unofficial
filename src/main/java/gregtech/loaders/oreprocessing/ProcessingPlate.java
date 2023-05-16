@@ -236,7 +236,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         } else {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    gregtech.api.util.GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 2L),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 2L),
                     GT_Utility.getIntegratedCircuit(2))
                 .itemOutputs(GT_Utility.copyAmount(1L, aStack))
                 .fluidInputs(Materials.Glue.getFluid(10L))
@@ -304,7 +304,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         } else {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    gregtech.api.util.GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 3L),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 3L),
                     GT_Utility.getIntegratedCircuit(3))
                 .itemOutputs(GT_Utility.copyAmount(1L, aStack))
                 .fluidInputs(Materials.Glue.getFluid(20L))
@@ -405,7 +405,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         } else {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    gregtech.api.util.GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 4L),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 4L),
                     GT_Utility.getIntegratedCircuit(4))
                 .itemOutputs(GT_Utility.copyAmount(1L, aStack))
                 .fluidInputs(Materials.Glue.getFluid(30L))
@@ -463,7 +463,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         } else {
             GT_Values.RA.stdBuilder()
                 .itemInputs(
-                    gregtech.api.util.GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 5L),
+                    GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 5L),
                     GT_Utility.getIntegratedCircuit(5))
                 .itemOutputs(GT_Utility.copyAmount(1L, aStack))
                 .fluidInputs(Materials.Glue.getFluid(40L))
