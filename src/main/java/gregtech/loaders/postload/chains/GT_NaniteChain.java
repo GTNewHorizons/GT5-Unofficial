@@ -204,8 +204,7 @@ public class GT_NaniteChain {
                 MaterialsUEVplus.TranscendentMetal.getNanite(1),
                 MaterialsUEVplus.Eternity.getBlocks(8),
                 getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32),
-                ItemList.Timepiece.get(4)
-            )
+                ItemList.Timepiece.get(4))
             .itemOutputs(MaterialsUEVplus.Eternity.getNanite(4))
             .fluidInputs(
                 MaterialsUEVplus.Space.getMolten(1152),
