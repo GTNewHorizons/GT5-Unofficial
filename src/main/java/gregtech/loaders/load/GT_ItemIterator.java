@@ -1,5 +1,8 @@
 package gregtech.loaders.load;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCannerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -113,41 +116,46 @@ public class GT_ItemIterator implements Runnable {
 
         GT_Log.out.println(
             "GT_Mod: Adding Food Recipes to the Automatic Canning Machine. (also during the following Item Iteration)");
-        GT_Values.RA.addCannerRecipe(
-            new ItemStack(Items.rotten_flesh, 2, 32767),
-            ItemList.IC2_Food_Can_Empty.get(1L),
-            ItemList.IC2_Food_Can_Spoiled.get(1L),
-            null,
-            200,
-            1);
-        GT_Values.RA.addCannerRecipe(
-            new ItemStack(Items.spider_eye, 2, 32767),
-            ItemList.IC2_Food_Can_Empty.get(1L),
-            ItemList.IC2_Food_Can_Spoiled.get(1L),
-            null,
-            100,
-            1);
-        GT_Values.RA.addCannerRecipe(
-            ItemList.Food_Poisonous_Potato.get(2L),
-            ItemList.IC2_Food_Can_Empty.get(1L),
-            ItemList.IC2_Food_Can_Spoiled.get(1L),
-            null,
-            100,
-            1);
-        GT_Values.RA.addCannerRecipe(
-            new ItemStack(Items.cake, 1, 32767),
-            ItemList.IC2_Food_Can_Empty.get(12L),
-            ItemList.IC2_Food_Can_Filled.get(12L),
-            null,
-            600,
-            1);
-        GT_Values.RA.addCannerRecipe(
-            new ItemStack(Items.mushroom_stew, 1, 32767),
-            ItemList.IC2_Food_Can_Empty.get(6L),
-            ItemList.IC2_Food_Can_Filled.get(6L),
-            new ItemStack(Items.bowl, 1),
-            300,
-            1);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.rotten_flesh, 2, 32767), ItemList.IC2_Food_Can_Empty.get(1L))
+            .itemOutputs(ItemList.IC2_Food_Can_Spoiled.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(10 * SECONDS)
+            .eut(1)
+            .addTo(sCannerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.spider_eye, 2, 32767), ItemList.IC2_Food_Can_Empty.get(1L))
+            .itemOutputs(ItemList.IC2_Food_Can_Spoiled.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(5 * SECONDS)
+            .eut(1)
+            .addTo(sCannerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Food_Poisonous_Potato.get(2L), ItemList.IC2_Food_Can_Empty.get(1L))
+            .itemOutputs(ItemList.IC2_Food_Can_Spoiled.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(5 * SECONDS)
+            .eut(1)
+            .addTo(sCannerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.cake, 1, 32767), ItemList.IC2_Food_Can_Empty.get(12L))
+            .itemOutputs(ItemList.IC2_Food_Can_Filled.get(12L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(30 * SECONDS)
+            .eut(1)
+            .addTo(sCannerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.mushroom_stew, 1, 32767), ItemList.IC2_Food_Can_Empty.get(6L))
+            .itemOutputs(ItemList.IC2_Food_Can_Filled.get(6L), new ItemStack(Items.bowl, 1))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(15 * SECONDS)
+            .eut(1)
+            .addTo(sCannerRecipes);
 
         GT_Log.out.println("GT_Mod: Scanning ItemList.");
 
@@ -204,13 +212,18 @@ public class GT_ItemIterator implements Runnable {
                             && (tItem != ItemList.IC2_Food_Can_Spoiled.getItem())) {
                             int tFoodValue = ((ItemFood) tItem).func_150905_g(new ItemStack(tItem, 1, 0));
                             if (tFoodValue > 0) {
-                                GT_Values.RA.addCannerRecipe(
-                                    new ItemStack(tItem, 1, 32767),
-                                    ItemList.IC2_Food_Can_Empty.get(tFoodValue),
-                                    ItemList.IC2_Food_Can_Filled.get(tFoodValue),
-                                    GT_Utility.getContainerItem(new ItemStack(tItem, 1, 0), true),
-                                    tFoodValue * 100,
-                                    1);
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(
+                                        new ItemStack(tItem, 1, 32767),
+                                        ItemList.IC2_Food_Can_Empty.get(tFoodValue))
+                                    .itemOutputs(
+                                        ItemList.IC2_Food_Can_Filled.get(tFoodValue),
+                                        GT_Utility.getContainerItem(new ItemStack(tItem, 1, 0), true))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(tFoodValue * 5 * SECONDS)
+                                    .eut(1)
+                                    .addTo(sCannerRecipes);
                             }
                         }
                         if ((tItem instanceof IFluidContainerItem)) {
