@@ -1,29 +1,7 @@
-# Welcome to the GT++ Github!  
-
-## Patreon
-[Become a humble Patron!](https://www.patreon.com/bePatron?u=9530372) <-- Clicky clicky    
-There's cookies, capes and sometimes even cakes!  
-Monthly goals will permit a community vote, which dictates new content additions.  
-Funds raised are distributed between all active developers. (Currently Alkalus & Bot)
-
-## Current Build Status  
-### CircleCI - [![CircleCI](https://circleci.com/gh/alkcorp/GTplusplus/tree/master.svg?style=svg)](https://circleci.com/gh/alkcorp/GTplusplus/tree/master)   
-Click the Green Passed/Red Failed button for the latest BETA builds!  
-Make sure you are signed in via Github/BitBucket.  
-If you have not done so, login here first. [Sign into CircleCI here!](https://circleci.com/vcs-authorize/)  
-Downloads can be found on the artefacts tab (builds) located within each job.  
+# Welcome to the Github for GTNH fork of GT++!
   
-### Discord  
-[Join the GT++ Channel - Click here](https://discord.gg/YdXJbgb)  
-   
+## This is a fork of GT++ by Alkalus (draknyte1)
+The original Github page can be found [here](https://github.com/alkcorp/GTplusplus), where you can also find links to the original GT++ Discord and the Patreon of Alkalus. The original work was relicensed under GNU General Public License v3.0 for this GTNH fork by Alkalus (see license page). Make sure to respect the license when using, modifying, or distributing any part of this mod. If not for open source mods, this mod itself simply would not exist. Thanks & happy modding!
+
 ## Issues & Suggestions  
-[Github Issue Template - Click here](https://github.com/alkcorp/GTplusplus/wiki/Github-Issue-Format)  
-Please read this before you submit any issues or suggestions.  
-I will Happily take the form of code criticism or suggestions in the form of PRs.  
-  
-## Download   
-[Recommended Version](https://github.com/alkcorp/GTplusplus/wiki/Downloads!#click-here-to-download) 
-[Modpack Permissions - Click here](https://github.com/alkcorp/GTplusplus/issues/24#issuecomment-252458551)   
-
-## Re-use of code  
-Feel free to poke about and try learn what you can from the work we've done here. I would prefer that it wasn't stolen, but if ever in doubt, please just ask Alkalus on Discord. If not for open source mods, this mod itself simply would not exist. It would probably be rare where anything would be directly copy/pasted, but please do give credit where due. Thanks & happy modding!
+Please bring all issues and suggestions to the [GTNH issue page](https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues) or the [GTNH discord](https://discord.gg/gtnh), not to the original github or here.
