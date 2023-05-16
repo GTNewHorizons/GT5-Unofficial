@@ -187,7 +187,7 @@ public class GT_NaniteChain {
                 getModItem(GoodGenerator.ID, "huiCircuit", 1, 4) // Paradox circuit
             },
             new FluidStack[] { MaterialsUEVplus.SpaceTime.getMolten(144), Materials.Infinity.getMolten(576),
-                Materials.UUMatter.getFluid(1_000_000), },
+                MaterialsUEVplus.PrimordialMatter.getFluid(64_000), },
             new ItemStack[] { MaterialsUEVplus.Universium.getNanite(2) },
             null,
             null,
@@ -210,7 +210,7 @@ public class GT_NaniteChain {
             .fluidInputs(
                 MaterialsUEVplus.Space.getMolten(1152),
                 MaterialsUEVplus.ExcitedDTSC.getFluid(50000),
-                Materials.UUMatter.getFluid(1_000_000))
+                MaterialsUEVplus.PrimordialMatter.getFluid(64_000))
             .noFluidOutputs()
             .duration(750 * GT_RecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_MAX)
