@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.enums.Mods.*;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ENERGY_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_OUT;
@@ -37,14 +38,16 @@ public class LayeredCokeBattery extends StackableController<LayeredCokeBattery> 
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_START = new Vec3Impl(0, 0, -3);
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_STACK = new Vec3Impl(0, 0, -2);
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_STOP = new Vec3Impl(0, 0, -1);
-    private final ProcessingLogic PROCESSING_LOGIC = new GenericProcessingLogic(GT_Recipe_Map.sPyrolyseRecipes);
-    public LayeredCokeBattery() {
-        super();
-    }
+    private static final ProcessingLogic PROCESSING_LOGIC = new GenericProcessingLogic(GT_Recipe_Map.sPyrolyseRecipes);
 
     @Override
     public String getTileEntityName() {
         return "gt.multitileentity.multiblock.layeredcokebattery";
+    }
+
+    @Override
+    public String getLocalName() {
+        return "Layered Coke Battery";
     }
 
     @Override
@@ -95,51 +98,51 @@ public class LayeredCokeBattery extends StackableController<LayeredCokeBattery> 
                     STACKABLE_STOP,
                     transpose(
                         new String[][]{
-                            {"ADADADADADADA","AAAAAAAAAAAAA"},
-                            {" B B B B B B ","A A A A A A A"},
-                            {"CB B B B B BC","ACACACACACACA"},
-                            {" B B B B B B ","A A A A A A A"},
-                            {" B B B B B B ","A A A A A A A"},
-                            {" B B B B B B ","A A A A A A A"},
-                            {" B B B B B B ","A A A A A A A"},
-                            {" B B B B B B ","A A A A A A A"},
-                            {" B B B B B B ","A A A A A A A"},
-                            {"CB B B B B BC","ACACACACACACA"},
-                            {" B B B B B B ","A A A A A A A"},
+                            {"AAAAAAAAAAAAA","AAAAAAAAAAAAA"},
+                            {" B B B B B B ","AFAFAFAFAFAFA"},
+                            {"CB B B B B BC","AFAFAFAFAFAFA"},
+                            {" B B B B B B ","AFAFAFAFAFAFA"},
+                            {" B B B B B B ","AFAFAFAFAFAFA"},
+                            {" B B B B B B ","AFAFAFAFAFAFA"},
+                            {" B B B B B B ","AFAFAFAFAFAFA"},
+                            {" B B B B B B ","AFAFAFAFAFAFA"},
+                            {" B B B B B B ","AFAFAFAFAFAFA"},
+                            {"CB B B B B BC","AFAFAFAFAFAFA"},
+                            {" B B B B B B ","AFAFAFAFAFAFA"},
                             {"AAAAAAAAAAAAA","AAAAAAAAAAAAA"}
                         }))
                 .addShape(
                     STACKABLE_MIDDLE,
                     transpose(
                         new String[][]{
-                            {"ADAAAAAAAAADA","AAAAAAAAAAAAA"},
-                            {" B         B ","AAAAAAAAAAAAA"},
-                            {"CB         BC","AAAAAAAAAAAAA"},
-                            {" B         B ","AAAAAAAAAAAAA"},
-                            {" B         B ","AAAAAAAAAAAAA"},
-                            {" B         B ","AAAAAAAAAAAAA"},
-                            {" B         B ","AAAAAAAAAAAAA"},
-                            {" B         B ","AAAAAAAAAAAAA"},
-                            {" B         B ","AAAAAAAAAAAAA"},
-                            {"CB         BC","AAAAAAAAAAAAA"},
-                            {" B         B ","AAAAAAAAAAAAA"},
+                            {"ADFFFFAFFFFDA","AAAAAAAAAAAAA"},
+                            {" B    A    B ","AAAAAAAAAAAAA"},
+                            {"CB    A    BC","AAAAAAAAAAAAA"},
+                            {" B    A    B ","AAAAAAAAAAAAA"},
+                            {" B    A    B ","AAAAAAAAAAAAA"},
+                            {" B    A    B ","AAAAAAAAAAAAA"},
+                            {" B    A    B ","AAAAAAAAAAAAA"},
+                            {" B    A    B ","AAAAAAAAAAAAA"},
+                            {" B    A    B ","AAAAAAAAAAAAA"},
+                            {"CB    A    BC","AAAAAAAAAAAAA"},
+                            {" B    A    B ","AAAAAAAAAAAAA"},
                             {"AAAAAAAAAAAAA","AAAAAAAAAAAAA"}
                         }))
                 .addShape(
                     STACKABLE_START,
                     transpose(
                         new String[][]{
-                            {"AAAAAAAAAAAAA","ADADADADADADA","AAAAAAAAAAAAA"},
-                            {"A A A A A A A"," B B B B B B ","AAAAAAAAAAAAA"},
-                            {"ACACACACACACA","CB B B B B BC","AAAAAAAAAAAAA"},
-                            {"A A A A A A A"," B B B B B B ","AAAAAAAAAAAAA"},
-                            {"A A A A A A A"," B B B B B B ","AAAAAAAAAAAAA"},
-                            {"A A A A A A A"," B B B B B B ","AAAAAAAAAAAAA"},
-                            {"A A A A A A A"," B B B B B B ","AAAAAAAAAAAAA"},
-                            {"A A A A A A A"," B B B B B B ","AAAAAAAAAAAAA"},
-                            {"A A A A A A A"," B B B B B B ","AAAAAAAAAAAAA"},
-                            {"ACACA A ACACA","CB B B B B BC","AAAAAAAAAAAAA"},
-                            {"A A A A A A A"," B B B B B B ","AAAAAAAAAAAAA"},
+                            {"AAAAAAAAAAAAA","AAAAAAAAAAAAA","AAAAAAAAAAAAA"},
+                            {"AFAFAFAFAFAFA"," B B B B B B ","AAAAAAAAAAAAA"},
+                            {"AFAFAFAFAFAFA","CB B B B B BC","AAAAAAAAAAAAA"},
+                            {"AFAFAFAFAFAFA"," B B B B B B ","AAAAAAAAAAAAA"},
+                            {"AFAFAFAFAFAFA"," B B B B B B ","AAAAAAAAAAAAA"},
+                            {"AFAFAFAFAFAFA"," B B B B B B ","AAAAAAAAAAAAA"},
+                            {"AFAFAFAFAFAFA"," B B B B B B ","AAAAAAAAAAAAA"},
+                            {"AFAFAFAFAFAFA"," B B B B B B ","AAAAAAAAAAAAA"},
+                            {"AFAFAFAFAFAFA"," B B B B B B ","AAAAAAAAAAAAA"},
+                            {"AFAFAFAFAFAFA","CB B B B B BC","AAAAAAAAAAAAA"},
+                            {"AFAFAFAFAFAFA"," B B B B B B ","AAAAAAAAAAAAA"},
                             {"AAAAAAAAAAAAA","AAAAAAAAAAAAA","AAAAAAAAAAAAA"}
                         }))
                 .addElement(
@@ -157,6 +160,13 @@ public class LayeredCokeBattery extends StackableController<LayeredCokeBattery> 
                 .addElement('C', ofBlock(GregTech_API.sBlockCasings4, 1))
                 .addElement('D', GT_StructureUtility.ofFrame(Materials.Steel))
                 .addElement('E', addMotorCasings(NOTHING))
+                .addElement(
+                    'F',
+                    ofChain(
+                        ofBlockUnlocalizedName(IndustrialCraft2.ID, "blockAlloyGlass", 0, true),
+                        ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks", 0, true),
+                        ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks2", 0, true),
+                        ofBlockUnlocalizedName(Thaumcraft.ID, "blockCosmeticOpaque", 2, false)))
                 .build();
         }
         return STRUCTURE_DEFINITION_MEGA;
@@ -198,7 +208,7 @@ public class LayeredCokeBattery extends StackableController<LayeredCokeBattery> 
 
     @Override
     public int getCasingMeta() {
-        return 18000;
+        return GT_MultiTileCasing.Distillation.getId();
     }
 
     @Override
