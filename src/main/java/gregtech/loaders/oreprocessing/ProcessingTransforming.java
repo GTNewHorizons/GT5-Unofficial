@@ -1,7 +1,9 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPolarizerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 
@@ -66,11 +68,14 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
 
                 // Polarizer recipes
                 {
-                    GT_Values.RA.addPolarizerRecipe(
-                        GT_Utility.copyAmount(1L, aStack),
-                        GT_OreDictUnificator.get(aPrefix, Materials.IronMagnetic, 1L),
-                        (int) Math.max(16L, aPrefix.mMaterialAmount * 128L / GT_Values.M),
-                        (int) TierEU.LV / 2);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.IronMagnetic, 1L))
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(((int) Math.max(16L, aPrefix.mMaterialAmount * 128L / GT_Values.M)) * TICKS)
+                        .eut((int) TierEU.LV / 2)
+                        .addTo(sPolarizerRecipes);
                 }
             }
             case "WroughtIron" -> {
@@ -92,11 +97,14 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
 
                 // Polarizer recipes
                 {
-                    GT_Values.RA.addPolarizerRecipe(
-                        GT_Utility.copyAmount(1L, aStack),
-                        GT_OreDictUnificator.get(aPrefix, Materials.IronMagnetic, 1L),
-                        (int) Math.max(16L, aPrefix.mMaterialAmount * 128L / GT_Values.M),
-                        (int) TierEU.LV / 2);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.IronMagnetic, 1L))
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(((int) Math.max(16L, aPrefix.mMaterialAmount * 128L / GT_Values.M)) * TICKS)
+                        .eut((int) TierEU.LV / 2)
+                        .addTo(sPolarizerRecipes);
                 }
             }
             case "Steel" -> {
@@ -118,40 +126,52 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
 
                 // polarizer recipes
                 {
-                    GT_Values.RA.addPolarizerRecipe(
-                        GT_Utility.copyAmount(1L, aStack),
-                        GT_OreDictUnificator.get(aPrefix, Materials.SteelMagnetic, 1L),
-                        (int) Math.max(16L, aPrefix.mMaterialAmount * 128L / GT_Values.M),
-                        (int) TierEU.LV / 2);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.SteelMagnetic, 1L))
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(((int) Math.max(16L, aPrefix.mMaterialAmount * 128L / GT_Values.M)) * TICKS)
+                        .eut((int) TierEU.LV / 2)
+                        .addTo(sPolarizerRecipes);
                 }
             }
             case "Neodymium" ->
             // Polarizer recipes
             {
-                GT_Values.RA.addPolarizerRecipe(
-                    GT_Utility.copyAmount(1L, aStack),
-                    GT_OreDictUnificator.get(aPrefix, Materials.NeodymiumMagnetic, 1L),
-                    (int) Math.max(16L, aPrefix.mMaterialAmount * 128L / GT_Values.M),
-                    (int) TierEU.HV / 2);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                    .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.NeodymiumMagnetic, 1L))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(((int) Math.max(16L, aPrefix.mMaterialAmount * 128L / GT_Values.M)) * TICKS)
+                    .eut((int) TierEU.HV / 2)
+                    .addTo(sPolarizerRecipes);
             }
             case "Samarium" ->
             // Polarizer recipes
             {
-                GT_Values.RA.addPolarizerRecipe(
-                    GT_Utility.copyAmount(1L, aStack),
-                    GT_OreDictUnificator.get(aPrefix, Materials.SamariumMagnetic, 1L),
-                    (int) Math.max(16L, aPrefix.mMaterialAmount * 128L / GT_Values.M),
-                    (int) TierEU.IV / 2);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                    .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.SamariumMagnetic, 1L))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(((int) Math.max(16L, aPrefix.mMaterialAmount * 128L / GT_Values.M)) * TICKS)
+                    .eut((int) TierEU.IV / 2)
+                    .addTo(sPolarizerRecipes);
             }
 
             case "TengamPurified" ->
             // Polarizer recipes
             {
-                GT_Values.RA.addPolarizerRecipe(
-                    GT_Utility.copyAmount(1L, aStack),
-                    GT_OreDictUnificator.get(aPrefix, Materials.TengamAttuned, 1L),
-                    (int) Math.max(16L, aPrefix.mMaterialAmount * 128L / GT_Values.M),
-                    (int) TierEU.RECIPE_UHV);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                    .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.TengamAttuned, 1L))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(((int) Math.max(16L, aPrefix.mMaterialAmount * 128L / GT_Values.M)) * TICKS)
+                    .eut((int) TierEU.RECIPE_UHV)
+                    .addTo(sPolarizerRecipes);
             }
 
             default -> { /* NO-OP */ }
