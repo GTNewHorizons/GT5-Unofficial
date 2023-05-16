@@ -204,7 +204,7 @@ public class GT_NaniteChain {
                 MaterialsUEVplus.TranscendentMetal.getNanite(1),
                 MaterialsUEVplus.Eternity.getBlocks(8),
                 getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32),
-                getModItem(GoodGenerator.ID, "huiCircuit", 1, 4) // Paradox circuit
+                ItemList.Timepiece.get(4)
             )
             .itemOutputs(MaterialsUEVplus.Eternity.getNanite(4))
             .fluidInputs(
