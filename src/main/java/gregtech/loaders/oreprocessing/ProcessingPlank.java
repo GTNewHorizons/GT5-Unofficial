@@ -99,26 +99,8 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(sAssemblerRecipes);
             // todo: not actually in the game. removed somewhere? better remove here then.
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(2L, aStack), GT_Utility.getIntegratedCircuit(2))
-                .itemOutputs(new ItemStack(Blocks.wooden_pressure_plate, 1))
-                .noFluidInputs()
-                .noFluidOutputs()
-                .duration(5 * SECONDS)
-                .eut(4)
-                .addTo(sAssemblerRecipes);
-            // todo: not actually in the game. removed somewhere? better remove here then.
-            GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(3L, aStack), GT_Utility.getIntegratedCircuit(3))
                 .itemOutputs(new ItemStack(Blocks.trapdoor, 1))
-                .noFluidInputs()
-                .noFluidOutputs()
-                .duration(15 * SECONDS)
-                .eut(4)
-                .addTo(sAssemblerRecipes);
-            // todo: not actually in the game. removed somewhere? better remove here then.
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(4L, aStack), GT_Utility.getIntegratedCircuit(4))
-                .itemOutputs(new ItemStack(Blocks.crafting_table, 1))
                 .noFluidInputs()
                 .noFluidOutputs()
                 .duration(15 * SECONDS)
