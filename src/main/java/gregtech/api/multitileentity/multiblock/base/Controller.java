@@ -136,7 +136,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     private boolean structureOkay = false, structureChanged = false;
     private ExtendedFacing extendedFacing = ExtendedFacing.DEFAULT;
     private IAlignmentLimits limits = getInitialAlignmentLimits();
-    private String inventoryName;
+    protected String inventoryName;
     private String tankName;
     protected boolean separateInputs = false;
     protected boolean voidExcess = false;
@@ -1701,9 +1701,9 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     protected FluidStack[] getOutputFluids() {
         List<FluidStack> fluidStacks = new ArrayList<>();
-        for (FluidTankGT[] inputTanks : multiBlockInputTank.values()) {
-            for (FluidTankGT inputTank : inputTanks) {
-                FluidStack fluidStack = inputTank.getFluid();
+        for (FluidTankGT[] outputTanks : multiBlockOutputTank.values()) {
+            for (FluidTankGT outputTank : outputTanks) {
+                FluidStack fluidStack = outputTank.getFluid();
                 if (fluidStack != null) {
                     fluidStacks.add(fluidStack);
                 }
