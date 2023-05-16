@@ -25,7 +25,6 @@ public class Inventory extends UpgradeCasing {
     private String inventoryName = "inventory";
     private int inventorySize;
     private int type = BOTH;
-    private boolean wasBroken;
 
     public String getCustomInventoryName() {
         return inventoryName;
