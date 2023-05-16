@@ -502,8 +502,7 @@ public class GT_MetaTileEntity_ProcessingArray
 
     @Override
     protected List<IHatchElement<? super GT_MetaTileEntity_CubicMultiBlockBase<?>>> getAllowedHatches() {
-        return ImmutableList
-            .of(InputHatch, OutputHatch, InputBus, OutputBus, Muffler, Maintenance, Energy, ExoticEnergy);
+        return ImmutableList.of(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy, ExoticEnergy);
     }
 
     @Override
