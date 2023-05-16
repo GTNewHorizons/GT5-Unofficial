@@ -75,7 +75,6 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 
     public static int CASING_TEXTURE_ID;
     public static String mCasingName = "Sterile Farm Casing";
-    // public static TreeGenerator mTreeData;
     public static HashMap<String, ItemStack> sLogCache = new HashMap<>();
     private static final int TICKS_PER_OPERATION = 100;
 

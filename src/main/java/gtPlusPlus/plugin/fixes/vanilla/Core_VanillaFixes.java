@@ -8,6 +8,8 @@ import gtPlusPlus.api.interfaces.IPlugin;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.plugin.manager.Core_Manager;
 
+// Called by Core_Manager#veryEarlyInit
+@SuppressWarnings("unused")
 public class Core_VanillaFixes implements IPlugin {
 
     static final Core_VanillaFixes mInstance;

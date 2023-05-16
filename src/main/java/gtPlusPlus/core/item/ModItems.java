@@ -113,13 +113,11 @@ import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.StringUtils;
-import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.GTplusplus_Everglades;
-import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.cofh.HANDLER_COFH;
 import gtPlusPlus.xmod.eio.material.MaterialEIO;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -428,11 +426,6 @@ public final class ModItems {
         itemGenericToken = new ItemGenericToken();
         itemDummyResearch = new ItemDummyResearch();
         itemCustomSpawnEgg = new ItemCustomSpawnEgg();
-
-        // Debug Loading
-        if (CORE_Preloader.DEBUG_MODE) {
-            DEBUG_INIT.registerItems();
-        }
 
         itemDebugAreaClear = new ItemAreaClear();
 
@@ -1025,9 +1018,6 @@ public final class ModItems {
         toolGregtechPump.registerPumpType(2, "Super Hand Pump", 128000, 2);
         toolGregtechPump.registerPumpType(3, "Ultimate Hand Pump", 512000, 3);
 
-        // Create Multi-tools
-        // ItemsMultiTools.load();
-
         // Xp Fluids - Dev
         if (!FluidRegistry.isFluidRegistered("mobessence")) {
             FluidUtils.generateFluidNoPrefix("mobessence", "mobessence", 0, new short[] { 125, 175, 125, 100 });
@@ -1152,11 +1142,6 @@ public final class ModItems {
         itemDetCable = new CoreItem("itemDetCable", "Det. Cable", tabMisc);
         itemDetCable.setTextureName("string");
         itemBomb = new ItemThrowableBomb();
-
-        // Only used for debugging.
-        /*
-         * if (CORE.DEVENV) { new ConnectedBlockFinder(); }
-         */
 
         // Misc Items
         @SuppressWarnings("unused")

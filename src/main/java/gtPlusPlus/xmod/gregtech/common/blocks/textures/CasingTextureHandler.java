@@ -9,8 +9,6 @@ import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks;
 
 public class CasingTextureHandler {
 
-    // private static final TexturesGregtech59 gregtech59 = new TexturesGregtech59();
-    // private static final TexturesGregtech58 gregtech58 = new TexturesGregtech58();
     private static final TexturesCentrifugeMultiblock gregtechX = new TexturesCentrifugeMultiblock();
 
     public static IIcon getIcon(final int ordinalSide, final int aMeta) { // Texture ID's. case 0 == ID[57]

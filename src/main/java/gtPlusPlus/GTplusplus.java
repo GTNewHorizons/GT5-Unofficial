@@ -219,7 +219,6 @@ public class GTplusplus implements ActionListener {
         BookHandler.runLater();
         Meta_GT_Proxy.postInit();
         Core_Manager.postInit();
-        // SprinklerHandler.registerModFerts();
 
         ItemGiantEgg.postInit(ModItems.itemBigEgg);
         BlockEventHandler.init();

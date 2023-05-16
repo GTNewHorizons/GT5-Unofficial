@@ -36,7 +36,6 @@ import gtPlusPlus.recipes.CokeAndPyrolyseOven;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
-import gtPlusPlus.xmod.gregtech.api.world.GTPP_Worldgen;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
@@ -57,7 +56,6 @@ public class HANDLER_GT {
     public static GT_Config mMaterialProperties = null;
     public static GTPP_Config sCustomWorldgenFile = null;
     public static final List<WorldGen_GT> sWorldgenListEverglades = new ArrayList<>();
-    public static final List<GTPP_Worldgen> sCustomWorldgenList = new ArrayList<>();
     public static GT_MetaGenerated_Tool sMetaGeneratedToolInstance;
 
     public static void preInit() {

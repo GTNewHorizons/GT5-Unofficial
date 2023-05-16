@@ -8,8 +8,8 @@ import net.minecraftforge.oredict.OreDictionary;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.sys.Log;
 
 public class FlotationRecipeHandler {
 
@@ -19,7 +19,7 @@ public class FlotationRecipeHandler {
     public static boolean registerOreType(Material aMaterial) {
         String aMaterialKey = aMaterial.getUnlocalizedName();
         if (sMaterialMap.containsKey(aMaterialKey)) {
-            Log.warn("Tried to register a Flotation material already in use. Material: " + aMaterialKey);
+            Logger.WARNING("Tried to register a Flotation material already in use. Material: " + aMaterialKey);
             return false;
         } else {
             sMaterialMap.put(aMaterialKey, aMaterial);

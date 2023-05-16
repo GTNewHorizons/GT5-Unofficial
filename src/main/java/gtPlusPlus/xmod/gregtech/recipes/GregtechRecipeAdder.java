@@ -31,7 +31,6 @@ import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy_RTG;
 import gtPlusPlus.xmod.gregtech.common.helpers.FlotationRecipeHandler;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntity_RTG;
-import gtPlusPlus.xmod.gregtech.recipes.machines.RECIPEHANDLER_MatterFabricator;
 
 public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
@@ -116,7 +115,6 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
                 aEUt,
                 0);
         GTPP_Recipe_Map.sMatterFab2Recipes.addRecipe(aRecipe);
-        RECIPEHANDLER_MatterFabricator.debug5(aFluidInput, aFluidOutput, aDuration, aEUt);
         return true;
     }
 

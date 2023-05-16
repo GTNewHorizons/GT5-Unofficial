@@ -5,6 +5,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gtPlusPlus.core.common.CommonProxy;
 
+@SuppressWarnings("unused")
 public class ServerProxy extends CommonProxy {
 
     @Override

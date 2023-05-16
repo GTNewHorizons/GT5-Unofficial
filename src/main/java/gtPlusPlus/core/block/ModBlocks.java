@@ -107,8 +107,6 @@ public final class ModBlocks {
 
     public static void init() {
         Logger.INFO("Initializing Blocks.");
-        // blockGriefSaver = new
-        // TowerDevice().setBlockName("blockGriefSaver").setCreativeTab(AddToCreativeTab.tabBlock).setBlockTextureName("blockDefault");
 
         registerBlocks();
     }
@@ -126,8 +124,6 @@ public final class ModBlocks {
         blockFirePit = new FirePit();
         blockFishTrap = new FishTrap();
         blockInfiniteFLuidTank = new FluidTankInfinite();
-        // blockOreFluorite = new BlockBaseOre.oldOreBlock("oreFluorite", "Fluorite", Material.rock, BlockTypes.ORE,
-        // Utils.rgbtoHexValue(120, 120, 30), 3);
         blockMiningExplosive = new MiningExplosives();
         blockHellfire = new HellFire();
         blockProjectTable = new Machine_ProjectTable();

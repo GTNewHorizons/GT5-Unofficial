@@ -15,6 +15,8 @@ import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.plugin.manager.Core_Manager;
 import gtPlusPlus.preloader.CORE_Preloader;
 
+// Called by Core_Manager#veryEarlyInit
+@SuppressWarnings("unused")
 public class Core_SulfuricChemistry implements IPlugin {
 
     static final Core_SulfuricChemistry mInstance;

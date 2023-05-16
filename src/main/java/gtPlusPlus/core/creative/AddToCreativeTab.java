@@ -16,13 +16,6 @@ public class AddToCreativeTab {
 
     public static void initialiseTabs() {
         // GT_CreativeTab
-        /*
-         * tabBlock = new MiscUtilCreativeTabBlock("MiscUtilBlockTab"); tabMisc = new
-         * MiscUtilCreativeTabMisc("MiscUtilMiscTab"); tabTools = new MiscUtilCreativeTabTools("MiscUtilToolsTab");
-         * tabMachines = new MiscUtilCreativeTabMachines("MiscUtilMachineTab"); tabOther = new
-         * MiscUtilCreativeTabOther("MiscUtilOtherTab"); tabBOP = new MiscUtilsBOPTab("MiscUtilBOP");
-         */
-
         tabBlock = new GT_CreativeTab("GTPP_BLOCKS", "GT++ Blocks");
         tabMisc = new GT_CreativeTab("GTPP_MISC", "GT++ Misc");
         tabTools = new GT_CreativeTab("GTPP_TOOLS", "GT++ Tools");

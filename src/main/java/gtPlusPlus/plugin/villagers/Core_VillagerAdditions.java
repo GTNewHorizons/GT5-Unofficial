@@ -17,6 +17,8 @@ import gtPlusPlus.plugin.villagers.trade.TradeHandlerBanker;
 import gtPlusPlus.plugin.villagers.trade.TradeHandlerTechnician;
 import gtPlusPlus.plugin.villagers.trade.TradeHandlerTrader;
 
+// Called by Core_Manager#veryEarlyInit
+@SuppressWarnings("unused")
 public class Core_VillagerAdditions implements IPlugin {
 
     public static final Core_VillagerAdditions mInstance;

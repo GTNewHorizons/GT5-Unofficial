@@ -47,7 +47,6 @@ import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.tileentities.ModTileEntities;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.player.PlayerCache;
@@ -104,11 +103,6 @@ public class CommonProxy {
     }
 
     public void init(final FMLInitializationEvent e) {
-        // Debug Loading
-        if (CORE_Preloader.DEBUG_MODE) {
-            DEBUG_INIT.registerHandlers();
-        }
-
         registerCustomItemsForMaterials();
         ModBlocks.blockCustomMobSpawner = new BlockGenericSpawner();
         CI.init();

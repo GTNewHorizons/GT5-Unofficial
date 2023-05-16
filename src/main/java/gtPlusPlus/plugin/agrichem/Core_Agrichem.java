@@ -5,6 +5,8 @@ import gtPlusPlus.plugin.agrichem.block.AgrichemFluids;
 import gtPlusPlus.plugin.agrichem.fluids.FluidLoader;
 import gtPlusPlus.plugin.manager.Core_Manager;
 
+// Called by Core_Manager#veryEarlyInit
+@SuppressWarnings("unused")
 public class Core_Agrichem implements IPlugin {
 
     static final Core_Agrichem mInstance;
