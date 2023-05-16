@@ -32,6 +32,7 @@ import gregtech.common.tileentities.machines.multiblock.AdvChemicalProcessor;
 import gregtech.common.tileentities.machines.multiblock.CokeOven;
 import gregtech.common.tileentities.machines.multiblock.DistillationTower;
 import gregtech.common.tileentities.machines.multiblock.Macerator;
+import gregtech.common.tileentities.machines.multiblock.LayeredCokeBattery;
 
 public class GT_Loader_MultiTileEntities implements Runnable {
 
@@ -112,6 +113,16 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .inputInventorySize(16)
             .outputInventorySize(16)
             .tankCapacity(128000L)
+            .register();
+        MACHINE_REGISTRY.create(3, LayeredCokeBattery.class)
+            .name("Layered Coke Foundry")
+            .category("Multiblock Controller")
+            .setBlock(MACHINE_BLOCK)
+            .material(Materials.Iron)
+            .textureFolder("macerator")
+            .tankCapacity(128000L)
+            .inputInventorySize(16)
+            .outputInventorySize(16)
             .register();
     }
 
