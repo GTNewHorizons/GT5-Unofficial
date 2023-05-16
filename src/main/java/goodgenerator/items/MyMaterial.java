@@ -1236,7 +1236,8 @@ public class MyMaterial implements Runnable {
                     .setSpeedOverride(640.0F).setDurOverride(15728640).setQualityOverride((byte) 26),
             Werkstoff.Types.ELEMENT,
             new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems()
-                    .addSimpleMetalWorkingItems().addMultipleIngotMetalWorkingItems(),
+                    .addSimpleMetalWorkingItems().addMultipleIngotMetalWorkingItems()
+                    .addMetalCraftingSolidifierRecipes().addMetaSolidifierRecipes(),
             OffsetID + 111,
             TextureSet.SET_SHINY);
 
