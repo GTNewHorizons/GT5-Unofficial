@@ -13,6 +13,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_RecipeBuilder;
 
 public class GT_NaniteChain {
 
@@ -192,6 +194,28 @@ public class GT_NaniteChain {
             750 * 20,
             2_000_000_000,
             3);
+
+        // Eternity nanites
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Forcicium, 0, false),
+                // Quantum Anomaly
+                getModItem(GTPlusPlus.ID, "MU-metaitem.01", 0, 32105),
+                MaterialsUEVplus.TranscendentMetal.getNanite(1),
+                MaterialsUEVplus.Eternity.getBlocks(8),
+                getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32),
+                getModItem(GoodGenerator.ID, "huiCircuit", 1, 4) // Paradox circuit
+            )
+            .itemOutputs(MaterialsUEVplus.Eternity.getNanite(4))
+            .fluidInputs(
+                MaterialsUEVplus.Space.getMolten(1152),
+                MaterialsUEVplus.ExcitedDTSC.getFluid(50000),
+                Materials.UUMatter.getFluid(1_000_000))
+            .noFluidOutputs()
+            .duration(750 * GT_RecipeBuilder.SECONDS)
+            .eut(TierEU.RECIPE_MAX)
+            .specialValue(3)
+            .addTo(GT_Recipe.GT_Recipe_Map.sNanoForge);
 
     }
 }
