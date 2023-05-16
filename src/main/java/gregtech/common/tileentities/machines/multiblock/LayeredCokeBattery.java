@@ -11,15 +11,11 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHIN
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.logic.interfaces.PollutionLogicHost;
 import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.util.GT_StructureUtility;
-import gregtech.common.tileentities.machines.multiblock.logic.CokeOvenProcessingLogic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
-import org.apache.commons.lang3.tuple.Pair;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -28,15 +24,13 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.TierEU;
 import gregtech.api.multitileentity.multiblock.base.StackableController;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.common.tileentities.machines.multiblock.logic.GenericProcessingLogic;
 
-public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> implements ProcessingLogicHost {
-    private static IStructureDefinition<LayeredCokeFoundry> STRUCTURE_DEFINITION_MEGA = null;
+public class LayeredCokeBattery extends StackableController<LayeredCokeBattery> implements ProcessingLogicHost {
+    private static IStructureDefinition<LayeredCokeBattery> STRUCTURE_DEFINITION_MEGA = null;
     protected static final String STRUCTURE_PIECE_BASE = "T1";
     private static final Vec3Impl STRUCTURE_OFFSET_BASE = new Vec3Impl(2, 2, 0);
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_POSITION = new Vec3Impl(4, 7, -4);
@@ -44,13 +38,13 @@ public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> 
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_STACK = new Vec3Impl(0, 0, -2);
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_STOP = new Vec3Impl(0, 0, -1);
     private final ProcessingLogic PROCESSING_LOGIC = new GenericProcessingLogic(GT_Recipe_Map.sPyrolyseRecipes);
-    public LayeredCokeFoundry() {
+    public LayeredCokeBattery() {
         super();
     }
 
     @Override
     public String getTileEntityName() {
-        return "gt.multitileentity.multiblock.extensiblecokefoundry";
+        return "gt.multitileentity.multiblock.layeredcokebattery";
     }
 
     @Override
@@ -84,9 +78,9 @@ public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> 
     }
 
     @Override
-    public IStructureDefinition<LayeredCokeFoundry> getStructureDefinition() {
+    public IStructureDefinition<LayeredCokeBattery> getStructureDefinition() {
         if (STRUCTURE_DEFINITION_MEGA == null) {
-            STRUCTURE_DEFINITION_MEGA = StructureDefinition.<LayeredCokeFoundry>builder()
+            STRUCTURE_DEFINITION_MEGA = StructureDefinition.<LayeredCokeBattery>builder()
                 .addShape(
                     STRUCTURE_PIECE_BASE,
                     transpose(
@@ -119,16 +113,16 @@ public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> 
                     transpose(
                         new String[][]{
                             {"ADAAAAAAAAADA","AAAAAAAAAAAAA"},
-                            {" B         B ","A           A"},
-                            {"CB         BC","A           A"},
-                            {" B         B ","A           A"},
-                            {" B         B ","A           A"},
-                            {" B         B ","A           A"},
-                            {" B         B ","A           A"},
-                            {" B         B ","A           A"},
-                            {" B         B ","A           A"},
-                            {"CB         BC","A           A"},
-                            {" B         B ","A           A"},
+                            {" B         B ","AAAAAAAAAAAAA"},
+                            {"CB         BC","AAAAAAAAAAAAA"},
+                            {" B         B ","AAAAAAAAAAAAA"},
+                            {" B         B ","AAAAAAAAAAAAA"},
+                            {" B         B ","AAAAAAAAAAAAA"},
+                            {" B         B ","AAAAAAAAAAAAA"},
+                            {" B         B ","AAAAAAAAAAAAA"},
+                            {" B         B ","AAAAAAAAAAAAA"},
+                            {"CB         BC","AAAAAAAAAAAAA"},
+                            {" B         B ","AAAAAAAAAAAAA"},
                             {"AAAAAAAAAAAAA","AAAAAAAAAAAAA"}
                         }))
                 .addShape(
@@ -136,16 +130,16 @@ public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> 
                     transpose(
                         new String[][]{
                             {"AAAAAAAAAAAAA","ADADADADADADA","AAAAAAAAAAAAA"},
-                            {"A A A A A A A"," B B B B B B ","A           A"},
-                            {"ACACACACACACA","CB B B B B BC","A           A"},
-                            {"A A A A A A A"," B B B B B B ","A           A"},
-                            {"A A A A A A A"," B B B B B B ","A           A"},
-                            {"A A A A A A A"," B B B B B B ","A           A"},
-                            {"A A A A A A A"," B B B B B B ","A           A"},
-                            {"A A A A A A A"," B B B B B B ","A           A"},
-                            {"A A A A A A A"," B B B B B B ","A           A"},
-                            {"ACACA A ACACA","CB B B B B BC","A           A"},
-                            {"A A A A A A A"," B B B B B B ","A           A"},
+                            {"A A A A A A A"," B B B B B B ","AAAAAAAAAAAAA"},
+                            {"ACACACACACACA","CB B B B B BC","AAAAAAAAAAAAA"},
+                            {"A A A A A A A"," B B B B B B ","AAAAAAAAAAAAA"},
+                            {"A A A A A A A"," B B B B B B ","AAAAAAAAAAAAA"},
+                            {"A A A A A A A"," B B B B B B ","AAAAAAAAAAAAA"},
+                            {"A A A A A A A"," B B B B B B ","AAAAAAAAAAAAA"},
+                            {"A A A A A A A"," B B B B B B ","AAAAAAAAAAAAA"},
+                            {"A A A A A A A"," B B B B B B ","AAAAAAAAAAAAA"},
+                            {"ACACA A ACACA","CB B B B B BC","AAAAAAAAAAAAA"},
+                            {"A A A A A A A"," B B B B B B ","AAAAAAAAAAAAA"},
                             {"AAAAAAAAAAAAA","AAAAAAAAAAAAA","AAAAAAAAAAAAA"}
                         }))
                 .addElement(
@@ -234,7 +228,7 @@ public class LayeredCokeFoundry extends StackableController<LayeredCokeFoundry> 
 
     @Override
     public int getMaxStacks() {
-        return 10;
+        return 20;
     }
 
     public Vec3Impl getMegaPositionOffset() {
