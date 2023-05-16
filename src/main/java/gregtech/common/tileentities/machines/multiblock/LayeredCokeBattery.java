@@ -38,7 +38,7 @@ public class LayeredCokeBattery extends StackableController<LayeredCokeBattery> 
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_START = new Vec3Impl(0, 0, -3);
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_STACK = new Vec3Impl(0, 0, -2);
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_STOP = new Vec3Impl(0, 0, -1);
-    private static final ProcessingLogic PROCESSING_LOGIC = new GenericProcessingLogic(GT_Recipe_Map.sPyrolyseRecipes);
+    private final ProcessingLogic foundryProcessingLogic = new GenericProcessingLogic(GT_Recipe_Map.sPyrolyseRecipes);
 
     @Override
     public String getTileEntityName() {
@@ -269,6 +269,6 @@ public class LayeredCokeBattery extends StackableController<LayeredCokeBattery> 
 
     @Override
     public ProcessingLogic getProcessingLogic() {
-        return PROCESSING_LOGIC;
+        return foundryProcessingLogic;
     }
 }
