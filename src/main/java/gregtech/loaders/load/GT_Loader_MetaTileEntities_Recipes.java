@@ -1116,7 +1116,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "HighTech combination Smelter",
                 GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes,
                 2,
-                0,
+                1,
                 false,
                 0,
                 1,
