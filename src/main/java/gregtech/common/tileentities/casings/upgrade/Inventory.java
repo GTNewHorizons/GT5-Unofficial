@@ -121,7 +121,7 @@ public class Inventory extends UpgradeCasing {
     public GT_Packet_MultiTileEntity getClientDataPacket() {
         final GT_Packet_MultiTileEntity packet = super.getClientDataPacket();
         String name = getCustomInventoryName();
-        packet.setInventoryName(name);
+        packet.setInventoryName(name, inventoryID.toString());
         return packet;
     }
 
@@ -130,5 +130,9 @@ public class Inventory extends UpgradeCasing {
         super.addToolTips(list, stack, f3_h);
         list.add("Adds another item inventory");
         list.add("Inventory size: " + inventorySize);
+    }
+
+    public void setInventoryId(String inventoryID) {
+        this.inventoryID = UUID.fromString(inventoryID);
     }
 }
