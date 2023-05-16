@@ -36,28 +36,6 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 .duration(10 * TICKS)
                 .eut(8)
                 .addTo(sLatheRecipes);
-            // todo: not actually in the game. removed somewhere? better remove here then.
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_Utility.copyAmount(8L, aStack),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))
-                .itemOutputs(new ItemStack(Blocks.noteblock, 1))
-                .noFluidInputs()
-                .noFluidOutputs()
-                .duration(10 * SECONDS)
-                .eut(4)
-                .addTo(sAssemblerRecipes);
-            // todo: not actually in the game. removed somewhere? better remove here then.
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_Utility.copyAmount(8L, aStack),
-                    GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Diamond, 1L))
-                .itemOutputs(new ItemStack(Blocks.jukebox, 1))
-                .noFluidInputs()
-                .noFluidOutputs()
-                .duration(20 * SECONDS)
-                .eut(4)
-                .addTo(sAssemblerRecipes);
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     GT_Utility.copyAmount(1L, aStack),
@@ -87,33 +65,6 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut(1)
-                .addTo(sAssemblerRecipes);
-            // todo: not actually in the game. removed somewhere? better remove here then.
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1))
-                .itemOutputs(new ItemStack(Blocks.wooden_button, 1))
-                .noFluidInputs()
-                .noFluidOutputs()
-                .duration(5 * SECONDS)
-                .eut(4)
-                .addTo(sAssemblerRecipes);
-            // todo: not actually in the game. removed somewhere? better remove here then.
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(3L, aStack), GT_Utility.getIntegratedCircuit(3))
-                .itemOutputs(new ItemStack(Blocks.trapdoor, 1))
-                .noFluidInputs()
-                .noFluidOutputs()
-                .duration(15 * SECONDS)
-                .eut(4)
-                .addTo(sAssemblerRecipes);
-            // todo: not actually in the game. removed somewhere? better remove here then.
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(6L, aStack), GT_Utility.getIntegratedCircuit(6))
-                .itemOutputs(new ItemStack(Items.wooden_door, 1))
-                .noFluidInputs()
-                .noFluidOutputs()
-                .duration(30 * SECONDS)
-                .eut(4)
                 .addTo(sAssemblerRecipes);
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(8L, aStack), GT_Utility.getIntegratedCircuit(8))
