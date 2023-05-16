@@ -823,9 +823,9 @@ public class GTPP_Recipe extends GT_Recipe {
         }.useModularUI(true).setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> {
             List<String> result = new ArrayList<>();
             if (ModItems.fluidFertBasic != null) {
-                result.add("Sapling is outputted if");
-                result.add("" + ModItems.fluidFertBasic.getLocalizedName() + " is provided.");
-                result.add("This is optional.");
+                result.add("The sapling is not consumed.");
+                result.add("If " + ModItems.fluidFertBasic.getLocalizedName() + " is provided,");
+                result.add("Saplings are made instead");
             }
             return result;
         });

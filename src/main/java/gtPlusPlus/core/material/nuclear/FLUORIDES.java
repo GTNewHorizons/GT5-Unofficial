@@ -95,7 +95,7 @@ public class FLUORIDES {
             -1,
             -1,
             false,
-            "ZrF4",
+            "ZrF\u2084",
             -1,
             true,
             false,
@@ -169,7 +169,7 @@ public class FLUORIDES {
             new MaterialStack[] { new MaterialStack(ELEMENT.getInstance().BERYLLIUM, 1),
                     new MaterialStack(MISC_MATERIALS.HYDROXIDE, 2) });
 
-    // (NH4)2Be(OH)2 / (NH4)2BeF4
+    // (NH4)2BeF4
     public static final Material AMMONIUM_TETRAFLUOROBERYLLATE = new Material(
             "Ammonium Tetrafluoroberyllate", // Material Name
             MaterialState.PURE_LIQUID, // State
@@ -181,7 +181,8 @@ public class FLUORIDES {
             false, // Uses Blast furnace?
             // Material Stacks with Percentage of required elements.
             new MaterialStack[] { new MaterialStack(MISC_MATERIALS.AMMONIUM, 2),
-                    new MaterialStack(FLUORIDES.BERYLLIUM_HYDROXIDE, 1) });
+                    new MaterialStack(ELEMENT.getInstance().BERYLLIUM, 1),
+                    new MaterialStack(ELEMENT.getInstance().FLUORINE, 4) });
 
     // LFTR Output
     public static final Material NEPTUNIUM_HEXAFLUORIDE = new Material(

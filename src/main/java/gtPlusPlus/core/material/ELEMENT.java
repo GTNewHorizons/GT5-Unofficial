@@ -651,7 +651,7 @@ public final class ELEMENT {
                 40,
                 51,
                 true,
-                "⚷⚙⚷ Ni4Ti6",
+                StringUtils.subscript("⚷⚙⚷ Ni4Ti6"),
                 0); // Not a GT Inherited Material
         public static final Material HYPOGEN = new Material(
                 "Hypogen",

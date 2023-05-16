@@ -127,7 +127,7 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
 
     @Override
     public long maxEUStore() {
-        return GT_Values.V[this.mTier] * (this.mTier * GT_Values.V[this.mTier]);
+        return Math.max(2048L, GT_Values.V[this.mTier] * (this.mTier * GT_Values.V[this.mTier]));
     }
 
     @Override

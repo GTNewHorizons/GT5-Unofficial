@@ -222,4 +222,8 @@ public class StringUtils {
             return aFound;
         }
     }
+
+    public static long uppercaseCount(String aString) {
+        return aString.chars().filter((c) -> Character.isUpperCase(c)).count();
+    }
 }

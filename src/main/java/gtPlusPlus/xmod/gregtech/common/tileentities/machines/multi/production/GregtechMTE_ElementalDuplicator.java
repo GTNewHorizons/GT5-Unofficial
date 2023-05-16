@@ -420,7 +420,7 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
         for (GT_MetaTileEntity_Hatch_ElementalDataOrbHolder tHatch : mReplicatorDataOrbHatches) {
             tHatch.mRecipeMap = getRecipeMap();
             if (isValidMetaTileEntity(tHatch)) {
-                tItems.addAll(tHatch.getInventory());
+                tItems.add(tHatch.getOrbByCircuit());
             }
         }
         tItems.removeAll(Collections.singleton(null));

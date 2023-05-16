@@ -88,7 +88,7 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
                 .addInfo("If there's more Cold Salt than heat, all the heat is used up and returns to 0")
                 .addInfo("The heat increase is most efficient at exactly half of maximum heat")
                 .addInfo("Minimum efficiency at 0 or 100000 heat, maximum efficiency at 50000")
-                .addInfo("Heat Efficiency formula: (|currentHeat - 50000| ^ 0.8 + 7000) / 7000")
+                .addInfo("Heat Efficiency formula: ( 7000 - [|currentHeat - 50000| ^ 0.8]) / 7000")
                 .addInfo("Heat gain per cycle: numberHeaters * heatEfficiency * (10 + bonus)")
                 .addInfo("Bonus: 1 ring  = +1, 2 rings = +2, 3 rings = +4, 4 rings = +8, 5 rings = +16")
                 .addInfo("Total number of reflectors based on how many rings are built:")
