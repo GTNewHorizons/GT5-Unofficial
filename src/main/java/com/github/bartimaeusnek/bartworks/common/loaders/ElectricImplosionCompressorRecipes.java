@@ -116,6 +116,18 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 20 * 4,
                 (int) TierEU.RECIPE_UXV);
 
+        // MHDCSM V2
+        addElectricImplosionRecipe(
+                // IN.
+                new ItemStack[] { MaterialsUEVplus.Eternity.getNanite(1), MaterialsUEVplus.Universium.getNanite(1) },
+                new FluidStack[] { MaterialsUEVplus.RawStarMatter.getFluid(128 * 144L) },
+                // OUT.
+                new ItemStack[] { GT_Values.NI },
+                new FluidStack[] { MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(32 * 144L) },
+                // Recipe stats.
+                20 * 4,
+                (int) TierEU.RECIPE_MAX);
+
         addMagnetohydrodynamicallyConstrainedStarMatterPartRecipes();
     }
 
@@ -152,7 +164,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                     new ItemStack[] { circuit.splitStack(circuitMultiplier),
                             getModItem(SuperSolarPanels.ID, "solarsplitter", 1, 0),
                             getModItem(OpenComputers.ID, "hologram2", circuitMultiplier, 0),
-                            GT_OreDictUnificator.get(part, MaterialsUEVplus.Universium, multiplier), },
+                            GT_OreDictUnificator.get(part, MaterialsUEVplus.Eternity, multiplier), },
                     new FluidStack[] { MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter
                             .getMolten((long) partFraction * multiplier) },
                     new ItemStack[] { GT_OreDictUnificator
