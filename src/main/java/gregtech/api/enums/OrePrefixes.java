@@ -842,6 +842,7 @@ public enum OrePrefixes {
         nanite.mGeneratedItems.add(MaterialsUEVplus.WhiteDwarfMatter);
         nanite.mGeneratedItems.add(MaterialsUEVplus.BlackDwarfMatter);
         nanite.mGeneratedItems.add(Materials.Glowstone);
+        nanite.mGeneratedItems.add(MaterialsUEVplus.Eternity);
         // -----
 
         gear.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
