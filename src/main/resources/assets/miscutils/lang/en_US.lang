@@ -3466,6 +3466,7 @@ item.BasicGenericChemItem.24.name=Advanced Naquadah Catalyst
 item.BasicGenericChemItem.25.name=Raw Intelligence Catalyst
 item.BasicGenericChemItem.26.name=Ultimate Plasticizer Catalyst
 item.BasicGenericChemItem.27.name=Biological Intelligence Catalyst
+item.BasicGenericChemItem.28.name=Temporal Harmonizer Catalyst
 
 item.ItemCustomSpawnEgg.name=Spawn %s
 item.itemSimpleFiremaker.message.0=You light the fire pit.

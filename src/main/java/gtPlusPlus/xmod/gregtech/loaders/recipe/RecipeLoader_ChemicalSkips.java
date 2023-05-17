@@ -224,6 +224,7 @@ public class RecipeLoader_ChemicalSkips {
                 20 * 20,
                 (int) TierEU.RECIPE_UIV,
                 4);
+
     }
 
     private static void fusionReactorRecipes() {
@@ -342,6 +343,15 @@ public class RecipeLoader_ChemicalSkips {
                 ItemUtils.getSimpleStack(GenericChem.mBiologicalIntelligenceCatalyst, 1),
                 60 * 20,
                 (int) TierEU.RECIPE_UMV);
+
+        CORE.RA.addSixSlotAssemblingRecipe(
+                new ItemStack[] { CI.getNumberedCircuit(10), CI.getEmptyCatalyst(1),
+                        GT_OreDictUnificator.get("blockShirabon", 16), MaterialsUEVplus.Universium.getNanite(1),
+                        ItemList.Timepiece.get(1) },
+                Materials.DarkIron.getMolten(92160),
+                ItemUtils.getSimpleStack(GenericChem.TemporalHarmonyCatalyst, 1),
+                60 * 20,
+                (int) TierEU.RECIPE_UXV);
     }
 
     private static void tieredCasingRecipes() {

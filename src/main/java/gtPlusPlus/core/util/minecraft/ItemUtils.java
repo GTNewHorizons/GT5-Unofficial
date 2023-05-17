@@ -1435,6 +1435,9 @@ public class ItemUtils {
         if (GT_Utility.areStacksEqual(aStack, GenericChem.mBiologicalIntelligenceCatalyst, true)) {
             return true;
         }
+        if (GT_Utility.areStacksEqual(aStack, GenericChem.TemporalHarmonyCatalyst, true)) {
+            return true;
+        }
         return false;
     }
 
