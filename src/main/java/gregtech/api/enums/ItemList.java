@@ -24,10 +24,6 @@ public enum ItemList implements IItemContainer {
 
     Display_ITS_FREE,
     Display_Fluid,
-    TE_Slag,
-    TE_Slag_Rich,
-    TE_Rockwool,
-    TE_Hardened_Glass,
     FR_Lemon,
     FR_Mulch,
     FR_Fertilizer,

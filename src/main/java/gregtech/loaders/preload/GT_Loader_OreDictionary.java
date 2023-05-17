@@ -6,7 +6,6 @@ import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.enums.Mods.ThermalExpansion;
 import static gregtech.api.enums.Mods.TwilightForest;
 
 import net.minecraft.init.Blocks;
@@ -110,16 +109,8 @@ public class GT_Loader_OreDictionary implements Runnable {
             .registerOre(OreDictNames.craftingAnvil, GT_ModHandler.getModItem(Railcraft.ID, "anvil", 1L, 0));
         GT_OreDictUnificator
             .registerOre(OreDictNames.craftingIndustrialDiamond, ItemList.IC2_Industrial_Diamond.get(1L));
-        GT_OreDictUnificator.registerOre(
-            OrePrefixes.dust,
-            Materials.Wood,
-            GT_ModHandler.getModItem(ThermalExpansion.ID, "sawdust", 1L));
         GT_OreDictUnificator
             .registerOre(OrePrefixes.glass, Materials.Reinforced, GT_ModHandler.getIC2Item("reinforcedGlass", 1L));
-        GT_OreDictUnificator.registerOre(
-            OrePrefixes.glass,
-            Materials.Reinforced,
-            GT_ModHandler.getModItem(ThermalExpansion.ID, "glassHardened", 1L));
 
         GT_OreDictUnificator
             .registerOre(OrePrefixes.stone, Materials.Basalt, GT_ModHandler.getModItem(Railcraft.ID, "cube", 1L, 6));

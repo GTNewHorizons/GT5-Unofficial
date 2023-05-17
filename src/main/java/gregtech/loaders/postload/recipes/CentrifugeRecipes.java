@@ -818,7 +818,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1))
             .itemOutputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1),
-                ItemList.TE_Slag.get(1L, GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1)))
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1))
             .noFluidInputs()
             .noFluidOutputs()
             .duration(12 * SECONDS + 10 * TICKS)
