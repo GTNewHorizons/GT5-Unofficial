@@ -1,6 +1,8 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPressRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
@@ -1132,30 +1134,46 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         OrePrefixes.ingot.get(aMaterial) });
             }
             case turbineBlade -> {
-                GT_Values.RA.addAssemblerRecipe(
-                    GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 4L),
-                    GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Magnalium, 1L),
-                    GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(170, 1, aMaterial, aMaterial, null),
-                    160,
-                    calculateRecipeEU(aMaterial, 100));
-                GT_Values.RA.addAssemblerRecipe(
-                    GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 8L),
-                    GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Titanium, 1L),
-                    GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(172, 1, aMaterial, aMaterial, null),
-                    320,
-                    calculateRecipeEU(aMaterial, 400));
-                GT_Values.RA.addAssemblerRecipe(
-                    GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 12L),
-                    GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.TungstenSteel, 1L),
-                    GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(174, 1, aMaterial, aMaterial, null),
-                    640,
-                    calculateRecipeEU(aMaterial, 1600));
-                GT_Values.RA.addAssemblerRecipe(
-                    GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 16L),
-                    GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Americium, 1L),
-                    GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(176, 1, aMaterial, aMaterial, null),
-                    1280,
-                    calculateRecipeEU(aMaterial, 6400));
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                        GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 4L),
+                        GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Magnalium, 1L))
+                    .itemOutputs(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(170, 1, aMaterial, aMaterial, null))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(8 * SECONDS)
+                    .eut(calculateRecipeEU(aMaterial, 100))
+                    .addTo(sAssemblerRecipes);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                        GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 8L),
+                        GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Titanium, 1L))
+                    .itemOutputs(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(172, 1, aMaterial, aMaterial, null))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(16 * SECONDS)
+                    .eut(calculateRecipeEU(aMaterial, 400))
+                    .addTo(sAssemblerRecipes);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                        GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 12L),
+                        GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.TungstenSteel, 1L))
+                    .itemOutputs(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(174, 1, aMaterial, aMaterial, null))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(32 * SECONDS)
+                    .eut(calculateRecipeEU(aMaterial, 1600))
+                    .addTo(sAssemblerRecipes);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                        GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 16L),
+                        GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Americium, 1L))
+                    .itemOutputs(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(176, 1, aMaterial, aMaterial, null))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(1 * MINUTES + 4 * SECONDS)
+                    .eut(calculateRecipeEU(aMaterial, 6400))
+                    .addTo(sAssemblerRecipes);
                 if (aSpecialRecipeReq2) {
                     if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                         GT_ModHandler.addCraftingRecipe(

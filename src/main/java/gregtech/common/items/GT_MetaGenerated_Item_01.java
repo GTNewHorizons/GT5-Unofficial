@@ -2,7 +2,9 @@ package gregtech.common.items;
 
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCannerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.client.GT_TooltipHandler.Tier.*;
 import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
@@ -1726,69 +1728,96 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_HV_Lithium.get(1L), ItemList.Battery_Hull_HV.get(1L));
         GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_HV_Sodium.get(1L), ItemList.Battery_Hull_HV.get(1L));
 
-        GT_Values.RA.addCannerRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 2L),
-            ItemList.Battery_Hull_LV.get(1L),
-            ItemList.Battery_RE_LV_Cadmium.get(1L),
-            null,
-            100,
-            2);
-        GT_Values.RA.addCannerRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 2L),
-            ItemList.Battery_Hull_LV.get(1L),
-            ItemList.Battery_RE_LV_Lithium.get(1L),
-            null,
-            100,
-            2);
-        GT_Values.RA.addCannerRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 2L),
-            ItemList.Battery_Hull_LV.get(1L),
-            ItemList.Battery_RE_LV_Sodium.get(1L),
-            null,
-            100,
-            2);
-        GT_Values.RA.addCannerRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 8L),
-            ItemList.Battery_Hull_MV.get(1L),
-            ItemList.Battery_RE_MV_Cadmium.get(1L),
-            null,
-            400,
-            2);
-        GT_Values.RA.addCannerRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 8L),
-            ItemList.Battery_Hull_MV.get(1L),
-            ItemList.Battery_RE_MV_Lithium.get(1L),
-            null,
-            400,
-            2);
-        GT_Values.RA.addCannerRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 8L),
-            ItemList.Battery_Hull_MV.get(1L),
-            ItemList.Battery_RE_MV_Sodium.get(1L),
-            null,
-            400,
-            2);
-        GT_Values.RA.addCannerRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 32L),
-            ItemList.Battery_Hull_HV.get(1L),
-            ItemList.Battery_RE_HV_Cadmium.get(1L),
-            null,
-            1600,
-            2);
-        GT_Values.RA.addCannerRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 32L),
-            ItemList.Battery_Hull_HV.get(1L),
-            ItemList.Battery_RE_HV_Lithium.get(1L),
-            null,
-            1600,
-            2);
-        GT_Values.RA.addCannerRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 32L),
-            ItemList.Battery_Hull_HV.get(1L),
-            ItemList.Battery_RE_HV_Sodium.get(1L),
-            null,
-            1600,
-            2);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 2L),
+                ItemList.Battery_Hull_LV.get(1L))
+            .itemOutputs(ItemList.Battery_RE_LV_Cadmium.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(5 * SECONDS)
+            .eut(2)
+            .addTo(sCannerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 2L),
+                ItemList.Battery_Hull_LV.get(1L))
+            .itemOutputs(ItemList.Battery_RE_LV_Lithium.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(5 * SECONDS)
+            .eut(2)
+            .addTo(sCannerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 2L),
+                ItemList.Battery_Hull_LV.get(1L))
+            .itemOutputs(ItemList.Battery_RE_LV_Sodium.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(5 * SECONDS)
+            .eut(2)
+            .addTo(sCannerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 8L),
+                ItemList.Battery_Hull_MV.get(1L))
+            .itemOutputs(ItemList.Battery_RE_MV_Cadmium.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(sCannerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 8L),
+                ItemList.Battery_Hull_MV.get(1L))
+            .itemOutputs(ItemList.Battery_RE_MV_Lithium.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(sCannerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 8L),
+                ItemList.Battery_Hull_MV.get(1L))
+            .itemOutputs(ItemList.Battery_RE_MV_Sodium.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(sCannerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 32L),
+                ItemList.Battery_Hull_HV.get(1L))
+            .itemOutputs(ItemList.Battery_RE_HV_Cadmium.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(1 * MINUTES + 20 * SECONDS)
+            .eut(2)
+            .addTo(sCannerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 32L),
+                ItemList.Battery_Hull_HV.get(1L))
+            .itemOutputs(ItemList.Battery_RE_HV_Lithium.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(1 * MINUTES + 20 * SECONDS)
+            .eut(2)
+            .addTo(sCannerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 32L),
+                ItemList.Battery_Hull_HV.get(1L))
+            .itemOutputs(ItemList.Battery_RE_HV_Sodium.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(1 * MINUTES + 20 * SECONDS)
+            .eut(2)
+            .addTo(sCannerRecipes);
 
         // IV Battery
         ItemList.Energy_LapotronicOrb.set(

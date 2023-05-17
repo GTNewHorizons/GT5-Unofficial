@@ -18,7 +18,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_LanguageManager;
@@ -37,8 +36,7 @@ public class Behaviour_Spray_Color extends Behaviour_None {
         Blocks.stained_glass,
         Blocks.stained_glass_pane,
         Blocks.carpet,
-        Blocks.hardened_clay,
-        ItemList.TE_Rockwool.getBlock());
+        Blocks.hardened_clay);
     private final String mTooltip;
     private final String mTooltipUses = GT_LanguageManager
         .addStringLocalization("gt.behaviour.paintspray.uses", "Remaining Uses:");

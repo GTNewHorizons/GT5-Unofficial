@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -65,18 +66,22 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
     }
 
     private void registerAssemblerRecipes() {
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack(this, 1, 0),
-            ItemList.Circuit_Integrated.getWithDamage(0L, 4L),
-            new ItemStack(this, 1, 3),
-            50,
-            4);
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack(this, 1, 8),
-            ItemList.Circuit_Integrated.getWithDamage(0L, 4L),
-            new ItemStack(this, 1, 11),
-            50,
-            4);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(this, 1, 0), GT_Utility.getIntegratedCircuit(4))
+            .itemOutputs(new ItemStack(this, 1, 3))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(2 * SECONDS + 10 * TICKS)
+            .eut(4)
+            .addTo(sAssemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(this, 1, 8), GT_Utility.getIntegratedCircuit(4))
+            .itemOutputs(new ItemStack(this, 1, 11))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(2 * SECONDS + 10 * TICKS)
+            .eut(4)
+            .addTo(sAssemblerRecipes);
     }
 
     private void registerCraftingRecipes() {
