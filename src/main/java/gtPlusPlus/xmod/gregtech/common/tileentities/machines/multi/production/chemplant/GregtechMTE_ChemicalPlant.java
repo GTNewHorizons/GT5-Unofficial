@@ -234,6 +234,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
                                             .casingIndex(getCasingTextureID()).dot(1).build(),
                                     buildHatchAdder(GregtechMTE_ChemicalPlant.class)
                                             .hatchClass(GT_MetaTileEntity_Hatch_Catalysts.class)
+                                            .shouldReject(t -> t.mCatalystBuses.size() >= 1)
                                             .adder(GregtechMTE_ChemicalPlant::addChemicalPlantList)
                                             .casingIndex(getCasingTextureID()).dot(1).build(),
                                     allCasingsElement))
