@@ -158,125 +158,127 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                 }
 
                 if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
-                    if (GT_OreDictUnificator.get(OrePrefixes.ring, aMaterial, 1L) != null) {
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(ItemList.Shape_Mold_Ring.get(0L))
-                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ring, aMaterial, 1L))
-                            .fluidInputs(aMaterial.getMolten(36L))
-                            .noFluidOutputs()
-                            .duration(5 * SECONDS)
-                            .eut(calculateRecipeEU(aMaterial, 4 * tVoltageMultiplier))
-                            .addTo(sFluidSolidficationRecipes);
-                    }
-                    if (GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L) != null) {
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(ItemList.Shape_Mold_Screw.get(0L))
-                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L))
-                            .fluidInputs(aMaterial.getMolten(18L))
-                            .noFluidOutputs()
-                            .duration(2 * SECONDS + 10 * TICKS)
-                            .eut(calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier))
-                            .addTo(sFluidSolidficationRecipes);
-                    }
-                    if (GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L) != null) {
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(ItemList.Shape_Mold_Rod.get(0L))
-                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L))
-                            .fluidInputs(aMaterial.getMolten(72L))
-                            .noFluidOutputs()
-                            .duration(7 * SECONDS + 10 * TICKS)
-                            .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
-                            .addTo(sFluidSolidficationRecipes);
-                    }
-                    if (GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L) != null) {
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(ItemList.Shape_Mold_Bolt.get(0L))
-                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L))
-                            .fluidInputs(aMaterial.getMolten(18L))
-                            .noFluidOutputs()
-                            .duration(2 * SECONDS + 10 * TICKS)
-                            .eut(calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier))
-                            .addTo(sFluidSolidficationRecipes);
-                    }
-                    if (GT_OreDictUnificator.get(OrePrefixes.round, aMaterial, 1L) != null) {
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(ItemList.Shape_Mold_Round.get(0L))
-                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.round, aMaterial, 1L))
-                            .fluidInputs(aMaterial.getMolten(18L))
-                            .noFluidOutputs()
-                            .duration(2 * SECONDS + 10 * TICKS)
-                            .eut(calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier))
-                            .addTo(sFluidSolidficationRecipes);
-                    }
-                    if (GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L) != null) {
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(ItemList.Shape_Mold_Rod_Long.get(0L))
-                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L))
-                            .fluidInputs(aMaterial.getMolten(144L))
-                            .noFluidOutputs()
-                            .duration(15 * SECONDS)
-                            .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
-                            .addTo(sFluidSolidficationRecipes);
-                    }
-                    if (GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 1L) != null) {
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(ItemList.Shape_Mold_Turbine_Blade.get(0L))
-                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 1L))
-                            .fluidInputs(aMaterial.getMolten(864L))
-                            .noFluidOutputs()
-                            .duration(20 * SECONDS)
-                            .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
-                            .addTo(sFluidSolidficationRecipes);
-                    }
-                    if (GT_OreDictUnificator.get(OrePrefixes.pipeTiny, aMaterial, 1L) != null) {
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(ItemList.Shape_Mold_Pipe_Tiny.get(0L))
-                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeTiny, aMaterial, 1L))
-                            .fluidInputs(aMaterial.getMolten(72L))
-                            .noFluidOutputs()
-                            .duration(1 * SECONDS)
-                            .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
-                            .addTo(sFluidSolidficationRecipes);
-                    }
-                    if (GT_OreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 1L) != null) {
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(ItemList.Shape_Mold_Pipe_Small.get(0L))
-                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 1L))
-                            .fluidInputs(aMaterial.getMolten(144L))
-                            .noFluidOutputs()
-                            .duration(2 * SECONDS)
-                            .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
-                            .addTo(sFluidSolidficationRecipes);
-                    }
-                    if (GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 1L) != null) {
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(ItemList.Shape_Mold_Pipe_Medium.get(0L))
-                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 1L))
-                            .fluidInputs(aMaterial.getMolten(432L))
-                            .noFluidOutputs()
-                            .duration(4 * SECONDS)
-                            .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
-                            .addTo(sFluidSolidficationRecipes);
-                    }
-                    if (GT_OreDictUnificator.get(OrePrefixes.pipeLarge, aMaterial, 1L) != null) {
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(ItemList.Shape_Mold_Pipe_Large.get(0L))
-                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeLarge, aMaterial, 1L))
-                            .fluidInputs(aMaterial.getMolten(864L))
-                            .noFluidOutputs()
-                            .duration(8 * SECONDS)
-                            .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
-                            .addTo(sFluidSolidficationRecipes);
-                    }
-                    if (GT_OreDictUnificator.get(OrePrefixes.pipeHuge, aMaterial, 1L) != null) {
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(ItemList.Shape_Mold_Pipe_Huge.get(0L))
-                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeHuge, aMaterial, 1L))
-                            .fluidInputs(aMaterial.getMolten(1728L))
-                            .noFluidOutputs()
-                            .duration(16 * SECONDS)
-                            .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
-                            .addTo(sFluidSolidficationRecipes);
+                    if (aMaterial.mStandardMoltenFluid != null) {
+                        if (GT_OreDictUnificator.get(OrePrefixes.ring, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(ItemList.Shape_Mold_Ring.get(0L))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ring, aMaterial, 1L))
+                                .fluidInputs(aMaterial.getMolten(36L))
+                                .noFluidOutputs()
+                                .duration(5 * SECONDS)
+                                .eut(calculateRecipeEU(aMaterial, 4 * tVoltageMultiplier))
+                                .addTo(sFluidSolidficationRecipes);
+                        }
+                        if (GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(ItemList.Shape_Mold_Screw.get(0L))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L))
+                                .fluidInputs(aMaterial.getMolten(18L))
+                                .noFluidOutputs()
+                                .duration(2 * SECONDS + 10 * TICKS)
+                                .eut(calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier))
+                                .addTo(sFluidSolidficationRecipes);
+                        }
+                        if (GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(ItemList.Shape_Mold_Rod.get(0L))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L))
+                                .fluidInputs(aMaterial.getMolten(72L))
+                                .noFluidOutputs()
+                                .duration(7 * SECONDS + 10 * TICKS)
+                                .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
+                                .addTo(sFluidSolidficationRecipes);
+                        }
+                        if (GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(ItemList.Shape_Mold_Bolt.get(0L))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L))
+                                .fluidInputs(aMaterial.getMolten(18L))
+                                .noFluidOutputs()
+                                .duration(2 * SECONDS + 10 * TICKS)
+                                .eut(calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier))
+                                .addTo(sFluidSolidficationRecipes);
+                        }
+                        if (GT_OreDictUnificator.get(OrePrefixes.round, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(ItemList.Shape_Mold_Round.get(0L))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.round, aMaterial, 1L))
+                                .fluidInputs(aMaterial.getMolten(18L))
+                                .noFluidOutputs()
+                                .duration(2 * SECONDS + 10 * TICKS)
+                                .eut(calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier))
+                                .addTo(sFluidSolidficationRecipes);
+                        }
+                        if (GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(ItemList.Shape_Mold_Rod_Long.get(0L))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L))
+                                .fluidInputs(aMaterial.getMolten(144L))
+                                .noFluidOutputs()
+                                .duration(15 * SECONDS)
+                                .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
+                                .addTo(sFluidSolidficationRecipes);
+                        }
+                        if (GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(ItemList.Shape_Mold_Turbine_Blade.get(0L))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 1L))
+                                .fluidInputs(aMaterial.getMolten(864L))
+                                .noFluidOutputs()
+                                .duration(20 * SECONDS)
+                                .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
+                                .addTo(sFluidSolidficationRecipes);
+                        }
+                        if (GT_OreDictUnificator.get(OrePrefixes.pipeTiny, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(ItemList.Shape_Mold_Pipe_Tiny.get(0L))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeTiny, aMaterial, 1L))
+                                .fluidInputs(aMaterial.getMolten(72L))
+                                .noFluidOutputs()
+                                .duration(1 * SECONDS)
+                                .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
+                                .addTo(sFluidSolidficationRecipes);
+                        }
+                        if (GT_OreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(ItemList.Shape_Mold_Pipe_Small.get(0L))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 1L))
+                                .fluidInputs(aMaterial.getMolten(144L))
+                                .noFluidOutputs()
+                                .duration(2 * SECONDS)
+                                .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
+                                .addTo(sFluidSolidficationRecipes);
+                        }
+                        if (GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(ItemList.Shape_Mold_Pipe_Medium.get(0L))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 1L))
+                                .fluidInputs(aMaterial.getMolten(432L))
+                                .noFluidOutputs()
+                                .duration(4 * SECONDS)
+                                .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
+                                .addTo(sFluidSolidficationRecipes);
+                        }
+                        if (GT_OreDictUnificator.get(OrePrefixes.pipeLarge, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(ItemList.Shape_Mold_Pipe_Large.get(0L))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeLarge, aMaterial, 1L))
+                                .fluidInputs(aMaterial.getMolten(864L))
+                                .noFluidOutputs()
+                                .duration(8 * SECONDS)
+                                .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
+                                .addTo(sFluidSolidficationRecipes);
+                        }
+                        if (GT_OreDictUnificator.get(OrePrefixes.pipeHuge, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(ItemList.Shape_Mold_Pipe_Huge.get(0L))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeHuge, aMaterial, 1L))
+                                .fluidInputs(aMaterial.getMolten(1728L))
+                                .noFluidOutputs()
+                                .duration(16 * SECONDS)
+                                .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
+                                .addTo(sFluidSolidficationRecipes);
+                        }
                     }
                 }
                 if (tAmount * 2 <= 64) {
