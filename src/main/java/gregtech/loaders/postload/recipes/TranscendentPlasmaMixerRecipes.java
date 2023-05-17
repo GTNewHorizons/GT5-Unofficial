@@ -15,6 +15,8 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
     private static final int EXOTIC_EU_PER_L = 1_073_007_393;
     private static final int STELLAR_EU_PER_HALF_L = 2_138_383_760;
 
+    private static final int PRIMORDIAL_MATTER = 2_000_000_000;
+
     @Override
     public void run() {
 
@@ -125,6 +127,20 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .fluidOutputs(MaterialsUEVplus.ExcitedDTSC.getFluid(1000L))
             .duration(200)
             .eut(STELLAR_EU_PER_HALF_L)
+            .noOptimize()
+            .addTo(sTranscendentPlasmaMixerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(24))
+            .noItemOutputs()
+            .fluidInputs(
+                MaterialsUEVplus.RawStarMatter.getFluid(1000L),
+                MaterialsUEVplus.SpaceTime.getMolten(1000L),
+                MaterialsUEVplus.Space.getMolten(1000L),
+                MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1000L))
+            .fluidOutputs(MaterialsUEVplus.PrimordialMatter.getFluid(1000L))
+            .duration(100)
+            .eut(PRIMORDIAL_MATTER)
             .noOptimize()
             .addTo(sTranscendentPlasmaMixerRecipes);
 
