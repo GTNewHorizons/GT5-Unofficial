@@ -2707,7 +2707,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         }
         ItemList.Display_ITS_FREE.set(
             addItem(
-                tLastID = 766,
+                tLastID = 765,
                 "ITS FREE",
                 "(or at least almost free)",
                 SubTag.INVISIBLE,
