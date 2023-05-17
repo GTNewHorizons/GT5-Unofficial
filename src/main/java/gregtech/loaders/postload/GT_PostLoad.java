@@ -351,7 +351,7 @@ public class GT_PostLoad {
             0);
         GT_Recipe.GT_Recipe_Map.sRockBreakerFakeRecipes.addFakeRecipe(
             false,
-            new ItemStack[] { ItemList.Display_ITS_FREE.getWithName(0L, "IT'S FREE! Place Lava on Side") },
+            new ItemStack[] { ItemList.Display_ITS_FREE.getWithName(1L, "IT'S FREE! Place Lava on Side") },
             new ItemStack[] { new ItemStack(Blocks.cobblestone, 1) },
             null,
             null,
@@ -361,7 +361,7 @@ public class GT_PostLoad {
             0);
         GT_Recipe.GT_Recipe_Map.sRockBreakerFakeRecipes.addFakeRecipe(
             false,
-            new ItemStack[] { ItemList.Display_ITS_FREE.getWithName(0L, "IT'S FREE! Place Lava on Top") },
+            new ItemStack[] { ItemList.Display_ITS_FREE.getWithName(1L, "IT'S FREE! Place Lava on Top") },
             new ItemStack[] { new ItemStack(Blocks.stone, 1) },
             null,
             null,
