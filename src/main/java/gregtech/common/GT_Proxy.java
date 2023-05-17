@@ -8,6 +8,7 @@ import static gregtech.api.enums.FluidState.PLASMA;
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.GT_Values.debugEntityCramming;
 import static gregtech.api.enums.Mods.*;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sWiremillRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gregtech.api.util.GT_Util.LAST_BROKEN_TILEENTITY;
@@ -1936,16 +1937,22 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                                                         Materials.Brass,
                                                         new ItemStack(aEvent.Ore.getItem(), 1, 2));
                                                     if (!mDisableIC2Cables) {
-                                                        GT_Values.RA.addWiremillRecipe(
-                                                            GT_ModHandler.getIC2Item("copperCableItem", 3L),
-                                                            new ItemStack(aEvent.Ore.getItem(), 1, 8),
-                                                            400,
-                                                            1);
-                                                        GT_Values.RA.addWiremillRecipe(
-                                                            GT_ModHandler.getIC2Item("ironCableItem", 6L),
-                                                            new ItemStack(aEvent.Ore.getItem(), 1, 9),
-                                                            400,
-                                                            2);
+                                                        GT_Values.RA.stdBuilder()
+                                                            .itemInputs(GT_ModHandler.getIC2Item("copperCableItem", 3L))
+                                                            .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 1, 8))
+                                                            .noFluidInputs()
+                                                            .noFluidOutputs()
+                                                            .duration(20 * SECONDS)
+                                                            .eut(1)
+                                                            .addTo(sWiremillRecipes);
+                                                        GT_Values.RA.stdBuilder()
+                                                            .itemInputs(GT_ModHandler.getIC2Item("ironCableItem", 6L))
+                                                            .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 1, 9))
+                                                            .noFluidInputs()
+                                                            .noFluidOutputs()
+                                                            .duration(20 * SECONDS)
+                                                            .eut(2)
+                                                            .addTo(sWiremillRecipes);
                                                     }
                                                     GT_Values.RA.addCutterRecipe(
                                                         new ItemStack(aEvent.Ore.getItem(), 1, 3),
