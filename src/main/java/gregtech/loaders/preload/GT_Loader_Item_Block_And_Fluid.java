@@ -5,7 +5,6 @@ import static gregtech.api.enums.FluidState.LIQUID;
 import static gregtech.api.enums.FluidState.MOLTEN;
 import static gregtech.api.enums.FluidState.SLURRY;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
-import static gregtech.api.enums.Mods.BloodArsenal;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
@@ -2132,10 +2131,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .set(OrePrefixes.nugget, Materials.Void, GT_ModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 7));
         GT_OreDictUnificator
             .set(OrePrefixes.ingot, Materials.Void, GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 16));
-        GT_OreDictUnificator.set(
-            OrePrefixes.ingot,
-            Materials.BloodInfusedIron,
-            GT_ModHandler.getModItem(BloodArsenal.ID, "blood_infused_iron", 1L, 0));
 
         if (GregTech_API.sUnification
             .get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateIron", true)) {
