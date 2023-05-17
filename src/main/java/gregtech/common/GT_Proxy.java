@@ -792,10 +792,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
             }
         }
         GT_Log.out.println("GT_Mod: Getting required Items of other Mods.");
-        ItemList.TE_Slag.set(GT_ModHandler.getModItem(ThermalExpansion.ID, "slag", 1L));
-        ItemList.TE_Slag_Rich.set(GT_ModHandler.getModItem(ThermalExpansion.ID, "slagRich", 1L));
-        ItemList.TE_Rockwool.set(GT_ModHandler.getModItem(ThermalExpansion.ID, "rockwool", 1L));
-        ItemList.TE_Hardened_Glass.set(GT_ModHandler.getModItem(ThermalExpansion.ID, "glassHardened", 1L));
 
         ItemList.RC_ShuntingWire.set(GT_ModHandler.getModItem(Railcraft.ID, "machine.delta", 1L, 0));
         ItemList.RC_ShuntingWireFrame.set(GT_ModHandler.getModItem(Railcraft.ID, "frame", 1L, 0));
