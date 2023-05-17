@@ -2,28 +2,29 @@
 
 dependencies {
     shadowImplementation('com.github.GTNewHorizons:AVRcore:1.0.1')
-    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.43.12:dev')
+    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.43.39:dev')
     api('com.github.GTNewHorizons:Yamcl:0.5.86:dev')
-    api('com.github.GTNewHorizons:ModularUI:1.1.2:dev')
     implementation('com.github.GTNewHorizons:GTNEIOrePlugin:1.0.29:dev')
 
-    compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.23:deobf") {transitive = false}
-
+    compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.23:deobf") {transitive=false}
+    compileOnly('com.github.GTNewHorizons:TinkersConstruct:1.9.32-GTNH:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:OpenModularTurrets:2.2.11-247:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:OpenComputers:1.9.4-GTNH:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:GTplusplus:1.9.3:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:OpenComputers:1.9.5-GTNH:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:GTplusplus:1.9.11:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:Avaritia:1.41:dev') {transitive=false}
 
     compileOnly('curse.maven:cofh-lib-220333:2388748') {transitive=false}
     compileOnly('curse.maven:computercraft-67504:2269339') {transitive=false}
     compileOnly('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev') {transitive=false}
-    compileOnly("curse.maven:extra-utilities-225561:2264384") {transitive = false}
+    compileOnly("curse.maven:extra-utilities-225561:2264384") {transitive=false}
 
     // for testing EOH recipes
     //runtimeOnlyNonPublishable("TGregworks:TGregworks:1.7.10-GTNH-1.0.23:deobf")
-    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TinkersConstruct:1.9.31-GTNH:dev')
-    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:NewHorizonsCoreMod:2.1.18:dev')
-    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:GoodGenerator:0.6.2:dev') {
+    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TinkersConstruct:1.9.32-GTNH:dev')
+    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:NewHorizonsCoreMod:2.1.21:dev')
+    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:GoodGenerator:0.6.4:dev') {
     //    exclude group: "com.github.GTNewHorizons", module: "TecTech"
     //}
-    //runtimeOnlyNonPublishable("curse.maven:extra-utilities-225561:2264384") {transitive = false}
+    //runtimeOnlyNonPublishable("curse.maven:extra-utilities-225561:2264384") {transitive=false}
+    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:Avaritia:1.41:dev') {transitive=false}
 }

@@ -23,7 +23,6 @@ import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.SGCraft;
 import static gregtech.api.enums.Mods.SuperSolarPanels;
 import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.enums.Mods.TinkersGregworks;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
@@ -36,6 +35,7 @@ import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.rwtema.extrautils.ExtraUtils;
 
+import fox.spiteful.avaritia.compat.ticon.Tonkers;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -43,6 +43,7 @@ import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import tconstruct.tools.TinkerTools;
 import vexatos.tgregworks.reference.PartTypes;
 import vexatos.tgregworks.util.TGregUtils;
 
@@ -57,7 +58,10 @@ public class ResearchStationAssemblyLine implements Runnable {
         itemPartsUXVAsslineRecipes();
         addWirelessEnergyRecipes();
 
-        if (TinkersGregworks.isModLoaded() && GoodGenerator.isModLoaded() && ExtraUtilities.isModLoaded()) {
+        if (TinkersGregworks.isModLoaded() && GoodGenerator.isModLoaded() // Shirabon
+                && Avaritia.isModLoaded() // Infinity, Cosmic Neutronium
+                && ExtraUtilities.isModLoaded() // Bedrockium
+        ) {
             addEOHRecipes();
         }
 
@@ -2590,14 +2594,9 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
                 : FluidRegistry.getFluid("molten.solderingalloy");
         ItemStack largeShirabonPlate = TGregUtils.newItemStack(Materials.get("Shirabon"), PartTypes.LargePlate, 1);
-        ItemStack largeInfinityPlate = TGregUtils.newItemStack(Materials.Infinity, PartTypes.LargePlate, 1);
-        ItemStack largeBedrockiumPlate = getModItem(
-                TinkerConstruct.ID,
-                "heavyPlate",
-                1,
-                ExtraUtils.tcon_bedrock_material_id);
-        ItemStack largeCosmicNeutroniumPlate = TGregUtils
-                .newItemStack(Materials.CosmicNeutronium, PartTypes.LargePlate, 1);
+        ItemStack largeInfinityPlate = new ItemStack(TinkerTools.largePlate, 1, Tonkers.infinityMetalId);
+        ItemStack largeBedrockiumPlate = new ItemStack(TinkerTools.largePlate, 1, ExtraUtils.tcon_bedrock_material_id);
+        ItemStack largeCosmicNeutroniumPlate = new ItemStack(TinkerTools.largePlate, 1, Tonkers.neutroniumId);
 
         final FluidStack[] specialFluid = new FluidStack[] { MaterialsUEVplus.SpaceTime.getMolten(1_440),
                 MaterialsUEVplus.SpaceTime.getMolten(1_440), MaterialsUEVplus.SpaceTime.getMolten(1_440),
