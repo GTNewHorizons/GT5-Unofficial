@@ -998,8 +998,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(Forestry.ID, "waxCast", 1L, 32767));
         GT_ModHandler.sNonReplaceableItems
             .add(GT_ModHandler.getModItem(GalacticraftCore.ID, "item.sensorGlasses", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems
-            .add(GT_ModHandler.getModItem(IC2NuclearControl.ID, "ItemToolThermometer", 1L, 32767));
 
         RecipeSorter.register(
             "gregtech:shaped",
