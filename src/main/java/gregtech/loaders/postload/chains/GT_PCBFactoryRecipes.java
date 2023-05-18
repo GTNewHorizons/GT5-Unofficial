@@ -2,6 +2,8 @@ package gregtech.loaders.postload.chains;
 
 import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +13,11 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_PCBFactoryManager;
@@ -40,37 +46,53 @@ public class GT_PCBFactoryRecipes {
             new FluidStack[] { new FluidStack(solderLuV, 144 * 36), Materials.Naquadah.getMolten(144 * 18) },
             ItemList.PCBFactory.get(1),
             6000 * 20,
-            (int) GT_Values.VP[8]);
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 1),
-                Materials.get("Artherium-Sn")
-                    .getPlates(6) },
-            null,
-            ItemList.BasicPhotolithographicFrameworkCasing.get(1),
-            30 * 20,
-            (int) GT_Values.VP[7]);
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
-                Materials.EnrichedHolmium.getPlates(6) },
-            null,
-            ItemList.ReinforcedPhotolithographicFrameworkCasing.get(1),
-            30 * 20,
-            (int) GT_Values.VP[9]);
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { GT_ModHandler.getModItem(GTPlusPlus.ID, "blockFrameGtCelestialTungsten", 1),
-                Materials.get("Quantum")
-                    .getPlates(6) },
-            null,
-            ItemList.RadiationProofPhotolithographicFrameworkCasing.get(1),
-            30 * 20,
-            (int) GT_Values.VP[11]);
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { GT_ModHandler.getModItem(GTPlusPlus.ID, "blockFrameGtHypogen", 1),
-                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Infinity, 2), Materials.Thulium.getPlates(6) },
-            MaterialsUEVplus.SpaceTime.getMolten(144 * 8),
-            ItemList.InfinityCooledCasing.get(1),
-            10 * 20,
-            (int) GT_Values.VP[12]);
+            (int) TierEU.RECIPE_UV);
+
+        if (GTPlusPlus.isModLoaded()) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 1),
+                    Materials.get("Artherium-Sn")
+                        .getPlates(6))
+                .itemOutputs(ItemList.BasicPhotolithographicFrameworkCasing.get(1))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(sAssemblerRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
+                    Materials.EnrichedHolmium.getPlates(6))
+                .itemOutputs(ItemList.ReinforcedPhotolithographicFrameworkCasing.get(1))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_UHV)
+                .addTo(sAssemblerRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_ModHandler.getModItem(GTPlusPlus.ID, "blockFrameGtCelestialTungsten", 1),
+                    Materials.get("Quantum")
+                        .getPlates(6))
+                .itemOutputs(ItemList.RadiationProofPhotolithographicFrameworkCasing.get(1))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_UIV)
+                .addTo(sAssemblerRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_ModHandler.getModItem(GTPlusPlus.ID, "blockFrameGtHypogen", 1),
+                    GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Infinity, 2),
+                    Materials.Thulium.getPlates(6))
+                .itemOutputs(ItemList.InfinityCooledCasing.get(1))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_UMV)
+                .addTo(sAssemblerRecipes);
+        }
 
         // Load CircuitBoard Recipes
 
