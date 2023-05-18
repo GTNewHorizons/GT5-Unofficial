@@ -24,6 +24,7 @@ import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
 import mods.railcraft.api.core.items.IToolCrowbar;
 
@@ -212,14 +213,18 @@ public class GT_ItemIterator implements Runnable {
                             && (tItem != ItemList.IC2_Food_Can_Spoiled.getItem())) {
                             int tFoodValue = ((ItemFood) tItem).func_150905_g(new ItemStack(tItem, 1, 0));
                             if (tFoodValue > 0) {
-                                GT_Values.RA.stdBuilder()
-                                    .itemInputs(
-                                        new ItemStack(tItem, 1, 32767),
-                                        ItemList.IC2_Food_Can_Empty.get(tFoodValue))
-                                    .itemOutputs(
+                                GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                                recipeBuilder.itemInputs(
+                                    new ItemStack(tItem, 1, 32767),
+                                    ItemList.IC2_Food_Can_Empty.get(tFoodValue));
+                                if (GT_Utility.getContainerItem(new ItemStack(tItem, 1, 0), true) == null) {
+                                    recipeBuilder.itemOutputs(ItemList.IC2_Food_Can_Filled.get(tFoodValue));
+                                } else {
+                                    recipeBuilder.itemOutputs(
                                         ItemList.IC2_Food_Can_Filled.get(tFoodValue),
-                                        GT_Utility.getContainerItem(new ItemStack(tItem, 1, 0), true))
-                                    .noFluidInputs()
+                                        GT_Utility.getContainerItem(new ItemStack(tItem, 1, 0), true));
+                                }
+                                recipeBuilder.noFluidInputs()
                                     .noFluidOutputs()
                                     .duration(tFoodValue * 5 * SECONDS)
                                     .eut(1)

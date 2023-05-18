@@ -1676,12 +1676,16 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                         requiresCleanroom = volt.compareTo(Voltage.IV) > 0;
                     }
                 }
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(combInput)
+                GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                recipeBuilder.itemInputs(combInput)
                     .itemOutputs(combOutput)
-                    .fluidInputs(fluidInput)
-                    .fluidOutputs(fluidOutput)
-                    .duration(durationTicks)
+                    .fluidInputs(fluidInput);
+                if (fluidOutput == null) {
+                    recipeBuilder.noFluidOutputs();
+                } else {
+                    recipeBuilder.fluidOutputs(fluidOutput);
+                }
+                recipeBuilder.duration(durationTicks)
                     .eut(eut)
                     .metadata(CLEANROOM, requiresCleanroom)
                     .addTo(UniversalChemical);

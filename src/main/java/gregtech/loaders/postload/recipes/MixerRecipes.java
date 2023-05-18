@@ -1,7 +1,5 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.GT_Values.NF;
-import static gregtech.api.enums.GT_Values.NI;
 import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
@@ -1389,10 +1387,10 @@ public class MixerRecipes implements Runnable {
         // radiation manufacturing
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_ModHandler.getIC2Item("fuelRod", 1), new ItemStack(Items.glowstone_dust, 9), NI, NI)
+            .itemInputs(GT_ModHandler.getIC2Item("fuelRod", 1), new ItemStack(Items.glowstone_dust, 9))
             .itemOutputs(ItemList.GlowstoneCell.get(1))
             .fluidInputs(Materials.Helium.getGas(250))
-            .fluidOutputs(NF)
+            .noFluidOutputs()
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(16)
             .addTo(sMixerRecipes);

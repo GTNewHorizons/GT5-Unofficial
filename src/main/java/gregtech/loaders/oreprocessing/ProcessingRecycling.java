@@ -10,6 +10,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
 
 public class ProcessingRecycling implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -26,12 +27,17 @@ public class ProcessingRecycling implements gregtech.api.interfaces.IOreRecipeRe
         if ((aMaterial != Materials.Empty) && (GT_Utility.getFluidForFilledItem(aStack, true) == null)
             && !aMaterial.contains(SubTag.SMELTING_TO_FLUID)
             && (GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L) != null)) {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(aStack)
-                .itemOutputs(
+            GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+            recipeBuilder.itemInputs(aStack);
+            if (GT_Utility.getContainerItem(aStack, true) == null) {
+                recipeBuilder.itemOutputs(
+                    GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, aPrefix.mMaterialAmount / 3628800L));
+            } else {
+                recipeBuilder.itemOutputs(
                     GT_Utility.getContainerItem(aStack, true),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, aPrefix.mMaterialAmount / 3628800L))
-                .noFluidInputs()
+                    GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, aPrefix.mMaterialAmount / 3628800L));
+            }
+            recipeBuilder.noFluidInputs()
                 .noFluidOutputs()
                 .duration(((int) Math.max(aMaterial.getMass() / 2L, 1L)) * TICKS)
                 .eut(2)
