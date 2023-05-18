@@ -335,8 +335,9 @@ public class SpaceMiningRecipes {
         addRecipesToDrones(
                 null,
                 null,
-                new int[] { 1500, 1500, 1500, 5500 },
-                new Materials[] { Materials.Tellurium, Materials.Thulium, Materials.Tantalum, Materials.Redstone },
+                new int[] { 1500, 1000, 1500, 500, 5500 },
+                new Materials[] { Materials.Tellurium, Materials.Thulium, Materials.Tantalum, Materials.Lutetium,
+                        Materials.Redstone },
                 OrePrefixes.oreEndstone,
                 20,
                 80,
@@ -479,6 +480,36 @@ public class SpaceMiningRecipes {
                 ItemMiningDrones.DroneTiers.MV.ordinal(),
                 ItemMiningDrones.DroneTiers.ZPM.ordinal(),
                 250);
+
+        if (Loader.isModLoaded("miscutils")) {
+            // Everglades Asteroid
+            addRecipesToDrones(
+                    null,
+                    null,
+                    new int[] { 600, 400, 1500, 1500, 1000, 400, 1000, 600, 1000, 1000, 1000 },
+                    new ItemStack[] { new ItemStack(GameRegistry.findItem("miscutils", "oreKoboldite"), 64),
+                            new ItemStack(GameRegistry.findItem("miscutils", "oreCrocoite"), 64),
+                            new ItemStack(GameRegistry.findItem("miscutils", "oreGadoliniteY"), 64),
+                            new ItemStack(GameRegistry.findItem("miscutils", "oreLepersonnite"), 64),
+                            new ItemStack(GameRegistry.findItem("miscutils", "oreZircon"), 64),
+                            new ItemStack(GameRegistry.findItem("miscutils", "oreLautarite"), 64),
+                            new ItemStack(GameRegistry.findItem("miscutils", "oreHoneaite"), 64),
+                            new ItemStack(GameRegistry.findItem("miscutils", "oreAlburnite"), 64),
+                            new ItemStack(GameRegistry.findItem("miscutils", "oreRareEarthI"), 64),
+                            new ItemStack(GameRegistry.findItem("miscutils", "oreRareEarthII"), 64),
+                            new ItemStack(GameRegistry.findItem("miscutils", "oreRareEarthIII"), 64) },
+                    10,
+                    20,
+                    110,
+                    230,
+                    200,
+                    1,
+                    25 * 20,
+                    (int) VP[5],
+                    ItemMiningDrones.DroneTiers.ZPM.ordinal(),
+                    ItemMiningDrones.DroneTiers.UHV.ordinal(),
+                    100);
+        }
 
         // Draconic Asteroid
         addRecipesToDrones(
