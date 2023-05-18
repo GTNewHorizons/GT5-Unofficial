@@ -34,32 +34,32 @@
  * For more details, see https://docs.gradle.org/8.0.1/userguide/java_library_plugin.html#sec:java_library_configurations_graph
  */
 dependencies {
-    api("com.github.GTNewHorizons:StructureLib:1.2.6:dev")
+    api("com.github.GTNewHorizons:StructureLib:1.2.7:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
-    api("com.github.GTNewHorizons:NotEnoughItems:2.3.46-GTNH:dev")
+    api("com.github.GTNewHorizons:NotEnoughItems:2.3.53-GTNH:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.0.13:dev")
     api("com.github.GTNewHorizons:ModularUI:1.1.7:dev")
-    api("com.github.GTNewHorizons:waila:1.5.24:dev")
+    api("com.github.GTNewHorizons:waila:1.6.0:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-213-GTNH:dev")
     implementation("com.github.GTNewHorizons:Eternal-Singularity:1.1.0:dev")
 
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.2.10:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.33:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.4.10:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.6.3:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.4.16:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.6.7:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.7.9-GTNH:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.13.18:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.14.1:dev") { transitive = false }
 
-    compileOnly("com.github.GTNewHorizons:EnderCore:0.2.12:dev") { transitive = false }
-    compileOnly("com.github.GTNewHorizons:Galacticraft:3.0.65-GTNH:dev") { transitive = false }
-    compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.9.23-GTNH:dev") { transitive = false }
-    compileOnly("com.github.GTNewHorizons:Chisel:2.10.17-GTNH:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:EnderCore:0.2.13:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:Galacticraft:3.0.68-GTNH:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.9.32-GTNH:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:Chisel:2.11.0-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Translocators:1.1.2.21:dev") { transitive = false }
     compileOnly("curse.maven:cofh-core-69162:2388751") { transitive = false }
-    compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.4.16:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.4.19:dev") { transitive = false }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
-    compileOnly("com.github.GTNewHorizons:Hodgepodge:2.2.8:dev") { transitive = false }
-    compileOnly('com.github.GTNewHorizons:Botania:1.9.22-GTNH:dev') { transitive = false }
+    compileOnly("com.github.GTNewHorizons:Hodgepodge:2.2.13:dev") { transitive = false }
+    compileOnly('com.github.GTNewHorizons:Botania:1.9.23-GTNH:dev') { transitive = false }
 
     compileOnly("com.google.auto.value:auto-value-annotations:1.10.1") { transitive = false }
     annotationProcessor("com.google.auto.value:auto-value:1.10.1")
