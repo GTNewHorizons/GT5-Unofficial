@@ -11,6 +11,8 @@ import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.GregTech_API;
@@ -45,6 +47,21 @@ public class FluidSolidifierRecipes implements Runnable {
                 .noFluidOutputs()
                 .duration(16 * TICKS)
                 .eut(8)
+                .addTo(sFluidSolidficationRecipes);
+        }
+
+        {
+            ItemStack flask = ItemList.VOLUMETRIC_FLASK.get(1);
+            NBTTagCompound nbtFlask = new NBTTagCompound();
+            nbtFlask.setInteger("Capacity", 1000);
+            flask.setTagCompound(nbtFlask);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(ItemList.Shape_Mold_Ball.get(0))
+                .itemOutputs(getModItem(Thaumcraft.ID, "ItemResource", 1, 3))
+                .fluidInputs(new FluidStack(FluidRegistry.getFluid("molten.borosilicateglass"), 144))
+                .noFluidOutputs()
+                .duration(2 * SECONDS + 4 * TICKS)
+                .eut(TierEU.RECIPE_LV)
                 .addTo(sFluidSolidficationRecipes);
         }
 
