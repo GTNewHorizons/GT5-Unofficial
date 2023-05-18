@@ -172,6 +172,9 @@ public class ComponentAssemblyLineRecipeLoader {
                 if (data != null && data.mMaterial.mMaterial == Materials.SamariumMagnetic) {
                     input = GT_OreDictUnificator.get(data.mPrefix, Materials.Samarium, 1);
                     foundFluidStack = tryConvertItemStackToFluidMaterial(input);
+                } else if (data != null && data.mMaterial.mMaterial == Materials.TengamAttuned) {
+                    input = GT_OreDictUnificator.get(data.mPrefix, Materials.TengamPurified, 1);
+                    foundFluidStack = tryConvertItemStackToFluidMaterial(input);
                 }
 
                 if (foundFluidStack != null) {
