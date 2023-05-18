@@ -204,7 +204,7 @@ public class HANDLER_Railcraft {
                     RailcraftUtils.addAdvancedCokeOvenRecipe(aInputs1[i], true, true, aInputs2[i], 20);
                 }
                 for (int i = 0; i < aOutputs.length; i++) {
-                    RailcraftUtils.addAdvancedCokeOvenRecipe(aInputs2[i], true, true, aInputs2[i], 20);
+                    RailcraftUtils.addAdvancedCokeOvenRecipe(aInputs2[i], true, true, aOutputs[i], 20);
                 }
             }
         }
