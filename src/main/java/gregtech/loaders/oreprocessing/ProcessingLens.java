@@ -15,6 +15,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_RecipeBuilder;
 
 public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -61,24 +62,32 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
             }
             default -> {
                 if (GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
-                    GT_Values.RA.stdBuilder()
-                        .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
-                        .itemOutputs(
+                    GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                    recipeBuilder.itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L));
+                    if (GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L) == null) {
+                        recipeBuilder.itemOutputs(GT_OreDictUnificator.get(OrePrefixes.lens, aMaterial, 1L));
+                    } else {
+                        recipeBuilder.itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.lens, aMaterial, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L))
-                        .noFluidInputs()
+                            GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L));
+                    }
+                    recipeBuilder.noFluidInputs()
                         .noFluidOutputs()
                         .duration(1 * MINUTES)
                         .eut(TierEU.RECIPE_MV)
                         .addTo(sLatheRecipes);
                 }
                 if (GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1L) != null) {
-                    GT_Values.RA.stdBuilder()
-                        .itemInputs(GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1L))
-                        .itemOutputs(
+                    GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                    recipeBuilder.itemInputs(GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1L));
+                    if (GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L) == null) {
+                        recipeBuilder.itemOutputs(GT_OreDictUnificator.get(OrePrefixes.lens, aMaterial, 1L));
+                    } else {
+                        recipeBuilder.itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.lens, aMaterial, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 2L))
-                        .noFluidInputs()
+                            GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 2L));
+                    }
+                    recipeBuilder.noFluidInputs()
                         .noFluidOutputs()
                         .duration(2 * MINUTES)
                         .eut(TierEU.RECIPE_LV)
