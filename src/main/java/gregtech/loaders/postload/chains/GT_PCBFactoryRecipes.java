@@ -3,7 +3,12 @@ package gregtech.loaders.postload.chains;
 import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.HOURS;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
+import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
+import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,16 +42,20 @@ public class GT_PCBFactoryRecipes {
             : FluidRegistry.getFluid("molten.solderingalloy");
 
         // Load Multi Recipes
-        GT_Values.RA.addAssemblylineRecipe(
-            ItemList.Circuit_Board_Wetware.get(1),
-            3600,
-            new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 32),
+        GT_Values.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.Circuit_Board_Wetware.get(1))
+            .metadata(RESEARCH_TIME, 3 * MINUTES)
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 32),
                 ItemList.Machine_ZPM_CircuitAssembler.get(4),
-                new Object[] { OrePrefixes.circuit.get(Materials.Master), 16 }, ItemList.Robot_Arm_ZPM.get(8) },
-            new FluidStack[] { new FluidStack(solderLuV, 144 * 36), Materials.Naquadah.getMolten(144 * 18) },
-            ItemList.PCBFactory.get(1),
-            6000 * 20,
-            (int) TierEU.RECIPE_UV);
+                new Object[] { OrePrefixes.circuit.get(Materials.Master), 16 },
+                ItemList.Robot_Arm_ZPM.get(8))
+            .fluidInputs(new FluidStack(solderLuV, 144 * 36), Materials.Naquadah.getMolten(144 * 18))
+            .noFluidOutputs()
+            .itemOutputs(ItemList.PCBFactory.get(1))
+            .eut(TierEU.RECIPE_UV)
+            .duration(1 * HOURS + 40 * MINUTES)
+            .addTo(AssemblyLine);
 
         if (GTPlusPlus.isModLoaded()) {
             GT_Values.RA.stdBuilder()
