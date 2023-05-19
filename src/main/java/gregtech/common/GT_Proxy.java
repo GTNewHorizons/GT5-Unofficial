@@ -1018,14 +1018,19 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     public void onLoad() {
         GT_Log.out.println("GT_Mod: Beginning Load-Phase.");
         GT_Log.ore.println("GT_Mod: Beginning Load-Phase.");
-        GT_OreDictUnificator.registerOre(
-            "cropChilipepper",
-            GT_ModHandler.getModItem(MagicalCrops.ID, "magicalcrops_CropProduce", 1L, 2));
-        GT_OreDictUnificator
-            .registerOre("cropTomato", GT_ModHandler.getModItem(MagicalCrops.ID, "magicalcrops_CropProduce", 1L, 8));
-        GT_OreDictUnificator
-            .registerOre("cropGrape", GT_ModHandler.getModItem(MagicalCrops.ID, "magicalcrops_CropProduce", 1L, 4));
-        GT_OreDictUnificator.registerOre("cropTea", GT_ModHandler.getModItem(GanysSurface.ID, "teaLeaves", 1L, 0));
+        if (MagicalCrops.isModLoaded()) {
+            GT_OreDictUnificator.registerOre(
+                "cropChilipepper",
+                GT_ModHandler.getModItem(MagicalCrops.ID, "magicalcrops_CropProduce", 1L, 2));
+            GT_OreDictUnificator.registerOre(
+                "cropTomato",
+                GT_ModHandler.getModItem(MagicalCrops.ID, "magicalcrops_CropProduce", 1L, 8));
+            GT_OreDictUnificator
+                .registerOre("cropGrape", GT_ModHandler.getModItem(MagicalCrops.ID, "magicalcrops_CropProduce", 1L, 4));
+        }
+        if (GanysSurface.isModLoaded()) {
+            GT_OreDictUnificator.registerOre("cropTea", GT_ModHandler.getModItem(GanysSurface.ID, "teaLeaves", 1L, 0));
+        }
 
         // Clay buckets, which don't get registered until Iguana Tweaks pre-init
         if (IguanaTweaksTinkerConstruct.isModLoaded()) {

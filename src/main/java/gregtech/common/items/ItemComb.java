@@ -1,9 +1,21 @@
 package gregtech.common.items;
 
-import static gregtech.api.enums.GT_Values.*;
-import static gregtech.api.enums.Mods.*;
+import static gregtech.api.enums.GT_Values.L;
+import static gregtech.api.enums.GT_Values.NF;
+import static gregtech.api.enums.GT_Values.NI;
+import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.Mods.AE2FluidCraft;
+import static gregtech.api.enums.Mods.ExtraUtilities;
+import static gregtech.api.enums.Mods.GalaxySpace;
+import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Mods.MagicBees;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.Mods.ThaumicBases;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.CLEANROOM;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 
@@ -37,6 +49,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
 import gregtech.loaders.misc.GT_Bees;
@@ -1557,16 +1570,21 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
      *
      **/
     public void addAutoclaveProcess(CombType comb, Materials aMaterial, Voltage volt, int circuitNumber) {
-        if (GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4) == NI) return;
-        RA.addAutoclaveRecipe(
-            GT_Utility.copyAmount(9, getStackForType(comb)),
-            GT_Utility.getIntegratedCircuit(circuitNumber),
-            Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass() + volt.getUUAmplifier()) / 10))),
-            GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4),
-            10000,
-            (int) (aMaterial.getMass() * 128),
-            volt.getAutoClaveEnergy(),
-            volt.compareTo(Voltage.HV) > 0);
+        if (GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4) == NI) {
+            return;
+        }
+        GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+        recipeBuilder
+            .itemInputs(GT_Utility.copyAmount(9, getStackForType(comb)), GT_Utility.getIntegratedCircuit(circuitNumber))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4))
+            .fluidInputs(Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass() + volt.getUUAmplifier()) / 10))))
+            .noFluidOutputs()
+            .duration(((int) (aMaterial.getMass() * 128)) * TICKS)
+            .eut(volt.getAutoClaveEnergy());
+        if (volt.compareTo(Voltage.HV) > 0) {
+            recipeBuilder.requiresCleanRoom();
+        }
+        recipeBuilder.addTo(sAutoclaveRecipes);
     }
 
     public void addFluidExtractorProcess(CombType comb, FluidStack fluid, Voltage volt) {
@@ -1658,12 +1676,16 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                         requiresCleanroom = volt.compareTo(Voltage.IV) > 0;
                     }
                 }
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(combInput)
+                GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                recipeBuilder.itemInputs(combInput)
                     .itemOutputs(combOutput)
-                    .fluidInputs(fluidInput)
-                    .fluidOutputs(fluidOutput)
-                    .duration(durationTicks)
+                    .fluidInputs(fluidInput);
+                if (fluidOutput == null) {
+                    recipeBuilder.noFluidOutputs();
+                } else {
+                    recipeBuilder.fluidOutputs(fluidOutput);
+                }
+                recipeBuilder.duration(durationTicks)
                     .eut(eut)
                     .metadata(CLEANROOM, requiresCleanroom)
                     .addTo(UniversalChemical);

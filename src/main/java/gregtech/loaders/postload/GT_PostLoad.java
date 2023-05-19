@@ -301,6 +301,7 @@ public class GT_PostLoad {
                             (int) (tMaterial.getMass() * 512L),
                             (int) VP[1],
                             0);
+                        return;
                     }
                     tInput = GT_OreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L);
                     iSMat0 = new ItemStack[] { tInput };

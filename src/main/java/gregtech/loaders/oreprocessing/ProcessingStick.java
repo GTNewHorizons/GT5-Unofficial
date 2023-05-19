@@ -1,6 +1,5 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBenderRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCutterRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
@@ -143,15 +142,5 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(sHammerRecipes);
             }
         }
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
-                GT_Utility.getIntegratedCircuit(2))
-            .itemOutputs(ItemList.FR_Stick.get(1L))
-            .fluidInputs(Materials.SeedOil.getFluid(50L))
-            .noFluidOutputs()
-            .duration(16 * TICKS)
-            .eut(8)
-            .addTo(sAssemblerRecipes);
     }
 }

@@ -41,6 +41,17 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
+                GT_Utility.getIntegratedCircuit(2))
+            .itemOutputs(ItemList.FR_Stick.get(1L))
+            .fluidInputs(Materials.SeedOil.getFluid(50L))
+            .noFluidOutputs()
+            .duration(16 * TICKS)
+            .eut(8)
+            .addTo(sAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 1))
             .itemOutputs(ItemList.Block_Plascrete.get(1))
