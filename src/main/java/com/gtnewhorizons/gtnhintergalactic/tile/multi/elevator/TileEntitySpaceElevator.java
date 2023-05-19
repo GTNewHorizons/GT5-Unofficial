@@ -605,6 +605,7 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
                         long tEnergy = getEUVar() / mProjectModuleHatches.size() * MODULE_CHARGE_INTERVAL;
                         for (TileEntityModuleBase projectModule : mProjectModuleHatches) {
                             if (projectModule.getNeededMotorTier() <= motorTier) {
+                                projectModule.connect();
                                 long tAvailableEnergy = getEUVar();
                                 if (tAvailableEnergy > 0) {
                                     setEUVar(
