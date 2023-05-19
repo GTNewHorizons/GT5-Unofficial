@@ -15,23 +15,12 @@ import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.tile.TileEvent;
 import appeng.tile.events.TileEventType;
-import cpw.mods.fml.common.Optional;
 import goodgenerator.util.ItemRefer;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumicenergistics.api.grid.IEssentiaGrid;
 import thaumicenergistics.api.grid.IMEEssentiaMonitor;
 
-@Optional.InterfaceList(
-        value = {
-                @Optional.Interface(
-                        iface = "appeng.api.networking.security.IActionHost",
-                        modid = "appliedenergistics2",
-                        striprefs = true),
-                @Optional.Interface(
-                        iface = "appeng.me.helpers.IGridProxyable",
-                        modid = "appliedenergistics2",
-                        striprefs = true), })
 public class EssentiaOutputHatch_ME extends EssentiaOutputHatch implements IActionHost, IGridProxyable {
 
     private AENetworkProxy gridProxy = null;
@@ -57,53 +46,45 @@ public class EssentiaOutputHatch_ME extends EssentiaOutputHatch implements IActi
     }
 
     @TileEvent(TileEventType.WORLD_NBT_READ)
-    @Optional.Method(modid = "appliedenergistics2")
     public void readFromNBT_AENetwork(final NBTTagCompound data) {
         AENetworkProxy gp = getProxy();
         if (gp != null) getProxy().readFromNBT(data);
     }
 
     @TileEvent(TileEventType.WORLD_NBT_WRITE)
-    @Optional.Method(modid = "appliedenergistics2")
     public void writeToNBT_AENetwork(final NBTTagCompound data) {
         AENetworkProxy gp = getProxy();
         if (gp != null) gp.writeToNBT(data);
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     void onChunkUnloadAE() {
         AENetworkProxy gp = getProxy();
         if (gp != null) gp.onChunkUnload();
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
     void invalidateAE() {
         AENetworkProxy gp = getProxy();
         if (gp != null) gp.invalidate();
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
+    @Override
     public IGridNode getGridNode(ForgeDirection forgeDirection) {
         AENetworkProxy gp = getProxy();
         return gp != null ? gp.getNode() : null;
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public void gridChanged() {}
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public AECableType getCableConnectionType(ForgeDirection forgeDirection) {
         return AECableType.SMART;
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public void securityBreak() {}
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
             gridProxy = new AENetworkProxy(this, "proxy", ItemRefer.Essentia_Output_Hatch_ME.get(1), true);
@@ -114,13 +95,11 @@ public class EssentiaOutputHatch_ME extends EssentiaOutputHatch implements IActi
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public DimensionalCoord getLocation() {
         return new DimensionalCoord(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public IGridNode getActionableNode() {
         AENetworkProxy gp = getProxy();
         return gp != null ? gp.getNode() : null;

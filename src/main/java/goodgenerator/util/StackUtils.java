@@ -6,8 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import appeng.api.AEApi;
+import appeng.api.storage.data.IAEFluidStack;
 import goodgenerator.items.MyMaterial;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
@@ -122,4 +127,23 @@ public class StackUtils {
                 return MyMaterial.shirabon.getMolten(aAmount);
         }
     }
+
+    // === Copied from AE2FC to avoid hard dep ===
+
+    public static IAEFluidStack createAEFluidStack(Fluid fluid) {
+        return createAEFluidStack(new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME));
+    }
+
+    public static IAEFluidStack createAEFluidStack(Fluid fluid, long amount) {
+        return createAEFluidStack(fluid.getID(), amount);
+    }
+
+    public static IAEFluidStack createAEFluidStack(FluidStack fluid) {
+        return AEApi.instance().storage().createFluidStack(fluid);
+    }
+
+    public static IAEFluidStack createAEFluidStack(int fluidId, long amount) {
+        return createAEFluidStack(new FluidStack(FluidRegistry.getFluid(fluidId), 1)).setStackSize(amount);
+    }
+
 }

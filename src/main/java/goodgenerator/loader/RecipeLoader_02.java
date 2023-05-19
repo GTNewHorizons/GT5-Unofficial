@@ -187,17 +187,15 @@ public class RecipeLoader_02 {
                         GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Enderium, 1), 'C',
                         ItemRefer.YOTTank_Casing.get(1) });
 
-        if (LoadedList.EXTRA_CELLS) {
-            GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] { ItemList.Hatch_Output_IV.get(1),
-                            GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1, 440),
-                            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CertusQuartz, 8),
-                            GT_Utility.getIntegratedCircuit(1) },
-                    Materials.Plastic.getMolten(144),
-                    Loaders.YFH,
-                    200,
-                    1920);
-        }
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.Hatch_Output_IV.get(1),
+                        GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiPart", 1, 440),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CertusQuartz, 8),
+                        GT_Utility.getIntegratedCircuit(1) },
+                Materials.Plastic.getMolten(144),
+                Loaders.YFH,
+                200,
+                1920);
 
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { ItemList.Large_Fluid_Cell_Steel.get(12L),

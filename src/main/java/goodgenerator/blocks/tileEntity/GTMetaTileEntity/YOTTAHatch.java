@@ -32,10 +32,9 @@ import appeng.api.util.AECableType;
 import appeng.api.util.DimensionalCoord;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
-import cpw.mods.fml.common.Optional;
-import extracells.util.FluidUtil;
 import goodgenerator.blocks.tileEntity.YottaFluidTank;
 import goodgenerator.loader.Loaders;
+import goodgenerator.util.StackUtils;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -45,28 +44,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 
-@Optional.InterfaceList(
-        value = {
-                @Optional.Interface(
-                        iface = "appeng.api.networking.security.IActionHost",
-                        modid = "appliedenergistics2",
-                        striprefs = true),
-                @Optional.Interface(
-                        iface = "appeng.me.helpers.IGridProxyable",
-                        modid = "appliedenergistics2",
-                        striprefs = true),
-                @Optional.Interface(
-                        iface = "appeng.api.storage.IMEInventory",
-                        modid = "appliedenergistics2",
-                        striprefs = true),
-                @Optional.Interface(
-                        iface = "appeng.api.storage.IMEInventoryHandler",
-                        modid = "appliedenergistics2",
-                        striprefs = true),
-                @Optional.Interface(
-                        iface = "appeng.api.storage.ICellContainer",
-                        modid = "appliedenergistics2",
-                        striprefs = true), })
 public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyable, IActionHost, ICellContainer,
         IMEInventory<IAEFluidStack>, IMEInventoryHandler<IAEFluidStack> {
 
@@ -144,23 +121,21 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
         return true;
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
+    @Override
     public IGridNode getGridNode(ForgeDirection forgeDirection) {
         AENetworkProxy gp = getProxy();
         return gp != null ? gp.getNode() : null;
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public AECableType getCableConnectionType(ForgeDirection forgeDirection) {
         return AECableType.SMART;
     }
 
-    @Optional.Method(modid = "appliedenergistics2")
+    @Override
     public void securityBreak() {}
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
             gridProxy = new AENetworkProxy(this, "proxy", Loaders.YFH, true);
@@ -171,14 +146,12 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public DimensionalCoord getLocation() {
         IGregTechTileEntity gtm = this.getBaseMetaTileEntity();
         return new DimensionalCoord(gtm.getWorld(), gtm.getXCoord(), gtm.getYCoord(), gtm.getZCoord());
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public IItemList<IAEFluidStack> getAvailableItems(IItemList<IAEFluidStack> out) {
         if (host == null || host.getBaseMetaTileEntity() == null || !host.getBaseMetaTileEntity().isActive())
             return out;
@@ -189,12 +162,11 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
         if (host.mStorageCurrent.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) > 0) {
             ready = Long.MAX_VALUE;
         } else ready = host.mStorageCurrent.longValue();
-        out.add(FluidUtil.createAEFluidStack(FluidRegistry.getFluid(host.mFluidName), ready));
+        out.add(StackUtils.createAEFluidStack(FluidRegistry.getFluid(host.mFluidName), ready));
         return out;
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public IAEFluidStack injectItems(IAEFluidStack input, Actionable type, BaseActionSource src) {
         long amt = fill(null, input, false);
         if (amt == input.getStackSize()) {
@@ -205,7 +177,6 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public IAEFluidStack extractItems(IAEFluidStack request, Actionable mode, BaseActionSource src) {
         IAEFluidStack ready = drain(null, request, false);
         if (ready != null) {
@@ -215,7 +186,6 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public StorageChannel getChannel() {
         return StorageChannel.FLUIDS;
     }
@@ -393,33 +363,28 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public IGridNode getActionableNode() {
         AENetworkProxy gp = getProxy();
         return gp != null ? gp.getNode() : null;
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public AccessRestriction getAccess() {
         return this.readMode;
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public boolean isPrioritized(IAEFluidStack input) {
         return true;
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public boolean canAccept(IAEFluidStack input) {
         FluidStack rInput = input.getFluidStack();
         return fill(null, rInput, false) > 0;
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public List<IMEInventoryHandler> getCellArray(StorageChannel channel) {
         List<IMEInventoryHandler> list = new ArrayList<>();
         if (channel == StorageChannel.FLUIDS) {
@@ -429,19 +394,16 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public int getPriority() {
         return this.priority;
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public int getSlot() {
         return 0;
     }
 
     @Override
-    @Optional.Method(modid = "appliedenergistics2")
     public boolean validForPass(int i) {
         return true;
     }
