@@ -3743,18 +3743,20 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     StringBuilder errorInfo = new StringBuilder();
                     boolean hasAnEntry = false;
                     for (FluidStack fStack : r.mFluidInputs) {
-                        if (fStack != null) {
-                            String s = fStack.getLocalizedName();
-                            if (s != null) {
-                                if (hasAnEntry) {
-                                    errorInfo.append("+")
-                                        .append(s);
-                                } else {
-                                    errorInfo.append(s);
-                                }
-                                hasAnEntry = true;
-                            }
+                        if (fStack == null) {
+                            continue;
                         }
+                        String s = fStack.getLocalizedName();
+                        if (s == null) {
+                            continue;
+                        }
+                        if (hasAnEntry) {
+                            errorInfo.append("+")
+                                .append(s);
+                        } else {
+                            errorInfo.append(s);
+                        }
+                        hasAnEntry = true;
                     }
                     for (ItemStack iStack : r.mInputs) {
                         if (iStack != null) {
