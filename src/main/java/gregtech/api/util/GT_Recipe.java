@@ -3763,12 +3763,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                             continue;
                         }
                         String s = iStack.getDisplayName();
-                        if (s == null) {
-                            continue;
-                        }
                         if (hasAnEntry) {
-                            errorInfo.append("+")
-                                .append(s);
+                            errorInfo.append("+" + s);
                         } else {
                             errorInfo.append(s);
                         }
