@@ -2284,8 +2284,8 @@ public class ResearchStationAssemblyLine implements Runnable {
         int researchEuPerTick = 64_000_000;
         int researchAmperage = 2;
 
-        int craftingTimeInTicks = 2000;
-        int craftingEuPerTick = (int) TierEU.RECIPE_UXV;
+        int craftingTimeInTicks = 1000;
+        int craftingEuPerTick = (int) TierEU.RECIPE_UMV;
 
         // -------------------------------------------------------------
 
