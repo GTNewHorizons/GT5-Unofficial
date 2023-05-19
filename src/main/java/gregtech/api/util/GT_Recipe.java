@@ -3742,28 +3742,32 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     && findRecipe(null, false, true, Long.MAX_VALUE, r.mFluidInputs, r.mInputs) != null) {
                     StringBuilder errorInfo = new StringBuilder();
                     boolean hasAnEntry = false;
-                    for (FluidStack f : r.mFluidInputs) {
-                        String s = f.getUnlocalizedName();
-                        if (s != null) {
-                            if (hasAnEntry) {
-                                errorInfo.append("+")
-                                    .append(s);
-                            } else {
-                                errorInfo.append(s);
+                    for (FluidStack fStack : r.mFluidInputs) {
+                        if (fStack != null) {
+                            String s = fStack.getUnlocalizedName();
+                            if (s != null) {
+                                if (hasAnEntry) {
+                                    errorInfo.append("+")
+                                        .append(s);
+                                } else {
+                                    errorInfo.append(s);
+                                }
+                                hasAnEntry = true;
                             }
-                            hasAnEntry = true;
                         }
                     }
-                    for (ItemStack f : r.mInputs) {
-                        String s = f.getUnlocalizedName();
-                        if (s != null) {
-                            if (hasAnEntry) {
-                                errorInfo.append("+")
-                                    .append(s);
-                            } else {
-                                errorInfo.append(s);
+                    for (ItemStack iStack : r.mInputs) {
+                        if (iStack != null) {
+                            String s = iStack.getUnlocalizedName();
+                            if (s != null) {
+                                if (hasAnEntry) {
+                                    errorInfo.append("+")
+                                        .append(s);
+                                } else {
+                                    errorInfo.append(s);
+                                }
+                                hasAnEntry = true;
                             }
-                            hasAnEntry = true;
                         }
                     }
                     handleRecipeCollision(errorInfo.toString());
