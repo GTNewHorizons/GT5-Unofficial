@@ -10,6 +10,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.TC_Aspects;
+import gregtech.api.interfaces.internal.IThaumcraftCompat;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Utility;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
@@ -22,12 +28,6 @@ import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchCategoryList;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.TC_Aspects;
-import gregtech.api.interfaces.internal.IThaumcraftCompat;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Utility;
 
 public class GT_ThaumcraftCompat implements IThaumcraftCompat {
 

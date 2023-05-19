@@ -1,15 +1,17 @@
 package gregtech.api.gui.modularui;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+
 import gregtech.api.interfaces.tileentity.ICoverable;
 
 public class GT_CoverUIBuildContext extends UIBuildContext {
 
     // cover data is not synced to client, while ID is
     private final int coverID;
-    private final byte side;
+    private final ForgeDirection side;
     private final ICoverable tile;
     private final boolean anotherWindow;
     private final int guiColorization;
@@ -22,8 +24,8 @@ public class GT_CoverUIBuildContext extends UIBuildContext {
      * @param anotherWindow   If cover UI is shown on top of another window
      * @param guiColorization The color used to render machine's GUI
      */
-    public GT_CoverUIBuildContext(EntityPlayer player, int coverID, byte side, ICoverable tile, boolean anotherWindow,
-        int guiColorization) {
+    public GT_CoverUIBuildContext(EntityPlayer player, int coverID, ForgeDirection side, ICoverable tile,
+        boolean anotherWindow, int guiColorization) {
         super(player);
         this.coverID = coverID;
         this.side = side;
@@ -39,7 +41,8 @@ public class GT_CoverUIBuildContext extends UIBuildContext {
      * @param tile          Tile this cover is attached to
      * @param anotherWindow If cover GUI is shown in opened on top of another window
      */
-    public GT_CoverUIBuildContext(EntityPlayer player, int coverID, byte side, ICoverable tile, boolean anotherWindow) {
+    public GT_CoverUIBuildContext(EntityPlayer player, int coverID, ForgeDirection side, ICoverable tile,
+        boolean anotherWindow) {
         this(player, coverID, side, tile, anotherWindow, tile.getGUIColorization());
     }
 
@@ -47,7 +50,7 @@ public class GT_CoverUIBuildContext extends UIBuildContext {
         return coverID;
     }
 
-    public byte getCoverSide() {
+    public ForgeDirection getCoverSide() {
         return side;
     }
 

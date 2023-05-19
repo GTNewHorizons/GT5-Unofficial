@@ -6,13 +6,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
+import appeng.api.crafting.ICraftingIconProvider;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -25,7 +28,8 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 
-public abstract class CommonMetaTileEntity extends CoverableTileEntity implements IGregTechTileEntity {
+public abstract class CommonMetaTileEntity extends CoverableTileEntity
+    implements IGregTechTileEntity, ICraftingIconProvider {
 
     protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mSendClientData = false, mInventoryChanged = false;
 
@@ -80,7 +84,12 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
                 final NBTTagCompound tTag = tItemList.getCompoundTagAt(i);
                 final int tSlot = migrateInventoryIndex(tTag.getInteger("IntSlot"), nbtVersion);
                 if (tSlot >= 0 && tSlot < getMetaTileEntity().getRealInventory().length) {
-                    getMetaTileEntity().getRealInventory()[tSlot] = GT_Utility.loadItem(tTag);
+                    ItemStack loadedStack = GT_Utility.loadItem(tTag);
+                    // We move away from fluid display item in TEs
+                    if (loadedStack != null && loadedStack.getItem() == ItemList.Display_Fluid.getItem()) {
+                        loadedStack = null;
+                    }
+                    getMetaTileEntity().getRealInventory()[tSlot] = loadedStack;
                 }
             }
 
@@ -140,8 +149,8 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
     }
 
     @Override
-    public boolean isValidFacing(byte aSide) {
-        if (canAccessData()) return getMetaTileEntity().isFacingValid(aSide);
+    public boolean isValidFacing(ForgeDirection side) {
+        if (canAccessData()) return getMetaTileEntity().isFacingValid(side);
         return false;
     }
 
@@ -163,13 +172,13 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
     }
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
-        return hasValidMetaTileEntity() && getMetaTileEntity().allowCoverOnSide(aSide, aCoverID);
+    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aCoverID) {
+        return hasValidMetaTileEntity() && getMetaTileEntity().allowCoverOnSide(side, aCoverID);
     }
 
     @Override
-    public void issueCoverUpdate(byte aSide) {
-        super.issueCoverUpdate(aSide);
+    public void issueCoverUpdate(ForgeDirection side) {
+        super.issueCoverUpdate(side);
         issueClientUpdate();
     }
 
@@ -299,5 +308,10 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
             return getMetaTileEntity().getGUITextureSet();
         }
         return super.getGUITextureSet();
+    }
+
+    @Override
+    public ItemStack getMachineCraftingIcon() {
+        return getMetaTileEntity() != null ? getMetaTileEntity().getMachineCraftingIcon() : null;
     }
 }

@@ -100,9 +100,10 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
     public void onRandomDisplayTick(IGregTechTileEntity aBaseMetaTileEntity) {
         if (aBaseMetaTileEntity.isActive()) {
 
-            final byte frontFacing = aBaseMetaTileEntity.getFrontFacing();
+            final ForgeDirection frontFacing = aBaseMetaTileEntity.getFrontFacing();
 
-            if (frontFacing > 1 && aBaseMetaTileEntity.getCoverIDAtSide(frontFacing) == 0
+            if ((frontFacing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0
+                && aBaseMetaTileEntity.getCoverIDAtSide(frontFacing) == 0
                 && !aBaseMetaTileEntity.getOpacityAtSide(frontFacing)) {
 
                 final double oX = aBaseMetaTileEntity.getOffsetX(frontFacing, 1) + 8D / 16D;
@@ -115,16 +116,16 @@ public class GT_MetaTileEntity_Boiler_Bronze extends GT_MetaTileEntity_Boiler {
 
                 y = oY + XSTR_INSTANCE.nextFloat() * 6D / 16D;
 
-                if (frontFacing == ForgeDirection.WEST.ordinal()) {
+                if (frontFacing == ForgeDirection.WEST) {
                     x = oX - offset;
                     z = oZ + horizontal;
-                } else if (frontFacing == ForgeDirection.EAST.ordinal()) {
+                } else if (frontFacing == ForgeDirection.EAST) {
                     x = oX + offset;
                     z = oZ + horizontal;
-                } else if (frontFacing == ForgeDirection.NORTH.ordinal()) {
+                } else if (frontFacing == ForgeDirection.NORTH) {
                     x = oX + horizontal;
                     z = oZ - offset;
-                } else // if (frontFacing == ForgeDirection.SOUTH.ordinal())
+                } else // if (frontFacing == ForgeDirection.SOUTH)
                 {
                     x = oX + horizontal;
                     z = oZ + offset;

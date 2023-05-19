@@ -36,6 +36,20 @@ public class AssemblerRecipes implements Runnable {
         this.loadOutputHatchesRecipes();
         this.withIC2NuclearControl();
 
+        Materials LuVMat = BartWorks.isModLoaded() ? Materials.get("Ruridit") : Materials.Osmiridium;
+        Materials LuVMat2 = BartWorks.isModLoaded() ? Materials.get("Rhodium-PlatedPalladium") : Materials.Chrome;
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
+                GT_Utility.getIntegratedCircuit(2))
+            .itemOutputs(ItemList.FR_Stick.get(1L))
+            .fluidInputs(Materials.SeedOil.getFluid(50L))
+            .noFluidOutputs()
+            .duration(16 * TICKS)
+            .eut(8)
+            .addTo(sAssemblerRecipes);
+
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1),
@@ -1580,7 +1594,6 @@ public class AssemblerRecipes implements Runnable {
             .eut(TierEU.RECIPE_IV)
             .addTo(sAssemblerRecipes);
 
-        Materials LuVMat = BartWorks.isModLoaded() ? Materials.get("Ruridit") : Materials.Osmiridium;
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.SamariumMagnetic, 1),
@@ -2090,9 +2103,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Chrome, 8),
-                GT_Utility.getIntegratedCircuit(8))
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, LuVMat2, 8), GT_Utility.getIntegratedCircuit(8))
             .itemOutputs(ItemList.Casing_LuV.get(1))
             .noFluidInputs()
             .noFluidOutputs()
@@ -2726,45 +2737,12 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.EnderPearl, 1),
-                new ItemStack(Items.blaze_powder, 1, 0))
-            .itemOutputs(new ItemStack(Items.ender_eye, 1, 0))
-            .noFluidInputs()
-            .noFluidOutputs()
-            .duration(4 * SECONDS)
-            .eut(20)
-            .addTo(sAssemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.EnderPearl, 6),
-                new ItemStack(Items.blaze_rod, 1, 0))
-            .itemOutputs(new ItemStack(Items.ender_eye, 6, 0))
-            .noFluidInputs()
-            .noFluidOutputs()
-            .duration(25 * SECONDS)
-            .eut(20)
-            .addTo(sAssemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.gear, Materials.CobaltBrass, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1))
             .itemOutputs(ItemList.Component_Sawblade_Diamond.get(1))
             .noFluidInputs()
             .noFluidOutputs()
             .duration(16 * SECONDS)
-            .eut(20)
-            .addTo(sAssemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 4),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 4))
-            .itemOutputs(new ItemStack(Blocks.redstone_lamp, 1))
-            .noFluidInputs()
-            .noFluidOutputs()
-            .duration(2 * SECONDS)
             .eut(20)
             .addTo(sAssemblerRecipes);
 
@@ -2777,39 +2755,6 @@ public class AssemblerRecipes implements Runnable {
             .noFluidOutputs()
             .duration(1 * SECONDS)
             .eut(20)
-            .addTo(sAssemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 4))
-            .itemOutputs(new ItemStack(Items.compass, 1))
-            .noFluidInputs()
-            .noFluidOutputs()
-            .duration(20 * SECONDS)
-            .eut(4)
-            .addTo(sAssemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 4))
-            .itemOutputs(new ItemStack(Items.compass, 1))
-            .noFluidInputs()
-            .noFluidOutputs()
-            .duration(20 * SECONDS)
-            .eut(4)
-            .addTo(sAssemblerRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Gold, 4))
-            .itemOutputs(new ItemStack(Items.clock, 1))
-            .noFluidInputs()
-            .noFluidOutputs()
-            .duration(20 * SECONDS)
-            .eut(4)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()

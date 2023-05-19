@@ -63,7 +63,7 @@ public class GT_Block_Concretes extends GT_Block_Stones_Abstract implements IBlo
     }
 
     @Override
-    public IIcon getIcon(int aSide, int aMeta) {
+    public IIcon getIcon(int ordinalSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
             return gregtech.api.enums.Textures.BlockIcons.CONCRETES[aMeta].getIcon();
         }

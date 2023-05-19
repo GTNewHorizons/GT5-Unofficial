@@ -8,6 +8,7 @@ import java.util.Collections;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -106,7 +107,7 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer implem
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         // Regulation per Screwdriver is overridden by GUI regulation.
     }
 
@@ -134,8 +135,9 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer implem
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack) && aIndex >= 0
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        return super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack) && aIndex >= 0
             && aIndex <= 8
             && GT_Utility.areStacksEqual(aStack, this.mInventory[(aIndex + 9)]);
     }

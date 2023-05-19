@@ -8,9 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -20,6 +17,13 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.IMEMonitorHandlerReceiver;
@@ -28,13 +32,6 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.util.item.AEItemStack;
 import appeng.util.item.ItemList;
-
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.modularui.GT_UIInfos;
@@ -47,6 +44,8 @@ import gregtech.api.objects.AE2DigitalChestHandler;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEntity_TieredMachineBlock
     implements IMEMonitor<IAEItemStack>, IAddUIWidgets {
@@ -274,7 +273,7 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mVoidOverflow = !mVoidOverflow;
         GT_Utility.sendChatToPlayer(
             aPlayer,
@@ -284,9 +283,9 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-        float aZ) {
-        if (super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ)) return true;
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ) {
+        if (super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) return true;
         mDisableFilter = !mDisableFilter;
         GT_Utility.sendChatToPlayer(
             aPlayer,
@@ -355,7 +354,7 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -467,13 +466,15 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
         if (GregTech_API.mAE2 && GT_Values.disableDigitalChestsExternalAccess && hasActiveMEConnection()) return false;
         return aIndex == 1;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
         if (GregTech_API.mAE2 && GT_Values.disableDigitalChestsExternalAccess && hasActiveMEConnection()) return false;
         if (aIndex != 0) return false;
         if ((mInventory[0] != null && !GT_Utility.areStacksEqual(mInventory[0], aStack))) return false;
@@ -483,10 +484,10 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        if (aSide != aFacing) return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1] };
-        return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_SCHEST),
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        if (side != aFacing) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1] };
+        return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_SCHEST),
             TextureFactory.builder()
                 .addIcon(OVERLAY_SCHEST_GLOW)
                 .glow()
@@ -497,7 +498,7 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
-        NBTTagCompound tag = accessor.getNBTData();
+        final NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("itemType", Constants.NBT.TAG_COMPOUND)) {
             currenttip.add("Item Count: " + GT_Utility.parseNumberToString(tag.getInteger("itemCount")));
             currenttip.add(

@@ -163,7 +163,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistilleryRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(MaterialsOreAlum.SluiceSand.getDust(1))
             .fluidInputs(MaterialsOreAlum.SluiceJuice.getFluid(1000))
             .fluidOutputs(Materials.Water.getFluid(500))
@@ -209,7 +209,7 @@ public class DistilleryRecipes implements Runnable {
         // (NaCl·H2O) = NaCl + H2O
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(Materials.Salt.getDust(2))
             .fluidInputs(Materials.SaltWater.getFluid(1000))
             .fluidOutputs(GT_ModHandler.getDistilledWater(1000))
@@ -218,7 +218,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistilleryRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
             .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
             .fluidOutputs(Materials.AceticAcid.getFluid(25))
@@ -227,7 +227,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistilleryRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(2))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
             .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
             .fluidOutputs(Materials.Water.getFluid(375))
@@ -236,7 +236,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistilleryRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
             .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
             .fluidOutputs(Materials.Ethanol.getFluid(150))
@@ -245,7 +245,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistilleryRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(4))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
             .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
             .fluidOutputs(Materials.Methanol.getFluid(150))
@@ -254,7 +254,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistilleryRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(5))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
             .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
             .fluidOutputs(Materials.Ammonia.getGas(100))
@@ -263,7 +263,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistilleryRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(6))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
             .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
             .fluidOutputs(Materials.CarbonDioxide.getGas(400))
@@ -272,7 +272,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistilleryRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(7))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
             .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
             .fluidOutputs(Materials.Methane.getGas(600))
@@ -281,7 +281,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistilleryRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(17))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
             .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 1800))
@@ -290,7 +290,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistilleryRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .noItemOutputs()
             .fluidInputs(Materials.Methane.getGas(1000))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 3000))
@@ -409,7 +409,7 @@ public class DistilleryRecipes implements Runnable {
 
     public void distillationTowerRecipes() {
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(2))
             .noItemOutputs()
             .fluidInputs(Materials.Creosote.getFluid(1000L))
             .fluidOutputs(Materials.Lubricant.getFluid(500L))
@@ -418,7 +418,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistillationRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(2))
             .noItemOutputs()
             .fluidInputs(Materials.SeedOil.getFluid(1400L))
             .fluidOutputs(Materials.Lubricant.getFluid(500L))
@@ -427,7 +427,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistillationRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(2))
             .noItemOutputs()
             .fluidInputs(Materials.FishOil.getFluid(1200L))
             .fluidOutputs(Materials.Lubricant.getFluid(500L))
@@ -454,7 +454,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistillationRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(2))
             .noItemOutputs()
             .fluidInputs(Materials.OilLight.getFluid(1000L))
             .fluidOutputs(Materials.Lubricant.getFluid(250L))
@@ -463,7 +463,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistillationRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(2))
             .noItemOutputs()
             .fluidInputs(Materials.OilMedium.getFluid(1000L))
             .fluidOutputs(Materials.Lubricant.getFluid(500L))
@@ -472,7 +472,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistillationRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(2))
             .noItemOutputs()
             .fluidInputs(Materials.OilHeavy.getFluid(1000L))
             .fluidOutputs(Materials.Lubricant.getFluid(750L))
@@ -491,7 +491,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistillationRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(2))
             .itemOutputs(Materials.Charcoal.getDustSmall(1))
             .fluidInputs(Materials.CharcoalByproducts.getGas(1000))
             .fluidOutputs(
@@ -504,7 +504,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistillationRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(2))
             .noItemOutputs()
             .fluidInputs(Materials.WoodTar.getFluid(1000))
             .fluidOutputs(
@@ -518,7 +518,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistillationRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(Materials.Charcoal.getDustSmall(1))
             .fluidInputs(Materials.CharcoalByproducts.getGas(1000))
             .fluidOutputs(
@@ -531,7 +531,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistillationRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(4))
             .itemOutputs(Materials.Charcoal.getDustSmall(1))
             .fluidInputs(Materials.CharcoalByproducts.getGas(1000))
             .fluidOutputs(
@@ -546,7 +546,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistillationRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(4))
             .noItemOutputs()
             .fluidInputs(Materials.WoodTar.getFluid(1000))
             .fluidOutputs(
@@ -562,7 +562,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistillationRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(9))
             .noItemOutputs()
             .fluidInputs(Materials.OilLight.getFluid(1500))
             .fluidOutputs(
@@ -576,7 +576,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistillationRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(9))
             .noItemOutputs()
             .fluidInputs(Materials.OilMedium.getFluid(1000))
             .fluidOutputs(
@@ -590,7 +590,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistillationRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(9))
             .noItemOutputs()
             .fluidInputs(Materials.Oil.getFluid(500L))
             .fluidOutputs(
@@ -604,7 +604,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistillationRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(9))
             .noItemOutputs()
             .fluidInputs(Materials.OilHeavy.getFluid(1000))
             .fluidOutputs(
@@ -1291,8 +1291,8 @@ public class DistilleryRecipes implements Runnable {
         }
         buildDT.fluidInputs(aInput)
             .fluidOutputs(aOutputs)
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
+            .duration(aDuration)
+            .eut(aEUt)
             .addTo(sDistillationRecipes);
     }
 
@@ -1321,8 +1321,8 @@ public class DistilleryRecipes implements Runnable {
         }
         buildDT.fluidInputs(aInput)
             .fluidOutputs(aOutputs)
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
+            .duration(aDuration)
+            .eut(aEUt)
             .addTo(sDistillationRecipes);
     }
 }

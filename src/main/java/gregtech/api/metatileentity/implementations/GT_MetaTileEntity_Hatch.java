@@ -1,7 +1,10 @@
 package gregtech.api.metatileentity.implementations;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
+import appeng.api.crafting.ICraftingIconProvider;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -10,7 +13,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 /**
  * Handles texture changes internally. No special calls are necessary other than updateTexture in add***ToMachineList.
  */
-public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTank {
+public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTank implements ICraftingIconProvider {
 
     public enum ConnectionType {
         CABLE,
@@ -26,6 +29,8 @@ public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTan
 
     private byte mTexturePage = 0;
     private byte actualTexture = 0;
+
+    private ItemStack ae2CraftingIcon;
 
     public GT_MetaTileEntity_Hatch(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
         String aDescription, ITexture... aTextures) {
@@ -61,16 +66,16 @@ public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTan
     public abstract ITexture[] getTexturesInactive(ITexture aBaseTexture);
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
         int texturePointer = (byte) (actualTexture & 0x7F); // just to be sure, from my testing the 8th bit cannot be
                                                             // set clientside
         int textureIndex = texturePointer | (mTexturePage << 7); // Shift seven since one page is 128 textures!
         try {
-            if (aSide != aFacing) {
+            if (side != aFacing) {
                 if (textureIndex > 0)
                     return new ITexture[] { Textures.BlockIcons.casingTexturePages[mTexturePage][texturePointer] };
-                else return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1] };
+                else return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1] };
             } else {
                 if (textureIndex > 0) {
                     if (aActive)
@@ -78,8 +83,8 @@ public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTan
                     else return getTexturesInactive(
                         Textures.BlockIcons.casingTexturePages[mTexturePage][texturePointer]);
                 } else {
-                    if (aActive) return getTexturesActive(Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1]);
-                    else return getTexturesInactive(Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1]);
+                    if (aActive) return getTexturesActive(Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1]);
+                    else return getTexturesInactive(Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1]);
                 }
             }
         } catch (NullPointerException npe) {
@@ -108,7 +113,7 @@ public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTan
 
     /**
      * Sets texture with page and index, called on add to machine list
-     * 
+     *
      * @param id (page<<7)+index of the texture
      */
     public final void updateTexture(int id) {
@@ -117,8 +122,21 @@ public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTan
     }
 
     /**
+     * Sets the icon for the owning multiblock used for AE2 crafting display of attached interfaces, called on add to
+     * machine list
+     */
+    public final void updateCraftingIcon(ItemStack icon) {
+        this.ae2CraftingIcon = icon;
+    }
+
+    @Override
+    public ItemStack getMachineCraftingIcon() {
+        return this.ae2CraftingIcon;
+    }
+
+    /**
      * Sets texture with page and index, rather unusable, but kept FFS
-     * 
+     *
      * @param page  page of texure
      * @param index index of texure
      */

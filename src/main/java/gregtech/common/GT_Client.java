@@ -5,7 +5,6 @@
 
 package gregtech.common;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.calculateMaxPlasmaTurbineEfficiency;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GregTech;
@@ -31,7 +30,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
@@ -40,14 +38,13 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizon.structurelib.alignment.IAlignment;
+import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
+
 import codechicken.lib.vec.Rotation;
 import codechicken.lib.vec.Scale;
 import codechicken.lib.vec.Transformation;
 import codechicken.lib.vec.Translation;
-
-import com.gtnewhorizon.structurelib.alignment.IAlignment;
-import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
-
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -57,9 +54,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
-import gregtech.api.interfaces.IHasFluidDisplayItem;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -78,7 +73,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
-import gregtech.common.net.MessageUpdateFluidDisplayItem;
 import gregtech.common.render.*;
 import gregtech.common.render.items.GT_MetaGenerated_Item_Renderer;
 import gregtech.common.tileentities.debug.GT_MetaTileEntity_AdvDebugStructureWriter;
@@ -165,9 +159,6 @@ public class GT_Client extends GT_Proxy implements Runnable {
     private long afterSomeTime;
 
     private boolean mAnimationDirection;
-    private int mLastUpdatedBlockX;
-    private int mLastUpdatedBlockY;
-    private int mLastUpdatedBlockZ;
     private GT_ClientPreference mPreference;
     private boolean mFirstTick = false;
     public static final int ROTATION_MARKER_RESOLUTION = 120;
@@ -326,20 +317,19 @@ public class GT_Client extends GT_Proxy implements Runnable {
             .getTileEntity(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
 
         // draw connection indicators
-        byte tConnections = 0;
-        if (tTile instanceof ICoverable) {
+        int tConnections = 0;
+        if (tTile instanceof ICoverable iCoverable) {
             if (showCoverConnections) {
-                for (byte tSide : ALL_VALID_SIDES) {
-                    if (((ICoverable) tTile).getCoverIDAtSide(tSide) > 0)
-                        tConnections = (byte) (tConnections + (1 << tSide));
+                for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
+                    if (iCoverable.getCoverIDAtSide(tSide) != 0) tConnections |= tSide.flag;
                 }
             } else if (tTile instanceof BaseMetaPipeEntity) tConnections = ((BaseMetaPipeEntity) tTile).mConnections;
         }
 
-        if (tConnections > 0) {
-            for (byte tSide : ALL_VALID_SIDES) {
-                if ((tConnections & (1 << tSide)) != 0) {
-                    switch (GRID_SWITCH_TABLE[aEvent.target.sideHit][tSide]) {
+        if (tConnections != 0) {
+            for (ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
+                if ((tConnections & tSide.flag) != 0) {
+                    switch (GRID_SWITCH_TABLE[aEvent.target.sideHit][tSide.ordinal()]) {
                         case 0 -> {
                             GL11.glVertex3d(+.25D, .0D, +.25D);
                             GL11.glVertex3d(-.25D, .0D, -.25D);
@@ -725,28 +715,6 @@ public class GT_Client extends GT_Proxy implements Runnable {
                 }
             }
             if (!GregTech_API.mServerStarted) GregTech_API.mServerStarted = true;
-            if (GT_Values.updateFluidDisplayItems) {
-                final MovingObjectPosition trace = Minecraft.getMinecraft().objectMouseOver;
-                if (trace != null && trace.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK
-                    && (mLastUpdatedBlockX != trace.blockX && mLastUpdatedBlockY != trace.blockY
-                        && mLastUpdatedBlockZ != trace.blockZ || afterSomeTime % 10 == 0)) {
-                    mLastUpdatedBlockX = trace.blockX;
-                    mLastUpdatedBlockY = trace.blockY;
-                    mLastUpdatedBlockZ = trace.blockZ;
-                    final TileEntity tileEntity = aEvent.player.worldObj
-                        .getTileEntity(trace.blockX, trace.blockY, trace.blockZ);
-                    if (tileEntity instanceof IGregTechTileEntity gtTile) {
-                        if (gtTile.getMetaTileEntity() instanceof IHasFluidDisplayItem) {
-                            GT_Values.NW.sendToServer(
-                                new MessageUpdateFluidDisplayItem(
-                                    trace.blockX,
-                                    trace.blockY,
-                                    trace.blockZ,
-                                    gtTile.getWorld().provider.dimensionId));
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -780,7 +748,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
             || GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sSolderingToolList)
             || (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sSoftHammerList)
                 && aTileEntity instanceof MultiBlockPart) && aEvent.player.isSneaking()) {
-            if (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.target.sideHit) == 0)
+            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
                 drawGrid(aEvent, false, false, aEvent.player.isSneaking());
             return;
         }
@@ -788,21 +756,23 @@ public class GT_Client extends GT_Proxy implements Runnable {
         if ((aEvent.currentItem == null && aEvent.player.isSneaking())
             || GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sCrowbarList)
             || GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sScrewdriverList)) {
-            if (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.target.sideHit) == 0)
-                for (byte tSide : ALL_VALID_SIDES) if (((ICoverable) aTileEntity).getCoverIDAtSide(tSide) > 0) {
-                    drawGrid(aEvent, true, false, true);
-                    return;
+            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
+                for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
+                    if (((ICoverable) aTileEntity).getCoverIDAtSide(tSide) > 0) {
+                        drawGrid(aEvent, true, false, true);
+                        return;
+                    }
                 }
             return;
         }
 
         if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sCovers.keySet())) {
-            if (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.target.sideHit) == 0)
+            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
                 drawGrid(aEvent, true, false, aEvent.player.isSneaking());
         }
 
         if (GT_Utility.areStacksEqual(ItemList.Tool_Cover_Copy_Paste.get(1), aEvent.currentItem, true)) {
-            if (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.target.sideHit) == 0)
+            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
                 drawGrid(aEvent, true, false, aEvent.player.isSneaking());
         }
     }

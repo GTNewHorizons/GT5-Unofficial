@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -24,7 +25,7 @@ public class Behaviour_SensorKit extends Behaviour_None {
 
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         if ((aPlayer instanceof EntityPlayerMP)) {
             TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
             if (((tTileEntity instanceof IInventory)) && (!((IInventory) tTileEntity).isUseableByPlayer(aPlayer))) {

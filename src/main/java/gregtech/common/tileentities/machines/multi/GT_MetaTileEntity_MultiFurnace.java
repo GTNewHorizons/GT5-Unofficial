@@ -104,10 +104,10 @@ public class GT_MetaTileEntity_MultiFurnace
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        if (aSide != aFacing) return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
-        if (aActive) return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        if (sideDirection != facingDirection) return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
+        if (active) return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
             .addIcon(OVERLAY_FRONT_MULTI_SMELTER_ACTIVE)
             .extFacing()
             .build(),
@@ -219,11 +219,11 @@ public class GT_MetaTileEntity_MultiFurnace
     }
 
     private void replaceDeprecatedCoils(IGregTechTileEntity aBaseMetaTileEntity) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-        int tX = aBaseMetaTileEntity.getXCoord() + xDir;
-        int tY = aBaseMetaTileEntity.getYCoord();
-        int tZ = aBaseMetaTileEntity.getZCoord() + zDir;
+        final int xDir = aBaseMetaTileEntity.getBackFacing().offsetX;
+        final int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ;
+        final int tX = aBaseMetaTileEntity.getXCoord() + xDir;
+        final int tY = aBaseMetaTileEntity.getYCoord();
+        final int tZ = aBaseMetaTileEntity.getZCoord() + zDir;
         int tUsedMeta;
         for (int xPos = tX - 1; xPos <= tX + 1; xPos++) for (int zPos = tZ - 1; zPos <= tZ + 1; zPos++) {
             if ((xPos == tX) && (zPos == tZ)) continue;
@@ -238,12 +238,12 @@ public class GT_MetaTileEntity_MultiFurnace
     @Override
     public String[] getInfoData() {
         int mPollutionReduction = 0;
-        for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) if (isValidMetaTileEntity(tHatch))
+        for (final GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) if (isValidMetaTileEntity(tHatch))
             mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
 
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) if (isValidMetaTileEntity(tHatch)) {
+        for (final GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) if (isValidMetaTileEntity(tHatch)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()

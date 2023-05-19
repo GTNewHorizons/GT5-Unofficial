@@ -15,11 +15,11 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import singulariteam.eternalsingularity.render.CosmicRenderStuffs;
 import codechicken.lib.render.TextureUtils;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
+import singulariteam.eternalsingularity.render.CosmicRenderStuffs;
 
 public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 

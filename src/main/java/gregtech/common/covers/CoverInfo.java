@@ -1,13 +1,12 @@
 package gregtech.common.covers;
 
-import static gregtech.api.enums.GT_Values.SIDE_UNKNOWN;
-
 import java.lang.ref.WeakReference;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -23,21 +22,21 @@ public final class CoverInfo {
 
     private static final String NBT_SIDE = "s", NBT_ID = "id", NBT_DATA = "d";
 
-    public static final CoverInfo EMPTY_INFO = new CoverInfo(SIDE_UNKNOWN, null);
-    private byte coverSide;
+    public static final CoverInfo EMPTY_INFO = new CoverInfo(ForgeDirection.UNKNOWN, null);
+    private final ForgeDirection coverSide;
     private int coverID = 0;
     private GT_CoverBehaviorBase<?> coverBehavior = null;
     private ISerializableObject coverData = null;
     private final WeakReference<ICoverable> coveredTile;
     private boolean needsUpdate = false;
 
-    public CoverInfo(byte aSide, ICoverable aTile) {
-        coverSide = aSide;
+    public CoverInfo(ForgeDirection side, ICoverable aTile) {
+        coverSide = side;
         coveredTile = new WeakReference<>(aTile);
     }
 
-    public CoverInfo(byte aSide, int aID, ICoverable aTile, ISerializableObject aCoverData) {
-        coverSide = aSide;
+    public CoverInfo(ForgeDirection side, int aID, ICoverable aTile, ISerializableObject aCoverData) {
+        coverSide = side;
         coverID = aID;
         coverBehavior = GregTech_API.getCoverBehaviorNew(aID);
         coverData = aCoverData == null ? coverBehavior.createDataObject() : aCoverData;
@@ -45,7 +44,7 @@ public final class CoverInfo {
     }
 
     public CoverInfo(ICoverable aTile, NBTTagCompound aNBT) {
-        coverSide = aNBT.getByte(NBT_SIDE);
+        coverSide = ForgeDirection.getOrientation(aNBT.getByte(NBT_SIDE));
         coverID = aNBT.getInteger(NBT_ID);
         coverBehavior = GregTech_API.getCoverBehaviorNew(coverID);
         coverData = aNBT.hasKey(NBT_DATA) ? coverBehavior.createDataObject(aNBT.getTag(NBT_DATA))
@@ -54,11 +53,11 @@ public final class CoverInfo {
     }
 
     public boolean isValid() {
-        return coverID != 0 && coverSide != SIDE_UNKNOWN;
+        return coverID != 0 && coverSide != ForgeDirection.UNKNOWN;
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound aNBT) {
-        aNBT.setByte(NBT_SIDE, coverSide);
+        aNBT.setByte(NBT_SIDE, (byte) coverSide.ordinal());
         aNBT.setInteger(NBT_ID, coverID);
         if (coverData != null) aNBT.setTag(NBT_DATA, coverData.saveDataToNBT());
 
@@ -123,7 +122,7 @@ public final class CoverInfo {
         return getCoverBehavior().getTickRate(coverSide, coverID, coverData, coveredTile.get());
     }
 
-    public byte getSide() {
+    public ForgeDirection getSide() {
         return coverSide;
     }
 

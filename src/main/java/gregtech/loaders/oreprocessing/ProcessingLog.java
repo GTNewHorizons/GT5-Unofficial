@@ -1,8 +1,13 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sExtractorRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLatheRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPyrolyseRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
@@ -40,19 +45,24 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                 .eut(20)
                 .addTo(sCentrifugeRecipes);
 
-            GT_ModHandler.addSawmillRecipe(
-                GT_Utility.copyAmount(1L, aStack),
-                ItemList.IC2_Resin.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 16L));
-            GT_ModHandler.addExtractionRecipe(
-                GT_Utility.copyAmount(1L, aStack),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 1L));
-            GT_ModHandler.addPulverisationRecipe(
-                GT_Utility.copyAmount(1L, aStack),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L),
-                ItemList.IC2_Resin.get(1L),
-                33,
-                false);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 1L))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(15 * SECONDS)
+                .eut(2)
+                .addTo(sExtractorRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L), ItemList.IC2_Resin.get(1L))
+                .outputChances(10000, 3300)
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(20 * SECONDS)
+                .eut(2)
+                .addTo(sMaceratorRecipes);
         } else {
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1))
@@ -63,12 +73,17 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                 .eut(20)
                 .addTo(sCentrifugeRecipes);
 
-            GT_ModHandler.addPulverisationRecipe(
-                GT_Utility.copyAmount(1L, aStack),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L),
-                80,
-                false);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                .itemOutputs(
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+                .outputChances(10000, 8000)
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(20 * SECONDS)
+                .eut(2)
+                .addTo(sMaceratorRecipes);
         }
 
         GT_ModHandler.addCraftingRecipe(
@@ -76,31 +91,40 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
                 | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED,
             new Object[] { "sLf", 'L', GT_Utility.copyAmount(1L, aStack) });
-        GT_Values.RA.addLatheRecipe(
-            GT_Utility.copyAmount(1L, aStack),
-            GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 4L),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L),
-            160,
-            8);
-        GT_Values.RA.addAssemblerRecipe(
-            GT_Utility.copyAmount(1L, aStack),
-            ItemList.Circuit_Integrated.getWithDamage(0L, 2L),
-            Materials.SeedOil.getFluid(50L),
-            ItemList.FR_Stick.get(1L),
-            16,
-            8);
-        GT_Values.RA.addAssemblerRecipe(
-            GT_Utility.copyAmount(8L, aStack),
-            ItemList.Circuit_Integrated.getWithDamage(0L, 8L),
-            Materials.SeedOil.getFluid(250L),
-            ItemList.FR_Casing_Impregnated.get(1L),
-            64,
-            16);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+            .itemOutputs(
+                GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 4L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(8 * SECONDS)
+            .eut(7)
+            .addTo(sLatheRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(2))
+            .itemOutputs(ItemList.FR_Stick.get(1L))
+            .fluidInputs(Materials.SeedOil.getFluid(50L))
+            .noFluidOutputs()
+            .duration(16 * TICKS)
+            .eut(7)
+            .addTo(sAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(8L, aStack), GT_Utility.getIntegratedCircuit(8))
+            .itemOutputs(ItemList.FR_Casing_Impregnated.get(1L))
+            .fluidInputs(Materials.SeedOil.getFluid(250L))
+            .noFluidOutputs()
+            .duration(3 * SECONDS + 4 * TICKS)
+            .eut(16)
+            .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1L, aStack))
             .itemOutputs(GT_ModHandler.getModItem(Railcraft.ID, "cube", 1L, 8))
-            .fluidInputs(Materials.Creosote.getFluid(1000L))
+            .fluidInputs(Materials.Creosote.getFluid(750L))
             .noFluidOutputs()
             .duration(16 * TICKS)
             .eut(TierEU.ULV)
@@ -224,93 +248,104 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
     }
 
     public static void addPyrolyeOvenRecipes(ItemStack logStack) {
-        GT_Values.RA.addPyrolyseRecipe(
-            GT_Utility.copyAmount(16L, logStack),
-            GT_Values.NF,
-            1,
-            Materials.Charcoal.getGems(20),
-            Materials.Creosote.getFluid(4000),
-            640,
-            64);
-        GT_Values.RA.addPyrolyseRecipe(
-            GT_Utility.copyAmount(16L, logStack),
-            Materials.Nitrogen.getGas(1000),
-            2,
-            Materials.Charcoal.getGems(20),
-            Materials.Creosote.getFluid(4000),
-            320,
-            96);
-        GT_Values.RA.addPyrolyseRecipe(
-            GT_Utility.copyAmount(16L, logStack),
-            GT_Values.NF,
-            3,
-            Materials.Ash.getDust(4),
-            Materials.OilHeavy.getFluid(200),
-            320,
-            192);
-        GT_Values.RA.addPyrolyseRecipe(
-            GT_Utility.copyAmount(16L, logStack),
-            GT_Values.NF,
-            3,
-            Materials.Charcoal.getGems(20),
-            Materials.CharcoalByproducts.getGas(4000),
-            640,
-            64);
-        GT_Values.RA.addPyrolyseRecipe(
-            GT_Utility.copyAmount(16L, logStack),
-            Materials.Nitrogen.getGas(1000),
-            4,
-            Materials.Charcoal.getGems(20),
-            Materials.CharcoalByproducts.getGas(4000),
-            320,
-            96);
-        GT_Values.RA.addPyrolyseRecipe(
-            GT_Utility.copyAmount(16L, logStack),
-            GT_Values.NF,
-            5,
-            Materials.Charcoal.getGems(20),
-            Materials.WoodGas.getGas(1500),
-            640,
-            64);
-        GT_Values.RA.addPyrolyseRecipe(
-            GT_Utility.copyAmount(16L, logStack),
-            Materials.Nitrogen.getGas(1000),
-            6,
-            Materials.Charcoal.getGems(20),
-            Materials.WoodGas.getGas(1500),
-            320,
-            96);
-        GT_Values.RA.addPyrolyseRecipe(
-            GT_Utility.copyAmount(16L, logStack),
-            GT_Values.NF,
-            7,
-            Materials.Charcoal.getGems(20),
-            Materials.WoodVinegar.getFluid(3000),
-            640,
-            64);
-        GT_Values.RA.addPyrolyseRecipe(
-            GT_Utility.copyAmount(16L, logStack),
-            Materials.Nitrogen.getGas(1000),
-            8,
-            Materials.Charcoal.getGems(20),
-            Materials.WoodVinegar.getFluid(3000),
-            320,
-            96);
-        GT_Values.RA.addPyrolyseRecipe(
-            GT_Utility.copyAmount(16L, logStack),
-            GT_Values.NF,
-            9,
-            Materials.Charcoal.getGems(20),
-            Materials.WoodTar.getFluid(1500),
-            640,
-            64);
-        GT_Values.RA.addPyrolyseRecipe(
-            GT_Utility.copyAmount(16L, logStack),
-            Materials.Nitrogen.getGas(1000),
-            10,
-            Materials.Charcoal.getGems(20),
-            Materials.WoodTar.getFluid(1500),
-            320,
-            96);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .noFluidInputs()
+            .fluidOutputs(Materials.Creosote.getFluid(4000))
+            .duration(32 * SECONDS)
+            .eut(64)
+            .noOptimize()
+            .addTo(sPyrolyseRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(2))
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidInputs(Materials.Nitrogen.getGas(1000))
+            .fluidOutputs(Materials.Creosote.getFluid(4000))
+            .duration(16 * SECONDS)
+            .eut(96)
+            .noOptimize()
+            .addTo(sPyrolyseRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(3))
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .noFluidInputs()
+            .fluidOutputs(Materials.CharcoalByproducts.getGas(4000))
+            .duration(32 * SECONDS)
+            .eut(64)
+            .noOptimize()
+            .addTo(sPyrolyseRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(4))
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidInputs(Materials.Nitrogen.getGas(1000))
+            .fluidOutputs(Materials.CharcoalByproducts.getGas(4000))
+            .duration(16 * SECONDS)
+            .eut(96)
+            .noOptimize()
+            .addTo(sPyrolyseRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(5))
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .noFluidInputs()
+            .fluidOutputs(Materials.WoodGas.getGas(1500))
+            .duration(32 * SECONDS)
+            .eut(64)
+            .noOptimize()
+            .addTo(sPyrolyseRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(6))
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidInputs(Materials.Nitrogen.getGas(1000))
+            .fluidOutputs(Materials.WoodGas.getGas(1500))
+            .duration(16 * SECONDS)
+            .eut(96)
+            .noOptimize()
+            .addTo(sPyrolyseRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(7))
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .noFluidInputs()
+            .fluidOutputs(Materials.WoodVinegar.getFluid(3000))
+            .duration(32 * SECONDS)
+            .eut(64)
+            .noOptimize()
+            .addTo(sPyrolyseRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(8))
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidInputs(Materials.Nitrogen.getGas(1000))
+            .fluidOutputs(Materials.WoodVinegar.getFluid(3000))
+            .duration(16 * SECONDS)
+            .eut(96)
+            .noOptimize()
+            .addTo(sPyrolyseRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(9))
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .noFluidInputs()
+            .fluidOutputs(Materials.WoodTar.getFluid(1500))
+            .duration(32 * SECONDS)
+            .eut(64)
+            .noOptimize()
+            .addTo(sPyrolyseRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(10))
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidInputs(Materials.Nitrogen.getGas(1000))
+            .fluidOutputs(Materials.WoodTar.getFluid(1500))
+            .duration(16 * SECONDS)
+            .eut(96)
+            .noOptimize()
+            .addTo(sPyrolyseRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(11))
+            .itemOutputs(Materials.Ash.getDust(4))
+            .noFluidInputs()
+            .fluidOutputs(Materials.OilHeavy.getFluid(200))
+            .duration(16 * SECONDS)
+            .eut(192)
+            .noOptimize()
+            .addTo(sPyrolyseRecipes);
     }
 }

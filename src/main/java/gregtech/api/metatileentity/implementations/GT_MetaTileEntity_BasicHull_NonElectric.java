@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
@@ -21,9 +23,9 @@ public abstract class GT_MetaTileEntity_BasicHull_NonElectric extends GT_MetaTil
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections,
-        byte aColorIndex, boolean aConnected, boolean aRedstone) {
-        return mTextures[Math.min(2, aSide)][aColorIndex + 1];
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        return mTextures[Math.min(2, sideDirection.ordinal())][colorIndex + 1];
     }
 
     @Override
@@ -42,12 +44,12 @@ public abstract class GT_MetaTileEntity_BasicHull_NonElectric extends GT_MetaTil
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
+    public boolean isInputFacing(ForgeDirection side) {
         return false;
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
+    public boolean isOutputFacing(ForgeDirection side) {
         return false;
     }
 

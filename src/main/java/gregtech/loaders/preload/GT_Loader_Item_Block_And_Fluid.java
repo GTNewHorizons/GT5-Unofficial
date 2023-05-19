@@ -5,7 +5,6 @@ import static gregtech.api.enums.FluidState.LIQUID;
 import static gregtech.api.enums.FluidState.MOLTEN;
 import static gregtech.api.enums.FluidState.SLURRY;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
-import static gregtech.api.enums.Mods.BloodArsenal;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
@@ -631,7 +630,8 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             "gt.blockmetal9",
             new Materials[] { Materials.Cryolite, Materials.SiliconSG, MaterialsKevlar.NickelAluminide,
                 MaterialsUEVplus.SpaceTime, MaterialsUEVplus.TranscendentMetal, Materials.Oriharukon,
-                MaterialsUEVplus.WhiteDwarfMatter, MaterialsUEVplus.BlackDwarfMatter, MaterialsUEVplus.Universium },
+                MaterialsUEVplus.WhiteDwarfMatter, MaterialsUEVplus.BlackDwarfMatter, MaterialsUEVplus.Universium,
+                MaterialsUEVplus.Eternity },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
 
@@ -1222,6 +1222,15 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Time, 1L),
                 ItemList.Cell_Empty.get(1L));
 
+        GT_FluidFactory.builder("PrimordialMatter")
+            .withLocalizedName(MaterialsUEVplus.PrimordialMatter.mLocalizedName)
+            .withStateAndTemperature(LIQUID, 2_000_000_000)
+            .buildAndRegister()
+            .configureMaterials(MaterialsUEVplus.PrimordialMatter)
+            .registerBContainers(
+                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.PrimordialMatter, 1L),
+                ItemList.Cell_Empty.get(1L));
+
         GT_FluidFactory.builder("fieryblood")
             .withLocalizedName("Fiery Blood")
             .withStateAndTemperature(LIQUID, 6400)
@@ -1245,15 +1254,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     Materials.FierySteel.getFluid(250L),
                     ItemList.TF_Vial_FieryBlood.get(1L),
                     ItemList.Bottle_Empty.get(1L)));
-
-            GT_FluidFactory.builder("liquid_sodium")
-                .withLocalizedName("Liquid Sodium")
-                .withStateAndTemperature(LIQUID, 495)
-                .buildAndRegister()
-                .configureMaterials(Materials.Sodium)
-                .registerBContainers(
-                    GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Sodium, 1L),
-                    ItemList.Cell_Empty.get(1L));
         }
 
         FluidContainerRegistry.registerFluidContainer(
@@ -1911,6 +1911,14 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .withStateAndTemperature(LIQUID, 255)
             .buildAndRegister()
             .registerPContainers(ItemList.ThermosCan_Ice_Tea.get(1L), ItemList.ThermosCan_Empty.get(1L));
+        GT_FluidFactory.builder("liquid_sodium")
+            .withLocalizedName("Liquid Sodium")
+            .withStateAndTemperature(LIQUID, 495)
+            .buildAndRegister()
+            .configureMaterials(Materials.Sodium)
+            .registerBContainers(
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Sodium, 1L),
+                ItemList.Cell_Empty.get(1L));
 
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
@@ -2123,10 +2131,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .set(OrePrefixes.nugget, Materials.Void, GT_ModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 7));
         GT_OreDictUnificator
             .set(OrePrefixes.ingot, Materials.Void, GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 16));
-        GT_OreDictUnificator.set(
-            OrePrefixes.ingot,
-            Materials.BloodInfusedIron,
-            GT_ModHandler.getModItem(BloodArsenal.ID, "blood_infused_iron", 1L, 0));
 
         if (GregTech_API.sUnification
             .get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateIron", true)) {

@@ -7,6 +7,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+
 import gregtech.api.logic.PowerLogic;
 
 public interface IMultiBlockController extends IMultiTileEntity, IMultiBlockFluidHandler, IMultiBlockInventory {
@@ -19,17 +20,17 @@ public interface IMultiBlockController extends IMultiTileEntity, IMultiBlockFlui
     @Override
     ChunkCoordinates getCoords();
 
-    FluidStack getDrainableFluid(byte aSide);
+    FluidStack getDrainableFluid(ForgeDirection side);
 
-    FluidStack getDrainableFluid(byte aSide, Fluid fluid);
+    FluidStack getDrainableFluid(ForgeDirection side, Fluid fluid);
 
-    boolean isLiquidInput(byte aSide);
+    boolean isLiquidInput(ForgeDirection side);
 
-    boolean isLiquidOutput(byte aSide);
+    boolean isLiquidOutput(ForgeDirection side);
 
-    void registerCoveredPartOnSide(final int aSide, IMultiBlockPart part);
+    void registerCoveredPartOnSide(final ForgeDirection side, IMultiBlockPart part);
 
-    void unregisterCoveredPartOnSide(final int aSide, IMultiBlockPart part);
+    void unregisterCoveredPartOnSide(final ForgeDirection side, IMultiBlockPart part);
 
     void registerInventory(String aName, String aID, int aInventorySize, int aType);
 

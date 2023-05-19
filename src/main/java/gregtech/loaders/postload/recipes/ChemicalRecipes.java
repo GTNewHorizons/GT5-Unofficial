@@ -716,25 +716,36 @@ public class ChemicalRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Rutile, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Rutile, 3),
                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Carbon, 2))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.CarbonMonoxide, 2))
             .fluidInputs(Materials.Chlorine.getGas(4000))
             .fluidOutputs(Materials.Titaniumtetrachloride.getFluid(1000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
+            .addTo(sChemicalRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Rutile, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Rutile, 3),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 2))
             .noItemOutputs()
             .fluidInputs(Materials.Chlorine.getGas(4000))
             .fluidOutputs(Materials.Titaniumtetrachloride.getFluid(1000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Rutile, 3),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 2))
+            .noItemOutputs()
+            .fluidInputs(Materials.Chlorine.getGas(4000))
+            .fluidOutputs(Materials.CarbonMonoxide.getGas(2000), Materials.Titaniumtetrachloride.getFluid(1000))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(sMultiblockChemicalRecipes);
 
         // 4Na + 2MgCl2 = 2Mg + 4NaCl
 
@@ -2668,7 +2679,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 1))
-            .itemOutputs(getModItem(Railcraft.ID, "tile.railcraft.glass", 6))
+            .itemOutputs(getModItem(Railcraft.ID, "glass", 6))
             .fluidInputs(Materials.Glass.getMolten(864))
             .noFluidOutputs()
             .duration(2 * SECONDS + 10 * TICKS)
@@ -3998,7 +4009,7 @@ public class ChemicalRecipes implements Runnable {
             .fluidOutputs(new GT_FluidStack(aPolymer, 144))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(sChemicalRecipes);
+            .addTo(UniversalChemical);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Oxygen.getCells(1), GT_Utility.getIntegratedCircuit(1))
@@ -4007,7 +4018,7 @@ public class ChemicalRecipes implements Runnable {
             .fluidOutputs(new GT_FluidStack(aPolymer, 216))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(sChemicalRecipes);
+            .addTo(UniversalChemical);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(aBasicMaterialCell, GT_Utility.getIntegratedCircuit(1))
@@ -4016,7 +4027,7 @@ public class ChemicalRecipes implements Runnable {
             .fluidOutputs(new GT_FluidStack(aPolymer, 1000))
             .duration(56 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(sChemicalRecipes);
+            .addTo(UniversalChemical);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(aBasicMaterialCell, GT_Utility.getIntegratedCircuit(1))
@@ -4025,7 +4036,7 @@ public class ChemicalRecipes implements Runnable {
             .fluidOutputs(new GT_FluidStack(aPolymer, 1500))
             .duration(56 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(sChemicalRecipes);
+            .addTo(UniversalChemical);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(2))

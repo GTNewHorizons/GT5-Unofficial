@@ -2,6 +2,8 @@ package gregtech.common.tileentities.generators;
 
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
@@ -69,8 +71,8 @@ public class GT_MetaTileEntity_GasTurbine extends GT_MetaTileEntity_BasicGenerat
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing();
+    public boolean isOutputFacing(ForgeDirection side) {
+        return side == getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override

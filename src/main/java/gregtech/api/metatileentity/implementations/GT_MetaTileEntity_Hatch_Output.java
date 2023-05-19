@@ -16,7 +16,6 @@ import net.minecraftforge.fluids.*;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
@@ -32,7 +31,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
+import gregtech.common.gui.modularui.widget.FluidLockWidget;
 
 public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch implements IFluidLockable, IAddUIWidgets {
 
@@ -92,7 +91,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -102,7 +101,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
     }
 
     @Override
-    public boolean isLiquidInput(byte aSide) {
+    public boolean isLiquidInput(ForgeDirection side) {
         return false;
     }
 
@@ -124,20 +123,14 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
             IFluidHandler tTileEntity = aBaseMetaTileEntity
                 .getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
             if (tTileEntity != null) {
-                FluidStack tDrained = aBaseMetaTileEntity.drain(
-                    ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()),
-                    Math.max(1, mFluid.amount),
-                    false);
+                FluidStack tDrained = aBaseMetaTileEntity
+                    .drain(aBaseMetaTileEntity.getFrontFacing(), Math.max(1, mFluid.amount), false);
                 if (tDrained != null) {
-                    int tFilledAmount = tTileEntity
-                        .fill(ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()), tDrained, false);
+                    int tFilledAmount = tTileEntity.fill(aBaseMetaTileEntity.getBackFacing(), tDrained, false);
                     if (tFilledAmount > 0) {
                         tTileEntity.fill(
-                            ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
-                            aBaseMetaTileEntity.drain(
-                                ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()),
-                                tFilledAmount,
-                                true),
+                            aBaseMetaTileEntity.getBackFacing(),
+                            aBaseMetaTileEntity.drain(aBaseMetaTileEntity.getFrontFacing(), tFilledAmount, true),
                             true);
                     }
                 }
@@ -201,34 +194,21 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
     }
 
     @Override
-    public void updateFluidDisplayItem() {
-        super.updateFluidDisplayItem();
-        if (lockedFluidName == null || mMode < 8) mInventory[getLockedDisplaySlot()] = null;
-        else {
-            FluidStack tLockedFluid = FluidRegistry.getFluidStack(lockedFluidName, 1);
-            // Because getStackDisplaySlot() only allow return one int, this place I only can manually set.
-            if (tLockedFluid != null) {
-                mInventory[getLockedDisplaySlot()] = GT_Utility.getFluidDisplayStack(tLockedFluid, false, true);
-            } else {
-                mInventory[getLockedDisplaySlot()] = null;
-            }
-        }
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         // Because getStackDisplaySlot() only allow return one int, this place I only can manually set.
         return aIndex != getStackDisplaySlot() && aIndex != getLockedDisplaySlot();
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aSide == aBaseMetaTileEntity.getFrontFacing() && aIndex == 1;
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        return side == aBaseMetaTileEntity.getFrontFacing() && aIndex == 1;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aSide == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0;
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        return side == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0;
     }
 
     @Override
@@ -237,8 +217,8 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide)
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
             .isGUIClickable()) return;
         if (aPlayer.isSneaking()) {
             mMode = (byte) ((mMode + 9) % 10);
@@ -323,8 +303,8 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
         }
     }
 
-    private boolean tryToLockHatch(EntityPlayer aPlayer, byte aSide) {
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide)
+    private boolean tryToLockHatch(EntityPlayer aPlayer, ForgeDirection side) {
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
             .isGUIClickable()) return false;
         if (!isFluidLocked()) return false;
         final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
@@ -371,10 +351,10 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
-        float aY, float aZ) {
-        if (tryToLockHatch(aPlayer, aSide)) return true;
-        return super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
+        float aX, float aY, float aZ) {
+        if (tryToLockHatch(aPlayer, side)) return true;
+        return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
     }
 
     public boolean outputsSteam() {
@@ -419,7 +399,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
     }
 
     @Override
-    public boolean allowChangingLockedFluid(String name) {
+    public boolean acceptsFluidLock(String name) {
         return true;
     }
 
@@ -488,41 +468,18 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
             new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
                 .setPos(98, 16)
                 .setSize(71, 45))
-            .widget(
-                new FluidDisplaySlotWidget(inventoryHandler, getLockedDisplaySlot()).setIHasFluidDisplay(this)
-                    .setActionRealClick(FluidDisplaySlotWidget.Action.LOCK)
-                    .setActionDragAndDrop(FluidDisplaySlotWidget.Action.LOCK)
-                    .setBeforeClick((clickData, widget) -> {
-                        if (NetworkUtils.isClient()) {
-                            // propagate
-                            // display
-                            // item
-                            // content to
-                            // actual
-                            // fluid
-                            // stored in
-                            // this tank
-                            setDrainableStack(GT_Utility.getFluidFromDisplayStack(mInventory[getStackDisplaySlot()]));
-                        }
-                        return true;
-                    })
-                    .setBackground(GT_UITextures.TRANSPARENT)
-                    .setPos(149, 41))
+            .widget(new FluidLockWidget(this).setPos(149, 41))
             .widget(
                 new TextWidget("Locked Fluid").setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(101, 20))
             .widget(TextWidget.dynamicString(() -> {
-                final ItemStack lockedDisplayStack = mInventory[getLockedDisplaySlot()];
-                return lockedDisplayStack == null ? "None" : lockedDisplayStack.getDisplayName();
+                FluidStack fluidStack = FluidRegistry.getFluidStack(lockedFluidName, 1);
+                return fluidStack != null ? fluidStack.getLocalizedName() : "None";
             })
-                .setSynced(false)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setTextAlignment(Alignment.CenterLeft)
                 .setMaxWidth(65)
                 .setPos(101, 30))
-            // #updateFluidDisplayItem invalidates locked fluid slot
-            // if lockedFluidName == null or mMode is incorrect
-            .widget(new FakeSyncWidget.StringSyncer(() -> lockedFluidName, val -> lockedFluidName = val))
             .widget(new FakeSyncWidget.ByteSyncer(() -> mMode, val -> mMode = val));
     }
 }

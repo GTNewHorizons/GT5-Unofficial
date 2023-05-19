@@ -7,6 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
 
@@ -24,7 +25,7 @@ public class GT_Packet_RequestCoverData extends GT_Packet_New {
     protected short mY;
     protected int mZ;
 
-    protected byte side;
+    protected ForgeDirection side;
     protected int coverID;
 
     protected EntityPlayerMP mPlayer;
@@ -43,7 +44,7 @@ public class GT_Packet_RequestCoverData extends GT_Packet_New {
         this.coverID = info.getCoverID();
     }
 
-    public GT_Packet_RequestCoverData(int mX, short mY, int mZ, byte coverSide, int coverID) {
+    public GT_Packet_RequestCoverData(int mX, short mY, int mZ, ForgeDirection coverSide, int coverID) {
         super(false);
         this.mX = mX;
         this.mY = mY;
@@ -53,7 +54,7 @@ public class GT_Packet_RequestCoverData extends GT_Packet_New {
         this.coverID = coverID;
     }
 
-    public GT_Packet_RequestCoverData(byte coverSide, int coverID, ICoverable tile) {
+    public GT_Packet_RequestCoverData(ForgeDirection coverSide, int coverID, ICoverable tile) {
         super(false);
         this.mX = tile.getXCoord();
         this.mY = tile.getYCoord();
@@ -74,7 +75,7 @@ public class GT_Packet_RequestCoverData extends GT_Packet_New {
         aOut.writeShort(mY);
         aOut.writeInt(mZ);
 
-        aOut.writeByte(side);
+        aOut.writeByte(side.ordinal());
         aOut.writeInt(coverID);
     }
 
@@ -84,7 +85,7 @@ public class GT_Packet_RequestCoverData extends GT_Packet_New {
             aData.readInt(),
             aData.readShort(),
             aData.readInt(),
-            aData.readByte(),
+            ForgeDirection.getOrientation(aData.readByte()),
             aData.readInt());
     }
 

@@ -7,6 +7,7 @@ import static gregtech.api.enums.GT_Values.ticksBetweenSounds;
 import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
+import static net.minecraftforge.common.util.ForgeDirection.UP;
 
 import java.util.Locale;
 
@@ -171,13 +172,13 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                     case WIRE               -> Tier.ELECTRIC[this.mTier].mConductingObject;
                     case WIRE4              -> Tier.ELECTRIC[this.mTier].mLargerConductingObject;
                     case STICK_DISTILLATION -> OrePrefixes.stick.get(Materials.Blaze);
-                    
+
                     case GLASS -> switch (this.mTier) {
                         case 0, 1, 2, 3    -> new ItemStack(Blocks.glass, 1, W);
                         case 4, 5, 6, 7, 8 -> BartWorks.isModLoaded() ? "blockGlass" + VN[aTier] : Ic2Items.reinforcedGlass;
                         default            -> BartWorks.isModLoaded() ? "blockGlass" + VN[8]     : Ic2Items.reinforcedGlass;
                     };
-                    
+
                     case PLATE -> switch (this.mTier) {
                         case 0, 1 -> OrePrefixes.plate.get(Materials.Steel);
                         case 2    -> OrePrefixes.plate.get(Materials.Aluminium);
@@ -188,7 +189,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 7    -> OrePrefixes.plate.get(Materials.HSSE);
                         default   -> OrePrefixes.plate.get(Materials.Neutronium);
                     };
-                    
+
                     case PIPE -> switch (this.mTier) {
                         case 0, 1 -> OrePrefixes.pipeMedium.get(Materials.Bronze);
                         case 2    -> OrePrefixes.pipeMedium.get(Materials.Steel);
@@ -200,7 +201,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 8    -> OrePrefixes.pipeLarge.get(Materials.Ultimate);
                         default   -> OrePrefixes.pipeHuge.get(Materials.Ultimate);
                     };
-                    
+
                     case COIL_HEATING -> switch (this.mTier) {
                         case 0, 1 -> OrePrefixes.wireGt02.get(Materials.AnyCopper);
                         case 2    -> OrePrefixes.wireGt02.get(Materials.Cupronickel);
@@ -213,7 +214,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 9    -> OrePrefixes.wireGt04.get(Materials.NaquadahAlloy);
                         default   -> OrePrefixes.wireGt08.get(Materials.NaquadahAlloy);
                     };
-                    
+
                     case COIL_HEATING_DOUBLE -> switch (this.mTier) {
                         case 0, 1 -> OrePrefixes.wireGt04.get(Materials.AnyCopper);
                         case 2    -> OrePrefixes.wireGt04.get(Materials.Cupronickel);
@@ -226,7 +227,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 9    -> OrePrefixes.wireGt08.get(Materials.NaquadahAlloy);
                         default   -> OrePrefixes.wireGt16.get(Materials.NaquadahAlloy);
                     };
-                    
+
                     case STICK_MAGNETIC -> switch (this.mTier) {
                         case 0, 1       -> OrePrefixes.stick.get(Materials.IronMagnetic);
                         case 2, 3       -> OrePrefixes.stick.get(Materials.SteelMagnetic);
@@ -234,14 +235,14 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 6, 7, 8, 9 -> OrePrefixes.stick.get(Materials.SamariumMagnetic);
                         default         -> OrePrefixes.stick.get(Materials.TengamAttuned);
                     };
-                    
+
                     case STICK_ELECTROMAGNETIC -> switch (this.mTier) {
                         case 0, 1 -> OrePrefixes.stick.get(Materials.AnyIron);
                         case 2, 3 -> OrePrefixes.stick.get(Materials.Steel);
                         case 4    -> OrePrefixes.stick.get(Materials.Neodymium);
                         default   -> OrePrefixes.stick.get(Materials.VanadiumGallium);
                     };
-                    
+
                     case COIL_ELECTRIC -> switch (this.mTier) {
                         case 0  -> OrePrefixes.wireGt01.get(Materials.Lead);
                         case 1  -> OrePrefixes.wireGt02.get(Materials.Tin);
@@ -253,7 +254,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 7  -> OrePrefixes.wireGt08.get(Materials.Iridium);
                         default -> OrePrefixes.wireGt16.get(Materials.Osmium);
                     };
-                    
+
                     case ROBOT_ARM -> switch (this.mTier) {
                         case 0, 1 -> ItemList.Robot_Arm_LV;
                         case 2    -> ItemList.Robot_Arm_MV;
@@ -270,7 +271,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 13   -> ItemList.Robot_Arm_UXV;
                         default   ->  ItemList.Robot_Arm_MAX;
                     };
-                    
+
                     case PUMP -> switch (this.mTier) {
                         case 0, 1 -> ItemList.Electric_Pump_LV;
                         case 2    -> ItemList.Electric_Pump_MV;
@@ -287,7 +288,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 13   -> ItemList.Electric_Pump_UXV;
                         default   -> ItemList.Electric_Pump_MAX;
                     };
-                    
+
                     case MOTOR -> switch (this.mTier) {
                         case 0, 1 -> ItemList.Electric_Motor_LV;
                         case 2    -> ItemList.Electric_Motor_MV;
@@ -304,7 +305,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 13   -> ItemList.Electric_Motor_UXV;
                         default   -> ItemList.Electric_Motor_MAX;
                     };
-                    
+
                     case PISTON -> switch (this.mTier) {
                         case 0, 1 -> ItemList.Electric_Piston_LV;
                         case 2    -> ItemList.Electric_Piston_MV;
@@ -321,7 +322,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 13   -> ItemList.Electric_Piston_UXV;
                         default   -> ItemList.Electric_Piston_MAX;
                     };
-                    
+
                     case CONVEYOR -> switch (this.mTier) {
                         case 0, 1 -> ItemList.Conveyor_Module_LV;
                         case 2    -> ItemList.Conveyor_Module_MV;
@@ -338,7 +339,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 13   -> ItemList.Conveyor_Module_UXV;
                         default   -> ItemList.Conveyor_Module_MAX;
                     };
-                    
+
                     case EMITTER -> switch (this.mTier) {
                         case 0, 1 -> ItemList.Emitter_LV;
                         case 2    -> ItemList.Emitter_MV;
@@ -355,7 +356,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 13   -> ItemList.Emitter_UXV;
                         default   -> ItemList.Emitter_MAX;
                     };
-                    
+
                     case SENSOR -> switch (this.mTier) {
                         case 0, 1 -> ItemList.Sensor_LV;
                         case 2    -> ItemList.Sensor_MV;
@@ -372,7 +373,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 13   -> ItemList.Sensor_UXV;
                         default   -> ItemList.Sensor_MAX;
                     };
-                    
+
                     case FIELD_GENERATOR -> switch (this.mTier) {
                         case 0, 1 -> ItemList.Field_Generator_LV;
                         case 2    -> ItemList.Field_Generator_MV;
@@ -389,18 +390,18 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 13   -> ItemList.Field_Generator_UXV;
                         default   -> ItemList.Field_Generator_MAX;
                     };
-                    
+
                     case ROTOR -> switch (this.mTier) {
                         case 0, 1 -> OrePrefixes.rotor.get(Materials.Tin);
                         case 2    -> OrePrefixes.rotor.get(Materials.Bronze);
                         case 3    -> OrePrefixes.rotor.get(Materials.Steel);
                         case 4    -> OrePrefixes.rotor.get(Materials.StainlessSteel);
                         case 5    -> OrePrefixes.rotor.get(Materials.TungstenSteel);
-                        case 6    -> OrePrefixes.rotor.get(Materials.Chrome);
+                        case 6    -> OrePrefixes.rotor.get(BartWorks.isModLoaded() ? Materials.get("Rhodium-PlatedPalladium") : Materials.Chrome);
                         case 7    -> OrePrefixes.rotor.get(Materials.Iridium);
                         default   -> OrePrefixes.rotor.get(Materials.Osmium);
                     };
-                    
+
                     default -> throw new IllegalArgumentException("MISSING TIER MAPPING FOR: " + aRecipe[i] + " AT TIER " + this.mTier);
                 };
                 // spotless:on
@@ -559,9 +560,9 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     }
 
     @Override
-    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        if (!super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)) return false;
+        if (!super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack)) return false;
         switch (this.mInputSlotCount) {
             case 0 -> {
                 return false;
@@ -636,10 +637,8 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             // noinspection SwitchStatementWithTooFewBranches
             switch (this.mSpecialEffect) {
                 case TOP_SMOKE -> {
-                    final byte topFacing = (byte) ForgeDirection.UP.ordinal();
-                    if (aBaseMetaTileEntity.getFrontFacing() != topFacing
-                        && aBaseMetaTileEntity.getCoverIDAtSide(topFacing) == 0
-                        && !aBaseMetaTileEntity.getOpacityAtSide(topFacing)) {
+                    if (aBaseMetaTileEntity.getFrontFacing() != UP && aBaseMetaTileEntity.getCoverIDAtSide(UP) == 0
+                        && !aBaseMetaTileEntity.getOpacityAtSide(UP)) {
 
                         new ParticleEventBuilder().setMotion(0.0D, 0.0D, 0.0D)
                             .setIdentifier(ParticleFX.SMOKE)
@@ -671,9 +670,10 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                 // Random Sparkles at main face
                 if (aBaseMetaTileEntity.isActive() && XSTR_INSTANCE.nextInt(3) == 0) {
 
-                    final byte mainFacing = (byte) this.mMainFacing;
+                    final ForgeDirection mainFacing = this.mMainFacing;
 
-                    if (mainFacing > 1 && aBaseMetaTileEntity.getCoverIDAtSide(mainFacing) == 0
+                    if ((mainFacing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0
+                        && aBaseMetaTileEntity.getCoverIDAtSide(mainFacing) == 0
                         && !aBaseMetaTileEntity.getOpacityAtSide(mainFacing)) {
 
                         final double oX = aBaseMetaTileEntity.getXCoord();
@@ -686,17 +686,17 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
 
                         y = oY + XSTR_INSTANCE.nextFloat() * 10D / 16D + 5D / 16D;
 
-                        if (mainFacing == ForgeDirection.WEST.ordinal()) {
+                        if (mainFacing == ForgeDirection.WEST) {
                             x = oX - offset;
                             mX = -.05D;
                             z = oZ + horizontal;
                             mZ = 0D;
-                        } else if (mainFacing == ForgeDirection.EAST.ordinal()) {
+                        } else if (mainFacing == ForgeDirection.EAST) {
                             x = oX + offset;
                             mX = .05D;
                             z = oZ + horizontal;
                             mZ = 0D;
-                        } else if (mainFacing == ForgeDirection.NORTH.ordinal()) {
+                        } else if (mainFacing == ForgeDirection.NORTH) {
                             x = oX + horizontal;
                             mX = 0D;
                             z = oZ - offset;
@@ -762,11 +762,6 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     @Override
     public FluidStack setFillableStack(FluidStack aFluid) {
         return this.mSharedTank ? this.setDrainableStack(aFluid) : super.setFillableStack(aFluid);
-    }
-
-    @Override
-    protected boolean displaysOutputFluid() {
-        return !this.mSharedTank;
     }
 
     @Override

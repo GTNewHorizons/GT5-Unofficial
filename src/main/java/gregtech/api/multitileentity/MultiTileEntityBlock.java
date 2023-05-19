@@ -1,6 +1,5 @@
 package gregtech.api.multitileentity;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.OFFX;
 import static gregtech.api.enums.GT_Values.OFFY;
 import static gregtech.api.enums.GT_Values.OFFZ;
@@ -46,7 +45,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDebugableBlock;
@@ -66,7 +64,6 @@ import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_ShouldCheck
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Util;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.covers.CoverInfo;
 import gregtech.common.render.GT_MultiTile_Renderer;
 
@@ -229,13 +226,13 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
 
     @SideOnly(Side.CLIENT)
     @Override
-    public IIcon getIcon(IBlockAccess aIBlockAccess, int aX, int aY, int aZ, int aSide) {
+    public IIcon getIcon(IBlockAccess aIBlockAccess, int aX, int aY, int aZ, int ordinalSide) {
         return Textures.BlockIcons.MACHINE_LV_SIDE.getIcon();
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public IIcon getIcon(int aSide, int aMeta) {
+    public IIcon getIcon(int ordinalSide, int aMeta) {
         return Textures.BlockIcons.MACHINE_LV_SIDE.getIcon();
     }
 
@@ -252,24 +249,22 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
     @Override
     public final AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMultiTileEntity
-            ? ((IMultiTileEntity) aTileEntity).getCollisionBoundingBoxFromPool()
+        return aTileEntity instanceof IMultiTileEntity mte ? mte.getCollisionBoundingBoxFromPool()
             : aTileEntity == null ? null : super.getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
     }
 
     @Override
     public final AxisAlignedBB getSelectedBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMultiTileEntity
-            ? ((IMultiTileEntity) aTileEntity).getSelectedBoundingBoxFromPool()
+        return aTileEntity instanceof IMultiTileEntity mte ? mte.getSelectedBoundingBoxFromPool()
             : super.getSelectedBoundingBoxFromPool(aWorld, aX, aY, aZ);
     }
 
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int aX, int aY, int aZ) {
         final TileEntity aTileEntity = blockAccess.getTileEntity(aX, aY, aZ);
-        if (aTileEntity instanceof IMultiTileEntity) {
-            ((IMultiTileEntity) aTileEntity).setBlockBoundsBasedOnState(this);
+        if (aTileEntity instanceof IMultiTileEntity mte) {
+            mte.setBlockBoundsBasedOnState(this);
             return;
         }
         super.setBlockBoundsBasedOnState(blockAccess, aX, aY, aZ);
@@ -300,21 +295,20 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
             if (aTileEntity instanceof BaseTileEntity) ((BaseTileEntity) aTileEntity).onAdjacentBlockChange(aX, aY, aZ);
             LOCK = false;
         }
-        if (aTileEntity instanceof IMTE_OnNeighborBlockChange)
-            ((IMTE_OnNeighborBlockChange) aTileEntity).onNeighborBlockChange(aWorld, aBlock);
+        if (aTileEntity instanceof IMTE_OnNeighborBlockChange change) change.onNeighborBlockChange(aWorld, aBlock);
         if (aTileEntity == null) aWorld.setBlockToAir(aX, aY, aZ);
     }
 
     @Override
     public final void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (aTileEntity instanceof IMultiTileEntity) ((IMultiTileEntity) aTileEntity).onBlockAdded();
+        if (aTileEntity instanceof IMultiTileEntity mte) mte.onBlockAdded();
     }
 
     @Override
     public float getPlayerRelativeBlockHardness(EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMultiTileEntity && ((IMultiTileEntity) aTileEntity).privateAccess()
+        return aTileEntity instanceof IMultiTileEntity mte && mte.privateAccess()
             && !((IMultiTileEntity) aTileEntity).playerOwnsThis(aPlayer, true) ? -1.0F
                 : super.getPlayerRelativeBlockHardness(aPlayer, aWorld, aX, aY, aZ);
     }
@@ -322,47 +316,47 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
     @Override
     public final void onBlockClicked(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (aTileEntity instanceof IMultiTileEntity) ((IMultiTileEntity) aTileEntity).onLeftClick(aPlayer);
+        if (aTileEntity instanceof IMultiTileEntity mte) mte.onLeftClick(aPlayer);
         else super.onBlockClicked(aWorld, aX, aY, aZ, aPlayer);
     }
 
     @Override
-    public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int aSide, float aHitX,
-        float aHitY, float aHitZ) {
+    public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int ordinalSide,
+        float aHitX, float aHitY, float aHitZ) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (aPlayer != null && ItemList.TC_Thaumometer.isStackEqual(aPlayer.getHeldItem(), true, true)) return false;
-        return aTileEntity instanceof IMultiTileEntity
-            && ((IMultiTileEntity) aTileEntity).onBlockActivated(aPlayer, (byte) aSide, aHitX, aHitY, aHitZ);
+        return aTileEntity instanceof IMultiTileEntity mte
+            && mte.onBlockActivated(aPlayer, ForgeDirection.getOrientation(ordinalSide), aHitX, aHitY, aHitZ);
     }
 
     @Override
-    public final int isProvidingWeakPower(IBlockAccess aWorld, int aX, int aY, int aZ, int aSide) {
+    public final int isProvidingWeakPower(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMTE_IsProvidingWeakPower
-            ? ((IMTE_IsProvidingWeakPower) aTileEntity).isProvidingWeakPower((byte) aSide)
-            : super.isProvidingWeakPower(aWorld, aX, aY, aZ, aSide);
+        return aTileEntity instanceof IMTE_IsProvidingWeakPower power
+            ? power.isProvidingWeakPower(ForgeDirection.getOrientation(ordinalSide))
+            : super.isProvidingWeakPower(aWorld, aX, aY, aZ, ordinalSide);
     }
 
     @Override
-    public final int isProvidingStrongPower(IBlockAccess aWorld, int aX, int aY, int aZ, int aSide) {
+    public final int isProvidingStrongPower(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMTE_IsProvidingStrongPower
-            ? ((IMTE_IsProvidingStrongPower) aTileEntity).isProvidingStrongPower((byte) aSide)
-            : super.isProvidingStrongPower(aWorld, aX, aY, aZ, aSide);
+        return aTileEntity instanceof IMTE_IsProvidingStrongPower power
+            ? power.isProvidingStrongPower(ForgeDirection.getOrientation(ordinalSide))
+            : super.isProvidingStrongPower(aWorld, aX, aY, aZ, ordinalSide);
     }
 
     @Override
-    public final boolean shouldCheckWeakPower(IBlockAccess aWorld, int aX, int aY, int aZ, int aSide) {
+    public final boolean shouldCheckWeakPower(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMTE_ShouldCheckWeakPower
-            ? ((IMTE_ShouldCheckWeakPower) aTileEntity).shouldCheckWeakPower((byte) aSide)
+        return aTileEntity instanceof IMTE_ShouldCheckWeakPower power
+            ? power.shouldCheckWeakPower(ForgeDirection.getOrientation(ordinalSide))
             : isNormalCube(aWorld, aX, aY, aZ);
     }
 
     @Override
     public final boolean getWeakChanges(IBlockAccess aWorld, int aX, int aY, int aZ) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMTE_GetWeakChanges ? ((IMTE_GetWeakChanges) aTileEntity).getWeakChanges()
+        return aTileEntity instanceof IMTE_GetWeakChanges changes ? changes.getWeakChanges()
             : super.getWeakChanges(aWorld, aX, aY, aZ);
     }
 
@@ -379,32 +373,33 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
             final ArrayList<ItemStack> tList = ((IMultiTileEntity) aTileEntity).getDrops(aFortune, aSilkTouch);
             aChance = ForgeEventFactory
                 .fireBlockHarvesting(tList, aWorld, this, aX, aY, aZ, aMeta, aFortune, aChance, aSilkTouch, aPlayer);
-            for (ItemStack tStack : tList)
+            for (final ItemStack tStack : tList)
                 if (XSTR.XSTR_INSTANCE.nextFloat() <= aChance) dropBlockAsItem(aWorld, aX, aY, aZ, tStack);
         }
     }
 
     @Override
-    public final boolean shouldSideBeRendered(IBlockAccess aWorld, int aX, int aY, int aZ, int aSide) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX - OFFX[aSide], aY - OFFY[aSide], aZ - OFFZ[aSide]);
+    public final boolean shouldSideBeRendered(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
+        final TileEntity aTileEntity = aWorld
+            .getTileEntity(aX - OFFX[ordinalSide], aY - OFFY[ordinalSide], aZ - OFFZ[ordinalSide]);
         return aTileEntity instanceof IMultiTileEntity
-            ? ((IMultiTileEntity) aTileEntity).shouldSideBeRendered((byte) aSide)
-            : super.shouldSideBeRendered(aWorld, aX, aY, aZ, aSide);
+            ? ((IMultiTileEntity) aTileEntity).shouldSideBeRendered(ForgeDirection.getOrientation(ordinalSide))
+            : super.shouldSideBeRendered(aWorld, aX, aY, aZ, ordinalSide);
     }
 
     @Override
-    public Block getFacade(IBlockAccess aWorld, int aX, int aY, int aZ, int side) {
+    public Block getFacade(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof CoverableTileEntity tile) {
-            final byte aSide = (byte) side;
-            if (side != -1) {
-                final Block facadeBlock = tile.getCoverInfoAtSide(aSide)
+            final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
+            if (ordinalSide != -1) {
+                final Block facadeBlock = tile.getCoverInfoAtSide(side)
                     .getFacadeBlock();
                 if (facadeBlock != null) return facadeBlock;
             } else {
                 // we do not allow more than one type of facade per block, so no need to check every side
                 // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
-                for (byte tSide : ALL_VALID_SIDES) {
+                for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
                     final Block facadeBlock = tile.getCoverInfoAtSide(tSide)
                         .getFacadeBlock();
                     if (facadeBlock != null) {
@@ -417,18 +412,18 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
     }
 
     @Override
-    public int getFacadeMetadata(IBlockAccess aWorld, int aX, int aY, int aZ, int side) {
+    public int getFacadeMetadata(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof CoverableTileEntity tile) {
-            final byte aSide = (byte) side;
-            if (side != -1) {
-                final CoverInfo coverInfo = tile.getCoverInfoAtSide(aSide);
+            final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
+            if (ordinalSide != -1) {
+                final CoverInfo coverInfo = tile.getCoverInfoAtSide(side);
                 final Block facadeBlock = coverInfo.getFacadeBlock();
                 if (facadeBlock != null) return coverInfo.getFacadeMeta();
             } else {
                 // we do not allow more than one type of facade per block, so no need to check every side
                 // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
-                for (byte tSide : ALL_VALID_SIDES) {
+                for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
                     final CoverInfo coverInfo = tile.getCoverInfoAtSide(tSide);
                     final Block facadeBlock = coverInfo.getFacadeBlock();
                     if (facadeBlock != null) {
@@ -477,13 +472,14 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
     }
 
     @Override
-    public final int getComparatorInputOverride(World aWorld, int aX, int aY, int aZ, int aSide) {
+    public final int getComparatorInputOverride(World aWorld, int aX, int aY, int aZ, int ordinalSide) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMTE_GetComparatorInputOverride
-            ? ((IMTE_GetComparatorInputOverride) aTileEntity).getComparatorInputOverride((byte) aSide)
-            : aTileEntity instanceof IMTE_IsProvidingWeakPower
-                ? ((IMTE_IsProvidingWeakPower) aTileEntity).isProvidingWeakPower(GT_Utility.getOppositeSide(aSide))
-                : super.getComparatorInputOverride(aWorld, aX, aY, aZ, aSide);
+        return aTileEntity instanceof IMTE_GetComparatorInputOverride override
+            ? override.getComparatorInputOverride(ForgeDirection.getOrientation(ordinalSide))
+            : aTileEntity instanceof IMTE_IsProvidingWeakPower power ? power.isProvidingWeakPower(
+                ForgeDirection.getOrientation(ordinalSide)
+                    .getOpposite())
+                : super.getComparatorInputOverride(aWorld, aX, aY, aZ, ordinalSide);
     }
 
     @Override
@@ -497,12 +493,9 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
     }
 
     @Override
-    public final boolean isSideSolid(IBlockAccess aWorld, int aX, int aY, int aZ, ForgeDirection aSide) {
+    public final boolean isSideSolid(IBlockAccess aWorld, int aX, int aY, int aZ, ForgeDirection side) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMultiTileEntity
-            ? ((IMultiTileEntity) aTileEntity)
-                .isSideSolid((byte) (aSide != null ? aSide.ordinal() : GT_Values.SIDE_UNKNOWN))
-            : mOpaque;
+        return aTileEntity instanceof IMultiTileEntity mte ? mte.isSideSolid(side) : mOpaque;
     }
 
     @Override
@@ -566,15 +559,14 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
     }
 
     @Override
-    public final boolean canConnectRedstone(IBlockAccess aWorld, int aX, int aY, int aZ, int aSide) {
+    public final boolean canConnectRedstone(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
         return true;
     }
 
     @Override
-    public final boolean recolourBlock(World aWorld, int aX, int aY, int aZ, ForgeDirection aSide, int aColor) {
+    public final boolean recolourBlock(World aWorld, int aX, int aY, int aZ, ForgeDirection side, int aColor) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMultiTileEntity
-            && ((IMultiTileEntity) aTileEntity).recolourBlock((byte) aSide.ordinal(), (byte) aColor);
+        return aTileEntity instanceof IMultiTileEntity mte && mte.recolourBlock(side, (byte) aColor);
     }
 
     @Override
@@ -627,12 +619,12 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
     public void receiveCoverData(IMultiTileEntity mte, int aCover0, int aCover1, int aCover2, int aCover3, int aCover4,
         int aCover5) {
         boolean updated;
-        updated = mte.setCoverIDAtSideNoUpdate((byte) 0, aCover0);
-        updated |= mte.setCoverIDAtSideNoUpdate((byte) 1, aCover1);
-        updated |= mte.setCoverIDAtSideNoUpdate((byte) 2, aCover2);
-        updated |= mte.setCoverIDAtSideNoUpdate((byte) 3, aCover3);
-        updated |= mte.setCoverIDAtSideNoUpdate((byte) 4, aCover4);
-        updated |= mte.setCoverIDAtSideNoUpdate((byte) 5, aCover5);
+        updated = mte.setCoverIDAtSideNoUpdate(ForgeDirection.DOWN, aCover0);
+        updated |= mte.setCoverIDAtSideNoUpdate(ForgeDirection.UP, aCover1);
+        updated |= mte.setCoverIDAtSideNoUpdate(ForgeDirection.NORTH, aCover2);
+        updated |= mte.setCoverIDAtSideNoUpdate(ForgeDirection.SOUTH, aCover3);
+        updated |= mte.setCoverIDAtSideNoUpdate(ForgeDirection.WEST, aCover4);
+        updated |= mte.setCoverIDAtSideNoUpdate(ForgeDirection.EAST, aCover5);
 
         if (updated) {
             mte.issueBlockUpdate();

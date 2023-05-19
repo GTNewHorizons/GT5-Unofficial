@@ -25,6 +25,7 @@ import gregtech.api.interfaces.IHasFluidDisplayItem;
 import gregtech.api.interfaces.metatileentity.IFluidLockable;
 import gregtech.api.util.GT_Utility;
 
+@Deprecated
 public class FluidDisplaySlotWidget extends SlotWidget {
 
     private IHasFluidDisplayItem iHasFluidDisplay;
@@ -36,11 +37,7 @@ public class FluidDisplaySlotWidget extends SlotWidget {
     private Action actionDragAndDrop = Action.NONE;
     private BiFunction<ClickData, FluidDisplaySlotWidget, Boolean> beforeRealClick;
     private BiFunction<ClickData, FluidDisplaySlotWidget, Boolean> beforeDragAndDrop;
-    private Runnable updateFluidDisplayItem = () -> {
-        if (iHasFluidDisplay != null) {
-            iHasFluidDisplay.updateFluidDisplayItem();
-        }
-    };
+    private Runnable updateFluidDisplayItem = () -> {};
 
     public FluidDisplaySlotWidget(BaseSlot slot) {
         super(slot);
@@ -315,46 +312,9 @@ public class FluidDisplaySlotWidget extends SlotWidget {
         updateFluidDisplayItem.run();
     }
 
-    protected void lockFluid(ItemStack cursorStack) {
-        if (!(iHasFluidDisplay instanceof IFluidLockable mteToLock)) return;
+    protected void lockFluid(ItemStack cursorStack) {}
 
-        if (cursorStack == null) {
-            if (!mteToLock.allowChangingLockedFluid(null)) return;
-
-            mteToLock.lockFluid(false);
-            mteToLock.setLockedFluidName(null);
-            GT_Utility.sendChatToPlayer(getContext().getPlayer(), GT_Utility.trans("300.1", "Fluid Lock Cleared."));
-
-            if (!isClient()) {
-                mteToLock.onFluidLockPacketReceived(null);
-            }
-        } else {
-            FluidStack fluidStack = GT_Utility.getFluidFromContainerOrFluidDisplay(cursorStack);
-            if (fluidStack == null) return;
-            Fluid tFluid = fluidStack.getFluid();
-            if (tFluid == null) return;
-
-            if (!mteToLock.allowChangingLockedFluid(tFluid.getName())) return;
-
-            mteToLock.lockFluid(true);
-            mteToLock.setLockedFluidName(tFluid.getName());
-            GT_Utility.sendChatToPlayer(
-                getContext().getPlayer(),
-                String.format(
-                    GT_Utility.trans("151.4", "Successfully locked Fluid to %s"),
-                    new FluidStack(tFluid, 1).getLocalizedName()));
-
-            if (!isClient()) {
-                mteToLock.onFluidLockPacketReceived(tFluid.getName());
-            }
-        }
-    }
-
-    protected void updateFluidDisplayItem() {
-        if (iHasFluidDisplay != null) {
-            iHasFluidDisplay.updateFluidDisplayItem();
-        }
-    }
+    protected void updateFluidDisplayItem() {}
 
     // === setters ===
 
@@ -444,10 +404,6 @@ public class FluidDisplaySlotWidget extends SlotWidget {
         return this;
     }
 
-    /**
-     * By default, this widget runs {@link IHasFluidDisplayItem#updateFluidDisplayItem} after click. You can specify
-     * custom update action with this method.
-     */
     public FluidDisplaySlotWidget setUpdateFluidDisplayItem(Runnable updateFluidDisplayItem) {
         this.updateFluidDisplayItem = updateFluidDisplayItem;
         return this;

@@ -4,6 +4,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import com.gtnewhorizons.modularui.api.math.MathExpression;
@@ -51,14 +52,14 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public boolean isRedstoneSensitive(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         long aTimer) {
         return false;
     }
 
     @Override
-    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        long aTimer) {
+    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
+        ICoverable aTileEntity, long aTimer) {
         if ((((aTileEntity instanceof IMachineProgress)) && (!((IMachineProgress) aTileEntity).isAllowedToWork()))) {
             return aCoverVariable;
         }
@@ -70,41 +71,44 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
             aCoverVariable = CONVERTED_BIT | Math.min(Math.abs(aCoverVariable - 1), SLOT_ID_MASK);
         }
 
-        TileEntity toTile, fromTile;
-        int toSlot, fromSlot;
+        final TileEntity toTile;
+        final TileEntity fromTile;
+        final int toSlot;
+        final int fromSlot;
 
         if ((aCoverVariable & EXPORT_MASK) > 0) {
             fromTile = (TileEntity) aTileEntity;
-            toTile = aTileEntity.getTileEntityAtSide(aSide);
+            toTile = aTileEntity.getTileEntityAtSide(side);
             fromSlot = aCoverVariable & SLOT_ID_MASK;
             toSlot = (aCoverVariable >> 14) & SLOT_ID_MASK;
         } else {
-            fromTile = aTileEntity.getTileEntityAtSide(aSide);
+            fromTile = aTileEntity.getTileEntityAtSide(side);
             toTile = (TileEntity) aTileEntity;
             fromSlot = (aCoverVariable >> 14) & SLOT_ID_MASK;
             toSlot = aCoverVariable & SLOT_ID_MASK;
         }
 
         if (fromSlot > 0 && toSlot > 0) {
-            if (fromTile instanceof IInventory && toTile instanceof IInventory) GT_Utility.moveFromSlotToSlot(
-                (IInventory) fromTile,
-                (IInventory) toTile,
-                fromSlot - 1,
-                toSlot - 1,
-                null,
-                false,
-                (byte) 64,
-                (byte) 1,
-                (byte) 64,
-                (byte) 1);
+            if (fromTile instanceof IInventory fromInventory && toTile instanceof IInventory toInventory)
+                GT_Utility.moveFromSlotToSlot(
+                    fromInventory,
+                    toInventory,
+                    fromSlot - 1,
+                    toSlot - 1,
+                    null,
+                    false,
+                    (byte) 64,
+                    (byte) 1,
+                    (byte) 64,
+                    (byte) 1);
         } else if (toSlot > 0) {
-            byte side;
-            if ((aCoverVariable & EXPORT_MASK) > 0) side = aSide;
-            else side = GT_Utility.getOppositeSide(aSide);
+            final ForgeDirection toSide;
+            if ((aCoverVariable & EXPORT_MASK) > 0) toSide = side;
+            else toSide = side.getOpposite();
             GT_Utility.moveOneItemStackIntoSlot(
                 fromTile,
                 toTile,
-                side,
+                toSide,
                 toSlot - 1,
                 null,
                 false,
@@ -113,9 +117,9 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
                 (byte) 64,
                 (byte) 1);
         } else if (fromSlot > 0) {
-            byte toSide;
-            if ((aCoverVariable & EXPORT_MASK) > 0) toSide = aSide;
-            else toSide = GT_Utility.getOppositeSide(aSide);
+            final ForgeDirection toSide;
+            if ((aCoverVariable & EXPORT_MASK) > 0) toSide = side;
+            else toSide = side.getOpposite();
             if (fromTile instanceof IInventory) GT_Utility.moveFromSlotToSide(
                 (IInventory) fromTile,
                 toTile,
@@ -128,13 +132,14 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
                 (byte) 64,
                 (byte) 1);
         } else {
-            byte fromSide, toSide;
+            final ForgeDirection fromSide;
+            final ForgeDirection toSide;
             if ((aCoverVariable & EXPORT_MASK) > 0) {
-                fromSide = aSide;
-                toSide = GT_Utility.getOppositeSide(aSide);
+                fromSide = side;
+                toSide = side.getOpposite();
             } else {
-                fromSide = GT_Utility.getOppositeSide(aSide);
-                toSide = aSide;
+                fromSide = side.getOpposite();
+                toSide = side;
             }
             GT_Utility.moveOneItemStack(
                 fromTile,
@@ -153,10 +158,10 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
     }
 
     @Override
-    public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int step = 0;
-        if (GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ)[0] >= 0.5F) {
+        if (GT_Utility.getClickedFacingCoords(side, aX, aY, aZ)[0] >= 0.5F) {
             step += aPlayer.isSneaking() ? 256 : 16;
         } else {
             step -= aPlayer.isSneaking() ? 256 : 16;
@@ -167,10 +172,10 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
     }
 
     @Override
-    protected boolean onCoverRightClickImpl(byte aSide, int aCoverID,
+    protected boolean onCoverRightClickImpl(ForgeDirection side, int aCoverID,
         ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX,
         float aY, float aZ) {
-        int step = (GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ)[0] >= 0.5F) ? 1 : -1;
+        int step = (GT_Utility.getClickedFacingCoords(side, aX, aY, aZ)[0] >= 0.5F) ? 1 : -1;
         int tCoverVariable = getNewVar(aCoverVariable.get(), step);
         sendMessageToPlayer(aPlayer, tCoverVariable);
         aCoverVariable.set(tCoverVariable);
@@ -179,12 +184,12 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean onCoverRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public boolean onCoverRightclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        int step = (GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ)[0] >= 0.5F) ? 1 : -1;
+        final int step = (GT_Utility.getClickedFacingCoords(side, aX, aY, aZ)[0] >= 0.5F) ? 1 : -1;
         aCoverVariable = getNewVar(aCoverVariable, step);
         sendMessageToPlayer(aPlayer, aCoverVariable);
-        aTileEntity.setCoverDataAtSide(aSide, aCoverVariable);
+        aTileEntity.setCoverDataAtSide(side, aCoverVariable);
         return true;
     }
 
@@ -217,52 +222,56 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean letsRedstoneGoIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsRedstoneGoIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsRedstoneGoOut(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsRedstoneGoOut(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsEnergyIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsEnergyOut(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyOut(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsFluidIn(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    public boolean letsFluidIn(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsFluidOut(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    public boolean letsFluidOut(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsItemsIn(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    public boolean letsItemsIn(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsItemsOut(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    public boolean letsItemsOut(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean alwaysLookConnected(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean alwaysLookConnected(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return this.mTickRate;
     }
 

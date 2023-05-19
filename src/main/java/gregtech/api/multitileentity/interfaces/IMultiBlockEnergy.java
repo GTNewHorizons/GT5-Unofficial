@@ -1,5 +1,7 @@
 package gregtech.api.multitileentity.interfaces;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 
 interface IMultiBlockEnergy {
@@ -22,9 +24,9 @@ interface IMultiBlockEnergy {
 
     boolean increaseStoredEnergyUnits(MultiBlockPart aPart, long aEnergy, boolean aIgnoreTooMuchEnergy);
 
-    boolean drainEnergyUnits(MultiBlockPart aPart, byte aSide, long aVoltage, long aAmperage);
+    boolean drainEnergyUnits(MultiBlockPart aPart, ForgeDirection side, long aVoltage, long aAmperage);
 
-    long injectEnergyUnits(MultiBlockPart aPart, byte aSide, long aVoltage, long aAmperage);
+    long injectEnergyUnits(MultiBlockPart aPart, ForgeDirection side, long aVoltage, long aAmperage);
 
     long getAverageElectricInput(MultiBlockPart aPart);
 
@@ -34,7 +36,7 @@ interface IMultiBlockEnergy {
 
     long getEUCapacity(MultiBlockPart aPart);
 
-    boolean inputEnergyFrom(MultiBlockPart aPart, byte aSide);
+    boolean inputEnergyFrom(MultiBlockPart aPart, ForgeDirection side);
 
-    boolean outputsEnergyTo(MultiBlockPart aPart, byte aSide);
+    boolean outputsEnergyTo(MultiBlockPart aPart, ForgeDirection side);
 }

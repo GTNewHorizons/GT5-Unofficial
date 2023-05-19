@@ -8,6 +8,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_LOCKER;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
@@ -57,13 +58,13 @@ public class GT_MetaTileEntity_Locker extends GT_MetaTileEntity_TieredMachineBlo
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
-            return new ITexture[] { this.mTextures[2][(aColorIndex + 1)][0], this.mTextures[2][(aColorIndex + 1)][1],
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        if (side == aFacing) {
+            return new ITexture[] { this.mTextures[2][(colorIndex + 1)][0], this.mTextures[2][(colorIndex + 1)][1],
                 LOCKERS[Math.abs(this.mType % LOCKERS.length)] };
         }
-        return this.mTextures[0][(aColorIndex + 1)];
+        return this.mTextures[0][(colorIndex + 1)];
     }
 
     @Override
@@ -87,8 +88,8 @@ public class GT_MetaTileEntity_Locker extends GT_MetaTileEntity_TieredMachineBlo
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
-        return aFacing > 1;
+    public boolean isFacingValid(ForgeDirection facing) {
+        return (facing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0;
     }
 
     @Override
@@ -97,8 +98,8 @@ public class GT_MetaTileEntity_Locker extends GT_MetaTileEntity_TieredMachineBlo
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
-        return aSide == getBaseMetaTileEntity().getBackFacing();
+    public boolean isInputFacing(ForgeDirection side) {
+        return side == getBaseMetaTileEntity().getBackFacing();
     }
 
     @Override
@@ -164,21 +165,21 @@ public class GT_MetaTileEntity_Locker extends GT_MetaTileEntity_TieredMachineBlo
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (side == getBaseMetaTileEntity().getFrontFacing()) {
             this.mType = ((byte) (this.mType + 1));
         }
     }
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack) {
-        return aSide != getBaseMetaTileEntity().getFrontFacing();
+    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aStack) {
+        return side != getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
-        float aY, float aZ) {
-        if ((aBaseMetaTileEntity.isServerSide()) && (aSide == aBaseMetaTileEntity.getFrontFacing())) {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
+        float aX, float aY, float aZ) {
+        if ((aBaseMetaTileEntity.isServerSide()) && (side == aBaseMetaTileEntity.getFrontFacing())) {
             for (int i = 0; i < 4; i++) {
                 ItemStack tSwapStack = this.mInventory[i];
                 this.mInventory[i] = aPlayer.inventory.armorInventory[i];
@@ -191,12 +192,14 @@ public class GT_MetaTileEntity_Locker extends GT_MetaTileEntity_TieredMachineBlo
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
         return false;
     }
 }

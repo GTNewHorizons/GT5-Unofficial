@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.steam;
 
-import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
@@ -10,6 +9,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -44,11 +44,9 @@ public class GT_MetaTileEntity_Macerator_Bronze extends GT_MetaTileEntity_BasicM
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isClientSide() && aBaseMetaTileEntity.isActive()) {
 
-            final byte topFacing = (byte) ForgeDirection.UP.ordinal();
-
-            if (aBaseMetaTileEntity.getFrontFacing() != topFacing
-                && aBaseMetaTileEntity.getCoverIDAtSide(topFacing) == 0
-                && !aBaseMetaTileEntity.getOpacityAtSide(topFacing)) {
+            if (aBaseMetaTileEntity.getFrontFacing() != ForgeDirection.UP
+                && aBaseMetaTileEntity.getCoverIDAtSide(ForgeDirection.UP) == 0
+                && !aBaseMetaTileEntity.getOpacityAtSide(ForgeDirection.UP)) {
 
                 new ParticleEventBuilder().setMotion(0.0D, 0.0D, 0.0D)
                     .setIdentifier(ParticleFX.SMOKE)
@@ -70,7 +68,7 @@ public class GT_MetaTileEntity_Macerator_Bronze extends GT_MetaTileEntity_BasicM
     @Override
     public int checkRecipe() {
         GT_Recipe tRecipe = getRecipeList()
-            .findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, V[mTier], null, null, getAllInputs());
+            .findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, TierEU.LV, null, null, getAllInputs());
         if (tRecipe == null) return DID_NOT_FIND_RECIPE;
         if (tRecipe.mCanBeBuffered) mLastRecipe = tRecipe;
         if (!canOutput(tRecipe)) {
@@ -86,9 +84,9 @@ public class GT_MetaTileEntity_Macerator_Bronze extends GT_MetaTileEntity_BasicM
     }
 
     @Override
-    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)
+        return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack)
             && GT_Recipe_Map.sMaceratorRecipes.containsInput(GT_Utility.copyAmount(64L, aStack));
     }
 

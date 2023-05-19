@@ -301,6 +301,7 @@ public class GT_PostLoad {
                             (int) (tMaterial.getMass() * 512L),
                             (int) VP[1],
                             0);
+                        return;
                     }
                     tInput = GT_OreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L);
                     iSMat0 = new ItemStack[] { tInput };
@@ -351,7 +352,7 @@ public class GT_PostLoad {
             0);
         GT_Recipe.GT_Recipe_Map.sRockBreakerFakeRecipes.addFakeRecipe(
             false,
-            new ItemStack[] { ItemList.Display_ITS_FREE.getWithName(0L, "Place Lava on Side") },
+            new ItemStack[] { ItemList.Display_ITS_FREE.getWithName(1L, "IT'S FREE! Place Lava on Side") },
             new ItemStack[] { new ItemStack(Blocks.cobblestone, 1) },
             null,
             null,
@@ -361,7 +362,7 @@ public class GT_PostLoad {
             0);
         GT_Recipe.GT_Recipe_Map.sRockBreakerFakeRecipes.addFakeRecipe(
             false,
-            new ItemStack[] { ItemList.Display_ITS_FREE.getWithName(0L, "Place Lava on Top") },
+            new ItemStack[] { ItemList.Display_ITS_FREE.getWithName(1L, "IT'S FREE! Place Lava on Top") },
             new ItemStack[] { new ItemStack(Blocks.stone, 1) },
             null,
             null,

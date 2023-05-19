@@ -2,6 +2,8 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sVacuumRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.util.ArrayList;
 
@@ -11,10 +13,12 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
 
 public class ProcessingCell implements IOreRecipeRegistrator {
@@ -100,20 +104,21 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                 // Electrolyzer recipe
                                 {
                                     if (GT_Utility.getFluidForFilledItem(aStack, true) == null) {
-                                        int capsuleCount = tCapsuleCount <= 0L ? 0 : (int) tCapsuleCount;
-                                        ItemStack cells = capsuleCount <= 0 ? null
-                                            : ItemList.Cell_Empty.get(capsuleCount);
                                         // dust stuffed cell e.g. Phosphate, Phosphorous Pentoxide
-                                        GT_Values.RA.stdBuilder()
-                                            .itemInputs(GT_Utility.copyAmount(tItemAmount, aStack), cells)
-                                            .itemOutputs(
-                                                tList.get(0),
-                                                tList.size() >= 2 ? tList.get(1) : null,
-                                                tList.size() >= 3 ? tList.get(2) : null,
-                                                tList.size() >= 4 ? tList.get(3) : null,
-                                                tList.size() >= 5 ? tList.get(4) : null,
-                                                tCapsuleCount >= 0L ? tList.size() >= 6 ? tList.get(5) : null
-                                                    : ItemList.Cell_Empty.get(-tCapsuleCount))
+                                        GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                                        if (tCapsuleCount > 0L) {
+                                            recipeBuilder.itemInputs(
+                                                GT_Utility.copyAmount(tItemAmount, aStack),
+                                                ItemList.Cell_Empty.get(tCapsuleCount));
+                                        } else {
+                                            recipeBuilder.itemInputs(GT_Utility.copyAmount(tItemAmount, aStack));
+                                        }
+                                        if (tCapsuleCount < 0L) {
+                                            tList.add(ItemList.Cell_Empty.get(-tCapsuleCount));
+                                        }
+                                        ItemStack[] outputsArray = tList
+                                            .toArray(new ItemStack[Math.min(tList.size(), 6)]);
+                                        recipeBuilder.itemOutputs(outputsArray)
                                             .noFluidInputs()
                                             .noFluidOutputs()
                                             .duration(Math.max(1L, Math.abs(aMaterial.getProtons() * 2L * tItemAmount)))
@@ -121,20 +126,18 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                             .addTo(sElectrolyzerRecipes);
                                     } else {
                                         long tCellBalance = tCapsuleCount + tItemAmount - 1;
-                                        int capsuleCount = tCellBalance <= 0L ? 0 : (int) tCellBalance;
-                                        ItemStack cells = capsuleCount <= 0 ? null
-                                            : ItemList.Cell_Empty.get(capsuleCount);
-
-                                        GT_Values.RA.stdBuilder()
-                                            .itemInputs(aStack, cells)
-                                            .itemOutputs(
-                                                tList.get(0),
-                                                tList.size() >= 2 ? tList.get(1) : null,
-                                                tList.size() >= 3 ? tList.get(2) : null,
-                                                tList.size() >= 4 ? tList.get(3) : null,
-                                                tList.size() >= 5 ? tList.get(4) : null,
-                                                tCapsuleCount >= 0L ? tList.size() >= 6 ? tList.get(5) : null
-                                                    : tCellBalance < 0 ? ItemList.Cell_Empty.get(-tCellBalance) : null)
+                                        GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                                        if (tCellBalance > 0L) {
+                                            recipeBuilder.itemInputs(aStack, ItemList.Cell_Empty.get(tCellBalance));
+                                        } else {
+                                            recipeBuilder.itemInputs(GT_Utility.copyAmount(tItemAmount, aStack));
+                                        }
+                                        if (tCellBalance < 0L) {
+                                            tList.add(ItemList.Cell_Empty.get(-tCellBalance));
+                                        }
+                                        ItemStack[] outputsArray = tList
+                                            .toArray(new ItemStack[Math.min(tList.size(), 6)]);
+                                        recipeBuilder.itemOutputs(outputsArray)
                                             .noFluidInputs()
                                             .noFluidOutputs()
                                             .duration(Math.max(1L, Math.abs(aMaterial.getProtons() * 8L * tItemAmount)))
@@ -144,19 +147,19 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                 }
                             }
                             if ((aMaterial.mExtraData & 0x2) != 0) {
-                                ItemStack emptyCells = tCapsuleCount > 0 ? ItemList.Cell_Empty.get(tCapsuleCount)
-                                    : null;
-
-                                GT_Values.RA.stdBuilder()
-                                    .itemInputs(GT_Utility.copyAmount(tItemAmount, aStack), emptyCells)
-                                    .itemOutputs(
-                                        tList.get(0),
-                                        tList.size() >= 2 ? tList.get(1) : null,
-                                        tList.size() >= 3 ? tList.get(2) : null,
-                                        tList.size() >= 4 ? tList.get(3) : null,
-                                        tList.size() >= 5 ? tList.get(4) : null,
-                                        tCapsuleCount >= 0L ? tList.size() >= 6 ? tList.get(5) : null
-                                            : ItemList.Cell_Empty.get(-tCapsuleCount))
+                                GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                                if (tCapsuleCount > 0L) {
+                                    recipeBuilder.itemInputs(
+                                        GT_Utility.copyAmount(tItemAmount, aStack),
+                                        ItemList.Cell_Empty.get(tCapsuleCount));
+                                } else {
+                                    recipeBuilder.itemInputs(GT_Utility.copyAmount(tItemAmount, aStack));
+                                }
+                                if (tCapsuleCount < 0L) {
+                                    tList.add(ItemList.Cell_Empty.get(-tCapsuleCount));
+                                }
+                                ItemStack[] outputsArray = tList.toArray(new ItemStack[Math.min(tList.size(), 6)]);
+                                recipeBuilder.itemOutputs(outputsArray)
                                     .noFluidInputs()
                                     .noFluidOutputs()
                                     .duration(Math.max(1L, Math.abs(aMaterial.getMass() * 2L * tItemAmount)))
@@ -178,10 +181,16 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             : null,
                         (int) Math.max(1024L, 1024L * aMaterial.getMass()),
                         4);
-                    GT_Values.RA.addVacuumFreezerRecipe(
-                        GT_Utility.copyAmount(1L, aStack),
-                        GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L),
-                        (int) Math.max(aMaterial.getMass() * 2L, 1L));
+                    if (GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L) != null) {
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L))
+                            .noFluidInputs()
+                            .noFluidOutputs()
+                            .duration(((int) Math.max(aMaterial.getMass() * 2L, 1L)) * TICKS)
+                            .eut(TierEU.RECIPE_MV)
+                            .addTo(sVacuumRecipes);
+                    }
                 }
             }
             default -> {}

@@ -1,5 +1,6 @@
 package gregtech.common.covers;
 
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.ITexture;
@@ -21,7 +22,7 @@ public class GT_Cover_SteamValve extends GT_Cover_Pump {
     }
 
     @Override
-    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public boolean isRedstoneSensitive(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         long aTimer) {
         return false;
     }

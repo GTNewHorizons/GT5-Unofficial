@@ -7,6 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
 
@@ -25,7 +26,7 @@ public class GT_Packet_TileEntityCoverNew extends GT_Packet_New {
     protected short mY;
     protected int mZ;
 
-    protected byte side;
+    protected ForgeDirection side;
     protected int coverID, dimID;
     protected ISerializableObject coverData;
 
@@ -35,7 +36,7 @@ public class GT_Packet_TileEntityCoverNew extends GT_Packet_New {
         super(true);
     }
 
-    public GT_Packet_TileEntityCoverNew(int mX, short mY, int mZ, byte coverSide, int coverID,
+    public GT_Packet_TileEntityCoverNew(int mX, short mY, int mZ, ForgeDirection coverSide, int coverID,
         ISerializableObject coverData, int dimID) {
         super(false);
         this.mX = mX;
@@ -49,7 +50,8 @@ public class GT_Packet_TileEntityCoverNew extends GT_Packet_New {
         this.dimID = dimID;
     }
 
-    public GT_Packet_TileEntityCoverNew(byte coverSide, int coverID, ISerializableObject coverData, ICoverable tile) {
+    public GT_Packet_TileEntityCoverNew(ForgeDirection coverSide, int coverID, ISerializableObject coverData,
+        ICoverable tile) {
         super(false);
         this.mX = tile.getXCoord();
         this.mY = tile.getYCoord();
@@ -80,7 +82,7 @@ public class GT_Packet_TileEntityCoverNew extends GT_Packet_New {
         aOut.writeShort(mY);
         aOut.writeInt(mZ);
 
-        aOut.writeByte(side);
+        aOut.writeByte(side.ordinal());
         aOut.writeInt(coverID);
         coverData.writeToByteBuf(aOut);
 
@@ -94,7 +96,7 @@ public class GT_Packet_TileEntityCoverNew extends GT_Packet_New {
             aData.readInt(),
             aData.readShort(),
             aData.readInt(),
-            aData.readByte(),
+            ForgeDirection.getOrientation(aData.readByte()),
             coverId = aData.readInt(),
             GregTech_API.getCoverBehaviorNew(coverId)
                 .createDataObject()

@@ -8,12 +8,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import thaumcraft.api.aspects.IEssentiaTransport;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
+import thaumcraft.api.aspects.IEssentiaTransport;
 
 public class Behaviour_Plunger_Essentia extends Behaviour_None {
 
@@ -27,7 +27,7 @@ public class Behaviour_Plunger_Essentia extends Behaviour_None {
 
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         if (aWorld.isRemote) {
             return false;
         }

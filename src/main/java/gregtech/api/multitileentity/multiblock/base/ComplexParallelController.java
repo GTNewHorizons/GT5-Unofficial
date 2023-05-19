@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.LongStream;
 
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -24,6 +21,8 @@ import gregtech.api.logic.ComplexParallelProcessingLogic;
 import gregtech.api.logic.interfaces.PollutionLogicHost;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class ComplexParallelController<T extends ComplexParallelController<T>> extends PowerController<T> {
 

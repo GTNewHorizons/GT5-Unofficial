@@ -62,7 +62,7 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
     }
 
     @Override
-    public IIcon getIcon(int aSide, int aMeta) {
+    public IIcon getIcon(int ordinalSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
             switch (aMeta) {
                 case 10 -> {
@@ -84,10 +84,10 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
                     return Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR.getIcon();
                 }
             }
-            if (aSide == 0) {
+            if (ordinalSide == 0) {
                 return Textures.BlockIcons.MACHINECASINGS_BOTTOM[aMeta].getIcon();
             }
-            if (aSide == 1) {
+            if (ordinalSide == 1) {
                 return Textures.BlockIcons.MACHINECASINGS_TOP[aMeta].getIcon();
             }
             return Textures.BlockIcons.MACHINECASINGS_SIDE[aMeta].getIcon();

@@ -15,6 +15,11 @@ public class SteamPower extends Power {
     }
 
     @Override
+    public byte getTier() {
+        return 1;
+    }
+
+    @Override
     public String getTierString() {
         return STEAM_TIER_NAMES[tier - 1];
     }

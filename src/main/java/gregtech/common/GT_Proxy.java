@@ -8,6 +8,7 @@ import static gregtech.api.enums.FluidState.PLASMA;
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.GT_Values.debugEntityCramming;
 import static gregtech.api.enums.Mods.*;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sWiremillRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gregtech.api.util.GT_Util.LAST_BROKEN_TILEENTITY;
@@ -63,6 +64,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings.GameType;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
@@ -791,10 +793,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
             }
         }
         GT_Log.out.println("GT_Mod: Getting required Items of other Mods.");
-        ItemList.TE_Slag.set(GT_ModHandler.getModItem(ThermalExpansion.ID, "slag", 1L));
-        ItemList.TE_Slag_Rich.set(GT_ModHandler.getModItem(ThermalExpansion.ID, "slagRich", 1L));
-        ItemList.TE_Rockwool.set(GT_ModHandler.getModItem(ThermalExpansion.ID, "rockwool", 1L));
-        ItemList.TE_Hardened_Glass.set(GT_ModHandler.getModItem(ThermalExpansion.ID, "glassHardened", 1L));
 
         ItemList.RC_ShuntingWire.set(GT_ModHandler.getModItem(Railcraft.ID, "machine.delta", 1L, 0));
         ItemList.RC_ShuntingWireFrame.set(GT_ModHandler.getModItem(Railcraft.ID, "frame", 1L, 0));
@@ -1001,8 +999,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(Forestry.ID, "waxCast", 1L, 32767));
         GT_ModHandler.sNonReplaceableItems
             .add(GT_ModHandler.getModItem(GalacticraftCore.ID, "item.sensorGlasses", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems
-            .add(GT_ModHandler.getModItem(IC2NuclearControl.ID, "ItemToolThermometer", 1L, 32767));
 
         RecipeSorter.register(
             "gregtech:shaped",
@@ -1022,14 +1018,19 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     public void onLoad() {
         GT_Log.out.println("GT_Mod: Beginning Load-Phase.");
         GT_Log.ore.println("GT_Mod: Beginning Load-Phase.");
-        GT_OreDictUnificator.registerOre(
-            "cropChilipepper",
-            GT_ModHandler.getModItem(MagicalCrops.ID, "magicalcrops_CropProduce", 1L, 2));
-        GT_OreDictUnificator
-            .registerOre("cropTomato", GT_ModHandler.getModItem(MagicalCrops.ID, "magicalcrops_CropProduce", 1L, 8));
-        GT_OreDictUnificator
-            .registerOre("cropGrape", GT_ModHandler.getModItem(MagicalCrops.ID, "magicalcrops_CropProduce", 1L, 4));
-        GT_OreDictUnificator.registerOre("cropTea", GT_ModHandler.getModItem(GanysSurface.ID, "teaLeaves", 1L, 0));
+        if (MagicalCrops.isModLoaded()) {
+            GT_OreDictUnificator.registerOre(
+                "cropChilipepper",
+                GT_ModHandler.getModItem(MagicalCrops.ID, "magicalcrops_CropProduce", 1L, 2));
+            GT_OreDictUnificator.registerOre(
+                "cropTomato",
+                GT_ModHandler.getModItem(MagicalCrops.ID, "magicalcrops_CropProduce", 1L, 8));
+            GT_OreDictUnificator
+                .registerOre("cropGrape", GT_ModHandler.getModItem(MagicalCrops.ID, "magicalcrops_CropProduce", 1L, 4));
+        }
+        if (GanysSurface.isModLoaded()) {
+            GT_OreDictUnificator.registerOre("cropTea", GT_ModHandler.getModItem(GanysSurface.ID, "teaLeaves", 1L, 0));
+        }
 
         // Clay buckets, which don't get registered until Iguana Tweaks pre-init
         if (IguanaTweaksTinkerConstruct.isModLoaded()) {
@@ -1941,16 +1942,22 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                                                         Materials.Brass,
                                                         new ItemStack(aEvent.Ore.getItem(), 1, 2));
                                                     if (!mDisableIC2Cables) {
-                                                        GT_Values.RA.addWiremillRecipe(
-                                                            GT_ModHandler.getIC2Item("copperCableItem", 3L),
-                                                            new ItemStack(aEvent.Ore.getItem(), 1, 8),
-                                                            400,
-                                                            1);
-                                                        GT_Values.RA.addWiremillRecipe(
-                                                            GT_ModHandler.getIC2Item("ironCableItem", 6L),
-                                                            new ItemStack(aEvent.Ore.getItem(), 1, 9),
-                                                            400,
-                                                            2);
+                                                        GT_Values.RA.stdBuilder()
+                                                            .itemInputs(GT_ModHandler.getIC2Item("copperCableItem", 3L))
+                                                            .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 1, 8))
+                                                            .noFluidInputs()
+                                                            .noFluidOutputs()
+                                                            .duration(20 * SECONDS)
+                                                            .eut(1)
+                                                            .addTo(sWiremillRecipes);
+                                                        GT_Values.RA.stdBuilder()
+                                                            .itemInputs(GT_ModHandler.getIC2Item("ironCableItem", 6L))
+                                                            .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 1, 9))
+                                                            .noFluidInputs()
+                                                            .noFluidOutputs()
+                                                            .duration(20 * SECONDS)
+                                                            .eut(2)
+                                                            .addTo(sWiremillRecipes);
                                                     }
                                                     GT_Values.RA.addCutterRecipe(
                                                         new ItemStack(aEvent.Ore.getItem(), 1, 3),
@@ -2351,7 +2358,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         if ((tTileEntity instanceof IGregTechTileEntity tile)) {
 
             if (GUI_ID_COVER_SIDE_BASE <= aID && aID < GUI_ID_COVER_SIDE_BASE + 6) {
-                final byte side = (byte) (aID - GT_Proxy.GUI_ID_COVER_SIDE_BASE);
+                final ForgeDirection side = ForgeDirection
+                    .getOrientation((byte) (aID - GT_Proxy.GUI_ID_COVER_SIDE_BASE));
                 GT_CoverBehaviorBase<?> cover = tile.getCoverBehaviorAtSideNew(side);
 
                 if (cover.hasCoverGUI() && !cover.useModularUI()) {

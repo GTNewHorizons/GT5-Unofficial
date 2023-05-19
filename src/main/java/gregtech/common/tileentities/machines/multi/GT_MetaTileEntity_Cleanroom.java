@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
@@ -101,8 +100,8 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
-        return aFacing > 1;
+    public boolean isFacingValid(ForgeDirection facing) {
+        return (facing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0;
     }
 
     @Override
@@ -275,7 +274,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
         if (doorState) {
             this.mEfficiency = Math.max(0, this.mEfficiency - 200);
         }
-        for (byte tSide : ALL_VALID_SIDES) {
+        for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
             final byte t = (byte) Math.max(1, (byte) (15 / (10000f / this.mEfficiency)));
             aBaseMetaTileEntity.setInternalOutputRedstoneSignal(tSide, t);
         }
@@ -323,10 +322,10 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        if (aSide == ForgeDirection.DOWN.ordinal() || aSide == ForgeDirection.UP.ordinal()) {
-            return new ITexture[] { TextureFactory.of(BLOCK_PLASCRETE), aActive
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        if ((sideDirection.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) != 0) {
+            return new ITexture[] { TextureFactory.of(BLOCK_PLASCRETE), active
                 ? TextureFactory.of(
                     TextureFactory.of(OVERLAY_TOP_CLEANROOM_ACTIVE),
                     TextureFactory.builder()
@@ -404,6 +403,12 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
     private static final String category = "cleanroom_allowed_blocks";
 
     private static void setDefaultConfigValues(Configuration cfg) {
+        cfg.get("cleanroom_allowed_blocks.manaGlass", "Name", "tile.manaGlass");
+        cfg.get("cleanroom_allowed_blocks.manaGlass", "Percentage", 50);
+        cfg.get("cleanroom_allowed_blocks.elfGlass", "Name", "tile.elfGlass");
+        cfg.get("cleanroom_allowed_blocks.elfGlass", "Percentage", 50);
+        cfg.get("cleanroom_allowed_blocks.hourglass", "Name", "tile.hourglass");
+        cfg.get("cleanroom_allowed_blocks.hourglass", "Percentage", 50);
         cfg.get("cleanroom_allowed_blocks.reinforced_glass", "Name", "blockAlloyGlass");
         cfg.get("cleanroom_allowed_blocks.reinforced_glass", "Percentage", 5);
         cfg.get("cleanroom_allowed_blocks.bw_reinforced_glass_0", "Name", "BW_GlasBlocks");

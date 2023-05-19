@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
@@ -23,31 +24,25 @@ public class GT_RenderUtil {
     }
 
     public static void renderBlockIcon(RenderBlocks aRenderer, Block aBlock, double aX, double aY, double aZ,
-        IIcon aIcon, byte aSide) {
-        switch (aSide) {
-            case 0 -> {
+        IIcon aIcon, ForgeDirection side) {
+        switch (side) {
+            case DOWN -> {
                 aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, aIcon);
-                return;
             }
-            case 1 -> {
+            case UP -> {
                 aRenderer.renderFaceYPos(aBlock, aX, aY, aZ, aIcon);
-                return;
             }
-            case 2 -> {
+            case NORTH -> {
                 aRenderer.renderFaceZNeg(aBlock, aX, aY, aZ, aIcon);
-                return;
             }
-            case 3 -> {
+            case SOUTH -> {
                 aRenderer.renderFaceZPos(aBlock, aX, aY, aZ, aIcon);
-                return;
             }
-            case 4 -> {
+            case WEST -> {
                 aRenderer.renderFaceXNeg(aBlock, aX, aY, aZ, aIcon);
-                return;
             }
-            case 5 -> {
+            case EAST -> {
                 aRenderer.renderFaceXPos(aBlock, aX, aY, aZ, aIcon);
-                return;
             }
         }
     }

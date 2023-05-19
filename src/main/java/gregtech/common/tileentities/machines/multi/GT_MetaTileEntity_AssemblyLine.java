@@ -3,9 +3,6 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.enums.Mods.BartWorks;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
@@ -41,6 +38,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
+import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
@@ -65,24 +63,10 @@ public class GT_MetaTileEntity_AssemblyLine
         .addShape(
             STRUCTURE_PIECE_LAST,
             transpose(new String[][] { { " ", "e", " " }, { "d", "l", "d" }, { "g", "m", "g" }, { "o", "i", "b" }, }))
-        .addElement('G', ofBlock(GregTech_API.sBlockCasings3, 10)) // grate
-                                                                   // machine
-                                                                   // casing
-        .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 9)) // assembler
-                                                                  // machine
-                                                                  // casing
-        .addElement('m', ofBlock(GregTech_API.sBlockCasings2, 5)) // assembling
-                                                                  // line
-                                                                  // casing
-        .addElement(
-            'g',
-            ofChain(
-                ofBlockUnlocalizedName(IndustrialCraft2.ID, "blockAlloyGlass", 0, true),
-                ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks", 0, true),
-                ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks2", 0, true),
-                // warded
-                // glass
-                ofBlockUnlocalizedName(Thaumcraft.ID, "blockCosmeticOpaque", 2, false)))
+        .addElement('G', ofBlock(GregTech_API.sBlockCasings3, 10)) // grate machine casing
+        .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 9)) // assembler machine casing
+        .addElement('m', ofBlock(GregTech_API.sBlockCasings2, 5)) // assembling line casing
+        .addElement('g', Glasses.chainAllGlasses())
         .addElement(
             'e',
             ofChain(
@@ -108,20 +92,7 @@ public class GT_MetaTileEntity_AssemblyLine
         .addElement(
             'I',
             ofChain(
-                // all
-                // blocks
-                // nearby
-                // use
-                // solid
-                // steel
-                // casing,
-                // so
-                // let's
-                // use
-                // the
-                // texture
-                // of
-                // that
+                // all blocks nearby use solid steel casing, so let's use the texture of that
                 InputBus.newAny(16, 5, ForgeDirection.DOWN),
                 ofHatchAdder(GT_MetaTileEntity_AssemblyLine::addOutputToMachineList, 16, 4)))
         .addElement('i', InputBus.newAny(16, 5, ForgeDirection.DOWN))
@@ -170,10 +141,10 @@ public class GT_MetaTileEntity_AssemblyLine
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
-            if (aActive) return new ITexture[] { BlockIcons.casingTexturePages[0][16], TextureFactory.builder()
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        if (sideDirection == facingDirection) {
+            if (active) return new ITexture[] { BlockIcons.casingTexturePages[0][16], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
                 .extFacing()
                 .build(),

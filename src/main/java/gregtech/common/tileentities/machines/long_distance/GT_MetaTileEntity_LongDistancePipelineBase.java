@@ -34,9 +34,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -55,6 +52,8 @@ import gregtech.api.items.GT_Block_LongDistancePipe;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull_NonElectric;
 import gregtech.api.util.GT_Utility;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_MetaTileEntity_BasicHull_NonElectric {
 
@@ -279,11 +278,11 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
             + Math.abs(getBaseMetaTileEntity().getZCoord() - aCoords.posZ);
     }
 
-    public ChunkCoordinates getFacingOffset(IGregTechTileEntity gt_tile, byte aSide) {
+    public ChunkCoordinates getFacingOffset(IGregTechTileEntity gt_tile, ForgeDirection side) {
         return new ChunkCoordinates(
-            gt_tile.getOffsetX(aSide, 1),
-            gt_tile.getOffsetY(aSide, 1),
-            gt_tile.getOffsetZ(aSide, 1));
+            gt_tile.getOffsetX(side, 1),
+            gt_tile.getOffsetY(side, 1),
+            gt_tile.getOffsetZ(side, 1));
     }
 
     public ChunkCoordinates getCoords() {
@@ -312,12 +311,11 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         final NBTTagCompound tag = accessor.getNBTData();
-        final int facing = getBaseMetaTileEntity().getFrontFacing();
-        final int side = (byte) accessor.getSide()
-            .ordinal();
+        final ForgeDirection facing = getBaseMetaTileEntity().getFrontFacing();
+        final ForgeDirection side = accessor.getSide();
 
         if (side == facing) currentTip.add(GOLD + "Pipeline Input" + RESET);
-        else if (side == ForgeDirection.OPPOSITES[facing]) currentTip.add(BLUE + "Pipeline Output" + RESET);
+        else if (side == facing.getOpposite()) currentTip.add(BLUE + "Pipeline Output" + RESET);
         else currentTip.add("Pipeline Side");
 
         if (tag.getBoolean("hasSender")) currentTip.add("Other End of Input: " + GREEN + "distance" + RESET);

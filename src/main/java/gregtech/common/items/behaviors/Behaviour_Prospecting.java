@@ -41,7 +41,7 @@ public class Behaviour_Prospecting extends Behaviour_None {
 
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         if (aWorld.isRemote) {
             return false;
         }
@@ -80,9 +80,9 @@ public class Behaviour_Prospecting extends Behaviour_None {
                 int tX = aX, tY = aY, tZ = aZ;
                 Block tBlock;
                 for (int i = 0, j = 6 + tQuality; i < j; i++) {
-                    tX -= ForgeDirection.getOrientation(aSide).offsetX;
-                    tY -= ForgeDirection.getOrientation(aSide).offsetY;
-                    tZ -= ForgeDirection.getOrientation(aSide).offsetZ;
+                    tX -= side.offsetX;
+                    tY -= side.offsetY;
+                    tZ -= side.offsetZ;
 
                     tBlock = aWorld.getBlock(tX, tY, tZ);
                     if (tBlock == Blocks.lava || tBlock == Blocks.flowing_lava) {
@@ -109,16 +109,16 @@ public class Behaviour_Prospecting extends Behaviour_None {
                     }
                 }
 
-                Random tRandom = new XSTR(aX ^ aY ^ aZ ^ aSide);
+                final Random tRandom = new XSTR(aX ^ aY ^ aZ ^ side.ordinal());
                 for (int i = 0, j = 9 + 2 * tQuality; i < j; i++) {
                     tX = aX - 4 - tQuality + tRandom.nextInt(j);
                     tY = aY - 4 - tQuality + tRandom.nextInt(j);
                     tZ = aZ - 4 - tQuality + tRandom.nextInt(j);
                     tBlock = aWorld.getBlock(tX, tY, tZ);
                     if (tBlock instanceof GT_Block_Ores_Abstract) {
-                        TileEntity tTileEntity = aWorld.getTileEntity(tX, tY, tZ);
+                        final TileEntity tTileEntity = aWorld.getTileEntity(tX, tY, tZ);
                         if (tTileEntity instanceof GT_TileEntity_Ores) {
-                            Materials tMaterial = GregTech_API.sGeneratedMaterials[((GT_TileEntity_Ores) tTileEntity).mMetaData
+                            final Materials tMaterial = GregTech_API.sGeneratedMaterials[((GT_TileEntity_Ores) tTileEntity).mMetaData
                                 % 1000];
                             if (tMaterial != null && tMaterial != Materials._NULL) {
                                 GT_Utility.sendChatToPlayer(

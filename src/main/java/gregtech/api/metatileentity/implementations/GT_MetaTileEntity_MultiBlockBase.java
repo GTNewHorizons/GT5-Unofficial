@@ -9,9 +9,6 @@ import static mcp.mobius.waila.api.SpecialChars.RESET;
 import java.util.ArrayList;
 import java.util.List;
 
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -60,6 +57,8 @@ import gregtech.common.GT_Pollution;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DrillerBase;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     implements IAddGregtechLogo, IAddUIWidgets, IBindPlayerInventoryUI {
@@ -136,8 +135,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
-        return aSide != getBaseMetaTileEntity().getFrontFacing();
+    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aCoverID) {
+        return side != getBaseMetaTileEntity().getFrontFacing();
     }
 
     /** Override this if you are a multi-block that has added support for single recipe locking. */
@@ -146,7 +145,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (supportsSingleRecipeLocking()) {
             mLockedToSingleRecipe = !mLockedToSingleRecipe;
             if (mLockedToSingleRecipe) {
@@ -166,7 +165,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -800,6 +799,20 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return rVoltage;
     }
 
+    public long getInputVoltageTier() {
+        long rTier = 0;
+        if (mEnergyHatches.size() > 0) {
+            rTier = mEnergyHatches.get(0)
+                .getInputTier();
+            for (int i = 1; i < mEnergyHatches.size(); i++) {
+                if (mEnergyHatches.get(i)
+                    .getInputTier() != rTier) return 0;
+            }
+        }
+
+        return rTier;
+    }
+
     /**
      * Calcualtes the overclockedness using long integers
      *
@@ -1096,8 +1109,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
             ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = getRecipeMap();
@@ -1126,9 +1140,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mMaintenanceHatches.add(hatch);
         }
         return false;
     }
@@ -1139,9 +1154,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mEnergyHatches.add(hatch);
         }
         return false;
     }
@@ -1153,6 +1169,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch hatch
             && GT_ExoticEnergyInputHelper.isExoticEnergyInput(aMetaTileEntity)) {
             hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return mExoticEnergyHatches.add(hatch);
         }
         return false;
@@ -1162,9 +1179,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mDynamoHatches.add(hatch);
         }
         return false;
     }
@@ -1173,9 +1191,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mMufflerHatches.add(hatch);
         }
         return false;
     }
@@ -1194,10 +1213,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = getRecipeMap();
-            return mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.mRecipeMap = getRecipeMap();
+            return mInputBusses.add(hatch);
         }
         return false;
     }
@@ -1206,9 +1226,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mOutputBusses.add(hatch);
         }
         return false;
     }
@@ -1217,10 +1238,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = getRecipeMap();
-            return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.mRecipeMap = getRecipeMap();
+            return mInputHatches.add(hatch);
         }
         return false;
     }
@@ -1229,9 +1251,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mOutputHatches.add(hatch);
         }
         return false;
     }
@@ -1314,12 +1337,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
         return false;
     }
 
@@ -1380,19 +1405,38 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
         boolean isActive = tag.getBoolean("isActive");
         if (isActive) {
+            long energyTier = tag.getLong("energyTier");
             long actualEnergyUsage = tag.getLong("energyUsage");
-            if (actualEnergyUsage > 0) {
-                currentTip.add(
-                    StatCollector.translateToLocalFormatted(
-                        "GT5U.waila.energy.use",
-                        GT_Utility.formatNumbers(actualEnergyUsage),
-                        GT_Utility.getColoredTierNameFromVoltage(actualEnergyUsage)));
-            } else if (actualEnergyUsage < 0) {
-                currentTip.add(
-                    StatCollector.translateToLocalFormatted(
-                        "GT5U.waila.energy.produce",
-                        GT_Utility.formatNumbers(-actualEnergyUsage),
-                        GT_Utility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
+            if (energyTier > 0) {
+                if (actualEnergyUsage > 0) {
+                    currentTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.waila.energy.use_with_amperage",
+                            GT_Utility.formatNumbers(actualEnergyUsage),
+                            GT_Utility.getAmperageForTier(actualEnergyUsage, (byte) energyTier),
+                            GT_Utility.getColoredTierNameFromTier((byte) energyTier)));
+                } else if (actualEnergyUsage < 0) {
+                    currentTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.waila.energy.produce_with_amperage",
+                            GT_Utility.formatNumbers(-actualEnergyUsage),
+                            GT_Utility.getAmperageForTier(-actualEnergyUsage, (byte) energyTier),
+                            GT_Utility.getColoredTierNameFromTier((byte) energyTier)));
+                }
+            } else {
+                if (actualEnergyUsage > 0) {
+                    currentTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.waila.energy.use",
+                            GT_Utility.formatNumbers(actualEnergyUsage),
+                            GT_Utility.getColoredTierNameFromVoltage(actualEnergyUsage)));
+                } else if (actualEnergyUsage < 0) {
+                    currentTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.waila.energy.produce",
+                            GT_Utility.formatNumbers(-actualEnergyUsage),
+                            GT_Utility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
+                }
             }
         }
         currentTip.add(
@@ -1418,6 +1462,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             if (tileEntity.isActive()) {
                 if (mEUt < 0) tag.setLong("energyUsage", getActualEnergyUsage());
                 else tag.setLong("energyUsage", (long) -mEUt * mEfficiency / 10000);
+                tag.setLong("energyTier", getInputVoltageTier());
             }
         }
     }

@@ -4,9 +4,6 @@ import static gregtech.api.enums.GT_Values.V;
 
 import java.util.List;
 
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -15,6 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -31,6 +29,8 @@ import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import ic2.api.item.IElectricItem;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -84,9 +84,9 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        return mTextures[aSide == aFacing ? 1 : 0][aColorIndex + 1];
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return mTextures[side == aFacing ? 1 : 0][colorIndex + 1];
     }
 
     @Override
@@ -110,7 +110,7 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -125,13 +125,13 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
-        return aSide != getBaseMetaTileEntity().getFrontFacing();
+    public boolean isInputFacing(ForgeDirection side) {
+        return side != getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing();
+    public boolean isOutputFacing(ForgeDirection side) {
+        return side == getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -236,7 +236,8 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
         if (GT_ModHandler.isElectricItem(aStack) && aStack.getUnlocalizedName()
             .startsWith("gt.metaitem.01.")) {
             String name = aStack.getUnlocalizedName();
@@ -254,7 +255,8 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
         if (!GT_Utility.isStackValid(aStack)) {
             return false;
         }
@@ -346,14 +348,16 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
         long avgOut = tag.getLong("AvgOut");
         currenttip.add(
             StatCollector.translateToLocalFormatted(
-                "GT5U.waila.energy.avg_in",
+                "GT5U.waila.energy.avg_in_with_amperage",
                 GT_Utility.formatNumbers(avgIn),
-                GT_Utility.getColoredTierNameFromVoltage(avgIn)));
+                GT_Utility.getAmperageForTier(avgIn, (byte) getInputTier()),
+                GT_Utility.getColoredTierNameFromTier((byte) getInputTier())));
         currenttip.add(
             StatCollector.translateToLocalFormatted(
-                "GT5U.waila.energy.avg_out",
+                "GT5U.waila.energy.avg_out_with_amperage",
                 GT_Utility.formatNumbers(avgOut),
-                GT_Utility.getColoredTierNameFromVoltage(avgOut)));
+                GT_Utility.getAmperageForTier(avgOut, (byte) getOutputTier()),
+                GT_Utility.getColoredTierNameFromTier((byte) getOutputTier())));
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 

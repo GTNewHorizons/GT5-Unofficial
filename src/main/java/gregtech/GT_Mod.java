@@ -34,10 +34,9 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import appeng.api.AEApi;
-
 import com.google.common.base.Stopwatch;
 
+import appeng.api.AEApi;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -88,6 +87,7 @@ import gregtech.crossmod.Waila;
 import gregtech.loaders.load.GT_CoverBehaviorLoader;
 import gregtech.loaders.load.GT_FuelLoader;
 import gregtech.loaders.load.GT_ItemIterator;
+import gregtech.loaders.load.GT_Loader_MetaTileEntities_Recipes;
 import gregtech.loaders.load.GT_SonictronLoader;
 import gregtech.loaders.misc.GT_Achievements;
 import gregtech.loaders.misc.GT_Bees;
@@ -105,7 +105,7 @@ import ic2.api.recipe.RecipeOutput;
     guiFactory = "gregtech.client.GT_GuiFactory",
     dependencies = " required-after:IC2;" + " required-after:structurelib;"
         + " required-after:gtnhlib@[0.0.8,);"
-        + " required-after:modularui;"
+        + " required-after:modularui@[1.1.7,);"
         + " after:dreamcraft;"
         + " after:Forestry;"
         + " after:PFAAGeologica;"
@@ -343,6 +343,8 @@ public class GT_Mod implements IGT_Mod {
                 return false;
             }
         }, true);
+
+        new GT_Loader_MetaTileEntities_Recipes().run();
 
         if (gregtechproxy.mSortToTheEnd) {
             new GT_ItemIterator().run();

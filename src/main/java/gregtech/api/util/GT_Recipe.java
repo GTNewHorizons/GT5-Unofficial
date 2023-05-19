@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.NEICustomDiagrams;
 import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.util.GT_RecipeBuilder.handleRecipeCollision;
 import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GT_RecipeMapUtil.*;
 import static gregtech.api.util.GT_Utility.formatNumbers;
@@ -22,9 +23,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
-
-import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
-import mods.railcraft.common.items.RailcraftToolItems;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -45,10 +43,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import appeng.util.ReadableNumberConverter;
-import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.PositionedStack;
-
 import com.google.common.collect.Iterables;
 import com.gtnewhorizons.modularui.api.GlStateManager;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
@@ -64,6 +58,9 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import appeng.util.ReadableNumberConverter;
+import codechicken.lib.gui.GuiDraw;
+import codechicken.nei.PositionedStack;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import gnu.trove.map.TByteObjectMap;
@@ -98,6 +95,8 @@ import gregtech.nei.HeatingCoilSpecialValueFormatter;
 import gregtech.nei.INEISpecialInfoFormatter;
 import gregtech.nei.NEIRecipeInfo;
 import ic2.core.Ic2Items;
+import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
+import mods.railcraft.common.items.RailcraftToolItems;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -2071,8 +2070,14 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 setUsualFluidInputCount(20);
                 setUsualFluidOutputCount(1);
                 setProgressBarPos(86, 44);
-                setLogoPos(87, 81);
-                setNEIBackgroundSize(172, 125);
+                setNEITransferRect(
+                    new Rectangle(
+                        progressBarPos.x - (16 / 2),
+                        progressBarPos.y,
+                        progressBarSize.width + 16,
+                        progressBarSize.height));
+                setLogoPos(87, 99);
+                setNEIBackgroundSize(172, 118);
             }
 
             @Override
@@ -2100,7 +2105,12 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         + formatNumbers(1000L * recipeInfo.recipe.mDuration / 100L * recipeInfo.recipe.mEUt)
                         + " EU");
                 // 1000 / (20 ticks * 5 seconds) = 10L/t. 10L/t * x EU/L = 10 * x EU/t.
-                drawNEIText(recipeInfo, "Average: " + formatNumbers(10L * recipeInfo.recipe.mEUt) + " EU/t");
+                long averageUsage = 10L * recipeInfo.recipe.mEUt;
+                drawNEIText(
+                    recipeInfo,
+                    "Average: " + formatNumbers(averageUsage)
+                        + " EU/t"
+                        + GT_Utility.getTierNameWithParentheses(averageUsage));
             }
         }
 
@@ -3729,7 +3739,40 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 if (specialHandler != null) r = specialHandler.apply(r);
                 if (r == null) continue;
                 if (checkForCollision
-                    && findRecipe(null, false, true, Long.MAX_VALUE, r.mFluidInputs, r.mInputs) != null) continue;
+                    && findRecipe(null, false, true, Long.MAX_VALUE, r.mFluidInputs, r.mInputs) != null) {
+                    StringBuilder errorInfo = new StringBuilder();
+                    boolean hasAnEntry = false;
+                    for (FluidStack fStack : r.mFluidInputs) {
+                        if (fStack == null) {
+                            continue;
+                        }
+                        String s = fStack.getLocalizedName();
+                        if (s == null) {
+                            continue;
+                        }
+                        if (hasAnEntry) {
+                            errorInfo.append("+")
+                                .append(s);
+                        } else {
+                            errorInfo.append(s);
+                        }
+                        hasAnEntry = true;
+                    }
+                    for (ItemStack iStack : r.mInputs) {
+                        if (iStack == null) {
+                            continue;
+                        }
+                        String s = iStack.getDisplayName();
+                        if (hasAnEntry) {
+                            errorInfo.append("+" + s);
+                        } else {
+                            errorInfo.append(s);
+                        }
+                        hasAnEntry = true;
+                    }
+                    handleRecipeCollision(errorInfo.toString());
+                    continue;
+                }
                 ret.add(add(r));
             }
             if (!ret.isEmpty()) {

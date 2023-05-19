@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 
 import com.google.common.io.ByteArrayDataInput;
+
 import io.netty.buffer.ByteBuf;
 
 /**

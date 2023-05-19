@@ -60,15 +60,15 @@ public class GT_MetaTileEntity_MonsterRepellent extends GT_MetaTileEntity_Tiered
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        if (aSide != ForgeDirection.UP.ordinal()) return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1] };
-        if (aActive) return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1],
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        if (sideDirection != ForgeDirection.UP) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1] };
+        if (active) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1],
             TextureFactory.of(OVERLAY_TELEPORTER_ACTIVE), TextureFactory.builder()
                 .addIcon(OVERLAY_TELEPORTER_ACTIVE_GLOW)
                 .glow()
                 .build() };
-        return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_TELEPORTER),
+        return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_TELEPORTER),
             TextureFactory.builder()
                 .addIcon(OVERLAY_TELEPORTER_GLOW)
                 .glow()
@@ -118,7 +118,7 @@ public class GT_MetaTileEntity_MonsterRepellent extends GT_MetaTileEntity_Tiered
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -128,7 +128,7 @@ public class GT_MetaTileEntity_MonsterRepellent extends GT_MetaTileEntity_Tiered
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
+    public boolean isInputFacing(ForgeDirection side) {
         return true;
     }
 
@@ -158,12 +158,14 @@ public class GT_MetaTileEntity_MonsterRepellent extends GT_MetaTileEntity_Tiered
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
         return false;
     }
 

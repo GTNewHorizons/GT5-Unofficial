@@ -13,12 +13,14 @@ import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TierEU;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -28,7 +30,6 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
-import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
 import gregtech.common.power.Power;
 import gregtech.common.power.SteamPower;
 
@@ -100,7 +101,7 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
+    public boolean isInputFacing(ForgeDirection side) {
         return false;
     }
 
@@ -130,8 +131,8 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
-        return super.isFacingValid(aFacing) && aFacing != mMainFacing;
+    public boolean isFacingValid(ForgeDirection facing) {
+        return super.isFacingValid(facing) && facing != mMainFacing;
     }
 
     @Override
@@ -145,13 +146,13 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
-    public boolean isLiquidInput(byte aSide) {
-        return aSide != mMainFacing;
+    public boolean isLiquidInput(ForgeDirection side) {
+        return side != mMainFacing;
     }
 
     @Override
-    public boolean isLiquidOutput(byte aSide) {
-        return aSide != mMainFacing;
+    public boolean isLiquidOutput(ForgeDirection side) {
+        return side != mMainFacing;
     }
 
     @Override
@@ -192,15 +193,14 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
 
     @Override
     public int checkRecipe() {
-        GT_Recipe tRecipe = getRecipeList()
-            .findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[mTier], null, getAllInputs());
+        GT_Recipe tRecipe = getRecipeList().findRecipe(getBaseMetaTileEntity(), false, TierEU.LV, null, getAllInputs());
         if ((tRecipe != null) && (canOutput(tRecipe.mOutputs))
             && (tRecipe.isRecipeInputEqual(true, null, getAllInputs()))) {
             this.mOutputItems[0] = tRecipe.getOutput(0);
             calculateOverclockedNess(tRecipe);
-            return 2;
+            return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
         }
-        return 0;
+        return DID_NOT_FIND_RECIPE;
     }
 
     @Override
@@ -224,9 +224,9 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
             new ParticleEventBuilder().setIdentifier(ParticleFX.CLOUD)
                 .setWorld(getBaseMetaTileEntity().getWorld())
                 .setMotion(
-                    ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetX / 5.0,
-                    ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetY / 5.0,
-                    ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetZ / 5.0)
+                    getBaseMetaTileEntity().getFrontFacing().offsetX / 5.0,
+                    getBaseMetaTileEntity().getFrontFacing().offsetY / 5.0,
+                    getBaseMetaTileEntity().getFrontFacing().offsetZ / 5.0)
                 .<ParticleEventBuilder>times(
                     8,
                     x -> x
@@ -244,9 +244,9 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
+    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aCoverID) {
         return GregTech_API.getCoverBehaviorNew(aCoverID.toStack())
-            .isSimpleCover() && super.allowCoverOnSide(aSide, aCoverID);
+            .isSimpleCover() && super.allowCoverOnSide(side, aCoverID);
     }
 
     public float getSteamDamage() {
@@ -370,12 +370,12 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
-    protected FluidDisplaySlotWidget createFluidInputSlot(IDrawable[] backgrounds, Pos2d pos) {
+    protected FluidSlotWidget createFluidInputSlot(IDrawable[] backgrounds, Pos2d pos) {
         return null;
     }
 
     @Override
-    protected FluidDisplaySlotWidget createFluidOutputSlot(IDrawable[] backgrounds, Pos2d pos) {
+    protected FluidSlotWidget createFluidOutputSlot(IDrawable[] backgrounds, Pos2d pos) {
         return null;
     }
 }

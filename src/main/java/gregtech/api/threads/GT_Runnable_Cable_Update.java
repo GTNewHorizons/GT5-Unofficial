@@ -1,7 +1,5 @@
 package gregtech.api.threads;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
@@ -51,18 +49,16 @@ public class GT_Runnable_Cable_Update extends GT_Runnable_MachineBlockUpdate {
 
                 // Now see if we should add the nearby blocks to the queue:
                 // only add blocks the cable is connected to
-                if (tTileEntity instanceof BaseMetaPipeEntity
-                    && ((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable) {
+                if (tTileEntity instanceof BaseMetaPipeEntity metaPipe
+                    && metaPipe.getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable cable) {
                     ChunkCoordinates tCoords;
-                    for (byte tSide : ALL_VALID_SIDES) {
-                        if (((GT_MetaPipeEntity_Cable) ((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity())
-                            .isConnectedAtSide(tSide)) {
-                            final ForgeDirection offset = ForgeDirection.getOrientation(tSide);
+                    for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                        if (cable.isConnectedAtSide(side)) {
                             if (visited.add(
                                 tCoords = new ChunkCoordinates(
-                                    aCoords.posX + offset.offsetX,
-                                    aCoords.posY + offset.offsetY,
-                                    aCoords.posZ + offset.offsetZ)))
+                                    aCoords.posX + side.offsetX,
+                                    aCoords.posY + side.offsetY,
+                                    aCoords.posZ + side.offsetZ)))
                                 tQueue.add(tCoords);
                         }
                     }

@@ -2,18 +2,12 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.enums.Mods.BartWorks;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -23,6 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -43,11 +38,14 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMul
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_IntegratedOreFactory extends
     GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_IntegratedOreFactory> implements ISurvivalConstructable {
@@ -76,15 +74,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
                     { "EEEEEE     ", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEE     " } }))
         .addElement('i', ofBlock(GregTech_API.sBlockCasings8, 7))
         .addElement('s', ofBlock(GregTech_API.sBlockCasings4, 1))
-        .addElement(
-            'g',
-            ofChain(
-                ofBlockUnlocalizedName(IndustrialCraft2.ID, "blockAlloyGlass", 0, true),
-                ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks", 0, true),
-                ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks2", 0, true),
-                // warded
-                // glass
-                ofBlockUnlocalizedName(Thaumcraft.ID, "blockCosmeticOpaque", 2, false)))
+        .addElement('g', Glasses.chainAllGlasses())
         .addElement('x', ofBlock(GregTech_API.sBlockCasings2, 3))
         .addElement('p', ofBlock(GregTech_API.sBlockCasings2, 15))
         .addElement('t', ofFrame(Materials.TungstenSteel))
@@ -371,7 +361,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @Override
-    public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             sVoidStone = !sVoidStone;
             GT_Utility.sendChatToPlayer(
@@ -662,9 +652,9 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE)

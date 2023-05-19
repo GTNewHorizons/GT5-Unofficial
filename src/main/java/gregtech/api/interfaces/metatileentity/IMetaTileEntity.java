@@ -16,11 +16,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
 
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 
+import appeng.api.crafting.ICraftingIconProvider;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
@@ -42,7 +44,7 @@ import gregtech.common.power.Power;
  * Don't implement this yourself and expect it to work. Extend @MetaTileEntity itself.
  */
 public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHandler, IGearEnergyTileEntity,
-    IMachineBlockUpdateable, IGregtechWailaProvider, IGetGUITextureSet {
+    IMachineBlockUpdateable, IGregtechWailaProvider, IGetGUITextureSet, ICraftingIconProvider {
 
     /**
      * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
@@ -125,28 +127,30 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * If a Cover of that Type can be placed on this Side. Also Called when the Facing of the Block Changes and a Cover
      * is on said Side.
      */
-    boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack);
+    boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aStack);
 
     /**
      * When a Player rightclicks the Facing with a Screwdriver.
      */
-    void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ);
+    void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ);
 
     /**
-     * When a Player rightclicks the Facing with a Wrench.
+     * When a Player right-clicks the Facing with a Wrench.
      */
-    boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ);
+    boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer, float aX,
+        float aY, float aZ);
 
     /**
-     * When a Player rightclicks the Facing with a wire cutter.
+     * When a Player right-clicks the Facing with a wire cutter.
      */
-    boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ);
+    boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
+        float aX, float aY, float aZ);
 
     /**
-     * When a Player rightclicks the Facing with a soldering iron.
+     * When a Player right-clicks the Facing with a soldering iron.
      */
-    boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-        float aZ);
+    boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
+        float aX, float aY, float aZ);
 
     /**
      * Called right before this Machine explodes
@@ -181,10 +185,10 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     void onRemoval();
 
     /**
-     * @param aFacing
+     * @param facing
      * @return if aFacing would be a valid Facing for this Device. Used for wrenching.
      */
-    boolean isFacingValid(byte aFacing);
+    boolean isFacingValid(ForgeDirection facing);
 
     /**
      * @return the Server Side Container
@@ -214,12 +218,12 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * From new ISidedInventory
      */
-    boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack);
+    boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side, ItemStack aStack);
 
     /**
      * From new ISidedInventory
      */
-    boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack);
+    boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side, ItemStack aStack);
 
     /**
      * @return if aIndex is a valid Slot. false for things like HoloSlots. Is used for determining if an Item is dropped
@@ -243,12 +247,12 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * If this Side can connect to inputting pipes
      */
-    boolean isLiquidInput(byte aSide);
+    boolean isLiquidInput(ForgeDirection side);
 
     /**
      * If this Side can connect to outputting pipes
      */
-    boolean isLiquidOutput(byte aSide);
+    boolean isLiquidOutput(ForgeDirection side);
 
     /**
      * Just an Accessor for the Name variable.
@@ -261,12 +265,12 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     boolean isAccessAllowed(EntityPlayer aPlayer);
 
     /**
-     * a Player rightclicks the Machine Sneaky rightclicks are not getting passed to this!
+     * a Player right-clicks the Machine Sneaky right clicks are not getting passed to this!
      *
      * @return
      */
-    boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY,
-        float aZ);
+    boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side, float aX,
+        float aY, float aZ);
 
     /**
      * a Player leftclicks the Machine Sneaky leftclicks are getting passed to this unlike with the rightclicks.
@@ -364,22 +368,17 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * Icon of the Texture. If this returns null then it falls back to getTextureIndex.
      *
-     * @param aSide       is the Side of the Block
-     * @param aFacing     is the direction the Block is facing (or a Bitmask of all Connections in case of Pipes)
-     * @param aColorIndex The Minecraft Color the Block is having
-     * @param aActive     if the Machine is currently active (use this instead of calling
-     *                    mBaseMetaTileEntity.mActive!!!). Note: In case of Pipes this means if this Side is connected
-     *                    to something or not.
-     * @param aRedstone   if the Machine is currently outputting a RedstoneSignal (use this instead of calling
-     *                    mBaseMetaTileEntity.mRedstone!!!)
+     * @param side          is the Side of the Block
+     * @param facing        is the direction the Block is facing
+     * @param colorIndex    The Minecraft Color the Block is having
+     * @param active        if the Machine is currently active (use this instead of calling
+     *                      {@code mBaseMetaTileEntity.mActive)}. Note: In case of Pipes this means if this Side is
+     *                      connected to something or not.
+     * @param redstoneLevel if the Machine is currently outputting a RedstoneSignal (use this instead of calling
+     *                      {@code mBaseMetaTileEntity.mRedstone} !!!)
      */
-    ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone);
-
-    /**
-     * The Textures used for the Item rendering. Return null if you want the regular 3D Block Rendering.
-     */
-    // public ITexture[] getItemTexture(ItemStack aStack);
+    ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+        int colorIndex, boolean active, boolean redstoneLevel);
 
     /**
      * Register Icons here. This gets called when the Icons get initialized by the Base Block Best is you put your Icons
@@ -405,9 +404,9 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * Gets the Output for the comparator on the given Side
      */
-    byte getComparatorValue(byte aSide);
+    byte getComparatorValue(ForgeDirection side);
 
-    float getExplosionResistance(byte aSide);
+    float getExplosionResistance(ForgeDirection side);
 
     String[] getInfoData();
 
@@ -415,7 +414,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
 
     ItemStack[] getRealInventory();
 
-    boolean connectsToItemPipe(byte aSide);
+    boolean connectsToItemPipe(ForgeDirection side);
 
     void onColorChangeServer(byte aColor);
 
@@ -521,4 +520,9 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @param tooltip Tooltip to which can be added
      */
     default void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {}
+
+    @Override
+    default ItemStack getMachineCraftingIcon() {
+        return null;
+    }
 }

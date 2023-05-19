@@ -842,6 +842,7 @@ public enum OrePrefixes {
         nanite.mGeneratedItems.add(MaterialsUEVplus.WhiteDwarfMatter);
         nanite.mGeneratedItems.add(MaterialsUEVplus.BlackDwarfMatter);
         nanite.mGeneratedItems.add(Materials.Glowstone);
+        nanite.mGeneratedItems.add(MaterialsUEVplus.Eternity);
         // -----
 
         gear.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
@@ -970,7 +971,6 @@ public enum OrePrefixes {
         oreRich.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount * 2);
         ore.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount);
         crushed.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount);
-        toolHeadDrill.mSecondaryMaterial = new MaterialStack(Materials.Steel, plate.mMaterialAmount * 4);
         toolHeadChainsaw.mSecondaryMaterial = new MaterialStack(
             Materials.Steel,
             plate.mMaterialAmount * 4 + ring.mMaterialAmount * 2);
@@ -1352,8 +1352,8 @@ public enum OrePrefixes {
                     || aMaterial == Materials.YttriumBariumCuprate
                     || aMaterial == Materials.BloodInfusedIron
                     || aMaterial == MaterialsUEVplus.Universium
-                    || aMaterial == MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter))
-                    wireFine.mDisabledItems.add(aMaterial);
+                    || aMaterial == MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter
+                    || aMaterial == MaterialsUEVplus.Eternity)) wireFine.mDisabledItems.add(aMaterial);
                 // Gears
                 if (!enableUnusedGears && !(aMaterial == Materials.Aluminium || aMaterial == Materials.Titanium
                     || aMaterial == Materials.Iron

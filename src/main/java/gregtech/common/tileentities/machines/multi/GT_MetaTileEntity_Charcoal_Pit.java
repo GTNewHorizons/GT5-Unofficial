@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.ChunkPosition;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.GT_Mod;
@@ -46,8 +47,8 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
-        return aFacing > 1;
+    public boolean isFacingValid(ForgeDirection facing) {
+        return (facing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0;
     }
 
     @Override
@@ -267,9 +268,9 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        if (aSide == 1) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        if (side == ForgeDirection.UP) {
             if (aActive) return new ITexture[] { casingTexturePages[0][10],
                 TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE), TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW)
@@ -299,9 +300,9 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
             new WorldSpawnedEventBuilder.ParticleEventBuilder().setMotion(0D, 0.3D, 0D)
                 .setIdentifier(ParticleFX.LARGE_SMOKE)
                 .setPosition(
-                    aBaseMetaTileEntity.getOffsetX((byte) 1, 1) + XSTR_INSTANCE.nextFloat(),
-                    aBaseMetaTileEntity.getOffsetY((byte) 1, 1),
-                    aBaseMetaTileEntity.getOffsetZ((byte) 1, 1) + XSTR_INSTANCE.nextFloat())
+                    aBaseMetaTileEntity.getOffsetX(ForgeDirection.UP, 1) + XSTR_INSTANCE.nextFloat(),
+                    aBaseMetaTileEntity.getOffsetY(ForgeDirection.UP, 1),
+                    aBaseMetaTileEntity.getOffsetZ(ForgeDirection.UP, 1) + XSTR_INSTANCE.nextFloat())
                 .setWorld(getBaseMetaTileEntity().getWorld())
                 .run();
         }

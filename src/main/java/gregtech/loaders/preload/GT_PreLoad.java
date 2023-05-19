@@ -359,8 +359,6 @@ public class GT_PreLoad {
             .getBoolean(false);
         GT_Values.D2 = tMainConfig.get(GT_Mod.aTextGeneral, "Debug2", false)
             .getBoolean(false);
-        GT_Values.updateFluidDisplayItems = tMainConfig.get(GT_Mod.aTextGeneral, "update fluid display items", true)
-            .getBoolean(true);
         GT_Values.allow_broken_recipemap = tMainConfig.get(GT_Mod.aTextGeneral, "debug allow broken recipemap", false)
             .getBoolean(false);
         GT_Values.debugCleanroom = tMainConfig.get(GT_Mod.aTextGeneral, "debugCleanroom", false)

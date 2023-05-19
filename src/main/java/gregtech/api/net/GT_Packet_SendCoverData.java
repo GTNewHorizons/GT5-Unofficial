@@ -2,6 +2,7 @@ package gregtech.api.net;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
 
@@ -21,7 +22,7 @@ public class GT_Packet_SendCoverData extends GT_Packet_New {
     protected short mY;
     protected int mZ;
 
-    protected byte side;
+    protected ForgeDirection side;
     protected int coverID;
     protected ISerializableObject coverData;
 
@@ -29,7 +30,7 @@ public class GT_Packet_SendCoverData extends GT_Packet_New {
         super(true);
     }
 
-    public GT_Packet_SendCoverData(int mX, short mY, int mZ, byte coverSide, int coverID,
+    public GT_Packet_SendCoverData(int mX, short mY, int mZ, ForgeDirection coverSide, int coverID,
         ISerializableObject coverData) {
         super(false);
         this.mX = mX;
@@ -52,7 +53,8 @@ public class GT_Packet_SendCoverData extends GT_Packet_New {
         this.coverData = info.getCoverData();
     }
 
-    public GT_Packet_SendCoverData(byte coverSide, int coverID, ISerializableObject coverData, ICoverable tile) {
+    public GT_Packet_SendCoverData(ForgeDirection coverSide, int coverID, ISerializableObject coverData,
+        ICoverable tile) {
         super(false);
         this.mX = tile.getXCoord();
         this.mY = tile.getYCoord();
@@ -74,7 +76,7 @@ public class GT_Packet_SendCoverData extends GT_Packet_New {
         aOut.writeShort(mY);
         aOut.writeInt(mZ);
 
-        aOut.writeByte(side);
+        aOut.writeByte(side.ordinal());
         aOut.writeInt(coverID);
         coverData.writeToByteBuf(aOut);
     }
@@ -86,7 +88,7 @@ public class GT_Packet_SendCoverData extends GT_Packet_New {
             aData.readInt(),
             aData.readShort(),
             aData.readInt(),
-            aData.readByte(),
+            ForgeDirection.getOrientation(aData.readByte()),
             coverId = aData.readInt(),
             GregTech_API.getCoverBehaviorNew(coverId)
                 .createDataObject()
@@ -97,8 +99,8 @@ public class GT_Packet_SendCoverData extends GT_Packet_New {
     public void process(IBlockAccess aWorld) {
         if (aWorld != null) {
             final TileEntity tile = aWorld.getTileEntity(mX, mY, mZ);
-            if (tile instanceof CoverableTileEntity && !((CoverableTileEntity) tile).isDead()) {
-                ((CoverableTileEntity) tile).receiveCoverData(side, coverID, coverData, null);
+            if (tile instanceof CoverableTileEntity coverable && !coverable.isDead()) {
+                coverable.receiveCoverData(side, coverID, coverData, null);
             }
         }
     }

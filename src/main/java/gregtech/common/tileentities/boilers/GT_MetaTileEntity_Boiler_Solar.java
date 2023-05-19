@@ -7,9 +7,6 @@ import static mcp.mobius.waila.api.SpecialChars.RESET;
 
 import java.util.List;
 
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,6 +29,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
 
@@ -128,14 +127,14 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        int i = aColorIndex + 1;
-        if (aSide >= 2) {
-            if (aSide != aFacing) return mTextures[2][i];
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        final int i = colorIndex + 1;
+        if ((sideDirection.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0) { // Horizontal
+            if (sideDirection != facingDirection) return mTextures[2][i];
             return mTextures[3][i];
         }
-        return mTextures[aSide][i];
+        return mTextures[sideDirection.ordinal()][i];
     }
 
     @Override
@@ -224,7 +223,7 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
         if ((aTick % 240L != 0L) || (world.isThundering())) {
             return;
         }
-        if (!aBaseMetaTileEntity.getSkyAtSide((byte) ForgeDirection.UP.ordinal())) {
+        if (!aBaseMetaTileEntity.getSkyAtSide(ForgeDirection.UP)) {
             return;
         }
         boolean weatherClear = !world.isRaining() || aBaseMetaTileEntity.getBiome().rainfall == 0.0F;

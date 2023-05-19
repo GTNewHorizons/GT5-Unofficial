@@ -86,23 +86,21 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        final ForgeDirection sideDirection = ForgeDirection.getOrientation(aSide);
-        final ForgeDirection facingDirection = ForgeDirection.getOrientation(aFacing);
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         final ForgeDirection rearDirection = facingDirection.getOpposite();
         final ITexture[] tmp;
-        if (aSide >= 2) {
+        if ((sideDirection.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0) {
             if (sideDirection == facingDirection) {
-                if (aActive) tmp = mTextures[4][aColorIndex + 1];
-                else tmp = mTextures[3][aColorIndex + 1];
+                if (active) tmp = mTextures[4][colorIndex + 1];
+                else tmp = mTextures[3][colorIndex + 1];
             } else if (sideDirection == rearDirection) {
-                tmp = mTextures[5][aColorIndex + 1];
+                tmp = mTextures[5][colorIndex + 1];
             } else {
-                tmp = mTextures[2][aColorIndex + 1];
+                tmp = mTextures[2][colorIndex + 1];
             }
-        } else tmp = mTextures[aSide][aColorIndex + 1];
-        if (aSide != aFacing && tmp.length == 2) {
+        } else tmp = mTextures[sideDirection.ordinal()][colorIndex + 1];
+        if (sideDirection != facingDirection && tmp.length == 2) {
             return new ITexture[] { tmp[0] };
         }
         return tmp;
@@ -267,9 +265,8 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
         if (mSteam == null || mSteam.amount == 0) return;
         pushSteamToSide(
             aBaseMetaTileEntity,
-            ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing())
-                .getOpposite()
-                .ordinal());
+            aBaseMetaTileEntity.getFrontFacing()
+                .getOpposite());
     }
 
     /**
@@ -278,7 +275,7 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
      * @param aBaseMetaTileEntity The tile-entity instance of this Lava Boiler
      */
     protected void drainLava(IGregTechTileEntity aBaseMetaTileEntity) {
-        final IFluidHandler upTank = aBaseMetaTileEntity.getITankContainerAtSide((byte) ForgeDirection.UP.ordinal());
+        final IFluidHandler upTank = aBaseMetaTileEntity.getITankContainerAtSide(ForgeDirection.UP);
         if (upTank == null) return;
         // Simulates drain of maximum lava amount up to 1000L that can fit the internal tank
         final FluidStack drainableLavaStack = upTank.drain(
@@ -321,10 +318,10 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     public void onRandomDisplayTick(IGregTechTileEntity aBaseMetaTileEntity) {
         if (aBaseMetaTileEntity.isActive()) {
 
-            final byte frontFacing = aBaseMetaTileEntity.getFrontFacing();
-            final ForgeDirection frontDirection = ForgeDirection.getOrientation(frontFacing);
+            final ForgeDirection frontFacing = aBaseMetaTileEntity.getFrontFacing();
 
-            if (frontFacing > 1 && aBaseMetaTileEntity.getCoverIDAtSide(frontFacing) == 0
+            if ((frontFacing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0
+                && aBaseMetaTileEntity.getCoverIDAtSide(frontFacing) == 0
                 && !aBaseMetaTileEntity.getOpacityAtSide(frontFacing)) {
 
                 final double oX = aBaseMetaTileEntity.getOffsetX(frontFacing, 1) + 8D / 16D;
@@ -337,7 +334,7 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
 
                 y = oY + XSTR_INSTANCE.nextFloat() * 6D / 16D;
 
-                switch (frontDirection) {
+                switch (frontFacing) {
                     case WEST -> {
                         x = oX - offset;
                         z = oZ + horizontal;
@@ -395,12 +392,14 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
         return true;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
         return true;
     }
 
@@ -408,7 +407,7 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         if (aIndex != GT_MetaTileEntity_Boiler.SOUND_EVENT_LET_OFF_EXCESS_STEAM) return;
 
-        final ForgeDirection rearDirection = ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing())
+        final ForgeDirection rearDirection = getBaseMetaTileEntity().getFrontFacing()
             .getOpposite();
         GT_Utility.doSoundAtClient(
             SoundResource.RANDOM_FIZZ,
@@ -454,13 +453,8 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    public FluidStack getDisplayedFluid() {
-        return lavaTank.getFluid();
-    }
-
-    @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
-        return new FluidTankInfo[] { super.getTankInfo(aSide)[0],
+    public FluidTankInfo[] getTankInfo(ForgeDirection side) {
+        return new FluidTankInfo[] { super.getTankInfo(side)[0],
             new FluidTankInfo(this.lavaTank.getFluid(), this.lavaTank.getCapacity()),
             new FluidTankInfo(getDrainableStack(), getCapacity()) };
     }

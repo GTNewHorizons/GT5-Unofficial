@@ -6,7 +6,7 @@ import gregtech.api.logic.PowerLogic;
 
 public interface PowerLogicHost {
 
-    PowerLogic getPowerLogic(ForgeDirection facing);
+    PowerLogic getPowerLogic(ForgeDirection side);
 
     default boolean isEnergyReceiver() {
         return false;

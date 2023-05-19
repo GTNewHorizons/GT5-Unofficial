@@ -38,12 +38,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.AspectSourceHelper;
-import thaumcraft.api.aspects.IAspectContainer;
-import thaumcraft.api.visnet.VisNetHandler;
-
 import com.google.common.base.Enums;
 
 import cpw.mods.fml.relauncher.Side;
@@ -62,6 +56,11 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.AspectSourceHelper;
+import thaumcraft.api.aspects.IAspectContainer;
+import thaumcraft.api.visnet.VisNetHandler;
 
 interface MagicalEnergyBBListener {
 
@@ -144,7 +143,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) mMagicalEnergyBB.decreaseTier();
         else mMagicalEnergyBB.increaseTier();
         GT_Utility.sendChatToPlayer(
@@ -338,8 +337,8 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing();
+    public boolean isOutputFacing(ForgeDirection side) {
+        return side == getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -393,9 +392,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
 
         if (aBaseMetaTileEntity.isActive()) {
 
-            final byte topFacing = (byte) ForgeDirection.UP.ordinal();
-
-            if (isEgg(aBaseMetaTileEntity.getBlockAtSide(topFacing))) {
+            if (isEgg(aBaseMetaTileEntity.getBlockAtSide(ForgeDirection.UP))) {
 
                 final double oX = aBaseMetaTileEntity.getXCoord() + 8D / 16D;
                 final double oY = aBaseMetaTileEntity.getYCoord() + 17D / 32D;
@@ -443,7 +440,8 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
         // Restrict input to disenchantable items or enchanted books
         return (isDisenchantableItem(aStack) || isEnchantedBook(aStack));
     }

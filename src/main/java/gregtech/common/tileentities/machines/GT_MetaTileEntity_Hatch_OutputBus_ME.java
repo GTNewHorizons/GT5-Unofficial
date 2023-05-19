@@ -120,7 +120,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
 
     @Override
     public AECableType getCableConnectionType(ForgeDirection forgeDirection) {
-        return isOutputFacing((byte) forgeDirection.ordinal()) ? AECableType.SMART : AECableType.NONE;
+        return isOutputFacing(forgeDirection) ? AECableType.SMART : AECableType.NONE;
     }
 
     @Override
@@ -129,8 +129,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide)
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
             .isGUIClickable()) return;
         infiniteCache = !infiniteCache;
         GT_Utility

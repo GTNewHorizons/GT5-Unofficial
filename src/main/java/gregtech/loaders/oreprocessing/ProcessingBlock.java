@@ -1,8 +1,12 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCutterRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
@@ -22,16 +26,97 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        if (aMaterial != Materials.Clay && aMaterial != Materials.Basalt) {
-            if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                GT_Values.RA.addCutterRecipe(
-                    GT_Utility.copyAmount(1L, aStack),
-                    aMaterial == MaterialsBotania.Livingrock || aMaterial == MaterialsBotania.Livingwood
-                        || aMaterial == MaterialsBotania.Dreamwood ? GT_Utility.getIntegratedCircuit(3) : null,
-                    GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L),
-                    null,
-                    (int) Math.max(aMaterial.getMass() * 10L, 1L),
-                    30);
+        if (aMaterial != Materials.Clay && aMaterial != Materials.Basalt
+            && aMaterial != MaterialsBotania.Livingrock
+            && aMaterial != MaterialsBotania.Livingwood
+            && aMaterial != MaterialsBotania.Dreamwood) {
+            if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV
+                && GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
+
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .fluidInputs(
+                        Materials.Water.getFluid(
+                            Math.max(
+                                4,
+                                Math.min(1000, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 320))))
+                    .noFluidOutputs()
+                    .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(sCutterRecipes);
+
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .fluidInputs(
+                        GT_ModHandler.getDistilledWater(
+                            Math.max(
+                                3,
+                                Math.min(750, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 426))))
+                    .noFluidOutputs()
+                    .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(sCutterRecipes);
+
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .fluidInputs(
+                        Materials.Lubricant.getFluid(
+                            Math.max(
+                                1,
+                                Math.min(250, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 1280))))
+                    .noFluidOutputs()
+                    .duration(((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(sCutterRecipes);
+            }
+        }
+
+        if (aMaterial == MaterialsBotania.Livingrock || aMaterial == MaterialsBotania.Livingwood
+            || aMaterial == MaterialsBotania.Dreamwood) {
+            if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV
+                && GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
+
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(3))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .fluidInputs(
+                        Materials.Water.getFluid(
+                            Math.max(
+                                4,
+                                Math.min(1000, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 320))))
+                    .noFluidOutputs()
+                    .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(sCutterRecipes);
+
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(3))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .fluidInputs(
+                        GT_ModHandler.getDistilledWater(
+                            Math.max(
+                                3,
+                                Math.min(750, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 426))))
+                    .noFluidOutputs()
+                    .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(sCutterRecipes);
+
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(3))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .fluidInputs(
+                        Materials.Lubricant.getFluid(
+                            Math.max(
+                                1,
+                                Math.min(250, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 1280))))
+                    .noFluidOutputs()
+                    .duration(((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(sCutterRecipes);
             }
         }
 
@@ -53,12 +138,15 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         if (aMaterial.mStandardMoltenFluid != null) {
             if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                    GT_Values.RA.addFluidSolidifierRecipe(
-                        ItemList.Shape_Mold_Block.get(0L),
-                        aMaterial.getMolten(1296L),
-                        GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L),
-                        288,
-                        8);
+
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(ItemList.Shape_Mold_Block.get(0L))
+                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
+                        .fluidInputs(aMaterial.getMolten(1296L))
+                        .noFluidOutputs()
+                        .duration(14 * SECONDS + 8 * TICKS)
+                        .eut(8)
+                        .addTo(sFluidSolidficationRecipes);
                 }
             }
         }
@@ -83,14 +171,16 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         if (tStack2 != null) tStack2.stackSize = 9;
         if (tStack3 != null) tStack3.stackSize = 9;
 
-        GT_Values.RA.stdBuilder()
-            .itemInputs(aStack)
-            .itemOutputs(tStack2)
-            .noFluidInputs()
-            .noFluidOutputs()
-            .duration(5 * SECONDS)
-            .eut(24)
-            .addTo(sHammerRecipes);
+        if (tStack2 != null) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(aStack)
+                .itemOutputs(tStack2)
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(5 * SECONDS)
+                .eut(24)
+                .addTo(sHammerRecipes);
+        }
 
         if (GregTech_API.sRecipeFile.get(
             ConfigCategories.Recipes.storageblockdecrafting,
@@ -105,7 +195,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 GT_ModHandler.addShapelessCraftingRecipe(tStack1, new Object[] { OrePrefixes.block.get(aMaterial) });
         }
 
-        if (!OrePrefixes.block.isIgnored(aMaterial)) {
+        if (!OrePrefixes.block.isIgnored(aMaterial) && tStack1 != null) {
             // 9 ingots -> 1 block
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L))
@@ -120,12 +210,14 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         switch (aMaterial.mName) {
             case "Mercury" -> System.err.println(
                 "'blockQuickSilver'?, In which Ice Desert can you actually place this as a solid Block? On Pluto Greg :)");
-            case "Iron", "WroughtIron", "Steel" -> GT_Values.RA.addAssemblerRecipe(
-                ItemList.IC2_Compressed_Coal_Ball.get(8L),
-                GT_Utility.copyAmount(1L, aStack),
-                ItemList.IC2_Compressed_Coal_Chunk.get(1L),
-                400,
-                4);
+            case "Iron", "WroughtIron", "Steel" -> GT_Values.RA.stdBuilder()
+                .itemInputs(ItemList.IC2_Compressed_Coal_Ball.get(8L), GT_Utility.copyAmount(1L, aStack))
+                .itemOutputs(ItemList.IC2_Compressed_Coal_Chunk.get(1L))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(20 * SECONDS)
+                .eut(4)
+                .addTo(sAssemblerRecipes);
         }
     }
 }

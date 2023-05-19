@@ -40,23 +40,16 @@ public class GT_UIInfos {
         .of()
         .container((player, world, x, y, z) -> {
             TileEntity te = world.getTileEntity(x, y, z);
-            if (te instanceof ITileWithModularUI) {
-                return createTileEntityContainer(
-                    player,
-                    ((ITileWithModularUI) te)::createWindow,
-                    te::markDirty,
-                    containerConstructor);
+            if (te instanceof ITileWithModularUI mui) {
+                return createTileEntityContainer(player, mui::createWindow, te::markDirty, containerConstructor);
             }
             return null;
         })
         .gui(((player, world, x, y, z) -> {
             if (!world.isRemote) return null;
             TileEntity te = world.getTileEntity(x, y, z);
-            if (te instanceof ITileWithModularUI) {
-                return createTileEntityGuiContainer(
-                    player,
-                    ((ITileWithModularUI) te)::createWindow,
-                    containerConstructor);
+            if (te instanceof ITileWithModularUI mui) {
+                return createTileEntityGuiContainer(player, mui::createWindow, containerConstructor);
             }
             return null;
         }))
@@ -64,18 +57,17 @@ public class GT_UIInfos {
 
     private static final UIInfo<?, ?> GTTileEntityDefaultUI = GTTileEntityUIFactory.apply(ModularUIContainer::new);
 
-    private static final Map<Byte, UIInfo<?, ?>> coverUI = new HashMap<>();
+    private static final Map<ForgeDirection, UIInfo<?, ?>> coverUI = new HashMap<>();
 
     static {
-        for (byte i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
-            final byte side = i;
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             coverUI.put(
                 side,
                 UIBuilder.of()
                     .container((player, world, x, y, z) -> {
                         final TileEntity te = world.getTileEntity(x, y, z);
                         if (!(te instanceof ICoverable gtTileEntity)) return null;
-                        GT_CoverBehaviorBase<?> cover = gtTileEntity.getCoverBehaviorAtSideNew(side);
+                        final GT_CoverBehaviorBase<?> cover = gtTileEntity.getCoverBehaviorAtSideNew(side);
                         return createCoverContainer(
                             player,
                             cover::createWindow,
@@ -116,7 +108,7 @@ public class GT_UIInfos {
     /**
      * Opens cover UI, created by {@link GT_CoverBehaviorBase#createWindow}.
      */
-    public static void openCoverUI(ICoverable tileEntity, EntityPlayer player, byte side) {
+    public static void openCoverUI(ICoverable tileEntity, EntityPlayer player, ForgeDirection side) {
         if (tileEntity.isClientSide()) return;
 
         GT_Values.NW.sendToPlayer(
@@ -167,8 +159,8 @@ public class GT_UIInfos {
     }
 
     private static ModularUIContainer createCoverContainer(EntityPlayer player,
-        Function<GT_CoverUIBuildContext, ModularWindow> windowCreator, Runnable onWidgetUpdate, int coverID, byte side,
-        ICoverable tile) {
+        Function<GT_CoverUIBuildContext, ModularWindow> windowCreator, Runnable onWidgetUpdate, int coverID,
+        ForgeDirection side, ICoverable tile) {
         final GT_CoverUIBuildContext buildContext = new GT_CoverUIBuildContext(player, coverID, side, tile, false);
         final ModularWindow window = windowCreator.apply(buildContext);
         if (window == null) return null;
@@ -177,7 +169,8 @@ public class GT_UIInfos {
 
     @SideOnly(Side.CLIENT)
     private static ModularGui createCoverGuiContainer(EntityPlayer player,
-        Function<GT_CoverUIBuildContext, ModularWindow> windowCreator, int coverID, byte side, ICoverable tile) {
+        Function<GT_CoverUIBuildContext, ModularWindow> windowCreator, int coverID, ForgeDirection side,
+        ICoverable tile) {
         final ModularUIContainer container = createCoverContainer(player, windowCreator, null, coverID, side, tile);
         if (container == null) {
             return null;

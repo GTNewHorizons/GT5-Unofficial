@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import com.google.common.io.ByteArrayDataInput;
@@ -63,27 +64,28 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
+    protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID, ItemFilterData aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
         return false;
     }
 
     @Override
-    protected ItemFilterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
+    protected ItemFilterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
         ItemFilterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        TileEntity tTileEntity = aTileEntity.getTileEntityAtSide(aSide);
-        Object fromEntity = mExport ? aTileEntity : tTileEntity, toEntity = !mExport ? aTileEntity : tTileEntity;
-        byte fromSide = !mExport ? GT_Utility.getOppositeSide(aSide) : aSide,
-            toSide = mExport ? GT_Utility.getOppositeSide(aSide) : aSide;
+        final TileEntity tTileEntity = aTileEntity.getTileEntityAtSide(side);
+        final Object fromEntity = mExport ? aTileEntity : tTileEntity;
+        final Object toEntity = !mExport ? aTileEntity : tTileEntity;
+        final ForgeDirection fromSide = !mExport ? side.getOpposite() : side;
+        final ForgeDirection toSide = mExport ? side.getOpposite() : side;
 
-        List<ItemStack> Filter = Collections.singletonList(aCoverVariable.mFilter);
+        final List<ItemStack> filter = Collections.singletonList(aCoverVariable.mFilter);
 
         moveMultipleItemStacks(
             fromEntity,
             toEntity,
             fromSide,
             toSide,
-            Filter,
+            filter,
             aCoverVariable.mWhitelist,
             (byte) 64,
             (byte) 1,
@@ -95,9 +97,9 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
     }
 
     @Override
-    protected boolean onCoverRightClickImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
+    protected boolean onCoverRightClickImpl(ForgeDirection side, int aCoverID, ItemFilterData aCoverVariable,
         ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        ItemStack tStack = aPlayer.inventory.getCurrentItem();
+        final ItemStack tStack = aPlayer.inventory.getCurrentItem();
         if (tStack != null) {
             aCoverVariable.mFilter = tStack;
             GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("299", "Item Filter: ") + tStack.getDisplayName());
@@ -109,8 +111,8 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
     }
 
     @Override
-    protected ItemFilterData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
-        ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    protected ItemFilterData onCoverScrewdriverClickImpl(ForgeDirection side, int aCoverID,
+        ItemFilterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable.mWhitelist = !aCoverVariable.mWhitelist;
         GT_Utility.sendChatToPlayer(
             aPlayer,
@@ -120,61 +122,62 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
     }
 
     @Override
-    protected boolean letsRedstoneGoInImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
+    protected boolean letsRedstoneGoInImpl(ForgeDirection side, int aCoverID, ItemFilterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsRedstoneGoOutImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
+    protected boolean letsRedstoneGoOutImpl(ForgeDirection side, int aCoverID, ItemFilterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsEnergyInImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
+    protected boolean letsEnergyInImpl(ForgeDirection side, int aCoverID, ItemFilterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsEnergyOutImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
+    protected boolean letsEnergyOutImpl(ForgeDirection side, int aCoverID, ItemFilterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidInImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, Fluid aFluid,
+    protected boolean letsFluidInImpl(ForgeDirection side, int aCoverID, ItemFilterData aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return false;
     }
 
     @Override
-    protected boolean letsFluidOutImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, Fluid aFluid,
+    protected boolean letsFluidOutImpl(ForgeDirection side, int aCoverID, ItemFilterData aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return false;
     }
 
     @Override
-    protected boolean letsItemsInImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, int aSlot,
+    protected boolean letsItemsInImpl(ForgeDirection side, int aCoverID, ItemFilterData aCoverVariable, int aSlot,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsOutImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, int aSlot,
+    protected boolean letsItemsOutImpl(ForgeDirection side, int aCoverID, ItemFilterData aCoverVariable, int aSlot,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean alwaysLookConnectedImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
+    protected boolean alwaysLookConnectedImpl(ForgeDirection side, int aCoverID, ItemFilterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected int getTickRateImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, ICoverable aTileEntity) {
+    protected int getTickRateImpl(ForgeDirection side, int aCoverID, ItemFilterData aCoverVariable,
+        ICoverable aTileEntity) {
         return 1;
     }
 

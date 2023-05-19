@@ -1119,6 +1119,8 @@ public class Textures {
         BLOCK_SILICONSG,
         BLOCK_TRANSCENDENTMETAL,
         BLOCK_UNIVERSIUM,
+        BLOCK_ETERNITY,
+
         BLOCK_ORIHARUKON,
 
         BLOCK_WHITEDWARFMATTER,
@@ -1489,7 +1491,7 @@ public class Textures {
                 BLOCK_BLAZE },
             STORAGE_BLOCKS12 = { BLOCK_CRYOLITE, BLOCK_SILICONSG, BLOCK_NICKELALUMINIUM, BLOCK_SPACETIME,
                 BLOCK_TRANSCENDENTMETAL, BLOCK_ORIHARUKON, BLOCK_WHITEDWARFMATTER, BLOCK_BLACKDWARFMATTER,
-                BLOCK_UNIVERSIUM };
+                BLOCK_UNIVERSIUM, BLOCK_ETERNITY };
 
         public static final ITexture[] HIDDEN_TEXTURE = { TextureFactory.builder()
             .addIcon(HIDDEN_FACE)

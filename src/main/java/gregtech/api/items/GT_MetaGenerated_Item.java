@@ -1,9 +1,10 @@
 package gregtech.api.items;
 
 import static gregtech.api.enums.GT_Values.D1;
-import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.enums.Mods.AppleCore;
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCannerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,12 +22,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-import squeek.applecore.api.food.FoodValues;
-import squeek.applecore.api.food.IEdible;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
@@ -43,6 +43,8 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
+import squeek.applecore.api.food.FoodValues;
+import squeek.applecore.api.food.IEdible;
 
 /**
  * @author Gregorius Techneticies
@@ -142,15 +144,19 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
                     setFoodBehavior(mOffset + aID, (IFoodStat) tRandomData);
                     if (((IFoodStat) tRandomData).getFoodAction(this, rStack) == EnumAction.eat) {
                         int tFoodValue = ((IFoodStat) tRandomData).getFoodLevel(this, rStack, null);
-                        if (tFoodValue > 0) RA.addCannerRecipe(
-                            rStack,
-                            ItemList.IC2_Food_Can_Empty.get(tFoodValue),
-                            ((IFoodStat) tRandomData).isRotten(this, rStack, null)
-                                ? ItemList.IC2_Food_Can_Spoiled.get(tFoodValue)
-                                : ItemList.IC2_Food_Can_Filled.get(tFoodValue),
-                            null,
-                            tFoodValue * 100,
-                            1);
+                        if (tFoodValue > 0) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(rStack, ItemList.IC2_Food_Can_Empty.get(tFoodValue))
+                                .itemOutputs(
+                                    ((IFoodStat) tRandomData).isRotten(this, rStack, null)
+                                        ? ItemList.IC2_Food_Can_Spoiled.get(tFoodValue)
+                                        : ItemList.IC2_Food_Can_Filled.get(tFoodValue))
+                                .noFluidInputs()
+                                .noFluidOutputs()
+                                .duration(tFoodValue * 5 * SECONDS)
+                                .eut(1)
+                                .addTo(sCannerRecipes);
+                        }
                     }
                     tUseOreDict = false;
                 }

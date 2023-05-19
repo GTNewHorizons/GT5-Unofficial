@@ -1,12 +1,20 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -16,6 +24,7 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_ModHandler.RecipeBits;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 
 public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
 
@@ -35,14 +44,19 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
                 new Object[] { "SSS", "SwS", "SSS", 'S', OrePrefixes.stick.get(mMaterial) });
         }
 
-        if (!aMaterial.contains(SubTag.NO_RECIPES)) {
+        if (!aMaterial.contains(SubTag.NO_RECIPES)
+            && GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1) != null) {
             // Auto generate frame box recipe in an assembler.
-            RA.addAssemblerRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 4),
-                ItemList.Circuit_Integrated.getWithDamage(0, 4),
-                getStackForm(1),
-                64,
-                calculateRecipeEU(aMaterial, 7));
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 4),
+                    GT_Utility.getIntegratedCircuit(4))
+                .itemOutputs(getStackForm(1))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(3 * SECONDS + 4 * TICKS)
+                .eut(calculateRecipeEU(aMaterial, 7))
+                .addTo(sAssemblerRecipes);
         }
     }
 
@@ -62,11 +76,11 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections,
-        byte aColorIndex, boolean aConnected, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection, int connections,
+        int colorIndex, boolean active, boolean redstoneLevel) {
         return new ITexture[] { TextureFactory.of(
             mMaterial.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex],
-            Dyes.getModulation(aColorIndex, mMaterial.mRGBa)) };
+            Dyes.getModulation(colorIndex, mMaterial.mRGBa)) };
     }
 
     @Override
@@ -80,7 +94,7 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
     }
 
     @Override
-    public final boolean isFacingValid(byte aFacing) {
+    public final boolean isFacingValid(ForgeDirection facing) {
         return false;
     }
 
@@ -90,7 +104,7 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
     }
 
     @Override
-    public final boolean renderInside(byte aSide) {
+    public final boolean renderInside(ForgeDirection side) {
         return true;
     }
 
@@ -110,24 +124,24 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
     }
 
     @Override
-    public final boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+    public final boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return false;
     }
 
     @Override
-    public final boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+    public final boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return false;
     }
 
     @Override
-    public int connect(byte aSide) {
+    public int connect(ForgeDirection side) {
         return 0;
     }
 
     @Override
-    public void disconnect(byte aSide) {
+    public void disconnect(ForgeDirection side) {
         /* Do nothing */
     }
 

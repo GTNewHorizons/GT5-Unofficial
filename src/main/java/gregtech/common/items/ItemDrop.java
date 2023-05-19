@@ -29,6 +29,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_RecipeBuilder;
 
 public class ItemDrop extends Item {
 
@@ -148,7 +149,7 @@ public class ItemDrop extends Item {
         addProcessMV(
             tDrop,
             Materials.FierySteel.getFluid(200L),
-            GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "SnowQueenBloodDrop", 1L, 0),
+            GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.SnowQueenBloodDrop", 1L, 0),
             1500,
             48);
         tDrop = getStackForType(DropType.LAPIS);
@@ -229,11 +230,15 @@ public class ItemDrop extends Item {
     }
 
     public void addProcessHV(ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance) {
-        GT_Values.RA.stdBuilder()
-            .itemInputs(tDrop)
-            .itemOutputs(aOutput2)
-            .outputChances(aChance)
-            .noFluidInputs()
+        GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+        recipeBuilder.itemInputs(tDrop);
+        if (aOutput2 == GT_Values.NI) {
+            recipeBuilder.noItemOutputs();
+        } else {
+            recipeBuilder.itemOutputs(aOutput2)
+                .outputChances(aChance);
+        }
+        recipeBuilder.noFluidInputs()
             .fluidOutputs(aOutput)
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_HV)
