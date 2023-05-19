@@ -1,6 +1,14 @@
 package gregtech.api.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
@@ -123,6 +131,17 @@ public class GT_RecipeBuilder {
             GT_Log.err.print("null detected in ");
             GT_Log.err.println(componentType);
             new NullPointerException().printStackTrace(GT_Log.err);
+        }
+    }
+
+    public static void handleRecipeCollision(String details) {
+        if (PANIC_MODE) {
+            throw new IllegalArgumentException("Recipe Collision");
+        } else if (DEBUG_MODE) {
+            // place a breakpoint here to catch all these issues
+            GT_Log.err.print("Recipe collision resulting in recipe loss detected with ");
+            GT_Log.err.println(details);
+            new IllegalArgumentException().printStackTrace(GT_Log.err);
         }
     }
 
