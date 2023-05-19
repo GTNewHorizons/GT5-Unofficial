@@ -135,14 +135,15 @@ public class GT_RecipeBuilder {
     }
 
     public static void handleRecipeCollision(String details) {
+        if (!PANIC_MODE && !DEBUG_MODE) {
+            return;
+        }
+        GT_Log.err.print("Recipe collision resulting in recipe loss detected with ");
+        GT_Log.err.println(details);
         if (PANIC_MODE) {
-            GT_Log.err.print("Recipe collision resulting in recipe loss detected with ");
-            GT_Log.err.println(details);
             throw new IllegalArgumentException("Recipe Collision");
-        } else if (DEBUG_MODE) {
+        } else {
             // place a breakpoint here to catch all these issues
-            GT_Log.err.print("Recipe collision resulting in recipe loss detected with ");
-            GT_Log.err.println(details);
             new IllegalArgumentException().printStackTrace(GT_Log.err);
         }
     }
