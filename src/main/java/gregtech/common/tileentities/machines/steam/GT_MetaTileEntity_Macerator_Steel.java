@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.steam;
 
-import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
@@ -10,6 +9,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -67,7 +67,7 @@ public class GT_MetaTileEntity_Macerator_Steel extends GT_MetaTileEntity_BasicMa
     @Override
     public int checkRecipe() {
         GT_Recipe tRecipe = getRecipeList()
-            .findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, V[mTier], null, null, getAllInputs());
+            .findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, TierEU.LV, null, null, getAllInputs());
         if (tRecipe == null) return DID_NOT_FIND_RECIPE;
         if (tRecipe.mCanBeBuffered) mLastRecipe = tRecipe;
         if (!canOutput(tRecipe)) {
