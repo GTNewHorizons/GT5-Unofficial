@@ -3744,7 +3744,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     boolean hasAnEntry = false;
                     for (FluidStack fStack : r.mFluidInputs) {
                         if (fStack != null) {
-                            String s = fStack.getUnlocalizedName();
+                            String s = fStack.getLocalizedName();
                             if (s != null) {
                                 if (hasAnEntry) {
                                     errorInfo.append("+")
@@ -3758,7 +3758,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     }
                     for (ItemStack iStack : r.mInputs) {
                         if (iStack != null) {
-                            String s = iStack.getUnlocalizedName();
+                            String s = iStack.getDisplayName();
                             if (s != null) {
                                 if (hasAnEntry) {
                                     errorInfo.append("+")
