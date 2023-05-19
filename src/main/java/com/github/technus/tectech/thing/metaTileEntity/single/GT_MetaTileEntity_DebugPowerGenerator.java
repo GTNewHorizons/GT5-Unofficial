@@ -10,6 +10,7 @@ import static com.github.technus.tectech.util.CommonValues.VN;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,6 +31,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -249,6 +251,22 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
         return (int) getBaseMetaTileEntity().getUniversalEnergyCapacity();
     }
 
+    public int getEUT() {
+        return EUT;
+    }
+
+    public void setEUT(int EUT) {
+        this.EUT = EUT;
+    }
+
+    public int getAMP() {
+        return AMP;
+    }
+
+    public void setAMP(int AMP) {
+        this.AMP = AMP;
+    }
+
     @Override
     public boolean canConnect(ForgeDirection side) {
         return LASER && side != getBaseMetaTileEntity().getFrontFacing();
@@ -305,18 +323,17 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
                 new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setSize(90, 72).setPos(43, 4))
-                .widget(
-                        TextWidget.dynamicString(() -> "EUT: " + EUT).setDefaultColor(COLOR_TEXT_WHITE.get())
-                                .setPos(46, 8))
+
                 .widget(
                         TextWidget.dynamicString(() -> "TIER: " + VN[TT_Utility.getTier(Math.abs(EUT))])
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 16))
-                .widget(
-                        TextWidget.dynamicString(() -> "AMP: " + AMP).setDefaultColor(COLOR_TEXT_WHITE.get())
-                                .setPos(46, 24))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 22))
+
                 .widget(
                         TextWidget.dynamicString(() -> "SUM: " + (long) AMP * EUT)
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 32));
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 46));
+
+        addLabelledIntegerTextField(builder, "EUT: ", 24, this::getEUT, this::setEUT, 46, 8);
+        addLabelledIntegerTextField(builder, "AMP: ", 24, this::getAMP, this::setAMP, 46, 34);
 
         addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> EUT -= val, 512, 64, 7, 4);
         addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> EUT /= val, 512, 64, 7, 22);
@@ -337,6 +354,16 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
         addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> EUT *= val, 512, 64, 151, 22);
         addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> AMP += val, 512, 64, 151, 40);
         addChangeNumberButton(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> AMP *= val, 512, 64, 151, 58);
+    }
+
+    private void addLabelledIntegerTextField(ModularWindow.Builder builder, String label, int labelWidth,
+            Supplier<Integer> getter, Consumer<Integer> setter, int xPos, int yPos) {
+        TextFieldWidget itfw = new TextFieldWidget();
+        TextWidget ltw = new TextWidget(label);
+        builder.widget(ltw.setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(xPos, yPos)).widget(
+                itfw.setSetterInt(setter).setGetterInt(getter).setTextColor(COLOR_TEXT_WHITE.get())
+                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
+                        .setPos(xPos + labelWidth, yPos - 1).setSize(56, 10));
     }
 
     private void addChangeNumberButton(ModularWindow.Builder builder, IDrawable overlay, Consumer<Integer> setter,
