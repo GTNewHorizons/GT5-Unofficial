@@ -4,6 +4,7 @@ import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.Materials.Void;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sWiremillRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -358,19 +359,38 @@ public class GT_RecipeRegistrator {
         if (!aData.hasValidMaterialData()) return;
 
         long tAmount = 0;
-        for (MaterialStack tMaterial : aData.getAllMaterialStacks())
+        for (MaterialStack tMaterial : aData.getAllMaterialStacks()) {
             tAmount += tMaterial.mAmount * tMaterial.mMaterial.getMass();
-        boolean tHide = (aData.mMaterial.mMaterial != Materials.Iron) && (GT_Mod.gregtechproxy.mHideRecyclingRecipes);
-        RA.addPulveriserRecipe(
-            aStack,
-            new ItemStack[] { GT_OreDictUnificator.getDust(aData.mMaterial),
-                GT_OreDictUnificator.getDust(aData.getByProduct(0)),
-                GT_OreDictUnificator.getDust(aData.getByProduct(1)),
-                GT_OreDictUnificator.getDust(aData.getByProduct(2)) },
-            null,
-            aData.mMaterial.mMaterial == Materials.Marble ? 1 : (int) Math.max(16, tAmount / M),
-            4,
-            tHide);
+        }
+
+        {
+            boolean tHide = (aData.mMaterial.mMaterial != Materials.Iron)
+                && (GT_Mod.gregtechproxy.mHideRecyclingRecipes);
+            ArrayList<ItemStack> outputs = new ArrayList<ItemStack>();
+            if (GT_OreDictUnificator.getDust(aData.mMaterial) != null) {
+                outputs.add(GT_OreDictUnificator.getDust(aData.mMaterial));
+            }
+            for (int i = 0; i < 3; i++) {
+                if (GT_OreDictUnificator.getDust(aData.getByProduct(i)) != null) {
+                    outputs.add(GT_OreDictUnificator.getDust(aData.getByProduct(i)));
+                }
+            }
+            if (outputs.size() != 0) {
+                ItemStack[] outputsArray = outputs.toArray(new ItemStack[outputs.size()]);
+                GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                recipeBuilder.itemInputs(aStack)
+                    .itemOutputs(outputsArray)
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(
+                        (aData.mMaterial.mMaterial == Materials.Marble ? 1 : (int) Math.max(16, tAmount / M)) * TICKS)
+                    .eut(4);
+                if (tHide) {
+                    recipeBuilder.hidden();
+                }
+                recipeBuilder.addTo(sMaceratorRecipes);
+            }
+        }
 
         if (!aAllowHammer) {
             return;

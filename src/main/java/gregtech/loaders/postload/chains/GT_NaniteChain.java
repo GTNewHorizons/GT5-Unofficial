@@ -5,6 +5,12 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GoodGenerator;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GT_ModHandler.getModItem;
+import static gregtech.api.util.GT_RecipeBuilder.HOURS;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
+import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
+import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -31,31 +37,43 @@ public class GT_NaniteChain {
             ? FluidRegistry.getFluid("molten.indalloy140")
             : FluidRegistry.getFluid("molten.solderingalloy");
 
-        GT_Values.RA.addAssemblylineRecipe(
-            Materials.Carbon.getNanite(1),
-            3600 * 20,
-            new Object[] { ItemList.Hull_UV.get(16), Materials.Carbon.getNanite(16),
-                ItemList.Field_Generator_ZPM.get(16), ItemList.Conveyor_Module_UV.get(16),
-                ItemList.Electric_Motor_UV.get(32), new Object[] { OrePrefixes.circuit.get(Materials.Master), 16 },
-                GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 32) },
-            new FluidStack[] { new FluidStack(solderIndalloy, 144 * 32), Materials.HSSS.getMolten(144L * 32),
-                Materials.Osmiridium.getMolten(144L * 16) },
-            ItemList.NanoForge.get(1),
-            2400 * 20,
-            (int) GT_Values.VP[7]);
+        GT_Values.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, Materials.Carbon.getNanite(1))
+            .metadata(RESEARCH_TIME, 1 * HOURS)
+            .itemInputs(
+                ItemList.Hull_UV.get(16),
+                Materials.Carbon.getNanite(16),
+                ItemList.Field_Generator_ZPM.get(16),
+                ItemList.Conveyor_Module_UV.get(16),
+                ItemList.Electric_Motor_UV.get(32),
+                new Object[] { OrePrefixes.circuit.get(Materials.Master), 16 },
+                GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 32))
+            .fluidInputs(
+                new FluidStack(solderIndalloy, 144 * 32),
+                Materials.HSSS.getMolten(144L * 32),
+                Materials.Osmiridium.getMolten(144L * 16))
+            .noFluidOutputs()
+            .itemOutputs(ItemList.NanoForge.get(1))
+            .eut(TierEU.RECIPE_ZPM)
+            .duration(40 * MINUTES)
+            .addTo(AssemblyLine);
 
-        GT_Values.RA.addAssemblylineRecipe(
-            ItemList.Circuit_Crystalmainframe.get(1),
-            144000,
-            new Object[] { new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 16 },
-                ItemList.Robot_Arm_UV.get(16), ItemList.Circuit_Chip_Stemcell.get(32),
+        GT_Values.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.Circuit_Crystalmainframe.get(1))
+            .metadata(RESEARCH_TIME, 2 * HOURS)
+            .itemInputs(
+                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 16 },
+                ItemList.Robot_Arm_UV.get(16),
+                ItemList.Circuit_Chip_Stemcell.get(32),
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.NaquadahAlloy, 32),
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.NaquadahAlloy, 16),
-                Materials.Carbon.getDust(64) },
-            new FluidStack[] { Materials.UUMatter.getFluid(10000), new FluidStack(solderIndalloy, 144 * 32) },
-            Materials.Carbon.getNanite(2),
-            50 * 20,
-            (int) GT_Values.VP[8]);
+                Materials.Carbon.getDust(64))
+            .fluidInputs(Materials.UUMatter.getFluid(10000), new FluidStack(solderIndalloy, 144 * 32))
+            .noFluidOutputs()
+            .itemOutputs(Materials.Carbon.getNanite(2))
+            .eut(TierEU.RECIPE_UV)
+            .duration(50 * SECONDS)
+            .addTo(AssemblyLine);
 
         /*
          * General Rules for making nanite recipes: 1. Never make a nanite that takes a long time to make and only gives

@@ -92,10 +92,33 @@ public class GT_RecipeMapUtil {
         TIntList chances = b.getChances() != null ? new TIntArrayList(b.getChances()) : null;
         cellToFluid(itemInputs, fluidInputs, removeIntegratedCircuit, null);
         cellToFluid(itemOutputs, fluidOutputs, removeIntegratedCircuit, chances);
-        return b.itemInputs(itemInputs.toArray(new ItemStack[0]))
-            .itemOutputs(itemOutputs.toArray(new ItemStack[0]), chances != null ? chances.toArray() : null)
-            .fluidInputs(fluidInputs.toArray(new FluidStack[0]))
-            .fluidOutputs(fluidOutputs.toArray(new FluidStack[0]));
+        itemInputs.removeIf(Objects::isNull);
+        if (chances == null) {
+            itemOutputs.removeIf(Objects::isNull);
+        }
+        fluidInputs.removeIf(Objects::isNull);
+        fluidOutputs.removeIf(Objects::isNull);
+        if (itemInputs.size() == 0) {
+            b.noItemInputs();
+        } else {
+            b.itemInputs(itemInputs.toArray(new ItemStack[0]));
+        }
+        if (itemOutputs.size() == 0) {
+            b.noItemOutputs();
+        } else {
+            b.itemOutputs(itemOutputs.toArray(new ItemStack[0]), chances != null ? chances.toArray() : null);
+        }
+        if (fluidInputs.size() == 0) {
+            b.noFluidInputs();
+        } else {
+            b.fluidInputs(fluidInputs.toArray(new FluidStack[0]));
+        }
+        if (fluidOutputs.size() == 0) {
+            b.noFluidOutputs();
+        } else {
+            b.fluidOutputs(fluidOutputs.toArray(new FluidStack[0]));
+        }
+        return b;
     }
 
     private static void cellToFluid(List<ItemStack> items, List<FluidStack> fluids, boolean removeIntegratedCircuit,
