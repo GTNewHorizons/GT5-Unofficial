@@ -2,7 +2,9 @@ package gregtech.common.items;
 
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.dispenser.IBlockSource;
@@ -2442,45 +2444,61 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_MAINTENANCE_DETECTOR)),
             new GT_Cover_WirelessMaintenanceDetector(TextureFactory.of(OVERLAY_WIRELESS_MAINTENANCE_DETECTOR)));
 
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { ItemList.Cover_RedstoneTransmitterExternal.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L), GT_Utility.getIntegratedCircuit(1) },
-            GT_Values.NF,
-            ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L),
-            3200,
-            128);
-
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { ItemList.Cover_RedstoneReceiverExternal.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L), GT_Utility.getIntegratedCircuit(1) },
-            GT_Values.NF,
-            ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L),
-            3200,
-            128);
-
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { ItemList.Cover_FluidDetector.get(1L), ItemList.Emitter_EV.get(1L),
-                GT_Utility.getIntegratedCircuit(1) },
-            GT_Values.NF,
-            ItemList.Cover_WirelessFluidDetector.get(1L),
-            3200,
-            128);
-
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { ItemList.Cover_ItemDetector.get(1L), ItemList.Emitter_EV.get(1L),
-                GT_Utility.getIntegratedCircuit(1) },
-            GT_Values.NF,
-            ItemList.Cover_WirelessItemDetector.get(1L),
-            3200,
-            128);
-
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { ItemList.Cover_NeedsMaintainance.get(1L), ItemList.Emitter_EV.get(1L),
-                GT_Utility.getIntegratedCircuit(1) },
-            GT_Values.NF,
-            ItemList.Cover_WirelessNeedsMaintainance.get(1L),
-            3200,
-            128);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Cover_RedstoneTransmitterExternal.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(sAssemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Cover_RedstoneReceiverExternal.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(sAssemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Cover_FluidDetector.get(1L),
+                ItemList.Emitter_EV.get(1L),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Cover_WirelessFluidDetector.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(sAssemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Cover_ItemDetector.get(1L),
+                ItemList.Emitter_EV.get(1L),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Cover_WirelessItemDetector.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(sAssemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Cover_NeedsMaintainance.get(1L),
+                ItemList.Emitter_EV.get(1L),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Cover_WirelessNeedsMaintainance.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(sAssemblerRecipes);
 
         GT_ModHandler.addShapelessCraftingRecipe(
             ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L),

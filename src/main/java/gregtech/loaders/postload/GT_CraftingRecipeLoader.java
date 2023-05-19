@@ -11,9 +11,6 @@ import java.util.stream.Collectors;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -2094,17 +2091,6 @@ public class GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.addShapelessCraftingRecipe(
             Materials.Fireclay.getDust(2),
             new Object[] { Materials.Brick.getDust(1), Materials.Clay.getDust(1) });
-
-        ItemStack flask = ItemList.VOLUMETRIC_FLASK.get(1);
-        NBTTagCompound nbtFlask = new NBTTagCompound();
-        nbtFlask.setInteger("Capacity", 1000);
-        flask.setTagCompound(nbtFlask);
-        GT_Values.RA.addFluidSolidifierRecipe(
-            ItemList.Shape_Mold_Ball.get(0),
-            new FluidStack(FluidRegistry.getFluid("molten.borosilicateglass"), 144),
-            flask,
-            44,
-            24);
 
         if (BartWorks.isModLoaded()) {
             GT_ModHandler.addCraftingRecipe(
