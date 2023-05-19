@@ -136,6 +136,8 @@ public class GT_RecipeBuilder {
 
     public static void handleRecipeCollision(String details) {
         if (PANIC_MODE) {
+            GT_Log.err.print("Recipe collision resulting in recipe loss detected with ");
+            GT_Log.err.println(details);
             throw new IllegalArgumentException("Recipe Collision");
         } else if (DEBUG_MODE) {
             // place a breakpoint here to catch all these issues
