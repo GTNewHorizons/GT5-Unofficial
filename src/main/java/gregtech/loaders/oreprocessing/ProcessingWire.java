@@ -269,7 +269,6 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                         100,
                         8);
                 }
-
             // alloy smelter recipes
             {
                 GT_Values.RA.stdBuilder()
@@ -302,7 +301,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(sAlloySmelterRecipes);
-            }
+            } // deliberate fall-through
             case "Iron", "Nickel", "Cupronickel", "Copper", "AnnealedCopper", "Kanthal", "Gold", "Electrum", "Silver", "Nichrome", "Steel", "BlackSteel", "Titanium", "Aluminium", "BlueAlloy", "NetherStar":
             // Assembler recipes
             {
@@ -358,6 +357,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                 }
             }
+                break;
 
             case "RedstoneAlloy":
             // Assembler recipes
