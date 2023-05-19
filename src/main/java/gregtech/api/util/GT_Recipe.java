@@ -3759,18 +3759,20 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         hasAnEntry = true;
                     }
                     for (ItemStack iStack : r.mInputs) {
-                        if (iStack != null) {
-                            String s = iStack.getDisplayName();
-                            if (s != null) {
-                                if (hasAnEntry) {
-                                    errorInfo.append("+")
-                                        .append(s);
-                                } else {
-                                    errorInfo.append(s);
-                                }
-                                hasAnEntry = true;
-                            }
+                        if (iStack == null) {
+                            continue;
                         }
+                        String s = iStack.getDisplayName();
+                        if (s == null) {
+                            continue;
+                        }
+                        if (hasAnEntry) {
+                            errorInfo.append("+")
+                                .append(s);
+                        } else {
+                            errorInfo.append(s);
+                        }
+                        hasAnEntry = true;
                     }
                     handleRecipeCollision(errorInfo.toString());
                     continue;
