@@ -214,10 +214,17 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
         if (getBaseMetaTileEntity() == null) {
             return 0;
         }
-        isConnected = true;
+        connect();
         long increasedEU = Math
                 .min(getBaseMetaTileEntity().getEUCapacity() - getBaseMetaTileEntity().getStoredEU(), maximumIncrease);
         return getBaseMetaTileEntity().increaseStoredEnergyUnits(increasedEU, false) ? increasedEU : 0;
+    }
+
+    /**
+     * Tells the module that it's now connected to a Space Elevator
+     */
+    public void connect() {
+        isConnected = true;
     }
 
     /**
