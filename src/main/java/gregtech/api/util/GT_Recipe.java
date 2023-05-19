@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.NEICustomDiagrams;
 import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.util.GT_RecipeBuilder.handleRecipeCollision;
 import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GT_RecipeMapUtil.*;
 import static gregtech.api.util.GT_Utility.formatNumbers;
@@ -3738,7 +3739,40 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 if (specialHandler != null) r = specialHandler.apply(r);
                 if (r == null) continue;
                 if (checkForCollision
-                    && findRecipe(null, false, true, Long.MAX_VALUE, r.mFluidInputs, r.mInputs) != null) continue;
+                    && findRecipe(null, false, true, Long.MAX_VALUE, r.mFluidInputs, r.mInputs) != null) {
+                    StringBuilder errorInfo = new StringBuilder();
+                    boolean hasAnEntry = false;
+                    for (FluidStack fStack : r.mFluidInputs) {
+                        if (fStack == null) {
+                            continue;
+                        }
+                        String s = fStack.getLocalizedName();
+                        if (s == null) {
+                            continue;
+                        }
+                        if (hasAnEntry) {
+                            errorInfo.append("+")
+                                .append(s);
+                        } else {
+                            errorInfo.append(s);
+                        }
+                        hasAnEntry = true;
+                    }
+                    for (ItemStack iStack : r.mInputs) {
+                        if (iStack == null) {
+                            continue;
+                        }
+                        String s = iStack.getDisplayName();
+                        if (hasAnEntry) {
+                            errorInfo.append("+" + s);
+                        } else {
+                            errorInfo.append(s);
+                        }
+                        hasAnEntry = true;
+                    }
+                    handleRecipeCollision(errorInfo.toString());
+                    continue;
+                }
                 ret.add(add(r));
             }
             if (!ret.isEmpty()) {
