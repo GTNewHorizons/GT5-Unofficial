@@ -227,6 +227,6 @@ public class GT_MetaTileEntity_PotionBrewer extends GT_MetaTileEntity_BasicMachi
 
     @Override
     public int getCapacity() {
-        return 6000;
+        return getCapacityForTier(mTier);
     }
 }
