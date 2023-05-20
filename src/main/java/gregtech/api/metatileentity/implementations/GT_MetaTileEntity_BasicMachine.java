@@ -1616,7 +1616,9 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             case 0 -> 8000;
             case 1 -> 16000;
             case 2 -> 32000;
-            default -> 64000;
+            case 3 -> 64000;
+            case 4 -> 128000;
+            default -> 256000;
         };
     }
 }
