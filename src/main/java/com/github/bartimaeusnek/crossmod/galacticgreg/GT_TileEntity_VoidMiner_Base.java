@@ -15,6 +15,11 @@ package com.github.bartimaeusnek.crossmod.galacticgreg;
 
 import static bloodasp.galacticgreg.registry.GalacticGregRegistry.getModContainers;
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_Values.VN;
 
 import java.util.HashMap;
@@ -40,6 +45,7 @@ import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_OreLayer;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ImmutableList;
 
 import bloodasp.galacticgreg.GT_Worldgen_GT_Ore_Layer_Space;
 import bloodasp.galacticgreg.GT_Worldgen_GT_Ore_SmallPieces_Space;
@@ -51,6 +57,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -185,6 +192,11 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
                 .addInputHatch("Optional noble gas, any base casing").addOutputBus("Any base casing")
                 .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS);
         return tt;
+    }
+
+    @Override
+    protected List<IHatchElement<? super GT_MetaTileEntity_DrillerBase>> getAllowedHatches() {
+        return ImmutableList.of(InputHatch, InputBus, OutputBus, Maintenance, Energy);
     }
 
     /**
