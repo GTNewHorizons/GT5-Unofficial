@@ -317,8 +317,9 @@ public class SpaceMiningRecipes {
         addRecipesToDrones(
                 null,
                 null,
-                new int[] { 4000, 3500, 2500 },
-                new Materials[] { Materials.Quartzite, Materials.CertusQuartz, Materials.Vanadium },
+                new int[] { 3000, 2250, 2250, 2500 },
+                new Materials[] { Materials.Quartzite, Materials.CertusQuartz, Materials.NetherQuartz,
+                        Materials.Vanadium },
                 OrePrefixes.oreEndstone,
                 20,
                 80,
@@ -428,8 +429,9 @@ public class SpaceMiningRecipes {
         addRecipesToDrones(
                 null,
                 null,
-                new int[] { 3500, 3500, 2500, 500 },
-                new Materials[] { Materials.Tungsten, Materials.Titanium, Materials.Neodymium, Materials.Tungstate },
+                new int[] { 3000, 3000, 2000, 1500, 500 },
+                new Materials[] { Materials.Tungsten, Materials.Titanium, Materials.Neodymium, Materials.Molybdenum,
+                        Materials.Tungstate },
                 OrePrefixes.oreEndstone,
                 30,
                 70,
