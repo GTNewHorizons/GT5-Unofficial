@@ -1674,7 +1674,7 @@ public class RECIPES_Machines {
         aSemiFluidInputs[2] = new ItemStack[] { CI.getNumberedBioCircuit(14), CI.getTieredMachineHull(3, 1),
                 CI.getElectricMotor(3, 2), CI.getElectricPiston(3, 2),
                 CI.getTieredComponent(OrePrefixes.cableGt01, 3, 1), CI.getTieredComponent(OrePrefixes.circuit, 3, 1),
-                CI.getGear(3, 2) };
+                GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Chrome, 2) };
         aSemiFluidInputs[3] = new ItemStack[] { CI.getNumberedBioCircuit(14), CI.getTieredMachineHull(4, 1),
                 CI.getElectricMotor(4, 2), CI.getElectricPiston(4, 2),
                 CI.getTieredComponent(OrePrefixes.cableGt01, 4, 1), CI.getTieredComponent(OrePrefixes.circuit, 4, 1),
@@ -1713,7 +1713,8 @@ public class RECIPES_Machines {
                 GregtechItemList.Generator_SemiFluid_HV.get(1L),
                 new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_HV, 'P', ItemList.Electric_Piston_HV, 'E',
                         ItemList.Electric_Motor_HV, 'C', OrePrefixes.circuit.get(Materials.Advanced), 'W',
-                        OrePrefixes.cableGt01.get(Materials.Gold), 'G', ALLOY.INCONEL_625.getGear(2) });
+                        OrePrefixes.cableGt01.get(Materials.Gold), 'G',
+                        GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.Chrome, 1) });
         GT_ModHandler.addCraftingRecipe(
                 GregtechItemList.Generator_SemiFluid_EV.get(1L),
                 new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
