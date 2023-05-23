@@ -140,7 +140,7 @@ public enum Mods {
     StevesCarts2(Names.STEVES_CARTS2),
     StevesFactoryManager(Names.STEVES_FACTORY_MANAGER),
     StructureLib(Names.STRUCTURE_LIB),
-    StorageDrawer(Names.STORAGE_DRAWER),
+    StorageDrawers(Names.STORAGE_DRAWERS),
     SuperSolarPanels(Names.SUPER_SOLAR_PANELS),
     TaintedMagic(Names.TAINTED_MAGIC),
     TecTech(Names.TECTECH),
@@ -315,7 +315,7 @@ public enum Mods {
         public static final String STEVES_CARTS2 = "StevesCarts";
         public static final String STEVES_FACTORY_MANAGER = "StevesFactoryManager";
         public static final String STRUCTURE_LIB = "structurelib";
-        public static final String STORAGE_DRAWER = "storagedrawer";
+        public static final String STORAGE_DRAWERS = "storagedrawers";
         public static final String SUPER_SOLAR_PANELS = "supersolarpanel";
         public static final String TAINTED_MAGIC = "TaintedMagic";
         public static final String TECTECH = "tectech";
