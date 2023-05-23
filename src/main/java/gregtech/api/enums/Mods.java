@@ -315,7 +315,7 @@ public enum Mods {
         public static final String STEVES_CARTS2 = "StevesCarts";
         public static final String STEVES_FACTORY_MANAGER = "StevesFactoryManager";
         public static final String STRUCTURE_LIB = "structurelib";
-        public static final String STORAGE_DRAWERS = "storagedrawers";
+        public static final String STORAGE_DRAWERS = "StorageDrawers";
         public static final String SUPER_SOLAR_PANELS = "supersolarpanel";
         public static final String TAINTED_MAGIC = "TaintedMagic";
         public static final String TECTECH = "tectech";
