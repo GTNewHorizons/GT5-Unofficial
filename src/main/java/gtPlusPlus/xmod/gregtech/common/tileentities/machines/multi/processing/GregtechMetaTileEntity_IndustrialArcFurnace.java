@@ -163,13 +163,11 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace extends
             return mCasing >= 10 && checkHatch();
         }
         mCasing = 0;
-        clearHatches();
         if (checkPiece(mName + "5", 2, 2, 0)) {
             mSize = 5;
             return mCasing >= 10 && checkHatch();
         }
         mCasing = 0;
-        clearHatches();
         if (checkPiece(mName + "7", 3, 3, 0)) {
             mSize = 7;
             return mCasing >= 10 && checkHatch();
