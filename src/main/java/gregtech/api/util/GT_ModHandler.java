@@ -9,7 +9,6 @@ import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.W;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +45,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -100,6 +100,8 @@ public class GT_ModHandler {
     private static final Map<IRecipeInput, RecipeOutput> sOreWashingRecipes = new HashMap<>();
     private static final Map<IRecipeInput, RecipeOutput> sThermalCentrifugeRecipes = new HashMap<>();
     private static final Map<IRecipeInput, RecipeOutput> sMassfabRecipes = new HashMap<>();
+    private static Set<GT_Utility.ItemId> recyclerWhitelist;
+    private static Set<GT_Utility.ItemId> recyclerBlacklist;
 
     private static boolean sBufferCraftingRecipes = true;
     public static List<Integer> sSingleNonBlockDamagableRecipeList_list = new ArrayList<>(100);
@@ -2017,19 +2019,47 @@ public class GT_ModHandler {
      */
     public static ItemStack getRecyclerOutput(ItemStack aInput, int aScrapChance) {
         if (aInput == null || aScrapChance != 0) return null;
-        try {
-            if (ic2.api.recipe.Recipes.recyclerWhitelist.isEmpty())
-                return ic2.api.recipe.Recipes.recyclerBlacklist.contains(aInput) ? null : ItemList.IC2_Scrap.get(1);
-            return ic2.api.recipe.Recipes.recyclerWhitelist.contains(aInput) ? ItemList.IC2_Scrap.get(1) : null;
-        } catch (Throwable e) {
-            /* Do nothing */
+        if (recyclerWhitelist == null) {
+            generateRecyclerCache();
         }
-        try {
-            return ic2.api.recipe.Recipes.recyclerBlacklist.contains(aInput) ? null : ItemList.IC2_Scrap.get(1);
-        } catch (Throwable e) {
-            /* Do nothing */
+
+        if (recyclerWhitelist.isEmpty()) {
+            if (searchRecyclerCache(aInput, recyclerBlacklist)) {
+                return null;
+            } else {
+                return ItemList.IC2_Scrap.get(1);
+            }
+        } else {
+            if (searchRecyclerCache(aInput, recyclerWhitelist)) {
+                return ItemList.IC2_Scrap.get(1);
+            } else {
+                return null;
+            }
         }
-        return null;
+    }
+
+    private static void generateRecyclerCache() {
+        recyclerWhitelist = new HashSet<>();
+        for (IRecipeInput input : ic2.api.recipe.Recipes.recyclerWhitelist) {
+            for (ItemStack stack : input.getInputs()) {
+                recyclerWhitelist.add(GT_Utility.ItemId.create(stack));
+            }
+        }
+        recyclerBlacklist = new HashSet<>();
+        for (IRecipeInput input : ic2.api.recipe.Recipes.recyclerBlacklist) {
+            for (ItemStack stack : input.getInputs()) {
+                recyclerBlacklist.add(GT_Utility.ItemId.create(stack));
+            }
+        }
+    }
+
+    private static boolean searchRecyclerCache(ItemStack stack, Set<GT_Utility.ItemId> set) {
+        if (set.contains(GT_Utility.ItemId.createNoCopy(stack))) {
+            return true;
+        }
+        // ic2.api.recipe.RecipeInputItemStack#matches expects item with wildcard meta to accept arbitrary meta
+        return set.contains(
+            GT_Utility.ItemId.createNoCopy(stack.getItem(), OreDictionary.WILDCARD_VALUE, stack.getTagCompound()));
     }
 
     /**
