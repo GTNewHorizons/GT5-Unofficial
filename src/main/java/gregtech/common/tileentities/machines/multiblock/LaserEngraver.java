@@ -9,6 +9,8 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_
 import static gregtech.loaders.preload.GT_Loader_MultiTileEntities.CASING_REGISTRY_NAME;
 import static gregtech.loaders.preload.GT_Loader_MultiTileEntities.UPGRADE_CASING_REGISTRY_NAME;
 
+import gregtech.api.multitileentity.multiblock.casing.FunctionalCasing;
+import gregtech.api.util.GT_ParallelHelper;
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -33,6 +35,10 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.common.tileentities.machines.multiblock.logic.GenericProcessingLogic;
+import scala.collection.Parallel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LaserEngraver extends ComplexParallelController<LaserEngraver> implements ProcessingLogicHost {
 
@@ -53,7 +59,9 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver> impl
     protected static final Vec3Impl STRUCTURE_OFFSET_T4 = new Vec3Impl(18, 0, 0);
     protected static final Vec3Impl STRUCTURE_OFFSET_T5 = new Vec3Impl(-18, 0, 9);
     protected static final Vec3Impl STRUCTURE_OFFSET_T6 = new Vec3Impl(18, 0, 0);
-    protected static final int MAX_PROCESSES = 8;
+    protected static final int MAX_PROCESSES = 6;
+    protected static final String Parallel = "MAX_PARALLEL";
+
 
     public LaserEngraver() {
         super();
@@ -255,6 +263,11 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver> impl
         }
         return STRUCTURE_DEFINITION;
     }
+
+    protected void calculateTier() {
+
+    }
+
     @Override
     protected void setMaxComplexParallels(int parallel, boolean stopMachine) {
         super.setMaxComplexParallels(parallel, stopMachine);
@@ -307,8 +320,8 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver> impl
         tt.addMachineType("Laser Engraver")
             .addInfo("Used for Engraving")
             .addSeparator()
-            .beginStructureBlock(3, 3, 3, true)
-            .addController("Front Center")
+            .beginStructureBlock(3, 3, 5, true)
+            .addController("Front right center")
             .addCasingInfoExactly("Laser Engraver Casing", 25, false)
             .toolTipFinisher(GT_Values.AuthorTheEpicGamer274);
         return tt;
