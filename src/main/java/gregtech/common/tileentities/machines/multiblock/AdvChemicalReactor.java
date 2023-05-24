@@ -7,7 +7,6 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.stream.Collectors;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -271,8 +270,7 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
                         .filter(
                             itemStack -> processWhitelists.get(outputIndex)
                                 .contains(getWhitelistString(itemStack)))
-                        .collect(Collectors.toList())
-                        .toArray(new ItemStack[0]));
+                        .toArray(ItemStack[]::new));
             }
             // Output remaining items
             if (processingLogic.getOutputItems(index) != null && processingLogic.getOutputItems(index).length > 0) {
@@ -298,8 +296,7 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
                         .filter(
                             fluidStack -> processWhitelists.get(outputIndex)
                                 .contains(getWhitelistString(fluidStack)))
-                        .collect(Collectors.toList())
-                        .toArray(new FluidStack[0]));
+                        .toArray(FluidStack[]::new));
             }
             // Output remaining fluids
             if (processingLogic.getOutputFluids(index) != null && processingLogic.getOutputFluids(index).length > 0) {
