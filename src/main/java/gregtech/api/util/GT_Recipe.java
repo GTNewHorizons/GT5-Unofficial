@@ -2905,7 +2905,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             0,
             "",
             true,
-            false).setRecipeEmitter(GT_RecipeMapUtil::buildRecipeForMultiblockNoCircuit);
+            false).setRecipeEmitter(GT_RecipeMapUtil::buildRecipeForMultiblock);
 
         public static final GT_Recipe_Map sMultiblockCentrifugeRecipes = new GT_Recipe_Map(
             new HashSet<>(1200),
@@ -2939,7 +2939,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             0,
             "",
             true,
-            false).setRecipeEmitter(GT_RecipeMapUtil::buildRecipeForMultiblock)
+            false).setRecipeEmitter(GT_RecipeMapUtil::buildRecipeForMultiblockNoCircuit)
                 .setDisableOptimize(true);
         public static final GT_Recipe_Map_LargeBoilerFakeFuels sLargeBoilerFakeFuels = (GT_Recipe_Map_LargeBoilerFakeFuels) new GT_Recipe_Map_LargeBoilerFakeFuels()
             .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
