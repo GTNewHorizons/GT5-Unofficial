@@ -113,7 +113,7 @@ public enum GT_GuiIcon implements IGuiIcon {
 
     /**
      * This is intended to enable addon mods to register additional textures. They can then add to this enum using
-     * EnumHelper.addEnum or by creating your their enum that implements IGuiIcon (still requires adding a texture here)
+     * EnumHelper.addEnum or by creating their enum that implements IGuiIcon (still requires adding a texture here)
      *
      * @param location
      */

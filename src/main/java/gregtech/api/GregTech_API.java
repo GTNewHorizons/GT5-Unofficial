@@ -221,14 +221,14 @@ public class GregTech_API {
     @Deprecated
     public static IGT_RecipeAdder sRecipeAdder;
     /**
-     * Used to register Aspects to ThaumCraft, this Object might be null if ThaumCraft isn't installed
+     * Registers Aspects to Thaumcraft. This Object might be {@code null} if Thaumcraft isn't installed.
      */
     public static IThaumcraftCompat sThaumcraftCompat;
     /**
-     * These Lists are getting executed at their respective timings. Useful if you have to do things right before/after
-     * I do them, without having to control the load order. Add your "Commands" in the Constructor or in a static Code
-     * Block of your Mods Main Class. These are not Threaded, I just use a native Java Interface for their execution.
-     * Implement just the Method run() and everything should work
+     * The Lists below are executed at their respective timings. Useful to do things at a particular moment in time.
+     * The Lists are not Threaded - a native Java interface is used for their execution.
+     * Add your "commands" in the constructor or in the static-code-block of your mod's Main class.
+     * Implement the method {@code run()}, and everything should work.
      */
     public static List<Runnable> sBeforeGTPreload = new ArrayList<>(), sAfterGTPreload = new ArrayList<>(),
         sBeforeGTLoad = new ArrayList<>(), sAfterGTLoad = new ArrayList<>(), sBeforeGTPostload = new ArrayList<>(),
