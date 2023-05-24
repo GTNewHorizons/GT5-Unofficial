@@ -156,7 +156,7 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
             aWorld,
             aDimensionType,
             ((aDimensionType == -1) && (this.mNether)) || ((aDimensionType == 0) && (this.mOverworld))
-                || ((aDimensionType == 1) && (this.mEnd)) ? aDimensionType : aDimensionType ^ 0xFFFFFFFF)) {
+                || ((aDimensionType == 1) && (this.mEnd)) ? aDimensionType : ~aDimensionType)) {
             // The following code can be used for debugging, but it spams in logs
             // if (debugOrevein) { GT_Log.out.println( "Wrong dimension" ); }
             return WRONG_DIMENSION;
