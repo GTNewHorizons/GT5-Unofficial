@@ -17,8 +17,8 @@ import gregtech.api.util.GT_OreDictUnificator;
 
 public class AssemblyLineRecipes implements Runnable {
 
-    private Fluid solderIndalloy;
-    private Materials LuVMat;
+    private final Fluid solderIndalloy;
+    private final Materials LuVMat;
 
     public AssemblyLineRecipes() {
         solderIndalloy = GTPlusPlus.isModLoaded() ? FluidRegistry.getFluid("molten.indalloy140")

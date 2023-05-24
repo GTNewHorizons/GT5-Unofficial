@@ -15,13 +15,13 @@ public enum PropolisType {
     Endium("Endium", true),
     Fireessence("Fireessence", true);
 
-    private static int[] colours = new int[] { 0xCC00FA, 0xDCB0E5, 0x9010AD, 0xFFFF00, 0x911ECE, 0x161616, 0xEE053D,
-        0xa0ffff, 0xD41238 };
+    private static final int[] colours = new int[] { 0xCC00FA, 0xDCB0E5, 0x9010AD, 0xFFFF00, 0x911ECE, 0x161616,
+        0xEE053D, 0xa0ffff, 0xD41238 };
 
     public boolean showInList;
     public Materials material;
     public int chance;
-    private String name;
+    private final String name;
 
     PropolisType(String pName, boolean show) {
         this.name = pName;

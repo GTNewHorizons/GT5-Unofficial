@@ -3160,7 +3160,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         private int neiTextColorOverride = -1;
 
         private INEISpecialInfoFormatter neiSpecialInfoFormatter;
-        private boolean checkForCollision = true, allowNoInput, allowNoInputFluid, allowNoOutput, allowNoOutputFluid;
+        private final boolean checkForCollision = true;
+        private boolean allowNoInput;
+        private boolean allowNoInputFluid;
+        private boolean allowNoOutput;
+        private boolean allowNoOutputFluid;
         private boolean disableOptimize = false;
         private Function<? super GT_RecipeBuilder, ? extends Iterable<? extends GT_Recipe>> recipeEmitter = this::defaultBuildRecipe;
         private Function<? super GT_Recipe, ? extends GT_Recipe> specialHandler;

@@ -22,7 +22,7 @@ public class Inventory extends UpgradeCasing {
     public static final int BOTH = 2;
     private String mInventoryName = "inventory";
     private int mInventorySize;
-    private int mType = BOTH;
+    private final int mType = BOTH;
 
     public String getInventoryName() {
         return mInventoryName;

@@ -23,12 +23,12 @@ public class GT_GuiTab {
     public boolean visible = true, mousedOver, enabled = true;
 
     private Rectangle bounds;
-    private GT_GuiTabIconSet tabBackground;
-    private ItemStack item;
-    private GT_ITabRenderer gui;
+    private final GT_GuiTabIconSet tabBackground;
+    private final ItemStack item;
+    private final GT_ITabRenderer gui;
     private GT_GuiTooltip tooltip;
-    private IGuiIcon overlay;
-    private boolean flipHorizontally;
+    private final IGuiIcon overlay;
+    private final boolean flipHorizontally;
 
     /**
      * A tab to be attached to a tab line

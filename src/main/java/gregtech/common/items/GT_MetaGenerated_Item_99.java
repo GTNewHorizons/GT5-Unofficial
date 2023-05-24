@@ -49,7 +49,7 @@ public class GT_MetaGenerated_Item_99 extends GT_MetaGenerated_Item {
      * Assignment of metadata IDs: 0 - 999: Molten cells 10_000 - 15_999: Cracked fluid cells (# IDs used is
      * NUM_CRACKED_CELL_TYPES * 1_000; update this if you add any)
      */
-    private BitSet enabled = new BitSet();
+    private final BitSet enabled = new BitSet();
 
     public GT_MetaGenerated_Item_99() {
         super("metaitem.99", (short) (10_000 + NUM_CRACKED_CELL_TYPES * 1_000), (short) 0);

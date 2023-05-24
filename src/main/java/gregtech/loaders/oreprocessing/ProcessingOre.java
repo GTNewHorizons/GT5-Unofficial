@@ -19,7 +19,7 @@ import gregtech.api.util.GT_Utility;
 
 public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    private ArrayList<Materials> mAlreadyListedOres = new ArrayList<>(1000);
+    private final ArrayList<Materials> mAlreadyListedOres = new ArrayList<>(1000);
 
     public ProcessingOre() {
         for (OrePrefixes tPrefix : OrePrefixes.values()) if ((tPrefix.name()

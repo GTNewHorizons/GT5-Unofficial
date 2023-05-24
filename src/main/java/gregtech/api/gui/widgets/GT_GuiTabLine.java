@@ -40,7 +40,7 @@ public class GT_GuiTabLine {
         NORMAL((byte) 1),
         INVERSE((byte) -1);
 
-        private byte value;
+        private final byte value;
 
         DisplayStyle(byte value) {
             this.value = value;
@@ -75,16 +75,21 @@ public class GT_GuiTabLine {
     // The tabs are arranged according to their index in this array
     protected final GT_GuiTab[] mTabs;
 
-    private int tabLineLeft, tabLineTop, tabHeight, tabWidth, tabSpacing;
+    private final int tabLineLeft;
+    private final int tabLineTop;
+    private final int tabHeight;
+    private final int tabWidth;
+    private final int tabSpacing;
 
     // In which direction to draw the tab line
-    private DisplayStyle xDir, yDir;
+    private final DisplayStyle xDir;
+    private final DisplayStyle yDir;
 
     // Whether to display on the right side of the GT_ITabRenderer instead of left
     protected boolean flipHorizontally, visible;
 
-    private GT_GuiTabIconSet tabBackground;
-    private GT_ITabRenderer gui;
+    private final GT_GuiTabIconSet tabBackground;
+    private final GT_ITabRenderer gui;
 
     /**
      * Draws clickable and configurable tabs on the left or right side of a GT_ITabRenderer
