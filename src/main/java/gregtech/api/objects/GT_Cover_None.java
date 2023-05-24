@@ -200,12 +200,6 @@ public class GT_Cover_None extends GT_CoverBehavior {
     }
 
     @Override
-    protected boolean isGUIClickableImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
     protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection side, int aCoverID,
         ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
         return false;
