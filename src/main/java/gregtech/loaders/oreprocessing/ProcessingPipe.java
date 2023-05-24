@@ -12,6 +12,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
+@SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
     public ProcessingPipe() {

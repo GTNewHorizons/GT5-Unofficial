@@ -17,6 +17,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
 
+@SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
     public ProcessingShaping() {

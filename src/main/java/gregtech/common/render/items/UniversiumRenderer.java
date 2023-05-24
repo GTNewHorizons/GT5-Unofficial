@@ -21,6 +21,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import singulariteam.eternalsingularity.render.CosmicRenderStuffs;
 
+@SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
     private static final float cosmicOpacity = 2.5f;
