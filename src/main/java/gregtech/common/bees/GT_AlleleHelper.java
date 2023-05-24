@@ -151,10 +151,10 @@ public class GT_AlleleHelper extends AlleleHelper {
             return;
         }
 
-        // uncomment this once all addon mods are using the allele registration with IChromosomeType
+        // TODO: uncomment this once all addon mods are using the allele registration with IChromosomeType
         // Collection<IChromosomeType> validTypes = AlleleManager.alleleRegistry.getChromosomeTypes(allele);
         // if (validTypes.size() > 0 && !validTypes.contains(chromosomeType)) {
-        // throw new IllegalArgumentException("Allele can't applied to this Chromosome type. Expected: " + validTypes
+        // throw new IllegalArgumentException("Allele can't be applied to this Chromosome type. Expected: " + validTypes
         // + " Got: " + chromosomeType);
         // }
 
