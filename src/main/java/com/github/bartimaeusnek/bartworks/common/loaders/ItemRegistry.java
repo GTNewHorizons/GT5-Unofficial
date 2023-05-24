@@ -294,7 +294,6 @@ public class ItemRegistry {
         bitmask = GregTech_API.sMachineIDs.getOrDefault(LudicrousBlocks.resource_block, 0) | (1 << 1);
         GregTech_API.registerMachineBlock(LudicrousBlocks.resource_block, bitmask);
 
-        GregTech_API.registerMachineBlock(GregTech_API.sBlockMetal5, bitmask);
         ItemRegistry.THTR = new GT_TileEntity_THTR(
                 ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 5,
                 "THTR",
