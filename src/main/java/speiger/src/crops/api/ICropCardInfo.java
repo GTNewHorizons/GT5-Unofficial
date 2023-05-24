@@ -8,12 +8,12 @@ import ic2.api.crops.CropCard;
 
 /**
  * Adds information from CropCards. This class has priority over ICropInfo.
- * 
+ *
  * @requirement: the class that implements this interface needs to extend {@link CropCard}
  */
 public interface ICropCardInfo {
 
-    public List<String> getCropInformation();
+    List<String> getCropInformation();
 
-    public ItemStack getDisplayItem();
+    ItemStack getDisplayItem();
 }
