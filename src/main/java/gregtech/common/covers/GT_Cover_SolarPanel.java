@@ -122,6 +122,12 @@ public class GT_Cover_SolarPanel extends GT_CoverBehavior {
     }
 
     @Override
+    protected boolean isGUIClickableImpl(ForgeDirection side, int aCoverID,
+        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
+        return false;
+    }
+
+    @Override
     public boolean alwaysLookConnected(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
