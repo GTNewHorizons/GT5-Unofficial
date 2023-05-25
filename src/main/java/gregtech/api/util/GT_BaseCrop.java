@@ -237,11 +237,7 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
                     Materials tMaterial = GregTech_API.sGeneratedMaterials[(((GT_TileEntity_Ores) tTileEntity).mMetaData
                         % 1000)];
                     if ((tMaterial != null) && (tMaterial != Materials._NULL)) {
-                        if (tMaterial == mBlock) {
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return tMaterial == mBlock;
                     }
                 }
             } else {

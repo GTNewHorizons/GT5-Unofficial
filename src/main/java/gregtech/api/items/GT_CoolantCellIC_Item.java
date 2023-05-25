@@ -22,10 +22,7 @@ public class GT_CoolantCellIC_Item extends GT_CoolantCell_Item implements IReact
 
     @Override
     public boolean canStoreHeat(IReactor aReactor, ItemStack aStack, int x, int y) {
-        if (aReactor.isFluidCooled() && (getControlTagOfStack(aStack)) != 0) {
-            return false;
-        }
-        return true;
+        return !aReactor.isFluidCooled() || getControlTagOfStack(aStack) == 0;
     }
 
     @Override

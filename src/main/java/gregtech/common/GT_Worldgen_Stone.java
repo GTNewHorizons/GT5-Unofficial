@@ -128,10 +128,7 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
             }
         }
 
-        boolean result = true;
-        if (stones.size() == 0) {
-            result = false;
-        }
+        boolean result = stones.size() != 0;
         // Now process each oreseed vs this requested chunk
         for (; stones.size() != 0; stones.remove(0)) {
             int x = stones.get(0).mX * 16;
