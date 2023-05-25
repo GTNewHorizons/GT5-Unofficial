@@ -771,7 +771,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
     @Override
     public boolean shouldDropItemAt(int index) {
-        return this.mMetaTileEntity != null ? this.mMetaTileEntity.shouldDropItemAt(index) : true;
+        return this.mMetaTileEntity == null || this.mMetaTileEntity.shouldDropItemAt(index);
     }
 
     @Override
