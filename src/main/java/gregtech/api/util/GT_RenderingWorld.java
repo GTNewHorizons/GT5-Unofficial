@@ -81,8 +81,8 @@ public class GT_RenderingWorld implements IBlockAccess {
     }
 
     @Override
-    public TileEntity getTileEntity(int p_147438_1_, int p_147438_2_, int p_147438_3_) {
-        return mWorld.getTileEntity(p_147438_1_, p_147438_2_, p_147438_3_);
+    public TileEntity getTileEntity(int x, int y, int z) {
+        return mWorld.getTileEntity(x, y, z);
     }
 
     @Override
@@ -97,18 +97,18 @@ public class GT_RenderingWorld implements IBlockAccess {
     }
 
     @Override
-    public int isBlockProvidingPowerTo(int p_72879_1_, int p_72879_2_, int p_72879_3_, int p_72879_4_) {
-        return mWorld.isBlockProvidingPowerTo(p_72879_1_, p_72879_2_, p_72879_3_, p_72879_4_);
+    public int isBlockProvidingPowerTo(int x, int y, int z, int directionIn) {
+        return mWorld.isBlockProvidingPowerTo(x, y, z, directionIn);
     }
 
     @Override
-    public boolean isAirBlock(int p_147437_1_, int p_147437_2_, int p_147437_3_) {
-        return getBlock(p_147437_1_, p_147437_2_, p_147437_3_).isAir(mWorld, p_147437_1_, p_147437_2_, p_147437_3_);
+    public boolean isAirBlock(int x, int y, int z) {
+        return getBlock(x, y, z).isAir(mWorld, x, y, z);
     }
 
     @Override
-    public BiomeGenBase getBiomeGenForCoords(int p_72807_1_, int p_72807_2_) {
-        return mWorld.getBiomeGenForCoords(p_72807_1_, p_72807_2_);
+    public BiomeGenBase getBiomeGenForCoords(int x, int z) {
+        return mWorld.getBiomeGenForCoords(x, z);
     }
 
     @Override

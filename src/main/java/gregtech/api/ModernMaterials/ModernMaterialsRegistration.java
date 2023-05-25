@@ -23,7 +23,7 @@ public class ModernMaterialsRegistration {
         GregTech_API.lastMaterialID = GregTech_API.modernMaterialIDs.mConfig
                 .get(ConfigCategories.ModernMaterials.materialID.name(), "LastMaterialID", 0).getInt();
 
-        ModernMaterial copper = new ModernMaterial.Builder("Copper")
+        new ModernMaterial.Builder("Copper")
             .setColor(120, 100, 0)
             .setTextureMode(Metallic)
             .addAllParts()
@@ -31,10 +31,12 @@ public class ModernMaterialsRegistration {
             .addFluid(NoPrefix, 3_000)
             .addFluid(Molten, 10_000)
             .addFluid(Plasma, 100_000)
-            .addCustomFluid(
-                new ModernMaterialFluid.Builder("Zebra % Fluid %")
-                    .setTemperature(120_000_000)
-            ).build();
+            .build();
+
+//                    .addCustomFluid(
+//            new ModernMaterialFluid.Builder("Zebra % Fluid %")
+//                .setTemperature(120_000_000)
+//        )
 
 //        new ModernMaterial("UwU").setColor(0, 255, 255)
 //            .setTextureMode(Metallic).addParts(Gear).build();

@@ -13,6 +13,7 @@ final public class ModernMaterialFluid extends Fluid {
 
     public ModernMaterialFluid(FluidEnum fluidEnum, ModernMaterial modernMaterial) {
         super(fluidEnum.format(modernMaterial));
+        this.fluidEnum = fluidEnum;
         this.localisedName = fluidEnum.format(modernMaterial);
         this.associatedMaterial = modernMaterial;
         this.temperature = fluidEnum.getTemperature();
@@ -65,10 +66,10 @@ final public class ModernMaterialFluid extends Fluid {
 
         public ModernMaterialFluid build() {
             ModernMaterialFluid materialFluid = new ModernMaterialFluid(unformattedString, associatedMaterial);
-            materialFluid.setStillIcon(this.stillIcon);
-            materialFluid.setFlowingIcon(this.flowingIcon);
-            materialFluid.setTemperature(this.temperature);
-            materialFluid.setGaseous(this.isGas);
+            //materialFluid.setStillIcon(this.stillIcon);
+            //materialFluid.setFlowingIcon(this.flowingIcon);
+            //materialFluid.setTemperature(this.temperature);
+            //materialFluid.setGaseous(this.isGas);
             return materialFluid;
         }
 

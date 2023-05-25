@@ -113,7 +113,6 @@ public final class ModernMaterial {
             modernMaterialFluid.setGaseous(fluidEnum.isGas());
             // Determines fluid texture.
             modernMaterialFluid.setFluidEnum(fluidEnum);
-
             // Add fluid to list in material.
             materialToBuild.existingFluids.add(new ModernMaterialFluid(fluidEnum, materialToBuild));
 

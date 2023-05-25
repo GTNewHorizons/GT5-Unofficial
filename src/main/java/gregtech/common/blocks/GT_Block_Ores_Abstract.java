@@ -157,11 +157,11 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     @Override
-    public boolean onBlockEventReceived(World p_149696_1_, int p_149696_2_, int p_149696_3_, int p_149696_4_,
-        int p_149696_5_, int p_149696_6_) {
-        super.onBlockEventReceived(p_149696_1_, p_149696_2_, p_149696_3_, p_149696_4_, p_149696_5_, p_149696_6_);
-        TileEntity tileentity = p_149696_1_.getTileEntity(p_149696_2_, p_149696_3_, p_149696_4_);
-        return tileentity != null && tileentity.receiveClientEvent(p_149696_5_, p_149696_6_);
+    public boolean onBlockEventReceived(World worldIn, int x, int y, int z,
+        int eventId, int eventData) {
+        super.onBlockEventReceived(worldIn, x, y, z, eventId, eventData);
+        TileEntity tileentity = worldIn.getTileEntity(x, y, z);
+        return tileentity != null && tileentity.receiveClientEvent(eventId, eventData);
     }
 
     @Override

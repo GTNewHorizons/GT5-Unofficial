@@ -23,14 +23,11 @@ public class ModernMaterialsTextureRegister {
     public void registerIcons(TextureStitchEvent.Pre event) {
         if (event.map.getTextureType() == 1) {
             itemTextures(event.map);
-        } else {
-            otherTextures(event.map);
+        } else if (event.map.getTextureType() == 0){
+            // These are both stored in the same texture atlas.
+            blockTextures(event.map);
+            fluidTextures(event.map);
         }
-    }
-
-    private void otherTextures(TextureMap map) {
-        blockTextures(map);
-        fluidTextures(map);
     }
 
     private void blockTextures(TextureMap map) {
@@ -88,7 +85,7 @@ public class ModernMaterialsTextureRegister {
                     if (!fileNameWithoutCode.equals(part.partName)) {
                         continue;
                     }
-
+                    // textures/items
                     IIcon icon = map.registerIcon( RES_PATH_ITEM + "ModernMaterialsIcons/" + textureType + "/Items/" + removePNG(trueFileName));
 
                     IconWrapper iconWrapper = new IconWrapper(priority, isColoured, icon);
