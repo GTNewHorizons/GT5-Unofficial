@@ -4651,7 +4651,7 @@ public class GT_Utility {
     @AutoValue
     public abstract static class ItemId {
 
-        public static AutoValue_GT_Utility_ItemId create(NBTTagCompound tag) {
+        public static ItemId create(NBTTagCompound tag) {
             return new AutoValue_GT_Utility_ItemId(
                 Item.getItemById(tag.getShort("item")),
                 tag.getShort("meta"),
@@ -4668,12 +4668,25 @@ public class GT_Utility {
             return new AutoValue_GT_Utility_ItemId(itemStack.getItem(), itemStack.getItemDamage(), nbt);
         }
 
+        /** This method copies NBT, as it is mutable. */
+        public static ItemId create(Item item, int metaData, @Nullable NBTTagCompound nbt) {
+            if (nbt != null) {
+                nbt = (NBTTagCompound) nbt.copy();
+            }
+            return new AutoValue_GT_Utility_ItemId(item, metaData, nbt);
+        }
+
         /** This method does not copy NBT in order to save time. Make sure not to mutate it! */
         public static ItemId createNoCopy(ItemStack itemStack) {
             return new AutoValue_GT_Utility_ItemId(
                 itemStack.getItem(),
                 itemStack.getItemDamage(),
                 itemStack.getTagCompound());
+        }
+
+        /** This method does not copy NBT in order to save time. Make sure not to mutate it! */
+        public static ItemId createNoCopy(Item item, int metaData, @Nullable NBTTagCompound nbt) {
+            return new AutoValue_GT_Utility_ItemId(item, metaData, nbt);
         }
 
         protected abstract Item item();

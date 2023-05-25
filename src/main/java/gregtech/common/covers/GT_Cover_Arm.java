@@ -193,6 +193,12 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
         return true;
     }
 
+    @Override
+    protected boolean isGUIClickableImpl(ForgeDirection side, int aCoverID,
+        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
+        return false;
+    }
+
     private void sendMessageToPlayer(EntityPlayer aPlayer, int var) {
         if ((var & EXPORT_MASK) != 0) GT_Utility.sendChatToPlayer(
             aPlayer,

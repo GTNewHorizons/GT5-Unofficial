@@ -532,8 +532,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         dis -> dis.registerMutation(REDSTONE, GOLD, 10)),
     SUNNARIUM(GT_BranchDefinition.RAREMETAL, "Sunnarium", false, new Color(0xFFBC5E), new Color(0xE5CA2A),
         beeSpecies -> {
-            beeSpecies.addProduct(Materials.Glowstone.getDust(1), 0.40f);
-            beeSpecies.addSpecialty(Materials.Sunnarium.getDust(1), 0.20f);
+            beeSpecies.addProduct(Materials.Glowstone.getDust(1), 0.30f);
+            beeSpecies.addSpecialty(Materials.Sunnarium.getDust(1), 0.5f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setNocturnal();
             beeSpecies.setHasEffect();

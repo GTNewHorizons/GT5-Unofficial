@@ -2905,7 +2905,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             0,
             "",
             true,
-            false).setRecipeEmitter(GT_RecipeMapUtil::buildRecipeForMultiblockNoCircuit);
+            false).setRecipeEmitter(GT_RecipeMapUtil::buildRecipeForMultiblock);
 
         public static final GT_Recipe_Map sMultiblockCentrifugeRecipes = new GT_Recipe_Map(
             new HashSet<>(1200),
@@ -2939,7 +2939,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             0,
             "",
             true,
-            false).setRecipeEmitter(GT_RecipeMapUtil::buildRecipeForMultiblock)
+            false).setRecipeEmitter(GT_RecipeMapUtil::buildRecipeForMultiblockNoCircuit)
                 .setDisableOptimize(true);
         public static final GT_Recipe_Map_LargeBoilerFakeFuels sLargeBoilerFakeFuels = (GT_Recipe_Map_LargeBoilerFakeFuels) new GT_Recipe_Map_LargeBoilerFakeFuels()
             .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
@@ -5161,13 +5161,12 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         @Override
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated,
             long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
-            if (aInputs == null || aInputs.length <= 0 || aInputs[0] == null) return null;
+            if (aInputs == null || aInputs.length == 0 || aInputs[0] == null) return null;
             if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) return aRecipe;
             return new GT_Recipe(
                 false,
                 new ItemStack[] { GT_Utility.copyAmount(1, aInputs[0]) },
-                GT_ModHandler.getRecyclerOutput(GT_Utility.copyAmount(64, aInputs[0]), 0) == null ? null
-                    : new ItemStack[] { ItemList.IC2_Scrap.get(1) },
+                new ItemStack[] { GT_ModHandler.getRecyclerOutput(aInputs[0], 0) },
                 null,
                 new int[] { 1250 },
                 null,
@@ -5179,7 +5178,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Override
         public boolean containsInput(ItemStack aStack) {
-            return GT_ModHandler.getRecyclerOutput(GT_Utility.copyAmount(64, aStack), 0) != null;
+            return GT_ModHandler.getRecyclerOutput(aStack, 0) != null;
         }
     }
 
