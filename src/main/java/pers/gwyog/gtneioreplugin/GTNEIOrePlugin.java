@@ -6,12 +6,6 @@ import net.minecraft.item.Item;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import pers.gwyog.gtneioreplugin.plugin.IMCForNEI;
-import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
-import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
-import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
-import pers.gwyog.gtneioreplugin.util.GT5UndergroundFluidHelper;
-import pers.gwyog.gtneioreplugin.util.GuiRecipeHelper;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -19,6 +13,13 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
+import pers.gwyog.gtneioreplugin.plugin.IMCForNEI;
+import pers.gwyog.gtneioreplugin.plugin.block.ModBlocks;
+import pers.gwyog.gtneioreplugin.util.CSVMaker;
+import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
+import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
+import pers.gwyog.gtneioreplugin.util.GT5UndergroundFluidHelper;
+import pers.gwyog.gtneioreplugin.util.GuiRecipeHelper;
 
 @Mod(
         modid = GTNEIOrePlugin.MODID,
@@ -27,9 +28,9 @@ import cpw.mods.fml.relauncher.Side;
         dependencies = "required-after:gregtech;required-after:NotEnoughItems")
 public class GTNEIOrePlugin {
 
-    public static final String MODID = "GRADLETOKEN_MODID";
-    public static final String NAME = "GRADLETOKEN_MODNAME";
-    public static final String VERSION = "GRADLETOKEN_VERSION";
+    public static final String MODID = "gtneioreplugin";
+    public static final String NAME = "GT NEI Ore Plugin GT:NH Mod";
+    public static final String VERSION = Tags.VERSION;
     public static final Logger LOG = LogManager.getLogger(NAME);
     public static boolean csv = false;
     public static String CSVname;
@@ -91,7 +92,7 @@ public class GTNEIOrePlugin {
         if (event.getSide() == Side.CLIENT) {
             new GuiRecipeHelper();
             if (csv) {
-                new pers.gwyog.gtneioreplugin.util.CSVMaker().run();
+                new CSVMaker().run();
             }
         }
     }

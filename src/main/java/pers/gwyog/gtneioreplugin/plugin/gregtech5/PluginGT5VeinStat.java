@@ -11,12 +11,12 @@ import java.util.List;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
+import codechicken.nei.PositionedStack;
+import cpw.mods.fml.common.Loader;
 import pers.gwyog.gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import pers.gwyog.gtneioreplugin.util.DimensionHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
-import codechicken.nei.PositionedStack;
-import cpw.mods.fml.common.Loader;
 
 public class PluginGT5VeinStat extends PluginGT5Base {
 

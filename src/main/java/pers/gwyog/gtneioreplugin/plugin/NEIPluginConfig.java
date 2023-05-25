@@ -1,11 +1,11 @@
 package pers.gwyog.gtneioreplugin.plugin;
 
+import codechicken.nei.api.API;
+import codechicken.nei.api.IConfigureNEI;
 import pers.gwyog.gtneioreplugin.GTNEIOrePlugin;
 import pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5SmallOreStat;
 import pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid;
 import pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5VeinStat;
-import codechicken.nei.api.API;
-import codechicken.nei.api.IConfigureNEI;
 
 public class NEIPluginConfig implements IConfigureNEI {
 

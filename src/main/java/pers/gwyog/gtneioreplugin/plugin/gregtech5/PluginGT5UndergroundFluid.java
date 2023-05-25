@@ -11,13 +11,13 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import codechicken.lib.gui.GuiDraw;
+import codechicken.nei.PositionedStack;
+import gregtech.api.util.GT_Utility;
 import pers.gwyog.gtneioreplugin.plugin.PluginBase;
 import pers.gwyog.gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import pers.gwyog.gtneioreplugin.util.GT5UndergroundFluidHelper;
 import pers.gwyog.gtneioreplugin.util.GT5UndergroundFluidHelper.UndergroundFluidWrapper;
-import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.PositionedStack;
-import gregtech.api.util.GT_Utility;
 
 public class PluginGT5UndergroundFluid extends PluginBase {
 

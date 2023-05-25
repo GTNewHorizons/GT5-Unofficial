@@ -58,7 +58,7 @@ public class GT5UndergroundFluidHelper {
                     loop: for (Class<? extends WorldProvider> candidate : dimensionCandidates) {
                         for (int i = 0; i < DimensionHelper.DimNameTrimmed.length; i++) {
                             if (DimensionHelper.DimNameTrimmed[i]
-                                    .equalsIgnoreCase(candidate.newInstance().getDimensionName())) {
+                                    .equalsIgnoreCase(candidate.getConstructor().newInstance().getDimensionName())) {
                                 dimension = DimensionHelper.DimNameDisplayed[i];
                                 break loop;
                             }

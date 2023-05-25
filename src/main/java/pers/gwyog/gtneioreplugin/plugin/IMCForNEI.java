@@ -2,8 +2,8 @@ package pers.gwyog.gtneioreplugin.plugin;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import pers.gwyog.gtneioreplugin.GTNEIOrePlugin;
 import cpw.mods.fml.common.event.FMLInterModComms;
+import pers.gwyog.gtneioreplugin.GTNEIOrePlugin;
 
 public class IMCForNEI {
 

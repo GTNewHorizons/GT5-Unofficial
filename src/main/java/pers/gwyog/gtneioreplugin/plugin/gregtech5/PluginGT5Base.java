@@ -5,13 +5,13 @@ import java.awt.Rectangle;
 
 import net.minecraft.client.resources.I18n;
 
-import pers.gwyog.gtneioreplugin.plugin.PluginBase;
-import pers.gwyog.gtneioreplugin.util.GuiRecipeHelper;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.recipe.GuiRecipe;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
+import pers.gwyog.gtneioreplugin.plugin.PluginBase;
+import pers.gwyog.gtneioreplugin.util.GuiRecipeHelper;
 
 public abstract class PluginGT5Base extends PluginBase {
 
@@ -64,7 +64,7 @@ public abstract class PluginGT5Base extends PluginBase {
      * @param dimNames Dimension names to produce a rectangle for
      * @return Rectangle area of dimension names
      */
-    protected Rectangle getDimensionNamesRect(GuiRecipe gui, int recipe, String dimNames) {
+    protected Rectangle getDimensionNamesRect(GuiRecipe<?> gui, int recipe, String dimNames) {
         int dimNamesHeight = dimNames.length() > 70 ? 30 : (dimNames.length() > 36 ? 20 : 10);
         Point offset = gui.getRecipePosition(recipe);
         return new Rectangle(

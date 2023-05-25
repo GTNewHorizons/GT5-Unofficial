@@ -12,9 +12,9 @@ import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
-import pers.gwyog.gtneioreplugin.GTNEIOrePlugin;
 import cpw.mods.fml.common.FMLLog;
 import gregtech.api.GregTech_API;
+import pers.gwyog.gtneioreplugin.GTNEIOrePlugin;
 
 public class GT5CFGHelper {
 

@@ -8,14 +8,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import pers.gwyog.gtneioreplugin.GTNEIOrePlugin;
-import pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5VeinStat;
-import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
-
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
+
+import pers.gwyog.gtneioreplugin.GTNEIOrePlugin;
+import pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5VeinStat;
+import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
 
 public class CSVMaker implements Runnable {
 
@@ -54,14 +54,15 @@ public class CSVMaker implements Runnable {
 
     public void runSmallOres() {
         try {
-            Iterator it = GT5OreSmallHelper.mapOreSmallWrapper.entrySet().iterator();
-            List<Oremix> OreVeins = new ArrayList();
+            Iterator<Map.Entry<String, GT5OreSmallHelper.OreSmallWrapper>> it = GT5OreSmallHelper.mapOreSmallWrapper
+                    .entrySet().iterator();
+            List<Oremix> OreVeins = new ArrayList<>();
             while (it.hasNext()) {
                 Oremix oremix = new Oremix();
 
-                Map.Entry pair = (Map.Entry) it.next();
+                Map.Entry<String, GT5OreSmallHelper.OreSmallWrapper> pair = it.next();
                 String Dims = GT5OreSmallHelper.bufferedDims.get(pair.getValue());
-                GT5OreSmallHelper.OreSmallWrapper oreLayer = (GT5OreSmallHelper.OreSmallWrapper) pair.getValue();
+                GT5OreSmallHelper.OreSmallWrapper oreLayer = pair.getValue();
                 oremix.setOreName(oreLayer.oreGenName.split("\\.")[2]);
                 oremix.setHeight(oreLayer.worldGenHeightRange);
                 oremix.setDensity(oreLayer.amountPerChunk);
@@ -105,14 +106,14 @@ public class CSVMaker implements Runnable {
                 it.remove(); // avoids a ConcurrentModificationException
             }
             BufferedWriter one = Files.newBufferedWriter(Paths.get(GTNEIOrePlugin.CSVnameSmall));
-            ColumnPositionMappingStrategy strat = new ColumnPositionMappingStrategy();
+            ColumnPositionMappingStrategy<Oremix> strat = new ColumnPositionMappingStrategy<>();
             strat.setType(Oremix.class);
             String[] columns = "ORENAME,mix,DENSITY,overworld,nether,end,ea,tf,mo,ma,ph,de,as,ce,eu,ga,ca,io,ve,me,en,ti,mi,ob,pr,tr,pl,kb,ha,make,dd,cb,vb,bc,be,bf,tcetie"
                     .split("\\,");
             strat.setColumnMapping(columns);
-            StatefulBeanToCsv<Oremix> beanToCsv = new StatefulBeanToCsvBuilder(one)
+            StatefulBeanToCsv<Oremix> beanToCsv = new StatefulBeanToCsvBuilder<Oremix>(one)
                     .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER).withMappingStrategy(strat).build();
-            List towrite = Combsort(OreVeins);
+            List<Oremix> towrite = Combsort(OreVeins);
             one.write(
                     "Ore Name,Primary,Secondary,Inbetween,Around,ID,Tier,Height,Density,Size,Weight,Overworld,Nether,End,End Asteroids,Twilight Forest,Moon,Mars,Phobos,Deimos,Asteroids,Ceres,Europa,Ganymede,Callisto,Io,Venus,Mercury,Enceladus,Titan,Miranda,Oberon,Proteus,Triton,Pluto,Kuiper Belt,Haumea,Makemake,Deep Dark,Centauri Bb,Vega B,Barnard C,Barnard E,Barnard F,T Ceti E");
             one.newLine();
@@ -132,14 +133,15 @@ public class CSVMaker implements Runnable {
 
     public void runVeins() {
         try {
-            Iterator it = GT5OreLayerHelper.mapOreLayerWrapper.entrySet().iterator();
-            List<Oremix> OreVeins = new ArrayList();
+            Iterator<Map.Entry<String, OreLayerWrapper>> it = GT5OreLayerHelper.mapOreLayerWrapper.entrySet()
+                    .iterator();
+            List<Oremix> OreVeins = new ArrayList<>();
             while (it.hasNext()) {
                 Oremix oremix = new Oremix();
 
-                Map.Entry pair = (Map.Entry) it.next();
+                Map.Entry<String, OreLayerWrapper> pair = it.next();
                 String Dims = GT5OreLayerHelper.bufferedDims.get(pair.getValue());
-                OreLayerWrapper oreLayer = (OreLayerWrapper) pair.getValue();
+                OreLayerWrapper oreLayer = pair.getValue();
                 oremix.setOreName(oreLayer.veinName.split("\\.")[2]);
                 oremix.setPrimary(PluginGT5VeinStat.getGTOreLocalizedName(oreLayer.Meta[0]));
                 oremix.setSecondary(PluginGT5VeinStat.getGTOreLocalizedName(oreLayer.Meta[1]));
@@ -196,14 +198,14 @@ public class CSVMaker implements Runnable {
                 it.remove(); // avoids a ConcurrentModificationException
             }
             BufferedWriter one = Files.newBufferedWriter(Paths.get(GTNEIOrePlugin.CSVname));
-            ColumnPositionMappingStrategy strat = new ColumnPositionMappingStrategy();
+            ColumnPositionMappingStrategy<Oremix> strat = new ColumnPositionMappingStrategy<>();
             strat.setType(Oremix.class);
             String[] columns = "ORENAME,PRIMARY,SECONDARY,INBETWEEN,AROUND,mix,TIER,HEIGHT,DENSITY,SIZE,WEIGHT,overworld,nether,end,ea,tf,mo,ma,ph,de,as,ce,eu,ga,ca,io,ve,me,en,ti,mi,ob,pr,tr,pl,kb,ha,make,dd,cb,vb,bc,be,bf,tcetie"
                     .split("\\,");
             strat.setColumnMapping(columns);
-            StatefulBeanToCsv<Oremix> beanToCsv = new StatefulBeanToCsvBuilder(one)
+            StatefulBeanToCsv<Oremix> beanToCsv = new StatefulBeanToCsvBuilder<Oremix>(one)
                     .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER).withMappingStrategy(strat).build();
-            List towrite = Combsort(OreVeins);
+            List<Oremix> towrite = Combsort(OreVeins);
             one.write(
                     "Ore Name,Primary,Secondary,Inbetween,Around,ID,Tier,Height,Density,Size,Weight,Overworld,Nether,End,End Asteroids,Twilight Forest,Moon,Mars,Phobos,Deimos,Asteroids,Ceres,Europa,Ganymede,Callisto,Io,Venus,Mercury,Enceladus,Titan,Miranda,Oberon,Proteus,Triton,Pluto,Kuiper Belt,Haumea,Makemake,Deep Dark,Centauri Bb,Vega B,Barnard C,Barnard E,Barnard F,T Ceti E");
             one.newLine();

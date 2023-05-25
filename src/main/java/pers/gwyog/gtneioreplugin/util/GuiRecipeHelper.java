@@ -24,7 +24,7 @@ public class GuiRecipeHelper {
      * @param gui GuiRecipe object
      * @return Integer value of the xSize field of that object
      */
-    public static int getXSize(GuiRecipe gui) {
+    public static int getXSize(GuiRecipe<?> gui) {
         if (xSizeField != null) {
             try {
                 return (int) xSizeField.get(gui);
@@ -43,7 +43,7 @@ public class GuiRecipeHelper {
      * @param gui GuiRecipe object
      * @return Integer value of the guiLeft field of that object
      */
-    public static int getGuiLeft(GuiRecipe gui) {
+    public static int getGuiLeft(GuiRecipe<?> gui) {
         if (guiLeftField != null) {
             try {
                 return (int) guiLeftField.get(gui);
@@ -62,7 +62,7 @@ public class GuiRecipeHelper {
      * @param gui GuiRecipe object
      * @return Integer value of the guiTop field of that object
      */
-    public static int getGuiTop(GuiRecipe gui) {
+    public static int getGuiTop(GuiRecipe<?> gui) {
         if (guiTopField != null) {
             try {
                 return (int) guiTopField.get(gui);
@@ -81,6 +81,7 @@ public class GuiRecipeHelper {
      * Initialize the GuiRecipe Field accessors through reflection
      */
     public GuiRecipeHelper() {
+        @SuppressWarnings("rawtypes")
         Class<GuiRecipe> guiRecipeClass = GuiRecipe.class;
         try {
             guiLeftField = guiRecipeClass.getField("guiLeft");

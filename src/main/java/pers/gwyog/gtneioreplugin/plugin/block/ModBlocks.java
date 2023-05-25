@@ -5,9 +5,9 @@ import java.util.Map;
 
 import net.minecraft.block.Block;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import pers.gwyog.gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import pers.gwyog.gtneioreplugin.util.DimensionHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ModBlocks {
 

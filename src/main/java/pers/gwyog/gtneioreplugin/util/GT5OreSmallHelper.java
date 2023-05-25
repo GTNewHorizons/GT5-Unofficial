@@ -2,7 +2,6 @@ package pers.gwyog.gtneioreplugin.util;
 
 import static pers.gwyog.gtneioreplugin.util.GT5CFGHelper.oreVeinNotInAnyDim;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -152,12 +151,12 @@ public class GT5OreSmallHelper {
         } catch (ClassNotFoundException e) {}
         if (clazzGTOreSmall != null) {
             try {
-                Field fieldRestrictBiome = clazzGTOreSmall.getField("mRestrictBiome");
+                clazzGTOreSmall.getField("mRestrictBiome");
                 restrictBiomeSupport = true;
             } catch (Exception e) {}
             try {
-                Field fieldGCMoon = clazzGTOreSmall.getField("mMoon");
-                Field fieldGCMars = clazzGTOreSmall.getField("mMars");
+                clazzGTOreSmall.getField("mMoon");
+                clazzGTOreSmall.getField("mMars");
                 gcBasicSupport = true;
             } catch (Exception e) {}
         }
