@@ -16,9 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 
-import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.commons.lang3.tuple.MutableTriple;
-
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import com.gtnewhorizons.modularui.api.forge.IItemHandler;
 
@@ -436,7 +433,7 @@ public class GT_ParallelHelper {
         // Map that keeps track of the number of parallel crafts we can accommodate for each fluid output.
         // In the pair, we keep track of number of full crafts plus mb of fluid in a partial craft, to avoid
         // issues with floating point math not being completely accurate when summing.
-        Map<FluidStack, MutablePair<Integer, Integer>> tParallels = new HashMap<>();
+        Map<FluidStack, ParallelData> tParallels = new HashMap<>();
 
         // Iterate over the outputs, calculating require stack spacing they will require.
         for (FluidStack aY : mRecipe.mFluidOutputs) {
@@ -444,7 +441,7 @@ public class GT_ParallelHelper {
                 continue;
             }
             tFluidOutputMap.merge(aY, aY.amount, Integer::sum);
-            tParallels.put(aY, new MutablePair<>(0, 0));
+            tParallels.put(aY, new ParallelData(0, 0));
         }
 
         if (tFluidOutputMap.isEmpty()) {
@@ -461,39 +458,40 @@ public class GT_ParallelHelper {
             // check if hatch is empty and unrestricted
             if (isEmpty.apply(tHatch)) continue;
 
-            for (Entry<FluidStack, MutablePair<Integer, Integer>> entry : tParallels.entrySet()) {
+            for (Entry<FluidStack, ParallelData> entry : tParallels.entrySet()) {
                 FluidStack tFluidOutput = entry.getKey();
                 if (acceptsFluid.apply(tHatch, tFluidOutput)) continue;
                 // this fluid is not prevented by restrictions on output hatch
                 if (tHatch.getFluidAmount() == 0 || GT_Utility.areFluidsEqual(tHatch.getFluid(), tFluidOutput)) {
-                    MutablePair<Integer, Integer> tParallel = entry.getValue();
+                    ParallelData tParallel = entry.getValue();
                     Integer tCraftSize = tFluidOutputMap.get(tFluidOutput);
-                    tParallel.left += (tParallel.right + tSpaceLeft) / tCraftSize;
-                    tParallel.right = (tParallel.right + tSpaceLeft) % tCraftSize;
+                    tParallel.batch += (tParallel.partial + tSpaceLeft) / tCraftSize;
+                    tParallel.partial = (tParallel.partial + tSpaceLeft) % tCraftSize;
                 }
             }
         }
         // now that all partial/restricted hatches have been counted, create a priority queue for our outputs
         // the lowest priority fluid is the number of complete parallel crafts we can support
-        PriorityQueue<MutableTriple<Integer, Integer, FluidStack>> aParallelQueue = new PriorityQueue<>(
-            Comparator.comparing(MutableTriple::getLeft));
-        for (Entry<FluidStack, MutablePair<Integer, Integer>> entry : tParallels.entrySet()) {
-            aParallelQueue.add(new MutableTriple<>(entry.getValue().left, entry.getValue().right, entry.getKey()));
+        PriorityQueue<ParallelStackInfo<FluidStack>> aParallelQueue = new PriorityQueue<>(
+            Comparator.comparing(i -> i.batch));
+        for (Entry<FluidStack, ParallelData> entry : tParallels.entrySet()) {
+            aParallelQueue
+                .add(new ParallelStackInfo<>(entry.getValue().batch, entry.getValue().partial, entry.getKey()));
         }
         // add extra parallels for open slots as well
         for (T tHatch : hatches) {
             // partially filled or restricted hatch. done in last pass
             if (!isEmpty.apply(tHatch)) continue;
 
-            MutableTriple<Integer, Integer, FluidStack> tParallel = aParallelQueue.poll();
+            ParallelStackInfo<FluidStack> tParallel = aParallelQueue.poll();
             assert tParallel != null; // will always be true, specifying assert here to avoid IDE/compiler warnings
-            Integer tCraftSize = tFluidOutputMap.get(tParallel.right);
+            Integer tCraftSize = tFluidOutputMap.get(tParallel.stack);
             int tSpaceLeft = tHatch.getCapacity();
-            tParallel.left += (tParallel.middle + tSpaceLeft) / tCraftSize;
-            tParallel.middle = (tParallel.middle + tSpaceLeft) % tCraftSize;
+            tParallel.batch += (tParallel.partial + tSpaceLeft) / tCraftSize;
+            tParallel.partial = (tParallel.partial + tSpaceLeft) % tCraftSize;
             aParallelQueue.add(tParallel);
         }
-        return aParallelQueue.element().left;
+        return aParallelQueue.element().batch;
     }
 
     /**
@@ -544,11 +542,11 @@ public class GT_ParallelHelper {
         // Map that keeps track of the number of parallel crafts we can accommodate for each item output.
         // In the pair, we keep track of number of full crafts plus number of items in a partial craft, to avoid
         // issues with floating point math not being completely accurate when summing.
-        Map<ItemStack, MutablePair<Integer, Integer>> tParallels = new ItemStackMap<>();
+        Map<ItemStack, ParallelData> tParallels = new ItemStackMap<>();
         int tSlotsFree = 0;
         for (ItemStack tItem : mRecipe.mOutputs) {
             tItemOutputMap.merge(tItem, tItem.stackSize, Integer::sum);
-            tParallels.put(tItem, new MutablePair<>(0, 0));
+            tParallels.put(tItem, new ParallelData(0, 0));
         }
 
         if (tItemOutputMap.isEmpty()) {
@@ -573,33 +571,58 @@ public class GT_ParallelHelper {
                         // we don't have a matching stack to output, ignore this bus stack
                         continue;
                     }
-                    MutablePair<Integer, Integer> tParallel = tParallels.get(tBusStack);
-                    tParallel.left += (tParallel.right + tSpaceLeft) / tCraftSize;
-                    tParallel.right = (tParallel.right + tSpaceLeft) % tCraftSize;
+                    ParallelData tParallel = tParallels.get(tBusStack);
+                    tParallel.batch += (tParallel.partial + tSpaceLeft) / tCraftSize;
+                    tParallel.partial = (tParallel.partial + tSpaceLeft) % tCraftSize;
                 }
 
             }
             // now that all partial stacks have been counted, create a priority queue for our outputs
             // the lowest priority item is the number of complete parallel crafts we can support
-            PriorityQueue<MutableTriple<Integer, Integer, ItemStack>> aParallelQueue = new PriorityQueue<>(
-                Comparator.comparing(MutableTriple::getLeft));
-            for (Entry<ItemStack, MutablePair<Integer, Integer>> entry : tParallels.entrySet()) {
-                aParallelQueue.add(new MutableTriple<>(entry.getValue().left, entry.getValue().right, entry.getKey()));
+            PriorityQueue<ParallelStackInfo<ItemStack>> aParallelQueue = new PriorityQueue<>(
+                Comparator.comparing(i -> i.batch));
+            for (Entry<ItemStack, ParallelData> entry : tParallels.entrySet()) {
+                aParallelQueue
+                    .add(new ParallelStackInfo<>(entry.getValue().batch, entry.getValue().partial, entry.getKey()));
             }
 
             while (tSlotsFree > 0) {
-                MutableTriple<Integer, Integer, ItemStack> tParallel = aParallelQueue.poll();
+                ParallelStackInfo<ItemStack> tParallel = aParallelQueue.poll();
                 assert tParallel != null; // will always be true, specifying assert here to avoid IDE/compiler warnings
-                Integer tCraftSize = tItemOutputMap.get(tParallel.right);
-                int tStackSize = tParallel.right.getMaxStackSize();
-                tParallel.left += (tParallel.middle + tStackSize) / tCraftSize;
-                tParallel.middle = (tParallel.middle + tStackSize) % tCraftSize;
+                Integer tCraftSize = tItemOutputMap.get(tParallel.stack);
+                int tStackSize = tParallel.stack.getMaxStackSize();
+                tParallel.batch += (tParallel.partial + tStackSize) / tCraftSize;
+                tParallel.partial = (tParallel.partial + tStackSize) % tCraftSize;
                 aParallelQueue.add(tParallel);
                 --tSlotsFree;
             }
 
-            return aParallelQueue.element().left;
+            return aParallelQueue.element().batch;
         }
         return 0;
+    }
+
+    static class ParallelData {
+
+        int batch;
+        int partial;
+
+        ParallelData(int batch, int partial) {
+            this.batch = batch;
+            this.partial = partial;
+        }
+    }
+
+    static class ParallelStackInfo<T> {
+
+        int batch;
+        int partial;
+        T stack;
+
+        ParallelStackInfo(int batch, int partial, T stack) {
+            this.batch = batch;
+            this.partial = partial;
+            this.stack = stack;
+        }
     }
 }
