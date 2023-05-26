@@ -448,7 +448,6 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             GlStateManager.popMatrix();
         }
 
-        // noinspection RedundantSuppression //IntelliJ incorrectly thinks that OverrideOnly suppression is redundant
         for (Widget widget : window.getChildren()) {
             // NEI already did translation, so we can't use Widget#drawInternal here
             GlStateManager.pushMatrix();
