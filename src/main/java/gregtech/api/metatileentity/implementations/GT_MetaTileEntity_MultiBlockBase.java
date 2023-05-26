@@ -9,6 +9,8 @@ import static mcp.mobius.waila.api.SpecialChars.RESET;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -120,6 +122,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorLow", 5);
         this.damageFactorHigh = (float) GregTech_API.sMachineFile
             .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorHigh", 0.6f);
+        voidExcess = !isVoidExcessButtonEnabled();
     }
 
     public static boolean isValidMetaTileEntity(MetaTileEntity aMetaTileEntity) {
@@ -933,12 +936,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     public boolean depleteInput(FluidStack aLiquid) {
+        return depleteInput(aLiquid, false);
+    }
+
+    public boolean depleteInput(FluidStack aLiquid, boolean simulate) {
         if (aLiquid == null) return false;
         for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
             tHatch.mRecipeMap = getRecipeMap();
             if (isValidMetaTileEntity(tHatch)) {
                 FluidStack tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, false);
                 if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
+                    if (simulate) {
+                        return true;
+                    }
                     tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, true);
                     return tLiquid != null && tLiquid.amount >= aLiquid.amount;
                 }
@@ -1510,6 +1520,38 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
 
         return true;
+    }
+
+    /**
+     * Checks if items can fit in the output buses. If your outputs come from GT_Recipe,
+     * {@link GT_ParallelHelper} will work better.
+     */
+    protected boolean canFitOutput(ItemStack[] items) {
+        return canFitOutput(items, null);
+    }
+
+    /**
+     * Checks if fluids can fit in the output hatches. If your outputs come from GT_Recipe,
+     * {@link GT_ParallelHelper} will work better.
+     */
+    protected boolean canFitOutput(FluidStack[] fluids) {
+        return canFitOutput(null, fluids);
+    }
+
+    /**
+     * Checks if items / fluids can fit in the output buses / hatches. If your outputs come from GT_Recipe,
+     * {@link GT_ParallelHelper} will work better.
+     */
+    protected boolean canFitOutput(@Nullable ItemStack[] items, @Nullable FluidStack[] fluids) {
+        VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper().setController(this);
+        if (items != null) {
+            voidProtectionHelper.setItemOutputs(items);
+        }
+        if (fluids != null) {
+            voidProtectionHelper.setFluidOutputs(fluids);
+        }
+        voidProtectionHelper.build();
+        return voidProtectionHelper.getMaxParallel() > 0;
     }
 
     @Override

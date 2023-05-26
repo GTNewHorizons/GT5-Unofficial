@@ -41,7 +41,7 @@ import gregtech.common.blocks.GT_TileEntity_Ores;
 
 public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTileEntity_DrillerBase {
 
-    private final ArrayList<ChunkPosition> oreBlockPositions = new ArrayList<>();
+    private final List<ChunkPosition> oreBlockPositions = new ArrayList<>();
     protected int mTier = 1;
     private int chunkRadiusConfig = getRadiusInChunks();
     private boolean replaceWithCobblestone = true;
@@ -130,11 +130,31 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             // new layer - fill again
             fillMineListIfEmpty(xDrill, yDrill, zDrill, xPipe, zPipe, yHead);
         }
-        return processOreList();
+        return tryProcessOreList();
     }
 
-    private boolean processOreList() {
+    private boolean tryProcessOreList() {
+        if (!voidExcess) {
+            boolean simulateResult = processOreList(true);
+            if (!simulateResult) {
+                mEUt = 0;
+                mMaxProgresstime = 0;
+                return false;
+            }
+        }
+        boolean result = processOreList(false);
+        if (!result) {
+            mEUt = 0;
+            mMaxProgresstime = 0;
+            return false;
+        }
+        return true;
+    }
+
+    private boolean processOreList(boolean simulate) {
         ChunkPosition oreBlockPos = null;
+        List<ChunkPosition> oreBlockPositions = simulate ? copyOreBlockPositions(this.oreBlockPositions)
+            : this.oreBlockPositions;
         int x = 0, y = 0, z = 0;
         Block oreBlock = null;
         int oreBlockMetadata = 0;
@@ -150,7 +170,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                 .getBlockMetadata(x, y, z);
         }
 
-        if (!tryConsumeDrillingFluid()) {
+        if (!tryConsumeDrillingFluid(simulate)) {
             oreBlockPositions.add(0, oreBlockPos);
             return false;
         }
@@ -163,16 +183,30 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
 
             Collection<ItemStack> oreBlockDrops = getBlockDrops(oreBlock, x, y, z);
             ItemStack cobble = GT_Utility.getCobbleForOre(oreBlock, metaData);
-            if (replaceWithCobblestone) {
-                getBaseMetaTileEntity().getWorld()
-                    .setBlock(x, y, z, Block.getBlockFromItem(cobble.getItem()), cobble.getItemDamage(), 3);
-            } else {
-                getBaseMetaTileEntity().getWorld()
-                    .setBlockToAir(oreBlockPos.chunkPosX, oreBlockPos.chunkPosY, oreBlockPos.chunkPosZ);
+            if (!simulate) {
+                if (replaceWithCobblestone) {
+                    getBaseMetaTileEntity().getWorld()
+                        .setBlock(x, y, z, Block.getBlockFromItem(cobble.getItem()), cobble.getItemDamage(), 3);
+                } else {
+                    getBaseMetaTileEntity().getWorld()
+                        .setBlockToAir(oreBlockPos.chunkPosX, oreBlockPos.chunkPosY, oreBlockPos.chunkPosZ);
+                }
             }
-            mOutputItems = getOutputByDrops(oreBlockDrops);
+            ItemStack[] toOutput = getOutputByDrops(oreBlockDrops);
+            if (simulate && !canFitOutput(toOutput)) {
+                return false;
+            }
+            mOutputItems = toOutput;
         }
         return true;
+    }
+
+    private static List<ChunkPosition> copyOreBlockPositions(List<ChunkPosition> oreBlockPositions) {
+        List<ChunkPosition> ret = new ArrayList<>();
+        for (ChunkPosition chunkPosition : oreBlockPositions) {
+            ret.add(new ChunkPosition(chunkPosition.chunkPosX, chunkPosition.chunkPosY, chunkPosition.chunkPosZ));
+        }
+        return ret;
     }
 
     @Override
@@ -199,7 +233,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                 return true;
             }
         }
-        return processOreList();
+        return tryProcessOreList();
     }
 
     private void createInitialWorkingChunk() {
@@ -220,7 +254,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         int yHead, int oldYHead) {
         if (!mChunkLoadingEnabled || oreBlockPositions.isEmpty())
             return super.workingUpward(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
-        boolean result = processOreList();
+        boolean result = tryProcessOreList();
         if (oreBlockPositions.isEmpty()) GT_ChunkManager.releaseTicket((TileEntity) getBaseMetaTileEntity());
         return result;
     }
@@ -331,12 +365,8 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         } else return oreBlock.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, mTier + 3);
     }
 
-    private boolean tryConsumeDrillingFluid() {
-        if (!depleteInput(new FluidStack(ItemList.sDrillingFluid, 2000))) {
-            mMaxProgresstime = 0;
-            return false;
-        }
-        return true;
+    private boolean tryConsumeDrillingFluid(boolean simulate) {
+        return depleteInput(new FluidStack(ItemList.sDrillingFluid, 2000), simulate);
     }
 
     private void fillChunkMineList(int yHead, int yDrill) {
@@ -432,5 +462,10 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                 + EnumChatFormatting.RESET
                 + " "
                 + StatCollector.translateToLocal("GT5U.machines.chunks") };
+    }
+
+    @Override
+    protected boolean isVoidExcessButtonEnabled() {
+        return true;
     }
 }
