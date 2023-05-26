@@ -447,14 +447,18 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             background.draw(Pos2d.ZERO, window.getSize(), 0);
             GlStateManager.popMatrix();
         }
+
         for (Widget widget : window.getChildren()) {
             // NEI already did translation, so we can't use Widget#drawInternal here
             GlStateManager.pushMatrix();
             GlStateManager.translate(widget.getPos().x, widget.getPos().y, 0);
             GlStateManager.color(1, 1, 1, window.getAlpha());
             GlStateManager.enableBlend();
+
             // maybe we can use Minecraft#timer but none of the IDrawables use partialTicks
             widget.drawBackground(0);
+
+            // noinspection OverrideOnly // It's either suppressing this warning or changing ModularUI
             widget.draw(0);
             GlStateManager.popMatrix();
         }
