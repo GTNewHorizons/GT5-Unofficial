@@ -25,8 +25,7 @@ public class FrameBoxBlock extends DumbBlock {
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister reg)
-    {
+    public void registerBlockIcons(IIconRegister reg) {
         this.blockIcon = reg.registerIcon(RES_PATH_BLOCK + "bottom");
     }
 

@@ -3,6 +3,7 @@ package gregtech.api.ModernMaterials.Blocks;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -37,7 +38,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 //
 //    @Override
 //    public TileEntity createNewTileEntity(World world, int metadata) {
-//        return new TileEntityFrameBox(materialID);
+//        return new FrameBoxTileEntity(materialID);
 //    }
 //
 //    @Override

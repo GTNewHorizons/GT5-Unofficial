@@ -7,6 +7,7 @@ import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxBlock;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxItemBlock;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxRenderer;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxTileEntity;
+import gregtech.api.ModernMaterials.Blocks.FrameBox2.FrameBoxBlock2;
 import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.PartProperties.Rendering.ModernMaterialItemRenderer;
@@ -81,15 +82,6 @@ public class ModernMaterialUtilities {
 
     public static void registerAllMaterialsFluids() {
 
-        // todo fix
-        // Register the icons for the ModernMaterial fluids.
-        TextureMap textureMap = Minecraft.getMinecraft().getTextureMapBlocks();
-        final String defaultPath = RES_PATH_BLOCK + "ModernMaterialsIcons/Fluids/";
-        for (FluidEnum fluidEnum : FluidEnum.values()) {
-            fluidEnum.stillIcon = null;
-            fluidEnum.flowingIcon = null;
-        }
-
         // Register the fluids with forge.
         for (ModernMaterial material : materialIDToMaterial.values()) {
             for (ModernMaterialFluid fluid : material.existingFluids) {
@@ -98,8 +90,14 @@ public class ModernMaterialUtilities {
         }
 
         BlocksEnum.FrameBox.getAssociatedMaterials().addAll(materialIDToMaterial.values());
-        (new FrameBoxBlock()).registerBlock(FrameBoxTileEntity.class, FrameBoxItemBlock.class);
-        new FrameBoxRenderer();
+
+        GameRegistry.registerBlock(new FrameBoxBlock2(), "exampleBlock");
+        GameRegistry.registerTileEntity(FrameBoxTileEntity.class, "exampleTileEntity");
+
+
+
+        //(new FrameBoxBlock()).registerBlock(FrameBoxTileEntity.class, FrameBoxItemBlock.class);
+        //new FrameBoxRenderer();
 //        FrameBoxBlock block = new FrameBoxBlock();
 //        GameRegistry.registerBlock(block, FrameBoxItemBlock.class, BlocksEnum.FrameBox.name());
 //        GameRegistry.registerTileEntity(FrameBoxTileEntity.class, BlocksEnum.FrameBox.name());
