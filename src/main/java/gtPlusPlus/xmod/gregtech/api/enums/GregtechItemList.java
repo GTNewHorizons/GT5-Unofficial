@@ -613,6 +613,12 @@ public enum GregtechItemList implements GregtechItemContainer {
     Hatch_SuperBus_Output_UV,
     Hatch_SuperBus_Output_MAX,
 
+    // Chisel Buses for Industrial Chisel
+    GT_MetaTileEntity_ChiselBus_I,
+    GT_MetaTileEntity_ChiselBus_II,
+    GT_MetaTileEntity_ChiselBus_III,
+    GT_MetaTileEntity_ChiselBus_IV,
+
     // ----------------------------------------------------------------------------
 
     /**

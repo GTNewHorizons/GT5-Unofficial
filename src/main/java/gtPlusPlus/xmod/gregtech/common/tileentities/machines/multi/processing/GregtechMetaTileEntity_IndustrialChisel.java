@@ -25,6 +25,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
@@ -34,6 +35,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ChiselBus;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import team.chisel.carving.Carving;
@@ -42,6 +44,8 @@ public class GregtechMetaTileEntity_IndustrialChisel
         extends GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialChisel> implements ISurvivalConstructable {
 
     private int mCasing;
+
+    private ItemStack target;
     private static IStructureDefinition<GregtechMetaTileEntity_IndustrialChisel> STRUCTURE_DEFINITION = null;
     private ItemStack mInputCache;
     private ItemStack mOutputCache;
@@ -69,7 +73,9 @@ public class GregtechMetaTileEntity_IndustrialChisel
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType()).addInfo("Factory Grade Auto Chisel")
-                .addInfo("Target block goes in GUI slot").addInfo("If no target provided, first chisel result is used")
+                .addInfo("Target block goes in Controller slot for common Input Buses")
+                .addInfo("You can also set a target block in each Chisel Input Bus and use them as an Input Bus")
+                .addInfo("If no target is provided for common buses, the result of the first chisel is used")
                 .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 16")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
                 .addController("Front center").addCasingInfo("Sturdy Printer Casing", 10).addInputBus("Any casing", 1)
@@ -81,12 +87,17 @@ public class GregtechMetaTileEntity_IndustrialChisel
     @Override
     public IStructureDefinition<GregtechMetaTileEntity_IndustrialChisel> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_IndustrialChisel>builder()
-                    .addShape(
+            STRUCTURE_DEFINITION = StructureDefinition
+                    .<GregtechMetaTileEntity_IndustrialChisel>builder().addShape(
                             mName,
                             transpose(
-                                    new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
-                                            { "CCC", "CCC", "CCC" }, }))
+                                    // spotless:off
+                                    new String[][] {
+                                            { "CCC", "CCC", "CCC" },
+                                            { "C~C", "C-C", "CCC" },
+                                            { "CCC", "CCC", "CCC" },
+                                    }))
+                                    // spotless:on
                     .addElement(
                             'C',
                             buildHatchAdder(GregtechMetaTileEntity_IndustrialChisel.class)
@@ -184,7 +195,7 @@ public class GregtechMetaTileEntity_IndustrialChisel
     }
 
     private static ItemStack getChiselOutput(ItemStack aInput, ItemStack aTarget) {
-        ItemStack tOutput = null;
+        ItemStack tOutput;
         if (aTarget != null && canBeMadeFrom(aInput, aTarget)) {
             tOutput = aTarget;
         } else if (aTarget != null && !canBeMadeFrom(aInput, aTarget)) {
@@ -195,10 +206,10 @@ public class GregtechMetaTileEntity_IndustrialChisel
         return tOutput;
     }
 
-    private GTPP_Recipe generateChiselRecipe(ItemStack aInput, ItemStack aTarget) {
-        boolean tIsCached = hasValidCache(aInput, aTarget, true);
+    private GTPP_Recipe generateChiselRecipe(ItemStack aInput) {
+        boolean tIsCached = hasValidCache(aInput, this.target, true);
         if (tIsCached || aInput != null && hasChiselResults(aInput)) {
-            ItemStack tOutput = tIsCached ? mOutputCache.copy() : getChiselOutput(aInput, aTarget);
+            ItemStack tOutput = tIsCached ? mOutputCache.copy() : getChiselOutput(aInput, this.target);
             if (tOutput != null) {
                 if (mCachedRecipe != null && GT_Utility.areStacksEqual(aInput, mInputCache)
                         && GT_Utility.areStacksEqual(tOutput, mOutputCache)) {
@@ -225,74 +236,97 @@ public class GregtechMetaTileEntity_IndustrialChisel
         return null;
     }
 
+    private GT_Recipe getRecipe() {
+        for (GT_MetaTileEntity_Hatch_InputBus bus : this.mInputBusses) {
+            if (bus instanceof GT_MetaTileEntity_ChiselBus) { // Chisel buses
+                if (bus.mInventory[bus.getSizeInventory() - 1] == null) continue;
+                this.target = bus.mInventory[bus.getSizeInventory() - 1];
+
+                for (int i = bus.getSizeInventory() - 2; i >= 0; i--) {
+                    ItemStack itemsInSlot = bus.mInventory[i];
+                    if (itemsInSlot != null) {
+                        GT_Recipe tRecipe = generateChiselRecipe(itemsInSlot);
+                        if (tRecipe != null) {
+                            return tRecipe;
+                        }
+                    }
+                }
+            } else {
+                target = this.getGUIItemStack(); // Common buses
+                for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                    ItemStack itemsInSlot = bus.mInventory[i];
+                    if (itemsInSlot != null) {
+                        GT_Recipe tRecipe = generateChiselRecipe(itemsInSlot);
+                        if (tRecipe != null) {
+                            return tRecipe;
+                        }
+                    }
+                }
+            }
+
+        }
+        return null;
+    }
+
     @Override
     public boolean checkRecipe(final ItemStack aStack) {
+        GT_Recipe tRecipe = getRecipe();
+        if (tRecipe == null) return false;
+
         ArrayList<ItemStack> aItems = this.getStoredInputs();
-        if (!aItems.isEmpty()) {
 
-            GT_Recipe tRecipe = generateChiselRecipe(aItems.get(0), this.getGUIItemStack());
+        // Based on the Processing Array. A bit overkill, but very flexible.
+        ItemStack[] aItemInputs = aItems.toArray(new ItemStack[aItems.size()]);
 
-            if (tRecipe == null) {
-                return false;
-            }
+        // Reset outputs and progress stats
+        this.lEUt = 0;
+        this.mMaxProgresstime = 0;
+        this.mOutputItems = new ItemStack[] {};
+        this.mOutputFluids = new FluidStack[] {};
+        long tEnergy = getMaxInputEnergy();
 
-            // Based on the Processing Array. A bit overkill, but very flexible.
-            ItemStack[] aItemInputs = aItems.toArray(new ItemStack[aItems.size()]);
-            FluidStack[] aFluidInputs = new FluidStack[] {};
+        // Remember last recipe - an optimization for findRecipe()
+        this.mLastRecipe = tRecipe;
 
-            // Reset outputs and progress stats
-            this.lEUt = 0;
-            this.mMaxProgresstime = 0;
-            this.mOutputItems = new ItemStack[] {};
-            this.mOutputFluids = new FluidStack[] {};
+        int aMaxParallelRecipes = getMaxParallelRecipes();
+        int aEUPercent = getEuDiscountForParallelism();
+        int aSpeedBonusPercent = 200;
 
-            long tVoltage = getMaxInputVoltage();
-            long tEnergy = getMaxInputEnergy();
-            // Remember last recipe - an optimization for findRecipe()
-            this.mLastRecipe = tRecipe;
-
-            int aMaxParallelRecipes = getMaxParallelRecipes();
-            int aEUPercent = getEuDiscountForParallelism();
-            int aSpeedBonusPercent = 200;
-
-            GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
-                    .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes)
-                    .enableConsumption().enableOutputCalculation().setEUtModifier(aEUPercent / 100.0f);
-            if (!voidExcess) {
-                helper.enableVoidProtection(this);
-            }
-
-            if (batchMode) {
-                helper.enableBatchMode(128);
-            }
-
-            helper.build();
-
-            if (helper.getCurrentParallel() == 0) {
-                return false;
-            }
-
-            this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-            this.mEfficiencyIncrease = 10000;
-
-            GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tEnergy)
-                    .setDuration(tRecipe.mDuration).setEUtDiscount(aEUPercent / 100.0f)
-                    .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
-                    .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplier()))
-                    .calculate();
-            lEUt = -calculator.getConsumption();
-            mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
-
-            mOutputItems = helper.getItemOutputs();
-            mOutputFluids = helper.getFluidOutputs();
-            updateSlots();
-
-            // Play sounds (GT++ addition - GT multiblocks play no sounds)
-            startProcess();
-            return true;
+        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
+                .setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes).enableConsumption()
+                .enableOutputCalculation().setEUtModifier(aEUPercent / 100.0f);
+        if (!voidExcess) {
+            helper.enableVoidProtection(this);
         }
 
-        return false;
+        if (batchMode) {
+            helper.enableBatchMode(128);
+        }
+
+        helper.build();
+
+        if (helper.getCurrentParallel() == 0) {
+            return false;
+        }
+
+        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+        this.mEfficiencyIncrease = 10000;
+
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tEnergy)
+                .setDuration(tRecipe.mDuration).setEUtDiscount(aEUPercent / 100.0f)
+                .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
+                .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplier()))
+                .calculate();
+        lEUt = -calculator.getConsumption();
+        mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
+
+        mOutputItems = helper.getItemOutputs();
+
+        updateSlots();
+
+        // Play sounds (GT++ addition - GT multiblocks play no sounds)
+        startProcess();
+        return true;
     }
 
     @Override
@@ -307,7 +341,7 @@ public class GregtechMetaTileEntity_IndustrialChisel
 
     private static String sChiselSound = null;
 
-    private static final String getChiselSound() {
+    private static String getChiselSound() {
         if (sChiselSound == null) {
             sChiselSound = Carving.chisel.getVariationSound(Blocks.stone, 0);
         }

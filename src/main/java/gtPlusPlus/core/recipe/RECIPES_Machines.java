@@ -262,6 +262,7 @@ public class RECIPES_Machines {
         rockBreaker();
         thermicFluidHeater();
         advHeatExchanger();
+        chiselBuses();
 
         gt4FarmManager();
         gt4Redstone();
@@ -3548,6 +3549,27 @@ public class RECIPES_Machines {
                     mSuperBusesOutput[i].get(1),
                     20 * 30 * 2,
                     (int) GT_Values.V[i]);
+        }
+    }
+
+    private static void chiselBuses() {
+        ItemStack[] mSuperBusesInput = new ItemStack[] { ItemList.Hatch_Input_Bus_HV.get(1),
+                GregtechItemList.Hatch_SuperBus_Input_LV.get(1), GregtechItemList.Hatch_SuperBus_Input_MV.get(1),
+                GregtechItemList.Hatch_SuperBus_Input_HV.get(1), };
+
+        ItemStack[] mChiselBuses = new ItemStack[] { GregtechItemList.GT_MetaTileEntity_ChiselBus_I.get(1),
+                GregtechItemList.GT_MetaTileEntity_ChiselBus_II.get(1),
+                GregtechItemList.GT_MetaTileEntity_ChiselBus_III.get(1),
+                GregtechItemList.GT_MetaTileEntity_ChiselBus_IV.get(1), };
+
+        for (int i = 0; i < 4; i++) {
+            CORE.RA.addSixSlotAssemblingRecipe(
+                    new ItemStack[] { CI.getNumberedCircuit(17), mSuperBusesInput[i], CI.getSensor(i, 1),
+                            CI.getRobotArm(i, 2), CI.getBolt(i, 16), ItemUtils.getSimpleStack(Blocks.chest) },
+                    CI.getAlternativeTieredFluid(i, 144 * 2),
+                    mChiselBuses[i],
+                    20 * 30 * 2,
+                    (int) GT_Values.VP[i + 1]);
         }
     }
 

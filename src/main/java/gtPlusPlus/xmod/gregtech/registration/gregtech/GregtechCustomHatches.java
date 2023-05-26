@@ -5,6 +5,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ChiselBus;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_AirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_AirIntake_Extreme;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_ControlCore;
@@ -27,6 +28,7 @@ public class GregtechCustomHatches {
         }
         run3();
         run4();
+        run5(); // Chisel buses
     }
 
     private static void run1() {
@@ -273,5 +275,24 @@ public class GregtechCustomHatches {
         GregtechItemList.Hatch_RTG_LV.set(aHatch1.getStackForm(1L));
         GregtechItemList.Hatch_RTG_MV.set(aHatch2.getStackForm(1L));
         GregtechItemList.Hatch_RTG_HV.set(aHatch3.getStackForm(1L));
+    }
+
+    private static GT_MetaTileEntity_ChiselBus makeChiselBus(int id, String unlocalizedName, String localizedName,
+            int tier) {
+        return new GT_MetaTileEntity_ChiselBus(id, unlocalizedName, localizedName, tier);
+    }
+
+    private static void run5() {
+        int aID = 31777;
+
+        GregtechItemList.GT_MetaTileEntity_ChiselBus_I
+                .set((makeChiselBus(aID++, "hatch.chisel.tier.00", "Chisel Bus I", 0)).getStackForm(1L));
+        GregtechItemList.GT_MetaTileEntity_ChiselBus_II
+                .set((makeChiselBus(aID++, "hatch.chisel.tier.01", "Chisel Bus II", 1)).getStackForm(1L));
+        GregtechItemList.GT_MetaTileEntity_ChiselBus_III
+                .set((makeChiselBus(aID++, "hatch.chisel.tier.02", "Chisel Bus III", 2)).getStackForm(1L));
+        GregtechItemList.GT_MetaTileEntity_ChiselBus_IV
+                .set((makeChiselBus(aID++, "hatch.chisel.tier.03", "Chisel Bus IV", 3)).getStackForm(1L));
+
     }
 }
