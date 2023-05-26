@@ -234,7 +234,7 @@ public class VoidProtectionHelper {
 
             for (Map.Entry<FluidStack, ParallelData> entry : tParallels.entrySet()) {
                 FluidStack tFluidOutput = entry.getKey();
-                if (acceptsFluid.apply(tHatch, tFluidOutput)) continue;
+                if (!acceptsFluid.apply(tHatch, tFluidOutput)) continue;
                 // this fluid is not prevented by restrictions on output hatch
                 if (tHatch.getFluidAmount() == 0 || GT_Utility.areFluidsEqual(tHatch.getFluid(), tFluidOutput)) {
                     ParallelData tParallel = entry.getValue();
