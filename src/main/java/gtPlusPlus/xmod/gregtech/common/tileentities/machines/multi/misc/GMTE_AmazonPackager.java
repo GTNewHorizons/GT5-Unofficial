@@ -96,9 +96,9 @@ public class GMTE_AmazonPackager extends GregtechMeta_MultiBlockBase<GMTE_Amazon
                 .addInfo("500% faster than using single block machines of the same voltage")
                 .addInfo("Only uses 75% of the EU/t normally required").addInfo("Processes 16 items per voltage tier")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
-                .addController("Front center").addCasingInfo("Supply Depot Casings", 10).addInputBus("Any casing", 1)
-                .addOutputBus("Any casing", 1).addEnergyHatch("Any casing", 1).addMaintenanceHatch("Any casing", 1)
-                .addMufflerHatch("Any casing", 1).toolTipFinisher("GT++");
+                .addController("Front center").addCasingInfoMin("Supply Depot Casings", 10, false)
+                .addInputBus("Any casing", 1).addOutputBus("Any casing", 1).addEnergyHatch("Any casing", 1)
+                .addMaintenanceHatch("Any casing", 1).addMufflerHatch("Any casing", 1).toolTipFinisher("GT++");
         return tt;
     }
 

@@ -5,6 +5,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -29,14 +31,14 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
         super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
     }
 
-    public TileEntitySolarHeater(final String aName, final int aTier, final String aDescription,
+    public TileEntitySolarHeater(final String aName, final int aTier, final String[] aDescription,
             final ITexture[][][] aTextures, final int aSlotCount) {
         super(aName, aTier, aSlotCount, aDescription, aTextures);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, "Point me at a Solar Tower", CORE.GT_Tooltip.get() };
+        return ArrayUtils.addAll(this.mDescriptionArray, "Point me at a Solar Tower", CORE.GT_Tooltip.get());
     }
 
     @Override
@@ -115,7 +117,7 @@ public class TileEntitySolarHeater extends GT_MetaTileEntity_TieredMachineBlock 
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new TileEntitySolarHeater(this.mName, this.mTier, this.mDescription, this.mTextures, 0);
+        return new TileEntitySolarHeater(this.mName, this.mTier, this.mDescriptionArray, this.mTextures, 0);
     }
 
     @Override

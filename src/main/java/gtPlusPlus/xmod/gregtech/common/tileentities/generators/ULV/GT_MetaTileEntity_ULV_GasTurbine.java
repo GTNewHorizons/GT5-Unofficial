@@ -2,6 +2,8 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.generators.ULV;
 
 import static gregtech.api.enums.GT_Values.V;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.interfaces.IIconContainer;
@@ -15,18 +17,23 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GT_MetaTileEntity_ULV_GasTurbine extends GT_MetaTileEntity_GasTurbine {
 
+    private static final int EFFICIENCY_DEFAULT = 95;
+
     public GT_MetaTileEntity_ULV_GasTurbine(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier);
+        super(aID, aName, aNameRegional, aTier, EFFICIENCY_DEFAULT);
     }
 
-    public GT_MetaTileEntity_ULV_GasTurbine(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
+    public GT_MetaTileEntity_ULV_GasTurbine(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, aDescription, aTextures, EFFICIENCY_DEFAULT);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, "Produces " + (this.getPollution() * 20) + " pollution/sec",
-                "Fuel Efficiency: " + this.getEfficiency() + "%", CORE.GT_Tooltip.get() };
+        return ArrayUtils.addAll(
+                this.mDescriptionArray,
+                "Produces " + (this.getPollution() * 20) + " pollution/sec",
+                "Fuel Efficiency: " + this.getEfficiency() + "%",
+                CORE.GT_Tooltip.get());
     }
 
     @Override
@@ -36,7 +43,7 @@ public class GT_MetaTileEntity_ULV_GasTurbine extends GT_MetaTileEntity_GasTurbi
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_ULV_GasTurbine(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GT_MetaTileEntity_ULV_GasTurbine(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
@@ -47,7 +54,7 @@ public class GT_MetaTileEntity_ULV_GasTurbine extends GT_MetaTileEntity_GasTurbi
     @Override
     public void onConfigLoad() {
         this.mEfficiency = GregTech_API.sMachineFile
-                .get(ConfigCategories.machineconfig, "GasTurbine.efficiency.tier." + this.mTier, 95);
+                .get(ConfigCategories.machineconfig, "GasTurbine.efficiency.tier." + this.mTier, EFFICIENCY_DEFAULT);
     }
 
     @Override

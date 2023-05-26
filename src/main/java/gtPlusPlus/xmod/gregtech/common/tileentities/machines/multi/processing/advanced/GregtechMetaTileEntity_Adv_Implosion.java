@@ -8,11 +8,12 @@ import static gregtech.api.GregTech_API.sBlockCasings4;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -59,7 +60,7 @@ public class GregtechMetaTileEntity_Adv_Implosion
                 .addInfo("Speed: +100% | EU Usage: 100% | Parallel: ((Tier/2)+1)")
                 .addInfo("Constructed exactly the same as a normal Implosion Compressor")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
-                .addController("Front center").addCasingInfo("Robust TungstenSteel Casing", 10)
+                .addController("Front center").addCasingInfoMin("Robust TungstenSteel Casing", 10, false)
                 .addInputBus("Any casing", 1).addOutputBus("Any casing", 1).addEnergyHatch("Any casing", 1)
                 .addMaintenanceHatch("Any casing", 1).addMufflerHatch("Any casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
@@ -150,13 +151,13 @@ public class GregtechMetaTileEntity_Adv_Implosion
     public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
         super.startSoundLoop(aIndex, aX, aY, aZ);
         if (aIndex == 20) {
-            GT_Utility.doSoundAtClient((String) GregTech_API.sSoundList.get(Integer.valueOf(5)), 10, 1.0F, aX, aY, aZ);
+            GT_Utility.doSoundAtClient(new ResourceLocation(getSound()), 10, 1.0F, aX, aY, aZ);
         }
     }
 
     @Override
     public String getSound() {
-        return (String) GregTech_API.sSoundList.get(Integer.valueOf(5));
+        return SoundResource.RANDOM_EXPLODE.toString();
     }
 
     @Override

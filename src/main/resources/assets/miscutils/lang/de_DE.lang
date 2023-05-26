@@ -96,8 +96,6 @@ item.itemPLACEHOLDER_Circuit.name=Quark-Manipulator (UV)
 item.itemPlateEnrichedSoularium.name=Platte aus angereichertem Soularium 
 item.itemHeliumBlob.name=Geheimnisvolle Wasserstoffsubstanz
 item.itemAlkalusDisk.name=Alkalus-Schallplatte
-item.itemHotIngotRaisinBread.name=Heißer Laib Rosinenbrot
-item.itemIngotRaisinBread.name=§5ImQ009's §fRosinenbrot
 
 //Misc Blocks
 tile.blockCompressedObsidian.0.name=Komprimierter Obsidian (9)

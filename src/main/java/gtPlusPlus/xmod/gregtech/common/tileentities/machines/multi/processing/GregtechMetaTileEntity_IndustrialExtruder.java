@@ -21,7 +21,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -69,7 +69,7 @@ public class GregtechMetaTileEntity_IndustrialExtruder extends
                 .addInfo("Each Input Bus can have a different shape!")
                 .addInfo("You can use several input buses per multiblock")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 5, true)
-                .addController("Front Center").addCasingInfo("Inconel Reinforced Casings", 14)
+                .addController("Front Center").addCasingInfoMin("Inconel Reinforced Casings", 14, false)
                 .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1)
                 .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Back Center", 2)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
@@ -116,7 +116,7 @@ public class GregtechMetaTileEntity_IndustrialExtruder extends
 
     @Override
     public String getSound() {
-        return GregTech_API.sSoundList.get(Integer.valueOf(203));
+        return SoundResource.IC2_MACHINES_COMPRESSOR_OP.toString();
     }
 
     @Override

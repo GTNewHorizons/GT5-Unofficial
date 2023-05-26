@@ -8,12 +8,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -54,11 +57,14 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, "Right Click with a soldering iron to reset controller link",
+        return ArrayUtils.addAll(
+                this.mDescriptionArray,
+                "Right Click with a soldering iron to reset controller link",
                 "Right Click with a wrench to remove turbine",
                 "Right Click with a screwdriver for technical information",
                 "Sneak + Right Click with a wrench to rotate",
-                "Sneak + Right Click with a screwdriver to disable animations", CORE.GT_Tooltip.get() };
+                "Sneak + Right Click with a screwdriver to disable animations",
+                CORE.GT_Tooltip.get());
     }
 
     @Override
@@ -391,7 +397,7 @@ public class GT_MetaTileEntity_Hatch_Turbine extends GT_MetaTileEntity_Hatch {
                         GT_Utility.sendChatToPlayer(aPlayer, tChat);
                         GT_Utility.sendSoundToPlayers(
                                 g.getWorld(),
-                                GregTech_API.sSoundList.get(101),
+                                SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE,
                                 1.0F,
                                 -1,
                                 g.getXCoord(),

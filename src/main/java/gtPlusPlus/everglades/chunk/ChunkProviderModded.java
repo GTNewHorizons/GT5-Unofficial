@@ -212,13 +212,14 @@ public class ChunkProviderModded implements IChunkProvider {
 
     public void replaceBlocksForBiome(int p_147422_1_, int p_147422_2_, Block[] p_147422_3_, byte[] p_147422_4_,
             BiomeGenBase[] p_147422_5_) {
-        @SuppressWarnings("deprecation")
         ChunkProviderEvent.ReplaceBiomeBlocks event = new ChunkProviderEvent.ReplaceBiomeBlocks(
                 this,
                 p_147422_1_,
                 p_147422_2_,
                 p_147422_3_,
-                p_147422_5_);
+                new byte[256],
+                p_147422_5_,
+                null);
         MinecraftForge.EVENT_BUS.post(event);
         if (event.getResult() == cpw.mods.fml.common.eventhandler.Event.Result.DENY) return;
 

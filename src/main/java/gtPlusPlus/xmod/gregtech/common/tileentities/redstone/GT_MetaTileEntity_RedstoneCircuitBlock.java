@@ -40,6 +40,7 @@ import gregtech.api.util.GT_CircuitryBehavior;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.ISerializableObject;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -53,14 +54,14 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
         super(aID, "redstone.circuit", "Redstone Circuit Block", 1, 5, "Computes Redstone");
     }
 
-    public GT_MetaTileEntity_RedstoneCircuitBlock(final String aName, String aDescription,
+    public GT_MetaTileEntity_RedstoneCircuitBlock(final String aName, String[] aDescription,
             final ITexture[][][] aTextures) {
         super(aName, 1, 5, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_RedstoneCircuitBlock(this.mName, mDescription, this.mTextures);
+        return new GT_MetaTileEntity_RedstoneCircuitBlock(this.mName, mDescriptionArray, this.mTextures);
     }
 
     @Override
@@ -395,7 +396,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
 
     @Override
     public GT_CoverBehavior getCover(ForgeDirection side) {
-        return getBaseMetaTileEntity().getCoverBehaviorAtSide(side);
+        return (GT_CoverBehavior) getBaseMetaTileEntity().getCoverBehaviorAtSideNew(side);
     }
 
     @Override
@@ -405,7 +406,7 @@ public class GT_MetaTileEntity_RedstoneCircuitBlock extends GT_MetaTileEntity_Re
 
     @Override
     public int getCoverVariable(ForgeDirection side) {
-        return getBaseMetaTileEntity().getCoverDataAtSide(side);
+        return ((ISerializableObject.LegacyCoverData) getBaseMetaTileEntity().getComplexCoverDataAtSide(side)).get();
     }
 
     @Override

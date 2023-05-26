@@ -12,6 +12,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -39,14 +41,14 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
         super(aID, aName, aNameRegional, aTier, 3, "");
     }
 
-    public GT_MetaTileEntity_TesseractTerminal(final String aName, final int aTier, final String aDescription,
+    public GT_MetaTileEntity_TesseractTerminal(final String aName, final int aTier, final String[] aDescription,
             final ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_TesseractTerminal(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GT_MetaTileEntity_TesseractTerminal(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
@@ -484,11 +486,14 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, "Accesses Tesseract Generators remotely",
-                "Connect with pipes to extract items or fluids", "Outputs from the back face",
+        return ArrayUtils.addAll(
+                this.mDescriptionArray,
+                "Accesses Tesseract Generators remotely",
+                "Connect with pipes to extract items or fluids",
+                "Outputs from the back face",
                 "Consumes " + TESSERACT_ENERGY_COST + "EU/t for same dimension transfers",
                 "Consumes " + TESSERACT_ENERGY_COST_DIMENSIONAL + "EU/t for cross dimensional transfers",
-                CORE.GT_Tooltip.get() };
+                CORE.GT_Tooltip.get());
     }
 
     @Override

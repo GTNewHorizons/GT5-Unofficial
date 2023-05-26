@@ -27,6 +27,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -92,10 +93,10 @@ public class GregtechMetaTileEntity_IndustrialMixer
                 .addInfo("250% faster than using single block machines of the same voltage")
                 .addInfo("Processes eight recipes per voltage tier").addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator().beginStructureBlock(3, 4, 3, false).addController("Second Layer Center")
-                .addCasingInfo(mCasingName, 6).addCasingInfo(mCasingName2, 2).addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+                .addCasingInfoMin(mCasingName, 6, false).addCasingInfoMin(mCasingName2, 2, false)
+                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
+                .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
+                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -138,7 +139,7 @@ public class GregtechMetaTileEntity_IndustrialMixer
 
     @Override
     public String getSound() {
-        return GregTech_API.sSoundList.get(Integer.valueOf(203));
+        return SoundResource.IC2_MACHINES_COMPRESSOR_OP.toString();
     }
 
     @Override

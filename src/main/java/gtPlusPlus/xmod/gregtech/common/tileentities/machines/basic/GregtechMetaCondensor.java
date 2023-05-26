@@ -4,6 +4,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -31,15 +33,18 @@ public class GregtechMetaCondensor extends GregtechMetaBoilerBase implements IAd
         super(aID, aName, aNameRegional, "A Steam condenser - [IC2->Steam]", new ITexture[0]);
     }
 
-    public GregtechMetaCondensor(final String aName, final int aTier, final String aDescription,
+    public GregtechMetaCondensor(final String aName, final int aTier, final String[] aDescription,
             final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, "IC2 Steam + Water = Normal Steam.",
-                "Requires no power to run, although it's not very fast.", CORE.GT_Tooltip.get() };
+        return ArrayUtils.addAll(
+                this.mDescriptionArray,
+                "IC2 Steam + Water = Normal Steam.",
+                "Requires no power to run, although it's not very fast.",
+                CORE.GT_Tooltip.get());
     }
 
     @Override
@@ -80,7 +85,7 @@ public class GregtechMetaCondensor extends GregtechMetaBoilerBase implements IAd
 
     @Override
     public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaCondensor(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GregtechMetaCondensor(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override

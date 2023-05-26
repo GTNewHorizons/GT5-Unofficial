@@ -131,34 +131,6 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
                 new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
-    /*
-     * @Override public ITexture[][][] getTextureSet(ITexture[] aTextures) { ITexture[][][] rTextures = new
-     * ITexture[2][17][]; for (byte i = -1; i < 16; i++) { rTextures[0][i + 1] = new ITexture[] { new
-     * GT_RenderedTexture( Textures.BlockIcons.MACHINE_HEATPROOFCASING) }; rTextures[1][i + 1] = new ITexture[] { new
-     * GT_RenderedTexture( Textures.BlockIcons.MACHINE_HEATPROOFCASING), mInventory.length > 4 ?
-     * Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] : Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] }; } return
-     * rTextures; }
-     */
-
-    /*
-     * @Override public ITexture[][][] getTextureSet(ITexture[] aTextures) { ITexture[][][] rTextures = new
-     * ITexture[5][17][]; for (byte i = -1; i < 16; i = (byte) (i + 1)) { ITexture[] tmp0 = { new GT_RenderedTexture(
-     * Textures.BlockIcons.MACHINE_STEEL_BOTTOM, Dyes.getModulation(i, Dyes._NULL.mRGBa)) }; rTextures[0][(i + 1)] =
-     * tmp0; ITexture[] tmp1 = { new GT_RenderedTexture( Textures.BlockIcons.MACHINE_STEEL_TOP) }; rTextures[1][(i + 1)]
-     * = tmp1; ITexture[] tmp2 = { new GT_RenderedTexture( Textures.BlockIcons.MACHINE_STEEL_SIDE, Dyes.getModulation(i,
-     * Dyes._NULL.mRGBa)), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE) }; rTextures[2][(i + 1)] = tmp2;
-     * ITexture[] tmp4 = { new GT_RenderedTexture( Textures.BlockIcons.MACHINE_STEEL_SIDE, Dyes.getModulation(i,
-     * Dyes._NULL.mRGBa)), new GT_RenderedTexture(Textures.BlockIcons.BOILER_FRONT) }; rTextures[3][(i + 1)] = tmp4;
-     * ITexture[] tmp5 = { new GT_RenderedTexture( Textures.BlockIcons.MACHINE_STEEL_SIDE, Dyes.getModulation(i,
-     * Dyes._NULL.mRGBa)), new GT_RenderedTexture( Textures.BlockIcons.BOILER_FRONT_ACTIVE) }; rTextures[4][(i + 1)] =
-     * tmp5; } return rTextures; }
-     */
-
-    /*
-     * @Override public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte
-     * aColorIndex, boolean aActive, boolean aRedstone) { return mTextures[side == facing ? 1 : 0][aColorIndex+1]; }
-     */
-
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new GregtechMetaEnergyBuffer(

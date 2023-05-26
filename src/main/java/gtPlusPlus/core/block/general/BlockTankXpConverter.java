@@ -31,7 +31,6 @@ public class BlockTankXpConverter extends BlockContainer {
     @SideOnly(Side.CLIENT)
     private IIcon textureFront;
 
-    @SuppressWarnings("deprecation")
     public BlockTankXpConverter() {
         super(Material.iron);
         this.setBlockName("blockTankXpConverter");

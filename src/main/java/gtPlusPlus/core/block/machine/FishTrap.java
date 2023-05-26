@@ -46,7 +46,6 @@ public class FishTrap extends BlockContainer implements ITileTooltip {
         return this.mTooltipID;
     }
 
-    @SuppressWarnings("deprecation")
     public FishTrap() {
         super(Material.iron);
         this.setBlockName("blockFishTrap");
@@ -134,14 +133,4 @@ public class FishTrap extends BlockContainer implements ITileTooltip {
             final int z) {
         return false;
     }
-
-    /*
-     * @Override public void breakBlock(World world, BlockPos pos, IBlockState blockstate) { TileEntityFishTrap te =
-     * (TileEntityFishTrap) world.getTileEntity(pos); InventoryHelper.dropInventoryItems(world, pos, te);
-     * super.breakBlock(world, pos, blockstate); }
-     * @Override public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
-     * ItemStack stack) { if (stack.hasDisplayName()) { ((TileEntityFishTrap)
-     * worldIn.getTileEntity(pos)).setCustomName(stack.getDisplayName()); } }
-     */
-
 }

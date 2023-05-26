@@ -11,23 +11,13 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.machines
 
 public class GregtechMetaTreeFarmerStructural extends GregtechMetaTreeFarmerBase {
 
-    @Override
-    public String[] getDescription() {
-        return new String[] { this.mDescription };
-    }
-
     public GregtechMetaTreeFarmerStructural(final int aID, final String aName, final String aNameRegional,
             final int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Structural Blocks for the Tree Farmer.");
     }
 
-    public GregtechMetaTreeFarmerStructural(final int aID, final String aName, final String aNameRegional,
-            final int aTier, final int aInvSlotCount, final String aDescription) {
-        super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
-    }
-
     public GregtechMetaTreeFarmerStructural(final String aName, final int aTier, final int aInvSlotCount,
-            final String aDescription, final ITexture[][][] aTextures) {
+            final String[] aDescription, final ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -37,7 +27,7 @@ public class GregtechMetaTreeFarmerStructural extends GregtechMetaTreeFarmerBase
                 this.mName,
                 this.mTier,
                 this.mInventory.length,
-                this.mDescription,
+                this.mDescriptionArray,
                 this.mTextures);
     }
 

@@ -48,7 +48,6 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechAdvancedBoilers;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechAlgaeContent;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechAmazonWarehouse;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechBufferDynamos;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechComponentAssembler;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechCustomHatches;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechCyclotron;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechDehydrator;
@@ -185,7 +184,6 @@ public class COMPAT_HANDLER {
         GregtechWirelessChargers.run();
         GregtechIndustrialGeneratorArray.run();
         GregtechIndustrialCuttingFactory.run();
-        GregtechComponentAssembler.run();
         GregtechTeslaTower.run();
         GregtechSuperChests.run();
         GregtechIndustrialFishPond.run();

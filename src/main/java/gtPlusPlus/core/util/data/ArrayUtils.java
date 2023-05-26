@@ -14,18 +14,6 @@ import gtPlusPlus.api.objects.data.AutoMap;
 
 public class ArrayUtils {
 
-    public static <V> V[] expandArray(final V[] someArray, final V newValueToAdd) {
-        V[] series = someArray;
-        series = addElement(series, newValueToAdd);
-        return series;
-    }
-
-    private static <V> V[] addElement(V[] series, final V newValueToAdd) {
-        series = Arrays.copyOf(series, series.length + 1);
-        series[series.length - 1] = newValueToAdd;
-        return series;
-    }
-
     public static <V> V[] insertElementAtIndex(V[] aArray, int aIndex, V aObjectToInsert) {
         V[] newArray = Arrays.copyOf(aArray, aArray.length + 1);
         for (int i = 0; i < aIndex; i++) {
@@ -37,13 +25,6 @@ public class ArrayUtils {
         }
         return newArray;
     }
-
-    /*
-     * public static <V> Object getMostCommonElement(List<V> list) { Optional r =
-     * list.stream().map(V::getTextureSet).collect(Collectors.groupingBy(Function.identity(),
-     * Collectors.counting())).entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey); return
-     * r.get(); }
-     */
 
     public static Object[] removeNulls(final Object[] v) {
         List<Object> list = new ArrayList<Object>(Arrays.asList(v));

@@ -4,6 +4,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -21,7 +23,7 @@ public class GregtechMetaTransformerHiAmp extends GT_MetaTileEntity_Transformer 
         super(aID, aName, aNameRegional, aTier, aDescription);
     }
 
-    public GregtechMetaTransformerHiAmp(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GregtechMetaTransformerHiAmp(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -80,13 +82,16 @@ public class GregtechMetaTransformerHiAmp extends GT_MetaTileEntity_Transformer 
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaTransformerHiAmp(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GregtechMetaTransformerHiAmp(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, "Accepts 4A and outputs 16A",
-                "Toggle 2A/8A half-mode with Screwdriver", CORE.GT_Tooltip.get() };
+        return ArrayUtils.addAll(
+                this.mDescriptionArray,
+                "Accepts 4A and outputs 16A",
+                "Toggle 2A/8A half-mode with Screwdriver",
+                CORE.GT_Tooltip.get());
     }
 
     @Override

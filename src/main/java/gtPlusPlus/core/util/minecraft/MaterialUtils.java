@@ -31,7 +31,6 @@ import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class MaterialUtils {
 
@@ -75,8 +74,7 @@ public class MaterialUtils {
         }
 
         try {
-            @SuppressWarnings("deprecation")
-            String name = material.name();
+            String name = material.mName;
             final short[] rgba = (customRGB == null ? material.mRGBa : customRGB);
             final int melting = material.mMeltingPoint;
             final int boiling = material.mBlastFurnaceTemp;
@@ -178,12 +176,12 @@ public class MaterialUtils {
                 return M;
             } else {
                 Logger.DEBUG_MATERIALS(
-                        "Failed to generate GT++ material instance for " + material.name()
+                        "Failed to generate GT++ material instance for " + material.mName
                                 + " | Valid RGB? "
                                 + (hasValidRGBA(rgba)));
             }
         } catch (Throwable t) {
-            Logger.DEBUG_MATERIALS("Failed to generate GT++ material instance for " + material.name());
+            Logger.DEBUG_MATERIALS("Failed to generate GT++ material instance for " + material.mName);
             t.printStackTrace();
         }
         return null;
@@ -285,20 +283,10 @@ public class MaterialUtils {
         return null;
     }
 
-    @SuppressWarnings("deprecation")
     public static String getMaterialName(Materials mat) {
-
-        String mName = null;
-
-        try {
-            mName = (String) ReflectionUtils.getField(Materials.class, "mDefaultLocalName").get(mat);
-            if (mName == null) {
-                mName = (String) ReflectionUtils.getField(Materials.class, "mName").get(mat);
-            }
-        } catch (IllegalArgumentException | IllegalAccessException e) {}
-
+        String mName = mat.mDefaultLocalName;
         if (mName == null || mName.equals("")) {
-            mName = mat.name();
+            mName = mat.mName;
         }
         return mName;
     }
@@ -315,12 +303,6 @@ public class MaterialUtils {
             }
         }
         return aCounter.getResults();
-        /*
-         * Optional<TextureSet> r =
-         * list.stream().map(Material::getTextureSet).collect(Collectors.groupingBy(Function.identity(),
-         * Collectors.counting())).entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey);
-         * TextureSet o = (r != null && r.isPresent() && r.get() != null) ? r.get() : null; return o;
-         */
     }
 
     public static Materials getMaterial(String aMaterialName, String aFallbackMaterialName) {
@@ -443,7 +425,7 @@ public class MaterialUtils {
 
     public static boolean isNullGregtechMaterial(Materials aGregtechMaterial) {
         if (aGregtechMaterial == Materials._NULL || aGregtechMaterial.equals(Materials._NULL)
-                || aGregtechMaterial.name().equals(Materials._NULL.name())) {
+                || aGregtechMaterial.mName.equals(Materials._NULL.mName)) {
             return true;
         }
         return false;

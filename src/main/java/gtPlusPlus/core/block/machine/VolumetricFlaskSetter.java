@@ -41,7 +41,6 @@ public class VolumetricFlaskSetter extends BasicTileBlockWithTooltip {
         return ItemBlockBasicTile.class;
     }
 
-    @SuppressWarnings("deprecation")
     public VolumetricFlaskSetter() {
         super(Material.iron);
     }

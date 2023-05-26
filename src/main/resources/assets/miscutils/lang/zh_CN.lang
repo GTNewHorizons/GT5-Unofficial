@@ -97,9 +97,6 @@ item.itemPLACEHOLDER_Circuit.name=夸克操纵者 (UV)
 item.itemPlateEnrichedSoularium.name=富集阳光合金板
 item.itemHeliumBlob.name=神秘氢气物质
 item.itemAlkalusDisk.name=Alkalus圆盘
-# The following 2 keys have been deprecated and overwritten
-# item.itemHotIngotRaisinBread.name=Hot Loaf of Raisin Bread
-# item.itemIngotRaisinBread.name=§5ImQ009's §fRaisin Bread
 
 //Misc Blocks
 tile.blockCompressedObsidian.0.name=压缩黑曜石(9)
@@ -1956,13 +1953,8 @@ tile.blockDarkWorldPortalFrame.name=遏制框架
 
 //Added 1/4/18
 tile.Block of Plutonium-239.name=钚-239块
-tile.Fluorite Ore [Old].name=氟石矿[不可用的]
 tile.blockMiningPipeFake.name=强化钢筋挖掘管道
 tile.blockMiningHeadFake.name=基岩钻头
-# The following 3 keys have been deprecated and overwritten
-# item.itemCellLiFBeF2ThF4UF4.name=Cell of Molten Salt [LiFBeF2ThF4UF4]
-# item.itemCellLiFBeF2ZrF4UF4.name=Cell of Molten Salt [LiFBeF2ZrF4UF4]
-# item.itemCellLiFBeF2ZrF4U235.name=Cell of Molten Salt [LiFBeF2ZrF4U235]
 item.itemPlateMeatRaw.name=生肉板
 tile.Block of MeatRaw.name=生肉块
 
@@ -3109,15 +3101,6 @@ item.BasicGenericChemItem.4.name=紫色金属催化剂
 item.BasicGenericChemItem.5.name=棕色金属催化剂
 item.MudRedSlurry.name=红色泥浆单元
 item.liquid_toluene.name=甲苯单元
-
-# The following 7 keys have been deprecated and overwritten
-# item.BasicAlgaeItem.0.name=Algae Spore (I)
-# item.BasicAlgaeItem.1.name=Algae Spore (II)
-# item.BasicAlgaeItem.2.name=Algae Spore (III)
-# item.BasicAlgaeItem.3.name=Algae Spore (IV)
-# item.BasicAlgaeItem.4.name=Algae Spore (V)
-# item.BasicAlgaeItem.5.name=Algae Spore (VI)
-# item.BasicAlgaeItem.6.name=Algae Spore (VII)
 
 //Added 17/01/20
 item.BasicGenericChemItem.6.name=粉色金属催化剂

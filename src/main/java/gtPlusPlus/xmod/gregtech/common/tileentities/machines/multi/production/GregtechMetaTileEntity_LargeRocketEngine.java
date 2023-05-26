@@ -109,9 +109,10 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends
                 .addInfo("- 50% of max fuel efficiency at 69k or 207k EU/t output energy")
                 .addInfo("- 25% of max fuel efficiency at 98k or 294k EU/t output energy")
                 .addInfo("formula: x = input of energy (30000^(1/3)/ x^(1/3)) * (80000^(1/3)/ x^(1/3))").addSeparator()
-                .beginStructureBlock(3, 3, 10, false).addController("Front Center").addCasingInfo(mCasingName, 64)
-                .addCasingInfo(mGearboxName, 8).addStructureHint("Air Intake Hatch", 1)
-                .addInputBus("Side center line", 1).addInputHatch("Side center line", 1)
+                .beginStructureBlock(3, 3, 10, false).addController("Front Center")
+                .addCasingInfoMin(mCasingName, 64, false).addCasingInfoMin(mGearboxName, 8, false)
+                .addStructureHint("Air Intake Hatch", 1).addInputBus("Side center line", 1)
+                .addInputHatch("Side center line", 1)
                 .addMaintenanceHatch("Any Block Touching Inconel Reinforced Casing", 1)
                 .addDynamoHatch("Top center line", 2).addMufflerHatch("Back Center", 3)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder.get());

@@ -47,7 +47,6 @@ public class Machine_PestKiller extends BlockContainer implements ITileTooltip {
         return this.mTooltipID;
     }
 
-    @SuppressWarnings("deprecation")
     public Machine_PestKiller() {
         super(Material.wood);
         this.setBlockName("blockPestKiller");

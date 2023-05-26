@@ -12,6 +12,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -36,7 +37,7 @@ public abstract class GregtechMetaBoilerBase extends GT_MetaTileEntity_BasicTank
         super(aID, aName, aNameRegional, 0, 4, aDescription, aTextures);
     }
 
-    public GregtechMetaBoilerBase(final String aName, final int aTier, final String aDescription,
+    public GregtechMetaBoilerBase(final String aName, final int aTier, final String[] aDescription,
             final ITexture[][][] aTextures) {
         super(aName, aTier, 4, aDescription, aTextures);
     }
@@ -166,7 +167,7 @@ public abstract class GregtechMetaBoilerBase extends GT_MetaTileEntity_BasicTank
 
     @Override
     public boolean allowCoverOnSide(final ForgeDirection side, final GT_ItemStack aCover) {
-        return GregTech_API.getCoverBehavior(aCover.toStack()).isSimpleCover();
+        return GregTech_API.getCoverBehaviorNew(aCover.toStack()).isSimpleCover();
     }
 
     @Override
@@ -332,7 +333,7 @@ public abstract class GregtechMetaBoilerBase extends GT_MetaTileEntity_BasicTank
     @Override
     public void doSound(final byte aIndex, final double aX, final double aY, final double aZ) {
         if (aIndex == 1) {
-            GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(Integer.valueOf(4)), 2, 1.0F, aX, aY, aZ);
+            GT_Utility.doSoundAtClient(SoundResource.RANDOM_FIZZ, 2, 1.0F, aX, aY, aZ);
             for (int l = 0; l < 8; l++) {
                 this.getBaseMetaTileEntity().getWorld().spawnParticle(
                         "largesmoke",

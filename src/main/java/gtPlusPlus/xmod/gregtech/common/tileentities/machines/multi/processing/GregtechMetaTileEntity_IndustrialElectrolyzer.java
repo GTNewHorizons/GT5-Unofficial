@@ -63,10 +63,10 @@ public class GregtechMetaTileEntity_IndustrialElectrolyzer extends
                 .addInfo("180% faster than using single block machines of the same voltage")
                 .addInfo("Only uses 90% of the EU/t normally required").addInfo("Processes two items per voltage tier")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
-                .addController("Front Center").addCasingInfo("Electrolyzer Casings", 10).addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+                .addController("Front Center").addCasingInfoMin("Electrolyzer Casings", 10, false)
+                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
+                .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
+                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

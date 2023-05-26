@@ -5,6 +5,8 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidTankInfo;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
@@ -39,7 +41,7 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
         this.tier = tier;
     }
 
-    public GT_MetaTileEntity_Boiler_Base(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Boiler_Base(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
         this.steamPerSecond = (CORE.ConfigSwitches.boilerSteamPerSecond * aTier);
         this.tier = aTier;
@@ -47,10 +49,13 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, "Produces " + getPollution() + " pollution/sec",
+        return ArrayUtils.addAll(
+                this.mDescriptionArray,
+                "Produces " + getPollution() + " pollution/sec",
                 "Consumes fuel only when temperature is less than 100C",
-                "Fuel with burn time greater than 500 is more efficient.", "Doesn't explode if there's no water",
-                CORE.GT_Tooltip.get() };
+                "Fuel with burn time greater than 500 is more efficient.",
+                "Doesn't explode if there's no water",
+                CORE.GT_Tooltip.get());
     }
 
     public ITexture getOverlayIcon() {
@@ -246,7 +251,7 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Boiler_Base(this.mName, tier, this.mDescription, this.mTextures);
+        return new GT_MetaTileEntity_Boiler_Base(this.mName, tier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override

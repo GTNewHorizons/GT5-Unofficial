@@ -28,7 +28,7 @@ public class GregtechMetaTileEntityRocketFuelGenerator extends GregtechRocketFue
         this.onConfigLoad();
     }
 
-    public GregtechMetaTileEntityRocketFuelGenerator(final String aName, final int aTier, final String aDescription,
+    public GregtechMetaTileEntityRocketFuelGenerator(final String aName, final int aTier, final String[] aDescription,
             final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
         this.onConfigLoad();
@@ -41,8 +41,11 @@ public class GregtechMetaTileEntityRocketFuelGenerator extends GregtechRocketFue
 
     @Override
     public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        // Logger.INFO("Valid Fuels: "+Recipe_GT.Gregtech_Recipe_Map.sRocketFuels.mRecipeList.size());
-        return new GregtechMetaTileEntityRocketFuelGenerator(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GregtechMetaTileEntityRocketFuelGenerator(
+                this.mName,
+                this.mTier,
+                this.mDescriptionArray,
+                this.mTextures);
     }
 
     @Override
@@ -70,7 +73,7 @@ public class GregtechMetaTileEntityRocketFuelGenerator extends GregtechRocketFue
 
     @Override
     public int getFuelValue(final ItemStack aStack) {
-        int rValue = Math.max((GT_ModHandler.getFuelCanValue(aStack) * 6) / 5, super.getFuelValue(aStack));
+        int rValue = Math.max((GT_ModHandler.getFuelValue(aStack) * 6) / 5, super.getFuelValue(aStack));
         if (ItemList.Fuel_Can_Plastic_Filled.isStackEqual(aStack, false, true)) {
             rValue = Math.max(rValue, GameRegistry.getFuelValue(aStack) * 3);
         }

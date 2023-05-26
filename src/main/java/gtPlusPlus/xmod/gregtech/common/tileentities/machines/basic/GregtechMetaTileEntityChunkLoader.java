@@ -48,7 +48,7 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMa
                 new ITexture[] {});
     }
 
-    public GregtechMetaTileEntityChunkLoader(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
+    public GregtechMetaTileEntityChunkLoader(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
             String aGUIName, String aNEIName) {
         super(aName, aTier, 4, aDescription, aTextures, 0, 0, aGUIName, aNEIName);
     }
@@ -190,7 +190,7 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMa
         return new GregtechMetaTileEntityChunkLoader(
                 this.mName,
                 this.mTier,
-                this.mDescription,
+                this.mDescriptionArray,
                 this.mTextures,
                 this.mGUIName,
                 this.mNEIName);

@@ -50,7 +50,6 @@ public class DecayablesChest extends BlockContainer implements ITileTooltip {
         return this.mTooltipID;
     }
 
-    @SuppressWarnings("deprecation")
     public DecayablesChest() {
         super(Material.iron);
         this.setBlockName("blockDecayablesChest");
@@ -184,24 +183,4 @@ public class DecayablesChest extends BlockContainer implements ITileTooltip {
             final int z) {
         return false;
     }
-
-    /*
-     * @Override public void breakBlock(World world, BlockPos pos, IBlockState blockstate) { TileEntityFishTrap te =
-     * (TileEntityFishTrap) world.getTileEntity(pos); InventoryHelper.dropInventoryItems(world, pos, te);
-     * super.breakBlock(world, pos, blockstate); }
-     * @Override public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
-     * ItemStack stack) { if (stack.hasDisplayName()) { ((TileEntityFishTrap)
-     * worldIn.getTileEntity(pos)).setCustomName(stack.getDisplayName()); } }
-     */
-
-    /**
-     * Update Chest Meta - Stub
-     * 
-     * @param aWorld
-     * @param xPos
-     * @param yPos
-     * @param zPos
-     */
-    @Deprecated
-    public void func_149954_e(World aWorld, int xPos, int yPos, int zPos) {}
 }

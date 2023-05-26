@@ -94,7 +94,7 @@ public class GregtechMTE_TeslaTower extends GregtechMeta_MultiBlockBase<Gregtech
                 .addInfo("Enemies within " + this.mRange + "m are blasted with a high energy plasma.")
                 .addInfo("This uses 5,000,000EU per blast.")
                 .addInfo("Can screwdriver to toggle mode between Players and all Entities.").addSeparator()
-                .beginStructureBlock(1, 7, 1, false).addController("Top Middle").addCasingInfo("Casing", 360)
+                .beginStructureBlock(1, 7, 1, false).addController("Top Middle").addCasingInfoMin("Casing", 360, false)
                 .addOtherStructurePart("Rotor Assembly", "Any 1 dot hint", 1).addInputBus("Any 4 dot hint (min 1)", 4)
                 .addInputHatch("Any 4 dot hint(min 1)", 4).addOutputHatch("Any 4 dot hint(min 1)", 4)
                 .addEnergyHatch("Any 4 dot hint(min 1)", 4).addMaintenanceHatch("Any 4 dot hint(min 1)", 4)

@@ -36,7 +36,7 @@ public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
         this.mItemStack = null;
     }
 
-    public GT4Entity_Shelf_Large(String mName, String mDescriptionArray, final int aSize, ITexture[][][] mTextures) {
+    public GT4Entity_Shelf_Large(String mName, String[] mDescriptionArray, final int aSize, ITexture[][][] mTextures) {
         super(mName, mDescriptionArray, mTextures);
         this.mSize = aSize;
         this.mItemCount = 0;
@@ -45,12 +45,8 @@ public class GT4Entity_Shelf_Large extends GT4Entity_Shelf {
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT4Entity_Shelf_Large(this.mName, this.mDescription, mSize, this.mTextures);
+        return new GT4Entity_Shelf_Large(this.mName, this.mDescriptionArray, mSize, this.mTextures);
     }
-
-    /*
-     * @Override public int getInvSize() { return (mSize > 0 && mSize < 255 ? mSize : 255); }
-     */
 
     @Override
     public boolean isGivingInformation() {

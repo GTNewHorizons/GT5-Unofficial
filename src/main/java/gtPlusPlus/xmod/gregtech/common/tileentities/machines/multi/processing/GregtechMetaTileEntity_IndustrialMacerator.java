@@ -26,6 +26,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -74,8 +75,8 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
                 .addInfo("Maximum of n*tier parallels, LV = Tier 1, MV = Tier 2, etc.")
                 .addInfo("n=2 initially. n=8 after inserting Maceration Upgrade Chip.")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 6, 3, true)
-                .addController("Bottom center").addCasingInfo("Maceration Stack Casings (After upgrade)", 26)
-                .addCasingInfo("Stable Titanium Casings (Before upgrade)", 26).addInputBus("Bottom casing", 1)
+                .addController("Bottom center").addCasingInfoMin("Maceration Stack Casings (After upgrade)", 26, false)
+                .addCasingInfoMin("Stable Titanium Casings (Before upgrade)", 26, false).addInputBus("Bottom casing", 1)
                 .addEnergyHatch("Bottom casing", 1).addMaintenanceHatch("Bottom casing", 1)
                 .addOutputBus("One per layer except bottom layer", 2)
                 .addMufflerHatch("Any casing except bottom layer", 2).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
@@ -240,7 +241,7 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
 
     @Override
     public String getSound() {
-        return GregTech_API.sSoundList.get(Integer.valueOf(201));
+        return SoundResource.IC2_MACHINES_MACERATOR_OP.toString();
     }
 
     @Override

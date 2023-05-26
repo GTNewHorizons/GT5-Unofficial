@@ -349,11 +349,6 @@ public class BaseItemMetaFood extends ItemFood {
     }
 
     @Override
-    public int getDisplayDamage(ItemStack stack) {
-        return stack.getItemDamage();
-    }
-
-    @Override
     public boolean showDurabilityBar(ItemStack stack) {
         return false;
     }

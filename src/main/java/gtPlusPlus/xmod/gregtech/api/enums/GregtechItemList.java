@@ -651,18 +651,6 @@ public enum GregtechItemList implements GregtechItemContainer {
     // Auto TC Research Creator
     Thaumcraft_Researcher,
 
-    // Threaded Buffers
-    Automation_Threaded_SuperBuffer_ULV,
-    Automation_Threaded_SuperBuffer_LV,
-    Automation_Threaded_SuperBuffer_MV,
-    Automation_Threaded_SuperBuffer_HV,
-    Automation_Threaded_SuperBuffer_EV,
-    Automation_Threaded_SuperBuffer_IV,
-    Automation_Threaded_SuperBuffer_LuV,
-    Automation_Threaded_SuperBuffer_ZPM,
-    Automation_Threaded_SuperBuffer_UV,
-    Automation_Threaded_SuperBuffer_MAX,
-
     // infinite Items
     Infinite_Item_Chest,
 
@@ -768,19 +756,6 @@ public enum GregtechItemList implements GregtechItemContainer {
     Charger_ZPM,
     Charger_UV,
     Charger_MAX,
-
-    // Tiny Fusion
-    /* Miniature_Fusion, */
-
-    // Component Makers
-    Machine_LV_Component_Maker,
-    Machine_MV_Component_Maker,
-    Machine_HV_Component_Maker,
-    Machine_EV_Component_Maker,
-    Machine_IV_Component_Maker,
-    Machine_LuV_Component_Maker,
-    Machine_ZPM_Component_Maker,
-    Machine_UV_Component_Maker,
 
     // Reactor Processing Unit
     ReactorProcessingUnit_IV,
@@ -968,18 +943,6 @@ public enum GregtechItemList implements GregtechItemContainer {
     Cover_Overflow_Item_HV,
     Cover_Overflow_Item_EV,
     Cover_Overflow_Item_IV,
-
-    // Fake Hull Covers
-    FakeMachineCasingPlate_ULV,
-    FakeMachineCasingPlate_LV,
-    FakeMachineCasingPlate_MV,
-    FakeMachineCasingPlate_HV,
-    FakeMachineCasingPlate_EV,
-    FakeMachineCasingPlate_IV,
-    FakeMachineCasingPlate_LuV,
-    FakeMachineCasingPlate_ZPM,
-    FakeMachineCasingPlate_UV,
-    FakeMachineCasingPlate_MAX,
 
     // ----------------------------------------------------------------------------
 

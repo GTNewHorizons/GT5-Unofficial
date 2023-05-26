@@ -3,6 +3,8 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -18,12 +20,8 @@ public class GT_MetaTileEntity_Hatch_Catalysts extends GT_MetaTileEntity_Hatch_N
         super(aID, aName, aNameRegional, 0, 16, "Dedicated Catalyst Storage", false);
     }
 
-    public GT_MetaTileEntity_Hatch_Catalysts(String aName, String aDescription, ITexture[][][] aTextures) {
-        super(aName, 0, 16, aDescription, false, aTextures);
-    }
-
     public GT_MetaTileEntity_Hatch_Catalysts(String aName, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, 0, 16, aDescription[0], false, aTextures);
+        super(aName, 0, 16, aDescription, false, aTextures);
     }
 
     @Override
@@ -38,7 +36,7 @@ public class GT_MetaTileEntity_Hatch_Catalysts extends GT_MetaTileEntity_Hatch_N
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, CORE.GT_Tooltip.get() };
+        return ArrayUtils.add(this.mDescriptionArray, CORE.GT_Tooltip.get());
     }
 
     @Override

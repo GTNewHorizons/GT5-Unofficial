@@ -121,10 +121,10 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
                                 + EnumChatFormatting.RESET)
                 .addInfo("Read Multi-Machine Manual for extra information")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
-                .addController("Front Center").addCasingInfo("Multi-Use Casings", 6).addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+                .addController("Front Center").addCasingInfoMin("Multi-Use Casings", 6, false)
+                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
+                .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
+                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

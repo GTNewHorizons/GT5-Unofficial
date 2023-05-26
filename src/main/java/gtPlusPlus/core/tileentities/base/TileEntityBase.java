@@ -23,10 +23,10 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GT_Packet_Block_Event;
 import gregtech.api.util.GT_CoverBehavior;
-import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.CoverInfo;
 import gtPlusPlus.api.interfaces.ILazyCoverable;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BTF_Inventory;
@@ -264,10 +264,8 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     @Override
     public int[] getAccessibleSlotsFromSide(int ordinalSide) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
-        if (canAccessData() && (getCoverBehaviorAtSide(side)
-                .letsItemsOut(side, getCoverIDAtSide(side), getCoverDataAtSide(side), -1, this)
-                || getCoverBehaviorAtSide(side)
-                        .letsItemsIn(side, getCoverIDAtSide(side), getCoverDataAtSide(side), -1, this)))
+        CoverInfo coverInfo = getCoverInfoAtSide(side);
+        if (canAccessData() && (coverInfo.letsItemsOut(-1) || coverInfo.letsItemsIn(-1)))
             return mInventory.getAccessibleSlotsFromSide(ordinalSide);
         return new int[0];
     }
@@ -279,8 +277,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
         return canAccessData() && (mRunningThroughTick || !mInputDisabled)
-                && getCoverBehaviorAtSide(side)
-                        .letsItemsIn(side, getCoverIDAtSide(side), getCoverDataAtSide(side), aIndex, this)
+                && getCoverInfoAtSide(side).letsItemsIn(aIndex)
                 && mInventory.canInsertItem(aIndex, aStack, ordinalSide);
     }
 
@@ -291,8 +288,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     public boolean canExtractItem(int aIndex, ItemStack aStack, int ordinalSide) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
         return canAccessData() && (mRunningThroughTick || !mOutputDisabled)
-                && getCoverBehaviorAtSide(side)
-                        .letsItemsOut(side, getCoverIDAtSide(side), getCoverDataAtSide(side), aIndex, this)
+                && getCoverInfoAtSide(side).letsItemsOut(aIndex)
                 && mInventory.canExtractItem(aIndex, aStack, ordinalSide);
     }
 
@@ -431,8 +427,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     private boolean isEnergyInputSide(ForgeDirection side) {
         if (side != ForgeDirection.UNKNOWN) {
-            if (!this.getCoverBehaviorAtSide(side)
-                    .letsEnergyIn(side, this.getCoverIDAtSide(side), this.getCoverDataAtSide(side), this)) {
+            if (!this.getCoverInfoAtSide(side).letsEnergyIn()) {
                 return false;
             }
 
@@ -450,8 +445,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     private boolean isEnergyOutputSide(ForgeDirection side) {
         if (side != ForgeDirection.UNKNOWN) {
-            if (!this.getCoverBehaviorAtSide(side)
-                    .letsEnergyOut(side, this.getCoverIDAtSide(side), this.getCoverDataAtSide(side), this)) {
+            if (!this.getCoverInfoAtSide(side).letsEnergyOut()) {
                 return false;
             }
 
@@ -872,10 +866,6 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
         this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, Blocks.fire);
     }
 
-    public String trans(String aKey, String aEnglish) {
-        return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish, false);
-    }
-
     @Override
     public byte getInternalInputRedstoneSignal(ForgeDirection side) {
         return (byte) (getCoverBehaviorAtSide(side).getRedstoneInput(
@@ -955,7 +945,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
             final int ordinalSide = side.ordinal();
             mCoverSides[ordinalSide] = aID;
             mCoverData[ordinalSide] = 0;
-            mCoverBehaviors[ordinalSide] = GregTech_API.getCoverBehavior(aID);
+            mCoverBehaviors[ordinalSide] = (GT_CoverBehavior) GregTech_API.getCoverBehaviorNew(aID);
             return true;
         }
         return false;
@@ -969,7 +959,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     @Override
     public void setCoverItemAtSide(ForgeDirection side, ItemStack aCover) {
-        GregTech_API.getCoverBehavior(aCover).placeCover(side, aCover, this);
+        GregTech_API.getCoverBehaviorNew(aCover).placeCover(side, aCover, this);
     }
 
     @Override

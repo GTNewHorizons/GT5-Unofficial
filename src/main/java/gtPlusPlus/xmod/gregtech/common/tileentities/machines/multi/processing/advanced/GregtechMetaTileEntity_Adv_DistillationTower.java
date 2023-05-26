@@ -177,8 +177,8 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
                 .addInfo("Max parallel dictated by tower tier and mode").addInfo("DTower Mode: T1=4, T2=12")
                 .addInfo("Distilery Mode: Tower Tier * (4*InputTier)")
                 .addInfo("Distilery Mode require a full height tower").addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator().addCasingInfo("Clean Stainless Steel Machine Casing", 7).addInputBus("Bottom Casing", 1)
-                .addOutputBus("Bottom Casing", 1).addInputHatch("Bottom Casing", 1)
+                .addSeparator().addCasingInfoMin("Clean Stainless Steel Machine Casing", 7, false)
+                .addInputBus("Bottom Casing", 1).addOutputBus("Bottom Casing", 1).addInputHatch("Bottom Casing", 1)
                 .addMaintenanceHatch("Bottom Casing", 1).addEnergyHatch("Bottom Casing", 1)
                 .addOutputHatch("One per layer except bottom", 2).addMufflerHatch("Top Casing", 3)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder.get());

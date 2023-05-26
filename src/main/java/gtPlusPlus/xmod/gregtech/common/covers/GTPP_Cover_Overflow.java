@@ -21,7 +21,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
-import gtPlusPlus.core.util.minecraft.LangUtils;
 
 public class GTPP_Cover_Overflow extends GT_CoverBehavior {
 
@@ -86,7 +85,7 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
         }
         GT_Utility.sendChatToPlayer(
                 aPlayer,
-                LangUtils.trans("322", "Overflow point: ") + aCoverVariable + trans("323", "L"));
+                GT_Utility.trans("322", "Overflow point: ") + aCoverVariable + GT_Utility.trans("323", "L"));
         return aCoverVariable;
     }
 
@@ -107,8 +106,8 @@ public class GTPP_Cover_Overflow extends GT_CoverBehavior {
         }
         GT_Utility.sendChatToPlayer(
                 aPlayer,
-                LangUtils.trans("322", "Overflow point: ") + aCoverVariable + trans("323", "L"));
-        aTileEntity.setCoverDataAtSide(side, aCoverVariable);
+                GT_Utility.trans("322", "Overflow point: ") + aCoverVariable + GT_Utility.trans("323", "L"));
+        aTileEntity.setCoverDataAtSide(side, new ISerializableObject.LegacyCoverData(aCoverVariable));
         return true;
     }
 

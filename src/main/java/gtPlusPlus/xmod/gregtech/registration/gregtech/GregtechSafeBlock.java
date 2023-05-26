@@ -124,7 +124,7 @@ public class GregtechSafeBlock {
                         | GT_ModHandler.RecipeBits.BUFFERED,
                 new Object[] { "CMV", " X ", Character.valueOf('M'), ItemList.Hull_UV, Character.valueOf('V'),
                         OrePrefixes.circuit.get(Materials.Master), Character.valueOf('C'), OreDictNames.craftingChest,
-                        Character.valueOf('X'), OrePrefixes.circuit.get(Materials.Superconductor) });
+                        Character.valueOf('X'), OrePrefixes.circuit.get(Materials.SuperconductorUHV) });
         GT_ModHandler.addCraftingRecipe(
                 GregtechItemList.GT_Safe_MAX.get(1L, new Object[0]),
                 GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE

@@ -66,8 +66,8 @@ public class GregtechMetaTileEntity_IndustrialThermalCentrifuge
                 .addInfo("Only uses 80% of the EU/t normally required")
                 .addInfo("Processes eight items per voltage tier").addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator().beginStructureBlock(3, 2, 3, false).addController("Front Center")
-                .addCasingInfo("Thermal Processing Casings/Noise Hazard Sign Blocks", 8).addInputBus("Bottom Casing", 1)
-                .addOutputBus("Bottom Casing", 1).addEnergyHatch("Bottom Casing", 1)
+                .addCasingInfoMin("Thermal Processing Casings/Noise Hazard Sign Blocks", 8, false)
+                .addInputBus("Bottom Casing", 1).addOutputBus("Bottom Casing", 1).addEnergyHatch("Bottom Casing", 1)
                 .addMaintenanceHatch("Bottom Casing", 1).addMufflerHatch("Bottom Casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;

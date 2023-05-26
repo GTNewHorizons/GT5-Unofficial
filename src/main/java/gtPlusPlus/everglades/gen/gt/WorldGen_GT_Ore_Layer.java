@@ -444,7 +444,6 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
             ore4String = "unset";
     Map<Materials, String> gtOreMap = new HashMap<Materials, String>();
 
-    @SuppressWarnings("deprecation")
     public boolean setOreBlock(World aWorld, int aX, int aY, int aZ, Block aMetaData, boolean isSmallOre, boolean air) {
         if (!air) {
             aY = Math.min(aWorld.getActualHeight(), Math.max(aY, 1));
@@ -468,7 +467,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
             if (this.mPrimaryMeta == aMetaData) {
                 for (Materials f : Materials.values()) {
                     if (!gtOreMap.containsKey(f)) {
-                        gtOreMap.put(f, Utils.sanitizeString(f.name().toLowerCase()));
+                        gtOreMap.put(f, Utils.sanitizeString(f.mName.toLowerCase()));
                     }
                     fString = gtOreMap.get(f);
                     if (fString.contains(ore1String)) {
@@ -490,7 +489,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
             if (this.mSecondaryMeta == aMetaData) {
                 for (Materials f : Materials.values()) {
                     if (!gtOreMap.containsKey(f)) {
-                        gtOreMap.put(f, Utils.sanitizeString(f.name().toLowerCase()));
+                        gtOreMap.put(f, Utils.sanitizeString(f.mName.toLowerCase()));
                     }
                     fString = gtOreMap.get(f);
                     if (fString.contains(ore2String)) {
@@ -512,7 +511,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
             if (this.mBetweenMeta == aMetaData) {
                 for (Materials f : Materials.values()) {
                     if (!gtOreMap.containsKey(f)) {
-                        gtOreMap.put(f, Utils.sanitizeString(f.name().toLowerCase()));
+                        gtOreMap.put(f, Utils.sanitizeString(f.mName.toLowerCase()));
                     }
                     fString = gtOreMap.get(f);
                     if (fString.contains(ore3String)) {
@@ -534,7 +533,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
             if (this.mSporadicMeta == aMetaData) {
                 for (Materials f : Materials.values()) {
                     if (!gtOreMap.containsKey(f)) {
-                        gtOreMap.put(f, Utils.sanitizeString(f.name().toLowerCase()));
+                        gtOreMap.put(f, Utils.sanitizeString(f.mName.toLowerCase()));
                     }
                     fString = gtOreMap.get(f);
                     if (fString.contains(ore4String)) {

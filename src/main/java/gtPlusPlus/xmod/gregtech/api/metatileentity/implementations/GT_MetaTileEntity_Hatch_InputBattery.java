@@ -6,6 +6,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
@@ -31,7 +33,7 @@ public class GT_MetaTileEntity_Hatch_InputBattery extends GT_MetaTileEntity_Hatc
         super(aID, aName, aNameRegional, aTier, getSlots(aTier), "Chargeable Item Bus for Multiblocks");
     }
 
-    public GT_MetaTileEntity_Hatch_InputBattery(String aName, int aTier, String aDescription,
+    public GT_MetaTileEntity_Hatch_InputBattery(String aName, int aTier, String[] aDescription,
             ITexture[][][] aTextures) {
         super(aName, aTier, aTier < 1 ? 1 : aTier == 1 ? 4 : aTier == 2 ? 4 : 16, aDescription, aTextures);
     }
@@ -46,7 +48,7 @@ public class GT_MetaTileEntity_Hatch_InputBattery extends GT_MetaTileEntity_Hatc
         } else {
             mSlots = 16;
         }
-        return new String[] { this.mDescription, "Capacity: " + mSlots + " slots", CORE.GT_Tooltip.get() };
+        return ArrayUtils.addAll(this.mDescriptionArray, "Capacity: " + mSlots + " slots", CORE.GT_Tooltip.get());
     }
 
     @Override
@@ -111,7 +113,7 @@ public class GT_MetaTileEntity_Hatch_InputBattery extends GT_MetaTileEntity_Hatc
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_InputBattery(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_InputBattery(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override

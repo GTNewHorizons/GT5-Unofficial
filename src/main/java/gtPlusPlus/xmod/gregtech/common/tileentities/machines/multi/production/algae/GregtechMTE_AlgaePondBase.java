@@ -21,6 +21,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -84,9 +85,10 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
                 .addInfo("All Buses/Hatches must, at least, match the tier of the Casings")
                 .addInfo("Fill Input Hatch with Water to fill the inside of the multiblock.")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(9, 3, 9, true)
-                .addController("Front Center").addCasingInfo("Machine Casings", 64)
-                .addCasingInfo("Sterile Farm Casings", 64).addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1)
-                .addInputHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+                .addController("Front Center").addCasingInfoMin("Machine Casings", 64, true)
+                .addCasingInfoMin("Sterile Farm Casings", 64, false).addInputBus("Any Casing", 1)
+                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -161,7 +163,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
 
     @Override
     public String getSound() {
-        return GregTech_API.sSoundList.get(Integer.valueOf(207));
+        return SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP.toString();
     }
 
     @Override

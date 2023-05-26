@@ -2021,7 +2021,6 @@ tile.blockDarkWorldPortalFrame.name=Containment Frame
 
 //Added 1/4/18
 tile.Block of Plutonium-239.name=Block of Plutonium-239
-tile.Fluorite Ore [Old].name=Fluorite Ore [Deprecated]
 tile.blockMiningPipeFake.name=Strengthened Mining Pipe
 tile.blockMiningHeadFake.name=Bedrock Drill
 item.itemPlateMeatRaw.name=Fleshy Panel
@@ -3166,15 +3165,6 @@ item.BasicGenericChemItem.4.name=Purple Metal Catalyst
 item.BasicGenericChemItem.5.name=Brown Metal Catalyst
 item.MudRedSlurry.name=Cell of Red Mud Slurry
 item.liquid_toluene.name=Toluene Cell
-
-# The following 7 keys have been deprecated and overwritten
-# item.BasicAlgaeItem.0.name=Algae Spore (I)
-# item.BasicAlgaeItem.1.name=Algae Spore (II)
-# item.BasicAlgaeItem.2.name=Algae Spore (III)
-# item.BasicAlgaeItem.3.name=Algae Spore (IV)
-# item.BasicAlgaeItem.4.name=Algae Spore (V)
-# item.BasicAlgaeItem.5.name=Algae Spore (VI)
-# item.BasicAlgaeItem.6.name=Algae Spore (VII)
 
 //Added 17/01/20
 item.BasicGenericChemItem.6.name=Pink Metal Catalyst

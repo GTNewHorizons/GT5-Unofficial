@@ -28,7 +28,6 @@ public class HeliumGenerator extends BlockContainer {
     @SideOnly(Side.CLIENT)
     private IIcon textureFront;
 
-    @SuppressWarnings("deprecation")
     public HeliumGenerator() {
         super(Material.wood);
         this.setBlockName("blockHeliumGenerator");

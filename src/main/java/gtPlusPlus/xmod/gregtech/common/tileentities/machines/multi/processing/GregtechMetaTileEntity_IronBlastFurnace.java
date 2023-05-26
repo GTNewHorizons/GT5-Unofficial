@@ -137,7 +137,7 @@ public class GregtechMetaTileEntity_IronBlastFurnace extends MetaTileEntity impl
 
     @Override
     public boolean allowCoverOnSide(final ForgeDirection side, final GT_ItemStack aCoverID) {
-        return (GregTech_API.getCoverBehavior(aCoverID.toStack()).isSimpleCover())
+        return (GregTech_API.getCoverBehaviorNew(aCoverID.toStack()).isSimpleCover())
                 && (super.allowCoverOnSide(side, aCoverID));
     }
 

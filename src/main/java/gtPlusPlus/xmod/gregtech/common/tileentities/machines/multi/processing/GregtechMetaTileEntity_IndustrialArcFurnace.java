@@ -23,7 +23,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -75,10 +75,10 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace extends
                 .addInfo("Processes 8 items per voltage tier * W/L")
                 .addInfo("Max Size required to process Plasma recipes").addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator().addController("Top center").addStructureInfo("Size: nx3xn [WxHxL] (Hollow)")
-                .addStructureInfo("n can be 3, 5 or 7").addCasingInfo(mCasingName, 10).addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+                .addStructureInfo("n can be 3, 5 or 7").addCasingInfoMin(mCasingName, 10, false)
+                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
+                .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
+                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -177,7 +177,7 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace extends
 
     @Override
     public String getSound() {
-        return GregTech_API.sSoundList.get(Integer.valueOf(207));
+        return SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP.toString();
     }
 
     @Override

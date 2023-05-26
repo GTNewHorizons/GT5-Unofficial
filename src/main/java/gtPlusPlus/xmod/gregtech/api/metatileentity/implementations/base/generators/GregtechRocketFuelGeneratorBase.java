@@ -10,6 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
@@ -36,7 +38,7 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
                 * CORE.ConfigSwitches.pollutionReleasedByTierRocketFuelGenerator[mTier]);
     }
 
-    public GregtechRocketFuelGeneratorBase(final String aName, final int aTier, final String aDescription,
+    public GregtechRocketFuelGeneratorBase(final String aName, final int aTier, final String[] aDescription,
             final ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
         pollMin = (int) (CORE.ConfigSwitches.baseMinPollutionPerSecondRocketFuelGenerator
@@ -76,8 +78,11 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
     @Override
     public String[] getDescription() {
         String aPollution = "Causes between " + pollMin + " and " + pollMax + " Pollution per second";
-        return new String[] { this.mDescription, "Fuel Efficiency: " + this.getEfficiency() + "%", aPollution,
-                CORE.GT_Tooltip.get() };
+        return ArrayUtils.addAll(
+                this.mDescriptionArray,
+                "Fuel Efficiency: " + this.getEfficiency() + "%",
+                aPollution,
+                CORE.GT_Tooltip.get());
     }
 
     @Override

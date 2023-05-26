@@ -24,7 +24,6 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
     public boolean bOutput = false, bRedstoneIfFull = false, bInvert = false, bUnbreakable = false;
     public int mSuccess = 0, mTargetStackSize = 0;
     public UUID ownerUUID;
-    private boolean value_last = false, value_current = false;
 
     public GregtechMetaSafeBlockBase(final int aID, final String aName, final String aNameRegional, final int aTier,
             final int aInvSlotCount, final String aDescription) {
@@ -32,7 +31,7 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
     }
 
     public GregtechMetaSafeBlockBase(final String aName, final int aTier, final int aInvSlotCount,
-            final String aDescription, final ITexture[][][] aTextures) {
+            final String[] aDescription, final ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 

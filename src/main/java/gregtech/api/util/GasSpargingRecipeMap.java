@@ -1,6 +1,6 @@
 package gregtech.api.util;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+import static gregtech.api.enums.Mods.GregTech;
 
 import net.minecraftforge.fluids.FluidStack;
 
@@ -12,7 +12,7 @@ public class GasSpargingRecipeMap extends AutoMap<GasSpargingRecipe> {
     public static final String mUnlocalizedName = "gtpp.recipe.lftr.sparging";
     public static final String mNEIName = mUnlocalizedName;
     public static final String mNEIDisplayName = "LFTR Gas Sparging";
-    public static final String mNEIGUIPath = RES_PATH_GUI + "basicmachines/FissionFuel.png";
+    public static final String mNEIGUIPath = GregTech.getResourcePath("textures", "gui/basicmachines/FissionFuel.png");
 
     public static boolean addRecipe(FluidStack aSpargeGas, FluidStack aSpentFuel, FluidStack aSpargedFuel,
             FluidStack[] aOutputs, int[] aMaxOutputs) {

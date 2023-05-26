@@ -3,6 +3,8 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
@@ -25,17 +27,12 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 
     public int mEfficiency;
 
-    /*
-     * public GT_MetaTileEntity_SemiFluidGenerator(int aID, String aName, String aNameRegional, int aTier) { super(aID,
-     * aName, aNameRegional, aTier); onConfigLoad(); }
-     */
-
     public GT_MetaTileEntity_SemiFluidGenerator(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, "Requires semi-fluid Fuel", new ITexture[0]);
         onConfigLoad();
     }
 
-    public GT_MetaTileEntity_SemiFluidGenerator(String aName, int aTier, String aDescription,
+    public GT_MetaTileEntity_SemiFluidGenerator(String aName, int aTier, String[] aDescription,
             ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
         onConfigLoad();
@@ -61,7 +58,7 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_SemiFluidGenerator(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GT_MetaTileEntity_SemiFluidGenerator(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
@@ -72,8 +69,11 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, "Produces " + (this.getPollution()) + " pollution/sec",
-                "Fuel Efficiency: " + this.getEfficiency() + "%", CORE.GT_Tooltip.get() };
+        return ArrayUtils.addAll(
+                this.mDescriptionArray,
+                "Produces " + (this.getPollution()) + " pollution/sec",
+                "Fuel Efficiency: " + this.getEfficiency() + "%",
+                CORE.GT_Tooltip.get());
     }
 
     @Override
@@ -100,7 +100,7 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Basi
             Logger.WARNING("Bad Fuel?");
             return 0;
         }
-        int rValue = Math.max(GT_ModHandler.getFuelCanValue(aStack) * 6 / 5, super.getFuelValue(aStack));
+        int rValue = Math.max(GT_ModHandler.getFuelValue(aStack) * 6 / 5, super.getFuelValue(aStack));
         if (ItemList.Fuel_Can_Plastic_Filled.isStackEqual(aStack, false, true)) {
             rValue = Math.max(rValue, GameRegistry.getFuelValue(aStack) * 3);
         }

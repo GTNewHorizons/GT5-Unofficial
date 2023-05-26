@@ -5,6 +5,8 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
@@ -53,7 +55,7 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
                         new GT_RenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB) });
     }
 
-    public GregtechMetaTileEntity_AutoChisel(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
+    public GregtechMetaTileEntity_AutoChisel(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
             String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
     }
@@ -63,7 +65,7 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
         return new GregtechMetaTileEntity_AutoChisel(
                 this.mName,
                 this.mTier,
-                this.mDescription,
+                this.mDescriptionArray,
                 this.mTextures,
                 this.mGUIName,
                 this.mNEIName);
@@ -71,10 +73,11 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
 
     @Override
     public String[] getDescription() {
-        String[] A = new String[] { this.mDescription, "What you want to chisel goes in slot 1",
+        return ArrayUtils.addAll(
+                this.mDescriptionArray,
+                "What you want to chisel goes in slot 1",
                 "What you want to get goes in the special slot (bottom right)",
-                "If special slot is empty, first chisel result is used" };
-        return A;
+                "If special slot is empty, first chisel result is used");
     }
 
     @Override

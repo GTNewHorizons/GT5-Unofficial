@@ -17,14 +17,14 @@ public class GT_MetaTileEntity_Hatch_Reservoir extends GT_MetaTileEntity_Hatch_F
         super(aID, aName, aNameRegional, aTier);
     }
 
-    public GT_MetaTileEntity_Hatch_Reservoir(final String aName, final int aTier, final String aDescription,
+    public GT_MetaTileEntity_Hatch_Reservoir(final String aName, final int aTier, final String[] aDescription,
             final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_Reservoir(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GT_MetaTileEntity_Hatch_Reservoir(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override

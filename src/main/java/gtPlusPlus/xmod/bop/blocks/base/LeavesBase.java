@@ -30,7 +30,6 @@ public class LeavesBase extends BlockLeaves {
     protected String[] treeType = new String[] {};
     protected ItemStack[] bonusDrops;
 
-    @SuppressWarnings("deprecation")
     public LeavesBase(String blockNameLocalized, String blockNameUnlocalized, ItemStack[] bonusDrops) {
         this.bonusDrops = bonusDrops;
         String blockName = "block" + Utils.sanitizeString(blockNameLocalized) + "Leaves";

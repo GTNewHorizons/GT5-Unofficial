@@ -53,6 +53,7 @@ public class ItemGenericToken extends CoreItem {
         mCustomNameColours = new HashMap<Integer, EnumChatFormatting>();
         mIcons = new HashMap<Integer, IIcon>();
         mTextureDir = aTextureDir;
+        setMaxStackSize(64);
     }
 
     public boolean register(int id, String aLocalName, int aMaxStack, String aDescript) {
@@ -135,7 +136,7 @@ public class ItemGenericToken extends CoreItem {
     }
 
     @Override
-    public boolean hasEffect(ItemStack par1ItemStack) {
+    public boolean hasEffect(ItemStack par1ItemStack, final int pass) {
         return false;
     }
 
@@ -145,7 +146,7 @@ public class ItemGenericToken extends CoreItem {
     }
 
     @Override
-    public int getDisplayDamage(ItemStack stack) {
+    public int getDamage(ItemStack stack) {
         return 0;
     }
 
@@ -165,20 +166,15 @@ public class ItemGenericToken extends CoreItem {
     }
 
     @Override
-    public int getItemStackLimit() {
-        return 64;
-    }
-
-    @Override
     public int getItemStackLimit(ItemStack aStack) {
         if (aStack == null) {
-            return getItemStackLimit();
+            return maxStackSize;
         } else {
             Integer aSize = mMaxStackSizes.get(aStack.getItemDamage());
             if (aSize != null) {
                 return aSize;
             } else {
-                return getItemStackLimit();
+                return maxStackSize;
             }
         }
     }

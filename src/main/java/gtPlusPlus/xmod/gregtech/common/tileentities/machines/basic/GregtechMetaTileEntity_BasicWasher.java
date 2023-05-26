@@ -4,6 +4,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -38,20 +40,15 @@ public class GregtechMetaTileEntity_BasicWasher extends GT_MetaTileEntity_BasicM
                         new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_ROCK_BREAKER) });
     }
 
-    public GregtechMetaTileEntity_BasicWasher(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
+    public GregtechMetaTileEntity_BasicWasher(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
             String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
     }
 
-    /*
-     * public GregtechMetaTileEntity_BasicWasher(String aName, int aTier, String[] aDescription, ITexture[][][]
-     * aTextures, String aGUIName, String aNEIName) { super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName,
-     * aNEIName); }
-     */
-
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, "Grants no byproducts, but it is fast.", CORE.GT_Tooltip.get() };
+        return ArrayUtils
+                .addAll(this.mDescriptionArray, "Grants no byproducts, but it is fast.", CORE.GT_Tooltip.get());
     }
 
     @Override
@@ -59,7 +56,7 @@ public class GregtechMetaTileEntity_BasicWasher extends GT_MetaTileEntity_BasicM
         return new GregtechMetaTileEntity_BasicWasher(
                 this.mName,
                 this.mTier,
-                this.mDescription,
+                this.mDescriptionArray,
                 this.mTextures,
                 this.mGUIName,
                 this.mNEIName);

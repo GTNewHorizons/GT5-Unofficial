@@ -21,7 +21,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -957,27 +956,6 @@ public class ItemUtils {
         return getItemStackOfAmountFromOreDictNoBroken(oredictName, amount);
     }
 
-    @Deprecated
-    public static ItemStack getGregtechOreStack(OrePrefixes mPrefix, Materials mMat, int mAmount) {
-
-        ItemStack aTemp = getOrePrefixStack(mPrefix, mMat, mAmount);
-        if (aTemp != null) {
-            return aTemp;
-        }
-
-        String mName = MaterialUtils.getMaterialName(mMat);
-
-        String mItemName = mPrefix.name() + mName;
-        // Utils.LOG_INFO("[Component Maker] Trying to get "+mItemName+".");
-        ItemStack gregstack = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(mItemName, mAmount);
-        if (gregstack == null) {
-            // Utils.LOG_INFO("[Component Maker] Failed to get "+mItemName+".");
-            return null;
-        }
-        // Utils.LOG_INFO("[Component Maker] Found "+mItemName+".");
-        return (gregstack);
-    }
-
     public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, Material mMat, int mAmount) {
 
         String mName = Utils.sanitizeString(mMat.getLocalizedName());
@@ -1180,10 +1158,6 @@ public class ItemUtils {
 
     public static String getFluidName(FluidStack aFluid) {
         return aFluid != null ? aFluid.getFluid().getLocalizedName(aFluid) : "NULL";
-    }
-
-    public static String getFluidName(Fluid aFluid) {
-        return aFluid != null ? aFluid.getLocalizedName() : "NULL";
     }
 
     public static String getItemName(ItemStack aStack) {

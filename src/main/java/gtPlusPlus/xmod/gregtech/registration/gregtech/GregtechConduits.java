@@ -238,8 +238,7 @@ public class GregtechConduits {
 
     private static void wireFactory(final String Material, final int Voltage, final int ID, final long insulatedLoss,
             final long uninsulatedLoss, final long Amps, final short[] rgb) {
-        @SuppressWarnings("deprecation")
-        final Materials T = Materials.valueOf(Material);
+        final Materials T = Materials.get(Material);
         int V = GT_Utility.getTier(Voltage);
         if (V == -1) {
             Logger.ERROR("Failed to set voltage on " + Material + ". Invalid voltage of " + Voltage + "V set.");
@@ -249,17 +248,16 @@ public class GregtechConduits {
         makeWires(T, ID, insulatedLoss, uninsulatedLoss, Amps, GT_Values.V[V], true, false, rgb);
     }
 
-    @SuppressWarnings("deprecation")
     private static void makeWires(final Materials aMaterial, final int aStartID, final long aLossInsulated,
             final long aLoss, final long aAmperage, final long aVoltage, final boolean aInsulatable,
             final boolean aAutoInsulated, final short[] aRGB) {
-        Logger.WARNING("Gregtech5u Content | Registered " + aMaterial.name() + " as a new material for Wire & Cable.");
+        Logger.WARNING("Gregtech5u Content | Registered " + aMaterial.mName + " as a new material for Wire & Cable.");
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.wireGt01,
                 aMaterial,
                 new GregtechMetaPipeEntity_Cable(
                         aStartID + 0,
-                        "wire." + aMaterial.name().toLowerCase() + ".01",
+                        "wire." + aMaterial.mName.toLowerCase() + ".01",
                         "1x " + aMaterial.mDefaultLocalName + " Wire",
                         0.125F,
                         aMaterial,
@@ -274,7 +272,7 @@ public class GregtechConduits {
                 aMaterial,
                 new GregtechMetaPipeEntity_Cable(
                         aStartID + 1,
-                        "wire." + aMaterial.name().toLowerCase() + ".02",
+                        "wire." + aMaterial.mName.toLowerCase() + ".02",
                         "2x " + aMaterial.mDefaultLocalName + " Wire",
                         0.25F,
                         aMaterial,
@@ -289,7 +287,7 @@ public class GregtechConduits {
                 aMaterial,
                 new GregtechMetaPipeEntity_Cable(
                         aStartID + 2,
-                        "wire." + aMaterial.name().toLowerCase() + ".04",
+                        "wire." + aMaterial.mName.toLowerCase() + ".04",
                         "4x " + aMaterial.mDefaultLocalName + " Wire",
                         0.375F,
                         aMaterial,
@@ -304,7 +302,7 @@ public class GregtechConduits {
                 aMaterial,
                 new GregtechMetaPipeEntity_Cable(
                         aStartID + 3,
-                        "wire." + aMaterial.name().toLowerCase() + ".08",
+                        "wire." + aMaterial.mName.toLowerCase() + ".08",
                         "8x " + aMaterial.mDefaultLocalName + " Wire",
                         0.50F,
                         aMaterial,
@@ -319,7 +317,7 @@ public class GregtechConduits {
                 aMaterial,
                 new GregtechMetaPipeEntity_Cable(
                         aStartID + 4,
-                        "wire." + aMaterial.name().toLowerCase() + ".12",
+                        "wire." + aMaterial.mName.toLowerCase() + ".12",
                         "12x " + aMaterial.mDefaultLocalName + " Wire",
                         0.625F,
                         aMaterial,
@@ -334,7 +332,7 @@ public class GregtechConduits {
                 aMaterial,
                 new GregtechMetaPipeEntity_Cable(
                         aStartID + 5,
-                        "wire." + aMaterial.name().toLowerCase() + ".16",
+                        "wire." + aMaterial.mName.toLowerCase() + ".16",
                         "16x " + aMaterial.mDefaultLocalName + " Wire",
                         0.75F,
                         aMaterial,
@@ -350,7 +348,7 @@ public class GregtechConduits {
                     aMaterial,
                     new GregtechMetaPipeEntity_Cable(
                             aStartID + 6,
-                            "cable." + aMaterial.name().toLowerCase() + ".01",
+                            "cable." + aMaterial.mName.toLowerCase() + ".01",
                             "1x " + aMaterial.mDefaultLocalName + " Cable",
                             0.25F,
                             aMaterial,
@@ -365,7 +363,7 @@ public class GregtechConduits {
                     aMaterial,
                     new GregtechMetaPipeEntity_Cable(
                             aStartID + 7,
-                            "cable." + aMaterial.name().toLowerCase() + ".02",
+                            "cable." + aMaterial.mName.toLowerCase() + ".02",
                             "2x " + aMaterial.mDefaultLocalName + " Cable",
                             0.375F,
                             aMaterial,
@@ -380,7 +378,7 @@ public class GregtechConduits {
                     aMaterial,
                     new GregtechMetaPipeEntity_Cable(
                             aStartID + 8,
-                            "cable." + aMaterial.name().toLowerCase() + ".04",
+                            "cable." + aMaterial.mName.toLowerCase() + ".04",
                             "4x " + aMaterial.mDefaultLocalName + " Cable",
                             0.5F,
                             aMaterial,
@@ -395,7 +393,7 @@ public class GregtechConduits {
                     aMaterial,
                     new GregtechMetaPipeEntity_Cable(
                             aStartID + 9,
-                            "cable." + aMaterial.name().toLowerCase() + ".08",
+                            "cable." + aMaterial.mName.toLowerCase() + ".08",
                             "8x " + aMaterial.mDefaultLocalName + " Cable",
                             0.625F,
                             aMaterial,
@@ -410,7 +408,7 @@ public class GregtechConduits {
                     aMaterial,
                     new GregtechMetaPipeEntity_Cable(
                             aStartID + 10,
-                            "cable." + aMaterial.name().toLowerCase() + ".12",
+                            "cable." + aMaterial.mName.toLowerCase() + ".12",
                             "12x " + aMaterial.mDefaultLocalName + " Cable",
                             0.75F,
                             aMaterial,
@@ -425,7 +423,7 @@ public class GregtechConduits {
                     aMaterial,
                     new GregtechMetaPipeEntity_Cable(
                             aStartID + 11,
-                            "cable." + aMaterial.name().toLowerCase() + ".16",
+                            "cable." + aMaterial.mName.toLowerCase() + ".16",
                             "16x " + aMaterial.mDefaultLocalName + " Cable",
                             0.875f,
                             aMaterial,

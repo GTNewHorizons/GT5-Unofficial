@@ -26,7 +26,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -73,9 +73,10 @@ public class GregtechMetaTileEntity_IndustrialWireMill extends
                 .addInfo("200% faster than using single block machines of the same voltage")
                 .addInfo("Only uses 75% of the EU/t normally required").addInfo("Processes four items per voltage tier")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 5, true)
-                .addController("Front Center").addCasingInfo("Wire Factory Casings", 20).addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+                .addController("Front Center").addCasingInfoMin("Wire Factory Casings", 20, false)
+                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1)
+                .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -119,7 +120,7 @@ public class GregtechMetaTileEntity_IndustrialWireMill extends
 
     @Override
     public String getSound() {
-        return GregTech_API.sSoundList.get(204);
+        return SoundResource.IC2_MACHINES_RECYCLER_OP.toString();
     }
 
     @Override

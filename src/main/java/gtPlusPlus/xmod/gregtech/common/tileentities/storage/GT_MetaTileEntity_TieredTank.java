@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,24 +32,20 @@ public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
         super(aID, aName, aNameRegional, aTier, 3, "Stores " + ((int) (Math.pow(2, aTier) * 32000)) + "L of fluid");
     }
 
-    public GT_MetaTileEntity_TieredTank(final String aName, final int aTier, final String aDescription,
+    public GT_MetaTileEntity_TieredTank(final String aName, final int aTier, final String[] aDescription,
             final ITexture[][][] aTextures) {
-        super(aName, aTier, 3, "Stores " + ((int) (Math.pow(2, aTier) * 32000)) + "L of fluid", aTextures);
+        super(aName, aTier, 3, aDescription, aTextures);
     }
 
     @Override
     public String[] getDescription() {
-        String[] aTip;
-
-        String aTankPortableness = "portable";
-
-        if (this.mFluid == null) {
-            aTip = new String[] { this.mDescription, "A " + aTankPortableness + " tank.", CORE.GT_Tooltip.get() };
-        } else {
-            aTip = new String[] { this.mDescription, "A " + aTankPortableness + " tank.",
-                    "Fluid: " + mFluid.getLocalizedName() + " " + mFluid.amount + "L", CORE.GT_Tooltip.get() };
+        List<String> description = new ArrayList<>(Arrays.asList(this.mDescriptionArray));
+        description.add("A portable tank.");
+        if (this.mFluid != null) {
+            description.add("Fluid: " + mFluid.getLocalizedName() + " " + mFluid.amount + "L");
         }
-        return aTip;
+        description.add(CORE.GT_Tooltip.get());
+        return description.toArray(new String[0]);
     }
 
     @Override
@@ -144,7 +142,7 @@ public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
 
     @Override
     public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_TieredTank(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GT_MetaTileEntity_TieredTank(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override

@@ -350,7 +350,7 @@ public enum GregtechOrePrefixes {
                                     + "' with the Prefix '"
                                     + this.name()
                                     + "' and the Material '"
-                                    + aMaterial.name()
+                                    + aMaterial.mName
                                     + "' at "
                                     + GT_Utility.getClassName(tRegistrator));
                 }

@@ -76,7 +76,7 @@ public class GregtechMetaTileEntity_IndustrialCentrifuge extends
                 .addInfo("Disable animations with a screwdriver").addInfo("Only uses 90% of the EU/t normally required")
                 .addInfo("Processes six items per voltage tier").addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator().beginStructureBlock(3, 3, 3, true).addController("Front Center")
-                .addCasingInfo("Centrifuge Casings", 10).addInputBus("Any Casing except front", 1)
+                .addCasingInfoMin("Centrifuge Casings", 10, false).addInputBus("Any Casing except front", 1)
                 .addOutputBus("Any Casing except front", 1).addInputHatch("Any Casing except front", 1)
                 .addOutputHatch("Any Casing except front", 1).addEnergyHatch("Any Casing except front", 1)
                 .addMaintenanceHatch("Any Casing except front", 1).addMufflerHatch("Any Casing except front", 1)

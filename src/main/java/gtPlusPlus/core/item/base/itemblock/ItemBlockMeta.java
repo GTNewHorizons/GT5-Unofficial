@@ -91,7 +91,7 @@ public class ItemBlockMeta extends ItemBlockWithMetadata {
     }
 
     @Override
-    public int getDisplayDamage(ItemStack stack) {
+    public int getDamage(ItemStack stack) {
         return 0;
     }
 

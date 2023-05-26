@@ -127,7 +127,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
                 .addInfo("Hatches can be placed nearly anywhere")
                 .addInfo("HV Energy/Dynamo Hatches are the lowest tier you can use")
                 .addInfo("Supports voltages >= UHV using MAX tier components.").addSeparator()
-                .addController("Bottom Center").addCasingInfo("Sub-Station External Casings", 10)
+                .addController("Bottom Center").addCasingInfoMin("Sub-Station External Casings", 10, false)
                 .addDynamoHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1)
                 .addSubChannelUsage("capacitor", "Vanadium Capacitor Cell Tier")
                 .addSubChannelUsage("height", "Height of structure").toolTipFinisher(CORE.GT_Tooltip_Builder.get());

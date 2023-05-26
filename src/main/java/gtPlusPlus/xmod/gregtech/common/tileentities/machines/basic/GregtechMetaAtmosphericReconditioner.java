@@ -20,8 +20,8 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -89,8 +89,8 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
         mPollutionEnabled = PollutionUtils.isPollutionEnabled();
     }
 
-    public GregtechMetaAtmosphericReconditioner(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
-            String aGUIName, String aNEIName) {
+    public GregtechMetaAtmosphericReconditioner(String aName, int aTier, String[] aDescription,
+            ITexture[][][] aTextures, String aGUIName, String aNEIName) {
         super(aName, aTier, 2, aDescription, aTextures, 2, 0, aGUIName, aNEIName);
         mPollutionEnabled = PollutionUtils.isPollutionEnabled();
     }
@@ -106,7 +106,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
         return new GregtechMetaAtmosphericReconditioner(
                 this.mName,
                 this.mTier,
-                this.mDescription,
+                this.mDescriptionArray,
                 this.mTextures,
                 this.mGUIName,
                 this.mNEIName);
@@ -117,7 +117,8 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 
         boolean highTier = this.mTier >= 7;
 
-        String[] A = new String[] { this.mDescription,
+        String[] A = ArrayUtils.addAll(
+                this.mDescriptionArray,
                 highTier ? "Will attempt to remove 1/4 pollution from 8 surrounding chunks" : "",
                 highTier ? "If these chunks are not loaded, they will be ignored" : "",
                 "Requires a turbine rotor and an Air Filter [T1/T2] to run.",
@@ -126,7 +127,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
                 "Low Efficiency: Removes half pollution, Turbine takes 50% dmg",
                 "High Efficiency: Removes full pollution, Turbine takes 100% dmg",
                 "Turbine Rotor will not break in LE mode",
-                "Insert an equal tier Conveyor Module to enable automation" };
+                "Insert an equal tier Conveyor Module to enable automation");
         if (!mPollutionEnabled) {
             String[] B = new String[] { "===============================================",
                     "Pollution is disabled, scrubbers will now have a bonus use",
@@ -781,20 +782,9 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
     @Override
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         if (aIndex == -120) {
-            GT_Utility.doSoundAtClient(
-                    (String) GregTech_API.sSoundList.get(Integer.valueOf(103)),
-                    MathUtils.randInt(5, 50),
-                    0.05F,
-                    aX,
-                    aY,
-                    aZ);
-        } else if (aIndex == -121 || aIndex == -122) {
-            // GT_Utility.doSoundAtClient((String) GregTech_API.sSoundList.get(Integer.valueOf(108)), 0, 0.5F, aX, aY,
-            // aZ);
-        } /*
-           * else if (aIndex == -122) { GT_Utility.doSoundAtClient((String)
-           * GregTech_API.sSoundList.get(Integer.valueOf(6)), 100, 1.0F, aX, aY, aZ); }
-           */ else {
+            GT_Utility
+                    .doSoundAtClient(SoundResource.IC2_TOOLS_BATTERY_USE, MathUtils.randInt(5, 50), 0.05F, aX, aY, aZ);
+        } else {
             super.doSound((byte) 0, aX, aY, aZ);
         }
     }

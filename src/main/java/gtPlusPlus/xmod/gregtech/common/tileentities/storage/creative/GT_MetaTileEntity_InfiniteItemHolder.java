@@ -7,7 +7,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_TieredChest;
@@ -18,14 +17,9 @@ public class GT_MetaTileEntity_InfiniteItemHolder extends GT_MetaTileEntity_Tier
         super(aID, aName, aNameRegional, aTier);
     }
 
-    public GT_MetaTileEntity_InfiniteItemHolder(String aName, int aTier, String aDescription,
+    public GT_MetaTileEntity_InfiniteItemHolder(String aName, int aTier, String[] aDescription,
             ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] { this.mDescription, CORE.GT_Tooltip.get() };
     }
 
     @Override
@@ -92,6 +86,6 @@ public class GT_MetaTileEntity_InfiniteItemHolder extends GT_MetaTileEntity_Tier
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_InfiniteItemHolder(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GT_MetaTileEntity_InfiniteItemHolder(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 }

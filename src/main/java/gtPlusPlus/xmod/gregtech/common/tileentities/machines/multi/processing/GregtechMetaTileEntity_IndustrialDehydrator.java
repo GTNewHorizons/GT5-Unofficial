@@ -78,7 +78,7 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends
                 .addInfo("Each 1800K over the min. Heat Capacity allows for one upgraded overclock")
                 .addInfo("Upgraded overclocks reduce recipe time to 25% and increase EU/t to 400%")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 5, 3, true)
-                .addController("Bottom Center").addCasingInfo(mCasingName, 5).addInputBus("Any Casing", 1)
+                .addController("Bottom Center").addCasingInfoMin(mCasingName, 5, false).addInputBus("Any Casing", 1)
                 .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
                 .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder.get());

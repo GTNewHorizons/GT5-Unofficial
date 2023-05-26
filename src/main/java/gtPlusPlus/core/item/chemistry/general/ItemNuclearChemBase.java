@@ -96,11 +96,6 @@ public class ItemNuclearChemBase extends Item {
     }
 
     @Override
-    public int getDisplayDamage(ItemStack stack) {
-        return stack.getItemDamage();
-    }
-
-    @Override
     public int getItemEnchantability() {
         return 0;
     }

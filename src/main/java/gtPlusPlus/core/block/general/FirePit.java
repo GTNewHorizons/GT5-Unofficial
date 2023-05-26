@@ -35,7 +35,6 @@ public class FirePit extends BasicBlock {
     public static final int META_ANTIBUILDER = 2;
     private int meta;
 
-    @SuppressWarnings("deprecation")
     public FirePit() {
         super("blockFirePit", Material.wood);
         this.setBlockName("blockFirePit");

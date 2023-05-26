@@ -27,14 +27,14 @@ public class GT_MetaTileEntity_RedstoneStrengthDisplay extends GT_MetaTileEntity
         super(aID, aUnlocal, aLocal, 5, 0, aDescription);
     }
 
-    public GT_MetaTileEntity_RedstoneStrengthDisplay(final String aName, String aDescription,
+    public GT_MetaTileEntity_RedstoneStrengthDisplay(final String aName, String[] aDescription,
             final ITexture[][][] aTextures) {
         super(aName, 5, 0, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_RedstoneStrengthDisplay(this.mName, mDescription, this.mTextures);
+        return new GT_MetaTileEntity_RedstoneStrengthDisplay(this.mName, mDescriptionArray, this.mTextures);
     }
 
     @Override

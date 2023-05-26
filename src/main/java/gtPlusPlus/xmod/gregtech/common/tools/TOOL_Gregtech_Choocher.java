@@ -18,7 +18,7 @@ import net.minecraft.util.IChatComponent;
 import net.minecraftforge.event.world.BlockEvent;
 
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_Recipe;
@@ -82,17 +82,12 @@ public class TOOL_Gregtech_Choocher extends GT_Tool {
 
     @Override
     public String getCraftingSound() {
-        return GregTech_API.sSoundList.get(Integer.valueOf(1));
+        return SoundResource.RANDOM_ANVIL_USE.toString();
     }
 
     @Override
     public String getEntityHitSound() {
-        return GregTech_API.sSoundList.get(Integer.valueOf(2));
-    }
-
-    @Override
-    public String getBreakingSound() {
-        return GregTech_API.sSoundList.get(Integer.valueOf(0));
+        return SoundResource.RANDOM_ANVIL_BREAK.toString();
     }
 
     @Override

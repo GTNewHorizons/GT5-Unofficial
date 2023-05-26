@@ -13,6 +13,7 @@ import net.minecraftforge.fluids.IFluidBlock;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.objects.ItemData;
@@ -52,14 +53,7 @@ public class Behaviour_Prospecting_Ex extends Behaviour_Prospecting {
             GT_Utility.sendChatToPlayer(
                     aPlayer,
                     "This is " + tAssotiation.mMaterial.mMaterial.mDefaultLocalName + " Ore.");
-            GT_Utility.sendSoundToPlayers(
-                    aWorld,
-                    GregTech_API.sSoundList.get(Integer.valueOf(1)),
-                    1.0F,
-                    -1.0F,
-                    aX,
-                    aY,
-                    aZ);
+            GT_Utility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, aX, aY, aZ);
             return true;
         }
         if ((aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.stone))
@@ -69,14 +63,7 @@ public class Behaviour_Prospecting_Ex extends Behaviour_Prospecting {
                 || (aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.dirt))
                 || (aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.grass))) {
             if (GT_ModHandler.damageOrDechargeItem(aStack, this.mVanillaCosts, this.mEUCosts, aPlayer)) {
-                GT_Utility.sendSoundToPlayers(
-                        aWorld,
-                        GregTech_API.sSoundList.get(Integer.valueOf(1)),
-                        1.0F,
-                        -1.0F,
-                        aX,
-                        aY,
-                        aZ);
+                GT_Utility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, aX, aY, aZ);
                 int tX = aX;
                 int tY = aY;
                 int tZ = aZ;

@@ -28,6 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -435,7 +436,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
     public void startSoundLoop(final byte aIndex, final double aX, final double aY, final double aZ) {
         super.startSoundLoop(aIndex, aX, aY, aZ);
         if (aIndex == 1) {
-            GT_Utility.doSoundAtClient(getSound(), 10, 1.0F, aX, aY, aZ);
+            GT_Utility.doSoundAtClient(new ResourceLocation(getSound()), 10, 1.0F, aX, aY, aZ);
         }
     }
 
@@ -1443,7 +1444,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
     /**
      * Enable Texture Casing Support if found in GT 5.09
      */
-    @SuppressWarnings("deprecation")
     public boolean updateTexture(final IMetaTileEntity aTileEntity, int aCasingID) {
         try { // gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch.updateTexture(int)
 
@@ -1463,7 +1463,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
                 log("Bad Method Call for updateTexture.");
                 if (GT_MetaTileEntity_Hatch.class.isInstance(aMetaTileEntity)) {
                     if (aCasingID <= Byte.MAX_VALUE) {
-                        ((GT_MetaTileEntity_Hatch) aTileEntity).mMachineBlock = (byte) aCasingID;
+                        ((GT_MetaTileEntity_Hatch) aTileEntity).updateTexture(aCasingID);
                         log(
                                 "Good Method Call for updateTexture. Used fallback method of setting mMachineBlock as casing id was <= 128.");
                         return true;
@@ -2451,7 +2451,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         mToolStacks.put(
                 true + "SOFTHAMMER",
                 GT_MetaGenerated_Tool_01.INSTANCE
-                        .getToolWithStats(GT_MetaGenerated_Tool_01.SOFTHAMMER, 1, GOOD, Materials.Tungsten, null));
+                        .getToolWithStats(GT_MetaGenerated_Tool_01.SOFTMALLET, 1, GOOD, Materials.Tungsten, null));
         mToolStacks.put(
                 true + "SCREWDRIVER",
                 GT_MetaGenerated_Tool_01.INSTANCE
@@ -2480,7 +2480,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         mToolStacks.put(
                 false + "SOFTHAMMER",
                 GT_MetaGenerated_Tool_01.INSTANCE
-                        .getToolWithStats(GT_MetaGenerated_Tool_01.SOFTHAMMER, 1, BAD, Materials.Tungsten, null));
+                        .getToolWithStats(GT_MetaGenerated_Tool_01.SOFTMALLET, 1, BAD, Materials.Tungsten, null));
         mToolStacks.put(
                 false + "SCREWDRIVER",
                 GT_MetaGenerated_Tool_01.INSTANCE

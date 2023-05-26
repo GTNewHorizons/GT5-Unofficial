@@ -52,7 +52,6 @@ public class Machine_ProjectTable extends BlockContainer implements ITileTooltip
         return this.mTooltipID;
     }
 
-    @SuppressWarnings("deprecation")
     public Machine_ProjectTable() {
         super(Material.iron);
         this.setBlockName("blockProjectBench");

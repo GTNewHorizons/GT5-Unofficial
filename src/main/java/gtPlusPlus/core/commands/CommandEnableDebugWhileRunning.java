@@ -158,7 +158,7 @@ public class CommandEnableDebugWhileRunning implements ICommand {
                         aFluidContainerData.put("FluidStack Local Name: " + aHeldItemFluid.getLocalizedName());
                         aFluidContainerData
                                 .put("Fluid Unlocal Name: " + aHeldItemFluid.getFluid().getUnlocalizedName());
-                        aFluidContainerData.put("Fluid Local Name: " + aHeldItemFluid.getFluid().getLocalizedName());
+                        aFluidContainerData.put("Fluid Local Name: " + aHeldItemFluid.getLocalizedName());
                         aFluidContainerData.put("Fluid Name: " + aHeldItemFluid.getFluid().getName());
                     }
 

@@ -76,7 +76,7 @@ public class BaseItemDamageable extends Item {
     }
 
     @Override
-    public boolean hasEffect(final ItemStack par1ItemStack) {
+    public boolean hasEffect(final ItemStack par1ItemStack, final int pass) {
         int dmg = (int) getItemDamage(par1ItemStack);
         if (dmg > 200) {
             return true;
@@ -174,13 +174,7 @@ public class BaseItemDamageable extends Item {
     }
 
     @Override
-    public boolean hasContainerItem() {
-        return true;
-    }
-
-    @Override
     public boolean hasContainerItem(ItemStack stack) {
-        Logger.INFO("hasContainerItem? " + stack.getDisplayName());
         return true;
     }
 

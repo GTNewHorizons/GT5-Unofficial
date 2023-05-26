@@ -28,7 +28,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -89,8 +89,8 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter extends
                 .addInfo("Allows Complex GT++ alloys to be created").addInfo("Accepts only one Energy Hatch")
                 .addInfo("Circuit for recipe goes in the Input Bus or GUI slot")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 4, 3, true)
-                .addController("Bottom Center").addCasingInfo("Blast Smelter Casings", 5)
-                .addCasingInfo("Blast Smelter Heat Containment Coils", 16).addInputBus("Any Casing", 1)
+                .addController("Bottom Center").addCasingInfoMin("Blast Smelter Casings", 5, false)
+                .addCasingInfoMin("Blast Smelter Heat Containment Coils", 16, false).addInputBus("Any Casing", 1)
                 .addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1)
                 .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
@@ -136,7 +136,7 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter extends
 
     @Override
     public String getSound() {
-        return GregTech_API.sSoundList.get(Integer.valueOf(208));
+        return SoundResource.IC2_MACHINES_INDUCTION_LOOP.toString();
     }
 
     @Override

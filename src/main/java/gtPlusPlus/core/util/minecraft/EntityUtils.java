@@ -57,14 +57,6 @@ public class EntityUtils {
         return d;
     }
 
-    @Deprecated
-    public static Block findBlockUnderEntityNonBoundingBox(final Entity parEntity) {
-        final int blockX = MathHelper.floor_double(parEntity.posX);
-        final int blockY = MathHelper.floor_double(parEntity.posY - 0.2D - parEntity.yOffset);
-        final int blockZ = MathHelper.floor_double(parEntity.posZ);
-        return parEntity.worldObj.getBlock(blockX, blockY, blockZ);
-    }
-
     public static Block findBlockUnderEntity(final Entity parEntity) {
         final int blockX = MathHelper.floor_double(parEntity.posX);
         final int blockY = MathHelper.floor_double(parEntity.boundingBox.minY) - 1;

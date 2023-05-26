@@ -23,7 +23,6 @@ import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustomCapes;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustomCircuits;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustom_Cables;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustom_Pipes;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_ComponentAssemblers;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_Dehydrators;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_FluidTanks;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_GeothermalEngines;
@@ -117,7 +116,6 @@ import static gtPlusPlus.core.lib.CORE.ConfigSwitches.showHiddenNEIItems;
 import static gtPlusPlus.core.lib.CORE.EVERGLADESBIOME_ID;
 import static gtPlusPlus.core.lib.CORE.EVERGLADES_ID;
 import static gtPlusPlus.core.lib.CORE.turbineCutoffBase;
-import static gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_WorldAccelerator.BlacklistedTileEntiyClassNames;
 
 import java.io.File;
 
@@ -250,8 +248,6 @@ public class ConfigHandler {
                 GregTech.ID,
                 false,
                 "These may be overpowered, Consult a local electrician.");
-        enableMachine_ComponentAssemblers = config
-                .getBoolean("enableComponentAssemblers", GregTech.ID, true, "These construct machine components.");
         enableMachine_Safes = config
                 .getBoolean("enableMachineSafes", GregTech.ID, true, "These protect your goodies/rare stuff.");
         enableMachine_Dehydrators = config
@@ -427,15 +423,6 @@ public class ConfigHandler {
         EVERGLADES_ID = config.getInt("darkworld_ID", "worldgen", 227, 1, 254, "The ID of the Dark Dimension.");
         EVERGLADESBIOME_ID = config
                 .getInt("darkbiome_ID", "worldgen", 238, 1, 254, "The biome within the Dark Dimension.");
-
-        // Blacklisted Accelerator TileEntities
-        BlacklistedTileEntiyClassNames = new String[] {
-                "com.rwtema.extrautils.tileentity.enderquarry.TileEntityEnderQuarry" };
-        BlacklistedTileEntiyClassNames = config.getStringList(
-                "BlacklistedTileEntiyClassNames",
-                GregTech.ID,
-                BlacklistedTileEntiyClassNames,
-                "The Canonical Class-Names of TileEntities that should be ignored by the WorldAccelerator");
 
         // Pollution
         pollutionPerSecondMultiPackager = config

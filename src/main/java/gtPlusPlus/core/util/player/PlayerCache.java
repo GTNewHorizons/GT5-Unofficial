@@ -1,17 +1,14 @@
 package gtPlusPlus.core.util.player;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -77,45 +74,6 @@ public class PlayerCache {
             Logger.INFO("No PlayerCache file found, creating one.");
             createPropertiesFile(playerName, playerUUIDasString);
         }
-    }
-
-    /**
-     * Reads a "properties" file, and returns it as a Map (a collection of key/value pairs).
-     *
-     * Credit due to Alvin Alexander -
-     * http://alvinalexander.com/java/java-properties-file-map-example?nocache=1#comment-8215 Changed slightly as the
-     * filename and delimiter are constant in my case.
-     *
-     * @param filename  The properties filename to read.
-     * @param delimiter The string (or character) that separates the key from the value in the properties file.
-     * @return The Map that contains the key/value pairs.
-     * @throws Exception
-     */
-    @Deprecated
-    public static Map<String, String> readPropertiesFileAsMapOld() throws Exception {
-        final String delimiter = "=";
-        @SuppressWarnings({ "rawtypes", "unchecked" })
-        final Map<String, String> map = new HashMap<>();
-        final BufferedReader reader = new BufferedReader(new FileReader(cache));
-        String line;
-        while ((line = reader.readLine()) != null) {
-            if (line.trim().length() == 0) {
-                continue;
-            }
-            if (line.charAt(0) == '#') {
-                continue;
-            }
-            // assumption here is that proper lines are like "String : <a href="http://xxx.yyy.zzz/foo/bar""
-            // title="http://xxx.yyy.zzz/foo/bar"">http://xxx.yyy.zzz/foo/bar"</a>,
-            // and the ":" is the delimiter
-            final int delimPosition = line.indexOf(delimiter);
-            final String key = line.substring(0, delimPosition - 1).trim();
-            final String value = line.substring(delimPosition + 1).trim();
-            map.put(key, value);
-        }
-        reader.close();
-        CORE.PlayerCache = map;
-        return map;
     }
 
     public static HashMap<String, UUID> readPropertiesFileAsMap() {

@@ -65,10 +65,11 @@ public class GregtechMetaTileEntity_IndustrialSifter
                 .addInfo("400% faster than single-block machines of the same voltage")
                 .addInfo("Only uses 75% of the EU/t normally required").addInfo("Processes four items per voltage tier")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(5, 3, 5, false)
-                .addController("Bottom Center").addCasingInfo("Sieve Grate", 18).addCasingInfo("Sieve Casings", 35)
-                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
-                .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+                .addController("Bottom Center").addCasingInfoMin("Sieve Grate", 18, false)
+                .addCasingInfoMin("Sieve Casings", 35, false).addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1)
+                .addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1)
+                .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

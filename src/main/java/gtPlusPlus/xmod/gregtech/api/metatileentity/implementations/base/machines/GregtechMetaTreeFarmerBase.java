@@ -12,16 +12,13 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public abstract class GregtechMetaTreeFarmerBase extends GT_MetaTileEntity_TieredMachineBlock {
 
-    public boolean bOutput = false, bRedstoneIfFull = false, bInvert = false, bUnbreakable = false;
-    public int mSuccess = 0, mTargetStackSize = 0;
-
     public GregtechMetaTreeFarmerBase(final int aID, final String aName, final String aNameRegional, final int aTier,
             final int aInvSlotCount, final String aDescription) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
     }
 
     public GregtechMetaTreeFarmerBase(final String aName, final int aTier, final int aInvSlotCount,
-            final String aDescription, final ITexture[][][] aTextures) {
+            final String[] aDescription, final ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 

@@ -67,8 +67,8 @@ public class GregtechMetaTileEntity_SteamMacerator
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType()).addInfo("Controller Block for the Steam Macerator")
                 .addInfo("Macerates " + getMaxParallelRecipes() + " ores at a time").addSeparator()
-                .beginStructureBlock(3, 3, 3, true).addController("Front center").addCasingInfo(mCasingName, 14)
-                .addOtherStructurePart(TT_steaminputbus, "Any casing", 1)
+                .beginStructureBlock(3, 3, 3, true).addController("Front center")
+                .addCasingInfoMin(mCasingName, 14, false).addOtherStructurePart(TT_steaminputbus, "Any casing", 1)
                 .addOtherStructurePart(TT_steamoutputbus, "Any casing", 1)
                 .addOtherStructurePart(TT_steamhatch, "Any casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;

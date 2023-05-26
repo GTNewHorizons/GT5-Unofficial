@@ -12,6 +12,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -54,7 +56,7 @@ public class GT_MetaTileEntity_AdvancedCraftingTable extends GT_MetaTileEntity_B
         mLocalName = aNameRegional;
     }
 
-    public GT_MetaTileEntity_AdvancedCraftingTable(final String aName, final int aTier, final String aDescription,
+    public GT_MetaTileEntity_AdvancedCraftingTable(final String aName, final int aTier, final String[] aDescription,
             final ITexture[][][] aTextures) {
         super(aName, aTier, 35, aDescription, aTextures);
     }
@@ -136,7 +138,11 @@ public class GT_MetaTileEntity_AdvancedCraftingTable extends GT_MetaTileEntity_B
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_AdvancedCraftingTable(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GT_MetaTileEntity_AdvancedCraftingTable(
+                this.mName,
+                this.mTier,
+                this.mDescriptionArray,
+                this.mTextures);
     }
 
     @Override
@@ -470,8 +476,11 @@ public class GT_MetaTileEntity_AdvancedCraftingTable extends GT_MetaTileEntity_B
 
     @Override
     public String[] getDescription() {
-        return new String[] { isAdvanced() ? "For the very large Projects" : "For the smaller Projects",
-                "Hold Shift in GUI to see slot usage", this.mDescription, CORE.GT_Tooltip.get() };
+        return ArrayUtils.addAll(
+                this.mDescriptionArray,
+                isAdvanced() ? "For the very large Projects" : "For the smaller Projects",
+                "Hold Shift in GUI to see slot usage",
+                CORE.GT_Tooltip.get());
     }
 
     @Override

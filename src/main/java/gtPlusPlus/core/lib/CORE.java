@@ -23,7 +23,6 @@ import net.minecraftforge.common.util.FakePlayerFactory;
 import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import gregtech.api.enums.Mods;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.random.XSTR;
@@ -173,7 +172,6 @@ public class CORE {
         public static boolean enableMachine_Tesseracts = true;
         public static boolean enableMachine_SimpleWasher = true;
         public static boolean enableMachine_Pollution = true;
-        public static boolean enableMachine_ComponentAssemblers = false;
         public static boolean enableCustom_Pipes = true;
         public static boolean enableCustom_Cables = true;
         public static boolean enableMachine_RF_Convetor = false;
@@ -271,8 +269,6 @@ public class CORE {
 
     public static class Everglades {
 
-        @Deprecated
-        public static final String MODID = Mods.Names.G_T_PLUS_PLUS_EVERGLADES;
         public static final String NAME = "GT++ Toxic Everglades";
         public static final String VERSION = "GRADLETOKEN_VERSION";
     }

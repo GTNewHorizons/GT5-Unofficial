@@ -4,6 +4,8 @@ import static gregtech.api.enums.GT_Values.V;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
@@ -30,7 +32,7 @@ public class GregtechMetaTileEntitySolarGenerator extends GregtechMetaSolarGener
         this.onConfigLoad();
     }
 
-    public GregtechMetaTileEntitySolarGenerator(final String aName, final int aTier, final String aDescription,
+    public GregtechMetaTileEntitySolarGenerator(final String aName, final int aTier, final String[] aDescription,
             final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
         this.onConfigLoad();
@@ -38,8 +40,11 @@ public class GregtechMetaTileEntitySolarGenerator extends GregtechMetaSolarGener
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, "Generates power at " + this.getEfficiency() + "% Efficiency per tick",
-                "Output Voltage: " + this.getOutputTier() + " EU/t", CORE.GT_Tooltip.get() };
+        return ArrayUtils.addAll(
+                this.mDescriptionArray,
+                "Generates power at " + this.getEfficiency() + "% Efficiency per tick",
+                "Output Voltage: " + this.getOutputTier() + " EU/t",
+                CORE.GT_Tooltip.get());
     }
 
     @Override
@@ -49,7 +54,7 @@ public class GregtechMetaTileEntitySolarGenerator extends GregtechMetaSolarGener
 
     @Override
     public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaTileEntitySolarGenerator(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GregtechMetaTileEntitySolarGenerator(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     public void onConfigLoad() {

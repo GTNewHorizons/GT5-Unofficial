@@ -121,9 +121,10 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
                 .addInfo("When fertilizer is supplied, produces saplings instead of logs")
                 .addInfo("Forestry saplings can get increased production")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
-                .addController("Front center").addCasingInfo("Sterile Farm Casing", 8).addInputBus("Any casing", 1)
-                .addOutputBus("Any casing", 1).addEnergyHatch("Any casing", 1).addMaintenanceHatch("Any casing", 1)
-                .addMufflerHatch("Any casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+                .addController("Front center").addCasingInfoMin("Sterile Farm Casing", 8, false)
+                .addInputBus("Any casing", 1).addOutputBus("Any casing", 1).addEnergyHatch("Any casing", 1)
+                .addMaintenanceHatch("Any casing", 1).addMufflerHatch("Any casing", 1)
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

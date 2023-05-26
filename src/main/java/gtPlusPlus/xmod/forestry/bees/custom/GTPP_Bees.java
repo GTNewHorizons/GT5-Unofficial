@@ -155,8 +155,8 @@ public class GTPP_Bees {
     }
 
     private Materials trySetValue(String material) {
-        Materials mTemp = Materials.valueOf(material);
-        if (mTemp != null) {
+        Materials mTemp = Materials.get(material);
+        if (mTemp != Materials._NULL) {
             return mTemp;
         }
         return Materials._NULL;

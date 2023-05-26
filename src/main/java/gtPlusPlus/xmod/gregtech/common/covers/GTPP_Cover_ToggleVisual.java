@@ -12,10 +12,11 @@ import net.minecraftforge.fluids.Fluid;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.ISerializableObject;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.api.objects.random.XSTR;
-import gtPlusPlus.core.util.minecraft.LangUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class GTPP_Cover_ToggleVisual extends GT_CoverBehavior {
@@ -40,7 +41,7 @@ public class GTPP_Cover_ToggleVisual extends GT_CoverBehavior {
     public boolean onCoverRightclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
             EntityPlayer aPlayer, float aX, float aY, float aZ) {
         PlayerUtils
-                .messagePlayer(aPlayer, LangUtils.trans("756", "Connectable: ") + getConnectionState(aCoverVariable));
+                .messagePlayer(aPlayer, GT_Utility.trans("756", "Connectable: ") + getConnectionState(aCoverVariable));
         return super.onCoverRightclick(side, aCoverID, aCoverVariable, aTileEntity, aPlayer, aX, aY, aZ);
     }
 
@@ -75,10 +76,6 @@ public class GTPP_Cover_ToggleVisual extends GT_CoverBehavior {
     public boolean letsItemsOut(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
             ICoverable aTileEntity) {
         return getConnectionState(aCoverVariable);
-    }
-
-    public String getDescription(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return LangUtils.trans("756", "Connectable: ") + getConnectionState(aCoverVariable);
     }
 
     public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
@@ -158,11 +155,8 @@ public class GTPP_Cover_ToggleVisual extends GT_CoverBehavior {
 
     private static final void trySetState(ForgeDirection side, int aState, ICoverable aTile) {
         // Try set cover state directly
-        if (aTile instanceof IGregTechTileEntity) {
-            IGregTechTileEntity gTileEntity = (IGregTechTileEntity) aTile;
-            if (gTileEntity != null) {
-                gTileEntity.setCoverDataAtSide(side, aState);
-            }
+        if (aTile instanceof IGregTechTileEntity gTileEntity) {
+            gTileEntity.setCoverDataAtSide(side, new ISerializableObject.LegacyCoverData(aState));
         }
     }
 

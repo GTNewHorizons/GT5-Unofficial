@@ -80,14 +80,16 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
                 .addInfo("Speed: +100% | EU Usage: 100% | Parallel: 8 * Tier").addInfo("Maximum 1x of each bus/hatch.")
                 .addInfo("Does not require both Output Hatch & Bus").addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator().beginStructureBlock(9, 6, 9, true).addController("Top Center")
-                .addCasingInfo("Elemental Confinement Shell", 138).addCasingInfo("Matter Fabricator Casing", 24)
-                .addCasingInfo("Particle Containment Casing", 24).addCasingInfo("Matter Generation Coil", 24)
-                .addCasingInfo("High Voltage Current Capacitor", 20).addCasingInfo("Resonance Chamber III", 24)
-                .addCasingInfo("Modulator III", 16).addOtherStructurePart("Data Orb Repository", "1x", 1)
-                .addInputHatch("Any 1 dot hint", 1).addOutputBus("Any 1 dot hint", 1)
-                .addOutputHatch("Any 1 dot hint", 1).addEnergyHatch("Any 1 dot hint", 1)
-                .addMaintenanceHatch("Any 1 dot hint", 1).addMufflerHatch("Any 1 dot hint", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+                .addCasingInfoMin("Elemental Confinement Shell", 138, false)
+                .addCasingInfoMin("Matter Fabricator Casing", 24, false)
+                .addCasingInfoMin("Particle Containment Casing", 24, false)
+                .addCasingInfoMin("Matter Generation Coil", 24, false)
+                .addCasingInfoMin("High Voltage Current Capacitor", 20, false)
+                .addCasingInfoMin("Resonance Chamber III", 24, false).addCasingInfoMin("Modulator III", 16, false)
+                .addOtherStructurePart("Data Orb Repository", "1x", 1).addInputHatch("Any 1 dot hint", 1)
+                .addOutputBus("Any 1 dot hint", 1).addOutputHatch("Any 1 dot hint", 1)
+                .addEnergyHatch("Any 1 dot hint", 1).addMaintenanceHatch("Any 1 dot hint", 1)
+                .addMufflerHatch("Any 1 dot hint", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

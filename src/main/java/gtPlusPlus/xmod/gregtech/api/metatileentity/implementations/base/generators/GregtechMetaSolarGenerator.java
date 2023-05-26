@@ -5,6 +5,8 @@ import static gregtech.api.enums.GT_Values.V;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
@@ -24,7 +26,7 @@ public abstract class GregtechMetaSolarGenerator extends GT_MetaTileEntity_Basic
         super(aID, aName, aNameRegional, aTier, 3, aDescription, aTextures);
     }
 
-    public GregtechMetaSolarGenerator(final String aName, final int aTier, final String aDescription,
+    public GregtechMetaSolarGenerator(final String aName, final int aTier, final String[] aDescription,
             final ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
@@ -59,7 +61,7 @@ public abstract class GregtechMetaSolarGenerator extends GT_MetaTileEntity_Basic
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, "Efficiency: " + this.getEfficiency() + "%" };
+        return ArrayUtils.add(this.mDescriptionArray, "Efficiency: " + this.getEfficiency() + "%");
     }
 
     @Override

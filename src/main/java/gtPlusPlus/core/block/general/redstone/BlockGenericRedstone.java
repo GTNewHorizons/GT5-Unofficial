@@ -23,7 +23,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
@@ -37,14 +36,12 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public abstract class BlockGenericRedstone extends BlockContainer {
 
-    @SuppressWarnings("deprecation")
     public BlockGenericRedstone(String aUnlocalizedSuffix, String aDisplayName) {
         super(Material.redstoneLight);
         this.setBlockName("blockGenericRedstone." + aUnlocalizedSuffix);
         this.setHardness(3f);
         this.setCreativeTab(AddToCreativeTab.tabMachines);
         GameRegistry.registerBlock(this, ItemBlockMeta.class, "blockGenericRedstone." + aUnlocalizedSuffix);
-        LanguageRegistry.addName(this, aDisplayName);
     }
 
     private final HashMap<Integer, HashMap<ForgeDirection, IIcon>> mTextures = new HashMap<Integer, HashMap<ForgeDirection, IIcon>>();

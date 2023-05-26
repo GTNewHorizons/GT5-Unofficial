@@ -36,6 +36,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -428,7 +429,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 
     @Override
     public String getSound() {
-        return GregTech_API.sSoundList.get(Integer.valueOf(207));
+        return SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP.toString();
     }
 
     @Override

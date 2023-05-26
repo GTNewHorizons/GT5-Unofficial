@@ -82,7 +82,7 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
         tt.addMachineType(getMachineType()).addInfo("Controller Block for the Large Grinding Machine")
                 .addInfo("Grind ores.").addPollutionAmount(getPollutionPerSecond(null)).addSeparator()
                 .beginStructureBlock(3, 3, 7, false).addController("Front Center")
-                .addCasingInfo("IsaMill Exterior Casing", 40)
+                .addCasingInfoMin("IsaMill Exterior Casing", 40, false)
                 .addOtherStructurePart("IsaMill Gearbox", "5x, Inner Blocks")
                 .addOtherStructurePart("IsaMill Piping", "8x, ring around controller")
                 .addStructureInfo("IsaMill Pipings must not be obstructed in front (only air blocks)")

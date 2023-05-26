@@ -62,7 +62,7 @@ public class ProcessingToolHeadChoocher implements Interface_OreRecipeRegistrato
                         && (!aMaterial.contains(SubTag.FLAMMABLE))
                         && (!aMaterial.contains(SubTag.MAGICAL))
                         && (!aMaterial.contains(SubTag.NO_SMELTING))) {
-                    Logger.WARNING("Found " + aMaterial.name() + " as a valid Skookum Choocher Material.");
+                    Logger.WARNING("Found " + aMaterial.mName + " as a valid Skookum Choocher Material.");
                     // Input 1
                     final ItemStack plate = GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L);
                     final ItemStack ingot = GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L);
@@ -93,13 +93,12 @@ public class ProcessingToolHeadChoocher implements Interface_OreRecipeRegistrato
                         used++;
                     } else {
                         Logger.WARNING(
-                                "" + aMaterial.name()
-                                        + " could not be used for all input compoenents. [3x"
-                                        + aMaterial.name()
+                                aMaterial.mName + " could not be used for all input compoenents. [3x"
+                                        + aMaterial.mName
                                         + " plates, 2x"
-                                        + aMaterial.name()
+                                        + aMaterial.mName
                                         + " ingots, 1x"
-                                        + aMaterial.name()
+                                        + aMaterial.mName
                                         + " Hard Hammer Head.");
                     }
                     // GT_ModHandler.addCraftingRecipe(, GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS |
@@ -107,10 +106,10 @@ public class ProcessingToolHeadChoocher implements Interface_OreRecipeRegistrato
                     // OrePrefixes.ingot.get(aMaterial), Character.valueOf('P'), OrePrefixes.plate.get(aMaterial),
                     // Character.valueOf('H'), OrePrefixes.toolHeadHammer.get(aMaterial)});
                 } else {
-                    Logger.WARNING("" + aMaterial.name() + " was not a valid Skookum Choocher Material.");
+                    Logger.WARNING(aMaterial.mName + " was not a valid Skookum Choocher Material.");
                 }
             } else {
-                Logger.WARNING("" + aMaterial.name() + " was not a valid Skookum Choocher Material.");
+                Logger.WARNING(aMaterial.mName + " was not a valid Skookum Choocher Material.");
             }
         }
 

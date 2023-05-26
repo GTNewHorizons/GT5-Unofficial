@@ -256,7 +256,7 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
                 .addInfo("Converts Water & Heat into Steam").addInfo("Explodes if water is not supplied")
                 .addInfo("Consult user manual for more information").addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator().beginStructureBlock(3, 3, 3, true).addController("Front Center")
-                .addCasingInfo("Thermal Containment Casings", 10).addInputBus("Any Casing", 1)
+                .addCasingInfoMin("Thermal Containment Casings", 10, false).addInputBus("Any Casing", 1)
                 .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
                 .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder.get());

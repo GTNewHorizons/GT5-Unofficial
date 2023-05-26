@@ -45,15 +45,15 @@ public class ItemGenericFluidBucket extends ItemBucket {
 
         if (FluidFactory.mMetaToBucketMap.containsKey(aID)) {
             try {
+                // noinspection deprecation
                 throw new GregtechException(
-                        "" + aID
-                                + " is already registered! Unable to register fluid: "
+                        aID + " is already registered! Unable to register fluid: "
                                 + FluidFactory.mMetaToFluidMap.get(aID).getLocalizedName());
             } catch (GregtechException e) {
                 e.printStackTrace();
+                // noinspection deprecation
                 CORE.crash(
-                        "" + aID
-                                + " is already registered! Unable to register fluid: "
+                        aID + " is already registered! Unable to register fluid: "
                                 + FluidFactory.mMetaToFluidMap.get(aID).getLocalizedName());
             }
         }

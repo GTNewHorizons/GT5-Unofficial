@@ -38,14 +38,6 @@ public abstract class GT_MetaTileEntity_Hatch_NbtConsumable extends GT_MetaTileE
         mAllowDuplicateUsageTypes = aAllowDuplicateTypes;
     }
 
-    public GT_MetaTileEntity_Hatch_NbtConsumable(String aName, int aTier, int aInputSlots, String aDescription,
-            boolean aAllowDuplicateTypes, ITexture[][][] aTextures) {
-        super(aName, aTier, aInputSlots * 2, aDescription, aTextures);
-        mInputslotCount = getInputSlotCount();
-        mTotalSlotCount = getInputSlotCount() * 2;
-        mAllowDuplicateUsageTypes = aAllowDuplicateTypes;
-    }
-
     public GT_MetaTileEntity_Hatch_NbtConsumable(String aName, int aTier, int aInputSlots, String[] aDescription,
             boolean aAllowDuplicateTypes, ITexture[][][] aTextures) {
         super(aName, aTier, aInputSlots * 2, aDescription, aTextures);

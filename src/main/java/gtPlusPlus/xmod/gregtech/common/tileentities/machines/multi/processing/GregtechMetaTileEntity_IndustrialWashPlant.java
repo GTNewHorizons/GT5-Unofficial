@@ -82,10 +82,10 @@ public class GregtechMetaTileEntity_IndustrialWashPlant extends
                 .addInfo("Always requires an Input Hatch full of water to refill structure")
                 .addInfo("Need to be filled with water.").addInfo("Will automatically fill water from input hatch.")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(5, 3, 7, true)
-                .addController("Front Center").addCasingInfo("Wash Plant Casings", 40).addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
-                .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+                .addController("Front Center").addCasingInfoMin("Wash Plant Casings", 40, false)
+                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
+                .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
+                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

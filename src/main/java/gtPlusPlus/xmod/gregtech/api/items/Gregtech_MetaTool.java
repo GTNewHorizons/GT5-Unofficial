@@ -69,7 +69,7 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool
      */
     public Gregtech_MetaTool(final String aUnlocalized) {
         super(aUnlocalized);
-        GT_ModHandler.registerBoxableItemToToolBox(this);
+        GT_ModHandler.registerBoxableItemToToolBox(new ItemStack(this));
         this.setCreativeTab(AddToCreativeTab.tabMachines);
         this.setMaxStackSize(1);
         sInstances.put(this.getUnlocalizedName(), this);

@@ -13,6 +13,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -62,7 +64,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
                 aDescription);
     }
 
-    public GT_MetaTileEntity_CropHarvestor(final String aName, final int aTier, final String aDescription,
+    public GT_MetaTileEntity_CropHarvestor(final String aName, final int aTier, final String[] aDescription,
             final ITexture[][][] aTextures) {
         super(aName, aTier, 21, aDescription, aTextures);
     }
@@ -140,7 +142,7 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_CropHarvestor(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GT_MetaTileEntity_CropHarvestor(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
@@ -508,13 +510,16 @@ public class GT_MetaTileEntity_CropHarvestor extends GT_MetaTileEntity_BasicTank
     public String[] getDescription() {
         int aRadius = 10 + getRange(this.mTier);
         int aSide = (aRadius - 1) / 2;
-        return new String[] { this.mDescription, "Secondary mode can Hydrate/Fertilize/Weed-EX",
+        return ArrayUtils.addAll(
+                this.mDescriptionArray,
+                "Secondary mode can Hydrate/Fertilize/Weed-EX",
                 "Consumes " + powerUsage() + "eu per harvest",
                 "Consumes " + powerUsageSecondary() + "eu per secondary operation",
                 "Can harvest 2 blocks above and below",
                 "Radius: " + aSide + " each side (" + aRadius + "x3x" + aRadius + ")",
-                "Has " + (this.mTier * 5) + "% chance for extra drops", "Holds " + this.getCapacity() + "L of Water",
-                CORE.GT_Tooltip.get() };
+                "Has " + (this.mTier * 5) + "% chance for extra drops",
+                "Holds " + this.getCapacity() + "L of Water",
+                CORE.GT_Tooltip.get());
     }
 
     @Override

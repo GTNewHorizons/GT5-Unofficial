@@ -92,9 +92,9 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
                 .addInfo("Circuit 14 for Fish").addInfo("Circuit 15 for Junk").addInfo("Circuit 16 for Treasure")
                 .addInfo("Need to be filled with water.").addInfo("Will automatically fill water from input hatch.")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(9, 3, 9, true)
-                .addController("Front Center").addCasingInfo("Aquatic Casings", 64).addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
+                .addController("Front Center").addCasingInfoMin("Aquatic Casings", 64, false)
+                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
+                .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }

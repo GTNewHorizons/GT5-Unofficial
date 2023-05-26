@@ -34,14 +34,14 @@ public class GT_MetaTileEntity_RedstoneButtonPanel extends GT_MetaTileEntity_Red
                 "Right-click with Screwdriver to change Button Design");
     }
 
-    public GT_MetaTileEntity_RedstoneButtonPanel(final String aName, String aDescription,
+    public GT_MetaTileEntity_RedstoneButtonPanel(final String aName, String[] aDescription,
             final ITexture[][][] aTextures) {
         super(aName, 5, 0, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_RedstoneButtonPanel(this.mName, mDescription, this.mTextures);
+        return new GT_MetaTileEntity_RedstoneButtonPanel(this.mName, mDescriptionArray, this.mTextures);
     }
 
     @Override

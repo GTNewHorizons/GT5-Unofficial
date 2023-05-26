@@ -87,7 +87,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
                 .addInfo("Speed: +120% | EU Usage: 90% | Parallel: 8")
                 .addInfo("Consumes 10L of " + mHotFuelName + " per second during operation")
                 .addInfo("Constructed exactly the same as a normal EBF").addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator().addController("Bottom center").addCasingInfo(mCasingName, 8)
+                .addSeparator().addController("Bottom center").addCasingInfoMin(mCasingName, 8, false)
                 .addInputHatch("Any Casing", 1).addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1)
                 .addOutputHatch("Any Casing", 1).addStructureHint(mHatchName, 1).addEnergyHatch("Any Casing", 1)
                 .addMufflerHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)

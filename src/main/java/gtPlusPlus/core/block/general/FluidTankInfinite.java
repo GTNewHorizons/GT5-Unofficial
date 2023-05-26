@@ -17,7 +17,6 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.ItemFluidContainer;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -35,13 +34,11 @@ public class FluidTankInfinite extends BlockContainer {
     @SideOnly(Side.CLIENT)
     private IIcon textureFront;
 
-    @SuppressWarnings("deprecation")
     public FluidTankInfinite() {
         super(Material.iron);
         this.setBlockName("blockInfiniteFluidTank");
         this.setCreativeTab(AddToCreativeTab.tabMachines);
         GameRegistry.registerBlock(this, "blockInfiniteFluidTank");
-        LanguageRegistry.addName(this, "Infinite Fluid Tank");
     }
 
     /**

@@ -7,22 +7,18 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.potion.Potion;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL11;
-
-import com.mojang.authlib.GameProfile;
 
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
@@ -231,56 +227,6 @@ public class GTPP_CapeRenderer extends RenderPlayer {
 
         }
         return false;
-    }
-
-    @SuppressWarnings("unused")
-    @Deprecated
-    /**
-     * Should be able to get the username from a UUID
-     * 
-     * @param name - Players Name
-     * @param uuid - Players known UUID
-     * @return - The newest Player name
-     */
-    private String getPlayerName(String name, String uuid) {
-        try {
-            Logger.WORLD("[Capes++] Trying to UUID check " + name + ".");
-            if (uuid != null) {
-                if (uuid.length() > 0) {
-                    UUID g = UUID.fromString(uuid);
-                    if (g != null) {
-                        Logger.WORLD("[Capes++] Mojang/Cache checking for " + name + ".");
-                        GameProfile profile = MinecraftServer.getServer().func_152358_ax().func_152652_a(g);
-                        if (profile != null) {
-                            Logger.WARNING("[Capes++] Found for UUID check: " + profile.getName() + ".");
-                            return profile.getName();
-                        }
-                    } else {
-                        g = UUID.fromString(uuid.replace("-", ""));
-                        if (g != null) {
-                            Logger.WORLD("[Capes++] Mojang/Cache checking for " + name + ".");
-                            GameProfile profile = MinecraftServer.getServer().func_152358_ax().func_152652_a(g);
-                            if (profile != null) {
-                                Logger.WARNING("[Capes++] Found for UUID check 2: " + profile.getName() + ".");
-                                return profile.getName();
-                            }
-                        }
-                    }
-                }
-            }
-            if (name != null) {
-                if (name.length() > 0) {
-                    Logger.WORLD("[Capes++] Mojang/Cache checking for " + name + ".");
-                    GameProfile profile = MinecraftServer.getServer().func_152358_ax().func_152655_a(name);
-                    if (profile != null) {
-                        Logger.WARNING("[Capes++] Found for name check: " + profile.getName() + ".");
-                        return profile.getName();
-                    }
-                }
-            }
-            Logger.WORLD("[Capes++] Failed UUID check for " + name + ".");
-        } catch (Throwable t) {}
-        return name;
     }
 
     private static class CapeUtils {

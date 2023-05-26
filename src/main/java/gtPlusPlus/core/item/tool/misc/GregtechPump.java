@@ -173,7 +173,7 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
     }
 
     @Override
-    public boolean hasEffect(final ItemStack par1ItemStack) {
+    public boolean hasEffect(final ItemStack par1ItemStack, final int pass) {
         int h = getCorrectMetaForItemstack(par1ItemStack);
         if (this.hasEffect.get(h) != null) {
             return this.hasEffect.get(h);

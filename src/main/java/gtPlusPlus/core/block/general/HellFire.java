@@ -35,10 +35,8 @@ import gtPlusPlus.core.util.math.MathUtils;
 
 public class HellFire extends BlockFire {
 
-    @Deprecated
     private final int[] field_149849_a = new int[Short.MAX_VALUE];
 
-    @Deprecated
     private final int[] field_149848_b = new int[Short.MAX_VALUE];
 
     @SideOnly(Side.CLIENT)
@@ -249,16 +247,6 @@ public class HellFire extends BlockFire {
             l = this.getChanceToEncourageFire(world, x, y, z + 1, l, NORTH);
             return l;
         }
-    }
-
-    /**
-     * Checks the specified block coordinate to see if it can catch fire. Args: blockAccess, x, y, z
-     */
-    @Override
-    @Deprecated
-    public boolean canBlockCatchFire(final IBlockAccess p_149844_1_, final int p_149844_2_, final int p_149844_3_,
-            final int p_149844_4_) {
-        return this.canCatchFire(p_149844_1_, p_149844_2_, p_149844_3_, p_149844_4_, UP);
     }
 
     /**

@@ -67,10 +67,11 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator extends
                 .addInfo("Default: Produces 2048EU/t at 100% efficiency")
                 .addInfo("Boosted: Produces 6144EU/t at 150% efficiency")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 4, false)
-                .addController("Front Center").addCasingInfo("Stable Titanium Machine Casing", 16)
-                .addCasingInfo("Steel Gear Box Machine Casing", 2).addCasingInfo("Engine Intake Machine Casing", 8)
-                .addInputHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .addDynamoHatch("Back Center", 2).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+                .addController("Front Center").addCasingInfoMin("Stable Titanium Machine Casing", 16, false)
+                .addCasingInfoMin("Steel Gear Box Machine Casing", 2, false)
+                .addCasingInfoMin("Engine Intake Machine Casing", 8, false).addInputHatch("Any Casing", 1)
+                .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1).addDynamoHatch("Back Center", 2)
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

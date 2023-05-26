@@ -447,13 +447,6 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         return true;
     }
 
-    // Machine Component Assembler
-    @Override
-    public boolean addComponentMakerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput1,
-            int aDuration, int aEUt) {
-        return false;
-    }
-
     @Override
     public boolean addMultiblockCentrifugeRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs,
             FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick,

@@ -201,11 +201,6 @@ public class CustomKineticRotor extends Item implements IKineticRotor {
     }
 
     @Override
-    public int getDisplayDamage(ItemStack stack) {
-        return super.getDisplayDamage(stack);
-    }
-
-    @Override
     public double getDurabilityForDisplay(ItemStack stack) {
         return super.getDurabilityForDisplay(stack);
     }

@@ -7,6 +7,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -173,10 +175,13 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, "Fuel is measured in minecraft days (Check with Scanner)",
+        return ArrayUtils.addAll(
+                this.mDescriptionArray,
+                "Fuel is measured in minecraft days (Check with Scanner)",
                 "RTG changes output voltage depending on fuel",
                 "Generates power at " + this.getEfficiency() + "% Efficiency per tick",
-                "Output Voltage: " + this.getOutputTier() + " EU/t", CORE.GT_Tooltip.get() };
+                "Output Voltage: " + this.getOutputTier() + " EU/t",
+                CORE.GT_Tooltip.get());
     }
 
     public GregtechMetaTileEntity_RTG(int aID, String aName, String aNameRegional, int aTier) {
@@ -197,7 +202,7 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
         return 0;
     }
 
-    public GregtechMetaTileEntity_RTG(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GregtechMetaTileEntity_RTG(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -209,7 +214,7 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaTileEntity_RTG(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GregtechMetaTileEntity_RTG(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
@@ -329,7 +334,6 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
                 }
                 ReflectionUtils.setByte(this, "mTier", mTier2);
                 this.mNewTier = mTier2;
-                // ReflectionUtils.setFinalStatic(mTier2, GT_Values.V[0]);
             } catch (Exception e) {
                 Logger.WARNING("Failed setting mTier.");
                 e.printStackTrace();

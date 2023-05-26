@@ -10,7 +10,6 @@ import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.Muffler;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_Values.E;
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -26,9 +25,9 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -80,8 +79,8 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
                 .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 8").addInfo("Circuit goes in the GUI slot")
                 .addInfo("1 = cobble, 2 = stone, 3 = obsidian").addInfo("Supply Water/Lava")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 4, 3, true)
-                .addController("Bottom Center").addCasingInfo("Thermal Processing Casing", 9)
-                .addCasingInfo("Thermal Containment Casing", 16).addInputBus("Any Casing", 1)
+                .addController("Bottom Center").addCasingInfoMin("Thermal Processing Casing", 9, false)
+                .addCasingInfoMin("Thermal Containment Casing", 16, false).addInputBus("Any Casing", 1)
                 .addInputHatch("Any Casing", 1).addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1)
                 .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
@@ -131,7 +130,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
 
     @Override
     public String getSound() {
-        return GregTech_API.sSoundList.get(208);
+        return SoundResource.IC2_MACHINES_INDUCTION_LOOP.toString();
     }
 
     @Override
@@ -154,7 +153,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
             "gt.recipe.fakerockbreaker",
             "Rock Breaker",
             "smelting",
-            RES_PATH_GUI + "basicmachines/E_Furnace",
+            "",
             1,
             1,
             0,

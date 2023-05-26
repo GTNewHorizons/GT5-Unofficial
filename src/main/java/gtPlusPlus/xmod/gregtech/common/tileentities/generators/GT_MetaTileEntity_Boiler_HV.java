@@ -13,13 +13,13 @@ public class GT_MetaTileEntity_Boiler_HV extends GT_MetaTileEntity_Boiler_Base {
         super(aID, aNameRegional, aBoilerTier);
     }
 
-    public GT_MetaTileEntity_Boiler_HV(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Boiler_HV(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Boiler_HV(this.mName, 3, this.mDescription, this.mTextures);
+        return new GT_MetaTileEntity_Boiler_HV(this.mName, 3, this.mDescriptionArray, this.mTextures);
     }
 
     @Override

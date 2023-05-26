@@ -26,7 +26,6 @@ public abstract class LogBase extends BlockLog {
     protected IIcon[] textureSide;
     protected IIcon[] textureTop;
 
-    @SuppressWarnings("deprecation")
     public LogBase(String blockNameLocalized, String blockNameUnlocalized, String[] treeTypes) {
         this.treeType = treeTypes;
         String blockName = "block" + Utils.sanitizeString(blockNameLocalized) + "Log";

@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.CustomMetaTileBase;
@@ -57,14 +58,7 @@ public abstract class MetaTileEntityCustomPower extends CustomMetaTileBase {
         short tY = this.getBaseMetaTileEntity().getYCoord();
         int tZ = this.getBaseMetaTileEntity().getZCoord();
         World tWorld = this.getBaseMetaTileEntity().getWorld();
-        GT_Utility.sendSoundToPlayers(
-                tWorld,
-                (String) GregTech_API.sSoundList.get(Integer.valueOf(209)),
-                1.0F,
-                -1.0F,
-                tX,
-                tY,
-                tZ);
+        GT_Utility.sendSoundToPlayers(tWorld, SoundResource.IC2_MACHINES_MACHINE_OVERLOAD, 1.0F, -1.0F, tX, tY, tZ);
         tWorld.setBlock(tX, tY, tZ, Blocks.air);
         if (GregTech_API.sMachineExplosions) {
             tWorld.createExplosion(

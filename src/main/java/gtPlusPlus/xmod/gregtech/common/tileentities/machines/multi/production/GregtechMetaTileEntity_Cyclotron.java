@@ -28,10 +28,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GTPP_Recipe;
@@ -170,10 +166,11 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
                 .addInfo("Any external casing can be a hatch/bus, unlike Fusion")
                 .addInfo("Cyclotron Machine Casings around Cyclotron Coil Blocks")
                 .addInfo("All Hatches must be IV or better").addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator().addCasingInfo("Cyclotron Machine Casings", 40).addCasingInfo("Cyclotron Coil", 32)
-                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
-                .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+                .addSeparator().addCasingInfoMin("Cyclotron Machine Casings", 40, false)
+                .addCasingInfoMin("Cyclotron Coil", 32, false).addInputBus("Any Casing", 1)
+                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
+                .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -359,31 +356,6 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
     @Override
     public int getAmountOfOutputs() {
         return 1;
-    }
-
-    @SuppressWarnings("deprecation")
-    public boolean turnCasingActive(final boolean status) {
-        if (this.mEnergyHatches != null) {
-            for (final GT_MetaTileEntity_Hatch_Muffler hatch : this.mMufflerHatches) {
-                hatch.mMachineBlock = status ? (byte) 44 : (byte) 44;
-            }
-        }
-        if (this.mOutputHatches != null) {
-            for (final GT_MetaTileEntity_Hatch_Output hatch : this.mOutputHatches) {
-                hatch.mMachineBlock = status ? (byte) 44 : (byte) 44;
-            }
-        }
-        if (this.mInputHatches != null) {
-            for (final GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) {
-                hatch.mMachineBlock = status ? (byte) 44 : (byte) 44;
-            }
-        }
-        if (this.mMaintenanceHatches != null) {
-            for (final GT_MetaTileEntity_Hatch_Maintenance hatch : this.mMaintenanceHatches) {
-                hatch.mMachineBlock = status ? (byte) 44 : (byte) 44;
-            }
-        }
-        return true;
     }
 
     @Override

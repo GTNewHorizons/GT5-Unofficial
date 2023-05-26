@@ -18,10 +18,6 @@ public class MaterialHelper {
         return ItemUtils.getOrePrefixStack(oreprefix, material, amount);
     }
 
-    public static ItemStack getComponentFromGtMaterial(OrePrefixes oreprefix, Materials material, int amount) {
-        return ItemUtils.getGregtechOreStack(oreprefix, material, amount);
-    }
-
     /**
      * Generates a 16 Fluid Pipe
      * 

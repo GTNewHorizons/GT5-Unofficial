@@ -44,13 +44,6 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
     }
 
     public GT_MetaTileEntity_Hatch_CustomFluidBase(Fluid aFluid, int aAmount, final String aName,
-            final String aDescription, final ITexture[][][] aTextures) {
-        super(aName, 6, 3, aDescription, aTextures);
-        this.mLockedFluid = aFluid;
-        this.mFluidCapacity = aAmount;
-    }
-
-    public GT_MetaTileEntity_Hatch_CustomFluidBase(Fluid aFluid, int aAmount, final String aName,
             final String[] aDescription, final ITexture[][][] aTextures) {
         super(aName, 6, 3, aDescription[0], aTextures);
         this.mLockedFluid = aFluid;
@@ -202,7 +195,7 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
                 this.mLockedFluid,
                 this.mFluidCapacity,
                 this.mName,
-                this.mDescription,
+                this.mDescriptionArray,
                 this.mTextures);
     }
 

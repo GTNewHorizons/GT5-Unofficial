@@ -21,7 +21,7 @@ public class GT_MetaTileEntity_BronzeCraftingTable extends GT_MetaTileEntity_Adv
         super(aID, aName, aNameRegional, aTier, aDescription);
     }
 
-    public GT_MetaTileEntity_BronzeCraftingTable(final String aName, final int aTier, final String aDescription,
+    public GT_MetaTileEntity_BronzeCraftingTable(final String aName, final int aTier, final String[] aDescription,
             final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
@@ -38,13 +38,16 @@ public class GT_MetaTileEntity_BronzeCraftingTable extends GT_MetaTileEntity_Adv
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_BronzeCraftingTable(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GT_MetaTileEntity_BronzeCraftingTable(
+                this.mName,
+                this.mTier,
+                this.mDescriptionArray,
+                this.mTextures);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aStack) {
-        return GregTech_API.getCoverBehavior(aStack.toStack()).isSimpleCover();
+        return GregTech_API.getCoverBehaviorNew(aStack.toStack()).isSimpleCover();
     }
 
     @Override

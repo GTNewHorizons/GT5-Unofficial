@@ -4,6 +4,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
@@ -30,7 +32,7 @@ public class GregtechMetaTileEntityGeothermalGenerator extends GT_MetaTileEntity
         this.onConfigLoad();
     }
 
-    public GregtechMetaTileEntityGeothermalGenerator(final String aName, final int aTier, final String aDescription,
+    public GregtechMetaTileEntityGeothermalGenerator(final String aName, final int aTier, final String[] aDescription,
             final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
         this.onConfigLoad();
@@ -39,8 +41,11 @@ public class GregtechMetaTileEntityGeothermalGenerator extends GT_MetaTileEntity
     @Override
     public String[] getDescription() {
         String aPollution = "Causes " + this.getPollution() + " Pollution per second";
-        return new String[] { this.mDescription, "Generates power at " + this.getEfficiency() + "% Efficiency per tick",
-                aPollution, CORE.GT_Tooltip.get() };
+        return ArrayUtils.addAll(
+                this.mDescriptionArray,
+                "Generates power at " + this.getEfficiency() + "% Efficiency per tick",
+                aPollution,
+                CORE.GT_Tooltip.get());
     }
 
     @Override
@@ -69,7 +74,7 @@ public class GregtechMetaTileEntityGeothermalGenerator extends GT_MetaTileEntity
 
     @Override
     public int getFuelValue(final ItemStack aStack) {
-        int rValue = Math.max((GT_ModHandler.getFuelCanValue(aStack) * 6) / 5, super.getFuelValue(aStack));
+        int rValue = Math.max((GT_ModHandler.getFuelValue(aStack) * 6) / 5, super.getFuelValue(aStack));
         if (ItemList.Fuel_Can_Plastic_Filled.isStackEqual(aStack, false, true)) {
             rValue = Math.max(rValue, GameRegistry.getFuelValue(aStack) * 3);
         }
@@ -83,7 +88,11 @@ public class GregtechMetaTileEntityGeothermalGenerator extends GT_MetaTileEntity
 
     @Override
     public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaTileEntityGeothermalGenerator(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GregtechMetaTileEntityGeothermalGenerator(
+                this.mName,
+                this.mTier,
+                this.mDescriptionArray,
+                this.mTextures);
     }
 
     @Override

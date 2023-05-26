@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -18,8 +17,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -50,7 +47,6 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.LangUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.BaseCustomTileEntity;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.custom.power.BaseCustomPower_MTE;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
@@ -354,27 +350,6 @@ public class Meta_GT_Proxy {
                 throw new RuntimeException(e);
             }
         }
-    }
-
-    public static boolean setTileEntityClassAsBlacklistedInWorldAccelerator(String aClassName) {
-        Class aMainModClass = ReflectionUtils.getClass("com.dreammaster.main.MainRegistry");
-        Class aCoreModConfig = ReflectionUtils.getClass("com.dreammaster.config");
-        if (aMainModClass != null && aCoreModConfig != null) {
-            Field aCoreConfig = ReflectionUtils.getField(aMainModClass, "CoreConfig");
-            if (aCoreConfig != null) {
-                Field aBlackList = ReflectionUtils.getField(aCoreModConfig, "BlacklistedTileEntiyClassNames");
-                Object aInstance = ReflectionUtils.getFieldValue(aCoreConfig);
-                if (aBlackList != null && aInstance != null) {
-                    String[] aBlackListValue = (String[]) ReflectionUtils.getFieldValue(aBlackList, aInstance);
-                    if (aBlackListValue != null) {
-                        aBlackListValue = ArrayUtils.add(aBlackListValue, aClassName);
-                        ReflectionUtils.setField(aInstance, aBlackList, aBlackListValue);
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
     }
 
     public static void setValidHeatingCoilMetas() {

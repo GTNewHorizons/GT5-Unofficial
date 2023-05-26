@@ -60,7 +60,7 @@ public class GregtechGeothermalThermalGenerator {
                         | GT_ModHandler.RecipeBits.BUFFERED,
                 new Object[] { "CEC", "GMG", "PWP", Character.valueOf('M'), ItemList.Hull_IV, Character.valueOf('P'),
                         ItemList.Electric_Piston_IV, Character.valueOf('E'), ItemList.Electric_Motor_IV,
-                        Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Superconductor),
+                        Character.valueOf('C'), OrePrefixes.circuit.get(Materials.SuperconductorUHV),
                         Character.valueOf('W'), OrePrefixes.cableGt04.get(Materials.Platinum), Character.valueOf('G'),
                         ALLOY.STELLITE.getGear(1) });
 

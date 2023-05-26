@@ -5,6 +5,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
@@ -48,7 +50,7 @@ public class GT_MetaTileEntity_Hatch_ControlCore extends GT_MetaTileEntity_Hatch
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, CORE.GT_Tooltip.get() };
+        return ArrayUtils.add(this.mDescriptionArray, CORE.GT_Tooltip.get());
     }
 
     @Override

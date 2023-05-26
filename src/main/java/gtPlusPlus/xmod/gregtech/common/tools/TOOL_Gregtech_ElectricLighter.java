@@ -15,8 +15,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.ItemIcons;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -79,17 +79,12 @@ public class TOOL_Gregtech_ElectricLighter extends GT_Tool {
 
     @Override
     public String getCraftingSound() {
-        return GregTech_API.sSoundList.get(Integer.valueOf(1));
+        return SoundResource.RANDOM_ANVIL_USE.toString();
     }
 
     @Override
     public String getEntityHitSound() {
-        return GregTech_API.sSoundList.get(Integer.valueOf(2));
-    }
-
-    @Override
-    public String getBreakingSound() {
-        return GregTech_API.sSoundList.get(Integer.valueOf(0));
+        return SoundResource.RANDOM_ANVIL_BREAK.toString();
     }
 
     @Override

@@ -2,6 +2,8 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.generators.ULV;
 
 import static gregtech.api.enums.GT_Values.V;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.interfaces.ITexture;
@@ -16,15 +18,18 @@ public class GT_MetaTileEntity_ULV_CombustionGenerator extends GT_MetaTileEntity
         super(aID, aName, aNameRegional, aTier);
     }
 
-    public GT_MetaTileEntity_ULV_CombustionGenerator(String aName, int aTier, String aDescription,
+    public GT_MetaTileEntity_ULV_CombustionGenerator(String aName, int aTier, String[] aDescription,
             ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, "Produces " + (this.getPollution() * 20) + " pollution/sec",
-                "Fuel Efficiency: " + this.getEfficiency() + "%", CORE.GT_Tooltip.get() };
+        return ArrayUtils.addAll(
+                this.mDescriptionArray,
+                "Produces " + (this.getPollution() * 20) + " pollution/sec",
+                "Fuel Efficiency: " + this.getEfficiency() + "%",
+                CORE.GT_Tooltip.get());
     }
 
     @Override
@@ -34,7 +39,11 @@ public class GT_MetaTileEntity_ULV_CombustionGenerator extends GT_MetaTileEntity
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_ULV_CombustionGenerator(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GT_MetaTileEntity_ULV_CombustionGenerator(
+                this.mName,
+                this.mTier,
+                this.mDescriptionArray,
+                this.mTextures);
     }
 
     @Override

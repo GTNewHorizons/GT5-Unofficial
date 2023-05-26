@@ -69,9 +69,9 @@ public class GregtechMetaTileEntity_IndustrialCuttingMachine extends
                 .addInfo("200% faster than using single block machines of the same voltage")
                 .addInfo("Only uses 75% of the EU/t normally required").addInfo("Processes four items per voltage tier")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 5, true)
-                .addController("Front Center").addCasingInfo("Cutting Factory Frames", 26).addInputBus("Any Casing", 1)
-                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
+                .addController("Front Center").addCasingInfoMin("Cutting Factory Frames", 26, false)
+                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
+                .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }

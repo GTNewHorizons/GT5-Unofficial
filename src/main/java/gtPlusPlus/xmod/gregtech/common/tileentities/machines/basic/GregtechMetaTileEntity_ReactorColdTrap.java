@@ -4,6 +4,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -38,14 +40,14 @@ public class GregtechMetaTileEntity_ReactorColdTrap extends GT_MetaTileEntity_Ba
                         new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_COLDTRAP_TOP) });
     }
 
-    public GregtechMetaTileEntity_ReactorColdTrap(String aName, int aTier, String aDescription,
+    public GregtechMetaTileEntity_ReactorColdTrap(String aName, int aTier, String[] aDescription,
             ITexture[][][] aTextures, String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 2, 9, aGUIName, aNEIName);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, "Does not require ice cubes", CORE.GT_Tooltip.get() };
+        return ArrayUtils.addAll(this.mDescriptionArray, "Does not require ice cubes", CORE.GT_Tooltip.get());
     }
 
     @Override
@@ -53,7 +55,7 @@ public class GregtechMetaTileEntity_ReactorColdTrap extends GT_MetaTileEntity_Ba
         return new GregtechMetaTileEntity_ReactorColdTrap(
                 this.mName,
                 this.mTier,
-                this.mDescription,
+                this.mDescriptionArray,
                 this.mTextures,
                 this.mGUIName,
                 this.mNEIName);

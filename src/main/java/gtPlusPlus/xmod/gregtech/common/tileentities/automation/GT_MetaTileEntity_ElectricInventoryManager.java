@@ -16,6 +16,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -61,7 +63,7 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
         mLocalName = "Auto Workbench (" + GT_Values.VN[aTier] + ")";
     }
 
-    public GT_MetaTileEntity_ElectricInventoryManager(final String aName, final int aTier, final String aDescription,
+    public GT_MetaTileEntity_ElectricInventoryManager(final String aName, final int aTier, final String[] aDescription,
             final ITexture[][][] aTextures) {
         super(aName, aTier, 16, aDescription, aTextures);
     }
@@ -167,7 +169,7 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
         return new GT_MetaTileEntity_ElectricInventoryManager(
                 this.mName,
                 this.mTier,
-                this.mDescription,
+                this.mDescriptionArray,
                 this.mTextures);
     }
 
@@ -437,7 +439,8 @@ public class GT_MetaTileEntity_ElectricInventoryManager extends GT_MetaTileEntit
 
     @Override
     public String[] getDescription() {
-        return new String[] { "It's simpler than you think. I promise.", this.mDescription, CORE.GT_Tooltip.get() };
+        return ArrayUtils
+                .addAll(this.mDescriptionArray, "It's simpler than you think. I promise.", CORE.GT_Tooltip.get());
     }
 
     @Override

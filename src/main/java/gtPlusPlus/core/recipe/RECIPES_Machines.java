@@ -3416,22 +3416,10 @@ public class RECIPES_Machines {
     }
 
     private static void fakeMachineCasingCovers() {
-        GregtechItemList[] mMachineCasingCovers = new GregtechItemList[] { GregtechItemList.FakeMachineCasingPlate_ULV,
-                GregtechItemList.FakeMachineCasingPlate_LV, GregtechItemList.FakeMachineCasingPlate_MV,
-                GregtechItemList.FakeMachineCasingPlate_HV, GregtechItemList.FakeMachineCasingPlate_EV,
-                GregtechItemList.FakeMachineCasingPlate_IV, GregtechItemList.FakeMachineCasingPlate_LuV,
-                GregtechItemList.FakeMachineCasingPlate_ZPM, GregtechItemList.FakeMachineCasingPlate_UV,
-                GregtechItemList.FakeMachineCasingPlate_MAX, };
         int aMaxTier = GT_Values.VOLTAGE_NAMES.length;
         ItemStack aTier[] = new ItemStack[aMaxTier];
         for (int i = 0; i < aMaxTier; i++) {
             aTier[i] = ItemUtils.simpleMetaStack(CoverManager.Cover_Gt_Machine_Casing, i, 7);
-        }
-        // Deprecate old recipes
-        for (int i = 0; i < 10; i++) {
-            RecipeUtils.addShapelessGregtechRecipe(
-                    new ItemStack[] { mMachineCasingCovers[i].get(1) },
-                    ItemUtils.getSimpleStack(aTier[i], 1));
         }
         // Add recipes for new ones
         for (int i = 0; i < aMaxTier; i++) {

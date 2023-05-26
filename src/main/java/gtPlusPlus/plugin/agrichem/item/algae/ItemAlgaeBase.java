@@ -128,11 +128,6 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
     }
 
     @Override
-    public int getDisplayDamage(ItemStack stack) {
-        return stack.getItemDamage();
-    }
-
-    @Override
     public boolean showDurabilityBar(ItemStack stack) {
         return false;
     }

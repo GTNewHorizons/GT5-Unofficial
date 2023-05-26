@@ -135,7 +135,7 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
                 .addInfo("A circuit in the controller lowers the SH Steam threshold and efficiency")
                 .addInfo("2400 L/s reduction and 1.5% efficiency loss per circuit config over 1").addSeparator()
                 .beginStructureBlock(5, 9, 5, false).addController("Front bottom")
-                .addCasingInfo("Reinforced Heat Exchanger Casing", 90)
+                .addCasingInfoMin("Reinforced Heat Exchanger Casing", 90, false)
                 .addOtherStructurePart("Tungstensteel Pipe Casing", "Center 3x5x3 (45 blocks)")
                 .addMaintenanceHatch("Any casing", 1).addInputHatch("Hot fluid, bottom center", 2)
                 .addInputHatch("Distilled water, any bottom layer casing", 1)

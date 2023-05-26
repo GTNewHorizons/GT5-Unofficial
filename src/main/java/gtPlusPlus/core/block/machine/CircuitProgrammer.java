@@ -34,7 +34,6 @@ public class CircuitProgrammer extends BasicTileBlockWithTooltip {
         return this.mTooltipID;
     }
 
-    @SuppressWarnings("deprecation")
     public CircuitProgrammer() {
         super(Material.iron);
     }

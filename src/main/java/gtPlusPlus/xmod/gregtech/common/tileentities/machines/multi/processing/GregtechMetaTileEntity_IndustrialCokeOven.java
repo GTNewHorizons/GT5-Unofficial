@@ -20,7 +20,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -70,8 +70,8 @@ public class GregtechMetaTileEntity_IndustrialCokeOven extends
                 .addInfo("Process 12x materials with Heat Resistant Casings")
                 .addInfo("Or 24x materials with Heat Proof Casings").addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator().beginStructureBlock(3, 3, 3, true).addController("Front middle at bottom")
-                .addCasingInfo("Structural Coke Oven Casings", 8)
-                .addCasingInfo("Heat Resistant/Proof Coke Oven Casings", 8).addInputBus("Any Casing", 1)
+                .addCasingInfoMin("Structural Coke Oven Casings", 8, false)
+                .addCasingInfoMin("Heat Resistant/Proof Coke Oven Casings", 8, false).addInputBus("Any Casing", 1)
                 .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1)
                 .addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
@@ -144,7 +144,7 @@ public class GregtechMetaTileEntity_IndustrialCokeOven extends
 
     @Override
     public String getSound() {
-        return GregTech_API.sSoundList.get(Integer.valueOf(207));
+        return SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP.toString();
     }
 
     @Override

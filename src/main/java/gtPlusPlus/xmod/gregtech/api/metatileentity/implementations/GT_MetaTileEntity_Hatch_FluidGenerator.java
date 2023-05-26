@@ -33,7 +33,7 @@ public abstract class GT_MetaTileEntity_Hatch_FluidGenerator extends GT_MetaTile
         super(aID, aName, aNameRegional, aTier);
     }
 
-    public GT_MetaTileEntity_Hatch_FluidGenerator(final String aName, final int aTier, final String aDescription,
+    public GT_MetaTileEntity_Hatch_FluidGenerator(final String aName, final int aTier, final String[] aDescription,
             final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }

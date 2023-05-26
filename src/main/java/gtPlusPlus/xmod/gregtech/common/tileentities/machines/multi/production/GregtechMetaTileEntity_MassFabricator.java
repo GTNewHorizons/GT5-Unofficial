@@ -112,11 +112,11 @@ public class GregtechMetaTileEntity_MassFabricator
                 .addInfo("Speed: +0% | EU Usage: 80%").addInfo("Parallel: Scrap = 64 | UU = 8 * Tier")
                 .addInfo("Produces UU-A, UU-M & Scrap").addInfo("Change mode with screwdriver")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(5, 4, 5, true)
-                .addController("Front Center").addCasingInfo(mCasingName3, 9).addCasingInfo(mCasingName2, 24)
-                .addCasingInfo(mCasingName1, 40).addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1)
-                .addInputHatch("Any Casing", 1).addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1)
-                .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
-                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+                .addController("Front Center").addCasingInfoMin(mCasingName3, 9, false)
+                .addCasingInfoMin(mCasingName2, 24, false).addCasingInfoMin(mCasingName1, 40, false)
+                .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1)
+                .addOutputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
+                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 

@@ -228,7 +228,7 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
                     this.mOutputFluids = new FluidStack[] {};
                     this.mLastRecipe = tRecipe;
 
-                    calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
+                    calculateOverclockedNessMulti((long) tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
                     int aDevProgress = this.mMaxProgresstime / 10;
                     this.mMaxProgresstime = Math.max(1, aDevProgress);
                     this.mOutputItems = new ItemStack[] {};

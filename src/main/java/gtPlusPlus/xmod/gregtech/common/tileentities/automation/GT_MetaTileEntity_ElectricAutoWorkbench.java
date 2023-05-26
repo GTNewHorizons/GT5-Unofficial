@@ -55,7 +55,7 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
         mLocalName = "Auto Workbench (" + GT_Values.VN[aTier] + ")";
     }
 
-    public GT_MetaTileEntity_ElectricAutoWorkbench(final String aName, final int aTier, final String aDescription,
+    public GT_MetaTileEntity_ElectricAutoWorkbench(final String aName, final int aTier, final String[] aDescription,
             final ITexture[][][] aTextures) {
         super(aName, aTier, 30, aDescription, aTextures);
     }
@@ -148,7 +148,11 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_ElectricAutoWorkbench(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GT_MetaTileEntity_ElectricAutoWorkbench(
+                this.mName,
+                this.mTier,
+                this.mDescriptionArray,
+                this.mTextures);
     }
 
     @Override
@@ -214,7 +218,7 @@ public class GT_MetaTileEntity_ElectricAutoWorkbench extends GT_MetaTileEntity_B
 
             for (byte i = 19; i < 28; i++) {
                 if (mInventory[i] != null && mInventory[i].isItemStackDamageable()
-                        && mInventory[i].getItem().hasContainerItem()) {
+                        && mInventory[i].getItem().hasContainerItem(mInventory[i])) {
                     mInventory[i].setItemDamage(OreDictionary.WILDCARD_VALUE);
                 }
             }

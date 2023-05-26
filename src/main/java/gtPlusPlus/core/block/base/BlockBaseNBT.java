@@ -28,7 +28,6 @@ public abstract class BlockBaseNBT extends BlockContainer {
     @SideOnly(Side.CLIENT)
     private IIcon textureFront;
 
-    @SuppressWarnings("deprecation")
     public BlockBaseNBT(final Material material, final String unlocalName, final String displayName) {
         super(material);
         this.setBlockName(unlocalName);

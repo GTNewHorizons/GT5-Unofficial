@@ -216,19 +216,6 @@ public interface IGregtech_RecipeAdder {
             FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3,
             ItemStack aOutput4, int aDuration, int aEUt);
 
-    /**
-     * Adds a Recipe for the Machine Component Assembler. (up to 6 Inputs)
-     *
-     * @param aInputs     = ItemStack[] (not null, and respects StackSize)
-     * @param aFluidInput = Input of a fluid (can be null, and respects StackSize)
-     * @param aOutput1    = Output ItemStack (not null, and respects StackSize)
-     * @param aDuration   = Duration (must be >= 0)
-     * @param aEUt        = EU per tick needed for heating up (must be >= 0)
-     * @return true if the Recipe got added, otherwise false.
-     */
-    boolean addComponentMakerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput1, int aDuration,
-            int aEUt);
-
     boolean addMultiblockCentrifugeRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs,
             ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUtick, int aSpecial);
 

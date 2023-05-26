@@ -1,7 +1,5 @@
 package gtPlusPlus.core.tileentities;
 
-import static gregtech.api.enums.Mods.Thaumcraft;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.general.BlockSuperLight.TileEntitySuperLight;
@@ -23,7 +21,6 @@ import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityRoundRobinator;
 import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
 import gtPlusPlus.plugin.villagers.tile.TileEntityGenericSpawner;
-import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 
 public class ModTileEntities {
 
@@ -49,19 +46,6 @@ public class ModTileEntities {
         GameRegistry.registerTileEntity(TileEntityEggBox.class, "TileEggBox");
 
         GameRegistry.registerTileEntity(TileEntityVolumetricFlaskSetter.class, "TileEntityVolumetricFlaskSetter");
-
-        // Mod TEs
-        if (Thaumcraft.isModLoaded()) {}
-
-        blacklistTilesFromAcceleration();
     }
 
-    private static void blacklistTilesFromAcceleration() {
-        Meta_GT_Proxy.setTileEntityClassAsBlacklistedInWorldAccelerator(
-                "gtPlusPlus.core.tileentities.general.TileEntityFishTrap");
-        Meta_GT_Proxy.setTileEntityClassAsBlacklistedInWorldAccelerator(
-                "gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest");
-        Meta_GT_Proxy
-                .setTileEntityClassAsBlacklistedInWorldAccelerator("gtPlusPlus.core.tileentities.general.TileEggBox");
-    }
 }

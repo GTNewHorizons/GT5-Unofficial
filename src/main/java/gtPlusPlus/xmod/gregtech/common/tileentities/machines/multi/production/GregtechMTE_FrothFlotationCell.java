@@ -24,7 +24,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -70,16 +70,16 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
         tt.addMachineType(getMachineType()).addInfo("Process that milled ore!")
                 .addInfo("You can only ever process one type of material per controller")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(7, 9, 7, true)
-                .addController("Front Center").addCasingInfo("Inconel Reinforced Casing", 68)
-                .addCasingInfo("Flotation Casing", 52).addInputBus("Bottom Casing", 1).addInputHatch("Bottom Casing", 1)
-                .addOutputHatch("Bottom Casing", 1).addEnergyHatch("Bottom Casing", 1)
+                .addController("Front Center").addCasingInfoMin("Inconel Reinforced Casing", 68, false)
+                .addCasingInfoMin("Flotation Casing", 52, false).addInputBus("Bottom Casing", 1)
+                .addInputHatch("Bottom Casing", 1).addOutputHatch("Bottom Casing", 1).addEnergyHatch("Bottom Casing", 1)
                 .addMaintenanceHatch("Bottom Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
     @Override
     public String getSound() {
-        return GregTech_API.sSoundList.get(Integer.valueOf(207));
+        return SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP.toString();
     }
 
     @Override

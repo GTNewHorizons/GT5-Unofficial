@@ -64,6 +64,7 @@ public class HandlerTooltip_GC {
                 for (int aMapKey : RocketFuels.mValidRocketFuels.keySet()) {
                     Fluid aFuel = RocketFuels.mValidRocketFuels.get(aMapKey);
                     if (aFuel != null) {
+                        // noinspection deprecation
                         mFuelNames.put(aMapKey, aFuel.getLocalizedName());
                     }
                 }

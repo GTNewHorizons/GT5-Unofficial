@@ -161,7 +161,7 @@ public class GregtechEnergyBuffer {
                         | GT_ModHandler.RecipeBits.REVERSIBLE
                         | GT_ModHandler.RecipeBits.BUFFERED,
                 new Object[] { "WTW", "WMW", Character.valueOf('M'), ItemList.Hull_MAX, Character.valueOf('W'),
-                        OrePrefixes.wireGt08.get(Materials.Superconductor), Character.valueOf('T'),
+                        OrePrefixes.wireGt08.get(Materials.SuperconductorUHV), Character.valueOf('T'),
                         GregtechOreDictNames.buffer_core });
         /*
          * GT_ModHandler.addCraftingRecipe( GregtechItemList.Energy_Buffer_1by1_MAX.get(1L, new Object[0]),

@@ -74,17 +74,6 @@ public class FluidUtils {
         return FluidUtils.getFluidStack("ic2superheatedsteam", amount);
     }
 
-    @Deprecated
-    /**
-     * Do not use - Gives third tier steam - Not implemented
-     * 
-     * @param amount
-     * @return
-     */
-    public static FluidStack getHyperSteam(final int amount) {
-        return FluidUtils.getFluidStack("water", amount);
-    }
-
     public static FluidStack getUUA(final int amount) {
         return FluidUtils.getFluidStack("uuamplifier", amount);
     }

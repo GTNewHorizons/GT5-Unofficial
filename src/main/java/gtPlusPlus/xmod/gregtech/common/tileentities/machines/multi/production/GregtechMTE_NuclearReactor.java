@@ -91,11 +91,11 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
                 .addInfo("Outputs U233 every 10 seconds, on average, while the reactor is running")
                 .addInfo("Check NEI to see the other 3 outputs - they differ between fuels")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(7, 4, 7, true)
-                .addController("Bottom Center").addCasingInfo("Hastelloy-N Reactor Casing", 27)
-                .addCasingInfo("Zeron-100 Reactor Shielding", 26).addInputHatch("Top or bottom layer edges", 1)
-                .addOutputHatch("Top or bottom layer edges", 1).addDynamoHatch("Top or bottom layer edges", 1)
-                .addMaintenanceHatch("Top or bottom layer edges", 1).addMufflerHatch("Top 3x3", 2)
-                .addStructureInfo("All dynamos must be between EV and LuV tier.")
+                .addController("Bottom Center").addCasingInfoMin("Hastelloy-N Reactor Casing", 27, false)
+                .addCasingInfoMin("Zeron-100 Reactor Shielding", 26, false)
+                .addInputHatch("Top or bottom layer edges", 1).addOutputHatch("Top or bottom layer edges", 1)
+                .addDynamoHatch("Top or bottom layer edges", 1).addMaintenanceHatch("Top or bottom layer edges", 1)
+                .addMufflerHatch("Top 3x3", 2).addStructureInfo("All dynamos must be between EV and LuV tier.")
                 .addStructureInfo("All other hatches must be IV+ tier.")
                 .addStructureInfo("4x Output Hatches, 2x Input Hatches, 4x Dynamo Hatches")
                 .addStructureInfo("2x Maintenance Hatches, 4x Mufflers").toolTipFinisher(CORE.GT_Tooltip_Builder.get());
@@ -298,27 +298,27 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
         // TODO
         if (this.mDynamoHatches != null) {
             for (final GT_MetaTileEntity_Hatch_Dynamo hatch : this.mDynamoHatches) {
-                hatch.mMachineBlock = status ? (byte) TAE.GTPP_INDEX(13) : (byte) TAE.GTPP_INDEX(12);
+                hatch.updateTexture(status ? TAE.GTPP_INDEX(13) : TAE.GTPP_INDEX(12));
             }
         }
         if (this.mMufflerHatches != null) {
             for (final GT_MetaTileEntity_Hatch_Muffler hatch : this.mMufflerHatches) {
-                hatch.mMachineBlock = status ? (byte) TAE.GTPP_INDEX(13) : (byte) TAE.GTPP_INDEX(12);
+                hatch.updateTexture(status ? TAE.GTPP_INDEX(13) : TAE.GTPP_INDEX(12));
             }
         }
         if (this.mOutputHatches != null) {
             for (final GT_MetaTileEntity_Hatch_Output hatch : this.mOutputHatches) {
-                hatch.mMachineBlock = status ? (byte) TAE.GTPP_INDEX(13) : (byte) TAE.GTPP_INDEX(12);
+                hatch.updateTexture(status ? TAE.GTPP_INDEX(13) : TAE.GTPP_INDEX(12));
             }
         }
         if (this.mInputHatches != null) {
             for (final GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) {
-                hatch.mMachineBlock = status ? (byte) TAE.GTPP_INDEX(13) : (byte) TAE.GTPP_INDEX(12);
+                hatch.updateTexture(status ? TAE.GTPP_INDEX(13) : TAE.GTPP_INDEX(12));
             }
         }
         if (this.mMaintenanceHatches != null) {
             for (final GT_MetaTileEntity_Hatch_Maintenance hatch : this.mMaintenanceHatches) {
-                hatch.mMachineBlock = status ? (byte) TAE.GTPP_INDEX(13) : (byte) TAE.GTPP_INDEX(12);
+                hatch.updateTexture(status ? TAE.GTPP_INDEX(13) : TAE.GTPP_INDEX(12));
             }
         }
         return true;

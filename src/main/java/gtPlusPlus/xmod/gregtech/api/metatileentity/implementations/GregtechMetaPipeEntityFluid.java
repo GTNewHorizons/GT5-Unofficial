@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
@@ -29,7 +28,7 @@ public class GregtechMetaPipeEntityFluid extends GT_MetaPipeEntity_Fluid {
 
     public GregtechMetaPipeEntityFluid(int aID, String aName, String aNameRegional, float aThickNess,
             GT_Materials aMaterial, int aCapacity, int aHeatResistance, boolean aGasProof, int aFluidTypes) {
-        super(aID, aName, aNameRegional, aThickNess, null, aCapacity, aHeatResistance, aGasProof);
+        super(aID, aName, aNameRegional, aThickNess, null, aCapacity, aHeatResistance, aGasProof, aFluidTypes);
         this.mLastReceivedFrom = 0;
         this.oLastReceivedFrom = 0;
         this.mMaterial = aMaterial;
@@ -37,7 +36,7 @@ public class GregtechMetaPipeEntityFluid extends GT_MetaPipeEntity_Fluid {
 
     public GregtechMetaPipeEntityFluid(String aName, float aThickNess, GT_Materials aMaterial, int aCapacity,
             int aHeatResistance, boolean aGasProof, int aFluidTypes) {
-        super(aName, aThickNess, null, aCapacity, aHeatResistance, aGasProof);
+        super(aName, aThickNess, null, aCapacity, aHeatResistance, aGasProof, aFluidTypes);
         this.mLastReceivedFrom = 0;
         this.oLastReceivedFrom = 0;
         this.mMaterial = aMaterial;
@@ -114,18 +113,5 @@ public class GregtechMetaPipeEntityFluid extends GT_MetaPipeEntity_Fluid {
         return TextureFactory.of(
                 aMaterial.mIconSet.mTextures[OrePrefixes.pipeHuge.mTextureIndex],
                 Dyes.getModulation(aColorIndex, aMaterial.mRGBa));
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] {
-                EnumChatFormatting.BLUE + "Fluid Capacity: %%%"
-                        + (mCapacity * 20)
-                        + "%%% L/sec"
-                        + EnumChatFormatting.GRAY,
-                EnumChatFormatting.RED + "Heat Limit: %%%" + mHeatResistance + "%%% K" + EnumChatFormatting.GRAY,
-                EnumChatFormatting.DARK_GREEN + "Gas Proof: " + (this.mGasProof) + EnumChatFormatting.GRAY,
-                // CORE.GT_Tooltip
-        };
     }
 }

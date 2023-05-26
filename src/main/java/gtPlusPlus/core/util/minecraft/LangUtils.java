@@ -12,7 +12,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import gregtech.api.util.GT_LanguageManager;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
@@ -51,10 +50,6 @@ public class LangUtils {
             }
         }
         return false;
-    }
-
-    public static String trans(String aNr, String aEnglish) {
-        return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_GTPP_" + aNr, aEnglish, false);
     }
 
     /**

@@ -31,19 +31,18 @@ public class GT_MetaTileEntity_Hatch_TurbineProvider extends GT_MetaTileEntity_H
         super(aID, aName, aNameRegional, aTier);
     }
 
-    public GT_MetaTileEntity_Hatch_TurbineProvider(String aName, int aTier, String aDescription,
+    public GT_MetaTileEntity_Hatch_TurbineProvider(String aName, int aTier, String[] aDescription,
             ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
-    public GT_MetaTileEntity_Hatch_TurbineProvider(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription[0], aTextures);
-    }
-
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_TurbineProvider(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GT_MetaTileEntity_Hatch_TurbineProvider(
+                this.mName,
+                this.mTier,
+                this.mDescriptionArray,
+                this.mTextures);
     }
 
     @Override

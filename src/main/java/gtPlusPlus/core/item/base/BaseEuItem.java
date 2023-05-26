@@ -128,7 +128,7 @@ public class BaseEuItem extends Item implements ISpecialElectricItem, IElectricI
     }
 
     @Override
-    public boolean hasEffect(final ItemStack par1ItemStack) {
+    public boolean hasEffect(final ItemStack par1ItemStack, final int pass) {
         if (this.hasEffect.get(par1ItemStack.getItemDamage() - this.mOffset) != null) {
             return this.hasEffect.get(par1ItemStack.getItemDamage() - this.mOffset).getValue();
         }

@@ -44,7 +44,6 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
@@ -261,11 +260,13 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                 .addInfo("Pulse Manipulators: Recipe Tier Allowed (check NEI for the tier of each recipe)")
                 .addInfo("Shielding Cores: Focusing Tier (equal to or higher than recipe tier to allow focus)")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(15, 21, 15, true)
-                .addController("Bottom Center").addCasingInfo("Bulk Production Frame", 80)
-                .addCasingInfo("Quantum Force Conductor", 177).addCasingInfo("Force Field Glass", 224)
-                .addCasingInfo("Neutron Pulse Manipulators", 233).addCasingInfo("Neutron Shielding Cores", 142)
-                .addInputBus("Bottom Layer", 4).addInputHatch("Bottom Layer", 4).addOutputHatch("Top Layer", 5)
-                .addOutputBus("Top Layer", 5).addEnergyHatch("Bottom Layer", 4).addMaintenanceHatch("Bottom Layer", 4)
+                .addController("Bottom Center").addCasingInfoMin("Bulk Production Frame", 80, false)
+                .addCasingInfoMin("Quantum Force Conductor", 177, false)
+                .addCasingInfoMin("Force Field Glass", 224, false)
+                .addCasingInfoMin("Neutron Pulse Manipulators", 233, false)
+                .addCasingInfoMin("Neutron Shielding Cores", 142, false).addInputBus("Bottom Layer", 4)
+                .addInputHatch("Bottom Layer", 4).addOutputHatch("Top Layer", 5).addOutputBus("Top Layer", 5)
+                .addEnergyHatch("Bottom Layer", 4).addMaintenanceHatch("Bottom Layer", 4)
                 .addStructureInfo("Neptunium Plasma Hatch: Left side of Controller")
                 .addStructureInfo("Fermium Plasma Hatch: Right side of Controller").toolTipFinisher(
                         GT_Values.AuthorBlueWeabo + EnumChatFormatting.RESET
@@ -403,10 +404,6 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
 
     private int getFocusingTier() {
         return mFocusingTier;
-    }
-
-    public String getSound() {
-        return GregTech_API.sSoundList.get(208);
     }
 
     protected IIconContainer getActiveOverlay() {

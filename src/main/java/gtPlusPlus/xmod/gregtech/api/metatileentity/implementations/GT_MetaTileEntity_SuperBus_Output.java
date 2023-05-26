@@ -12,7 +12,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.extensions.ArrayExt;
 import gtPlusPlus.core.lib.CORE;
 
 public class GT_MetaTileEntity_SuperBus_Output extends GT_MetaTileEntity_Hatch_OutputBus {
@@ -42,11 +41,7 @@ public class GT_MetaTileEntity_SuperBus_Output extends GT_MetaTileEntity_Hatch_O
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_SuperBus_Output(
-                this.mName,
-                this.mTier,
-                ArrayExt.of(this.mDescription),
-                this.mTextures);
+        return new GT_MetaTileEntity_SuperBus_Output(this.mName, this.mTier, mDescriptionArray, this.mTextures);
     }
 
     @Override

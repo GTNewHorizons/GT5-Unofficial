@@ -23,7 +23,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -71,7 +71,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress extends
                 .addInfo("Processes four items per voltage tier").addInfo("Circuit for recipe goes in the Input Bus")
                 .addInfo("Each Input Bus can have a different Circuit/Shape!")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
-                .addController("Front Center").addCasingInfo("Material Press Machine Casings", 10)
+                .addController("Front Center").addCasingInfoMin("Material Press Machine Casings", 10, false)
                 .addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1).addEnergyHatch("Any Casing", 1)
                 .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
                 .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
@@ -117,7 +117,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress extends
 
     @Override
     public String getSound() {
-        return GregTech_API.sSoundList.get(203);
+        return SoundResource.IC2_MACHINES_COMPRESSOR_OP.toString();
     }
 
     @Override

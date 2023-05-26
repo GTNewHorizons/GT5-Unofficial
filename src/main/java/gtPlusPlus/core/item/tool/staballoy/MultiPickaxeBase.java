@@ -222,7 +222,7 @@ public class MultiPickaxeBase extends StaballoyPickaxe {
     }
 
     @Override
-    public boolean hasEffect(final ItemStack par1ItemStack) {
+    public boolean hasEffect(final ItemStack par1ItemStack, final int pass) {
         return false;
     }
 

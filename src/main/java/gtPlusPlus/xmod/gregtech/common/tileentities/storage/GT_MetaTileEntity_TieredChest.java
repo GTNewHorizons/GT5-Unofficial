@@ -5,6 +5,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -40,18 +42,13 @@ public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachi
                 new ITexture[0]);
     }
 
-    public GT_MetaTileEntity_TieredChest(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_TieredChest(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
 
-    /*
-     * public GT_MetaTileEntity_TieredChest(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-     * super(aName, aTier, 3, aDescription, aTextures); }
-     */
-
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, CORE.GT_Tooltip.get() };
+        return ArrayUtils.add(this.mDescriptionArray, CORE.GT_Tooltip.get());
     }
 
     @Override
@@ -75,7 +72,7 @@ public class GT_MetaTileEntity_TieredChest extends GT_MetaTileEntity_TieredMachi
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_TieredChest(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GT_MetaTileEntity_TieredChest(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override

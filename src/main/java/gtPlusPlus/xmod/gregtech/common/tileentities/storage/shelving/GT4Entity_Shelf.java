@@ -6,6 +6,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -24,7 +26,6 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIco
 public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
 
     public byte mType = 0;
-    public String mOldDesc = "";
     public boolean mLocked = false;
     protected byte mIndex = (byte) MathUtils.randInt(1, 3);
     public static GT_RenderedTexture texBottom = new GT_RenderedTexture(
@@ -36,21 +37,15 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
 
     public GT4Entity_Shelf(final int aID, final String aName, final String aNameRegional, final String aDescription) {
         super(aID, aName, aNameRegional, 0, aDescription);
-        mOldDesc = aDescription;
     }
 
-    public GT4Entity_Shelf(final String aName, final String aDescription, final ITexture[][][] aTextures) {
+    public GT4Entity_Shelf(final String aName, final String[] aDescription, final ITexture[][][] aTextures) {
         super(aName, 0, aDescription, aTextures);
-        mOldDesc = aDescription;
     }
 
     @Override
     public boolean isSimpleMachine() {
         return true;
-    }
-
-    public int getInvSize() {
-        return 1;
     }
 
     @Override
@@ -178,7 +173,7 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT4Entity_Shelf(this.mName, this.mDescription, this.mTextures);
+        return new GT4Entity_Shelf(this.mName, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
@@ -213,8 +208,12 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
 
     @Override
     public String[] getDescription() {
-        return new String[] { mOldDesc, "Decorative Item Storage", "Right click to store/remove something",
-                "Ctrl + Rmb to check contents", "Ctrl + Rmb with a screwdriver to lock", };
+        return ArrayUtils.addAll(
+                mDescriptionArray,
+                "Decorative Item Storage",
+                "Right click to store/remove something",
+                "Ctrl + Rmb to check contents",
+                "Ctrl + Rmb with a screwdriver to lock");
     }
 
     @Override

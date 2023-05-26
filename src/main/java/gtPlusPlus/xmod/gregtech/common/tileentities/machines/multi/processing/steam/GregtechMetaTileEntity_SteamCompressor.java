@@ -63,8 +63,8 @@ public class GregtechMetaTileEntity_SteamCompressor
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType()).addInfo("Controller Block for the Steam Compressor")
                 .addInfo("Compresses " + getMaxParallelRecipes() + " things at a time").addSeparator()
-                .beginStructureBlock(3, 3, 4, true).addController("Front center").addCasingInfo(mCasingName, 28)
-                .addOtherStructurePart(TT_steaminputbus, "Any casing", 1)
+                .beginStructureBlock(3, 3, 4, true).addController("Front center")
+                .addCasingInfoMin(mCasingName, 28, false).addOtherStructurePart(TT_steaminputbus, "Any casing", 1)
                 .addOtherStructurePart(TT_steamoutputbus, "Any casing", 1)
                 .addOtherStructurePart(TT_steamhatch, "Any casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;

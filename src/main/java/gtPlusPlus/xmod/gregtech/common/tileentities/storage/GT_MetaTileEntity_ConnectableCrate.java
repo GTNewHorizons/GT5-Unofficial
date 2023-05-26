@@ -80,13 +80,14 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
                 new ITexture[0]);
     }
 
-    public GT_MetaTileEntity_ConnectableCrate(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_ConnectableCrate(String aName, int aTier, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, CORE.GT_Tooltip.get() };
+        return org.apache.commons.lang3.ArrayUtils.add(this.mDescriptionArray, CORE.GT_Tooltip.get());
     }
 
     @Override
@@ -110,7 +111,7 @@ public class GT_MetaTileEntity_ConnectableCrate extends GT_MetaTileEntity_Tiered
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_ConnectableCrate(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GT_MetaTileEntity_ConnectableCrate(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     public int getOppositeSide(int side) {

@@ -24,7 +24,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -94,10 +94,12 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
                 .addInfo("Total number of reflectors based on how many rings are built:")
                 .addInfo("1 ring = 36, 2 rings = 88, 3 rings = 156, 4 rings = 240, 5 rings = 340").addSeparator()
                 .beginVariableStructureBlock(15, 31, 28, 28, 15, 31, false).addController("Top Middle")
-                .addCasingInfo("Structural Solar Casing", 229).addCasingInfo("Thermally Insulated Casing", 60)
-                .addCasingInfo("Salt Containment Casing", 66).addCasingInfo("Thermal Containment Casing", 60)
-                .addInputHatch("Any 2 dot hint(min 1)", 2).addOutputHatch("Any 2 dot hint(min 1)", 2)
-                .addMaintenanceHatch("Any 2 dot hint", 2).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+                .addCasingInfoMin("Structural Solar Casing", 229, false)
+                .addCasingInfoMin("Thermally Insulated Casing", 60, false)
+                .addCasingInfoMin("Salt Containment Casing", 66, false)
+                .addCasingInfoMin("Thermal Containment Casing", 60, false).addInputHatch("Any 2 dot hint(min 1)", 2)
+                .addOutputHatch("Any 2 dot hint(min 1)", 2).addMaintenanceHatch("Any 2 dot hint", 2)
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -398,7 +400,7 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
 
     @Override
     public String getSound() {
-        return GregTech_API.sSoundList.get(Integer.valueOf(212));
+        return SoundResource.IC2_MACHINES_MAGNETIZER_LOOP.toString();
     }
 
     @Override

@@ -464,11 +464,6 @@ public class ReflectionUtils {
         }
     }
 
-    @Deprecated
-    public static void setFinalStatic(Field field, Object newValue) throws Exception {
-        cacheAccessor(field).setValue(null, newValue);
-    }
-
     public static void setByte(Object clazz, String fieldName, byte newValue) throws Exception {
         Field nameField = getField(clazz.getClass(), fieldName);
         cacheAccessor(nameField).setValue(null, newValue);
@@ -773,18 +768,6 @@ public class ReflectionUtils {
             // Class or one of its dependencies is not present...
             return false;
         }
-    }
-
-    @Deprecated
-    public static Method getMethodViaReflection(final Class<?> lookupClass, final String methodName,
-            final boolean invoke) throws Exception {
-        final Class<? extends Class> lookup = lookupClass.getClass();
-        final Method m = lookup.getDeclaredMethod(methodName);
-        m.setAccessible(true); // Abracadabra
-        if (invoke) {
-            m.invoke(lookup); // now its OK
-        }
-        return m;
     }
 
     private static Method getMethod_Internal(Class<?> aClass, String aMethodName, Class<?>... aTypes) {

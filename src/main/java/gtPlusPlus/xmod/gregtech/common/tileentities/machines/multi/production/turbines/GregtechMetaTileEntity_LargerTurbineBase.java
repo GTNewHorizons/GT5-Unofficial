@@ -103,7 +103,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
                 .addInfo("XL Steam Turbines can use Loose Mode with either Slow or Fast Mode")
                 .addPollutionAmount(getPollutionPerSecond(null)).addInfo("Pollution is 3x higher in Fast Mode")
                 .addSeparator().beginStructureBlock(7, 9, 7, false).addController("Top Middle")
-                .addCasingInfo(getCasingName(), 360).addCasingInfo("Rotor Shaft", 30)
+                .addCasingInfoMin(getCasingName(), 360, false).addCasingInfoMin("Rotor Shaft", 30, false)
                 .addOtherStructurePart("Rotor Assembly", "Any 1 dot hint", 1).addInputBus("Any 4 dot hint (min 1)", 4)
                 .addInputHatch("Any 4 dot hint(min 1)", 4);
         if (requiresOutputHatch()) {

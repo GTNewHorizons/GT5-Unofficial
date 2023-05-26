@@ -431,26 +431,6 @@ public class ThaumcraftUtils {
         return research;
     }
 
-    public static void placeAspectIntoResearchNote(ItemStack note, World aWorld, final int q, final int r,
-            final TC_Aspect_Wrapper aspect) {
-        /*
-         * TC_ResearchNoteData_Wrapper data = gatherResults(note); String mGTPP = CORE.gameProfile.getName();
-         * EntityPlayer player = CORE.getFakePlayer(aWorld); if (isItemResearchNotes(note) && data != null &&
-         * note.getItemDamage() < 64) { final boolean r2 = ResearchManager.isResearchComplete(mGTPP, "RESEARCHER1");
-         * final boolean r3 = ResearchManager.isResearchComplete(mGTPP, "RESEARCHER2"); final HexUtils.Hex hex = new
-         * HexUtils.Hex(q, r); ResearchManager.HexEntry he = null; if (aspect != null) { he = new
-         * ResearchManager.HexEntry(aspect, 2); if (r3 && aWorld.rand.nextFloat() < 0.1f) {
-         * aWorld.playSoundAtEntity((Entity) player, "random.orb", 0.2f, 0.9f + player.worldObj.rand.nextFloat() *
-         * 0.2f); } } else { final float f = aWorld.rand.nextFloat(); if (data.hexEntries.get(hex.toString()).aspect !=
-         * null && ((r2 && f < 0.25f) || (r3 && f < 0.5f))) { aWorld.playSoundAtEntity((Entity) player, "random.orb",
-         * 0.2f, 0.9f + player.worldObj.rand.nextFloat() * 0.2f); ResearchManager.scheduleSave(player); } he = new
-         * ResearchManager.HexEntry((Aspect) null, 0); } data.hexEntries.put(hex.toString(), he);
-         * data.hexes.put(hex.toString(), hex); updateResearchNote(note, data); if (!aWorld.isRemote &&
-         * ResearchManager.checkResearchCompletion(note, data, player.getCommandSenderName())) { note.setItemDamage(64);
-         * } }
-         */
-    }
-
     public static void completeResearchNote(World aWorld, ItemStack aStack) {
         if (!aWorld.isRemote) {
             if (isItemResearchNotes(aStack)) {

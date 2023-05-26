@@ -5,6 +5,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
@@ -23,11 +25,6 @@ public abstract class GT_MetaTileEntity_RedstoneBase extends GT_MetaTileEntity_T
     public GT_MetaTileEntity_RedstoneBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
             String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
-    }
-
-    public GT_MetaTileEntity_RedstoneBase(String aName, int aTier, int aInvSlotCount, String aDescription,
-            ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public GT_MetaTileEntity_RedstoneBase(String aName, int aTier, int aInvSlotCount, String[] aDescription,
@@ -109,6 +106,6 @@ public abstract class GT_MetaTileEntity_RedstoneBase extends GT_MetaTileEntity_T
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, CORE.GT_Tooltip.get() };
+        return ArrayUtils.add(this.mDescriptionArray, CORE.GT_Tooltip.get());
     }
 }

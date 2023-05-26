@@ -128,6 +128,6 @@ public class GregtechBufferDynamos {
                 GregtechItemList.Hatch_Buffer_Dynamo_MAX.get(1L, new Object[0]),
                 bitsd,
                 new Object[] { "TMC", 'M', ItemList.Hatch_Dynamo_MAX, 'T', CI.getTieredCircuit(9), 'C',
-                        OrePrefixes.wireGt04.get((Object) Materials.Superconductor) });
+                        OrePrefixes.wireGt04.get(Materials.SuperconductorUHV) });
     }
 }

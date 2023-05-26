@@ -43,7 +43,6 @@ public class Machine_ModularityTable extends BlockContainer implements ITileTool
         return this.mTooltipID;
     }
 
-    @SuppressWarnings("deprecation")
     public Machine_ModularityTable() {
         super(Material.iron);
         this.setBlockName("blockModularity");

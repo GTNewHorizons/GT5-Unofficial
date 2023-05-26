@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.util.GT_Utility;
+import gregtech.common.covers.CoverInfo;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import gtPlusPlus.core.util.data.ArrayUtils;
 
@@ -90,43 +91,21 @@ public class BTF_Inventory implements ISidedInventory {
     @Override
     public int[] getAccessibleSlotsFromSide(int ordinalSide) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
-        ArrayList<Integer> tList = new ArrayList<Integer>();
-        TileEntityBase tTileEntity = this.mTile;
-        boolean tSkip = tTileEntity.getCoverBehaviorAtSide(side).letsItemsIn(
-                side,
-                tTileEntity.getCoverIDAtSide(side),
-                tTileEntity.getCoverDataAtSide(side),
-                -2,
-                tTileEntity)
-                || tTileEntity.getCoverBehaviorAtSide(side).letsItemsOut(
-                        side,
-                        tTileEntity.getCoverIDAtSide(side),
-                        tTileEntity.getCoverDataAtSide(side),
-                        -2,
-                        tTileEntity);
+        ArrayList<Integer> tList = new ArrayList<>();
+        CoverInfo coverInfo = this.mTile.getCoverInfoAtSide(side);
+        boolean tSkip = coverInfo.letsItemsIn(-2) || coverInfo.letsItemsIn(-2);
 
         for (int rArray = 0; rArray < this.getSizeInventory(); ++rArray) {
-            if (this.isValidSlot(rArray) && (tSkip
-                    || tTileEntity.getCoverBehaviorAtSide(side).letsItemsOut(
-                            side,
-                            tTileEntity.getCoverIDAtSide(side),
-                            tTileEntity.getCoverDataAtSide(side),
-                            rArray,
-                            tTileEntity)
-                    || tTileEntity.getCoverBehaviorAtSide(side).letsItemsIn(
-                            side,
-                            tTileEntity.getCoverIDAtSide(side),
-                            tTileEntity.getCoverDataAtSide(side),
-                            rArray,
-                            tTileEntity))) {
-                tList.add(Integer.valueOf(rArray));
+            if (this.isValidSlot(rArray)
+                    && (tSkip || coverInfo.letsItemsOut(rArray) || coverInfo.letsItemsIn(rArray))) {
+                tList.add(rArray);
             }
         }
 
         int[] arg6 = new int[tList.size()];
 
         for (int i = 0; i < arg6.length; ++i) {
-            arg6[i] = ((Integer) tList.get(i)).intValue();
+            arg6[i] = tList.get(i);
         }
 
         return arg6;
