@@ -87,7 +87,7 @@ public class GT_ParallelHelper {
     public GT_ParallelHelper() {}
 
     /**
-     * Enables void protection on a metatile multiblock. Experimental! Still needs to be worked on
+     * Enables void protection on a metatile multiblock.
      */
     public GT_ParallelHelper enableVoidProtection(GT_MetaTileEntity_MultiBlockBase aMachineMeta) {
         mVoidProtection = true;
@@ -96,7 +96,7 @@ public class GT_ParallelHelper {
     }
 
     /**
-     * Enables void protection on a multitile multiblock. Experimental! Still needs to be worked on
+     * Enables void protection on a multitile multiblock.
      */
     public GT_ParallelHelper enableVoidProtection(Controller<?> aMachineMulti) {
         mVoidProtection = true;
