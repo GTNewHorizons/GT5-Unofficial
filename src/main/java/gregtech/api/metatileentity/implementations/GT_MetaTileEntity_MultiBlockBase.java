@@ -25,6 +25,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.TestOnly;
 import org.lwjgl.input.Keyboard;
 
 import com.google.common.collect.Iterables;
@@ -96,7 +97,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public ArrayList<GT_MetaTileEntity_Hatch_Muffler> mMufflerHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Energy> mEnergyHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Maintenance> mMaintenanceHatches = new ArrayList<>();
-    protected final List<GT_MetaTileEntity_Hatch> mExoticEnergyHatches = new ArrayList<>();
+    protected List<GT_MetaTileEntity_Hatch> mExoticEnergyHatches = new ArrayList<>();
     @SideOnly(Side.CLIENT)
     protected GT_SoundLoop activitySoundLoop;
 
@@ -1505,7 +1506,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             return false;
         }
 
-        if (mExoticEnergyHatches.size() >= 1) {
+        if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty()) {
                 return false;
             }
@@ -1515,11 +1516,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             }
         }
 
-        if (mEnergyHatches.size() > 2) {
-            return false;
-        }
-
-        return true;
+        return mEnergyHatches.size() <= 2;
     }
 
     /**
@@ -1916,5 +1913,15 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         button.addTooltip(StatCollector.translateToLocal("GT5U.gui.button.lock_recipe"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY);
         return (ButtonWidget) button;
+    }
+
+    @TestOnly
+    protected void setEnergyHatches(ArrayList<GT_MetaTileEntity_Hatch_Energy> EnergyHatches) {
+        this.mEnergyHatches = EnergyHatches;
+    }
+
+    @TestOnly
+    protected void setExoticEnergyHatches(List<GT_MetaTileEntity_Hatch> ExoticEnergyHatches) {
+        this.mExoticEnergyHatches = ExoticEnergyHatches;
     }
 }
