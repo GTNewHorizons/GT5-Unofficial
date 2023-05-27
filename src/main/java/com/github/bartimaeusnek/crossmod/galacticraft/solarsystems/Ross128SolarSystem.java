@@ -48,7 +48,7 @@ public class Ross128SolarSystem {
     public static void init() {
 
         Ross128SolarSystem.Ross128System = new SolarSystem("Ross128System", "milkyWay")
-                .setMapPosition(new Vector3(-0.3D, 0.4D, 0.0D));
+                .setMapPosition(new Vector3(-0.5D, 0.65D, 0.0D));
         Ross128SolarSystem.Ross128 = (Star) new Star("Ross128").setParentSolarSystem(Ross128SolarSystem.Ross128System)
                 .setTierRequired(-1);
         Ross128SolarSystem.Ross128.setUnreachable();
