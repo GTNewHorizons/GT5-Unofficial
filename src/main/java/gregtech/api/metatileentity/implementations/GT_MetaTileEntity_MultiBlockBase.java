@@ -1506,7 +1506,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             return false;
         }
 
-        if (mExoticEnergyHatches.size() >= 1) {
+        if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty()) {
                 return false;
             }
@@ -1516,11 +1516,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             }
         }
 
-        if (mEnergyHatches.size() > 2) {
-            return false;
-        }
-
-        return true;
+        return mEnergyHatches.size() <= 2;
     }
 
     /**
