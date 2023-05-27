@@ -1611,7 +1611,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     @Override
-    public boolean isInputSeparationButtonEnabled() {
+    public boolean supportsInputSeparation() {
         return false;
     }
 
@@ -1631,7 +1631,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     @Override
-    public boolean isBatchModeButtonEnabled() {
+    public boolean supportsBatchMode() {
         return false;
     }
 

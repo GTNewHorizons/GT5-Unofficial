@@ -138,7 +138,7 @@ public interface ControllerWithButtons {
     /**
      * @return if the multi supports input separation.
      */
-    boolean isInputSeparationButtonEnabled();
+    boolean supportsInputSeparation();
 
     /**
      * @return true if input separation is enabled, else false. This is getter is used for displaying the icon in the
@@ -152,29 +152,29 @@ public interface ControllerWithButtons {
 
     default ButtonWidget createInputSeparationButton(IWidgetBuilder<?> builder) {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (isInputSeparationButtonEnabled()) {
+            if (supportsInputSeparation()) {
                 setInputSeparation(!isInputSeparationEnabled());
             }
         })
-            .setPlayClickSound(isInputSeparationButtonEnabled())
+            .setPlayClickSound(supportsInputSeparation())
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
                 if (isInputSeparationEnabled()) {
                     ret.add(GT_UITextures.BUTTON_STANDARD_PRESSED);
-                    if (isInputSeparationButtonEnabled()) {
+                    if (supportsInputSeparation()) {
                         ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON);
                     } else {
                         ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED);
                     }
                 } else {
                     ret.add(GT_UITextures.BUTTON_STANDARD);
-                    if (isInputSeparationButtonEnabled()) {
+                    if (supportsInputSeparation()) {
                         ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF);
                     } else {
                         ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED);
                     }
                 }
-                if (!isInputSeparationButtonEnabled()) {
+                if (!supportsInputSeparation()) {
                     ret.add(GT_UITextures.OVERLAY_BUTTON_FORBIDDEN);
                 }
                 return ret.toArray(new IDrawable[0]);
@@ -186,7 +186,7 @@ public interface ControllerWithButtons {
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(getInputSeparationButtonPos())
             .setSize(16, 16);
-        if (!isInputSeparationButtonEnabled()) {
+        if (!supportsInputSeparation()) {
             button.addTooltip(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP));
         }
         return (ButtonWidget) button;
@@ -195,7 +195,7 @@ public interface ControllerWithButtons {
     /**
      * @return if the multi supports batch mode.
      */
-    boolean isBatchModeButtonEnabled();
+    boolean supportsBatchMode();
 
     /**
      * @return true if batch mode is enabled, else false. This is getter is used for displaying the icon in the GUI
@@ -208,29 +208,29 @@ public interface ControllerWithButtons {
 
     default ButtonWidget createBatchModeButton(IWidgetBuilder<?> builder) {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (isBatchModeButtonEnabled()) {
+            if (supportsBatchMode()) {
                 setBatchMode(!isBatchModeEnabled());
             }
         })
-            .setPlayClickSound(isBatchModeButtonEnabled())
+            .setPlayClickSound(supportsBatchMode())
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
                 if (isBatchModeEnabled()) {
                     ret.add(GT_UITextures.BUTTON_STANDARD_PRESSED);
-                    if (isBatchModeButtonEnabled()) {
+                    if (supportsBatchMode()) {
                         ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
                     } else {
                         ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED);
                     }
                 } else {
                     ret.add(GT_UITextures.BUTTON_STANDARD);
-                    if (isBatchModeButtonEnabled()) {
+                    if (supportsBatchMode()) {
                         ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_OFF);
                     } else {
                         ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED);
                     }
                 }
-                if (!isBatchModeButtonEnabled()) {
+                if (!supportsBatchMode()) {
                     ret.add(GT_UITextures.OVERLAY_BUTTON_FORBIDDEN);
                 }
                 return ret.toArray(new IDrawable[0]);
@@ -240,7 +240,7 @@ public interface ControllerWithButtons {
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(getBatchModeButtonPos())
             .setSize(16, 16);
-        if (!isBatchModeButtonEnabled()) {
+        if (!supportsBatchMode()) {
             button.addTooltip(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP));
         }
         return (ButtonWidget) button;

@@ -665,12 +665,12 @@ public class GT_MetaTileEntity_ProcessingArray
     }
 
     @Override
-    public boolean isInputSeparationButtonEnabled() {
+    public boolean supportsInputSeparation() {
         return true;
     }
 
     @Override
-    public boolean isBatchModeButtonEnabled() {
+    public boolean supportsBatchMode() {
         return true;
     }
 

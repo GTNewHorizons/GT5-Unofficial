@@ -1983,7 +1983,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     @Override
-    public boolean isInputSeparationButtonEnabled() {
+    public boolean supportsInputSeparation() {
         return true;
     }
 
@@ -2003,7 +2003,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     @Override
-    public boolean isBatchModeButtonEnabled() {
+    public boolean supportsBatchMode() {
         return true;
     }
 

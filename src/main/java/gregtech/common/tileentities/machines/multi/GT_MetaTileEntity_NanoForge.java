@@ -500,7 +500,7 @@ public class GT_MetaTileEntity_NanoForge extends
     }
 
     @Override
-    public boolean isInputSeparationButtonEnabled() {
+    public boolean supportsInputSeparation() {
         return true;
     }
 }
