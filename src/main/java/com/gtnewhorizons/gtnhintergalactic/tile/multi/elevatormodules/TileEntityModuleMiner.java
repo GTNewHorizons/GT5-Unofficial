@@ -721,11 +721,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
         return true;
     }
 
-    @Override
-    public boolean supportsVoidProtection() {
-        return true;
-    }
-
     /**
      * Power object used to display the miners in NEI
      */
