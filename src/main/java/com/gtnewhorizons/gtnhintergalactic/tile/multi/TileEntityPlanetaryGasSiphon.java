@@ -311,7 +311,7 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
             mEfficiency = 0;
             return false;
         }
-        if (!canOutputAll(new FluidStack[] {recipeFluid})) {
+        if (!canOutputAll(new FluidStack[] { recipeFluid })) {
             return false;
         }
 
