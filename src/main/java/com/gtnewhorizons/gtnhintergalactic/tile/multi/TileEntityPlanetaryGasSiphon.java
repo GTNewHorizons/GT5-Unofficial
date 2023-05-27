@@ -311,6 +311,9 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
             mEfficiency = 0;
             return false;
         }
+        if (!canOutputAll(new FluidStack[] {recipeFluid})) {
+            return false;
+        }
 
         // calculate overclockedness
         int recipeEUt = depth * (4 << (2 * provider.getCelestialBody().getTierRequirement() + 2));
@@ -484,6 +487,11 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
                 "Maintenance Status: " + (getRepairStatus() == getIdealStatus() ? GREEN + "Working perfectly" + RESET
                         : RED + "Has problems" + RESET),
                 "---------------------------------------------" };
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 
     private static <T> IStructureElement<T> ofReboltedCasing() {

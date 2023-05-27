@@ -136,10 +136,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
                         gregtech.api.enums.GT_Values.V[tTier]
                                 * Math.min(getMaxParallels(), (int) parallelSetting.get()))
                 .setMaxParallel(Math.min(getMaxParallels(), (int) parallelSetting.get())).enableConsumption()
-                .enableOutputCalculation();
-        if (!eSafeVoid) {
-            helper.enableVoidProtection(this);
-        }
+                .enableOutputCalculation().setController(this);
 
         helper.build();
 
@@ -205,6 +202,16 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
     public void registerIcons(IIconRegister aBlockIconRegister) {
         engraving = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_SIDE_ASSEMBLER_MODULE");
         super.registerIcons(aBlockIconRegister);
+    }
+
+    @Override
+    public boolean protectsExcessItem() {
+        return eSafeVoid;
+    }
+
+    @Override
+    public boolean protectsExcessFluid() {
+        return eSafeVoid;
     }
 
     /**

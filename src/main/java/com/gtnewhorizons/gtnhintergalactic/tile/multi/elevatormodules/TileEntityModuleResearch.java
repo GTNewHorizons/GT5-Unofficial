@@ -131,10 +131,8 @@ public class TileEntityModuleResearch extends TileEntityModuleBase {
         }
 
         GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(recipe).setItemInputs(items).setFluidInputs(fluids)
-                .setAvailableEUt(gregtech.api.enums.GT_Values.V[tTier]).enableOutputCalculation().enableConsumption();
-        if (!eSafeVoid) {
-            helper.enableVoidProtection(this);
-        }
+                .setAvailableEUt(gregtech.api.enums.GT_Values.V[tTier]).enableOutputCalculation().enableConsumption()
+                .setController(this);
 
         helper.build();
 
@@ -151,6 +149,11 @@ public class TileEntityModuleResearch extends TileEntityModuleBase {
         mEfficiency = 10000;
         mEfficiencyIncrease = 10000;
         mOutputItems = helper.getItemOutputs();
+        return true;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
         return true;
     }
 }
