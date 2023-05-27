@@ -3,11 +3,15 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.t
 import static gtPlusPlus.core.lib.CORE.RANDOM;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -18,6 +22,12 @@ import gregtech.api.util.GT_Utility;
 
 @SuppressWarnings("deprecation")
 public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbineBase {
+
+    private static final HashSet<Fluid> BLACKLIST = new HashSet<>();
+
+    static {
+        BLACKLIST.add(Materials.Benzene.getFluid(0).getFluid());
+    }
 
     public GT_MTE_LargeTurbine_Gas(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -65,11 +75,29 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
     }
 
     @Override
+    public boolean checkRecipeGeneric(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
+            long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
+        List<FluidStack> fluids = getStoredFluids();
+        for (FluidStack fluid : fluids) {
+            if (fluid != null && BLACKLIST.contains(fluid.getFluid())) {
+                return false;
+            }
+        }
+        return super.checkRecipeGeneric(
+                aItemInputs,
+                aFluidInputs,
+                aMaxParallelRecipes,
+                aEUPercent,
+                aSpeedBonusPercent,
+                aOutputChanceRoll,
+                aRecipe);
+    }
+
+    @Override
     int fluidIntoPower(ArrayList<FluidStack> aFluids, long aOptFlow, int aBaseEff, float[] flowMultipliers) {
         if (aFluids.size() >= 1) {
             int tEU = 0;
             int actualOptimalFlow = 0;
-
             FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.
                                                                           // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);

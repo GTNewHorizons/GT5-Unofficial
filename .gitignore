@@ -33,3 +33,4 @@ src/main/resources/mixins.*.json
 /saves
 /asm
 /.vscode
+.factorypath

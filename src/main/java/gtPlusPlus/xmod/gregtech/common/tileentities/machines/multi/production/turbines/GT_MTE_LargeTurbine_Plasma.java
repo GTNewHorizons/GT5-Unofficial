@@ -1,11 +1,14 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -19,6 +22,12 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEn
 
 @SuppressWarnings("deprecation")
 public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTurbineBase {
+
+    private static final HashSet<Fluid> BLACKLIST = new HashSet<>();
+
+    static {
+        BLACKLIST.add(Materials.Helium.getPlasma(0).getFluid());
+    }
 
     public GT_MTE_LargeTurbine_Plasma(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -97,6 +106,11 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
             ArrayList<FluidStack> tFluids = getStoredFluids();
 
             if (tFluids.size() > 0) {
+                for (FluidStack fluid : tFluids) {
+                    if (fluid != null && BLACKLIST.contains(fluid.getFluid())) {
+                        return false;
+                    }
+                }
                 if (baseEff == 0 || optFlow == 0
                         || counter >= 512
                         || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()
