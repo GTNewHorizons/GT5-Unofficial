@@ -3,5 +3,5 @@ dependencies {
     api('com.github.GTNewHorizons:Galaxy-Space-GTNH:1.2.3-GTNH:dev')
     api('com.github.GTNewHorizons:GoodGenerator:0.6.8:dev')
     compileOnly("com.github.GTNewHorizons:Hodgepodge:2.2.14:dev") {transitive = false}
-    devOnlyNonPublishable('com.github.GTNewHorizons:GTplusplus:1.9.19:dev')
+    devOnlyNonPublishable('com.github.GTNewHorizons:GTplusplus:1.9.20-pre:dev')
 }
