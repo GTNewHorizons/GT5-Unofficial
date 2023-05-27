@@ -1,7 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.*;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
@@ -9,6 +8,7 @@ import static mcp.mobius.waila.api.SpecialChars.RESET;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
@@ -28,12 +28,9 @@ import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
 
 import com.google.common.collect.Iterables;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.*;
 
 import cpw.mods.fml.relauncher.Side;
@@ -42,9 +39,11 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.ControllerWithButtons;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
@@ -63,7 +62,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
-    implements IAddGregtechLogo, IAddUIWidgets, IBindPlayerInventoryUI {
+    implements ControllerWithButtons, IAddGregtechLogo, IAddUIWidgets, IBindPlayerInventoryUI {
 
     public static boolean disableMaintenance;
     public boolean mMachine = false, mWrench = false, mScrewdriver = false, mSoftHammer = false, mHardHammer = false,
@@ -81,10 +80,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     public boolean mLockedToSingleRecipe = false;
     protected boolean inputSeparation = false;
-    protected boolean voidExcess = true;
+    protected VoidingMode voidingMode = VoidingMode.VOID_ALL;
     protected boolean batchMode = false;
     protected static String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static String VOID_EXCESS_NBT_KEY = "voidExcess";
+    protected static String VOIDING_MODE_NBT_KEY = "voidingMode";
     protected static String BATCH_MODE_NBT_KEY = "batchMode";
     public GT_Single_Recipe_Check mSingleRecipeCheck = null;
 
@@ -122,7 +122,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorLow", 5);
         this.damageFactorHigh = (float) GregTech_API.sMachineFile
             .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorHigh", 0.6f);
-        voidExcess = !isVoidExcessButtonEnabled();
+        voidingMode = supportsVoidProtection() ? VoidingMode.VOID_NONE : VoidingMode.VOID_ALL;
     }
 
     public static boolean isValidMetaTileEntity(MetaTileEntity aMetaTileEntity) {
@@ -140,11 +140,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     @Override
     public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aCoverID) {
         return side != getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    /** Override this if you are a multi-block that has added support for single recipe locking. */
-    public boolean supportsSingleRecipeLocking() {
-        return false;
     }
 
     @Override
@@ -234,7 +229,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         aNBT.setBoolean("mCrowbar", mCrowbar);
         aNBT.setBoolean(BATCH_MODE_NBT_KEY, batchMode);
         aNBT.setBoolean(INPUT_SEPARATION_NBT_KEY, inputSeparation);
-        aNBT.setBoolean(VOID_EXCESS_NBT_KEY, voidExcess);
+        aNBT.setString(VOIDING_MODE_NBT_KEY, voidingMode.name);
     }
 
     @Override
@@ -259,7 +254,12 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
         batchMode = aNBT.getBoolean(BATCH_MODE_NBT_KEY);
         inputSeparation = aNBT.getBoolean(INPUT_SEPARATION_NBT_KEY);
-        voidExcess = aNBT.getBoolean(VOID_EXCESS_NBT_KEY);
+        if (aNBT.hasKey(VOIDING_MODE_NBT_KEY, Constants.NBT.TAG_STRING)) {
+            voidingMode = VoidingMode.fromName(aNBT.getString(VOIDING_MODE_NBT_KEY));
+        } else if (aNBT.hasKey(VOID_EXCESS_NBT_KEY)) {
+            // backward compatibility
+            voidingMode = aNBT.getBoolean(VOID_EXCESS_NBT_KEY) ? VoidingMode.VOID_ALL : VoidingMode.VOID_NONE;
+        }
 
         int aOutputItemsLength = aNBT.getInteger("mOutputItemsLength");
         if (aOutputItemsLength > 0) {
@@ -1523,35 +1523,151 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Checks if items can fit in the output buses. If your outputs come from GT_Recipe,
-     * {@link GT_ParallelHelper} will work better.
+     * Checks if all the item / fluid outputs of the recipe can be outputted to the buses / hatches.
+     * If void protection is enabled, it also checks for {@link #protectsExcessItem()} and
+     * {@link #protectsExcessFluid()}, so you don't need to call them along with this method.
+     * <p>
+     * If you're using {@link GT_ParallelHelper}, it will handle void protection and return 0 parallel
+     * if all the output cannot be dumped into buses / hatches. In that case you won't use this method.
      */
-    protected boolean canFitOutput(ItemStack[] items) {
-        return canFitOutput(items, null);
+    protected boolean canOutputAll(@Nonnull GT_Recipe recipe) {
+        return canOutputAll(recipe.mOutputs, recipe.mFluidOutputs);
     }
 
     /**
-     * Checks if fluids can fit in the output hatches. If your outputs come from GT_Recipe,
-     * {@link GT_ParallelHelper} will work better.
+     * Checks if all the items can be outputted to the output buses.
+     * If void protection is enabled, it also checks for {@link #protectsExcessItem()},
+     * so you don't need to call it along with this method.
      */
-    protected boolean canFitOutput(FluidStack[] fluids) {
-        return canFitOutput(null, fluids);
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    protected boolean canOutputAll(ItemStack[] items) {
+        return canOutputAll(items, null);
     }
 
     /**
-     * Checks if items / fluids can fit in the output buses / hatches. If your outputs come from GT_Recipe,
-     * {@link GT_ParallelHelper} will work better.
+     * Checks if all the fluids can be outputted to the output hatches.
+     * If void protection is enabled, it also checks for {@link #protectsExcessFluid()},
+     * so you don't need to call it along with this method.
      */
-    protected boolean canFitOutput(@Nullable ItemStack[] items, @Nullable FluidStack[] fluids) {
-        VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper().setController(this);
-        if (items != null) {
-            voidProtectionHelper.setItemOutputs(items);
+    protected boolean canOutputAll(FluidStack[] fluids) {
+        return canOutputAll(null, fluids);
+    }
+
+    /**
+     * Checks if all the items / fluids can be outputted to output buses / hatches.
+     * If void protection is enabled, it also checks for {@link #protectsExcessItem()} and
+     * {@link #protectsExcessFluid()}, so you don't need to call them along with this method.
+     */
+    protected boolean canOutputAll(@Nullable ItemStack[] items, @Nullable FluidStack[] fluids) {
+        if (!protectsExcessItem() && !protectsExcessFluid()) {
+            return true;
         }
-        if (fluids != null) {
-            voidProtectionHelper.setFluidOutputs(fluids);
-        }
-        voidProtectionHelper.build();
+
+        VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper().setController(this)
+            .setItemOutputs(items)
+            .setFluidOutputs(fluids)
+            .build();
         return voidProtectionHelper.getMaxParallel() > 0;
+    }
+
+    @Override
+    public boolean isAllowedToWork() {
+        return getBaseMetaTileEntity().isAllowedToWork();
+    }
+
+    @Override
+    public void disableWorking() {
+        getBaseMetaTileEntity().disableWorking();
+    }
+
+    @Override
+    public void enableWorking() {
+        getBaseMetaTileEntity().enableWorking();
+    }
+
+    @Override
+    public Pos2d getPowerSwitchButtonPos() {
+        return new Pos2d(174, 148);
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return false;
+    }
+
+    @Override
+    public VoidingMode getVoidingMode() {
+        return voidingMode;
+    }
+
+    @Override
+    public void setVoidingMode(VoidingMode mode) {
+        this.voidingMode = mode;
+    }
+
+    @Override
+    public Pos2d getVoidingModeButtonPos() {
+        return new Pos2d(8, 91);
+    }
+
+    @Override
+    public boolean isInputSeparationButtonEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isInputSeparationEnabled() {
+        return inputSeparation;
+    }
+
+    @Override
+    public void setInputSeparation(boolean enabled) {
+        this.inputSeparation = enabled;
+    }
+
+    @Override
+    public Pos2d getInputSeparationButtonPos() {
+        return new Pos2d(26, 91);
+    }
+
+    @Override
+    public boolean isBatchModeButtonEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isBatchModeEnabled() {
+        return batchMode;
+    }
+
+    @Override
+    public void setBatchMode(boolean enabled) {
+        this.batchMode = enabled;
+    }
+
+    @Override
+    public Pos2d getBatchModeButtonPos() {
+        return new Pos2d(44, 91);
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
+    @Override
+    public boolean isRecipeLockingEnabled() {
+        return mLockedToSingleRecipe;
+    }
+
+    @Override
+    public void setRecipeLocking(boolean enabled) {
+        this.mLockedToSingleRecipe = enabled;
+    }
+
+    @Override
+    public Pos2d getRecipeLockingButtonPos() {
+        return new Pos2d(62, 91);
     }
 
     @Override
@@ -1567,57 +1683,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     @Override
     public int getGUIHeight() {
         return 192;
-    }
-
-    /**
-     * @return if the multi supports input separation. If you want to use it you need to use {@link #inputSeparation}.
-     */
-    protected boolean isInputSeparationButtonEnabled() {
-        return false;
-    }
-
-    /**
-     * @return if the multi supports batch mode. If you want to use it you need to use {@link #batchMode}.
-     */
-    protected boolean isBatchModeButtonEnabled() {
-        return false;
-    }
-
-    /**
-     * @return if the multi supports void excess to be toggled. If you want to use it you need to use
-     *         {@link #voidExcess}.
-     */
-    protected boolean isVoidExcessButtonEnabled() {
-        return false;
-    }
-
-    /**
-     * @return true if input separation is enabled, else false. This is getter is used for displaying the icon in the
-     *         GUI
-     */
-    protected boolean isInputSeparationEnabled() {
-        return inputSeparation;
-    }
-
-    /**
-     * @return true if batch mode is enabled, else false. This is getter is used for displaying the icon in the GUI
-     */
-    protected boolean isBatchModeEnabled() {
-        return batchMode;
-    }
-
-    /**
-     * @return true if void excess is enabled, else false. This is getter is used for displaying the icon in the GUI
-     */
-    protected boolean isVoidExcessEnabled() {
-        return voidExcess;
-    }
-
-    /**
-     * @return true if recipe locking is enabled, else false. This is getter is used for displaying the icon in the GUI
-     */
-    protected boolean isRecipeLockingEnabled() {
-        return mLockedToSingleRecipe;
     }
 
     @Override
@@ -1640,23 +1705,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         drawTexts(screenElements, inventorySlot);
         builder.widget(screenElements);
 
-        builder.widget(createPowerSwitchButton())
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> getBaseMetaTileEntity().isAllowedToWork(), val -> {
-                if (val) getBaseMetaTileEntity().enableWorking();
-                else getBaseMetaTileEntity().disableWorking();
-            }));
-
-        builder.widget(createVoidExcessButton())
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> voidExcess, val -> voidExcess = val));
-
-        builder.widget(createInputSeparationButton())
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> inputSeparation, val -> inputSeparation = val));
-
-        builder.widget(createBatchModeButton())
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> batchMode, val -> batchMode = val));
-
-        builder.widget(createLockToSingleRecipeButton())
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> mLockedToSingleRecipe, val -> mLockedToSingleRecipe = val));
+        builder.widget(createPowerSwitchButton(builder))
+            .widget(createVoidExcessButton(builder))
+            .widget(createInputSeparationButton(builder))
+            .widget(createBatchModeButton(builder))
+            .widget(createLockToSingleRecipeButton(builder));
     }
 
     @Override
@@ -1760,161 +1813,5 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     }
                     return false;
                 }));
-    }
-
-    protected ButtonWidget createPowerSwitchButton() {
-        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (getBaseMetaTileEntity().isAllowedToWork()) {
-                getBaseMetaTileEntity().disableWorking();
-            } else {
-                getBaseMetaTileEntity().enableWorking();
-            }
-        })
-            .setPlayClickSoundResource(
-                () -> getBaseMetaTileEntity().isAllowedToWork() ? SoundResource.GUI_BUTTON_UP.resourceLocation
-                    : SoundResource.GUI_BUTTON_DOWN.resourceLocation)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(GT_UITextures.BUTTON_STANDARD);
-                if (getBaseMetaTileEntity().isAllowedToWork()) {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
-                } else {
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
-                }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .setPos(174, 148)
-            .setSize(16, 16);
-        button.addTooltip(StatCollector.translateToLocal("GT5U.gui.button.power_switch"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY);
-        return (ButtonWidget) button;
-    }
-
-    protected ButtonWidget createVoidExcessButton() {
-        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (isVoidExcessButtonEnabled()) {
-                voidExcess = !voidExcess;
-            }
-        })
-            .setPlayClickSound(true)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(GT_UITextures.BUTTON_STANDARD);
-                if (isVoidExcessButtonEnabled()) {
-                    if (isVoidExcessEnabled()) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_ON);
-                    } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_OFF);
-                    }
-                } else {
-                    if (isVoidExcessEnabled()) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_ON_DISABLED);
-                    } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_OFF_DISABLED);
-                    }
-                }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .setPos(8, 91)
-            .setSize(16, 16);
-        button.addTooltip(StatCollector.translateToLocal("GT5U.gui.button.void_excess"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY);
-        return (ButtonWidget) button;
-    }
-
-    protected ButtonWidget createInputSeparationButton() {
-        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (isInputSeparationButtonEnabled()) {
-                inputSeparation = !inputSeparation;
-            }
-        })
-            .setPlayClickSound(true)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(GT_UITextures.BUTTON_STANDARD);
-                if (isInputSeparationButtonEnabled()) {
-                    if (isInputSeparationEnabled()) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON);
-                    } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF);
-                    }
-                } else {
-                    if (isInputSeparationEnabled()) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED);
-                    } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED);
-                    }
-                }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .setPos(26, 91)
-            .setSize(16, 16);
-        button.addTooltip(StatCollector.translateToLocal("GT5U.gui.button.input_separation"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY);
-        return (ButtonWidget) button;
-    }
-
-    protected ButtonWidget createBatchModeButton() {
-        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (isBatchModeButtonEnabled()) {
-                batchMode = !batchMode;
-            }
-        })
-            .setPlayClickSound(true)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(GT_UITextures.BUTTON_STANDARD);
-                if (isBatchModeButtonEnabled()) {
-                    if (isBatchModeEnabled()) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
-                    } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_OFF);
-                    }
-                } else {
-                    if (isBatchModeEnabled()) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED);
-                    } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED);
-                    }
-                }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .setPos(44, 91)
-            .setSize(16, 16);
-        button.addTooltip(StatCollector.translateToLocal("GT5U.gui.button.batch_mode"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY);
-        return (ButtonWidget) button;
-    }
-
-    protected ButtonWidget createLockToSingleRecipeButton() {
-        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (supportsSingleRecipeLocking()) {
-                mLockedToSingleRecipe = !mLockedToSingleRecipe;
-            }
-        })
-            .setPlayClickSound(true)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(GT_UITextures.BUTTON_STANDARD);
-                if (supportsSingleRecipeLocking()) {
-                    if (isRecipeLockingEnabled()) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_LOCKED);
-                    } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED);
-                    }
-                } else {
-                    if (isRecipeLockingEnabled()) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED);
-                    } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED);
-                    }
-                }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .setPos(62, 91)
-            .setSize(16, 16);
-        button.addTooltip(StatCollector.translateToLocal("GT5U.gui.button.lock_recipe"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY);
-        return (ButtonWidget) button;
     }
 }

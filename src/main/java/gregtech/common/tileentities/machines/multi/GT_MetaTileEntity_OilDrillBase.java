@@ -288,9 +288,11 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
             GT_Log.out.println(" pump speed = " + speed);
         }
 
-        if (!voidExcess) {
+        // Even though it works fine without this check,
+        // it can save tiny amount of CPU time when void protection is disabled
+        if (protectsExcessFluid()) {
             FluidStack simulatedOil = pumpOil(speed, true);
-            if (!canFitOutput(new FluidStack[] { simulatedOil })) {
+            if (!canOutputAll(new FluidStack[] { simulatedOil })) {
                 return ValidationResult.of(ValidationType.INVALID, null);
             }
         }
@@ -372,7 +374,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
     }
 
     @Override
-    protected boolean isVoidExcessButtonEnabled() {
+    public boolean supportsVoidProtection() {
         return true;
     }
 }

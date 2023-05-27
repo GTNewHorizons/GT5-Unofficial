@@ -207,6 +207,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
 
         if (tRecipe == null) return false;
         if (this.mHeatingCapacity < tRecipe.mSpecialValue) return false;
+        if (!canOutputAll(tRecipe)) return false;
         if (!tRecipe.isRecipeInputEqual(true, tFluids, tItems)) return false;
         // In case recipe is too OP for that machine
         if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) return false;
@@ -439,7 +440,12 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
     }
 
     @Override
-    protected boolean isInputSeparationButtonEnabled() {
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean isInputSeparationButtonEnabled() {
         return true;
     }
 }

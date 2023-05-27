@@ -546,6 +546,7 @@ public class GT_MetaTileEntity_PCBFactory extends
         if (tRecipe == null) {
             return false;
         }
+        if (!canOutputAll(tRecipe)) return false;
 
         int recipeBitMap = tRecipe.mSpecialValue;
 
@@ -1352,7 +1353,12 @@ public class GT_MetaTileEntity_PCBFactory extends
     }
 
     @Override
-    protected boolean isInputSeparationButtonEnabled() {
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean isInputSeparationButtonEnabled() {
         return true;
     }
 }

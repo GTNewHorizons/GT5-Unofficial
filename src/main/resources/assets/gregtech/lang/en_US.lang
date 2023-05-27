@@ -211,12 +211,17 @@ GT5U.type_filter.representation_slot.tooltip.1=right click to back
 
 GT5U.gui.select.current=Current:
 GT5U.gui.button.power_switch=Power Switch
-GT5U.gui.button.void_excess=Void Excess
+GT5U.gui.button.voiding_mode=Voiding Mode:
+GT5U.gui.button.voiding_mode_none=§7Void Nothing
+GT5U.gui.button.voiding_mode_item=§7Void Excess §6Items
+GT5U.gui.button.voiding_mode_fluid=§7Void Excess §9Fluids
+GT5U.gui.button.voiding_mode_all=§7Void Excess §6Items §7and §9Fluids
 GT5U.gui.button.input_separation=Input Separation
 GT5U.gui.button.batch_mode=Batch Mode
 GT5U.gui.button.lock_recipe=Lock Recipe
 GT5U.gui.button.down_tier=Down Tier
 GT5U.gui.button.tier=Tier:
+GT5U.gui.button.forbidden=§4Cannot change mode for this machine
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 

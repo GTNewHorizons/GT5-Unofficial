@@ -117,7 +117,7 @@ public class CokeOven extends Controller<CokeOven> implements PollutionLogicHost
         builder.widget(
             new SlotWidget(outputInventory, 0).setPos(36, 36)
                 .setSize(18, 18));
-        builder.widget(createButtons());
+        builder.widget(createButtons(builder));
     }
 
     @Override

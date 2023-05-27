@@ -314,6 +314,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
                 this.mLastRecipe = null;
                 return false;
             }
+            if (!canOutputAll(tRecipe)) return false;
             if (mRunningOnLoad || tRecipe.isRecipeInputEqual(true, tFluids)) {
                 this.mLastRecipe = tRecipe;
                 this.mEUt = (this.mLastRecipe.mEUt * overclock(this.mLastRecipe.mSpecialValue));
@@ -630,5 +631,10 @@ public abstract class GT_MetaTileEntity_FusionComputer
                     .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_NEI)
                     .setPos(154, 4)
                     .setSize(18, 18));
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 }

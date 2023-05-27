@@ -38,6 +38,14 @@ public class VoidProtectionHelper {
      */
     private Controller<?> machineMulti;
     /**
+     * Does void protection enabled for items
+     */
+    private boolean protectExcessItem;
+    /**
+     * Does void protection enabled for fluids
+     */
+    private boolean protectExcessFluid;
+    /**
      * The maximum possible parallel possible for the multiblock
      */
     private int maxParallel = 1;
@@ -57,17 +65,37 @@ public class VoidProtectionHelper {
     public VoidProtectionHelper() {}
 
     /**
-     * Sets MetaTE controller to use for calculation
+     * Sets MetaTE controller, with current configuration for void protection mode.
      */
     public VoidProtectionHelper setController(GT_MetaTileEntity_MultiBlockBase machineMeta) {
+        return setController(machineMeta, machineMeta.protectsExcessItem(), machineMeta.protectsExcessFluid());
+    }
+
+    /**
+     * Sets MetaTE controller, with void protection mode forcibly.
+     */
+    public VoidProtectionHelper setController(GT_MetaTileEntity_MultiBlockBase machineMeta, boolean protectExcessItem,
+        boolean protectExcessFluid) {
+        this.protectExcessItem = protectExcessItem;
+        this.protectExcessFluid = protectExcessFluid;
         this.machineMeta = machineMeta;
         return this;
     }
 
     /**
-     * Sets MuTE controller to use for calculation
+     * Sets MuTE controller, with current configuration for void protection mode.
      */
     public VoidProtectionHelper setController(Controller<?> machineMulti) {
+        return setController(machineMulti, machineMulti.protectsExcessItem(), machineMulti.protectsExcessFluid());
+    }
+
+    /**
+     * Sets MuTE controller, with void protection mode forcibly.
+     */
+    public VoidProtectionHelper setController(Controller<?> machineMulti, boolean protectExcessItem,
+        boolean protectExcessFluid) {
+        this.protectExcessItem = protectExcessItem;
+        this.protectExcessFluid = protectExcessFluid;
         this.machineMulti = machineMulti;
         return this;
     }
@@ -123,6 +151,8 @@ public class VoidProtectionHelper {
             fluidOutputs = new FluidStack[0];
         }
 
+        // Don't check ControllerWithButtons#protectsExcessItem nor #protectsExcessFluid here,
+        // to allow more involved setting for void protections (see ComplexParallelProcessingLogic)
         if (machineMeta != null) {
             boolean tMEOutputBus = false;
             boolean tMEOutputHatch = false;
@@ -139,16 +169,20 @@ public class VoidProtectionHelper {
                     break;
                 }
             }
-            if (!tMEOutputBus) {
+
+            if (protectExcessItem && itemOutputs.length > 0 && !tMEOutputBus) {
                 maxParallel = Math.min(calculateMaxItemParallelsForMetaTEs(), maxParallel);
             }
-
-            if (!tMEOutputHatch) {
+            if (protectExcessFluid && fluidOutputs.length > 0 && !tMEOutputHatch) {
                 maxParallel = Math.min(calculateMaxFluidParallelsForMetaTEs(), maxParallel);
             }
         } else if (machineMulti != null) {
-            maxParallel = Math.min(calculateMaxItemParallelsForMuTEs(), maxParallel);
-            maxParallel = Math.min(calculateMaxFluidParallelsForMuTEs(), maxParallel);
+            if (protectExcessItem && itemOutputs.length > 0) {
+                maxParallel = Math.min(calculateMaxItemParallelsForMuTEs(), maxParallel);
+            }
+            if (protectExcessFluid && fluidOutputs.length > 0) {
+                maxParallel = Math.min(calculateMaxFluidParallelsForMuTEs(), maxParallel);
+            }
         }
     }
 

@@ -182,7 +182,8 @@ public class GT_MetaTileEntity_PyrolyseOven
             tRecipe = GT_Recipe.GT_Recipe_Map.sPyrolyseRecipes
                 .findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
 
-            if (tRecipe == null || !tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) return false;
+            if (tRecipe == null || !canOutputAll(tRecipe) || !tRecipe.isRecipeInputEqual(true, tFluids, tInputs))
+                return false;
 
             if (mLockedToSingleRecipe) {
                 mSingleRecipeCheck = tSingleRecipeCheckBuilder.setAfter(tInputs, tFluids)
@@ -288,5 +289,10 @@ public class GT_MetaTileEntity_PyrolyseOven
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivialBuildPiece("main", stackSize, 2, 3, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 }
