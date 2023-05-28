@@ -207,10 +207,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         if (difference > 1.05 && difference < 1.4) {
             side = ForgeDirection.EAST;
         }
-        boolean tCovered = false;
-        if (side != ForgeDirection.UNKNOWN && mBaseMetaTileEntity.getCoverIDAtSide(side) > 0) {
-            tCovered = true;
-        }
+        boolean tCovered = side != ForgeDirection.UNKNOWN && mBaseMetaTileEntity.getCoverIDAtSide(side) > 0;
         if (isConnectedAtSide(side)) {
             tCovered = true;
         }

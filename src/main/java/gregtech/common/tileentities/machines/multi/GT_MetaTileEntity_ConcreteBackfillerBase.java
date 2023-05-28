@@ -115,10 +115,8 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
                 .getMaterial()
                 .isSolid())
             return false;
-        if (!GT_Utility
-            .setBlockByFakePlayer(getFakePlayer(aBaseTile), aX, aY, aZ, GregTech_API.sBlockConcretes, 8, true))
-            return false;
-        return true;
+        return GT_Utility
+            .setBlockByFakePlayer(getFakePlayer(aBaseTile), aX, aY, aZ, GregTech_API.sBlockConcretes, 8, true);
     }
 
     private boolean tryRefillBlock(int aX, int aY, int aZ) {

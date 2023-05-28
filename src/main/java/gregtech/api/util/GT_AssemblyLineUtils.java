@@ -278,12 +278,9 @@ public class GT_AssemblyLineUtils {
      * @return Does this Data Stick have a valid output ItemStack?
      */
     public static boolean doesDataStickHaveOutput(ItemStack aDataStick) {
-        if (isItemDataStick(aDataStick) && aDataStick.hasTagCompound()
+        return isItemDataStick(aDataStick) && aDataStick.hasTagCompound()
             && aDataStick.getTagCompound()
-                .hasKey("output")) {
-            return true;
-        }
-        return false;
+                .hasKey("output");
     }
 
     /**
@@ -296,9 +293,7 @@ public class GT_AssemblyLineUtils {
             if (isValidHash(aStickHash) && doesDataStickHaveOutput(aDataStick)) {
                 ItemStack aStickOutput = getDataStickOutput(aDataStick);
                 GT_Recipe_AssemblyLine aIntendedRecipe = findAssemblyLineRecipeByOutput(aStickOutput);
-                if (aStickHash.equals(generateRecipeHash(aIntendedRecipe))) {
-                    return false;
-                }
+                return !aStickHash.equals(generateRecipeHash(aIntendedRecipe));
             }
         }
         return true;
@@ -311,10 +306,8 @@ public class GT_AssemblyLineUtils {
     public static boolean doesDataStickHaveRecipeHash(ItemStack aDataStick) {
         if (isItemDataStick(aDataStick) && aDataStick.hasTagCompound()) {
             NBTTagCompound aNBT = aDataStick.getTagCompound();
-            if (aNBT.hasKey("Data.Recipe.Hash") && !aNBT.getString("Data.Recipe.Hash")
-                .equals("Hash.0")) {
-                return true;
-            }
+            return aNBT.hasKey("Data.Recipe.Hash") && !aNBT.getString("Data.Recipe.Hash")
+                .equals("Hash.0");
         }
         return false;
     }

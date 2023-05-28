@@ -947,11 +947,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
 
     @Override
     public void setBooleans(int booleans) {
-        if ((booleans & ACTIVE) == ACTIVE) {
-            setActive(true);
-        } else {
-            setActive(false);
-        }
+        setActive((booleans & ACTIVE) == ACTIVE);
     }
 
     protected boolean hasItemInput() {

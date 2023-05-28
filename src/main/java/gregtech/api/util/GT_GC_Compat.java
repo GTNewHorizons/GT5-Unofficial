@@ -44,10 +44,8 @@ public class GT_GC_Compat {
 
     public static boolean canConnect(TileEntity tTileEntity, ForgeDirection tDirection) {
         // GC Compat
-        if (GregTech_API.mGalacticraft && tTileEntity instanceof IEnergyHandlerGC
+        return GregTech_API.mGalacticraft && tTileEntity instanceof IEnergyHandlerGC
             && (!(tTileEntity instanceof IConnector)
-                || ((IConnector) tTileEntity).canConnect(tDirection, NetworkType.POWER)))
-            return true;
-        return false;
+                || ((IConnector) tTileEntity).canConnect(tDirection, NetworkType.POWER));
     }
 }

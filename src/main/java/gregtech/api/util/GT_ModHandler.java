@@ -544,8 +544,7 @@ public class GT_ModHandler {
      */
     public static boolean addSmeltingAndAlloySmeltingRecipe(ItemStack aInput, ItemStack aOutput, boolean hidden) {
         if (aInput == null || aOutput == null) return false;
-        boolean temp = false;
-        if (aInput.stackSize == 1 && addSmeltingRecipe(aInput, aOutput)) temp = true;
+        boolean temp = aInput.stackSize == 1 && addSmeltingRecipe(aInput, aOutput);
         return (RA.addAlloySmelterRecipe(
             aInput,
             OrePrefixes.ingot.contains(aOutput) ? ItemList.Shape_Mold_Ingot.get(0)
