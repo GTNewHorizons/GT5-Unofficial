@@ -1238,7 +1238,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             return new ListItemHandler(multiBlockInventory.values());
         } else {
             final IItemHandlerModifiable inv = multiBlockInventory.get(lockedInventory);
-            return inv != null ? inv : null;
+            return inv;
         }
     }
 
