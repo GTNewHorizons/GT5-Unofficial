@@ -325,7 +325,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
         // Check how many parallels we can actually do, return if none
         GT_ParallelHelper helper = new GT_ParallelHelper().setMaxParallel(maxParallels).setRecipe(tRecipe)
                 .setFluidInputs(fluidInputs).setItemInputs(inputs).setAvailableEUt(GT_Values.V[tTier])
-                .enableConsumption().build();
+                .setController(this).enableConsumption().build();
         int parallels = helper.getCurrentParallel();
         if (parallels <= 0) {
             return false;
