@@ -15,7 +15,7 @@ import ic2.api.energy.tile.IEnergySink;
 
 public class TileIC2EnergySink extends TileEntity implements IEnergySink {
 
-    private IGregTechTileEntity myMeta;
+    private final IGregTechTileEntity myMeta;
     private GT_MetaPipeEntity_Cable cableMeta = null;
 
     public TileIC2EnergySink(IGregTechTileEntity meta) {

@@ -82,7 +82,7 @@ public class GT_Bees {
 
     private static class AlleleFloat extends Allele implements IAlleleFloat {
 
-        private float value;
+        private final float value;
 
         public AlleleFloat(String id, float val, boolean isDominant) {
             super("gregtech." + id, "gregtech." + id, isDominant);
@@ -98,7 +98,7 @@ public class GT_Bees {
 
     private static class AlleleInteger extends Allele implements IAlleleInteger {
 
-        private int value;
+        private final int value;
 
         public AlleleInteger(String id, int val, boolean isDominant, EnumBeeChromosome c) {
             super("gregtech." + id, "gregtech." + id, isDominant);
@@ -114,7 +114,7 @@ public class GT_Bees {
 
     private static class AlleleArea extends Allele implements IAlleleArea {
 
-        private int[] value;
+        private final int[] value;
 
         public AlleleArea(String id, int rangeXZ, int rangeY, boolean isDominant) {
             super("gregtech." + id, "gregtech." + id, isDominant);

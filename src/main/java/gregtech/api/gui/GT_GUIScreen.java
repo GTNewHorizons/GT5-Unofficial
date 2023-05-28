@@ -35,7 +35,7 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
     protected ResourceLocation mGUIbackgroundLocation;
 
     private GuiButton selectedButton;
-    private GT_GUIColorOverride colorOverride;
+    private final GT_GUIColorOverride colorOverride;
     private final int textColor;
     private static final String guiTexturePath = "gregtech:textures/gui/GuiCover.png";
 

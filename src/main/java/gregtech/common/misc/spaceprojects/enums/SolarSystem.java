@@ -55,9 +55,9 @@ public enum SolarSystem implements ISpaceBody {
     KuiperBelt(AsteroidBelt),
     NONE(SpaceBodyType.NONE);
 
-    private SpaceBodyType spaceBody;
-    private StarType star;
-    private UITexture texture;
+    private final SpaceBodyType spaceBody;
+    private final StarType star;
+    private final UITexture texture;
 
     SolarSystem(SpaceBodyType aType) {
         this(aType, NotAStar);

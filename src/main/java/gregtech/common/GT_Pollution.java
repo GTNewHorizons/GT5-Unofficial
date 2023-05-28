@@ -79,7 +79,7 @@ public class GT_Pollution {
     private boolean blank = true;
     public static int mPlayerPollution;
 
-    private static int POLLUTIONPACKET_MINVALUE = 1000;
+    private static final int POLLUTIONPACKET_MINVALUE = 1000;
 
     private static GT_PollutionEventHandler EVENT_HANDLER;
 

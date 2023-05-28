@@ -28,11 +28,11 @@ public class GT_AssemblyLineUtils {
     /**
      * A cache of Recipes using the Output as Key.
      */
-    private static HashMap<GT_ItemStack, GT_Recipe_AssemblyLine> sRecipeCacheByOutput = new HashMap<>();
+    private static final HashMap<GT_ItemStack, GT_Recipe_AssemblyLine> sRecipeCacheByOutput = new HashMap<>();
     /**
      * A cache of Recipes using the Recipe Hash String as Key.
      */
-    private static HashMap<String, GT_Recipe_AssemblyLine> sRecipeCacheByRecipeHash = new HashMap<>();
+    private static final HashMap<String, GT_Recipe_AssemblyLine> sRecipeCacheByRecipeHash = new HashMap<>();
 
     /**
      * Checks the DataStick for deprecated/invalid recipes, updating them as required.

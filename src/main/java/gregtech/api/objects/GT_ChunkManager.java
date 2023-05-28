@@ -25,7 +25,7 @@ import gregtech.api.util.GT_Log;
 public class GT_ChunkManager
     implements ForgeChunkManager.OrderedLoadingCallback, ForgeChunkManager.PlayerOrderedLoadingCallback {
 
-    private Map<TileEntity, Ticket> registeredTickets = new HashMap<>();
+    private final Map<TileEntity, Ticket> registeredTickets = new HashMap<>();
     public static GT_ChunkManager instance = new GT_ChunkManager();
 
     public static void init() {

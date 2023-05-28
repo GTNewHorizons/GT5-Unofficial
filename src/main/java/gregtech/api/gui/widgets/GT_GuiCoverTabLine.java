@@ -30,10 +30,10 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
         "GT5U.interface.coverTabs.north", "GT5U.interface.coverTabs.south", "GT5U.interface.coverTabs.west",
         "GT5U.interface.coverTabs.east" };
 
-    // Not sure there's a point in JIT translation but that's what this is
-    private String[] translatedSides;
-    private IGregTechTileEntity tile;
-    private int colorization;
+    // Not sure if there's a point in JIT translation but that's what this is
+    private final String[] translatedSides;
+    private final IGregTechTileEntity tile;
+    private final int colorization;
 
     /**
      * Let's you access an IGregTechTileEntity's covers as tabs on the GUI's sides
