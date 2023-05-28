@@ -7,6 +7,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.multitileentity.multiblock.base.Controller;
 import gregtech.api.objects.XSTR;
 
+@SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class GT_ParallelHelper {
 
     /**
@@ -55,9 +56,13 @@ public class GT_ParallelHelper {
      */
     private FluidStack[] mFluidOutputs;
     /**
-     * Does the multi have void protection enabled
+     * Does the multi have void protection enabled for items
      */
-    private boolean mVoidProtection;
+    private boolean protectExcessItem;
+    /**
+     * Does the multi have void protection enabled for fluids
+     */
+    private boolean protectExcessFluid;
     /**
      * Should the Parallel Helper automatically consume for the multi
      */
@@ -87,20 +92,38 @@ public class GT_ParallelHelper {
     public GT_ParallelHelper() {}
 
     /**
-     * Enables void protection on a metatile multiblock.
+     * Sets MetaTE controller, with current configuration for void protection mode.
      */
-    public GT_ParallelHelper enableVoidProtection(GT_MetaTileEntity_MultiBlockBase aMachineMeta) {
-        mVoidProtection = true;
-        mMachineMeta = aMachineMeta;
+    public GT_ParallelHelper setController(GT_MetaTileEntity_MultiBlockBase machineMeta) {
+        return setController(machineMeta, machineMeta.protectsExcessItem(), machineMeta.protectsExcessFluid());
+    }
+
+    /**
+     * Sets MetaTE controller, with void protection mode forcibly.
+     */
+    public GT_ParallelHelper setController(GT_MetaTileEntity_MultiBlockBase machineMeta, boolean protectExcessItem,
+        boolean protectExcessFluid) {
+        this.protectExcessItem = protectExcessItem;
+        this.protectExcessFluid = protectExcessFluid;
+        this.mMachineMeta = machineMeta;
         return this;
     }
 
     /**
-     * Enables void protection on a multitile multiblock.
+     * Sets MuTE controller, with current configuration for void protection mode.
      */
-    public GT_ParallelHelper enableVoidProtection(Controller<?> aMachineMulti) {
-        mVoidProtection = true;
-        mMachineMulti = aMachineMulti;
+    public GT_ParallelHelper setController(Controller<?> machineMulti) {
+        return setController(machineMulti, machineMulti.protectsExcessItem(), machineMulti.protectsExcessFluid());
+    }
+
+    /**
+     * Sets MuTE controller, with void protection mode forcibly.
+     */
+    public GT_ParallelHelper setController(Controller<?> machineMulti, boolean protectExcessItem,
+        boolean protectExcessFluid) {
+        this.protectExcessItem = protectExcessItem;
+        this.protectExcessFluid = protectExcessFluid;
+        this.mMachineMulti = machineMulti;
         return this;
     }
 
@@ -273,12 +296,12 @@ public class GT_ParallelHelper {
             mMaxParallel *= mBatchModifier;
         }
         // Let's look at how many parallels we can get with void protection
-        if (mVoidProtection) {
+        if (protectExcessItem || protectExcessFluid) {
             VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper();
             if (mMachineMeta != null) {
-                voidProtectionHelper.setController(mMachineMeta);
+                voidProtectionHelper.setController(mMachineMeta, protectExcessItem, protectExcessFluid);
             } else if (mMachineMulti != null) {
-                voidProtectionHelper.setController(mMachineMulti);
+                voidProtectionHelper.setController(mMachineMulti, protectExcessItem, protectExcessFluid);
             }
             voidProtectionHelper.setItemOutputs(mRecipe.mOutputs)
                 .setFluidOutputs(mRecipe.mFluidOutputs)

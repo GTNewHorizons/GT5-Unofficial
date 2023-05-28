@@ -343,7 +343,7 @@ public class GT_Values {
             UPGRADE_TANKS_COUNT = "gt.tankcount.upg", // Int
             UPGRADE_TANKS_PREFIX = "gt.tank.upg", // NBT Tag
             SEPARATE_INPUTS = "gt.separate.inputs", // Boolean
-            VOID_EXCESS = "gt.void.excess", // Boolean
+            VOIDING_MODE = "gt.voiding.mode", // String
             BATCH_MODE = "gt.batch.mode", // Boolean
             RECIPE_LOCK = "gt.recipe.lock", // Boolean
 

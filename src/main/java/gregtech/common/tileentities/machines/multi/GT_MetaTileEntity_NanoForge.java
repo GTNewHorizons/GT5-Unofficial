@@ -255,8 +255,8 @@ public class GT_MetaTileEntity_NanoForge extends
             .findRecipe(getBaseMetaTileEntity(), null, false, false, tTotalEU, tFluidInputs, null, tItemInputs);
 
         if (tRecipe == null) return false;
-
         if (tRecipe.mSpecialValue > mSpecialTier) return false;
+        if (!canOutputAll(tRecipe)) return false;
 
         if (tRecipe.isRecipeInputEqual(true, tFluidInputs, tItemInputs)) {
             this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
@@ -495,7 +495,12 @@ public class GT_MetaTileEntity_NanoForge extends
     }
 
     @Override
-    protected boolean isInputSeparationButtonEnabled() {
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsInputSeparation() {
         return true;
     }
 }

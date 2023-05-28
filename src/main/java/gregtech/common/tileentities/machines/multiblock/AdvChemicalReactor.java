@@ -26,6 +26,7 @@ import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
@@ -308,8 +309,8 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
     }
 
     @Override
-    protected MultiChildWidget createMainPage() {
-        MultiChildWidget child = super.createMainPage();
+    protected MultiChildWidget createMainPage(IWidgetBuilder<?> builder) {
+        MultiChildWidget child = super.createMainPage(builder);
         for (int i = 0; i < MAX_PROCESSES; i++) {
             final int processIndex = i;
             child.addChild(

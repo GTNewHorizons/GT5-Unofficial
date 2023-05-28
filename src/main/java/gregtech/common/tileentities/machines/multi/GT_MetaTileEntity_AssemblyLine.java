@@ -210,6 +210,8 @@ public class GT_MetaTileEntity_AssemblyLine
                 }
             }
 
+            if (!canOutputAll(new ItemStack[] { tRecipe.mOutput })) continue;
+
             // So here we check against the recipe found on the data stick.
             // If we run into missing buses/hatches or bad inputs, we go to the next data stick.
             // This check only happens if we have a valid up to date data stick.
@@ -466,6 +468,11 @@ public class GT_MetaTileEntity_AssemblyLine
             if (build >= 0) return build;
         }
         return survivialBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 1 - tLength, 1, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 
     private enum DataHatchElement implements IHatchElement<GT_MetaTileEntity_AssemblyLine> {

@@ -693,6 +693,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
             }
         }
 
+        if (!canOutputAll(tRecipe_1)) return false;
         // Takes items/fluids from hatches/busses.
         if (!tRecipe_1.isRecipeInputEqual(true, tFluids, tItems)) return false;
 
@@ -776,6 +777,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         return true;
     }
 
+    @Override
     public void clearHatches() {
         super.clearHatches();
         mExoticEnergyHatches.clear();
@@ -974,5 +976,10 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         discount = aNBT.getDouble("eLongDiscountValue");
         EU_per_tick = aNBT.getLong("eLongEUPerTick");
         super.loadNBTData(aNBT);
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 }

@@ -575,6 +575,7 @@ public class GT_MetaTileEntity_PCBFactory extends
 
         if (recipeAllowed) {
             GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe)
+                .setController(this)
                 .setItemInputs(aItemInputs)
                 .setFluidInputs(aFluidInputs)
                 .setMaxParallel(aMaxParallel)
@@ -1352,7 +1353,12 @@ public class GT_MetaTileEntity_PCBFactory extends
     }
 
     @Override
-    protected boolean isInputSeparationButtonEnabled() {
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsInputSeparation() {
         return true;
     }
 }

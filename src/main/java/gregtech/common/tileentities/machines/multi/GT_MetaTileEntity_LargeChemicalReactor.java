@@ -191,7 +191,7 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends
                 fluids,
                 inputs);
 
-            if (tRecipe == null || !tRecipe.isRecipeInputEqual(true, fluids, inputs)) {
+            if (tRecipe == null || !canOutputAll(tRecipe) || !tRecipe.isRecipeInputEqual(true, fluids, inputs)) {
                 return false;
             }
 
@@ -263,6 +263,11 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends
         if (mMachine) return -1;
         mCoilAmount = 0;
         return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 
     private enum CoilStructureElement implements IStructureElement<GT_MetaTileEntity_LargeChemicalReactor> {

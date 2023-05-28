@@ -30,7 +30,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
@@ -664,12 +663,12 @@ public class GT_MetaTileEntity_ProcessingArray
     }
 
     @Override
-    protected boolean isInputSeparationButtonEnabled() {
+    public boolean supportsInputSeparation() {
         return true;
     }
 
     @Override
-    protected boolean isBatchModeButtonEnabled() {
+    public boolean supportsBatchMode() {
         return true;
     }
 
@@ -681,14 +680,13 @@ public class GT_MetaTileEntity_ProcessingArray
             new ButtonWidget().setOnClick((clickData, widget) -> downtierUEV = !downtierUEV)
                 .setPlayClickSound(true)
                 .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
                     if (downtierUEV) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_DOWN_TIERING_ON);
+                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
+                            GT_UITextures.OVERLAY_BUTTON_DOWN_TIERING_ON };
                     } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_DOWN_TIERING_OFF);
+                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
+                            GT_UITextures.OVERLAY_BUTTON_DOWN_TIERING_OFF };
                     }
-                    return ret.toArray(new IDrawable[0]);
                 })
                 .setPos(80, 91)
                 .setSize(16, 16)

@@ -111,6 +111,7 @@ public class GT_MetaTileEntity_VacuumFreezer
         GT_Recipe tRecipe = getRecipeMap()
             .findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluidList, tInputList);
         if (tRecipe != null) {
+            if (!canOutputAll(tRecipe)) return false;
             if (tRecipe.isRecipeInputEqual(true, tFluidList, tInputList)) {
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
@@ -159,5 +160,10 @@ public class GT_MetaTileEntity_VacuumFreezer
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 }

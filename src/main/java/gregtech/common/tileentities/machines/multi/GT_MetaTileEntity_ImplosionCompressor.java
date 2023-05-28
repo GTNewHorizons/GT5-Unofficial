@@ -126,7 +126,7 @@ public class GT_MetaTileEntity_ImplosionCompressor
         if (!tInputList.isEmpty()) {
             GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sImplosionRecipes
                 .findRecipe(getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
-            if ((tRecipe != null) && (tRecipe.isRecipeInputEqual(true, null, tInputs))) {
+            if ((tRecipe != null) && canOutputAll(tRecipe) && tRecipe.isRecipeInputEqual(true, null, tInputs)) {
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
                 // OC THAT EXPLOSIVE SHIT!!!
@@ -188,5 +188,10 @@ public class GT_MetaTileEntity_ImplosionCompressor
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 }

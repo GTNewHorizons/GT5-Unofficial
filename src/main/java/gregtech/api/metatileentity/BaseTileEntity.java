@@ -672,6 +672,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         STALLED_VENT_TOOLTIP = "GT5U.machines.stalled_vent.tooltip",
         FLUID_TRANSFER_TOOLTIP = "GT5U.machines.fluid_transfer.tooltip",
         ITEM_TRANSFER_TOOLTIP = "GT5U.machines.item_transfer.tooltip", POWER_SOURCE_KEY = "GT5U.machines.powersource.",
+        BUTTON_FORBIDDEN_TOOLTIP = "GT5U.gui.button.forbidden",
         NEI_TRANSFER_STEAM_TOOLTIP = "GT5U.machines.nei_transfer.steam.tooltip",
         NEI_TRANSFER_VOLTAGE_TOOLTIP = "GT5U.machines.nei_transfer.voltage.tooltip";
 

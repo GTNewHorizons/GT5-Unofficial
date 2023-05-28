@@ -164,6 +164,8 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
             // Multiply up the output fluid.
             modifiedRecipe.mFluidOutputs[0].amount *= multiplier;
 
+            if (!canOutputAll(modifiedRecipe)) return false;
+
             // Takes items/fluids from hatches/busses.
             if (!modifiedRecipe.isRecipeInputEqual(true, fluids, items)) return false;
 
@@ -254,5 +256,10 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
     public void loadNBTData(final NBTTagCompound aNBT) {
         multiplier = aNBT.getInteger("eMultiplier");
         super.loadNBTData(aNBT);
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 }

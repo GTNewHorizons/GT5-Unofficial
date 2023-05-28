@@ -231,6 +231,7 @@ public class GT_MetaTileEntity_DistillationTower extends
                 new FluidStack[] { tFluid },
                 inputs);
             if (tRecipe != null) {
+                if (!canOutputAll(tRecipe)) continue;
                 if (tRecipe.isRecipeInputEqual(true, tFluids, inputs)) {
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
@@ -394,5 +395,10 @@ public class GT_MetaTileEntity_DistillationTower extends
     @Override
     protected SoundResource getProcessStartSound() {
         return SoundResource.GT_MACHINES_DISTILLERY_LOOP;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 }

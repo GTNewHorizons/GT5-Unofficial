@@ -1,7 +1,5 @@
 package gregtech.api.multitileentity.multiblock.base;
 
-import static mcp.mobius.waila.api.SpecialChars.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.LongStream;
@@ -123,7 +121,7 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
         boolean result = processingLogic.setInputItems(index, getInputItems(index))
             .setInputFluids(index, getInputFluids(index))
             .setTileEntity(this)
-            .setVoidProtection(index, isVoidProtectionEnabled(index))
+            .setVoidProtection(index, isVoidProtectionEnabledForItem(index), isVoidProtectionEnabledForFluid(index))
             .setEut(index, getEutForComplexParallel(index))
             .setPerfectOverclock(hasPerfectOverclock())
             .process(index);
@@ -181,8 +179,12 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
         return getInputFluids();
     }
 
-    protected boolean isVoidProtectionEnabled(int index) {
-        return !voidExcess;
+    protected boolean isVoidProtectionEnabledForItem(int index) {
+        return protectsExcessItem();
+    }
+
+    protected boolean isVoidProtectionEnabledForFluid(int index) {
+        return protectsExcessFluid();
     }
 
     protected boolean hasPerfectOverclock() {

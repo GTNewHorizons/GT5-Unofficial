@@ -134,7 +134,9 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     }
 
     private boolean tryProcessOreList() {
-        if (!voidExcess) {
+        // Even though it works fine without this check,
+        // it can save tiny amount of CPU time when void protection is disabled
+        if (protectsExcessItem()) {
             boolean simulateResult = processOreList(true);
             if (!simulateResult) {
                 mEUt = 0;
@@ -142,6 +144,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                 return false;
             }
         }
+
         boolean result = processOreList(false);
         if (!result) {
             mEUt = 0;
@@ -193,7 +196,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                 }
             }
             ItemStack[] toOutput = getOutputByDrops(oreBlockDrops);
-            if (simulate && !canFitOutput(toOutput)) {
+            if (simulate && !canOutputAll(toOutput)) {
                 return false;
             }
             mOutputItems = toOutput;
@@ -465,7 +468,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     }
 
     @Override
-    protected boolean isVoidExcessButtonEnabled() {
+    public boolean supportsVoidProtection() {
         return true;
     }
 }
