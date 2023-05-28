@@ -508,7 +508,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
 
             GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
                     .setFluidInputs(aFluidInputs).setAvailableEUt(getMaxInputAmps() * getAverageInputVoltage())
-                    .setMaxParallel(mCurrentMaxParallel).enableConsumption();
+                    .setMaxParallel(mCurrentMaxParallel).setController(this).enableConsumption();
 
             if (batchMode) {
                 helper.enableBatchMode(128);
