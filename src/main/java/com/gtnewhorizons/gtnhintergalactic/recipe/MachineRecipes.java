@@ -1,7 +1,8 @@
 package com.gtnewhorizons.gtnhintergalactic.recipe;
 
 import static gregtech.api.enums.GT_Values.RA;
-import static gregtech.api.enums.GT_Values.VP;
+import static gregtech.api.enums.TickTime.MINUTE;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,6 +26,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -116,20 +118,19 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderLuV, 5760), Materials.UUMatter.getFluid(16000),
                         Materials.Lubricant.getFluid(32000), Materials.Neutronium.getMolten(1440) },
                 IGItems.SpaceElevatorController,
-                36000,
-                (int) VP[9]);
+                5 * MINUTE,
+                (int) TierEU.RECIPE_UHV);
 
         // Nanotube spool
-        RA.addAssemblerRecipe(
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Graphene, 64),
+        RA.stdBuilder()
+                .itemInputs(
                         GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Graphene, 64),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Graphene, 64),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Graphene, 64), },
-                Materials.AdvancedGlue.getFluid(720),
-                new ItemStack(IGItems.SpaceElevatorItems, 1, 0),
-                1200,
-                (int) VP[7],
-                true);
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Graphene, 64),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Graphene, 64))
+                .itemOutputs(new ItemStack(IGItems.SpaceElevatorItems, 1, 0))
+                .fluidInputs(Materials.AdvancedGlue.getFluid(720)).noFluidOutputs().duration(1 * MINUTE)
+                .eut(TierEU.RECIPE_ZPM).requiresCleanRoom().noOptimize().addTo(sAssemblerRecipes);
 
         // Space Elevator Cable
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -145,8 +146,8 @@ public class MachineRecipes implements Runnable {
                         new Object[] { OrePrefixes.circuit.get(Materials.Infinite), 4 }, },
                 new FluidStack[] { Materials.AdvancedGlue.getFluid(720) },
                 new ItemStack(IGBlocks.SpaceElevatorCable),
-                1200,
-                (int) VP[9]);
+                1 * MINUTE,
+                (int) TierEU.RECIPE_UHV);
 
         // Space Elevator Base Casing
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -164,8 +165,8 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderLuV, 5760), Materials.UUMatter.getFluid(2000),
                         Materials.Iridium.getMolten(1152) },
                 new ItemStack(IGBlocks.SpaceElevatorCasing, 8, 0),
-                1200,
-                (int) VP[8]);
+                1 * MINUTE,
+                (int) TierEU.RECIPE_UV);
 
         // Space Elevator Support Structure
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -181,8 +182,8 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderLuV, 5760), Materials.UUMatter.getFluid(1000),
                         Materials.Iridium.getMolten(1440) },
                 new ItemStack(IGBlocks.SpaceElevatorCasing, 8, 1),
-                1200,
-                (int) VP[8]);
+                1 * MINUTE,
+                (int) TierEU.RECIPE_UV);
 
         // Space Elevator Internal Structure
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -197,8 +198,8 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderLuV, 5760), Materials.UUMatter.getFluid(8000),
                         Materials.Concrete.getMolten(1440) },
                 new ItemStack(IGBlocks.SpaceElevatorCasing, 8, 2),
-                1200,
-                (int) VP[8]);
+                1 * MINUTE,
+                (int) TierEU.RECIPE_UV);
 
         // Space Elevator Motor MK-I
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -216,8 +217,8 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderLuV, 5760), Materials.UUMatter.getFluid(8000),
                         Materials.Naquadria.getMolten(1440), Materials.Lubricant.getFluid(16000) },
                 new ItemStack(IGBlocks.SpaceElevatorMotor, 1, 0),
-                2400,
-                (int) VP[8]);
+                1 * MINUTE,
+                (int) TierEU.RECIPE_UV);
 
         // Space Elevator Motor MK-II
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -235,8 +236,8 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderLuV, 5760), Materials.UUMatter.getFluid(8000),
                         Materials.Naquadria.getMolten(1440), Materials.Lubricant.getFluid(16000) },
                 new ItemStack(IGBlocks.SpaceElevatorMotor, 1, 1),
-                2400,
-                (int) VP[9]);
+                1 * MINUTE,
+                (int) TierEU.RECIPE_UHV);
 
         // Space Elevator Motor MK-III
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -254,8 +255,8 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderUEV, 2880), Materials.UUMatter.getFluid(8000),
                         Materials.Naquadria.getMolten(1440), Materials.Lubricant.getFluid(24000) },
                 new ItemStack(IGBlocks.SpaceElevatorMotor, 1, 2),
-                2400,
-                (int) VP[10]);
+                1 * MINUTE,
+                (int) TierEU.RECIPE_UEV);
 
         // Space Elevator Motor MK-IV
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -273,8 +274,8 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderUEV, 2880), Materials.UUMatter.getFluid(8000),
                         Materials.Naquadria.getMolten(1440), Materials.Lubricant.getFluid(24000) },
                 new ItemStack(IGBlocks.SpaceElevatorMotor, 1, 3),
-                2400,
-                (int) VP[11]);
+                1 * MINUTE,
+                (int) TierEU.RECIPE_UIV);
 
         // Space Elevator Motor MK-V
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -292,8 +293,8 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderUEV, 2880), Materials.UUMatter.getFluid(8000),
                         Materials.Naquadria.getMolten(1440), Materials.Lubricant.getFluid(24000) },
                 new ItemStack(IGBlocks.SpaceElevatorMotor, 1, 4),
-                2400,
-                (int) VP[11]);
+                1 * MINUTE,
+                (int) TierEU.RECIPE_UIV);
 
         // Space Elevator Modules
 
@@ -312,8 +313,8 @@ public class MachineRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 32), },
                 new FluidStack[] { new FluidStack(solderUEV, 1296), Materials.Infinity.getMolten(576) },
                 IGItems.SpaceElevatorModulePumpT1,
-                6000,
-                (int) VP[10]);
+                2 * MINUTE,
+                (int) TierEU.RECIPE_UEV);
 
         // Pump Module MK-II
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -332,23 +333,21 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderUEV, 4608),
                         MaterialsUEVplus.TranscendentMetal.getMolten(2304) },
                 IGItems.SpaceElevatorModulePumpT2,
-                600 * 20,
-                (int) VP[11]);
+                2 * MINUTE,
+                (int) TierEU.RECIPE_UIV);
 
         // Pump Module MK-II - Assembler alt
-        RA.addAssemblerRecipe(
-                new ItemStack[] { GT_Utility.copyAmount(4, IGItems.SpaceElevatorModulePumpT1),
+        RA.stdBuilder()
+                .itemInputs(
+                        GT_Utility.copyAmount(4, IGItems.SpaceElevatorModulePumpT1),
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 8),
                         GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Optical, 16),
                         ItemList.Electric_Pump_UIV.get(8),
                         GT_OreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.SpaceTime, 8),
                         metaStableOgScrew_64,
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.TranscendentMetal, 16), },
-                new FluidStack(solderUEV, 4608),
-                IGItems.SpaceElevatorModulePumpT2,
-                1200 * 20,
-                (int) VP[11],
-                false);
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.TranscendentMetal, 16))
+                .itemOutputs(IGItems.SpaceElevatorModulePumpT2).fluidInputs(new FluidStack(solderUEV, 4608))
+                .noFluidOutputs().duration(2 * MINUTE).eut(TierEU.RECIPE_UIV).noOptimize().addTo(sAssemblerRecipes);
 
         // Assembler Module MK-I
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -370,8 +369,8 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderLuV, 1296), Materials.Naquadria.getMolten(1296),
                         Materials.Lubricant.getFluid(16000) },
                 IGItems.SpaceElevatorModuleAssemblerT1,
-                600 * 20,
-                (int) VP[10]);
+                2 * MINUTE,
+                (int) TierEU.RECIPE_UEV);
 
         // Assembler Module MK-II
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -391,8 +390,8 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderUEV, 1296), Materials.Infinity.getMolten(1296),
                         Materials.UUMatter.getFluid(16000) },
                 IGItems.SpaceElevatorModuleAssemblerT2,
-                600 * 20,
-                (int) VP[11]);
+                2 * MINUTE,
+                (int) TierEU.RECIPE_UIV);
 
         // Assembler Module MK-III
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -420,8 +419,8 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderUEV, 5184), MaterialsUEVplus.BlackDwarfMatter.getMolten(1296),
                         MaterialsUEVplus.WhiteDwarfMatter.getMolten(1296), MaterialsUEVplus.SpaceTime.getMolten(1296) },
                 IGItems.SpaceElevatorModuleAssemblerT3,
-                600 * 20,
-                (int) VP[13]);
+                2 * MINUTE,
+                (int) TierEU.RECIPE_UXV);
 
         // Research Module
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -441,8 +440,8 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderLuV, 4608), Materials.Infinity.getMolten(2304),
                         Materials.UUMatter.getFluid(8000), Materials.SuperCoolant.getFluid(4000) },
                 IGItems.SpaceElevatorModuleResearch,
-                600 * 20,
-                (int) VP[10]);
+                2 * MINUTE,
+                (int) TierEU.RECIPE_UEV);
 
         // Project Manager Module
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -463,8 +462,8 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderLuV, 4608), Materials.Iridium.getMolten(2304),
                         Materials.UUMatter.getFluid(2000) },
                 IGItems.SpaceElevatorModuleManager,
-                300 * 20,
-                (int) VP[9]);
+                2 * MINUTE,
+                (int) TierEU.RECIPE_UHV);
 
         // Miner Module MK-I
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -482,8 +481,8 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderLuV, 2880), Materials.Naquadria.getMolten(1440),
                         Materials.Lubricant.getFluid(8000) },
                 IGItems.SpaceElevatorModuleMinerT1,
-                4500,
-                (int) VP[9]);
+                2 * MINUTE,
+                (int) TierEU.RECIPE_UHV);
         // Miner Module MK-II
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 IGItems.SpaceElevatorModuleMinerT1,
@@ -499,8 +498,8 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderLuV, 2880), Materials.Naquadria.getMolten(2880),
                         Materials.Lubricant.getFluid(16000) },
                 IGItems.SpaceElevatorModuleMinerT2,
-                9000,
-                (int) VP[10]);
+                2 * MINUTE,
+                (int) TierEU.RECIPE_UEV);
         // Miner Module MK-III
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 IGItems.SpaceElevatorModuleMinerT2,
@@ -516,46 +515,52 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderUEV, 2880), MaterialsUEVplus.TranscendentMetal.getMolten(1440),
                         Materials.UUMatter.getFluid(2000) },
                 IGItems.SpaceElevatorModuleMinerT3,
-                18000,
-                (int) VP[11]);
+                2 * MINUTE,
+                (int) TierEU.RECIPE_UIV);
 
         // Mining drones
 
         // LV
-        RA.addAssemblerRecipe(
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.Titanium, 8),
-                        ItemList.Robot_Arm_LV.get(8), ItemList.Field_Generator_LV.get(2),
-                        GT_OreDictUnificator.get("circuitAdvanced", 4), new ItemStack(GCItems.heavyPlatingTier1, 16),
-                        new ItemStack(GCItems.rocketEngine, 2), ItemList.Sensor_LV.get(8) },
-                Materials.SolderingAlloy.getMolten(720),
-                new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.LV.ordinal()),
-                1200,
-                (int) VP[1],
-                false);
+        RA.stdBuilder()
+                .itemInputs(
+                        GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.Titanium, 8),
+                        ItemList.Robot_Arm_LV.get(8),
+                        ItemList.Field_Generator_LV.get(2),
+                        GT_OreDictUnificator.get("circuitAdvanced", 4),
+                        new ItemStack(GCItems.heavyPlatingTier1, 16),
+                        new ItemStack(GCItems.rocketEngine, 2),
+                        ItemList.Sensor_LV.get(8))
+                .itemOutputs(new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.LV.ordinal()))
+                .fluidInputs(Materials.SolderingAlloy.getMolten(720)).noFluidOutputs().duration(1 * MINUTE)
+                .eut(TierEU.RECIPE_LV).addTo(sAssemblerRecipes);
 
         // MV
-        RA.addAssemblerRecipe(
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.TungstenSteel, 8),
-                        ItemList.Robot_Arm_MV.get(8), ItemList.Field_Generator_MV.get(2),
-                        GT_OreDictUnificator.get("circuitData", 4), new ItemStack(GCItems.heavyPlatingTier1, 32),
-                        new ItemStack(GCItems.rocketEngine, 4), ItemList.Sensor_MV.get(8) },
-                Materials.SolderingAlloy.getMolten(1440),
-                new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.MV.ordinal()),
-                1200,
-                (int) VP[2],
-                false);
+        RA.stdBuilder()
+                .itemInputs(
+                        GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.TungstenSteel, 8),
+                        ItemList.Robot_Arm_MV.get(8),
+                        ItemList.Field_Generator_MV.get(2),
+                        GT_OreDictUnificator.get("circuitData", 4),
+                        new ItemStack(GCItems.heavyPlatingTier1, 32),
+                        new ItemStack(GCItems.rocketEngine, 4),
+                        ItemList.Sensor_MV.get(8))
+                .itemOutputs(new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.MV.ordinal()))
+                .fluidInputs(Materials.SolderingAlloy.getMolten(1440)).noFluidOutputs().duration(1 * MINUTE)
+                .eut(TierEU.RECIPE_MV).addTo(sAssemblerRecipes);
 
         // HV
-        RA.addAssemblerRecipe(
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.Iridium, 8),
-                        ItemList.Robot_Arm_HV.get(8), ItemList.Field_Generator_HV.get(2),
-                        GT_OreDictUnificator.get("circuitElite", 4), new ItemStack(MarsItems.marsItemBasic, 32, 3),
-                        new ItemStack(GCItems.rocketEngine, 4), ItemList.Sensor_HV.get(8) },
-                Materials.SolderingAlloy.getMolten(1440),
-                new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.HV.ordinal()),
-                1200,
-                (int) VP[3],
-                false);
+        RA.stdBuilder()
+                .itemInputs(
+                        GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.Iridium, 8),
+                        ItemList.Robot_Arm_HV.get(8),
+                        ItemList.Field_Generator_HV.get(2),
+                        GT_OreDictUnificator.get("circuitElite", 4),
+                        new ItemStack(MarsItems.marsItemBasic, 32, 3),
+                        new ItemStack(GCItems.rocketEngine, 4),
+                        ItemList.Sensor_HV.get(8))
+                .itemOutputs(new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.HV.ordinal()))
+                .fluidInputs(Materials.SolderingAlloy.getMolten(1440)).noFluidOutputs().duration(1 * MINUTE)
+                .eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
 
         // EV
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -572,8 +577,8 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderLuV, 720), Materials.Iridium.getMolten(720),
                         new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 16000) },
                 new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.EV.ordinal()),
-                1200,
-                (int) VP[4]);
+                1 * MINUTE,
+                (int) TierEU.RECIPE_EV);
 
         // IV
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -590,8 +595,8 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderLuV, 1440), Materials.Iridium.getMolten(1440),
                         new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 32000) },
                 new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.IV.ordinal()),
-                1200,
-                (int) VP[5]);
+                1 * MINUTE,
+                (int) TierEU.RECIPE_IV);
 
         // LuV
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -609,8 +614,8 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderLuV, 2880), Materials.Osmiridium.getMolten(1440),
                         new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 64000) },
                 new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.LuV.ordinal()),
-                1200,
-                (int) VP[6]);
+                1 * MINUTE,
+                (int) TierEU.RECIPE_LuV);
 
         // ZPM
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -628,8 +633,8 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderLuV, 2880), Materials.Osmiridium.getMolten(1440),
                         new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 128000) },
                 new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.ZPM.ordinal()),
-                1200,
-                (int) VP[7]);
+                1 * MINUTE,
+                (int) TierEU.RECIPE_ZPM);
 
         // UV
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -647,8 +652,8 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderLuV, 2880), Materials.Naquadria.getMolten(1440),
                         new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 256000) },
                 new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.UV.ordinal()),
-                1200,
-                (int) VP[8]);
+                1 * MINUTE,
+                (int) TierEU.RECIPE_UV);
 
         // UHV
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -666,8 +671,8 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderUEV, 2880), Materials.Neutronium.getMolten(1440),
                         new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 512000) },
                 new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.UHV.ordinal()),
-                1200,
-                (int) VP[9]);
+                1 * MINUTE,
+                (int) TierEU.RECIPE_UHV);
 
         // UEV
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -685,7 +690,7 @@ public class MachineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderUEV, 2880), Materials.Quantium.getMolten(1440),
                         new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 512000) },
                 new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.UEV.ordinal()),
-                1200,
-                (int) VP[10]);
+                1 * MINUTE,
+                (int) TierEU.RECIPE_UEV);
     }
 }
