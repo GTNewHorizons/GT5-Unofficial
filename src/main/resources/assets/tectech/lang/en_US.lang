@@ -884,6 +884,8 @@ gt.blockmachines.pipe.datastream.desc.1=Don't stare at the beam!
 gt.blockmachines.pipe.datastream.desc.2=Must be painted to work
 gt.blockmachines.pipe.datastream.desc.3=Do not cross or split
 
+gt.blockmachines.pipe.desc.4=Explosion proof
+
 #Single blocks
 gt.blockmachines.machine.tt.ownerdetector.name=Owner detector
 gt.blockmachines.machine.tt.ownerdetector.desc.0=Screwdrive to change mode
