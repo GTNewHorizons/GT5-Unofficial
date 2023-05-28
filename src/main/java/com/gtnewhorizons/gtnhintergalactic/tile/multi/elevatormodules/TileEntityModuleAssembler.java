@@ -206,12 +206,12 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
 
     @Override
     public boolean protectsExcessItem() {
-        return eSafeVoid;
+        return !eSafeVoid;
     }
 
     @Override
     public boolean protectsExcessFluid() {
-        return eSafeVoid;
+        return !eSafeVoid;
     }
 
     /**

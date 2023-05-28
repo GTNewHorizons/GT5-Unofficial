@@ -153,7 +153,12 @@ public class TileEntityModuleResearch extends TileEntityModuleBase {
     }
 
     @Override
-    public boolean supportsVoidProtection() {
-        return true;
+    public boolean protectsExcessItem() {
+        return !eSafeVoid;
+    }
+
+    @Override
+    public boolean protectsExcessFluid() {
+        return !eSafeVoid;
     }
 }
