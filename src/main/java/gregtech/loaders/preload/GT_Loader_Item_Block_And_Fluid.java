@@ -18,6 +18,7 @@ import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.util.Locale;
 
+import gregtech.common.items.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -43,17 +44,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.*;
-import gregtech.common.items.GT_DepletetCell_Item;
-import gregtech.common.items.GT_FluidDisplayItem;
-import gregtech.common.items.GT_IntegratedCircuit_Item;
-import gregtech.common.items.GT_MetaGenerated_Item_01;
-import gregtech.common.items.GT_MetaGenerated_Item_02;
-import gregtech.common.items.GT_MetaGenerated_Item_03;
-import gregtech.common.items.GT_MetaGenerated_Item_98;
-import gregtech.common.items.GT_MetaGenerated_Item_99;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gregtech.common.items.GT_NeutronReflector_Item;
-import gregtech.common.items.GT_VolumetricFlask;
 
 public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
@@ -116,6 +106,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         new GT_MetaGenerated_Item_01();
         new GT_MetaGenerated_Item_02();
         new GT_MetaGenerated_Item_03();
+        new GT_MetaGenerated_Item_04();
         // GT_MetaGenerated_Item_98 is initialized in GT_Proxy.onPostLoad() because we need to wait for fluids to be
         // registered.
         // Pre-initialization needs to happen before then, though, because the cell icons get deleted at some point

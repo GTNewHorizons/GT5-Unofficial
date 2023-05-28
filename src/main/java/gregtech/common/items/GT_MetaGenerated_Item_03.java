@@ -909,7 +909,9 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "White Dwarf Extruder Shape (Plate)",
                 "Ultra Strong Stellar Shape for making Plates"));
         ItemList.White_Dwarf_Shape_Extruder_Rod.set(
-            addItem(whiteDwarfIDs++, "White Dwarf Extruder Shape (Rod)", "Ultra Strong Stellar Shape for making Rods"));
+            addItem(whiteDwarfIDs++,
+                "White Dwarf Extruder Shape (Rod)",
+                "Ultra Strong Stellar Shape for making Rods"));
         ItemList.White_Dwarf_Shape_Extruder_Bolt.set(
             addItem(
                 whiteDwarfIDs++,
