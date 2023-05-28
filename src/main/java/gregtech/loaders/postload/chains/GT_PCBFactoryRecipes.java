@@ -54,7 +54,7 @@ public class GT_PCBFactoryRecipes {
             .noFluidOutputs()
             .itemOutputs(ItemList.PCBFactory.get(1))
             .eut(TierEU.RECIPE_UV)
-            .duration(1 * HOURS + 40 * MINUTES)
+            .duration(5 * MINUTES)
             .addTo(AssemblyLine);
 
         if (GTPlusPlus.isModLoaded()) {
