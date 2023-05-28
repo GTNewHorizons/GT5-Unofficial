@@ -327,8 +327,6 @@ public class GT_MetaTileEntity_ProcessingArray
             return false;
         }
 
-        if (!canOutputAll(aRecipe)) return false;
-
         this.mMaxProgresstime = aRecipe.mDuration * multiplier;
 
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
@@ -671,11 +669,6 @@ public class GT_MetaTileEntity_ProcessingArray
 
     @Override
     public boolean supportsBatchMode() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsVoidProtection() {
         return true;
     }
 
