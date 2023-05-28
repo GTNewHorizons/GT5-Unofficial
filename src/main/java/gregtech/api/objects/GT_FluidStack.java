@@ -16,7 +16,6 @@ public class GT_FluidStack extends FluidStack {
 
     private static final Collection<GT_FluidStack> sAllFluidStacks = Collections
         .newSetFromMap(new WeakHashMap<>(10000));
-    private static volatile boolean lock = false;
     private final Fluid mFluid;
 
     public GT_FluidStack(Fluid aFluid, int aAmount) {
