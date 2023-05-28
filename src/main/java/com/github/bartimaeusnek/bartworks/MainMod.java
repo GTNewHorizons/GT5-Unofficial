@@ -82,7 +82,7 @@ import gregtech.api.util.GT_Recipe;
 @Mod(
         modid = MainMod.MOD_ID,
         name = MainMod.NAME,
-        version = MainMod.VERSION,
+        version = API_REFERENCE.VERSION,
         dependencies = "required-after:IC2; " + "required-after:gregtech; "
                 + "after:berriespp; "
                 + "after:tectech; "
@@ -95,7 +95,6 @@ import gregtech.api.util.GT_Recipe;
 public final class MainMod {
 
     public static final String NAME = "BartWorks";
-    public static final String VERSION = "GRADLETOKEN_VERSION";
     public static final String MOD_ID = Mods.Names.BART_WORKS;
     public static final String APIVERSION = "11";
     public static final Logger LOGGER = LogManager.getLogger(MainMod.NAME);
@@ -115,11 +114,6 @@ public final class MainMod {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent preinit) {
-
-        if (!(API_REFERENCE.VERSION.equals(MainMod.APIVERSION))) {
-            MainMod.LOGGER.error("Something has loaded an old API. Please contact the Mod authors to update!");
-        }
-
         if (GTPlusPlus.isModLoaded()) {
             MainMod.LOGGER.info("Found GT++, continuing");
         }

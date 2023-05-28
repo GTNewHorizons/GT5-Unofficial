@@ -25,7 +25,7 @@ import org.apache.commons.io.input.ReaderInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.github.bartimaeusnek.bartworks.MainMod;
+import com.github.bartimaeusnek.bartworks.API.API_REFERENCE;
 import com.github.bartimaeusnek.crossmod.GTpp.loader.RadioHatchCompat;
 import com.github.bartimaeusnek.crossmod.galacticraft.GalacticraftProxy;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechResearchLoader;
@@ -51,7 +51,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 public class BartWorksCrossmod {
 
     public static final String NAME = "BartWorks Mod Additions";
-    public static final String VERSION = MainMod.VERSION;
+    public static final String VERSION = API_REFERENCE.VERSION;
     public static final String MOD_ID = "bartworkscrossmod";
     public static final Logger LOGGER = LogManager.getLogger(BartWorksCrossmod.NAME);
 

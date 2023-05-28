@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 import net.minecraftforge.common.config.Property;
 
+import com.github.bartimaeusnek.bartworks.API.API_REFERENCE;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 
@@ -36,7 +37,7 @@ import vexatos.tgregworks.reference.Config;
 public class MaterialsInjector {
 
     public static final String NAME = "BartWorks Mod Additions - TGregworks Container";
-    public static final String VERSION = MainMod.VERSION;
+    public static final String VERSION = API_REFERENCE.VERSION;
     public static final String MOD_ID = "bartworkscrossmodtgregworkscontainer";
 
     private static HashMap<Materials, Property> configProps;
