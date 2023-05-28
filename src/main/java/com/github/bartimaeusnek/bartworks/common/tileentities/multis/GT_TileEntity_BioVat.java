@@ -312,6 +312,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
+        if (!canOutputAll(gtRecipe)) return false;
         if (!gtRecipe.isRecipeInputEqual(true, tFluids, tInputs)) return false;
 
         final FluidStack recipeFluidOutput = gtRecipe.getFluidOutput(0);
@@ -738,5 +739,10 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
                 + EnumChatFormatting.RESET
                 + " %";
         return infoData;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 }

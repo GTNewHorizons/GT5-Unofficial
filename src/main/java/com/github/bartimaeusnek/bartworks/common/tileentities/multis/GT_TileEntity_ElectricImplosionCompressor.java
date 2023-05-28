@@ -285,14 +285,10 @@ public class GT_TileEntity_ElectricImplosionCompressor
 
             GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(tItemInputs)
                     .setFluidInputs(tFluidInputs).setAvailableEUt(tTotalEU).setMaxParallel(tCurrentMaxParallel)
-                    .enableConsumption().enableOutputCalculation();
+                    .enableConsumption().enableOutputCalculation().setController(this);
 
             if (batchMode) {
                 helper.enableBatchMode(128);
-            }
-
-            if (!voidExcess) {
-                helper.enableVoidProtection(this);
             }
 
             helper.build();
@@ -540,12 +536,12 @@ public class GT_TileEntity_ElectricImplosionCompressor
     }
 
     @Override
-    protected boolean isBatchModeButtonEnabled() {
+    public boolean supportsBatchMode() {
         return true;
     }
 
     @Override
-    protected boolean isVoidExcessButtonEnabled() {
+    public boolean supportsVoidProtection() {
         return true;
     }
 }

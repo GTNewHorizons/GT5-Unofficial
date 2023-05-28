@@ -233,6 +233,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
         }
 
         for (GT_Recipe recipe : this.GT_RECIPE_COLLECTION) {
+            if (!canOutputAll(recipe)) return false;
             if (recipe.isRecipeInputEqual(
                     true,
                     false,
@@ -439,7 +440,12 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     }
 
     @Override
-    protected boolean isRecipeLockingEnabled() {
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean isRecipeLockingEnabled() {
         return imprintedItemName != null && !imprintedItemName.equals("");
     }
 

@@ -545,12 +545,12 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
     }
 
     @Override
-    protected boolean isInputSeparationButtonEnabled() {
+    public boolean supportsInputSeparation() {
         return true;
     }
 
     @Override
-    protected boolean isBatchModeButtonEnabled() {
+    public boolean supportsBatchMode() {
         return true;
     }
 }

@@ -496,7 +496,7 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
     }
 
     @Override
-    protected boolean isBatchModeButtonEnabled() {
+    public boolean supportsBatchMode() {
         return true;
     }
 }

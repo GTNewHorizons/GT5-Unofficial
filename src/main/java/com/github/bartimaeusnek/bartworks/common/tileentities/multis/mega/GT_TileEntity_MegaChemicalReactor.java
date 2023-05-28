@@ -317,7 +317,7 @@ public class GT_TileEntity_MegaChemicalReactor
     }
 
     @Override
-    protected boolean isBatchModeButtonEnabled() {
+    public boolean supportsBatchMode() {
         return true;
     }
 }

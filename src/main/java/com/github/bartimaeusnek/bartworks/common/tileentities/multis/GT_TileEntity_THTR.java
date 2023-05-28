@@ -254,14 +254,18 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
 
         int toReduce = MathUtils.floorInt((double) this.fuelsupply * 0.005D * eff);
 
-        this.fuelsupply -= toReduce;
+        final int originalToReduce = toReduce;
         int burnedballs = toReduce / 64;
         if (burnedballs > 0) toReduce -= burnedballs * 64;
 
         int meta = THTRMaterials.MATERIAL_USED_FUEL_INDEX;
 
-        this.mOutputItems = new ItemStack[] { new ItemStack(THTRMaterials.aTHTR_Materials, burnedballs, meta),
+        ItemStack[] toOutput = new ItemStack[] { new ItemStack(THTRMaterials.aTHTR_Materials, burnedballs, meta),
                 new ItemStack(THTRMaterials.aTHTR_Materials, toReduce, meta + 1) };
+        if (!canOutputAll(toOutput)) return false;
+
+        this.fuelsupply -= originalToReduce;
+        this.mOutputItems = toOutput;
 
         // this.updateSlots(); not needed ?
 
@@ -381,6 +385,11 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
         GT_Utility.sendChatToPlayer(
                 aPlayer,
                 "THTR is now running in " + (this.empty ? "emptying mode." : "normal Operation"));
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 
     public static class THTRMaterials {
