@@ -1305,7 +1305,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
     @Override
     public float getBlastResistance(ForgeDirection side) {
-        return (mConnections & IConnectable.HAS_FOAM) != 0 ? 50.0F : 5.0F;
+        return canAccessData() ? Math.max(0, getMetaTileEntity().getExplosionResistance(side)) : 5.0F;
     }
 
     @Override
