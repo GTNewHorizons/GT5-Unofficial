@@ -1649,7 +1649,7 @@ public class Textures {
          * USE casingTexturePages[page] instead of CASING_BLOCKS since it is casingTexturePages[0]
          */
         @Deprecated
-        public static ITexture[] CASING_BLOCKS = new ITexture[128]; // original variable still limited to 128
+        public static final ITexture[] CASING_BLOCKS = new ITexture[128]; // original variable still limited to 128
 
         public static ITexture[][] MACHINE_CASINGS = new ITexture[15][17];
         /**

@@ -211,9 +211,9 @@ public enum CombType {
     _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);
 
     public boolean showInList;
-    public ItemComb.Voltage voltage;
-    public Materials material;
-    public int chance;
+    public final ItemComb.Voltage voltage;
+    public final Materials material;
+    public final int chance;
 
     private final int id;
     private final String name;

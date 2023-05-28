@@ -1007,7 +1007,7 @@ public enum OrePrefixes {
     public OrePrefixes mPrefixInto = this;
     public float mHeatDamage = 0.0F; // Negative for Frost Damage
     private final GT_HashSet<GT_ItemStack2> mContainsTestCache = new GT_HashSet<>(512, 0.5f);
-    public static List<OrePrefixes> mPreventableComponents = new LinkedList<>(
+    public static final List<OrePrefixes> mPreventableComponents = new LinkedList<>(
         Arrays.asList(
             OrePrefixes.gem,
             OrePrefixes.ingotHot,
