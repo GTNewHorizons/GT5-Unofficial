@@ -5,12 +5,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.awt.*;
+import java.util.List;
+
+import static gregtech.api.ModernMaterials.ModernMaterialUtilities.materialIDToMaterial;
 
 public class FrameBoxBlock2 extends BlockContainer {
 
@@ -55,5 +61,19 @@ public class FrameBoxBlock2 extends BlockContainer {
     public int colorMultiplier(IBlockAccess worldIn, int x, int y, int z)
     {
         return new Color(255, 255, 0, 255).getRGB();
+    }
+
+    @Override
+    public int damageDropped(int meta) {
+        return meta;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list)
+    {
+        for (final int materialID : materialIDToMaterial.keySet())
+        {
+            list.add(new ItemStack(item, 1, materialID));
+        }
     }
 }

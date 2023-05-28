@@ -22,7 +22,7 @@ public abstract class DumbItemBlock extends ItemBlock {
         super(block);
         setMaxDamage(0);
         setHasSubtypes(true);
-        setCreativeTab(GregTech_API.TAB_GREGTECH); // todo add new gt frame tab.
+        setCreativeTab(GregTech_API.TAB_GREGTECH_ORES); // todo add new gt frame tab.
     }
 
     @Override
@@ -33,7 +33,7 @@ public abstract class DumbItemBlock extends ItemBlock {
     // Tooltip information.
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List tooltipList, boolean aF3_H)  {
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> tooltipList, boolean aF3_H)  {
 
         final ModernMaterial material = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
 

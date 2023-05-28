@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public enum BlocksEnum implements IGetItem, IAssociatedMaterials {
 
     // Define new blocks here.
-    FrameBox("% Frame Box");
+    FrameBox("% LARP Box");
 
     public String getLocalisedName(final ModernMaterial material) {
         return unlocalisedName.replace("%", material.getMaterialName());

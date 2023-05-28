@@ -17,7 +17,9 @@ public class FrameBoxItemBlock extends DumbItemBlock {
     public String getItemStackDisplayName(ItemStack itemStack) {
         final ModernMaterial associatedMaterial = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
 
-        return getBlockEnum().getLocalisedName(associatedMaterial);
+        final String s = getBlockEnum().getLocalisedName(associatedMaterial);
+
+        return s;
     }
 
     @Override

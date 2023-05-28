@@ -8,7 +8,10 @@ import gregtech.api.ModernMaterials.Blocks.DumbBase.DumbTileEntity;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import java.awt.*;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 
@@ -24,19 +27,23 @@ public class FrameBoxBlock extends DumbBlock {
         return new FrameBoxTileEntity();
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister reg) {
-        this.blockIcon = reg.registerIcon(RES_PATH_BLOCK + "bottom");
+        this.blockIcon = reg.registerIcon("gregtech:ModernMaterialsIcons/Blocks/frameGt");
     }
 
-    @Override
-    public int getRenderType() {
-        return FrameBoxRenderer.renderID;
-    }
-
+    // Make block see through.
     @Override
     public boolean isOpaqueCube() {
-        return true;
+        return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public int colorMultiplier(IBlockAccess worldIn, int x, int y, int z)
+    {
+        return new Color(255, 100, 0, 255).getRGB();
     }
 
 }

@@ -41,7 +41,7 @@ public abstract class DumbBlock extends BlockContainer {
     }
 
     @Override
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
 
         getBlockEnum().setAssociatedItem(item);
 

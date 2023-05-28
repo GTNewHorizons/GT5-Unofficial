@@ -5,18 +5,14 @@ import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxBlock;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxItemBlock;
-import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxRenderer;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxTileEntity;
 import gregtech.api.ModernMaterials.Blocks.FrameBox2.FrameBoxBlock2;
-import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.PartProperties.Rendering.ModernMaterialItemRenderer;
 import gregtech.api.ModernMaterials.PartRecipeGenerators.ModernMaterialsPlateRecipeGenerator;
 import gregtech.api.ModernMaterials.PartsClasses.IGetItem;
 import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
 import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -26,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import static gregtech.api.enums.ConfigCategories.ModernMaterials.materialID;
-import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 
 public class ModernMaterialUtilities {
 
@@ -91,16 +86,15 @@ public class ModernMaterialUtilities {
 
         BlocksEnum.FrameBox.getAssociatedMaterials().addAll(materialIDToMaterial.values());
 
-        GameRegistry.registerBlock(new FrameBoxBlock2(), "exampleBlock");
-        GameRegistry.registerTileEntity(FrameBoxTileEntity.class, "exampleTileEntity");
+        //GameRegistry.registerBlock(new FrameBoxBlock2(), FrameBoxItemBlock.class, "exampleBlock");
+        //GameRegistry.registerTileEntity(FrameBoxTileEntity.class, "exampleTileEntity");
 
 
 
         //(new FrameBoxBlock()).registerBlock(FrameBoxTileEntity.class, FrameBoxItemBlock.class);
         //new FrameBoxRenderer();
-//        FrameBoxBlock block = new FrameBoxBlock();
-//        GameRegistry.registerBlock(block, FrameBoxItemBlock.class, BlocksEnum.FrameBox.name());
-//        GameRegistry.registerTileEntity(FrameBoxTileEntity.class, BlocksEnum.FrameBox.name());
+        GameRegistry.registerBlock(new FrameBoxBlock(), FrameBoxItemBlock.class, BlocksEnum.FrameBox.name());
+        GameRegistry.registerTileEntity(FrameBoxTileEntity.class, BlocksEnum.FrameBox.name());
     }
 
     private static void registerAllMaterialPartRecipes(ModernMaterial material) {

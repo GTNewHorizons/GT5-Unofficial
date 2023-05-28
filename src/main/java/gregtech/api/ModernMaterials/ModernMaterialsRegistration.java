@@ -33,6 +33,36 @@ public class ModernMaterialsRegistration {
             .addFluid(Plasma, 100_000)
             .build();
 
+        new ModernMaterial.Builder("GERE")
+            .setColor(3, 100, 97)
+            .setTextureMode(Metallic)
+            .addAllParts()
+            .addFluid(Gas, 1_000)
+            .addFluid(NoPrefix, 3_000)
+            .addFluid(Molten, 10_000)
+            .addFluid(Plasma, 100_000)
+            .build();
+
+        new ModernMaterial.Builder("EWAD")
+            .setColor(120, 100, 123)
+            .setTextureMode(Metallic)
+            .addAllParts()
+            .addFluid(Gas, 1_000)
+            .addFluid(NoPrefix, 3_000)
+            .addFluid(Molten, 10_000)
+            .addFluid(Plasma, 100_000)
+            .build();
+
+        new ModernMaterial.Builder("TEST")
+            .setColor(120, 2, 0)
+            .setTextureMode(Metallic)
+            .addAllParts()
+            .addFluid(Gas, 1_000)
+            .addFluid(NoPrefix, 3_000)
+            .addFluid(Molten, 10_000)
+            .addFluid(Plasma, 100_000)
+            .build();
+
 //                    .addCustomFluid(
 //            new ModernMaterialFluid.Builder("Zebra % Fluid %")
 //                .setTemperature(120_000_000)
