@@ -39,7 +39,7 @@ public class GT_NaniteChain {
             new FluidStack[] { new FluidStack(solderIndalloy, 144 * 32), Materials.HSSS.getMolten(144L * 32),
                 Materials.Osmiridium.getMolten(144L * 16) },
             ItemList.NanoForge.get(1),
-            2400 * 20,
+            300 * 20,
             (int) GT_Values.VP[7]);
 
         GT_Values.RA.addAssemblylineRecipe(

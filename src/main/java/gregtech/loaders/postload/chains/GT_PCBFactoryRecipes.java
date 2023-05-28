@@ -39,7 +39,7 @@ public class GT_PCBFactoryRecipes {
                 new Object[] { OrePrefixes.circuit.get(Materials.Master), 16 }, ItemList.Robot_Arm_ZPM.get(8) },
             new FluidStack[] { new FluidStack(solderLuV, 144 * 36), Materials.Naquadah.getMolten(144 * 18) },
             ItemList.PCBFactory.get(1),
-            6000 * 20,
+            300 * 20,
             (int) GT_Values.VP[8]);
         GT_Values.RA.addAssemblerRecipe(
             new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 1),
