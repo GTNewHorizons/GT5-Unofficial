@@ -78,7 +78,7 @@ import gregtech.api.enums.VoidingMode;
 import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IDescribable;
-import gregtech.api.interfaces.modularui.ControllerWithButtons;
+import gregtech.api.interfaces.modularui.ControllerWithOptionalFeatures;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
@@ -105,7 +105,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  */
 public abstract class Controller<T extends Controller<T>> extends MultiTileBasicMachine
     implements IAlignment, IConstructable, IMultiBlockController, IDescribable, IMTE_AddToolTips,
-    ISurvivalConstructable, ControllerWithButtons {
+    ISurvivalConstructable, ControllerWithOptionalFeatures {
 
     public static final String ALL_INVENTORIES_NAME = "all";
 

@@ -7,13 +7,14 @@ import java.util.function.Function;
 import codechicken.nei.config.DataDumper;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.ControllerWithButtons;
+import gregtech.api.interfaces.modularui.ControllerWithOptionalFeatures;
 
 public abstract class MultiBlockFeatureSupportDumper extends DataDumper {
 
-    private final Function<ControllerWithButtons, Boolean> isFeatureSupported;
+    private final Function<ControllerWithOptionalFeatures, Boolean> isFeatureSupported;
 
-    public MultiBlockFeatureSupportDumper(String name, Function<ControllerWithButtons, Boolean> isFeatureSupported) {
+    public MultiBlockFeatureSupportDumper(String name,
+        Function<ControllerWithOptionalFeatures, Boolean> isFeatureSupported) {
         super("tools.dump.gt5u." + name);
         this.isFeatureSupported = isFeatureSupported;
     }
@@ -28,7 +29,7 @@ public abstract class MultiBlockFeatureSupportDumper extends DataDumper {
         List<String[]> list = new ArrayList<>();
         for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
             IMetaTileEntity mte = GregTech_API.METATILEENTITIES[i];
-            if (!(mte instanceof ControllerWithButtons controller)) continue;
+            if (!(mte instanceof ControllerWithOptionalFeatures controller)) continue;
             if (!isFeatureSupported.apply(controller)) {
                 list.add(
                     new String[] { controller.getClass()

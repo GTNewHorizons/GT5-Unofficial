@@ -1,10 +1,10 @@
 package gregtech.nei.dumper;
 
-import gregtech.api.interfaces.modularui.ControllerWithButtons;
+import gregtech.api.interfaces.modularui.ControllerWithOptionalFeatures;
 
 public class VoidProtectionSupportDumper extends MultiBlockFeatureSupportDumper {
 
     public VoidProtectionSupportDumper() {
-        super("void_protection", ControllerWithButtons::supportsVoidProtection);
+        super("void_protection", ControllerWithOptionalFeatures::supportsVoidProtection);
     }
 }

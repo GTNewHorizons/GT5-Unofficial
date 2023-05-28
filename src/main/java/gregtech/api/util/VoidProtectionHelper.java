@@ -151,7 +151,7 @@ public class VoidProtectionHelper {
             fluidOutputs = new FluidStack[0];
         }
 
-        // Don't check ControllerWithButtons#protectsExcessItem nor #protectsExcessFluid here,
+        // Don't check ControllerWithOptionalFeatures#protectsExcessItem nor #protectsExcessFluid here,
         // to allow more involved setting for void protections (see ComplexParallelProcessingLogic)
         if (machineMeta != null) {
             boolean tMEOutputBus = false;

@@ -28,10 +28,10 @@ import gregtech.api.gui.modularui.GT_UITextures;
  * <li>Void protection</li>
  * <li>Separated input buses</li>
  * <li>Batch mode</li>
- * <li>Recipe lock</li>
+ * <li>Recipe locking</li>
  * </ul>
  */
-public interface ControllerWithButtons {
+public interface ControllerWithOptionalFeatures {
 
     boolean isAllowedToWork();
 
