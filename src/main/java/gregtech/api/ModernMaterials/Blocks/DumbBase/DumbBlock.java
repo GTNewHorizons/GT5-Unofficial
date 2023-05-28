@@ -1,11 +1,15 @@
 package gregtech.api.ModernMaterials.Blocks.DumbBase;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
 import gregtech.api.ModernMaterials.ModernMaterial;
+import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -92,10 +96,22 @@ public abstract class DumbBlock extends BlockContainer {
     }
 
     public ItemStack getDroppedItemStack(World world, int x, int y, int z) {
-        // Get the material ID.
-        DumbTileEntity dumbTileEntity = (DumbTileEntity) world.getTileEntity(x, y, z);
-        final int materialID = dumbTileEntity.getMaterialID();
+        return new ItemStack(this, 1, getMaterialID(world, x, y, z));
+    }
 
-        return new ItemStack(this, 1, materialID);
+    public int getMaterialID(World world, int x, int y, int z) {
+        DumbTileEntity dumbTileEntity = (DumbTileEntity) world.getTileEntity(x, y, z);
+        return dumbTileEntity.getMaterialID();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public int colorMultiplier(IBlockAccess worldIn, int x, int y, int z)
+    {
+        final DumbTileEntity dumbTileEntity = (DumbTileEntity) worldIn.getTileEntity(x, y, z);
+        final int materialID = dumbTileEntity.getMaterialID();
+        final ModernMaterial material = ModernMaterialUtilities.materialIDToMaterial.get(materialID);
+
+        return material.getColor().getRGB();
     }
 }

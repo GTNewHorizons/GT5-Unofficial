@@ -39,11 +39,4 @@ public class FrameBoxBlock extends DumbBlock {
         return false;
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public int colorMultiplier(IBlockAccess worldIn, int x, int y, int z)
-    {
-        return new Color(255, 100, 0, 255).getRGB();
-    }
-
 }
