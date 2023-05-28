@@ -298,10 +298,7 @@ public class GregtechMetaTileEntity_MassFabricator
 
         GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
                 .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes)
-                .enableConsumption().enableOutputCalculation();
-        if (!voidExcess) {
-            helper.enableVoidProtection(this);
-        }
+                .enableConsumption().enableOutputCalculation().setController(this);
 
         if (batchMode) {
             helper.enableBatchMode(128);
@@ -360,10 +357,7 @@ public class GregtechMetaTileEntity_MassFabricator
 
         GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
                 .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes)
-                .enableConsumption().enableOutputCalculation().setEUtModifier(aEUPercent / 100.0f);
-        if (!voidExcess) {
-            helper.enableVoidProtection(this);
-        }
+                .enableConsumption().enableOutputCalculation().setEUtModifier(aEUPercent / 100.0f).setController(this);
 
         if (batchMode) {
             helper.enableBatchMode(128);

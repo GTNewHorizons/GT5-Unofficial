@@ -687,10 +687,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 
         GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
                 .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(tMaxParallelCatalyst)
-                .enableConsumption().enableOutputCalculation();
-        if (!voidExcess) {
-            helper.enableVoidProtection(this);
-        }
+                .enableConsumption().enableOutputCalculation().setController(this);
 
         if (batchMode) {
             helper.enableBatchMode(128);

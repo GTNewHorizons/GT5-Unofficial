@@ -110,17 +110,6 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace extends
         return STRUCTURE_DEFINITION;
     }
 
-    @Override
-    public void clearHatches() {
-        mOutputHatches.clear();
-        mInputHatches.clear();
-        mOutputBusses.clear();
-        mInputBusses.clear();
-        mEnergyHatches.clear();
-        mMaintenanceHatches.clear();
-        mMufflerHatches.clear();
-    }
-
     private int getSizeFromHint(ItemStack stackSize) {
         switch (stackSize.stackSize) {
             case 1:

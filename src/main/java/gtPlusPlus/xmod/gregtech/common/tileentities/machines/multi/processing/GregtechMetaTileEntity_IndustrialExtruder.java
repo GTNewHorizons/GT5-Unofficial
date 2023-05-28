@@ -215,7 +215,7 @@ public class GregtechMetaTileEntity_IndustrialExtruder extends
     }
 
     @Override
-    protected boolean isInputSeparationEnabled() {
+    public boolean isInputSeparationEnabled() {
         return true;
     }
 }

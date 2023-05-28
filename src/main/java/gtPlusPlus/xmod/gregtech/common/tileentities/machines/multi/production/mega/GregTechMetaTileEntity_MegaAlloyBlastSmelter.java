@@ -268,12 +268,6 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
         return false;
     }
 
-    @Override
-    public void clearHatches() {
-        super.clearHatches();
-        mExoticEnergyHatches.clear();
-    }
-
     public double getCoilDiscount(HeatingCoilLevel lvl) {
         // Since there are only 14 tiers (starting from 0), this is what the function is.
         double unRounded = (lvl != null ? lvl.getTier() : 0) / 130.0D;
@@ -474,7 +468,7 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
     }
 
     @Override
-    protected boolean isInputSeparationButtonEnabled() {
+    public boolean supportsInputSeparation() {
         return true;
     }
 }

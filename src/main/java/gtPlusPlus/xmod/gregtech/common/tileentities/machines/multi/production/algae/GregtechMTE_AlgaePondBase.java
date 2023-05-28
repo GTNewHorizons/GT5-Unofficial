@@ -342,10 +342,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
 
         GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
                 .setFluidInputs(aFluidInputs).setAvailableEUt(120).setMaxParallel(aMaxParallelRecipes)
-                .enableConsumption().enableOutputCalculation();
-        if (!voidExcess) {
-            helper.enableVoidProtection(this);
-        }
+                .enableConsumption().enableOutputCalculation().setController(this);
 
         if (batchMode) {
             helper.enableBatchMode(128);

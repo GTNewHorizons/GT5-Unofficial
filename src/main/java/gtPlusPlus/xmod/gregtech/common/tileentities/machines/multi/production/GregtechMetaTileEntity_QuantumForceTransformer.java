@@ -974,7 +974,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
     }
 
     @Override
-    protected boolean isInputSeparationButtonEnabled() {
+    public boolean supportsInputSeparation() {
         return true;
     }
 }

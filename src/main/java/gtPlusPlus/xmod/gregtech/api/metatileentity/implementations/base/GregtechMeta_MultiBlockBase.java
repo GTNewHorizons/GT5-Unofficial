@@ -26,7 +26,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -51,6 +50,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
@@ -131,12 +131,10 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
 
     public GregtechMeta_MultiBlockBase(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
-        voidExcess = false;
     }
 
     public GregtechMeta_MultiBlockBase(final String aName) {
         super(aName);
-        voidExcess = false;
     }
 
     public static boolean isValidMetaTileEntity(final MetaTileEntity aMetaTileEntity) {
@@ -607,10 +605,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
 
         GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
                 .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes)
-                .enableConsumption().enableOutputCalculation().setEUtModifier(aEUPercent / 100.0f);
-        if (!voidExcess) {
-            helper.enableVoidProtection(this);
-        }
+                .enableConsumption().enableOutputCalculation().setEUtModifier(aEUPercent / 100.0f).setController(this);
 
         if (batchMode) {
             helper.enableBatchMode(128);
@@ -816,10 +811,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
 
         GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
                 .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes)
-                .enableConsumption().enableOutputCalculation();
-        if (!voidExcess) {
-            helper.enableVoidProtection(this);
-        }
+                .enableConsumption().enableOutputCalculation().setController(this);
 
         if (batchMode) {
             helper.enableBatchMode(128);
@@ -1633,7 +1625,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         super.loadNBTData(aNBT);
         this.mTotalRunTime = aNBT.getLong("mTotalRunTime");
         if (!aNBT.hasKey(VOID_EXCESS_NBT_KEY)) {
-            voidExcess = aNBT.getBoolean("mVoidExcess");
+            voidingMode = aNBT.getBoolean("mVoidExcess") ? VoidingMode.VOID_ALL : VoidingMode.VOID_NONE;
         }
         if (!aNBT.hasKey(BATCH_MODE_NBT_KEY)) {
             batchMode = aNBT.getBoolean("mUseMultiparallelMode");
@@ -1880,18 +1872,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
             aHatchIndex++;
         }
         return aHatchIndex > 0;
-    }
-
-    @Override
-    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-            float aX, float aY, float aZ) {
-        boolean tSuper = super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ);
-        if (aPlayer.isSneaking()) return tSuper;
-        voidExcess = !voidExcess;
-        aPlayer.addChatMessage(
-                new ChatComponentTranslation(
-                        voidExcess ? "interaction.voidexcess.enabled" : "interaction.voidexcess.disabled"));
-        return true;
     }
 
     @Override
@@ -2151,12 +2131,12 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
     private static final ConcurrentHashMap<String, ItemStack> mToolStacks = new ConcurrentHashMap<>();
 
     @Override
-    protected boolean isVoidExcessButtonEnabled() {
+    public boolean supportsVoidProtection() {
         return true;
     }
 
     @Override
-    protected boolean isBatchModeButtonEnabled() {
+    public boolean supportsBatchMode() {
         return true;
     }
 

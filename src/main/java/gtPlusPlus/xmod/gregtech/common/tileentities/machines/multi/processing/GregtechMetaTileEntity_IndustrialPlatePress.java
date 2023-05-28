@@ -224,7 +224,7 @@ public class GregtechMetaTileEntity_IndustrialPlatePress extends
     }
 
     @Override
-    protected boolean isInputSeparationEnabled() {
+    public boolean isInputSeparationEnabled() {
         return true;
     }
 }
