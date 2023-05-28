@@ -170,9 +170,6 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
         if (recipe == null) {
             return false;
         }
-        if (!canOutputAll(recipe)) {
-            return false;
-        }
 
         if (!recipe.isRecipeInputEqual(
                 true,
@@ -1029,10 +1026,5 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
         } else {
             return true;
         }
-    }
-
-    @Override
-    public boolean supportsVoidProtection() {
-        return true;
     }
 }
