@@ -726,7 +726,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 
     @Override
     public float getExplosionResistance(ForgeDirection side) {
-        return 10.0F;
+        return (mConnections & IConnectable.HAS_FOAM) != 0 ? 50.0F : 5.0F;
     }
 
     @Override
