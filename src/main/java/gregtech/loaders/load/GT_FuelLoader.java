@@ -3,6 +3,8 @@ package gregtech.loaders.load;
 import static gregtech.api.enums.Mods.BloodMagic;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -18,6 +20,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_RecipeConstants;
 
 public class GT_FuelLoader implements Runnable {
 
@@ -147,14 +150,55 @@ public class GT_FuelLoader implements Runnable {
             0,
             20000);
 
-        GT_Values.RA.addFuel(GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 4), null, 4, 5);
-        GT_Values.RA.addFuel(new ItemStack(Items.experience_bottle, 1), null, 10, 5);
-        GT_Values.RA.addFuel(new ItemStack(Items.ghast_tear, 1), null, 50, 5);
-        GT_Values.RA.addFuel(
-            new ItemStack(Blocks.beacon, 1),
-            null,
-            Materials.NetherStar.mFuelPower * 2,
-            Materials.NetherStar.mFuelType);
-        GT_Values.RA.addFuel(GT_ModHandler.getModItem(EnderIO.ID, "bucketRocket_fuel", 1), null, 250, 1);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 4))
+            .noItemOutputs()
+            .noFluidInputs()
+            .noFluidOutputs()
+            .metadata(FUEL_VALUE, 4)
+            .metadata(FUEL_TYPE, 5)
+            .duration(0)
+            .eut(0)
+            .addTo(GT_RecipeConstants.Fuel);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.experience_bottle, 1))
+            .noItemOutputs()
+            .noFluidInputs()
+            .noFluidOutputs()
+            .metadata(FUEL_VALUE, 10)
+            .metadata(FUEL_TYPE, 5)
+            .duration(0)
+            .eut(0)
+            .addTo(GT_RecipeConstants.Fuel);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.ghast_tear, 1))
+            .noItemOutputs()
+            .noFluidInputs()
+            .noFluidOutputs()
+            .metadata(FUEL_VALUE, 50)
+            .metadata(FUEL_TYPE, 5)
+            .duration(0)
+            .eut(0)
+            .addTo(GT_RecipeConstants.Fuel);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.beacon, 1))
+            .noItemOutputs()
+            .noFluidInputs()
+            .noFluidOutputs()
+            .metadata(FUEL_VALUE, Materials.NetherStar.mFuelPower * 2)
+            .metadata(FUEL_TYPE, Materials.NetherStar.mFuelType)
+            .duration(0)
+            .eut(0)
+            .addTo(GT_RecipeConstants.Fuel);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_ModHandler.getModItem(EnderIO.ID, "bucketRocket_fuel", 1))
+            .noItemOutputs()
+            .noFluidInputs()
+            .noFluidOutputs()
+            .metadata(FUEL_VALUE, 250)
+            .metadata(FUEL_TYPE, 1)
+            .duration(0)
+            .eut(0)
+            .addTo(GT_RecipeConstants.Fuel);
     }
 }

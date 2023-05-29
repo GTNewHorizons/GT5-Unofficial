@@ -11,6 +11,8 @@ import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLatheRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.init.Blocks;
@@ -27,6 +29,7 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
 
@@ -56,11 +59,16 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
             case gem -> {
                 // fuel recipes
                 if (aFuelPower) {
-                    GT_Values.RA.addFuel(
-                        GT_Utility.copyAmount(1L, aStack),
-                        null,
-                        aMaterial.mFuelPower * 2,
-                        aMaterial.mFuelType);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .noItemOutputs()
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .metadata(FUEL_VALUE, aMaterial.mFuelPower * 2)
+                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .duration(0)
+                        .eut(0)
+                        .addTo(GT_RecipeConstants.Fuel);
                 }
 
                 if (!OrePrefixes.block.isIgnored(aMaterial)
@@ -333,11 +341,16 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
             case gemChipped -> {
                 // Fuel recipes
                 if (aFuelPower) {
-                    GT_Values.RA.addFuel(
-                        GT_Utility.copyAmount(1L, aStack),
-                        null,
-                        aMaterial.mFuelPower / 2,
-                        aMaterial.mFuelType);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .noItemOutputs()
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .metadata(FUEL_VALUE, aMaterial.mFuelPower / 2)
+                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .duration(0)
+                        .eut(0)
+                        .addTo(GT_RecipeConstants.Fuel);
                 }
 
                 if (!aNoWorking) {
@@ -439,11 +452,16 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
             case gemExquisite -> {
                 // Fuel recipes
                 if (aFuelPower) {
-                    GT_Values.RA.addFuel(
-                        GT_Utility.copyAmount(1L, aStack),
-                        null,
-                        aMaterial.mFuelPower * 8,
-                        aMaterial.mFuelType);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .noItemOutputs()
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .metadata(FUEL_VALUE, aMaterial.mFuelPower * 8)
+                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .duration(0)
+                        .eut(0)
+                        .addTo(GT_RecipeConstants.Fuel);
                 }
 
                 if (!aNoWorking) {
@@ -475,8 +493,16 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
             case gemFlawed -> {
                 // fuel recipes
                 if (aFuelPower) {
-                    GT_Values.RA
-                        .addFuel(GT_Utility.copyAmount(1L, aStack), null, aMaterial.mFuelPower, aMaterial.mFuelType);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .noItemOutputs()
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .metadata(FUEL_VALUE, aMaterial.mFuelPower)
+                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .duration(0)
+                        .eut(0)
+                        .addTo(GT_RecipeConstants.Fuel);
                 }
 
                 if (!aNoWorking) {
@@ -589,11 +615,16 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
 
                 // Fuel recipes
                 if (aFuelPower) {
-                    GT_Values.RA.addFuel(
-                        GT_Utility.copyAmount(1L, aStack),
-                        null,
-                        aMaterial.mFuelPower * 4,
-                        aMaterial.mFuelType);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .noItemOutputs()
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .metadata(FUEL_VALUE, aMaterial.mFuelPower * 4)
+                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .duration(0)
+                        .eut(0)
+                        .addTo(GT_RecipeConstants.Fuel);
                 }
 
                 if (!aNoWorking) {

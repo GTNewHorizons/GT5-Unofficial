@@ -6,6 +6,8 @@ import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sVacuumRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
@@ -14,6 +16,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
@@ -39,11 +42,19 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
             && !aMaterial.contains(SubTag.NO_SMASHING);
 
         switch (aPrefix) {
-            case ingot:
+            case ingot -> {
                 // Fuel recipe
                 if (aMaterial.mFuelPower > 0) {
-                    GT_Values.RA
-                        .addFuel(GT_Utility.copyAmount(1L, aStack), null, aMaterial.mFuelPower, aMaterial.mFuelType);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .noItemOutputs()
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .metadata(FUEL_VALUE, aMaterial.mFuelPower)
+                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .duration(0)
+                        .eut(0)
+                        .addTo(GT_RecipeConstants.Fuel);
                 }
                 if (aMaterial.mStandardMoltenFluid != null
                     && !(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
@@ -58,27 +69,25 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                         .eut(calculateRecipeEU(aMaterial, 8))
                         .addTo(sFluidSolidficationRecipes);
                 }
-            // Reverse recipes
-            {
-                GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
-                GT_RecipeRegistrator
-                    .registerReverseMacerating(aStack, aMaterial, aPrefix.mMaterialAmount, null, null, null, false);
-                if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
-                    GT_RecipeRegistrator.registerReverseArcSmelting(
-                        GT_Utility.copyAmount(1L, aStack),
-                        aMaterial,
-                        aPrefix.mMaterialAmount,
-                        null,
-                        null,
-                        null);
+                // Reverse recipes
+                {
+                    GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
+                    GT_RecipeRegistrator
+                        .registerReverseMacerating(aStack, aMaterial, aPrefix.mMaterialAmount, null, null, null, false);
+                    if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
+                        GT_RecipeRegistrator.registerReverseArcSmelting(
+                            GT_Utility.copyAmount(1L, aStack),
+                            aMaterial,
+                            aPrefix.mMaterialAmount,
+                            null,
+                            null,
+                            null);
+                    }
                 }
-            }
-
                 ItemStack tStack = GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L);
                 if ((tStack != null) && ((aMaterial.mBlastFurnaceRequired) || aNoSmelting)) {
                     GT_ModHandler.removeFurnaceSmelting(tStack);
                 }
-
                 if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)
                     && !aMaterial.contains(SubTag.NO_WORKING)
                     && !aMaterial.contains(SubTag.SMELTING_TO_GEM)
@@ -89,7 +98,6 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                         GT_Proxy.tBits,
                         new Object[] { ToolDictNames.craftingToolMortar, OrePrefixes.ingot.get(aMaterial) });
                 }
-
                 if (!aNoSmashing) {
                     // Forge hammer recipes
                     if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
@@ -183,9 +191,8 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                         }
                     }
                 }
-                break;
-
-            case ingotDouble:
+            }
+            case ingotDouble -> {
                 if (!aNoSmashing) {
                     // bender recipes
                     {
@@ -218,9 +225,8 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             new Object[] { "I", "I", "h", 'I', OrePrefixes.ingot.get(aMaterial) });
                     }
                 }
-                break;
-
-            case ingotTriple:
+            }
+            case ingotTriple -> {
                 if (!aNoSmashing) {
                     // Bender recipes
                     {
@@ -253,9 +259,8 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                                 OrePrefixes.ingot.get(aMaterial) });
                     }
                 }
-                break;
-
-            case ingotQuadruple:
+            }
+            case ingotQuadruple -> {
                 if (!aNoSmashing) {
                     // Bender recipes
                     {
@@ -280,9 +285,8 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                                 OrePrefixes.ingot.get(aMaterial) });
                     }
                 }
-                break;
-
-            case ingotQuintuple:
+            }
+            case ingotQuintuple -> {
                 if (!aNoSmashing) {
                     // Bender recipes
                     {
@@ -307,9 +311,8 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                                 OrePrefixes.ingot.get(aMaterial) });
                     }
                 }
-                break;
-
-            case ingotHot:
+            }
+            case ingotHot -> {
                 if (aMaterial.mAutoGenerateVacuumFreezerRecipes
                     && GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
                     // Vacuum freezer recipes
@@ -322,10 +325,8 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                         .eut(TierEU.RECIPE_MV)
                         .addTo(sVacuumRecipes);
                 }
-                break;
-
-            default:
-                break;
+            }
+            default -> {}
         }
     }
 }
