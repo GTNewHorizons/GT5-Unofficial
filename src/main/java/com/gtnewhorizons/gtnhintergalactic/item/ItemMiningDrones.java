@@ -11,6 +11,7 @@ import net.minecraft.util.IIcon;
 import com.gtnewhorizons.gtnhintergalactic.GTNHIntergalactic;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 
 /**
  * Drones used for the Space Mining module of the Space Elevator
@@ -22,7 +23,7 @@ public class ItemMiningDrones extends Item {
     /** Names of the mining drones */
     private static final String[] NAMES = new String[] { "MiningDroneLV", "MiningDroneMV", "MiningDroneHV",
             "MiningDroneEV", "MiningDroneIV", "MiningDroneLuV", "MiningDroneZPM", "MiningDroneUV", "MiningDroneUHV",
-            "MiningDroneUEV", };
+            "MiningDroneUEV", "MiningDroneUIV", "MiningDroneUMV", "MiningDroneUXV", "MiningDroneMAX" };
     /** Icons of the mining drones */
     private static final IIcon[] ICONS = new IIcon[NAMES.length];
 
@@ -48,7 +49,11 @@ public class ItemMiningDrones extends Item {
         ZPM,
         UV,
         UHV,
-        UEV
+        UEV,
+        UIV,
+        UMV,
+        UXV,
+        MAX
     }
 
     /**
@@ -65,7 +70,10 @@ public class ItemMiningDrones extends Item {
         ZPM(Materials.Naquadah),
         UV(Materials.Naquadah),
         UHV(Materials.NaquadahAlloy),
-        UEV(Materials.Neutronium);
+        UEV(Materials.Neutronium),
+        UIV(Materials.CosmicNeutronium),
+        UMV(Materials.Infinity),
+        UXV(MaterialsUEVplus.TranscendentMetal);
 
         /** Material for this drone tier */
         private final Materials mat;

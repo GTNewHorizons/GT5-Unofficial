@@ -65,6 +65,16 @@ achievement.item.MiningDroneUHV=Mining Drone MK-IX
 achievement.item.MiningDroneUHV.desc=Devourer of planets
 achievement.item.MiningDroneUEV=Mining Drone MK-X
 achievement.item.MiningDroneUEV.desc=Devourer of star systems
+achievement.item.MiningDroneUIV=Mining Drone MK-XI
+achievement.item.MiningDroneUIV.desc=Devourer of constellations
+achievement.item.MiningDroneUMV=Mining Drone MK-XII
+achievement.item.MiningDroneUMV.desc=Devourer of galaxies
+achievement.item.MiningDroneUXV=Mining Drone MK-XIII
+achievement.item.MiningDroneUXV.desc=Devourer of the known universe
+achievement.item.MiningDroneMAX=Mining Drone MK-XIV
+achievement.item.MiningDroneMAX.desc=Devourer of everything that has been and ever will be
+
+
 
 # Items
 item.nanotubeSpool.name=Nanotube Spool
@@ -78,6 +88,10 @@ item.MiningDroneZPM.name=Mining Drone MK-VII
 item.MiningDroneUV.name=Mining Drone MK-VIII
 item.MiningDroneUHV.name=Mining Drone MK-IX
 item.MiningDroneUEV.name=Mining Drone MK-X
+item.MiningDroneUIV.name=Mining Drone MK-XI
+item.MiningDroneUMV.name=Mining Drone MK-XII
+item.MiningDroneUXV.name=Mining Drone MK-XIII
+item.MiningDroneMAX.name=Mining Drone MK-XIV
 
 # Blocks
 gt.blockcasings.ig.0.name=Space Elevator Base Casing
