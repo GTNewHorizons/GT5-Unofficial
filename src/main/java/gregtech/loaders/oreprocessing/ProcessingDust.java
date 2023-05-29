@@ -1,6 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBlastRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCannerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
@@ -10,6 +11,8 @@ import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sImplosionRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 
@@ -91,19 +94,23 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     if (aMaterial.mBlastFurnaceRequired) {
                         GT_ModHandler.removeFurnaceSmelting(aStack);
                         if (aMaterial.mAutoGenerateBlastFurnaceRecipes) {
-                            GT_Values.RA.addBlastRecipe(
-                                GT_Utility.copyAmount(1L, aStack),
-                                ItemList.Circuit_Integrated.getWithDamage(0L, 1L),
-                                null,
-                                null,
-                                aMaterial.mBlastFurnaceTemp > 1750
-                                    ? GT_OreDictUnificator
-                                        .get(OrePrefixes.ingotHot, aMaterial.mSmeltInto, tDustStack, 1L)
-                                    : GT_Utility.copyAmount(1L, tDustStack),
-                                null,
-                                (int) Math.max(aMaterial.getMass() / 40L, 1L) * aMaterial.mBlastFurnaceTemp,
-                                120,
-                                aMaterial.mBlastFurnaceTemp);
+                            GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                            recipeBuilder
+                                .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1));
+                            if (aMaterial.mBlastFurnaceTemp > 1750) {
+                                recipeBuilder.itemOutputs(
+                                    GT_OreDictUnificator
+                                        .get(OrePrefixes.ingotHot, aMaterial.mSmeltInto, tDustStack, 1L));
+                            } else {
+                                recipeBuilder.itemOutputs(GT_Utility.copyAmount(1L, tDustStack));
+                            }
+                            recipeBuilder.noFluidInputs()
+                                .noFluidOutputs()
+                                .duration(
+                                    (Math.max(aMaterial.getMass() / 40L, 1L) * aMaterial.mBlastFurnaceTemp) * TICKS)
+                                .eut(TierEU.RECIPE_MV)
+                                .metadata(COIL_HEAT, (int) aMaterial.mBlastFurnaceTemp)
+                                .addTo(sBlastRecipes);
                         }
                     } else {
                         GT_ModHandler.addSmeltingRecipe(aStack, tDustStack);

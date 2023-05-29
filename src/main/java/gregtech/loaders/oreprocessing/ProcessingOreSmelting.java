@@ -1,5 +1,9 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBlastRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -7,6 +11,7 @@ import gregtech.GT_Mod;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
 
 public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -26,22 +31,28 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
         if (!aMaterial.contains(SubTag.NO_SMELTING)) {
             if ((aMaterial.mBlastFurnaceRequired) || (aMaterial.mDirectSmelting.mBlastFurnaceRequired)) {
                 if (aMaterial.mBlastFurnaceTemp < 1000 && aMaterial.mDirectSmelting.mBlastFurnaceTemp < 1000)
-                    if (aMaterial.mAutoGenerateBlastFurnaceRecipes) {
-                        GT_Values.RA.addBlastRecipe(
-                            GT_Utility.copyAmount(1L, aStack),
-                            ItemList.Circuit_Integrated.getWithDamage(0L, 1L),
-                            null,
-                            null,
-                            aMaterial.mBlastFurnaceTemp > 1750 ? GT_OreDictUnificator.get(
-                                OrePrefixes.ingotHot,
-                                aMaterial,
-                                GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
-                                1L) : GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
-                            null,
-                            (int) Math.max(aMaterial.getMass() / 4L, 1L) * aMaterial.mBlastFurnaceTemp,
-                            120,
-                            aMaterial.mBlastFurnaceTemp);
-                    }
+                    if (aMaterial.mAutoGenerateBlastFurnaceRecipes
+                        && GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
+                            GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                            recipeBuilder
+                                .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1));
+                            if (aMaterial.mBlastFurnaceTemp > 1750) {
+                                recipeBuilder.itemOutputs(
+                                    GT_OreDictUnificator.get(
+                                        OrePrefixes.ingotHot,
+                                        aMaterial,
+                                        GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
+                                        1L));
+                            } else {
+                                recipeBuilder.itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L));
+                            }
+                            recipeBuilder.noFluidInputs()
+                                .noFluidOutputs()
+                                .duration(Math.max(aMaterial.getMass() / 4L, 1L) * aMaterial.mBlastFurnaceTemp * TICKS)
+                                .eut(TierEU.RECIPE_MV)
+                                .metadata(COIL_HEAT, (int) aMaterial.mBlastFurnaceTemp)
+                                .addTo(sBlastRecipes);
+                        }
             } else {
                 OrePrefixes outputPrefix;
                 int outputSize;
