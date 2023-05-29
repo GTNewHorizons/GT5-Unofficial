@@ -94,8 +94,6 @@ public class GT_Values {
                 .divide(BigInteger.valueOf(32))
                 .longValueExact())
         .toArray();
-    // Why -7? Mystery of the universe. Something may break if you change this so please do not without extensive
-    // testing.
     // TODO:Adding that in coremod!!!
     // TODO:tier 14,15 wires and transformers only (not even cables !!!)
     // TODO:tier 12,13 the above + batteries, battery buffers, (maybe cables,12 also works for machines)
