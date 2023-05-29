@@ -1901,6 +1901,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         TengamRaw.mChemicalFormula = "";
         TengamPurified.mChemicalFormula = "M";
         TengamAttuned.mChemicalFormula = "M";
+        MaterialsUEVplus.ExcitedDTSC.mChemicalFormula = "[-Stellar-Stellar-]";
+        MaterialsUEVplus.DimensionallyTranscendentStellarCatalyst.mChemicalFormula = "Stellar";
     }
 
     private static void initSubTags() {
