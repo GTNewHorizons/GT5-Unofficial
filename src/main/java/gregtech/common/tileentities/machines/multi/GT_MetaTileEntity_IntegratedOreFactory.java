@@ -351,7 +351,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @SafeVarargs
-    private final boolean checkTypes(int aID, HashSet<Integer>... aTables) {
+    private boolean checkTypes(int aID, HashSet<Integer>... aTables) {
         for (HashSet<Integer> set : aTables) {
             if (set.contains(aID)) {
                 return true;
@@ -391,7 +391,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @SafeVarargs
-    private final void doMac(HashSet<Integer>... aTables) {
+    private void doMac(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
@@ -413,7 +413,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @SafeVarargs
-    private final void doWash(HashSet<Integer>... aTables) {
+    private void doWash(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
@@ -439,7 +439,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @SafeVarargs
-    private final void doThermal(HashSet<Integer>... aTables) {
+    private void doThermal(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
@@ -461,7 +461,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @SafeVarargs
-    private final void doCentrifuge(HashSet<Integer>... aTables) {
+    private void doCentrifuge(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
@@ -483,7 +483,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @SafeVarargs
-    private final void doSift(HashSet<Integer>... aTables) {
+    private void doSift(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
@@ -505,7 +505,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @SafeVarargs
-    private final void doChemWash(HashSet<Integer>... aTables) {
+    private void doChemWash(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
