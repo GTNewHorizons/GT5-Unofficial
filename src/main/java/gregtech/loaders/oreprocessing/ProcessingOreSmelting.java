@@ -79,7 +79,8 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                     case dust:
                         int outputAmount = GT_Mod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre ? 2 : 3;
                         if (aMaterial.mDirectSmelting != aMaterial) {
-                            if (!aMaterial.contains(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE)) {
+                            if (!aMaterial.contains(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE)
+                                && aMaterial.mDirectSmelting.getIngots(1) != null) {
                                 GT_Values.RA.stdBuilder()
                                     .itemInputs(GT_Utility.copyAmount(2, aStack))
                                     .itemOutputs(aMaterial.mDirectSmelting.getIngots(outputAmount))
