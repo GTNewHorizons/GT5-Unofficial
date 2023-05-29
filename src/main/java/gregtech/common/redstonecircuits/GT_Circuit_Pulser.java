@@ -34,17 +34,16 @@ public class GT_Circuit_Pulser extends GT_CircuitryBehavior {
 
     @Override
     public void onTick(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock) {
-        byte tRedstone = aCircuitData[1] == 0 ? getWeakestNonZeroRedstone(aRedstoneCircuitBlock)
+        byte redstoneSignal = aCircuitData[1] == 0 ? getWeakestNonZeroRedstone(aRedstoneCircuitBlock)
             : getStrongestRedstone(aRedstoneCircuitBlock);
         if (aCircuitData[4] == 0) {
-            aCircuitData[5] = tRedstone;
+            aCircuitData[5] = redstoneSignal;
         }
-        if ((tRedstone > 0) || (aCircuitData[4] > 0)) {
-            int tmp40_39 = 4;
-            int[] tmp40_38 = aCircuitData;
-            int tmp42_41 = tmp40_38[tmp40_39];
-            tmp40_38[tmp40_39] = (tmp42_41 + 1);
-            if ((tmp42_41 >= aCircuitData[0]) && (tRedstone <= 0)) {
+        if ((redstoneSignal > 0) || (aCircuitData[4] > 0)) {
+            int index = 4;
+            int tmp42_41 = aCircuitData[index];
+            aCircuitData[index] = (tmp42_41 + 1);
+            if ((tmp42_41 >= aCircuitData[0]) && (redstoneSignal <= 0)) {
                 aCircuitData[4] = 0;
             }
         }
