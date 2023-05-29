@@ -1,6 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCannerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
@@ -650,12 +651,14 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
             }
             case dustSmall -> {
-                GT_Values.RA.addBoxingRecipe(
-                    GT_Utility.copyAmount(4L, aStack),
-                    ItemList.Schematic_Dust.get(0L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
-                    20,
-                    4);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(4L, aStack), ItemList.Schematic_Dust.get(0L))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(1 * SECONDS)
+                    .eut(4)
+                    .addTo(sBoxinatorRecipes);
                 if (!aMaterial.mBlastFurnaceRequired) {
                     GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
                     if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
@@ -670,12 +673,14 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
             }
             case dustTiny -> {
-                GT_Values.RA.addBoxingRecipe(
-                    GT_Utility.copyAmount(9L, aStack),
-                    ItemList.Schematic_Dust.get(0L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
-                    20,
-                    4);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(9L, aStack), ItemList.Schematic_Dust.get(0L))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(1 * SECONDS)
+                    .eut(4)
+                    .addTo(sBoxinatorRecipes);
                 if (!aMaterial.mBlastFurnaceRequired) {
                     GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
                     if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
