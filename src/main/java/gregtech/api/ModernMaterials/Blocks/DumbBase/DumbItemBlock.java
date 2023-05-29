@@ -37,13 +37,14 @@ public abstract class DumbItemBlock extends ItemBlock {
 
         final ModernMaterial material = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
 
-        for (String line : tooltipGenerator((MaterialPart) itemStack.getItem(), material)) {
-            tooltipList.add(line);
-        }
+        //for (String line : tooltipGenerator((MaterialPart) itemStack.getItem(), material)) {
+        //    tooltipList.add(line);
+        //}
     }
 
     @Override
     public abstract String getItemStackDisplayName(ItemStack itemStack);
 
     public abstract BlocksEnum getBlockEnum();
+
 }

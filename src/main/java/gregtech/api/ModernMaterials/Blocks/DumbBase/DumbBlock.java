@@ -10,6 +10,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.ModernMaterialUtilities;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -112,6 +113,19 @@ public abstract class DumbBlock extends BlockContainer {
         final int materialID = dumbTileEntity.getMaterialID();
         final ModernMaterial material = ModernMaterialUtilities.materialIDToMaterial.get(materialID);
 
+        if (material == null) return new Color(100, 100, 0, 255).getRGB();
         return material.getColor().getRGB();
     }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public String getUnlocalizedName() {
+        return super.getUnlocalizedName();
+    }
+
+    @Override
+    public String getLocalizedName() {
+        return super.getLocalizedName();
+    }
+
 }

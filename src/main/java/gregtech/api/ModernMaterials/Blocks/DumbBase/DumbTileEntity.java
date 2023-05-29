@@ -20,7 +20,6 @@ public class DumbTileEntity extends TileEntity {
 
     public void setMaterialID(int materialID) {
         this.materialID = materialID;
-        this.markDirty();
     }
 
     private static final String NBT_TAG_MATERIAL_ID = "materialID";
@@ -41,7 +40,7 @@ public class DumbTileEntity extends TileEntity {
     public Packet getDescriptionPacket() {
         NBTTagCompound NBTTag = new NBTTagCompound();
         this.writeToNBT(NBTTag);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 3, NBTTag);
+        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, NBTTag);
     }
 
 }

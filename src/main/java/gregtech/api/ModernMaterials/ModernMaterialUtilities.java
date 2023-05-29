@@ -13,6 +13,7 @@ import gregtech.api.ModernMaterials.PartRecipeGenerators.ModernMaterialsPlateRec
 import gregtech.api.ModernMaterials.PartsClasses.IGetItem;
 import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
 import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
+import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static gregtech.api.enums.ConfigCategories.ModernMaterials.materialID;
+import static gregtech.api.enums.GT_Values.W;
 
 public class ModernMaterialUtilities {
 
@@ -93,8 +95,10 @@ public class ModernMaterialUtilities {
 
         //(new FrameBoxBlock()).registerBlock(FrameBoxTileEntity.class, FrameBoxItemBlock.class);
         //new FrameBoxRenderer();
-        GameRegistry.registerBlock(new FrameBoxBlock(), FrameBoxItemBlock.class, BlocksEnum.FrameBox.name());
-        GameRegistry.registerTileEntity(FrameBoxTileEntity.class, BlocksEnum.FrameBox.name());
+        // GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + W + ".name", "Any Sub Block of this one");
+
+        GameRegistry.registerBlock(new FrameBoxBlock(), FrameBoxItemBlock.class, "frameBoxBlock");
+        GameRegistry.registerTileEntity(FrameBoxTileEntity.class, "frameBoxBlockTile");
     }
 
     private static void registerAllMaterialPartRecipes(ModernMaterial material) {
