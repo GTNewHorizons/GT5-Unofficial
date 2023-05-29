@@ -37,7 +37,7 @@ public abstract class PowerController<T extends PowerController<T>> extends Cont
     @Override
     public void writeMultiTileNBT(NBTTagCompound nbt) {
         super.writeMultiTileNBT(nbt);
-        power.writeToNBT(nbt);
+        power.saveToNBT(nbt);
     }
 
     @Override
