@@ -1,6 +1,7 @@
 package com.github.bartimaeusnek.bartworks.common.loaders.recipes;
 
 import static gregtech.api.enums.Mods.GalactiGreg;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -11,10 +12,7 @@ import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
 
 public class AssemblyLine implements Runnable {
@@ -42,7 +40,7 @@ public class AssemblyLine implements Runnable {
         if (GalactiGreg.isModLoaded()) {
             GT_Values.RA.addAssemblylineRecipe(
                     ItemList.OreDrill4.get(1L),
-                    BW_Util.getMachineVoltageFromTier(6),
+                    (int) TierEU.LuV,
                     new Object[] { ItemList.OreDrill4.get(1L),
                             GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Europium, 9L),
                             Materials.Europium.getPlates(3), ItemList.Electric_Motor_LuV.get(9L),
@@ -51,8 +49,8 @@ public class AssemblyLine implements Runnable {
                     new FluidStack[] { new FluidStack(solderIndalloy, 1440),
                             WerkstoffLoader.Neon.getFluidOrGas(20000), },
                     ItemRegistry.voidminer[0].copy(),
-                    108000,
-                    BW_Util.getMachineVoltageFromTier(6));
+                    5 * MINUTES,
+                    (int) TierEU.LuV);
         }
 
         GT_Values.RA.addAssemblylineRecipe(
