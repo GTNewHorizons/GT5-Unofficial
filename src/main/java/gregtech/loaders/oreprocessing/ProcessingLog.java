@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCutterRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sExtractorRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLatheRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
@@ -159,38 +160,76 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                     }
                 } else {
                     ItemStack tPlanks = GT_Utility.copyOrNull(tStack);
-                    tPlanks.stackSize = (tPlanks.stackSize * 3 / 2);
-                    GT_Values.RA.addCutterRecipe(
-                        new ItemStack(aStack.getItem(), 1, i),
-                        Materials.Lubricant.getFluid(1L),
-                        GT_Utility.copyOrNull(tPlanks),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L),
-                        200,
-                        8);
-                    GT_Values.RA.addCutterRecipe(
-                        new ItemStack(aStack.getItem(), 1, i),
-                        GT_Utility.copyAmount(
-                            GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
-                            tStack),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L),
-                        200,
-                        8);
-                    GT_ModHandler.addSawmillRecipe(
-                        new ItemStack(aStack.getItem(), 1, i),
-                        tPlanks,
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L));
-                    GT_ModHandler.removeRecipeDelayed(new ItemStack(aStack.getItem(), 1, i));
-                    GT_ModHandler.addCraftingRecipe(
-                        GT_Utility.copyAmount(
-                            GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
-                            tStack),
-                        GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] { "s", "L", 'L', new ItemStack(aStack.getItem(), 1, i) });
-                    GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_Utility
-                            .copyAmount(tStack.stackSize / (GT_Mod.gregtechproxy.mNerfedWoodPlank ? 2 : 1), tStack),
-                        GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] { new ItemStack(aStack.getItem(), 1, i) });
+                    if (tPlanks != null) {
+                        tPlanks.stackSize = (tPlanks.stackSize * 3 / 2);
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(new ItemStack(aStack.getItem(), 1, i))
+                            .itemOutputs(
+                                GT_Utility.copyOrNull(tPlanks),
+                                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+                            .fluidInputs(Materials.Lubricant.getFluid(1L))
+                            .noFluidOutputs()
+                            .duration(10 * SECONDS)
+                            .eut(8)
+                            .addTo(sCutterRecipes);
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(new ItemStack(aStack.getItem(), 1, i))
+                            .itemOutputs(
+                                GT_Utility.copyAmount(
+                                    GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize
+                                        : tStack.stackSize * 5L / 4,
+                                    tStack),
+                                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
+                            .fluidInputs(Materials.Water.getFluid(Math.min(1000, 200 * 8 / 320)))
+                            .noFluidOutputs()
+                            .duration(20 * SECONDS)
+                            .eut(8)
+                            .addTo(sCutterRecipes);
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(new ItemStack(aStack.getItem(), 1, i))
+                            .itemOutputs(
+                                GT_Utility.copyAmount(
+                                    GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize
+                                        : tStack.stackSize * 5L / 4,
+                                    tStack),
+                                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
+                            .fluidInputs(GT_ModHandler.getDistilledWater(3))
+                            .noFluidOutputs()
+                            .duration(20 * SECONDS)
+                            .eut(8)
+                            .addTo(sCutterRecipes);
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(new ItemStack(aStack.getItem(), 1, i))
+                            .itemOutputs(
+                                GT_Utility.copyAmount(
+                                    GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize
+                                        : tStack.stackSize * 5L / 4,
+                                    tStack),
+                                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
+                            .fluidInputs(Materials.Lubricant.getFluid(1))
+                            .noFluidOutputs()
+                            .duration(10 * SECONDS)
+                            .eut(8)
+                            .addTo(sCutterRecipes);
+                        GT_ModHandler.addSawmillRecipe(
+                            new ItemStack(aStack.getItem(), 1, i),
+                            tPlanks,
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L));
+                        GT_ModHandler.removeRecipeDelayed(new ItemStack(aStack.getItem(), 1, i));
+                        GT_ModHandler
+                            .addCraftingRecipe(
+                                GT_Utility.copyAmount(
+                                    GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize
+                                        : tStack.stackSize * 5L / 4,
+                                    tStack),
+                                GT_ModHandler.RecipeBits.BUFFERED,
+                                new Object[] { "s", "L", 'L', new ItemStack(aStack.getItem(), 1, i) });
+                        GT_ModHandler.addShapelessCraftingRecipe(
+                            GT_Utility
+                                .copyAmount(tStack.stackSize / (GT_Mod.gregtechproxy.mNerfedWoodPlank ? 2 : 1), tStack),
+                            GT_ModHandler.RecipeBits.BUFFERED,
+                            new Object[] { new ItemStack(aStack.getItem(), 1, i) });
+                    }
                 }
             }
         } else {
@@ -206,35 +245,69 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             ItemStack tStack = GT_ModHandler.getRecipeOutput(GT_Utility.copyAmount(1L, aStack));
             if (tStack != null) {
                 ItemStack tPlanks = GT_Utility.copyOrNull(tStack);
-                tPlanks.stackSize = (tPlanks.stackSize * 3 / 2);
-                GT_Values.RA.addCutterRecipe(
-                    GT_Utility.copyAmount(1L, aStack),
-                    Materials.Lubricant.getFluid(1L),
-                    GT_Utility.copyOrNull(tPlanks),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L),
-                    200,
-                    8);
-                GT_Values.RA.addCutterRecipe(
-                    GT_Utility.copyAmount(1L, aStack),
-                    GT_Utility.copyAmount(
-                        GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
-                        tStack),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L),
-                    200,
-                    8);
-                GT_ModHandler.addSawmillRecipe(
-                    GT_Utility.copyAmount(1L, aStack),
-                    tPlanks,
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L));
-                GT_ModHandler.removeRecipeDelayed(GT_Utility.copyAmount(1L, aStack));
-                GT_ModHandler.addCraftingRecipe(
-                    GT_Utility.copyAmount(
-                        GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
-                        tStack),
-                    new Object[] { "s", "L", 'L', GT_Utility.copyAmount(1L, aStack) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    GT_Utility.copyAmount(tStack.stackSize / (GT_Mod.gregtechproxy.mNerfedWoodPlank ? 2 : 1), tStack),
-                    new Object[] { GT_Utility.copyAmount(1L, aStack) });
+                if (tPlanks != null) {
+                    tPlanks.stackSize = (tPlanks.stackSize * 3 / 2);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .itemOutputs(
+                            GT_Utility.copyOrNull(tPlanks),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+                        .fluidInputs(Materials.Lubricant.getFluid(1L))
+                        .noFluidOutputs()
+                        .duration(10 * SECONDS)
+                        .eut(8)
+                        .addTo(sCutterRecipes);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .itemOutputs(
+                            GT_Utility.copyAmount(
+                                GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5L / 4,
+                                tStack),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
+                        .fluidInputs(Materials.Water.getFluid(Math.min(1000, 200 * 8 / 320)))
+                        .noFluidOutputs()
+                        .duration(20 * SECONDS)
+                        .eut(8)
+                        .addTo(sCutterRecipes);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .itemOutputs(
+                            GT_Utility.copyAmount(
+                                GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5L / 4,
+                                tStack),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
+                        .fluidInputs(GT_ModHandler.getDistilledWater(3))
+                        .noFluidOutputs()
+                        .duration(20 * SECONDS)
+                        .eut(8)
+                        .addTo(sCutterRecipes);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .itemOutputs(
+                            GT_Utility.copyAmount(
+                                GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5L / 4,
+                                tStack),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
+                        .fluidInputs(Materials.Lubricant.getFluid(1))
+                        .noFluidOutputs()
+                        .duration(10 * SECONDS)
+                        .eut(8)
+                        .addTo(sCutterRecipes);
+                    GT_ModHandler.addSawmillRecipe(
+                        GT_Utility.copyAmount(1L, aStack),
+                        tPlanks,
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L));
+                    GT_ModHandler.removeRecipeDelayed(GT_Utility.copyAmount(1L, aStack));
+                    GT_ModHandler.addCraftingRecipe(
+                        GT_Utility.copyAmount(
+                            GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5L / 4,
+                            tStack),
+                        new Object[] { "s", "L", 'L', GT_Utility.copyAmount(1L, aStack) });
+                    GT_ModHandler.addShapelessCraftingRecipe(
+                        GT_Utility
+                            .copyAmount(tStack.stackSize / (GT_Mod.gregtechproxy.mNerfedWoodPlank ? 2 : 1), tStack),
+                        new Object[] { GT_Utility.copyAmount(1L, aStack) });
+                }
             }
         }
 

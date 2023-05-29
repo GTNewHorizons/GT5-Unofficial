@@ -3,6 +3,7 @@ package gregtech.common.items;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCannerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
@@ -1226,14 +1227,24 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16)
             .addTo(sAssemblerRecipes);
-        GT_Values.RA.addBoxingRecipe(
-            ItemList.Tool_Matches.get(16L),
-            GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Paper, 1L),
-            ItemList.Tool_MatchBox_Full.get(1L),
-            64,
-            16);
-        GT_Values.RA
-            .addUnboxingRecipe(ItemList.Tool_MatchBox_Full.get(1L), ItemList.Tool_Matches.get(16L), null, 32, 16);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Tool_Matches.get(16L),
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Paper, 1L))
+            .itemOutputs(ItemList.Tool_MatchBox_Full.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(3 * SECONDS + 4 * TICKS)
+            .eut(16)
+            .addTo(sBoxinatorRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Tool_MatchBox_Full.get(1L))
+            .itemOutputs(ItemList.Tool_Matches.get(16L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(1 * SECONDS + 12 * TICKS)
+            .eut(16)
+            .addTo(sBoxinatorRecipes);
 
         ItemList.Tool_Lighter_Invar_Empty.set(
             addItem(

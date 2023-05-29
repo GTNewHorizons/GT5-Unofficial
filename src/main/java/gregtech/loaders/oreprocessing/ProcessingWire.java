@@ -3,6 +3,8 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBenderRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sUnboxinatorRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sWiremillRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -262,12 +264,16 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
 
                 // Packer recipe
                 if (GT_OreDictUnificator.get(correspondingCable, aMaterial, 1L) != null) {
-                    GT_Values.RA.addBoxingRecipe(
-                        GT_Utility.copyAmount(1L, aStack),
-                        GT_OreDictUnificator.get(OrePrefixes.plate.get(Materials.Rubber), costMultiplier),
-                        GT_OreDictUnificator.get(correspondingCable, aMaterial, 1L),
-                        100,
-                        8);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                            GT_Utility.copyAmount(1L, aStack),
+                            GT_OreDictUnificator.get(OrePrefixes.plate.get(Materials.Rubber), costMultiplier))
+                        .itemOutputs(GT_OreDictUnificator.get(correspondingCable, aMaterial, 1L))
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(5 * SECONDS)
+                        .eut(8)
+                        .addTo(sBoxinatorRecipes);
                 }
                 // alloy smelter recipes
                 {
@@ -498,14 +504,15 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
             }
         }
 
-        // Honestly when can this machine be removed? );
         if (GT_OreDictUnificator.get(correspondingCable, aMaterial, 1L) != null) {
-            GT_Values.RA.addUnboxingRecipe(
-                GT_OreDictUnificator.get(correspondingCable, aMaterial, 1L),
-                GT_Utility.copyAmount(1L, aStack),
-                null,
-                100,
-                calculateRecipeEU(aMaterial, 8));
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GT_OreDictUnificator.get(correspondingCable, aMaterial, 1L))
+                .itemOutputs(GT_Utility.copyAmount(1L, aStack))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(5 * SECONDS)
+                .eut(calculateRecipeEU(aMaterial, 8))
+                .addTo(sUnboxinatorRecipes);
         }
 
         if (GT_Mod.gregtechproxy.mAE2Integration
