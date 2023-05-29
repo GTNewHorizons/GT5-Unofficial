@@ -752,6 +752,7 @@ public class GT_RecipeBuilder {
 
         public static <T> MetadataIdentifier<T> create(Class<T> clazz, String identifier) {
             MetadataIdentifier<T> key = new MetadataIdentifier<>(clazz, identifier);
+            // noinspection unchecked // The class uses type T to fill allIdentifiers
             return (MetadataIdentifier<T>) allIdentifiers.computeIfAbsent(key, Function.identity());
         }
 

@@ -711,6 +711,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
         GT_Pollution.addPollution(getBaseMetaTileEntity(), GT_Mod.gregtechproxy.mPollutionOnExplosion);
         mInventory[1] = null;
+        // noinspection unchecked // In this case, the inspection only indicates that the array can be abused in runtime
         Iterable<MetaTileEntity> allHatches = Iterables.concat(
             mInputBusses,
             mOutputBusses,

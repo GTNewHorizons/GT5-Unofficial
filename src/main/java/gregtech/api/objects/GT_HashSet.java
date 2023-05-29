@@ -42,6 +42,7 @@ public class GT_HashSet<E extends GT_ItemStack> extends AbstractSet<E> {
         return map;
     }
 
+    @SuppressWarnings("unchecked") // The downcasting below will throw ClassCastException unless E is GT_ItemStack.
     @Override
     public Iterator<E> iterator() {
         return (Iterator<E>) map.keySet()

@@ -161,6 +161,8 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
                     tUseOreDict = false;
                 }
                 if (tRandomData instanceof IItemBehaviour) {
+                    // The cast below from is not safe. If you know how to make it safe, please do.
+                    // noinspection unchecked
                     addItemBehavior(mOffset + aID, (IItemBehaviour<GT_MetaBase_Item>) tRandomData);
                     tUseOreDict = false;
                 }
