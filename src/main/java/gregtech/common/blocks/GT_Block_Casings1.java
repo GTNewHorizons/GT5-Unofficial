@@ -8,6 +8,10 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.util.GT_LanguageManager;
 
+/**
+ * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
+ * 16 subtypes at most.
+ */
 public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
 
     /**

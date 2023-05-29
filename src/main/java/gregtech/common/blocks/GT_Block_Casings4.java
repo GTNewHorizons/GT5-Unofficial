@@ -15,6 +15,10 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_RenderingWorld;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
 
+/**
+ * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
+ * 16 subtypes at most.
+ */
 public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
 
     /**

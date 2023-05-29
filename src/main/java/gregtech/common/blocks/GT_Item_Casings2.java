@@ -6,6 +6,10 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
+/**
+ * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
+ * 16 subtypes at most.
+ */
 public class GT_Item_Casings2 extends GT_Item_Casings_Abstract {
 
     public GT_Item_Casings2(Block block) {
