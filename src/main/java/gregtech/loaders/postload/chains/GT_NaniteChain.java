@@ -55,7 +55,7 @@ public class GT_NaniteChain {
             .noFluidOutputs()
             .itemOutputs(ItemList.NanoForge.get(1))
             .eut(TierEU.RECIPE_ZPM)
-            .duration(40 * MINUTES)
+            .duration(5 * MINUTES)
             .addTo(AssemblyLine);
 
         GT_Values.RA.stdBuilder()

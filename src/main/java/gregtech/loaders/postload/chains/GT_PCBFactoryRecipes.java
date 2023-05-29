@@ -3,7 +3,6 @@ package gregtech.loaders.postload.chains;
 import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
@@ -54,7 +53,7 @@ public class GT_PCBFactoryRecipes {
             .noFluidOutputs()
             .itemOutputs(ItemList.PCBFactory.get(1))
             .eut(TierEU.RECIPE_UV)
-            .duration(1 * HOURS + 40 * MINUTES)
+            .duration(5 * MINUTES)
             .addTo(AssemblyLine);
 
         if (GTPlusPlus.isModLoaded()) {
