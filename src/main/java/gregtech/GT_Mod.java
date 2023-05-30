@@ -165,6 +165,7 @@ public class GT_Mod implements IGT_Mod {
     public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
 
     static {
+        // The version check prevents the breaking of the mod
         if ((509 != GregTech_API.VERSION) || (509 != GT_ModHandler.VERSION)
             || (509 != GT_OreDictUnificator.VERSION)
             || (509 != GT_Recipe.VERSION)
@@ -174,7 +175,8 @@ public class GT_Mod implements IGT_Mod {
             || (509 != Materials.VERSION)
             || (509 != OrePrefixes.VERSION)) {
             throw new GT_ItsNotMyFaultException(
-                "One of your Mods included GregTech-API Files inside it's download, mention this to the Mod Author, who does this bad thing, and tell him/her to use reflection. I have added a Version check, to prevent Authors from breaking my Mod that way.");
+                "One of your mods included GregTech-API files inside its download, which is a wrong thing to do. "
+                    + "Please let the the mod author know that they should use reflection instead.");
         }
     }
 
