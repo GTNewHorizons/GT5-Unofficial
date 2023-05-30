@@ -44,8 +44,6 @@ public class DumbTileEntity extends TileEntity {
 
     @Override
     public Packet getDescriptionPacket() {
-        super.getDescriptionPacket();
-
         NBTTagCompound NBTTag = new NBTTagCompound();
         this.writeToNBT(NBTTag);
 
