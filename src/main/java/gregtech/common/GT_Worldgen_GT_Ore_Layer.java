@@ -152,7 +152,7 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
         int aChunkZ, int aSeedX, int aSeedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         if (mWorldGenName.equals("NoOresInVein")) {
             if (debugOrevein) GT_Log.out.println(" NoOresInVein");
-            // This is a special empty orevein
+            // Return a special empty orevein
             return ORE_PLACED;
         }
         if (!isGenerationAllowed(

@@ -187,7 +187,7 @@ public class GT_MetaTileEntity_HeatExchanger extends
             .startsWith("gt.integrated_circuit")) {
             int circuit_config = mInventory[1].getItemDamage();
             if (circuit_config >= 1 && circuit_config <= 25) {
-                // If so, apply the penalty and reduced threshold.
+                // If so, apply the penalty and reduce the threshold.
                 penalty = (circuit_config - 1) * penalty_per_config;
                 superheated_threshold -= (shs_reduction_per_config * (circuit_config - 1));
             }

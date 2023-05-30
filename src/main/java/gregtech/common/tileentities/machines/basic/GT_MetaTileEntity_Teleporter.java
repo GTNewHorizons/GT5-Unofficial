@@ -74,7 +74,7 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
     public int mTargetX = 0;
     public int mTargetY = 0;
     public int mTargetZ = 0;
-    public int mTargetD = Integer.MIN_VALUE; // 0
+    public int mTargetD = Integer.MIN_VALUE;
     public boolean mDebug = false;
     // public boolean hasEgg = false;
 
