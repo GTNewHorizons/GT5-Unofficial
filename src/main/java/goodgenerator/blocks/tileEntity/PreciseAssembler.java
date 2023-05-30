@@ -10,6 +10,7 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -29,7 +30,6 @@ import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
@@ -458,21 +458,19 @@ public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<Preci
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
         builder.widget(
-                new CycleButtonWidget().setToggle(() -> mode % 2 == 0, val -> mode = val ? 0 : 1)
-                        .setPlayClickSound(true).setVariableBackgroundGetter((state) -> {
-                            if (state == 0) {
-                                return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
-                                        GG_UITextures.OVERLAY_BUTTON_ASSEMBLER_MODE };
-                            }
-                            return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
-                                    GG_UITextures.OVERLAY_BUTTON_PRECISE_MODE };
-                        }).setPos(80, 91).setSize(16, 16)
-                        .addTooltip(StatCollector.translateToLocal("gui.PreciseAssembler.mode"))
-                        .setTooltipShowUpDelay(TOOLTIP_DELAY));
+                new CycleButtonWidget().setToggle(() -> mode == 1, val -> mode = val ? 1 : 0)
+                        .setTextureGetter(
+                                state -> state == 1 ? GG_UITextures.OVERLAY_BUTTON_ASSEMBLER_MODE
+                                        : GG_UITextures.OVERLAY_BUTTON_PRECISE_MODE)
+                        .setBackground(GT_UITextures.BUTTON_STANDARD).setPos(80, 91).setSize(16, 16)
+                        .dynamicTooltip(
+                                () -> Collections
+                                        .singletonList(StatCollector.translateToLocal("preciseassembler.chat." + mode)))
+                        .setUpdateTooltipEveryTick(true).setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
 
     @Override
-    protected boolean isInputSeparationEnabled() {
+    public boolean isInputSeparationEnabled() {
         return true;
     }
 }

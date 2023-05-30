@@ -324,7 +324,7 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_LongPowerUsageBase<
     }
 
     @Override
-    protected boolean isInputSeparationButtonEnabled() {
+    public boolean supportsInputSeparation() {
         return true;
     }
 

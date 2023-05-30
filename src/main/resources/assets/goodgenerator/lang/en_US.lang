@@ -307,7 +307,6 @@ gui.YOTTank.button.void=Void Excess
 gui.YOTTank.button.locking=Fluid locking
 gui.LargeFusion.0=Energy Capacity:
 gui.LargeFusion.1=Stored Energy:
-gui.PreciseAssembler.mode=Mode
 
 #NEI Info
 tile.recipe.naquadah_reactor=Large Naquadah Reactor
