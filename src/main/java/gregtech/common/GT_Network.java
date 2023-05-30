@@ -73,7 +73,7 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
     }
 
     @Override
-    protected void encode(ChannelHandlerContext aContext, GT_Packet aPacket, List<Object> aOutput) throws Exception {
+    protected void encode(ChannelHandlerContext aContext, GT_Packet aPacket, List<Object> aOutput) {
         final ByteBuf tBuf = Unpooled.buffer()
             .writeByte(aPacket.getPacketID());
         aPacket.encode(tBuf);
@@ -86,8 +86,7 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
     }
 
     @Override
-    protected void decode(ChannelHandlerContext aContext, FMLProxyPacket aPacket, List<Object> aOutput)
-        throws Exception {
+    protected void decode(ChannelHandlerContext aContext, FMLProxyPacket aPacket, List<Object> aOutput) {
         final ByteArrayDataInput aData = ByteStreams.newDataInput(
             aPacket.payload()
                 .array());
