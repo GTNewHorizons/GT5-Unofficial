@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import java.lang.reflect.Field;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,11 +15,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.objects.GT_RenderedTexture;
-import gtPlusPlus.api.objects.Logger;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.random.XSTR;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public abstract class GT_MetaTileEntity_Hatch_FluidGenerator extends GT_MetaTileEntity_Hatch_Input {
 
@@ -38,9 +35,6 @@ public abstract class GT_MetaTileEntity_Hatch_FluidGenerator extends GT_MetaTile
         super(aName, aTier, aDescription, aTextures);
     }
 
-    private static String[] S;
-    private static Field F;
-
     public abstract String[] getCustomTooltip();
 
     public abstract Fluid getFluidToGenerate();
@@ -51,44 +45,13 @@ public abstract class GT_MetaTileEntity_Hatch_FluidGenerator extends GT_MetaTile
 
     @Override
     public synchronized String[] getDescription() {
-        try {
-            if (F == null || S == null) {
-                Field t = ReflectionUtils.getField(this.getClass(), "mDescriptionArray");
-                if (t != null) {
-                    F = t;
-                } else {
-                    F = ReflectionUtils.getField(this.getClass(), "mDescription");
-                }
-                if (S == null && F != null) {
-                    Object o = F.get(this);
-                    if (o instanceof String[]) {
-                        S = (String[]) o;
-                    } else if (o instanceof String) {
-                        S = new String[] { (String) o };
-                    }
-                }
-            }
-        } catch (Throwable t) {
-            Logger.INFO("1");
-            t.printStackTrace();
-        }
-        try {
-            if (S != null) {
-                String[] aCustomTips = getCustomTooltip();
-                final String[] desc = new String[S.length + aCustomTips.length + 1];
-                System.arraycopy(S, 0, desc, 0, S.length);
-                for (int i = 0; i < aCustomTips.length; i++) {
-                    desc[S.length + i] = aCustomTips[i];
-                }
-                desc[S.length + aCustomTips.length] = CORE.GT_Tooltip.get();
-                return desc;
-            }
-        } catch (Throwable t) {
-            Logger.INFO("2");
-            t.printStackTrace();
-        }
-
-        return new String[] { "Broken Tooltip - Report on Github" };
+        mDescriptionArray[1] = "Capacity: " + GT_Utility.formatNumbers(getCapacity()) + "L";
+        String[] aCustomTips = getCustomTooltip();
+        final String[] desc = new String[mDescriptionArray.length + aCustomTips.length + 1];
+        System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
+        System.arraycopy(aCustomTips, 0, desc, mDescriptionArray.length, aCustomTips.length);
+        desc[mDescriptionArray.length + aCustomTips.length] = CORE.GT_Tooltip.get();
+        return desc;
     }
 
     @Override
