@@ -1677,7 +1677,7 @@ public class Textures {
             setCasingTextureForId(ERROR_TEXTURE_INDEX, ERROR_RENDERING[0]);
         }
 
-        protected IIcon mIcon;
+        IIcon mIcon;
 
         BlockIcons() {
             GregTech_API.sGTBlockIconload.add(this);
@@ -1822,7 +1822,7 @@ public class Textures {
 
         public static final ITexture[] ERROR_RENDERING = { TextureFactory.of(RENDERING_ERROR) };
 
-        protected IIcon mIcon, mOverlay;
+        IIcon mIcon, mOverlay;
 
         ItemIcons() {
             GregTech_API.sGTItemIconload.add(this);
