@@ -38,8 +38,8 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
 
     public final GT_ContainerMetaTile_Machine mContainer;
 
-    protected GT_GuiTooltipManager mTooltipManager = new GT_GuiTooltipManager();
-    protected GT_TooltipDataCache mTooltipCache = new GT_TooltipDataCache();
+    protected final GT_GuiTooltipManager mTooltipManager = new GT_GuiTooltipManager();
+    protected final GT_TooltipDataCache mTooltipCache = new GT_TooltipDataCache();
     private static final String GHOST_CIRCUIT_TOOLTIP = "GT5U.machines.select_circuit.tooltip";
 
     private final int guiTint;

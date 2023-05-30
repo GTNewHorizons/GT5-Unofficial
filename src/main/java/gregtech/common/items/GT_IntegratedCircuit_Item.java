@@ -50,7 +50,7 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
 
     private static final String aTextEmptyRow = "   ";
     private static final List<ItemStack> ALL_VARIANTS = new ArrayList<>();
-    protected IIcon[] mIconDamage = new IIcon[25];
+    protected final IIcon[] mIconDamage = new IIcon[25];
 
     public GT_IntegratedCircuit_Item() {
         super("integrated_circuit", "Programmed Circuit", "");

@@ -13,7 +13,7 @@ import ic2.core.util.StackUtil;
 
 public class GT_CoolantCell_Item extends GT_Generic_Item {
 
-    protected int heatStorage;
+    protected final int heatStorage;
 
     public GT_CoolantCell_Item(String aUnlocalized, String aEnglish, int aMaxStore) {
         super(aUnlocalized, aEnglish, null);

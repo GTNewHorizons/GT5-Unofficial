@@ -83,10 +83,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     protected boolean inputSeparation = false;
     protected VoidingMode voidingMode = VoidingMode.VOID_ALL;
     protected boolean batchMode = false;
-    protected static String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
-    protected static String VOID_EXCESS_NBT_KEY = "voidExcess";
-    protected static String VOIDING_MODE_NBT_KEY = "voidingMode";
-    protected static String BATCH_MODE_NBT_KEY = "batchMode";
+    protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
+    protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
+    protected static final String VOIDING_MODE_NBT_KEY = "voidingMode";
+    protected static final String BATCH_MODE_NBT_KEY = "batchMode";
     public GT_Single_Recipe_Check mSingleRecipeCheck = null;
 
     public ArrayList<GT_MetaTileEntity_Hatch_Input> mInputHatches = new ArrayList<>();

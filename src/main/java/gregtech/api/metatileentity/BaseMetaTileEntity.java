@@ -90,7 +90,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     protected long mStoredEnergy = 0, mStoredSteam = 0;
     protected int mAverageEUInputIndex = 0, mAverageEUOutputIndex = 0;
     protected boolean mReleaseEnergy = false;
-    protected long[] mAverageEUInput = new long[] { 0, 0, 0, 0, 0 }, mAverageEUOutput = new long[] { 0, 0, 0, 0, 0 };
+    protected final long[] mAverageEUInput = new long[] { 0, 0, 0, 0, 0 };
+    protected final long[] mAverageEUOutput = new long[] { 0, 0, 0, 0, 0 };
     private boolean mHasEnoughEnergy = true, mRunningThroughTick = false, mInputDisabled = false,
         mOutputDisabled = false, mMuffler = false, mLockUpgrade = false;
     private boolean mActive = false, mWorkUpdate = false, mSteamConverter = false, mWorks = true;

@@ -508,9 +508,9 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
             return colorOverride.getTextColorOrDefault(textType, defaultColor);
         }
 
-        protected Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x222222);
-        protected Supplier<Integer> COLOR_TEXT_GRAY = () -> getTextColorOrDefault("text_gray", 0x555555);
-        protected Supplier<Integer> COLOR_TEXT_WARN = () -> getTextColorOrDefault("text_warn", 0xff0000);
+        protected final Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x222222);
+        protected final Supplier<Integer> COLOR_TEXT_GRAY = () -> getTextColorOrDefault("text_gray", 0x555555);
+        protected final Supplier<Integer> COLOR_TEXT_WARN = () -> getTextColorOrDefault("text_warn", 0xff0000);
     }
 
     // endregion

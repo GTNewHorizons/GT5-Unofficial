@@ -11,7 +11,7 @@ import gregtech.api.util.GT_TooltipDataCache.TooltipData;
 
 public class GT_GuiTooltip {
 
-    protected Rectangle bounds;
+    protected final Rectangle bounds;
     protected TooltipData data;
     private List<String> displayedText;
     public boolean enabled = true;

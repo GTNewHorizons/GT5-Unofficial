@@ -86,7 +86,8 @@ public class GT_GuiTabLine {
     private final DisplayStyle yDir;
 
     // Whether to display on the right side of the GT_ITabRenderer instead of left
-    protected boolean flipHorizontally, visible;
+    protected final boolean flipHorizontally;
+    protected final boolean visible;
 
     private final GT_GuiTabIconSet tabBackground;
     private final GT_ITabRenderer gui;

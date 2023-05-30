@@ -78,7 +78,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine
     protected int counter = 0;
     protected boolean looseFit = false;
     protected int overflowMultiplier = 0;
-    protected float[] flowMultipliers = new float[] { 1, 1, 1 };
+    protected final float[] flowMultipliers = new float[] { 1, 1, 1 };
 
     // client side stuff
     protected boolean mHasTurbine;

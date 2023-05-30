@@ -36,8 +36,8 @@ import ic2.core.Ic2Items;
 public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_BasicMachine {
 
     boolean ready = false;
-    int radius;
-    int step;
+    final int radius;
+    final int step;
     int cX;
     int cZ;
 

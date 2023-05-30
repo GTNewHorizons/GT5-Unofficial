@@ -390,8 +390,8 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
 
     private static class ConfigEntry {
 
-        int percentage;
-        int allowedCount;
+        final int percentage;
+        final int allowedCount;
 
         ConfigEntry(int percentage, int count) {
             this.percentage = percentage;
