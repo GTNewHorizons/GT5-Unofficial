@@ -1624,10 +1624,12 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         this.mTotalRunTime = aNBT.getLong("mTotalRunTime");
-        if (!aNBT.hasKey(VOID_EXCESS_NBT_KEY)) {
+        if (aNBT.hasKey("mVoidExcess")) {
+            // backward compatibility
             voidingMode = aNBT.getBoolean("mVoidExcess") ? VoidingMode.VOID_ALL : VoidingMode.VOID_NONE;
         }
-        if (!aNBT.hasKey(BATCH_MODE_NBT_KEY)) {
+        if (aNBT.hasKey("mUseMultiparallelMode")) {
+            // backward compatibility
             batchMode = aNBT.getBoolean("mUseMultiparallelMode");
         }
     }
