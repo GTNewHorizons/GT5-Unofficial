@@ -519,11 +519,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     }
 
     @Override
-    public void onChunkUnload() {
-        super.onChunkUnload();
-    }
-
-    @Override
     public boolean hasCustomInventoryName() {
         return false;
     }

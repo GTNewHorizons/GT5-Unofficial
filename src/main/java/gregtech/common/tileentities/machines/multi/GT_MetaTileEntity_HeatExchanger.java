@@ -349,11 +349,6 @@ public class GT_MetaTileEntity_HeatExchanger extends
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return super.isGivingInformation();
-    }
-
-    @Override
     public String[] getInfoData() {
         return new String[] {
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
