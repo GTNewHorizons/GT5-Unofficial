@@ -404,6 +404,10 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                 // EU/t -> toolCombatDamage, toolSpeed
                 // Overflow Tier -> toolQuality
                 float aBaseEff = (5f + getToolCombatDamage(aStack)) * 1000f;
+
+                // It was noted by IntelliJ that replacing ((GT_MetaGenerated_Tool) aStack.getItem()) with
+                // GT_MetaGenerated_Tool can have side effects. This refactoring will need tests.
+                @SuppressWarnings("AccessStaticViaInstance")
                 float aOptFlow = (Math.max(
                     Float.MIN_NORMAL,
                     ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack)
