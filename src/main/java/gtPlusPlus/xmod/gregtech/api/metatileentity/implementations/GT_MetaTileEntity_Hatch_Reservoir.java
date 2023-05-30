@@ -31,7 +31,7 @@ public class GT_MetaTileEntity_Hatch_Reservoir extends GT_MetaTileEntity_Hatch_F
     public String[] getCustomTooltip() {
         String[] aTooltip = new String[2];
         aTooltip[0] = "Infinite water supply hatch";
-        aTooltip[1] = "Fills to max capacity every 5 seconds";
+        aTooltip[1] = "Refills half of its capacity every 5 seconds";
         return aTooltip;
     }
 
@@ -42,7 +42,7 @@ public class GT_MetaTileEntity_Hatch_Reservoir extends GT_MetaTileEntity_Hatch_F
 
     @Override
     public int getAmountOfFluidToGenerate() {
-        return 2_000_000_000;
+        return 1_000_000_000;
     }
 
     @Override
