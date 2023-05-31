@@ -122,7 +122,7 @@ public enum GT_GuiIcon implements IGuiIcon {
 
         int startIndex = TEXTURES.length;
         TEXTURES = Arrays.copyOf(TEXTURES, location.length);
-        System.arraycopy(location, 0, TEXTURES, startIndex + 0, location.length);
+        System.arraycopy(location, 0, TEXTURES, startIndex, location.length);
     }
 
     @Override
