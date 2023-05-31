@@ -81,7 +81,7 @@ public class ItemGenericToken extends CoreItem {
         for (int i = 0; i < aDescript.length; i++) {
             GT_LanguageManager.addStringLocalization(
                     "gtplusplus." + this.getUnlocalizedName() + "." + id + ".tooltip." + i,
-                    aDescript[0]);
+                    aDescript[i]);
         }
         mRarities.put(id, aRarity);
         mCustomNameColours.put(id, aCustomNameColour);
@@ -126,8 +126,13 @@ public class ItemGenericToken extends CoreItem {
 
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
-        return GT_LanguageManager.getTranslation(
+        String ret = GT_LanguageManager.getTranslation(
                 "gtplusplus." + this.getUnlocalizedNameInefficiently(tItem) + "." + tItem.getItemDamage() + ".name");
+        EnumChatFormatting format = mCustomNameColours.get(tItem.getItemDamage());
+        if (format != null) {
+            ret = format + ret;
+        }
+        return ret;
     }
 
     @Override
