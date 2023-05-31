@@ -84,11 +84,6 @@ public class ItemBlockRoundRobinator extends ItemBlockWithMetadata {
     }
 
     @Override
-    public int getDamage(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
     public boolean showDurabilityBar(ItemStack stack) {
         return false;
     }

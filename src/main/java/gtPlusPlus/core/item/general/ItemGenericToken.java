@@ -146,11 +146,6 @@ public class ItemGenericToken extends CoreItem {
     }
 
     @Override
-    public int getDamage(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
     public boolean showDurabilityBar(ItemStack stack) {
         return false;
     }
