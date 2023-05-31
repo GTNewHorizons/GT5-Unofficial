@@ -97,11 +97,9 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
     }
 
     private static float calculateWeight(Entity aEntity) {
-        try {
-            if ((aEntity instanceof EntityFX)) {
-                return -1.0F;
-            }
-        } catch (Throwable e) {}
+        if ((aEntity instanceof EntityFX)) {
+            return -1.0F;
+        }
         if ((aEntity instanceof EntityFishHook)) {
             return -1.0F;
         }
