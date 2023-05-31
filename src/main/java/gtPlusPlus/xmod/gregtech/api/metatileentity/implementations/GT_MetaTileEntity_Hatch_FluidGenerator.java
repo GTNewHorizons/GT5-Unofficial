@@ -166,17 +166,7 @@ public abstract class GT_MetaTileEntity_Hatch_FluidGenerator extends GT_MetaTile
 
     @Override
     public boolean canTankBeFilled() {
-        if (this.getCapacity() - this.getFluidAmount() > 0) {
-            // Logger.INFO("Total Space: "+this.getCapacity());
-            // Logger.INFO("Current amount: "+this.getFluidAmount());
-            // Logger.INFO("To add: "+this.getAmountOfFluidToGenerate());
-            // Logger.INFO("Space Free: "+(this.getCapacity()-this.getFluidAmount()));
-        }
-        if (this.mFluid == null || (this.mFluid != null
-                && (this.getCapacity() - this.getFluidAmount() >= this.getAmountOfFluidToGenerate()))) {
-            return true;
-        }
-        return false;
+        return true;
     }
 
     @Override
