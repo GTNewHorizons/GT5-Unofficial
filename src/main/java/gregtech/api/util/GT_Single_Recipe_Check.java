@@ -62,6 +62,7 @@ public class GT_Single_Recipe_Check {
      * {@link GT_MetaTileEntity_MultiBlockBase#getCompactedFluids()} both enforce this single-stack restriction, so any
      * multi-block that calls those can use this method.
      */
+    @SuppressWarnings("JavadocReference")
     public boolean checkRecipeInputsSingleStack(boolean consumeInputs) {
         Map<GT_Utility.ItemId, ItemStack> itemMap = null;
         if (totalItemCost > 0) {

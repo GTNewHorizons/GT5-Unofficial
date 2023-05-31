@@ -16,5 +16,6 @@ public interface INEISpecialInfoFormatter {
      *                             {@link gregtech.api.util.GT_Recipe.GT_Recipe_Map#formatSpecialValue}.
      * @return List of strings containing info for special value etc.
      */
+    @SuppressWarnings("JavadocReference")
     List<String> format(NEIRecipeInfo recipeInfo, Function<Integer, String> applyPrefixAndSuffix);
 }
