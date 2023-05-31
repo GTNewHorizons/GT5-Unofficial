@@ -14,7 +14,7 @@ public interface IGearEnergyTileEntity {
      * Inject Energy Call for Rotational Energy. Rotation Energy can't be stored, this is just for things like internal
      * Dynamos, which convert it into Energy, or into Progress.
      *
-     * @param side
+     * @param side   inject to this side
      * @param aSpeed Positive = Clockwise, Negative = Counterclockwise
      */
     boolean injectRotationalEnergy(ForgeDirection side, long aSpeed, long aEnergy);

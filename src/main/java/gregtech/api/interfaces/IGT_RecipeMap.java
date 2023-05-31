@@ -25,7 +25,7 @@ public interface IGT_RecipeMap {
      * <p>
      * A downstream will only be invoked if parent recipe map added something.
      *
-     * @param downstream
+     * @param downstream the downstream recipe map to add
      */
     void addDownstream(IGT_RecipeMap downstream);
 

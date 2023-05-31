@@ -150,10 +150,10 @@ public class GT_RecipeMapUtil {
     }
 
     /**
-     * Register a recipe map as part of your mod's public API under your modid and your given identifier.
+     * Register a recipe map as part of your mod's public API under your modID and your given identifier.
      *
-     * @param identifier
-     * @param recipeMap
+     * @param identifier   map name
+     * @param recipeMap    the map to register
      * @param dependencies fully qualified identifier of dependent recipe maps. scheduler will only add recipes to one
      *                     of the dependent recipe maps and this recipe map concurrently, guaranteeing thread safety.
      *                     Currently unused, but you are advised to fill them, so that when The Day (tm) comes we don't

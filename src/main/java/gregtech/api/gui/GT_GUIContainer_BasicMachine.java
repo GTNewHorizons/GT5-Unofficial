@@ -137,7 +137,7 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
     /**
      * Apply proper coloration to a machine's power tier short name
      *
-     * @param machineTier
+     * @param machineTier machine tier
      * @return colored power tier short name
      */
     private String powerTierName(byte machineTier) {

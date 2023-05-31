@@ -35,11 +35,9 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
      */
 
     /**
-     * Determine how much energy the sink accepts.
+     * Determine how much energy the sink accepts. Note that you cannot modify the energy net from this method.
      * <p>
-     * Make sure that injectEnergy() does accepts energy if demandsEnergy() returns anything > 0.
-     *
-     * @note Modifying the energy net from this method is disallowed.
+     * Make sure that {@link TileIC2EnergySink#injectEnergy} accepts energy if this function returns anything positive.
      *
      * @return max accepted input in eu
      */
@@ -58,11 +56,9 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
     }
 
     /**
-     * Determine the tier of this energy sink. 1 = LV, 2 = MV, 3 = HV, 4 = EV etc.
+     * Gets the tier of this energy sink. 1 = LV, 2 = MV, 3 = HV, 4 = EV etc.
      *
-     * @note Return Integer.MAX_VALUE to allow any voltage.
-     *
-     * @return tier of this energy sink
+     * @return tier of this energy sink or {@link Integer#MAX_VALUE} to allow any voltage
      */
     @Override
     public int getSinkTier() {

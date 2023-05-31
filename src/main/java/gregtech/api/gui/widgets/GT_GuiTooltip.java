@@ -20,8 +20,8 @@ public class GT_GuiTooltip {
      * Used to create a tooltip that will appear over the specified bounds. This will initially be a "static" tooltip
      * that doesn't respect verbosity levels or respond to the shift key.
      *
-     * @param bounds
-     * @param text
+     * @param bounds tooltip bounds
+     * @param text   tooltip text
      */
     public GT_GuiTooltip(Rectangle bounds, String... text) {
         this.bounds = bounds;
@@ -32,8 +32,8 @@ public class GT_GuiTooltip {
      * Used to create a tooltip that will appear over the specified bounds. This will initially be a "dynamic" tooltip
      * that respects verbosity levels and responds to the shift key.
      *
-     * @param bounds
-     * @param data
+     * @param bounds tooltip bounds
+     * @param data   tooltip data
      */
     public GT_GuiTooltip(Rectangle bounds, TooltipData data) {
         this.bounds = bounds;
@@ -69,7 +69,7 @@ public class GT_GuiTooltip {
     /**
      * Used to set a "static" tooltip that doesn't respect verbosity levels or respond to the shift key
      *
-     * @param text
+     * @param text tooltip text
      */
     public void setToolTipText(String... text) {
         this.data = formatTooltip(text);
@@ -79,7 +79,7 @@ public class GT_GuiTooltip {
     /**
      * Used to set a "dynamic" tooltip that respects verbosity levels and responds to the shift key
      *
-     * @param data
+     * @param data tooltip data
      */
     public void setToolTipText(TooltipData data) {
         // Trust that the tooltips have already been formatted and colored, just make sure it has no nulls
@@ -89,7 +89,7 @@ public class GT_GuiTooltip {
     /**
      * Apply tooltip colors in case the text doesn't contain them and return as tooltip data
      *
-     * @param text
+     * @param text text to apply the colors to
      * @return colored tooltip lines as list
      */
     protected TooltipData formatTooltip(String[] text) {

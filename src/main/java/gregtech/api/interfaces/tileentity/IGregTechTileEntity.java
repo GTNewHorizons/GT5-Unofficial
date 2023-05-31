@@ -62,7 +62,7 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
      * one kind of MetaTileEntity so only use this if you are sure its the correct one or you will get a Class cast
      * Error.
      *
-     * @param aMetaTileEntity
+     * @param aMetaTileEntity a MetaTileEntity
      */
     void setMetaTileEntity(IMetaTileEntity aMetaTileEntity);
 

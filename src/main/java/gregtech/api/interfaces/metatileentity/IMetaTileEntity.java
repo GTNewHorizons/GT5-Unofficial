@@ -185,7 +185,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     void onRemoval();
 
     /**
-     * @param facing
+     * @param facing the facing direction to check
      * @return if aFacing would be a valid Facing for this Device. Used for wrenching.
      */
     boolean isFacingValid(ForgeDirection facing);
@@ -267,7 +267,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * a Player right-clicks the Machine Sneaky right clicks are not getting passed to this!
      *
-     * @return
+     * @return mostly {@code false}. Probably is left for compatibility.
      */
     boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side, float aX,
         float aY, float aZ);
@@ -323,9 +323,9 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     void sendLoopEnd(byte aIndex);
 
     /**
-     * Called when the Machine explodes, override Explosion Code here.
+     * Called when the Machine explodes. Override the Explosion code here.
      *
-     * @param aExplosionPower
+     * @param aExplosionPower explosion power
      */
     void doExplosion(long aExplosionPower);
 

@@ -87,14 +87,22 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     private IGregTechTileEntity mBaseMetaTileEntity;
 
     /**
-     * This registers your Machine at the List. Use only ID's larger than 2048, because i reserved these ones. See also
-     * the List in the API, as it has a Description containing all the reservations.
+     * This registers your Machine at the List. Use only ID's larger than 2048 - the ones lower are reserved by GT.
+     * See also the list in the API package - it has a description that contains all the reservations.
+     * <p>
+     * The constructor can be overloaded as follows:
+     * <blockquote>
+     * 
+     * <pre>
+     * 
+     * public GT_MetaTileEntity_EBench(int id, String name, String nameRegional) {
+     *     super(id, name, nameRegional);
+     * }
+     * </pre>
+     * 
+     * </blockquote>
      *
-     * @param aID the ID
-     * @example for Constructor overload.
-     *          <p/>
-     *          public GT_MetaTileEntity_EBench(int aID, String mName, String mNameRegional) { super(aID, mName,
-     *          mNameRegional); }
+     * @param aID the machine ID
      */
     public MetaPipeEntity(int aID, String aBasicName, String aRegionalName, int aInvSlotCount) {
         this(aID, aBasicName, aRegionalName, aInvSlotCount, true);
@@ -332,7 +340,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     }
 
     /**
-     * a Player rightclicks the Machine Sneaky rightclicks are not getting passed to this!
+     * Called when a Player rightclicks the Machine. Sneaky rightclicks are not getting passed to this!
      */
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
