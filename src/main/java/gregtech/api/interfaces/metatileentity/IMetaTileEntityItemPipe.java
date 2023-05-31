@@ -49,7 +49,7 @@ public interface IMetaTileEntityItemPipe extends IMetaTileEntityPipe {
     class Util {
 
         /**
-         * @return a List of connected Item Pipes
+         * @return connected Item Pipes
          */
         public static Map<IMetaTileEntityItemPipe, Long> scanPipes(IMetaTileEntityItemPipe aMetaTileEntity,
             Map<IMetaTileEntityItemPipe, Long> aMap, long aStep, boolean aSuckItems, boolean aIgnoreCapacity) {
