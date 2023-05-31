@@ -941,7 +941,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         /**
          * THIS CONSTRUCTOR DOES SET THE PERSISTENT HASH.
-         *
+         * <p>
          * if you set one yourself, it will give you one of the RunetimeExceptions!
          */
         public GT_Recipe_AssemblyLine(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs,
@@ -970,7 +970,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         /**
          * THIS CONSTRUCTOR DOES <b>NOT</b> SET THE PERSISTENT HASH.
-         *
+         * <p>
          * if you don't set one yourself, it will break a lot of stuff!
          */
         public GT_Recipe_AssemblyLine(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs,
@@ -3480,7 +3480,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         /**
          * Change how recipes are emitted by a particular recipe builder. Can emit multiple recipe per builder.
-         *
+         * <p>
          * Unlike {@link #setRecipeEmitter(Function)}, this one does not clear the existing recipe being emitted, if any
          */
         public GT_Recipe_Map combineRecipeEmitter(
@@ -3501,7 +3501,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         /**
          * Change how recipes are emitted by a particular recipe builder. Effectively add a new recipe per recipe added.
          * func must not return null.
-         *
+         * <p>
          * Unlike {@link #setRecipeEmitter(Function)}, this one does not clear the existing recipe being emitted, if any
          */
         public GT_Recipe_Map combineRecipeEmitterSingle(Function<? super GT_RecipeBuilder, ? extends GT_Recipe> func) {
@@ -3538,10 +3538,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         /**
          * Run a custom hook on all recipes added <b>via builder</b>. For more complicated behavior subclass this, then
-         * override {@link #doAdd(GT_RecipeBuilder)}
-         *
+         * override {@link #doAdd(GT_RecipeBuilder)}.
+         * <p>
          * Recipes added via one of the overloads of addRecipe will NOT be affected by this function.
-         *
+         * <p>
          * Unlike {@link #setRecipeSpecialHandler(Function)}, this one will not replace the existing special handler.
          * The supplied function will be given the output of existing handler when a recipe is added.
          */
@@ -3552,10 +3552,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         /**
          * Run a custom hook on all recipes added <b>via builder</b>. For more complicated behavior subclass this, then
-         * override {@link #doAdd(GT_RecipeBuilder)}
-         *
+         * override {@link #doAdd(GT_RecipeBuilder)}.
+         * <p>
          * Recipes added via one of the overloads of addRecipe will NOT be affected by this function.
-         *
+         * <p>
          * Unlike {@link #setRecipeSpecialHandler(Function)}, this one will not replace the existing special handler.
          * The supplied function will be given the output of existing handler when a recipe is added.
          */

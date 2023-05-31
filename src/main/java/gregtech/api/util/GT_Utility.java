@@ -1720,7 +1720,7 @@ public class GT_Utility {
 
     /**
      * Treat both null list, or both null item stack at same list position as equal.
-     *
+     * <p>
      * Since ItemStack doesn't override equals and hashCode, you cannot just use Objects.equals
      */
     public static boolean areStackListsEqual(List<ItemStack> lhs, List<ItemStack> rhs, boolean ignoreStackSize,
@@ -2479,7 +2479,7 @@ public class GT_Utility {
 
     /**
      * Initializes new empty texture page for casings page 0 is old CASING_BLOCKS
-     *
+     * <p>
      * Then casings should be registered like this: for (byte i = MIN_USED_META; i < MAX_USED_META; i = (byte) (i + 1))
      * { Textures.BlockIcons.casingTexturePages[PAGE][i+START_INDEX] = new GT_CopiedBlockTexture(this, 6, i); }
      *

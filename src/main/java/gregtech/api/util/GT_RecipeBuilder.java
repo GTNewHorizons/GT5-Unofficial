@@ -388,7 +388,7 @@ public class GT_RecipeBuilder {
     /**
      * produce a deep copy of current values. anything unset will remain unset. IMPORTANT: If metadata contains mutable
      * value, they will not be cloned!
-     *
+     * <p>
      * checkout docs/RecipeBuilder.md for more info on whether to copy or not.
      */
     public GT_RecipeBuilder copy() {

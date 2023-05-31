@@ -137,7 +137,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
 
     /**
      * Return whether cover data needs to be synced to client upon tile entity creation or cover placement.
-     *
+     * <p>
      * Note if you want to sync the data afterwards you will have to manually do it by calling
      * {@link ICoverable#issueCoverUpdate(ForgeDirection)} This option only affects the initial sync.
      */

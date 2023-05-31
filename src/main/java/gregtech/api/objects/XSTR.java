@@ -2,19 +2,19 @@ package gregtech.api.objects;
 
 /**
  * A subclass of java.util.random that implements the Xorshift random number generator
- *
+ * <p>
  * - it is 30% faster than the generator from Java's library - it produces random sequences of higher quality than
  * java.util.Random - this class also provides a clone() function
- *
+ * <p>
  * Usage: XSRandom rand = new XSRandom(); //Instantiation x = rand.nextInt(); //pull a random number
- *
+ * <p>
  * To use the class in legacy code, you may also instantiate an XSRandom object and assign it to a java.util.Random
  * object: java.util.Random rand = new XSRandom();
- *
+ * <p>
  * for an explanation of the algorithm, see http://demesos.blogspot.com/2011/09/pseudo-random-number-generators.html
  *
  * @author Wilfried Elmenreich University of Klagenfurt/Lakeside Labs http://www.elmenreich.tk
- *
+ *         <p>
  *         This code is released under the GNU Lesser General Public License Version 3
  *         http://www.gnu.org/licenses/lgpl-3.0.txt
  */

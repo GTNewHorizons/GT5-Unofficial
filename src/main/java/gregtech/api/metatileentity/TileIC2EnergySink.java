@@ -36,7 +36,7 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
 
     /**
      * Determine how much energy the sink accepts.
-     *
+     * <p>
      * Make sure that injectEnergy() does accepts energy if demandsEnergy() returns anything > 0.
      *
      * @note Modifying the energy net from this method is disallowed.
@@ -71,7 +71,7 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
 
     /**
      * Transfer energy to the sink.
-     *
+     * <p>
      * It's highly recommended to accept all energy by letting the internal buffer overflow to increase the performance
      * and accuracy of the distribution simulation.
      *
@@ -105,7 +105,7 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
 
     /**
      * Determine if this acceptor can accept current from an adjacent emitter in a direction.
-     *
+     * <p>
      * The TileEntity in the emitter parameter is what was originally added to the energy net, which may be normal
      * in-world TileEntity, a delegate or an IMetaDelegate.
      *

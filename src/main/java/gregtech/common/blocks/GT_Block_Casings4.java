@@ -23,7 +23,7 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
 
     /**
      * This mapping is used to look up which texture should be used to render the connected texture for fusion casings.
-     *
+     * <p>
      * This mapping is computed from that giant if ladder from #getIcon in commit
      * da3421547afadc49938b5b6a7f9a9679afa1d570 The exact meaning of these numbers are like black magic. Read the
      * original getIcon implementation to understand why it is 0, 1, etc, if that if ladder is even intelligible.
