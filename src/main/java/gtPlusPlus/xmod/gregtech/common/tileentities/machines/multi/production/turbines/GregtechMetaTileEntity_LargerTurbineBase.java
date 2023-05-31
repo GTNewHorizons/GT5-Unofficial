@@ -57,6 +57,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
 
     protected int baseEff = 0;
     protected long optFlow = 0;
+    protected long euPerTurbine = 0;
     protected double realOptFlow = 0;
     protected int storedFluid = 0;
     protected int counter = 0;
@@ -101,6 +102,8 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
                 .addInfo("Fast Mode increases speed to 48x instead of 16x, with some penalties")
                 .addInfo("Maintenance problems and turbine damage happen 12x as often in Fast Mode")
                 .addInfo("XL Steam Turbines can use Loose Mode with either Slow or Fast Mode")
+                .addInfo("Plasma fuel efficiency is lower for high tier turbines when using low-grade plasmas")
+                .addInfo("Efficiency = ((FuelValue / 100000)^2) / (EU per Turbine)")
                 .addPollutionAmount(getPollutionPerSecond(null)).addInfo("Pollution is 3x higher in Fast Mode")
                 .addSeparator().beginStructureBlock(7, 9, 7, false).addController("Top Middle")
                 .addCasingInfoMin(getCasingName(), 360, false).addCasingInfoMin("Rotor Shaft", 30, false)
