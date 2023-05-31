@@ -4217,9 +4217,7 @@ public class GT_Utility {
         }
 
         private static void applyArrayOfBullshit(IBullshit aBullshitModifier, ItemStack[] aStacks) {
-            int i = aStacks.length;
-            for (int j = 0; j < i; ++j) {
-                ItemStack itemstack = aStacks[j];
+            for (ItemStack itemstack : aStacks) {
                 applyBullshit(aBullshitModifier, itemstack);
             }
         }
