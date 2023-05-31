@@ -327,7 +327,7 @@ public class GT_RecipeRegistrator {
             tAmount += tMaterial.mAmount * tMaterial.mMaterial.getMass();
 
         boolean tHide = !tIron && GT_Mod.gregtechproxy.mHideRecyclingRecipes;
-        ArrayList<ItemStack> outputs = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> outputs = new ArrayList<>();
         if (GT_OreDictUnificator.getIngotOrDust(aData.mMaterial) != null) {
             outputs.add(GT_OreDictUnificator.getIngotOrDust(aData.mMaterial));
         }
@@ -386,7 +386,7 @@ public class GT_RecipeRegistrator {
         {
             boolean tHide = (aData.mMaterial.mMaterial != Materials.Iron)
                 && (GT_Mod.gregtechproxy.mHideRecyclingRecipes);
-            ArrayList<ItemStack> outputs = new ArrayList<ItemStack>();
+            ArrayList<ItemStack> outputs = new ArrayList<>();
             if (GT_OreDictUnificator.getDust(aData.mMaterial) != null) {
                 outputs.add(GT_OreDictUnificator.getDust(aData.mMaterial));
             }
