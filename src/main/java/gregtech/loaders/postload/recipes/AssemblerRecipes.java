@@ -1690,6 +1690,20 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1),
+                ItemList.Electric_Motor_MV.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Steel, 1),
+                new ItemStack(Blocks.iron_bars, 6),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Casing_Grate.get(1))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(sAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Iridium, 1),
                 ItemList.Electric_Motor_UV.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Iridium, 1),
