@@ -745,16 +745,16 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         if (getCoilLevel() == HeatingCoilLevel.None) return false;
 
         // Item input bus check.
-        if ((mInputBusses.size() < min_input_bus) || (mInputBusses.size() > max_input_bus)) return false;
+        if (mInputBusses.size() > max_input_bus) return false;
 
         // Item output bus check.
-        if ((mOutputBusses.size() < min_output_bus) || (mOutputBusses.size() > max_output_bus)) return false;
+        if (mOutputBusses.size() > max_output_bus) return false;
 
         // Fluid input hatch check.
-        if ((mInputHatches.size() < min_input_hatch) || (mInputHatches.size() > max_input_hatch)) return false;
+        if (mInputHatches.size() > max_input_hatch) return false;
 
         // Fluid output hatch check.
-        if ((mOutputHatches.size() < min_output_hatch) || (mOutputHatches.size() > max_output_hatch)) return false;
+        if (mOutputHatches.size() > max_output_hatch) return false;
 
         // If there is more than 1 TT energy hatch, the structure check will fail.
         // If there is a TT hatch and a normal hatch, the structure check will fail.
