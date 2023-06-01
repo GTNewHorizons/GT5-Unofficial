@@ -2194,13 +2194,12 @@ public class GT_ModHandler {
      */
     public static boolean damageOrDechargeItem(ItemStack aStack, int aDamage, int aDecharge, EntityLivingBase aPlayer) {
         if (GT_Utility.isStackInvalid(aStack) || (aStack.getMaxStackSize() <= 1 && aStack.stackSize > 1)) return false;
-        if (aPlayer != null && aPlayer instanceof EntityPlayer && ((EntityPlayer) aPlayer).capabilities.isCreativeMode)
-            return true;
+        if (aPlayer instanceof EntityPlayer && ((EntityPlayer) aPlayer).capabilities.isCreativeMode) return true;
         if (aStack.getItem() instanceof IDamagableItem) {
             return ((IDamagableItem) aStack.getItem()).doDamageToItem(aStack, aDamage);
         } else if (GT_ModHandler.isElectricItem(aStack)) {
             if (canUseElectricItem(aStack, aDecharge)) {
-                if (aPlayer != null && aPlayer instanceof EntityPlayer) {
+                if (aPlayer instanceof EntityPlayer) {
                     return GT_ModHandler.useElectricItem(aStack, aDecharge, (EntityPlayer) aPlayer);
                 }
                 return GT_ModHandler.dischargeElectricItem(aStack, aDecharge, Integer.MAX_VALUE, true, false, true)

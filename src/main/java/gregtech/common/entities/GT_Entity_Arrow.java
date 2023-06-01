@@ -247,7 +247,7 @@ public class GT_Entity_Arrow extends EntityArrow {
                                         : null,
                                     tHitLivingEntity,
                                     this.mArrow);
-                                if ((tShootingEntity != null) && (tHitLivingEntity != tShootingEntity)
+                                if ((tHitLivingEntity != tShootingEntity)
                                     && ((tHitLivingEntity instanceof EntityPlayer))
                                     && ((tShootingEntity instanceof EntityPlayerMP))) {
                                     ((EntityPlayerMP) tShootingEntity).playerNetServerHandler

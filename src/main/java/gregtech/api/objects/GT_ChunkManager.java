@@ -64,8 +64,7 @@ public class GT_ChunkManager
                     .getInteger("OwnerZ");
                 if (y > 0) {
                     TileEntity tile = world.getTileEntity(x, y, z);
-                    if (tile != null && tile instanceof IGregTechTileEntity
-                        && ((IGregTechTileEntity) tile).isAllowedToWork()) {
+                    if (tile instanceof IGregTechTileEntity && ((IGregTechTileEntity) tile).isAllowedToWork()) {
                         ForgeChunkManager.forceChunk(ticket, new ChunkCoordIntPair(x >> 4, z >> 4));
                         if (!registeredTickets.containsKey(tile)) {
                             registeredTickets.put(tile, ticket);

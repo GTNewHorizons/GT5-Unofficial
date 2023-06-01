@@ -1419,8 +1419,7 @@ public class GT_Utility {
     public static byte moveOneItemStackIntoSlot(Object fromTileEntity, Object toTileEntity, ForgeDirection fromSide,
         int putSlot, List<ItemStack> aFilter, boolean aInvertFilter, byte aMaxTargetStackSize, byte aMinTargetStackSize,
         byte aMaxMoveAtOnce, byte aMinMoveAtOnce) {
-        if (fromTileEntity == null || !(fromTileEntity instanceof IInventory fromInv)
-            || aMaxTargetStackSize <= 0
+        if (!(fromTileEntity instanceof IInventory fromInv) || aMaxTargetStackSize <= 0
             || aMinTargetStackSize <= 0
             || aMaxMoveAtOnce <= 0
             || aMinTargetStackSize > aMaxTargetStackSize
@@ -2403,8 +2402,7 @@ public class GT_Utility {
     }
 
     public static boolean isStackInvalid(Object aStack) {
-        return aStack == null || !(aStack instanceof ItemStack)
-            || ((ItemStack) aStack).getItem() == null
+        return !(aStack instanceof ItemStack) || ((ItemStack) aStack).getItem() == null
             || ((ItemStack) aStack).stackSize < 0;
     }
 
