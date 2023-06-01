@@ -3681,6 +3681,7 @@ public class GT_Utility {
      * @return an Array containing the X and the Y Coordinate of the clicked Point, with the top left Corner as Origin,
      *         like on the Texture Sheet. return values should always be between [0.0F and 0.99F].
      */
+    // TODO: use clamp()
     public static float[] getClickedFacingCoords(ForgeDirection side, float aX, float aY, float aZ) {
         return switch (side) {
             case DOWN -> new float[] { Math.min(0.99F, Math.max(0, 1 - aX)), Math.min(0.99F, Math.max(0, aZ)) };
