@@ -65,8 +65,8 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             tAllAmount = (int) (tAllAmount + tMat2.mAmount);
                         }
                         long tItemAmount = 0L;
-                        long tCapsuleCount = GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(aStack)
-                            * -tAllAmount;
+                        long tCapsuleCount = (long) GT_ModHandler
+                            .getCapsuleCellContainerCountMultipliedWithStackSize(aStack) * -tAllAmount;
                         long tDensityMultiplier = aMaterial.getDensity() > 3628800L ? aMaterial.getDensity() / 3628800L
                             : 1L;
                         ArrayList<ItemStack> tList = new ArrayList<>();

@@ -599,7 +599,7 @@ public class GT_MetaTileEntity_ProcessingArray
                 + " x",
             StatCollector.translateToLocal("GT5U.PA.parallel") + ": "
                 + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers((mInventory[1] != null) ? (mInventory[1].stackSize << mMult) : 0)
+                + GT_Utility.formatNumbers((mInventory[1] != null) ? ((long) mInventory[1].stackSize << mMult) : 0)
                 + EnumChatFormatting.RESET };
     }
 
@@ -653,7 +653,7 @@ public class GT_MetaTileEntity_ProcessingArray
                 mMaxProgresstime >>= ocTimeShift; // this is effect of overclocking
                 if (mMaxProgresstime < 1) {
                     if (oldTime == 1) break;
-                    xEUt *= oldTime * (perfectOC ? 1 : 2);
+                    xEUt *= (long) oldTime * (perfectOC ? 1 : 2);
                     break;
                 } else {
                     xEUt <<= 2;

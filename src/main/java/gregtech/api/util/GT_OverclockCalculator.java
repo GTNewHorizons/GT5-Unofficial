@@ -261,7 +261,7 @@ public class GT_OverclockCalculator {
 
         if (mOneTickDiscount) {
             int voltageDifference = GT_Utility.getTier(mEUt) - GT_Utility.getTier(mRecipeEUt);
-            mRecipeEUt >>= voltageDifference * mDurationDecreasePerOC;
+            mRecipeEUt >>= (long) voltageDifference * mDurationDecreasePerOC;
             if (mRecipeEUt < 1) {
                 mRecipeEUt = 1;
             }

@@ -126,7 +126,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
             tt.addInfo(
                 "Produces " + formatNumbers((getEUt() * 40) * (runtimeBoost(20) / 20f))
                     + "L of Steam with 1 Coal at "
-                    + formatNumbers(getEUt() * 40)
+                    + formatNumbers(getEUt() * 40L)
                     + "L/s") // ?
                 .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
                 .addInfo("Solid Fuels with a burn value that is too high or too low will not work");

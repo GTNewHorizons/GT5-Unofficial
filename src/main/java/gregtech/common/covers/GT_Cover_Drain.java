@@ -58,7 +58,7 @@ public class GT_Cover_Drain extends GT_CoverBehavior {
                             side,
                             Materials.Water.getFluid(
                                 aTileEntity.getWorld()
-                                    .isThundering() ? tAmount * 2 : tAmount),
+                                    .isThundering() ? tAmount * 2L : tAmount),
                             true);
                     }
                 }

@@ -236,7 +236,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         IToolStats tStats = getToolStats(aStack);
         if (isItemStackUsable(aStack) && getDigSpeed(aStack, aBlock, aMetaData) > 0.0F) doDamage(
             aStack,
-            tStats
+            (long) tStats
                 .convertBlockDrops(aDrops, aStack, aPlayer, aBlock, aX, aY, aZ, aMetaData, aFortune, aSilkTouch, aEvent)
                 * tStats.getToolDamagePerDropConversion());
     }
@@ -619,7 +619,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
 
     @Override
     public final boolean doDamageToItem(ItemStack aStack, int aVanillaDamage) {
-        return doDamage(aStack, aVanillaDamage * 100);
+        return doDamage(aStack, aVanillaDamage * 100L);
     }
 
     public final boolean doDamage(ItemStack aStack, long aAmount) {

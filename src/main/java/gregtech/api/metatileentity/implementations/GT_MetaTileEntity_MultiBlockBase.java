@@ -871,7 +871,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 mMaxProgresstime >>= ocTimeShift; // this is effect of overclocking
                 if (mMaxProgresstime < 1) {
                     if (oldTime == 1) break;
-                    xEUt *= oldTime * (perfectOC ? 1 : 2);
+                    xEUt *= (long) oldTime * (perfectOC ? 1 : 2);
                     break;
                 } else {
                     xEUt <<= 2;

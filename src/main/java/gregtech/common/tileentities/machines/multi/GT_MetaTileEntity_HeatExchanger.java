@@ -372,7 +372,7 @@ public class GT_MetaTileEntity_HeatExchanger extends
                 + StatCollector.translateToLocal("GT5U.LHE.steam")
                 + ": "
                 + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-                + GT_Utility.formatNumbers(superheated ? -2 * mEUt : -mEUt)
+                + GT_Utility.formatNumbers(superheated ? -2L * mEUt : -mEUt)
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
