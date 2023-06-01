@@ -337,7 +337,7 @@ public class GT_RecipeRegistrator {
             }
         }
         if (outputs.size() != 0) {
-            ItemStack[] outputsArray = outputs.toArray(new ItemStack[outputs.size()]);
+            ItemStack[] outputsArray = outputs.toArray(new ItemStack[0]);
             GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
             recipeBuilder.itemInputs(aStack)
                 .itemOutputs(outputsArray)
@@ -396,7 +396,7 @@ public class GT_RecipeRegistrator {
                 }
             }
             if (outputs.size() != 0) {
-                ItemStack[] outputsArray = outputs.toArray(new ItemStack[outputs.size()]);
+                ItemStack[] outputsArray = outputs.toArray(new ItemStack[0]);
                 GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
                 recipeBuilder.itemInputs(aStack)
                     .itemOutputs(outputsArray)
