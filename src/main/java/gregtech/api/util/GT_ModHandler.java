@@ -94,12 +94,7 @@ public class GT_ModHandler {
     public static GT_HashSet<GT_ItemStack> sNonReplaceableItems = new GT_HashSet<>();
     public static Object sBoxableWrapper = new GT_IBoxableWrapper();
     public static Collection<GT_ItemStack> sBoxableItems = new ArrayList<>();
-    private static final Map<IRecipeInput, RecipeOutput> sExtractorRecipes = new HashMap<>();
-    private static final Map<IRecipeInput, RecipeOutput> sMaceratorRecipes = new HashMap<>();
-    private static final Map<IRecipeInput, RecipeOutput> sCompressorRecipes = new HashMap<>();
-    private static final Map<IRecipeInput, RecipeOutput> sOreWashingRecipes = new HashMap<>();
-    private static final Map<IRecipeInput, RecipeOutput> sThermalCentrifugeRecipes = new HashMap<>();
-    private static final Map<IRecipeInput, RecipeOutput> sMassfabRecipes = new HashMap<>();
+    private static final Map<IRecipeInput, RecipeOutput> emptyRecipeMap = new HashMap<>();
     private static Set<GT_Utility.ItemId> recyclerWhitelist;
     private static Set<GT_Utility.ItemId> recyclerBlacklist;
 
@@ -789,7 +784,7 @@ public class GT_ModHandler {
         } catch (Throwable e) {
             /* Do nothing */
         }
-        return sExtractorRecipes;
+        return emptyRecipeMap;
     }
 
     public static Map<IRecipeInput, RecipeOutput> getCompressorRecipeList() {
@@ -798,7 +793,7 @@ public class GT_ModHandler {
         } catch (Throwable e) {
             /* Do nothing */
         }
-        return sCompressorRecipes;
+        return emptyRecipeMap;
     }
 
     public static Map<IRecipeInput, RecipeOutput> getMaceratorRecipeList() {
@@ -807,7 +802,7 @@ public class GT_ModHandler {
         } catch (Throwable e) {
             /* Do nothing */
         }
-        return sMaceratorRecipes;
+        return emptyRecipeMap;
     }
 
     public static Map<IRecipeInput, RecipeOutput> getThermalCentrifugeRecipeList() {
@@ -816,7 +811,7 @@ public class GT_ModHandler {
         } catch (Throwable e) {
             /* Do nothing */
         }
-        return sThermalCentrifugeRecipes;
+        return emptyRecipeMap;
     }
 
     public static Map<IRecipeInput, RecipeOutput> getOreWashingRecipeList() {
@@ -825,7 +820,7 @@ public class GT_ModHandler {
         } catch (Throwable e) {
             /* Do nothing */
         }
-        return sOreWashingRecipes;
+        return emptyRecipeMap;
     }
 
     public static Map<IRecipeInput, RecipeOutput> getMassFabricatorList() {
@@ -834,7 +829,7 @@ public class GT_ModHandler {
         } catch (Throwable e) {
             /* Do nothing */
         }
-        return sMassfabRecipes;
+        return emptyRecipeMap;
     }
 
     /**
