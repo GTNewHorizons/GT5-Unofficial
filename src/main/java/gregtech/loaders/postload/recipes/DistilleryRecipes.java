@@ -1277,7 +1277,7 @@ public class DistilleryRecipes implements Runnable {
         for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
             GT_RecipeBuilder buildDistillation = GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.getIntegratedCircuit(i + 1));
-            if (aOutput2 == GT_Values.NI || aOutput2 == null) {
+            if (aOutput2 == GT_Values.NI) {
                 buildDistillation.noItemOutputs();
             } else {
                 buildDistillation.itemOutputs(aOutput2);
@@ -1290,7 +1290,7 @@ public class DistilleryRecipes implements Runnable {
         }
         GT_RecipeBuilder buildDT = GT_Values.RA.stdBuilder()
             .itemInputs(aCircuit);
-        if (aOutput2 == GT_Values.NI || aOutput2 == null) {
+        if (aOutput2 == GT_Values.NI) {
             buildDT.noItemOutputs();
         } else {
             buildDT.itemOutputs(aOutput2);
@@ -1307,7 +1307,7 @@ public class DistilleryRecipes implements Runnable {
         for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
             GT_RecipeBuilder buildDistillation = GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.getIntegratedCircuit(i + 1));
-            if (aOutput2 == GT_Values.NI || aOutput2 == null) {
+            if (aOutput2 == GT_Values.NI) {
                 buildDistillation.noItemOutputs();
             } else {
                 buildDistillation.itemOutputs(aOutput2);
@@ -1320,7 +1320,7 @@ public class DistilleryRecipes implements Runnable {
         }
         GT_RecipeBuilder buildDT = GT_Values.RA.stdBuilder()
             .noItemInputs();
-        if (aOutput2 == GT_Values.NI || aOutput2 == null) {
+        if (aOutput2 == GT_Values.NI) {
             buildDT.noItemOutputs();
         } else {
             buildDT.itemOutputs(aOutput2);
