@@ -40,7 +40,7 @@ public class GT_Cover_Drain extends GT_CoverBehavior {
     public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
         if ((aCoverVariable % 3 > 1) && ((aTileEntity instanceof IMachineProgress))) {
-            if (((IMachineProgress) aTileEntity).isAllowedToWork() != aCoverVariable % 3 < 2) {
+            if (((IMachineProgress) aTileEntity).isAllowedToWork()) {
                 return aCoverVariable;
             }
         }
