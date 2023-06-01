@@ -599,7 +599,10 @@ public class BreweryRecipes implements Runnable {
             .addTo(sBrewingRecipes);
 
         // strong
-        if (aName == "regen" || aName == "speed" || aName == "health" || aName == "strength" || aName == "poison") {
+        if (aName.equals("regen") || aName.equals("speed")
+            || aName.equals("health")
+            || aName.equals("strength")
+            || aName.equals("poison")) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(aItem)
                 .noItemOutputs()
@@ -611,7 +614,7 @@ public class BreweryRecipes implements Runnable {
         }
 
         // long
-        if (aName != "health") {
+        if (!aName.equals("health")) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))
                 .noItemOutputs()
