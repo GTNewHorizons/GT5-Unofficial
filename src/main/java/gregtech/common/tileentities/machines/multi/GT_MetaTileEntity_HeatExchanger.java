@@ -239,10 +239,8 @@ public class GT_MetaTileEntity_HeatExchanger extends
             mOutputColdFluidHatch.fill(FluidRegistry.getFluidStack("ic2pahoehoelava", fluidAmountToConsume), true);
         } else if (do_coolant) {
             mOutputColdFluidHatch.fill(FluidRegistry.getFluidStack("ic2coolant", fluidAmountToConsume), true);
-        } else if (do_solarSalt) {
-            mOutputColdFluidHatch.fill(FluidRegistry.getFluidStack("molten.solarsaltcold", fluidAmountToConsume), true);
         } else {
-            return false;
+            mOutputColdFluidHatch.fill(FluidRegistry.getFluidStack("molten.solarsaltcold", fluidAmountToConsume), true);
         }
         this.mEfficiencyIncrease = 80;
         return true;
