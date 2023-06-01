@@ -165,6 +165,7 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
             || !mConnectedMachineTextures) {
             return getIcon(ordinalSide, tMeta);
         }
+        // noinspection ConstantValue // tMeta < 13 should stay because mConnectedMachineTextures can be changed
         if (tMeta > 8 && tMeta < 13) {
             int tInvertLeftRightMod = ordinalSide % 2 * 2 - 1;
             switch (ordinalSide / 2) {
