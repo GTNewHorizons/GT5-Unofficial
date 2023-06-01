@@ -3046,9 +3046,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
 
     @SubscribeEvent
     public void onItemTooltip(ItemTooltipEvent event) {
-        if (event.itemStack == null) {
-            return;
-        } else {
+        if (event.itemStack != null) {
             ItemStack aStackTemp = event.itemStack;
             GT_ItemStack aStack = new GT_ItemStack(aStackTemp);
             if (providesProtection(aStackTemp)) {
