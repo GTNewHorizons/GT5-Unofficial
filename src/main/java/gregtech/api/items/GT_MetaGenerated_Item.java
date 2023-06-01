@@ -134,7 +134,6 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
                 }
                 if (tRandomData == SubTag.NO_UNIFICATION) {
                     GT_OreDictUnificator.addToBlacklist(rStack);
-                    continue;
                 }
             }
             // now check for the rest
@@ -184,7 +183,6 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
                 }
                 if (tUseOreDict) {
                     GT_OreDictUnificator.registerOre(tRandomData, rStack);
-                    continue;
                 }
             }
             if (GregTech_API.sThaumcraftCompat != null)
