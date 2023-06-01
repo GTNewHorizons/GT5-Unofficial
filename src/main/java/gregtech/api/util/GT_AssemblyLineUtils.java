@@ -320,8 +320,7 @@ public class GT_AssemblyLineUtils {
      */
     public static ItemStack getDataStickOutput(ItemStack aDataStick) {
         if (doesDataStickHaveOutput(aDataStick)) {
-            ItemStack aOutput = GT_Utility.loadItem(aDataStick.getTagCompound(), "output");
-            return aOutput;
+            return GT_Utility.loadItem(aDataStick.getTagCompound(), "output");
         }
         return null;
     }

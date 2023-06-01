@@ -334,7 +334,7 @@ public class SP_Upgrade implements ISP_Upgrade {
 
     @Override
     public SP_Upgrade copy() {
-        SP_Upgrade copy = new SP_Upgrade().setUpgradeName(name)
+        return new SP_Upgrade().setUpgradeName(name)
             .setUpgradeUnlocalizedName(unlocalizedName)
             .setUpgradeBuildTime(buildTime)
             .setUpgradeFluidsCost(fluidsCost)
@@ -342,7 +342,6 @@ public class SP_Upgrade implements ISP_Upgrade {
             .setUpgradeRequirements(requirements)
             .setUpgradeTotalStages(totalStages)
             .setUpgradeVoltage(voltage);
-        return copy;
     }
 
     @Override

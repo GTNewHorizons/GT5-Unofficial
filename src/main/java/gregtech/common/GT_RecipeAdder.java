@@ -1307,6 +1307,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         int tExplosives = Math.min(aInput2, 64);
         int tGunpowder = tExplosives << 1; // Worst
         int tDynamite = Math.max(1, tExplosives >> 1); // good
+        @SuppressWarnings("UnnecessaryLocalVariable")
         int tTNT = tExplosives; // Slightly better
         int tITNT = Math.max(1, tExplosives >> 2); // the best
         // new GT_Recipe(aInput1, aInput2, aOutput1, aOutput2);

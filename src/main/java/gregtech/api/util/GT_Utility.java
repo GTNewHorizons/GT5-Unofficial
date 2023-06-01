@@ -4190,10 +4190,9 @@ public class GT_Utility {
         }
 
         private static void applyArrayOfBullshit(IBullshit aBullshitModifier, ItemStack[] aStacks) {
-            ItemStack[] aitemstack1 = aStacks;
             int i = aStacks.length;
             for (int j = 0; j < i; ++j) {
-                ItemStack itemstack = aitemstack1[j];
+                ItemStack itemstack = aStacks[j];
                 applyBullshit(aBullshitModifier, itemstack);
             }
         }
