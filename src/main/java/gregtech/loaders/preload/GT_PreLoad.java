@@ -825,6 +825,10 @@ public class GT_PreLoad {
             .get("render", "RenderDirtParticles", true);
         GT_Mod.gregtechproxy.mRenderPollutionFog = GregTech_API.sClientDataFile
             .get("render", "RenderPollutionFog", true);
+        GT_Mod.gregtechproxy.mRenderItemDurabilityBar = GregTech_API.sClientDataFile
+            .get("render", "RenderItemDurabilityBar", true);
+        GT_Mod.gregtechproxy.mRenderItemChargeBar = GregTech_API.sClientDataFile
+            .get("render", "RenderItemChargeBar", true);
 
         GT_Mod.gregtechproxy.mCoverTabsVisible = GregTech_API.sClientDataFile
             .get("interface", "DisplayCoverTabs", true);

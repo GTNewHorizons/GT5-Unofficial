@@ -680,6 +680,16 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     public boolean mNEIOriginalVoltage = false;
 
     /**
+     * This enables the green->red durability for an item's damage value
+     */
+    public boolean mRenderItemDurabilityBar = true;
+
+    /**
+     * This enables the blue charge bar for an electric item's charge
+     */
+    public boolean mRenderItemChargeBar = true;
+
+    /**
      * This enables showing voltage tier of transformer for Waila, instead of raw voltage number
      */
     public boolean mWailaTransformerVoltageTier = true;
