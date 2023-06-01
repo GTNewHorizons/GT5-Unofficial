@@ -3092,7 +3092,7 @@ public class GT_Utility {
         if (!interDimensional) return false;
         startWorld.updateEntityWithOptionalForce(entity, false); // added
 
-        if ((entity instanceof EntityPlayerMP player) && interDimensional) {
+        if (entity instanceof EntityPlayerMP player) {
             player.closeScreen(); // added
             player.dimension = aDimension;
             player.playerNetServerHandler.sendPacket(
@@ -3124,38 +3124,34 @@ public class GT_Utility {
         destinationWorld.theChunkProviderServer.loadChunk((int) aX >> 4, (int) aZ >> 4);
 
         destinationWorld.theProfiler.startSection("placing");
-        if (interDimensional) {
-            if (!(entity instanceof EntityPlayer)) {
-                NBTTagCompound entityNBT = new NBTTagCompound();
-                entity.isDead = false;
-                entityNBT.setString("id", EntityList.getEntityString(entity));
-                entity.writeToNBT(entityNBT);
-                entity.isDead = true;
-                entity = EntityList.createEntityFromNBT(entityNBT, destinationWorld);
-                if (entity == null) {
-                    return false;
-                }
-                entity.dimension = destinationWorld.provider.dimensionId;
+        if (!(entity instanceof EntityPlayer)) {
+            NBTTagCompound entityNBT = new NBTTagCompound();
+            entity.isDead = false;
+            entityNBT.setString("id", EntityList.getEntityString(entity));
+            entity.writeToNBT(entityNBT);
+            entity.isDead = true;
+            entity = EntityList.createEntityFromNBT(entityNBT, destinationWorld);
+            if (entity == null) {
+                return false;
             }
-            destinationWorld.spawnEntityInWorld(entity);
-            entity.setWorld(destinationWorld);
+            entity.dimension = destinationWorld.provider.dimensionId;
         }
+        destinationWorld.spawnEntityInWorld(entity);
+        entity.setWorld(destinationWorld);
         entity.setLocationAndAngles(aX, aY, aZ, entity.rotationYaw, entity.rotationPitch);
 
         destinationWorld.updateEntityWithOptionalForce(entity, false);
         entity.setLocationAndAngles(aX, aY, aZ, entity.rotationYaw, entity.rotationPitch);
 
         if ((entity instanceof EntityPlayerMP player)) {
-            if (interDimensional) {
-                player.mcServer.getConfigurationManager()
-                    .func_72375_a(player, destinationWorld);
-            }
+            player.mcServer.getConfigurationManager()
+                .func_72375_a(player, destinationWorld);
             player.playerNetServerHandler.setPlayerLocation(aX, aY, aZ, player.rotationYaw, player.rotationPitch);
         }
 
         destinationWorld.updateEntityWithOptionalForce(entity, false);
 
-        if (((entity instanceof EntityPlayerMP player)) && interDimensional) {
+        if (entity instanceof EntityPlayerMP player) {
             player.theItemInWorldManager.setWorld(destinationWorld);
             player.mcServer.getConfigurationManager()
                 .updateTimeAndWeatherForPlayer(player, destinationWorld);
