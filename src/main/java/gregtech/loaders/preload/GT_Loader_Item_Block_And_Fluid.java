@@ -667,7 +667,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         GT_Log.out.println("GT_Mod: Testing BaseMetaTileEntity.");
         if (tBaseMetaTileEntity == null) {
-            GT_Log.out.println("GT_Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
+            GT_Log.out.println("GT_Mod: Fatal Error occurred while initializing TileEntities, crashing Minecraft.");
             throw new RuntimeException("");
         }
         GT_Log.out.println("GT_Mod: Registering the BaseMetaTileEntity.");
