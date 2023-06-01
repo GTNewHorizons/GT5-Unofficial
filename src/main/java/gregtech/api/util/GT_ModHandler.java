@@ -1273,8 +1273,7 @@ public class GT_ModHandler {
                     if (tRecipe[x] != null && Items.feather.getDamage(tRecipe[x]) == W)
                         Items.feather.setDamage(tRecipe[x], 0);
                 }
-                if (tDoWeCareIfThereWasARecipe || !aBuffered)
-                    tThereWasARecipe = removeRecipe(tRecipe) != null || tThereWasARecipe;
+                if (tDoWeCareIfThereWasARecipe || !aBuffered) tThereWasARecipe = removeRecipe(tRecipe) != null;
                 else removeRecipeDelayed(tRecipe);
             }
         } catch (Throwable e) {
