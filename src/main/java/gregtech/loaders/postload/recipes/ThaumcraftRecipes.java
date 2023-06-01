@@ -651,7 +651,7 @@ public class ThaumcraftRecipes implements Runnable {
                     tKey,
                     OrePrefixes.dust.get(Materials.Amber),
                     GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Amber, 1L),
-                    Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L))),
+                    Collections.singletonList(new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L))),
                 GregTech_API.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.dust.get(Materials.InfusedOrder),
