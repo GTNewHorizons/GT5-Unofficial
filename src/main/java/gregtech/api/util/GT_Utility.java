@@ -4651,6 +4651,7 @@ public class GT_Utility {
             size = sum;
         }
 
+        @Nonnull
         @Override
         public Iterator<E> iterator() {
             return colls.stream()

@@ -44,6 +44,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
@@ -3738,6 +3739,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return addRecipe(aRecipe, aCheckForCollisions, true, hidden);
         }
 
+        @Nonnull
         @Override
         public Collection<GT_Recipe> doAdd(GT_RecipeBuilder builder) {
             Iterable<? extends GT_Recipe> recipes = recipeEmitter.apply(builder);
