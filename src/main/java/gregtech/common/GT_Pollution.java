@@ -289,14 +289,12 @@ public class GT_Pollution {
         }
 
         if (sourRain && world.isRaining()
-            && (tBlock == Blocks.stone || tBlock == Blocks.gravel || tBlock == Blocks.cobblestone)
+            && (tBlock == Blocks.gravel || tBlock == Blocks.cobblestone)
             && world.getBlock(x, y + 1, z) == Blocks.air
             && world.canBlockSeeTheSky(x, y, z)) {
-            if (tBlock == Blocks.stone) {
-                world.setBlock(x, y, z, Blocks.cobblestone);
-            } else if (tBlock == Blocks.cobblestone) {
+            if (tBlock == Blocks.cobblestone) {
                 world.setBlock(x, y, z, Blocks.gravel);
-            } else if (tBlock == Blocks.gravel) {
+            } else {
                 world.setBlock(x, y, z, Blocks.sand);
             }
         }
