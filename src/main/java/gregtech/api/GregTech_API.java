@@ -733,12 +733,14 @@ public class GregTech_API {
     public static BaseMetaTileEntity constructBaseMetaTileEntity() {
         if (sBaseMetaTileEntityClass == null) {
             try {
-                return (sBaseMetaTileEntityClass = BaseMetaTileEntity.class).newInstance();
+                return (sBaseMetaTileEntityClass = BaseMetaTileEntity.class).getDeclaredConstructor()
+                    .newInstance();
             } catch (Throwable ignored) {}
         }
 
         try {
-            return sBaseMetaTileEntityClass.newInstance();
+            return sBaseMetaTileEntityClass.getDeclaredConstructor()
+                .newInstance();
         } catch (Throwable e) {
             GT_Log.err.println("GT_Mod: Fatal Error occurred while initializing TileEntities, crashing Minecraft.");
             e.printStackTrace(GT_Log.err);
