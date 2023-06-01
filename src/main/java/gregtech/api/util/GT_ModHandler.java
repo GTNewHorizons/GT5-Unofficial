@@ -1700,8 +1700,7 @@ public class GT_ModHandler {
             }
         }
 
-        if (tIndex == 2) {
-            assert tStack1 != null && tStack2 != null;
+        if (tIndex == 2 && tStack2 != null) {
             if (tStack1.getItem() == tStack2.getItem() && tStack1.stackSize == 1
                 && tStack2.stackSize == 1
                 && tStack1.getItem()
