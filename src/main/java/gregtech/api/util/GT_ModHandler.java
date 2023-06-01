@@ -9,6 +9,8 @@ import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.W;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -535,20 +537,43 @@ public class GT_ModHandler {
     }
 
     /**
-     * Adds to Furnace AND Alloysmelter AND Induction Smelter
+     * Adds to Furnace AND Alloy Smelter
      */
     public static boolean addSmeltingAndAlloySmeltingRecipe(ItemStack aInput, ItemStack aOutput, boolean hidden) {
-        if (aInput == null || aOutput == null) return false;
+        if (aInput == null || aOutput == null) {
+            return false;
+        }
         boolean temp = aInput.stackSize == 1 && addSmeltingRecipe(aInput, aOutput);
-        return (RA.addAlloySmelterRecipe(
-            aInput,
-            OrePrefixes.ingot.contains(aOutput) ? ItemList.Shape_Mold_Ingot.get(0)
-                : OrePrefixes.block.contains(aOutput) ? ItemList.Shape_Mold_Block.get(0)
-                    : OrePrefixes.nugget.contains(aOutput) ? ItemList.Shape_Mold_Nugget.get(0) : null,
-            aOutput,
-            130,
-            3,
-            hidden));
+        ItemStack input2 = OrePrefixes.ingot.contains(aOutput) ? ItemList.Shape_Mold_Ingot.get(0)
+            : OrePrefixes.block.contains(aOutput) ? ItemList.Shape_Mold_Block.get(0)
+                : OrePrefixes.nugget.contains(aOutput) ? ItemList.Shape_Mold_Nugget.get(0) : null;
+        if (Materials.Graphite.contains(aInput)) {
+            return false;
+        }
+        if ((input2 == null) && ((OrePrefixes.ingot.contains(aInput)) || (OrePrefixes.dust.contains(aInput))
+            || (OrePrefixes.gem.contains(aInput)))) {
+            return false;
+        }
+        int duration = GregTech_API.sRecipeFile.get("alloysmelting", input2 == null ? aInput : aOutput, 130);
+        if (duration <= 0) {
+            return false;
+        }
+        GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+        if (input2 == null) {
+            recipeBuilder.itemInputs(aInput);
+        } else {
+            recipeBuilder.itemInputs(aInput, input2);
+        }
+        recipeBuilder.itemOutputs(aOutput)
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(duration * TICKS)
+            .eut(3);
+        if (hidden) {
+            recipeBuilder.hidden();
+        }
+        recipeBuilder.addTo(sAlloySmelterRecipes);
+        return true;
     }
 
     /**
