@@ -28,6 +28,6 @@ public class GT_PlayerActivityLogger implements Runnable {
                 buffer.clear();
                 Thread.sleep(10000L);
             }
-        } catch (Throwable e) {}
+        } catch (Throwable ignored) {}
     }
 }

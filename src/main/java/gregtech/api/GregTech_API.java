@@ -734,9 +734,7 @@ public class GregTech_API {
         if (sBaseMetaTileEntityClass == null) {
             try {
                 return (sBaseMetaTileEntityClass = BaseMetaTileEntity.class).newInstance();
-            } catch (Throwable e) {
-                /* Do nothing */
-            }
+            } catch (Throwable ignored) {}
         }
 
         try {
