@@ -736,10 +736,10 @@ public class GT_Mod implements IGT_Mod {
         GT_Log.out.println("GT_Mod: Smelting");
 
         // Deal with legacy Minecraft raw types
-        FurnaceRecipes.smelting()
-            .getSmeltingList()
-            .values()
-            .forEach(tStacks::add);
+        tStacks.addAll(
+            FurnaceRecipes.smelting()
+                .getSmeltingList()
+                .values());
 
         if (gregtechproxy.mCraftingUnification) {
             GT_Log.out.println("GT_Mod: Crafting Recipes");
