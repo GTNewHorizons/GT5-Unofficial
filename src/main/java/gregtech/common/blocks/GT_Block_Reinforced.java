@@ -178,17 +178,11 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
                 case 3 -> {
                     return Textures.BlockIcons.BLOCK_TSREIN.getIcon();
                 }
-                case 4 -> {
+                case 4, 6, 7 -> {
                     return Blocks.coal_block.getIcon(0, 0);
                 }
                 case 5 -> {
                     return Textures.BlockIcons.COVER_WOOD_PLATE.getIcon();
-                }
-                case 6 -> {
-                    return Blocks.coal_block.getIcon(0, 0);
-                }
-                case 7 -> {
-                    return Blocks.coal_block.getIcon(0, 0);
                 }
                 case 8 -> {
                     return Textures.BlockIcons.BLOCK_STEELPREIN.getIcon();

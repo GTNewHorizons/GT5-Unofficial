@@ -331,10 +331,9 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
     private double getBaseAbsorptionRatio() {
         if (mArmorAbsorbtionPercentage <= 0) return 0.00;
         return switch (this.armorType) {
-            case 0 -> 0.15;
+            case 0, 3 -> 0.15;
             case 1 -> 0.40;
             case 2 -> 0.30;
-            case 3 -> 0.15;
             default -> 0.00;
         };
     }
