@@ -1,6 +1,5 @@
 package gregtech.api.net;
 
-import java.io.DataOutput;
 import java.io.IOException;
 
 import net.minecraft.world.IBlockAccess;
@@ -35,14 +34,13 @@ public class GT_Packet_Sound extends GT_Packet_New {
 
     @Override
     public void encode(ByteBuf aOut) {
-        DataOutput tOut = new ByteBufOutputStream(aOut);
-        try {
-            tOut.writeUTF(mSoundName);
-            tOut.writeFloat(mSoundStrength);
-            tOut.writeFloat(mSoundPitch);
-            tOut.writeInt(mX);
-            tOut.writeShort(mY);
-            tOut.writeInt(mZ);
+        try (ByteBufOutputStream byteOutputStream = new ByteBufOutputStream(aOut)) {
+            byteOutputStream.writeUTF(mSoundName);
+            byteOutputStream.writeFloat(mSoundStrength);
+            byteOutputStream.writeFloat(mSoundPitch);
+            byteOutputStream.writeInt(mX);
+            byteOutputStream.writeShort(mY);
+            byteOutputStream.writeInt(mZ);
         } catch (IOException e) {
             // this really shouldn't happen, but whatever
             e.printStackTrace(GT_Log.err);
