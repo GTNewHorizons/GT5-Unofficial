@@ -26,6 +26,7 @@ public class GT_PlayerActivityLogger implements Runnable {
                     }
                 }
                 buffer.clear();
+                // TODO: swap from sleep to event bus
                 Thread.sleep(10000L);
             }
         } catch (Throwable ignored) {}
