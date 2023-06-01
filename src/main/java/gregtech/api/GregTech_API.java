@@ -727,8 +727,8 @@ public class GregTech_API {
     }
 
     /**
-     * This gives you a new BaseMetaTileEntity. As some Interfaces are not always loaded (Buildcraft, Universal
-     * Electricity) I have to use Invocation at the Constructor of the BaseMetaTileEntity
+     * Provides a new BaseMetaTileEntity. Because some interfaces are not always loaded (Buildcraft, Universal
+     * Electricity) we have to use invocation at the constructor of the BaseMetaTileEntity.
      */
     public static BaseMetaTileEntity constructBaseMetaTileEntity() {
         if (sBaseMetaTileEntityClass == null) {
