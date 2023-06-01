@@ -1383,7 +1383,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
         tItemEntity.hurtResistantTime = 999999;
         tItemEntity.lifespan = 60000;
         try {
-            if (ENTITY_ITEM_HEALTH_FIELD != null) ENTITY_ITEM_HEALTH_FIELD.setInt(tItemEntity, 99999999);
+            ENTITY_ITEM_HEALTH_FIELD.setInt(tItemEntity, 99999999);
         } catch (Exception ignored) {}
         this.worldObj.spawnEntityInWorld(tItemEntity);
         tItem.stackSize = 0;
