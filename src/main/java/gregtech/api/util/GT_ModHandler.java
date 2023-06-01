@@ -866,7 +866,7 @@ public class GT_ModHandler {
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.thermalcentrifuge, aInput, true)) return false;
         RA.addThermalCentrifugeRecipe(
             aInput,
-            aOutput.length >= 1 ? (ItemStack) aOutput[0] : null,
+            (ItemStack) aOutput[0],
             aOutput.length >= 2 ? (ItemStack) aOutput[1] : null,
             aOutput.length >= 3 ? (ItemStack) aOutput[2] : null,
             aChances,
@@ -881,7 +881,7 @@ public class GT_ModHandler {
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.thermalcentrifuge, aInput, true)) return false;
         RA.addThermalCentrifugeRecipe(
             aInput,
-            aOutput.length >= 1 ? (ItemStack) aOutput[0] : null,
+            (ItemStack) aOutput[0],
             aOutput.length >= 2 ? (ItemStack) aOutput[1] : null,
             aOutput.length >= 3 ? (ItemStack) aOutput[2] : null,
             500,
