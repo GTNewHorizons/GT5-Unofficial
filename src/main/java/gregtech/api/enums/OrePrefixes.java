@@ -864,7 +864,6 @@ public enum OrePrefixes {
         crateGtIngot.mGeneratedItems.addAll(ingot.mGeneratedItems);
         crateGtGem.mGeneratedItems.addAll(gem.mGeneratedItems);
         crateGtPlate.mGeneratedItems.addAll(plate.mGeneratedItems);
-        itemCasing.mGeneratedItems.addAll(itemCasing.mGeneratedItems);
         // -----
 
         toolHeadFile.mCondition = new ICondition.And<>(
