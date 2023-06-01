@@ -50,7 +50,6 @@ import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Hazmat;
 import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.Element;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -193,14 +192,7 @@ public class GT_Mod implements IGT_Mod {
 
     static {
         // The version check prevents the breaking of the mod
-        if ((509 != GregTech_API.VERSION) || (509 != GT_ModHandler.VERSION)
-            || (509 != GT_OreDictUnificator.VERSION)
-            || (509 != GT_Recipe.VERSION)
-            || (509 != GT_Utility.VERSION)
-            || (509 != GT_RecipeRegistrator.VERSION)
-            || (509 != Element.VERSION)
-            || (509 != Materials.VERSION)
-            || (509 != OrePrefixes.VERSION)) {
+        if (509 != GregTech_API.VERSION) {
             throw new GT_ItsNotMyFaultException(
                 "One of your mods included GregTech-API files inside its download, which is a wrong thing to do. "
                     + "Please let the the mod author know that they should use reflection instead.");
