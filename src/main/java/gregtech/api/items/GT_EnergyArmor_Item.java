@@ -180,9 +180,7 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
                     }
                 }
 
-                if (bonus > 0.0F) {
-                    aPlayer.moveFlying(0.0F, 1.0F, bonus);
-                }
+                aPlayer.moveFlying(0.0F, 1.0F, bonus);
             }
         }
 
