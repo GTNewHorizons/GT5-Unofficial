@@ -492,8 +492,6 @@ public class GT_Worldgenerator implements IWorldGenerator {
                             tRandomWeight -= tWorldGen.mWeight;
                             if (tRandomWeight <= 0) {
                                 try {
-                                    // if ((tWorldGen.mEndAsteroid && tDimensionType == 1) || (tWorldGen.mAsteroid &&
-                                    // tDimensionType == -30)) {
                                     if (tWorldGen.mEndAsteroid && tDimensionType == 1) {
                                         primaryMeta = tWorldGen.mPrimaryMeta;
                                         secondaryMeta = tWorldGen.mSecondaryMeta;
@@ -515,8 +513,6 @@ public class GT_Worldgenerator implements IWorldGenerator {
                 int tZ = mZ * 16 + aRandom.nextInt(16);
                 if (tDimensionType == 1) {
                     mSize = aRandom.nextInt(endMaxSize - endMinSize);
-                    // } else if (tDimensionName.equals("Asteroids")) {
-                    // mSize = aRandom.nextInt((int) (gcMaxSize - gcMinSize));
                 }
                 if ((mWorld.getBlock(tX, tY, tZ)
                     .isAir(mWorld, tX, tY, tZ))) {

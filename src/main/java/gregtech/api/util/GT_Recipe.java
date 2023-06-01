@@ -1283,10 +1283,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 .setSlotOverlay(true, false, GT_UITextures.OVERLAY_SLOT_UUM)
                 .setSlotOverlay(false, false, true, true, GT_UITextures.OVERLAY_SLOT_DATA_ORB)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
-        // public static final GT_Recipe_Map sAssemblylineFakeRecipes = new GT_Recipe_Map(new HashSet<>(30),
-        // "gt.recipe.scanner", "Scanner", null, Mods.GregTech.getResourcePath(BASIC_MACHINES, "Default"), 1, 1, 1, 0,
-        // 1, E, 1, E, true,
-        // true);
         public static final GT_Recipe_Map sAssemblylineVisualRecipes = new GT_Recipe_Map_AssemblyLineFake(
             new HashSet<>(110),
             "gt.recipe.fakeAssemblylineProcess",

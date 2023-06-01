@@ -426,17 +426,11 @@ public class GregTech_API {
     public static Item constructCoolantCellItem(String aUnlocalized, String aEnglish, int aMaxStore) {
         try {
             return new GT_CoolantCellIC_Item(aUnlocalized, aEnglish, aMaxStore);
-            // return
-            // (Item)Class.forName("gregtech.api.items.GT_CoolantCellIC_Item").getConstructors()[0].newInstance(aUnlocalized,
-            // aEnglish, aMaxStore);
         } catch (Throwable e) {
             /* Do nothing */
         }
         try {
             return new GT_CoolantCell_Item(aUnlocalized, aEnglish, aMaxStore);
-            // return
-            // (Item)Class.forName("gregtech.api.items.GT_CoolantCell_Item").getConstructors()[0].newInstance(aUnlocalized,
-            // aEnglish, aMaxStore);
         } catch (Throwable e) {
             /* Do nothing */
         }

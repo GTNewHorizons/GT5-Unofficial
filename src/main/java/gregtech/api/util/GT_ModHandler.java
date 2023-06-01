@@ -2134,8 +2134,6 @@ public class GT_ModHandler {
                         aCharge,
                         V[Math.max(0, Math.min(V.length - 1, tTier))] + B[Math.max(0, Math.min(V.length - 1, tTier))]);
                     if (aCharge > 0) {
-                        // int rCharge = Math.max(0, ic2.api.item.ElectricItem.manager.discharge(aStack, aCharge +
-                        // (aCharge * 4 > aTier ? aTier : 0), tTier, T, aSimulate));
                         int rCharge = (int) Math.max(
                             0,
                             ic2.api.item.ElectricItem.manager.discharge(

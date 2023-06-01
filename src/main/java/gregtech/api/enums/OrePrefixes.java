@@ -731,9 +731,6 @@ public enum OrePrefixes {
         dust.mNotGeneratedItems.add(Materials.Gunpowder);
         dust.mNotGeneratedItems.add(Materials.Sugar);
         dust.mNotGeneratedItems.add(Materials.Blaze);
-        // dust.mNotGeneratedItems.add(Materials.Ichorium);
-        // dustSmall.mNotGeneratedItems.add(Materials.Ichorium);
-        // dustTiny.mNotGeneratedItems.add(Materials.Ichorium);
         stick.mNotGeneratedItems.add(Materials.Wood);
         stick.mNotGeneratedItems.add(Materials.Bone);
         stick.mNotGeneratedItems.add(Materials.Blaze);

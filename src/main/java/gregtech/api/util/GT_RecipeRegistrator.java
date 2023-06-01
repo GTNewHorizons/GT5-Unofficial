@@ -189,11 +189,6 @@ public class GT_RecipeRegistrator {
                 || tData.mPrefix == OrePrefixes.block | tData.mPrefix == OrePrefixes.plate)) {
             tHide = true;
         }
-        // boolean tHide = (aMaterial != Materials.Iron && aMaterial!=
-        // Materials.Redstone)&&(GT_Mod.gregtechproxy.mHideRecyclingRecipes);
-        // if(tHide && tData!=null&&tData.hasValidPrefixData()&&tData.mPrefix==OrePrefixes.ingot){
-        // tHide=false;
-        // }
         RA.addFluidSmelterRecipe(
             GT_Utility.copyAmount(1, aStack),
             aByproduct

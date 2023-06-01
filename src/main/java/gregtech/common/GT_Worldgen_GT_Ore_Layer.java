@@ -57,9 +57,6 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
         this.mNether = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Nether", aNether);
         this.mEnd = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "TheEnd", aEnd);
         this.mEndAsteroid = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "EndAsteroid", aEnd);
-        // this.mMoon = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Moon", aMoon);
-        // this.mMars = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Mars", aMars);
-        // this.mAsteroid = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Asteroid", aAsteroid);
         this.mMinY = ((short) GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "MinHeight", aMinY));
         short mMaxY = ((short) GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "MaxHeight", aMaxY));
         if (mMaxY < (this.mMinY + 9)) {
@@ -164,13 +161,6 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
             // if (debugOrevein) { GT_Log.out.println( "Wrong dimension" ); }
             return WRONG_DIMENSION;
         }
-        /*
-         * if (!((aWorld.provider.getDimensionName().equalsIgnoreCase("Overworld")) ||
-         * (aWorld.provider.getDimensionName().equalsIgnoreCase("Nether"))||(aWorld.provider.getDimensionName().
-         * equalsIgnoreCase("Underdark"))||(aWorld.provider.getDimensionName().equalsIgnoreCase("Twilight Forest"))||(
-         * aWorld.provider.getDimensionName().equalsIgnoreCase("Underdark"))||(aWorld.provider.getDimensionName().
-         * equalsIgnoreCase("The End")))) return WRONG_DIMENSION;
-         */
 
         if (!this.mRestrictBiome.equals("None") && !(this.mRestrictBiome.equals(aBiome))) {
             return WRONG_BIOME;

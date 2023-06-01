@@ -253,18 +253,6 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
                     return true;
                 }
             }
-            // Block block = aCrop.getWorld().getBlock(aCrop.getLocation().posX, aCrop.getLocation().posY - i,
-            // aCrop.getLocation().posZ);
-            // if (block.isAir(aCrop.getWorld(), aCrop.getLocation().posX, aCrop.getLocation().posY - i,
-            // aCrop.getLocation().posZ)) {
-            // return false;
-            // }
-            // if (block == mBlock) {
-            // int tMeta = aCrop.getWorld().getBlockMetadata(aCrop.getLocation().posX, aCrop.getLocation().posY -
-            // i, aCrop.getLocation().posZ);
-            // if(mMeta < 0 || tMeta == mMeta){
-            // return true;}
-            // }
         }
         return false;
     }

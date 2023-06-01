@@ -42,9 +42,6 @@ public class GT_MetaTileEntity_PyrolyseOven
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_PyrolyseOven> implements ISurvivalConstructable {
 
     private HeatingCoilLevel coilHeat;
-    // public static GT_CopiedBlockTexture mTextureULV = new
-    // GT_CopiedBlockTexture(Block.getBlockFromItem(ItemList.Casing_ULV.get(1).getItem()), 6, 0,
-    // Dyes.MACHINE_METAL.mRGBa);
     private static final int CASING_INDEX = 1090;
     private static final IStructureDefinition<GT_MetaTileEntity_PyrolyseOven> STRUCTURE_DEFINITION = createStructureDefinition();
 

@@ -589,8 +589,6 @@ public class GT_Utility {
                                 byte tMovedItemCount = (byte) (tStack.stackSize
                                     - (rStack == null ? 0 : rStack.stackSize));
                                 if (tMovedItemCount >= 1 /* Math.max(aMinMoveAtOnce, aMinTargetStackSize) */) {
-                                    // ((cofh.api.transport.IItemConduit)aTileEntity2).insertItem(ForgeDirection.getOrientation(aPutTo),
-                                    // copyAmount(tMovedItemCount, tStack), F);
                                     fromInventory.decrStackSize(aGrabSlot, tMovedItemCount);
                                     fromInventory.markDirty();
                                     return tMovedItemCount;

@@ -1024,11 +1024,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     public ArrayList<ItemStack> getStoredOutputs() {
         ArrayList<ItemStack> rList = new ArrayList<>();
-        // for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches) {
-        // if (isValidMetaTileEntity(tHatch)) {
-        // rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(1));
-        // }
-        // }
         for (GT_MetaTileEntity_Hatch_OutputBus tHatch : mOutputBusses) {
             if (isValidMetaTileEntity(tHatch)) {
                 for (int i = tHatch.getBaseMetaTileEntity()

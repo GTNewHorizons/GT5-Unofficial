@@ -684,11 +684,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 4L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)));
 
-        // GT_ModHandler.addCraftingRecipe(ItemList.Shape_Empty.get(1L, new Object[0]),
-        // GT_ModHandler.RecipeBits.MIRRORED | GT_ModHandler.RecipeBits.BUFFERED |
-        // GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hf", "PP", "PP",
-        // 'P', OrePrefixes.plate.get(Materials.Steel)});
-
         ItemList.Shape_Mold_Plate.set(addItem(tLastID = 301, "Mold (Plate)", "Mold for making Plates"));
         ItemList.Shape_Mold_Casing.set(addItem(tLastID = 302, "Mold (Casing)", "Mold for making Item Casings"));
         ItemList.Shape_Mold_Gear.set(addItem(tLastID = 303, "Mold (Gear)", "Mold for making Gears"));
@@ -1349,10 +1344,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             ItemList.Ingot_Heavy3
                 .set(addItem(tLastID = 464, "Heavy Duty Alloy Ingot T3", "Used to make Heavy Duty Plates T3"));
 
-            // GT_ModHandler.addCraftingRecipe(ItemList.Ingot_Heavy1.get(1L, new Object[0]),
-            // GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"BhB", "CAS", "B B", 'B',
-            // OrePrefixes.bolt.get(Materials.StainlessSteel), 'C', OrePrefixes.compressed.get(Materials.Bronze), 'A',
-            // OrePrefixes.compressed.get(Materials.Aluminium), 'S', OrePrefixes.compressed.get(Materials.Steel)});
         }
         ItemList.Ingot_IridiumAlloy.set(
             addItem(
@@ -1361,16 +1352,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 "Used to make Iridium Plates",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 4L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)));
-
-        // GT_ModHandler.addRollingMachineRecipe(ItemList.Ingot_IridiumAlloy.get(1L, new Object[0]), new Object[]{"IAI",
-        // "ADA", "IAI", 'D', GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "iridiumplate", true)
-        // ? OreDictNames.craftingIndustrialDiamond : OrePrefixes.dust.get(Materials.Diamond), 'A',
-        // OrePrefixes.plateAlloy.get("Advanced"), 'I', OrePrefixes.plate.get(Materials.Iridium)});
-        // GT_ModHandler.addCraftingRecipe(ItemList.Ingot_IridiumAlloy.get(1L, new Object[0]),
-        // GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"IAI", "ADA", "IAI", 'D',
-        // GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "iridiumplate", true) ?
-        // OreDictNames.craftingIndustrialDiamond : OrePrefixes.dust.get(Materials.Diamond), 'A',
-        // OrePrefixes.plateAlloy.get("Advanced"), 'I', OrePrefixes.plate.get(Materials.Iridium)});
 
         ItemList.Paper_Printed_Pages.set(
             addItem(

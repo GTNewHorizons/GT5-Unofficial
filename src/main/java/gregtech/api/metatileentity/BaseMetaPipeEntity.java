@@ -851,10 +851,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                 }
 
                 if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sHardHammerList)) {
-                    // if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                    // GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(1), 1.0F, -1, xCoord, yCoord,
-                    // zCoord);
-                    // }
                     return true;
                 }
 

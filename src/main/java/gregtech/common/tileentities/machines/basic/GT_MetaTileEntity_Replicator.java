@@ -31,12 +31,13 @@ public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine
     private static int sHeaviestElementMass = 0;
 
     static {
-        // put overrides here
-        // ex.
-        // MASS_OVERRIDES.put(Materials.get("cake"),Materials.get("cake").getMass());
-        // MASS_OVERRIDES.put(Materials.get("otherCake"),1235234L);
-        // MASS_OVERRIDES.put(Materials.Kalendrite,1235234L);
-        // MASS_OVERRIDES.put(Materials.Kalendrite,Materials.Kalendrite.getMass()*2);
+        /*
+         * Put overrides here. For instance:
+         * MASS_OVERRIDES.put(Materials.get("cake"),Materials.get("cake").getMass());
+         * MASS_OVERRIDES.put(Materials.get("otherCake"),1235234L);
+         * MASS_OVERRIDES.put(Materials.Kalendrite,1235234L);
+         * MASS_OVERRIDES.put(Materials.Kalendrite,Materials.Kalendrite.getMass()*2);
+         */
     }
 
     public GT_MetaTileEntity_Replicator(int aID, String aName, String aNameRegional, int aTier) {
