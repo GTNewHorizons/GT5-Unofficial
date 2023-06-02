@@ -484,7 +484,6 @@ public class GT_RecipeRegistrator {
 
     private static Map<RecipeShape, List<IRecipe>> createIndexedRecipeListCache() {
         Map<RecipeShape, List<IRecipe>> result = new IdentityHashMap<>();
-        @SuppressWarnings("unchecked")
         ArrayList<IRecipe> allRecipeList = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
         // filter using the empty slots in the shape.

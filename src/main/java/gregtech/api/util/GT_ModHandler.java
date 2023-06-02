@@ -1542,7 +1542,6 @@ public class GT_ModHandler {
         delayedRemovalByRecipe.add(aCrafting);
     }
 
-    @SuppressWarnings("unchecked")
     public static void bulkRemoveByRecipe(List<InventoryCrafting> toRemove) {
         ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
@@ -1733,7 +1732,6 @@ public class GT_ModHandler {
     /**
      * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection.
      */
-    @SuppressWarnings("unchecked")
     public static ItemStack getRecipeOutput(boolean aUncopiedStack, boolean allowOreDict, ItemStack... aRecipe) {
         if (aRecipe == null || Arrays.stream(aRecipe)
             .noneMatch(Objects::nonNull)) return null;
