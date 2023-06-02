@@ -722,37 +722,11 @@ public class GT_Mod implements IGT_Mod {
             }
         }
         for (ItemStack tOutput : tStacks) {
-            if (gregtechproxy.mRegisteredOres.contains(tOutput)) {
-                GT_FML_LOGGER.error("GT-ERR-01: @ " + tOutput.getUnlocalizedName() + "   " + tOutput.getDisplayName());
-                GT_FML_LOGGER.error(
-                    "A Recipe used an OreDict Item as Output directly, without copying it before!!! This is a typical CallByReference/CallByValue Error");
-                GT_FML_LOGGER.error(
-                    "Said Item will be renamed to make the invalid Recipe visible, so that you can report it properly.");
-                GT_FML_LOGGER
-                    .error("Please check all Recipes outputting this Item, and report the Recipes to their Owner.");
-                GT_FML_LOGGER.error(
-                    "The Owner of the ==>RECIPE<==, NOT the Owner of the Item, which has been mentioned above!!!");
-                GT_FML_LOGGER.error(
-                    "And ONLY Recipes which are ==>OUTPUTTING<== the Item, sorry but I don't want failed Bug Reports.");
-                GT_FML_LOGGER.error(
-                    "GregTech just reports this Error to you, so you can report it to the Mod causing the Problem.");
-                GT_FML_LOGGER.error(
-                    "Even though I make that Bug visible, I can not and will not fix that for you, that's for the causing Mod to fix.");
-                GT_FML_LOGGER.error("And speaking of failed Reports:");
-                GT_FML_LOGGER.error(
-                    "Both IC2 and GregTech CANNOT be the CAUSE of this Problem, so don't report it to either of them.");
-                GT_FML_LOGGER
-                    .error("I REPEAT, BOTH, IC2 and GregTech CANNOT be the source of THIS BUG. NO MATTER WHAT.");
-                GT_FML_LOGGER.error(
-                    "Asking in the IC2 Forums, which Mod is causing that, won't help anyone, since it is not possible to determine, which Mod it is.");
-                GT_FML_LOGGER.error(
-                    "If it would be possible, then I would have had added the Mod which is causing it to the Message already. But it is not possible.");
-                GT_FML_LOGGER.error(
-                    "Sorry, but this Error is serious enough to justify this Wall-O-Text and the partially allcapsed Language.");
-                GT_FML_LOGGER.error("Also it is a Ban Reason on the IC2-Forums to post this seriously.");
-                tOutput.setStackDisplayName("ERROR! PLEASE CHECK YOUR LOG FOR 'GT-ERR-01'!");
-            } else {
+            if (!gregtechproxy.mRegisteredOres.contains(tOutput)) {
                 GT_OreDictUnificator.setStack(tOutput);
+            } else {
+                logMultilineError(GT_FML_LOGGER, generateGTErr01Message(tOutput));
+                tOutput.setStackDisplayName("ERROR! PLEASE CHECK YOUR LOG FOR 'GT-ERR-01'!");
             }
         }
         GregTech_API.mServerStarted = true;
@@ -838,5 +812,20 @@ public class GT_Mod implements IGT_Mod {
         final StringWriter sw = new StringWriter();
         t.printStackTrace(new PrintWriter(sw));
         GT_FML_LOGGER.error(sw);
+    }
+
+    private static String[] generateGTErr01Message(ItemStack stack) {
+        // The message is presented on a per-line basis to make possible formatting in the future easier.
+        return new String[] { "GT-ERR-01 at " + stack.getUnlocalizedName() + "   " + stack.getDisplayName(),
+            "A recipe used an OreDict item as output directly, without copying the item before that. This is a typical CallByReference/CallByValue error.",
+            "The said item will be renamed to make the invalid recipe visible.",
+            "Please check all recipes that output this item, and report them to the mod that introduced the recipes.", };
+    }
+
+    @SuppressWarnings("SameParameterValue") // The method is used with one logger, but that might change in the future.
+    private static void logMultilineError(Logger logger, String[] errorMessageLines) {
+        for (String errorMessage : errorMessageLines) {
+            logger.error(errorMessage);
+        }
     }
 }
