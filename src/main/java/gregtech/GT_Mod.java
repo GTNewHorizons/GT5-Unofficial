@@ -722,11 +722,11 @@ public class GT_Mod implements IGT_Mod {
             }
         }
         for (ItemStack tOutput : tStacks) {
-            if (gregtechproxy.mRegisteredOres.contains(tOutput)) {
+            if (!gregtechproxy.mRegisteredOres.contains(tOutput)) {
+                GT_OreDictUnificator.setStack(tOutput);
+            } else {
                 logMultilineError(GT_FML_LOGGER, generateGTErr01Message(tOutput));
                 tOutput.setStackDisplayName("ERROR! PLEASE CHECK YOUR LOG FOR 'GT-ERR-01'!");
-            } else {
-                GT_OreDictUnificator.setStack(tOutput);
             }
         }
         GregTech_API.mServerStarted = true;
