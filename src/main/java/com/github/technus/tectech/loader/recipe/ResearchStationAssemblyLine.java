@@ -667,9 +667,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                         new Object[] { OrePrefixes.circuit.get(Materials.Optical), 2L },
                         ItemList.Circuit_Parts_TransistorXSMD.get(48L), ItemList.Circuit_Parts_ResistorXSMD.get(48L),
                         ItemList.Circuit_Parts_CapacitorXSMD.get(48L), ItemList.Circuit_Parts_DiodeXSMD.get(48L),
-                        ItemList.Circuit_Chip_PPIC.get(64L),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.NiobiumTitanium, 16),
-                        GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Osmium, 32),
+                        ItemList.Circuit_Chip_PPIC.get(64L), GT_OreDictUnificator.get("foilRadoxPoly", 16L),
+                        GT_OreDictUnificator.get(OrePrefixes.bolt, MaterialsUEVplus.TranscendentMetal, 32),
                         GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Neutronium, 16),
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Lanthanum, 64) },
                 new FluidStack[] { new FluidStack(solderUEV, 3744), Materials.UUMatter.getFluid(8000L),
@@ -697,7 +696,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                         Materials.Osmium.getMolten(2304L) },
                 getItemContainer("QuantumCircuit").get(1L),
                 20000,
-                512_000_000);
+                (int) TierEU.RECIPE_UMV);
 
         // Transcendent Plasma Mixer - TPM.
         TT_recipeAdder.addResearchableAssemblylineRecipe(
