@@ -28,7 +28,7 @@ public abstract class GT_GUICover extends GT_GUIScreen {
 
     /**
      * The parent GUI to exit to. -1 is ignored.
-     * 
+     *
      * @param parentGuiId
      */
     public void setParentGuiId(int parentGuiId) {

@@ -4,7 +4,16 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.util.GT_Config.getStackConfigName;
 import static gregtech.api.util.GT_Utility.isArrayEmptyOrNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 

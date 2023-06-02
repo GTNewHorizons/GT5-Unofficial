@@ -70,7 +70,7 @@ public class SelectItemUIFactory {
     /**
      * Constructor for a dialog to select an item from given list. Given callback may be called zero or more times
      * depending on user action.
-     * 
+     *
      * @param header           Header text
      * @param headerItem       ItemStack to use as Dialog icon
      * @param selectedCallback callback upon selected

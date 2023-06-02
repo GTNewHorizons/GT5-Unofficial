@@ -5,7 +5,17 @@ import static gregtech.api.enums.GT_Values.L;
 import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.IntFunction;

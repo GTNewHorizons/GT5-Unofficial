@@ -1,6 +1,10 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_NEW5;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_NEW_ACTIVE5;
+import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_NEW_EMPTY5;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
+import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 
 import java.util.ArrayList;
 

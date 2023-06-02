@@ -1,7 +1,13 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.D1;
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZE_BOTTOM;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZE_SIDE;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZE_TOP;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import net.minecraft.entity.EntityLivingBase;

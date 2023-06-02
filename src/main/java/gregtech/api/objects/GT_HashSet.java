@@ -1,6 +1,11 @@
 package gregtech.api.objects;
 
-import java.util.*;
+import java.util.AbstractSet;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 

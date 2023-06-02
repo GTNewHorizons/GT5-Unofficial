@@ -1,8 +1,14 @@
 package gregtech.common.tileentities.machines.multiblock;
 
 import static com.google.common.primitives.Ints.saturatedCast;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ENERGY_IN;
+import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_IN;
+import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_OUT;
+import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_IN;
+import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_OUT;
+import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHING;
 
 import java.util.ArrayList;
 import java.util.Arrays;

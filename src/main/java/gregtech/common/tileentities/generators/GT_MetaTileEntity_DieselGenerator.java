@@ -1,6 +1,26 @@
 package gregtech.common.tileentities.generators;
 
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_BACK;
+import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_BACK_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_BACK_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_BACK_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_BOTTOM;
+import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_BOTTOM_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_BOTTOM_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_BOTTOM_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_FRONT;
+import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_FRONT_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_FRONT_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_FRONT_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_SIDE;
+import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_SIDE_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_SIDE_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_SIDE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_TOP;
+import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_TOP_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_TOP_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_TOP_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import net.minecraft.block.Block;

@@ -1,6 +1,21 @@
 package gregtech.common.tileentities.machines.basic;
 
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_BOXINATOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_BOXINATOR_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_BOXINATOR_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_BOXINATOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOXINATOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOXINATOR_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOXINATOR_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOXINATOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_BOXINATOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_BOXINATOR_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_BOXINATOR_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_BOXINATOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_BOXINATOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_BOXINATOR_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_BOXINATOR_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_BOXINATOR_GLOW;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;

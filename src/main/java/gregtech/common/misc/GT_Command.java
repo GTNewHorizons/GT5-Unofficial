@@ -2,7 +2,8 @@ package gregtech.common.misc;
 
 import java.lang.reflect.Field;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import net.minecraft.command.CommandBase;

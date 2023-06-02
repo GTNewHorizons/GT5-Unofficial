@@ -64,7 +64,7 @@ public interface ITextureBuilder {
 
     /**
      * Set alpha blending
-     * 
+     *
      * @param allowAlpha to set
      *
      * @return {@link ITextureBuilder} for chaining

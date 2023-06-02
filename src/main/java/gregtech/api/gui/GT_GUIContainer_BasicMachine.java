@@ -2,7 +2,7 @@ package gregtech.api.gui;
 
 import static gregtech.api.enums.Mods.GregTech;
 
-import java.awt.*;
+import java.awt.Rectangle;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;

@@ -1,8 +1,15 @@
 package gregtech.api.enums;
 
-import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.GT_Values.B;
+import static gregtech.api.enums.GT_Values.D2;
+import static gregtech.api.enums.GT_Values.M;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
