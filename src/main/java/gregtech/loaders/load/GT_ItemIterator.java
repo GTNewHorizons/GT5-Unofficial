@@ -359,9 +359,7 @@ public class GT_ItemIterator implements Runnable {
                             GT_OreDictUnificator
                                 .registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 6));
                         }
-                        if (
-                        /** (tName.equals("tile.sedimentaryStone")) || **/
-                        ((tName.equals("tile.igneousStone")) || (tName.equals("tile.igneousStoneBrick"))
+                        if (((tName.equals("tile.igneousStone")) || (tName.equals("tile.igneousStoneBrick"))
                             || (tName.equals("tile.igneousCobblestone")))) {
                             GT_OreDictUnificator
                                 .registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(tItem, 1, 0));

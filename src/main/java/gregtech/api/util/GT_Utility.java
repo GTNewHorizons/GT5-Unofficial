@@ -1951,7 +1951,7 @@ public class GT_Utility {
             .hasContainerItem(aStack))
             return aStack.getItem()
                 .getContainerItem(aStack);
-        /**
+        /*
          * These are all special Cases, in which it is intended to have only GT Blocks outputting those Container Items
          */
         if (ItemList.Cell_Empty.isStackEqual(aStack, false, true)) return null;

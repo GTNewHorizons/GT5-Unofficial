@@ -16,7 +16,8 @@ public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandle
     @SuppressWarnings("unused")
     @Override
     public void onMaterialsInit() {
-        /** This is just left here as an example of how to add new materials. **/
+        // This is left here as an example of how to add new materials
+        // TODO: convert the example to a javadoc
         if (false) {
             int i = 0;
             for (int j = GregTech_API.sMaterialProperties.get("general", "AmountOfCustomMaterialSlots", 16); i
@@ -54,7 +55,8 @@ public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandle
 
     @Override
     public void onComponentInit() {
-        /** This is just left here as an example of how to add components. **/
+        // This is left here as an example of how to add components.
+        // TODO: convert the example to a javadoc
         /*
          * Enabling specific components: OrePrefixes.spring.enableComponent(Materials.Cobalt);
          * OrePrefixes.ingotDouble.enableComponent(Materials.Cobalt);
@@ -71,7 +73,8 @@ public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandle
 
     @Override
     public void onComponentIteration(Materials aMaterial) {
-        /** This is just left here as an example of how to add components. **/
+        // This is left here as an example of how to add components.
+        // TODO: convert the example to a javadoc
         /*
          * Enabling/Disabling components depending on the current Materials values: if ((aMaterial.mTypes & 0x40) != 0)
          * { //This material can be made into tool heads OrePrefixes.plateQuadruple.mDisabledItems.remove(aMaterial); }

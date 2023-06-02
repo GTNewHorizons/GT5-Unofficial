@@ -1,6 +1,11 @@
 package gregtech.api.objects;
 
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
+ * XSTR - Xorshift ThermiteRandom Modified by Bogdan-G 03.06.2016 version 0.0.4
+ * <p>
  * A subclass of java.util.random that implements the Xorshift random number generator
  * <p>
  * - it is 30% faster than the generator from Java's library - it produces random sequences of higher quality than
@@ -17,12 +22,6 @@ package gregtech.api.objects;
  *         <p>
  *         This code is released under the GNU Lesser General Public License Version 3
  *         http://www.gnu.org/licenses/lgpl-3.0.txt
- */
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicLong;
-
-/**
- * XSTR - Xorshift ThermiteRandom Modified by Bogdan-G 03.06.2016 version 0.0.4
  */
 public class XSTR extends Random {
 
