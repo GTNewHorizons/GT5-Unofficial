@@ -64,7 +64,6 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.GT_Assemblyline_Server;
 import gregtech.api.util.GT_Forestry_Compat;
-import gregtech.api.util.GT_ItsNotMyFaultException;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
@@ -189,15 +188,6 @@ public class GT_Mod implements IGT_Mod {
     public static final String aTextGeneral = "general";
     public static final String aTextIC2 = "ic2_";
     public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
-
-    static {
-        // The version check prevents the breaking of the mod
-        if (509 != GregTech_API.VERSION) {
-            throw new GT_ItsNotMyFaultException(
-                "One of your mods included GregTech-API files inside its download, which is a wrong thing to do. "
-                    + "Please let the the mod author know that they should use reflection instead.");
-        }
-    }
 
     @SuppressWarnings("deprecation")
     public GT_Mod() {

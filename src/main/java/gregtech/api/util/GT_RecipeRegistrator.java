@@ -153,7 +153,6 @@ public class GT_RecipeRegistrator {
         { "Shears", s_H + s_P, s_P + s_F }, { "Shears", s_H + s_P, s_P + s_F },
         { "Scythe", s_I + s_P + s_H, s_R + s_F + s_P, s_R + " " + " " },
         { "Scythe", s_H + s_P + s_I, s_P + s_F + s_R, " " + " " + s_R } };
-    public static volatile int VERSION = 509;
 
     static {
         // flush the cache on post load finish

@@ -50,7 +50,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public static final Map<Fluid, Materials> FLUID_MAP = new LinkedHashMap<>();
 
-    public static volatile int VERSION = 509;
     /**
      * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) that looped over the old
      * materials enum

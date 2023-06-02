@@ -191,7 +191,6 @@ public class GT_Utility {
     private static final Map<OrePrefixes, Supplier<ItemStack>> sOreToCobble = new HashMap<>();
 
     private static final Map<Integer, Boolean> sOreTable = new HashMap<>();
-    public static volatile int VERSION = 509;
     public static boolean TE_CHECK = false, BC_CHECK = false, CHECK_ALL = true, RF_CHECK = false;
     public static Map<GT_PlayedSound, Integer> sPlayedSoundMap = new /* Concurrent */ HashMap<>();
     private static int sBookCount = 0;

@@ -674,8 +674,6 @@ public enum OrePrefixes {
         cellSteamCracked2,
         cellSteamCracked3);
 
-    public static volatile int VERSION = 509;
-
     static {
         pulp.mPrefixInto = dust;
         oreGem.mPrefixInto = ore;

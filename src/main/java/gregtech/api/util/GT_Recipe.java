@@ -141,7 +141,6 @@ import mods.railcraft.common.items.RailcraftToolItems;
  */
 public class GT_Recipe implements Comparable<GT_Recipe> {
 
-    public static volatile int VERSION = 509;
     /**
      * If you want to change the Output, feel free to modify or even replace the whole ItemStack Array, for Inputs,
      * please add a new Recipe, because of the HashMaps.

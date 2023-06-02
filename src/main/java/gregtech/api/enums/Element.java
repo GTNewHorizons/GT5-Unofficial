@@ -277,7 +277,6 @@ public enum Element {
     $Nq(-130, -200, 0, -1, null, "Anti-Naquadah", false),
     $Nt(0, -10000, 0, -1, null, "Anti-Neutronium", false);
 
-    public static volatile int VERSION = 509;
     public final long mProtons, mNeutrons, mAdditionalMass, mHalfLifeSeconds;
     public final String mName, mDecayTo;
     public final boolean mIsIsotope;

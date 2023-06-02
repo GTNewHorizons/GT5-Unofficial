@@ -44,7 +44,6 @@ public class GT_OreDictUnificator {
     private static final Map<GT_ItemStack2, ItemData> sItemStack2DataMap = new HashMap<>();
     private static final Map<GT_ItemStack2, List<ItemStack>> sUnificationTable = new HashMap<>();
     private static final Set<GT_ItemStack2> sNoUnificationList = new HashSet<>();
-    public static volatile int VERSION = 509;
     private static int isRegisteringOre = 0, isAddingOre = 0;
     private static boolean mRunThroughTheList = true;
 

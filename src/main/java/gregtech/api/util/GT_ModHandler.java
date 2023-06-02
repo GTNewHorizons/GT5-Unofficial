@@ -91,7 +91,6 @@ public class GT_ModHandler {
     private static final List<ItemStack> delayedRemovalByOutput = new ArrayList<>();
     private static final List<InventoryCrafting> delayedRemovalByRecipe = new ArrayList<>();
 
-    public static volatile int VERSION = 509;
     public static Collection<String> sNativeRecipeClasses = new HashSet<>(), sSpecialRecipeClasses = new HashSet<>();
     public static GT_HashSet<GT_ItemStack> sNonReplaceableItems = new GT_HashSet<>();
     public static Object sBoxableWrapper = new GT_IBoxableWrapper();
