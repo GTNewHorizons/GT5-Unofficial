@@ -1548,7 +1548,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                     ForgeEventFactory.onPlayerDestroyItem(aEvent.entityPlayer, aStack);
                 }
             }
-            return;
         }
     }
 

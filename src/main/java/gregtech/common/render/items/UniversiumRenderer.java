@@ -239,7 +239,6 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
             }
             case INVENTORY -> {
                 CosmicRenderStuffs.setLightLevel(10.2f);
-                return;
             }
             default -> {
                 CosmicRenderStuffs.setLightLevel(1.0f);

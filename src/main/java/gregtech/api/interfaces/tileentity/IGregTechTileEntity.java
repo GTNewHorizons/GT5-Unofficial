@@ -177,9 +177,7 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
             && getMetaTileEntity().isMachineBlockUpdateRecursive();
     }
 
-    default void setShutdownStatus(boolean newStatus) {
-        return;
-    }
+    default void setShutdownStatus(boolean newStatus) {}
 
     /**
      * A randomly called display update to be able to add particles or other items for display The event is proxied by
