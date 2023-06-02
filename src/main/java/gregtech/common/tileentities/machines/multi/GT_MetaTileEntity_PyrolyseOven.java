@@ -172,7 +172,7 @@ public class GT_MetaTileEntity_PyrolyseOven
             ItemStack[] tInputs = getCompactedInputs();
             FluidStack[] tFluids = getCompactedFluids();
 
-            if (tInputs.length <= 0) return false;
+            if (tInputs.length == 0) return false;
 
             GT_Single_Recipe_Check.Builder tSingleRecipeCheckBuilder = null;
             if (mLockedToSingleRecipe) {

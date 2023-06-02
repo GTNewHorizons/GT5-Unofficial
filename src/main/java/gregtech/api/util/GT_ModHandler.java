@@ -862,7 +862,7 @@ public class GT_ModHandler {
      */
     @Deprecated
     public static boolean addThermalCentrifugeRecipe(ItemStack aInput, int[] aChances, int aHeat, Object... aOutput) {
-        if (aInput == null || aOutput == null || aOutput.length <= 0 || aOutput[0] == null) return false;
+        if (aInput == null || aOutput == null || aOutput.length == 0 || aOutput[0] == null) return false;
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.thermalcentrifuge, aInput, true)) return false;
         RA.addThermalCentrifugeRecipe(
             aInput,
@@ -877,7 +877,7 @@ public class GT_ModHandler {
 
     @Deprecated
     public static boolean addThermalCentrifugeRecipe(ItemStack aInput, int aHeat, Object... aOutput) {
-        if (aInput == null || aOutput == null || aOutput.length <= 0 || aOutput[0] == null) return false;
+        if (aInput == null || aOutput == null || aOutput.length == 0 || aOutput[0] == null) return false;
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.thermalcentrifuge, aInput, true)) return false;
         RA.addThermalCentrifugeRecipe(
             aInput,
@@ -893,7 +893,7 @@ public class GT_ModHandler {
      * IC2-OreWasher Recipe. Overloads old Recipes automatically
      */
     public static boolean addOreWasherRecipe(ItemStack aInput, int[] aChances, int aWaterAmount, Object... aOutput) {
-        if (aInput == null || aOutput == null || aOutput.length <= 0 || aOutput[0] == null) return false;
+        if (aInput == null || aOutput == null || aOutput.length == 0 || aOutput[0] == null) return false;
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.orewashing, aInput, true)) return false;
         RA.addOreWasherRecipe(
             aInput,
@@ -917,7 +917,7 @@ public class GT_ModHandler {
     }
 
     public static boolean addOreWasherRecipe(ItemStack aInput, int aWaterAmount, Object... aOutput) {
-        if (aInput == null || aOutput == null || aOutput.length <= 0 || aOutput[0] == null) return false;
+        if (aInput == null || aOutput == null || aOutput.length == 0 || aOutput[0] == null) return false;
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.orewashing, aInput, true)) return false;
         RA.addOreWasherRecipe(
             aInput,
@@ -1101,7 +1101,7 @@ public class GT_ModHandler {
         aResult = GT_OreDictUnificator.get(true, aResult);
         if (aOnlyAddIfResultIsNotNull && aResult == null) return false;
         if (aResult != null && Items.feather.getDamage(aResult) == W) Items.feather.setDamage(aResult, 0);
-        if (aRecipe == null || aRecipe.length <= 0) return false;
+        if (aRecipe == null || aRecipe.length == 0) return false;
 
         // The renamed variable clarifies what's happening
         // noinspection UnnecessaryLocalVariable
@@ -1388,7 +1388,7 @@ public class GT_ModHandler {
         int[] aEnchantmentLevelsAdded, boolean aBuffered, boolean aKeepNBT, boolean aDismantleable, boolean aRemovable,
         Object[] aRecipe) {
         aResult = GT_OreDictUnificator.get(true, aResult);
-        if (aRecipe == null || aRecipe.length <= 0) return false;
+        if (aRecipe == null || aRecipe.length == 0) return false;
         for (byte i = 0; i < aRecipe.length; i++) {
             if (aRecipe[i] instanceof IItemContainer) aRecipe[i] = ((IItemContainer) aRecipe[i]).get(1);
             else if (aRecipe[i] instanceof Enum) aRecipe[i] = ((Enum<?>) aRecipe[i]).name();
@@ -1994,7 +1994,7 @@ public class GT_ModHandler {
      */
     public static ItemStack[] getMachineOutput(ItemStack aInput, Map<IRecipeInput, RecipeOutput> aRecipeList,
         boolean aRemoveInput, NBTTagCompound rRecipeMetaData, ItemStack... aOutputSlots) {
-        if (aOutputSlots == null || aOutputSlots.length <= 0) return new ItemStack[0];
+        if (aOutputSlots == null || aOutputSlots.length == 0) return new ItemStack[0];
         if (aInput == null) return new ItemStack[aOutputSlots.length];
         try {
             for (Entry<IRecipeInput, RecipeOutput> tEntry : aRecipeList.entrySet()) {

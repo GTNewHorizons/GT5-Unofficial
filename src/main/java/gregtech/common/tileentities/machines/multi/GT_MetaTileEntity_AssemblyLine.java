@@ -304,7 +304,7 @@ public class GT_MetaTileEntity_AssemblyLine
         }
 
         // Best not to run this recipe.
-        if (!foundRecipe || tStack.length <= 0) {
+        if (!foundRecipe || tStack.length == 0) {
             return false;
         }
 

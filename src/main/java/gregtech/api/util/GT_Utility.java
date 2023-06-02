@@ -2100,7 +2100,7 @@ public class GT_Utility {
         if (isStringInvalid(aMapping)) return null;
         ItemStack rStack = GregTech_API.sBookList.get(aMapping);
         if (rStack != null) return copyAmount(1, rStack);
-        if (isStringInvalid(aTitle) || isStringInvalid(aAuthor) || aPages.length <= 0) return null;
+        if (isStringInvalid(aTitle) || isStringInvalid(aAuthor) || aPages.length == 0) return null;
         sBookCount++;
         rStack = new ItemStack(Items.written_book, 1);
         NBTTagCompound tNBT = new NBTTagCompound();

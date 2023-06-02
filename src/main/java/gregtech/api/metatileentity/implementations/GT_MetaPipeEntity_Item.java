@@ -308,7 +308,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
         }
         if (tileEntity instanceof ISidedInventory) {
             final int[] tSlots = ((ISidedInventory) tileEntity).getAccessibleSlotsFromSide(oppositeSide.ordinal());
-            if (tSlots == null || tSlots.length <= 0) return false;
+            if (tSlots == null || tSlots.length == 0) return false;
             connectable = true;
         }
 

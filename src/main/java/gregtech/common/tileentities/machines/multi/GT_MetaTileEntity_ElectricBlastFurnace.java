@@ -211,7 +211,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
     }
 
     protected boolean processRecipe(ItemStack[] tItems, FluidStack[] tFluids) {
-        if (tItems.length <= 0) return false;
+        if (tItems.length == 0) return false;
 
         long tVoltage = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));

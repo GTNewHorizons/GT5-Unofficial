@@ -278,7 +278,7 @@ public class GT_MetaTileEntity_ProcessingArray
     }
 
     public boolean processRecipe(ItemStack[] tInputs, FluidStack[] tFluids, GT_Recipe.GT_Recipe_Map map) {
-        if (tInputs.length <= 0 && tFluids.length <= 0) return false;
+        if (tInputs.length == 0 && tFluids.length == 0) return false;
         GT_Recipe tRecipe = map.findRecipe(
             getBaseMetaTileEntity(),
             mLastRecipe,
