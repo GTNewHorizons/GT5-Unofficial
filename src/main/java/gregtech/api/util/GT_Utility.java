@@ -3092,8 +3092,7 @@ public class GT_Utility {
         if (!interDimensional) return false;
         startWorld.updateEntityWithOptionalForce(entity, false); // added
 
-        if ((entity instanceof EntityPlayerMP) && interDimensional) {
-            EntityPlayerMP player = (EntityPlayerMP) entity;
+        if ((entity instanceof EntityPlayerMP player) && interDimensional) {
             player.closeScreen(); // added
             player.dimension = aDimension;
             player.playerNetServerHandler.sendPacket(
@@ -3146,8 +3145,7 @@ public class GT_Utility {
         destinationWorld.updateEntityWithOptionalForce(entity, false);
         entity.setLocationAndAngles(aX, aY, aZ, entity.rotationYaw, entity.rotationPitch);
 
-        if ((entity instanceof EntityPlayerMP)) {
-            EntityPlayerMP player = (EntityPlayerMP) entity;
+        if ((entity instanceof EntityPlayerMP player)) {
             if (interDimensional) {
                 player.mcServer.getConfigurationManager()
                     .func_72375_a(player, destinationWorld);
@@ -3157,8 +3155,7 @@ public class GT_Utility {
 
         destinationWorld.updateEntityWithOptionalForce(entity, false);
 
-        if (((entity instanceof EntityPlayerMP)) && interDimensional) {
-            EntityPlayerMP player = (EntityPlayerMP) entity;
+        if (((entity instanceof EntityPlayerMP player)) && interDimensional) {
             player.theItemInWorldManager.setWorld(destinationWorld);
             player.mcServer.getConfigurationManager()
                 .updateTimeAndWeatherForPlayer(player, destinationWorld);

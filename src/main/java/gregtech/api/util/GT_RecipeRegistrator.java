@@ -528,8 +528,7 @@ public class GT_RecipeRegistrator {
                 && !(tStack.getItem() instanceof IReactorComponent)
                 && !GT_ModHandler.isElectricItem(tStack)
                 && !GT_Utility.isStackInList(tStack, GT_ModHandler.sNonReplaceableItems)) {
-                if (tRecipe instanceof ShapedOreRecipe) {
-                    ShapedOreRecipe tShapedRecipe = (ShapedOreRecipe) tRecipe;
+                if (tRecipe instanceof ShapedOreRecipe tShapedRecipe) {
                     if (checkRecipeShape(
                         buffer,
                         tShapedRecipe.getInput(),
@@ -540,8 +539,7 @@ public class GT_RecipeRegistrator {
                                 .add(tRecipe);
                         }
                     }
-                } else if (tRecipe instanceof ShapedRecipes) {
-                    ShapedRecipes tShapedRecipe = (ShapedRecipes) tRecipe;
+                } else if (tRecipe instanceof ShapedRecipes tShapedRecipe) {
                     if (checkRecipeShape(
                         buffer,
                         tShapedRecipe.recipeItems,
