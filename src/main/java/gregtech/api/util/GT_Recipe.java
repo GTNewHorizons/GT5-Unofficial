@@ -2328,7 +2328,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 .setSlotOverlay(false, true, GT_UITextures.OVERLAY_SLOT_VIAL_1)
                 .setSlotOverlay(true, true, GT_UITextures.OVERLAY_SLOT_VIAL_2)
                 .setRecipeConfigFile("chemicalreactor", FIRST_ITEM_OR_FLUID_OUTPUT)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE, ProgressBar.Direction.RIGHT);
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE, ProgressBar.Direction.RIGHT)
+                .setDisableOptimize(true);
         /**
          * using {@code .addTo(sMultiblockChemicalRecipes)} will cause the recipe to be added to multiblock recipe map
          * ONLY!
@@ -2462,7 +2463,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             true,
             true).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_CIRCUIT)
                 .setRecipeConfigFile("assembling", FIRST_ITEM_OUTPUT)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE, ProgressBar.Direction.RIGHT);
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE, ProgressBar.Direction.RIGHT)
+                .setDisableOptimize(true);
         public static final GT_Recipe_Map sCircuitAssemblerRecipes = new GT_Recipe_Map_Assembler(
             new HashSet<>(605),
             "gt.recipe.circuitassembler",
