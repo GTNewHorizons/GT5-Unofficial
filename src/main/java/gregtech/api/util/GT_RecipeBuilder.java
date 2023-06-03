@@ -81,7 +81,7 @@ public class GT_RecipeBuilder {
         FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int[] chances, Object special, int duration, int eut,
         int specialValue, boolean enabled, boolean hidden, boolean fakeRecipe, boolean mCanBeBuffered,
         boolean mNeedsEmptyOutput, String[] neiDesc, boolean optimize,
-        Map<MetadataIdentifier<?>, Object> additionalData) {
+        Map<MetadataIdentifier<?>, Object> additionalData, boolean valid) {
         this.inputsBasic = inputsBasic;
         this.inputsOreDict = inputsOreDict;
         this.outputs = outputs;
@@ -101,6 +101,7 @@ public class GT_RecipeBuilder {
         this.neiDesc = neiDesc;
         this.optimize = optimize;
         this.additionalData.putAll(additionalData);
+        this.valid = valid;
     }
 
     private static FluidStack[] fix(FluidStack[] fluidInputs) {
@@ -377,6 +378,26 @@ public class GT_RecipeBuilder {
         return metadata(GT_RecipeConstants.LOW_GRAVITY, true);
     }
 
+    private static ItemStack[] copy(ItemStack[] arr) {
+        if (arr == null) return null;
+        ItemStack[] ret = new ItemStack[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == null) continue;
+            ret[i] = arr[i].copy();
+        }
+        return ret;
+    }
+
+    private static FluidStack[] copy(FluidStack[] arr) {
+        if (arr == null) return null;
+        FluidStack[] ret = new FluidStack[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == null) continue;
+            ret[i] = arr[i].copy();
+        }
+        return ret;
+    }
+
     private static <T> T[] copy(T[] arr) {
         return arr == null ? null : arr.clone();
     }
@@ -409,9 +430,10 @@ public class GT_RecipeBuilder {
             fakeRecipe,
             mCanBeBuffered,
             mNeedsEmptyOutput,
-            neiDesc,
+            copy(neiDesc),
             optimize,
-            additionalData);
+            additionalData,
+            valid);
     }
 
     /**
@@ -435,9 +457,10 @@ public class GT_RecipeBuilder {
             fakeRecipe,
             mCanBeBuffered,
             mNeedsEmptyOutput,
-            neiDesc,
+            copy(neiDesc),
             optimize,
-            Collections.emptyMap());
+            Collections.emptyMap(),
+            valid);
     }
 
     public ItemStack getItemInputBasic(int index) {
@@ -675,21 +698,17 @@ public class GT_RecipeBuilder {
             l.addAll(Arrays.asList(outputs));
             for (int i = 0; i < l.size(); i++) if (l.get(i) == null) l.remove(i--);
 
-            for (byte i = (byte) Math.min(64, duration / 16); i > 1; i--) if (duration / i >= 16) {
-                boolean temp = true;
-                for (ItemStack stack : l) if (stack.stackSize % i != 0) {
-                    temp = false;
-                    break;
-                }
-                if (temp) for (FluidStack fluidInput : fluidInputs) if (fluidInput.amount % i != 0) {
-                    temp = false;
-                    break;
-                }
-                if (temp) for (FluidStack fluidOutput : fluidOutputs) if (fluidOutput.amount % i != 0) {
-                    temp = false;
-                    break;
-                }
-                if (temp) {
+            outer: for (byte i = (byte) Math.min(64, duration / 16); i > 1; i--) {
+                if (duration / i >= 16) {
+                    for (ItemStack stack : l) {
+                        if (stack.stackSize % i != 0) continue outer;
+                    }
+                    for (FluidStack fluidInput : fluidInputs) {
+                        if (fluidInput.amount % i != 0) continue outer;
+                    }
+                    for (FluidStack fluidOutput : fluidOutputs) {
+                        if (fluidOutput.amount % i != 0) continue outer;
+                    }
                     for (ItemStack itemStack : l) itemStack.stackSize /= i;
                     for (FluidStack fluidInput : fluidInputs) fluidInput.amount /= i;
                     for (FluidStack fluidOutput : fluidOutputs) fluidOutput.amount /= i;
