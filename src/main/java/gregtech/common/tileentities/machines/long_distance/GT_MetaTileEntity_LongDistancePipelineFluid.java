@@ -19,11 +19,12 @@
  */
 package gregtech.common.tileentities.machines.long_distance;
 
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPELINE_FLUID_BACK;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPELINE_FLUID_FRONT;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPELINE_FLUID_SIDE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPELINE_FLUID_SIDE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPELINE_FLUID_SIDE_LEFT_RIGHT;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPELINE_FLUID_SIDE_LEFT_RIGHT_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPELINE_FLUID_SIDE_UP_DOWN;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPELINE_FLUID_SIDE_UP_DOWN_GLOW;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -102,21 +103,23 @@ public class GT_MetaTileEntity_LongDistancePipelineFluid extends GT_MetaTileEnti
     }
 
     @Override
-    public ITexture[][][] getTextureSet(ITexture[] aTextures) {
-        return new ITexture[0][0][0];
-    }
-
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (sideDirection == facingDirection) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1],
-            TextureFactory.of(OVERLAY_PIPELINE_FLUID_FRONT) };
-        else if (sideDirection == facingDirection.getOpposite()) return new ITexture[] {
-            MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_PIPELINE_FLUID_BACK) };
-        else return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1],
-            TextureFactory.of(OVERLAY_PIPELINE_FLUID_SIDE), TextureFactory.builder()
-                .addIcon(OVERLAY_PIPELINE_FLUID_SIDE_GLOW)
+    public ITexture[] getTextureOverlays() {
+        ITexture[] overlays = new ITexture[4];
+        overlays[INPUT_INDEX] = TextureFactory.of(OVERLAY_PIPELINE_FLUID_FRONT);
+        overlays[OUTPUT_INDEX] = TextureFactory.of(OVERLAY_PIPELINE_FLUID_BACK);
+        overlays[SIDE_UP_DOWN_INDEX] = TextureFactory.of(
+            TextureFactory.of(OVERLAY_PIPELINE_FLUID_SIDE_UP_DOWN),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_PIPELINE_FLUID_SIDE_UP_DOWN_GLOW)
                 .glow()
-                .build() };
+                .build());
+        overlays[SIDE_LEFT_RIGHT_INDEX] = TextureFactory.of(
+            TextureFactory.of(OVERLAY_PIPELINE_FLUID_SIDE_LEFT_RIGHT),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_PIPELINE_FLUID_SIDE_LEFT_RIGHT_GLOW)
+                .glow()
+                .build());
+
+        return overlays;
     }
 }

@@ -19,6 +19,7 @@
  */
 package gregtech.common.tileentities.machines.long_distance;
 
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static mcp.mobius.waila.api.SpecialChars.BLUE;
 import static mcp.mobius.waila.api.SpecialChars.GOLD;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
@@ -56,6 +57,11 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_MetaTileEntity_BasicHull_NonElectric {
+
+    protected static final int INPUT_INDEX = 0;
+    protected static final int OUTPUT_INDEX = 1;
+    protected static final int SIDE_UP_DOWN_INDEX = 2;
+    protected static final int SIDE_LEFT_RIGHT_INDEX = 3;
 
     public static int minimalDistancePoints = 64;
 
@@ -305,19 +311,72 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
     }
 
     @Override
+    public boolean shouldTriggerBlockUpdate() {
+        return true;
+    }
+
+    abstract public ITexture[] getTextureOverlays();
+
+    @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
-        return new ITexture[0][0][0];
+        ITexture[][][] rTextures = new ITexture[4][17][];
+        ITexture[] overlays = getTextureOverlays();
+        for (int i = 0; i < rTextures[0].length; i++) {
+            rTextures[INPUT_INDEX][i] = new ITexture[] { MACHINE_CASINGS[mTier][i], overlays[INPUT_INDEX] };
+            rTextures[OUTPUT_INDEX][i] = new ITexture[] { MACHINE_CASINGS[mTier][i], overlays[OUTPUT_INDEX] };
+            rTextures[SIDE_UP_DOWN_INDEX][i] = new ITexture[] { MACHINE_CASINGS[mTier][i],
+                overlays[SIDE_UP_DOWN_INDEX] };
+            rTextures[SIDE_LEFT_RIGHT_INDEX][i] = new ITexture[] { MACHINE_CASINGS[mTier][i],
+                overlays[SIDE_LEFT_RIGHT_INDEX] };
+        }
+        return rTextures;
     }
 
     @Override
-    public boolean shouldTriggerBlockUpdate() {
-        return true;
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        colorIndex += 1;
+        if (sideDirection == facingDirection) return mTextures[INPUT_INDEX][colorIndex];
+        else if (sideDirection == facingDirection.getOpposite()) return mTextures[OUTPUT_INDEX][colorIndex];
+        else {
+            switch (facingDirection) {
+                case UP, DOWN -> {
+                    return mTextures[SIDE_UP_DOWN_INDEX][colorIndex];
+                }
+                case NORTH -> {
+                    switch (sideDirection) {
+                        case DOWN, UP -> {
+                            return mTextures[SIDE_UP_DOWN_INDEX][colorIndex];
+                        }
+                        case EAST, WEST -> {
+                            return mTextures[SIDE_LEFT_RIGHT_INDEX][colorIndex];
+                        }
+                        default -> {}
+                    }
+                }
+                case SOUTH -> {
+                    switch (sideDirection) {
+                        case DOWN, UP -> {
+                            return mTextures[SIDE_UP_DOWN_INDEX][colorIndex];
+                        }
+                        case EAST, WEST -> {
+                            return mTextures[SIDE_LEFT_RIGHT_INDEX][colorIndex];
+                        }
+                        default -> {}
+                    }
+                }
+                case EAST, WEST -> {
+                    return mTextures[SIDE_LEFT_RIGHT_INDEX][colorIndex];
+                }
+                default -> {}
+            }
+        }
+        return mTextures[INPUT_INDEX][colorIndex]; // dummy
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
-        final NBTTagCompound tag = accessor.getNBTData();
         final ForgeDirection facing = getBaseMetaTileEntity().getFrontFacing();
         final ForgeDirection side = accessor.getSide();
 
