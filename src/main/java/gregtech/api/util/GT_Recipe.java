@@ -2330,7 +2330,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 .setRecipeConfigFile("chemicalreactor", FIRST_ITEM_OR_FLUID_OUTPUT)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE, ProgressBar.Direction.RIGHT);
         /**
-         * using {@code .addTo(sChemicalRecipes)} will cause the recipe to be added to multiblock recipe map ONLY!
+         * using {@code .addTo(sMultiblockChemicalRecipes)} will cause the recipe to be added to multiblock recipe map
+         * ONLY!
          * use {@link GT_RecipeConstants#UniversalChemical} to add to both.
          */
         public static final GT_Recipe_Map sMultiblockChemicalRecipes = //
