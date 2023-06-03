@@ -58,6 +58,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_MetaTileEntity_BasicHull_NonElectric {
 
     public static int minimalDistancePoints = 64;
+
     protected GT_MetaTileEntity_LongDistancePipelineBase mTarget = null;
     // these two are updated by machine block update thread, so must be volatile
     protected volatile GT_MetaTileEntity_LongDistancePipelineBase mSender = null;
@@ -72,6 +73,13 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
     public GT_MetaTileEntity_LongDistancePipelineBase(String aName, int aTier, String aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return new String[] { "Only one Input and Output are allowed per pipeline",
+            "Only Input and Output have to be chunkloaded", "Transfer rate is solely limited by input rate",
+            "Minimum distance: " + minimalDistancePoints + " blocks" };
     }
 
     @Override
@@ -167,13 +175,13 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
             final ChunkCoordinates coords = mSender.getCoords();
             aList.addAll(
                 Arrays.asList(
-                    "Is the Target",
-                    "Sender is at: X: " + coords.posX + " Y: " + coords.posY + " Z: " + coords.posZ));
+                    "Is Pipeline Output",
+                    "Pipeline Input is at: X: " + coords.posX + " Y: " + coords.posY + " Z: " + coords.posZ));
         } else {
             aList.addAll(
                 Arrays.asList(
-                    checkTarget() ? "Has Target" : "Has no loaded Target",
-                    "Target should be around: X: " + mTargetPos.posX
+                    checkTarget() ? "Is connected to Pipeline Output" : "Pipeline Output is not connected/chunkloaded",
+                    "Pipeline Output should be around: X: " + mTargetPos.posX
                         + " Y: "
                         + mTargetPos.posY
                         + " Z: "
@@ -222,7 +230,7 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
                     ChunkCoordinates tCoords;
                     tWires.add(aCoords);
 
-                    // For each direction, if we haven't already visisted that coordinate, add it to the end of the
+                    // For each direction, if we haven't already visited that coordinate, add it to the end of the
                     // queue
                     if (tVisited.add(tCoords = new ChunkCoordinates(aCoords.posX + 1, aCoords.posY, aCoords.posZ)))
                         tQueue.add(tCoords);
@@ -292,7 +300,6 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
 
     @Override
     public void onMachineBlockUpdate() {
-        // GT_Mod.GT_FML_LOGGER.info("You're dead to me");
         mTargetPos = null;
         mSender = null;
     }
@@ -314,19 +321,24 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
         final ForgeDirection facing = getBaseMetaTileEntity().getFrontFacing();
         final ForgeDirection side = accessor.getSide();
 
+        final NBTTagCompound tag = accessor.getNBTData();
+        final boolean hasInput = tag.getBoolean("hasInput");
+        final boolean hasInputTooClose = tag.getBoolean("hasInputTooClose");
+        final boolean hasOutput = tag.getBoolean("hasOutput");
+        final boolean hasOutputTooClose = tag.getBoolean("hasOutputTooClose");
+
         if (side == facing) currentTip.add(GOLD + "Pipeline Input" + RESET);
         else if (side == facing.getOpposite()) currentTip.add(BLUE + "Pipeline Output" + RESET);
         else currentTip.add("Pipeline Side");
 
-        if (tag.getBoolean("hasSender")) currentTip.add("Other End of Input: " + GREEN + "distance" + RESET);
-        else if (tag.getBoolean("hasTooCloseSender"))
-            currentTip.add("Other End of Input: " + RED + "too close" + RESET);
-        else currentTip.add("Other End of Input: " + YELLOW + "cannot found(may need to update other end)" + RESET);
+        if (!hasInput && !hasInputTooClose && !hasOutput && !hasOutputTooClose) {
+            currentTip.add(YELLOW + "Not connected" + RESET);
+        }
 
-        if (tag.getBoolean("hasTarget")) currentTip.add("Other End of Output: " + GREEN + "distance" + RESET);
-        else if (tag.getBoolean("hasTooCloseTarget"))
-            currentTip.add("Other End of Output: " + RED + "too close" + RESET);
-        else currentTip.add("Other End of Output: " + YELLOW + "cannot found" + RESET);
+        if (hasInput) currentTip.add(GREEN + "Connected to " + GOLD + "Input" + RESET);
+        else if (hasInputTooClose) currentTip.add(RED + "Connected Input too close" + RESET);
+        else if (hasOutput) currentTip.add(GREEN + "Connected to " + BLUE + "Output" + RESET);
+        else if (hasOutputTooClose) currentTip.add(RED + "Connected Output too close" + RESET);
 
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }
@@ -336,9 +348,9 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
 
-        tag.setBoolean("hasSender", mSender != null);
-        tag.setBoolean("hasTooCloseSender", mTooCloseSender != null);
-        tag.setBoolean("hasTarget", mTarget != null && mTarget != this);
-        tag.setBoolean("hasTooCloseTarget", mTooCloseTarget != null);
+        tag.setBoolean("hasInput", mSender != null);
+        tag.setBoolean("hasInputTooClose", mTooCloseSender != null);
+        tag.setBoolean("hasOutput", mTarget != null && mTarget != this);
+        tag.setBoolean("hasOutputTooClose", mTooCloseTarget != null);
     }
 }
