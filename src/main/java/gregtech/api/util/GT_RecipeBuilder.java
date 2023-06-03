@@ -698,20 +698,16 @@ public class GT_RecipeBuilder {
             l.addAll(Arrays.asList(outputs));
             for (int i = 0; i < l.size(); i++) if (l.get(i) == null) l.remove(i--);
 
-            outer:
-            for (byte i = (byte) Math.min(64, duration / 16); i > 1; i--) {
+            outer: for (byte i = (byte) Math.min(64, duration / 16); i > 1; i--) {
                 if (duration / i >= 16) {
                     for (ItemStack stack : l) {
-                        if (stack.stackSize % i != 0)
-                            continue outer;
+                        if (stack.stackSize % i != 0) continue outer;
                     }
                     for (FluidStack fluidInput : fluidInputs) {
-                        if (fluidInput.amount % i != 0)
-                            continue outer;
+                        if (fluidInput.amount % i != 0) continue outer;
                     }
                     for (FluidStack fluidOutput : fluidOutputs) {
-                        if (fluidOutput.amount % i != 0)
-                            continue outer;
+                        if (fluidOutput.amount % i != 0) continue outer;
                     }
                     for (ItemStack itemStack : l) itemStack.stackSize /= i;
                     for (FluidStack fluidInput : fluidInputs) fluidInput.amount /= i;
