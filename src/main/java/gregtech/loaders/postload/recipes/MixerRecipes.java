@@ -799,6 +799,45 @@ public class MixerRecipes implements Runnable {
             .addTo(sMixerRecipes);
 
         GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 4),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.SFMixture.get(64))
+            .fluidInputs(Materials.McGuffium239.getFluid(12))
+            .noFluidOutputs()
+            .duration(20 * SECONDS)
+            .eut(16)
+            .addTo(sMixerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 4),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.SFMixture.get(64))
+            .fluidInputs(Materials.McGuffium239.getFluid(8))
+            .noFluidOutputs()
+            .duration(20 * SECONDS)
+            .eut(16)
+            .addTo(sMixerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Caesium, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 4),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.SFMixture.get(64))
+            .fluidInputs(Materials.McGuffium239.getFluid(4))
+            .noFluidOutputs()
+            .duration(20 * SECONDS)
+            .eut(16)
+            .addTo(sMixerRecipes);
+
+        GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.SFMixture.get(2), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.EnderEye, 1))
             .itemOutputs(ItemList.MSFMixture.get(4))
             .fluidInputs(Materials.Mercury.getFluid(1000))
