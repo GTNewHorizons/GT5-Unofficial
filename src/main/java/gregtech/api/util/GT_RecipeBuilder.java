@@ -1,5 +1,8 @@
 package gregtech.api.util;
 
+import static gregtech.api.util.GT_Utility.copyFluidArray;
+import static gregtech.api.util.GT_Utility.copyItemArray;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -378,26 +381,6 @@ public class GT_RecipeBuilder {
         return metadata(GT_RecipeConstants.LOW_GRAVITY, true);
     }
 
-    private static ItemStack[] copy(ItemStack[] arr) {
-        if (arr == null) return null;
-        ItemStack[] ret = new ItemStack[arr.length];
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] == null) continue;
-            ret[i] = arr[i].copy();
-        }
-        return ret;
-    }
-
-    private static FluidStack[] copy(FluidStack[] arr) {
-        if (arr == null) return null;
-        FluidStack[] ret = new FluidStack[arr.length];
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] == null) continue;
-            ret[i] = arr[i].copy();
-        }
-        return ret;
-    }
-
     private static <T> T[] copy(T[] arr) {
         return arr == null ? null : arr.clone();
     }
@@ -414,12 +397,12 @@ public class GT_RecipeBuilder {
      */
     public GT_RecipeBuilder copy() {
         return new GT_RecipeBuilder(
-            copy(inputsBasic),
+            copyItemArray(inputsBasic),
             copy(inputsOreDict),
-            copy(outputs),
+            copyItemArray(outputs),
             copy(alts),
-            copy(fluidInputs),
-            copy(fluidOutputs),
+            copyFluidArray(fluidInputs),
+            copyFluidArray(fluidOutputs),
             copy(chances),
             special,
             duration,
@@ -441,12 +424,12 @@ public class GT_RecipeBuilder {
      */
     public GT_RecipeBuilder copyNoMetadata() {
         return new GT_RecipeBuilder(
-            copy(inputsBasic),
+            copyItemArray(inputsBasic),
             copy(inputsOreDict),
-            copy(outputs),
+            copyItemArray(outputs),
             copy(alts),
-            copy(fluidInputs),
-            copy(fluidOutputs),
+            copyFluidArray(fluidInputs),
+            copyFluidArray(fluidOutputs),
             copy(chances),
             special,
             duration,

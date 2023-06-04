@@ -1,28 +1,19 @@
 package gregtech.api.util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidTank;
 
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
-import com.gtnewhorizons.modularui.api.forge.IItemHandler;
 
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.interfaces.fluid.IFluidStore;
+import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.multitileentity.multiblock.base.Controller;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 
 /**
  * Helper class to calculate how many parallels of items / fluids can fit in the output buses / hatches.
@@ -30,13 +21,9 @@ import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 public class VoidProtectionHelper {
 
     /**
-     * A MetaTileEntity Controller
+     * Machine used for calculation
      */
-    private GT_MetaTileEntity_MultiBlockBase machineMeta;
-    /**
-     * A MultiTileEntity Controller
-     */
-    private Controller<?> machineMulti;
+    private IVoidable machine;
     /**
      * Does void protection enabled for items
      */
@@ -66,37 +53,39 @@ public class VoidProtectionHelper {
 
     /**
      * Sets MetaTE controller, with current configuration for void protection mode.
+     *
+     * @deprecated Use {@link #setMachine(IVoidable)}
      */
+    @Deprecated
     public VoidProtectionHelper setController(GT_MetaTileEntity_MultiBlockBase machineMeta) {
         return setController(machineMeta, machineMeta.protectsExcessItem(), machineMeta.protectsExcessFluid());
     }
 
     /**
      * Sets MetaTE controller, with void protection mode forcibly.
+     *
+     * @deprecated Use {@link #setMachine(IVoidable, boolean, boolean)}
      */
+    @Deprecated
     public VoidProtectionHelper setController(GT_MetaTileEntity_MultiBlockBase machineMeta, boolean protectExcessItem,
         boolean protectExcessFluid) {
-        this.protectExcessItem = protectExcessItem;
-        this.protectExcessFluid = protectExcessFluid;
-        this.machineMeta = machineMeta;
-        return this;
+        return setMachine(machineMeta, protectExcessItem, protectExcessFluid);
     }
 
     /**
-     * Sets MuTE controller, with current configuration for void protection mode.
+     * Sets machine, with current configuration for void protection mode.
      */
-    public VoidProtectionHelper setController(Controller<?> machineMulti) {
-        return setController(machineMulti, machineMulti.protectsExcessItem(), machineMulti.protectsExcessFluid());
+    public VoidProtectionHelper setMachine(IVoidable machine) {
+        return setMachine(machine, machine.protectsExcessItem(), machine.protectsExcessFluid());
     }
 
     /**
-     * Sets MuTE controller, with void protection mode forcibly.
+     * Sets machine, with void protection mode forcibly.
      */
-    public VoidProtectionHelper setController(Controller<?> machineMulti, boolean protectExcessItem,
-        boolean protectExcessFluid) {
+    public VoidProtectionHelper setMachine(IVoidable machine, boolean protectExcessItem, boolean protectExcessFluid) {
         this.protectExcessItem = protectExcessItem;
         this.protectExcessFluid = protectExcessFluid;
-        this.machineMulti = machineMulti;
+        this.machine = machine;
         return this;
     }
 
@@ -125,6 +114,9 @@ public class VoidProtectionHelper {
         if (built) {
             throw new IllegalStateException("Tried to build twice");
         }
+        if (machine == null) {
+            throw new IllegalStateException("Machine is not set");
+        }
         built = true;
         determineParallel();
         return this;
@@ -151,85 +143,21 @@ public class VoidProtectionHelper {
             fluidOutputs = new FluidStack[0];
         }
 
-        // Don't check ControllerWithOptionalFeatures#protectsExcessItem nor #protectsExcessFluid here,
+        // Don't check IVoidable#protectsExcessItem nor #protectsExcessFluid here,
         // to allow more involved setting for void protections (see ComplexParallelProcessingLogic)
-        if (machineMeta != null) {
-            boolean tMEOutputBus = false;
-            boolean tMEOutputHatch = false;
-            for (GT_MetaTileEntity_Hatch tHatch : machineMeta.mOutputBusses) {
-                if (tHatch instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
-                    tMEOutputBus = true;
-                    break;
-                }
-            }
-
-            for (GT_MetaTileEntity_Hatch tHatch : machineMeta.mOutputHatches) {
-                if (tHatch instanceof GT_MetaTileEntity_Hatch_Output_ME) {
-                    tMEOutputHatch = true;
-                    break;
-                }
-            }
-
-            if (protectExcessItem && itemOutputs.length > 0 && !tMEOutputBus) {
-                maxParallel = Math.min(calculateMaxItemParallelsForMetaTEs(), maxParallel);
-            }
-            if (protectExcessFluid && fluidOutputs.length > 0 && !tMEOutputHatch) {
-                maxParallel = Math.min(calculateMaxFluidParallelsForMetaTEs(), maxParallel);
-            }
-        } else if (machineMulti != null) {
-            if (protectExcessItem && itemOutputs.length > 0) {
-                maxParallel = Math.min(calculateMaxItemParallelsForMuTEs(), maxParallel);
-            }
-            if (protectExcessFluid && fluidOutputs.length > 0) {
-                maxParallel = Math.min(calculateMaxFluidParallelsForMuTEs(), maxParallel);
-            }
+        if (protectExcessItem && itemOutputs.length > 0 && !machine.canDumpItemToME()) {
+            maxParallel = Math.min(calculateMaxItemParallels(), maxParallel);
+        }
+        if (protectExcessFluid && fluidOutputs.length > 0 && !machine.canDumpFluidToME()) {
+            maxParallel = Math.min(calculateMaxFluidParallels(), maxParallel);
         }
     }
 
     /**
      * Calculates the max parallel for fluids if void protection is turned on
      */
-    private int calculateMaxFluidParallelsForMuTEs() {
-        if (machineMulti == null || machineMulti.getOutputTanks() == null) {
-            return 0;
-        }
-        return calculateMaxFluidParallels(
-            Arrays.asList(machineMulti.getOutputTanks()),
-            tHatch -> tHatch.getFluidAmount() == 0,
-            (tHatch, fluidStack) -> true);
-    }
-
-    /**
-     * Calculates the max parallel for fluids if void protection is turned on
-     */
-    private int calculateMaxFluidParallelsForMetaTEs() {
-        if (machineMeta == null) {
-            return 0;
-        }
-        return calculateMaxFluidParallels(
-            machineMeta.mOutputHatches,
-            tHatch -> tHatch.mMode == 0 && tHatch.getFluidAmount() == 0,
-            (tHatch, fluidStack) -> {
-                if (GT_ModHandler.isSteam(fluidStack)) {
-                    return tHatch.outputsSteam();
-                } else {
-                    if (!tHatch.outputsLiquids()) {
-                        return false;
-                    }
-                    String tLockedFluidName = tHatch.getLockedFluidName();
-                    return !tHatch.isFluidLocked() || tLockedFluidName == null
-                        || tLockedFluidName.equals(
-                            fluidStack.getFluid()
-                                .getName());
-                }
-            });
-    }
-
-    /**
-     * Calculates the max parallel for fluids if void protection is turned on
-     */
-    private <T extends IFluidTank> int calculateMaxFluidParallels(List<T> hatches, Function<T, Boolean> isEmpty,
-        BiFunction<T, FluidStack, Boolean> acceptsFluid) {
+    private int calculateMaxFluidParallels() {
+        List<? extends IFluidStore> hatches = machine.getFluidOutputSlots(fluidOutputs);
         if (hatches.size() < fluidOutputs.length) {
             return 0;
         }
@@ -257,25 +185,23 @@ public class VoidProtectionHelper {
             return maxParallel;
         }
 
-        for (T tHatch : hatches) {
+        for (IFluidStore tHatch : hatches) {
             int tSpaceLeft = tHatch.getCapacity() - tHatch.getFluidAmount();
 
             // check if hatch filled
             if (tSpaceLeft <= 0) continue;
 
             // check if hatch is empty and unrestricted
-            if (isEmpty.apply(tHatch)) continue;
+            if (tHatch.isEmptyAndAcceptsAnyFluid()) continue;
 
             for (Map.Entry<FluidStack, ParallelData> entry : tParallels.entrySet()) {
                 FluidStack tFluidOutput = entry.getKey();
-                if (!acceptsFluid.apply(tHatch, tFluidOutput)) continue;
+                if (!tHatch.canStoreFluid(tFluidOutput)) continue;
                 // this fluid is not prevented by restrictions on output hatch
-                if (tHatch.getFluidAmount() == 0 || GT_Utility.areFluidsEqual(tHatch.getFluid(), tFluidOutput)) {
-                    ParallelData tParallel = entry.getValue();
-                    Integer tCraftSize = tFluidOutputMap.get(tFluidOutput);
-                    tParallel.batch += (tParallel.partial + tSpaceLeft) / tCraftSize;
-                    tParallel.partial = (tParallel.partial + tSpaceLeft) % tCraftSize;
-                }
+                ParallelData tParallel = entry.getValue();
+                Integer tCraftSize = tFluidOutputMap.get(tFluidOutput);
+                tParallel.batch += (tParallel.partial + tSpaceLeft) / tCraftSize;
+                tParallel.partial = (tParallel.partial + tSpaceLeft) % tCraftSize;
             }
         }
         // now that all partial/restricted hatches have been counted, create a priority queue for our outputs
@@ -287,9 +213,9 @@ public class VoidProtectionHelper {
                 .add(new ParallelStackInfo<>(entry.getValue().batch, entry.getValue().partial, entry.getKey()));
         }
         // add extra parallels for open slots as well
-        for (T tHatch : hatches) {
-            // partially filled or restricted hatch. done in last pass
-            if (!isEmpty.apply(tHatch)) continue;
+        for (IFluidStore tHatch : hatches) {
+            // partially filled or restricted hatch. done in the last pass
+            if (!tHatch.isEmptyAndAcceptsAnyFluid()) continue;
 
             ParallelStackInfo<FluidStack> tParallel = aParallelQueue.poll();
             assert tParallel != null; // will always be true, specifying assert here to avoid IDE/compiler warnings
@@ -305,44 +231,8 @@ public class VoidProtectionHelper {
     /**
      * Calculates the max parallels one can do with items if void protection is on
      */
-    private int calculateMaxItemParallelsForMuTEs() {
-        List<ItemStack> busStacks = new ArrayList<>();
-        if (machineMulti != null) {
-            IItemHandler inv = machineMulti.getOutputInventory();
-            if (inv != null && inv.getSlots() > 0) {
-                for (int i = 0; i < inv.getSlots(); i++) {
-                    busStacks.add(inv.getStackInSlot(i));
-                }
-            }
-        }
-        return calculateMaxItemParallels(busStacks);
-    }
-
-    /**
-     * Calculates the max parallels one can do with items if void protection is on
-     */
-    private int calculateMaxItemParallelsForMetaTEs() {
-        List<ItemStack> busStacks = new ArrayList<>();
-        if (machineMeta != null) {
-            for (final GT_MetaTileEntity_Hatch tBus : machineMeta.mOutputBusses) {
-                if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tBus)) {
-                    continue;
-                }
-                final IInventory tBusInv = tBus.getBaseMetaTileEntity();
-                for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
-                    busStacks.add(tBus.getStackInSlot(i));
-                }
-            }
-        }
-        return calculateMaxItemParallels(busStacks);
-    }
-
-    /**
-     * Calculates the max parallels one can do with items if void protection is on
-     *
-     * @param busStacks List of itemstacks that are already stored in buses
-     */
-    private int calculateMaxItemParallels(List<ItemStack> busStacks) {
+    private int calculateMaxItemParallels() {
+        List<ItemStack> busStacks = machine.getItemOutputSlots(itemOutputs);
         // A map to hold the items we will be 'inputting' into the output buses. These itemstacks are actually the
         // recipe outputs.
         Map<ItemStack, Integer> tItemOutputMap = new ItemStackMap<>();

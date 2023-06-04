@@ -5,6 +5,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
 import java.lang.ref.WeakReference;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,6 +26,7 @@ import gregtech.GT_Mod;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IFluidLockable;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -33,7 +36,8 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.widget.FluidLockWidget;
 
-public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch implements IFluidLockable, IAddUIWidgets {
+public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch
+    implements IFluidStore, IFluidLockable, IAddUIWidgets {
 
     private String lockedFluidName = null;
     private WeakReference<EntityPlayer> playerThatLockedfluid = null;
@@ -403,12 +407,27 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
         return true;
     }
 
-    public boolean canStoreFluid(Fluid fluid) {
-        if (isFluidLocked()) {
-            if (lockedFluidName == null) return true;
-            return lockedFluidName.equals(fluid.getName());
+    @Override
+    public boolean isEmptyAndAcceptsAnyFluid() {
+        return mMode == 0 && getFluidAmount() == 0;
+    }
+
+    @Override
+    public boolean canStoreFluid(@Nonnull FluidStack fluidStack) {
+        if (mFluid != null && !GT_Utility.areFluidsEqual(mFluid, fluidStack)) {
+            return false;
         }
-        if (GT_ModHandler.isSteam(new FluidStack(fluid, 0))) return outputsSteam();
+        if (isFluidLocked()) {
+            if (lockedFluidName == null) {
+                return true;
+            }
+            return lockedFluidName.equals(
+                fluidStack.getFluid()
+                    .getName());
+        }
+        if (GT_ModHandler.isSteam(fluidStack)) {
+            return outputsSteam();
+        }
         return outputsLiquids();
     }
 

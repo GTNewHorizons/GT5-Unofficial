@@ -172,8 +172,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     public List<List<StackTraceElement>> stackTraces = new ArrayList<>();
 
     private GT_Recipe(GT_Recipe aRecipe, boolean shallow) {
-        mInputs = shallow ? aRecipe.mInputs : GT_Utility.copyStackArray((Object[]) aRecipe.mInputs);
-        mOutputs = shallow ? aRecipe.mOutputs : GT_Utility.copyStackArray((Object[]) aRecipe.mOutputs);
+        mInputs = shallow ? aRecipe.mInputs : GT_Utility.copyItemArray(aRecipe.mInputs);
+        mOutputs = shallow ? aRecipe.mOutputs : GT_Utility.copyItemArray(aRecipe.mOutputs);
         mSpecialItems = aRecipe.mSpecialItems;
         mChances = aRecipe.mChances;
         mFluidInputs = shallow ? aRecipe.mFluidInputs : GT_Utility.copyFluidArray(aRecipe.mFluidInputs);

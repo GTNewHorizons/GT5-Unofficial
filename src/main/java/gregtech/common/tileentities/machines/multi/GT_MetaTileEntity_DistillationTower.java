@@ -32,6 +32,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
@@ -275,6 +276,11 @@ public class GT_MetaTileEntity_DistillationTower extends
         tHatch.updateTexture(aBaseCasingIndex);
         return mOutputHatchesByLayer.get(mHeight - 1)
             .add(tHatch);
+    }
+
+    @Override
+    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
+        return getFluidOutputSlotsByLayer(toOutput, mOutputHatchesByLayer);
     }
 
     @Override

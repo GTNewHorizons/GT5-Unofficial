@@ -2816,12 +2816,14 @@ public class GT_Utility {
     }
 
     public static FluidStack[] copyFluidArray(FluidStack... aStacks) {
+        if (aStacks == null) return null;
         FluidStack[] rStacks = new FluidStack[aStacks.length];
         for (int i = 0; i < aStacks.length; i++) if (aStacks[i] != null) rStacks[i] = aStacks[i].copy();
         return rStacks;
     }
 
-    public static ItemStack[] copyStackArray(Object... aStacks) {
+    public static ItemStack[] copyItemArray(ItemStack... aStacks) {
+        if (aStacks == null) return null;
         ItemStack[] rStacks = new ItemStack[aStacks.length];
         for (int i = 0; i < aStacks.length; i++) rStacks[i] = copy(aStacks[i]);
         return rStacks;
