@@ -1631,7 +1631,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     @Override
     public boolean canDumpItemToME() {
-        for (GT_MetaTileEntity_Hatch tHatch : mOutputBusses) {
+        for (GT_MetaTileEntity_Hatch tHatch : filterValidMetaTileEntities(mOutputBusses)) {
             if (tHatch instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
                 return true;
             }
