@@ -32,6 +32,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
@@ -40,6 +41,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.OutputHatchWrapper;
 
 public class GT_MetaTileEntity_DistillationTower extends
     GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_DistillationTower> implements ISurvivalConstructable {
@@ -275,6 +277,26 @@ public class GT_MetaTileEntity_DistillationTower extends
         tHatch.updateTexture(aBaseCasingIndex);
         return mOutputHatchesByLayer.get(mHeight - 1)
             .add(tHatch);
+    }
+
+    @Override
+    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
+        List<IFluidStore> ret = new ArrayList<>();
+        for (int i = 0; i < toOutput.length; i++) {
+            if (i >= mOutputHatchesByLayer.size()) {
+                break;
+            }
+            FluidStack fluidOutputForLayer = toOutput[i];
+            for (GT_MetaTileEntity_Hatch_Output hatch : mOutputHatchesByLayer.get(i)) {
+                if (!hatch.isValid()) continue;
+                if (fluidOutputForLayer != null) {
+                    ret.add(new OutputHatchWrapper(hatch, f -> GT_Utility.areFluidsEqual(f, fluidOutputForLayer)));
+                } else {
+                    ret.add(hatch);
+                }
+            }
+        }
+        return ret;
     }
 
     @Override

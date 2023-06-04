@@ -6,7 +6,9 @@ import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -14,6 +16,7 @@ import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -43,6 +46,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.ControllerWithOptionalFeatures;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
@@ -57,6 +61,8 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DrillerBase;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -126,11 +132,15 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         voidingMode = supportsVoidProtection() ? VoidingMode.VOID_NONE : VoidingMode.VOID_ALL;
     }
 
+    // maybe remove this at some point?
     public static boolean isValidMetaTileEntity(MetaTileEntity aMetaTileEntity) {
-        return aMetaTileEntity.getBaseMetaTileEntity() != null && aMetaTileEntity.getBaseMetaTileEntity()
-            .getMetaTileEntity() == aMetaTileEntity
-            && !aMetaTileEntity.getBaseMetaTileEntity()
-                .isDead();
+        return aMetaTileEntity.isValid();
+    }
+
+    public static <T extends MetaTileEntity> List<T> filterValidMetaTileEntities(Collection<T> metaTileEntities) {
+        return metaTileEntities.stream()
+            .filter(MetaTileEntity::isValid)
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -907,7 +917,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             if (!isValidMetaTileEntity(tHatch) || (restrictiveHatchesOnly && tHatch.mMode == 0)) {
                 continue;
             }
-            if (!tHatch.canStoreFluid(copiedFluidStack.getFluid())) continue;
+            if (!tHatch.canStoreFluid(copiedFluidStack)) continue;
             int tAmount = tHatch.fill(copiedFluidStack, false);
             if (tAmount >= copiedFluidStack.amount) {
                 boolean filled = tHatch.fill(copiedFluidStack, true) >= copiedFluidStack.amount;
@@ -1560,7 +1570,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             return true;
         }
 
-        VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper().setController(this)
+        VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper().setMachine(this)
             .setItemOutputs(items)
             .setFluidOutputs(fluids)
             .build();
@@ -1600,6 +1610,43 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     @Override
     public void setVoidingMode(VoidingMode mode) {
         this.voidingMode = mode;
+    }
+
+    @Override
+    public List<ItemStack> getItemOutputSlots(ItemStack[] toOutput) {
+        List<ItemStack> ret = new ArrayList<>();
+        for (final GT_MetaTileEntity_Hatch tBus : filterValidMetaTileEntities(mOutputBusses)) {
+            final IInventory tBusInv = tBus.getBaseMetaTileEntity();
+            for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
+                ret.add(tBus.getStackInSlot(i));
+            }
+        }
+        return ret;
+    }
+
+    @Override
+    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
+        return filterValidMetaTileEntities(mOutputHatches);
+    }
+
+    @Override
+    public boolean canDumpItemToME() {
+        for (GT_MetaTileEntity_Hatch tHatch : mOutputBusses) {
+            if (tHatch instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canDumpFluidToME() {
+        for (IFluidStore tHatch : getFluidOutputSlots(new FluidStack[0])) {
+            if (tHatch instanceof GT_MetaTileEntity_Hatch_Output_ME) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
