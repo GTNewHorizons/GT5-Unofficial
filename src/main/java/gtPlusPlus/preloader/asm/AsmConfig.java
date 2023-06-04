@@ -17,7 +17,6 @@ public class AsmConfig {
     public static Configuration config;
 
     public static boolean enableOreDictPatch;
-    public static boolean enableTiConFluidLighting;
     public static boolean enableGtTooltipFix;
     public static boolean enableGtNbtFix;
     public static boolean enableGtCharcoalPitFix;
@@ -100,12 +99,6 @@ public class AsmConfig {
             propOrderDebug.add(prop.getName());
 
             // General Features
-            prop = config.get("general", "enableTiConFluidLighting", true);
-            prop.comment = "Enable/Disable Brightness Visuals for Tinkers Fluids, only required on the Client.";
-            prop.setLanguageKey("gtpp.enableTiConFluidLighting").setRequiresMcRestart(true);
-            enableTiConFluidLighting = prop.getBoolean(true);
-            propOrder.add(prop.getName());
-
             prop = config.get("general", "enabledLwjglKeybindingFix", true);
             prop.comment = "Prevents the game crashing from having invalid keybinds. https://github.com/alkcorp/GTplusplus/issues/544";
             prop.setLanguageKey("gtpp.enabledLwjglKeybindingFix").setRequiresMcRestart(true);
@@ -147,7 +140,6 @@ public class AsmConfig {
 
             Preloader_Logger.INFO("Chunk Debugging - Enabled: " + enableChunkDebugging);
             Preloader_Logger.INFO("Gt Nbt Fix - Enabled: " + enableGtNbtFix);
-            Preloader_Logger.INFO("TiCon Fluid Lighting - Enabled: " + enableTiConFluidLighting);
             Preloader_Logger.INFO("Gt Tooltip Fix - Enabled: " + enableGtTooltipFix);
             Preloader_Logger.INFO("COFH Patch - Enabled: " + enableCofhPatch);
             Preloader_Logger.INFO("Gc Fuel Changes Patch - Enabled: " + enableGcFuelChanges);

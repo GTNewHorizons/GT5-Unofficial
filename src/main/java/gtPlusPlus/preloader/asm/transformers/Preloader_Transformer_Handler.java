@@ -26,7 +26,6 @@ import static gtPlusPlus.preloader.asm.ClassesToTransform.LWJGL_KEYBOARD;
 import static gtPlusPlus.preloader.asm.ClassesToTransform.MINECRAFT_GAMESETTINGS;
 import static gtPlusPlus.preloader.asm.ClassesToTransform.MINECRAFT_GAMESETTINGS_OBF;
 import static gtPlusPlus.preloader.asm.ClassesToTransform.THAUMCRAFT_ITEM_WISP_ESSENCE;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.TINKERS_FLUID_BLOCK;
 
 import java.io.File;
 import java.io.IOException;
@@ -138,12 +137,6 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
         if (transformedName.equals(COFH_ORE_DICTIONARY_ARBITER) && (AsmConfig.enableCofhPatch || !obfuscated)) {
             Preloader_Logger.INFO("COFH", "Transforming " + transformedName);
             return new ClassTransformer_COFH_OreDictionaryArbiter(basicClass).getWriter().toByteArray();
-        }
-
-        // Fix Tinkers Fluids
-        if (transformedName.equals(TINKERS_FLUID_BLOCK) && AsmConfig.enableTiConFluidLighting) {
-            Preloader_Logger.INFO("Bright Fluids", "Transforming " + transformedName);
-            return new ClassTransformer_TiConFluids("getLightValue", obfuscated, basicClass).getWriter().toByteArray();
         }
 
         // Fix GC stuff
