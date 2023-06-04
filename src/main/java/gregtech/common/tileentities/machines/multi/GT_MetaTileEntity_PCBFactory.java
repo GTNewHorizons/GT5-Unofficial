@@ -576,7 +576,7 @@ public class GT_MetaTileEntity_PCBFactory extends
 
         if (recipeAllowed) {
             GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe)
-                .setController(this)
+                .setMachine(this)
                 .setItemInputs(aItemInputs)
                 .setFluidInputs(aFluidInputs)
                 .setMaxParallel(aMaxParallel)

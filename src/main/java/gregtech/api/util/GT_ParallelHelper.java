@@ -3,21 +3,17 @@ package gregtech.api.util;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.multitileentity.multiblock.base.Controller;
 import gregtech.api.objects.XSTR;
 
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class GT_ParallelHelper {
 
     /**
-     * A MetaTileEntity Controller
+     * Machine used for calculation
      */
-    private GT_MetaTileEntity_MultiBlockBase mMachineMeta;
-    /**
-     * A MultiTileEntity Controller
-     */
-    private Controller<?> mMachineMulti;
+    private IVoidable machine;
     /**
      * Recipe used when trying to calculate parallels
      */
@@ -93,37 +89,39 @@ public class GT_ParallelHelper {
 
     /**
      * Sets MetaTE controller, with current configuration for void protection mode.
+     *
+     * @deprecated Use {@link #setMachine(IVoidable)}
      */
+    @Deprecated
     public GT_ParallelHelper setController(GT_MetaTileEntity_MultiBlockBase machineMeta) {
-        return setController(machineMeta, machineMeta.protectsExcessItem(), machineMeta.protectsExcessFluid());
+        return setMachine(machineMeta, machineMeta.protectsExcessItem(), machineMeta.protectsExcessFluid());
     }
 
     /**
      * Sets MetaTE controller, with void protection mode forcibly.
+     *
+     * @deprecated Use {@link #setMachine(IVoidable, boolean, boolean)}
      */
+    @Deprecated
     public GT_ParallelHelper setController(GT_MetaTileEntity_MultiBlockBase machineMeta, boolean protectExcessItem,
         boolean protectExcessFluid) {
-        this.protectExcessItem = protectExcessItem;
-        this.protectExcessFluid = protectExcessFluid;
-        this.mMachineMeta = machineMeta;
-        return this;
+        return setMachine(machineMeta, protectExcessItem, protectExcessFluid);
     }
 
     /**
-     * Sets MuTE controller, with current configuration for void protection mode.
+     * Sets machine, with current configuration for void protection mode.
      */
-    public GT_ParallelHelper setController(Controller<?> machineMulti) {
-        return setController(machineMulti, machineMulti.protectsExcessItem(), machineMulti.protectsExcessFluid());
+    public GT_ParallelHelper setMachine(IVoidable machine) {
+        return setMachine(machine, machine.protectsExcessItem(), machine.protectsExcessFluid());
     }
 
     /**
-     * Sets MuTE controller, with void protection mode forcibly.
+     * Sets machine, with void protection mode forcibly.
      */
-    public GT_ParallelHelper setController(Controller<?> machineMulti, boolean protectExcessItem,
-        boolean protectExcessFluid) {
+    public GT_ParallelHelper setMachine(IVoidable machine, boolean protectExcessItem, boolean protectExcessFluid) {
         this.protectExcessItem = protectExcessItem;
         this.protectExcessFluid = protectExcessFluid;
-        this.mMachineMulti = machineMulti;
+        this.machine = machine;
         return this;
     }
 
@@ -297,13 +295,12 @@ public class GT_ParallelHelper {
         }
         // Let's look at how many parallels we can get with void protection
         if (protectExcessItem || protectExcessFluid) {
-            VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper();
-            if (mMachineMeta != null) {
-                voidProtectionHelper.setMachine(mMachineMeta, protectExcessItem, protectExcessFluid);
-            } else if (mMachineMulti != null) {
-                voidProtectionHelper.setMachine(mMachineMulti, protectExcessItem, protectExcessFluid);
+            if (machine == null) {
+                throw new IllegalStateException("Tried to calculate void protection, but machine is not set");
             }
-            voidProtectionHelper.setItemOutputs(mRecipe.mOutputs)
+            VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper();
+            voidProtectionHelper.setMachine(machine)
+                .setItemOutputs(mRecipe.mOutputs)
                 .setFluidOutputs(mRecipe.mFluidOutputs)
                 .setMaxParallel(mMaxParallel)
                 .build();

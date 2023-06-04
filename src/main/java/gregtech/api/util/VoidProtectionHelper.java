@@ -58,7 +58,7 @@ public class VoidProtectionHelper {
      */
     @Deprecated
     public VoidProtectionHelper setController(GT_MetaTileEntity_MultiBlockBase machineMeta) {
-        return setController(machineMeta, machineMeta.protectsExcessItem(), machineMeta.protectsExcessFluid());
+        return setMachine(machineMeta, machineMeta.protectsExcessItem(), machineMeta.protectsExcessFluid());
     }
 
     /**
