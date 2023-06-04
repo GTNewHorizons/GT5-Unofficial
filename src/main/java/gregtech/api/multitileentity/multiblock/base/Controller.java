@@ -52,6 +52,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
+import com.gtnewhorizons.modularui.api.forge.IItemHandler;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.forge.ListItemHandler;
@@ -78,6 +79,7 @@ import gregtech.api.enums.VoidingMode;
 import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IDescribable;
+import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.modularui.ControllerWithOptionalFeatures;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.ProcessingLogic;
@@ -1975,6 +1977,33 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     @Override
     public void setVoidingMode(VoidingMode mode) {
         this.voidingMode = mode;
+    }
+
+    @Override
+    public List<ItemStack> getItemOutputSlots(ItemStack[] toOutput) {
+        List<ItemStack> ret = new ArrayList<>();
+        IItemHandler inv = getOutputInventory();
+        if (inv != null && inv.getSlots() > 0) {
+            for (int i = 0; i < inv.getSlots(); i++) {
+                ret.add(inv.getStackInSlot(i));
+            }
+        }
+        return ret;
+    }
+
+    @Override
+    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
+        return Arrays.asList(getOutputTanks());
+    }
+
+    @Override
+    public boolean canDumpItemToME() {
+        return false;
+    }
+
+    @Override
+    public boolean canDumpFluidToME() {
+        return false;
     }
 
     @Override

@@ -19,6 +19,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.interfaces.tileentity.IVoidable;
 
 /**
  * Machines implementing this interface can have logic and GUI buttons
@@ -31,7 +32,7 @@ import gregtech.api.gui.modularui.GT_UITextures;
  * <li>Recipe locking</li>
  * </ul>
  */
-public interface ControllerWithOptionalFeatures {
+public interface ControllerWithOptionalFeatures extends IVoidable {
 
     boolean isAllowedToWork();
 
@@ -71,29 +72,6 @@ public interface ControllerWithOptionalFeatures {
             .setSize(16, 16);
         return (ButtonWidget) button;
     }
-
-    /**
-     * @return if this machine can prevent excess item and fluid from voiding.
-     */
-    boolean supportsVoidProtection();
-
-    /**
-     * @return if this machine is configured to not void excess item.
-     */
-    default boolean protectsExcessItem() {
-        return supportsVoidProtection() && getVoidingMode().protectItem;
-    }
-
-    /**
-     * @return if this machine is configured to not void excess fluid.
-     */
-    default boolean protectsExcessFluid() {
-        return supportsVoidProtection() && getVoidingMode().protectFluid;
-    }
-
-    VoidingMode getVoidingMode();
-
-    void setVoidingMode(VoidingMode mode);
 
     Pos2d getVoidingModeButtonPos();
 

@@ -173,6 +173,11 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         }
     }
 
+    public boolean isValid() {
+        return getBaseMetaTileEntity() != null && getBaseMetaTileEntity().getMetaTileEntity() == this
+            && !getBaseMetaTileEntity().isDead();
+    }
+
     @Override
     public ItemStack getStackForm(long aAmount) {
         return new ItemStack(GregTech_API.sBlockMachines, (int) aAmount, getBaseMetaTileEntity().getMetaTileID());

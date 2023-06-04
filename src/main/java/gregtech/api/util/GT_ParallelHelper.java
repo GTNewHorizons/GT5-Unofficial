@@ -299,9 +299,9 @@ public class GT_ParallelHelper {
         if (protectExcessItem || protectExcessFluid) {
             VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper();
             if (mMachineMeta != null) {
-                voidProtectionHelper.setController(mMachineMeta, protectExcessItem, protectExcessFluid);
+                voidProtectionHelper.setMachine(mMachineMeta, protectExcessItem, protectExcessFluid);
             } else if (mMachineMulti != null) {
-                voidProtectionHelper.setController(mMachineMulti, protectExcessItem, protectExcessFluid);
+                voidProtectionHelper.setMachine(mMachineMulti, protectExcessItem, protectExcessFluid);
             }
             voidProtectionHelper.setItemOutputs(mRecipe.mOutputs)
                 .setFluidOutputs(mRecipe.mFluidOutputs)

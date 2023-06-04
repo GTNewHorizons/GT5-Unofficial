@@ -9,6 +9,11 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -28,6 +33,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
@@ -207,7 +213,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
 
         if (tRecipe == null) return false;
         if (this.mHeatingCapacity < tRecipe.mSpecialValue) return false;
-        if (!canOutputAll(tRecipe)) return false;
+        if (!canOutputAll(tRecipe.mOutputs, getPollutionMultiplierAppliedFluids(tRecipe.mFluidOutputs))) return false;
         if (!tRecipe.isRecipeInputEqual(true, tFluids, tItems)) return false;
         // In case recipe is too OP for that machine
         if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) return false;
@@ -281,6 +287,16 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
         return timesOverclocked;
     }
 
+    private FluidStack[] getPollutionMultiplierAppliedFluids(FluidStack[] original) {
+        FluidStack[] fluids = GT_Utility.copyFluidArray(original);
+        for (FluidStack fluid : fluids) {
+            if (isPollutionFluid(fluid)) {
+                multiplyPollutionFluidAmount(fluid);
+            }
+        }
+        return fluids;
+    }
+
     public boolean addOutputHatchToTopList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
@@ -314,37 +330,53 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
     public boolean addOutput(FluidStack aLiquid) {
         if (aLiquid == null) return false;
         FluidStack tLiquid = aLiquid.copy();
-        boolean isOutputPollution = false;
-        for (FluidStack pollutionFluidStack : pollutionFluidStacks) {
-            if (!tLiquid.isFluidEqual(pollutionFluidStack)) continue;
-
-            isOutputPollution = true;
-            break;
-        }
         ArrayList<GT_MetaTileEntity_Hatch_Output> tOutputHatches;
-        if (isOutputPollution) {
+        if (isPollutionFluid(tLiquid)) {
             tOutputHatches = this.mPollutionOutputHatches;
-            int pollutionReduction = 0;
-            for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
-                if (!isValidMetaTileEntity(tHatch)) continue;
-                pollutionReduction = 100 - tHatch.calculatePollutionReduction(100);
-                break;
-            }
-            tLiquid.amount = tLiquid.amount * (pollutionReduction + 5) / 100;
+            multiplyPollutionFluidAmount(tLiquid);
         } else {
             tOutputHatches = this.mOutputHatches;
         }
         return dumpFluid(tOutputHatches, tLiquid, true) || dumpFluid(tOutputHatches, tLiquid, false);
     }
 
+    protected boolean isPollutionFluid(@Nullable FluidStack fluidStack) {
+        if (fluidStack == null) return false;
+        for (FluidStack pollutionFluidStack : pollutionFluidStacks) {
+            if (!fluidStack.isFluidEqual(pollutionFluidStack)) continue;
+            return true;
+        }
+        return false;
+    }
+
     @Override
-    public String[] getInfoData() {
-        int mPollutionReduction = 0;
+    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
+        if (Arrays.stream(toOutput)
+            .anyMatch(this::isPollutionFluid)) {
+            return filterValidMetaTileEntities(mPollutionOutputHatches);
+        }
+        return filterValidMetaTileEntities(mOutputHatches);
+    }
+
+    /**
+     * @return 100 -> all released to air, 0 -> all dumped to hatch
+     */
+    public int getPollutionReduction() {
+        int reduction = 100;
         for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
             if (!isValidMetaTileEntity(tHatch)) continue;
-            mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
+            reduction = Math.min(tHatch.calculatePollutionReduction(100), reduction);
         }
+        return reduction;
+    }
 
+    protected void multiplyPollutionFluidAmount(@Nonnull FluidStack fluid) {
+        fluid.amount = fluid.amount * Math.min(100 - getPollutionReduction() + 5, 100) / 100;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        int mPollutionReduction = getPollutionReduction();
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
