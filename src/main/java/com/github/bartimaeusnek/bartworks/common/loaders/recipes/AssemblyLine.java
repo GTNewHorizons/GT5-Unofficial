@@ -40,7 +40,7 @@ public class AssemblyLine implements Runnable {
         if (GalactiGreg.isModLoaded()) {
             GT_Values.RA.addAssemblylineRecipe(
                     ItemList.OreDrill4.get(1L),
-                    (int) TierEU.LuV,
+                    (int) TierEU.RECIPE_LuV,
                     new Object[] { ItemList.OreDrill4.get(1L),
                             GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Europium, 9L),
                             Materials.Europium.getPlates(3), ItemList.Electric_Motor_LuV.get(9L),
@@ -50,7 +50,7 @@ public class AssemblyLine implements Runnable {
                             WerkstoffLoader.Neon.getFluidOrGas(20000), },
                     ItemRegistry.voidminer[0].copy(),
                     5 * MINUTES,
-                    (int) TierEU.LuV);
+                    (int) TierEU.RECIPE_LuV);
         }
 
         GT_Values.RA.addAssemblylineRecipe(

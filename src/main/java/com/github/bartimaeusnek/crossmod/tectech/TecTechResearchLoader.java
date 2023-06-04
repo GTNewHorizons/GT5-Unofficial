@@ -78,7 +78,7 @@ public class TecTechResearchLoader {
                 ItemList.Machine_Multi_ImplosionCompressor.get(1L),
                 64000,
                 48,
-                (int) TierEU.UV,
+                (int) TierEU.RECIPE_UV,
                 8,
                 new Object[] { ItemList.Machine_Multi_ImplosionCompressor.get(1L), Materials.Neutronium.getBlocks(5),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Osmium, 64),
@@ -89,7 +89,7 @@ public class TecTechResearchLoader {
                         Materials.Neutronium.getMolten(1440) },
                 ItemRegistry.eic.copy(),
                 5 * MINUTES,
-                (int) TierEU.UV);
+                (int) TierEU.RECIPE_UV);
 
     }
 }
