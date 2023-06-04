@@ -185,14 +185,14 @@ public class ChemicalRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NatruralGas, 16),
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NatruralGas, 2),
                 GT_Utility.getIntegratedCircuit(4))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Gas, 16))
-            .fluidInputs(Materials.Hydrogen.getGas(2000))
-            .fluidOutputs(Materials.HydricSulfide.getGas(1000))
-            .duration(8 * SECONDS)
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Gas, 2))
+            .fluidInputs(Materials.Hydrogen.getGas(250))
+            .fluidOutputs(Materials.HydricSulfide.getGas(125))
+            .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
+            .addTo(sChemicalRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -209,14 +209,14 @@ public class ChemicalRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricGas, 16),
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricGas, 2),
                 GT_Utility.getIntegratedCircuit(4))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Gas, 16))
-            .fluidInputs(Materials.Hydrogen.getGas(2000))
-            .fluidOutputs(Materials.HydricSulfide.getGas(1000))
-            .duration(8 * SECONDS)
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Gas, 2))
+            .fluidInputs(Materials.Hydrogen.getGas(250))
+            .fluidOutputs(Materials.HydricSulfide.getGas(125))
+            .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
+            .addTo(sChemicalRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -233,14 +233,14 @@ public class ChemicalRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricNaphtha, 12),
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricNaphtha, 3),
                 GT_Utility.getIntegratedCircuit(4))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Naphtha, 12))
-            .fluidInputs(Materials.Hydrogen.getGas(2000))
-            .fluidOutputs(Materials.HydricSulfide.getGas(1000))
-            .duration(8 * SECONDS)
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Naphtha, 3))
+            .fluidInputs(Materials.Hydrogen.getGas(500))
+            .fluidOutputs(Materials.HydricSulfide.getGas(250))
+            .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
+            .addTo(sChemicalRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -257,14 +257,14 @@ public class ChemicalRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricLightFuel, 12),
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricLightFuel, 3),
                 GT_Utility.getIntegratedCircuit(4))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LightFuel, 12))
-            .fluidInputs(Materials.Hydrogen.getGas(2000))
-            .fluidOutputs(Materials.HydricSulfide.getGas(1000))
-            .duration(8 * SECONDS)
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LightFuel, 3))
+            .fluidInputs(Materials.Hydrogen.getGas(500))
+            .fluidOutputs(Materials.HydricSulfide.getGas(250))
+            .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
+            .addTo(sChemicalRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -281,14 +281,14 @@ public class ChemicalRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricHeavyFuel, 8),
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SulfuricHeavyFuel, 1),
                 GT_Utility.getIntegratedCircuit(4))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HeavyFuel, 8))
-            .fluidInputs(Materials.Hydrogen.getGas(2000))
-            .fluidOutputs(Materials.HydricSulfide.getGas(1000))
-            .duration(8 * SECONDS)
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HeavyFuel, 1))
+            .fluidInputs(Materials.Hydrogen.getGas(250))
+            .fluidOutputs(Materials.HydricSulfide.getGas(125))
+            .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
+            .addTo(sChemicalRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
