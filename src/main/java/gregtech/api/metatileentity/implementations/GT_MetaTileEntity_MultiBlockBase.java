@@ -1629,6 +1629,29 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return filterValidMetaTileEntities(mOutputHatches);
     }
 
+    /**
+     * Util method for DT-like structure to collect list of output hatches.
+     */
+    protected <T extends GT_MetaTileEntity_Hatch_Output> List<? extends IFluidStore> getFluidOutputSlotsByLayer(
+        FluidStack[] toOutput, List<List<T>> hatchesByLayer) {
+        List<IFluidStore> ret = new ArrayList<>();
+        for (int i = 0; i < toOutput.length; i++) {
+            if (i >= hatchesByLayer.size()) {
+                break;
+            }
+            FluidStack fluidOutputForLayer = toOutput[i];
+            for (GT_MetaTileEntity_Hatch_Output hatch : hatchesByLayer.get(i)) {
+                if (!hatch.isValid()) continue;
+                if (fluidOutputForLayer != null) {
+                    ret.add(new OutputHatchWrapper(hatch, f -> GT_Utility.areFluidsEqual(f, fluidOutputForLayer)));
+                } else {
+                    ret.add(hatch);
+                }
+            }
+        }
+        return ret;
+    }
+
     @Override
     public boolean canDumpItemToME() {
         for (GT_MetaTileEntity_Hatch tHatch : filterValidMetaTileEntities(mOutputBusses)) {
