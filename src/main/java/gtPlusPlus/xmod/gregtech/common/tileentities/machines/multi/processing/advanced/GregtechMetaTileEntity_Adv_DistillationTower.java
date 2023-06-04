@@ -35,6 +35,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
@@ -352,6 +353,11 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
                 addOutput(outputFluidStack);
             }
         }
+    }
+
+    @Override
+    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
+        return getFluidOutputSlotsByLayer(toOutput, mOutputHatchesByLayer);
     }
 
     @Override

@@ -29,6 +29,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
@@ -215,7 +216,10 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
                     .findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids);
             if (tRecipe != null) {
                 Logger.INFO("Found recipe!");
-                if (tRecipe.isRecipeInputEqual(true, tFluids)) {
+                FluidStack[] possibleOutputs = getPossibleByproductsOfSparge(
+                        tRecipe.mFluidInputs[0],
+                        tRecipe.mFluidInputs[1]).toArray(new FluidStack[0]);
+                if (canOutputAll(possibleOutputs) && tRecipe.isRecipeInputEqual(true, tFluids)) {
                     Logger.INFO("Found recipe that matches!");
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
@@ -248,6 +252,30 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
         this.mEfficiency = 0;
         Logger.INFO("Did not find recipe! (2)");
         return false;
+    }
+
+    private static List<FluidStack> getPossibleByproductsOfSparge(final FluidStack aSpargeGas,
+            final FluidStack aSpentFuel) {
+        GasSpargingRecipe aSpargeRecipe = GasSpargingRecipeMap.findRecipe(aSpargeGas, aSpentFuel);
+        ArrayList<FluidStack> aOutputGases = new ArrayList<>();
+        if (aSpargeRecipe == null) {
+            return aOutputGases;
+        }
+
+        aOutputGases.add(aSpargeRecipe.mOutputSpargedFuel.copy());
+        ArrayList<FluidStack> aTempMap = new ArrayList<>();
+        for (int i = 2; i < aSpargeRecipe.mFluidOutputs.length; i++) {
+            int aGasAmount = aSpargeRecipe.mMaxOutputQuantity[i - 2] / 100;
+            FluidStack aOutput = aSpargeRecipe.mFluidOutputs[i].copy();
+            FluidStack aSpargeOutput = null;
+            if (aGasAmount > 0) {
+                aSpargeOutput = new FluidStack(aOutput.getFluid(), aGasAmount);
+            }
+            aTempMap.add(aSpargeOutput);
+        }
+        aOutputGases.add(new FluidStack(aSpargeRecipe.mInputGas.getFluid(), aSpargeRecipe.mInputGas.amount));
+        aOutputGases.addAll(aTempMap);
+        return aOutputGases;
     }
 
     private static ArrayList<FluidStack> getByproductsOfSparge(final FluidStack aSpargeGas,
@@ -313,6 +341,11 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
         boolean addedHatch = mOutputHatchesByLayer.get(mHeight - 1).add(tHatch);
         Logger.INFO("Added Hatch: " + addedHatch);
         return addedHatch;
+    }
+
+    @Override
+    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
+        return getFluidOutputSlotsByLayer(toOutput, mOutputHatchesByLayer);
     }
 
     @Override
