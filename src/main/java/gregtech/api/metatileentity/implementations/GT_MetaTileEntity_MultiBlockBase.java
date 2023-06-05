@@ -70,6 +70,7 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Single_Recipe_Check;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
+import gregtech.api.util.OutputHatchWrapper;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;

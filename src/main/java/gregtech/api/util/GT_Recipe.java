@@ -3246,7 +3246,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             mUsualOutputCount = aUsualOutputCount;
             mMinimalInputItems = aMinimalInputItems;
             mMinimalInputFluids = aMinimalInputFluids;
-            GregTech_API.sFluidMappings.add(mRecipeFluidMap);
             GregTech_API.sItemStackMappings.add(mRecipeItemMap);
             GT_LanguageManager.addStringLocalization(mUnlocalizedName = aUnlocalizedName, aLocalName);
             mUniqueIdentifier = String.format(

@@ -13,7 +13,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -162,10 +161,6 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch
         mMode = aNBT.getByte("mMode");
         lockedFluidName = aNBT.getString("lockedFluidName");
         lockedFluidName = lockedFluidName.length() == 0 ? null : lockedFluidName;
-        if (GT_Utility.getFluidFromUnlocalizedName(lockedFluidName) != null) {
-            lockedFluidName = GT_Utility.getFluidFromUnlocalizedName(lockedFluidName)
-                .getName();
-        }
     }
 
     @Override

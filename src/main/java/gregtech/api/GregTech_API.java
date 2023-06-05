@@ -33,7 +33,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
@@ -109,7 +108,6 @@ public class GregTech_API {
      */
     public static final Collection<Map<? extends GT_ItemStack, ?>> sItemStackMappings = new ArrayList<>();
 
-    public static final Collection<Map<Fluid, ?>> sFluidMappings = new ArrayList<>();
     /**
      * The MetaTileEntity-ID-List-Length
      */
