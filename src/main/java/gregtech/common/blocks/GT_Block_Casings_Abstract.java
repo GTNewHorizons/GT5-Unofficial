@@ -24,6 +24,9 @@ import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 
+/**
+ * The base class for casings. Casings are the blocks that are mainly used to build multiblocks.
+ */
 public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block
     implements gregtech.api.interfaces.IHasIndexedTexture {
 

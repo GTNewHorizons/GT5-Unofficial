@@ -1,6 +1,21 @@
 package gregtech.common.tileentities.machines.steam;
 
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_HAMMER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_HAMMER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_HAMMER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_HAMMER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_HAMMER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_HAMMER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_HAMMER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_HAMMER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_STEAM_HAMMER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_STEAM_HAMMER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_STEAM_HAMMER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_STEAM_HAMMER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_HAMMER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_HAMMER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_HAMMER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_HAMMER_GLOW;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import net.minecraft.block.Block;

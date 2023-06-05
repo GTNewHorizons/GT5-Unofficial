@@ -1,6 +1,21 @@
 package gregtech.common.tileentities.machines.basic;
 
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_REPLICATOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_REPLICATOR_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_REPLICATOR_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_REPLICATOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_REPLICATOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_REPLICATOR_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_REPLICATOR_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_REPLICATOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_REPLICATOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_REPLICATOR_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_REPLICATOR_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_REPLICATOR_GLOW;
 
 import java.util.HashMap;
 import java.util.NoSuchElementException;
@@ -31,12 +46,13 @@ public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine
     private static int sHeaviestElementMass = 0;
 
     static {
-        // put overrides here
-        // ex.
-        // MASS_OVERRIDES.put(Materials.get("cake"),Materials.get("cake").getMass());
-        // MASS_OVERRIDES.put(Materials.get("otherCake"),1235234L);
-        // MASS_OVERRIDES.put(Materials.Kalendrite,1235234L);
-        // MASS_OVERRIDES.put(Materials.Kalendrite,Materials.Kalendrite.getMass()*2);
+        /*
+         * Put overrides here. For instance:
+         * MASS_OVERRIDES.put(Materials.get("cake"),Materials.get("cake").getMass());
+         * MASS_OVERRIDES.put(Materials.get("otherCake"),1235234L);
+         * MASS_OVERRIDES.put(Materials.Kalendrite,1235234L);
+         * MASS_OVERRIDES.put(Materials.Kalendrite,Materials.Kalendrite.getMass()*2);
+         */
     }
 
     public GT_MetaTileEntity_Replicator(int aID, String aName, String aNameRegional, int aTier) {

@@ -7,7 +7,13 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 import forestry.api.apiculture.EnumBeeChromosome;
 import forestry.api.core.IClimateProvider;
-import forestry.api.genetics.*;
+import forestry.api.genetics.AlleleManager;
+import forestry.api.genetics.IAllele;
+import forestry.api.genetics.IAlleleArea;
+import forestry.api.genetics.IAlleleFloat;
+import forestry.api.genetics.IAlleleInteger;
+import forestry.api.genetics.IGenome;
+import forestry.api.genetics.IMutationCondition;
 import forestry.core.genetics.alleles.Allele;
 import forestry.core.utils.StringUtil;
 import gregtech.GT_Mod;
@@ -130,8 +136,8 @@ public class GT_Bees {
 
     public static class DimensionMutationCondition implements IMutationCondition {
 
-        int dimID;
-        String dimName;
+        final int dimID;
+        final String dimName;
 
         public DimensionMutationCondition(int id, String name) {
             dimID = id;
@@ -153,8 +159,8 @@ public class GT_Bees {
 
     public static class BiomeIDMutationCondition implements IMutationCondition {
 
-        int biomeID;
-        String biomeName;
+        final int biomeID;
+        final String biomeName;
 
         public BiomeIDMutationCondition(int id, String name) {
             biomeID = id;

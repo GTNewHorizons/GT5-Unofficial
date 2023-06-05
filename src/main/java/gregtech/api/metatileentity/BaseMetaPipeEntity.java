@@ -3,7 +3,11 @@ package gregtech.api.metatileentity;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.NW;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -519,11 +523,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     }
 
     @Override
-    public void onChunkUnload() {
-        super.onChunkUnload();
-    }
-
-    @Override
     public boolean hasCustomInventoryName() {
         return false;
     }
@@ -851,10 +850,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                 }
 
                 if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sHardHammerList)) {
-                    // if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                    // GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(1), 1.0F, -1, xCoord, yCoord,
-                    // zCoord);
-                    // }
                     return true;
                 }
 

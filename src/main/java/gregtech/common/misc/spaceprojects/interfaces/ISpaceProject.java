@@ -76,7 +76,7 @@ public interface ISpaceProject {
     Map<String, ISP_Upgrade> getUpgradesBuiltMap();
 
     /**
-     * @return
+     * @return all built upgrades
      */
     Collection<ISP_Upgrade> getAllBuiltUpgrades();
 
@@ -374,7 +374,7 @@ public interface ISpaceProject {
         /**
          * Sets the current stage of the upgrade
          *
-         * @param stage
+         * @param stage the stage to set
          */
         void setUpgradeCurrentStage(int stage);
 

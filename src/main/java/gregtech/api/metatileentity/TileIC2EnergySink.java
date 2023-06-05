@@ -35,34 +35,30 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
      */
 
     /**
-     * Determine how much energy the sink accepts.
-     *
-     * Make sure that injectEnergy() does accepts energy if demandsEnergy() returns anything > 0.
-     *
-     * @note Modifying the energy net from this method is disallowed.
+     * Determine how much energy the sink accepts. Note that you cannot modify the energy net from this method.
+     * <p>
+     * Make sure that {@link TileIC2EnergySink#injectEnergy} accepts energy if this function returns anything positive.
      *
      * @return max accepted input in eu
      */
     @Override
     public double getDemandedEnergy() {
         if (cableMeta != null) {
-            // We don't want everything to join the enet (treating the cable as a conductor) so we join it as a ink. We
-            // don't want to traverse all cables
-            // connected to this (like we would during distribution) to see if it actually needs any EU... so we just
-            // always say we want it all. If there
-            // are more than two things attached, and one of them is a GT cable that doesn't have anywhere to send it's
-            // energy, the distribution will be a bit
-            // weird. In that case only use one cable, or use a transformer.
+            /*
+             * We don't want everything to join the enet, treating the cable as a conductor, so we join it as a link.
+             * We don't want to traverse all cables connected to this, like we would during distribution, to see if it
+             * actually needs any EU, so we just always say we want it all. If there are more than two things attached
+             * and one of them is a GT cable that doesn't have anywhere to send its energy, the distribution will be a
+             * bit weird. In that case, use only one cable or a transformer.
+             */
             return (cableMeta.mVoltage * cableMeta.mAmperage);
         } else return myMeta.getEUCapacity() - myMeta.getStoredEU();
     }
 
     /**
-     * Determine the tier of this energy sink. 1 = LV, 2 = MV, 3 = HV, 4 = EV etc.
+     * Gets the tier of this energy sink. 1 = LV, 2 = MV, 3 = HV, 4 = EV etc.
      *
-     * @note Return Integer.MAX_VALUE to allow any voltage.
-     *
-     * @return tier of this energy sink
+     * @return tier of this energy sink or {@link Integer#MAX_VALUE} to allow any voltage
      */
     @Override
     public int getSinkTier() {
@@ -71,7 +67,7 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
 
     /**
      * Transfer energy to the sink.
-     *
+     * <p>
      * It's highly recommended to accept all energy by letting the internal buffer overflow to increase the performance
      * and accuracy of the distribution simulation.
      *
@@ -105,7 +101,7 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
 
     /**
      * Determine if this acceptor can accept current from an adjacent emitter in a direction.
-     *
+     * <p>
      * The TileEntity in the emitter parameter is what was originally added to the energy net, which may be normal
      * in-world TileEntity, a delegate or an IMetaDelegate.
      *

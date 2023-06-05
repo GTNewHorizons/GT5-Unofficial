@@ -1,6 +1,6 @@
 package gregtech.common.render.items;
 
-import java.awt.*;
+import java.awt.Color;
 
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;

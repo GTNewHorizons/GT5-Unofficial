@@ -127,12 +127,10 @@ public class CokeOven extends Controller<CokeOven> implements PollutionLogicHost
         int titleWidth = 0, titleHeight = 0;
         if (NetworkUtils.isClient()) {
             final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-            // noinspection unchecked
             final List<String> titleLines = fontRenderer
                 .listFormattedStringToWidth(title, getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2);
             titleWidth = titleLines.size() > 1 ? getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2
                 : fontRenderer.getStringWidth(title);
-            // noinspection PointlessArithmeticExpression
             titleHeight = titleLines.size() * fontRenderer.FONT_HEIGHT + (titleLines.size() - 1);
         }
 

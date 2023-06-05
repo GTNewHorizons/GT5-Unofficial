@@ -1,6 +1,25 @@
 package gregtech.common.tileentities.generators;
 
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_BACK;
+import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_BACK_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_BACK_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_BACK_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_BOTTOM;
+import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_BOTTOM_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_BOTTOM_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_BOTTOM_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT;
+import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_SIDE;
+import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_SIDE_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_SIDE_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_SIDE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP;
+import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_GLOW;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -51,24 +70,12 @@ public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGe
     public GT_Recipe.GT_Recipe_Map getRecipes() {
         GT_Recipe.GT_Recipe_Map ret;
         switch (mTier) {
-            case 4 -> {
-                ret = GT_Recipe.GT_Recipe_Map.sSmallNaquadahReactorFuels;
-            }
-            case 5 -> {
-                ret = GT_Recipe.GT_Recipe_Map.sLargeNaquadahReactorFuels;
-            }
-            case 6 -> {
-                ret = GT_Recipe.GT_Recipe_Map.sHugeNaquadahReactorFuels;
-            }
-            case 7 -> {
-                ret = GT_Recipe.GT_Recipe_Map.sExtremeNaquadahReactorFuels;
-            }
-            case 8 -> {
-                ret = GT_Recipe.GT_Recipe_Map.sUltraHugeNaquadahReactorFuels;
-            }
-            default -> {
-                ret = null;
-            }
+            case 4 -> ret = GT_Recipe.GT_Recipe_Map.sSmallNaquadahReactorFuels;
+            case 5 -> ret = GT_Recipe.GT_Recipe_Map.sLargeNaquadahReactorFuels;
+            case 6 -> ret = GT_Recipe.GT_Recipe_Map.sHugeNaquadahReactorFuels;
+            case 7 -> ret = GT_Recipe.GT_Recipe_Map.sExtremeNaquadahReactorFuels;
+            case 8 -> ret = GT_Recipe.GT_Recipe_Map.sUltraHugeNaquadahReactorFuels;
+            default -> ret = null;
         }
         return ret;
     }

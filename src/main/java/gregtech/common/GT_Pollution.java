@@ -180,9 +180,6 @@ public class GT_Pollution {
 
                     // Poison effects
                     if (tPollution > GT_Mod.gregtechproxy.mPollutionPoisonLimit) {
-                        // AxisAlignedBB chunk = AxisAlignedBB.getBoundingBox(tPos.chunkPosX*16, 0, tPos.chunkPosZ*16,
-                        // tPos.chunkPosX*16+16, 256, tPos.chunkPosZ*16+16);
-                        // List<EntityLiving> tEntitys = aWorld.getEntitiesWithinAABB(EntityLiving.class, chunk);
                         for (EntityLivingBase tEnt : tEntitys) {
                             if (tEnt instanceof EntityPlayerMP && ((EntityPlayerMP) tEnt).capabilities.isCreativeMode)
                                 continue;
@@ -292,14 +289,12 @@ public class GT_Pollution {
         }
 
         if (sourRain && world.isRaining()
-            && (tBlock == Blocks.stone || tBlock == Blocks.gravel || tBlock == Blocks.cobblestone)
+            && (tBlock == Blocks.gravel || tBlock == Blocks.cobblestone)
             && world.getBlock(x, y + 1, z) == Blocks.air
             && world.canBlockSeeTheSky(x, y, z)) {
-            if (tBlock == Blocks.stone) {
-                world.setBlock(x, y, z, Blocks.cobblestone);
-            } else if (tBlock == Blocks.cobblestone) {
+            if (tBlock == Blocks.cobblestone) {
                 world.setBlock(x, y, z, Blocks.gravel);
-            } else if (tBlock == Blocks.gravel) {
+            } else {
                 world.setBlock(x, y, z, Blocks.sand);
             }
         }
@@ -372,7 +367,7 @@ public class GT_Pollution {
 
     /**
      * Get the pollution in specified chunk
-     * 
+     *
      * @param w      world to look in. can be a client world, but that limits the knowledge to what server side send us
      * @param chunkX chunk coordinate X, i.e. blockX >> 4
      * @param chunkZ chunk coordinate Z, i.e. blockZ >> 4

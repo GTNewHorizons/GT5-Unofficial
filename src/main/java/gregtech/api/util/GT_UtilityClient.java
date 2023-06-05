@@ -27,7 +27,6 @@ public class GT_UtilityClient {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public static List<String> getTooltip(ItemStack aStack, boolean aGuiStyle) {
         try {
             List<String> tooltip = aStack.getTooltip(

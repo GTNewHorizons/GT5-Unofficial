@@ -119,7 +119,7 @@ public class GT_CLS_Compat {
     }
 
     public static void stepMaterialsCLS(Collection<GT_Proxy.OreDictEventContainer> mEvents,
-        ProgressManager.ProgressBar progressBar) throws IllegalAccessException, InvocationTargetException {
+        ProgressManager.ProgressBar progressBar) throws IllegalAccessException {
         try {
             isRegisteringGTmaterials.set(null, true);
         } catch (IllegalArgumentException | IllegalAccessException e) {
@@ -136,7 +136,7 @@ public class GT_CLS_Compat {
     }
 
     public static void doActualRegistrationCLS(ProgressManager.ProgressBar progressBar,
-        Set<Materials> replacedVanillaItemsSet) throws InvocationTargetException, IllegalAccessException {
+        Set<Materials> replacedVanillaItemsSet) {
         try {
             isReplacingVanillaMaterials.set(null, true);
         } catch (IllegalArgumentException | IllegalAccessException e) {

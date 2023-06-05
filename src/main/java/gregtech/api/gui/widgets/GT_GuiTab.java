@@ -34,7 +34,7 @@ public class GT_GuiTab {
      * A tab to be attached to a tab line
      *
      * @param gui              IGregTechTileEntity the tab line this tab belongs to is attached to
-     * @param id               both the ID and position in the tab line of this tab
+     * @param id               both the ID and position in the tab line of this tab. Not used, kept for compatibility.
      * @param bounds           bounds of this tab
      * @param tabBackground    set of background textures
      * @param item             item to draw atop the background texture, not colored
@@ -62,7 +62,7 @@ public class GT_GuiTab {
     /**
      * Set this tab's tooltip text
      *
-     * @param text
+     * @param text text to set
      * @return This tab for chaining
      */
     public GT_GuiTab setTooltipText(String... text) {
@@ -85,9 +85,9 @@ public class GT_GuiTab {
     /**
      * Draw the background texture for this tab
      *
-     * @param mouseX
-     * @param mouseY
-     * @param parTicks
+     * @param mouseX   not used, likely kept for backward compatibility
+     * @param mouseY   not used, likely kept for backward compatibility
+     * @param parTicks not used, likely kept for backward compatibility
      */
     public void drawBackground(int mouseX, int mouseY, float parTicks) {
         if (this.visible) {
@@ -106,9 +106,9 @@ public class GT_GuiTab {
     /**
      * Draw overlay textures and items atop the background texture
      *
-     * @param mouseX
-     * @param mouseY
-     * @param parTicks
+     * @param mouseX   X mouse coordinate
+     * @param mouseY   Y mouse coordinate
+     * @param parTicks not used, likely kept for backward compatibility
      */
     public void drawOverlays(int mouseX, int mouseY, float parTicks) {
         this.mousedOver = bounds.contains(mouseX, mouseY);
@@ -165,8 +165,8 @@ public class GT_GuiTab {
     /**
      * Reposition this tab on the screen
      *
-     * @param xPos
-     * @param yPos
+     * @param xPos X tab coordinate
+     * @param yPos Y tab coordinate
      */
     public void setPosition(int xPos, int yPos) {
         this.bounds = new Rectangle(xPos, yPos, bounds.width, bounds.height);

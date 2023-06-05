@@ -595,8 +595,8 @@ public class MaterialsKevlar {
     // H3RhCl6
 
     /**
-     * called by Materials. Can be safely called multiple times. exists to allow Materials ensure this class is
-     * initialized
+     * This method is called by Materials. It can be safely called multiple times.
+     * It exists to allow Materials ensure this class is initialized.
      */
     public static void init() {
         // no-op. all work is done by <clinit>

@@ -5,7 +5,15 @@ import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Thaumcraft;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -25,7 +33,11 @@ import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.render.items.*;
+import gregtech.common.render.items.CosmicNeutroniumRenderer;
+import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
+import gregtech.common.render.items.GaiaSpiritRenderer;
+import gregtech.common.render.items.InfinityRenderer;
+import gregtech.common.render.items.TranscendentMetalRenderer;
 import gregtech.common.render.items.UniversiumRenderer;
 import gregtech.loaders.materialprocessing.ProcessingConfig;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
@@ -38,7 +50,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public static final Map<Fluid, Materials> FLUID_MAP = new LinkedHashMap<>();
 
-    public static volatile int VERSION = 509;
     /**
      * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) that looped over the old
      * materials enum

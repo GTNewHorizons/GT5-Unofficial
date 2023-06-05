@@ -86,7 +86,8 @@ public class GT_GuiTabLine {
     private final DisplayStyle yDir;
 
     // Whether to display on the right side of the GT_ITabRenderer instead of left
-    protected boolean flipHorizontally, visible;
+    protected final boolean flipHorizontally;
+    protected final boolean visible;
 
     private final GT_GuiTabIconSet tabBackground;
     private final GT_ITabRenderer gui;
@@ -128,10 +129,10 @@ public class GT_GuiTabLine {
     /**
      * Creates a new tab at the specified position with the given parameters. This class handles the positioning.
      *
-     * @param tabId
-     * @param item
-     * @param overlay
-     * @param text
+     * @param tabId   tab ID
+     * @param item    item to draw atop the background texture, not colored
+     * @param overlay texture to draw atop the background texture, not colored
+     * @param text    tooltip of this tab
      */
     public void setTab(int tabId, ItemStack item, IGuiIcon overlay, String[] text) {
         mTabs[tabId] = new GT_GuiTab(
@@ -148,8 +149,8 @@ public class GT_GuiTabLine {
     /**
      * Get the bounds a given tab should occupy
      *
-     * @param tabId
-     * @return
+     * @param tabId tab ID
+     * @return tab bounds
      */
     protected Rectangle getBoundsForTab(int tabId) {
         return new Rectangle(getTabX(tabId), getTabY(tabId), this.tabWidth, this.tabHeight);
@@ -158,12 +159,12 @@ public class GT_GuiTabLine {
     /**
      * Enable or disable a tab. Disabled tabs have a dark background.
      *
-     * @param tabId
-     * @param value
+     * @param tabId  tab ID
+     * @param enable true to enable, false to disable
      */
-    public void setTabEnabled(int tabId, boolean value) {
+    public void setTabEnabled(int tabId, boolean enable) {
         if (mTabs[tabId] != null) {
-            mTabs[tabId].enabled = value;
+            mTabs[tabId].enabled = enable;
         }
     }
 
@@ -172,8 +173,6 @@ public class GT_GuiTabLine {
      * drawScreen.
      *
      * @param parTicks
-     * @param mouseX
-     * @param mouseY
      */
     public void drawTabs(float parTicks, int mouseX, int mouseY) {
         if (this.visible) {
@@ -189,9 +188,9 @@ public class GT_GuiTabLine {
     /**
      * Draw the tab's backgrounds first
      *
-     * @param parTicks
-     * @param mouseX
-     * @param mouseY
+     * @param parTicks not used, likely kept for compatibility
+     * @param mouseX   mouse X position
+     * @param mouseY   mouse Y position
      */
     protected void drawOverlays(float parTicks, int mouseX, int mouseY) {
         for (GT_GuiTab mTab : mTabs) {
@@ -204,9 +203,9 @@ public class GT_GuiTabLine {
     /**
      * Draw anything that overlays the tab's background texture
      *
-     * @param parTicks
-     * @param mouseX
-     * @param mouseY
+     * @param parTicks not used, likely kept for compatibility
+     * @param mouseX   mouse X position
+     * @param mouseY   mouse Y position
      */
     protected void drawBackground(float parTicks, int mouseX, int mouseY) {
         for (GT_GuiTab mTab : mTabs) {
@@ -219,9 +218,9 @@ public class GT_GuiTabLine {
     /**
      * Call tabClick for every tab that was clicked. GT_ITabRenderer must call this method on mouseClicked.
      *
-     * @param mouseX
-     * @param mouseY
-     * @param mouseButton
+     * @param mouseX      mouse X position
+     * @param mouseY      mouse Y position
+     * @param mouseButton which mouse button was used to click
      */
     public void onMouseClicked(int mouseX, int mouseY, int mouseButton) {
         for (int tabId = 0; tabId < mTabs.length; tabId++) {
@@ -236,8 +235,8 @@ public class GT_GuiTabLine {
     /**
      * Act on a tab being clicked.
      *
-     * @param tabId
-     * @param mouseButton
+     * @param tabId       tab ID
+     * @param mouseButton which mouse button was used to click
      */
     protected void tabClicked(int tabId, int mouseButton) {}
 
@@ -255,8 +254,8 @@ public class GT_GuiTabLine {
     /**
      * Get the proper X position for a given tab
      *
-     * @param tabId
-     * @return
+     * @param tabId tab ID
+     * @return X position of the tab
      */
     private int getTabX(int tabId) {
         return this.gui.getGuiLeft() + (flipHorizontally ? (gui.getXSize() - tabLineLeft - tabWidth) : tabLineLeft)
@@ -266,8 +265,8 @@ public class GT_GuiTabLine {
     /**
      * Get the proper Y position for a given tab
      *
-     * @param tabId
-     * @return
+     * @param tabId tab ID
+     * @return Y position of the tab
      */
     private int getTabY(int tabId) {
         return this.gui.getGuiTop() + tabLineTop + (tabId * (tabHeight + tabSpacing) * yDir.getValue());

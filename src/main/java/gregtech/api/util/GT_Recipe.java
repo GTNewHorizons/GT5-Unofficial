@@ -1,27 +1,50 @@
 package gregtech.api.util;
 
-import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.GT_Values.D1;
+import static gregtech.api.enums.GT_Values.D2;
+import static gregtech.api.enums.GT_Values.E;
+import static gregtech.api.enums.GT_Values.L;
+import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.NEICustomDiagrams;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.util.GT_RecipeBuilder.handleRecipeCollision;
 import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
-import static gregtech.api.util.GT_RecipeMapUtil.*;
+import static gregtech.api.util.GT_RecipeMapUtil.FIRST_FLUIDSTACK_INPUT;
+import static gregtech.api.util.GT_RecipeMapUtil.FIRST_FLUIDSTACK_OUTPUT;
+import static gregtech.api.util.GT_RecipeMapUtil.FIRST_FLUID_OUTPUT;
+import static gregtech.api.util.GT_RecipeMapUtil.FIRST_ITEM_INPUT;
+import static gregtech.api.util.GT_RecipeMapUtil.FIRST_ITEM_OR_FLUID_INPUT;
+import static gregtech.api.util.GT_RecipeMapUtil.FIRST_ITEM_OR_FLUID_OUTPUT;
+import static gregtech.api.util.GT_RecipeMapUtil.FIRST_ITEM_OUTPUT;
+import static gregtech.api.util.GT_RecipeMapUtil.GT_RecipeTemplate;
+import static gregtech.api.util.GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES;
+import static gregtech.api.util.GT_RecipeMapUtil.asTemplate;
+import static gregtech.api.util.GT_RecipeMapUtil.buildOrEmpty;
 import static gregtech.api.util.GT_Utility.formatNumbers;
 import static gregtech.api.util.GT_Utility.isArrayEmptyOrNull;
 import static gregtech.api.util.GT_Utility.isArrayOfLength;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import java.awt.*;
-import java.util.*;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
@@ -67,8 +90,15 @@ import gnu.trove.map.TByteObjectMap;
 import gnu.trove.map.hash.TByteObjectHashMap;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
+import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Element;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.SubTag;
 import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -111,7 +141,6 @@ import mods.railcraft.common.items.RailcraftToolItems;
  */
 public class GT_Recipe implements Comparable<GT_Recipe> {
 
-    public static volatile int VERSION = 509;
     /**
      * If you want to change the Output, feel free to modify or even replace the whole ItemStack Array, for Inputs,
      * please add a new Recipe, because of the HashMaps.
@@ -912,7 +941,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         /**
          * THIS CONSTRUCTOR DOES SET THE PERSISTENT HASH.
-         *
+         * <p>
          * if you set one yourself, it will give you one of the RunetimeExceptions!
          */
         public GT_Recipe_AssemblyLine(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs,
@@ -941,7 +970,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         /**
          * THIS CONSTRUCTOR DOES <b>NOT</b> SET THE PERSISTENT HASH.
-         *
+         * <p>
          * if you don't set one yourself, it will break a lot of stuff!
          */
         public GT_Recipe_AssemblyLine(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs,
@@ -1283,10 +1312,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 .setSlotOverlay(true, false, GT_UITextures.OVERLAY_SLOT_UUM)
                 .setSlotOverlay(false, false, true, true, GT_UITextures.OVERLAY_SLOT_DATA_ORB)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
-        // public static final GT_Recipe_Map sAssemblylineFakeRecipes = new GT_Recipe_Map(new HashSet<>(30),
-        // "gt.recipe.scanner", "Scanner", null, Mods.GregTech.getResourcePath(BASIC_MACHINES, "Default"), 1, 1, 1, 0,
-        // 1, E, 1, E, true,
-        // true);
         public static final GT_Recipe_Map sAssemblylineVisualRecipes = new GT_Recipe_Map_AssemblyLineFake(
             new HashSet<>(110),
             "gt.recipe.fakeAssemblylineProcess",
@@ -2251,6 +2276,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     int tExplosives = Math.min(b.getMetadata(ADDITIVE_AMOUNT), 64);
                     int tGunpowder = tExplosives << 1; // Worst
                     int tDynamite = Math.max(1, tExplosives >> 1); // good
+                    @SuppressWarnings("UnnecessaryLocalVariable")
                     int tTNT = tExplosives; // Slightly better
                     int tITNT = Math.max(1, tExplosives >> 2); // the best
                     if (tGunpowder < 65) coll.derive()
@@ -3457,7 +3483,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         /**
          * Change how recipes are emitted by a particular recipe builder. Can emit multiple recipe per builder.
-         *
+         * <p>
          * Unlike {@link #setRecipeEmitter(Function)}, this one does not clear the existing recipe being emitted, if any
          */
         public GT_Recipe_Map combineRecipeEmitter(
@@ -3478,7 +3504,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         /**
          * Change how recipes are emitted by a particular recipe builder. Effectively add a new recipe per recipe added.
          * func must not return null.
-         *
+         * <p>
          * Unlike {@link #setRecipeEmitter(Function)}, this one does not clear the existing recipe being emitted, if any
          */
         public GT_Recipe_Map combineRecipeEmitterSingle(Function<? super GT_RecipeBuilder, ? extends GT_Recipe> func) {
@@ -3515,10 +3541,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         /**
          * Run a custom hook on all recipes added <b>via builder</b>. For more complicated behavior subclass this, then
-         * override {@link #doAdd(GT_RecipeBuilder)}
-         *
+         * override {@link #doAdd(GT_RecipeBuilder)}.
+         * <p>
          * Recipes added via one of the overloads of addRecipe will NOT be affected by this function.
-         *
+         * <p>
          * Unlike {@link #setRecipeSpecialHandler(Function)}, this one will not replace the existing special handler.
          * The supplied function will be given the output of existing handler when a recipe is added.
          */
@@ -3529,10 +3555,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         /**
          * Run a custom hook on all recipes added <b>via builder</b>. For more complicated behavior subclass this, then
-         * override {@link #doAdd(GT_RecipeBuilder)}
-         *
+         * override {@link #doAdd(GT_RecipeBuilder)}.
+         * <p>
          * Recipes added via one of the overloads of addRecipe will NOT be affected by this function.
-         *
+         * <p>
          * Unlike {@link #setRecipeSpecialHandler(Function)}, this one will not replace the existing special handler.
          * The supplied function will be given the output of existing handler when a recipe is added.
          */
@@ -3715,6 +3741,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return addRecipe(aRecipe, aCheckForCollisions, true, hidden);
         }
 
+        @Nonnull
         @Override
         public Collection<GT_Recipe> doAdd(GT_RecipeBuilder builder) {
             Iterable<? extends GT_Recipe> recipes = recipeEmitter.apply(builder);
@@ -3771,7 +3798,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         }
                         String s = iStack.getDisplayName();
                         if (hasAnEntry) {
-                            errorInfo.append("+" + s);
+                            errorInfo.append("+")
+                                .append(s);
                         } else {
                             errorInfo.append(s);
                         }
@@ -4831,7 +4859,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         @Override
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated,
             long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
-            if (aInputs == null || aInputs.length <= 0 || aInputs[0] == null) return null;
+            if (aInputs == null || aInputs.length == 0 || aInputs[0] == null) return null;
             if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) return aRecipe;
             ItemStack tOutput = GT_ModHandler.getSmeltingOutput(aInputs[0], false, null);
             return tOutput == null ? null
@@ -4884,7 +4912,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         @Override
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated,
             long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
-            if (aInputs == null || aInputs.length <= 0 || aInputs[0] == null) return null;
+            if (aInputs == null || aInputs.length == 0 || aInputs[0] == null) return null;
             if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) return aRecipe;
             ItemStack tOutput = GT_ModHandler.getSmeltingOutput(aInputs[0], false, null);
 
@@ -5016,7 +5044,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         @Override
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated,
             long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
-            if (aInputs == null || aInputs.length <= 0 || !ItemList.IC2_Scrapbox.isStackEqual(aInputs[0], false, true))
+            if (aInputs == null || aInputs.length == 0 || !ItemList.IC2_Scrapbox.isStackEqual(aInputs[0], false, true))
                 return super.findRecipe(aTileEntity, aRecipe, aNotUnificated, aVoltage, aFluids, aSpecialSlot, aInputs);
             ItemStack tOutput = GT_ModHandler.getRandomScrapboxDrop();
             if (tOutput == null)
@@ -5084,7 +5112,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 aFluids,
                 aSpecialSlot,
                 aInputs);
-            if (aInputs == null || aInputs.length <= 0
+            if (aInputs == null || aInputs.length == 0
                 || aInputs[0] == null
                 || rRecipe != null
                 || !GregTech_API.sPostloadFinished) return rRecipe;
@@ -5219,7 +5247,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         @Override
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated,
             long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
-            if (aInputs == null || aInputs.length <= 0 || aInputs[0] == null) return null;
+            if (aInputs == null || aInputs.length == 0 || aInputs[0] == null) return null;
             if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) return aRecipe;
             ItemStack tComparedInput = GT_Utility.copyOrNull(aInputs[0]);
             ItemStack[] tOutputItems = GT_ModHandler.getMachineOutput(
@@ -5290,7 +5318,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         @Override
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated,
             long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
-            if (aInputs == null || aInputs.length <= 0 || aInputs[0] == null) return null;
+            if (aInputs == null || aInputs.length == 0 || aInputs[0] == null) return null;
             if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) return aRecipe;
             ItemStack tComparedInput = GT_Utility.copyOrNull(aInputs[0]);
             ItemStack[] tOutputItems = GT_ModHandler.getMachineOutput(
@@ -5362,7 +5390,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         @Override
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated,
             long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
-            if (aInputs == null || aInputs.length <= 0 || aInputs[0] == null) return null;
+            if (aInputs == null || aInputs.length == 0 || aInputs[0] == null) return null;
             if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) return aRecipe;
             ItemStack tComparedInput = GT_Utility.copyOrNull(aInputs[0]);
             ItemStack[] tOutputItems = GT_ModHandler.getMachineOutput(
@@ -5433,7 +5461,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         @Override
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated,
             long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
-            if (aInputs == null || aInputs.length <= 0
+            if (aInputs == null || aInputs.length == 0
                 || aInputs[0] == null
                 || aFluids == null
                 || aFluids.length < 1
@@ -5521,7 +5549,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         @Override
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated,
             long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
-            if (aInputs == null || aInputs.length <= 0 || aInputs[0] == null || !GregTech_API.sPostloadFinished)
+            if (aInputs == null || aInputs.length == 0 || aInputs[0] == null || !GregTech_API.sPostloadFinished)
                 return super.findRecipe(aTileEntity, aRecipe, aNotUnificated, aVoltage, aFluids, aSpecialSlot, aInputs);
             aRecipe = super.findRecipe(aTileEntity, aRecipe, aNotUnificated, aVoltage, aFluids, aSpecialSlot, aInputs);
             if (aRecipe != null) return aRecipe;
@@ -5634,7 +5662,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
              * aSpecialSlot,temp); if(rRecipe!= null){ break; } else { aInputs2.remove(IS); } } if(rRecipe!= null)
              * break; } } if(rRecipe!= null) break; }else aInputs2.add(aInput); if(rRecipe!= null) break; } }
              */
-            if (aInputs == null || aInputs.length <= 0
+            if (aInputs == null || aInputs.length == 0
                 || aInputs[0] == null
                 || rRecipe == null
                 || !GregTech_API.sPostloadFinished) return rRecipe;
@@ -5784,10 +5812,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 aFluids,
                 aSpecialSlot,
                 aInputs);
-            if (aInputs == null || aInputs.length <= 0
+            if (aInputs == null || aInputs.length == 0
                 || aInputs[0] == null
                 || aFluids == null
-                || aFluids.length <= 0
+                || aFluids.length == 0
                 || aFluids[0] == null
                 || !GregTech_API.sPostloadFinished) return rRecipe;
 

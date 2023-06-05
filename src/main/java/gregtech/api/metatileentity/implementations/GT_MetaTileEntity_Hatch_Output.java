@@ -13,7 +13,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidContainerItem;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -51,7 +56,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch
             aTier,
             4,
             new String[] { "Fluid Output for Multiblocks",
-                "Capacity: " + GT_Utility.formatNumbers(8000 * (1 << aTier)) + "L",
+                "Capacity: " + GT_Utility.formatNumbers(8000L * (1L << aTier)) + "L",
                 "Right click with screwdriver to restrict output",
                 "Can be restricted to put out Items and/or Steam/No Steam/1 specific Fluid",
                 "Restricted Output Hatches are given priority for Multiblock Fluid output" });

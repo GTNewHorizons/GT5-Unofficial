@@ -1,8 +1,15 @@
 package gregtech.api.enums;
 
-import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.GT_Values.B;
+import static gregtech.api.enums.GT_Values.D2;
+import static gregtech.api.enums.GT_Values.M;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
@@ -667,8 +674,6 @@ public enum OrePrefixes {
         cellSteamCracked2,
         cellSteamCracked3);
 
-    public static volatile int VERSION = 509;
-
     static {
         pulp.mPrefixInto = dust;
         oreGem.mPrefixInto = ore;
@@ -731,9 +736,6 @@ public enum OrePrefixes {
         dust.mNotGeneratedItems.add(Materials.Gunpowder);
         dust.mNotGeneratedItems.add(Materials.Sugar);
         dust.mNotGeneratedItems.add(Materials.Blaze);
-        // dust.mNotGeneratedItems.add(Materials.Ichorium);
-        // dustSmall.mNotGeneratedItems.add(Materials.Ichorium);
-        // dustTiny.mNotGeneratedItems.add(Materials.Ichorium);
         stick.mNotGeneratedItems.add(Materials.Wood);
         stick.mNotGeneratedItems.add(Materials.Bone);
         stick.mNotGeneratedItems.add(Materials.Blaze);
@@ -860,7 +862,6 @@ public enum OrePrefixes {
         crateGtIngot.mGeneratedItems.addAll(ingot.mGeneratedItems);
         crateGtGem.mGeneratedItems.addAll(gem.mGeneratedItems);
         crateGtPlate.mGeneratedItems.addAll(plate.mGeneratedItems);
-        itemCasing.mGeneratedItems.addAll(itemCasing.mGeneratedItems);
         // -----
 
         toolHeadFile.mCondition = new ICondition.And<>(

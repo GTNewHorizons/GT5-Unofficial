@@ -7,6 +7,10 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Utility;
 
+/**
+ * An optimization of {@link ItemStack} to have a better {@code hashcode} and {@code equals} in order to improve
+ * {@code HashMap} and {@code Set} performance
+ */
 public class GT_ItemStack {
 
     public final Item mItem;

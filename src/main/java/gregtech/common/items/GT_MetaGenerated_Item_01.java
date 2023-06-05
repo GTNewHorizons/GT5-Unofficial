@@ -1,7 +1,37 @@
 package gregtech.common.items;
 
 import static gregtech.api.enums.Mods.GalacticraftMars;
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.COVER_WOOD_PLATE;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ARM;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CONTROLLER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CONVEYOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CRAFTING;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DRAIN;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ENERGYDETECTOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FLUIDDETECTOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FLUID_STORAGE_MONITOR0;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ITEMDETECTOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MAINTENANCE_DETECTOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PUMP;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_REDSTONE_RECEIVER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_REDSTONE_TRANSMITTER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCREEN;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCREEN_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SHUTTER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_VALVE;
+import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL;
+import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_8V;
+import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_EV;
+import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_HV;
+import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_IV;
+import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_LV;
+import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_LuV;
+import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_MV;
+import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UV;
+import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_ZPM;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCannerRecipes;
@@ -9,7 +39,19 @@ import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static gregtech.client.GT_TooltipHandler.Tier.*;
+import static gregtech.client.GT_TooltipHandler.Tier.ERV;
+import static gregtech.client.GT_TooltipHandler.Tier.EV;
+import static gregtech.client.GT_TooltipHandler.Tier.HV;
+import static gregtech.client.GT_TooltipHandler.Tier.IV;
+import static gregtech.client.GT_TooltipHandler.Tier.LV;
+import static gregtech.client.GT_TooltipHandler.Tier.LuV;
+import static gregtech.client.GT_TooltipHandler.Tier.MAX;
+import static gregtech.client.GT_TooltipHandler.Tier.MV;
+import static gregtech.client.GT_TooltipHandler.Tier.ULV;
+import static gregtech.client.GT_TooltipHandler.Tier.UMV;
+import static gregtech.client.GT_TooltipHandler.Tier.UV;
+import static gregtech.client.GT_TooltipHandler.Tier.UXV;
+import static gregtech.client.GT_TooltipHandler.Tier.ZPM;
 import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
 
 import java.util.Collection;
@@ -52,8 +94,43 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.covers.*;
-import gregtech.common.items.behaviors.*;
+import gregtech.common.covers.GT_Cover_Arm;
+import gregtech.common.covers.GT_Cover_ControlsWork;
+import gregtech.common.covers.GT_Cover_Conveyor;
+import gregtech.common.covers.GT_Cover_Crafting;
+import gregtech.common.covers.GT_Cover_DoesWork;
+import gregtech.common.covers.GT_Cover_Drain;
+import gregtech.common.covers.GT_Cover_EUMeter;
+import gregtech.common.covers.GT_Cover_FluidLimiter;
+import gregtech.common.covers.GT_Cover_FluidRegulator;
+import gregtech.common.covers.GT_Cover_FluidStorageMonitor;
+import gregtech.common.covers.GT_Cover_Fluidfilter;
+import gregtech.common.covers.GT_Cover_ItemFilter;
+import gregtech.common.covers.GT_Cover_ItemMeter;
+import gregtech.common.covers.GT_Cover_LiquidMeter;
+import gregtech.common.covers.GT_Cover_NeedMaintainance;
+import gregtech.common.covers.GT_Cover_PlayerDetector;
+import gregtech.common.covers.GT_Cover_Pump;
+import gregtech.common.covers.GT_Cover_RedstoneReceiverExternal;
+import gregtech.common.covers.GT_Cover_RedstoneReceiverInternal;
+import gregtech.common.covers.GT_Cover_RedstoneTransmitterExternal;
+import gregtech.common.covers.GT_Cover_RedstoneTransmitterInternal;
+import gregtech.common.covers.GT_Cover_Screen;
+import gregtech.common.covers.GT_Cover_Shutter;
+import gregtech.common.covers.GT_Cover_SolarPanel;
+import gregtech.common.covers.GT_Cover_SteamRegulator;
+import gregtech.common.covers.GT_Cover_SteamValve;
+import gregtech.common.items.behaviors.Behaviour_Arrow_Potion;
+import gregtech.common.items.behaviors.Behaviour_Cover_Tool;
+import gregtech.common.items.behaviors.Behaviour_DataOrb;
+import gregtech.common.items.behaviors.Behaviour_DataStick;
+import gregtech.common.items.behaviors.Behaviour_Lighter;
+import gregtech.common.items.behaviors.Behaviour_PrintedPages;
+import gregtech.common.items.behaviors.Behaviour_Scanner;
+import gregtech.common.items.behaviors.Behaviour_SensorKit;
+import gregtech.common.items.behaviors.Behaviour_Sonictron;
+import gregtech.common.items.behaviors.Behaviour_Spray_Color;
+import gregtech.common.items.behaviors.Behaviour_WrittenBook;
 
 public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
@@ -683,11 +760,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 "Raw Plate to make Molds and Extruder Shapes",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.FABRICO, 4L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)));
-
-        // GT_ModHandler.addCraftingRecipe(ItemList.Shape_Empty.get(1L, new Object[0]),
-        // GT_ModHandler.RecipeBits.MIRRORED | GT_ModHandler.RecipeBits.BUFFERED |
-        // GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hf", "PP", "PP",
-        // 'P', OrePrefixes.plate.get(Materials.Steel)});
 
         ItemList.Shape_Mold_Plate.set(addItem(tLastID = 301, "Mold (Plate)", "Mold for making Plates"));
         ItemList.Shape_Mold_Casing.set(addItem(tLastID = 302, "Mold (Casing)", "Mold for making Item Casings"));
@@ -1349,10 +1421,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
             ItemList.Ingot_Heavy3
                 .set(addItem(tLastID = 464, "Heavy Duty Alloy Ingot T3", "Used to make Heavy Duty Plates T3"));
 
-            // GT_ModHandler.addCraftingRecipe(ItemList.Ingot_Heavy1.get(1L, new Object[0]),
-            // GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"BhB", "CAS", "B B", 'B',
-            // OrePrefixes.bolt.get(Materials.StainlessSteel), 'C', OrePrefixes.compressed.get(Materials.Bronze), 'A',
-            // OrePrefixes.compressed.get(Materials.Aluminium), 'S', OrePrefixes.compressed.get(Materials.Steel)});
         }
         ItemList.Ingot_IridiumAlloy.set(
             addItem(
@@ -1361,16 +1429,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 "Used to make Iridium Plates",
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 4L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)));
-
-        // GT_ModHandler.addRollingMachineRecipe(ItemList.Ingot_IridiumAlloy.get(1L, new Object[0]), new Object[]{"IAI",
-        // "ADA", "IAI", 'D', GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "iridiumplate", true)
-        // ? OreDictNames.craftingIndustrialDiamond : OrePrefixes.dust.get(Materials.Diamond), 'A',
-        // OrePrefixes.plateAlloy.get("Advanced"), 'I', OrePrefixes.plate.get(Materials.Iridium)});
-        // GT_ModHandler.addCraftingRecipe(ItemList.Ingot_IridiumAlloy.get(1L, new Object[0]),
-        // GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"IAI", "ADA", "IAI", 'D',
-        // GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "iridiumplate", true) ?
-        // OreDictNames.craftingIndustrialDiamond : OrePrefixes.dust.get(Materials.Diamond), 'A',
-        // OrePrefixes.plateAlloy.get("Advanced"), 'I', OrePrefixes.plate.get(Materials.Iridium)});
 
         ItemList.Paper_Printed_Pages.set(
             addItem(

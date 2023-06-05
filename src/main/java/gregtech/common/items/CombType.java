@@ -216,7 +216,6 @@ public enum CombType {
     public final int chance;
 
     private final int id;
-    private final String name;
     private final String localizedName;
     private final int[] color;
 
@@ -228,16 +227,16 @@ public enum CombType {
         ItemComb.Voltage voltage) {
         if (id < 0 && !"INVALIDCOMB".equals(pName)) throw new IllegalArgumentException();
         this.id = id;
-        this.name = pName;
         this.voltage = voltage;
         this.material = material;
         this.chance = chance;
         this.showInList = show;
         this.color = new int[] { color1, color2 };
         this.localizedName = GT_LanguageManager.addStringLocalization(
-            "comb." + this.name,
-            this.name.substring(0, 1)
-                .toUpperCase() + this.name.substring(1) + " Comb");
+            "comb." + pName,
+            pName.substring(0, 1)
+                .toUpperCase() + pName.substring(1)
+                + " Comb");
     }
 
     public void setHidden() {

@@ -103,8 +103,8 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
     /**
      * Add the cover on this side of the IGregTechTileEntity to the tabs
      *
-     * @param side
-     * @param cover
+     * @param side  side to apply the cover to
+     * @param cover cover to add
      */
     private void addCoverToTabs(ForgeDirection side, ItemStack cover) {
         final boolean enabled = this.tile.getCoverBehaviorAtSideNew(side)
@@ -117,9 +117,9 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
     /**
      * Decorate the cover's tooltips according to the side it's on and on whether the tab is enabled or not
      *
-     * @param side
-     * @param cover
-     * @param enabled
+     * @param side    side
+     * @param cover   cover which tooltip to decorate
+     * @param enabled if the tab is enabled
      * @return This cover tab's tooltip
      */
     private String[] getTooltipForCoverTab(ForgeDirection side, ItemStack cover, boolean enabled) {
@@ -135,7 +135,7 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
     /**
      * Get the translated name for a side of the IGregTechTileEntity
      *
-     * @param side
+     * @param side side of the entity
      * @return translated name for a side of the IGregTechTileEntity
      */
     private String getSideDescription(ForgeDirection side) {

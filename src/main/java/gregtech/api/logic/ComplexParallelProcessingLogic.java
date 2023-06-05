@@ -23,8 +23,8 @@ public class ComplexParallelProcessingLogic {
     protected final long[] availableEut;
     protected final long[] eut;
     protected final long[] durations;
-    protected boolean[] isItemVoidProtected;
-    protected boolean[] isFluidVoidProtected;
+    protected final boolean[] isItemVoidProtected;
+    protected final boolean[] isFluidVoidProtected;
 
     public ComplexParallelProcessingLogic(int maxComplexParallels) {
         this(null, maxComplexParallels);

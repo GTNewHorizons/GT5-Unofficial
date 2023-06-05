@@ -17,7 +17,7 @@ public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElemen
     protected GT_GuiIcon icon;
     private final int x0;
     private final int y0;
-    protected IGuiScreen gui;
+    protected final IGuiScreen gui;
 
     private GT_GuiTooltip tooltip;
 

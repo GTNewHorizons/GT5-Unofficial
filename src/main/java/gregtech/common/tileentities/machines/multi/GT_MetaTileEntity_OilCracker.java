@@ -8,7 +8,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
-import static gregtech.api.util.GT_StructureUtility.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofCoil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -234,20 +235,18 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input tHatch) {
             if (mInputOnSide == 1) return false;
             mInputOnSide = 0;
             mOutputOnSide = 1;
-            GT_MetaTileEntity_Hatch_Input tHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
             tHatch.updateTexture(aBaseCasingIndex);
             tHatch.mRecipeMap = getRecipeMap();
             return mInputHatches.add(tHatch);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output tHatch) {
             if (mOutputOnSide == 1) return false;
             mInputOnSide = 1;
             mOutputOnSide = 0;
-            GT_MetaTileEntity_Hatch_Output tHatch = (GT_MetaTileEntity_Hatch_Output) aMetaTileEntity;
             tHatch.updateTexture(aBaseCasingIndex);
             return mOutputHatches.add(tHatch);
         }
@@ -258,20 +257,18 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input tHatch) {
             if (mInputOnSide == 0) return false;
             mInputOnSide = 1;
             mOutputOnSide = 0;
-            GT_MetaTileEntity_Hatch_Input tHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
             tHatch.updateTexture(aBaseCasingIndex);
             tHatch.mRecipeMap = getRecipeMap();
             return mInputHatches.add(tHatch);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output tHatch) {
             if (mOutputOnSide == 0) return false;
             mInputOnSide = 0;
             mOutputOnSide = 1;
-            GT_MetaTileEntity_Hatch_Output tHatch = (GT_MetaTileEntity_Hatch_Output) aMetaTileEntity;
             tHatch.updateTexture(aBaseCasingIndex);
             return mOutputHatches.add(tHatch);
         }

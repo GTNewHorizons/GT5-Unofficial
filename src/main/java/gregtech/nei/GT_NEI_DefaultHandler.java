@@ -2,7 +2,8 @@ package gregtech.nei;
 
 import static codechicken.nei.recipe.RecipeInfo.getGuiOffset;
 
-import java.awt.*;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.lang.ref.SoftReference;
 import java.text.DecimalFormat;
 import java.util.ArrayList;

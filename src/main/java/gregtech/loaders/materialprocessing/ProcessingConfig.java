@@ -1,10 +1,7 @@
 package gregtech.loaders.materialprocessing;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTNH_ExtraMaterials;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.TextureSet;
 
 public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandler {
 
@@ -13,48 +10,53 @@ public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandle
         Materials.add(this);
     }
 
+    /**
+     * To add a new material, please see the following example:
+     * <blockquote>
+     * 
+     * <pre>
+     * int numberOfMaterialSlots = GregTech_API.sMaterialProperties.get("general", "AmountOfCustomMaterialSlots", 16);
+     * for (int i = 0; i < numberOfMaterialSlots; i++) {
+     *     String aID = (i < 10 ? "0" : "") + i;
+     *     new Materials(
+     *         -1,
+     *         TextureSet.SET_METALLIC,
+     *         1.0F,
+     *         0,
+     *         0,
+     *         0,
+     *         255,
+     *         255,
+     *         255,
+     *         0,
+     *         "CustomMat" + aID,
+     *         "CustomMat" + aID,
+     *         0,
+     *         0,
+     *         0,
+     *         0,
+     *         false,
+     *         false,
+     *         1,
+     *         1,
+     *         1,
+     *         Dyes._NULL,
+     *         "custom",
+     *         true,
+     *         aID);
+     * }
+     * </pre>
+     * 
+     * </blockquote>
+     */
     @SuppressWarnings("unused")
     @Override
-    public void onMaterialsInit() {
-        /** This is just left here as an example of how to add new materials. **/
-        if (false) {
-            int i = 0;
-            for (int j = GregTech_API.sMaterialProperties.get("general", "AmountOfCustomMaterialSlots", 16); i
-                < j; i++) {
-                String aID = (i < 10 ? "0" : "") + i;
-                new Materials(
-                    -1,
-                    TextureSet.SET_METALLIC,
-                    1.0F,
-                    0,
-                    0,
-                    0,
-                    255,
-                    255,
-                    255,
-                    0,
-                    "CustomMat" + aID,
-                    "CustomMat" + aID,
-                    0,
-                    0,
-                    0,
-                    0,
-                    false,
-                    false,
-                    1,
-                    1,
-                    1,
-                    Dyes._NULL,
-                    "custom",
-                    true,
-                    aID);
-            }
-        }
-    }
+    public void onMaterialsInit() {}
 
     @Override
     public void onComponentInit() {
-        /** This is just left here as an example of how to add components. **/
+        // This is left here as an example of how to add components.
+        // TODO: convert the example to a javadoc
         /*
          * Enabling specific components: OrePrefixes.spring.enableComponent(Materials.Cobalt);
          * OrePrefixes.ingotDouble.enableComponent(Materials.Cobalt);
@@ -71,7 +73,8 @@ public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandle
 
     @Override
     public void onComponentIteration(Materials aMaterial) {
-        /** This is just left here as an example of how to add components. **/
+        // This is left here as an example of how to add components.
+        // TODO: convert the example to a javadoc
         /*
          * Enabling/Disabling components depending on the current Materials values: if ((aMaterial.mTypes & 0x40) != 0)
          * { //This material can be made into tool heads OrePrefixes.plateQuadruple.mDisabledItems.remove(aMaterial); }

@@ -52,8 +52,6 @@ public class GT_Spray_Pepper_Item extends GT_Tool_Item {
             return false;
         }
         Block aBlock = aWorld.getBlock(aX, aY, aZ);
-        // byte aMeta = (byte)aWorld.getBlockMetadata(aX, aY, aZ);
-        // TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 
         return false;
     }

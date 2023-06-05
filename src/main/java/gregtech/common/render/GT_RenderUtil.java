@@ -26,24 +26,12 @@ public class GT_RenderUtil {
     public static void renderBlockIcon(RenderBlocks aRenderer, Block aBlock, double aX, double aY, double aZ,
         IIcon aIcon, ForgeDirection side) {
         switch (side) {
-            case DOWN -> {
-                aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, aIcon);
-            }
-            case UP -> {
-                aRenderer.renderFaceYPos(aBlock, aX, aY, aZ, aIcon);
-            }
-            case NORTH -> {
-                aRenderer.renderFaceZNeg(aBlock, aX, aY, aZ, aIcon);
-            }
-            case SOUTH -> {
-                aRenderer.renderFaceZPos(aBlock, aX, aY, aZ, aIcon);
-            }
-            case WEST -> {
-                aRenderer.renderFaceXNeg(aBlock, aX, aY, aZ, aIcon);
-            }
-            case EAST -> {
-                aRenderer.renderFaceXPos(aBlock, aX, aY, aZ, aIcon);
-            }
+            case DOWN -> aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, aIcon);
+            case UP -> aRenderer.renderFaceYPos(aBlock, aX, aY, aZ, aIcon);
+            case NORTH -> aRenderer.renderFaceZNeg(aBlock, aX, aY, aZ, aIcon);
+            case SOUTH -> aRenderer.renderFaceZPos(aBlock, aX, aY, aZ, aIcon);
+            case WEST -> aRenderer.renderFaceXNeg(aBlock, aX, aY, aZ, aIcon);
+            case EAST -> aRenderer.renderFaceXPos(aBlock, aX, aY, aZ, aIcon);
         }
     }
 

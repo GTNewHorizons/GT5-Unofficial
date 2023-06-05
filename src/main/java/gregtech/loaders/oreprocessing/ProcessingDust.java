@@ -297,7 +297,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         .addTo(sAutoclaveRecipes);
                 }
                 switch (aMaterial.mName) {
-                    case "NULL":
+                    case "NULL", "Mercury", "Coal":
                         break;
                     case "Glass":
                         GT_ModHandler.addSmeltingRecipe(
@@ -317,8 +317,6 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             GT_Utility.copyAmount(1L, aStack),
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.MeatCooked, 1L));
                         break;
-                    case "Mercury":
-                        break;
                     case "Oilsands":
                         sCentrifugeRecipes.addRecipe(
                             true,
@@ -330,8 +328,6 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             660,
                             8,
                             0);
-                        break;
-                    case "Coal":
                         break;
                     case "HydratedCoal":
                         GT_ModHandler.addSmeltingRecipe(

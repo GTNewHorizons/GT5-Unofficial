@@ -1,6 +1,7 @@
 package gregtech.api.interfaces.modularui;
 
-import static gregtech.api.metatileentity.BaseTileEntity.*;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
 import java.util.Arrays;

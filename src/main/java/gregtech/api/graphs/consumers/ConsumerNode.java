@@ -7,7 +7,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.graphs.Node;
 
-// node attached to a tile entity that can consume stuff from the network
+/**
+ * A node attached to a {@code TileEntity} that can consume stuff from the network.
+ */
 public class ConsumerNode extends Node {
 
     public ForgeDirection mSide;

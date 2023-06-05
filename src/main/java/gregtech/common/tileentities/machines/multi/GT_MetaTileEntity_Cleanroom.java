@@ -1,7 +1,11 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static gregtech.api.enums.GT_Values.debugCleanroom;
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.BLOCK_PLASCRETE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM_GLOW;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -390,8 +394,8 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
 
     private static class ConfigEntry {
 
-        int percentage;
-        int allowedCount;
+        final int percentage;
+        final int allowedCount;
 
         ConfigEntry(int percentage, int count) {
             this.percentage = percentage;

@@ -67,7 +67,7 @@ public class PartP2PGTPower extends PartP2PIC2Power implements IGridTickable {
         }
         final TileEntity te = getTileEntityAtSide(getSide());
         if (te instanceof IEnergyConnected energyConnected) {
-            long voltage = 8 << (getSourceTier() * 2);
+            long voltage = 8L << (getSourceTier() * 2);
             if (voltage > getOfferedEnergy()) {
                 voltage = (long) getOfferedEnergy();
             }

@@ -47,7 +47,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
 
     private BaseActionSource requestSource = null;
     private AENetworkProxy gridProxy = null;
-    IItemList<IAEItemStack> itemCache = GregTech_API.mAE2 ? AEApi.instance()
+    final IItemList<IAEItemStack> itemCache = GregTech_API.mAE2 ? AEApi.instance()
         .storage()
         .createItemList() : null;
     long lastOutputTick = 0;

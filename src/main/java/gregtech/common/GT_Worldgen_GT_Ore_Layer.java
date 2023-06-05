@@ -57,9 +57,6 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
         this.mNether = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Nether", aNether);
         this.mEnd = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "TheEnd", aEnd);
         this.mEndAsteroid = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "EndAsteroid", aEnd);
-        // this.mMoon = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Moon", aMoon);
-        // this.mMars = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Mars", aMars);
-        // this.mAsteroid = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Asteroid", aAsteroid);
         this.mMinY = ((short) GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "MinHeight", aMinY));
         short mMaxY = ((short) GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "MaxHeight", aMaxY));
         if (mMaxY < (this.mMinY + 9)) {
@@ -152,26 +149,18 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
         int aChunkZ, int aSeedX, int aSeedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         if (mWorldGenName.equals("NoOresInVein")) {
             if (debugOrevein) GT_Log.out.println(" NoOresInVein");
-            // This is a special empty orevein
+            // Return a special empty orevein
             return ORE_PLACED;
         }
         if (!isGenerationAllowed(
             aWorld,
             aDimensionType,
             ((aDimensionType == -1) && (this.mNether)) || ((aDimensionType == 0) && (this.mOverworld))
-                || ((aDimensionType == 1) && (this.mEnd)) ? aDimensionType : aDimensionType ^ 0xFFFFFFFF)) {
-            /*
-             * // Debug code, but spams log if (debugOrevein) { GT_Log.out.println( "Wrong dimension" ); }
-             */
+                || ((aDimensionType == 1) && (this.mEnd)) ? aDimensionType : ~aDimensionType)) {
+            // The following code can be used for debugging, but it spams in logs
+            // if (debugOrevein) { GT_Log.out.println( "Wrong dimension" ); }
             return WRONG_DIMENSION;
         }
-        /*
-         * if (!((aWorld.provider.getDimensionName().equalsIgnoreCase("Overworld")) ||
-         * (aWorld.provider.getDimensionName().equalsIgnoreCase("Nether"))||(aWorld.provider.getDimensionName().
-         * equalsIgnoreCase("Underdark"))||(aWorld.provider.getDimensionName().equalsIgnoreCase("Twilight Forest"))||(
-         * aWorld.provider.getDimensionName().equalsIgnoreCase("Underdark"))||(aWorld.provider.getDimensionName().
-         * equalsIgnoreCase("The End")))) return WRONG_DIMENSION;
-         */
 
         if (!this.mRestrictBiome.equals("None") && !(this.mRestrictBiome.equals(aBiome))) {
             return WRONG_BIOME;

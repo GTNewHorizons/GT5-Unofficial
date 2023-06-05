@@ -15,11 +15,6 @@ public class NodeEnergyConnected extends ConsumerNode {
     }
 
     @Override
-    public boolean needsEnergy() {
-        return super.needsEnergy();
-    }
-
-    @Override
     public int injectEnergy(long aVoltage, long aMaxAmps) {
         return (int) ((IEnergyConnected) mTileEntity).injectEnergyUnits(mSide, aVoltage, aMaxAmps);
     }

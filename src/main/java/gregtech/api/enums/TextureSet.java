@@ -97,7 +97,7 @@ public class TextureSet {
 
     /**
      * Construct a TextureSet that will delegate some of its textures to the origin TextureSet.
-     *
+     * <p>
      * This assumes you want to construct a custom texture set.
      */
     private TextureSet(String aSetName, TextureSet origin, boolean overrideBlock, boolean overrideItem) {

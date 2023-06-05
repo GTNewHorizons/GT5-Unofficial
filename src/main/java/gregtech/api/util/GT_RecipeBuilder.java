@@ -392,7 +392,7 @@ public class GT_RecipeBuilder {
     /**
      * produce a deep copy of current values. anything unset will remain unset. IMPORTANT: If metadata contains mutable
      * value, they will not be cloned!
-     *
+     * <p>
      * checkout docs/RecipeBuilder.md for more info on whether to copy or not.
      */
     public GT_RecipeBuilder copy() {
@@ -754,6 +754,7 @@ public class GT_RecipeBuilder {
 
         public static <T> MetadataIdentifier<T> create(Class<T> clazz, String identifier) {
             MetadataIdentifier<T> key = new MetadataIdentifier<>(clazz, identifier);
+            // noinspection unchecked // The class uses type T to fill allIdentifiers
             return (MetadataIdentifier<T>) allIdentifiers.computeIfAbsent(key, Function.identity());
         }
 

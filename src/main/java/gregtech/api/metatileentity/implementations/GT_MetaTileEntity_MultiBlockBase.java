@@ -1,6 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GT_Values.VN;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
@@ -35,7 +36,11 @@ import com.google.common.collect.Iterables;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.*;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -56,8 +61,16 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_ExoticEnergyInputHelper;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_ParallelHelper;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.GT_Single_Recipe_Check;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GT_Waila;
+import gregtech.api.util.VoidProtectionHelper;
 import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
@@ -89,10 +102,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     protected boolean inputSeparation = false;
     protected VoidingMode voidingMode = VoidingMode.VOID_ALL;
     protected boolean batchMode = false;
-    protected static String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
-    protected static String VOID_EXCESS_NBT_KEY = "voidExcess";
-    protected static String VOIDING_MODE_NBT_KEY = "voidingMode";
-    protected static String BATCH_MODE_NBT_KEY = "batchMode";
+    protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
+    protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
+    protected static final String VOIDING_MODE_NBT_KEY = "voidingMode";
+    protected static final String BATCH_MODE_NBT_KEY = "batchMode";
     public GT_Single_Recipe_Check mSingleRecipeCheck = null;
 
     public ArrayList<GT_MetaTileEntity_Hatch_Input> mInputHatches = new ArrayList<>();
@@ -721,6 +734,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
         GT_Pollution.addPollution(getBaseMetaTileEntity(), GT_Mod.gregtechproxy.mPollutionOnExplosion);
         mInventory[1] = null;
+        // noinspection unchecked // In this case, the inspection only indicates that the array can be abused in runtime
         Iterable<MetaTileEntity> allHatches = Iterables.concat(
             mInputBusses,
             mOutputBusses,
@@ -867,7 +881,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 mMaxProgresstime >>= ocTimeShift; // this is effect of overclocking
                 if (mMaxProgresstime < 1) {
                     if (oldTime == 1) break;
-                    xEUt *= oldTime * (perfectOC ? 1 : 2);
+                    xEUt *= (long) oldTime * (perfectOC ? 1 : 2);
                     break;
                 } else {
                     xEUt <<= 2;
@@ -1034,11 +1048,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     public ArrayList<ItemStack> getStoredOutputs() {
         ArrayList<ItemStack> rList = new ArrayList<>();
-        // for (GT_MetaTileEntity_Hatch_Output tHatch : mOutputHatches) {
-        // if (isValidMetaTileEntity(tHatch)) {
-        // rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(1));
-        // }
-        // }
         for (GT_MetaTileEntity_Hatch_OutputBus tHatch : mOutputBusses) {
             if (isValidMetaTileEntity(tHatch)) {
                 for (int i = tHatch.getBaseMetaTileEntity()

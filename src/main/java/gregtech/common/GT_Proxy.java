@@ -7,14 +7,35 @@ import static gregtech.api.enums.FluidState.MOLTEN;
 import static gregtech.api.enums.FluidState.PLASMA;
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.GT_Values.debugEntityCramming;
-import static gregtech.api.enums.Mods.*;
+import static gregtech.api.enums.Mods.AdvancedSolarPanel;
+import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.Avaritia;
+import static gregtech.api.enums.Mods.BetterLoadingScreen;
+import static gregtech.api.enums.Mods.DraconicEvolution;
+import static gregtech.api.enums.Mods.ElectroMagicTools;
+import static gregtech.api.enums.Mods.EnderIO;
+import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GalacticraftCore;
+import static gregtech.api.enums.Mods.GalaxySpace;
+import static gregtech.api.enums.Mods.GanysSurface;
+import static gregtech.api.enums.Mods.GraviSuite;
+import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Mods.IguanaTweaksTinkerConstruct;
+import static gregtech.api.enums.Mods.MagicalCrops;
+import static gregtech.api.enums.Mods.Names;
+import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.enums.Mods.TaintedMagic;
+import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.Mods.ThaumicTinkerer;
+import static gregtech.api.enums.Mods.TwilightForest;
+import static gregtech.api.enums.Mods.WitchingGadgets;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sWiremillRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gregtech.api.util.GT_Util.LAST_BROKEN_TILEENTITY;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -122,7 +143,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.objects.GT_ChunkManager;
-import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_UO_DimensionList;
 import gregtech.api.objects.ItemData;
@@ -1323,8 +1343,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
 
     public void onServerStarted() {
         GregTech_API.sWirelessRedstone.clear();
-        GT_FluidStack.fixAllThoseFuckingFluidIDs();
-
         GT_Log.out.println(
             "GT_Mod: Cleaning up all OreDict Crafting Recipes, which have an empty List in them, since they are never meeting any Condition.");
         List<IRecipe> tList = CraftingManager.getInstance()
@@ -1530,7 +1548,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                     ForgeEventFactory.onPlayerDestroyItem(aEvent.entityPlayer, aStack);
                 }
             }
-            return;
         }
     }
 
@@ -2910,7 +2927,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
             GT_Values.cls_enabled = true;
             try {
                 GT_CLS_Compat.stepMaterialsCLS(mEvents, progressBar);
-            } catch (IllegalAccessException | InvocationTargetException e) {
+            } catch (IllegalAccessException e) {
                 GT_FML_LOGGER.catching(e);
             }
         } else GT_Proxy.stepMaterialsVanilla(this.mEvents, progressBar);
@@ -3028,9 +3045,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
 
     @SubscribeEvent
     public void onItemTooltip(ItemTooltipEvent event) {
-        if (event.itemStack == null) {
-            return;
-        } else {
+        if (event.itemStack != null) {
             ItemStack aStackTemp = event.itemStack;
             GT_ItemStack aStack = new GT_ItemStack(aStackTemp);
             if (providesProtection(aStackTemp)) {

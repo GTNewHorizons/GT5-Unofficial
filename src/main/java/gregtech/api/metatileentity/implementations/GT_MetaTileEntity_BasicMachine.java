@@ -629,11 +629,6 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                         endProcess();
                     }
                     if (mProgresstime > 5) mStuttering = false;
-                    // XSTR aXSTR = new XSTR();
-                    // if(GT_Mod.gregtechproxy.mAprilFool &&
-                    // aXSTR.nextInt(5000)==0)GT_Utility.sendSoundToPlayers(aBaseMetaTileEntity.getWorld(),
-                    // GregTech_API.sSoundList.get(5), 10.0F, -1.0F, aBaseMetaTileEntity.getXCoord(),
-                    // aBaseMetaTileEntity.getYCoord(),aBaseMetaTileEntity.getZCoord());
                 } else {
                     if (!mStuttering) {
                         stutterProcess();
@@ -684,13 +679,6 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                     (byte) 64,
                     (byte) 1,
                     tMaxStacks);
-                // for (int i = 0, tCosts = 1; i < mOutputItems.length && tCosts > 0 &&
-                // aBaseMetaTileEntity.isUniversalEnergyStored(128); i++) {
-                // tCosts = GT_Utility.moveOneItemStack(aBaseMetaTileEntity, tTileEntity2,
-                // aBaseMetaTileEntity.getFrontFacing(), aBaseMetaTileEntity.getBackFacing(), null, false, (byte) 64,
-                // (byte) 1, (byte) 64, (byte) 1);
-                // if (tCosts > 0) aBaseMetaTileEntity.decreaseStoredEnergyUnits(tCosts, true);
-                // }
             }
 
             if (mOutputBlocked != 0) if (isOutputEmpty()) mOutputBlocked = 0;
