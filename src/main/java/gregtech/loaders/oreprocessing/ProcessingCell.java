@@ -193,13 +193,26 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                     } else {
                         recipeBuilder.noItemOutputs();
                     }
-                    recipeBuilder.noFluidInputs()
-                        .noFluidOutputs()
-                        .metadata(FUEL_VALUE, (int) Math.max(1024L, 1024L * aMaterial.getMass()))
-                        .metadata(FUEL_TYPE, 4)
-                        .duration(0)
-                        .eut(0)
-                        .addTo(GT_RecipeConstants.Fuel);
+                    // Switch case to set manual values for specific plasmas and escape the formula based on mass
+                    // when it doesn't make sense for powergen balance.
+                    switch (aMaterial.mName) {
+                        case "Tin":
+                            recipeBuilder.noFluidInputs()
+                                .noFluidOutputs()
+                                .metadata(FUEL_VALUE, 150_000)
+                                .metadata(FUEL_TYPE, 4)
+                                .duration(0)
+                                .eut(0)
+                                .addTo(GT_RecipeConstants.Fuel);
+                        default:
+                            recipeBuilder.noFluidInputs()
+                                .noFluidOutputs()
+                                .metadata(FUEL_VALUE, (int) Math.max(1024L, 1024L * aMaterial.getMass()))
+                                .metadata(FUEL_TYPE, 4)
+                                .duration(0)
+                                .eut(0)
+                                .addTo(GT_RecipeConstants.Fuel);
+                    }
                     if (GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L) != null) {
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(1L, aStack))
