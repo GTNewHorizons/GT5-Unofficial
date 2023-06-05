@@ -78,7 +78,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                 .addTo(sAlloySmelterRecipes);
             if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                 GT_ModHandler.addCraftingRecipe(
-                    GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial, 9L),
+                    GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial, 8L),
                     GT_ModHandler.RecipeBits.BUFFERED,
                     new Object[] { "sI ", 'I', OrePrefixes.ingot.get(aMaterial) });
             }
