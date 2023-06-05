@@ -1,7 +1,9 @@
 package com.elisis.gtnhlanth.loader;
 
 import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.*;
+import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.OrePrefixes.*;
+import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -15,6 +17,7 @@ import java.util.HashSet;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool;
@@ -382,16 +385,6 @@ public class BotRecipes {
                 1400,
                 7680);
 
-        // H2O2 + 2NH3 = N2H4 + 2H2O
-        GT_Values.RA.addChemicalRecipe(
-                HydrogenPeroxide.get(cell, 1),
-                C2,
-                Materials.Ammonia.getGas(2000),
-                Materials.Water.getFluid(2000),
-                Hydrazine.get(cell, 1),
-                100,
-                120);
-
         // 2CH4O + H2SO4 = C2H6O4S + 2H2O
         GT_Values.RA.addChemicalRecipe(
                 Materials.SulfuricAcid.getCells(1),
@@ -412,16 +405,18 @@ public class BotRecipes {
                 50,
                 480);
 
-        // N2H4 + C2H6O4S = SO3 + CH6N2 + CH4O
-        GT_Values.RA.addChemicalRecipe(
-                Hydrazine.get(cell, 1),
-                Materials.Empty.getCells(1),
-                DimethylSulfate.getFluidOrGas(1000),
-                Materials.SulfurTrioxide.getGas(1000),
-                Monomethylhydrazine.get(cell, 1),
-                Materials.Methanol.getCells(1),
-                80,
-                16000);
+        if (GTPlusPlus.isModLoaded()) {
+            // N2H4 + C2H6O4S = SO3 + CH6N2 + CH4O
+            GT_Values.RA.addChemicalRecipe(
+                    getModItem(GTPlusPlus.ID, "Hydrazine", 1),
+                    Materials.Empty.getCells(1),
+                    DimethylSulfate.getFluidOrGas(1000),
+                    Materials.SulfurTrioxide.getGas(1000),
+                    Monomethylhydrazine.get(cell, 1),
+                    Materials.Methanol.getCells(1),
+                    80,
+                    16000);
+        }
 
         /*
          * GT_Values.RA.addMixerRecipe( AmmoniumDinitramide.get(cell, 1), C1, null, null,
@@ -536,15 +531,17 @@ public class BotRecipes {
                 100,
                 480);
 
-        // N2H4 + C2H4O2 =C2H6O= C2H6N2O + H2O
-        GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] { C2 },
-                new FluidStack[] { Materials.AceticAcid.getFluid(1000), Materials.Ethanol.getFluid(1000),
-                        Hydrazine.getFluidOrGas(1000) },
-                new FluidStack[] { Acetylhydrazine.getFluidOrGas(1000), Materials.Ethanol.getFluid(1000) },
-                null,
-                40,
-                30_720);
+        if (GTPlusPlus.isModLoaded()) {
+            // N2H4 + C2H4O2 =C2H6O= C2H6N2O + H2O
+            GT_Values.RA.addMultiblockChemicalRecipe(
+                    new ItemStack[] { C2 },
+                    new FluidStack[] { Materials.AceticAcid.getFluid(1000), Materials.Ethanol.getFluid(1000),
+                            new FluidStack(FluidRegistry.getFluid("fluid.hydrazine"), 1000) },
+                    new FluidStack[] { Acetylhydrazine.getFluidOrGas(1000), Materials.Ethanol.getFluid(1000) },
+                    null,
+                    40,
+                    30_720);
+        }
 
         // C2H6N2O + 2CH2O + 4H = C2H8N2 + C2H4O2 + H2O
         GT_Values.RA.addMultiblockChemicalRecipe(
