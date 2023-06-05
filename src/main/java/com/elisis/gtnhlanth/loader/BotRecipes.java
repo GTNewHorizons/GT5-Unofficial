@@ -9,21 +9,16 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashSet;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 
-import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
@@ -508,34 +503,6 @@ public class BotRecipes {
     }
 
     public static void addFuels() {
-        try {
-            if (Loader.isModLoaded(GT_Values.MOD_ID_GC_CORE)) {
-                Class<?> rocket = Class.forName("micdoodle8.mods.galacticraft.api.recipe.RocketFuelRecipe");
-                Method addFuel = rocket.getMethod("addFuel", Fluid.class, int.class);
-                addFuel.invoke(null, LMP103S.getFluidOrGas(1).getFluid(), 4);
-                addFuel.invoke(null, MonomethylhydrazineFuelMix.getFluidOrGas(1).getFluid(), 6);
-                addFuel.invoke(null, UnsymmetricalDimethylhydrazineFuelMix.getFluidOrGas(1).getFluid(), 8);
-            }
-            if (Loader.isModLoaded("miscutils")) {
-                Class<?> gtppRecipeMap = Class.forName("gregtech.api.util.GTPP_Recipe$GTPP_Recipe_Map");
-                Field rocketFuels = gtppRecipeMap.getDeclaredField("sRocketFuels");
-                rocketFuels.setAccessible(true);
-                Class<?> rocketFuelsClass = rocketFuels.getType();
-                Object rocketFuelsObject = rocketFuels.get(null);
-                Method addFuel = rocketFuelsClass
-                        .getDeclaredMethod("addFuel", FluidStack.class, FluidStack.class, int.class);
-                addFuel.invoke(rocketFuelsObject, LMP103S.getFluidOrGas(1000), null, 666);
-                addFuel.invoke(rocketFuelsObject, MonomethylhydrazineFuelMix.getFluidOrGas(1000), null, 1500);
-                addFuel.invoke(
-                        rocketFuelsObject,
-                        UnsymmetricalDimethylhydrazineFuelMix.getFluidOrGas(1000),
-                        null,
-                        3000);
-            }
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException
-                | NoSuchFieldException e) {
-            e.printStackTrace();
-        }
         GT_Recipe.GT_Recipe_Map.sTurbineFuels.addFuel(TertButylbenzene.get(cell, 1), null, 420);
     }
 
