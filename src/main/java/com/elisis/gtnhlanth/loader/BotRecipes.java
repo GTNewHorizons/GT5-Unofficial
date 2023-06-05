@@ -1,26 +1,24 @@
 package com.elisis.gtnhlanth.loader;
 
 import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.*;
+import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.OrePrefixes.*;
+import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashSet;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 
-import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
@@ -112,10 +110,6 @@ public class BotRecipes {
         ItemStack WO3 = TungstenTrioxide.get(dust, 4);
         // H2WO4 = WO3 + H2O
         GT_Values.RA.addBlastRecipe(H2WO4, null, null, null, WO3, null, 200, 480, 1200);
-
-        // ItemStack WO3Fe = TungstenSteelOxide.get(dust, 2);
-        // GT_Values.RA.addMixerRecipe(WO3, Materials.Steel.getDust(1), null, null, null, null,
-        // WO3Fe, 100, 1920);
 
         // WO3 + 6H = W + 3H2O
         GT_Values.RA.addBlastRecipe(
@@ -221,13 +215,6 @@ public class BotRecipes {
                 AmmoniumDinitramide.get(cell, 1),
                 200,
                 1920);
-
-        // LMP-103S
-        /*
-         * GT_Values.RA.addMultiblockChemicalRecipe( new ItemStack[] {C24}, new FluidStack[] {
-         * AmmoniumDinitramide.getFluidOrGas(6000), Materials.Methanol.getFluid(2000), Materials.Ammonia.getGas(500),
-         * Materials.Water.getFluid(1500) }, new FluidStack[] {LMP103S.getFluidOrGas(10000)}, null, 1200, 1920);
-         */
 
         // P4O10 + 2HNO3 + 5H2O = 4H3PO4 + N2O5
         GT_Values.RA.addChemicalRecipe(
@@ -360,38 +347,6 @@ public class BotRecipes {
                 1200,
                 7680);
 
-        // 2C18H17O2 + 2O = 2C18H16O2 + H2O2
-        GT_Values.RA.addChemicalRecipe(
-                Materials.Oxygen.getCells(2),
-                C2,
-                TwoTertButylAnthrahydroquinone.getFluidOrGas(2000),
-                TwoTertButylAnthraquinone.getFluidOrGas(2000),
-                HydrogenPeroxide.get(cell, 1),
-                Materials.Empty.getCells(1),
-                40,
-                1920);
-
-        // 2H + 2O =C18H16O2,Pd= H2O2
-        GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] { C24, Materials.Palladium.getDustTiny(1) },
-                new FluidStack[] { Materials.Hydrogen.getGas(10000), Materials.Oxygen.getGas(10000),
-                        TwoTertButylAnthraquinone.getFluidOrGas(10000) },
-                new FluidStack[] { HydrogenPeroxide.getFluidOrGas(5000),
-                        TwoTertButylAnthraquinone.getFluidOrGas(10000) },
-                null,
-                1400,
-                7680);
-
-        // H2O2 + 2NH3 = N2H4 + 2H2O
-        GT_Values.RA.addChemicalRecipe(
-                HydrogenPeroxide.get(cell, 1),
-                C2,
-                Materials.Ammonia.getGas(2000),
-                Materials.Water.getFluid(2000),
-                Hydrazine.get(cell, 1),
-                100,
-                120);
-
         // 2CH4O + H2SO4 = C2H6O4S + 2H2O
         GT_Values.RA.addChemicalRecipe(
                 Materials.SulfuricAcid.getCells(1),
@@ -412,23 +367,19 @@ public class BotRecipes {
                 50,
                 480);
 
-        // N2H4 + C2H6O4S = SO3 + CH6N2 + CH4O
-        GT_Values.RA.addChemicalRecipe(
-                Hydrazine.get(cell, 1),
-                Materials.Empty.getCells(1),
-                DimethylSulfate.getFluidOrGas(1000),
-                Materials.SulfurTrioxide.getGas(1000),
-                Monomethylhydrazine.get(cell, 1),
-                Materials.Methanol.getCells(1),
-                80,
-                16000);
+        if (GTPlusPlus.isModLoaded()) {
+            // N2H4 + C2H6O4S = SO3 + CH6N2 + CH4O
+            GT_Values.RA.addChemicalRecipe(
+                    getModItem(GTPlusPlus.ID, "Hydrazine", 1),
+                    Materials.Empty.getCells(1),
+                    DimethylSulfate.getFluidOrGas(1000),
+                    Materials.SulfurTrioxide.getGas(1000),
+                    Monomethylhydrazine.get(cell, 1),
+                    Materials.Methanol.getCells(1),
+                    80,
+                    16000);
+        }
 
-        /*
-         * GT_Values.RA.addMixerRecipe( AmmoniumDinitramide.get(cell, 1), C1, null, null,
-         * Monomethylhydrazine.getFluidOrGas(2000), MonomethylhydrazineFuelMix.getFluidOrGas(3000), cells, 20, 480);
-         * cells.stackSize = 2; GT_Values.RA.addMixerRecipe( Monomethylhydrazine.get(cell, 2), C2, null, null,
-         * AmmoniumDinitramide.getFluidOrGas(1000), MonomethylhydrazineFuelMix.getFluidOrGas(3000), cells, 20, 480);
-         */
         cells.stackSize = 1;
 
         // unsimetrical hydazine
@@ -526,75 +477,32 @@ public class BotRecipes {
                 50,
                 1920);
 
-        // O + CH4O =Ag= CH2O
-        GT_Values.RA.addChemicalRecipe(
-                Materials.Oxygen.getCells(4),
-                Materials.Silver.getDustTiny(1),
-                Materials.Methanol.getFluid(4000),
-                Formaldehyde.getFluidOrGas(4000),
-                cells,
-                100,
-                480);
+        if (GTPlusPlus.isModLoaded()) {
+            // N2H4 + C2H4O2 =C2H6O= C2H6N2O + H2O
+            GT_Values.RA.addMultiblockChemicalRecipe(
+                    new ItemStack[] { C2 },
+                    new FluidStack[] { Materials.AceticAcid.getFluid(1000), Materials.Ethanol.getFluid(1000),
+                            new FluidStack(FluidRegistry.getFluid("fluid.hydrazine"), 1000) },
+                    new FluidStack[] { Acetylhydrazine.getFluidOrGas(1000), Materials.Ethanol.getFluid(1000) },
+                    null,
+                    40,
+                    30_720);
 
-        // N2H4 + C2H4O2 =C2H6O= C2H6N2O + H2O
-        GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] { C2 },
-                new FluidStack[] { Materials.AceticAcid.getFluid(1000), Materials.Ethanol.getFluid(1000),
-                        Hydrazine.getFluidOrGas(1000) },
-                new FluidStack[] { Acetylhydrazine.getFluidOrGas(1000), Materials.Ethanol.getFluid(1000) },
-                null,
-                40,
-                30_720);
-
-        // C2H6N2O + 2CH2O + 4H = C2H8N2 + C2H4O2 + H2O
-        GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] { C2 },
-                new FluidStack[] { Acetylhydrazine.getFluidOrGas(1000), Formaldehyde.getFluidOrGas(2000),
-                        Materials.Hydrogen.getGas(4000) },
-                new FluidStack[] { UnsymmetricalDimethylhydrazine.getFluidOrGas(1000),
-                        Materials.AceticAcid.getFluid(1000), Materials.Water.getFluid(1000) },
-                null,
-                20,
-                122_880);
-
-        /*
-         * cells.stackSize = 2; GT_Values.RA.addMixerRecipe( UnsymmetricalDimethylhydrazine.get(cell, 2), C2, null,
-         * null, Trinitramid.getFluidOrGas(1000), UnsymmetricalDimethylhydrazineFuelMix.getFluidOrGas(3000), cells, 10,
-         * 120); cells.stackSize = 1; GT_Values.RA.addMixerRecipe( Trinitramid.get(cell, 1), C2, null, null,
-         * UnsymmetricalDimethylhydrazine.getFluidOrGas(2000),
-         * UnsymmetricalDimethylhydrazineFuelMix.getFluidOrGas(3000), cells, 10, 120);
-         */
+            // C2H6N2O + 2CH2O + 4H = C2H8N2 + C2H4O2 + H2O
+            GT_Values.RA.addMultiblockChemicalRecipe(
+                    new ItemStack[] { C2 },
+                    new FluidStack[] { Acetylhydrazine.getFluidOrGas(1000),
+                            new FluidStack(FluidRegistry.getFluid("fluid.formaldehyde"), 2000),
+                            Materials.Hydrogen.getGas(4000) },
+                    new FluidStack[] { UnsymmetricalDimethylhydrazine.getFluidOrGas(1000),
+                            Materials.AceticAcid.getFluid(1000), Materials.Water.getFluid(1000) },
+                    null,
+                    20,
+                    122_880);
+        }
     }
 
     public static void addFuels() {
-        try {
-            if (Loader.isModLoaded(GT_Values.MOD_ID_GC_CORE)) {
-                Class<?> rocket = Class.forName("micdoodle8.mods.galacticraft.api.recipe.RocketFuelRecipe");
-                Method addFuel = rocket.getMethod("addFuel", Fluid.class, int.class);
-                addFuel.invoke(null, LMP103S.getFluidOrGas(1).getFluid(), 4);
-                addFuel.invoke(null, MonomethylhydrazineFuelMix.getFluidOrGas(1).getFluid(), 6);
-                addFuel.invoke(null, UnsymmetricalDimethylhydrazineFuelMix.getFluidOrGas(1).getFluid(), 8);
-            }
-            if (Loader.isModLoaded("miscutils")) {
-                Class<?> gtppRecipeMap = Class.forName("gregtech.api.util.GTPP_Recipe$GTPP_Recipe_Map");
-                Field rocketFuels = gtppRecipeMap.getDeclaredField("sRocketFuels");
-                rocketFuels.setAccessible(true);
-                Class<?> rocketFuelsClass = rocketFuels.getType();
-                Object rocketFuelsObject = rocketFuels.get(null);
-                Method addFuel = rocketFuelsClass
-                        .getDeclaredMethod("addFuel", FluidStack.class, FluidStack.class, int.class);
-                addFuel.invoke(rocketFuelsObject, LMP103S.getFluidOrGas(1000), null, 666);
-                addFuel.invoke(rocketFuelsObject, MonomethylhydrazineFuelMix.getFluidOrGas(1000), null, 1500);
-                addFuel.invoke(
-                        rocketFuelsObject,
-                        UnsymmetricalDimethylhydrazineFuelMix.getFluidOrGas(1000),
-                        null,
-                        3000);
-            }
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException
-                | NoSuchFieldException e) {
-            e.printStackTrace();
-        }
         GT_Recipe.GT_Recipe_Map.sTurbineFuels.addFuel(TertButylbenzene.get(cell, 1), null, 420);
     }
 

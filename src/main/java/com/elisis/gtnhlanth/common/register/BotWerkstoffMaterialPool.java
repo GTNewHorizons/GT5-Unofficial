@@ -5,8 +5,6 @@ import static com.github.bartimaeusnek.bartworks.util.BW_Util.subscriptNumbers;
 import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.TextureSet.*;
 
-import net.minecraft.util.EnumChatFormatting;
-
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 
@@ -15,9 +13,6 @@ import com.github.bartimaeusnek.bartworks.util.Pair;
  */
 @SuppressWarnings("unchecked")
 public class BotWerkstoffMaterialPool implements Runnable {
-
-    private static final String DEPRECATED = EnumChatFormatting.DARK_RED
-            + "Deprecated; Will be removed in the next update";
 
     public static final Werkstoff TungsticAcid = new Werkstoff(
             new short[] { 0xf5, 0xf1, 0x16 },
@@ -40,18 +35,6 @@ public class BotWerkstoffMaterialPool implements Runnable {
             SET_SHINY,
             new Pair<>(Tungsten, 1),
             new Pair<>(Oxygen, 3));
-    // public static final Werkstoff TungstenSteelOxide = new Werkstoff(
-    // new short[]{0x1f,0x27,0x69},
-    // "Tungstensteel Oxide",
-    // new Werkstoff.Stats(),
-    // COMPOUND,
-    // new Werkstoff.GenerationFeatures().onlyDust(),
-    // 29902,
-    // SET_FINE,
-    // new Pair<>(Tungsten, 1),
-    // new Pair<>(Oxygen,3),
-    // new Pair<>(Steel,1)
-    // );
     public static final Werkstoff AmmoniumNitrate = new Werkstoff(
             new short[] { 0x81, 0xcc, 0x00 },
             "Ammonium Nitrate",
@@ -145,15 +128,6 @@ public class BotWerkstoffMaterialPool implements Runnable {
             new Werkstoff.GenerationFeatures().disable().addCells(),
             29912,
             SET_FINE);
-    public static final Werkstoff LMP103S = new Werkstoff(
-            new short[] { 0xbf, 0x2f, 0xc2 },
-            "LMP-103S",
-            DEPRECATED,
-            new Werkstoff.Stats(),
-            COMPOUND,
-            new Werkstoff.GenerationFeatures().disable().addCells(),
-            29913,
-            SET_FINE);
     public static final Werkstoff OXylene = new Werkstoff(
             new short[] { 0x88, 0x94, 0xa8 },
             "O-Xylene",
@@ -208,24 +182,6 @@ public class BotWerkstoffMaterialPool implements Runnable {
             new Werkstoff.GenerationFeatures().disable().addCells(),
             29920,
             SET_METALLIC);
-    public static final Werkstoff HydrogenPeroxide = new Werkstoff(
-            new short[] { 0xad, 0x53, 0x1a },
-            "Hydrogen Peroxide",
-            subscriptNumbers("H2O2"),
-            new Werkstoff.Stats(),
-            COMPOUND,
-            new Werkstoff.GenerationFeatures().disable().addCells().enforceUnification(),
-            29921,
-            SET_METALLIC);
-    public static final Werkstoff Hydrazine = new Werkstoff(
-            new short[] { 0xb5, 0x07, 0x07 },
-            "hydrazine",
-            subscriptNumbers("N2H4"),
-            new Werkstoff.Stats(),
-            COMPOUND,
-            new Werkstoff.GenerationFeatures().disable().addCells(),
-            29922,
-            SET_METALLIC);
     public static final Werkstoff DimethylSulfate = new Werkstoff(
             new short[] { 0xff, 0xfb, 0x00 },
             "Dimethyl Sulfate",
@@ -243,15 +199,6 @@ public class BotWerkstoffMaterialPool implements Runnable {
             COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
             29924,
-            SET_METALLIC);
-    public static final Werkstoff Formaldehyde = new Werkstoff(
-            new short[] { 0x2e, 0xd9, 0x83 },
-            "Formaldehyde",
-            subscriptNumbers("CH2O"),
-            new Werkstoff.Stats(),
-            COMPOUND,
-            new Werkstoff.GenerationFeatures().disable().addCells(),
-            29925,
             SET_METALLIC);
     public static final Werkstoff EthylAcetate = new Werkstoff(
             new short[] { 0x0c, 0xfb, 0x32b },
@@ -279,24 +226,6 @@ public class BotWerkstoffMaterialPool implements Runnable {
             COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
             29928,
-            SET_METALLIC);
-    public static final Werkstoff MonomethylhydrazineFuelMix = new Werkstoff(
-            new short[] { 0x78, 0xe3, 0xa7 },
-            "Monomethylhydrazine Fuel Mix",
-            DEPRECATED,
-            new Werkstoff.Stats(),
-            COMPOUND,
-            new Werkstoff.GenerationFeatures().disable().addCells(),
-            29929,
-            SET_METALLIC);
-    public static final Werkstoff UnsymmetricalDimethylhydrazineFuelMix = new Werkstoff(
-            new short[] { 0xc8, 0xff, 0x00 },
-            "Unsymmetrical Dimethylhydrazine Fuel Mix",
-            DEPRECATED,
-            new Werkstoff.Stats(),
-            COMPOUND,
-            new Werkstoff.GenerationFeatures().disable().addCells(),
-            29930,
             SET_METALLIC);
     public static final Werkstoff Nitromethane = new Werkstoff(
             new short[] { 0x87, 0x7d, 0x60 },
