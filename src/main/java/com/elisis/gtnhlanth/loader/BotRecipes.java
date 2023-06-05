@@ -116,10 +116,6 @@ public class BotRecipes {
         // H2WO4 = WO3 + H2O
         GT_Values.RA.addBlastRecipe(H2WO4, null, null, null, WO3, null, 200, 480, 1200);
 
-        // ItemStack WO3Fe = TungstenSteelOxide.get(dust, 2);
-        // GT_Values.RA.addMixerRecipe(WO3, Materials.Steel.getDust(1), null, null, null, null,
-        // WO3Fe, 100, 1920);
-
         // WO3 + 6H = W + 3H2O
         GT_Values.RA.addBlastRecipe(
                 WO3,
@@ -224,13 +220,6 @@ public class BotRecipes {
                 AmmoniumDinitramide.get(cell, 1),
                 200,
                 1920);
-
-        // LMP-103S
-        /*
-         * GT_Values.RA.addMultiblockChemicalRecipe( new ItemStack[] {C24}, new FluidStack[] {
-         * AmmoniumDinitramide.getFluidOrGas(6000), Materials.Methanol.getFluid(2000), Materials.Ammonia.getGas(500),
-         * Materials.Water.getFluid(1500) }, new FluidStack[] {LMP103S.getFluidOrGas(10000)}, null, 1200, 1920);
-         */
 
         // P4O10 + 2HNO3 + 5H2O = 4H3PO4 + N2O5
         GT_Values.RA.addChemicalRecipe(
@@ -418,12 +407,6 @@ public class BotRecipes {
                     16000);
         }
 
-        /*
-         * GT_Values.RA.addMixerRecipe( AmmoniumDinitramide.get(cell, 1), C1, null, null,
-         * Monomethylhydrazine.getFluidOrGas(2000), MonomethylhydrazineFuelMix.getFluidOrGas(3000), cells, 20, 480);
-         * cells.stackSize = 2; GT_Values.RA.addMixerRecipe( Monomethylhydrazine.get(cell, 2), C2, null, null,
-         * AmmoniumDinitramide.getFluidOrGas(1000), MonomethylhydrazineFuelMix.getFluidOrGas(3000), cells, 20, 480);
-         */
         cells.stackSize = 1;
 
         // unsimetrical hydazine
@@ -553,14 +536,6 @@ public class BotRecipes {
                 null,
                 20,
                 122_880);
-
-        /*
-         * cells.stackSize = 2; GT_Values.RA.addMixerRecipe( UnsymmetricalDimethylhydrazine.get(cell, 2), C2, null,
-         * null, Trinitramid.getFluidOrGas(1000), UnsymmetricalDimethylhydrazineFuelMix.getFluidOrGas(3000), cells, 10,
-         * 120); cells.stackSize = 1; GT_Values.RA.addMixerRecipe( Trinitramid.get(cell, 1), C2, null, null,
-         * UnsymmetricalDimethylhydrazine.getFluidOrGas(2000),
-         * UnsymmetricalDimethylhydrazineFuelMix.getFluidOrGas(3000), cells, 10, 120);
-         */
     }
 
     public static void addFuels() {
