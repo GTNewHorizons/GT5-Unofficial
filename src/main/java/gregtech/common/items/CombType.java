@@ -206,6 +206,10 @@ public enum CombType {
     INDIUM(159, "indium", true, Materials.Indium, 100, 0x8F5D99, 0xFFA9FF, ItemComb.Voltage.ZPM),
     BLIZZ(160, "blizz", true, Materials.Blizz, 50, 0xFF99A5, 0x5af7ff, ItemComb.Voltage.MV),
     KEVLAR(161, "kevlar", true, Materials._NULL, 50, 0xa2baa3, 0x2d542f, ItemComb.Voltage.MV),
+    DRACONIC(162, "draconium", true, Materials.Draconium, 50, 0x161616, 0x6200e7, ItemComb.Voltage.MV),
+    AWAKENEDDRACONIUM(163, "awakeneddraconium", true, Materials.DraconiumAwakened, 50, 0xD41238, 0xFFA157,
+        ItemComb.Voltage.MV),
+    PALLADIUM(164, "palladium", true, Materials.Palladium, 50, 0x8B8B8B, 0xF1D9D9, ItemComb.Voltage.MV),
 
     // ALWAYS KEEP _NULL AT THE BOTTOM
     _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);
