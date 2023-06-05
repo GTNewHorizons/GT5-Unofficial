@@ -40,18 +40,6 @@ public class BotWerkstoffMaterialPool implements Runnable {
             SET_SHINY,
             new Pair<>(Tungsten, 1),
             new Pair<>(Oxygen, 3));
-    // public static final Werkstoff TungstenSteelOxide = new Werkstoff(
-    // new short[]{0x1f,0x27,0x69},
-    // "Tungstensteel Oxide",
-    // new Werkstoff.Stats(),
-    // COMPOUND,
-    // new Werkstoff.GenerationFeatures().onlyDust(),
-    // 29902,
-    // SET_FINE,
-    // new Pair<>(Tungsten, 1),
-    // new Pair<>(Oxygen,3),
-    // new Pair<>(Steel,1)
-    // );
     public static final Werkstoff AmmoniumNitrate = new Werkstoff(
             new short[] { 0x81, 0xcc, 0x00 },
             "Ammonium Nitrate",
@@ -208,24 +196,6 @@ public class BotWerkstoffMaterialPool implements Runnable {
             new Werkstoff.GenerationFeatures().disable().addCells(),
             29920,
             SET_METALLIC);
-    public static final Werkstoff HydrogenPeroxide = new Werkstoff(
-            new short[] { 0xad, 0x53, 0x1a },
-            "Hydrogen Peroxide",
-            subscriptNumbers("H2O2"),
-            new Werkstoff.Stats(),
-            COMPOUND,
-            new Werkstoff.GenerationFeatures().disable().addCells().enforceUnification(),
-            29921,
-            SET_METALLIC);
-    public static final Werkstoff Hydrazine = new Werkstoff(
-            new short[] { 0xb5, 0x07, 0x07 },
-            "hydrazine",
-            subscriptNumbers("N2H4"),
-            new Werkstoff.Stats(),
-            COMPOUND,
-            new Werkstoff.GenerationFeatures().disable().addCells(),
-            29922,
-            SET_METALLIC);
     public static final Werkstoff DimethylSulfate = new Werkstoff(
             new short[] { 0xff, 0xfb, 0x00 },
             "Dimethyl Sulfate",
@@ -243,15 +213,6 @@ public class BotWerkstoffMaterialPool implements Runnable {
             COMPOUND,
             new Werkstoff.GenerationFeatures().disable().addCells(),
             29924,
-            SET_METALLIC);
-    public static final Werkstoff Formaldehyde = new Werkstoff(
-            new short[] { 0x2e, 0xd9, 0x83 },
-            "Formaldehyde",
-            subscriptNumbers("CH2O"),
-            new Werkstoff.Stats(),
-            COMPOUND,
-            new Werkstoff.GenerationFeatures().disable().addCells(),
-            29925,
             SET_METALLIC);
     public static final Werkstoff EthylAcetate = new Werkstoff(
             new short[] { 0x0c, 0xfb, 0x32b },

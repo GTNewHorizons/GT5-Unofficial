@@ -492,18 +492,19 @@ public class BotRecipes {
                     null,
                     40,
                     30_720);
-        }
 
-        // C2H6N2O + 2CH2O + 4H = C2H8N2 + C2H4O2 + H2O
-        GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] { C2 },
-                new FluidStack[] { Acetylhydrazine.getFluidOrGas(1000), Formaldehyde.getFluidOrGas(2000),
-                        Materials.Hydrogen.getGas(4000) },
-                new FluidStack[] { UnsymmetricalDimethylhydrazine.getFluidOrGas(1000),
-                        Materials.AceticAcid.getFluid(1000), Materials.Water.getFluid(1000) },
-                null,
-                20,
-                122_880);
+            // C2H6N2O + 2CH2O + 4H = C2H8N2 + C2H4O2 + H2O
+            GT_Values.RA.addMultiblockChemicalRecipe(
+                    new ItemStack[] { C2 },
+                    new FluidStack[] { Acetylhydrazine.getFluidOrGas(1000),
+                            new FluidStack(FluidRegistry.getFluid("fluid.formaldehyde"), 2000),
+                            Materials.Hydrogen.getGas(4000) },
+                    new FluidStack[] { UnsymmetricalDimethylhydrazine.getFluidOrGas(1000),
+                            Materials.AceticAcid.getFluid(1000), Materials.Water.getFluid(1000) },
+                    null,
+                    20,
+                    122_880);
+        }
     }
 
     public static void addFuels() {
