@@ -1,12 +1,24 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBlastRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
+import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import gregtech.GT_Mod;
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
 
 public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -26,22 +38,28 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
         if (!aMaterial.contains(SubTag.NO_SMELTING)) {
             if ((aMaterial.mBlastFurnaceRequired) || (aMaterial.mDirectSmelting.mBlastFurnaceRequired)) {
                 if (aMaterial.mBlastFurnaceTemp < 1000 && aMaterial.mDirectSmelting.mBlastFurnaceTemp < 1000)
-                    if (aMaterial.mAutoGenerateBlastFurnaceRecipes) {
-                        GT_Values.RA.addBlastRecipe(
-                            GT_Utility.copyAmount(1L, aStack),
-                            ItemList.Circuit_Integrated.getWithDamage(0L, 1L),
-                            null,
-                            null,
-                            aMaterial.mBlastFurnaceTemp > 1750 ? GT_OreDictUnificator.get(
-                                OrePrefixes.ingotHot,
-                                aMaterial,
-                                GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
-                                1L) : GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
-                            null,
-                            (int) Math.max(aMaterial.getMass() / 4L, 1L) * aMaterial.mBlastFurnaceTemp,
-                            120,
-                            aMaterial.mBlastFurnaceTemp);
-                    }
+                    if (aMaterial.mAutoGenerateBlastFurnaceRecipes
+                        && GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
+                            GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                            recipeBuilder
+                                .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1));
+                            if (aMaterial.mBlastFurnaceTemp > 1750) {
+                                recipeBuilder.itemOutputs(
+                                    GT_OreDictUnificator.get(
+                                        OrePrefixes.ingotHot,
+                                        aMaterial,
+                                        GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
+                                        1L));
+                            } else {
+                                recipeBuilder.itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L));
+                            }
+                            recipeBuilder.noFluidInputs()
+                                .noFluidOutputs()
+                                .duration(Math.max(aMaterial.getMass() / 4L, 1L) * aMaterial.mBlastFurnaceTemp * TICKS)
+                                .eut(TierEU.RECIPE_MV)
+                                .metadata(COIL_HEAT, (int) aMaterial.mBlastFurnaceTemp)
+                                .addTo(sBlastRecipes);
+                        }
             } else {
                 OrePrefixes outputPrefix;
                 int outputSize;
@@ -65,73 +83,108 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                     case dust:
                         int outputAmount = GT_Mod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre ? 2 : 3;
                         if (aMaterial.mDirectSmelting != aMaterial) {
-                            if (!aMaterial.contains(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE)) {
-                                GT_Values.RA.addPrimitiveBlastRecipe(
-                                    GT_Utility.copyAmount(2, aStack),
-                                    GT_Values.NI,
-                                    2,
-                                    aMaterial.mDirectSmelting.getIngots(outputAmount),
-                                    GT_Values.NI,
-                                    2400);
+                            if (!aMaterial.contains(SubTag.DONT_ADD_DEFAULT_BBF_RECIPE)
+                                && aMaterial.mDirectSmelting.getIngots(1) != null) {
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(GT_Utility.copyAmount(2, aStack))
+                                    .itemOutputs(aMaterial.mDirectSmelting.getIngots(outputAmount))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(2 * MINUTES)
+                                    .eut(0)
+                                    .metadata(ADDITIVE_AMOUNT, 2)
+                                    .addTo(sPrimitiveBlastRecipes);
                             } else if (aMaterial == Materials.Chalcopyrite) {
-                                GT_Values.RA.addPrimitiveBlastRecipe(
-                                    aMaterial.getDust(2),
-                                    new ItemStack(Blocks.sand, 2),
-                                    2,
-                                    aMaterial.mDirectSmelting.getIngots(outputAmount),
-                                    Materials.Ferrosilite.getDustSmall(2 * outputAmount),
-                                    2400);
-                                GT_Values.RA.addPrimitiveBlastRecipe(
-                                    aMaterial.getDust(2),
-                                    Materials.Glass.getDust(2),
-                                    2,
-                                    aMaterial.mDirectSmelting.getIngots(outputAmount),
-                                    Materials.Ferrosilite.getDustTiny(7 * outputAmount),
-                                    2400);
-                                GT_Values.RA.addPrimitiveBlastRecipe(
-                                    aMaterial.getDust(2),
-                                    Materials.SiliconDioxide.getDust(2),
-                                    2,
-                                    aMaterial.mDirectSmelting.getIngots(outputAmount),
-                                    Materials.Ferrosilite.getDust(outputAmount),
-                                    2400);
-                                GT_Values.RA.addPrimitiveBlastRecipe(
-                                    aMaterial.getDust(2),
-                                    Materials.Quartzite.getDust(4),
-                                    2,
-                                    aMaterial.mDirectSmelting.getIngots(outputAmount),
-                                    Materials.Ferrosilite.getDust(outputAmount),
-                                    2400);
-                                GT_Values.RA.addPrimitiveBlastRecipe(
-                                    aMaterial.getDust(2),
-                                    Materials.NetherQuartz.getDust(2),
-                                    2,
-                                    aMaterial.mDirectSmelting.getIngots(outputAmount),
-                                    Materials.Ferrosilite.getDust(outputAmount),
-                                    2400);
-                                GT_Values.RA.addPrimitiveBlastRecipe(
-                                    aMaterial.getDust(2),
-                                    Materials.CertusQuartz.getDust(2),
-                                    2,
-                                    aMaterial.mDirectSmelting.getIngots(outputAmount),
-                                    Materials.Ferrosilite.getDust(outputAmount),
-                                    2400);
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(aMaterial.getDust(2), new ItemStack(Blocks.sand, 2))
+                                    .itemOutputs(
+                                        aMaterial.mDirectSmelting.getIngots(outputAmount),
+                                        Materials.Ferrosilite.getDustSmall(2 * outputAmount))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(2 * MINUTES)
+                                    .eut(0)
+                                    .metadata(ADDITIVE_AMOUNT, 2)
+                                    .addTo(sPrimitiveBlastRecipes);
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(aMaterial.getDust(2), Materials.Glass.getDust(2))
+                                    .itemOutputs(
+                                        aMaterial.mDirectSmelting.getIngots(outputAmount),
+                                        Materials.Ferrosilite.getDustSmall(7 * outputAmount))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(2 * MINUTES)
+                                    .eut(0)
+                                    .metadata(ADDITIVE_AMOUNT, 2)
+                                    .addTo(sPrimitiveBlastRecipes);
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(aMaterial.getDust(2), Materials.SiliconDioxide.getDust(2))
+                                    .itemOutputs(
+                                        aMaterial.mDirectSmelting.getIngots(outputAmount),
+                                        Materials.Ferrosilite.getDustSmall(outputAmount))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(2 * MINUTES)
+                                    .eut(0)
+                                    .metadata(ADDITIVE_AMOUNT, 2)
+                                    .addTo(sPrimitiveBlastRecipes);
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(aMaterial.getDust(2), Materials.Quartzite.getDust(4))
+                                    .itemOutputs(
+                                        aMaterial.mDirectSmelting.getIngots(outputAmount),
+                                        Materials.Ferrosilite.getDustSmall(outputAmount))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(2 * MINUTES)
+                                    .eut(0)
+                                    .metadata(ADDITIVE_AMOUNT, 2)
+                                    .addTo(sPrimitiveBlastRecipes);
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(aMaterial.getDust(2), Materials.NetherQuartz.getDust(2))
+                                    .itemOutputs(
+                                        aMaterial.mDirectSmelting.getIngots(outputAmount),
+                                        Materials.Ferrosilite.getDustSmall(outputAmount))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(2 * MINUTES)
+                                    .eut(0)
+                                    .metadata(ADDITIVE_AMOUNT, 2)
+                                    .addTo(sPrimitiveBlastRecipes);
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(aMaterial.getDust(2), Materials.CertusQuartz.getDust(2))
+                                    .itemOutputs(
+                                        aMaterial.mDirectSmelting.getIngots(outputAmount),
+                                        Materials.Ferrosilite.getDustSmall(outputAmount))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(2 * MINUTES)
+                                    .eut(0)
+                                    .metadata(ADDITIVE_AMOUNT, 2)
+                                    .addTo(sPrimitiveBlastRecipes);
                             } else if (aMaterial == Materials.Tetrahedrite) {
-                                GT_Values.RA.addPrimitiveBlastRecipe(
-                                    aMaterial.getDust(2),
-                                    GT_Values.NI,
-                                    2,
-                                    aMaterial.mDirectSmelting.getIngots(outputAmount),
-                                    Materials.Antimony.getNuggets(3 * outputAmount),
-                                    2400);
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(aMaterial.getDust(2))
+                                    .itemOutputs(
+                                        aMaterial.mDirectSmelting.getIngots(outputAmount),
+                                        Materials.Antimony.getNuggets(3 * outputAmount))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(2 * MINUTES)
+                                    .eut(0)
+                                    .metadata(ADDITIVE_AMOUNT, 2)
+                                    .addTo(sPrimitiveBlastRecipes);
                             } else if (aMaterial == Materials.Galena) {
-                                GT_Values.RA.addPrimitiveBlastRecipe(
-                                    aMaterial.getDust(2),
-                                    GT_Values.NI,
-                                    2,
-                                    aMaterial.mDirectSmelting.getIngots(outputAmount),
-                                    Materials.Silver.getNuggets(3 * outputAmount),
-                                    2400);
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(aMaterial.getDust(2))
+                                    .itemOutputs(
+                                        aMaterial.mDirectSmelting.getIngots(outputAmount),
+                                        Materials.Silver.getNuggets(3 * outputAmount))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(2 * MINUTES)
+                                    .eut(0)
+                                    .metadata(ADDITIVE_AMOUNT, 2)
+                                    .addTo(sPrimitiveBlastRecipes);
                             }
                         }
                     case dustImpure:

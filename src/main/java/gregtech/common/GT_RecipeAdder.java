@@ -27,8 +27,13 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_AssemblyLineUtils;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
+import gregtech.api.util.GT_RecipeBuilder;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
 import ic2.core.init.MainConfig;
 import ic2.core.util.ConfigUtil;
@@ -1307,6 +1312,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         int tExplosives = Math.min(aInput2, 64);
         int tGunpowder = tExplosives << 1; // Worst
         int tDynamite = Math.max(1, tExplosives >> 1); // good
+        @SuppressWarnings("UnnecessaryLocalVariable")
         int tTNT = tExplosives; // Slightly better
         int tITNT = Math.max(1, tExplosives >> 2); // the best
         // new GT_Recipe(aInput1, aInput2, aOutput1, aOutput2);

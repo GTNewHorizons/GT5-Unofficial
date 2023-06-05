@@ -28,11 +28,11 @@ public class GT_AssemblyLineUtils {
     /**
      * A cache of Recipes using the Output as Key.
      */
-    private static HashMap<GT_ItemStack, GT_Recipe_AssemblyLine> sRecipeCacheByOutput = new HashMap<>();
+    private static final HashMap<GT_ItemStack, GT_Recipe_AssemblyLine> sRecipeCacheByOutput = new HashMap<>();
     /**
      * A cache of Recipes using the Recipe Hash String as Key.
      */
-    private static HashMap<String, GT_Recipe_AssemblyLine> sRecipeCacheByRecipeHash = new HashMap<>();
+    private static final HashMap<String, GT_Recipe_AssemblyLine> sRecipeCacheByRecipeHash = new HashMap<>();
 
     /**
      * Checks the DataStick for deprecated/invalid recipes, updating them as required.
@@ -278,12 +278,9 @@ public class GT_AssemblyLineUtils {
      * @return Does this Data Stick have a valid output ItemStack?
      */
     public static boolean doesDataStickHaveOutput(ItemStack aDataStick) {
-        if (isItemDataStick(aDataStick) && aDataStick.hasTagCompound()
+        return isItemDataStick(aDataStick) && aDataStick.hasTagCompound()
             && aDataStick.getTagCompound()
-                .hasKey("output")) {
-            return true;
-        }
-        return false;
+                .hasKey("output");
     }
 
     /**
@@ -296,9 +293,7 @@ public class GT_AssemblyLineUtils {
             if (isValidHash(aStickHash) && doesDataStickHaveOutput(aDataStick)) {
                 ItemStack aStickOutput = getDataStickOutput(aDataStick);
                 GT_Recipe_AssemblyLine aIntendedRecipe = findAssemblyLineRecipeByOutput(aStickOutput);
-                if (aStickHash.equals(generateRecipeHash(aIntendedRecipe))) {
-                    return false;
-                }
+                return !aStickHash.equals(generateRecipeHash(aIntendedRecipe));
             }
         }
         return true;
@@ -311,10 +306,8 @@ public class GT_AssemblyLineUtils {
     public static boolean doesDataStickHaveRecipeHash(ItemStack aDataStick) {
         if (isItemDataStick(aDataStick) && aDataStick.hasTagCompound()) {
             NBTTagCompound aNBT = aDataStick.getTagCompound();
-            if (aNBT.hasKey("Data.Recipe.Hash") && !aNBT.getString("Data.Recipe.Hash")
-                .equals("Hash.0")) {
-                return true;
-            }
+            return aNBT.hasKey("Data.Recipe.Hash") && !aNBT.getString("Data.Recipe.Hash")
+                .equals("Hash.0");
         }
         return false;
     }
@@ -327,8 +320,7 @@ public class GT_AssemblyLineUtils {
      */
     public static ItemStack getDataStickOutput(ItemStack aDataStick) {
         if (doesDataStickHaveOutput(aDataStick)) {
-            ItemStack aOutput = GT_Utility.loadItem(aDataStick.getTagCompound(), "output");
-            return aOutput;
+            return GT_Utility.loadItem(aDataStick.getTagCompound(), "output");
         }
         return null;
     }

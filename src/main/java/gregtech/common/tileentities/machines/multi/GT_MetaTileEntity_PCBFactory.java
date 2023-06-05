@@ -1,8 +1,16 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.enums.GT_Values.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_Values.AuthorBlueWeabo;
+import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
@@ -85,8 +93,9 @@ public class GT_MetaTileEntity_PCBFactory extends
     private float mRoughnessMultiplier = 1;
     private int mTier = 1, mSetTier = 1, mUpgradesInstalled = 0, mCurrentParallel = 0, mMaxParallel = 0;
     private boolean mBioUpgrade = false, mBioRotate = false, mOCTier1 = false, mOCTier2 = false;
-    private int[] mBioOffsets = new int[] { -5, -1 }, mOCTier1Offsets = new int[] { 2, -11 },
-        mOCTier2Offsets = new int[] { 2, -11 };
+    private final int[] mBioOffsets = new int[] { -5, -1 };
+    private final int[] mOCTier1Offsets = new int[] { 2, -11 };
+    private final int[] mOCTier2Offsets = new int[] { 2, -11 };
     private GT_MetaTileEntity_Hatch_Input mCoolantInputHatch;
     private static final int mBioRotateBitMap = 0b1000000;
     private static final int mOCTier2BitMap = 0b100000;
@@ -575,6 +584,7 @@ public class GT_MetaTileEntity_PCBFactory extends
 
         if (recipeAllowed) {
             GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe)
+                .setMachine(this)
                 .setItemInputs(aItemInputs)
                 .setFluidInputs(aFluidInputs)
                 .setMaxParallel(aMaxParallel)
@@ -803,16 +813,15 @@ public class GT_MetaTileEntity_PCBFactory extends
     protected void calculateOverclockedNessMultiInternal(long aEUt, int aDuration, int mAmperage, long maxInputVoltage,
         boolean perfectOC) {
         int hatches = Math.max(getExoticEnergyHatches().size(), 1);
-        long zMaxInputVoltage = maxInputVoltage;
         long zTime = aDuration;
         long zEUt = aEUt;
-        if (zMaxInputVoltage < zEUt) {
+        if (maxInputVoltage < zEUt) {
             this.lEUt = Long.MAX_VALUE - 1;
             this.mMaxProgresstime = Integer.MAX_VALUE - 1;
             return;
         }
 
-        while (zEUt < zMaxInputVoltage) {
+        while (zEUt < maxInputVoltage) {
             zEUt = zEUt << 2;
             zTime = zTime >> (perfectOC ? 2 : 1);
             if (zTime <= 1) {
@@ -824,12 +833,12 @@ public class GT_MetaTileEntity_PCBFactory extends
             zTime = 1;
         }
 
-        while (zEUt * mAmperage > zMaxInputVoltage * getMaxInputAmps() / hatches) {
+        while (zEUt * mAmperage > maxInputVoltage * getMaxInputAmps() / hatches) {
             zEUt = zEUt >> 2;
             zTime = zTime << (perfectOC ? 2 : 1);
         }
 
-        if (zEUt > zMaxInputVoltage) {
+        if (zEUt > maxInputVoltage) {
             zEUt = zEUt >> 2;
             zTime = zTime << (perfectOC ? 2 : 1);
         }
@@ -1352,7 +1361,12 @@ public class GT_MetaTileEntity_PCBFactory extends
     }
 
     @Override
-    protected boolean isInputSeparationButtonEnabled() {
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsInputSeparation() {
         return true;
     }
 }

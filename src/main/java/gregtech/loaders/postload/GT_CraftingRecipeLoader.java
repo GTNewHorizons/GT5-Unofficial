@@ -1,7 +1,10 @@
 package gregtech.loaders.postload;
 
-import static gregtech.api.enums.Mods.*;
+import static gregtech.api.enums.Mods.BartWorks;
+import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GraviSuite;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.enums.Mods.NotEnoughItems;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
 import java.util.Arrays;

@@ -13,7 +13,13 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsKevlar;
+import gregtech.api.enums.MaterialsOreAlum;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_RecipeBuilder;
@@ -1271,7 +1277,7 @@ public class DistilleryRecipes implements Runnable {
         for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
             GT_RecipeBuilder buildDistillation = GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.getIntegratedCircuit(i + 1));
-            if (aOutput2 == GT_Values.NI || aOutput2 == null) {
+            if (aOutput2 == GT_Values.NI) {
                 buildDistillation.noItemOutputs();
             } else {
                 buildDistillation.itemOutputs(aOutput2);
@@ -1284,7 +1290,7 @@ public class DistilleryRecipes implements Runnable {
         }
         GT_RecipeBuilder buildDT = GT_Values.RA.stdBuilder()
             .itemInputs(aCircuit);
-        if (aOutput2 == GT_Values.NI || aOutput2 == null) {
+        if (aOutput2 == GT_Values.NI) {
             buildDT.noItemOutputs();
         } else {
             buildDT.itemOutputs(aOutput2);
@@ -1301,7 +1307,7 @@ public class DistilleryRecipes implements Runnable {
         for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
             GT_RecipeBuilder buildDistillation = GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.getIntegratedCircuit(i + 1));
-            if (aOutput2 == GT_Values.NI || aOutput2 == null) {
+            if (aOutput2 == GT_Values.NI) {
                 buildDistillation.noItemOutputs();
             } else {
                 buildDistillation.itemOutputs(aOutput2);
@@ -1314,7 +1320,7 @@ public class DistilleryRecipes implements Runnable {
         }
         GT_RecipeBuilder buildDT = GT_Values.RA.stdBuilder()
             .noItemInputs();
-        if (aOutput2 == GT_Values.NI || aOutput2 == null) {
+        if (aOutput2 == GT_Values.NI) {
             buildDT.noItemOutputs();
         } else {
             buildDT.itemOutputs(aOutput2);

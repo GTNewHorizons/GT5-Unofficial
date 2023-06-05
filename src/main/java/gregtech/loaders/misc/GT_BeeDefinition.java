@@ -1,14 +1,64 @@
 package gregtech.loaders.misc;
 
-import static forestry.api.apiculture.EnumBeeChromosome.*;
+import static forestry.api.apiculture.EnumBeeChromosome.CAVE_DWELLING;
+import static forestry.api.apiculture.EnumBeeChromosome.EFFECT;
+import static forestry.api.apiculture.EnumBeeChromosome.FERTILITY;
+import static forestry.api.apiculture.EnumBeeChromosome.FLOWERING;
+import static forestry.api.apiculture.EnumBeeChromosome.FLOWER_PROVIDER;
+import static forestry.api.apiculture.EnumBeeChromosome.HUMIDITY_TOLERANCE;
+import static forestry.api.apiculture.EnumBeeChromosome.LIFESPAN;
+import static forestry.api.apiculture.EnumBeeChromosome.NOCTURNAL;
+import static forestry.api.apiculture.EnumBeeChromosome.SPECIES;
+import static forestry.api.apiculture.EnumBeeChromosome.SPEED;
+import static forestry.api.apiculture.EnumBeeChromosome.TEMPERATURE_TOLERANCE;
+import static forestry.api.apiculture.EnumBeeChromosome.TERRITORY;
+import static forestry.api.apiculture.EnumBeeChromosome.TOLERANT_FLYER;
 import static forestry.api.core.EnumHumidity.ARID;
 import static forestry.api.core.EnumHumidity.DAMP;
-import static forestry.api.core.EnumTemperature.*;
-import static forestry.core.genetics.alleles.EnumAllele.*;
-import static gregtech.api.enums.Mods.*;
-import static gregtech.loaders.misc.GT_BeeDefinitionReference.*;
+import static forestry.api.core.EnumTemperature.COLD;
+import static forestry.api.core.EnumTemperature.HELLISH;
+import static forestry.api.core.EnumTemperature.HOT;
+import static forestry.api.core.EnumTemperature.ICY;
+import static forestry.api.core.EnumTemperature.NORMAL;
+import static forestry.api.core.EnumTemperature.WARM;
+import static forestry.core.genetics.alleles.EnumAllele.Fertility;
+import static forestry.core.genetics.alleles.EnumAllele.Flowering;
+import static forestry.core.genetics.alleles.EnumAllele.Flowers;
+import static forestry.core.genetics.alleles.EnumAllele.Lifespan;
+import static forestry.core.genetics.alleles.EnumAllele.Speed;
+import static forestry.core.genetics.alleles.EnumAllele.Territory;
+import static forestry.core.genetics.alleles.EnumAllele.Tolerance;
+import static gregtech.api.enums.Mods.AdvancedSolarPanel;
+import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.Avaritia;
+import static gregtech.api.enums.Mods.AvaritiaAddons;
+import static gregtech.api.enums.Mods.BiomesOPlenty;
+import static gregtech.api.enums.Mods.CropsPlusPlus;
+import static gregtech.api.enums.Mods.EnderStorage;
+import static gregtech.api.enums.Mods.ExtraBees;
+import static gregtech.api.enums.Mods.ExtraCells2;
+import static gregtech.api.enums.Mods.ExtraUtilities;
+import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.GalacticraftCore;
+import static gregtech.api.enums.Mods.GalacticraftMars;
+import static gregtech.api.enums.Mods.GalaxySpace;
+import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.enums.Mods.MagicBees;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.PamsHarvestCraft;
+import static gregtech.api.enums.Mods.TaintedMagic;
+import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.Mods.ThaumicBases;
+import static gregtech.api.enums.Mods.TinkerConstruct;
+import static gregtech.loaders.misc.GT_BeeDefinitionReference.EXTRABEES;
+import static gregtech.loaders.misc.GT_BeeDefinitionReference.FORESTRY;
+import static gregtech.loaders.misc.GT_BeeDefinitionReference.GENDUSTRY;
+import static gregtech.loaders.misc.GT_BeeDefinitionReference.GREGTECH;
+import static gregtech.loaders.misc.GT_BeeDefinitionReference.MAGICBEES;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.function.Consumer;
@@ -21,7 +71,13 @@ import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.text.WordUtils;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import forestry.api.apiculture.*;
+import forestry.api.apiculture.BeeManager;
+import forestry.api.apiculture.EnumBeeType;
+import forestry.api.apiculture.IAlleleBeeEffect;
+import forestry.api.apiculture.IAlleleBeeSpecies;
+import forestry.api.apiculture.IBee;
+import forestry.api.apiculture.IBeeGenome;
+import forestry.api.apiculture.IBeeMutationCustom;
 import forestry.api.core.EnumHumidity;
 import forestry.api.core.EnumTemperature;
 import forestry.api.genetics.AlleleManager;
@@ -33,7 +89,10 @@ import forestry.apiculture.genetics.IBeeDefinition;
 import forestry.apiculture.genetics.alleles.AlleleEffect;
 import forestry.core.genetics.alleles.AlleleHelper;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsKevlar;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_JubilanceMegaApiary;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
@@ -584,8 +643,9 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }),
     IRIDIUM(GT_BranchDefinition.RAREMETAL, "Iridium", false, new Color(0xDADADA), new Color(0xD1D1E0), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
-        beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.IRIDIUM), 0.30f);
+        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.IRIDIUM), 0.30f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.OSMIUM), 0.05f);
+        beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.PALLADIUM), 0.30f);
         beeSpecies.setHumidity(ARID);
         beeSpecies.setTemperature(HELLISH);
         beeSpecies.setHasEffect();
@@ -761,7 +821,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         tMutation.restrictTemperature(ICY);
     }),
     Explosive(GT_BranchDefinition.IC2, "explosive", false, new Color(0x7E270F), new Color(0x747474), beeSpecies -> {
-        beeSpecies.addProduct(GT_ModHandler.getIC2Item("industrialTnt", 1L), 0.5f);
+        beeSpecies.addProduct(GT_ModHandler.getIC2Item("industrialTnt", 1L), 0.2f);
         beeSpecies.setHumidity(ARID);
         beeSpecies.setTemperature(HELLISH);
         beeSpecies.setHasEffect();
@@ -1178,6 +1238,22 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         IBeeMutationCustom tMutation = dis.registerMutation(SHADOWMETAL, SPARKELING, 5);
         if (Thaumcraft.isModLoaded())
             tMutation.requireResource(GameRegistry.findBlock(Thaumcraft.ID, "blockCrystal"), 6);
+    }),
+
+    DRAKE(GT_BranchDefinition.THAUMIC, "Drake", true, new Color(0x100322), new Color(0x7A007A), beeSpecies -> {
+        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.DRACONIC), 0.30f);
+        beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.AWAKENEDDRACONIUM), 0.20f);
+        beeSpecies.setHumidity(DAMP);
+        beeSpecies.setTemperature(HELLISH);
+        beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
+    }, template -> {
+        AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.DOWN_3);
+        AlleleHelper.instance.set(template, CAVE_DWELLING, false);
+        AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.END);
+        AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectDrunkard);
+    }, dis -> {
+        IBeeMutationCustom tMutation = dis.registerMutation(ESSENTIA, THAUMINITE, 5);
+        tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockcasings5"), 8);
     }),
 
     // radioctive

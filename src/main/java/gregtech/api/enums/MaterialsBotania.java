@@ -1,6 +1,11 @@
 package gregtech.api.enums;
 
-import static gregtech.api.enums.OrePrefixes.*;
+import static gregtech.api.enums.OrePrefixes.gem;
+import static gregtech.api.enums.OrePrefixes.ingot;
+import static gregtech.api.enums.OrePrefixes.nugget;
+import static gregtech.api.enums.OrePrefixes.plate;
+import static gregtech.api.enums.OrePrefixes.rod;
+import static gregtech.api.enums.OrePrefixes.rotor;
 
 import java.util.Arrays;
 

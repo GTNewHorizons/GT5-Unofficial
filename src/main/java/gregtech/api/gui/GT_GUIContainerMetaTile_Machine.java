@@ -15,10 +15,14 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.widgets.*;
+import gregtech.api.gui.widgets.GT_GuiCoverTabLine;
+import gregtech.api.gui.widgets.GT_GuiIcon;
+import gregtech.api.gui.widgets.GT_GuiSlotTooltip;
 import gregtech.api.gui.widgets.GT_GuiTabLine.DisplayStyle;
 import gregtech.api.gui.widgets.GT_GuiTabLine.GT_GuiTabIconSet;
 import gregtech.api.gui.widgets.GT_GuiTabLine.GT_ITabRenderer;
+import gregtech.api.gui.widgets.GT_GuiTooltip;
+import gregtech.api.gui.widgets.GT_GuiTooltipManager;
 import gregtech.api.gui.widgets.GT_GuiTooltipManager.GT_IToolTipRenderer;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -38,8 +42,8 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
 
     public final GT_ContainerMetaTile_Machine mContainer;
 
-    protected GT_GuiTooltipManager mTooltipManager = new GT_GuiTooltipManager();
-    protected GT_TooltipDataCache mTooltipCache = new GT_TooltipDataCache();
+    protected final GT_GuiTooltipManager mTooltipManager = new GT_GuiTooltipManager();
+    protected final GT_TooltipDataCache mTooltipCache = new GT_TooltipDataCache();
     private static final String GHOST_CIRCUIT_TOOLTIP = "GT5U.machines.select_circuit.tooltip";
 
     private final int guiTint;

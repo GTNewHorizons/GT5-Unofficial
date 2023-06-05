@@ -3,7 +3,6 @@ package gregtech.loaders.postload.chains;
 import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
@@ -21,6 +20,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
@@ -54,7 +54,7 @@ public class GT_PCBFactoryRecipes {
             .noFluidOutputs()
             .itemOutputs(ItemList.PCBFactory.get(1))
             .eut(TierEU.RECIPE_UV)
-            .duration(1 * HOURS + 40 * MINUTES)
+            .duration(5 * MINUTES)
             .addTo(AssemblyLine);
 
         if (GTPlusPlus.isModLoaded()) {
@@ -96,7 +96,7 @@ public class GT_PCBFactoryRecipes {
                     GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Infinity, 2),
                     Materials.Thulium.getPlates(6))
                 .itemOutputs(ItemList.InfinityCooledCasing.get(1))
-                .noFluidInputs()
+                .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(8 * 144))
                 .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_UMV)

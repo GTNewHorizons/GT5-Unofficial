@@ -21,7 +21,7 @@ import gregtech.api.util.GT_ToolHarvestHelper;
 
 public class GT_Tool_Plow extends GT_Tool {
 
-    private ThreadLocal<Object> sIsHarvestingRightNow = new ThreadLocal<>();
+    private final ThreadLocal<Object> sIsHarvestingRightNow = new ThreadLocal<>();
 
     @Override
     public float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack,

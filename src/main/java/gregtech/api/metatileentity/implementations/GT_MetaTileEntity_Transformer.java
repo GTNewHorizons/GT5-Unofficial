@@ -123,8 +123,13 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
 
     @Override
     public boolean isInputFacing(ForgeDirection side) {
-        return getBaseMetaTileEntity().isAllowedToWork() ? side == getBaseMetaTileEntity().getFrontFacing()
-            : side != getBaseMetaTileEntity().getFrontFacing();
+        ForgeDirection blockFrontFacing = getBaseMetaTileEntity().getFrontFacing();
+
+        if (getBaseMetaTileEntity().isAllowedToWork()) {
+            return side == blockFrontFacing;
+        } else {
+            return side != blockFrontFacing;
+        }
     }
 
     @Override

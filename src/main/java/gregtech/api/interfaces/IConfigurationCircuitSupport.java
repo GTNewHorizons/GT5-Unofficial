@@ -20,7 +20,7 @@ public interface IConfigurationCircuitSupport {
 
     /**
      * Return a list of possible configuration circuit this machine expects.
-     *
+     * <p>
      * This list is unmodifiable. Its elements are not supposed to be modified in any way!
      */
     default List<ItemStack> getConfigurationCircuits() {

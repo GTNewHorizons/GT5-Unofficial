@@ -4,6 +4,8 @@ import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sVacuumRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 
 import java.util.ArrayList;
 
@@ -19,6 +21,7 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_RecipeBuilder;
+import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_Utility;
 
 public class ProcessingCell implements IOreRecipeRegistrator {
@@ -40,13 +43,21 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                     }
                 } else {
                     if (aMaterial.mFuelPower > 0) {
-                        GT_Values.RA.addFuel(
-                            GT_Utility.copyAmount(1L, aStack),
-                            GT_Utility.getFluidForFilledItem(aStack, true) == null
-                                ? GT_Utility.getContainerItem(aStack, true)
-                                : null,
-                            aMaterial.mFuelPower,
-                            aMaterial.mFuelType);
+                        GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                        recipeBuilder.itemInputs(GT_Utility.copyAmount(1L, aStack));
+                        if (GT_Utility.getFluidForFilledItem(aStack, true) == null
+                            && GT_Utility.getContainerItem(aStack, true) != null) {
+                            recipeBuilder.itemOutputs(GT_Utility.getContainerItem(aStack, true));
+                        } else {
+                            recipeBuilder.noItemOutputs();
+                        }
+                        recipeBuilder.noFluidInputs()
+                            .noFluidOutputs()
+                            .metadata(FUEL_VALUE, aMaterial.mFuelPower)
+                            .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                            .duration(0)
+                            .eut(0)
+                            .addTo(GT_RecipeConstants.Fuel);
                     }
                     if ((aMaterial.mMaterialList.size() > 0) && ((aMaterial.mExtraData & 0x3) != 0)) {
                         int tAllAmount = 0;
@@ -54,8 +65,8 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             tAllAmount = (int) (tAllAmount + tMat2.mAmount);
                         }
                         long tItemAmount = 0L;
-                        long tCapsuleCount = GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(aStack)
-                            * -tAllAmount;
+                        long tCapsuleCount = (long) GT_ModHandler
+                            .getCapsuleCellContainerCountMultipliedWithStackSize(aStack) * -tAllAmount;
                         long tDensityMultiplier = aMaterial.getDensity() > 3628800L ? aMaterial.getDensity() / 3628800L
                             : 1L;
                         ArrayList<ItemStack> tList = new ArrayList<>();
@@ -174,13 +185,21 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                 if (aMaterial == Materials.Empty) {
                     GT_ModHandler.removeRecipeByOutputDelayed(aStack);
                 } else {
-                    GT_Values.RA.addFuel(
-                        GT_Utility.copyAmount(1L, aStack),
-                        GT_Utility.getFluidForFilledItem(aStack, true) == null
-                            ? GT_Utility.getContainerItem(aStack, true)
-                            : null,
-                        (int) Math.max(1024L, 1024L * aMaterial.getMass()),
-                        4);
+                    GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+                    recipeBuilder.itemInputs(GT_Utility.copyAmount(1L, aStack));
+                    if (GT_Utility.getFluidForFilledItem(aStack, true) == null
+                        && GT_Utility.getContainerItem(aStack, true) != null) {
+                        recipeBuilder.itemOutputs(GT_Utility.getContainerItem(aStack, true));
+                    } else {
+                        recipeBuilder.noItemOutputs();
+                    }
+                    recipeBuilder.noFluidInputs()
+                        .noFluidOutputs()
+                        .metadata(FUEL_VALUE, (int) Math.max(1024L, 1024L * aMaterial.getMass()))
+                        .metadata(FUEL_TYPE, 4)
+                        .duration(0)
+                        .eut(0)
+                        .addTo(GT_RecipeConstants.Fuel);
                     if (GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L) != null) {
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(1L, aStack))

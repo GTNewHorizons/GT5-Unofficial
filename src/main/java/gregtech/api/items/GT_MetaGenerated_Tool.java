@@ -236,7 +236,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         IToolStats tStats = getToolStats(aStack);
         if (isItemStackUsable(aStack) && getDigSpeed(aStack, aBlock, aMetaData) > 0.0F) doDamage(
             aStack,
-            tStats
+            (long) tStats
                 .convertBlockDrops(aDrops, aStack, aPlayer, aBlock, aX, aY, aZ, aMetaData, aFortune, aSilkTouch, aEvent)
                 * tStats.getToolDamagePerDropConversion());
     }
@@ -404,6 +404,10 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                 // EU/t -> toolCombatDamage, toolSpeed
                 // Overflow Tier -> toolQuality
                 float aBaseEff = (5f + getToolCombatDamage(aStack)) * 1000f;
+
+                // It was noted by IntelliJ that replacing ((GT_MetaGenerated_Tool) aStack.getItem()) with
+                // GT_MetaGenerated_Tool can have side effects. This refactoring will need tests.
+                @SuppressWarnings("AccessStaticViaInstance")
                 float aOptFlow = (Math.max(
                     Float.MIN_NORMAL,
                     ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack)
@@ -615,7 +619,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
 
     @Override
     public final boolean doDamageToItem(ItemStack aStack, int aVanillaDamage) {
-        return doDamage(aStack, aVanillaDamage * 100);
+        return doDamage(aStack, aVanillaDamage * 100L);
     }
 
     public final boolean doDamage(ItemStack aStack, long aAmount) {

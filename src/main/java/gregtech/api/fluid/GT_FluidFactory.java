@@ -44,7 +44,7 @@ public class GT_FluidFactory {
 
     /**
      * Helper for quick fluid creation and registration
-     * 
+     *
      * @param fluidName     The name key of the {@link Fluid} to register in the {@link FluidRegistry}
      * @param localizedName The localized name of this {@link IGT_Fluid}
      * @param material      The {@link Materials} of this {@link IGT_Fluid}
@@ -63,7 +63,7 @@ public class GT_FluidFactory {
 
     /**
      * Helper for quick fluid creation and registration
-     * 
+     *
      * @param fluidName     The name key of the {@link Fluid} to register in the {@link FluidRegistry}
      * @param localizedName The localized name of this {@link IGT_Fluid}
      * @param state         The {@link FluidState} of this {@link IGT_Fluid}
@@ -80,7 +80,7 @@ public class GT_FluidFactory {
 
     /**
      * Gets an {@link IGT_Fluid} builder instance
-     * 
+     *
      * @param fluidName The name key of the {@link Fluid} to register in the {@link FluidRegistry}
      * @return the {@link IGT_FluidBuilder} instance
      */

@@ -4,7 +4,13 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUnlocalizedName;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.Muffler;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PYROLYSE_OVEN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE;
@@ -42,9 +48,6 @@ public class GT_MetaTileEntity_PyrolyseOven
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_PyrolyseOven> implements ISurvivalConstructable {
 
     private HeatingCoilLevel coilHeat;
-    // public static GT_CopiedBlockTexture mTextureULV = new
-    // GT_CopiedBlockTexture(Block.getBlockFromItem(ItemList.Casing_ULV.get(1).getItem()), 6, 0,
-    // Dyes.MACHINE_METAL.mRGBa);
     private static final int CASING_INDEX = 1090;
     private static final IStructureDefinition<GT_MetaTileEntity_PyrolyseOven> STRUCTURE_DEFINITION = createStructureDefinition();
 
@@ -169,7 +172,7 @@ public class GT_MetaTileEntity_PyrolyseOven
             ItemStack[] tInputs = getCompactedInputs();
             FluidStack[] tFluids = getCompactedFluids();
 
-            if (tInputs.length <= 0) return false;
+            if (tInputs.length == 0) return false;
 
             GT_Single_Recipe_Check.Builder tSingleRecipeCheckBuilder = null;
             if (mLockedToSingleRecipe) {
@@ -182,7 +185,8 @@ public class GT_MetaTileEntity_PyrolyseOven
             tRecipe = GT_Recipe.GT_Recipe_Map.sPyrolyseRecipes
                 .findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
 
-            if (tRecipe == null || !tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) return false;
+            if (tRecipe == null || !canOutputAll(tRecipe) || !tRecipe.isRecipeInputEqual(true, tFluids, tInputs))
+                return false;
 
             if (mLockedToSingleRecipe) {
                 mSingleRecipeCheck = tSingleRecipeCheckBuilder.setAfter(tInputs, tFluids)
@@ -288,5 +292,10 @@ public class GT_MetaTileEntity_PyrolyseOven
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivialBuildPiece("main", stackSize, 2, 3, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 }

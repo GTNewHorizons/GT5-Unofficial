@@ -1,5 +1,8 @@
 package gregtech.api.util;
 
+import static gregtech.api.util.GT_Utility.copyFluidArray;
+import static gregtech.api.util.GT_Utility.copyItemArray;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -81,7 +84,7 @@ public class GT_RecipeBuilder {
         FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int[] chances, Object special, int duration, int eut,
         int specialValue, boolean enabled, boolean hidden, boolean fakeRecipe, boolean mCanBeBuffered,
         boolean mNeedsEmptyOutput, String[] neiDesc, boolean optimize,
-        Map<MetadataIdentifier<?>, Object> additionalData) {
+        Map<MetadataIdentifier<?>, Object> additionalData, boolean valid) {
         this.inputsBasic = inputsBasic;
         this.inputsOreDict = inputsOreDict;
         this.outputs = outputs;
@@ -101,6 +104,7 @@ public class GT_RecipeBuilder {
         this.neiDesc = neiDesc;
         this.optimize = optimize;
         this.additionalData.putAll(additionalData);
+        this.valid = valid;
     }
 
     private static FluidStack[] fix(FluidStack[] fluidInputs) {
@@ -388,17 +392,17 @@ public class GT_RecipeBuilder {
     /**
      * produce a deep copy of current values. anything unset will remain unset. IMPORTANT: If metadata contains mutable
      * value, they will not be cloned!
-     *
+     * <p>
      * checkout docs/RecipeBuilder.md for more info on whether to copy or not.
      */
     public GT_RecipeBuilder copy() {
         return new GT_RecipeBuilder(
-            copy(inputsBasic),
+            copyItemArray(inputsBasic),
             copy(inputsOreDict),
-            copy(outputs),
+            copyItemArray(outputs),
             copy(alts),
-            copy(fluidInputs),
-            copy(fluidOutputs),
+            copyFluidArray(fluidInputs),
+            copyFluidArray(fluidOutputs),
             copy(chances),
             special,
             duration,
@@ -409,9 +413,10 @@ public class GT_RecipeBuilder {
             fakeRecipe,
             mCanBeBuffered,
             mNeedsEmptyOutput,
-            neiDesc,
+            copy(neiDesc),
             optimize,
-            additionalData);
+            additionalData,
+            valid);
     }
 
     /**
@@ -419,12 +424,12 @@ public class GT_RecipeBuilder {
      */
     public GT_RecipeBuilder copyNoMetadata() {
         return new GT_RecipeBuilder(
-            copy(inputsBasic),
+            copyItemArray(inputsBasic),
             copy(inputsOreDict),
-            copy(outputs),
+            copyItemArray(outputs),
             copy(alts),
-            copy(fluidInputs),
-            copy(fluidOutputs),
+            copyFluidArray(fluidInputs),
+            copyFluidArray(fluidOutputs),
             copy(chances),
             special,
             duration,
@@ -435,9 +440,10 @@ public class GT_RecipeBuilder {
             fakeRecipe,
             mCanBeBuffered,
             mNeedsEmptyOutput,
-            neiDesc,
+            copy(neiDesc),
             optimize,
-            Collections.emptyMap());
+            Collections.emptyMap(),
+            valid);
     }
 
     public ItemStack getItemInputBasic(int index) {
@@ -675,21 +681,17 @@ public class GT_RecipeBuilder {
             l.addAll(Arrays.asList(outputs));
             for (int i = 0; i < l.size(); i++) if (l.get(i) == null) l.remove(i--);
 
-            for (byte i = (byte) Math.min(64, duration / 16); i > 1; i--) if (duration / i >= 16) {
-                boolean temp = true;
-                for (ItemStack stack : l) if (stack.stackSize % i != 0) {
-                    temp = false;
-                    break;
-                }
-                if (temp) for (FluidStack fluidInput : fluidInputs) if (fluidInput.amount % i != 0) {
-                    temp = false;
-                    break;
-                }
-                if (temp) for (FluidStack fluidOutput : fluidOutputs) if (fluidOutput.amount % i != 0) {
-                    temp = false;
-                    break;
-                }
-                if (temp) {
+            outer: for (byte i = (byte) Math.min(64, duration / 16); i > 1; i--) {
+                if (duration / i >= 16) {
+                    for (ItemStack stack : l) {
+                        if (stack.stackSize % i != 0) continue outer;
+                    }
+                    for (FluidStack fluidInput : fluidInputs) {
+                        if (fluidInput.amount % i != 0) continue outer;
+                    }
+                    for (FluidStack fluidOutput : fluidOutputs) {
+                        if (fluidOutput.amount % i != 0) continue outer;
+                    }
                     for (ItemStack itemStack : l) itemStack.stackSize /= i;
                     for (FluidStack fluidInput : fluidInputs) fluidInput.amount /= i;
                     for (FluidStack fluidOutput : fluidOutputs) fluidOutput.amount /= i;
@@ -752,6 +754,7 @@ public class GT_RecipeBuilder {
 
         public static <T> MetadataIdentifier<T> create(Class<T> clazz, String identifier) {
             MetadataIdentifier<T> key = new MetadataIdentifier<>(clazz, identifier);
+            // noinspection unchecked // The class uses type T to fill allIdentifiers
             return (MetadataIdentifier<T>) allIdentifiers.computeIfAbsent(key, Function.identity());
         }
 

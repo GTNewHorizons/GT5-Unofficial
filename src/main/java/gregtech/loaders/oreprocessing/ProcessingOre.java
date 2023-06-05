@@ -1,8 +1,10 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBlastRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 
 import java.util.ArrayList;
 
@@ -19,7 +21,7 @@ import gregtech.api.util.GT_Utility;
 
 public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    private ArrayList<Materials> mAlreadyListedOres = new ArrayList<>(1000);
+    private final ArrayList<Materials> mAlreadyListedOres = new ArrayList<>(1000);
 
     public ProcessingOre() {
         for (OrePrefixes tPrefix : OrePrefixes.values()) if ((tPrefix.name()
@@ -98,15 +100,15 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
         ItemStack tDust = GT_OreDictUnificator.get(OrePrefixes.dust, tMaterial, tGem, 1L);
         ItemStack tCleaned = GT_OreDictUnificator.get(OrePrefixes.crushedPurified, tMaterial, tDust, 1L);
         ItemStack tCrushed = GT_OreDictUnificator
-            .get(OrePrefixes.crushed, tMaterial, aMaterial.mOreMultiplier * aMultiplier);
+            .get(OrePrefixes.crushed, tMaterial, (long) aMaterial.mOreMultiplier * aMultiplier);
         ItemStack tPrimaryByProduct = null;
 
         if (tCrushed == null) {
             tCrushed = GT_OreDictUnificator.get(
                 OrePrefixes.dustImpure,
                 tMaterial,
-                GT_Utility.copyAmount(aMaterial.mOreMultiplier * aMultiplier, tCleaned, tDust, tGem),
-                aMaterial.mOreMultiplier * aMultiplier);
+                GT_Utility.copyAmount((long) aMaterial.mOreMultiplier * aMultiplier, tCleaned, tDust, tGem),
+                (long) aMaterial.mOreMultiplier * aMultiplier);
         }
 
         ArrayList<ItemStack> tByProductStacks = new ArrayList<>();
@@ -149,54 +151,66 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
             } else {
                 tHasSmelting = GT_ModHandler.addSmeltingRecipe(
                     aOreStack,
-                    GT_Utility.copyAmount(aMultiplier * aMaterial.mSmeltingMultiplier, tSmeltInto));
+                    GT_Utility.copyAmount((long) aMultiplier * aMaterial.mSmeltingMultiplier, tSmeltInto));
             }
 
             if (aMaterial.contains(SubTag.BLASTFURNACE_CALCITE_TRIPLE)) {
                 if (aMaterial.mAutoGenerateBlastFurnaceRecipes) {
-                    GT_Values.RA.addBlastRecipe(
-                        aOreStack,
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, aMultiplier),
-                        null,
-                        null,
-                        GT_Utility.mul(aMultiplier * 3 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L),
-                        tSmeltInto.stackSize * 500,
-                        120,
-                        1500);
-                    GT_Values.RA.addBlastRecipe(
-                        aOreStack,
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Quicklime, aMultiplier),
-                        null,
-                        null,
-                        GT_Utility.mul(aMultiplier * 3 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L),
-                        tSmeltInto.stackSize * 500,
-                        120,
-                        1500);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                            aOreStack,
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, aMultiplier))
+                        .itemOutputs(
+                            GT_Utility.mul((long) aMultiplier * 3 * aMaterial.mSmeltingMultiplier, tSmeltInto),
+                            GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L))
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(tSmeltInto.stackSize * 25 * SECONDS)
+                        .eut(TierEU.RECIPE_MV)
+                        .metadata(COIL_HEAT, 1500)
+                        .addTo(sBlastRecipes);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                            aOreStack,
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Quicklime, aMultiplier))
+                        .itemOutputs(
+                            GT_Utility.mul((long) aMultiplier * 3 * aMaterial.mSmeltingMultiplier, tSmeltInto),
+                            GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L))
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(tSmeltInto.stackSize * 25 * SECONDS)
+                        .eut(TierEU.RECIPE_MV)
+                        .metadata(COIL_HEAT, 1500)
+                        .addTo(sBlastRecipes);
                 }
             } else if (aMaterial.contains(SubTag.BLASTFURNACE_CALCITE_DOUBLE)) {
                 if (aMaterial.mAutoGenerateBlastFurnaceRecipes) {
-                    GT_Values.RA.addBlastRecipe(
-                        aOreStack,
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, aMultiplier),
-                        null,
-                        null,
-                        GT_Utility.mul(aMultiplier * 2 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L),
-                        tSmeltInto.stackSize * 500,
-                        120,
-                        1500);
-                    GT_Values.RA.addBlastRecipe(
-                        aOreStack,
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Quicklime, aMultiplier),
-                        null,
-                        null,
-                        GT_Utility.mul(aMultiplier * 2 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L),
-                        tSmeltInto.stackSize * 500,
-                        120,
-                        1500);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                            aOreStack,
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, aMultiplier))
+                        .itemOutputs(
+                            GT_Utility.mul((long) aMultiplier * 2 * aMaterial.mSmeltingMultiplier, tSmeltInto),
+                            GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L))
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(tSmeltInto.stackSize * 25 * SECONDS)
+                        .eut(TierEU.RECIPE_MV)
+                        .metadata(COIL_HEAT, 1500)
+                        .addTo(sBlastRecipes);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                            aOreStack,
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Quicklime, aMultiplier))
+                        .itemOutputs(
+                            GT_Utility.mul((long) aMultiplier * 2 * aMaterial.mSmeltingMultiplier, tSmeltInto),
+                            GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L))
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(tSmeltInto.stackSize * 25 * SECONDS)
+                        .eut(TierEU.RECIPE_MV)
+                        .metadata(COIL_HEAT, 1500)
+                        .addTo(sBlastRecipes);
                 }
             }
         }

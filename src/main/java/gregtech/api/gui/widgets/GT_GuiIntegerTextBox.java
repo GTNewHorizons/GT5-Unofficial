@@ -1,6 +1,6 @@
 package gregtech.api.gui.widgets;
 
-import java.awt.*;
+import java.awt.Rectangle;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiTextField;

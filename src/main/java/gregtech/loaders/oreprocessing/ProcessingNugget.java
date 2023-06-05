@@ -8,7 +8,12 @@ import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_RecipeRegistrator;
@@ -78,7 +83,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                 .addTo(sAlloySmelterRecipes);
             if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                 GT_ModHandler.addCraftingRecipe(
-                    GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial, 9L),
+                    GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial, 8L),
                     GT_ModHandler.RecipeBits.BUFFERED,
                     new Object[] { "sI ", 'I', OrePrefixes.ingot.get(aMaterial) });
             }

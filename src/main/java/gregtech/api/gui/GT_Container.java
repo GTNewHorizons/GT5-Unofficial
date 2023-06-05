@@ -18,9 +18,9 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 
 /**
- * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
- * <p/>
- * Main Container-Class, used for all my GUIs
+ * The main Container class. It is used for all GregTech GUIs.
+ * <p>
+ * Never include this file in your mod - it will break your modpack.
  */
 public class GT_Container extends Container {
 

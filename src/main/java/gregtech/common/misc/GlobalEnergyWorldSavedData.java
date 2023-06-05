@@ -1,8 +1,15 @@
 package gregtech.common.misc;
 
-import static gregtech.common.misc.GlobalVariableStorage.*;
+import static gregtech.common.misc.GlobalVariableStorage.GlobalEnergy;
+import static gregtech.common.misc.GlobalVariableStorage.GlobalEnergyName;
+import static gregtech.common.misc.GlobalVariableStorage.GlobalEnergyTeam;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigInteger;
 import java.util.HashMap;
 

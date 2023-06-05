@@ -50,8 +50,9 @@ public class GT_MetaTileEntity_OilDrillInfinite extends GT_MetaTileEntity_OilDri
     }
 
     @Override
-    protected FluidStack pumpOil(float speed) {
-        return super.pumpOil(-speed);
+    protected FluidStack pumpOil(float speed, boolean simulate) {
+        // always simulate to not deplete vein
+        return super.pumpOil(speed, true);
     }
 
     @Override

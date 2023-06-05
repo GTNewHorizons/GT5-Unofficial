@@ -1,6 +1,6 @@
 package gregtech.api.gui.widgets;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
@@ -18,7 +18,7 @@ public class GT_GuiFakeItemButton implements IGuiScreen.IGuiElement {
 
     private GT_GuiIcon bgIcon;
     private ItemStack item;
-    private IGuiScreen gui;
+    private final IGuiScreen gui;
     private int xPosition, yPosition;
     private List<String> itemTooltips;
     private final GT_GuiTooltip tooltip = new GT_GuiTooltip(null) {

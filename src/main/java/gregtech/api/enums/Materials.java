@@ -5,7 +5,15 @@ import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Thaumcraft;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -25,7 +33,11 @@ import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.render.items.*;
+import gregtech.common.render.items.CosmicNeutroniumRenderer;
+import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
+import gregtech.common.render.items.GaiaSpiritRenderer;
+import gregtech.common.render.items.InfinityRenderer;
+import gregtech.common.render.items.TranscendentMetalRenderer;
 import gregtech.common.render.items.UniversiumRenderer;
 import gregtech.loaders.materialprocessing.ProcessingConfig;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
@@ -38,7 +50,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public static final Map<Fluid, Materials> FLUID_MAP = new LinkedHashMap<>();
 
-    public static volatile int VERSION = 509;
     /**
      * This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) that looped over the old
      * materials enum
@@ -892,9 +903,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public static Materials EnrichedHolmium          = new Materials(582, TextureSet.SET_METALLIC, 1.0F, 0, 2, 18, 100, 1|2|4|16, 255, 255, "EnrichedHolmium", "Enriched Holmium", -1, -1, 0, 3000, true, false, 200, 1, 1, Dyes.dyePurple);
 
-    public static Materials TengamPurified = new MaterialBuilder(111, TextureSet.SET_METALLIC, "Purified Tengam").addDustItems().addGearItems().addMetalItems().addToolHeadItems().setAspects(Arrays.asList(new TC_AspectStack(TC_Aspects.MAGNETO, 2), new TC_AspectStack(TC_Aspects.ELECTRUM, 2))).setColor(Dyes.dyeLime).setName("TengamPurified").setRGB(186, 223, 112).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
-    public static Materials TengamAttuned  = new MaterialBuilder(112, TextureSet.SET_MAGNETIC, "Attuned Tengam") .addDustItems().addGearItems().addMetalItems().addToolHeadItems().setAspects(Arrays.asList(new TC_AspectStack(TC_Aspects.MAGNETO, 4), new TC_AspectStack(TC_Aspects.ELECTRUM, 1))).setColor(Dyes.dyeLime).setName("TengamAttuned") .setRGB(213, 255, 128).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
-    public static Materials TengamRaw      = new MaterialBuilder(110, TextureSet.SET_ROUGH,    "Raw Tengam")     .addOreItems()                                                   .setAspects(Arrays.asList(new TC_AspectStack(TC_Aspects.MAGNETO, 1), new TC_AspectStack(TC_Aspects.ELECTRUM, 4))).setColor(Dyes.dyeLime).setName("TengamRaw")     .setRGB(160, 191,  96).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
+    public static Materials TengamPurified = new MaterialBuilder(111, TextureSet.SET_METALLIC, "Purified Tengam").addDustItems().addGearItems().addMetalItems().addToolHeadItems().setAspects(Arrays.asList(new TC_AspectStack(TC_Aspects.MAGNETO, 2), new TC_AspectStack(TC_Aspects.ELECTRUM, 2))).setColor(Dyes.dyeLime).setName("TengamPurified").setRGB(186, 223, 112).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UV);
+    public static Materials TengamAttuned  = new MaterialBuilder(112, TextureSet.SET_MAGNETIC, "Attuned Tengam") .addDustItems().addGearItems().addMetalItems().addToolHeadItems().setAspects(Arrays.asList(new TC_AspectStack(TC_Aspects.MAGNETO, 4), new TC_AspectStack(TC_Aspects.ELECTRUM, 1))).setColor(Dyes.dyeLime).setName("TengamAttuned") .setRGB(213, 255, 128).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UV);
+    public static Materials TengamRaw      = new MaterialBuilder(110, TextureSet.SET_ROUGH,    "Raw Tengam")     .addOreItems()                                                   .setAspects(Arrays.asList(new TC_AspectStack(TC_Aspects.MAGNETO, 1), new TC_AspectStack(TC_Aspects.ELECTRUM, 4))).setColor(Dyes.dyeLime).setName("TengamRaw")     .setRGB(160, 191,  96).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UV);
 
     // spotless:on
 
@@ -1901,6 +1912,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         TengamRaw.mChemicalFormula = "";
         TengamPurified.mChemicalFormula = "M";
         TengamAttuned.mChemicalFormula = "M";
+        MaterialsUEVplus.ExcitedDTSC.mChemicalFormula = "[-Stellar-Stellar-]";
+        MaterialsUEVplus.DimensionallyTranscendentStellarCatalyst.mChemicalFormula = "Stellar";
     }
 
     private static void initSubTags() {

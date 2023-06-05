@@ -969,9 +969,12 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addProcessGT(CombType.PLATINUM, new Materials[] { Materials.Platinum }, Voltage.HV);
         addProcessGT(CombType.MOLYBDENUM, new Materials[] { Materials.Molybdenum }, Voltage.LV);
         addProcessGT(CombType.IRIDIUM, new Materials[] { Materials.Iridium }, Voltage.IV);
+        addProcessGT(CombType.PALLADIUM, new Materials[] { Materials.Palladium }, Voltage.IV);
         addProcessGT(CombType.OSMIUM, new Materials[] { Materials.Osmium }, Voltage.IV);
         addProcessGT(CombType.LITHIUM, new Materials[] { Materials.Lithium }, Voltage.MV);
         addProcessGT(CombType.ELECTROTINE, new Materials[] { Materials.Electrotine }, Voltage.MV);
+        addProcessGT(CombType.DRACONIC, new Materials[] { Materials.Draconium }, Voltage.IV);
+        addProcessGT(CombType.AWAKENEDDRACONIUM, new Materials[] { Materials.DraconiumAwakened }, Voltage.ZPM);
         if (GT_Mod.gregtechproxy.mNerfedCombs) {
             addCentrifugeToItemStack(
                 CombType.SALT,
@@ -1556,12 +1559,13 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addFluidExtractorProcess(CombType.FLUORINE, Materials.Fluorine.getGas(250), Voltage.MV);
         addFluidExtractorProcess(CombType.OXYGEN, Materials.Oxygen.getGas(500), Voltage.MV);
         // Organic part 2, unknown liquid
-        // yes, unknowwater. Its not my typo, its how it is spelled. Stupid game.
+        // yes, unknowwater. It's not a typo, it's how it is spelled. Stupid game.
         addFluidExtractorProcess(CombType.UNKNOWNWATER, FluidRegistry.getFluidStack("unknowwater", 250), Voltage.ZPM);
-        /**
+        /*
+         * TODO: update this comment
          * The Centrifuge Recipes for Infused Shards and Nether/End-Shard from the Infused Shard Line are below the
-         * NobleGas Lines for Xenon and co. in Gt_MachineRecipeLoader.java In Lines 1525
-         **/
+         * NobleGas Lines for Xenon and co. in GT_MachineRecipeLoader.java In Lines 1525
+         */
     }
 
     /**
@@ -1845,19 +1849,19 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             int fluidAmount = this.getFluidAmount();
             return switch (this.getVoltageFromEU()) {
                 case 0 ->
-                    /** ULV **/
+                    /* ULV */
                     Materials.Water.getFluid(fluidAmount);
                 case 1 ->
-                    /** LV **/
+                    /* LV */
                     Materials.SulfuricAcid.getFluid(fluidAmount);
                 case 2 ->
-                    /** MV **/
+                    /* MV */
                     Materials.HydrochloricAcid.getFluid(fluidAmount);
                 case 3 ->
-                    /** HV **/
+                    /* HV */
                     Materials.PhosphoricAcid.getFluid(fluidAmount);
                 case 4 ->
-                    /** EV **/
+                    /* EV */
                     Materials.HydrofluoricAcid.getFluid(this.getFluidAmount());
                 default -> Materials.PhthalicAcid.getFluid(fluidAmount);
             };

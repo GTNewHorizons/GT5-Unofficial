@@ -152,6 +152,7 @@ public class GT_Cover_WirelessItemDetector
         private static final String ALL_TEXT = "All";
 
         private int maxSlot;
+        private int maxThreshold;
 
         public WirelessItemDetectorUIFactory(GT_CoverUIBuildContext buildContext) {
             super(buildContext);
@@ -169,7 +170,8 @@ public class GT_Cover_WirelessItemDetector
 
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
-            maxSlot = getMaxSlot();
+            setMaxSlot();
+            setMaxThreshold();
             super.addUIWidgets(builder);
             builder.widget(
                 new ItemWatcherSlotWidget().setGetter(this::getTargetItem)
@@ -193,7 +195,7 @@ public class GT_Cover_WirelessItemDetector
                     return coverData;
                 },
                 widget -> widget.setOnScrollNumbers(1, 10, 64)
-                    .setNumbers(() -> 0, this::getMaxItemCount)
+                    .setNumbers(0, maxThreshold)
                     .setPos(1, 2 + spaceY * 2)
                     .setSize(spaceX * 5 - 4, 12))
                 .addFollower(
@@ -218,19 +220,24 @@ public class GT_Cover_WirelessItemDetector
                         .setSize(spaceX * 4 - 8, 12));
         }
 
-        private int getMaxSlot() {
+        private void setMaxSlot() {
             final ICoverable tile = getUIBuildContext().getTile();
-            if (tile instanceof TileEntity && !tile.isDead()
-                && tile instanceof IGregTechTileEntity
-                && !(((IGregTechTileEntity) tile).getMetaTileEntity() instanceof GT_MetaTileEntity_DigitalChestBase)) {
-                return tile.getSizeInventory() - 1;
+            if (!tile.isDead() && tile instanceof IGregTechTileEntity gtTile
+                && !(gtTile.getMetaTileEntity() instanceof GT_MetaTileEntity_DigitalChestBase)) {
+                maxSlot = tile.getSizeInventory() - 1;
             } else {
-                return -1;
+                maxSlot = -1;
             }
         }
 
-        private int getMaxItemCount() {
-            return maxSlot > 0 ? maxSlot * 64 : Integer.MAX_VALUE;
+        private void setMaxThreshold() {
+            final ICoverable tile = getUIBuildContext().getTile();
+            if (!tile.isDead() && tile instanceof IGregTechTileEntity gtTile
+                && gtTile.getMetaTileEntity() instanceof GT_MetaTileEntity_DigitalChestBase) {
+                maxThreshold = gtTile.getMaxItemCount();
+            } else {
+                maxThreshold = maxSlot > 0 ? maxSlot * 64 : Integer.MAX_VALUE;
+            }
         }
 
         private int getIntFromText(String text) {

@@ -23,9 +23,8 @@ public class GT_Assemblyline_Server {
 
     public static void fillMap(FMLPreInitializationEvent aEvent) {
 
-        String s = new String(
-            aEvent.getModConfigurationDirectory()
-                .getAbsolutePath());
+        String s = aEvent.getModConfigurationDirectory()
+            .getAbsolutePath();
         s = s.substring(
             0,
             aEvent.getModConfigurationDirectory()

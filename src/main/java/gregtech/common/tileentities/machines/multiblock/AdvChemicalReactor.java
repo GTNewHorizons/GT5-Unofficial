@@ -1,13 +1,18 @@
 package gregtech.common.tileentities.machines.multiblock;
 
 import static com.google.common.primitives.Ints.saturatedCast;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ENERGY_IN;
+import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_IN;
+import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_OUT;
+import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_IN;
+import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_OUT;
+import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHING;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.stream.Collectors;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -26,6 +31,7 @@ import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
@@ -270,8 +276,7 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
                         .filter(
                             itemStack -> processWhitelists.get(outputIndex)
                                 .contains(getWhitelistString(itemStack)))
-                        .collect(Collectors.toList())
-                        .toArray(new ItemStack[0]));
+                        .toArray(ItemStack[]::new));
             }
             // Output remaining items
             if (processingLogic.getOutputItems(index) != null && processingLogic.getOutputItems(index).length > 0) {
@@ -297,8 +302,7 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
                         .filter(
                             fluidStack -> processWhitelists.get(outputIndex)
                                 .contains(getWhitelistString(fluidStack)))
-                        .collect(Collectors.toList())
-                        .toArray(new FluidStack[0]));
+                        .toArray(FluidStack[]::new));
             }
             // Output remaining fluids
             if (processingLogic.getOutputFluids(index) != null && processingLogic.getOutputFluids(index).length > 0) {
@@ -308,8 +312,8 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
     }
 
     @Override
-    protected MultiChildWidget createMainPage() {
-        MultiChildWidget child = super.createMainPage();
+    protected MultiChildWidget createMainPage(IWidgetBuilder<?> builder) {
+        MultiChildWidget child = super.createMainPage(builder);
         for (int i = 0; i < MAX_PROCESSES; i++) {
             final int processIndex = i;
             child.addChild(

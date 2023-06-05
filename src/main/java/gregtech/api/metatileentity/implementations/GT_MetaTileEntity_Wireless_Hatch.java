@@ -1,6 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.GT_Values.AuthorColen;
+import static gregtech.api.enums.GT_Values.V;
 
 import java.math.BigInteger;
 

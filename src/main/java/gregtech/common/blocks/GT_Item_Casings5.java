@@ -11,6 +11,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.util.GT_LanguageManager;
 
+/**
+ * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
+ * 16 subtypes at most.
+ */
 public class GT_Item_Casings5 extends GT_Item_Casings_Abstract {
 
     public GT_Item_Casings5(Block block) {

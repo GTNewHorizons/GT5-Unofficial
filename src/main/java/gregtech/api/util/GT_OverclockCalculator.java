@@ -3,38 +3,38 @@ package gregtech.api.util;
 public class GT_OverclockCalculator {
 
     /**
-     * @mAmps - Amperage of the multiblock
-     * @mEUt - Voltage of the multiblock
-     * @mRecipeEUt - Voltage the recipe will run at
-     * @mRecipeAmps - The amount of amps the recipe needs
+     * mAmps - Amperage of the multiblock
+     * mEUt - Voltage of the multiblock
+     * mRecipeEUt - Voltage the recipe will run at
+     * mRecipeAmps - The amount of amps the recipe needs
      */
     private long mAmps = 1, mEUt = 0, mRecipeEUt = 0, mRecipeAmps = 1;
     /**
-     * @mEUtDiscount - Discount for EUt at the beginning of calculating overclocks, like GT++ machines
-     * @mSpeedBoost - Speeding/Slowing up/down the duration of a recipe at the beginning of calculating overclocks, like
-     *              GT++ machines
-     * @mHeatDiscountAmont - The value used for discount final eut per 900 heat
+     * mEUtDiscount - Discount for EUt at the beginning of calculating overclocks, like GT++ machines
+     * mSpeedBoost - Speeding/Slowing up/down the duration of a recipe at the beginning of calculating overclocks, like
+     * GT++ machines
+     * mHeatDiscountAmount - The value used for discount final eut per 900 heat
      */
     private float mEUtDiscount = 1, mSpeedBoost = 1, mHeatDiscountAmount = 0.95f;
     /**
-     * @mEUtIncreasePerOC - How much the bits should be moved to the left when it is overclocking (Going up, 2 meaning
-     *                    it is multiplied with 4x)
-     * @mDurationDecreasePerOC - How much the bits should be moved to the right when its overclocking (Going down, 1
-     *                         meaning it is halved)
-     * @mDuration - Duration of the recipe
-     * @mParallel - The parallel the multi has when trying to overclock
-     * @mRecipeHeat - The min heat required for the recipe
-     * @mMultiHeat - The heat the multi has when starting the recipe
-     * @mHeatPerfectOC - How much the bits should be moved to the right for each 1800 above recipe heat (Used for
-     *                 duration)
+     * mEUtIncreasePerOC - How much the bits should be moved to the left when it is overclocking (Going up, 2 meaning
+     * it is multiplied with 4x)
+     * mDurationDecreasePerOC - How much the bits should be moved to the right when its overclocking (Going down, 1
+     * meaning it is halved)
+     * mDuration - Duration of the recipe
+     * mParallel - The parallel the multi has when trying to overclock
+     * mRecipeHeat - The min heat required for the recipe
+     * mMultiHeat - The heat the multi has when starting the recipe
+     * mHeatPerfectOC - How much the bits should be moved to the right for each 1800 above recipe heat (Used for
+     * duration)
      */
     private int mEUtIncreasePerOC = 2, mDurationDecreasePerOC = 1, mDuration = 0, mParallel = 1, mRecipeHeat = 0,
         mMultiHeat = 0, mHeatPerfectOC = 2;
     /**
-     * @mHeatOC - Whether to enable overclocking with heat like the EBF every 1800 heat difference
-     * @mOneTickDiscount - Whether to give EUt Discount when the duration goes below one tick
-     * @calculates - variable to check whether the overclocks have been calculated
-     * @mHeatDiscount - Whether to enable heat discounts every 900 heat difference
+     * mHeatOC - Whether to enable overclocking with heat like the EBF every 1800 heat difference
+     * mOneTickDiscount - Whether to give EUt Discount when the duration goes below one tick
+     * calculates - variable to check whether the overclocks have been calculated
+     * mHeatDiscount - Whether to enable heat discounts every 900 heat difference
      */
     private boolean mHeatOC, mOneTickDiscount, calculated, mHeatDiscount;
 
@@ -261,7 +261,7 @@ public class GT_OverclockCalculator {
 
         if (mOneTickDiscount) {
             int voltageDifference = GT_Utility.getTier(mEUt) - GT_Utility.getTier(mRecipeEUt);
-            mRecipeEUt >>= voltageDifference * mDurationDecreasePerOC;
+            mRecipeEUt >>= (long) voltageDifference * mDurationDecreasePerOC;
             if (mRecipeEUt < 1) {
                 mRecipeEUt = 1;
             }

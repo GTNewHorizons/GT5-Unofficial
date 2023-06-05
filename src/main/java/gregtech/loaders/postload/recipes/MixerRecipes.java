@@ -1,6 +1,12 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.Mods.*;
+import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.BiomesOPlenty;
+import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.Natura;
+import static gregtech.api.enums.Mods.PamsHarvestCraft;
+import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
@@ -14,7 +20,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsKevlar;
+import gregtech.api.enums.MaterialsOreAlum;
+import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -795,6 +808,45 @@ public class MixerRecipes implements Runnable {
             .fluidInputs(Materials.AdvancedGlue.getFluid(200))
             .noFluidOutputs()
             .duration(40 * SECONDS)
+            .eut(16)
+            .addTo(sMixerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 4),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.SFMixture.get(64))
+            .fluidInputs(Materials.McGuffium239.getFluid(12))
+            .noFluidOutputs()
+            .duration(20 * SECONDS)
+            .eut(16)
+            .addTo(sMixerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 4),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.SFMixture.get(64))
+            .fluidInputs(Materials.McGuffium239.getFluid(8))
+            .noFluidOutputs()
+            .duration(20 * SECONDS)
+            .eut(16)
+            .addTo(sMixerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Caesium, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 4),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.SFMixture.get(64))
+            .fluidInputs(Materials.McGuffium239.getFluid(4))
+            .noFluidOutputs()
+            .duration(20 * SECONDS)
             .eut(16)
             .addTo(sMixerRecipes);
 

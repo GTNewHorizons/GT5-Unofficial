@@ -3,8 +3,6 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MUFFLER;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-import java.util.Arrays;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -35,7 +33,6 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
     private final int pollutionRecover = 100 - pollutionReduction;
     private final String[] description = String.format(localizedDescFormat, pollutionReduction, pollutionRecover)
         .split("\\R");
-    private final boolean[] facings = new boolean[ForgeDirection.VALID_DIRECTIONS.length];
 
     public GT_MetaTileEntity_Hatch_Muffler(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "");
@@ -57,7 +54,6 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
     public GT_MetaTileEntity_Hatch_Muffler(String aName, int aTier, int aInvSlotCount, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-        setInValidFacings(ForgeDirection.DOWN);
     }
 
     @Override
@@ -121,7 +117,7 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return facings[facing.ordinal()];
+        return true;
     }
 
     @Override
@@ -223,15 +219,5 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
             return true;
         }
         return false;
-    }
-
-    /**
-     * @param aFacings the {@link ForgeDirection} invalid facings
-     * @apiNote API Code, BartWorks/TecTech based EBF relies on this. It's marked here, not anywhere else.
-     */
-    public void setInValidFacings(ForgeDirection... aFacings) {
-        Arrays.fill(facings, true);
-        Arrays.stream(aFacings)
-            .forEach(face -> facings[face.ordinal()] = false);
     }
 }

@@ -51,9 +51,9 @@ public class GT_Slot_Holo extends Slot {
     }
 
     /**
-     * Whether this slot should be ignored in event processing, for example highlight the slot on mouseOver
-     * 
-     * @param enabled
+     * Sets if this slot should be ignored in event-processing. For example, highlight the slot on mouseOver.
+     *
+     * @param enabled if the slot should be enabled
      */
     public void setEnabled(boolean enabled) {
         mEnabled = enabled;

@@ -3,11 +3,29 @@ package gregtech.common.items;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UEV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UHV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UIV;
-import static gregtech.client.GT_TooltipHandler.Tier.*;
+import static gregtech.client.GT_TooltipHandler.Tier.EV;
+import static gregtech.client.GT_TooltipHandler.Tier.HV;
+import static gregtech.client.GT_TooltipHandler.Tier.IV;
+import static gregtech.client.GT_TooltipHandler.Tier.LV;
+import static gregtech.client.GT_TooltipHandler.Tier.LuV;
+import static gregtech.client.GT_TooltipHandler.Tier.MAX;
+import static gregtech.client.GT_TooltipHandler.Tier.MV;
+import static gregtech.client.GT_TooltipHandler.Tier.UEV;
+import static gregtech.client.GT_TooltipHandler.Tier.UHV;
+import static gregtech.client.GT_TooltipHandler.Tier.UIV;
+import static gregtech.client.GT_TooltipHandler.Tier.ULV;
+import static gregtech.client.GT_TooltipHandler.Tier.UMV;
+import static gregtech.client.GT_TooltipHandler.Tier.UV;
+import static gregtech.client.GT_TooltipHandler.Tier.UXV;
+import static gregtech.client.GT_TooltipHandler.Tier.ZPM;
 import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TC_Aspects;
 import gregtech.api.items.GT_MetaGenerated_Item_X32;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -28,18 +46,18 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         INSTANCE = this;
         Object[] o = new Object[0];
 
-        /**
+        /*
          * circuit boards tier 1-7: coated circuit board / wood plate + resin Plastic Circuit Board / Plastic + Copper
          * Foil + Sulfuric Acid phenolic circuit board /carton+glue+chemical bath epoxy circuit board /epoxy plate +
          * copper foil + sulfuric acid fiberglass circuit board (simple + multilayer) / glass + plastic + electrum foil
-         * + sulfurci acid wetware lifesupport board / fiberglass CB + teflon +
+         * + sulfuric acid wetware lifesupport board / fiberglass CB + teflon +
          */
         ItemList.Circuit_Board_Wetware
             .set(addItem(6, "Wetware Lifesupport Circuit Board", "The Board that keeps life", o));
         ItemList.Circuit_Board_Plastic.set(addItem(7, "Plastic Circuit Board", "A Good Board", o));
         ItemList.Circuit_Board_Bio.set(addItem(8, "Bio Circuit Board", "Bio genetic mutated Board", o));
 
-        /**
+        /*
          * electronic components: vacuum tube (glass tube + red alloy cables) basic electronic circuits normal+smd coils
          * diodes normal+smd transistors normal+smd capacitors normal+smd Glass Fibers
          */
@@ -142,16 +160,13 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
             ItemList.Circuit_Parts_InductorSMD.get(1L),
             true);
 
-        /**
+        /*
          * ICs Lenses made from perfect crystals first instead of plates Monocrystalline silicon ingot
          * (normal+glowstone+naquadah) EBF, normal silicon no EBF need anymore wafer(normal+glowstone+naquadah) cut mono
          * silicon ingot in cutting machine
-         *
          * Integrated Logic Circuit(8bit DIP) RAM NAND Memory NOR Memory CPU (4 sizes) SoCs(2 sizes, high tier cheap low
          * tech component) Power IC/High Power IC/Ultra High power
-         *
          * nanotube interconnected circuit (H-IC + nanotubes)
-         *
          * quantum chips
          */
         ItemList.Circuit_Silicon_Ingot.set(addItem(30, "Monocrystalline Silicon Boule", "Raw Circuit", o));
@@ -229,7 +244,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_Wafer_Bioware.set(addItem(188, "Living Bio Wafer", "Raw Circuit", o));
         ItemList.Circuit_Parts_Chip_Bioware.set(addItem(189, "Living Bio Chip", "Needed for Circuits", o));
-        /**
+        /*
          * Engraved Crystal Chip Engraved Lapotron Chip Crystal CPU SoCrystal stem cells (disassemble eggs)
          */
         ItemList.Circuit_Chip_CrystalSoC2

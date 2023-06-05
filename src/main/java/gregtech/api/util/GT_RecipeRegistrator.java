@@ -1,7 +1,23 @@
 package gregtech.api.util;
 
-import static gregtech.api.enums.GT_Values.*;
-import static gregtech.api.enums.Materials.*;
+import static gregtech.api.enums.GT_Values.L;
+import static gregtech.api.enums.GT_Values.M;
+import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.enums.Materials.Bronze;
+import static gregtech.api.enums.Materials.Cobalt;
+import static gregtech.api.enums.Materials.DarkSteel;
+import static gregtech.api.enums.Materials.Diamond;
+import static gregtech.api.enums.Materials.FierySteel;
+import static gregtech.api.enums.Materials.Gold;
+import static gregtech.api.enums.Materials.Iron;
+import static gregtech.api.enums.Materials.IronWood;
+import static gregtech.api.enums.Materials.Knightmetal;
+import static gregtech.api.enums.Materials.Lead;
+import static gregtech.api.enums.Materials.Ruby;
+import static gregtech.api.enums.Materials.Sapphire;
+import static gregtech.api.enums.Materials.Steel;
+import static gregtech.api.enums.Materials.Steeleaf;
+import static gregtech.api.enums.Materials.Thaumium;
 import static gregtech.api.enums.Materials.Void;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
@@ -12,7 +28,11 @@ import static gregtech.api.util.GT_RecipeConstants.UniversalArcFurnace;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -32,7 +52,12 @@ import com.google.common.collect.SetMultimap;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
+import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TierEU;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import ic2.api.reactor.IReactorComponent;
@@ -128,7 +153,6 @@ public class GT_RecipeRegistrator {
         { "Shears", s_H + s_P, s_P + s_F }, { "Shears", s_H + s_P, s_P + s_F },
         { "Scythe", s_I + s_P + s_H, s_R + s_F + s_P, s_R + " " + " " },
         { "Scythe", s_H + s_P + s_I, s_P + s_F + s_R, " " + " " + s_R } };
-    public static volatile int VERSION = 509;
 
     static {
         // flush the cache on post load finish
@@ -189,11 +213,6 @@ public class GT_RecipeRegistrator {
                 || tData.mPrefix == OrePrefixes.block | tData.mPrefix == OrePrefixes.plate)) {
             tHide = true;
         }
-        // boolean tHide = (aMaterial != Materials.Iron && aMaterial!=
-        // Materials.Redstone)&&(GT_Mod.gregtechproxy.mHideRecyclingRecipes);
-        // if(tHide && tData!=null&&tData.hasValidPrefixData()&&tData.mPrefix==OrePrefixes.ingot){
-        // tHide=false;
-        // }
         RA.addFluidSmelterRecipe(
             GT_Utility.copyAmount(1, aStack),
             aByproduct
@@ -307,7 +326,7 @@ public class GT_RecipeRegistrator {
             tAmount += tMaterial.mAmount * tMaterial.mMaterial.getMass();
 
         boolean tHide = !tIron && GT_Mod.gregtechproxy.mHideRecyclingRecipes;
-        ArrayList<ItemStack> outputs = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> outputs = new ArrayList<>();
         if (GT_OreDictUnificator.getIngotOrDust(aData.mMaterial) != null) {
             outputs.add(GT_OreDictUnificator.getIngotOrDust(aData.mMaterial));
         }
@@ -317,7 +336,7 @@ public class GT_RecipeRegistrator {
             }
         }
         if (outputs.size() != 0) {
-            ItemStack[] outputsArray = outputs.toArray(new ItemStack[outputs.size()]);
+            ItemStack[] outputsArray = outputs.toArray(new ItemStack[0]);
             GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
             recipeBuilder.itemInputs(aStack)
                 .itemOutputs(outputsArray)
@@ -366,7 +385,7 @@ public class GT_RecipeRegistrator {
         {
             boolean tHide = (aData.mMaterial.mMaterial != Materials.Iron)
                 && (GT_Mod.gregtechproxy.mHideRecyclingRecipes);
-            ArrayList<ItemStack> outputs = new ArrayList<ItemStack>();
+            ArrayList<ItemStack> outputs = new ArrayList<>();
             if (GT_OreDictUnificator.getDust(aData.mMaterial) != null) {
                 outputs.add(GT_OreDictUnificator.getDust(aData.mMaterial));
             }
@@ -376,7 +395,7 @@ public class GT_RecipeRegistrator {
                 }
             }
             if (outputs.size() != 0) {
-                ItemStack[] outputsArray = outputs.toArray(new ItemStack[outputs.size()]);
+                ItemStack[] outputsArray = outputs.toArray(new ItemStack[0]);
                 GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
                 recipeBuilder.itemInputs(aStack)
                     .itemOutputs(outputsArray)
@@ -484,7 +503,6 @@ public class GT_RecipeRegistrator {
 
     private static Map<RecipeShape, List<IRecipe>> createIndexedRecipeListCache() {
         Map<RecipeShape, List<IRecipe>> result = new IdentityHashMap<>();
-        @SuppressWarnings("unchecked")
         ArrayList<IRecipe> allRecipeList = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
         // filter using the empty slots in the shape.
@@ -509,8 +527,7 @@ public class GT_RecipeRegistrator {
                 && !(tStack.getItem() instanceof IReactorComponent)
                 && !GT_ModHandler.isElectricItem(tStack)
                 && !GT_Utility.isStackInList(tStack, GT_ModHandler.sNonReplaceableItems)) {
-                if (tRecipe instanceof ShapedOreRecipe) {
-                    ShapedOreRecipe tShapedRecipe = (ShapedOreRecipe) tRecipe;
+                if (tRecipe instanceof ShapedOreRecipe tShapedRecipe) {
                     if (checkRecipeShape(
                         buffer,
                         tShapedRecipe.getInput(),
@@ -521,8 +538,7 @@ public class GT_RecipeRegistrator {
                                 .add(tRecipe);
                         }
                     }
-                } else if (tRecipe instanceof ShapedRecipes) {
-                    ShapedRecipes tShapedRecipe = (ShapedRecipes) tRecipe;
+                } else if (tRecipe instanceof ShapedRecipes tShapedRecipe) {
                     if (checkRecipeShape(
                         buffer,
                         tShapedRecipe.recipeItems,

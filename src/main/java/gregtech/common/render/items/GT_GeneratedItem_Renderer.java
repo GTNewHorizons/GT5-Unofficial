@@ -1,7 +1,14 @@
 package gregtech.common.render.items;
 
-import static gregtech.api.enums.ItemList.*;
+import static gregtech.api.enums.ItemList.Large_Fluid_Cell_Aluminium;
 import static gregtech.api.enums.ItemList.Large_Fluid_Cell_Chrome;
+import static gregtech.api.enums.ItemList.Large_Fluid_Cell_Iridium;
+import static gregtech.api.enums.ItemList.Large_Fluid_Cell_Neutronium;
+import static gregtech.api.enums.ItemList.Large_Fluid_Cell_Osmium;
+import static gregtech.api.enums.ItemList.Large_Fluid_Cell_StainlessSteel;
+import static gregtech.api.enums.ItemList.Large_Fluid_Cell_Steel;
+import static gregtech.api.enums.ItemList.Large_Fluid_Cell_Titanium;
+import static gregtech.api.enums.ItemList.Large_Fluid_Cell_TungstenSteel;
 
 import javax.annotation.Nullable;
 

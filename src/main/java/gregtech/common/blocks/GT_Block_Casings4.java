@@ -15,11 +15,15 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_RenderingWorld;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
 
+/**
+ * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
+ * 16 subtypes at most.
+ */
 public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
 
     /**
      * This mapping is used to look up which texture should be used to render the connected texture for fusion casings.
-     *
+     * <p>
      * This mapping is computed from that giant if ladder from #getIcon in commit
      * da3421547afadc49938b5b6a7f9a9679afa1d570 The exact meaning of these numbers are like black magic. Read the
      * original getIcon implementation to understand why it is 0, 1, etc, if that if ladder is even intelligible.
@@ -48,8 +52,6 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
             .addStringLocalization(getUnlocalizedName() + ".1.name", "Clean Stainless Steel Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Stable Titanium Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Titanium Firebox Casing");
-        // GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Fusion Casing");
-        // GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Fusion Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Fusion Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Fusion Coil Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Fusion Machine Casing MK II");
@@ -163,6 +165,7 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
             || !mConnectedMachineTextures) {
             return getIcon(ordinalSide, tMeta);
         }
+        // noinspection ConstantValue // tMeta < 13 should stay because mConnectedMachineTextures can be changed
         if (tMeta > 8 && tMeta < 13) {
             int tInvertLeftRightMod = ordinalSide % 2 * 2 - 1;
             switch (ordinalSide / 2) {
