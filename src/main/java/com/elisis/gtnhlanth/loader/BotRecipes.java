@@ -352,28 +352,6 @@ public class BotRecipes {
                 1200,
                 7680);
 
-        // 2C18H17O2 + 2O = 2C18H16O2 + H2O2
-        GT_Values.RA.addChemicalRecipe(
-                Materials.Oxygen.getCells(2),
-                C2,
-                TwoTertButylAnthrahydroquinone.getFluidOrGas(2000),
-                TwoTertButylAnthraquinone.getFluidOrGas(2000),
-                HydrogenPeroxide.get(cell, 1),
-                Materials.Empty.getCells(1),
-                40,
-                1920);
-
-        // 2H + 2O =C18H16O2,Pd= H2O2
-        GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] { C24, Materials.Palladium.getDustTiny(1) },
-                new FluidStack[] { Materials.Hydrogen.getGas(10000), Materials.Oxygen.getGas(10000),
-                        TwoTertButylAnthraquinone.getFluidOrGas(10000) },
-                new FluidStack[] { HydrogenPeroxide.getFluidOrGas(5000),
-                        TwoTertButylAnthraquinone.getFluidOrGas(10000) },
-                null,
-                1400,
-                7680);
-
         // 2CH4O + H2SO4 = C2H6O4S + 2H2O
         GT_Values.RA.addChemicalRecipe(
                 Materials.SulfuricAcid.getCells(1),
