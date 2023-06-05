@@ -1,5 +1,9 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFusionRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.FUSION_THRESHOLD;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -7,11 +11,13 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
@@ -38,6 +44,7 @@ public class RecipeLoader_Nuclear {
         electroMagneticSeperator();
         fluidExtractorRecipes();
         fluidHeater();
+        fusionChainRecipes();
         macerator();
         mixerRecipes();
         sifter();
@@ -471,6 +478,63 @@ public class RecipeLoader_Nuclear {
                 FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getFluidStack(144),
                 200,
                 512 + 256);
+    }
+
+    private static void fusionChainRecipes() {
+        // Mk1
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs()
+                .fluidInputs(Materials.Boron.getPlasma(100), Materials.Calcium.getPlasma(100))
+                .fluidOutputs(new FluidStack(ELEMENT.getInstance().NEON.getPlasma(), 100)).duration(3 * SECONDS)
+                .eut(TierEU.RECIPE_LuV).metadata(FUSION_THRESHOLD, 100000000).addTo(sFusionRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs()
+                .fluidInputs(
+                        new FluidStack(ELEMENT.getInstance().NEON.getPlasma(), 100),
+                        Materials.Bedrockium.getMolten(1000))
+                .fluidOutputs(new FluidStack(ELEMENT.STANDALONE.FORCE.getPlasma(), 100)).duration(3 * SECONDS)
+                .eut(TierEU.RECIPE_LuV).metadata(FUSION_THRESHOLD, 100000000).addTo(sFusionRecipes);
+
+        // Mk2
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs()
+                .fluidInputs(Materials.Niobium.getPlasma(100), Materials.Zinc.getPlasma(100))
+                .fluidOutputs(new FluidStack(ELEMENT.getInstance().KRYPTON.getPlasma(), 100)).duration(3 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM).metadata(FUSION_THRESHOLD, 300000000).addTo(sFusionRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs()
+                .fluidInputs(
+                        new FluidStack(ELEMENT.getInstance().KRYPTON.getPlasma(), 100),
+                        new FluidStack(ELEMENT.STANDALONE.FORCE.getPlasma(), 100))
+                .fluidOutputs(new FluidStack(ELEMENT.STANDALONE.ASTRAL_TITANIUM.getPlasma(), 100)).duration(3 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM).metadata(FUSION_THRESHOLD, 300000000).addTo(sFusionRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs()
+                .fluidInputs(
+                        new FluidStack(ELEMENT.STANDALONE.ASTRAL_TITANIUM.getPlasma(), 100),
+                        new FluidStack(ALLOY.TITANSTEEL.getFluid(), 1000))
+                .fluidOutputs(new FluidStack(ELEMENT.STANDALONE.RUNITE.getPlasma(), 100)).duration(3 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM).metadata(FUSION_THRESHOLD, 300000000).addTo(sFusionRecipes);
+
+        // Mk3
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs()
+                .fluidInputs(ELEMENT.getInstance().CURIUM.getFluidStack(100), Materials.Americium.getPlasma(100))
+                .fluidOutputs(new FluidStack(ELEMENT.getInstance().XENON.getPlasma(), 100)).duration(3 * SECONDS)
+                .eut(TierEU.RECIPE_UV).metadata(FUSION_THRESHOLD, 500000000).addTo(sFusionRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs()
+                .fluidInputs(
+                        new FluidStack(ELEMENT.getInstance().XENON.getPlasma(), 100),
+                        new FluidStack(ELEMENT.STANDALONE.RUNITE.getPlasma(), 100))
+                .fluidOutputs(new FluidStack(ELEMENT.STANDALONE.ADVANCED_NITINOL.getPlasma(), 100))
+                .duration(3 * SECONDS).eut(TierEU.RECIPE_UV).metadata(FUSION_THRESHOLD, 500000000)
+                .addTo(sFusionRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs()
+                .fluidInputs(
+                        new FluidStack(ELEMENT.STANDALONE.ADVANCED_NITINOL.getPlasma(), 100),
+                        Materials.Tartarite.getMolten(1000))
+                .fluidOutputs(new FluidStack(ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 100))
+                .duration(3 * SECONDS).eut(TierEU.RECIPE_UV).metadata(FUSION_THRESHOLD, 500000000)
+                .addTo(sFusionRecipes);
     }
 
     private static void macerator() {
