@@ -6272,7 +6272,7 @@ public class ChemicalRecipes implements Runnable {
                     Materials.SodiumHydroxide.getDust(6),
                     Materials.Manganese.getDustTiny(1))
                 .itemOutputs(MaterialsKevlar.SodiumHydride.getDust(4))
-                .fluidInputs(new FluidStack(FluidRegistry.getFluid("hydrazine"), 1000))
+                .fluidInputs(new FluidStack(FluidRegistry.getFluid("fluid.hydrazine"), 1000))
                 .fluidOutputs(Materials.Nitrogen.getGas(2000), Materials.Water.getFluid(2000))
                 .duration(10 * TICKS)
                 .eut(TierEU.RECIPE_EV)
@@ -6284,7 +6284,7 @@ public class ChemicalRecipes implements Runnable {
                     Materials.SodiumHydroxide.getDust(54),
                     Materials.Manganese.getDust(1))
                 .itemOutputs(MaterialsKevlar.SodiumHydride.getDust(36))
-                .fluidInputs(new FluidStack(FluidRegistry.getFluid("hydrazine"), 9000))
+                .fluidInputs(new FluidStack(FluidRegistry.getFluid("fluid.hydrazine"), 9000))
                 .fluidOutputs(Materials.Nitrogen.getGas(18000), Materials.Water.getFluid(18000))
                 .duration(3 * SECONDS + 10 * TICKS)
                 .eut(TierEU.RECIPE_EV)
