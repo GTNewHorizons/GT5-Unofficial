@@ -3974,7 +3974,7 @@ public class ChemicalRecipes implements Runnable {
                 .itemOutputs(
                     GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.Pentaerythritol, 21),
                     Materials.Empty.getCells(1))
-                .fluidInputs(new FluidStack(FluidRegistry.getFluid("formaldehyde"), 4000))
+                .fluidInputs(new FluidStack(FluidRegistry.getFluid("fluid.formaldehyde"), 4000))
                 .fluidOutputs(Materials.CarbonMonoxide.getGas(1000))
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
@@ -5933,7 +5933,7 @@ public class ChemicalRecipes implements Runnable {
                 .itemInputs(GT_Utility.getIntegratedCircuit(1))
                 .noItemOutputs()
                 .fluidInputs(
-                    new FluidStack(FluidRegistry.getFluid("formaldehyde"), 1000),
+                    new FluidStack(FluidRegistry.getFluid("fluid.formaldehyde"), 1000),
                     new FluidStack(FluidRegistry.getFluid("aniline"), 2000),
                     Materials.HydrochloricAcid.getFluid(1000))
                 .fluidOutputs(MaterialsKevlar.DiaminodiphenylmethanMixture.getFluid(1000))
@@ -6134,7 +6134,7 @@ public class ChemicalRecipes implements Runnable {
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.IIButinIIVdiol, 12))
                 .fluidInputs(
                     MaterialsKevlar.Acetylene.getGas(1000),
-                    new FluidStack(FluidRegistry.getFluid("formaldehyde"), 2000))
+                    new FluidStack(FluidRegistry.getFluid("fluid.formaldehyde"), 2000))
                 .noFluidOutputs()
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_EV)
@@ -6151,7 +6151,7 @@ public class ChemicalRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.IIButinIIVdiol, 44))
                 .fluidInputs(
                     MaterialsKevlar.Acetylene.getGas(9000),
-                    new FluidStack(FluidRegistry.getFluid("formaldehyde"), 18000))
+                    new FluidStack(FluidRegistry.getFluid("fluid.formaldehyde"), 18000))
                 .noFluidOutputs()
                 .duration(2 * MINUTES + 30 * SECONDS)
                 .eut(TierEU.RECIPE_EV)
@@ -6272,7 +6272,7 @@ public class ChemicalRecipes implements Runnable {
                     Materials.SodiumHydroxide.getDust(6),
                     Materials.Manganese.getDustTiny(1))
                 .itemOutputs(MaterialsKevlar.SodiumHydride.getDust(4))
-                .fluidInputs(new FluidStack(FluidRegistry.getFluid("hydrazine"), 1000))
+                .fluidInputs(new FluidStack(FluidRegistry.getFluid("fluid.hydrazine"), 1000))
                 .fluidOutputs(Materials.Nitrogen.getGas(2000), Materials.Water.getFluid(2000))
                 .duration(10 * TICKS)
                 .eut(TierEU.RECIPE_EV)
@@ -6284,7 +6284,7 @@ public class ChemicalRecipes implements Runnable {
                     Materials.SodiumHydroxide.getDust(54),
                     Materials.Manganese.getDust(1))
                 .itemOutputs(MaterialsKevlar.SodiumHydride.getDust(36))
-                .fluidInputs(new FluidStack(FluidRegistry.getFluid("hydrazine"), 9000))
+                .fluidInputs(new FluidStack(FluidRegistry.getFluid("fluid.hydrazine"), 9000))
                 .fluidOutputs(Materials.Nitrogen.getGas(18000), Materials.Water.getFluid(18000))
                 .duration(3 * SECONDS + 10 * TICKS)
                 .eut(TierEU.RECIPE_EV)
