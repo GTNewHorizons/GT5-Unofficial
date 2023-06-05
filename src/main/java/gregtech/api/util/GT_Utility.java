@@ -182,11 +182,8 @@ public class GT_Utility {
     private static final List<FluidContainerData> sFluidContainerList = new ArrayList<>();
 
     private static final Map<GT_ItemStack, FluidContainerData> sFilledContainerToData = new /* Concurrent */ HashMap<>();
-    private static final Map<GT_ItemStack, Map<Fluid, FluidContainerData>> sEmptyContainerToFluidToData = new /*
-                                                                                                               * Concurrent
-                                                                                                               */ HashMap<>();
-    private static final Map<Fluid, List<ItemStack>> sFluidToContainers = new HashMap<>();
-    private static final Map<String, Fluid> sFluidUnlocalizedNameToFluid = new HashMap<>();
+    private static final Map<GT_ItemStack, Map<String, FluidContainerData>> sEmptyContainerToFluidToData = new HashMap<>();
+    private static final Map<String, List<ItemStack>> sFluidToContainers = new HashMap<>();
     /** Must use {@code Supplier} here because the ore prefixes have not yet been registered at class load time. */
     private static final Map<OrePrefixes, Supplier<ItemStack>> sOreToCobble = new HashMap<>();
 
@@ -1770,56 +1767,51 @@ public class GT_Utility {
         sFilledContainerToData.clear();
         sEmptyContainerToFluidToData.clear();
         sFluidToContainers.clear();
-        sFluidUnlocalizedNameToFluid.clear();
         for (FluidContainerData tData : sFluidContainerList) {
+            String fluidName = tData.fluid.getFluid()
+                .getName();
             sFilledContainerToData.put(new GT_ItemStack(tData.filledContainer), tData);
-            Map<Fluid, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData
+            Map<String, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData
                 .get(new GT_ItemStack(tData.emptyContainer));
-            List<ItemStack> tContainers = sFluidToContainers.get(tData.fluid.getFluid());
+            List<ItemStack> tContainers = sFluidToContainers.get(fluidName);
             if (tFluidToContainer == null) {
                 sEmptyContainerToFluidToData
                     .put(new GT_ItemStack(tData.emptyContainer), tFluidToContainer = new /* Concurrent */ HashMap<>());
-                GregTech_API.sFluidMappings.add(tFluidToContainer);
             }
-            tFluidToContainer.put(tData.fluid.getFluid(), tData);
+            tFluidToContainer.put(fluidName, tData);
             if (tContainers == null) {
                 tContainers = new ArrayList<>();
                 tContainers.add(tData.filledContainer);
-                sFluidToContainers.put(tData.fluid.getFluid(), tContainers);
+                sFluidToContainers.put(fluidName, tContainers);
             } else tContainers.add(tData.filledContainer);
         }
-        for (Fluid tFluid : FluidRegistry.getRegisteredFluids()
-            .values()) {
-            sFluidUnlocalizedNameToFluid.put(tFluid.getUnlocalizedName(), tFluid);
-        }
-    }
-
-    public static Fluid getFluidFromUnlocalizedName(String aUnlocalizedName) {
-        return sFluidUnlocalizedNameToFluid.get(aUnlocalizedName);
     }
 
     public static void addFluidContainerData(FluidContainerData aData) {
+        String fluidName = aData.fluid.getFluid()
+            .getName();
         sFluidContainerList.add(aData);
         sFilledContainerToData.put(new GT_ItemStack(aData.filledContainer), aData);
-        Map<Fluid, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData
+        Map<String, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData
             .get(new GT_ItemStack(aData.emptyContainer));
-        List<ItemStack> tContainers = sFluidToContainers.get(aData.fluid.getFluid());
+        List<ItemStack> tContainers = sFluidToContainers.get(fluidName);
         if (tFluidToContainer == null) {
             sEmptyContainerToFluidToData
                 .put(new GT_ItemStack(aData.emptyContainer), tFluidToContainer = new /* Concurrent */ HashMap<>());
-            GregTech_API.sFluidMappings.add(tFluidToContainer);
         }
-        tFluidToContainer.put(aData.fluid.getFluid(), aData);
+        tFluidToContainer.put(fluidName, aData);
         if (tContainers == null) {
             tContainers = new ArrayList<>();
             tContainers.add(aData.filledContainer);
-            sFluidToContainers.put(aData.fluid.getFluid(), tContainers);
+            sFluidToContainers.put(fluidName, tContainers);
         } else tContainers.add(aData.filledContainer);
     }
 
     public static List<ItemStack> getContainersFromFluid(FluidStack tFluidStack) {
         if (tFluidStack != null) {
-            List<ItemStack> tContainers = sFluidToContainers.get(tFluidStack.getFluid());
+            List<ItemStack> tContainers = sFluidToContainers.get(
+                tFluidStack.getFluid()
+                    .getName());
             if (tContainers == null) return new ArrayList<>();
             return tContainers;
         }
@@ -1844,9 +1836,11 @@ public class GT_Utility {
             else((IFluidContainerItem) aStack.getItem()).fill(aStack = copyAmount(1, aStack), aFluid, true);
             return aStack;
         }
-        Map<Fluid, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new GT_ItemStack(aStack));
+        Map<String, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new GT_ItemStack(aStack));
         if (tFluidToContainer == null) return null;
-        FluidContainerData tData = tFluidToContainer.get(aFluid.getFluid());
+        FluidContainerData tData = tFluidToContainer.get(
+            aFluid.getFluid()
+                .getName());
         if (tData == null || tData.fluid.amount > aFluid.amount) return null;
         if (aRemoveFluidDirectly) aFluid.amount -= tData.fluid.amount;
         return copyAmount(1, tData.filledContainer);
