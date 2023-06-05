@@ -584,7 +584,6 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }),
     IRIDIUM(GT_BranchDefinition.RAREMETAL, "Iridium", false, new Color(0xDADADA), new Color(0xD1D1E0), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
-        beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.IRIDIUM), 0.30f);
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.IRIDIUM), 0.30f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.OSMIUM), 0.05f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.PALLADIUM), 0.30f);
