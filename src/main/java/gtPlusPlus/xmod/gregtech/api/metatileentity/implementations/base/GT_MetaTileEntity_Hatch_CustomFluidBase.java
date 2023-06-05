@@ -186,7 +186,7 @@ public class GT_MetaTileEntity_Hatch_CustomFluidBase extends GT_MetaTileEntity_H
 
     @Override
     public boolean isFluidInputAllowed(final FluidStack aFluid) {
-        return aFluid.getFluid() == this.mLockedFluid;
+        return this.mLockedFluid.getName().equals(aFluid.getFluid().getName());
     }
 
     @Override
