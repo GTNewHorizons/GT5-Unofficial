@@ -482,16 +482,6 @@ public class BotRecipes {
                 50,
                 1920);
 
-        // O + CH4O =Ag= CH2O
-        GT_Values.RA.addChemicalRecipe(
-                Materials.Oxygen.getCells(4),
-                Materials.Silver.getDustTiny(1),
-                Materials.Methanol.getFluid(4000),
-                Formaldehyde.getFluidOrGas(4000),
-                cells,
-                100,
-                480);
-
         if (GTPlusPlus.isModLoaded()) {
             // N2H4 + C2H4O2 =C2H6O= C2H6N2O + H2O
             GT_Values.RA.addMultiblockChemicalRecipe(
