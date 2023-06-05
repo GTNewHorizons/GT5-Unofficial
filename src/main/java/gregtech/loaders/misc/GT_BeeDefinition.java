@@ -585,7 +585,9 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     IRIDIUM(GT_BranchDefinition.RAREMETAL, "Iridium", false, new Color(0xDADADA), new Color(0xD1D1E0), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.IRIDIUM), 0.30f);
+        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.IRIDIUM), 0.30f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.OSMIUM), 0.05f);
+        beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.PALLADIUM), 0.30f);
         beeSpecies.setHumidity(ARID);
         beeSpecies.setTemperature(HELLISH);
         beeSpecies.setHasEffect();
@@ -761,7 +763,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         tMutation.restrictTemperature(ICY);
     }),
     Explosive(GT_BranchDefinition.IC2, "explosive", false, new Color(0x7E270F), new Color(0x747474), beeSpecies -> {
-        beeSpecies.addProduct(GT_ModHandler.getIC2Item("industrialTnt", 1L), 0.5f);
+        beeSpecies.addProduct(GT_ModHandler.getIC2Item("industrialTnt", 1L), 0.2f);
         beeSpecies.setHumidity(ARID);
         beeSpecies.setTemperature(HELLISH);
         beeSpecies.setHasEffect();
@@ -1178,6 +1180,22 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         IBeeMutationCustom tMutation = dis.registerMutation(SHADOWMETAL, SPARKELING, 5);
         if (Thaumcraft.isModLoaded())
             tMutation.requireResource(GameRegistry.findBlock(Thaumcraft.ID, "blockCrystal"), 6);
+    }),
+
+    DRAKE(GT_BranchDefinition.THAUMIC, "Drake", true, new Color(0x100322), new Color(0x7A007A), beeSpecies -> {
+        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.DRACONIC), 0.30f);
+        beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.AWAKENEDDRACONIUM), 0.20f);
+        beeSpecies.setHumidity(DAMP);
+        beeSpecies.setTemperature(HELLISH);
+        beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
+    }, template -> {
+        AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.DOWN_3);
+        AlleleHelper.instance.set(template, CAVE_DWELLING, false);
+        AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.END);
+        AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectDrunkard);
+    }, dis -> {
+        IBeeMutationCustom tMutation = dis.registerMutation(ESSENTIA, THAUMINITE, 5);
+        tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockcasings5"), 8);
     }),
 
     // radioctive
