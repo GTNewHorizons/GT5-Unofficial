@@ -295,7 +295,7 @@ public class FusionReactorRecipes implements Runnable {
             .noItemInputs()
             .noItemOutputs()
             .fluidInputs(Materials.Silver.getMolten(144), Materials.Helium_3.getGas(375))
-            .fluidOutputs(Materials.Tin.getPlasma(144))
+            .fluidOutputs(Materials.Tin.getPlasma(288))
             .duration(16 * TICKS)
             .eut(49152)
             .metadata(FUSION_THRESHOLD, 280000000)
