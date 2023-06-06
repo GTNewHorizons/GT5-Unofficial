@@ -25,7 +25,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
-import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_AssemblyLineUtils;
 import gregtech.api.util.GT_ModHandler;
@@ -517,44 +516,44 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         addChemicalRecipe(
             ItemList.Cell_Air.get(1),
             GT_Utility.getIntegratedCircuit(1),
-            new GT_FluidStack(aBasicMaterial, 144),
-            new GT_FluidStack(aPolymer, 144),
+            new FluidStack(aBasicMaterial, 144),
+            new FluidStack(aPolymer, 144),
             Materials.Empty.getCells(1),
             160);
         addChemicalRecipe(
             Materials.Oxygen.getCells(1),
             GT_Utility.getIntegratedCircuit(1),
-            new GT_FluidStack(aBasicMaterial, 144),
-            new GT_FluidStack(aPolymer, 216),
+            new FluidStack(aBasicMaterial, 144),
+            new FluidStack(aPolymer, 216),
             Materials.Empty.getCells(1),
             160);
         addChemicalRecipe(
             aBasicMaterialCell,
             GT_Utility.getIntegratedCircuit(1),
             Materials.Air.getGas(14000),
-            new GT_FluidStack(aPolymer, 1000),
+            new FluidStack(aPolymer, 1000),
             Materials.Empty.getCells(1),
             1120);
         addChemicalRecipe(
             aBasicMaterialCell,
             GT_Utility.getIntegratedCircuit(1),
             Materials.Oxygen.getGas(7000),
-            new GT_FluidStack(aPolymer, 1500),
+            new FluidStack(aPolymer, 1500),
             Materials.Empty.getCells(1),
             1120);
         addMultiblockChemicalRecipe(
             new ItemStack[] { GT_Utility.getIntegratedCircuit(2) },
-            new FluidStack[] { new GT_FluidStack(aBasicMaterial, 2160), Materials.Air.getGas(7500),
+            new FluidStack[] { new FluidStack(aBasicMaterial, 2160), Materials.Air.getGas(7500),
                 Materials.Titaniumtetrachloride.getFluid(100) },
-            new FluidStack[] { new GT_FluidStack(aPolymer, 3240) },
+            new FluidStack[] { new FluidStack(aPolymer, 3240) },
             null,
             800,
             30);
         addMultiblockChemicalRecipe(
             new ItemStack[] { GT_Utility.getIntegratedCircuit(2) },
-            new FluidStack[] { new GT_FluidStack(aBasicMaterial, 2160), Materials.Oxygen.getGas(7500),
+            new FluidStack[] { new FluidStack(aBasicMaterial, 2160), Materials.Oxygen.getGas(7500),
                 Materials.Titaniumtetrachloride.getFluid(100) },
-            new FluidStack[] { new GT_FluidStack(aPolymer, 4320) },
+            new FluidStack[] { new FluidStack(aPolymer, 4320) },
             null,
             800,
             30);

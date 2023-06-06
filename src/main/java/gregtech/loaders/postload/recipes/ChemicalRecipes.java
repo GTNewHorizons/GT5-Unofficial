@@ -28,7 +28,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -4015,8 +4014,8 @@ public class ChemicalRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Cell_Air.get(1), GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(Materials.Empty.getCells(1))
-            .fluidInputs(new GT_FluidStack(aBasicMaterial, 144))
-            .fluidOutputs(new GT_FluidStack(aPolymer, 144))
+            .fluidInputs(new FluidStack(aBasicMaterial, 144))
+            .fluidOutputs(new FluidStack(aPolymer, 144))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -4024,8 +4023,8 @@ public class ChemicalRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Oxygen.getCells(1), GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(Materials.Empty.getCells(1))
-            .fluidInputs(new GT_FluidStack(aBasicMaterial, 144))
-            .fluidOutputs(new GT_FluidStack(aPolymer, 216))
+            .fluidInputs(new FluidStack(aBasicMaterial, 144))
+            .fluidOutputs(new FluidStack(aPolymer, 216))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -4034,7 +4033,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(aBasicMaterialCell, GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(Materials.Empty.getCells(1))
             .fluidInputs(Materials.Air.getGas(14000))
-            .fluidOutputs(new GT_FluidStack(aPolymer, 1000))
+            .fluidOutputs(new FluidStack(aPolymer, 1000))
             .duration(56 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -4043,7 +4042,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(aBasicMaterialCell, GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(Materials.Empty.getCells(1))
             .fluidInputs(Materials.Oxygen.getGas(7000))
-            .fluidOutputs(new GT_FluidStack(aPolymer, 1500))
+            .fluidOutputs(new FluidStack(aPolymer, 1500))
             .duration(56 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -4052,10 +4051,10 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(GT_Utility.getIntegratedCircuit(2))
             .noItemOutputs()
             .fluidInputs(
-                new GT_FluidStack(aBasicMaterial, 2160),
+                new FluidStack(aBasicMaterial, 2160),
                 Materials.Air.getGas(7500),
                 Materials.Titaniumtetrachloride.getFluid(100))
-            .fluidOutputs(new GT_FluidStack(aPolymer, 3240))
+            .fluidOutputs(new FluidStack(aPolymer, 3240))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(sMultiblockChemicalRecipes);
@@ -4064,10 +4063,10 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(GT_Utility.getIntegratedCircuit(2))
             .noItemOutputs()
             .fluidInputs(
-                new GT_FluidStack(aBasicMaterial, 2160),
+                new FluidStack(aBasicMaterial, 2160),
                 Materials.Oxygen.getGas(7500),
                 Materials.Titaniumtetrachloride.getFluid(100))
-            .fluidOutputs(new GT_FluidStack(aPolymer, 4320))
+            .fluidOutputs(new FluidStack(aPolymer, 4320))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(sMultiblockChemicalRecipes);

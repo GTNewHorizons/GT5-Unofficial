@@ -21,7 +21,6 @@ import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.IGT_RecipeMap;
-import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.util.extensions.ArrayExt;
 
 public class GT_RecipeBuilder {
@@ -110,7 +109,6 @@ public class GT_RecipeBuilder {
     private static FluidStack[] fix(FluidStack[] fluidInputs) {
         return Arrays.stream(fluidInputs)
             .filter(Objects::nonNull)
-            .map(GT_FluidStack::new)
             .toArray(FluidStack[]::new);
     }
 
