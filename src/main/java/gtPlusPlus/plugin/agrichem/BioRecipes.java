@@ -23,6 +23,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.ModItems;
@@ -437,8 +438,8 @@ public class BioRecipes {
         // Assembly Recipe
         CORE.RA.addSixSlotAssemblingRecipe(
                 new ItemStack[] { getBioChip(4), CI.getEmptyCatalyst(10),
-                        ItemUtils.getItemStackOfAmountFromOreDict("dustAluminium", 4),
-                        ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 4) },
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4L),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 4L) },
                 GT_Values.NF,
                 CI.getGreenCatalyst(10),
                 20 * 20,
