@@ -150,7 +150,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setByte("mMode", mMode);
-        if (lockedFluidName != null && lockedFluidName.length() != 0)
+        if (isFluidLocked() && lockedFluidName != null && lockedFluidName.length() != 0)
             aNBT.setString("lockedFluidName", lockedFluidName);
         else aNBT.removeTag("lockedFluidName");
     }
@@ -159,8 +159,10 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mMode = aNBT.getByte("mMode");
-        lockedFluidName = aNBT.getString("lockedFluidName");
-        lockedFluidName = lockedFluidName.length() == 0 ? null : lockedFluidName;
+        if (isFluidLocked()) {
+            lockedFluidName = aNBT.getString("lockedFluidName");
+        }
+        lockedFluidName = GT_Utility.isStringInvalid(lockedFluidName) ? null : lockedFluidName;
     }
 
     @Override
@@ -393,6 +395,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch
             }
         } else {
             this.mMode = 0;
+            setLockedFluidName(null);
             markDirty();
         }
     }
