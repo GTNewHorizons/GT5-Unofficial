@@ -129,6 +129,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
 
     public int mSpeed = 0;
     public boolean mLockedSpeed = true;
+    public boolean mAutoQueen = true;
 
     private ItemStack usedQueen = null;
     private IBee usedQueenBee = null;
@@ -635,9 +636,10 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                                     if (aBaseMetaTileEntity.addStackToSlot(queen, mOutputItems[i])) break;
                                 } else if (beeRoot.isMember(mOutputItems[i], EnumBeeType.DRONE.ordinal()))
                                     if (aBaseMetaTileEntity.addStackToSlot(drone, mOutputItems[i])) break;
-                            } else
-                                if (i == 0 && j == 0 && beeRoot.isMember(mOutputItems[0], EnumBeeType.QUEEN.ordinal()))
-                                    if (aBaseMetaTileEntity.addStackToSlot(queen, mOutputItems[0])) break;
+                            } else if (mAutoQueen && i == 0
+                                && j == 0
+                                && beeRoot.isMember(mOutputItems[0], EnumBeeType.QUEEN.ordinal())
+                                && aBaseMetaTileEntity.addStackToSlot(queen, mOutputItems[0])) break;
                             if (aBaseMetaTileEntity
                                 .addStackToSlot(getOutputSlot() + ((j + i) % mOutputItems.length), mOutputItems[i]))
                                 break;
@@ -1139,7 +1141,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         SPEED_LOCKED_TOOLTIP = "GT5U.machines.industrialapiary.speedlocked.tooltip",
         INFO_TOOLTIP = "GT5U.machines.industrialapiary.info.tooltip",
         INFO_WITH_BEE_TOOLTIP = "GT5U.machines.industrialapiary.infoextended.tooltip",
-        UPGRADE_TOOLTIP = "GT5U.machines.industrialapiary.upgradeslot.tooltip";
+        UPGRADE_TOOLTIP = "GT5U.machines.industrialapiary.upgradeslot.tooltip",
+        AUTOQUEEN_TOOLTIP = "GT5U.machines.industrialapiary.autoqueen.tooltip";
 
     @Override
     public boolean useModularUI() {
@@ -1182,6 +1185,15 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     .setTooltipShowUpDelay(TOOLTIP_DELAY)
                     .setPos(7, 26)
                     .setSize(18, 18))
+            .widget(
+                new CycleButtonWidget().setToggle(() -> mAutoQueen, x -> mAutoQueen = x)
+                    .setTextureGetter(
+                        i -> i == 0 ? GT_UITextures.OVERLAY_BUTTON_CROSS : GT_UITextures.OVERLAY_BUTTON_CHECKMARK)
+                    .setGTTooltip(() -> mTooltipCache.getData(AUTOQUEEN_TOOLTIP))
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                    .setPos(7, 44)
+                    .setSize(18, 18)
+                    .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_SLOT_BEE_QUEEN))
             .widget(
                 new DrawableWidget().setDrawable(GT_UITextures.PICTURE_INFORMATION)
                     .setGTTooltip(() -> {
