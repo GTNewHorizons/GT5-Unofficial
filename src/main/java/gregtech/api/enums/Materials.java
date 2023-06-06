@@ -29,7 +29,6 @@ import gregtech.api.fluid.GT_FluidFactory;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.interfaces.ISubTagContainer;
-import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -3081,27 +3080,27 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public FluidStack getSolid(long aAmount) {
         if (mSolid == null) return null;
-        return new GT_FluidStack(mSolid, (int) aAmount);
+        return new FluidStack(mSolid, (int) aAmount);
     }
 
     public FluidStack getFluid(long aAmount) {
         if (mFluid == null) return null;
-        return new GT_FluidStack(mFluid, (int) aAmount);
+        return new FluidStack(mFluid, (int) aAmount);
     }
 
     public FluidStack getGas(long aAmount) {
         if (mGas == null) return null;
-        return new GT_FluidStack(mGas, (int) aAmount);
+        return new FluidStack(mGas, (int) aAmount);
     }
 
     public FluidStack getPlasma(long aAmount) {
         if (mPlasma == null) return null;
-        return new GT_FluidStack(mPlasma, (int) aAmount);
+        return new FluidStack(mPlasma, (int) aAmount);
     }
 
     public FluidStack getMolten(long aAmount) {
         if (mStandardMoltenFluid == null) return null;
-        return new GT_FluidStack(mStandardMoltenFluid, (int) aAmount);
+        return new FluidStack(mStandardMoltenFluid, (int) aAmount);
     }
 
     @Override
