@@ -40,11 +40,21 @@ public class RecipeGen_Plasma extends RecipeGen_Base {
                     ? GT_Utility.getContainerItem(aPlasmaCell, true)
                     : CI.emptyCells(1);
             if (ItemUtils.checkForInvalidItems(new ItemStack[] { aPlasmaCell, aContainerItem })) {
-                GT_Values.RA.addFuel(
-                        GT_Utility.copyAmount(1L, aPlasmaCell),
-                        aContainerItem,
-                        (int) Math.max(1024L, 1024L * material.getMass()),
-                        4);
+                switch (material.getUnlocalizedName()) {
+                    case "Force":
+                        GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, aPlasmaCell), aContainerItem, 150_000, 4);
+                    case "Runite":
+                        GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, aPlasmaCell), aContainerItem, 350_000, 4);
+                    case "CelestialTungsten":
+                        GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, aPlasmaCell), aContainerItem, 600_000, 4);
+                    default:
+                        GT_Values.RA.addFuel(
+                                GT_Utility.copyAmount(1L, aPlasmaCell),
+                                aContainerItem,
+                                (int) Math.max(1024L, 1024L * material.getMass()),
+                                4);
+
+                }
             }
             if (ItemUtils.checkForInvalidItems(new ItemStack[] { aCell, aPlasmaCell })) {
                 GT_Values.RA.addVacuumFreezerRecipe(aPlasmaCell, aCell, (int) Math.max(material.getMass() * 2L, 1L));

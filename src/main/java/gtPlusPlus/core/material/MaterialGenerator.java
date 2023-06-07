@@ -422,6 +422,7 @@ public class MaterialGenerator {
             new RecipeGen_MaterialProcessing(matInfo);
             new RecipeGen_DustGeneration(matInfo);
             new RecipeGen_Recycling(matInfo);
+            new RecipeGen_Plasma(matInfo);
             return true;
         } catch (final Throwable t) {
             Logger.MATERIALS("" + matInfo.getLocalizedName() + " failed to generate.");
