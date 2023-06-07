@@ -902,7 +902,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addInfo("to be handled with conventional means. All EU requirements are handled directly by")
                 .addInfo("your wireless EU network.").addInfo(TOOLTIP_BAR)
                 .addInfo("This multiblock will constantly consume hydrogen and helium when it is not running a")
-                .addInfo("recipe as fast as it can. It will store this internally, you can see the totals by")
+                .addInfo("recipe once per second. It will store this internally, you can see the totals by")
                 .addInfo("using a scanner. This multi also has three tiered blocks with " + RED + 9 + GRAY + " tiers")
                 .addInfo("each. They are as follows and have the associated effects on the multi.")
                 .addInfo(BLUE + "Spacetime Compression Field Generator:")
@@ -948,12 +948,12 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addInfo("The value of adjustmentValue is then subtracted from the total yield and recipe chance.")
                 .addInfo(TOOLTIP_BAR)
                 .addInfo("It should be noted that base recipe chance is determined per recipe and yield always starts")
-                .addInfo("at 1 and subtracts depending on penalities. All fluid/item outputs are multiplied by the")
+                .addInfo("at 1 and subtracts depending on penalties. All fluid/item outputs are multiplied by the")
                 .addInfo("yield. Failure fluid is exempt. All power outputs start at 60% of what the recipes display.")
                 .addInfo(TOOLTIP_BAR)
-                .addInfo("This multiblock can only output to ME output busses/hatches. If no space in the network")
+                .addInfo("This multiblock can only output to ME output buses/hatches. If no space in the network")
                 .addInfo(
-                        "is avaliable the items/fluids will be " + UNDERLINE + DARK_RED + "voided" + RESET + GRAY + ".")
+                        "is available the items/fluids will be " + UNDERLINE + DARK_RED + "voided" + RESET + GRAY + ".")
                 .addInfo(TOOLTIP_BAR)
                 .addInfo("This multiblock can be overclocked by placing a programmed circuit into the input bus.")
                 .addInfo("Each OC halves recipe time and multiplies startup cost by a factor of:")
@@ -975,7 +975,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                 + "L of molten")
                 .addInfo(
                         MaterialsUEVplus.SpaceTime.getLocalizedNameForItem("%material")
-                                + " and return half the start EU.")
+                                + " instead of fluid/item outputs and output as much EU as a successful recipe.")
                 .addInfo(TOOLTIP_BAR).addInfo("Animations can be disabled by using a screwdriver on the multiblock.")
                 .addSeparator().addStructureInfo("Eye of Harmony structure is too complex! See schematic for details.")
                 .addStructureInfo(
