@@ -27,7 +27,6 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.ISubTagContainer;
-import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Log;
@@ -1250,35 +1249,35 @@ public enum GregtechOrePrefixes {
             if (this.mSolid == null) {
                 return null;
             }
-            return new GT_FluidStack(this.mSolid, (int) aAmount);
+            return new FluidStack(this.mSolid, (int) aAmount);
         }
 
         public FluidStack getFluid(final long aAmount) {
             if (this.mFluid == null) {
                 return null;
             }
-            return new GT_FluidStack(this.mFluid, (int) aAmount);
+            return new FluidStack(this.mFluid, (int) aAmount);
         }
 
         public FluidStack getGas(final long aAmount) {
             if (this.mGas == null) {
                 return null;
             }
-            return new GT_FluidStack(this.mGas, (int) aAmount);
+            return new FluidStack(this.mGas, (int) aAmount);
         }
 
         public FluidStack getPlasma(final long aAmount) {
             if (this.mPlasma == null) {
                 return null;
             }
-            return new GT_FluidStack(this.mPlasma, (int) aAmount);
+            return new FluidStack(this.mPlasma, (int) aAmount);
         }
 
         public FluidStack getMolten(final long aAmount) {
             if (this.mStandardMoltenFluid == null) {
                 return null;
             }
-            return new GT_FluidStack(this.mStandardMoltenFluid, (int) aAmount);
+            return new FluidStack(this.mStandardMoltenFluid, (int) aAmount);
         }
 
         @Override
