@@ -106,7 +106,6 @@ import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.IGT_RecipeMap;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
-import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
@@ -262,8 +261,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         for (ItemStack tStack : aOutputs) GT_Utility.updateItemStack(tStack);
 
         for (int i = 0; i < aChances.length; i++) if (aChances[i] <= 0) aChances[i] = 10000;
-        for (int i = 0; i < aFluidInputs.length; i++) aFluidInputs[i] = new GT_FluidStack(aFluidInputs[i]);
-        for (int i = 0; i < aFluidOutputs.length; i++) aFluidOutputs[i] = new GT_FluidStack(aFluidOutputs[i]);
 
         for (ItemStack aInput : aInputs)
             if (aInput != null && Items.feather.getDamage(aInput) != W) for (int j = 0; j < aOutputs.length; j++) {
