@@ -2354,7 +2354,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.SNOW);
         AlleleHelper.instance.set(template, FLOWERING, Flowering.AVERAGE);
     }, dis -> {
-        IBeeMutationCustom tMutation = dis.registerMutation(OIL, INFINITYCATALYST, 99);
+        IBeeMutationCustom tMutation = dis.registerMutation(OIL, INFINITYCATALYST, 4);
         tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockmachines"), 11003);
     }),
 
