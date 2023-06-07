@@ -1601,17 +1601,8 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
     /**
      * Pollution Management
      */
-    private static Method calculatePollutionReduction = null;
-
-    public int calculatePollutionReductionForHatch(GT_MetaTileEntity_Hatch_Muffler i, int g) {
-        if (calculatePollutionReduction != null) {
-            try {
-                return (int) calculatePollutionReduction.invoke(i, g);
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-
-            }
-        }
-        return 0;
+    public int calculatePollutionReductionForHatch(GT_MetaTileEntity_Hatch_Muffler hatch, int poll) {
+        return hatch.calculatePollutionReduction(poll);
     }
 
     @Override
