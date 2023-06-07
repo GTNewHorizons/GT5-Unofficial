@@ -2355,6 +2355,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, FLOWERING, Flowering.AVERAGE);
     }, dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(OIL, INFINITYCATALYST, 4);
+        //UHV Replicator (UU-Matter)
         tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockmachines"), 11003);
     }),
 
