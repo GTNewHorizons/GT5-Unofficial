@@ -73,6 +73,7 @@ public class GT_DamageSources {
 
         public DamageSourceHeat() {
             super("steam");
+            setFireDamage();
             setDifficultyScaled();
         }
 
