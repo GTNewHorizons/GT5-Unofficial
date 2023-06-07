@@ -111,7 +111,7 @@ public class PyrolyseRecipes implements Runnable {
             .addTo(sPyrolyseRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(2))
             .noItemOutputs()
             .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 1000))
             .fluidOutputs(Materials.FermentedBiomass.getFluid(1000))
@@ -120,7 +120,7 @@ public class PyrolyseRecipes implements Runnable {
             .addTo(sPyrolyseRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(2))
             .noItemOutputs()
             .fluidInputs(Materials.Biomass.getFluid(1000))
             .fluidOutputs(Materials.FermentedBiomass.getFluid(1000))
