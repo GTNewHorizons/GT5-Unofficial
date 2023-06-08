@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
@@ -31,7 +30,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.net.GT_Packet_SetConfigurationCircuit;
 import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.GT_Util;
-import gregtech.api.util.GT_Utility;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -251,14 +249,6 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
         IMetaTileEntity machine = mContainer.mTileEntity.getMetaTileEntity();
         IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport) machine;
         List<ItemStack> circuits = ccs.getConfigurationCircuits();
-        mc.displayGuiScreen(
-            new GT_GUIDialogSelectItem(
-                StatCollector.translateToLocal("GT5U.machines.select_circuit"),
-                machine.getStackForm(0),
-                this,
-                this::onCircuitSelected,
-                circuits,
-                GT_Utility.findMatchingStackInList(circuits, machine.getStackInSlot(ccs.getCircuitSlot()))));
     }
 
     private void onCircuitSelected(ItemStack selected) {
