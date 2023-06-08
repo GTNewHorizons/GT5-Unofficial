@@ -2356,7 +2356,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }, dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(OIL, INFINITYCATALYST, 4);
         // UHV Replicator (UU-Matter)
-        tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockmachines"), 11003);
+        GregTech_API.sGTCompleteLoad.add(() -> tMutation.requireResource(GregTech_API.sBlockMachines, 11003));
     }),
 
     // Noble Gas Line
@@ -2566,7 +2566,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             beeSpecies.setHasEffect();
         }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
             IBeeMutationCustom tMutation = dis.registerMutation(INFINITYCATALYST, NAQUADRIA, 5);
-            tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockmachines"), 4684);
+            tMutation.requireResource(GregTech_API.sBlockMachines, 4684);
             tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(100, "Deep Dark")); // Deep Dark
                                                                                                       // dim
         });

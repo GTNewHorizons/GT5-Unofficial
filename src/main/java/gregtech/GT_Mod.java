@@ -37,6 +37,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLModIdMappingEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -564,6 +565,18 @@ public class GT_Mod implements IGT_Mod {
         GregTech_API.sAfterGTPostload = null;
 
         GT_PostLoad.createGTtoolsCreativeTab();
+    }
+
+    @Mod.EventHandler
+    public void onLoadComplete(FMLLoadCompleteEvent aEvent) {
+        for (Runnable tRunnable : GregTech_API.sGTCompleteLoad) {
+            try {
+                tRunnable.run();
+            } catch (Throwable e) {
+                e.printStackTrace(GT_Log.err);
+            }
+        }
+        GregTech_API.sGTCompleteLoad = null;
     }
 
     @Mod.EventHandler
