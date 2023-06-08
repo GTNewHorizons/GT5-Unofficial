@@ -212,18 +212,17 @@ public class RecipeLoader_ChemicalSkips {
                 4);
         // Platline skip using Platline Combs (Palladium, Osmium, Iridium, Platinum)
         CORE.RA.addQuantumTransformerRecipe(
-                new ItemStack[] { WerkstoffLoader.PTMetallicPowder.get(OrePrefixes.dust, 16),
-                        GT_Bees.combs.getStackForType(CombType.PLATINUM, 16),
-                        GT_Bees.combs.getStackForType(CombType.PALLADIUM, 16),
-                        GT_Bees.combs.getStackForType(CombType.OSMIUM, 16),
-                        GT_Bees.combs.getStackForType(CombType.IRIDIUM, 16),
+                new ItemStack[] { GT_Bees.combs.getStackForType(CombType.PLATINUM, 32),
+                        GT_Bees.combs.getStackForType(CombType.PALLADIUM, 32),
+                        GT_Bees.combs.getStackForType(CombType.OSMIUM, 32),
+                        GT_Bees.combs.getStackForType(CombType.IRIDIUM, 32),
                         ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 0) },
-                null,
-                null,
-                new ItemStack[] { Materials.Platinum.getDust(64), Materials.Palladium.getDust(64),
-                        Materials.Iridium.getDust(64), Materials.Osmium.getDust(64) },
+                new FluidStack[] { ELEMENT.STANDALONE.DRAGON_METAL.getFluidStack(100) },
+                new FluidStack[] { Materials.Osmium.getMolten(144 * 256), Materials.Palladium.getMolten(144 * 256),
+                        Materials.Iridium.getMolten(144 * 256), Materials.Platinum.getMolten(144 * 256) },
+                new ItemStack[] {},
                 new int[] { 2500, 2500, 2500, 2500 },
-                20 * 10,
+                20 * 20,
                 (int) TierEU.RECIPE_UV,
                 1);
         // Bio Cells and Mutated Solder
