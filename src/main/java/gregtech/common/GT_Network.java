@@ -22,7 +22,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.net.GT_Packet;
 import gregtech.api.net.GT_Packet_Block_Event;
 import gregtech.api.net.GT_Packet_ClientPreference;
-import gregtech.api.net.GT_Packet_GtTileEntityGuiRequest;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.net.GT_Packet_Pollution;
 import gregtech.api.net.GT_Packet_RequestCoverData;
@@ -30,14 +29,9 @@ import gregtech.api.net.GT_Packet_SendCoverData;
 import gregtech.api.net.GT_Packet_SetConfigurationCircuit;
 import gregtech.api.net.GT_Packet_Sound;
 import gregtech.api.net.GT_Packet_TileEntity;
-import gregtech.api.net.GT_Packet_TileEntityCover;
-import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
-import gregtech.api.net.GT_Packet_TileEntityCoverNew;
 import gregtech.api.net.GT_Packet_UpdateItem;
-import gregtech.api.net.GT_Packet_WirelessRedstoneCover;
 import gregtech.api.net.IGT_NetworkHandler;
 import gregtech.common.blocks.GT_Packet_Ores;
-import gregtech.common.net.MessageSetFlaskCapacity;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler;
@@ -60,17 +54,17 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
             new GT_Packet_Block_Event(), // 2
             new GT_Packet_Ores(), // 3
             new GT_Packet_Pollution(), // 4
-            new MessageSetFlaskCapacity(), // 5
-            new GT_Packet_TileEntityCover(), // 6
-            new GT_Packet_TileEntityCoverGUI(), // 7
+            // 5
+            // 6
+            // 7
             // 8
             new GT_Packet_ClientPreference(), // 9
-            new GT_Packet_WirelessRedstoneCover(), // 10
-            new GT_Packet_TileEntityCoverNew(), // 11
+            // 10
+            // 11
             new GT_Packet_SetConfigurationCircuit(), // 12
             new GT_Packet_UpdateItem(), // 13
             // 14
-            new GT_Packet_GtTileEntityGuiRequest(), // 15
+            // 15
             new GT_Packet_SendCoverData(), // 16
             new GT_Packet_RequestCoverData(), // 17
             new GT_Packet_MultiTileEntity() // 18
