@@ -49,7 +49,6 @@ import gregtech.api.enums.SteamVariant;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -504,52 +503,6 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         public final GT_Recipe mRecipe;
         public final List<PositionedStack> mOutputs;
         public final List<PositionedStack> mInputs;
-
-        // Draws a grid of items for NEI rendering.
-        private void drawNEIItemGrid(ItemStack[] ItemArray, int x_coord_origin, int y_coord_origin, int x_dir_max_items,
-            int y_max_dir_max_items, GT_Recipe Recipe, boolean is_input) {
-            if (ItemArray.length > x_dir_max_items * y_max_dir_max_items) {
-                GT_Log.err.println("Recipe cannot be properly displayed in NEI due to too many items.");
-            }
-            // 18 pixels to get to a new grid for placing an item tile since they are 16x16 and have 1 pixel buffers
-            // around them.
-            int x_max = x_coord_origin + x_dir_max_items * 18;
-
-            // Temp variables to keep track of current coordinates to place item at.
-            int x_coord = x_coord_origin;
-            int y_coord = y_coord_origin;
-
-            // Iterate over all items in array and display them.
-            int special_counter = 0;
-            for (ItemStack item : ItemArray) {
-                if (item != GT_Values.NI) {
-                    if (is_input) {
-                        mInputs.add(
-                            new FixedPositionedStack(
-                                item,
-                                GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
-                                x_coord,
-                                y_coord,
-                                true));
-                    } else {
-                        mOutputs.add(
-                            new FixedPositionedStack(
-                                item,
-                                GT_NEI_DefaultHandler.this.mRecipeMap.renderRealStackSizes,
-                                x_coord,
-                                y_coord,
-                                Recipe.getOutputChance(special_counter),
-                                GT_NEI_DefaultHandler.this.mRecipeMap.mNEIUnificateOutput));
-                        special_counter++;
-                    }
-                    x_coord += 18;
-                    if (x_coord == x_max) {
-                        x_coord = x_coord_origin;
-                        y_coord += 18;
-                    }
-                }
-            }
-        }
 
         public CachedDefaultRecipe(GT_Recipe aRecipe) {
             super();
