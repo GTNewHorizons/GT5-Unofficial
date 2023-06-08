@@ -25,7 +25,6 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -57,8 +56,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.gui.GT_Container_BasicMachine;
-import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.SteamTexture;
@@ -514,24 +511,6 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         }
         GT_Utility.sendChatToPlayer(aPlayer, "No free Side!");
         return true;
-    }
-
-    @Deprecated
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_BasicMachine(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Deprecated
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_BasicMachine(
-            aPlayerInventory,
-            aBaseMetaTileEntity,
-            getLocalName(),
-            mGUIName,
-            GT_Utility.isStringValid(mNEIName) ? mNEIName
-                : getRecipeList() != null ? getRecipeList().mUnlocalizedName : "");
     }
 
     @Override

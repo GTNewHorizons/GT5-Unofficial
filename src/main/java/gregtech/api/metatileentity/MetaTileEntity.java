@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -1027,24 +1026,6 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
     @Override
     public void closeInventory() {
         //
-    }
-
-    /**
-     * @deprecated Use ModularUI
-     */
-    @Deprecated
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
-    }
-
-    /**
-     * @deprecated Use ModularUI
-     */
-    @Deprecated
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return null;
     }
 
     @Override

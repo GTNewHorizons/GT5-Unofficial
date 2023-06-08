@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -189,24 +188,6 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @return if aFacing would be a valid Facing for this Device. Used for wrenching.
      */
     boolean isFacingValid(ForgeDirection facing);
-
-    /**
-     * @return the Server Side Container
-     * @deprecated Use ModularUI
-     */
-    @Deprecated
-    default Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * @return the Client Side GUI Container
-     * @deprecated Use ModularUI
-     */
-    @Deprecated
-    default Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        throw new UnsupportedOperationException();
-    }
 
     /**
      * From new ISidedInventory

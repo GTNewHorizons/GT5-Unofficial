@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -15,8 +14,6 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.GT_Container_BasicTank;
-import gregtech.api.gui.GT_GUIContainer_BasicTank;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -147,18 +144,6 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
     @Deprecated
     public FluidStack getDisplayedFluid() {
         return getDrainableStack();
-    }
-
-    @Deprecated
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_BasicTank(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Deprecated
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_BasicTank(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
     }
 
     @Override
