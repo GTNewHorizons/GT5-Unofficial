@@ -808,25 +808,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         this.neiDesc = neiDesc;
     }
 
-    /**
-     * Use {@link GT_Recipe_Map#getItemInputPositions} or {@link GT_Recipe_Map#getSpecialItemPosition} or
-     * {@link GT_Recipe_Map#getFluidInputPositions} instead
-     */
-    @SuppressWarnings("DeprecatedIsStillUsed")
-    @Deprecated
-    public ArrayList<PositionedStack> getInputPositionedStacks() {
-        return null;
-    }
-
-    /**
-     * Use {@link GT_Recipe_Map#getItemOutputPositions} or {@link GT_Recipe_Map#getFluidOutputPositions} instead
-     */
-    @SuppressWarnings("DeprecatedIsStillUsed")
-    @Deprecated
-    public ArrayList<PositionedStack> getOutputPositionedStacks() {
-        return null;
-    }
-
     public void reloadOwner() {
         setOwner(
             Loader.instance()
@@ -4464,23 +4445,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 power = new UnspecifiedEUPower((byte) 1, mAmperage);
             }
             return power;
-        }
-
-        /**
-         * Use {@link #getItemInputPositions} or {@link #getSpecialItemPosition} or {@link #getFluidInputPositions}
-         * instead
-         */
-        @Deprecated
-        public ArrayList<PositionedStack> getInputPositionedStacks(GT_Recipe recipe) {
-            return null;
-        }
-
-        /**
-         * Use {@link #getItemOutputPositions} or {@link #getFluidOutputPositions} instead
-         */
-        @Deprecated
-        public ArrayList<PositionedStack> getOutputPositionedStacks(GT_Recipe recipe) {
-            return null;
         }
 
         public void addRecipe(Object o, FluidStack[] fluidInputArray, FluidStack[] fluidOutputArray) {}
