@@ -4,7 +4,6 @@ import java.awt.Rectangle;
 import java.lang.ref.SoftReference;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -103,13 +102,6 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             WINDOW_OFFSET);
         modularWindow = builder.build();
         UIInfos.initializeWindow(Minecraft.getMinecraft().thePlayer, modularWindow);
-    }
-
-    @Deprecated
-    public List<GT_Recipe> getSortedRecipes() {
-        List<GT_Recipe> result = new ArrayList<>(this.mRecipeMap.mRecipeList);
-        Collections.sort(result);
-        return result;
     }
 
     private SortedRecipeListCache getCacheHolder() {
@@ -391,16 +383,6 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
             .drawNEIDescription(new NEIRecipeInfo(recipe, mRecipeMap, cachedRecipe, mPower, getDescriptionYOffset()));
     }
 
-    @Deprecated
-    protected String getSpecialInfo(int specialValue) {
-        return "";
-    }
-
-    @Deprecated
-    protected void drawLine(int lineNumber, String line) {
-        drawText(10, getDescriptionYOffset() + lineNumber * 10, line, 0xFF000000);
-    }
-
     protected int getDescriptionYOffset() {
         return mRecipeMap.neiBackgroundSize.height + mRecipeMap.neiBackgroundOffset.y + WINDOW_OFFSET.y + 3;
     }
@@ -443,26 +425,6 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         public final int mChance;
         public final int realStackSize;
         public final boolean renderRealStackSize;
-
-        @Deprecated
-        public FixedPositionedStack(Object object, int x, int y) {
-            this(object, true, x, y, 0, true);
-        }
-
-        @Deprecated
-        public FixedPositionedStack(Object object, int x, int y, boolean aUnificate) {
-            this(object, true, x, y, 0, aUnificate);
-        }
-
-        @Deprecated
-        public FixedPositionedStack(Object object, int x, int y, int aChance) {
-            this(object, true, x, y, aChance, true);
-        }
-
-        @Deprecated
-        public FixedPositionedStack(Object object, int x, int y, int aChance, boolean aUnificate) {
-            this(object, true, x, y, aChance, aUnificate);
-        }
 
         public FixedPositionedStack(Object object, boolean renderRealStackSizes, int x, int y) {
             this(object, renderRealStackSizes, x, y, 0, true);
@@ -652,11 +614,6 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         public List<PositionedStack> getOtherStacks() {
             return this.mOutputs;
         }
-    }
-
-    @Deprecated
-    public String trans(String aKey, String aEnglish) {
-        return GT_Utility.trans(aKey, aEnglish);
     }
 
     private class SortedRecipeListCache {
