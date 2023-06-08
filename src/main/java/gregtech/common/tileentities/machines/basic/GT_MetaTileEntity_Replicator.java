@@ -65,7 +65,6 @@ public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine
             "Producing Elemental Matter",
             1,
             1,
-            "",
             TextureFactory.of(
                 TextureFactory.of(OVERLAY_SIDE_REPLICATOR_ACTIVE),
                 TextureFactory.builder()
@@ -116,19 +115,13 @@ public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine
                     .build()));
     }
 
-    public GT_MetaTileEntity_Replicator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-        String aNEIName) {
-        super(aName, aTier, 1, aDescription, aTextures, 1, 1, aNEIName);
+    public GT_MetaTileEntity_Replicator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, 1, aDescription, aTextures, 1, 1);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Replicator(
-            this.mName,
-            this.mTier,
-            this.mDescriptionArray,
-            this.mTextures,
-            this.mNEIName);
+        return new GT_MetaTileEntity_Replicator(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     public static long cubicFluidMultiplier(long amount) {

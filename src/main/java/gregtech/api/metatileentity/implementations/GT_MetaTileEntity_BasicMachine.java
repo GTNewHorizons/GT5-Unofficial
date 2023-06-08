@@ -107,7 +107,6 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public int mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
     public ForgeDirection mMainFacing = ForgeDirection.WEST;
     public FluidStack mOutputFluid;
-    public String mNEIName;
     protected final Power mPower;
 
     /**
@@ -131,7 +130,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
      *                  SideFacingPipeInactive
      */
     public GT_MetaTileEntity_BasicMachine(int aID, String aName, String aNameRegional, int aTier, int aAmperage,
-        String aDescription, int aInputSlotCount, int aOutputSlotCount, String aNEIName, ITexture... aOverlays) {
+        String aDescription, int aInputSlotCount, int aOutputSlotCount, ITexture... aOverlays) {
         super(
             aID,
             aName,
@@ -143,12 +142,11 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mInputSlotCount = Math.max(0, aInputSlotCount);
         mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
         mAmperage = aAmperage;
-        mNEIName = aNEIName;
         mPower = buildPower();
     }
 
     public GT_MetaTileEntity_BasicMachine(int aID, String aName, String aNameRegional, int aTier, int aAmperage,
-        String[] aDescription, int aInputSlotCount, int aOutputSlotCount, String aNEIName, ITexture... aOverlays) {
+        String[] aDescription, int aInputSlotCount, int aOutputSlotCount, ITexture... aOverlays) {
         super(
             aID,
             aName,
@@ -160,17 +158,15 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mInputSlotCount = Math.max(0, aInputSlotCount);
         mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
         mAmperage = aAmperage;
-        mNEIName = aNEIName;
         mPower = buildPower();
     }
 
     public GT_MetaTileEntity_BasicMachine(String aName, int aTier, int aAmperage, String[] aDescription,
-        ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, String aNEIName) {
+        ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount) {
         super(aName, aTier, OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1, aDescription, aTextures);
         mInputSlotCount = Math.max(0, aInputSlotCount);
         mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
         mAmperage = aAmperage;
-        mNEIName = aNEIName;
         mPower = buildPower();
     }
 
@@ -852,7 +848,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public String[] getInfoData() {
-        return new String[] { EnumChatFormatting.BLUE + mNEIName + EnumChatFormatting.RESET, "Progress:",
+        return new String[] {
             EnumChatFormatting.GREEN + GT_Utility.formatNumbers((mProgresstime / 20))
                 + EnumChatFormatting.RESET
                 + " s / "
