@@ -54,7 +54,6 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
             "UUM = Matter * Fabrication Squared",
             1,
             1,
-            "Massfabricator.png",
             "",
             TextureFactory.of(
                 TextureFactory.of(OVERLAY_SIDE_MASSFAB_ACTIVE),
@@ -107,15 +106,9 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
         EUt = V[1] * (long) Math.pow(2, mTier + 2);
     }
 
-    public GT_MetaTileEntity_Massfabricator(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
-        String aGUIName, String aNEIName) {
-        super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
-        EUt = V[1] * (long) Math.pow(2, mTier + 2);
-    }
-
     public GT_MetaTileEntity_Massfabricator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-        String aGUIName, String aNEIName) {
-        super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
+        String aNEIName) {
+        super(aName, aTier, 1, aDescription, aTextures, 1, 1, aNEIName);
         EUt = V[1] * (long) Math.pow(2, mTier + 2);
     }
 
@@ -126,7 +119,6 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
             this.mTier,
             this.mDescriptionArray,
             this.mTextures,
-            this.mGUIName,
             this.mNEIName);
     }
 

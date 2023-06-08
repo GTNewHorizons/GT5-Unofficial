@@ -32,10 +32,6 @@ public class GT_MetaTileEntity_Compressor_Steel extends GT_MetaTileEntity_BasicM
         super(aID, aName, aNameRegional, "Compressing Items", 1, 1, true);
     }
 
-    public GT_MetaTileEntity_Compressor_Steel(String aName, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aDescription, aTextures, 1, 1, true);
-    }
-
     public GT_MetaTileEntity_Compressor_Steel(String aName, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aDescription, aTextures, 1, 1, true);
     }

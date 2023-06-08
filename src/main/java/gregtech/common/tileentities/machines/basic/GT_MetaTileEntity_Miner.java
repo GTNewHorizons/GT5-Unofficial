@@ -73,7 +73,6 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
                 String.format("Fortune bonus of %d", aTier) },
             2,
             2,
-            "Miner.png",
             "",
             TextureFactory.of(
                 TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE_ACTIVE")),
@@ -127,23 +126,16 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
         radiusConfig = RADIUS[mTier];
     }
 
-    public GT_MetaTileEntity_Miner(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
-        String aGUIName, String aNEIName) {
-        super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
-        mSpeed = SPEED[aTier];
-        radiusConfig = RADIUS[mTier];
-    }
-
     public GT_MetaTileEntity_Miner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-        String aGUIName, String aNEIName) {
-        super(aName, aTier, 1, aDescription, aTextures, 2, 2, aGUIName, aNEIName);
+        String aNEIName) {
+        super(aName, aTier, 1, aDescription, aTextures, 2, 2, aNEIName);
         mSpeed = SPEED[aTier];
         radiusConfig = RADIUS[mTier];
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Miner(mName, mTier, mDescriptionArray, mTextures, mGUIName, mNEIName);
+        return new GT_MetaTileEntity_Miner(mName, mTier, mDescriptionArray, mTextures, mNEIName);
     }
 
     @Override

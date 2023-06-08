@@ -67,7 +67,6 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
             "",
             1, // input slot count
             1, // output slot count
-            "Default.png", // GUI name
             "", // NEI name
             TextureFactory.of(
                 TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE),
@@ -131,8 +130,8 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
     }
 
     protected GT_MetaTileEntity_AdvSeismicProspector(String aName, int aTier, String[] aDescription,
-        ITexture[][][] aTextures, String aGUIName, String aNEIName, int aRadius, int aStep) {
-        super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
+        ITexture[][][] aTextures, String aNEIName, int aRadius, int aStep) {
+        super(aName, aTier, 1, aDescription, aTextures, 1, 1, aNEIName);
         radius = aRadius;
         step = aStep;
     }
@@ -144,7 +143,6 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
             this.mTier,
             this.mDescriptionArray,
             this.mTextures,
-            this.mGUIName,
             this.mNEIName,
             this.radius,
             this.step);

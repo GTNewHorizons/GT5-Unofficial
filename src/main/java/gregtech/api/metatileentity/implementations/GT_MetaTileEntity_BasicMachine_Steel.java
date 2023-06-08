@@ -30,11 +30,6 @@ public abstract class GT_MetaTileEntity_BasicMachine_Steel extends GT_MetaTileEn
         super(aID, aName, aNameRegional, aDescription, aInputSlotCount, aOutputSlotCount, aHighPressure);
     }
 
-    public GT_MetaTileEntity_BasicMachine_Steel(String aName, String aDescription, ITexture[][][] aTextures,
-        int aInputSlotCount, int aOutputSlotCount, boolean aHighPressure) {
-        super(aName, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, aHighPressure);
-    }
-
     public GT_MetaTileEntity_BasicMachine_Steel(String aName, String[] aDescription, ITexture[][][] aTextures,
         int aInputSlotCount, int aOutputSlotCount, boolean aHighPressure) {
         super(aName, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, aHighPressure);
