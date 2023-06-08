@@ -5,7 +5,6 @@ import static gregtech.api.enums.GT_Values.E;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
@@ -80,14 +79,6 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
     protected boolean onCoverShiftRightClickImpl(ForgeDirection side, int aCoverID,
         ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer) {
         return onCoverShiftRightclick(side, aCoverID, convert(aCoverVariable), aTileEntity, aPlayer);
-    }
-
-    @Deprecated
-    @Override
-    protected Object getClientGUIImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer,
-        World aWorld) {
-        return getClientGUI(side, aCoverID, convert(aCoverVariable), aTileEntity);
     }
 
     @Override
@@ -245,11 +236,6 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
             return true;
         }
         return false;
-    }
-
-    @Deprecated
-    public Object getClientGUI(ForgeDirection side, int aCoverID, int coverData, ICoverable aTileEntity) {
-        return null;
     }
 
     /**

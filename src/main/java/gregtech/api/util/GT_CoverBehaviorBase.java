@@ -12,7 +12,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagInt;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
@@ -213,12 +212,6 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     public final boolean onCoverShiftRightClick(ForgeDirection side, int aCoverID, ISerializableObject aCoverVariable,
         ICoverable aTileEntity, EntityPlayer aPlayer) {
         return onCoverShiftRightClickImpl(side, aCoverID, forceCast(aCoverVariable), aTileEntity, aPlayer);
-    }
-
-    @Deprecated
-    public final Object getClientGUI(ForgeDirection side, int aCoverID, ISerializableObject aCoverVariable,
-        ICoverable aTileEntity, EntityPlayer aPlayer, World aWorld) {
-        return getClientGUIImpl(side, aCoverID, forceCast(aCoverVariable), aTileEntity, aPlayer, aWorld);
     }
 
     /**
@@ -588,12 +581,6 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
             return true;
         }
         return false;
-    }
-
-    @Deprecated
-    protected Object getClientGUIImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity,
-        EntityPlayer aPlayer, World aWorld) {
-        return null;
     }
 
     /**

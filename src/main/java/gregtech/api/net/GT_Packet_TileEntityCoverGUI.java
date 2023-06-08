@@ -1,7 +1,5 @@
 package gregtech.api.net;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
@@ -12,10 +10,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.google.common.io.ByteArrayDataInput;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.gui.GT_GUICover;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverInfo;
 import io.netty.buffer.ByteBuf;
@@ -195,24 +191,6 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
             final TileEntity tile = aWorld.getTileEntity(mX, mY, mZ);
             if (tile instanceof IGregTechTileEntity gtTile && !gtTile.isDead()) {
                 gtTile.setCoverDataAtSide(side, coverData); // Set it client side to read later.
-
-                GT_CoverBehaviorBase<?> cover = gtTile.getCoverBehaviorAtSideNew(side);
-                if (cover.hasCoverGUI()) {
-                    final GuiScreen gui = (GuiScreen) cover.getClientGUI(
-                        side,
-                        gtTile.getCoverIDAtSide(side),
-                        gtTile.getComplexCoverDataAtSide(side),
-                        gtTile,
-                        thePlayer,
-                        thePlayer.worldObj);
-                    // If it's one of this mod's covers, tell it to exit to the GUI with the specified ID (-1 is
-                    // ignored)
-                    if (gui instanceof GT_GUICover guiCover) {
-                        guiCover.setParentGuiId(parentGuiId);
-                    }
-                    Minecraft.getMinecraft()
-                        .displayGuiScreen(gui);
-                }
             }
         }
     }
