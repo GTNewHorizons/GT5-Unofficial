@@ -112,11 +112,7 @@ public class GT_Packet_GtTileEntityGuiRequest extends GT_Packet_New {
                 parentGuiId);
             GT_Values.NW.sendToPlayer(packet, player);
         } else if (guiId == 0) {
-            if (baseTile.useModularUI()) {
-                GT_UIInfos.openGTTileEntityUI(baseTile, player);
-            } else {
-                baseTile.openGUI(player);
-            }
+            GT_UIInfos.openGTTileEntityUI(baseTile, player);
         }
     }
 }

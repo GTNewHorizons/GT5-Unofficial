@@ -278,11 +278,6 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final int SLOT_NUMBER = 4;
         final Pos2d[] positions = new Pos2d[] { new Pos2d(70, 25), new Pos2d(88, 25), new Pos2d(70, 43),

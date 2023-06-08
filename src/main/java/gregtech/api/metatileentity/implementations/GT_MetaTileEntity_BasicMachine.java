@@ -503,20 +503,12 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         if (!GT_Mod.gregtechproxy.mForceFreeFace) {
-            if (useModularUI()) {
-                GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
-            } else {
-                aBaseMetaTileEntity.openGUI(aPlayer);
-            }
+            GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
             return true;
         }
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             if (aBaseMetaTileEntity.getAirAtSide(side)) {
-                if (useModularUI()) {
-                    GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
-                } else {
-                    aBaseMetaTileEntity.openGUI(aPlayer);
-                }
+                GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
                 return true;
             }
         }
@@ -1282,11 +1274,6 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     // GUI stuff
-
-    @Override
-    public boolean useModularUI() {
-        return getRecipeList() != null;
-    }
 
     @Override
     public int getCircuitSlotX() {

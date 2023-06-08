@@ -671,10 +671,6 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     // End Inventory
 
     // === Modular UI ===
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
 
     @Override
     public String getLocalName() {

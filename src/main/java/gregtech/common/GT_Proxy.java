@@ -2361,19 +2361,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
 
     @Override
     public Object getServerGuiElement(int aID, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
-        if (aID >= 1000) {
-            return null;
-        }
-        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity instanceof IGregTechTileEntity)) {
-            if (GUI_ID_COVER_SIDE_BASE <= aID && aID < GUI_ID_COVER_SIDE_BASE + 6) {
-                return null;
-            }
-            final IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-            if (tMetaTileEntity != null && !tMetaTileEntity.useModularUI()) {
-                return tMetaTileEntity.getServerGUI(aID, aPlayer.inventory, (IGregTechTileEntity) tTileEntity);
-            }
-        }
         return null;
     }
 
@@ -2400,10 +2387,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                         aWorld);
                 }
                 return null;
-            }
-            final IMetaTileEntity tMetaTileEntity = tile.getMetaTileEntity();
-            if (tMetaTileEntity != null && !tMetaTileEntity.useModularUI()) {
-                return tMetaTileEntity.getClientGUI(aID, aPlayer.inventory, tile);
             }
         }
         return null;

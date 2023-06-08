@@ -592,14 +592,8 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         return () -> !this.isDead();
     }
 
-    public boolean useModularUI() {
-        return false;
-    }
-
     @Override
     public ModularWindow createWindow(UIBuildContext buildContext) {
-        if (!useModularUI()) return null;
-
         buildContext.setValidator(getValidator());
         final ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
         builder.setBackground(getGUITextureSet().getMainBackground());

@@ -319,11 +319,6 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public boolean useModularUI() {
-        return false;
-    }
-
-    @Override
     public long getTimer() {
         return 0;
     }

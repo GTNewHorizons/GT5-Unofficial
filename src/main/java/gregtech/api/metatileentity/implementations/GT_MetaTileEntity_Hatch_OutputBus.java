@@ -185,11 +185,6 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         switch (mTier) {
             case 0 -> getBaseMetaTileEntity().add1by1Slot(builder);

@@ -209,13 +209,6 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     }
 
     /**
-     * For back compatibility, you need to override this if this MetaTileEntity uses ModularUI.
-     */
-    default boolean useModularUI() {
-        return false;
-    }
-
-    /**
      * From new ISidedInventory
      */
     boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side, ItemStack aStack);

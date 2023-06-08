@@ -111,11 +111,6 @@ public class GT_MetaTileEntity_CuringOven extends GT_MetaTileEntity_BasicMachine
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         getBaseMetaTileEntity().add1by1Slot(builder);
     }

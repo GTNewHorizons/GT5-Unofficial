@@ -235,11 +235,6 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
             new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)

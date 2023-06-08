@@ -1715,15 +1715,10 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     /*
      * GUI Work - Multiblock GUI related methods
      */
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
 
     @Override
     public ModularWindow createWindow(UIBuildContext buildContext) {
         System.out.println("MultiBlockController::createWindow");
-        if (!useModularUI()) return null;
 
         buildContext.setValidator(getValidator());
         final ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());

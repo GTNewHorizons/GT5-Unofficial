@@ -230,11 +230,6 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public boolean useModularUI() {
-        return hasValidMetaTileEntity() && getMetaTileEntity().useModularUI();
-    }
-
-    @Override
     public String getLocalName() {
         if (hasValidMetaTileEntity()) return getMetaTileEntity().getLocalName();
         return super.getLocalName();

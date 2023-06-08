@@ -843,9 +843,4 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
                 + " "
                 + StatCollector.translateToLocal("GT5U.machines.blocks") };
     }
-
-    @Override
-    public boolean useModularUI() {
-        return true;
-    }
 }

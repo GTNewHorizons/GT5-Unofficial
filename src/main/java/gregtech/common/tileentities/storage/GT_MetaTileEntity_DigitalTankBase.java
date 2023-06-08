@@ -521,11 +521,6 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
     }
 
     @Override
-    public boolean useModularUI() {
-        return true;
-    }
-
-    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         fluidTank.setAllowOverflow(allowOverflow());
         fluidTank.setPreventDraining(mLockFluid);

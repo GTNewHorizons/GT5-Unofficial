@@ -299,9 +299,4 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
         }
         return ss.toArray(new String[itemCache.size() + 2]);
     }
-
-    @Override
-    public boolean useModularUI() {
-        return false;
-    }
 }
