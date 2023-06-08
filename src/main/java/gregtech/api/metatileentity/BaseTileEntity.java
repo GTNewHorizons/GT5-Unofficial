@@ -1,7 +1,6 @@
 package gregtech.api.metatileentity;
 
 import static gregtech.api.enums.GT_Values.COMPASS_DIRECTIONS;
-import static gregtech.api.enums.GT_Values.GT;
 import static gregtech.api.enums.GT_Values.NW;
 import static gregtech.api.enums.GT_Values.SIDE_DOWN;
 import static gregtech.api.enums.GT_Values.SIDE_UP;
@@ -16,7 +15,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -181,20 +179,6 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     @Override
     public final boolean isClientSide() {
         return worldObj.isRemote;
-    }
-
-    @Override
-    @Deprecated
-    public final boolean openGUI(EntityPlayer aPlayer) {
-        return openGUI(aPlayer, 0);
-    }
-
-    @Override
-    @Deprecated
-    public final boolean openGUI(EntityPlayer aPlayer, int aID) {
-        if (aPlayer == null) return false;
-        aPlayer.openGui(GT, aID, worldObj, xCoord, yCoord, zCoord);
-        return true;
     }
 
     @Override
