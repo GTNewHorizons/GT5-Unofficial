@@ -75,7 +75,6 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
@@ -85,7 +84,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings.GameType;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
@@ -139,7 +137,6 @@ import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.objects.GT_ChunkManager;
@@ -150,7 +147,6 @@ import gregtech.api.util.GT_BlockMap;
 import gregtech.api.util.GT_CLS_Compat;
 import gregtech.api.util.GT_ChunkAssociatedData;
 import gregtech.api.util.GT_ClientPreference;
-import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
@@ -2366,29 +2362,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
 
     @Override
     public Object getClientGuiElement(int aID, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
-        if (aID >= 1000) {
-            return null;
-        }
-        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity instanceof IGregTechTileEntity tile)) {
-
-            if (GUI_ID_COVER_SIDE_BASE <= aID && aID < GUI_ID_COVER_SIDE_BASE + 6) {
-                final ForgeDirection side = ForgeDirection
-                    .getOrientation((byte) (aID - GT_Proxy.GUI_ID_COVER_SIDE_BASE));
-                GT_CoverBehaviorBase<?> cover = tile.getCoverBehaviorAtSideNew(side);
-
-                if (cover.hasCoverGUI() && !cover.useModularUI()) {
-                    return cover.getClientGUI(
-                        side,
-                        tile.getCoverIDAtSide(side),
-                        tile.getComplexCoverDataAtSide(side),
-                        tile,
-                        aPlayer,
-                        aWorld);
-                }
-                return null;
-            }
-        }
         return null;
     }
 

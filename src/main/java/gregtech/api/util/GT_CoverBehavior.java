@@ -9,11 +9,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
-import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
 
 /**
  * For Covers with a special behavior. Has fixed storage format of 4 byte. Not very convenient...
@@ -243,18 +241,7 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
         if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             lastPlayer = aPlayer;
             mPlayerNotified = false;
-            if (useModularUI()) {
-                GT_UIInfos.openCoverUI(aTileEntity, aPlayer, side);
-            } else {
-                GT_Values.NW.sendToPlayer(
-                    new GT_Packet_TileEntityCoverGUI(
-                        side,
-                        aCoverID,
-                        aCoverVariable,
-                        aTileEntity,
-                        (EntityPlayerMP) aPlayer),
-                    (EntityPlayerMP) aPlayer);
-            }
+            GT_UIInfos.openCoverUI(aTileEntity, aPlayer, side);
             return true;
         }
         return false;
