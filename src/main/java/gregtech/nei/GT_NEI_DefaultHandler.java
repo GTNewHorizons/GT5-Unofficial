@@ -1,6 +1,5 @@
 package gregtech.nei;
 
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.lang.ref.SoftReference;
 import java.text.DecimalFormat;
@@ -20,7 +19,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -38,12 +36,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;
-import codechicken.nei.guihook.GuiContainerManager;
-import codechicken.nei.guihook.IContainerInputHandler;
-import codechicken.nei.guihook.IContainerTooltipHandler;
-import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiRecipe;
-import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.ICraftingHandler;
 import codechicken.nei.recipe.IUsageHandler;
 import codechicken.nei.recipe.RecipeCatalysts;
@@ -94,11 +87,6 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     protected final ItemStackHandler fluidInputsInventory;
     protected final ItemStackHandler fluidOutputsInventory;
     protected static final Pos2d WINDOW_OFFSET = new Pos2d(-sOffsetX, -sOffsetY);
-
-    static {
-        GuiContainerManager.addInputHandler(new GT_RectHandler());
-        GuiContainerManager.addTooltipHandler(new GT_RectHandler());
-    }
 
     public GT_NEI_DefaultHandler(GT_Recipe.GT_Recipe_Map aRecipeMap) {
         super(aRecipeMap);
@@ -448,97 +436,6 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
     public static int getDrawTicks() {
         return drawTicks;
-    }
-
-    public static class GT_RectHandler implements IContainerInputHandler, IContainerTooltipHandler {
-
-        @Override
-        public boolean mouseClicked(GuiContainer gui, int mouseX, int mouseY, int button) {
-            if (canHandle(gui)) {
-                NEI_TransferRectHost host = (NEI_TransferRectHost) gui;
-                if (hostRectContainsMouse(host, getMousePos(gui, mouseX, mouseY))) {
-                    if (button == 0) {
-                        return handleTransferRectMouseClick(host, false);
-                    }
-                    if (button == 1) {
-                        return handleTransferRectMouseClick(host, true);
-                    }
-                }
-            }
-            return false;
-        }
-
-        private Point getMousePos(GuiContainer gui, int mouseX, int mouseY) {
-            return new Point(0, 0);
-        }
-
-        private boolean hostRectContainsMouse(NEI_TransferRectHost host, Point mousePos) {
-            return host.getNeiTransferRect()
-                .contains(mousePos);
-        }
-
-        private boolean handleTransferRectMouseClick(NEI_TransferRectHost gui, boolean usage) {
-            String mNEI = gui.getNeiTransferRectString();
-            Object[] args = gui.getNeiTransferRectArgs();
-            return usage ? GuiUsageRecipe.openRecipeGui(mNEI) : GuiCraftingRecipe.openRecipeGui(mNEI, args);
-        }
-
-        @Override
-        public boolean lastKeyTyped(GuiContainer gui, char keyChar, int keyCode) {
-            return false;
-        }
-
-        public boolean canHandle(GuiContainer gui) {
-            return gui instanceof NEI_TransferRectHost
-                && GT_Utility.isStringValid(((NEI_TransferRectHost) gui).getNeiTransferRectString());
-        }
-
-        @Override
-        public List<String> handleTooltip(GuiContainer gui, int mouseX, int mouseY, List<String> currentTip) {
-            if ((canHandle(gui)) && (currentTip.isEmpty())) {
-                NEI_TransferRectHost host = (NEI_TransferRectHost) gui;
-                if (hostRectContainsMouse(host, getMousePos(gui, mouseX, mouseY))) {
-                    currentTip.add(host.getNeiTransferRectTooltip());
-                }
-            }
-            return currentTip;
-        }
-
-        @Override
-        public List<String> handleItemDisplayName(GuiContainer gui, ItemStack itemstack, List<String> currentTip) {
-            return currentTip;
-        }
-
-        @Override
-        public List<String> handleItemTooltip(GuiContainer gui, ItemStack itemstack, int mouseX, int mouseY,
-            List<String> currentTip) {
-            return currentTip;
-        }
-
-        @Override
-        public boolean keyTyped(GuiContainer gui, char keyChar, int keyCode) {
-            return false;
-        }
-
-        @Override
-        public void onKeyTyped(GuiContainer gui, char keyChar, int keyID) {}
-
-        @Override
-        public void onMouseClicked(GuiContainer gui, int mouseX, int mouseY, int button) {}
-
-        @Override
-        public void onMouseUp(GuiContainer gui, int mouseX, int mouseY, int button) {}
-
-        @Override
-        public boolean mouseScrolled(GuiContainer gui, int mouseX, int mouseY, int scrolled) {
-            return false;
-        }
-
-        @Override
-        public void onMouseScrolled(GuiContainer gui, int mouseX, int mouseY, int scrolled) {}
-
-        @Override
-        public void onMouseDragged(GuiContainer gui, int mouseX, int mouseY, int button, long heldTime) {}
     }
 
     public static class FixedPositionedStack extends PositionedStack {
