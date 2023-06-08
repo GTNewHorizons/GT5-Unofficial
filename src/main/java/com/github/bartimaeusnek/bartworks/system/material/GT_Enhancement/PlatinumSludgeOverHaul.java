@@ -120,7 +120,8 @@ import gregtech.common.blocks.GT_Block_Ores_Abstract;
 public class PlatinumSludgeOverHaul {
 
     private static final Materials[] BLACKLIST = { Materials.HSSS, Materials.EnderiumBase, Materials.Osmiridium,
-            Materials.get("Uraniumtriplatinid"), Materials.get("Tetranaquadahdiindiumhexaplatiumosminid"),
+            Materials.TPV, Materials.get("Uraniumtriplatinid"),
+            Materials.get("Tetranaquadahdiindiumhexaplatiumosminid"),
             Materials.get("Longasssuperconductornameforuvwire"), };
     private static final OrePrefixes[] OPBLACKLIST = { crushedCentrifuged, crushed, crushedPurified, dustPure,
             dustImpure, dustRefined, dust, dustTiny, dustSmall };
@@ -722,7 +723,8 @@ public class PlatinumSludgeOverHaul {
         maploop: for (GT_Recipe.GT_Recipe_Map map : GT_Recipe.GT_Recipe_Map.sMappings) {
             if (map == GT_Recipe.GT_Recipe_Map.sFusionRecipes || map == GT_Recipe.GT_Recipe_Map.sUnboxinatorRecipes
                     || map == GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes
-                    || map.mUnlocalizedName.equals("gt.recipe.eyeofharmony"))
+                    || map.mUnlocalizedName.equals("gt.recipe.eyeofharmony")
+                    || map.mUnlocalizedName.equals("gtpp.recipe.quantumforcesmelter"))
                 continue;
             HashSet<GT_Recipe> toDel = new HashSet<>();
             recipeloop: for (GT_Recipe recipe : map.mRecipeList) {
