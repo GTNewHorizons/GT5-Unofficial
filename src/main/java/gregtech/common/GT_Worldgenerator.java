@@ -454,7 +454,8 @@ public class GT_Worldgenerator implements IWorldGenerator {
             for (int x = wXbox; x < eXbox; x++) {
                 for (int z = nZbox; z < sZbox; z++) {
                     // Determine if this X/Z is an orevein seed
-                    if (((Math.abs(x) % 3) == 1) && ((Math.abs(z) % 3) == 1)) {
+                    // use floorMod because java was written by idiots
+                    if ((Math.floorMod(x, 3) == 1) && (Math.floorMod(z, 3) == 1)) {
                         if (debugWorldGen) GT_Log.out.println("Adding seed x=" + x + " z=" + z);
                         seedList.add(new NearbySeeds(x, z));
                     }
