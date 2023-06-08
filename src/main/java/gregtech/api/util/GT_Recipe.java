@@ -2060,8 +2060,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         .setPos(new Pos2d(106, 28).add(windowOffset))
                         .setSize(bar2Width, 72));
             }
-        }.useModularUI(true)
-            .setRenderRealStackSizes(false)
+        }.setRenderRealStackSizes(false)
             .setUsualFluidInputCount(4)
             .setNEIBackgroundOffset(2, 23)
             .setLogoPos(152, 83)
@@ -2090,7 +2089,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aNEISpecialValuePost,
                     aShowVoltageAmperageInNEI,
                     aNEIAllowed);
-                useModularUI(true);
                 setUsualFluidInputCount(20);
                 setUsualFluidOutputCount(1);
                 setProgressBarPos(86, 44);
@@ -2988,8 +2986,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1,
             "",
             false,
-            true).useModularUI(true)
-                .setUsualFluidInputCount(3)
+            true).setUsualFluidInputCount(3)
                 .setDisableOptimize(true)
                 .setSlotOverlay(false, false, true, GT_UITextures.OVERLAY_SLOT_LENS)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE, ProgressBar.Direction.RIGHT);
@@ -3009,8 +3006,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             0,
             E,
             true,
-            true).useModularUI(true)
-                .setUsualFluidInputCount(3)
+            true).setUsualFluidInputCount(3)
                 .setUsualFluidOutputCount(0)
                 .setDisableOptimize(true)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE, ProgressBar.Direction.RIGHT)
@@ -3115,11 +3111,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * not actually restrict number of fluids used in the recipe.
          */
         private int usualFluidOutputCount;
-
-        /**
-         * Whether to use ModularUI for slot placements.
-         */
-        public boolean useModularUI = false;
 
         /**
          * Overlays used for GUI. 1 = If it's fluid slot. 2 = If it's output slot. 4 = If it's first slot in the same
@@ -3308,14 +3299,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return this;
         }
 
-        public GT_Recipe_Map useModularUI(boolean use) {
-            this.useModularUI = use;
-            return this;
-        }
-
         public GT_Recipe_Map setSlotOverlay(boolean isFluid, boolean isOutput, boolean isFirst, boolean isSpecial,
             IDrawable slotOverlay) {
-            useModularUI(true);
             this.slotOverlays.put(
                 (byte) ((isFluid ? 1 : 0) + (isOutput ? 2 : 0) + (isFirst ? 4 : 0) + (isSpecial ? 8 : 0)),
                 slotOverlay);
@@ -3333,7 +3318,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         public GT_Recipe_Map setSlotOverlaySteam(boolean isFluid, boolean isOutput, boolean isFirst, boolean isSpecial,
             SteamTexture slotOverlay) {
-            useModularUI(true);
             this.slotOverlaysSteam.put(
                 (byte) ((isFluid ? 1 : 0) + (isOutput ? 2 : 0) + (isFirst ? 4 : 0) + (isSpecial ? 8 : 0)),
                 slotOverlay);
@@ -3367,7 +3351,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          */
         public GT_Recipe_Map setProgressBarWithFallback(FallbackableUITexture progressBarTexture,
             ProgressBar.Direction progressBarDirection) {
-            useModularUI(true);
             this.progressBarTexture = progressBarTexture;
             this.progressBarDirection = progressBarDirection;
             return this;
@@ -3386,81 +3369,68 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         public GT_Recipe_Map setProgressBarSize(int x, int y) {
-            useModularUI(true);
             this.progressBarSize = new Size(x, y);
             return this;
         }
 
         public GT_Recipe_Map setProgressBarPos(int x, int y) {
-            useModularUI(true);
             this.progressBarPos = new Pos2d(x, y);
             return this;
         }
 
         public GT_Recipe_Map setProgressBarImageSize(int progressBarImageSize) {
-            useModularUI(true);
             this.progressBarImageSize = progressBarImageSize;
             return this;
         }
 
         public GT_Recipe_Map setNEITransferRect(Rectangle neiTransferRect) {
-            useModularUI(true);
             this.neiTransferRect = neiTransferRect;
             return this;
         }
 
         public GT_Recipe_Map addSpecialTexture(int width, int height, int x, int y, IDrawable texture) {
-            useModularUI(true);
             specialTextures
                 .add(new ImmutablePair<>(texture, new ImmutablePair<>(new Size(width, height), new Pos2d(x, y))));
             return this;
         }
 
         public GT_Recipe_Map addSpecialTextureSteam(int width, int height, int x, int y, SteamTexture texture) {
-            useModularUI(true);
             specialTexturesSteam
                 .add(new ImmutablePair<>(texture, new ImmutablePair<>(new Size(width, height), new Pos2d(x, y))));
             return this;
         }
 
         public GT_Recipe_Map setUsualFluidInputCount(int usualFluidInputCount) {
-            useModularUI(true);
             this.usualFluidInputCount = usualFluidInputCount;
             return this;
         }
 
         public GT_Recipe_Map setUsualFluidOutputCount(int usualFluidOutputCount) {
-            useModularUI(true);
             this.usualFluidOutputCount = usualFluidOutputCount;
             return this;
         }
 
         public GT_Recipe_Map setLogo(IDrawable logo) {
-            useModularUI(true);
             this.logo = logo;
             return this;
         }
 
         public GT_Recipe_Map setLogoPos(int x, int y) {
-            useModularUI(true);
             this.logoPos = new Pos2d(x, y);
             return this;
         }
 
         public GT_Recipe_Map setLogoSize(int width, int height) {
-            useModularUI(true);
             this.logoSize = new Size(width, height);
             return this;
         }
 
         public GT_Recipe_Map setNEIBackgroundOffset(int x, int y) {
-            useModularUI(true);
             this.neiBackgroundOffset = new Pos2d(x, y);
             return this;
         }
 
         public GT_Recipe_Map setNEIBackgroundSize(int width, int height) {
-            useModularUI(true);
             this.neiBackgroundSize = new Size(width, height);
             return this;
         }
@@ -4550,7 +4520,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 aNEISpecialValuePost,
                 aShowVoltageAmperageInNEI,
                 aNEIAllowed);
-            useModularUI(true);
             setLogoPos(80, 62);
         }
 
@@ -4625,7 +4594,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 aNEISpecialValuePost,
                 aShowVoltageAmperageInNEI,
                 aNEIAllowed);
-            useModularUI(true);
         }
 
         @Override
