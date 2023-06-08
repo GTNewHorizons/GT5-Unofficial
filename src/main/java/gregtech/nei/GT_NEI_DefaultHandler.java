@@ -1,7 +1,5 @@
 package gregtech.nei;
 
-import static codechicken.nei.recipe.RecipeInfo.getGuiOffset;
-
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.lang.ref.SoftReference;
@@ -55,7 +53,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.GT_GUIContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
@@ -472,9 +469,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         }
 
         private Point getMousePos(GuiContainer gui, int mouseX, int mouseY) {
-            return new Point(
-                mouseX - ((GT_GUIContainer) gui).getLeft() - getGuiOffset(gui)[0],
-                mouseY - ((GT_GUIContainer) gui).getTop() - getGuiOffset(gui)[1]);
+            return new Point(0, 0);
         }
 
         private boolean hostRectContainsMouse(NEI_TransferRectHost host, Point mousePos) {

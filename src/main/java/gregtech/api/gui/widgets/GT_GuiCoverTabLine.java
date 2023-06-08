@@ -1,6 +1,5 @@
 package gregtech.api.gui.widgets;
 
-import java.awt.Rectangle;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
@@ -15,7 +14,6 @@ import org.lwjgl.opengl.GL11;
 import codechicken.nei.api.API;
 import codechicken.nei.api.INEIGuiAdapter;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GT_Packet_GtTileEntityGuiRequest;
 import gregtech.common.GT_Proxy;
@@ -38,7 +36,6 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
     /**
      * Let's you access an IGregTechTileEntity's covers as tabs on the GUI's sides
      *
-     * @param gui           GT_ITabRenderer gui which this tab line attaches to
      * @param tabLineLeft   left position of the tab line in relation to the gui
      * @param tabLineTop    top position of the tab line in relation to the gui
      * @param tabHeight     height of a tab
@@ -53,10 +50,21 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
      * @param tile          The IGregTechTileEntity the covers of which we are accessing
      * @param colorization  The colorization of the GUI we are adding tabs to
      */
-    public GT_GuiCoverTabLine(GT_GUIContainerMetaTile_Machine gui, int tabLineLeft, int tabLineTop, int tabHeight,
-        int tabWidth, int tabSpacing, DisplayStyle xDir, DisplayStyle yDir, DisplayStyle displayMode,
-        GT_GuiTabIconSet tabBackground, IGregTechTileEntity tile, int colorization) {
-        super(gui, 6, tabLineLeft, tabLineTop, tabHeight, tabWidth, tabSpacing, xDir, yDir, displayMode, tabBackground);
+    public GT_GuiCoverTabLine(int tabLineLeft, int tabLineTop, int tabHeight, int tabWidth, int tabSpacing,
+        DisplayStyle xDir, DisplayStyle yDir, DisplayStyle displayMode, GT_GuiTabIconSet tabBackground,
+        IGregTechTileEntity tile, int colorization) {
+        super(
+            null,
+            6,
+            tabLineLeft,
+            tabLineTop,
+            tabHeight,
+            tabWidth,
+            tabSpacing,
+            xDir,
+            yDir,
+            displayMode,
+            tabBackground);
         this.tile = tile;
         this.colorization = colorization;
         this.translatedSides = new String[6];
@@ -156,19 +164,6 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
 
         @Override
         public boolean hideItemPanelSlot(GuiContainer gui, int x, int y, int w, int h) {
-            final Rectangle neiSlotArea = new Rectangle(x, y, w, h);
-            if (gui instanceof GT_GUIContainerMetaTile_Machine) {
-                final GT_GuiTabLine tabLine = ((GT_GUIContainerMetaTile_Machine) gui).coverTabs;
-                if (!tabLine.visible) {
-                    return false;
-                }
-                for (int i = 0; i < tabLine.mTabs.length; i++) {
-                    if (tabLine.mTabs[i] != null && tabLine.mTabs[i].getBounds()
-                        .intersects(neiSlotArea)) {
-                        return true;
-                    }
-                }
-            }
             return false;
         }
     }
