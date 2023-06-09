@@ -141,7 +141,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                         if (tCellBalance > 0L) {
                                             recipeBuilder.itemInputs(aStack, ItemList.Cell_Empty.get(tCellBalance));
                                         } else {
-                                            recipeBuilder.itemInputs(GT_Utility.copyAmount(tItemAmount, aStack));
+                                            recipeBuilder.itemInputs(aStack);
                                         }
                                         if (tCellBalance < 0L) {
                                             tList.add(ItemList.Cell_Empty.get(-tCellBalance));
