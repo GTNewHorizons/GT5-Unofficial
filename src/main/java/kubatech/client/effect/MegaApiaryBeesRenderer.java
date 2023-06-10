@@ -20,7 +20,9 @@
 
 package kubatech.client.effect;
 
-import static net.minecraft.client.renderer.entity.RenderManager.*;
+import static net.minecraft.client.renderer.entity.RenderManager.renderPosX;
+import static net.minecraft.client.renderer.entity.RenderManager.renderPosY;
+import static net.minecraft.client.renderer.entity.RenderManager.renderPosZ;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;

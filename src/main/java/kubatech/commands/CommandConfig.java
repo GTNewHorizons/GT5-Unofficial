@@ -20,7 +20,9 @@
 
 package kubatech.commands;
 
-import static kubatech.commands.CommandConfig.Translations.*;
+import static kubatech.commands.CommandConfig.Translations.INVALID_OPTION;
+import static kubatech.commands.CommandConfig.Translations.SUCCESS;
+import static kubatech.commands.CommandConfig.Translations.USAGE;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;

@@ -20,7 +20,12 @@
 
 package kubatech.commands;
 
-import static kubatech.commands.CommandTea.Translations.*;
+import static kubatech.commands.CommandTea.Translations.INVALID_OPTION;
+import static kubatech.commands.CommandTea.Translations.PLAYER_NOT_FOUND;
+import static kubatech.commands.CommandTea.Translations.SUCCESS_ADD;
+import static kubatech.commands.CommandTea.Translations.SUCCESS_GET;
+import static kubatech.commands.CommandTea.Translations.SUCCESS_SET;
+import static kubatech.commands.CommandTea.Translations.USAGE;
 
 import java.math.BigInteger;
 import java.util.UUID;

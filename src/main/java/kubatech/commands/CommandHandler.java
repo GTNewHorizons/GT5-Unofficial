@@ -20,9 +20,15 @@
 
 package kubatech.commands;
 
-import static kubatech.commands.CommandHandler.Translations.*;
+import static kubatech.commands.CommandHandler.Translations.CANT_FIND;
+import static kubatech.commands.CommandHandler.Translations.GENERIC_HELP;
+import static kubatech.commands.CommandHandler.Translations.INVALID;
+import static kubatech.commands.CommandHandler.Translations.USAGE;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;

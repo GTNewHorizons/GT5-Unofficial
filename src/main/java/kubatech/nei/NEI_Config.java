@@ -20,7 +20,19 @@
 
 package kubatech.nei;
 
-import static kubatech.api.enums.ItemList.*;
+import static kubatech.api.enums.ItemList.LegendaryBlackTea;
+import static kubatech.api.enums.ItemList.LegendaryButterflyTea;
+import static kubatech.api.enums.ItemList.LegendaryEarlGrayTea;
+import static kubatech.api.enums.ItemList.LegendaryGreenTea;
+import static kubatech.api.enums.ItemList.LegendaryLemonTea;
+import static kubatech.api.enums.ItemList.LegendaryMilkTea;
+import static kubatech.api.enums.ItemList.LegendaryOolongTea;
+import static kubatech.api.enums.ItemList.LegendaryPeppermintTea;
+import static kubatech.api.enums.ItemList.LegendaryPuerhTea;
+import static kubatech.api.enums.ItemList.LegendaryRedTea;
+import static kubatech.api.enums.ItemList.LegendaryUltimateTea;
+import static kubatech.api.enums.ItemList.LegendaryWhiteTea;
+import static kubatech.api.enums.ItemList.LegendaryYellowTea;
 
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;

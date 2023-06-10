@@ -20,7 +20,22 @@
 
 package kubatech.nei;
 
-import static kubatech.nei.Mob_Handler.Translations.*;
+import static kubatech.nei.Mob_Handler.Translations.ADDITIONAL_DROPS;
+import static kubatech.nei.Mob_Handler.Translations.AVERAGE_REMINDER;
+import static kubatech.nei.Mob_Handler.Translations.BOSS;
+import static kubatech.nei.Mob_Handler.Translations.CANNOT_USE_VIAL;
+import static kubatech.nei.Mob_Handler.Translations.CHANCE;
+import static kubatech.nei.Mob_Handler.Translations.EEC_CHANCE;
+import static kubatech.nei.Mob_Handler.Translations.INFERNAL_ALWAYS;
+import static kubatech.nei.Mob_Handler.Translations.INFERNAL_CAN;
+import static kubatech.nei.Mob_Handler.Translations.INFERNAL_CANNOT;
+import static kubatech.nei.Mob_Handler.Translations.INFERNAL_DROPS;
+import static kubatech.nei.Mob_Handler.Translations.LOOTABLE;
+import static kubatech.nei.Mob_Handler.Translations.MAX_HEALTH;
+import static kubatech.nei.Mob_Handler.Translations.MOD;
+import static kubatech.nei.Mob_Handler.Translations.NORMAL_DROPS;
+import static kubatech.nei.Mob_Handler.Translations.PLAYER_ONLY;
+import static kubatech.nei.Mob_Handler.Translations.RARE_DROPS;
 
 import java.awt.*;
 import java.lang.reflect.Field;
@@ -58,7 +73,12 @@ import org.lwjgl.util.glu.GLU;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;
-import codechicken.nei.recipe.*;
+import codechicken.nei.recipe.GuiCraftingRecipe;
+import codechicken.nei.recipe.GuiRecipe;
+import codechicken.nei.recipe.GuiUsageRecipe;
+import codechicken.nei.recipe.IUsageHandler;
+import codechicken.nei.recipe.RecipeCatalysts;
+import codechicken.nei.recipe.TemplateRecipeHandler;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
