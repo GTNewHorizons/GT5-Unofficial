@@ -127,6 +127,10 @@ public interface ControllerWithOptionalFeatures extends IVoidable {
 
     void setInputSeparation(boolean enabled);
 
+    default boolean getDefaultInputSeparationMode() {
+        return supportsInputSeparation();
+    }
+
     Pos2d getInputSeparationButtonPos();
 
     default ButtonWidget createInputSeparationButton(IWidgetBuilder<?> builder) {
@@ -183,6 +187,10 @@ public interface ControllerWithOptionalFeatures extends IVoidable {
 
     void setBatchMode(boolean enabled);
 
+    default boolean getDefaultBatchMode() {
+        return false;
+    }
+
     Pos2d getBatchModeButtonPos();
 
     default ButtonWidget createBatchModeButton(IWidgetBuilder<?> builder) {
@@ -236,6 +244,10 @@ public interface ControllerWithOptionalFeatures extends IVoidable {
     boolean isRecipeLockingEnabled();
 
     void setRecipeLocking(boolean enabled);
+
+    default boolean getDefaultRecipeLockingMode() {
+        return false;
+    }
 
     Pos2d getRecipeLockingButtonPos();
 

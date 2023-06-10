@@ -99,10 +99,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public int damageFactorLow = 5;
     public float damageFactorHigh = 0.6f;
 
-    public boolean mLockedToSingleRecipe = false;
-    protected boolean inputSeparation = false;
-    protected VoidingMode voidingMode = VoidingMode.VOID_ALL;
-    protected boolean batchMode = false;
+    public boolean mLockedToSingleRecipe = getDefaultRecipeLockingMode();
+    protected boolean inputSeparation = getDefaultInputSeparationMode();
+    protected VoidingMode voidingMode = getDefaultVoidingMode();
+    protected boolean batchMode = getDefaultBatchMode();
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
     protected static final String VOIDING_MODE_NBT_KEY = "voidingMode";
@@ -143,7 +143,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorLow", 5);
         this.damageFactorHigh = (float) GregTech_API.sMachineFile
             .get(ConfigCategories.machineconfig, "MultiBlockMachines.damageFactorHigh", 0.6f);
-        voidingMode = supportsVoidProtection() ? VoidingMode.VOID_NONE : VoidingMode.VOID_ALL;
     }
 
     // maybe remove this at some point?
