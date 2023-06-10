@@ -74,7 +74,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 if (!OrePrefixes.block.isIgnored(aMaterial)
                     && GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L) != null) {
                     // Compressor recipes
-                    {
+                    // need to avoid iridium exploit
+                    if (aMaterial != Materials.Iridium) {
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(9L, aStack))
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
@@ -110,7 +111,9 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 } else {
                     // Forge hammer recipes
                     {
-                        if (GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
+                        // need to avoid iridium exploit
+                        if (GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null
+                            && aMaterial != Materials.Iridium) {
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(1L, aStack))
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
