@@ -6,7 +6,6 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NotEnoughItems;
-import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -658,26 +657,6 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             ItemList.Hatch_Maintenance.get(1L),
             bitsd,
             new Object[] { "dwx", "hMc", "fsr", 'M', ItemList.Hull_LV });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Hatch_Maintenance.get(1L),
-            bitsd,
-            new Object[] { "dwx", "hMC", "fsr", 'M', ItemList.Hull_LV, 'C',
-                GT_ModHandler.getModItem(Railcraft.ID, "tool.crowbar", 1L, 0) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Hatch_Maintenance.get(1L),
-            bitsd,
-            new Object[] { "dwx", "hMC", "fsr", 'M', ItemList.Hull_LV, 'C',
-                GT_ModHandler.getModItem(Railcraft.ID, "tool.crowbar.reinforced", 1L, 0) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Hatch_Maintenance.get(1L),
-            bitsd,
-            new Object[] { "dwx", "hMC", "fsr", 'M', ItemList.Hull_LV, 'C',
-                GT_ModHandler.getModItem(Railcraft.ID, "tool.crowbar.magic", 1L, 0) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Hatch_Maintenance.get(1L),
-            bitsd,
-            new Object[] { "dwx", "hMC", "fsr", 'M', ItemList.Hull_LV, 'C',
-                GT_ModHandler.getModItem(Railcraft.ID, "tool.crowbar.void", 1L, 0) });
 
         GT_ModHandler.addCraftingRecipe(
             ItemList.Hatch_DataAccess_EV.get(1L),
