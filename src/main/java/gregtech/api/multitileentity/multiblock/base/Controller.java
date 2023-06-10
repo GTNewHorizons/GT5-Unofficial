@@ -132,10 +132,10 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     private IAlignmentLimits limits = getInitialAlignmentLimits();
     private String inventoryName;
     private String tankName;
-    protected boolean separateInputs = false;
-    protected VoidingMode voidingMode = supportsVoidProtection() ? VoidingMode.VOID_NONE : VoidingMode.VOID_ALL;
-    protected boolean batchMode = false;
-    protected boolean recipeLock = false;
+    protected boolean separateInputs = getDefaultInputSeparationMode();
+    protected VoidingMode voidingMode = getDefaultVoidingMode();
+    protected boolean batchMode = getDefaultBatchMode();
+    protected boolean recipeLock = getDefaultRecipeLockingMode();
     /** If this is set to true, the machine will get default WAILA behavior */
     protected boolean isSimpleMachine = true;
 

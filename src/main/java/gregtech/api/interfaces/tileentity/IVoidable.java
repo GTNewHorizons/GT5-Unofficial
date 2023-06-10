@@ -36,6 +36,10 @@ public interface IVoidable {
 
     void setVoidingMode(VoidingMode mode);
 
+    default VoidingMode getDefaultVoidingMode() {
+        return supportsVoidProtection() ? VoidingMode.VOID_NONE : VoidingMode.VOID_ALL;
+    }
+
     /**
      * @param toOutput List of items this machine is going to output.
      * @return List of slots available for item outputs. Null element represents empty slot.
