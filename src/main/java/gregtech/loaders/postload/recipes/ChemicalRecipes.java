@@ -5969,7 +5969,7 @@ public class ChemicalRecipes implements Runnable {
                     new FluidStack(FluidRegistry.getFluid("nitrobenzene"), 5000),
                     Materials.DilutedSulfuricAcid.getFluid(3000))
                 .duration(6 * SECONDS)
-                .eut(TierEU.RECIPE_HV)
+                .eut(TierEU.RECIPE_EV)
                 .addTo(sMultiblockChemicalRecipes);
 
             // C13H14N2(HCl) + 2COCl2 = C15H10N2O2(5HCl)
