@@ -54,7 +54,6 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.plugin.villagers.block.BlockGenericSpawner;
 import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.eio.handler.HandlerTooltip_EIO;
-import gtPlusPlus.xmod.galacticraft.handler.HandlerTooltip_GC;
 import gtPlusPlus.xmod.gregtech.api.util.SpecialBehaviourTooltipHandler;
 import gtPlusPlus.xmod.gregtech.recipes.GregtechRecipeAdder;
 import gtPlusPlus.xmod.ic2.CustomInternalName;
@@ -121,8 +120,6 @@ public class CommonProxy {
         Utils.registerEvent(new SpecialBehaviourTooltipHandler());
         // Handles Custom tooltips for EIO.
         Utils.registerEvent(new HandlerTooltip_EIO());
-        // Handles Custom Tooltips for GC
-        Utils.registerEvent(new HandlerTooltip_GC());
         // Handles Sleep Benefits
         PlayerSleepEventHandler.init();
         // Handles Magic Feather

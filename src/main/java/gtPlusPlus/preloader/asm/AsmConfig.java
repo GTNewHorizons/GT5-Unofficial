@@ -22,7 +22,6 @@ public class AsmConfig {
     public static boolean enableGtCharcoalPitFix;
     public static boolean enableChunkDebugging;
     public static boolean enableCofhPatch;
-    public static boolean enableGcFuelChanges;
     public static boolean enableTcAspectSafety;
     public static boolean enabledLwjglKeybindingFix;
     public static boolean enabledFixEntitySetHealth;
@@ -117,14 +116,6 @@ public class AsmConfig {
             enableGtCharcoalPitFix = prop.getBoolean(true);
             propOrder.add(prop.getName());
 
-            prop = config.get("general", "enableGcFuelChanges", true);
-            prop.comment = "Enable/Disable changes to Galacticraft Rocket Fuels.";
-            prop.setLanguageKey("gtpp.enableGcFuelChanges").setRequiresMcRestart(true);
-            // Disabled because Broken
-            // enableGcFuelChanges = prop.getBoolean(true);
-            enableGcFuelChanges = false;
-            propOrder.add(prop.getName());
-
             // TC Aspect Safety
             prop = config.get("general", "enableTcAspectSafety", true);
             prop.comment = "Fixes small oversights in Thaumcraft 4.";
@@ -142,7 +133,6 @@ public class AsmConfig {
             Preloader_Logger.INFO("Gt Nbt Fix - Enabled: " + enableGtNbtFix);
             Preloader_Logger.INFO("Gt Tooltip Fix - Enabled: " + enableGtTooltipFix);
             Preloader_Logger.INFO("COFH Patch - Enabled: " + enableCofhPatch);
-            Preloader_Logger.INFO("Gc Fuel Changes Patch - Enabled: " + enableGcFuelChanges);
             Preloader_Logger.INFO("Thaumcraft Aspect Safety Patch - Enabled: " + enableTcAspectSafety);
             Preloader_Logger
                     .INFO("Fix bad usage of EntityLivingBase.setHealth Patch - Enabled: " + enabledFixEntitySetHealth);

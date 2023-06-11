@@ -3,9 +3,6 @@ package gtPlusPlus.preloader.asm.transformers;
 import static gtPlusPlus.preloader.asm.ClassesToTransform.COFH_ORE_DICTIONARY_ARBITER;
 import static gtPlusPlus.preloader.asm.ClassesToTransform.FORGE_CHUNK_MANAGER;
 import static gtPlusPlus.preloader.asm.ClassesToTransform.FORGE_ORE_DICTIONARY;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.GALACTICRAFT_ENTITY_AUTO_ROCKET;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.GALACTICRAFT_FLUID_UTILS;
-import static gtPlusPlus.preloader.asm.ClassesToTransform.GALACTICRAFT_TILE_ENTITY_FUEL_LOADER;
 import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_BASE_TILE_ENTITY;
 import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_CHARGEPAD;
 import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_ELECTRIC;
@@ -137,22 +134,6 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
         if (transformedName.equals(COFH_ORE_DICTIONARY_ARBITER) && (AsmConfig.enableCofhPatch || !obfuscated)) {
             Preloader_Logger.INFO("COFH", "Transforming " + transformedName);
             return new ClassTransformer_COFH_OreDictionaryArbiter(basicClass).getWriter().toByteArray();
-        }
-
-        // Fix GC stuff
-        if (AsmConfig.enableGcFuelChanges) {
-            if (transformedName.equals(GALACTICRAFT_FLUID_UTILS)) {
-                Preloader_Logger.INFO("Galacticraft FluidUtils Patch", "Transforming " + transformedName);
-                return new ClassTransformer_GC_FluidUtil(basicClass, false).getWriter().toByteArray();
-            }
-            if (transformedName.equals(GALACTICRAFT_TILE_ENTITY_FUEL_LOADER)) {
-                Preloader_Logger.INFO("Galacticraft Fuel_Loader Patch", "Transforming " + transformedName);
-                return new ClassTransformer_GC_FuelLoader(basicClass, false).getWriter().toByteArray();
-            }
-            if (transformedName.equals(GALACTICRAFT_ENTITY_AUTO_ROCKET)) {
-                Preloader_Logger.INFO("Galacticraft EntityAutoRocket Patch", "Transforming " + transformedName);
-                return new ClassTransformer_GC_EntityAutoRocket(basicClass, false).getWriter().toByteArray();
-            }
         }
 
         // Fix IC2 Wrench Harvesting
