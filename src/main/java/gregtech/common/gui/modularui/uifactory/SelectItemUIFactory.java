@@ -190,6 +190,7 @@ public class SelectItemUIFactory {
             }.setOnClick(
                 (clickData, widget) -> widget.getWindow()
                     .tryClose())
+                .setSynced(false, false)
                 .setBackground(ModularUITextures.VANILLA_BACKGROUND, new Text("x"))
                 .setPos(getGUIWidth() - 15, 3)
                 .setSize(12, 12));
