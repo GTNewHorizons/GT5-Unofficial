@@ -109,6 +109,7 @@ public class GT_RecipeBuilder {
     private static FluidStack[] fix(FluidStack[] fluidInputs) {
         return Arrays.stream(fluidInputs)
             .filter(Objects::nonNull)
+            .map(FluidStack::copy)
             .toArray(FluidStack[]::new);
     }
 
