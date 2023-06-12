@@ -84,6 +84,7 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings.GameType;
 import net.minecraft.world.gen.feature.WorldGenMinable;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -1364,6 +1365,13 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 }
             }
         }
+        World world = DimensionManager.getWorld(0);
+        if (world.getWorldInfo()
+            .getWorldTotalTime() == 0L) {
+            // The world has just been created
+            GT_Worldgenerator.useNewOregenPattern = true;
+        }
+        GT_Worldgenerator.OregenPatternSavedData.loadData(world);
     }
 
     public void onServerStopping() {

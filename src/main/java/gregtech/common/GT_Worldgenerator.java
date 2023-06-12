@@ -13,8 +13,10 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 
@@ -56,6 +58,11 @@ public class GT_Worldgenerator implements IWorldGenerator {
     public static Hashtable<Long, GT_Worldgen_GT_Ore_Layer> validOreveins = new Hashtable<>(1024);
     public boolean mIsGenerating = false;
     public static final Object listLock = new Object();
+
+    /**
+     * {@code true} if ore-veins positions are evenly spaced, {@code false} if they are symmetrical to the X and Z axis.
+     */
+    public static boolean useNewOregenPattern = false;
 
     public GT_Worldgenerator() {
         endAsteroids = GregTech_API.sWorldgenFile.get("endasteroids", "GenerateAsteroids", true);
@@ -120,6 +127,46 @@ public class GT_Worldgenerator implements IWorldGenerator {
             }
             this.mIsGenerating = false;
         }
+    }
+
+    public static boolean isOreChunk(int chunkX, int chunkZ) {
+        if (useNewOregenPattern) {
+            return Math.floorMod(chunkX, 3) == 1 && Math.floorMod(chunkZ, 3) == 1;
+        }
+        return Math.abs(chunkX) % 3 == 1 && Math.abs(chunkZ) % 3 == 1;
+    }
+
+    public static class OregenPatternSavedData extends WorldSavedData {
+
+        private static final String NAME = "GregTech_OregenPattern";
+        private static final String KEY = "useNewOregenPattern";
+
+        public OregenPatternSavedData(String p_i2141_1_) {
+            super(p_i2141_1_);
+        }
+
+        public static void loadData(World world) {
+            WorldSavedData instance = world.mapStorage
+                .loadData(OregenPatternSavedData.class, OregenPatternSavedData.NAME);
+            if (instance == null) {
+                instance = new OregenPatternSavedData(NAME);
+                world.mapStorage.setData(OregenPatternSavedData.NAME, instance);
+            }
+            instance.markDirty();
+        }
+
+        @Override
+        public void readFromNBT(NBTTagCompound p_76184_1_) {
+            if (p_76184_1_.hasKey(KEY)) {
+                useNewOregenPattern = p_76184_1_.getBoolean(KEY);
+            }
+        }
+
+        @Override
+        public void writeToNBT(NBTTagCompound p_76187_1_) {
+            p_76187_1_.setBoolean(KEY, useNewOregenPattern);
+        }
+
     }
 
     public static class WorldGenContainer implements Runnable {
@@ -454,8 +501,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
             for (int x = wXbox; x < eXbox; x++) {
                 for (int z = nZbox; z < sZbox; z++) {
                     // Determine if this X/Z is an orevein seed
-                    // use floorMod because java was written by idiots
-                    if ((Math.floorMod(x, 3) == 1) && (Math.floorMod(z, 3) == 1)) {
+                    if (isOreChunk(x, z)) {
                         if (debugWorldGen) GT_Log.out.println("Adding seed x=" + x + " z=" + z);
                         seedList.add(new NearbySeeds(x, z));
                     }
