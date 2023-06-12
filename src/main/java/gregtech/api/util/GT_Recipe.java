@@ -261,6 +261,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         for (ItemStack tStack : aOutputs) GT_Utility.updateItemStack(tStack);
 
         for (int i = 0; i < aChances.length; i++) if (aChances[i] <= 0) aChances[i] = 10000;
+        for (int i = 0; i < aFluidInputs.length; i++) aFluidInputs[i] = aFluidInputs[i].copy();
+        for (int i = 0; i < aFluidOutputs.length; i++) aFluidOutputs[i] = aFluidOutputs[i].copy();
 
         for (ItemStack aInput : aInputs)
             if (aInput != null && Items.feather.getDamage(aInput) != W) for (int j = 0; j < aOutputs.length; j++) {
