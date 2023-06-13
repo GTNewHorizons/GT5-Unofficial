@@ -60,9 +60,10 @@ public class GT_Worldgenerator implements IWorldGenerator {
     public static final Object listLock = new Object();
 
     /**
-     * {@code true} if ore-veins positions are evenly spaced, {@code false} if they are symmetrical to the X and Z axis.
+     * {@code 1} if ore-veins positions are evenly spaced, {@code 0} if they are symmetrical to the X and Z axis,
+     * {@code -1} if the state is unknown
      */
-    public static boolean useNewOregenPattern = false;
+    public static int useNewOregenPattern = -1;
 
     public GT_Worldgenerator() {
         endAsteroids = GregTech_API.sWorldgenFile.get("endasteroids", "GenerateAsteroids", true);
@@ -130,7 +131,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
     }
 
     public static boolean isOreChunk(int chunkX, int chunkZ) {
-        if (useNewOregenPattern) {
+        if (useNewOregenPattern == 1 || useNewOregenPattern == -1) {
             return Math.floorMod(chunkX, 3) == 1 && Math.floorMod(chunkZ, 3) == 1;
         }
         return Math.abs(chunkX) % 3 == 1 && Math.abs(chunkZ) % 3 == 1;
@@ -158,13 +159,22 @@ public class GT_Worldgenerator implements IWorldGenerator {
         @Override
         public void readFromNBT(NBTTagCompound p_76184_1_) {
             if (p_76184_1_.hasKey(KEY)) {
-                useNewOregenPattern = p_76184_1_.getBoolean(KEY);
+                if (p_76184_1_.getBoolean(KEY)) {
+                    useNewOregenPattern = 1;
+                } else {
+                    useNewOregenPattern = 0;
+                }
             }
         }
 
         @Override
         public void writeToNBT(NBTTagCompound p_76187_1_) {
-            p_76187_1_.setBoolean(KEY, useNewOregenPattern);
+            if (useNewOregenPattern == 1) {
+                p_76187_1_.setBoolean(KEY, true);
+            }
+            if (useNewOregenPattern == 0) {
+                p_76187_1_.setBoolean(KEY, false);
+            }
         }
 
     }

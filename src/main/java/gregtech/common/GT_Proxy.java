@@ -1369,7 +1369,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         if (world.getWorldInfo()
             .getWorldTotalTime() == 0L) {
             // The world has just been created
-            GT_Worldgenerator.useNewOregenPattern = true;
+            GT_Worldgenerator.useNewOregenPattern = 1;
+        }
+        if (GT_Worldgenerator.useNewOregenPattern == -1) {
+            // this is an old world that got updated
+            GT_Worldgenerator.useNewOregenPattern = 0;
         }
         GT_Worldgenerator.OregenPatternSavedData.loadData(world);
     }
