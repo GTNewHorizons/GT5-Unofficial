@@ -954,54 +954,6 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         // Batteries
         {
-            // Alternate Energy Module Recipe
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
-                    ItemList.Energy_LapotronicOrb2.get(1L),
-                    128_000,
-                    64,
-                    2_000_000,
-                    16,
-                    new Object[] { ItemList.Circuit_Board_Wetware_Extreme.get(1),
-                            new Object[] { OrePrefixes.foil.get(Materials.Bedrockium), 64L },
-                            new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 4 },
-                            ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
-                            ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L), ItemList.Circuit_Chip_UHPIC.get(64L),
-                            new ItemStack[] { ItemList.Circuit_Parts_DiodeASMD.get(64L),
-                                    ItemList.Circuit_Parts_DiodeXSMD.get(8L) },
-                            new ItemStack[] { ItemList.Circuit_Parts_CapacitorASMD.get(64L),
-                                    ItemList.Circuit_Parts_CapacitorXSMD.get(8L) },
-                            new ItemStack[] { ItemList.Circuit_Parts_ResistorASMD.get(64L),
-                                    ItemList.Circuit_Parts_ResistorXSMD.get(8L) },
-                            new ItemStack[] { ItemList.Circuit_Parts_TransistorASMD.get(64L),
-                                    ItemList.Circuit_Parts_TransistorXSMD.get(8L) },
-                            getModItem(GTPlusPlus.ID, "itemFineWireHypogen", 48, 0) },
-                    new FluidStack[] { new FluidStack(solderUEV, 720) },
-                    ItemList.Energy_Module.get(1),
-                    50 * 20,
-                    320_000);
-
-            // Alternate Energy Cluster Recipe
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
-                    ItemList.Energy_Module.get(1L),
-                    576_000,
-                    256,
-                    8_000_000,
-                    32,
-                    new Object[] { ItemList.Circuit_Board_Bio_Ultra.get(1),
-                            new Object[] { OrePrefixes.foil.get(Materials.CosmicNeutronium), 64L },
-                            new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
-                            ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
-                            ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
-                            ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
-                            ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L), ItemList.Circuit_Chip_NPIC.get(64L),
-                            ItemList.Circuit_Parts_DiodeXSMD.get(32L), ItemList.Circuit_Parts_CapacitorXSMD.get(32L),
-                            ItemList.Circuit_Parts_ResistorXSMD.get(32L),
-                            ItemList.Circuit_Parts_TransistorXSMD.get(32L),
-                            new Object[] { OrePrefixes.wireGt01.get(MaterialsUEVplus.SpaceTime), 12L } },
-                    new FluidStack[] { new FluidStack(solderUEV, 1440) },
-                    ItemList.Energy_Cluster.get(1),
-                    50 * 20,
-                    (int) TierEU.RECIPE_UHV);
 
             // Ultimate Battery
             TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -1024,35 +976,6 @@ public class ResearchStationAssemblyLine implements Runnable {
                     ItemList.ZPM2.get(1),
                     3000,
                     400000);
-
-            // Alternate Ultimate Battery Recipe
-            TT_recipeAdder.addResearchableAssemblylineRecipe(
-                    ItemList.Circuit_Chip_PPIC.get(1L),
-                    2_304_000,
-                    1024,
-                    32_000_000,
-                    64,
-                    new Object[] { ItemList.Circuit_Board_Optical.get(1), GT_OreDictUnificator.get("foilShirabon", 64),
-                            new Object[] { OrePrefixes.circuit.get(Materials.Infinite), 4 },
-                            ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
-                            ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
-                            ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
-                            ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
-                            ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
-                            ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
-                            ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L), ItemList.Circuit_Chip_PPIC.get(64L),
-                            ItemList.Circuit_Parts_DiodeXSMD.get(64L), ItemList.Circuit_Parts_CapacitorXSMD.get(64L),
-                            ItemList.Circuit_Parts_ResistorXSMD.get(64L),
-                            ItemList.Circuit_Parts_TransistorXSMD.get(64L),
-                            new Object[] {
-                                    OrePrefixes.bolt.get(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter),
-                                    4L } },
-                    new FluidStack[] { new FluidStack(solderUEV, 2880),
-                            MaterialsUEVplus.WhiteDwarfMatter.getMolten(576),
-                            MaterialsUEVplus.BlackDwarfMatter.getMolten(576) },
-                    ItemList.ZPM2.get(1),
-                    50 * 20,
-                    (int) TierEU.RECIPE_UEV);
 
             // Really Ultimate Battery
             TT_recipeAdder.addResearchableAssemblylineRecipe(
