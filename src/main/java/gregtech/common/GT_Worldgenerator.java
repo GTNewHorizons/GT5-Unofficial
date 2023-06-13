@@ -19,8 +19,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.event.world.WorldEvent;
 
 import cpw.mods.fml.common.IWorldGenerator;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -150,6 +152,19 @@ public class GT_Worldgenerator implements IWorldGenerator {
                 world.mapStorage.setData(OregenPatternSavedData.NAME, instance);
             }
             instance.markDirty();
+        }
+
+        @SubscribeEvent
+        public void onWorldLoad(WorldEvent.Load event) {
+            World world = event.world;
+            if (!world.isRemote && world.provider.dimensionId == 0) {
+                if (world.getWorldInfo()
+                    .getWorldTotalTime() == 0L) {
+                    // The world has just been created
+                    oregenPattern = OregenPattern.values()[OregenPattern.values().length - 1];
+                }
+                loadData(world);
+            }
         }
 
         @Override
