@@ -217,7 +217,7 @@ public class RecipeLoader_ChemicalSkips {
                         GT_Bees.combs.getStackForType(CombType.OSMIUM, 32),
                         GT_Bees.combs.getStackForType(CombType.IRIDIUM, 32),
                         ItemUtils.getSimpleStack(GenericChem.mPlatinumGroupCatalyst, 0) },
-                new FluidStack[] { ELEMENT.STANDALONE.DRAGON_METAL.getFluidStack(100) },
+                new FluidStack[] {},
                 new FluidStack[] { Materials.Osmium.getMolten(144 * 256), Materials.Palladium.getMolten(144 * 256),
                         Materials.Iridium.getMolten(144 * 256), Materials.Platinum.getMolten(144 * 256) },
                 new ItemStack[] {},
