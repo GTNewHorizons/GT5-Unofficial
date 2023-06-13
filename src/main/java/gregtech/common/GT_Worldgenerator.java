@@ -58,11 +58,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
     public static Hashtable<Long, GT_Worldgen_GT_Ore_Layer> validOreveins = new Hashtable<>(1024);
     public boolean mIsGenerating = false;
     public static final Object listLock = new Object();
-
-    /**
-     * {@code true} if ore-veins positions are evenly spaced, {@code false} if they are symmetrical to the X and Z axis.
-     */
-    public static boolean useNewOregenPattern = false;
+    public static OregenPattern oregenPattern = OregenPattern.AXISSYMMETRICAL;
 
     public GT_Worldgenerator() {
         endAsteroids = GregTech_API.sWorldgenFile.get("endasteroids", "GenerateAsteroids", true);
@@ -130,16 +126,17 @@ public class GT_Worldgenerator implements IWorldGenerator {
     }
 
     public static boolean isOreChunk(int chunkX, int chunkZ) {
-        if (useNewOregenPattern) {
+        if (oregenPattern == OregenPattern.EQUAL_SPACING) {
             return Math.floorMod(chunkX, 3) == 1 && Math.floorMod(chunkZ, 3) == 1;
         }
+        // AXISSYMMETRICAL - and next if statement here or convert to switch when expanding OregenPattern enum
         return Math.abs(chunkX) % 3 == 1 && Math.abs(chunkZ) % 3 == 1;
     }
 
     public static class OregenPatternSavedData extends WorldSavedData {
 
         private static final String NAME = "GregTech_OregenPattern";
-        private static final String KEY = "useNewOregenPattern";
+        private static final String KEY = "oregenPattern";
 
         public OregenPatternSavedData(String p_i2141_1_) {
             super(p_i2141_1_);
@@ -158,15 +155,23 @@ public class GT_Worldgenerator implements IWorldGenerator {
         @Override
         public void readFromNBT(NBTTagCompound p_76184_1_) {
             if (p_76184_1_.hasKey(KEY)) {
-                useNewOregenPattern = p_76184_1_.getBoolean(KEY);
+                int ordinal = p_76184_1_.getByte(KEY);
+                ordinal = MathHelper.clamp_int(ordinal, 0, OregenPattern.values().length - 1);
+                oregenPattern = OregenPattern.values()[ordinal];
             }
         }
 
         @Override
         public void writeToNBT(NBTTagCompound p_76187_1_) {
-            p_76187_1_.setBoolean(KEY, useNewOregenPattern);
+            // If we have so many different OregenPatterns that byte isn't good enough something is wrong
+            p_76187_1_.setByte(KEY, (byte) oregenPattern.ordinal());
         }
 
+    }
+
+    public enum OregenPattern {
+        AXISSYMMETRICAL,
+        EQUAL_SPACING;
     }
 
     public static class WorldGenContainer implements Runnable {
