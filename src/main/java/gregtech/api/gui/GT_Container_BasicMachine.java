@@ -251,8 +251,7 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
         mItemTransfer = getMachine().mItemTransfer;
         mStuttering = getMachine().mStuttering;
 
-        for (ICrafting crafter : this.crafters) {
-            ICrafting player = crafter;
+        for (ICrafting player : this.crafters) {
             player.sendProgressBarUpdate(this, 102, mFluidTransfer ? 1 : 0);
             player.sendProgressBarUpdate(this, 103, mItemTransfer ? 1 : 0);
             player.sendProgressBarUpdate(this, 104, mStuttering ? 1 : 0);

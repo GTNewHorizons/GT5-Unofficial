@@ -174,7 +174,7 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
 
     @SuppressWarnings("unchecked")
     @Override
-    public IItemList<IAEItemStack> getAvailableItems(@SuppressWarnings("rawtypes") final IItemList out) {
+    public IItemList<IAEItemStack> getAvailableItems(final IItemList out) {
         ItemStack storedStack = getItemStack();
         if (storedStack != null) {
             AEItemStack s = AEItemStack.create(storedStack);

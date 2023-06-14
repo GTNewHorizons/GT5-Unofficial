@@ -36,13 +36,9 @@ public class GenericProcessingLogic extends ProcessingLogic {
             .setAvailableEUt(voltage * ampere)
             .setMaxParallel(maxParallel)
             .enableConsumption()
-            .enableOutputCalculation();
-
-        if (voidProtection) {
-            helper.enableVoidProtection(controller);
-        }
-
-        helper.build();
+            .enableOutputCalculation()
+            .setMachine(controller, voidProtection, voidProtection)
+            .build();
 
         if (helper.getCurrentParallel() <= 0) {
             return false;

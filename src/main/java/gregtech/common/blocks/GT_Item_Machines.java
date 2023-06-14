@@ -38,7 +38,9 @@ import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Item;
 import gregtech.api.util.GT_ItsNotMyFaultException;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.tileentities.storage.*;
+import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;
+import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumTank;
+import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperTank;
 
 public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
 

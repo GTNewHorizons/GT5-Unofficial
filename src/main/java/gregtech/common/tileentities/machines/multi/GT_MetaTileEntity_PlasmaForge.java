@@ -1,12 +1,24 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.enums.GT_Values.*;
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.GT_Values.AuthorColen;
+import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_OFF;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_ON;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
-import static java.lang.Math.*;
+import static java.lang.Math.floor;
+import static java.lang.Math.log;
+import static java.lang.Math.pow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -693,6 +705,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
             }
         }
 
+        if (!canOutputAll(tRecipe_1)) return false;
         // Takes items/fluids from hatches/busses.
         if (!tRecipe_1.isRecipeInputEqual(true, tFluids, tItems)) return false;
 
@@ -732,16 +745,16 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         if (getCoilLevel() == HeatingCoilLevel.None) return false;
 
         // Item input bus check.
-        if ((mInputBusses.size() < min_input_bus) || (mInputBusses.size() > max_input_bus)) return false;
+        if (mInputBusses.size() > max_input_bus) return false;
 
         // Item output bus check.
-        if ((mOutputBusses.size() < min_output_bus) || (mOutputBusses.size() > max_output_bus)) return false;
+        if (mOutputBusses.size() > max_output_bus) return false;
 
         // Fluid input hatch check.
-        if ((mInputHatches.size() < min_input_hatch) || (mInputHatches.size() > max_input_hatch)) return false;
+        if (mInputHatches.size() > max_input_hatch) return false;
 
         // Fluid output hatch check.
-        if ((mOutputHatches.size() < min_output_hatch) || (mOutputHatches.size() > max_output_hatch)) return false;
+        if (mOutputHatches.size() > max_output_hatch) return false;
 
         // If there is more than 1 TT energy hatch, the structure check will fail.
         // If there is a TT hatch and a normal hatch, the structure check will fail.
@@ -776,6 +789,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         return true;
     }
 
+    @Override
     public void clearHatches() {
         super.clearHatches();
         mExoticEnergyHatches.clear();
@@ -974,5 +988,10 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         discount = aNBT.getDouble("eLongDiscountValue");
         EU_per_tick = aNBT.getLong("eLongEUPerTick");
         super.loadNBTData(aNBT);
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 }

@@ -30,7 +30,7 @@ public class GT_MetaTileEntity_Hatch_Input extends GT_MetaTileEntity_Hatch {
             aTier,
             3,
             new String[] { "Fluid Input for Multiblocks",
-                "Capacity: " + GT_Utility.formatNumbers(8000 * (1 << aTier)) + "L" });
+                "Capacity: " + GT_Utility.formatNumbers(8000L * (1L << aTier)) + "L" });
     }
 
     public GT_MetaTileEntity_Hatch_Input(int aID, int aSlot, String aName, String aNameRegional, int aTier) {
@@ -41,7 +41,7 @@ public class GT_MetaTileEntity_Hatch_Input extends GT_MetaTileEntity_Hatch {
             aTier,
             aSlot,
             new String[] { "Fluid Input for Multiblocks",
-                "Capacity: " + GT_Utility.formatNumbers(8000 * (1 << aTier) / aSlot) + "L",
+                "Capacity: " + GT_Utility.formatNumbers(8000L * (1L << aTier) / aSlot) + "L",
                 "Can hold " + aSlot + " types of fluid." });
     }
 

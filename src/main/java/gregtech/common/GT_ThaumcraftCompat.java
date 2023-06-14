@@ -120,7 +120,7 @@ public class GT_ThaumcraftCompat implements IThaumcraftCompat {
         GT_LanguageManager.addStringLocalization("tc.aspect.radio", "Radiation");
     }
 
-    private static final AspectList getAspectList(List<TC_Aspects.TC_AspectStack> aAspects) {
+    private static AspectList getAspectList(List<TC_Aspects.TC_AspectStack> aAspects) {
         AspectList rAspects = new AspectList();
         TC_Aspects.TC_AspectStack tAspect;
         for (Iterator<TC_Aspects.TC_AspectStack> i$ = aAspects.iterator(); i$.hasNext(); rAspects

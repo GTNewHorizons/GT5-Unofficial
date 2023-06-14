@@ -1,9 +1,21 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.ARROW_DOWN;
+import static gregtech.api.enums.Textures.BlockIcons.ARROW_DOWN_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.ARROW_LEFT;
+import static gregtech.api.enums.Textures.BlockIcons.ARROW_LEFT_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.ARROW_RIGHT;
+import static gregtech.api.enums.Textures.BlockIcons.ARROW_RIGHT_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.ARROW_UP;
+import static gregtech.api.enums.Textures.BlockIcons.ARROW_UP_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.stream.IntStream;
 
 import net.minecraft.entity.player.EntityPlayer;

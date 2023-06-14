@@ -1,9 +1,33 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.Mods.*;
+import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.AvaritiaAddons;
+import static gregtech.api.enums.Mods.BartWorks;
+import static gregtech.api.enums.Mods.BuildCraftFactory;
+import static gregtech.api.enums.Mods.ExtraUtilities;
+import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.GTNHLanthanides;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GalacticraftCore;
+import static gregtech.api.enums.Mods.GalacticraftMars;
+import static gregtech.api.enums.Mods.GalaxySpace;
+import static gregtech.api.enums.Mods.IC2NuclearControl;
+import static gregtech.api.enums.Mods.IronChests;
+import static gregtech.api.enums.Mods.IronTanks;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.OpenComputers;
+import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.enums.Mods.TinkerConstruct;
+import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.*;
+import static gregtech.api.util.GT_RecipeBuilder.EIGHTH_INGOT;
+import static gregtech.api.util.GT_RecipeBuilder.HALF_INGOT;
+import static gregtech.api.util.GT_RecipeBuilder.INGOTS;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+import static gregtech.api.util.GT_RecipeBuilder.QUARTER_INGOT;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.solderingMats;
 
 import net.minecraft.init.Blocks;
@@ -15,7 +39,15 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
+import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -35,6 +67,20 @@ public class AssemblerRecipes implements Runnable {
         this.loadOutputBusesRecipes();
         this.loadOutputHatchesRecipes();
         this.withIC2NuclearControl();
+
+        Materials LuVMat = BartWorks.isModLoaded() ? Materials.get("Ruridit") : Materials.Osmiridium;
+        Materials LuVMat2 = BartWorks.isModLoaded() ? Materials.get("Rhodium-PlatedPalladium") : Materials.Chrome;
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
+                GT_Utility.getIntegratedCircuit(2))
+            .itemOutputs(ItemList.FR_Stick.get(1L))
+            .fluidInputs(Materials.SeedOil.getFluid(50L))
+            .noFluidOutputs()
+            .duration(16 * TICKS)
+            .eut(8)
+            .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1580,7 +1626,6 @@ public class AssemblerRecipes implements Runnable {
             .eut(TierEU.RECIPE_IV)
             .addTo(sAssemblerRecipes);
 
-        Materials LuVMat = BartWorks.isModLoaded() ? Materials.get("Ruridit") : Materials.Osmiridium;
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.SamariumMagnetic, 1),
@@ -1673,6 +1718,20 @@ public class AssemblerRecipes implements Runnable {
             .noFluidOutputs()
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
+            .addTo(sAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1),
+                ItemList.Electric_Motor_MV.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Steel, 1),
+                new ItemStack(Blocks.iron_bars, 6),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Casing_Grate.get(1))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2090,9 +2149,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Chrome, 8),
-                GT_Utility.getIntegratedCircuit(8))
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, LuVMat2, 8), GT_Utility.getIntegratedCircuit(8))
             .itemOutputs(ItemList.Casing_LuV.get(1))
             .noFluidInputs()
             .noFluidOutputs()

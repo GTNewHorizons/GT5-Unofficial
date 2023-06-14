@@ -1,6 +1,21 @@
 package gregtech.common.tileentities.machines.steam;
 
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_ALLOY_SMELTER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_ALLOY_SMELTER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_ALLOY_SMELTER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_ALLOY_SMELTER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_ALLOY_SMELTER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_ALLOY_SMELTER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_ALLOY_SMELTER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_ALLOY_SMELTER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_STEAM_ALLOY_SMELTER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_STEAM_ALLOY_SMELTER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_STEAM_ALLOY_SMELTER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_STEAM_ALLOY_SMELTER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_ALLOY_SMELTER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_ALLOY_SMELTER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_ALLOY_SMELTER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_ALLOY_SMELTER_GLOW;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;

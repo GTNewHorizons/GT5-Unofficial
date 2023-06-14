@@ -358,7 +358,7 @@ public abstract class GT_CoverBehavior extends GT_CoverBehaviorBase<ISerializabl
      * If it lets you rightclick the Machine normally
      */
     public boolean isGUIClickable(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return false;
+        return true;
     }
 
     /**

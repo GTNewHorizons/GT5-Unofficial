@@ -26,24 +26,24 @@ import gregtech.api.interfaces.IGuiScreen;
 @Deprecated
 public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRenderer, IGuiScreen {
 
-    protected GT_GuiTooltipManager ttManager = new GT_GuiTooltipManager();
+    protected final GT_GuiTooltipManager ttManager = new GT_GuiTooltipManager();
 
     protected int gui_width = 176;
     protected int gui_height = 107;
     protected int guiTop, guiLeft;
-    protected boolean drawButtons = true;
-    protected ResourceLocation mGUIbackgroundLocation;
+    protected final boolean drawButtons = true;
+    protected final ResourceLocation mGUIbackgroundLocation;
 
     private GuiButton selectedButton;
-    private GT_GUIColorOverride colorOverride;
+    private final GT_GUIColorOverride colorOverride;
     private final int textColor;
     private static final String guiTexturePath = "gregtech:textures/gui/GuiCover.png";
 
     public String header;
     public GT_GuiFakeItemButton headerIcon;
 
-    protected List<IGuiElement> elements = new ArrayList<>();
-    protected List<GT_GuiIntegerTextBox> textBoxes = new ArrayList<>();
+    protected final List<IGuiElement> elements = new ArrayList<>();
+    protected final List<GT_GuiIntegerTextBox> textBoxes = new ArrayList<>();
 
     public GT_GUIScreen(int width, int height, String header) {
         this.gui_width = width;

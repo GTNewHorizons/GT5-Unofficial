@@ -15,8 +15,9 @@ public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElemen
     public static final int DEFAULT_HEIGHT = 16;
 
     protected GT_GuiIcon icon;
-    private int x0, y0;
-    protected IGuiScreen gui;
+    private final int x0;
+    private final int y0;
+    protected final IGuiScreen gui;
 
     private GT_GuiTooltip tooltip;
 

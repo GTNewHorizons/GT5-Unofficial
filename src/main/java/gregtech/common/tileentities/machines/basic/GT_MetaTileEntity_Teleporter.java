@@ -74,9 +74,8 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
     public int mTargetX = 0;
     public int mTargetY = 0;
     public int mTargetZ = 0;
-    public int mTargetD = Integer.MIN_VALUE; // 0
+    public int mTargetD = Integer.MIN_VALUE;
     public boolean mDebug = false;
-    // public boolean hasEgg = false;
 
     public GT_MetaTileEntity_Teleporter(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -97,12 +96,10 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
         super(aName, aTier, 3, aDescription, aTextures);
     }
 
-    private static float weightCalculation(Entity aEntity) {
-        try {
-            if ((aEntity instanceof EntityFX)) {
-                return -1.0F;
-            }
-        } catch (Throwable e) {}
+    private static float calculateWeight(Entity aEntity) {
+        if ((aEntity instanceof EntityFX)) {
+            return -1.0F;
+        }
         if ((aEntity instanceof EntityFishHook)) {
             return -1.0F;
         }
@@ -180,7 +177,6 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
-        // this.hasEgg = checkForEgg();
         GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
     }
@@ -273,33 +269,11 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
                 this.mTargetZ = aBaseMetaTileEntity.getZCoord();
                 this.mTargetD = aBaseMetaTileEntity.getWorld().provider.dimensionId;
             }
-            // this.hasEgg = checkForEgg();
         }
     }
 
-    // public boolean checkForEgg() {
-    // for (byte i = -5; i <= 5; i = (byte) (i + 1)) {
-    // for (byte j = -5; j <= 5; j = (byte) (j + 1)) {
-    // for (byte k = -5; k <= 5; k = (byte) (k + 1)) {
-    // if (getBaseMetaTileEntity().getBlockOffset(i, j, k) == Blocks.dragon_egg) {
-    // return true;
-    // }
-    // }
-    // }
-    // }
-    // return false;
-    // }
-
     public boolean hasDimensionalTeleportCapability() {
-        return this.mDebug ||
-        // (
-            sInterDimensionalTeleportAllowed // &&
-        // (
-        // this.hasEgg ||
-        // mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1)) && mFluid.amount >= 1000
-        // )
-        // )
-        ;
+        return this.mDebug || sInterDimensionalTeleportAllowed;
     }
 
     public boolean isDimensionalTeleportAvailable() {
@@ -363,9 +337,8 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
 
                     for (Object tObject : entities_in_box) {
                         if (((tObject instanceof Entity tEntity)) && (!((Entity) tObject).isDead)) {
-                            // GT_FML_LOGGER.info("teleport"+(Math.pow(tDistance, 1.5)));
                             if (getBaseMetaTileEntity().decreaseStoredEnergyUnits(
-                                (long) (Math.pow(tDistance, 1.5) * weightCalculation(tEntity) * sFPowerMultiplyer),
+                                (long) (Math.pow(tDistance, 1.5) * calculateWeight(tEntity) * sFPowerMultiplyer),
                                 false)) {
 
                                 if (tEntity.ridingEntity != null) {

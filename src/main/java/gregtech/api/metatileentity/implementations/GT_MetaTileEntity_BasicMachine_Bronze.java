@@ -1,7 +1,13 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.D1;
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZE_BOTTOM;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZE_SIDE;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZE_TOP;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import net.minecraft.entity.EntityLivingBase;
@@ -20,6 +26,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TierEU;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -192,15 +199,14 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
 
     @Override
     public int checkRecipe() {
-        GT_Recipe tRecipe = getRecipeList()
-            .findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[mTier], null, getAllInputs());
+        GT_Recipe tRecipe = getRecipeList().findRecipe(getBaseMetaTileEntity(), false, TierEU.LV, null, getAllInputs());
         if ((tRecipe != null) && (canOutput(tRecipe.mOutputs))
             && (tRecipe.isRecipeInputEqual(true, null, getAllInputs()))) {
             this.mOutputItems[0] = tRecipe.getOutput(0);
             calculateOverclockedNess(tRecipe);
-            return 2;
+            return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
         }
-        return 0;
+        return DID_NOT_FIND_RECIPE;
     }
 
     @Override

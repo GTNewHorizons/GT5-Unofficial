@@ -1,11 +1,19 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -24,15 +32,18 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
         switch (aPrefix) {
             case gearGt -> {
                 GT_ModHandler.removeRecipeByOutputDelayed(aStack);
-                if (aMaterial.mStandardMoltenFluid != null)
+                if (aMaterial.mStandardMoltenFluid != null) {
                     if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
-                        GT_Values.RA.addFluidSolidifierRecipe(
-                            ItemList.Shape_Mold_Gear.get(0L),
-                            aMaterial.getMolten(576L),
-                            GT_OreDictUnificator.get(aPrefix, aMaterial, 1L),
-                            128,
-                            calculateRecipeEU(aMaterial, 8));
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(ItemList.Shape_Mold_Gear.get(0L))
+                            .itemOutputs(GT_OreDictUnificator.get(aPrefix, aMaterial, 1L))
+                            .fluidInputs(aMaterial.getMolten(576L))
+                            .noFluidOutputs()
+                            .duration(6 * SECONDS + 8 * TICKS)
+                            .eut(calculateRecipeEU(aMaterial, 8))
+                            .addTo(sFluidSolidficationRecipes);
                     }
+                }
                 if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)
                     && !aMaterial.contains(SubTag.NO_WORKING)) {
                     switch (aMaterial.mName) {
@@ -59,15 +70,18 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
             }
             case gearGtSmall -> {
-                if (aMaterial.mStandardMoltenFluid != null)
+                if (aMaterial.mStandardMoltenFluid != null) {
                     if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
-                        GT_Values.RA.addFluidSolidifierRecipe(
-                            ItemList.Shape_Mold_Gear_Small.get(0L),
-                            aMaterial.getMolten(144L),
-                            GT_Utility.copyAmount(1L, aStack),
-                            16,
-                            calculateRecipeEU(aMaterial, 8));
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(ItemList.Shape_Mold_Gear_Small.get(0L))
+                            .itemOutputs(GT_Utility.copyAmount(1L, aStack))
+                            .fluidInputs(aMaterial.getMolten(144L))
+                            .noFluidOutputs()
+                            .duration(16 * TICKS)
+                            .eut(calculateRecipeEU(aMaterial, 8))
+                            .addTo(sFluidSolidficationRecipes);
                     }
+                }
                 if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)
                     && !aMaterial.contains(SubTag.NO_WORKING)) {
                     switch (aMaterial.mName) {

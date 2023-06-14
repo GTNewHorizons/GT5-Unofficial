@@ -216,6 +216,7 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
         private static final String ALL_TEXT = "All";
 
         private int maxSlot;
+        private int maxThreshold;
 
         public ItemMeterUIFactory(GT_CoverUIBuildContext buildContext) {
             super(buildContext);
@@ -226,7 +227,8 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
             final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
             final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
 
-            maxSlot = getMaxSlot();
+            setMaxSlot();
+            setMaxThreshold();
 
             builder.widget(
                 new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, GT_Cover_ItemMeter.this)
@@ -269,9 +271,9 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
                             return coverData;
                         },
                         widget -> widget.setOnScrollNumbers(1, 10, 64)
-                            .setNumbers(0, getUpperBound())
+                            .setNumbers(0, maxThreshold)
                             .setPos(0, spaceY * 2 + 2)
-                            .setSize(spaceX * 2 + 5, 12))
+                            .setSize(spaceX * 4 + 5, 12))
                     .setPos(startX, startY))
                 .widget(
                     new ItemWatcherSlotWidget().setGetter(this::getTargetItem)
@@ -287,16 +289,27 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
                         .setPos(startX + spaceX * 3, 4 + startY + spaceY))
                 .widget(
                     new TextWidget(GT_Utility.trans("221", "Item threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 3, startY + spaceY * 2 + 4));
+                        .setPos(startX + spaceX * 5 - 10, startY + spaceY * 2 + 4));
         }
 
-        private int getMaxSlot() {
+        private void setMaxSlot() {
             final ICoverable tile = getUIBuildContext().getTile();
-            if (tile instanceof TileEntity && !tile.isDead()
-                && tile instanceof IGregTechTileEntity
-                && !(((IGregTechTileEntity) tile).getMetaTileEntity() instanceof GT_MetaTileEntity_DigitalChestBase))
-                return Math.min(tile.getSizeInventory() - 1, SLOT_MASK - 1);
-            else return -1;
+            if (!tile.isDead() && tile instanceof IGregTechTileEntity gtTile
+                && !(gtTile.getMetaTileEntity() instanceof GT_MetaTileEntity_DigitalChestBase)) {
+                maxSlot = Math.min(tile.getSizeInventory() - 1, SLOT_MASK - 1);
+            } else {
+                maxSlot = -1;
+            }
+        }
+
+        private void setMaxThreshold() {
+            final ICoverable tile = getUIBuildContext().getTile();
+            if (!tile.isDead() && tile instanceof IGregTechTileEntity gtTile
+                && gtTile.getMetaTileEntity() instanceof GT_MetaTileEntity_DigitalChestBase) {
+                maxThreshold = gtTile.getMaxItemCount();
+            } else {
+                maxThreshold = maxSlot > 0 ? maxSlot * 64 : Integer.MAX_VALUE;
+            }
         }
 
         private int getIntFromText(String text) {
@@ -309,10 +322,6 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
 
         private String getSlotTextFieldContent(int val) {
             return val < 0 ? ALL_TEXT : String.valueOf(val);
-        }
-
-        private int getUpperBound() {
-            return maxSlot > 0 ? maxSlot * 64 : 999_999;
         }
 
         private ItemStack getTargetItem() {

@@ -6,15 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 
+import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.util.GT_Utility;
 
-public class FluidTankGT implements IFluidTank {
+public class FluidTankGT implements IFluidTank, IFluidStore {
 
     public final FluidTankGT[] AS_ARRAY = new FluidTankGT[] { this };
     private FluidStack mFluid;
@@ -468,5 +471,15 @@ public class FluidTankGT implements IFluidTank {
             }
         }
         return fluidStacks.toArray(new FluidStack[0]);
+    }
+
+    @Override
+    public boolean isEmptyAndAcceptsAnyFluid() {
+        return getFluidAmount() == 0;
+    }
+
+    @Override
+    public boolean canStoreFluid(@Nonnull FluidStack fluidStack) {
+        return GT_Utility.areFluidsEqual(mFluid, fluidStack);
     }
 }

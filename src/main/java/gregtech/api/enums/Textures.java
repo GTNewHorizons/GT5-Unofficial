@@ -1119,6 +1119,8 @@ public class Textures {
         BLOCK_SILICONSG,
         BLOCK_TRANSCENDENTMETAL,
         BLOCK_UNIVERSIUM,
+        BLOCK_ETERNITY,
+
         BLOCK_ORIHARUKON,
 
         BLOCK_WHITEDWARFMATTER,
@@ -1489,7 +1491,7 @@ public class Textures {
                 BLOCK_BLAZE },
             STORAGE_BLOCKS12 = { BLOCK_CRYOLITE, BLOCK_SILICONSG, BLOCK_NICKELALUMINIUM, BLOCK_SPACETIME,
                 BLOCK_TRANSCENDENTMETAL, BLOCK_ORIHARUKON, BLOCK_WHITEDWARFMATTER, BLOCK_BLACKDWARFMATTER,
-                BLOCK_UNIVERSIUM };
+                BLOCK_UNIVERSIUM, BLOCK_ETERNITY };
 
         public static final ITexture[] HIDDEN_TEXTURE = { TextureFactory.builder()
             .addIcon(HIDDEN_FACE)
@@ -1647,7 +1649,7 @@ public class Textures {
          * USE casingTexturePages[page] instead of CASING_BLOCKS since it is casingTexturePages[0]
          */
         @Deprecated
-        public static ITexture[] CASING_BLOCKS = new ITexture[128]; // original variable still limited to 128
+        public static final ITexture[] CASING_BLOCKS = new ITexture[128]; // original variable still limited to 128
 
         public static ITexture[][] MACHINE_CASINGS = new ITexture[15][17];
         /**
@@ -1675,7 +1677,7 @@ public class Textures {
             setCasingTextureForId(ERROR_TEXTURE_INDEX, ERROR_RENDERING[0]);
         }
 
-        protected IIcon mIcon;
+        IIcon mIcon;
 
         BlockIcons() {
             GregTech_API.sGTBlockIconload.add(this);
@@ -1820,7 +1822,7 @@ public class Textures {
 
         public static final ITexture[] ERROR_RENDERING = { TextureFactory.of(RENDERING_ERROR) };
 
-        protected IIcon mIcon, mOverlay;
+        IIcon mIcon, mOverlay;
 
         ItemIcons() {
             GregTech_API.sGTItemIconload.add(this);

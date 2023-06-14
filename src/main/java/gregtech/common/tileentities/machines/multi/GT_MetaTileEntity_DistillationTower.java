@@ -5,7 +5,12 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
@@ -32,6 +37,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
@@ -231,6 +237,7 @@ public class GT_MetaTileEntity_DistillationTower extends
                 new FluidStack[] { tFluid },
                 inputs);
             if (tRecipe != null) {
+                if (!canOutputAll(tRecipe)) continue;
                 if (tRecipe.isRecipeInputEqual(true, tFluids, inputs)) {
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
@@ -274,6 +281,11 @@ public class GT_MetaTileEntity_DistillationTower extends
         tHatch.updateTexture(aBaseCasingIndex);
         return mOutputHatchesByLayer.get(mHeight - 1)
             .add(tHatch);
+    }
+
+    @Override
+    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
+        return getFluidOutputSlotsByLayer(toOutput, mOutputHatchesByLayer);
     }
 
     @Override
@@ -394,5 +406,10 @@ public class GT_MetaTileEntity_DistillationTower extends
     @Override
     protected SoundResource getProcessStartSound() {
         return SoundResource.GT_MACHINES_DISTILLERY_LOOP;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 }

@@ -6,7 +6,11 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Nullable;
 
@@ -64,7 +68,10 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import gregtech.common.covers.CoverInfo;
 import ic2.api.Direction;
@@ -90,7 +97,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     protected long mStoredEnergy = 0, mStoredSteam = 0;
     protected int mAverageEUInputIndex = 0, mAverageEUOutputIndex = 0;
     protected boolean mReleaseEnergy = false;
-    protected long[] mAverageEUInput = new long[] { 0, 0, 0, 0, 0 }, mAverageEUOutput = new long[] { 0, 0, 0, 0, 0 };
+    protected final long[] mAverageEUInput = new long[] { 0, 0, 0, 0, 0 };
+    protected final long[] mAverageEUOutput = new long[] { 0, 0, 0, 0, 0 };
     private boolean mHasEnoughEnergy = true, mRunningThroughTick = false, mInputDisabled = false,
         mOutputDisabled = false, mMuffler = false, mLockUpgrade = false;
     private boolean mActive = false, mWorkUpdate = false, mSteamConverter = false, mWorks = true;
@@ -1375,7 +1383,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
         tItemEntity.hurtResistantTime = 999999;
         tItemEntity.lifespan = 60000;
         try {
-            if (ENTITY_ITEM_HEALTH_FIELD != null) ENTITY_ITEM_HEALTH_FIELD.setInt(tItemEntity, 99999999);
+            ENTITY_ITEM_HEALTH_FIELD.setInt(tItemEntity, 99999999);
         } catch (Exception ignored) {}
         this.worldObj.spawnEntityInWorld(tItemEntity);
         tItem.stackSize = 0;
@@ -1403,7 +1411,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
 
     @Override
     public boolean shouldDropItemAt(int index) {
-        return this.mMetaTileEntity != null ? this.mMetaTileEntity.shouldDropItemAt(index) : true;
+        return this.mMetaTileEntity == null || this.mMetaTileEntity.shouldDropItemAt(index);
     }
 
     public int getUpgradeCount() {

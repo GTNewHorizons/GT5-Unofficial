@@ -1,28 +1,32 @@
 package gregtech.api.objects;
 
-/**
- * A subclass of java.util.random that implements the Xorshift random number generator
- *
- * - it is 30% faster than the generator from Java's library - it produces random sequences of higher quality than
- * java.util.Random - this class also provides a clone() function
- *
- * Usage: XSRandom rand = new XSRandom(); //Instantiation x = rand.nextInt(); //pull a random number
- *
- * To use the class in legacy code, you may also instantiate an XSRandom object and assign it to a java.util.Random
- * object: java.util.Random rand = new XSRandom();
- *
- * for an explanation of the algorithm, see http://demesos.blogspot.com/2011/09/pseudo-random-number-generators.html
- *
- * @author Wilfried Elmenreich University of Klagenfurt/Lakeside Labs http://www.elmenreich.tk
- *
- *         This code is released under the GNU Lesser General Public License Version 3
- *         http://www.gnu.org/licenses/lgpl-3.0.txt
- */
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
+/*
+ * TODO: Check the validity of the algorithm.
+ * There is a claim that this particular implementation is not faithful to the articles it links, skewing the
+ * distribution.
+ */
 /**
  * XSTR - Xorshift ThermiteRandom Modified by Bogdan-G 03.06.2016 version 0.0.4
+ * <p>
+ * A subclass of java.util.random that implements the Xorshift random number generator
+ * <p>
+ * - it is 30% faster than the generator from Java's library - it produces random sequences of higher quality than
+ * java.util.Random - this class also provides a clone() function
+ * <p>
+ * Usage: XSRandom rand = new XSRandom(); //Instantiation x = rand.nextInt(); //pull a random number
+ * <p>
+ * To use the class in legacy code, you may also instantiate an XSRandom object and assign it to a java.util.Random
+ * object: java.util.Random rand = new XSRandom();
+ * <p>
+ * for an explanation of the algorithm, see http://demesos.blogspot.com/2011/09/pseudo-random-number-generators.html
+ *
+ * @author Wilfried Elmenreich University of Klagenfurt/Lakeside Labs http://www.elmenreich.tk
+ *         <p>
+ *         This code is released under the GNU Lesser General Public License Version 3
+ *         http://www.gnu.org/licenses/lgpl-3.0.txt
  */
 public class XSTR extends Random {
 
@@ -118,11 +122,12 @@ public class XSTR extends Random {
     }
 
     /**
-     * Implementation of George Marsaglia's elegant Xorshift random generator 30% faster and better quality than the
-     * built-in java.util.random see also see http://www.javamex.com/tutorials/random_numbers/xorshift.shtml
+     * Implementation of George Marsaglia's Xorshift random generator that is 30% faster and better quality than the
+     * built-in java.util.random.
      *
-     * @param nbits
-     * @return
+     * @param nbits number of bits to shift the result for
+     * @return a random integer
+     * @see <a href="https://www.javamex.com/tutorials/random_numbers/xorshift.shtml">the Xorshift article</a>
      */
     @Override
     public int next(int nbits) {

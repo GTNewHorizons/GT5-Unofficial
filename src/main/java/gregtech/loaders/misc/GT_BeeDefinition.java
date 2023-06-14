@@ -1,14 +1,64 @@
 package gregtech.loaders.misc;
 
-import static forestry.api.apiculture.EnumBeeChromosome.*;
+import static forestry.api.apiculture.EnumBeeChromosome.CAVE_DWELLING;
+import static forestry.api.apiculture.EnumBeeChromosome.EFFECT;
+import static forestry.api.apiculture.EnumBeeChromosome.FERTILITY;
+import static forestry.api.apiculture.EnumBeeChromosome.FLOWERING;
+import static forestry.api.apiculture.EnumBeeChromosome.FLOWER_PROVIDER;
+import static forestry.api.apiculture.EnumBeeChromosome.HUMIDITY_TOLERANCE;
+import static forestry.api.apiculture.EnumBeeChromosome.LIFESPAN;
+import static forestry.api.apiculture.EnumBeeChromosome.NOCTURNAL;
+import static forestry.api.apiculture.EnumBeeChromosome.SPECIES;
+import static forestry.api.apiculture.EnumBeeChromosome.SPEED;
+import static forestry.api.apiculture.EnumBeeChromosome.TEMPERATURE_TOLERANCE;
+import static forestry.api.apiculture.EnumBeeChromosome.TERRITORY;
+import static forestry.api.apiculture.EnumBeeChromosome.TOLERANT_FLYER;
 import static forestry.api.core.EnumHumidity.ARID;
 import static forestry.api.core.EnumHumidity.DAMP;
-import static forestry.api.core.EnumTemperature.*;
-import static forestry.core.genetics.alleles.EnumAllele.*;
-import static gregtech.api.enums.Mods.*;
-import static gregtech.loaders.misc.GT_BeeDefinitionReference.*;
+import static forestry.api.core.EnumTemperature.COLD;
+import static forestry.api.core.EnumTemperature.HELLISH;
+import static forestry.api.core.EnumTemperature.HOT;
+import static forestry.api.core.EnumTemperature.ICY;
+import static forestry.api.core.EnumTemperature.NORMAL;
+import static forestry.api.core.EnumTemperature.WARM;
+import static forestry.core.genetics.alleles.EnumAllele.Fertility;
+import static forestry.core.genetics.alleles.EnumAllele.Flowering;
+import static forestry.core.genetics.alleles.EnumAllele.Flowers;
+import static forestry.core.genetics.alleles.EnumAllele.Lifespan;
+import static forestry.core.genetics.alleles.EnumAllele.Speed;
+import static forestry.core.genetics.alleles.EnumAllele.Territory;
+import static forestry.core.genetics.alleles.EnumAllele.Tolerance;
+import static gregtech.api.enums.Mods.AdvancedSolarPanel;
+import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.Avaritia;
+import static gregtech.api.enums.Mods.AvaritiaAddons;
+import static gregtech.api.enums.Mods.BiomesOPlenty;
+import static gregtech.api.enums.Mods.CropsPlusPlus;
+import static gregtech.api.enums.Mods.EnderStorage;
+import static gregtech.api.enums.Mods.ExtraBees;
+import static gregtech.api.enums.Mods.ExtraCells2;
+import static gregtech.api.enums.Mods.ExtraUtilities;
+import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.GalacticraftCore;
+import static gregtech.api.enums.Mods.GalacticraftMars;
+import static gregtech.api.enums.Mods.GalaxySpace;
+import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.enums.Mods.MagicBees;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.PamsHarvestCraft;
+import static gregtech.api.enums.Mods.TaintedMagic;
+import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.Mods.ThaumicBases;
+import static gregtech.api.enums.Mods.TinkerConstruct;
+import static gregtech.loaders.misc.GT_BeeDefinitionReference.EXTRABEES;
+import static gregtech.loaders.misc.GT_BeeDefinitionReference.FORESTRY;
+import static gregtech.loaders.misc.GT_BeeDefinitionReference.GENDUSTRY;
+import static gregtech.loaders.misc.GT_BeeDefinitionReference.GREGTECH;
+import static gregtech.loaders.misc.GT_BeeDefinitionReference.MAGICBEES;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.function.Consumer;
@@ -21,7 +71,13 @@ import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.text.WordUtils;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import forestry.api.apiculture.*;
+import forestry.api.apiculture.BeeManager;
+import forestry.api.apiculture.EnumBeeType;
+import forestry.api.apiculture.IAlleleBeeEffect;
+import forestry.api.apiculture.IAlleleBeeSpecies;
+import forestry.api.apiculture.IBee;
+import forestry.api.apiculture.IBeeGenome;
+import forestry.api.apiculture.IBeeMutationCustom;
 import forestry.api.core.EnumHumidity;
 import forestry.api.core.EnumTemperature;
 import forestry.api.genetics.AlleleManager;
@@ -33,7 +89,10 @@ import forestry.apiculture.genetics.IBeeDefinition;
 import forestry.apiculture.genetics.alleles.AlleleEffect;
 import forestry.core.genetics.alleles.AlleleHelper;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsKevlar;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_JubilanceMegaApiary;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
@@ -224,7 +283,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     // Phosphorus bee, Humidity: normal, Temperature: Hot, Parents: Apatite & Ash, Mutationrate: 12%, Combrate: 55%
     PHOSPHORUS(GT_BranchDefinition.ORGANIC, "Phosphorus", false, new Color(0xFFC826), new Color(0xC1C1F6),
         beeSpecies -> {
-            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.PHOSPHORUS), 0.55f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.PHOSPHORUS), 0.35f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setTemperature(HOT);
             beeSpecies.setNocturnal();
@@ -532,8 +591,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         dis -> dis.registerMutation(REDSTONE, GOLD, 10)),
     SUNNARIUM(GT_BranchDefinition.RAREMETAL, "Sunnarium", false, new Color(0xFFBC5E), new Color(0xE5CA2A),
         beeSpecies -> {
-            beeSpecies.addProduct(Materials.Glowstone.getDust(1), 0.40f);
-            beeSpecies.addSpecialty(Materials.Sunnarium.getDust(1), 0.20f);
+            beeSpecies.addProduct(Materials.Glowstone.getDust(1), 0.30f);
+            beeSpecies.addSpecialty(Materials.Sunnarium.getDust(1), 0.5f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setNocturnal();
             beeSpecies.setHasEffect();
@@ -584,8 +643,9 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }),
     IRIDIUM(GT_BranchDefinition.RAREMETAL, "Iridium", false, new Color(0xDADADA), new Color(0xD1D1E0), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
-        beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.IRIDIUM), 0.30f);
+        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.IRIDIUM), 0.30f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.OSMIUM), 0.05f);
+        beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.PALLADIUM), 0.30f);
         beeSpecies.setHumidity(ARID);
         beeSpecies.setTemperature(HELLISH);
         beeSpecies.setHasEffect();
@@ -761,7 +821,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         tMutation.restrictTemperature(ICY);
     }),
     Explosive(GT_BranchDefinition.IC2, "explosive", false, new Color(0x7E270F), new Color(0x747474), beeSpecies -> {
-        beeSpecies.addProduct(GT_ModHandler.getIC2Item("industrialTnt", 1L), 0.5f);
+        beeSpecies.addProduct(GT_ModHandler.getIC2Item("industrialTnt", 1L), 0.2f);
         beeSpecies.setHumidity(ARID);
         beeSpecies.setTemperature(HELLISH);
         beeSpecies.setHasEffect();
@@ -1178,6 +1238,22 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         IBeeMutationCustom tMutation = dis.registerMutation(SHADOWMETAL, SPARKELING, 5);
         if (Thaumcraft.isModLoaded())
             tMutation.requireResource(GameRegistry.findBlock(Thaumcraft.ID, "blockCrystal"), 6);
+    }),
+
+    DRAKE(GT_BranchDefinition.THAUMIC, "Drake", true, new Color(0x100322), new Color(0x7A007A), beeSpecies -> {
+        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.DRACONIC), 0.30f);
+        beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.AWAKENEDDRACONIUM), 0.20f);
+        beeSpecies.setHumidity(DAMP);
+        beeSpecies.setTemperature(HELLISH);
+        beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
+    }, template -> {
+        AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.DOWN_3);
+        AlleleHelper.instance.set(template, CAVE_DWELLING, false);
+        AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.END);
+        AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectDrunkard);
+    }, dis -> {
+        IBeeMutationCustom tMutation = dis.registerMutation(ESSENTIA, THAUMINITE, 5);
+        tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockcasings5"), 8);
     }),
 
     // radioctive
@@ -2262,7 +2338,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             tMutation.requireResource(GameRegistry.findBlock(AvaritiaAddons.ID, "InfinityChest"), 0);
         }
     }),
-    KEVLAR(GT_BranchDefinition.IC2, "kevlar", false, new Color(0x2d542f), new Color(0xa2baa3), beeSpecies -> {
+    KEVLAR(GT_BranchDefinition.IC2, "Kevlar", false, new Color(0x2d542f), new Color(0xa2baa3), beeSpecies -> {
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.KEVLAR), 0.075f);
         beeSpecies.addSpecialty(MaterialsKevlar.Kevlar.getNuggets(1), 0.01f);
         beeSpecies.setHumidity(DAMP);
@@ -2278,8 +2354,9 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.SNOW);
         AlleleHelper.instance.set(template, FLOWERING, Flowering.AVERAGE);
     }, dis -> {
-        IBeeMutationCustom tMutation = dis.registerMutation(OIL, INFINITY, 4);
-        tMutation.requireResource("frameGtKevlar");
+        IBeeMutationCustom tMutation = dis.registerMutation(OIL, INFINITYCATALYST, 4);
+        // UHV Replicator (UU-Matter)
+        GregTech_API.sGTCompleteLoad.add(() -> tMutation.requireResource(GregTech_API.sBlockMachines, 11003));
     }),
 
     // Noble Gas Line
@@ -2342,7 +2419,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }),
     // Oxygen bee, Humidity: normal, Temperature: Icy, Parents: Space & Callisto, Mutationrate: 15%, Combrate: 50%
     OXYGEN(GT_BranchDefinition.NOBLEGAS, "Oxygen", false, new Color(0xFFFFFF), new Color(0x8F8FFF), beeSpecies -> {
-        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.OXYGEN), 0.35f);
+        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.OXYGEN), 0.45f);
+        beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.HYDROGEN), 0.20f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(ICY);
         beeSpecies.setNocturnal();
@@ -2353,7 +2431,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }),
     // Hydrogen bee, Humidity: normal, Temperature: Icy, Parents: Oxygen & Watery, Mutationrate: 15%, Combrate: 50%
     HYDROGEN(GT_BranchDefinition.NOBLEGAS, "Oxygen", false, new Color(0xFFFFFF), new Color(0xFF1493), beeSpecies -> {
-        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.HYDROGEN), 0.35f);
+        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.HYDROGEN), 0.45f);
+        beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.NITROGEN), 0.20f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(ICY);
         beeSpecies.setNocturnal();
@@ -2364,7 +2443,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }),
     // Nitrogen bee, Humidity: normal, Temperature: Icy, Parents: Oxygen & Hydrogen, Mutationrate: 15%, Combrate: 50%
     NITROGEN(GT_BranchDefinition.NOBLEGAS, "Nitrogen", false, new Color(0xFFC832), new Color(0xA52A2A), beeSpecies -> {
-        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.NITROGEN), 0.35f);
+        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.NITROGEN), 0.45f);
+        beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.FLUORINE), 0.20f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(ICY);
         beeSpecies.setNocturnal();
@@ -2375,7 +2455,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }),
     // Fluorine bee, Humidity: normal, Temperature: Icy, Parents: Nitrogen & Hydrogen, Mutationrate: 15%, Combrate: 50%
     FLUORINE(GT_BranchDefinition.NOBLEGAS, "Fluorine", false, new Color(0x86AFF0), new Color(0xFF6D00), beeSpecies -> {
-        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.FLUORINE), 0.35f);
+        beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.FLUORINE), 0.45f);
+        beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.OXYGEN), 0.20f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(ICY);
         beeSpecies.setNocturnal();
@@ -2485,7 +2566,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             beeSpecies.setHasEffect();
         }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
             IBeeMutationCustom tMutation = dis.registerMutation(INFINITYCATALYST, NAQUADRIA, 5);
-            tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockmachines"), 4684);
+            tMutation.requireResource(GregTech_API.sBlockMachines, 4684);
             tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(100, "Deep Dark")); // Deep Dark
                                                                                                       // dim
         });

@@ -48,7 +48,7 @@ public interface ISerializableObject {
     /**
      * Read data from given parameter and return this. The data read this way is intended to be stored for short amount
      * of time over network.
-     * 
+     *
      * @param aPlayer the player who is sending this packet to server. null if it's client reading data.
      */
     // the NBT is an unfortunate piece of tech. everything uses it but its API is not as efficient as could be

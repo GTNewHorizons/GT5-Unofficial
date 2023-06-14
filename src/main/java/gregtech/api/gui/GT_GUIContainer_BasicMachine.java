@@ -2,7 +2,7 @@ package gregtech.api.gui;
 
 import static gregtech.api.enums.Mods.GregTech;
 
-import java.awt.*;
+import java.awt.Rectangle;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
@@ -137,7 +137,7 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
     /**
      * Apply proper coloration to a machine's power tier short name
      *
-     * @param machineTier
+     * @param machineTier machine tier
      * @return colored power tier short name
      */
     private String powerTierName(byte machineTier) {

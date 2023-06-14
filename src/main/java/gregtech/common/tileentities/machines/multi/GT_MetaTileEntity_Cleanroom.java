@@ -1,7 +1,11 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static gregtech.api.enums.GT_Values.debugCleanroom;
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.BLOCK_PLASCRETE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM_GLOW;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -390,8 +394,8 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
 
     private static class ConfigEntry {
 
-        int percentage;
-        int allowedCount;
+        final int percentage;
+        final int allowedCount;
 
         ConfigEntry(int percentage, int count) {
             this.percentage = percentage;
@@ -403,6 +407,10 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
     private static final String category = "cleanroom_allowed_blocks";
 
     private static void setDefaultConfigValues(Configuration cfg) {
+        cfg.get("cleanroom_allowed_blocks.manaGlass", "Name", "tile.manaGlass");
+        cfg.get("cleanroom_allowed_blocks.manaGlass", "Percentage", 50);
+        cfg.get("cleanroom_allowed_blocks.elfGlass", "Name", "tile.elfGlass");
+        cfg.get("cleanroom_allowed_blocks.elfGlass", "Percentage", 50);
         cfg.get("cleanroom_allowed_blocks.reinforced_glass", "Name", "blockAlloyGlass");
         cfg.get("cleanroom_allowed_blocks.reinforced_glass", "Percentage", 5);
         cfg.get("cleanroom_allowed_blocks.bw_reinforced_glass_0", "Name", "BW_GlasBlocks");

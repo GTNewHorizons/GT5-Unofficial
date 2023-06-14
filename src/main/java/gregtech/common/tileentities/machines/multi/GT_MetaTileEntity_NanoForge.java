@@ -1,7 +1,13 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GT_HatchElement.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_Values.AuthorBlueWeabo;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
@@ -255,8 +261,8 @@ public class GT_MetaTileEntity_NanoForge extends
             .findRecipe(getBaseMetaTileEntity(), null, false, false, tTotalEU, tFluidInputs, null, tItemInputs);
 
         if (tRecipe == null) return false;
-
         if (tRecipe.mSpecialValue > mSpecialTier) return false;
+        if (!canOutputAll(tRecipe)) return false;
 
         if (tRecipe.isRecipeInputEqual(true, tFluidInputs, tItemInputs)) {
             this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
@@ -495,7 +501,12 @@ public class GT_MetaTileEntity_NanoForge extends
     }
 
     @Override
-    protected boolean isInputSeparationButtonEnabled() {
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsInputSeparation() {
         return true;
     }
 }

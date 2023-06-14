@@ -1,6 +1,21 @@
 package gregtech.common.tileentities.machines.basic;
 
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_POTIONBREWER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_POTIONBREWER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_POTIONBREWER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_POTIONBREWER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_POTIONBREWER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_POTIONBREWER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_POTIONBREWER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_POTIONBREWER_GLOW;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -227,6 +242,6 @@ public class GT_MetaTileEntity_PotionBrewer extends GT_MetaTileEntity_BasicMachi
 
     @Override
     public int getCapacity() {
-        return 6000;
+        return getCapacityForTier(mTier);
     }
 }

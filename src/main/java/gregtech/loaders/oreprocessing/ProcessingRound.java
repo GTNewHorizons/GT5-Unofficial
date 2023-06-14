@@ -1,5 +1,8 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLatheRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+
 import net.minecraft.item.ItemStack;
 
 import appeng.core.Api;
@@ -23,12 +26,17 @@ public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegist
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
         if (!aMaterial.contains(SubTag.NO_WORKING)) {
-            GT_Values.RA.addLatheRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial, 1L),
-                GT_Utility.copyAmount(1L, aStack),
-                null,
-                (int) Math.max(aMaterial.getMass() / 4L, 1L),
-                8);
+            if (GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial, 1L) != null) {
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial, 1L))
+                    .itemOutputs(GT_Utility.copyAmount(1L, aStack))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(((int) Math.max(aMaterial.getMass() / 4L, 1L)) * TICKS)
+                    .eut(8)
+                    .addTo(sLatheRecipes);
+            }
+
             if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)) {
                 GT_ModHandler.addCraftingRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.round, aMaterial, 1L),

@@ -36,11 +36,11 @@ public interface IGT_RecipeAdder {
     /**
      * Adds a Fusion Reactor Recipe
      *
-     * @param FluidOutputArray               : Array of input fluids. Up to 16.
-     * @param FluidOutputArray               : Array of output fluids. Up to 16.
-     * @param aFusionDurationInTicks         : How many ticks the Fusion lasts (must be > 0).
-     * @param aFusionEnergyPerTick           : The EU consumed per tick to keep the reaction going.
-     * @param aEnergyNeededForStartingFusion : EU needed to initialize the fusion reaction. (must be >= 0).
+     * @param FluidInputArray                Array of input fluids. Up to 16.
+     * @param FluidOutputArray               Array of output fluids. Up to 16.
+     * @param aFusionDurationInTicks         How many ticks the Fusion lasts (must be > 0).
+     * @param aFusionEnergyPerTick           The EU consumed per tick to keep the reaction going.
+     * @param aEnergyNeededForStartingFusion EU needed to initialize the fusion reaction. (must be >= 0).
      * @return true if the recipe got added, otherwise false.
      */
 
@@ -91,7 +91,7 @@ public interface IGT_RecipeAdder {
      * @param aInput1   must be != null
      * @param aOutput1  must be != null
      * @param aDuration must be > 0
-     * @return
+     * @return if the recipe was successfully added
      */
 
     @Deprecated
@@ -509,7 +509,7 @@ public interface IGT_RecipeAdder {
      * @param aOutput1    must be != null
      * @param aDuration   must be > 0
      * @param aEUt        should be > 0
-     * @return
+     * @return if the recipe was successfully added
      */
     @Deprecated
     boolean addOreWasherRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3,
@@ -626,7 +626,7 @@ public interface IGT_RecipeAdder {
      * @param aOutput1  must be != null
      * @param aDuration must be > 0
      * @param aEUt      should be > 0
-     * @return
+     * @return if the recipe was successfully added
      */
     @Deprecated
     boolean addThermalCentrifugeRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3,
@@ -974,12 +974,15 @@ public interface IGT_RecipeAdder {
     /**
      * Adds Pyrolyse Recipe
      *
-     * @param aInput
-     * @param intCircuit
-     * @param aOutput
-     * @param aFluidOutput
-     * @param aDuration
-     * @param aEUt
+     * @param aInput       input item stack
+     * @param aFluidInput  fluid input
+     * @param intCircuit   circuit index
+     * @param aOutput      output item stack
+     * @param aFluidOutput fluid output
+     * @param aDuration    recipe duration
+     * @param aEUt         recipe EU/t expenditure
+     *
+     * @return if the recipe was successfully added
      */
     @Deprecated
     boolean addPyrolyseRecipe(ItemStack aInput, FluidStack aFluidInput, int intCircuit, ItemStack aOutput,
@@ -988,10 +991,10 @@ public interface IGT_RecipeAdder {
     /**
      * Adds Oil Cracking Recipe
      *
-     * @param aInput
-     * @param aOutput
-     * @param aDuration
-     * @param aEUt
+     * @param aInput    input item stack
+     * @param aOutput   output item stack
+     * @param aDuration recipe duration
+     * @param aEUt      recipe EU/t expenditure
      */
     @Deprecated
     boolean addCrackingRecipe(FluidStack aInput, FluidStack aOutput, int aDuration, int aEUt);
@@ -1003,8 +1006,8 @@ public interface IGT_RecipeAdder {
      * @param aInput        The fluid to be cracked
      * @param aInput2       The fluid to catalyze the cracking (typically Hydrogen or Steam)
      * @param aOutput       The cracked fluid
-     * @param aDuration
-     * @param aEUt
+     * @param aDuration     recipe duration
+     * @param aEUt          recipe EU/t expenditure
      */
     @Deprecated
     boolean addCrackingRecipe(int circuitConfig, FluidStack aInput, FluidStack aInput2, FluidStack aOutput,
@@ -1029,14 +1032,14 @@ public interface IGT_RecipeAdder {
      * partly biological, partly metal nanites TIer 2 Nano Forge - Can make mostly metal nanites with some biological
      * aspects TIer 3 Nano Forge - Can make nanites entierly out of metal
      *
-     * @param aInputs       = must not be null
-     * @param aFluidInputs  = can be null
-     * @param aOutputs      = must not be null, the nanite or other output
-     * @param aFluidOutputs = can be null
-     * @param aChances      = can be null
-     * @param aDuration
-     * @param aEUt
-     * @param aSpecialValue = defines the tier of nano forge required.
+     * @param aInputs       must not be null
+     * @param aFluidInputs  can be null
+     * @param aOutputs      must not be null, the nanite or other output
+     * @param aFluidOutputs can be null
+     * @param aChances      can be null
+     * @param aDuration     recipe duration
+     * @param aEUt          recipe EU/t expenditure
+     * @param aSpecialValue defines the tier of nano forge required.
      *
      */
     @Deprecated
@@ -1047,12 +1050,12 @@ public interface IGT_RecipeAdder {
      * Add a Board Manufacturer Recipe. The Board Manufacturer's main use is to make the circuit boards needed to make
      * circuits.
      *
-     * @param aInputs       = must not be null
-     * @param aFluidInputs  = must not be null
-     * @param aOutputs      = must not be null
-     * @param aDuration
-     * @param aEUt
-     * @param aSpecialValue = defines the tier of the board manufacturer required.
+     * @param aInputs       must not be null
+     * @param aFluidInputs  must not be null
+     * @param aOutputs      must not be null
+     * @param aDuration     recipe duration
+     * @param aEUt          recipe EU/t expenditure
+     * @param aSpecialValue defines the tier of the board manufacturer required.
      */
     @Deprecated
     boolean addPCBFactoryRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack[] aOutputs, int aDuration,

@@ -1,6 +1,8 @@
 package gregtech.loaders.materialprocessing;
 
-import static gregtech.api.enums.Mods.*;
+import static gregtech.api.enums.Mods.Metallurgy;
+import static gregtech.api.enums.Mods.RotaryCraft;
+import static gregtech.api.enums.Mods.UndergroundBiomes;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;

@@ -18,7 +18,10 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.items.GT_MetaBase_Item;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.ISerializableObject;
 
 public class Behaviour_Cover_Tool extends Behaviour_None {
 

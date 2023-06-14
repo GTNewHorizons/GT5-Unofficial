@@ -60,6 +60,7 @@ public class ImplosionCompressorRecipes implements Runnable {
         int tExplosives = Math.min(explosiveAmount, 64);
         int tGunpowder = tExplosives << 1; // Worst
         int tDynamite = Math.max(1, tExplosives >> 1); // good
+        @SuppressWarnings("UnnecessaryLocalVariable")
         int tTNT = tExplosives; // Slightly better
         int tITNT = Math.max(1, tExplosives >> 2); // the best
 

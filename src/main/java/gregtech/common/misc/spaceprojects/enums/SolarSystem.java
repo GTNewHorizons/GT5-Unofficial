@@ -1,8 +1,15 @@
 package gregtech.common.misc.spaceprojects.enums;
 
 import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.common.misc.spaceprojects.enums.SpaceBodyType.*;
-import static gregtech.common.misc.spaceprojects.enums.StarType.*;
+import static gregtech.common.misc.spaceprojects.enums.SpaceBodyType.AsteroidBelt;
+import static gregtech.common.misc.spaceprojects.enums.SpaceBodyType.DwarfPlanet;
+import static gregtech.common.misc.spaceprojects.enums.SpaceBodyType.GasGiant;
+import static gregtech.common.misc.spaceprojects.enums.SpaceBodyType.IceGiant;
+import static gregtech.common.misc.spaceprojects.enums.SpaceBodyType.NaturalSatellite;
+import static gregtech.common.misc.spaceprojects.enums.SpaceBodyType.Planet;
+import static gregtech.common.misc.spaceprojects.enums.SpaceBodyType.Star;
+import static gregtech.common.misc.spaceprojects.enums.StarType.GClass;
+import static gregtech.common.misc.spaceprojects.enums.StarType.NotAStar;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
@@ -55,9 +62,9 @@ public enum SolarSystem implements ISpaceBody {
     KuiperBelt(AsteroidBelt),
     NONE(SpaceBodyType.NONE);
 
-    private SpaceBodyType spaceBody;
-    private StarType star;
-    private UITexture texture;
+    private final SpaceBodyType spaceBody;
+    private final StarType star;
+    private final UITexture texture;
 
     SolarSystem(SpaceBodyType aType) {
         this(aType, NotAStar);

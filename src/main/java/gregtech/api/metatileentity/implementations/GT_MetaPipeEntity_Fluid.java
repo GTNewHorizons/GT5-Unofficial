@@ -757,28 +757,24 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
 
     @Override
     public String[] getDescription() {
-        if (mPipeAmount == 1) {
-            return new String[] {
-                EnumChatFormatting.BLUE + "Fluid Capacity: %%%"
-                    + GT_Utility.formatNumbers(mCapacity * 20L)
-                    + "%%% L/sec"
-                    + EnumChatFormatting.GRAY,
-                EnumChatFormatting.RED + "Heat Limit: %%%"
-                    + GT_Utility.formatNumbers(mHeatResistance)
-                    + "%%% K"
-                    + EnumChatFormatting.GRAY };
-        } else {
-            return new String[] {
-                EnumChatFormatting.BLUE + "Fluid Capacity: %%%"
-                    + GT_Utility.formatNumbers(mCapacity * 20L)
-                    + "%%% L/sec"
-                    + EnumChatFormatting.GRAY,
-                EnumChatFormatting.RED + "Heat Limit: %%%"
-                    + GT_Utility.formatNumbers(mHeatResistance)
-                    + "%%% K"
-                    + EnumChatFormatting.GRAY,
-                EnumChatFormatting.AQUA + "Pipe Amount: %%%" + mPipeAmount + EnumChatFormatting.GRAY };
+        List<String> descriptions = new ArrayList<>();
+        descriptions.add(
+            EnumChatFormatting.BLUE + "Fluid Capacity: %%%"
+                + GT_Utility.formatNumbers(mCapacity * 20L)
+                + "%%% L/sec"
+                + EnumChatFormatting.GRAY);
+        descriptions.add(
+            EnumChatFormatting.RED + "Heat Limit: %%%"
+                + GT_Utility.formatNumbers(mHeatResistance)
+                + "%%% K"
+                + EnumChatFormatting.GRAY);
+        if (!mGasProof) {
+            descriptions.add(EnumChatFormatting.DARK_GREEN + "Cannot handle gas" + EnumChatFormatting.GRAY);
         }
+        if (mPipeAmount != 1) {
+            descriptions.add(EnumChatFormatting.AQUA + "Pipe Amount: %%%" + mPipeAmount + EnumChatFormatting.GRAY);
+        }
+        return descriptions.toArray(new String[0]);
     }
 
     @Override

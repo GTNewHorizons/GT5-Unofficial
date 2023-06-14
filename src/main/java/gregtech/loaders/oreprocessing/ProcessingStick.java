@@ -1,6 +1,5 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBenderRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCutterRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
@@ -11,7 +10,11 @@ import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -143,15 +146,5 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(sHammerRecipes);
             }
         }
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
-                GT_Utility.getIntegratedCircuit(2))
-            .itemOutputs(ItemList.FR_Stick.get(1L))
-            .fluidInputs(Materials.SeedOil.getFluid(50L))
-            .noFluidOutputs()
-            .duration(16 * TICKS)
-            .eut(8)
-            .addTo(sAssemblerRecipes);
     }
 }

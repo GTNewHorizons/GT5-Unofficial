@@ -5,20 +5,31 @@ import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBenderRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sImplosionRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLatheRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
+import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
 
@@ -48,17 +59,23 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
             case gem -> {
                 // fuel recipes
                 if (aFuelPower) {
-                    GT_Values.RA.addFuel(
-                        GT_Utility.copyAmount(1L, aStack),
-                        null,
-                        aMaterial.mFuelPower * 2,
-                        aMaterial.mFuelType);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .noItemOutputs()
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .metadata(FUEL_VALUE, aMaterial.mFuelPower * 2)
+                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .duration(0)
+                        .eut(0)
+                        .addTo(GT_RecipeConstants.Fuel);
                 }
 
                 if (!OrePrefixes.block.isIgnored(aMaterial)
                     && GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L) != null) {
                     // Compressor recipes
-                    {
+                    // need to avoid iridium exploit
+                    if (aMaterial != Materials.Iridium) {
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(9L, aStack))
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
@@ -94,7 +111,9 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 } else {
                     // Forge hammer recipes
                     {
-                        if (GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
+                        // need to avoid iridium exploit
+                        if (GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null
+                            && aMaterial != Materials.Iridium) {
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(1L, aStack))
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
@@ -202,11 +221,52 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
                         // Implosion compressor recipes
                         {
-                            GT_Values.RA.addImplosionRecipe(
-                                GT_Utility.copyAmount(3L, aStack),
-                                8,
-                                GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1),
-                                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2));
+                            if (GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1) != null) {
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(GT_Utility.copyAmount(3L, aStack), ItemList.Block_Powderbarrel.get(16))
+                                    .itemOutputs(
+                                        GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1),
+                                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(1 * SECONDS)
+                                    .eut(TierEU.RECIPE_LV)
+                                    .addTo(sImplosionRecipes);
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(
+                                        GT_Utility.copyAmount(3L, aStack),
+                                        GT_ModHandler.getIC2Item("dynamite", 4, null))
+                                    .itemOutputs(
+                                        GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1),
+                                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(1 * SECONDS)
+                                    .eut(TierEU.RECIPE_LV)
+                                    .addTo(sImplosionRecipes);
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(GT_Utility.copyAmount(3L, aStack), new ItemStack(Blocks.tnt, 8))
+                                    .itemOutputs(
+                                        GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1),
+                                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(1 * SECONDS)
+                                    .eut(TierEU.RECIPE_LV)
+                                    .addTo(sImplosionRecipes);
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(
+                                        GT_Utility.copyAmount(3L, aStack),
+                                        GT_ModHandler.getIC2Item("industrialTnt", 2))
+                                    .itemOutputs(
+                                        GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1),
+                                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(1 * SECONDS)
+                                    .eut(TierEU.RECIPE_LV)
+                                    .addTo(sImplosionRecipes);
+                            }
                         }
 
                         // Crafting recipes
@@ -284,11 +344,16 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
             case gemChipped -> {
                 // Fuel recipes
                 if (aFuelPower) {
-                    GT_Values.RA.addFuel(
-                        GT_Utility.copyAmount(1L, aStack),
-                        null,
-                        aMaterial.mFuelPower / 2,
-                        aMaterial.mFuelType);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .noItemOutputs()
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .metadata(FUEL_VALUE, aMaterial.mFuelPower / 2)
+                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .duration(0)
+                        .eut(0)
+                        .addTo(GT_RecipeConstants.Fuel);
                 }
 
                 if (!aNoWorking) {
@@ -310,11 +375,52 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
                         // Implosion compressor recipes
                         {
-                            GT_Values.RA.addImplosionRecipe(
-                                GT_Utility.copyAmount(3L, aStack),
-                                8,
-                                GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 1),
-                                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2));
+                            if (GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 1) != null) {
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(GT_Utility.copyAmount(3L, aStack), ItemList.Block_Powderbarrel.get(16))
+                                    .itemOutputs(
+                                        GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 1),
+                                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(1 * SECONDS)
+                                    .eut(TierEU.RECIPE_LV)
+                                    .addTo(sImplosionRecipes);
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(
+                                        GT_Utility.copyAmount(3L, aStack),
+                                        GT_ModHandler.getIC2Item("dynamite", 4, null))
+                                    .itemOutputs(
+                                        GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 1),
+                                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(1 * SECONDS)
+                                    .eut(TierEU.RECIPE_LV)
+                                    .addTo(sImplosionRecipes);
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(GT_Utility.copyAmount(3L, aStack), new ItemStack(Blocks.tnt, 8))
+                                    .itemOutputs(
+                                        GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 1),
+                                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(1 * SECONDS)
+                                    .eut(TierEU.RECIPE_LV)
+                                    .addTo(sImplosionRecipes);
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(
+                                        GT_Utility.copyAmount(3L, aStack),
+                                        GT_ModHandler.getIC2Item("industrialTnt", 2))
+                                    .itemOutputs(
+                                        GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 1),
+                                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(1 * SECONDS)
+                                    .eut(TierEU.RECIPE_LV)
+                                    .addTo(sImplosionRecipes);
+                            }
                         }
 
                         // Crafting recipes
@@ -349,11 +455,16 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
             case gemExquisite -> {
                 // Fuel recipes
                 if (aFuelPower) {
-                    GT_Values.RA.addFuel(
-                        GT_Utility.copyAmount(1L, aStack),
-                        null,
-                        aMaterial.mFuelPower * 8,
-                        aMaterial.mFuelType);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .noItemOutputs()
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .metadata(FUEL_VALUE, aMaterial.mFuelPower * 8)
+                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .duration(0)
+                        .eut(0)
+                        .addTo(GT_RecipeConstants.Fuel);
                 }
 
                 if (!aNoWorking) {
@@ -385,8 +496,16 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
             case gemFlawed -> {
                 // fuel recipes
                 if (aFuelPower) {
-                    GT_Values.RA
-                        .addFuel(GT_Utility.copyAmount(1L, aStack), null, aMaterial.mFuelPower, aMaterial.mFuelType);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .noItemOutputs()
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .metadata(FUEL_VALUE, aMaterial.mFuelPower)
+                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .duration(0)
+                        .eut(0)
+                        .addTo(GT_RecipeConstants.Fuel);
                 }
 
                 if (!aNoWorking) {
@@ -408,11 +527,52 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
                         // Implosion compressor recipes
                         {
-                            GT_Values.RA.addImplosionRecipe(
-                                GT_Utility.copyAmount(3L, aStack),
-                                8,
-                                GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1),
-                                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2));
+                            if (GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1) != null) {
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(GT_Utility.copyAmount(3L, aStack), ItemList.Block_Powderbarrel.get(16))
+                                    .itemOutputs(
+                                        GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1),
+                                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(1 * SECONDS)
+                                    .eut(TierEU.RECIPE_LV)
+                                    .addTo(sImplosionRecipes);
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(
+                                        GT_Utility.copyAmount(3L, aStack),
+                                        GT_ModHandler.getIC2Item("dynamite", 4, null))
+                                    .itemOutputs(
+                                        GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1),
+                                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(1 * SECONDS)
+                                    .eut(TierEU.RECIPE_LV)
+                                    .addTo(sImplosionRecipes);
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(GT_Utility.copyAmount(3L, aStack), new ItemStack(Blocks.tnt, 8))
+                                    .itemOutputs(
+                                        GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1),
+                                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(1 * SECONDS)
+                                    .eut(TierEU.RECIPE_LV)
+                                    .addTo(sImplosionRecipes);
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(
+                                        GT_Utility.copyAmount(3L, aStack),
+                                        GT_ModHandler.getIC2Item("industrialTnt", 2))
+                                    .itemOutputs(
+                                        GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1),
+                                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(1 * SECONDS)
+                                    .eut(TierEU.RECIPE_LV)
+                                    .addTo(sImplosionRecipes);
+                            }
                         }
 
                         // Crafting recipes
@@ -458,11 +618,16 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
 
                 // Fuel recipes
                 if (aFuelPower) {
-                    GT_Values.RA.addFuel(
-                        GT_Utility.copyAmount(1L, aStack),
-                        null,
-                        aMaterial.mFuelPower * 4,
-                        aMaterial.mFuelType);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .noItemOutputs()
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .metadata(FUEL_VALUE, aMaterial.mFuelPower * 4)
+                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .duration(0)
+                        .eut(0)
+                        .addTo(GT_RecipeConstants.Fuel);
                 }
 
                 if (!aNoWorking) {
@@ -486,11 +651,52 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
                         // Implosion compressor recipes
                         {
-                            GT_Values.RA.addImplosionRecipe(
-                                GT_Utility.copyAmount(3L, aStack),
-                                8,
-                                GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1),
-                                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2));
+                            if (GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1) != null) {
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(GT_Utility.copyAmount(3L, aStack), ItemList.Block_Powderbarrel.get(16))
+                                    .itemOutputs(
+                                        GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1),
+                                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(1 * SECONDS)
+                                    .eut(TierEU.RECIPE_LV)
+                                    .addTo(sImplosionRecipes);
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(
+                                        GT_Utility.copyAmount(3L, aStack),
+                                        GT_ModHandler.getIC2Item("dynamite", 4, null))
+                                    .itemOutputs(
+                                        GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1),
+                                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(1 * SECONDS)
+                                    .eut(TierEU.RECIPE_LV)
+                                    .addTo(sImplosionRecipes);
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(GT_Utility.copyAmount(3L, aStack), new ItemStack(Blocks.tnt, 8))
+                                    .itemOutputs(
+                                        GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1),
+                                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(1 * SECONDS)
+                                    .eut(TierEU.RECIPE_LV)
+                                    .addTo(sImplosionRecipes);
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(
+                                        GT_Utility.copyAmount(3L, aStack),
+                                        GT_ModHandler.getIC2Item("industrialTnt", 2))
+                                    .itemOutputs(
+                                        GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1),
+                                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(1 * SECONDS)
+                                    .eut(TierEU.RECIPE_LV)
+                                    .addTo(sImplosionRecipes);
+                            }
                         }
 
                         // Crafting recipes

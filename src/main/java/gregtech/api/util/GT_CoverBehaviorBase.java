@@ -137,7 +137,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
 
     /**
      * Return whether cover data needs to be synced to client upon tile entity creation or cover placement.
-     *
+     * <p>
      * Note if you want to sync the data afterwards you will have to manually do it by calling
      * {@link ICoverable#issueCoverUpdate(ForgeDirection)} This option only affects the initial sync.
      */
@@ -508,9 +508,9 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
             return colorOverride.getTextColorOrDefault(textType, defaultColor);
         }
 
-        protected Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x222222);
-        protected Supplier<Integer> COLOR_TEXT_GRAY = () -> getTextColorOrDefault("text_gray", 0x555555);
-        protected Supplier<Integer> COLOR_TEXT_WARN = () -> getTextColorOrDefault("text_warn", 0xff0000);
+        protected final Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x222222);
+        protected final Supplier<Integer> COLOR_TEXT_GRAY = () -> getTextColorOrDefault("text_gray", 0x555555);
+        protected final Supplier<Integer> COLOR_TEXT_WARN = () -> getTextColorOrDefault("text_warn", 0xff0000);
     }
 
     // endregion
@@ -712,7 +712,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
      * If it lets you rightclick the Machine normally
      */
     protected boolean isGUIClickableImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
-        return false;
+        return true;
     }
 
     /**

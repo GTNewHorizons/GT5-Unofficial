@@ -1,6 +1,20 @@
 package gregtech.common.blocks;
 
-import static gregtech.api.enums.HeatingCoilLevel.*;
+import static gregtech.api.enums.HeatingCoilLevel.EV;
+import static gregtech.api.enums.HeatingCoilLevel.HV;
+import static gregtech.api.enums.HeatingCoilLevel.IV;
+import static gregtech.api.enums.HeatingCoilLevel.LV;
+import static gregtech.api.enums.HeatingCoilLevel.LuV;
+import static gregtech.api.enums.HeatingCoilLevel.MAX;
+import static gregtech.api.enums.HeatingCoilLevel.MV;
+import static gregtech.api.enums.HeatingCoilLevel.None;
+import static gregtech.api.enums.HeatingCoilLevel.UEV;
+import static gregtech.api.enums.HeatingCoilLevel.UHV;
+import static gregtech.api.enums.HeatingCoilLevel.UIV;
+import static gregtech.api.enums.HeatingCoilLevel.UMV;
+import static gregtech.api.enums.HeatingCoilLevel.UV;
+import static gregtech.api.enums.HeatingCoilLevel.UXV;
+import static gregtech.api.enums.HeatingCoilLevel.ZPM;
 
 import java.util.function.Consumer;
 
@@ -15,6 +29,10 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.util.GT_LanguageManager;
 
+/**
+ * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
+ * 16 subtypes at most.
+ */
 public class GT_Block_Casings5 extends GT_Block_Casings_Abstract implements IHeatingCoil {
 
     public GT_Block_Casings5() {

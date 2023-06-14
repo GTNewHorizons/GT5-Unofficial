@@ -40,7 +40,7 @@ public class GT_Cover_Drain extends GT_CoverBehavior {
     public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
         if ((aCoverVariable % 3 > 1) && ((aTileEntity instanceof IMachineProgress))) {
-            if (((IMachineProgress) aTileEntity).isAllowedToWork() != aCoverVariable % 3 < 2) {
+            if (((IMachineProgress) aTileEntity).isAllowedToWork()) {
                 return aCoverVariable;
             }
         }
@@ -58,7 +58,7 @@ public class GT_Cover_Drain extends GT_CoverBehavior {
                             side,
                             Materials.Water.getFluid(
                                 aTileEntity.getWorld()
-                                    .isThundering() ? tAmount * 2 : tAmount),
+                                    .isThundering() ? tAmount * 2L : tAmount),
                             true);
                     }
                 }

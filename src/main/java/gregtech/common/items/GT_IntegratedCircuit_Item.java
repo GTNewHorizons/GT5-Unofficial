@@ -50,7 +50,7 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
 
     private static final String aTextEmptyRow = "   ";
     private static final List<ItemStack> ALL_VARIANTS = new ArrayList<>();
-    protected IIcon[] mIconDamage = new IIcon[25];
+    protected final IIcon[] mIconDamage = new IIcon[25];
 
     public GT_IntegratedCircuit_Item() {
         super("integrated_circuit", "Programmed Circuit", "");
@@ -189,22 +189,14 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
     public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         super.addAdditionalToolTips(aList, aStack, aPlayer);
         aList.add(
-            GT_LanguageManager.addStringLocalization(
-                new StringBuilder().append(getUnlocalizedName())
-                    .append(".configuration")
-                    .toString(),
-                "Configuration: ") + getConfigurationString(getDamage(aStack)));
+            GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".configuration", "Configuration: ")
+                + getConfigurationString(getDamage(aStack)));
+        aList.add(
+            GT_LanguageManager
+                .addStringLocalization(getUnlocalizedName() + ".tooltip.0", "Right click to reconfigure"));
         aList.add(
             GT_LanguageManager.addStringLocalization(
-                new StringBuilder().append(getUnlocalizedName())
-                    .append(".tooltip.0")
-                    .toString(),
-                "Right click to reconfigure"));
-        aList.add(
-            GT_LanguageManager.addStringLocalization(
-                new StringBuilder().append(getUnlocalizedName())
-                    .append(".tooltip.1")
-                    .toString(),
+                getUnlocalizedName() + ".tooltip.1",
                 "Needs a screwdriver or circuit programming tool"));
     }
 

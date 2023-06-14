@@ -1,6 +1,10 @@
 package gregtech.api.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
