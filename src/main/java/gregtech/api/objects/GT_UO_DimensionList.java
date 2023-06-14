@@ -11,7 +11,7 @@ public class GT_UO_DimensionList {
 
     private Configuration fConfig;
     private String fCategory;
-    private BiMap<String, GT_UO_Dimension> fDimensionList;
+    private final BiMap<String, GT_UO_Dimension> fDimensionList;
 
     public int[] blackList = new int[0];
 

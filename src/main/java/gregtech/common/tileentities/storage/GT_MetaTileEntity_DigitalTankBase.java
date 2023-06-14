@@ -1,6 +1,9 @@
 package gregtech.common.tileentities.storage;
 
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.List;
@@ -145,7 +148,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         if (mVoidFluidPart) aNBT.setBoolean("mVoidOverflow", true);
         if (mVoidFluidFull) aNBT.setBoolean("mVoidFluidFull", true);
         if (mLockFluid) aNBT.setBoolean("mLockFluid", true);
-        if (GT_Utility.isStringValid(lockedFluidName)) aNBT.setString("lockedFluidName", lockedFluidName);
+        if (mLockFluid && GT_Utility.isStringValid(lockedFluidName)) aNBT.setString("lockedFluidName", lockedFluidName);
         if (this.mAllowInputFromOutputSide) aNBT.setBoolean("mAllowInputFromOutputSide", true);
 
         super.setItemNBT(aNBT);
@@ -158,7 +161,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         aNBT.setBoolean("mVoidOverflow", this.mVoidFluidPart);
         aNBT.setBoolean("mVoidFluidFull", this.mVoidFluidFull);
         aNBT.setBoolean("mLockFluid", mLockFluid);
-        if (GT_Utility.isStringValid(lockedFluidName)) aNBT.setString("lockedFluidName", lockedFluidName);
+        if (mLockFluid && GT_Utility.isStringValid(lockedFluidName)) aNBT.setString("lockedFluidName", lockedFluidName);
         else aNBT.removeTag("lockedFluidName");
         aNBT.setBoolean("mAllowInputFromOutputSide", this.mAllowInputFromOutputSide);
     }
@@ -170,7 +173,11 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         mVoidFluidPart = aNBT.getBoolean("mVoidOverflow");
         mVoidFluidFull = aNBT.getBoolean("mVoidFluidFull");
         mLockFluid = aNBT.getBoolean("mLockFluid");
-        setLockedFluidName(aNBT.getString("lockedFluidName"));
+        if (mLockFluid) {
+            setLockedFluidName(aNBT.getString("lockedFluidName"));
+        } else {
+            setLockedFluidName(null);
+        }
         mAllowInputFromOutputSide = aNBT.getBoolean("mAllowInputFromOutputSide");
     }
 
@@ -256,6 +263,9 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
     @Override
     public void lockFluid(boolean lock) {
         this.mLockFluid = lock;
+        if (!lock) {
+            setLockedFluidName(null);
+        }
     }
 
     @Override
@@ -519,6 +529,8 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         fluidTank.setAllowOverflow(allowOverflow());
         fluidTank.setPreventDraining(mLockFluid);
+
+        FluidSlotWidget fluidSlotWidget = new FluidSlotWidget(fluidTank);
         builder.widget(
             new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
                 .setPos(7, 16)
@@ -532,7 +544,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                     .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
                     .setPos(79, 43))
             .widget(
-                new FluidSlotWidget(fluidTank).setOnClickContainer(widget -> onEmptyingContainerWhenEmpty())
+                fluidSlotWidget.setOnClickContainer(widget -> onEmptyingContainerWhenEmpty())
                     .setBackground(GT_UITextures.TRANSPARENT)
                     .setPos(58, 41))
             .widget(
@@ -577,7 +589,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                 .setPos(7, 63)
                 .setSize(18, 18))
             .widget(new CycleButtonWidget().setToggle(() -> mLockFluid, val -> {
-                mLockFluid = val;
+                lockFluid(val);
                 fluidTank.setPreventDraining(mLockFluid);
 
                 String inBrackets;
@@ -596,12 +608,12 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                         buildContext.getPlayer(),
                         String.format("%s (%s)", GT_Utility.trans("265", "1 specific Fluid"), inBrackets));
                 } else {
-                    setLockedFluidName(null);
                     fluidTank.drain(0, true);
                     GT_Utility.sendChatToPlayer(
                         buildContext.getPlayer(),
                         GT_Utility.trans("266", "Lock Fluid Mode Disabled"));
                 }
+                fluidSlotWidget.notifyTooltipChange();
             })
                 .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
                 .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_LOCK)
@@ -637,7 +649,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                 }
             })
                 .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS)
+                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_TANK_VOID_EXCESS)
                 .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.voidoverflow.tooltip"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(133, 7)
@@ -654,7 +666,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                 }
             })
                 .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_VOID_ALL)
+                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_TANK_VOID_ALL)
                 .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.voidfull.tooltip"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(151, 7)

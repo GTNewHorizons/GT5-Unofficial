@@ -1,6 +1,20 @@
 package gregtech.common.tileentities.machines.steam;
 
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_FURNACE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_FURNACE_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_FURNACE_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_FURNACE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_FURNACE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_FURNACE_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_FURNACE_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_FURNACE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_STEAM_FURNACE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_STEAM_FURNACE_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_STEAM_FURNACE_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_STEAM_FURNACE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_FURNACE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_FURNACE_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_FURNACE_GLOW;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -49,9 +63,9 @@ public class GT_MetaTileEntity_Furnace_Steel extends GT_MetaTileEntity_BasicMach
         if (null != (this.mOutputItems[0] = GT_ModHandler.getSmeltingOutput(getInputAt(0), true, getOutputAt(0)))) {
             this.mEUt = 8;
             this.mMaxProgresstime = 128;
-            return 2;
+            return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
         }
-        return 0;
+        return DID_NOT_FIND_RECIPE;
     }
 
     @Override

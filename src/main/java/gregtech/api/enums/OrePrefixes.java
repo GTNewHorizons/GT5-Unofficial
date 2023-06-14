@@ -1,8 +1,15 @@
 package gregtech.api.enums;
 
-import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.GT_Values.B;
+import static gregtech.api.enums.GT_Values.D2;
+import static gregtech.api.enums.GT_Values.M;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
@@ -667,8 +674,6 @@ public enum OrePrefixes {
         cellSteamCracked2,
         cellSteamCracked3);
 
-    public static volatile int VERSION = 509;
-
     static {
         pulp.mPrefixInto = dust;
         oreGem.mPrefixInto = ore;
@@ -731,9 +736,6 @@ public enum OrePrefixes {
         dust.mNotGeneratedItems.add(Materials.Gunpowder);
         dust.mNotGeneratedItems.add(Materials.Sugar);
         dust.mNotGeneratedItems.add(Materials.Blaze);
-        // dust.mNotGeneratedItems.add(Materials.Ichorium);
-        // dustSmall.mNotGeneratedItems.add(Materials.Ichorium);
-        // dustTiny.mNotGeneratedItems.add(Materials.Ichorium);
         stick.mNotGeneratedItems.add(Materials.Wood);
         stick.mNotGeneratedItems.add(Materials.Bone);
         stick.mNotGeneratedItems.add(Materials.Blaze);
@@ -842,6 +844,7 @@ public enum OrePrefixes {
         nanite.mGeneratedItems.add(MaterialsUEVplus.WhiteDwarfMatter);
         nanite.mGeneratedItems.add(MaterialsUEVplus.BlackDwarfMatter);
         nanite.mGeneratedItems.add(Materials.Glowstone);
+        nanite.mGeneratedItems.add(MaterialsUEVplus.Eternity);
         // -----
 
         gear.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
@@ -859,7 +862,6 @@ public enum OrePrefixes {
         crateGtIngot.mGeneratedItems.addAll(ingot.mGeneratedItems);
         crateGtGem.mGeneratedItems.addAll(gem.mGeneratedItems);
         crateGtPlate.mGeneratedItems.addAll(plate.mGeneratedItems);
-        itemCasing.mGeneratedItems.addAll(itemCasing.mGeneratedItems);
         // -----
 
         toolHeadFile.mCondition = new ICondition.And<>(
@@ -970,7 +972,6 @@ public enum OrePrefixes {
         oreRich.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount * 2);
         ore.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount);
         crushed.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.mMaterialAmount);
-        toolHeadDrill.mSecondaryMaterial = new MaterialStack(Materials.Steel, plate.mMaterialAmount * 4);
         toolHeadChainsaw.mSecondaryMaterial = new MaterialStack(
             Materials.Steel,
             plate.mMaterialAmount * 4 + ring.mMaterialAmount * 2);
@@ -1007,7 +1008,7 @@ public enum OrePrefixes {
     public OrePrefixes mPrefixInto = this;
     public float mHeatDamage = 0.0F; // Negative for Frost Damage
     private final GT_HashSet<GT_ItemStack2> mContainsTestCache = new GT_HashSet<>(512, 0.5f);
-    public static List<OrePrefixes> mPreventableComponents = new LinkedList<>(
+    public static final List<OrePrefixes> mPreventableComponents = new LinkedList<>(
         Arrays.asList(
             OrePrefixes.gem,
             OrePrefixes.ingotHot,
@@ -1352,8 +1353,8 @@ public enum OrePrefixes {
                     || aMaterial == Materials.YttriumBariumCuprate
                     || aMaterial == Materials.BloodInfusedIron
                     || aMaterial == MaterialsUEVplus.Universium
-                    || aMaterial == MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter))
-                    wireFine.mDisabledItems.add(aMaterial);
+                    || aMaterial == MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter
+                    || aMaterial == MaterialsUEVplus.Eternity)) wireFine.mDisabledItems.add(aMaterial);
                 // Gears
                 if (!enableUnusedGears && !(aMaterial == Materials.Aluminium || aMaterial == Materials.Titanium
                     || aMaterial == Materials.Iron

@@ -91,7 +91,6 @@ public class GT_Generic_Item extends Item implements IProjectileItem {
         return 0;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         if (getMaxDamage() > 0 && !getHasSubtypes())

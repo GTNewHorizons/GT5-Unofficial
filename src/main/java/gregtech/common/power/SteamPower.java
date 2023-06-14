@@ -15,6 +15,11 @@ public class SteamPower extends Power {
     }
 
     @Override
+    public byte getTier() {
+        return 1;
+    }
+
+    @Override
     public String getTierString() {
         return STEAM_TIER_NAMES[tier - 1];
     }
@@ -34,7 +39,7 @@ public class SteamPower extends Power {
     @Override
     public String getPowerUsageString() {
         // 2L normal steam == 1EU
-        return GT_Utility.formatNumbers(20L * 2L * recipeEuPerTick) + " L/s  Steam";
+        return GT_Utility.formatNumbers(20L * 2L * recipeEuPerTick) + " L/s Steam";
     }
 
     @Override

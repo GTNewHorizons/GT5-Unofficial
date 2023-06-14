@@ -2,7 +2,10 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_GLOW;
 
 import java.util.ArrayList;
 
@@ -126,7 +129,7 @@ public class GT_MetaTileEntity_ImplosionCompressor
         if (!tInputList.isEmpty()) {
             GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sImplosionRecipes
                 .findRecipe(getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
-            if ((tRecipe != null) && (tRecipe.isRecipeInputEqual(true, null, tInputs))) {
+            if ((tRecipe != null) && canOutputAll(tRecipe) && tRecipe.isRecipeInputEqual(true, null, tInputs)) {
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
                 // OC THAT EXPLOSIVE SHIT!!!
@@ -188,5 +191,10 @@ public class GT_MetaTileEntity_ImplosionCompressor
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 }

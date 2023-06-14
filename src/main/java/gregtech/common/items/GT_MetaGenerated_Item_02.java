@@ -1,8 +1,15 @@
 package gregtech.common.items;
 
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ADVANCED_REDSTONE_RECEIVER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ADVANCED_REDSTONE_TRANSMITTER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_FLUID_DETECTOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_ITEM_DETECTOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_MAINTENANCE_DETECTOR;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.dispenser.IBlockSource;
@@ -21,7 +28,15 @@ import net.minecraft.potion.Potion;
 import net.minecraft.world.World;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TC_Aspects;
+import gregtech.api.enums.TierEU;
 import gregtech.api.items.GT_MetaGenerated_Item_X32;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
@@ -464,7 +479,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 106,
                 "Leninade",
                 "Let the Communism flow through you!",
-                SubTag.INVISIBLE,
                 new GT_FoodStat(
                     2,
                     0.2F,
@@ -1807,102 +1821,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             ItemList.Plank_DarkOak.get(2L),
             GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "s ", " P", 'P', new ItemStack(Blocks.wooden_slab, 1, 5) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Larch.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs1", 1L, 0) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Teak.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs1", 1L, 1) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Acacia_Green.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs1", 1L, 2) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Lime.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs1", 1L, 3) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Chestnut.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs1", 1L, 4) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Wenge.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs1", 1L, 5) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Baobab.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs1", 1L, 6) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Sequoia.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs1", 1L, 7) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Kapok.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs2", 1L, 0) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Ebony.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs2", 1L, 1) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Mahagony.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs2", 1L, 2) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Balsa.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs2", 1L, 3) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Willow.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs2", 1L, 4) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Walnut.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs2", 1L, 5) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Greenheart.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs2", 1L, 6) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Cherry.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs2", 1L, 7) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Mahoe.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs3", 1L, 0) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Poplar.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs3", 1L, 1) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Palm.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs3", 1L, 2) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Papaya.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs3", 1L, 3) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Pine.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs3", 1L, 4) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Plum.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs3", 1L, 5) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Maple.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs3", 1L, 6) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Plank_Citrus.get(2L),
-            GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs3", 1L, 7) });
 
         GregTech_API.registerCover(ItemList.Plank_Oak.get(1L), TextureFactory.of(Blocks.planks, 0), null);
         GregTech_API.registerCover(ItemList.Plank_Spruce.get(1L), TextureFactory.of(Blocks.planks, 1), null);
@@ -2539,45 +2457,61 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_MAINTENANCE_DETECTOR)),
             new GT_Cover_WirelessMaintenanceDetector(TextureFactory.of(OVERLAY_WIRELESS_MAINTENANCE_DETECTOR)));
 
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { ItemList.Cover_RedstoneTransmitterExternal.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L), GT_Utility.getIntegratedCircuit(1) },
-            GT_Values.NF,
-            ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L),
-            3200,
-            128);
-
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { ItemList.Cover_RedstoneReceiverExternal.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L), GT_Utility.getIntegratedCircuit(1) },
-            GT_Values.NF,
-            ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L),
-            3200,
-            128);
-
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { ItemList.Cover_FluidDetector.get(1L), ItemList.Emitter_EV.get(1L),
-                GT_Utility.getIntegratedCircuit(1) },
-            GT_Values.NF,
-            ItemList.Cover_WirelessFluidDetector.get(1L),
-            3200,
-            128);
-
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { ItemList.Cover_ItemDetector.get(1L), ItemList.Emitter_EV.get(1L),
-                GT_Utility.getIntegratedCircuit(1) },
-            GT_Values.NF,
-            ItemList.Cover_WirelessItemDetector.get(1L),
-            3200,
-            128);
-
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { ItemList.Cover_NeedsMaintainance.get(1L), ItemList.Emitter_EV.get(1L),
-                GT_Utility.getIntegratedCircuit(1) },
-            GT_Values.NF,
-            ItemList.Cover_WirelessNeedsMaintainance.get(1L),
-            3200,
-            128);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Cover_RedstoneTransmitterExternal.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(sAssemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Cover_RedstoneReceiverExternal.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(sAssemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Cover_FluidDetector.get(1L),
+                ItemList.Emitter_EV.get(1L),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Cover_WirelessFluidDetector.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(sAssemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Cover_ItemDetector.get(1L),
+                ItemList.Emitter_EV.get(1L),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Cover_WirelessItemDetector.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(sAssemblerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Cover_NeedsMaintainance.get(1L),
+                ItemList.Emitter_EV.get(1L),
+                GT_Utility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Cover_WirelessNeedsMaintainance.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(sAssemblerRecipes);
 
         GT_ModHandler.addShapelessCraftingRecipe(
             ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L),
@@ -2804,7 +2738,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         }
         ItemList.Display_ITS_FREE.set(
             addItem(
-                tLastID = 766,
+                tLastID = 765,
                 "ITS FREE",
                 "(or at least almost free)",
                 SubTag.INVISIBLE,

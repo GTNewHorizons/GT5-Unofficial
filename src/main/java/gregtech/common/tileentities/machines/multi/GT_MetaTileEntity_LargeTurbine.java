@@ -3,7 +3,13 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.GT_HatchElement.Dynamo;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.Muffler;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_EMPTY;
@@ -78,7 +84,7 @@ public abstract class GT_MetaTileEntity_LargeTurbine
     protected int counter = 0;
     protected boolean looseFit = false;
     protected int overflowMultiplier = 0;
-    protected float[] flowMultipliers = new float[] { 1, 1, 1 };
+    protected final float[] flowMultipliers = new float[] { 1, 1, 1 };
 
     // client side stuff
     protected boolean mHasTurbine;

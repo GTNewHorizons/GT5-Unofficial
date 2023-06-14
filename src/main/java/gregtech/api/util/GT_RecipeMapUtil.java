@@ -4,7 +4,16 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.util.GT_Config.getStackConfigName;
 import static gregtech.api.util.GT_Utility.isArrayEmptyOrNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -92,10 +101,33 @@ public class GT_RecipeMapUtil {
         TIntList chances = b.getChances() != null ? new TIntArrayList(b.getChances()) : null;
         cellToFluid(itemInputs, fluidInputs, removeIntegratedCircuit, null);
         cellToFluid(itemOutputs, fluidOutputs, removeIntegratedCircuit, chances);
-        return b.itemInputs(itemInputs.toArray(new ItemStack[0]))
-            .itemOutputs(itemOutputs.toArray(new ItemStack[0]), chances != null ? chances.toArray() : null)
-            .fluidInputs(fluidInputs.toArray(new FluidStack[0]))
-            .fluidOutputs(fluidOutputs.toArray(new FluidStack[0]));
+        itemInputs.removeIf(Objects::isNull);
+        if (chances == null) {
+            itemOutputs.removeIf(Objects::isNull);
+        }
+        fluidInputs.removeIf(Objects::isNull);
+        fluidOutputs.removeIf(Objects::isNull);
+        if (itemInputs.size() == 0) {
+            b.noItemInputs();
+        } else {
+            b.itemInputs(itemInputs.toArray(new ItemStack[0]));
+        }
+        if (itemOutputs.size() == 0) {
+            b.noItemOutputs();
+        } else {
+            b.itemOutputs(itemOutputs.toArray(new ItemStack[0]), chances != null ? chances.toArray() : null);
+        }
+        if (fluidInputs.size() == 0) {
+            b.noFluidInputs();
+        } else {
+            b.fluidInputs(fluidInputs.toArray(new FluidStack[0]));
+        }
+        if (fluidOutputs.size() == 0) {
+            b.noFluidOutputs();
+        } else {
+            b.fluidOutputs(fluidOutputs.toArray(new FluidStack[0]));
+        }
+        return b;
     }
 
     private static void cellToFluid(List<ItemStack> items, List<FluidStack> fluids, boolean removeIntegratedCircuit,
@@ -118,10 +150,10 @@ public class GT_RecipeMapUtil {
     }
 
     /**
-     * Register a recipe map as part of your mod's public API under your modid and your given identifier.
+     * Register a recipe map as part of your mod's public API under your modID and your given identifier.
      *
-     * @param identifier
-     * @param recipeMap
+     * @param identifier   map name
+     * @param recipeMap    the map to register
      * @param dependencies fully qualified identifier of dependent recipe maps. scheduler will only add recipes to one
      *                     of the dependent recipe maps and this recipe map concurrently, guaranteeing thread safety.
      *                     Currently unused, but you are advised to fill them, so that when The Day (tm) comes we don't

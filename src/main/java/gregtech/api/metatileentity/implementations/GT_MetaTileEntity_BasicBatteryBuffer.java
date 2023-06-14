@@ -246,9 +246,7 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
                 || name.equals("gt.metaitem.01.32521")
                 || name.equals("gt.metaitem.01.32530")
                 || name.equals("gt.metaitem.01.32531")) {
-                if (ic2.api.item.ElectricItem.manager.getCharge(aStack) == 0) {
-                    return true;
-                }
+                return ic2.api.item.ElectricItem.manager.getCharge(aStack) == 0;
             }
         }
         return false;
@@ -260,10 +258,7 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
         if (!GT_Utility.isStackValid(aStack)) {
             return false;
         }
-        if (mInventory[aIndex] == null && GT_ModHandler.isElectricItem(aStack, this.mTier)) {
-            return true;
-        }
-        return false;
+        return mInventory[aIndex] == null && GT_ModHandler.isElectricItem(aStack, this.mTier);
     }
 
     @Override

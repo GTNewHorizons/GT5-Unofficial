@@ -5,7 +5,17 @@ import static gregtech.api.enums.GT_Values.L;
 import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.IntFunction;
@@ -23,7 +33,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
@@ -99,7 +108,6 @@ public class GregTech_API {
      */
     public static final Collection<Map<? extends GT_ItemStack, ?>> sItemStackMappings = new ArrayList<>();
 
-    public static final Collection<Map<Fluid, ?>> sFluidMappings = new ArrayList<>();
     /**
      * The MetaTileEntity-ID-List-Length
      */
@@ -221,21 +229,21 @@ public class GregTech_API {
     @Deprecated
     public static IGT_RecipeAdder sRecipeAdder;
     /**
-     * Used to register Aspects to ThaumCraft, this Object might be null if ThaumCraft isn't installed
+     * Registers Aspects to Thaumcraft. This Object might be {@code null} if Thaumcraft isn't installed.
      */
     public static IThaumcraftCompat sThaumcraftCompat;
     /**
-     * These Lists are getting executed at their respective timings. Useful if you have to do things right before/after
-     * I do them, without having to control the load order. Add your "Commands" in the Constructor or in a static Code
-     * Block of your Mods Main Class. These are not Threaded, I just use a native Java Interface for their execution.
-     * Implement just the Method run() and everything should work
+     * The Lists below are executed at their respective timings. Useful to do things at a particular moment in time.
+     * The Lists are not Threaded - a native Java interface is used for their execution.
+     * Add your "commands" in the constructor or in the static-code-block of your mod's Main class.
+     * Implement the method {@code run()}, and everything should work.
      */
     public static List<Runnable> sBeforeGTPreload = new ArrayList<>(), sAfterGTPreload = new ArrayList<>(),
         sBeforeGTLoad = new ArrayList<>(), sAfterGTLoad = new ArrayList<>(), sBeforeGTPostload = new ArrayList<>(),
         sAfterGTPostload = new ArrayList<>(), sFirstWorldTick = new ArrayList<>(),
         sBeforeGTServerstart = new ArrayList<>(), sAfterGTServerstart = new ArrayList<>(),
         sBeforeGTServerstop = new ArrayList<>(), sAfterGTServerstop = new ArrayList<>(),
-        sGTBlockIconload = new ArrayList<>(), sGTItemIconload = new ArrayList<>();
+        sGTBlockIconload = new ArrayList<>(), sGTItemIconload = new ArrayList<>(), sGTCompleteLoad = new ArrayList<>();
     /**
      * The Icon Registers from Blocks and Items. They will get set right before the corresponding Icon Load Phase as
      * executed in the Runnable List above.
@@ -426,17 +434,11 @@ public class GregTech_API {
     public static Item constructCoolantCellItem(String aUnlocalized, String aEnglish, int aMaxStore) {
         try {
             return new GT_CoolantCellIC_Item(aUnlocalized, aEnglish, aMaxStore);
-            // return
-            // (Item)Class.forName("gregtech.api.items.GT_CoolantCellIC_Item").getConstructors()[0].newInstance(aUnlocalized,
-            // aEnglish, aMaxStore);
         } catch (Throwable e) {
             /* Do nothing */
         }
         try {
             return new GT_CoolantCell_Item(aUnlocalized, aEnglish, aMaxStore);
-            // return
-            // (Item)Class.forName("gregtech.api.items.GT_CoolantCell_Item").getConstructors()[0].newInstance(aUnlocalized,
-            // aEnglish, aMaxStore);
         } catch (Throwable e) {
             /* Do nothing */
         }
@@ -723,20 +725,20 @@ public class GregTech_API {
     }
 
     /**
-     * This gives you a new BaseMetaTileEntity. As some Interfaces are not always loaded (Buildcraft, Universal
-     * Electricity) I have to use Invocation at the Constructor of the BaseMetaTileEntity
+     * Provides a new BaseMetaTileEntity. Because some interfaces are not always loaded (Buildcraft, Universal
+     * Electricity) we have to use invocation at the constructor of the BaseMetaTileEntity.
      */
     public static BaseMetaTileEntity constructBaseMetaTileEntity() {
         if (sBaseMetaTileEntityClass == null) {
             try {
-                return (sBaseMetaTileEntityClass = BaseMetaTileEntity.class).newInstance();
-            } catch (Throwable e) {
-                /* Do nothing */
-            }
+                return (sBaseMetaTileEntityClass = BaseMetaTileEntity.class).getDeclaredConstructor()
+                    .newInstance();
+            } catch (Throwable ignored) {}
         }
 
         try {
-            return sBaseMetaTileEntityClass.newInstance();
+            return sBaseMetaTileEntityClass.getDeclaredConstructor()
+                .newInstance();
         } catch (Throwable e) {
             GT_Log.err.println("GT_Mod: Fatal Error occurred while initializing TileEntities, crashing Minecraft.");
             e.printStackTrace(GT_Log.err);

@@ -1,6 +1,6 @@
 package gregtech.nei;
 
-import java.awt.*;
+import java.awt.Rectangle;
 
 public interface NEI_TransferRectHost {
 

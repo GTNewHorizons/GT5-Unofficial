@@ -15,7 +15,7 @@ import gregtech.common.gui.modularui.widget.DataControllerWidget;
  * recipe mode. <br>
  * No widgets implementing this interface should not sync; Instead, {@link DataControllerWidget} will sync data, either
  * when this widget triggers update on client or data update is detected on server.
- * 
+ *
  * @param <T> Data type stored in the parent widget
  * @param <U> State type stored in this widget
  * @see DataControllerWidget
@@ -45,5 +45,6 @@ public interface IDataFollowerWidget<T, U> {
     /**
      * Called on {@link Widget#onPostInit}.
      */
+    @SuppressWarnings("OverrideOnly") // So IntelliJ doesn't warn about the Widget#onPostInit link in the javadoc
     default void onPostInit() {}
 }

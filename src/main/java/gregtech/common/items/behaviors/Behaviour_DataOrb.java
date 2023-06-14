@@ -67,7 +67,7 @@ public class Behaviour_DataOrb extends Behaviour_None {
         for (int i = 0; i < tNBT_ItemList.tagCount(); i++) {
             NBTTagCompound tag = tNBT_ItemList.getCompoundTagAt(i);
             byte slot = tag.getByte("Slot");
-            if ((slot >= 0) && (slot < tInventory.length)) {
+            if (slot >= 0) {
                 tInventory[slot] = GT_Utility.loadItem(tag);
             }
         }

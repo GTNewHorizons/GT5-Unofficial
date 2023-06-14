@@ -68,8 +68,7 @@ public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializ
     }
 
     public JsonElement serialize(ColorsMetadataSection colorsMetaSection, Type type, JsonSerializationContext context) {
-        JsonObject jsonObject = new JsonObject();
-        return jsonObject;
+        return new JsonObject();
     }
 
     public String getSectionName() {

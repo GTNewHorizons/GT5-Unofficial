@@ -51,7 +51,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
 
     private BaseActionSource requestSource = null;
     private AENetworkProxy gridProxy = null;
-    IItemList<IAEFluidStack> fluidCache = GregTech_API.mAE2 ? AEApi.instance()
+    final IItemList<IAEFluidStack> fluidCache = GregTech_API.mAE2 ? AEApi.instance()
         .storage()
         .createFluidList() : null;
     long lastOutputTick = 0;

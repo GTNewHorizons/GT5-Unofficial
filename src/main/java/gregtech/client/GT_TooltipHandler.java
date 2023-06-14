@@ -1,6 +1,26 @@
 package gregtech.client;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.*;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.AQUA;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BLUE;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_BLUE;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_GRAY;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_GREEN;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_PURPLE;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_RED;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GOLD;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.LIGHT_PURPLE;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.OBFUSCATED;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RED;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.UNDERLINE;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.WHITE;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.YELLOW;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.animatedText;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
 
 import java.util.function.Supplier;
 

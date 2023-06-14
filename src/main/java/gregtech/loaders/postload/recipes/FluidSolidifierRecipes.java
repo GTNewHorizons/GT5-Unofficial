@@ -1,6 +1,9 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.Mods.*;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.INGOTS;
@@ -11,10 +14,18 @@ import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsKevlar;
+import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -45,6 +56,21 @@ public class FluidSolidifierRecipes implements Runnable {
                 .noFluidOutputs()
                 .duration(16 * TICKS)
                 .eut(8)
+                .addTo(sFluidSolidficationRecipes);
+        }
+
+        {
+            ItemStack flask = ItemList.VOLUMETRIC_FLASK.get(1);
+            NBTTagCompound nbtFlask = new NBTTagCompound();
+            nbtFlask.setInteger("Capacity", 1000);
+            flask.setTagCompound(nbtFlask);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(ItemList.Shape_Mold_Ball.get(0))
+                .itemOutputs(getModItem(Thaumcraft.ID, "ItemResource", 1, 3))
+                .fluidInputs(new FluidStack(FluidRegistry.getFluid("molten.borosilicateglass"), 144))
+                .noFluidOutputs()
+                .duration(2 * SECONDS + 4 * TICKS)
+                .eut(TierEU.RECIPE_LV)
                 .addTo(sFluidSolidficationRecipes);
         }
 

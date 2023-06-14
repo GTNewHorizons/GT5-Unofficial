@@ -5,13 +5,19 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
 import java.lang.ref.WeakReference;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidContainerItem;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -24,6 +30,7 @@ import gregtech.GT_Mod;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IFluidLockable;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -33,7 +40,8 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.widget.FluidLockWidget;
 
-public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch implements IFluidLockable, IAddUIWidgets {
+public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch
+    implements IFluidStore, IFluidLockable, IAddUIWidgets {
 
     private String lockedFluidName = null;
     private WeakReference<EntityPlayer> playerThatLockedfluid = null;
@@ -47,7 +55,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
             aTier,
             4,
             new String[] { "Fluid Output for Multiblocks",
-                "Capacity: " + GT_Utility.formatNumbers(8000 * (1 << aTier)) + "L",
+                "Capacity: " + GT_Utility.formatNumbers(8000L * (1L << aTier)) + "L",
                 "Right click with screwdriver to restrict output",
                 "Can be restricted to put out Items and/or Steam/No Steam/1 specific Fluid",
                 "Restricted Output Hatches are given priority for Multiblock Fluid output" });
@@ -142,7 +150,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setByte("mMode", mMode);
-        if (lockedFluidName != null && lockedFluidName.length() != 0)
+        if (isFluidLocked() && lockedFluidName != null && lockedFluidName.length() != 0)
             aNBT.setString("lockedFluidName", lockedFluidName);
         else aNBT.removeTag("lockedFluidName");
     }
@@ -151,12 +159,10 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mMode = aNBT.getByte("mMode");
-        lockedFluidName = aNBT.getString("lockedFluidName");
-        lockedFluidName = lockedFluidName.length() == 0 ? null : lockedFluidName;
-        if (GT_Utility.getFluidFromUnlocalizedName(lockedFluidName) != null) {
-            lockedFluidName = GT_Utility.getFluidFromUnlocalizedName(lockedFluidName)
-                .getName();
+        if (isFluidLocked()) {
+            lockedFluidName = aNBT.getString("lockedFluidName");
         }
+        lockedFluidName = GT_Utility.isStringInvalid(lockedFluidName) ? null : lockedFluidName;
     }
 
     @Override
@@ -389,6 +395,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
             }
         } else {
             this.mMode = 0;
+            setLockedFluidName(null);
             markDirty();
         }
     }
@@ -403,12 +410,27 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
         return true;
     }
 
-    public boolean canStoreFluid(Fluid fluid) {
-        if (isFluidLocked()) {
-            if (lockedFluidName == null) return true;
-            return lockedFluidName.equals(fluid.getName());
+    @Override
+    public boolean isEmptyAndAcceptsAnyFluid() {
+        return mMode == 0 && getFluidAmount() == 0;
+    }
+
+    @Override
+    public boolean canStoreFluid(@Nonnull FluidStack fluidStack) {
+        if (mFluid != null && !GT_Utility.areFluidsEqual(mFluid, fluidStack)) {
+            return false;
         }
-        if (GT_ModHandler.isSteam(new FluidStack(fluid, 0))) return outputsSteam();
+        if (isFluidLocked()) {
+            if (lockedFluidName == null) {
+                return true;
+            }
+            return lockedFluidName.equals(
+                fluidStack.getFluid()
+                    .getName());
+        }
+        if (GT_ModHandler.isSteam(fluidStack)) {
+            return outputsSteam();
+        }
         return outputsLiquids();
     }
 

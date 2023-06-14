@@ -220,6 +220,8 @@ public class GT_UITextures {
 
     public static final UITexture BUTTON_STANDARD = AdaptableUITexture
         .of(GregTech.ID, "gui/button/standard", 18, 18, 1);
+    public static final UITexture BUTTON_STANDARD_PRESSED = AdaptableUITexture
+        .of(GregTech.ID, "gui/button/standard_pressed", 18, 18, 1);
     public static final UITexture BUTTON_STANDARD_DISABLED = AdaptableUITexture
         .of(GregTech.ID, "gui/button/standard_disabled", 18, 18, 1);
     public static final UITexture BUTTON_STANDARD_TOGGLE = AdaptableUITexture
@@ -242,14 +244,14 @@ public class GT_UITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/power_switch_on");
     public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_OFF = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/power_switch_off");
-    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_ON = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/void_excess_on");
-    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_ON_DISABLED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/void_excess_on_disabled");
-    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_OFF = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/void_excess_off");
-    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_OFF_DISABLED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/void_excess_off_disabled");
+    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_NONE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/void_excess_none");
+    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_ITEM = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/void_excess_item");
+    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_FLUID = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/void_excess_fluid");
+    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_ALL = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/void_excess_all");
     public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/input_separation_on");
     public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED = UITexture
@@ -274,6 +276,8 @@ public class GT_UITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_off");
     public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_off_disabled");
+    public static final UITexture OVERLAY_BUTTON_FORBIDDEN = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/forbidden");
     public static final UITexture OVERLAY_BUTTON_DOWN_TIERING_ON = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/down_tiering_on");
     public static final UITexture OVERLAY_BUTTON_DOWN_TIERING_OFF = UITexture
@@ -342,10 +346,10 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_BUTTON_LOCK = UITexture.fullImage(GregTech.ID, "gui/overlay_button/lock");
     public static final UITexture OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/input_from_output_side");
-    public static final UITexture OVERLAY_BUTTON_VOID_EXCESS = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/void_excess");
-    public static final UITexture OVERLAY_BUTTON_VOID_ALL = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/void_all");
+    public static final UITexture OVERLAY_BUTTON_TANK_VOID_EXCESS = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/tank_void_excess");
+    public static final UITexture OVERLAY_BUTTON_TANK_VOID_ALL = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/tank_void_all");
     public static final UITexture OVERLAY_BUTTON_NEI = UITexture.fullImage(GregTech.ID, "gui/overlay_button/nei");
 
     /**

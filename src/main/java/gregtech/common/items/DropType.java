@@ -15,13 +15,13 @@ public enum DropType {
     LAPIS("lapis coolant", true),
     ENDERGOO("ender goo", true);
 
-    private static int[][] colours = new int[][] { { 0x19191B, 0x303032 }, { 0xffc100, 0x00ff11 },
+    private static final int[][] colours = new int[][] { { 0x19191B, 0x303032 }, { 0xffc100, 0x00ff11 },
         { 0x144F5A, 0x2494A2 }, { 0xC11F1F, 0xEBB9B9 }, { 0x872836, 0xB8132C }, { 0xD02001, 0x9C0018 },
         { 0x003366, 0x0066BB }, { 0x1727b1, 0x008ce3 }, { 0xA005E7, 0x161616 }, };
     public boolean showInList;
     public Materials material;
     public int chance;
-    private String name;
+    private final String name;
 
     DropType(String pName, boolean show) {
         this.name = pName;

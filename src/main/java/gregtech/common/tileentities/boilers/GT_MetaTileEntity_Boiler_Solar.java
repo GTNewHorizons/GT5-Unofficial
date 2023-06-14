@@ -41,7 +41,7 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
             + "Calcifies over time, reducing Steam output to %sL/s%n"
             + "Break and replace to descale");
     protected final Config mConfig;
-    protected int basicTemperatureMod = 5; // Base Celsius gain or loss
+    protected final int basicTemperatureMod = 5; // Base Celsius gain or loss
     private int mRunTimeTicks = 0;
 
     public GT_MetaTileEntity_Boiler_Solar(int aID, String aName, String aNameRegional) {

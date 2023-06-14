@@ -1,7 +1,12 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.Mods.*;
+import static gregtech.api.enums.Mods.BartWorks;
+import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;

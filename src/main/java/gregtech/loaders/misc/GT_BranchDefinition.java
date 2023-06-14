@@ -1,7 +1,24 @@
 package gregtech.loaders.misc;
 
-import static forestry.api.apiculture.EnumBeeChromosome.*;
-import static forestry.core.genetics.alleles.EnumAllele.*;
+import static forestry.api.apiculture.EnumBeeChromosome.CAVE_DWELLING;
+import static forestry.api.apiculture.EnumBeeChromosome.EFFECT;
+import static forestry.api.apiculture.EnumBeeChromosome.FERTILITY;
+import static forestry.api.apiculture.EnumBeeChromosome.FLOWERING;
+import static forestry.api.apiculture.EnumBeeChromosome.FLOWER_PROVIDER;
+import static forestry.api.apiculture.EnumBeeChromosome.HUMIDITY_TOLERANCE;
+import static forestry.api.apiculture.EnumBeeChromosome.LIFESPAN;
+import static forestry.api.apiculture.EnumBeeChromosome.NOCTURNAL;
+import static forestry.api.apiculture.EnumBeeChromosome.SPEED;
+import static forestry.api.apiculture.EnumBeeChromosome.TEMPERATURE_TOLERANCE;
+import static forestry.api.apiculture.EnumBeeChromosome.TERRITORY;
+import static forestry.api.apiculture.EnumBeeChromosome.TOLERANT_FLYER;
+import static forestry.core.genetics.alleles.EnumAllele.Fertility;
+import static forestry.core.genetics.alleles.EnumAllele.Flowering;
+import static forestry.core.genetics.alleles.EnumAllele.Flowers;
+import static forestry.core.genetics.alleles.EnumAllele.Lifespan;
+import static forestry.core.genetics.alleles.EnumAllele.Speed;
+import static forestry.core.genetics.alleles.EnumAllele.Territory;
+import static forestry.core.genetics.alleles.EnumAllele.Tolerance;
 import static gregtech.loaders.misc.GT_BeeDefinition.getEffect;
 import static gregtech.loaders.misc.GT_BeeDefinition.getFlowers;
 import static gregtech.loaders.misc.GT_BeeDefinitionReference.EXTRABEES;
@@ -174,7 +191,7 @@ public enum GT_BranchDefinition {
         return Arrays.copyOf(defaultTemplate, defaultTemplate.length);
     }
 
-    protected final void setBranchProperties(IAllele[] template) {
+    void setBranchProperties(IAllele[] template) {
         this.mBranchProperties.accept(template);
     }
 

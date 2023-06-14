@@ -12,9 +12,15 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.tuple.Pair;
+
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.logic.PowerLogic;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
+import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.util.GT_Utility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -50,6 +56,50 @@ public abstract class PowerController<T extends PowerController<T>> extends Cont
         boolean result = super.checkMachine();
         updatePowerLogic();
         return result;
+    }
+
+    @Override
+    protected boolean checkRecipe() {
+        if (!(this instanceof ProcessingLogicHost)) {
+            return false;
+        }
+        ProcessingLogic logic = ((ProcessingLogicHost) this).getProcessingLogic();
+        logic.clear();
+        boolean result = false;
+        if (isSeparateInputs()) {
+            // TODO: Add separation with fluids
+            for (Pair<ItemStack[], String> inventory : getItemInputsForEachInventory()) {
+                IItemHandlerModifiable outputInventory = multiBlockOutputInventory
+                    .getOrDefault(inventory.getLeft(), null);
+                result = logic.setInputItems(inventory.getLeft())
+                    .setCurrentOutputItems(getOutputItems())
+                    .process();
+                if (result) {
+                    inventoryName = inventory.getRight();
+                    break;
+                }
+                logic.clear();
+            }
+        } else {
+            result = logic.setInputItems(getInputItems())
+                .setCurrentOutputItems(getOutputItems())
+                .setInputFluids(getInputFluids())
+                .setCurrentOutputFluids(getOutputFluids())
+                .setVoltage(power.getVoltage())
+                .setAmperage(amperage)
+                .setPerfectOverclock(hasPerfectOverclock())
+                .setIsCleanroom(isCleanroom)
+                .process();
+        }
+        setDuration(logic.getDuration());
+        setEut(logic.getEut());
+        setItemOutputs(logic.getOutputItems());
+        setFluidOutputs(logic.getOutputFluids());
+        return result;
+    }
+
+    protected boolean hasPerfectOverclock() {
+        return false;
     }
 
     protected void updatePowerLogic() {

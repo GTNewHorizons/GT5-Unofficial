@@ -1,6 +1,6 @@
 package gregtech.common.bees;
 
-import java.awt.*;
+import java.awt.Color;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

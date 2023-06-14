@@ -5,7 +5,6 @@ import static gregtech.api.enums.FluidState.LIQUID;
 import static gregtech.api.enums.FluidState.MOLTEN;
 import static gregtech.api.enums.FluidState.SLURRY;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
-import static gregtech.api.enums.Mods.BloodArsenal;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
@@ -30,7 +29,15 @@ import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
+import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsKevlar;
+import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
 import gregtech.api.fluid.GT_FluidFactory;
 import gregtech.api.items.GT_Block_LongDistancePipe;
 import gregtech.api.items.GT_BreederCell_Item;
@@ -42,7 +49,23 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.*;
+import gregtech.common.blocks.GT_Block_Casings1;
+import gregtech.common.blocks.GT_Block_Casings2;
+import gregtech.common.blocks.GT_Block_Casings3;
+import gregtech.common.blocks.GT_Block_Casings4;
+import gregtech.common.blocks.GT_Block_Casings5;
+import gregtech.common.blocks.GT_Block_Casings6;
+import gregtech.common.blocks.GT_Block_Casings8;
+import gregtech.common.blocks.GT_Block_Casings9;
+import gregtech.common.blocks.GT_Block_Concretes;
+import gregtech.common.blocks.GT_Block_Granites;
+import gregtech.common.blocks.GT_Block_Machines;
+import gregtech.common.blocks.GT_Block_Metal;
+import gregtech.common.blocks.GT_Block_Ores;
+import gregtech.common.blocks.GT_Block_Reinforced;
+import gregtech.common.blocks.GT_Block_Stones;
+import gregtech.common.blocks.GT_Cyclotron_Coils;
+import gregtech.common.blocks.GT_TileEntity_Ores;
 import gregtech.common.items.GT_DepletetCell_Item;
 import gregtech.common.items.GT_FluidDisplayItem;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
@@ -631,7 +654,8 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             "gt.blockmetal9",
             new Materials[] { Materials.Cryolite, Materials.SiliconSG, MaterialsKevlar.NickelAluminide,
                 MaterialsUEVplus.SpaceTime, MaterialsUEVplus.TranscendentMetal, Materials.Oriharukon,
-                MaterialsUEVplus.WhiteDwarfMatter, MaterialsUEVplus.BlackDwarfMatter, MaterialsUEVplus.Universium },
+                MaterialsUEVplus.WhiteDwarfMatter, MaterialsUEVplus.BlackDwarfMatter, MaterialsUEVplus.Universium,
+                MaterialsUEVplus.Eternity },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
 
@@ -641,11 +665,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         BaseMetaTileEntity tBaseMetaTileEntity = GregTech_API.constructBaseMetaTileEntity();
 
-        GT_Log.out.println("GT_Mod: Testing BaseMetaTileEntity.");
-        if (tBaseMetaTileEntity == null) {
-            GT_Log.out.println("GT_Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
-            throw new RuntimeException("");
-        }
         GT_Log.out.println("GT_Mod: Registering the BaseMetaTileEntity.");
         GameRegistry.registerTileEntity(tBaseMetaTileEntity.getClass(), "BaseMetaTileEntity");
         FMLInterModComms.sendMessage(
@@ -1222,6 +1241,15 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Time, 1L),
                 ItemList.Cell_Empty.get(1L));
 
+        GT_FluidFactory.builder("PrimordialMatter")
+            .withLocalizedName(MaterialsUEVplus.PrimordialMatter.mLocalizedName)
+            .withStateAndTemperature(LIQUID, 2_000_000_000)
+            .buildAndRegister()
+            .configureMaterials(MaterialsUEVplus.PrimordialMatter)
+            .registerBContainers(
+                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.PrimordialMatter, 1L),
+                ItemList.Cell_Empty.get(1L));
+
         GT_FluidFactory.builder("fieryblood")
             .withLocalizedName("Fiery Blood")
             .withStateAndTemperature(LIQUID, 6400)
@@ -1245,15 +1273,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     Materials.FierySteel.getFluid(250L),
                     ItemList.TF_Vial_FieryBlood.get(1L),
                     ItemList.Bottle_Empty.get(1L)));
-
-            GT_FluidFactory.builder("liquid_sodium")
-                .withLocalizedName("Liquid Sodium")
-                .withStateAndTemperature(LIQUID, 495)
-                .buildAndRegister()
-                .configureMaterials(Materials.Sodium)
-                .registerBContainers(
-                    GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Sodium, 1L),
-                    ItemList.Cell_Empty.get(1L));
         }
 
         FluidContainerRegistry.registerFluidContainer(
@@ -1915,7 +1934,10 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .withLocalizedName("Liquid Sodium")
             .withStateAndTemperature(LIQUID, 495)
             .buildAndRegister()
-            .configureMaterials(Materials.Sodium);
+            .configureMaterials(Materials.Sodium)
+            .registerBContainers(
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Sodium, 1L),
+                ItemList.Cell_Empty.get(1L));
 
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
@@ -2128,10 +2150,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .set(OrePrefixes.nugget, Materials.Void, GT_ModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 7));
         GT_OreDictUnificator
             .set(OrePrefixes.ingot, Materials.Void, GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 16));
-        GT_OreDictUnificator.set(
-            OrePrefixes.ingot,
-            Materials.BloodInfusedIron,
-            GT_ModHandler.getModItem(BloodArsenal.ID, "blood_infused_iron", 1L, 0));
 
         if (GregTech_API.sUnification
             .get(ConfigCategories.specialunificationtargets + "." + "railcraft", "plateIron", true)) {

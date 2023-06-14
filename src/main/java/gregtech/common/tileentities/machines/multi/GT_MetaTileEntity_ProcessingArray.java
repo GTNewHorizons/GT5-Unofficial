@@ -1,9 +1,13 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
@@ -30,7 +34,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
@@ -47,7 +50,11 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_CubicMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -271,7 +278,7 @@ public class GT_MetaTileEntity_ProcessingArray
     }
 
     public boolean processRecipe(ItemStack[] tInputs, FluidStack[] tFluids, GT_Recipe.GT_Recipe_Map map) {
-        if (tInputs.length <= 0 && tFluids.length <= 0) return false;
+        if (tInputs.length == 0 && tFluids.length == 0) return false;
         GT_Recipe tRecipe = map.findRecipe(
             getBaseMetaTileEntity(),
             mLastRecipe,
@@ -502,8 +509,7 @@ public class GT_MetaTileEntity_ProcessingArray
 
     @Override
     protected List<IHatchElement<? super GT_MetaTileEntity_CubicMultiBlockBase<?>>> getAllowedHatches() {
-        return ImmutableList
-            .of(InputHatch, OutputHatch, InputBus, OutputBus, Muffler, Maintenance, Energy, ExoticEnergy);
+        return ImmutableList.of(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy, ExoticEnergy);
     }
 
     @Override
@@ -593,7 +599,7 @@ public class GT_MetaTileEntity_ProcessingArray
                 + " x",
             StatCollector.translateToLocal("GT5U.PA.parallel") + ": "
                 + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers((mInventory[1] != null) ? (mInventory[1].stackSize << mMult) : 0)
+                + GT_Utility.formatNumbers((mInventory[1] != null) ? ((long) mInventory[1].stackSize << mMult) : 0)
                 + EnumChatFormatting.RESET };
     }
 
@@ -647,7 +653,7 @@ public class GT_MetaTileEntity_ProcessingArray
                 mMaxProgresstime >>= ocTimeShift; // this is effect of overclocking
                 if (mMaxProgresstime < 1) {
                     if (oldTime == 1) break;
-                    xEUt *= oldTime * (perfectOC ? 1 : 2);
+                    xEUt *= (long) oldTime * (perfectOC ? 1 : 2);
                     break;
                 } else {
                     xEUt <<= 2;
@@ -665,12 +671,12 @@ public class GT_MetaTileEntity_ProcessingArray
     }
 
     @Override
-    protected boolean isInputSeparationButtonEnabled() {
+    public boolean supportsInputSeparation() {
         return true;
     }
 
     @Override
-    protected boolean isBatchModeButtonEnabled() {
+    public boolean supportsBatchMode() {
         return true;
     }
 
@@ -682,14 +688,13 @@ public class GT_MetaTileEntity_ProcessingArray
             new ButtonWidget().setOnClick((clickData, widget) -> downtierUEV = !downtierUEV)
                 .setPlayClickSound(true)
                 .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
                     if (downtierUEV) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_DOWN_TIERING_ON);
+                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
+                            GT_UITextures.OVERLAY_BUTTON_DOWN_TIERING_ON };
                     } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_DOWN_TIERING_OFF);
+                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
+                            GT_UITextures.OVERLAY_BUTTON_DOWN_TIERING_OFF };
                     }
-                    return ret.toArray(new IDrawable[0]);
                 })
                 .setPos(80, 91)
                 .setSize(16, 16)

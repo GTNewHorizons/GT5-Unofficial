@@ -1,10 +1,14 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.Mods.*;
+import static gregtech.api.enums.Mods.BartWorks;
+import static gregtech.api.enums.Mods.GTNHLanthanides;
+import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBlastRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.*;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 
@@ -13,7 +17,13 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GT_Mod;
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsKevlar;
+import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
@@ -552,94 +562,80 @@ public class BlastFurnaceRecipes implements Runnable {
         // Roasting
 
         for (ItemStack silicon : tSiliconDioxide) {
-            GT_Values.RA.addBlastRecipe(
-                Materials.Chalcopyrite.getDust(1),
-                silicon,
-                Materials.Oxygen.getGas(3000),
-                Materials.SulfurDioxide.getGas(2000),
-                Materials.RoastedCopper.getDust(1),
-                Materials.Ferrosilite.getDust(5),
-                120,
-                (int) TierEU.RECIPE_MV,
-                1200);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(Materials.Chalcopyrite.getDust(1), silicon)
+                .itemOutputs(Materials.RoastedCopper.getDust(1), Materials.Ferrosilite.getDust(5))
+                .fluidInputs(Materials.Oxygen.getGas(3000))
+                .fluidOutputs(Materials.SulfurDioxide.getGas(2000))
+                .duration(6 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .metadata(COIL_HEAT, 1200)
+                .addTo(sBlastRecipes);
         }
 
-        GT_Values.RA.addBlastRecipe(
-            Materials.Tetrahedrite.getDust(1),
-            GT_Values.NI,
-            Materials.Oxygen.getGas(3000),
-            Materials.SulfurDioxide.getGas(2000),
-            Materials.RoastedCopper.getDust(1),
-            Materials.RoastedAntimony.getDustTiny(3),
-            120,
-            (int) TierEU.RECIPE_MV,
-            1200);
-
-        GT_Values.RA.addBlastRecipe(
-            Materials.Pyrite.getDust(1),
-            GT_Values.NI,
-            Materials.Oxygen.getGas(3000),
-            Materials.SulfurDioxide.getGas(2000),
-            Materials.RoastedIron.getDust(1),
-            Materials.Ash.getDustTiny(1),
-            120,
-            (int) TierEU.RECIPE_MV,
-            1200);
-
-        GT_Values.RA.addBlastRecipe(
-            Materials.Pentlandite.getDust(1),
-            GT_Values.NI,
-            Materials.Oxygen.getGas(3000),
-            Materials.SulfurDioxide.getGas(1000),
-            Materials.RoastedNickel.getDust(1),
-            Materials.Ash.getDustTiny(1),
-            120,
-            (int) TierEU.RECIPE_MV,
-            1200);
-
-        GT_Values.RA.addBlastRecipe(
-            Materials.Sphalerite.getDust(1),
-            GT_Values.NI,
-            Materials.Oxygen.getGas(3000),
-            Materials.SulfurDioxide.getGas(1000),
-            Materials.RoastedZinc.getDust(1),
-            Materials.Ash.getDustTiny(1),
-            120,
-            (int) TierEU.RECIPE_MV,
-            1200);
-
-        GT_Values.RA.addBlastRecipe(
-            Materials.Cobaltite.getDust(1),
-            GT_Values.NI,
-            Materials.Oxygen.getGas(3000),
-            Materials.SulfurDioxide.getGas(1000),
-            Materials.RoastedCobalt.getDust(1),
-            Materials.RoastedArsenic.getDust(1),
-            120,
-            (int) TierEU.RECIPE_MV,
-            1200);
-
-        GT_Values.RA.addBlastRecipe(
-            Materials.Stibnite.getDust(1),
-            GT_Values.NI,
-            Materials.Oxygen.getGas(3000),
-            Materials.SulfurDioxide.getGas(1500),
-            Materials.RoastedAntimony.getDust(1),
-            Materials.Ash.getDustTiny(1),
-            120,
-            (int) TierEU.RECIPE_MV,
-            1200);
-
-        GT_Values.RA.addBlastRecipe(
-            Materials.Galena.getDust(1),
-            GT_Values.NI,
-            Materials.Oxygen.getGas(3000),
-            Materials.SulfurDioxide.getGas(1000),
-            Materials.RoastedLead.getDust(1),
-            Materials.Ash.getDustTiny(1),
-            120,
-            (int) TierEU.RECIPE_MV,
-            1200);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.Tetrahedrite.getDust(1))
+            .itemOutputs(Materials.RoastedCopper.getDust(1), Materials.RoastedAntimony.getDustTiny(3))
+            .fluidInputs(Materials.Oxygen.getGas(3000))
+            .fluidOutputs(Materials.SulfurDioxide.getGas(2000))
+            .duration(6 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .metadata(COIL_HEAT, 1200)
+            .addTo(sBlastRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.Pyrite.getDust(1))
+            .itemOutputs(Materials.RoastedIron.getDust(1), Materials.Ash.getDustTiny(1))
+            .fluidInputs(Materials.Oxygen.getGas(3000))
+            .fluidOutputs(Materials.SulfurDioxide.getGas(2000))
+            .duration(6 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .metadata(COIL_HEAT, 1200)
+            .addTo(sBlastRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.Pentlandite.getDust(1))
+            .itemOutputs(Materials.RoastedNickel.getDust(1), Materials.Ash.getDustTiny(1))
+            .fluidInputs(Materials.Oxygen.getGas(3000))
+            .fluidOutputs(Materials.SulfurDioxide.getGas(2000))
+            .duration(6 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .metadata(COIL_HEAT, 1200)
+            .addTo(sBlastRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.Sphalerite.getDust(1))
+            .itemOutputs(Materials.RoastedZinc.getDust(1), Materials.Ash.getDustTiny(1))
+            .fluidInputs(Materials.Oxygen.getGas(3000))
+            .fluidOutputs(Materials.SulfurDioxide.getGas(1000))
+            .duration(6 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .metadata(COIL_HEAT, 1200)
+            .addTo(sBlastRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.Cobaltite.getDust(1))
+            .itemOutputs(Materials.RoastedCobalt.getDust(1), Materials.RoastedArsenic.getDust(1))
+            .fluidInputs(Materials.Oxygen.getGas(3000))
+            .fluidOutputs(Materials.SulfurDioxide.getGas(1000))
+            .duration(6 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .metadata(COIL_HEAT, 1200)
+            .addTo(sBlastRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.Stibnite.getDust(1))
+            .itemOutputs(Materials.RoastedAntimony.getDust(1), Materials.Ash.getDustTiny(1))
+            .fluidInputs(Materials.Oxygen.getGas(3000))
+            .fluidOutputs(Materials.SulfurDioxide.getGas(1500))
+            .duration(6 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .metadata(COIL_HEAT, 1200)
+            .addTo(sBlastRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.Galena.getDust(1))
+            .itemOutputs(Materials.RoastedLead.getDust(1), Materials.Ash.getDustTiny(1))
+            .fluidInputs(Materials.Oxygen.getGas(3000))
+            .fluidOutputs(Materials.SulfurDioxide.getGas(1000))
+            .duration(6 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .metadata(COIL_HEAT, 1200)
+            .addTo(sBlastRecipes);
 
         if (GTNHLanthanides.isModLoaded() && GTPlusPlus.isModLoaded()) {
 

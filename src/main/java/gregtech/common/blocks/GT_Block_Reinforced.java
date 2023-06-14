@@ -25,7 +25,11 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
@@ -174,17 +178,11 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
                 case 3 -> {
                     return Textures.BlockIcons.BLOCK_TSREIN.getIcon();
                 }
-                case 4 -> {
+                case 4, 6, 7 -> {
                     return Blocks.coal_block.getIcon(0, 0);
                 }
                 case 5 -> {
                     return Textures.BlockIcons.COVER_WOOD_PLATE.getIcon();
-                }
-                case 6 -> {
-                    return Blocks.coal_block.getIcon(0, 0);
-                }
-                case 7 -> {
-                    return Blocks.coal_block.getIcon(0, 0);
                 }
                 case 8 -> {
                     return Textures.BlockIcons.BLOCK_STEELPREIN.getIcon();

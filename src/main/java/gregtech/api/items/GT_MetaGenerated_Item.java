@@ -1,9 +1,10 @@
 package gregtech.api.items;
 
 import static gregtech.api.enums.GT_Values.D1;
-import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.enums.Mods.AppleCore;
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCannerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +26,7 @@ import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
@@ -132,7 +134,6 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
                 }
                 if (tRandomData == SubTag.NO_UNIFICATION) {
                     GT_OreDictUnificator.addToBlacklist(rStack);
-                    continue;
                 }
             }
             // now check for the rest
@@ -142,19 +143,25 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
                     setFoodBehavior(mOffset + aID, (IFoodStat) tRandomData);
                     if (((IFoodStat) tRandomData).getFoodAction(this, rStack) == EnumAction.eat) {
                         int tFoodValue = ((IFoodStat) tRandomData).getFoodLevel(this, rStack, null);
-                        if (tFoodValue > 0) RA.addCannerRecipe(
-                            rStack,
-                            ItemList.IC2_Food_Can_Empty.get(tFoodValue),
-                            ((IFoodStat) tRandomData).isRotten(this, rStack, null)
-                                ? ItemList.IC2_Food_Can_Spoiled.get(tFoodValue)
-                                : ItemList.IC2_Food_Can_Filled.get(tFoodValue),
-                            null,
-                            tFoodValue * 100,
-                            1);
+                        if (tFoodValue > 0) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(rStack, ItemList.IC2_Food_Can_Empty.get(tFoodValue))
+                                .itemOutputs(
+                                    ((IFoodStat) tRandomData).isRotten(this, rStack, null)
+                                        ? ItemList.IC2_Food_Can_Spoiled.get(tFoodValue)
+                                        : ItemList.IC2_Food_Can_Filled.get(tFoodValue))
+                                .noFluidInputs()
+                                .noFluidOutputs()
+                                .duration(tFoodValue * 5 * SECONDS)
+                                .eut(1)
+                                .addTo(sCannerRecipes);
+                        }
                     }
                     tUseOreDict = false;
                 }
                 if (tRandomData instanceof IItemBehaviour) {
+                    // The cast below from is not safe. If you know how to make it safe, please do.
+                    // noinspection unchecked
                     addItemBehavior(mOffset + aID, (IItemBehaviour<GT_MetaBase_Item>) tRandomData);
                     tUseOreDict = false;
                 }
@@ -176,7 +183,6 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
                 }
                 if (tUseOreDict) {
                     GT_OreDictUnificator.registerOre(tRandomData, rStack);
-                    continue;
                 }
             }
             if (GregTech_API.sThaumcraftCompat != null)

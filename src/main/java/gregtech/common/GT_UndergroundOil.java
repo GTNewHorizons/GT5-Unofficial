@@ -37,7 +37,7 @@ public class GT_UndergroundOil {
 
     /**
      * Effectively just call {@code undergroundOil(te, -1)} for you
-     * 
+     *
      * @see #undergroundOil(World, int, int, float)
      */
     public static FluidStack undergroundOilReadInformation(IGregTechTileEntity te) {
@@ -49,7 +49,7 @@ public class GT_UndergroundOil {
 
     /**
      * Effectively just call {@code undergroundOil(chunk, -1)} for you
-     * 
+     *
      * @see #undergroundOil(World, int, int, float)
      */
     public static FluidStack undergroundOilReadInformation(Chunk chunk) {
@@ -73,7 +73,7 @@ public class GT_UndergroundOil {
 
     /**
      * Pump fluid or read info.
-     * 
+     *
      * @param w                      a remote World. For a WorldClient it will always tell you null
      * @param chunkX                 chunk coordinate X, i.e. blockX >> 4
      * @param chunkZ                 chunk coordinate Z, i.e. blockZ >> 4
@@ -121,7 +121,7 @@ public class GT_UndergroundOil {
 
     /**
      * Get the deposit as if it is never exploited
-     * 
+     *
      * @return UO fluid kind and amount, or null if nothing here.
      */
     public static Pair<GT_UO_Fluid, Integer> getPristineAmount(World world, int chunkX, int chunkZ) {

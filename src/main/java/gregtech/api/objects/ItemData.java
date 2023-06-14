@@ -1,6 +1,8 @@
 package gregtech.api.objects;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
@@ -115,8 +117,6 @@ public class ItemData {
     @Override
     public String toString() {
         if (mPrefix == null || mMaterial == null || mMaterial.mMaterial == null) return "";
-        return String.valueOf(
-            new StringBuilder().append(mPrefix.name())
-                .append(mMaterial.mMaterial.mName));
+        return String.valueOf(mPrefix.name() + mMaterial.mMaterial.mName);
     }
 }

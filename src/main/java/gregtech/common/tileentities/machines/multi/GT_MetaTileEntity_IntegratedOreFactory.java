@@ -1,15 +1,27 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.enums.Mods.BartWorks;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.Muffler;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,6 +53,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMul
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -76,15 +89,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
                     { "EEEEEE     ", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEE     " } }))
         .addElement('i', ofBlock(GregTech_API.sBlockCasings8, 7))
         .addElement('s', ofBlock(GregTech_API.sBlockCasings4, 1))
-        .addElement(
-            'g',
-            ofChain(
-                ofBlockUnlocalizedName(IndustrialCraft2.ID, "blockAlloyGlass", 0, true),
-                ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks", 0, true),
-                ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks2", 0, true),
-                // warded
-                // glass
-                ofBlockUnlocalizedName(Thaumcraft.ID, "blockCosmeticOpaque", 2, false)))
+        .addElement('g', Glasses.chainAllGlasses())
         .addElement('x', ofBlock(GregTech_API.sBlockCasings2, 3))
         .addElement('p', ofBlock(GregTech_API.sBlockCasings2, 15))
         .addElement('t', ofFrame(Materials.TungstenSteel))
@@ -351,7 +356,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
         this.mOutputItems = sMidProduct;
-        calculateOverclockedNessMultiInternal(30 * tRealUsed, getTime(sMode), 1, getMaxInputVoltage(), false);
+        calculateOverclockedNessMultiInternal(30L * tRealUsed, getTime(sMode), 1, getMaxInputVoltage(), false);
         if (this.mEUt > 0) {
             this.mEUt = -this.mEUt;
         }
@@ -361,7 +366,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @SafeVarargs
-    private final boolean checkTypes(int aID, HashSet<Integer>... aTables) {
+    private boolean checkTypes(int aID, HashSet<Integer>... aTables) {
         for (HashSet<Integer> set : aTables) {
             if (set.contains(aID)) {
                 return true;
@@ -401,7 +406,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @SafeVarargs
-    private final void doMac(HashSet<Integer>... aTables) {
+    private void doMac(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
@@ -423,7 +428,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @SafeVarargs
-    private final void doWash(HashSet<Integer>... aTables) {
+    private void doWash(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
@@ -449,7 +454,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @SafeVarargs
-    private final void doThermal(HashSet<Integer>... aTables) {
+    private void doThermal(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
@@ -471,7 +476,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @SafeVarargs
-    private final void doCentrifuge(HashSet<Integer>... aTables) {
+    private void doCentrifuge(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
@@ -493,7 +498,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @SafeVarargs
-    private final void doSift(HashSet<Integer>... aTables) {
+    private void doSift(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
@@ -515,7 +520,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @SafeVarargs
-    private final void doChemWash(HashSet<Integer>... aTables) {
+    private void doChemWash(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
@@ -567,15 +572,16 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
             }
             int tChance = aRecipe.getOutputChance(i);
             if (tChance == 10000) {
-                tOutput.add(GT_Utility.copyAmountUnsafe(aTime * aRecipe.getOutput(i).stackSize, aRecipe.getOutput(i)));
+                tOutput.add(
+                    GT_Utility.copyAmountUnsafe((long) aTime * aRecipe.getOutput(i).stackSize, aRecipe.getOutput(i)));
             } else {
                 // Use Normal Distribution
                 double u = aTime * (tChance / 10000D);
                 double e = aTime * (tChance / 10000D) * (1 - (tChance / 10000D));
                 Random random = new Random();
                 int tAmount = (int) Math.ceil(Math.sqrt(e) * random.nextGaussian() + u);
-                tOutput
-                    .add(GT_Utility.copyAmountUnsafe(tAmount * aRecipe.getOutput(i).stackSize, aRecipe.getOutput(i)));
+                tOutput.add(
+                    GT_Utility.copyAmountUnsafe((long) tAmount * aRecipe.getOutput(i).stackSize, aRecipe.getOutput(i)));
             }
         }
         return tOutput.stream()

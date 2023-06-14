@@ -7,14 +7,14 @@ import net.minecraft.nbt.NBTTagCompound;
 /**
  * Together with {@link gregtech.api.net.GT_Packet_UpdateItem} you can request server side to update item in hand with a
  * NBT tag.
- *
+ * <p>
  * Usual NBT tag size limit applies.
  */
 public interface INetworkUpdatableItem {
 
     /**
      * Receive update from client. Runs on server thread.
-     * 
+     *
      * @param stack  Stack being updated
      * @param player player holding the stack
      * @param tag    received data

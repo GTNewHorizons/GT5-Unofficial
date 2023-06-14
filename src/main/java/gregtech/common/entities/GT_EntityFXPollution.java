@@ -41,7 +41,7 @@ public class GT_EntityFXPollution extends EntityFX {
         if (this.particleAge++ >= this.particleMaxAge) {
             this.setDead();
         } else {
-            this.motionY += -5.0E-4D;
+            this.motionY -= 5.0E-4D;
             this.moveEntity(this.motionX, this.motionY, this.motionZ);
             if (this.posY == this.prevPosY) {
                 this.motionX *= 1.1D;

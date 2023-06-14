@@ -206,7 +206,7 @@ public class GT_MetaTileEntity_ExtremeDieselEngine extends GT_MetaTileEntity_Die
                     + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.engine.output") + ": "
                 + EnumChatFormatting.RED
-                + GT_Utility.formatNumbers(-mEUt * mEfficiency / 10000)
+                + GT_Utility.formatNumbers((long) -mEUt * mEfficiency / 10000)
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("GT5U.engine.consumption") + ": "

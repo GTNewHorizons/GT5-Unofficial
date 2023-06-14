@@ -24,7 +24,8 @@ public class ComplexParallelProcessingLogic {
     protected final long[] availableEut;
     protected final long[] eut;
     protected final long[] durations;
-    protected boolean[] isVoidProtected;
+    protected final boolean[] isItemVoidProtected;
+    protected final boolean[] isFluidVoidProtected;
     protected boolean isCleanroom;
 
     public ComplexParallelProcessingLogic(int maxComplexParallels) {
@@ -41,7 +42,8 @@ public class ComplexParallelProcessingLogic {
         eut = new long[maxComplexParallels];
         availableEut = new long[maxComplexParallels];
         durations = new long[maxComplexParallels];
-        isVoidProtected = new boolean[maxComplexParallels];
+        isItemVoidProtected = new boolean[maxComplexParallels];
+        isFluidVoidProtected = new boolean[maxComplexParallels];
     }
 
     public ComplexParallelProcessingLogic setRecipeMap(GT_Recipe.GT_Recipe_Map recipeMap) {
@@ -75,9 +77,10 @@ public class ComplexParallelProcessingLogic {
         return this;
     }
 
-    public ComplexParallelProcessingLogic setVoidProtection(int index, boolean shouldVoidProtect) {
+    public ComplexParallelProcessingLogic setVoidProtection(int index, boolean protectItem, boolean protectFluid) {
         if (index >= 0 && index < maxComplexParallels) {
-            isVoidProtected[index] = shouldVoidProtect;
+            isItemVoidProtected[index] = protectItem;
+            isFluidVoidProtected[index] = protectFluid;
         }
         return this;
     }
@@ -133,12 +136,9 @@ public class ComplexParallelProcessingLogic {
             .setItemInputs(inputItems[index])
             .setFluidInputs(inputFluids[index])
             .setAvailableEUt(availableEut[index])
+            .setMachine(tileEntity, isItemVoidProtected[index], isFluidVoidProtected[index])
             .enableConsumption()
             .enableOutputCalculation();
-
-        if (isVoidProtected[index]) {
-            helper.enableVoidProtection(tileEntity);
-        }
 
         helper.build();
 

@@ -15,7 +15,11 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
@@ -595,7 +599,10 @@ public class BreweryRecipes implements Runnable {
             .addTo(sBrewingRecipes);
 
         // strong
-        if (aName == "regen" || aName == "speed" || aName == "health" || aName == "strength" || aName == "poison") {
+        if (aName.equals("regen") || aName.equals("speed")
+            || aName.equals("health")
+            || aName.equals("strength")
+            || aName.equals("poison")) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(aItem)
                 .noItemOutputs()
@@ -607,7 +614,7 @@ public class BreweryRecipes implements Runnable {
         }
 
         // long
-        if (aName != "health") {
+        if (!aName.equals("health")) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))
                 .noItemOutputs()

@@ -22,6 +22,7 @@ public class Inventory extends UpgradeCasing {
     public static final int INPUT = 0;
     public static final int OUTPUT = 1;
     public static final int BOTH = 2;
+
     private String inventoryName = "inventory";
     private int inventorySize;
     private int type = BOTH;

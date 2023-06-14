@@ -1,6 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.GT_Values.VN;
 
 import java.util.ArrayList;
 import java.util.List;

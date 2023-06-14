@@ -1,6 +1,11 @@
 package gregtech.api.objects;
 
-import java.util.*;
+import java.util.AbstractSet;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 
@@ -42,6 +47,7 @@ public class GT_HashSet<E extends GT_ItemStack> extends AbstractSet<E> {
         return map;
     }
 
+    @SuppressWarnings("unchecked") // The downcasting below will throw ClassCastException unless E is GT_ItemStack.
     @Override
     public Iterator<E> iterator() {
         return (Iterator<E>) map.keySet()

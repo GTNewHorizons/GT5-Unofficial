@@ -82,6 +82,12 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
     }
 
     @Override
+    protected boolean isGUIClickableImpl(ForgeDirection side, int aCoverID,
+        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
+        return false;
+    }
+
+    @Override
     public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (((aX > 0.375D) && (aX < 0.625D))

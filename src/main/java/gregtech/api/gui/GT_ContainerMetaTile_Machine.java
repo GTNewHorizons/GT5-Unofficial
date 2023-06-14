@@ -93,8 +93,7 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
         mActive = mTileEntity.isActive() ? 1 : 0;
         mTimer++;
 
-        for (ICrafting crafter : this.crafters) {
-            ICrafting player = crafter;
+        for (ICrafting player : this.crafters) {
             if (mTimer % 500 == 10 || oEnergy != mEnergy) {
                 player.sendProgressBarUpdate(this, 0, mEnergy & 65535);
                 player.sendProgressBarUpdate(this, 1, mEnergy >>> 16);

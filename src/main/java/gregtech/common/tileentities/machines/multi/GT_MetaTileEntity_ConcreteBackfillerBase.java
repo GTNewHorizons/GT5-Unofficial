@@ -1,6 +1,9 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_Values.VN;
 
 import java.util.List;
@@ -115,10 +118,8 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
                 .getMaterial()
                 .isSolid())
             return false;
-        if (!GT_Utility
-            .setBlockByFakePlayer(getFakePlayer(aBaseTile), aX, aY, aZ, GregTech_API.sBlockConcretes, 8, true))
-            return false;
-        return true;
+        return GT_Utility
+            .setBlockByFakePlayer(getFakePlayer(aBaseTile), aX, aY, aZ, GregTech_API.sBlockConcretes, 8, true);
     }
 
     private boolean tryRefillBlock(int aX, int aY, int aZ) {

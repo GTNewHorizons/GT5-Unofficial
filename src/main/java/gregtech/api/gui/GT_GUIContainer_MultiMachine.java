@@ -20,7 +20,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbin
 @Deprecated
 public class GT_GUIContainer_MultiMachine extends GT_GUIContainerMetaTile_Machine {
 
-    String mName;
+    final String mName;
     private final int textColor = this.getTextColorOrDefault("text", 0xFAFAFF),
         textColorTitle = this.getTextColorOrDefault("title", 0xFAFAFF);
 

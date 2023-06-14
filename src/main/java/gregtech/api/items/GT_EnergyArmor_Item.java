@@ -140,7 +140,7 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
         }
 
         if (!aPlayer.worldObj.isRemote && (mSpecials & 128) != 0) {
-            float jumpCharge = jumpChargeMap.containsKey(aPlayer) ? (Float) jumpChargeMap.get(aPlayer) : 1.0F;
+            float jumpCharge = jumpChargeMap.getOrDefault(aPlayer, 1.0F);
 
             if (GT_ModHandler.canUseElectricItem(aStack, 1000) && aPlayer.onGround && jumpCharge < 1.0F) {
                 jumpCharge = 1.0F;
@@ -180,9 +180,7 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
                     }
                 }
 
-                if (bonus > 0.0F) {
-                    aPlayer.moveFlying(0.0F, 1.0F, bonus);
-                }
+                aPlayer.moveFlying(0.0F, 1.0F, bonus);
             }
         }
 
@@ -333,10 +331,9 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
     private double getBaseAbsorptionRatio() {
         if (mArmorAbsorbtionPercentage <= 0) return 0.00;
         return switch (this.armorType) {
-            case 0 -> 0.15;
+            case 0, 3 -> 0.15;
             case 1 -> 0.40;
             case 2 -> 0.30;
-            case 3 -> 0.15;
             default -> 0.00;
         };
     }

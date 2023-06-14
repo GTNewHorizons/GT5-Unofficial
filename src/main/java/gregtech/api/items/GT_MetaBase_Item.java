@@ -297,10 +297,6 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item
         if (tStats == null || tStats[2] > aTier
             || !(tStats[3] == -1 || tStats[3] == -3 || (tStats[3] < 0 && aCharge == Integer.MAX_VALUE))
             || aStack.stackSize != 1) return 0;
-        // REALLY?? THIS IS THE CULPRIT THAT CHARGES ITEMS AT INSTANT!!!
-        // long tChargeBefore = getRealCharge(aStack), tNewCharge = aCharge == Integer.MAX_VALUE ? Long.MAX_VALUE :
-        // Math.min(Math.abs(tStats[0]), tChargeBefore + (aIgnoreTransferLimit ? (long) aCharge : Math.min(tStats[1],
-        // (long) aCharge)));
         long tTransfer = aIgnoreTransferLimit ? (long) aCharge : Math.min(tStats[1], (long) aCharge);
         long tChargeBefore = getRealCharge(aStack), tNewCharge = Math.min(
             Math.abs(tStats[0]),

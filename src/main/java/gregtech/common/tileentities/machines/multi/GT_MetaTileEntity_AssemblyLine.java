@@ -1,11 +1,14 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.enums.Mods.BartWorks;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
@@ -41,8 +44,11 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
+import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_AssemblyLineUtils;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
@@ -65,24 +71,10 @@ public class GT_MetaTileEntity_AssemblyLine
         .addShape(
             STRUCTURE_PIECE_LAST,
             transpose(new String[][] { { " ", "e", " " }, { "d", "l", "d" }, { "g", "m", "g" }, { "o", "i", "b" }, }))
-        .addElement('G', ofBlock(GregTech_API.sBlockCasings3, 10)) // grate
-                                                                   // machine
-                                                                   // casing
-        .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 9)) // assembler
-                                                                  // machine
-                                                                  // casing
-        .addElement('m', ofBlock(GregTech_API.sBlockCasings2, 5)) // assembling
-                                                                  // line
-                                                                  // casing
-        .addElement(
-            'g',
-            ofChain(
-                ofBlockUnlocalizedName(IndustrialCraft2.ID, "blockAlloyGlass", 0, true),
-                ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks", 0, true),
-                ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks2", 0, true),
-                // warded
-                // glass
-                ofBlockUnlocalizedName(Thaumcraft.ID, "blockCosmeticOpaque", 2, false)))
+        .addElement('G', ofBlock(GregTech_API.sBlockCasings3, 10)) // grate machine casing
+        .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 9)) // assembler machine casing
+        .addElement('m', ofBlock(GregTech_API.sBlockCasings2, 5)) // assembling line casing
+        .addElement('g', Glasses.chainAllGlasses())
         .addElement(
             'e',
             ofChain(
@@ -108,20 +100,7 @@ public class GT_MetaTileEntity_AssemblyLine
         .addElement(
             'I',
             ofChain(
-                // all
-                // blocks
-                // nearby
-                // use
-                // solid
-                // steel
-                // casing,
-                // so
-                // let's
-                // use
-                // the
-                // texture
-                // of
-                // that
+                // all blocks nearby use solid steel casing, so let's use the texture of that
                 InputBus.newAny(16, 5, ForgeDirection.DOWN),
                 ofHatchAdder(GT_MetaTileEntity_AssemblyLine::addOutputToMachineList, 16, 4)))
         .addElement('i', InputBus.newAny(16, 5, ForgeDirection.DOWN))
@@ -239,6 +218,8 @@ public class GT_MetaTileEntity_AssemblyLine
                 }
             }
 
+            if (!canOutputAll(new ItemStack[] { tRecipe.mOutput })) continue;
+
             // So here we check against the recipe found on the data stick.
             // If we run into missing buses/hatches or bad inputs, we go to the next data stick.
             // This check only happens if we have a valid up to date data stick.
@@ -323,7 +304,7 @@ public class GT_MetaTileEntity_AssemblyLine
         }
 
         // Best not to run this recipe.
-        if (!foundRecipe || tStack.length <= 0) {
+        if (!foundRecipe || tStack.length == 0) {
             return false;
         }
 
@@ -495,6 +476,11 @@ public class GT_MetaTileEntity_AssemblyLine
             if (build >= 0) return build;
         }
         return survivialBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 1 - tLength, 1, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 
     private enum DataHatchElement implements IHatchElement<GT_MetaTileEntity_AssemblyLine> {
