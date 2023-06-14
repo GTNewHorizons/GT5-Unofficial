@@ -924,11 +924,10 @@ public class GenericChem extends ItemPackage {
         CORE.RA.addChemicalPlantRecipe(
                 new ItemStack[] { getTierThreeChip(), },
                 new FluidStack[] { FluidUtils.getFluidStack(Benzene, 5000),
-                        FluidUtils.getFluidStack("sulfuricacid", 3000), FluidUtils.getFluidStack("nitricacid", 5000),
+                        FluidUtils.getFluidStack("sulfuricacid", 1000), FluidUtils.getFluidStack("nitricacid", 5000),
                         FluidUtils.getDistilledWater(10000) },
                 new ItemStack[] {},
-                new FluidStack[] { FluidUtils.getFluidStack("dilutedsulfuricacid", 3000),
-                        FluidUtils.getFluidStack(NitroBenzene, 5000), },
+                new FluidStack[] { FluidUtils.getFluidStack(NitroBenzene, 5000), },
                 20 * 30,
                 500,
                 4);
