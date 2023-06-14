@@ -46,7 +46,7 @@ public class RecipeGen_Plasma extends RecipeGen_Base {
                     case "Runite":
                         GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, aPlasmaCell), aContainerItem, 350_000, 4);
                     case "CelestialTungsten":
-                        GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, aPlasmaCell), aContainerItem, 600_000, 4);
+                        GT_Values.RA.addFuel(GT_Utility.copyAmount(1L, aPlasmaCell), aContainerItem, 720_000, 4);
                     default:
                         GT_Values.RA.addFuel(
                                 GT_Utility.copyAmount(1L, aPlasmaCell),
