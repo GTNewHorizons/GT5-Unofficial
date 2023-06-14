@@ -2,6 +2,8 @@ package gregtech.api.net;
 
 import static gregtech.api.enums.GT_Values.B;
 
+import java.nio.charset.Charset;
+
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
@@ -12,6 +14,7 @@ import com.google.common.io.ByteArrayDataInput;
 import gregtech.GT_Mod;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.multitileentity.MultiTileEntityBlock;
+import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileMachine;
@@ -21,7 +24,7 @@ import io.netty.buffer.ByteBuf;
 public class GT_Packet_MultiTileEntity extends GT_Packet_New {
 
     public static final int COVERS = B[0], REDSTONE = B[1], MODES = B[2], CONTROLLER = B[3], INVENTORY_INDEX = B[4],
-        INVENTORY_NAME = B[5], BOOLEANS = B[6], SOUND = B[7];
+        INVENTORY_NAME_ID = B[5], BOOLEANS = B[6], SOUND = B[7], INVENTORY_UNREGISTER = B[8];
 
     private int features = 0;
 
@@ -32,10 +35,11 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
     private ChunkCoordinates mTargetPos = null;
     private int mLockedInventoryIndex;
     private String mInventoryName;
-    private int mInventoryLength;
+    private String inventoryID;
     private int booleans;
     private byte soundEvent;
     private int soundEventValue;
+    private String toUnregisterInventories;
 
     // MultiBlockPart
     private byte mMode;
@@ -94,9 +98,10 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
 
     }
 
-    public void setInventoryName(String aInventoryName) {
-        features |= INVENTORY_NAME;
+    public void setInventoryName(String aInventoryName, String inventoryID) {
+        features |= INVENTORY_NAME_ID;
         mInventoryName = aInventoryName;
+        this.inventoryID = inventoryID;
     }
 
     /**
@@ -112,6 +117,11 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         features |= SOUND;
         this.soundEvent = soundEvent;
         this.soundEventValue = soundEventValue;
+    }
+
+    public void setToUnregisterInventories(String inventoriesToUnregister) {
+        features |= INVENTORY_UNREGISTER;
+        toUnregisterInventories = inventoriesToUnregister;
     }
 
     @Override
@@ -151,16 +161,20 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         if ((features & INVENTORY_INDEX) == INVENTORY_INDEX) {
             aOut.writeInt(mLockedInventoryIndex);
         }
-        if ((features & INVENTORY_NAME) == INVENTORY_NAME) {
+        if ((features & INVENTORY_NAME_ID) == INVENTORY_NAME_ID) {
             if (mInventoryName != null && mInventoryName.length() > 0) {
-                mInventoryLength = mInventoryName.length();
-                aOut.writeInt(mInventoryLength);
-                for (char tChar : mInventoryName.toCharArray()) {
-                    aOut.writeChar(tChar);
-                }
+                byte[] bytes = mInventoryName.getBytes();
+                aOut.writeInt(bytes.length);
+                aOut.writeBytes(bytes);
             } else {
-                mInventoryLength = 0;
-                aOut.writeInt(mInventoryLength);
+                aOut.writeInt(0);
+            }
+            if (inventoryID != null && inventoryID.length() > 0) {
+                byte[] bytes = inventoryID.getBytes();
+                aOut.writeInt(bytes.length);
+                aOut.writeBytes(bytes);
+            } else {
+                aOut.writeInt(0);
             }
         }
 
@@ -171,6 +185,12 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         if ((features & SOUND) == SOUND) {
             aOut.writeByte(soundEvent);
             aOut.writeInt(soundEventValue);
+        }
+
+        if ((features & INVENTORY_UNREGISTER) == INVENTORY_UNREGISTER) {
+            byte[] bytes = toUnregisterInventories.getBytes(Charset.defaultCharset());
+            aOut.writeInt(bytes.length);
+            aOut.writeBytes(bytes);
         }
     }
 
@@ -211,19 +231,30 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         if ((packetFeatures & INVENTORY_INDEX) == INVENTORY_INDEX) {
             packet.setInventoryIndex(aData.readInt());
         }
-        if ((packetFeatures & INVENTORY_NAME) == INVENTORY_NAME) {
-            int tLength = aData.readInt();
-            String tName;
-            if (tLength > 0) {
-                StringBuilder tNameBuilder = new StringBuilder();
-                for (int i = 0; i < tLength; i++) {
-                    tNameBuilder.append(aData.readChar());
+        if ((packetFeatures & INVENTORY_NAME_ID) == INVENTORY_NAME_ID) {
+            int nameLength = aData.readInt();
+            String inventoryName;
+            if (nameLength > 0) {
+                byte[] bytes = new byte[nameLength];
+                for (int i = 0; i < nameLength; i++) {
+                    bytes[i] = aData.readByte();
                 }
-                tName = tNameBuilder.toString();
+                inventoryName = new String(bytes);
             } else {
-                tName = null;
+                inventoryName = null;
             }
-            packet.setInventoryName(tName);
+            int idLength = aData.readInt();
+            String inventoryID;
+            if (idLength > 0) {
+                byte[] bytes = new byte[idLength];
+                for (int i = 0; i < idLength; i++) {
+                    bytes[i] = aData.readByte();
+                }
+                inventoryID = new String(bytes);
+            } else {
+                inventoryID = null;
+            }
+            packet.setInventoryName(inventoryName, inventoryID);
         }
 
         if ((packetFeatures & BOOLEANS) == BOOLEANS) {
@@ -232,6 +263,15 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
 
         if ((packetFeatures & SOUND) == SOUND) {
             packet.setSoundEvent(aData.readByte(), aData.readInt());
+        }
+
+        if ((packetFeatures & INVENTORY_UNREGISTER) == INVENTORY_UNREGISTER) {
+            int numberOfBytes = aData.readInt();
+            byte[] bytes = new byte[numberOfBytes];
+            for (int i = 0; i < numberOfBytes; i++) {
+                bytes[i] = aData.readByte();
+            }
+            packet.setToUnregisterInventories(new String(bytes, Charset.defaultCharset()));
         }
 
         return packet;
@@ -261,6 +301,11 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
                     mteModes.setAllowedModes(mAllowedModes);
                 }
 
+                if ((features & INVENTORY_NAME_ID) == INVENTORY_NAME_ID && mte instanceof Inventory invUpg) {
+                    invUpg.setInventoryName(mInventoryName);
+                    invUpg.setInventoryId(inventoryID);
+                }
+
                 if ((features & CONTROLLER) == CONTROLLER && mte instanceof IMultiBlockPart) {
                     final IMultiBlockPart mtePart = (IMultiBlockPart) mte;
                     mtePart.setTargetPos(mTargetPos);
@@ -269,10 +314,6 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
                 if ((features & INVENTORY_INDEX) == INVENTORY_INDEX && mte instanceof IMultiBlockPart) {
                     final IMultiBlockPart mtePart = (IMultiBlockPart) mte;
                     mtePart.setLockedInventoryIndex(mLockedInventoryIndex);
-                }
-
-                if ((features & INVENTORY_NAME) == INVENTORY_NAME && mte instanceof Inventory invUpg) {
-                    invUpg.setInventoryName(mInventoryName);
                 }
 
                 if ((features & BOOLEANS) == BOOLEANS && mte instanceof IMultiTileMachine) {
@@ -285,8 +326,18 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
                     machine.setSound(soundEvent, soundEventValue);
                 }
 
+                if ((features & INVENTORY_UNREGISTER) == INVENTORY_UNREGISTER
+                    && mte instanceof IMultiBlockController controller) {
+                    String[] inventoryNameIdType = toUnregisterInventories.split(":");
+                    controller.unregisterInventory(
+                        inventoryNameIdType[0],
+                        inventoryNameIdType[1],
+                        Integer.parseInt(inventoryNameIdType[2]));
+                }
+
             }
         } catch (Exception e) {
+            e.printStackTrace();
             GT_Mod.GT_FML_LOGGER.error(
                 "Exception setting tile entity data for tile entity {} at ({}, {}, {})",
                 tTileEntity,

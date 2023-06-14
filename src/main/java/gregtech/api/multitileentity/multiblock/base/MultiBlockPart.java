@@ -93,6 +93,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         // issueClientUpdate();
         IMultiBlockController controller = getTarget(false);
         if (modeSelected(ITEM_IN) || modeSelected(ITEM_OUT)) {
+            mLockedInventoryIndex = validateAndGetIndex(controller, mLockedInventoryIndex);
             if (!getNameOfInventoryFromIndex(controller, mLockedInventoryIndex).equals(mLockedInventory)) {
                 mLockedInventory = getNameOfInventoryFromIndex(controller, mLockedInventoryIndex);
                 if (mLockedInventory.equals(Controller.ALL_INVENTORIES_NAME)) {
@@ -310,8 +311,8 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     @Override
     public void setTargetPos(ChunkCoordinates aTargetPos) {
         targetPosition = aTargetPos;
-        IMultiBlockController mTarget = getTarget(false);
-        setTarget(mTarget, allowedModes);
+        IMultiBlockController target = getTarget(false);
+        setTarget(target, allowedModes);
     }
 
     @Override
@@ -805,6 +806,14 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         return invNames.get(index);
     }
 
+    protected int validateAndGetIndex(final IMultiBlockController controller, int index) {
+        final List<String> invNames = controller.getInventoryIDs(this);
+        if (index >= invNames.size()) {
+            return 0;
+        }
+        return index;
+    }
+
     protected String getNameOfTankArrayFromIndex(final IMultiBlockController controller, int index) {
         final List<String> tankNames = controller.getTankArrayIDs(this);
         if (index > tankNames.size()) {
@@ -917,7 +926,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
             issueClientUpdate();
         }
         System.out.println("MultiBlockPart::createWindow");
-        if (modeSelected(NOTHING, ENERGY_IN, ENERGY_OUT) || mMode == NOTHING) {
+        if ((modeSelected(NOTHING, ENERGY_IN, ENERGY_OUT) || mMode == NOTHING) && canOpenControllerGui()) {
             IMultiBlockController controller = getTarget(false);
             if (controller == null) {
                 return super.createWindow(buildContext);
@@ -925,6 +934,10 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
             return controller.createWindowGUI(buildContext);
         }
         return super.createWindow(buildContext);
+    }
+
+    protected boolean canOpenControllerGui() {
+        return true;
     }
 
     @Override

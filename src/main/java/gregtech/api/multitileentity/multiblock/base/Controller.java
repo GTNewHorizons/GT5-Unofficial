@@ -213,6 +213,7 @@ import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_AddToolTips
 import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
 import gregtech.api.multitileentity.multiblock.casing.FunctionalCasing;
 import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
+import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -263,6 +264,10 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     protected boolean isSimpleMachine = true;
 
     protected boolean isCleanroom = false;
+
+    private String inventoryIDToUnregister;
+    private String inventoryNameToUnregister;
+    private int type;
 
     // A list of sides
     // Each side has a list of parts that have a cover that need to be ticked
@@ -539,8 +544,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
         // Only trigger an update if forced (from onPostTick, generally), or if the structure has changed
         if ((structureChanged || aForceReset)) {
-            functionalCasings.clear();
-            upgradeCasings.clear();
+            clearSpecialLists();
             structureOkay = checkMachine();
         }
         structureChanged = false;
@@ -770,7 +774,6 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     public void onPostTick(long tick, boolean isServerSide) {
         if (isServerSide) {
             if (tick % 600 == 5) {
-                clearSpecialLists();
                 // Recheck the structure every 30 seconds or so
                 if (!checkStructure(false)) checkStructure(true);
             }
@@ -885,6 +888,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     protected void clearSpecialLists() {
         upgradeCasings.clear();
+        functionalCasings.clear();
     }
 
     @Override
@@ -1069,6 +1073,10 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             @Override
             public boolean placeBlock(S t, World world, int x, int y, int z, ItemStack trigger) {
                 final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry.getRegistry(registryID);
+                if (tRegistry == null) {
+                    GT_FML_LOGGER.error("NULL REGISTRY");
+                    return false;
+                }
                 final MultiTileEntityContainer tContainer = tRegistry
                     .getNewTileEntityContainer(world, x, y, z, meta, null);
                 if (tContainer == null) {
@@ -1439,6 +1447,9 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             multiBlockOutputInventory.put(id, inventory);
             multiBlockOutputInventoryNames.put(id, name);
         }
+        if (isServerSide()) {
+            issueClientUpdate();
+        }
     }
 
     @Override
@@ -1446,10 +1457,19 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         if ((aType == Inventory.INPUT || aType == Inventory.BOTH) && multiBlockInputInventory.containsKey(aID)) {
             multiBlockInputInventory.remove(aID, multiBlockInputInventory.get(aID));
             multiBlockInputInventoryNames.remove(aID, aName);
+            inventoryIDToUnregister = aID;
+            inventoryNameToUnregister = aName;
+            type = aType;
         }
         if ((aType == Inventory.OUTPUT || aType == Inventory.BOTH) && multiBlockOutputInventory.containsKey(aID)) {
             multiBlockOutputInventory.remove(aID, multiBlockOutputInventory.get(aID));
             multiBlockOutputInventoryNames.remove(aID, aName);
+            inventoryIDToUnregister = aID;
+            inventoryNameToUnregister = aName;
+            type = aType;
+        }
+        if (isServerSide()) {
+            issueClientUpdate();
         }
     }
 
@@ -2370,5 +2390,17 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             currentTip
                 .add(GT_Waila.getMachineProgressString(isActive, tag.getLong("maxProgress"), tag.getLong("progress")));
         }
+    }
+
+    @Override
+    public GT_Packet_MultiTileEntity getClientDataPacket() {
+        final GT_Packet_MultiTileEntity packet = super.getClientDataPacket();
+        if (inventoryNameToUnregister != null && inventoryIDToUnregister != null && type != 0) {
+            packet.setToUnregisterInventories(inventoryNameToUnregister + ":" + inventoryIDToUnregister + ":" + type);
+            inventoryNameToUnregister = null;
+            inventoryIDToUnregister = null;
+            type = 0;
+        }
+        return packet;
     }
 }
