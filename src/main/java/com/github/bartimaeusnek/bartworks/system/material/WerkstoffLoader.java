@@ -631,7 +631,8 @@ public class WerkstoffLoader {
             new short[] { 0x14, 0x39, 0x7F, 0 },
             "Xenon",
             "Xe",
-            new Werkstoff.Stats().setProtons(54).setMass(131).setGas(true),
+            new Werkstoff.Stats().setProtons(54).setMass(131).setGas(true).setEbfGasRecipeTimeMultiplier(0.4d)
+                    .setEbfGasRecipeConsumedAmountMultiplier(0.25d),
             Werkstoff.Types.ELEMENT,
             new Werkstoff.GenerationFeatures().disable().addCells().enforceUnification(),
             37,
@@ -643,7 +644,8 @@ public class WerkstoffLoader {
             new short[] { 0x14, 0x39, 0x7F, 0 },
             "Oganesson",
             "Og",
-            new Werkstoff.Stats().setProtons(118).setMass(294).setGas(true),
+            new Werkstoff.Stats().setProtons(118).setMass(294).setGas(true).setEbfGasRecipeTimeMultiplier(0.3d)
+                    .setEbfGasRecipeConsumedAmountMultiplier(0.1d),
             Werkstoff.Types.ELEMENT,
             new Werkstoff.GenerationFeatures().disable().addCells(),
             38,
@@ -679,7 +681,8 @@ public class WerkstoffLoader {
             new short[] { 0xff, 0x07, 0x3a },
             "Neon",
             "Ne",
-            new Werkstoff.Stats().setProtons(Element.Ne.mProtons).setMass(Element.Ne.getMass()).setGas(true),
+            new Werkstoff.Stats().setProtons(Element.Ne.mProtons).setMass(Element.Ne.getMass()).setGas(true)
+                    .setEbfGasRecipeTimeMultiplier(0.6d).setEbfGasRecipeConsumedAmountMultiplier(0.55d),
             Werkstoff.Types.ELEMENT,
             new Werkstoff.GenerationFeatures().disable().addCells().enforceUnification(),
             41,
@@ -691,7 +694,8 @@ public class WerkstoffLoader {
             new short[] { 0xb1, 0xff, 0x32 },
             "Krypton",
             "Kr",
-            new Werkstoff.Stats().setProtons(Element.Kr.mProtons).setMass(Element.Kr.getMass()).setGas(true),
+            new Werkstoff.Stats().setProtons(Element.Kr.mProtons).setMass(Element.Kr.getMass()).setGas(true)
+                    .setEbfGasRecipeTimeMultiplier(0.5d).setEbfGasRecipeConsumedAmountMultiplier(0.4d),
             Werkstoff.Types.ELEMENT,
             new Werkstoff.GenerationFeatures().disable().addCells().enforceUnification(),
             42,

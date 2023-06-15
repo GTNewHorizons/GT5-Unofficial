@@ -86,6 +86,11 @@ public class StaticRecipeChangeLoaders {
             gtEbfGasRecipeTimeMultipliers = new TObjectDoubleHashMap<>(10, 0.5F, -1.0D); // keep default value as -1
             // Example to make Argon cut recipe times into a third of the original:
             // gtEbfGasRecipeTimeMultipliers.put(Materials.Argon, 1.0D / 3.0D);
+
+            gtEbfGasRecipeTimeMultipliers.put(Materials.Nitrogen, 1.0D);
+            gtEbfGasRecipeTimeMultipliers.put(Materials.Helium, 0.9D);
+            gtEbfGasRecipeTimeMultipliers.put(Materials.Argon, 0.8D);
+            gtEbfGasRecipeTimeMultipliers.put(Materials.Radon, 0.7D);
         }
         if (gtEbfGasRecipeConsumptionMultipliers == null) {
             // For Werkstoff gases, use Werkstoff.Stats.setEbfGasRecipeConsumedAmountMultiplier
@@ -94,6 +99,10 @@ public class StaticRecipeChangeLoaders {
             // Example to make Argon recipes use half the gas amount of the primary recipe (1000L->500L, 2000L->1000L
             // etc.):
             // gtEbfGasRecipeConsumptionMultipliers.put(Materials.Argon, 1.0D / 2.0D);
+            gtEbfGasRecipeConsumptionMultipliers.put(Materials.Nitrogen, 1.0D);
+            gtEbfGasRecipeConsumptionMultipliers.put(Materials.Helium, 1.0D);
+            gtEbfGasRecipeConsumptionMultipliers.put(Materials.Argon, 0.85D);
+            gtEbfGasRecipeConsumptionMultipliers.put(Materials.Radon, 0.7D);
         }
         ArrayListMultimap<SubTag, GT_Recipe> toChange = getRecipesToChange(NOBLE_GAS, ANAEROBE_GAS);
         editRecipes(toChange, getNoGasItems(toChange));
@@ -399,22 +408,24 @@ public class StaticRecipeChangeLoaders {
 
     private static int transformEBFGasRecipeTime(GT_Recipe recipe, Materials originalGas, Materials newGas) {
         double newEbfMul = gtEbfGasRecipeTimeMultipliers.get(newGas);
-        if (newEbfMul < 0.0D) {
+        double originalEbfMul = gtEbfGasRecipeTimeMultipliers.get(originalGas);
+        if (newEbfMul < 0.0D || originalEbfMul < 0.0D) {
             return transformEBFGasRecipeTime(recipe.mDuration, originalGas.getProtons(), newGas.getProtons());
         } else {
-            return Math.max(1, (int) ((double) recipe.mDuration * newEbfMul));
+            return Math.max(1, (int) ((double) recipe.mDuration * newEbfMul / originalEbfMul));
         }
     }
 
     private static int transformEBFGasRecipeTime(GT_Recipe recipe, Materials originalGas, Werkstoff newGas) {
         double newEbfMul = newGas.getStats().getEbfGasRecipeTimeMultiplier();
-        if (newEbfMul < 0.0D) {
+        double originalEbfMul = gtEbfGasRecipeTimeMultipliers.get(originalGas);
+        if (newEbfMul < 0.0D || originalEbfMul < 0.0D) {
             return transformEBFGasRecipeTime(
                     recipe.mDuration,
                     originalGas.getProtons(),
                     newGas.getStats().getProtons());
         } else {
-            return Math.max(1, (int) ((double) recipe.mDuration * newEbfMul));
+            return Math.max(1, (int) ((double) recipe.mDuration * newEbfMul / originalEbfMul));
         }
     }
 
