@@ -1,83 +1,181 @@
 package gregtech.api.logic;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.CheckRecipeResults;
+import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
+import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.api.util.GT_OverclockCalculator;
+import gregtech.api.util.GT_ParallelHelper;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
-public abstract class ProcessingLogic {
+public class ProcessingLogic<T extends IVoidable, U extends IHasWorldObjectAndCoords> {
 
+    T controller;
+    U tileEntity;
     protected GT_Recipe_Map recipeMap;
+    protected GT_Recipe lastRecipe;
     protected ItemStack[] inputItems;
     protected ItemStack[] outputItems;
     protected ItemStack[] currentOutputItems;
     protected FluidStack[] inputFluids;
     protected FluidStack[] outputFluids;
     protected FluidStack[] currentOutputFluids;
-    protected long eut;
+    protected long calculatedEut;
     protected long duration;
+    protected long availableVoltage;
+    protected long availableAmperage;
+    protected int overClockTimeReduction = 2;
+    protected int overClockPowerIncrease = 4;
+    protected boolean protectItems;
+    protected boolean protectFluids;
 
     public ProcessingLogic() {}
 
-    public ProcessingLogic setInputItems(ItemStack... itemInputs) {
+    public ProcessingLogic<T, U> setInputItems(ItemStack... itemInputs) {
         this.inputItems = itemInputs;
         return this;
     }
 
-    public ProcessingLogic setInputFluids(FluidStack... fluidInputs) {
+    public ProcessingLogic<T, U> setInputItems(List<ItemStack> itemOutputs) {
+        this.inputItems = itemOutputs.toArray(new ItemStack[0]);
+        return this;
+    }
+
+    public ProcessingLogic<T, U> setInputFluids(FluidStack... fluidInputs) {
         this.inputFluids = fluidInputs;
         return this;
     }
 
-    public ProcessingLogic setOutputItems(ItemStack... itemOutputs) {
+    public ProcessingLogic<T, U> setInputFluids(List<FluidStack> fluidInputs) {
+        this.inputFluids = fluidInputs.toArray(new FluidStack[0]);
+        return this;
+    }
+
+    public ProcessingLogic<T, U> setOutputItems(ItemStack... itemOutputs) {
         this.outputItems = itemOutputs;
         return this;
     }
 
-    public ProcessingLogic setOutputFluids(FluidStack... fluidOutputs) {
+    public ProcessingLogic<T, U> setOutputFluids(FluidStack... fluidOutputs) {
         this.outputFluids = fluidOutputs;
         return this;
     }
 
-    public ProcessingLogic setCurrentOutputItems(ItemStack... currentOutputItems) {
+    public ProcessingLogic<T, U> setCurrentOutputItems(ItemStack... currentOutputItems) {
         this.currentOutputItems = currentOutputItems;
         return this;
     }
 
-    public ProcessingLogic setCurrentOutputFluids(FluidStack... currentOutputFluids) {
+    public ProcessingLogic<T, U> setCurrentOutputFluids(FluidStack... currentOutputFluids) {
         this.currentOutputFluids = currentOutputFluids;
         return this;
     }
 
-    public ProcessingLogic setRecipeMap(GT_Recipe_Map recipeMap) {
+    public ProcessingLogic<T, U> setRecipeMap(GT_Recipe_Map recipeMap) {
         this.recipeMap = recipeMap;
         return this;
     }
 
-    public ProcessingLogic setDuration(long duration) {
+    public ProcessingLogic<T, U> setController(T controller) {
+        this.controller = controller;
+        return this;
+    }
+
+    public ProcessingLogic<T, U> setTileEntity(U tileEntity) {
+        this.tileEntity = tileEntity;
+        return this;
+    }
+
+    public ProcessingLogic<T, U> setDuration(long duration) {
         this.duration = duration;
         return this;
     }
 
-    public ProcessingLogic setEut(long eut) {
-        this.eut = eut;
+    public ProcessingLogic<T, U> setCalculatedEut(long calculatedEut) {
+        this.calculatedEut = calculatedEut;
+        return this;
+    }
+
+    public ProcessingLogic<T, U> setAvailableVoltage(long voltage) {
+        availableVoltage = voltage;
+        return this;
+    }
+
+    public ProcessingLogic<T, U> setAvailableAmperage(long amperage) {
+        availableAmperage = amperage;
+        return this;
+    }
+
+    public ProcessingLogic<T, U> setVoidProtection(boolean protectItems, boolean protectFluids) {
+        this.protectItems = protectItems;
+        this.protectFluids = protectFluids;
+        return this;
+    }
+
+    public ProcessingLogic<T, U> setOverclock(int timeReduction, int powerIncrease) {
+        this.overClockTimeReduction = timeReduction;
+        this.overClockPowerIncrease = powerIncrease;
         return this;
     }
 
     /**
-     * Clears everything stored in the Processing Logic other than the Recipe map used
+     * Clears calculated outputs, and provided machine inputs
      */
-    public ProcessingLogic clear() {
+    public ProcessingLogic<T, U> clear() {
         this.inputItems = null;
         this.inputFluids = null;
         this.outputItems = null;
         this.outputFluids = null;
-        this.eut = 0;
+        this.calculatedEut = 0;
         this.duration = 0;
         return this;
     }
 
-    public abstract boolean process();
+    public CheckRecipeResults process() {
+        if (recipeMap == null) return CheckRecipeResults.NO_RECIPE;
+
+        GT_Recipe recipe = recipeMap
+            .findRecipe(tileEntity, lastRecipe, false, availableVoltage, inputFluids, inputItems);
+
+        if (recipe == null) return CheckRecipeResults.NO_RECIPE;
+        else lastRecipe = recipe;
+
+        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(recipe)
+            .setItemInputs(inputItems)
+            .setFluidInputs(inputFluids)
+            .setAvailableEUt(availableVoltage * availableAmperage)
+            .setMachine(controller, protectItems, protectFluids)
+            .enableConsumption()
+            .enableOutputCalculation()
+            .build();
+
+        if (helper.getCurrentParallel() <= 0) return CheckRecipeResults.OUTPUT_FULL;
+
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
+            .setParallel(helper.getCurrentParallel())
+            .setDuration(recipe.mDuration)
+            .setAmperage(availableAmperage)
+            .setEUt(availableVoltage)
+            .setDurationDecreasePerOC(overClockTimeReduction)
+            .setEUtIncreasePerOC(overClockPowerIncrease)
+            .calculate();
+
+        if (calculator.getConsumption() == Long.MAX_VALUE - 1 || calculator.getDuration() == Integer.MAX_VALUE - 1) {
+            return CheckRecipeResults.NO_RECIPE;
+        }
+
+        calculatedEut = calculator.getConsumption();
+        duration = calculator.getDuration();
+        outputItems = helper.getItemOutputs();
+        outputFluids = helper.getFluidOutputs();
+
+        return CheckRecipeResults.SUCCESSFUL;
+    }
 
     public ItemStack[] getOutputItems() {
         return outputItems;
@@ -91,7 +189,7 @@ public abstract class ProcessingLogic {
         return duration;
     }
 
-    public long getEut() {
-        return eut;
+    public long getCalculatedEut() {
+        return calculatedEut;
     }
 }

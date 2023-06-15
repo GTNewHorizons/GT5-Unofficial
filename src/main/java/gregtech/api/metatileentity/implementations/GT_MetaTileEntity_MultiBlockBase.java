@@ -46,6 +46,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.CheckRecipeResults;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.VoidingMode;
@@ -58,7 +59,10 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
+import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
@@ -118,6 +122,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public ArrayList<GT_MetaTileEntity_Hatch_Energy> mEnergyHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Maintenance> mMaintenanceHatches = new ArrayList<>();
     protected List<GT_MetaTileEntity_Hatch> mExoticEnergyHatches = new ArrayList<>();
+    protected ProcessingLogic<IVoidable, IHasWorldObjectAndCoords> processingLogic;
     @SideOnly(Side.CLIENT)
     protected GT_SoundLoop activitySoundLoop;
 
@@ -442,12 +447,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     protected boolean checkRecipe() {
         startRecipeProcessing();
-        boolean result = checkRecipe(mInventory[1]);
-        if (result && getProcessStartSound() != null) {
+        CheckRecipeResults result = checkProcessing();
+        if (result.wasSuccessful() && getProcessStartSound() != null) {
             sendLoopStart(PROCESS_START_SOUND_INDEX);
         }
+        errorDisplayString = result.getResultDisplayString();
         endRecipeProcessing();
-        return result;
+        return result.wasSuccessful();
     }
 
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -612,8 +618,61 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     /**
      * Checks the Recipe
+     *
+     * @deprecated Use {@link #checkProcessing()} instead
      */
-    public abstract boolean checkRecipe(ItemStack aStack);
+    @Deprecated
+    public boolean checkRecipe(ItemStack aStack) {
+        return false;
+    }
+
+    public CheckRecipeResults checkProcessing() {
+        ProcessingLogic<IVoidable, IHasWorldObjectAndCoords> logic = getProcessingLogic();
+
+        // If no logic is found, try legacy checkRecipe
+        if (logic == null) {
+            return checkRecipe(mInventory[1]) ? CheckRecipeResults.SUCCESSFUL : CheckRecipeResults.NO_RECIPE;
+        }
+
+        CheckRecipeResults result = null;
+
+        logic.clear();
+        logic.setAvailableVoltage(getMaxInputVoltage());
+        logic.setAvailableAmperage(1);
+        logic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
+        logic.setInputFluids(getStoredFluids());
+        if (isInputSeparationEnabled()) {
+            for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
+                logic.setInputItems(bus.mInventory);
+                result = logic.process();
+                if (result.wasSuccessful()) break;
+            }
+        } else {
+            logic.setInputItems(getStoredInputs());
+            result = logic.process();
+        }
+
+        if (result == null || !result.wasSuccessful()) return result;
+
+        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+        this.mEfficiencyIncrease = 10000;
+
+        if (logic.getCalculatedEut() > Integer.MAX_VALUE) return CheckRecipeResults.NO_RECIPE;
+        mEUt = (int) logic.getCalculatedEut();
+
+        if (logic.getDuration() > Integer.MAX_VALUE) return CheckRecipeResults.NO_RECIPE;
+        mMaxProgresstime = (int) logic.getDuration();
+
+        if (this.mEUt > 0) {
+            this.mEUt = (-this.mEUt);
+        }
+
+        mOutputItems = logic.getOutputItems();
+        mOutputFluids = logic.getOutputFluids();
+
+        updateSlots();
+        return result;
+    }
 
     /**
      * Checks the Machine. You have to assign the MetaTileEntities for the Hatches here.
@@ -1106,6 +1165,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     public GT_Recipe_Map getRecipeMap() {
         return null;
+    }
+
+    protected ProcessingLogic<IVoidable, IHasWorldObjectAndCoords> getProcessingLogic() {
+        return processingLogic;
     }
 
     public void updateSlots() {
@@ -1791,6 +1854,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {}
 
+    private String errorDisplayString;
+
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         screenElements.setSynced(false)
             .setSpace(0)
@@ -1863,6 +1928,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             new TextWidget(GT_Utility.trans("142", "Running perfectly.")).setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(
                     widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
+        screenElements
+            .widget(
+                new TextWidget(errorDisplayString != null ? StatCollector.translateToLocal(errorDisplayString) : "")
+                    .setEnabled(widget -> errorDisplayString != null))
+            .widget(
+                new FakeSyncWidget.StringSyncer(
+                    () -> errorDisplayString,
+                    (displayString) -> errorDisplayString = displayString));
 
         screenElements.widget(
             new TextWidget(GT_Utility.trans("143", "Missing Mining Pipe")).setDefaultColor(COLOR_TEXT_WHITE.get())

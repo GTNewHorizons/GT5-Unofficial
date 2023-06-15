@@ -71,6 +71,7 @@ import com.gtnewhorizons.modularui.common.widget.TabContainer;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
+import gregtech.api.enums.CheckRecipeResults;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.OrePrefixes;
@@ -1675,7 +1676,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         }
         ProcessingLogic logic = ((ProcessingLogicHost) this).getProcessingLogic();
         logic.clear();
-        boolean result = false;
+        CheckRecipeResults result = CheckRecipeResults.NO_RECIPE;
         if (isSeparateInputs()) {
             // TODO: Add separation with fluids
             for (Pair<ItemStack[], String> inventory : getItemInputsForEachInventory()) {
@@ -1684,7 +1685,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 result = logic.setInputItems(inventory.getLeft())
                     .setCurrentOutputItems(getOutputItems())
                     .process();
-                if (result) {
+                if (result.wasSuccessful()) {
                     inventoryName = inventory.getRight();
                     break;
                 }
@@ -1698,10 +1699,10 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 .process();
         }
         setDuration(logic.getDuration());
-        setEut(logic.getEut());
+        setEut(logic.getCalculatedEut());
         setItemOutputs(logic.getOutputItems());
         setFluidOutputs(logic.getOutputFluids());
-        return result;
+        return result.wasSuccessful();
     }
 
     public IItemHandlerModifiable getOutputInventory() {
