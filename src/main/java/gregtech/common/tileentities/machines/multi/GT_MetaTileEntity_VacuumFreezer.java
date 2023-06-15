@@ -8,7 +8,6 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
@@ -17,11 +16,13 @@ import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
+import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_CubicMultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_VacuumFreezer
     extends GT_MetaTileEntity_CubicMultiBlockBase<GT_MetaTileEntity_VacuumFreezer> {
@@ -102,34 +103,13 @@ public class GT_MetaTileEntity_VacuumFreezer
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        ItemStack[] tInputList = getCompactedInputs();
-        FluidStack[] tFluidList = getCompactedFluids();
-
-        long tVoltage = getMaxInputVoltage();
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-        GT_Recipe tRecipe = getRecipeMap()
-            .findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluidList, tInputList);
-        if (tRecipe != null) {
-            if (!canOutputAll(tRecipe)) return false;
-            if (tRecipe.isRecipeInputEqual(true, tFluidList, tInputList)) {
-                this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-                this.mEfficiencyIncrease = 10000;
-
-                calculateOverclockedNessMultiInternal(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage, false);
-                // In case recipe is too OP for that machine
-                if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) return false;
-                if (this.mEUt > 0) {
-                    this.mEUt = (-this.mEUt);
-                }
-                this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-                this.mOutputItems = new ItemStack[] { tRecipe.getOutput(0) };
-                this.mOutputFluids = new FluidStack[] { tRecipe.getFluidOutput(0) };
-                updateSlots();
-                return true;
-            }
+    protected ProcessingLogic<IVoidable, IHasWorldObjectAndCoords> getProcessingLogic() {
+        if (super.getProcessingLogic() == null) {
+            processingLogic = new ProcessingLogic<>().setController(this)
+                .setTileEntity(getBaseMetaTileEntity())
+                .setRecipeMap(getRecipeMap());
         }
-        return false;
+        return super.getProcessingLogic();
     }
 
     @Override

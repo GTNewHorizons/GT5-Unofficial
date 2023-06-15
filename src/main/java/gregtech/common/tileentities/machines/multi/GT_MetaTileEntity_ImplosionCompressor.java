@@ -7,8 +7,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COM
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_GLOW;
 
-import java.util.ArrayList;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -22,11 +20,13 @@ import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
+import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_CubicMultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_ImplosionCompressor
     extends GT_MetaTileEntity_CubicMultiBlockBase<GT_MetaTileEntity_ImplosionCompressor> {
@@ -108,44 +108,13 @@ public class GT_MetaTileEntity_ImplosionCompressor
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        ArrayList<ItemStack> tInputList = getStoredInputs();
-        int tInputList_sS = tInputList.size();
-        for (int i = 0; i < tInputList_sS - 1; i++) {
-            for (int j = i + 1; j < tInputList_sS; j++) {
-                if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
-                    if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
-                        tInputList.remove(j--);
-                        tInputList_sS = tInputList.size();
-                    } else {
-                        tInputList.remove(i--);
-                        tInputList_sS = tInputList.size();
-                        break;
-                    }
-                }
-            }
+    protected ProcessingLogic<IVoidable, IHasWorldObjectAndCoords> getProcessingLogic() {
+        if (super.getProcessingLogic() == null) {
+            processingLogic = new ProcessingLogic<>().setController(this)
+                .setTileEntity(getBaseMetaTileEntity())
+                .setRecipeMap(getRecipeMap());
         }
-        ItemStack[] tInputs = tInputList.toArray(new ItemStack[0]);
-        if (!tInputList.isEmpty()) {
-            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sImplosionRecipes
-                .findRecipe(getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
-            if ((tRecipe != null) && canOutputAll(tRecipe) && tRecipe.isRecipeInputEqual(true, null, tInputs)) {
-                this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-                this.mEfficiencyIncrease = 10000;
-                // OC THAT EXPLOSIVE SHIT!!!
-                calculateOverclockedNessMultiInternal(tRecipe.mEUt, tRecipe.mDuration, 1, getMaxInputVoltage(), false);
-                // In case recipe is too OP for that machine
-                if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) return false;
-                if (this.mEUt > 0) {
-                    this.mEUt = (-this.mEUt);
-                }
-                this.mOutputItems = new ItemStack[] { tRecipe.getOutput(0), tRecipe.getOutput(1) };
-                sendLoopStart((byte) 20);
-                updateSlots();
-                return true;
-            }
-        }
-        return false;
+        return super.getProcessingLogic();
     }
 
     @Override
