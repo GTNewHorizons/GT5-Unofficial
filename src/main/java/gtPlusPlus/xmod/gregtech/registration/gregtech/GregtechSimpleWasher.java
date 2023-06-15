@@ -59,15 +59,12 @@ public class GregtechSimpleWasher {
         }
 
         for (Werkstoff v : Werkstoff.werkstoffHashSet) {
-            dustClean = v.get(OrePrefixes.dust);
-            dustDirty = v.get(OrePrefixes.dustImpure);
+            dustClean = v.hasItemType(OrePrefixes.dust) ? v.get(OrePrefixes.dust) : null;
+            dustDirty = v.hasItemType(OrePrefixes.dustImpure) ? v.get(OrePrefixes.dustImpure) : null;
             addSimpleWashRecipe(dustDirty, dustClean);
         }
 
-        if (GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes.mRecipeList.size() > mRecipeCount) {
-            return true;
-        }
-        return false;
+        return GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes.mRecipeList.size() > mRecipeCount;
     }
 
     private static boolean generateDirtyCrushedRecipes() {
@@ -82,15 +79,12 @@ public class GregtechSimpleWasher {
         }
 
         for (Werkstoff v : Werkstoff.werkstoffHashSet) {
-            crushedClean = v.get(OrePrefixes.crushedPurified);
-            crushedDirty = v.get(OrePrefixes.crushed);
+            crushedClean = v.hasItemType(OrePrefixes.crushedPurified) ? v.get(OrePrefixes.crushedPurified) : null;
+            crushedDirty = v.hasItemType(OrePrefixes.crushed) ? v.get(OrePrefixes.crushed) : null;
             addSimpleWashRecipe(crushedDirty, crushedClean);
         }
 
-        if (GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes.mRecipeList.size() > mRecipeCount) {
-            return true;
-        }
-        return false;
+        return GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes.mRecipeList.size() > mRecipeCount;
     }
 
     private static void addSimpleWashRecipe(ItemStack aInput, ItemStack aOutput) {
