@@ -654,8 +654,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
         if (result == null || !result.wasSuccessful()) return result;
 
-        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
+        mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+        mEfficiencyIncrease = 10000;
 
         if (logic.getCalculatedEut() > Integer.MAX_VALUE) return CheckRecipeResults.NO_RECIPE;
         mEUt = (int) logic.getCalculatedEut();
@@ -663,8 +663,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (logic.getDuration() > Integer.MAX_VALUE) return CheckRecipeResults.NO_RECIPE;
         mMaxProgresstime = (int) logic.getDuration();
 
-        if (this.mEUt > 0) {
-            this.mEUt = (-this.mEUt);
+        if (mEUt > 0) {
+            mEUt = (-mEUt);
         }
 
         mOutputItems = logic.getOutputItems();

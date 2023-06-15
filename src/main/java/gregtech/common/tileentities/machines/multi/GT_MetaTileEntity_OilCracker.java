@@ -29,14 +29,18 @@ import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
+import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
+import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_OilCracker>
     implements ISurvivalConstructable {
@@ -168,42 +172,20 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        ArrayList<FluidStack> tInputList = getStoredFluids();
-        FluidStack[] tFluidInputs = tInputList.toArray(new FluidStack[0]);
-        long tVoltage = getMaxInputVoltage();
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+    protected ProcessingLogic<IVoidable, IHasWorldObjectAndCoords> getProcessingLogic() {
+        if (super.getProcessingLogic() == null) {
+            processingLogic = new ProcessingLogic<>() {
 
-        GT_Recipe tRecipe = getRecipeMap().findRecipe(
-            getBaseMetaTileEntity(),
-            false,
-            gregtech.api.enums.GT_Values.V[tTier],
-            tFluidInputs,
-            mInventory[1]);
-
-        if (tRecipe == null) return false;
-        if (!canOutputAll(tRecipe)) return false;
-
-        if (tRecipe.isRecipeInputEqual(true, tFluidInputs, mInventory[1])) {
-            this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-            this.mEfficiencyIncrease = 10000;
-            calculateOverclockedNessMultiInternal(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage, false);
-            // In case recipe is too OP for that machine
-            if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) return false;
-
-            // heatLevel.getTier() starts at 0
-            if (this.heatLevel.getTier() < 5) {
-                this.mEUt *= 1 - (0.1D * (this.heatLevel.getTier() + 1));
-            } else {
-                this.mEUt *= 0.5;
-            }
-
-            if (this.mEUt > 0) this.mEUt = (-this.mEUt);
-
-            this.mOutputFluids = new FluidStack[] { tRecipe.getFluidOutput(0) };
-            return true;
+                @Override
+                protected GT_OverclockCalculator createOverclockCalculator(GT_Recipe recipe, GT_ParallelHelper helper) {
+                    return super.createOverclockCalculator(recipe, helper)
+                        .setEUtDiscount(Math.max((0.1F * (heatLevel.getTier() + 1.0F)), 0.5F));
+                }
+            }.setController(this)
+                .setTileEntity(getBaseMetaTileEntity())
+                .setRecipeMap(getRecipeMap());
         }
-        return false;
+        return super.getProcessingLogic();
     }
 
     @Override

@@ -13,7 +13,11 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import gregtech.api.enums.CheckRecipeResults;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
+import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Utility;
 
@@ -124,6 +128,54 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
                 else tag.setLong("energyUsage", -lEUt * mEfficiency / 10000);
             }
         }
+    }
+
+    @Override
+    public CheckRecipeResults checkProcessing() {
+        ProcessingLogic<IVoidable, IHasWorldObjectAndCoords> logic = getProcessingLogic();
+
+        // If no logic is found, try legacy checkRecipe
+        if (logic == null) {
+            return checkRecipe(mInventory[1]) ? CheckRecipeResults.SUCCESSFUL : CheckRecipeResults.NO_RECIPE;
+        }
+
+        CheckRecipeResults result = null;
+
+        logic.clear();
+        logic.setAvailableVoltage(getMaxInputVoltage());
+        logic.setAvailableAmperage(1);
+        logic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
+        logic.setInputFluids(getStoredFluids());
+        if (isInputSeparationEnabled()) {
+            for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
+                logic.setInputItems(bus.mInventory);
+                result = logic.process();
+                if (result.wasSuccessful()) break;
+            }
+        } else {
+            logic.setInputItems(getStoredInputs());
+            result = logic.process();
+        }
+
+        if (result == null || !result.wasSuccessful()) return result;
+
+        mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+        mEfficiencyIncrease = 10000;
+
+        lEUt = logic.getCalculatedEut();
+
+        if (logic.getDuration() > Integer.MAX_VALUE) return CheckRecipeResults.NO_RECIPE;
+        mMaxProgresstime = (int) logic.getDuration();
+
+        if (lEUt > 0) {
+            lEUt = (-lEUt);
+        }
+
+        mOutputItems = logic.getOutputItems();
+        mOutputFluids = logic.getOutputFluids();
+
+        updateSlots();
+        return result;
     }
 
     @Override

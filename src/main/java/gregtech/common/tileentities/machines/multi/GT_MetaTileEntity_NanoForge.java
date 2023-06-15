@@ -16,15 +16,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
-import java.util.ArrayList;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -44,8 +41,10 @@ import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
+import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -232,72 +231,19 @@ public class GT_MetaTileEntity_NanoForge extends
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        GT_Recipe.GT_Recipe_Map map = getRecipeMap();
-        FluidStack[] tFluidInputs = getCompactedFluids();
-        if (inputSeparation) {
-            ArrayList<ItemStack> tInputList = new ArrayList<>();
-            for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-                for (int i = tBus.getSizeInventory() - 1; i >= 0; i--) {
-                    if (tBus.getStackInSlot(i) != null) tInputList.add(tBus.getStackInSlot(i));
+    protected ProcessingLogic<IVoidable, IHasWorldObjectAndCoords> getProcessingLogic() {
+        if (super.getProcessingLogic() == null) {
+            processingLogic = new ProcessingLogic<>() {
+
+                @Override
+                protected boolean checkRecipe(GT_Recipe recipe) {
+                    return recipe.mSpecialValue <= mSpecialTier;
                 }
-                ItemStack[] tInputs = tInputList.toArray(new ItemStack[0]);
-                if (processRecipe(tInputs, tFluidInputs, map)) return true;
-                else tInputList.clear();
-            }
-        } else {
-            ItemStack[] tItemInputs = getStoredInputs().toArray(new ItemStack[0]);
-            return processRecipe(tItemInputs, tFluidInputs, map);
+            }.setController(this)
+                .setTileEntity(getBaseMetaTileEntity())
+                .setRecipeMap(getRecipeMap());
         }
-        return false;
-    }
-
-    private boolean processRecipe(ItemStack[] tItemInputs, FluidStack[] tFluidInputs, GT_Recipe.GT_Recipe_Map map) {
-        lEUt = 0;
-        mOutputItems = null;
-        mOutputFluids = null;
-        long tTotalEU = getMaxInputEu();
-        GT_Recipe tRecipe = map
-            .findRecipe(getBaseMetaTileEntity(), null, false, false, tTotalEU, tFluidInputs, null, tItemInputs);
-
-        if (tRecipe == null) return false;
-        if (tRecipe.mSpecialValue > mSpecialTier) return false;
-        if (!canOutputAll(tRecipe)) return false;
-
-        if (tRecipe.isRecipeInputEqual(true, tFluidInputs, tItemInputs)) {
-            this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-            this.mEfficiencyIncrease = 10000;
-            this.mMaxProgresstime = tRecipe.mDuration;
-            this.lEUt = -tRecipe.mEUt;
-            calculateOverclockedNessMultiInternal(
-                tRecipe.mEUt,
-                tRecipe.mDuration,
-                1,
-                tTotalEU,
-                tRecipe.mSpecialValue < mSpecialTier);
-
-            if (this.lEUt == Long.MAX_VALUE - 1 || this.mMaxProgresstime == Integer.MAX_VALUE - 1) return false;
-
-            if (this.lEUt > 0) {
-                this.lEUt *= -1;
-            }
-
-            ArrayList<ItemStack> tOutputs = new ArrayList<>();
-            for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i)) {
-                    tOutputs.add(tRecipe.getOutput(i));
-                }
-            }
-
-            this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-            mOutputItems = tOutputs.toArray(new ItemStack[0]);
-            mOutputFluids = tRecipe.mFluidOutputs.clone();
-            updateSlots();
-
-            return true;
-        }
-
-        return false;
+        return super.getProcessingLogic();
     }
 
     @Override
