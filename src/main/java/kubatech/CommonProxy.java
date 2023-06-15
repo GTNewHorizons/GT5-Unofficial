@@ -36,11 +36,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import kubatech.api.LoaderReference;
-import kubatech.commands.CommandBees;
-import kubatech.commands.CommandConfig;
 import kubatech.commands.CommandHandler;
-import kubatech.commands.CommandHelp;
-import kubatech.commands.CommandTea;
 import kubatech.config.Config;
 import kubatech.loaders.MTLoader;
 import kubatech.loaders.RecipeLoader;
@@ -76,10 +72,6 @@ public class CommonProxy {
     public void serverStarting(FMLServerStartingEvent event) {
         RecipeLoader.addRecipesLate();
         CommandHandler cmd = new CommandHandler();
-        cmd.addCommand(new CommandHelp());
-        cmd.addCommand(new CommandConfig());
-        cmd.addCommand(new CommandBees());
-        cmd.addCommand(new CommandTea());
         event.registerServerCommand(cmd);
     }
 

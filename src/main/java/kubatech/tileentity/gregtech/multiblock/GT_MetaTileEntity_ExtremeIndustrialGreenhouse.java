@@ -31,6 +31,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static kubatech.api.Variables.Author;
 import static kubatech.api.Variables.StructureHologram;
+import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
+import static kubatech.api.utils.ItemUtils.writeItemStackToNBT;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -1097,27 +1099,22 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
 
         public NBTTagCompound toNBTTagCompound() {
             NBTTagCompound aNBT = new NBTTagCompound();
-            aNBT.setTag("input", input.writeToNBT(new NBTTagCompound()));
+            aNBT.setTag("input", writeItemStackToNBT(input));
             aNBT.setBoolean("isValid", isValid);
             aNBT.setBoolean("isIC2Crop", isIC2Crop);
             if (!isIC2Crop) {
                 aNBT.setInteger("crop", Block.getIdFromBlock(crop));
                 if (customDrops != null && customDrops.size() > 0) {
                     aNBT.setInteger("customDropsCount", customDrops.size());
-                    for (int i = 0; i < customDrops.size(); i++) aNBT.setTag(
-                        "customDrop." + i,
-                        customDrops.get(i)
-                            .writeToNBT(new NBTTagCompound()));
+                    for (int i = 0; i < customDrops.size(); i++)
+                        aNBT.setTag("customDrop." + i, writeItemStackToNBT(customDrops.get(i)));
                 }
                 aNBT.setInteger("dropscount", drops.size());
-                for (int i = 0; i < drops.size(); i++) aNBT.setTag(
-                    "drop." + i,
-                    drops.get(i)
-                        .writeToNBT(new NBTTagCompound()));
+                for (int i = 0; i < drops.size(); i++) aNBT.setTag("drop." + i, writeItemStackToNBT(drops.get(i)));
                 aNBT.setInteger("optimalgrowth", optimalgrowth);
                 aNBT.setBoolean("needsreplanting", needsreplanting);
             } else {
-                if (undercrop != null) aNBT.setTag("undercrop", undercrop.writeToNBT(new NBTTagCompound()));
+                if (undercrop != null) aNBT.setTag("undercrop", writeItemStackToNBT(undercrop));
                 aNBT.setInteger("generationscount", generations.size());
                 for (int i = 0; i < generations.size(); i++) {
                     aNBT.setInteger(
@@ -1128,9 +1125,9 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
                         .size(); j++)
                         aNBT.setTag(
                             "generation." + i + "." + j,
-                            generations.get(i)
-                                .get(j)
-                                .writeToNBT(new NBTTagCompound()));
+                            writeItemStackToNBT(
+                                generations.get(i)
+                                    .get(j)));
                 }
                 aNBT.setInteger("growthticks", growthticks);
                 aNBT.setBoolean("noHumidity", noHumidity);
@@ -1142,29 +1139,28 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
             super(null, 3, 3);
             isIC2Crop = aNBT.getBoolean("isIC2Crop");
             isValid = aNBT.getBoolean("isValid");
-            input = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("input"));
+            input = readItemStackFromNBT(aNBT.getCompoundTag("input"));
             if (!isIC2Crop) {
                 crop = Block.getBlockById(aNBT.getInteger("crop"));
                 if (aNBT.hasKey("customDropsCount")) {
                     int imax = aNBT.getInteger("customDropsCount");
                     customDrops = new ArrayList<>(imax);
                     for (int i = 0; i < imax; i++)
-                        customDrops.add(ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("customDrop." + i)));
+                        customDrops.add(readItemStackFromNBT(aNBT.getCompoundTag("customDrop." + i)));
                 }
                 drops = new ArrayList<>();
                 for (int i = 0; i < aNBT.getInteger("dropscount"); i++)
-                    drops.add(ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("drop." + i)));
+                    drops.add(readItemStackFromNBT(aNBT.getCompoundTag("drop." + i)));
                 optimalgrowth = aNBT.getInteger("optimalgrowth");
                 if (optimalgrowth == 0) optimalgrowth = 7;
                 if (aNBT.hasKey("needsreplanting")) needsreplanting = aNBT.getBoolean("needsreplanting");
             } else {
-                if (aNBT.hasKey("undercrop"))
-                    undercrop = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("undercrop"));
+                if (aNBT.hasKey("undercrop")) undercrop = readItemStackFromNBT(aNBT.getCompoundTag("undercrop"));
                 generations = new ArrayList<>();
                 for (int i = 0; i < aNBT.getInteger("generationscount"); i++) {
                     generations.add(new ArrayList<>());
                     for (int j = 0; j < aNBT.getInteger("generation." + i + ".count"); j++) generations.get(i)
-                        .add(ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("generation." + i + "." + j)));
+                        .add(readItemStackFromNBT(aNBT.getCompoundTag("generation." + i + "." + j)));
                 }
                 growthticks = aNBT.getInteger("growthticks");
                 noHumidity = aNBT.getBoolean("noHumidity");

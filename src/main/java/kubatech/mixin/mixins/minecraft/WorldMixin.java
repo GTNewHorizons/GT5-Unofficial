@@ -5,8 +5,8 @@ import net.minecraft.world.World;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import com.gtnewhorizon.mixinextras.injector.ModifyReturnValue;
 
 import kubatech.loaders.BlockLoader;
 
@@ -15,9 +15,9 @@ import kubatech.loaders.BlockLoader;
 public class WorldMixin {
 
     @SuppressWarnings("ConstantConditions")
-    @Inject(method = "getBlock", at = @At("RETURN"), require = 1)
-    private void getBlockDetector(int x, int y, int z, CallbackInfoReturnable<Block> callbackInfoReturnable) {
-        if (callbackInfoReturnable.getReturnValue() == BlockLoader.kubaBlock)
-            BlockLoader.kubaBlock.setLastBlockAccess((World) (Object) this, x, y, z);
+    @ModifyReturnValue(method = "getBlock", at = @At("RETURN"), require = 1)
+    private Block getBlockDetector(Block block, int x, int y, int z) {
+        if (block == BlockLoader.kubaBlock) BlockLoader.kubaBlock.setLastBlockAccess((World) (Object) this, x, y, z);
+        return block;
     }
 }

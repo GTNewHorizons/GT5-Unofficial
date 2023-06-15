@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.item.ItemStack;
@@ -40,7 +39,9 @@ import com.google.common.io.Files;
 import forestry.api.apiculture.IAlleleBeeSpecies;
 import forestry.api.apiculture.IBee;
 import forestry.api.apiculture.IBeeGenome;
+import kubatech.api.utils.ModUtils;
 
+@CommandHandler.ChildCommand
 public class CommandBees extends CommandBase {
 
     @Override
@@ -62,8 +63,7 @@ public class CommandBees extends CommandBase {
     @Override
     public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
 
-        if (!Minecraft.getMinecraft()
-            .isSingleplayer()) {
+        if (!ModUtils.isClientSided) {
             p_71515_1_
                 .addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "This command is single-player only!"));
             return;

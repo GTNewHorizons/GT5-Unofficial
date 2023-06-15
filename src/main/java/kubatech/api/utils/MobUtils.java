@@ -20,8 +20,6 @@
 
 package kubatech.api.utils;
 
-import java.lang.reflect.Field;
-
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
@@ -32,10 +30,9 @@ import net.minecraft.entity.EntityLiving;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import kubatech.mixin.mixins.minecraft.RendererLivingEntityAccessor;
 
 public class MobUtils {
-
-    private static Field mainmodelfield = null;
 
     @SideOnly(Side.CLIENT)
     public static float getDesiredScale(EntityLiving e, float desiredHeight) {
@@ -50,17 +47,12 @@ public class MobUtils {
     @SideOnly(Side.CLIENT)
     public static float getMobHeight(EntityLiving e) {
         try {
-            if (mainmodelfield == null) {
-                mainmodelfield = RendererLivingEntity.class
-                    .getDeclaredField(ModUtils.isDeobfuscatedEnvironment ? "mainModel" : "field_77045_g");
-                mainmodelfield.setAccessible(true);
-            }
             float eheight = e.height;
             float ewidth = e.width;
             Render r = RenderManager.instance.getEntityRenderObject(e);
-            if (r instanceof RendererLivingEntity && mainmodelfield != null) {
-                ModelBase mainmodel = (ModelBase) mainmodelfield.get(r);
-                for (Object box : mainmodel.boxList) {
+            if (r instanceof RendererLivingEntity) {
+                ModelBase mainModel = ((RendererLivingEntityAccessor) r).getMainModel();
+                for (Object box : mainModel.boxList) {
                     if (box instanceof ModelRenderer) {
                         float minY = 999f;
                         float minX = 999f;

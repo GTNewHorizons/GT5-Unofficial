@@ -38,7 +38,6 @@ import static kubatech.nei.Mob_Handler.Translations.PLAYER_ONLY;
 import static kubatech.nei.Mob_Handler.Translations.RARE_DROPS;
 
 import java.awt.*;
-import java.lang.reflect.Field;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +48,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -70,6 +68,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
+import atomicstryker.infernalmobs.common.InfernalMobsCore;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;
@@ -85,7 +84,6 @@ import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
 import gregtech.api.util.GT_Utility;
 import kubatech.Tags;
 import kubatech.api.LoaderReference;
-import kubatech.api.helpers.InfernalHelper;
 import kubatech.api.mobhandler.MobDrop;
 import kubatech.api.utils.FastRandom;
 import kubatech.api.utils.MobUtils;
@@ -230,18 +228,6 @@ public class Mob_Handler extends TemplateRecipeHandler {
     @Override
     public String getGuiTexture() {
         return "kubatech:textures/gui/MobHandler.png";
-    }
-
-    private static final Field mainmodelfield;
-
-    static {
-        try {
-            mainmodelfield = RendererLivingEntity.class
-                .getDeclaredField(ModUtils.isDeobfuscatedEnvironment ? "mainModel" : "field_77045_g");
-            mainmodelfield.setAccessible(true);
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
@@ -530,8 +516,8 @@ public class Mob_Handler extends TemplateRecipeHandler {
             if (isPlayerOnly) {
                 extraTooltip.add(EnumChatFormatting.RESET + PLAYER_ONLY.get());
                 extraTooltip.add(
-                    EnumChatFormatting.RESET
-                        + EEC_CHANCE.get(((double) chance / 100d) * Config.MobHandler.playerOnlyDropsModifier));
+                    EnumChatFormatting.RESET + EEC_CHANCE
+                        .get(((double) ((int) ((double) chance * Config.MobHandler.playerOnlyDropsModifier)) / 100d)));
             }
             extraTooltip.add(EnumChatFormatting.RESET + AVERAGE_REMINDER.get());
 
@@ -603,8 +589,9 @@ public class Mob_Handler extends TemplateRecipeHandler {
 
             if (!LoaderReference.InfernalMobs) infernaltype = -1; // not supported
             else {
-                if (!InfernalHelper.isClassAllowed(mob)) infernaltype = 0; // not allowed
-                else if (InfernalHelper.checkEntityClassForced(mob)) infernaltype = 2; // forced
+                InfernalMobsCore infernalMobsCore = InfernalMobsCore.instance();
+                if (!infernalMobsCore.isClassAllowed(mob)) infernaltype = 0; // not allowed
+                else if (infernalMobsCore.checkEntityClassForced(mob)) infernaltype = 2; // forced
                 else infernaltype = 1; // normal
             }
         }

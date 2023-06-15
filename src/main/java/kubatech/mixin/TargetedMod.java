@@ -6,7 +6,9 @@ import com.google.common.io.Files;
 
 public enum TargetedMod {
 
-    VANILLA("Minecraft", "unused", true),;
+    VANILLA("Minecraft", "unused", true),
+
+    ;
 
     public final String modName;
     public final String jarNamePrefixLowercase;

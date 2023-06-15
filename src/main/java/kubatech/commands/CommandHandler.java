@@ -25,6 +25,10 @@ import static kubatech.commands.CommandHandler.Translations.GENERIC_HELP;
 import static kubatech.commands.CommandHandler.Translations.INVALID;
 import static kubatech.commands.CommandHandler.Translations.USAGE;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -37,6 +41,8 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+
+import kubatech.kubatech;
 
 public class CommandHandler extends CommandBase {
 
@@ -121,7 +127,29 @@ public class CommandHandler extends CommandBase {
         return true;
     }
 
-    public void addCommand(ICommand command) {
+    public static void addCommand(ICommand command) {
         commands.put(command.getCommandName(), command);
     }
+
+    static {
+        String ChildCommandDesc = "L" + ChildCommand.class.getName()
+            .replace(".", "/") + ";";
+        kubatech.myClasses.stream()
+            .filter(
+                clazz -> clazz.invisibleAnnotations != null && clazz.invisibleAnnotations.stream()
+                    .anyMatch(ann -> ann.desc.equals(ChildCommandDesc)))
+            .forEach(clazz -> {
+                try {
+                    addCommand(
+                        (ICommand) Class.forName(clazz.name.replace("/", "."))
+                            .newInstance());
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+    }
+
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.CLASS)
+    public @interface ChildCommand {}
 }

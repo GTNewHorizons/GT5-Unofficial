@@ -879,6 +879,7 @@ def getManifestAttributes() {
             "ForceLoadAsMod": !containsMixinsAndOrCoreModOnly.toBoolean()
         ]
     }
+    manifestAttributes += ["Main-class": "kubatech.standalone"]
     return manifestAttributes
 }
 

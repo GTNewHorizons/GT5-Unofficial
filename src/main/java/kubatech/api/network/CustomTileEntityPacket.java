@@ -132,7 +132,7 @@ public class CustomTileEntityPacket implements IMessage {
 
         @Override
         public IMessage onMessage(CustomTileEntityPacket message, MessageContext ctx) {
-            if (!ModUtils.isClientSided) return null;
+            if (!ModUtils.isClientThreaded()) return null;
             Minecraft mc = Minecraft.getMinecraft();
             if (mc == null) return null;
             if (mc.thePlayer == null) return null;

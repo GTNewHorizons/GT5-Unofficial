@@ -38,6 +38,7 @@ import net.minecraft.util.StatCollector;
 import kubatech.api.helpers.UUIDFinder;
 import kubatech.api.tea.TeaNetwork;
 
+@CommandHandler.ChildCommand
 public class CommandTea extends CommandBase {
 
     enum Translations {

@@ -38,6 +38,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static kubatech.api.Variables.StructureHologram;
 import static kubatech.api.Variables.buildAuthorList;
+import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
+import static kubatech.api.utils.ItemUtils.writeItemStackToNBT;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -1126,7 +1128,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         }
 
         public BeeSimulator(NBTTagCompound tag) {
-            queenStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("queenStack"));
+            queenStack = readItemStackFromNBT(tag.getCompoundTag("queenStack"));
             isValid = tag.getBoolean("isValid");
             drops = new ArrayList<>();
             specialDrops = new ArrayList<>();
@@ -1151,7 +1153,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
 
         public NBTTagCompound toNBTTagCompound() {
             NBTTagCompound tag = new NBTTagCompound();
-            tag.setTag("queenStack", queenStack.writeToNBT(new NBTTagCompound()));
+            tag.setTag("queenStack", writeItemStackToNBT(queenStack));
             tag.setBoolean("isValid", isValid);
             tag.setInteger("dropssize", drops.size());
             for (int i = 0; i < drops.size(); i++) tag.setTag(
@@ -1244,7 +1246,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
             }
 
             public BeeDrop(NBTTagCompound tag) {
-                stack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("stack"));
+                stack = readItemStackFromNBT(tag.getCompoundTag("stack"));
                 chance = tag.getFloat("chance");
                 beeSpeed = tag.getFloat("beeSpeed");
                 t = tag.getFloat("t");
@@ -1254,7 +1256,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
 
             public NBTTagCompound toNBTTagCompound() {
                 NBTTagCompound tag = new NBTTagCompound();
-                tag.setTag("stack", stack.writeToNBT(new NBTTagCompound()));
+                tag.setTag("stack", writeItemStackToNBT(stack));
                 tag.setFloat("chance", chance);
                 tag.setFloat("beeSpeed", beeSpeed);
                 tag.setFloat("t", t);

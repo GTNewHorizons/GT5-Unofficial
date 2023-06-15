@@ -20,9 +20,23 @@
 
 package kubatech.api.helpers;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Objects;
+import java.util.jar.JarFile;
+import java.util.stream.Collectors;
+
+import net.minecraft.launchwrapper.Launch;
+
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.tree.ClassNode;
 
 public class ReflectionHelper {
 
@@ -138,6 +152,55 @@ public class ReflectionHelper {
             return (T) m.invoke(obj, args);
         } catch (Exception ex) {
             return defaultValue;
+        }
+    }
+
+    /**
+     * Gets all classes in a specific package path, works only for jar files.
+     *
+     * @param packageName The package name
+     * @return The class nodes
+     */
+    public static Collection<ClassNode> getClasses(String packageName) throws IOException, SecurityException {
+        ClassLoader classLoader = Thread.currentThread()
+            .getContextClassLoader();
+        assert classLoader != null;
+        String packagePath = packageName.replace('.', '/');
+        URL resource = classLoader.getResource(packagePath);
+        if (resource == null) throw new FileNotFoundException();
+        if (!resource.getProtocol()
+            .equals("jar")) return Collections.emptySet();
+        String jarPath = resource.getPath();
+
+        try (JarFile jar = new JarFile(jarPath.substring(5, jarPath.indexOf('!')))) {
+            return jar.stream()
+                .filter(
+                    j -> !j.isDirectory() && j.getName()
+                        .startsWith(packagePath)
+                        && j.getName()
+                            .endsWith(".class"))
+                .map(j -> {
+                    try {
+                        String name = j.getName();
+                        URL jarResource = Launch.classLoader.getResource(name);
+                        if (jarResource == null) return null;
+                        byte[] bytes;
+                        try (InputStream is = jarResource.openStream()) {
+                            bytes = new byte[(int) j.getSize()];
+                            if (is.read(bytes) != bytes.length) return null;
+                            if (is.available() > 0) return null;
+                        }
+
+                        ClassNode cn = new ClassNode();
+                        ClassReader cr = new ClassReader(bytes);
+                        cr.accept(cn, 0);
+
+                        return cn;
+                    } catch (IOException ignored) {}
+                    return null;
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
         }
     }
 }

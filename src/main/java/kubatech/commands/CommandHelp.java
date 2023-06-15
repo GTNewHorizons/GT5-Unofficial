@@ -28,6 +28,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 
+@CommandHandler.ChildCommand
 public class CommandHelp extends CommandBase {
 
     enum Translations {

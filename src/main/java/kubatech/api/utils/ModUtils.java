@@ -32,6 +32,7 @@ import javax.xml.bind.DatatypeConverter;
 
 import net.minecraft.launchwrapper.Launch;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import kubatech.kubatech;
@@ -41,6 +42,19 @@ public class ModUtils {
     public static final boolean isDeobfuscatedEnvironment = (boolean) Launch.blackboard
         .get("fml.deobfuscatedEnvironment");
     public static boolean isClientSided = false;
+
+    public static boolean isClientThreaded() {
+        return FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isClient();
+    }
+
+    @FunctionalInterface
+    public interface TriConsumer<T, U, V> {
+
+        void accept(T t, U u, V v);
+    }
+
     private static final HashMap<String, String> classNamesToModIDs = new HashMap<>();
     private static final Map.Entry<String, String> emptyEntry = new AbstractMap.SimpleEntry<>("", "");
 

@@ -36,6 +36,7 @@ import kubatech.config.Config;
 import kubatech.kubatech;
 import kubatech.loaders.MobRecipeLoader;
 
+@CommandHandler.ChildCommand
 public class CommandConfig extends CommandBase {
 
     enum Translations {
