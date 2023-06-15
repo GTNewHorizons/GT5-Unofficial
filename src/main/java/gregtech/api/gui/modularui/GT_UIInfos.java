@@ -30,6 +30,8 @@ import gregtech.api.util.GT_CoverBehaviorBase;
 
 public class GT_UIInfos {
 
+    public static void init() {}
+
     /**
      * Generator for {@link UIInfo} which is responsible for registering and opening UIs. Unlike
      * {@link com.gtnewhorizons.modularui.api.UIInfos#TILE_MODULAR_UI}, this accepts custom constructors for UI. <br>
