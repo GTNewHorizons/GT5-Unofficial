@@ -142,30 +142,17 @@ public class ProcessingLogic<T extends IVoidable, U extends IHasWorldObjectAndCo
         GT_Recipe recipe = recipeMap
             .findRecipe(tileEntity, lastRecipe, false, availableVoltage, inputFluids, inputItems);
 
-        if (recipe == null) return CheckRecipeResults.NO_RECIPE;
+        if (recipe == null || !checkRecipe(recipe)) return CheckRecipeResults.NO_RECIPE;
         else lastRecipe = recipe;
 
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(recipe)
-            .setItemInputs(inputItems)
-            .setFluidInputs(inputFluids)
-            .setAvailableEUt(availableVoltage * availableAmperage)
-            .setMachine(controller, protectItems, protectFluids)
-            .enableConsumption()
-            .enableOutputCalculation()
-            .build();
+        GT_ParallelHelper helper = createParallelHelper(recipe);
 
-        if (helper.getCurrentParallel() <= 0) return CheckRecipeResults.OUTPUT_FULL;
+        if (helper == null || helper.getCurrentParallel() <= 0) return CheckRecipeResults.OUTPUT_FULL;
 
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
-            .setParallel(helper.getCurrentParallel())
-            .setDuration(recipe.mDuration)
-            .setAmperage(availableAmperage)
-            .setEUt(availableVoltage)
-            .setDurationDecreasePerOC(overClockTimeReduction)
-            .setEUtIncreasePerOC(overClockPowerIncrease)
-            .calculate();
+        GT_OverclockCalculator calculator = createOverclockCalculator(recipe, helper);
 
-        if (calculator.getConsumption() == Long.MAX_VALUE - 1 || calculator.getDuration() == Integer.MAX_VALUE - 1) {
+        if (calculator == null || calculator.getConsumption() == Long.MAX_VALUE - 1
+            || calculator.getDuration() == Integer.MAX_VALUE - 1) {
             return CheckRecipeResults.NO_RECIPE;
         }
 
@@ -175,6 +162,32 @@ public class ProcessingLogic<T extends IVoidable, U extends IHasWorldObjectAndCo
         outputFluids = helper.getFluidOutputs();
 
         return CheckRecipeResults.SUCCESSFUL;
+    }
+
+    protected GT_ParallelHelper createParallelHelper(GT_Recipe recipe) {
+        return new GT_ParallelHelper().setRecipe(recipe)
+            .setItemInputs(inputItems)
+            .setFluidInputs(inputFluids)
+            .setAvailableEUt(availableVoltage * availableAmperage)
+            .setMachine(controller, protectItems, protectFluids)
+            .enableConsumption()
+            .enableOutputCalculation()
+            .build();
+    }
+
+    protected boolean checkRecipe(GT_Recipe recipe) {
+        return true;
+    }
+
+    protected GT_OverclockCalculator createOverclockCalculator(GT_Recipe recipe, GT_ParallelHelper helper) {
+        return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
+            .setParallel(helper.getCurrentParallel())
+            .setDuration(recipe.mDuration)
+            .setAmperage(availableAmperage)
+            .setEUt(availableVoltage)
+            .setDurationDecreasePerOC(overClockTimeReduction)
+            .setEUtIncreasePerOC(overClockPowerIncrease)
+            .calculate();
     }
 
     public ItemStack[] getOutputItems() {
