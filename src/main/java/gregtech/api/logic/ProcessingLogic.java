@@ -183,7 +183,7 @@ public class ProcessingLogic {
             .findRecipe(tileEntity, lastRecipe, false, availableVoltage, inputFluids, inputItems);
 
         if (recipe != null) {
-            CheckRecipeResult result = checkRecipe(recipe);
+            CheckRecipeResult result = validateRecipe(recipe);
             if (!result.wasSuccessful()) {
                 return result;
             } else {
@@ -229,7 +229,7 @@ public class ProcessingLogic {
     }
 
     @Nonnull
-    protected CheckRecipeResult checkRecipe(GT_Recipe recipe) {
+    protected CheckRecipeResult validateRecipe(GT_Recipe recipe) {
         return CheckRecipeResults.SUCCESSFUL;
     }
 

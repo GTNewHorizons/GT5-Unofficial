@@ -237,7 +237,7 @@ public class GT_MetaTileEntity_NanoForge extends
         return new ProcessingLogic() {
 
             @Override
-            protected @Nonnull CheckRecipeResult checkRecipe(GT_Recipe recipe) {
+            protected @Nonnull CheckRecipeResult validateRecipe(GT_Recipe recipe) {
                 return recipe.mSpecialValue <= mSpecialTier ? CheckRecipeResults.SUCCESSFUL
                     : CheckRecipeResults.NO_RECIPE;
             }
