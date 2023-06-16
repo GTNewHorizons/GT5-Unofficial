@@ -13,10 +13,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import gregtech.api.enums.CheckRecipeResult;
 import gregtech.api.enums.CheckRecipeResults;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
-import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Utility;
@@ -131,15 +130,15 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
     }
 
     @Override
-    public CheckRecipeResults checkProcessing() {
-        ProcessingLogic<IVoidable, IHasWorldObjectAndCoords> logic = getProcessingLogic();
+    public CheckRecipeResult checkProcessing() {
+        ProcessingLogic logic = getProcessingLogic();
 
         // If no logic is found, try legacy checkRecipe
         if (logic == null) {
             return checkRecipe(mInventory[1]) ? CheckRecipeResults.SUCCESSFUL : CheckRecipeResults.NO_RECIPE;
         }
 
-        CheckRecipeResults result = null;
+        CheckRecipeResult result = null;
 
         logic.clear();
         logic.setAvailableVoltage(getMaxInputVoltage());

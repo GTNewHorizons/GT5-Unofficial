@@ -29,8 +29,6 @@ import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
-import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
@@ -172,17 +170,16 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
     }
 
     @Override
-    protected ProcessingLogic<IVoidable, IHasWorldObjectAndCoords> getProcessingLogic() {
+    protected ProcessingLogic getProcessingLogic() {
         if (super.getProcessingLogic() == null) {
-            processingLogic = new ProcessingLogic<>() {
+            processingLogic = new ProcessingLogic() {
 
                 @Override
                 protected GT_OverclockCalculator createOverclockCalculator(GT_Recipe recipe, GT_ParallelHelper helper) {
                     return super.createOverclockCalculator(recipe, helper)
                         .setEUtDiscount(Math.max((0.1F * (heatLevel.getTier() + 1.0F)), 0.5F));
                 }
-            }.setController(this)
-                .setTileEntity(getBaseMetaTileEntity())
+            }.setMetaTEController(this)
                 .setRecipeMap(getRecipeMap());
         }
         return super.getProcessingLogic();

@@ -1,24 +1,8 @@
 package gregtech.api.enums;
 
-public enum CheckRecipeResults implements CheckRecipeResult {
+public class CheckRecipeResults {
 
-    SUCCESSFUL("GT5U.gui.text.processing"),
-    NO_RECIPE("GT5U.gui.text.no_recipe"),
-    OUTPUT_FULL("GT5U.gui.text.output_full");
-
-    private final String displayString;
-
-    CheckRecipeResults(String displayString) {
-        this.displayString = displayString;
-    }
-
-    @Override
-    public String getResultDisplayString() {
-        return displayString;
-    }
-
-    @Override
-    public boolean wasSuccessful() {
-        return this.equals(SUCCESSFUL);
-    }
+    public static final CheckRecipeResult SUCCESSFUL = CheckRecipeResult.ofSuccess("GT5U.gui.text.processing");
+    public static final CheckRecipeResult NO_RECIPE = CheckRecipeResult.ofFailure("GT5U.gui.text.no_recipe");
+    public static final CheckRecipeResult OUTPUT_FULL = CheckRecipeResult.ofFailure("GT5U.gui.text.output_full");
 }

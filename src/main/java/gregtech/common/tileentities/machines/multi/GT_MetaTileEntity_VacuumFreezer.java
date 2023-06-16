@@ -16,8 +16,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
-import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_CubicMultiBlockBase;
 import gregtech.api.render.TextureFactory;
@@ -103,10 +101,9 @@ public class GT_MetaTileEntity_VacuumFreezer
     }
 
     @Override
-    protected ProcessingLogic<IVoidable, IHasWorldObjectAndCoords> getProcessingLogic() {
+    protected ProcessingLogic getProcessingLogic() {
         if (super.getProcessingLogic() == null) {
-            processingLogic = new ProcessingLogic<>().setController(this)
-                .setTileEntity(getBaseMetaTileEntity())
+            processingLogic = new ProcessingLogic().setMetaTEController(this)
                 .setRecipeMap(getRecipeMap());
         }
         return super.getProcessingLogic();

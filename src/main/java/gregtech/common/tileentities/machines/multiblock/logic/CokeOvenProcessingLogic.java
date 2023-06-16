@@ -7,6 +7,7 @@ import static net.minecraftforge.oredict.OreDictionary.getOreIDs;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.enums.CheckRecipeResult;
 import gregtech.api.enums.CheckRecipeResults;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.util.GT_ModHandler;
@@ -25,7 +26,7 @@ public class CokeOvenProcessingLogic extends ProcessingLogic {
     private int timeMultiplier = 1;
 
     @Override
-    public CheckRecipeResults process() {
+    public CheckRecipeResult process() {
         if (inputItems == null || inputItems[0] == null) {
             return CheckRecipeResults.NO_RECIPE;
         }

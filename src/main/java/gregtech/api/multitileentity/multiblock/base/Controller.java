@@ -71,6 +71,7 @@ import com.gtnewhorizons.modularui.common.widget.TabContainer;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
+import gregtech.api.enums.CheckRecipeResult;
 import gregtech.api.enums.CheckRecipeResults;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
@@ -1676,7 +1677,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         }
         ProcessingLogic logic = ((ProcessingLogicHost) this).getProcessingLogic();
         logic.clear();
-        CheckRecipeResults result = CheckRecipeResults.NO_RECIPE;
+        CheckRecipeResult result = CheckRecipeResults.NO_RECIPE;
         if (isSeparateInputs()) {
             // TODO: Add separation with fluids
             for (Pair<ItemStack[], String> inventory : getItemInputsForEachInventory()) {

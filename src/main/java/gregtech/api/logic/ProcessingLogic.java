@@ -1,23 +1,27 @@
 package gregtech.api.logic;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.CheckRecipeResult;
 import gregtech.api.enums.CheckRecipeResults;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
-public class ProcessingLogic<T extends IVoidable, U extends IHasWorldObjectAndCoords> {
+public class ProcessingLogic {
 
-    T controller;
-    U tileEntity;
+    IVoidable controller;
+    IHasWorldObjectAndCoords tileEntity;
     protected GT_Recipe_Map recipeMap;
+    protected Supplier<GT_Recipe_Map> mapSupplier;
     protected GT_Recipe lastRecipe;
     protected ItemStack[] inputItems;
     protected ItemStack[] outputItems;
@@ -36,88 +40,97 @@ public class ProcessingLogic<T extends IVoidable, U extends IHasWorldObjectAndCo
 
     public ProcessingLogic() {}
 
-    public ProcessingLogic<T, U> setInputItems(ItemStack... itemInputs) {
+    public ProcessingLogic setInputItems(ItemStack... itemInputs) {
         this.inputItems = itemInputs;
         return this;
     }
 
-    public ProcessingLogic<T, U> setInputItems(List<ItemStack> itemOutputs) {
+    public ProcessingLogic setInputItems(List<ItemStack> itemOutputs) {
         this.inputItems = itemOutputs.toArray(new ItemStack[0]);
         return this;
     }
 
-    public ProcessingLogic<T, U> setInputFluids(FluidStack... fluidInputs) {
+    public ProcessingLogic setInputFluids(FluidStack... fluidInputs) {
         this.inputFluids = fluidInputs;
         return this;
     }
 
-    public ProcessingLogic<T, U> setInputFluids(List<FluidStack> fluidInputs) {
+    public ProcessingLogic setInputFluids(List<FluidStack> fluidInputs) {
         this.inputFluids = fluidInputs.toArray(new FluidStack[0]);
         return this;
     }
 
-    public ProcessingLogic<T, U> setOutputItems(ItemStack... itemOutputs) {
+    public ProcessingLogic setOutputItems(ItemStack... itemOutputs) {
         this.outputItems = itemOutputs;
         return this;
     }
 
-    public ProcessingLogic<T, U> setOutputFluids(FluidStack... fluidOutputs) {
+    public ProcessingLogic setOutputFluids(FluidStack... fluidOutputs) {
         this.outputFluids = fluidOutputs;
         return this;
     }
 
-    public ProcessingLogic<T, U> setCurrentOutputItems(ItemStack... currentOutputItems) {
+    public ProcessingLogic setCurrentOutputItems(ItemStack... currentOutputItems) {
         this.currentOutputItems = currentOutputItems;
         return this;
     }
 
-    public ProcessingLogic<T, U> setCurrentOutputFluids(FluidStack... currentOutputFluids) {
+    public ProcessingLogic setCurrentOutputFluids(FluidStack... currentOutputFluids) {
         this.currentOutputFluids = currentOutputFluids;
         return this;
     }
 
-    public ProcessingLogic<T, U> setRecipeMap(GT_Recipe_Map recipeMap) {
+    public ProcessingLogic setRecipeMap(GT_Recipe_Map recipeMap) {
         this.recipeMap = recipeMap;
         return this;
     }
 
-    public ProcessingLogic<T, U> setController(T controller) {
+    public ProcessingLogic setRecipeMapSupplier(Supplier<GT_Recipe_Map> supplier) {
+        this.mapSupplier = supplier;
+        return this;
+    }
+
+    public ProcessingLogic setController(IVoidable controller) {
         this.controller = controller;
         return this;
     }
 
-    public ProcessingLogic<T, U> setTileEntity(U tileEntity) {
+    public ProcessingLogic setTileEntity(IHasWorldObjectAndCoords tileEntity) {
         this.tileEntity = tileEntity;
         return this;
     }
 
-    public ProcessingLogic<T, U> setDuration(long duration) {
+    public ProcessingLogic setMetaTEController(GT_MetaTileEntity_MultiBlockBase metaTEController) {
+        return setController(metaTEController).setTileEntity(metaTEController.getBaseMetaTileEntity());
+    }
+
+    public ProcessingLogic setDuration(long duration) {
         this.duration = duration;
         return this;
     }
 
-    public ProcessingLogic<T, U> setCalculatedEut(long calculatedEut) {
+    public ProcessingLogic setCalculatedEut(long calculatedEut) {
         this.calculatedEut = calculatedEut;
         return this;
     }
 
-    public ProcessingLogic<T, U> setAvailableVoltage(long voltage) {
+    public ProcessingLogic setAvailableVoltage(long voltage) {
         availableVoltage = voltage;
         return this;
     }
 
-    public ProcessingLogic<T, U> setAvailableAmperage(long amperage) {
+    public ProcessingLogic setAvailableAmperage(long amperage) {
         availableAmperage = amperage;
         return this;
     }
 
-    public ProcessingLogic<T, U> setVoidProtection(boolean protectItems, boolean protectFluids) {
+    public ProcessingLogic setVoidProtection(boolean protectItems, boolean protectFluids) {
         this.protectItems = protectItems;
         this.protectFluids = protectFluids;
         return this;
     }
 
-    public ProcessingLogic<T, U> setOverclock(int timeReduction, int powerIncrease) {
+    public ProcessingLogic setOverclock(int timeReduction, int powerIncrease) {
         this.overClockTimeReduction = timeReduction;
         this.overClockPowerIncrease = powerIncrease;
         return this;
@@ -126,7 +139,7 @@ public class ProcessingLogic<T extends IVoidable, U extends IHasWorldObjectAndCo
     /**
      * Clears calculated outputs, and provided machine inputs
      */
-    public ProcessingLogic<T, U> clear() {
+    public ProcessingLogic clear() {
         this.inputItems = null;
         this.inputFluids = null;
         this.outputItems = null;
@@ -136,7 +149,12 @@ public class ProcessingLogic<T extends IVoidable, U extends IHasWorldObjectAndCo
         return this;
     }
 
-    public CheckRecipeResults process() {
+    public CheckRecipeResult process() {
+        if (recipeMap == null && mapSupplier == null) return CheckRecipeResults.NO_RECIPE;
+
+        if (mapSupplier != null) {
+            recipeMap = mapSupplier.get();
+        }
         if (recipeMap == null) return CheckRecipeResults.NO_RECIPE;
 
         GT_Recipe recipe = recipeMap

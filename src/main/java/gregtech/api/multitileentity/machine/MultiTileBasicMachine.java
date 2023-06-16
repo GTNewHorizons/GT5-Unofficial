@@ -539,7 +539,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         }
         ProcessingLogic logic = ((ProcessingLogicHost) this).getProcessingLogic();
         logic.clear();
-        CheckRecipeResults result = logic.setInputItems(getInputItems())
+        CheckRecipeResult result = logic.setInputItems(getInputItems())
             .setInputFluids(getInputFluids())
             .setCurrentOutputItems(
                 outputInventory.getStacks()

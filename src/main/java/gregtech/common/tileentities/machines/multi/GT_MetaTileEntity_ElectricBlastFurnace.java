@@ -45,8 +45,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
-import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
@@ -190,9 +188,9 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
     }
 
     @Override
-    protected ProcessingLogic<IVoidable, IHasWorldObjectAndCoords> getProcessingLogic() {
+    protected ProcessingLogic getProcessingLogic() {
         if (super.getProcessingLogic() == null) {
-            processingLogic = new ProcessingLogic<>() {
+            processingLogic = new ProcessingLogic() {
 
                 @Override
                 protected GT_OverclockCalculator createOverclockCalculator(GT_Recipe recipe, GT_ParallelHelper helper) {
@@ -210,8 +208,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
                 protected boolean checkRecipe(GT_Recipe recipe) {
                     return recipe.mSpecialValue <= mHeatingCapacity;
                 }
-            }.setController(this)
-                .setTileEntity(getBaseMetaTileEntity())
+            }.setMetaTEController(this)
                 .setRecipeMap(getRecipeMap());
         }
         return super.getProcessingLogic();

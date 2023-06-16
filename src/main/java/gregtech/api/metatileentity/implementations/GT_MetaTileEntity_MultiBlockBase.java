@@ -46,6 +46,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.CheckRecipeResult;
 import gregtech.api.enums.CheckRecipeResults;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.SoundResource;
@@ -59,8 +60,6 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
-import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -122,7 +121,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public ArrayList<GT_MetaTileEntity_Hatch_Energy> mEnergyHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Maintenance> mMaintenanceHatches = new ArrayList<>();
     protected List<GT_MetaTileEntity_Hatch> mExoticEnergyHatches = new ArrayList<>();
-    protected ProcessingLogic<IVoidable, IHasWorldObjectAndCoords> processingLogic;
+    protected ProcessingLogic processingLogic;
     @SideOnly(Side.CLIENT)
     protected GT_SoundLoop activitySoundLoop;
 
@@ -447,11 +446,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     protected boolean checkRecipe() {
         startRecipeProcessing();
-        CheckRecipeResults result = checkProcessing();
+        CheckRecipeResult result = checkProcessing();
         if (result.wasSuccessful() && getProcessStartSound() != null) {
             sendLoopStart(PROCESS_START_SOUND_INDEX);
         }
-        errorDisplayString = result.getResultDisplayString();
+        errorDisplayString = result.getTransKey();
         endRecipeProcessing();
         return result.wasSuccessful();
     }
@@ -626,15 +625,15 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return false;
     }
 
-    public CheckRecipeResults checkProcessing() {
-        ProcessingLogic<IVoidable, IHasWorldObjectAndCoords> logic = getProcessingLogic();
+    public CheckRecipeResult checkProcessing() {
+        ProcessingLogic logic = getProcessingLogic();
 
         // If no logic is found, try legacy checkRecipe
         if (logic == null) {
             return checkRecipe(mInventory[1]) ? CheckRecipeResults.SUCCESSFUL : CheckRecipeResults.NO_RECIPE;
         }
 
-        CheckRecipeResults result = null;
+        CheckRecipeResult result = null;
 
         logic.clear();
         logic.setAvailableVoltage(getMaxInputVoltage());
@@ -1167,7 +1166,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return null;
     }
 
-    protected ProcessingLogic<IVoidable, IHasWorldObjectAndCoords> getProcessingLogic() {
+    protected ProcessingLogic getProcessingLogic() {
         return processingLogic;
     }
 
@@ -1930,7 +1929,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
         screenElements
             .widget(
-                new TextWidget(errorDisplayString != null ? StatCollector.translateToLocal(errorDisplayString) : "")
+                TextWidget
+                    .dynamicString(
+                        () -> errorDisplayString != null ? StatCollector.translateToLocal(errorDisplayString) : "")
                     .setEnabled(widget -> errorDisplayString != null))
             .widget(
                 new FakeSyncWidget.StringSyncer(
