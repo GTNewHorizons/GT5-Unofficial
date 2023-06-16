@@ -16,10 +16,11 @@ import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
+@SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class ProcessingLogic {
 
-    IVoidable controller;
-    IHasWorldObjectAndCoords tileEntity;
+    protected IVoidable controller;
+    protected IHasWorldObjectAndCoords tileEntity;
     protected GT_Recipe_Map recipeMap;
     protected Supplier<GT_Recipe_Map> mapSupplier;
     protected GT_Recipe lastRecipe;
