@@ -37,6 +37,9 @@ public class ProcessingLogic {
     protected int overClockPowerIncrease = 4;
     protected boolean protectItems;
     protected boolean protectFluids;
+    protected int parallels = 1;
+    protected Supplier<Integer> parallelSupplier;
+    protected int batchSize = 1;
 
     public ProcessingLogic() {}
 
@@ -77,6 +80,21 @@ public class ProcessingLogic {
 
     public ProcessingLogic setCurrentOutputFluids(FluidStack... currentOutputFluids) {
         this.currentOutputFluids = currentOutputFluids;
+        return this;
+    }
+
+    public ProcessingLogic setParallels(int parallels) {
+        this.parallels = parallels;
+        return this;
+    }
+
+    public ProcessingLogic setParallelSupplier(Supplier<Integer> supplier) {
+        this.parallelSupplier = supplier;
+        return this;
+    }
+
+    public ProcessingLogic setBatchSize(int size) {
+        this.batchSize = size;
         return this;
     }
 
@@ -136,6 +154,10 @@ public class ProcessingLogic {
         return this;
     }
 
+    public ProcessingLogic enablePerfectOverclock() {
+        return this.setOverclock(4, 4);
+    }
+
     /**
      * Clears calculated outputs, and provided machine inputs
      */
@@ -183,11 +205,16 @@ public class ProcessingLogic {
     }
 
     protected GT_ParallelHelper createParallelHelper(GT_Recipe recipe) {
+        if (parallelSupplier != null) {
+            parallels = parallelSupplier.get();
+        }
         return new GT_ParallelHelper().setRecipe(recipe)
             .setItemInputs(inputItems)
             .setFluidInputs(inputFluids)
             .setAvailableEUt(availableVoltage * availableAmperage)
             .setMachine(controller, protectItems, protectFluids)
+            .setMaxParallel(parallels)
+            .enableBatchMode(batchSize)
             .enableConsumption()
             .enableOutputCalculation()
             .build();
