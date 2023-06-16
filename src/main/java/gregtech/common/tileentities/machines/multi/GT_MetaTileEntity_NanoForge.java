@@ -231,18 +231,15 @@ public class GT_MetaTileEntity_NanoForge extends
     }
 
     @Override
-    protected ProcessingLogic getProcessingLogic() {
-        if (super.getProcessingLogic() == null) {
-            processingLogic = new ProcessingLogic() {
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-                @Override
-                protected CheckRecipeResult checkRecipe(GT_Recipe recipe) {
-                    return recipe.mSpecialValue <= mSpecialTier ? CheckRecipeResults.SUCCESSFUL
-                        : CheckRecipeResults.NO_RECIPE;
-                }
-            };
-        }
-        return super.getProcessingLogic();
+            @Override
+            protected CheckRecipeResult checkRecipe(GT_Recipe recipe) {
+                return recipe.mSpecialValue <= mSpecialTier ? CheckRecipeResults.SUCCESSFUL
+                    : CheckRecipeResults.NO_RECIPE;
+            }
+        };
     }
 
     @Override

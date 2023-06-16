@@ -121,7 +121,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public ArrayList<GT_MetaTileEntity_Hatch_Energy> mEnergyHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Maintenance> mMaintenanceHatches = new ArrayList<>();
     protected List<GT_MetaTileEntity_Hatch> mExoticEnergyHatches = new ArrayList<>();
-    protected ProcessingLogic processingLogic;
+    protected final ProcessingLogic processingLogic;
     @SideOnly(Side.CLIENT)
     protected GT_SoundLoop activitySoundLoop;
 
@@ -130,6 +130,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     public GT_MetaTileEntity_MultiBlockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 2);
+        this.processingLogic = null;
         GT_MetaTileEntity_MultiBlockBase.disableMaintenance = GregTech_API.sMachineFile
             .get(ConfigCategories.machineconfig, "MultiBlockMachines.disableMaintenance", false);
         this.damageFactorLow = GregTech_API.sMachineFile
@@ -141,6 +142,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     public GT_MetaTileEntity_MultiBlockBase(String aName) {
         super(aName, 2);
+        this.processingLogic = createProcessingLogic();
         GT_MetaTileEntity_MultiBlockBase.disableMaintenance = GregTech_API.sMachineFile
             .get(ConfigCategories.machineconfig, "MultiBlockMachines.disableMaintenance", false);
         this.damageFactorLow = GregTech_API.sMachineFile
@@ -626,31 +628,29 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     public CheckRecipeResult checkProcessing() {
-        ProcessingLogic logic = getProcessingLogic();
-
         // If no logic is found, try legacy checkRecipe
-        if (logic == null) {
+        if (processingLogic == null) {
             return checkRecipe(mInventory[1]) ? CheckRecipeResults.SUCCESSFUL : CheckRecipeResults.NO_RECIPE;
         }
 
         CheckRecipeResult result = null;
 
-        logic.clear();
-        logic.setMetaTEController(this);
-        logic.setRecipeMapSupplier(this::getRecipeMap);
-        logic.setAvailableVoltage(getMaxInputVoltage());
-        logic.setAvailableAmperage(1);
-        logic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
-        logic.setInputFluids(getStoredFluids());
+        processingLogic.clear();
+        processingLogic.setMetaTEController(this);
+        processingLogic.setRecipeMapSupplier(this::getRecipeMap);
+        processingLogic.setAvailableVoltage(getMaxInputVoltage());
+        processingLogic.setAvailableAmperage(1);
+        processingLogic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
+        processingLogic.setInputFluids(getStoredFluids());
         if (isInputSeparationEnabled()) {
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
-                logic.setInputItems(bus.mInventory);
-                result = logic.process();
+                processingLogic.setInputItems(bus.mInventory);
+                result = processingLogic.process();
                 if (result.wasSuccessful()) break;
             }
         } else {
-            logic.setInputItems(getStoredInputs());
-            result = logic.process();
+            processingLogic.setInputItems(getStoredInputs());
+            result = processingLogic.process();
         }
 
         if (result == null || !result.wasSuccessful()) return result;
@@ -658,18 +658,18 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         mEfficiencyIncrease = 10000;
 
-        if (logic.getCalculatedEut() > Integer.MAX_VALUE) return CheckRecipeResults.NO_RECIPE;
-        mEUt = (int) logic.getCalculatedEut();
+        if (processingLogic.getCalculatedEut() > Integer.MAX_VALUE) return CheckRecipeResults.NO_RECIPE;
+        mEUt = (int) processingLogic.getCalculatedEut();
 
-        if (logic.getDuration() > Integer.MAX_VALUE) return CheckRecipeResults.NO_RECIPE;
-        mMaxProgresstime = (int) logic.getDuration();
+        if (processingLogic.getDuration() > Integer.MAX_VALUE) return CheckRecipeResults.NO_RECIPE;
+        mMaxProgresstime = (int) processingLogic.getDuration();
 
         if (mEUt > 0) {
             mEUt = (-mEUt);
         }
 
-        mOutputItems = logic.getOutputItems();
-        mOutputFluids = logic.getOutputFluids();
+        mOutputItems = processingLogic.getOutputItems();
+        mOutputFluids = processingLogic.getOutputFluids();
 
         updateSlots();
         return result;
@@ -1168,8 +1168,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return null;
     }
 
-    protected ProcessingLogic getProcessingLogic() {
-        return processingLogic;
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic();
     }
 
     public void updateSlots() {

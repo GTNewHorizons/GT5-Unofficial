@@ -190,30 +190,27 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
     }
 
     @Override
-    protected ProcessingLogic getProcessingLogic() {
-        if (super.getProcessingLogic() == null) {
-            processingLogic = new ProcessingLogic() {
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-                @Override
-                protected GT_OverclockCalculator createOverclockCalculator(GT_Recipe recipe, GT_ParallelHelper helper) {
-                    return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
-                        .setDuration(recipe.mDuration)
-                        .setEUt(availableVoltage)
-                        .setRecipeHeat(recipe.mSpecialValue)
-                        .setMultiHeat(mHeatingCapacity)
-                        .enableHeatOC()
-                        .enableHeatDiscount()
-                        .calculate();
-                }
+            @Override
+            protected GT_OverclockCalculator createOverclockCalculator(GT_Recipe recipe, GT_ParallelHelper helper) {
+                return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
+                    .setDuration(recipe.mDuration)
+                    .setEUt(availableVoltage)
+                    .setRecipeHeat(recipe.mSpecialValue)
+                    .setMultiHeat(mHeatingCapacity)
+                    .enableHeatOC()
+                    .enableHeatDiscount()
+                    .calculate();
+            }
 
-                @Override
-                protected CheckRecipeResult checkRecipe(GT_Recipe recipe) {
-                    return recipe.mSpecialValue <= mHeatingCapacity ? CheckRecipeResults.SUCCESSFUL
-                        : CheckRecipeResults.NO_RECIPE;
-                }
-            };
-        }
-        return super.getProcessingLogic();
+            @Override
+            protected CheckRecipeResult checkRecipe(GT_Recipe recipe) {
+                return recipe.mSpecialValue <= mHeatingCapacity ? CheckRecipeResults.SUCCESSFUL
+                    : CheckRecipeResults.NO_RECIPE;
+            }
+        };
     }
 
     public boolean addOutputHatchToTopList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
