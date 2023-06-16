@@ -108,8 +108,7 @@ public class GT_MetaTileEntity_ImplosionCompressor
     @Override
     protected ProcessingLogic getProcessingLogic() {
         if (super.getProcessingLogic() == null) {
-            processingLogic = new ProcessingLogic().setMetaTEController(this)
-                .setRecipeMap(getRecipeMap());
+            processingLogic = new ProcessingLogic();
         }
         return super.getProcessingLogic();
     }

@@ -211,8 +211,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
                     return recipe.mSpecialValue <= mHeatingCapacity ? CheckRecipeResults.SUCCESSFUL
                         : CheckRecipeResults.NO_RECIPE;
                 }
-            }.setMetaTEController(this)
-                .setRecipeMap(getRecipeMap());
+            };
         }
         return super.getProcessingLogic();
     }

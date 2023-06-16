@@ -240,8 +240,7 @@ public class GT_MetaTileEntity_NanoForge extends
                     return recipe.mSpecialValue <= mSpecialTier ? CheckRecipeResults.SUCCESSFUL
                         : CheckRecipeResults.NO_RECIPE;
                 }
-            }.setMetaTEController(this)
-                .setRecipeMap(getRecipeMap());
+            };
         }
         return super.getProcessingLogic();
     }

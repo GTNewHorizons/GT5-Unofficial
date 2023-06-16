@@ -636,6 +636,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         CheckRecipeResult result = null;
 
         logic.clear();
+        logic.setMetaTEController(this);
+        logic.setRecipeMapSupplier(this::getRecipeMap);
         logic.setAvailableVoltage(getMaxInputVoltage());
         logic.setAvailableAmperage(1);
         logic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
