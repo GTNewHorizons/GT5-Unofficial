@@ -182,8 +182,16 @@ public class ProcessingLogic {
         GT_Recipe recipe = recipeMap
             .findRecipe(tileEntity, lastRecipe, false, availableVoltage, inputFluids, inputItems);
 
-        if (recipe == null || !checkRecipe(recipe)) return CheckRecipeResults.NO_RECIPE;
-        else lastRecipe = recipe;
+        if (recipe != null) {
+            CheckRecipeResult result = checkRecipe(recipe);
+            if (!result.wasSuccessful()) {
+                return result;
+            } else {
+                lastRecipe = recipe;
+            }
+        } else {
+            return CheckRecipeResults.NO_RECIPE;
+        }
 
         GT_ParallelHelper helper = createParallelHelper(recipe);
 
@@ -220,8 +228,8 @@ public class ProcessingLogic {
             .build();
     }
 
-    protected boolean checkRecipe(GT_Recipe recipe) {
-        return true;
+    protected CheckRecipeResult checkRecipe(GT_Recipe recipe) {
+        return CheckRecipeResults.SUCCESSFUL;
     }
 
     protected GT_OverclockCalculator createOverclockCalculator(GT_Recipe recipe, GT_ParallelHelper helper) {

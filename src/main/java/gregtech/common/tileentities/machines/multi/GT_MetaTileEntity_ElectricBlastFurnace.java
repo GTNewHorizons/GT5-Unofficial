@@ -39,6 +39,8 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.CheckRecipeResult;
+import gregtech.api.enums.CheckRecipeResults;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
@@ -205,8 +207,9 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
                 }
 
                 @Override
-                protected boolean checkRecipe(GT_Recipe recipe) {
-                    return recipe.mSpecialValue <= mHeatingCapacity;
+                protected CheckRecipeResult checkRecipe(GT_Recipe recipe) {
+                    return recipe.mSpecialValue <= mHeatingCapacity ? CheckRecipeResults.SUCCESSFUL
+                        : CheckRecipeResults.NO_RECIPE;
                 }
             }.setMetaTEController(this)
                 .setRecipeMap(getRecipeMap());

@@ -35,6 +35,8 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.CheckRecipeResult;
+import gregtech.api.enums.CheckRecipeResults;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -234,8 +236,9 @@ public class GT_MetaTileEntity_NanoForge extends
             processingLogic = new ProcessingLogic() {
 
                 @Override
-                protected boolean checkRecipe(GT_Recipe recipe) {
-                    return recipe.mSpecialValue <= mSpecialTier;
+                protected CheckRecipeResult checkRecipe(GT_Recipe recipe) {
+                    return recipe.mSpecialValue <= mSpecialTier ? CheckRecipeResults.SUCCESSFUL
+                        : CheckRecipeResults.NO_RECIPE;
                 }
             }.setMetaTEController(this)
                 .setRecipeMap(getRecipeMap());
