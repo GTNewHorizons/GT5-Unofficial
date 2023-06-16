@@ -5,6 +5,8 @@ import static gregtech.api.enums.GT_Values.VN;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -129,13 +131,14 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
     }
 
     @Override
-    public CheckRecipeResult checkProcessing() {
+    public @Nonnull CheckRecipeResult checkProcessing() {
         // If no logic is found, try legacy checkRecipe
         if (processingLogic == null) {
+            // noinspection deprecation
             return checkRecipe(mInventory[1]) ? CheckRecipeResults.SUCCESSFUL : CheckRecipeResults.NO_RECIPE;
         }
 
-        CheckRecipeResult result = null;
+        CheckRecipeResult result = CheckRecipeResults.NO_RECIPE;
 
         processingLogic.clear();
         processingLogic.setMetaTEController(this);
@@ -155,7 +158,7 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
             result = processingLogic.process();
         }
 
-        if (result == null || !result.wasSuccessful()) return result;
+        if (!result.wasSuccessful()) return result;
 
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         mEfficiencyIncrease = 10000;

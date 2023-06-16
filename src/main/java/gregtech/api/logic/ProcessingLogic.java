@@ -3,6 +3,8 @@ package gregtech.api.logic;
 import java.util.List;
 import java.util.function.Supplier;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -170,6 +172,7 @@ public class ProcessingLogic {
         return this;
     }
 
+    @Nonnull
     public CheckRecipeResult process() {
         if (recipeMapSupplier == null) return CheckRecipeResults.NO_RECIPE;
 
@@ -225,6 +228,7 @@ public class ProcessingLogic {
             .build();
     }
 
+    @Nonnull
     protected CheckRecipeResult checkRecipe(GT_Recipe recipe) {
         return CheckRecipeResults.SUCCESSFUL;
     }

@@ -4,6 +4,8 @@ import static gregtech.api.enums.Mods.Railcraft;
 import static net.minecraftforge.oredict.OreDictionary.getOreID;
 import static net.minecraftforge.oredict.OreDictionary.getOreIDs;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -26,7 +28,7 @@ public class CokeOvenProcessingLogic extends ProcessingLogic {
     private int timeMultiplier = 1;
 
     @Override
-    public CheckRecipeResult process() {
+    public @Nonnull CheckRecipeResult process() {
         if (inputItems == null || inputItems[0] == null) {
             return CheckRecipeResults.NO_RECIPE;
         }

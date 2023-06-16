@@ -627,13 +627,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return false;
     }
 
+    @Nonnull
     public CheckRecipeResult checkProcessing() {
         // If no logic is found, try legacy checkRecipe
         if (processingLogic == null) {
             return checkRecipe(mInventory[1]) ? CheckRecipeResults.SUCCESSFUL : CheckRecipeResults.NO_RECIPE;
         }
 
-        CheckRecipeResult result = null;
+        CheckRecipeResult result = CheckRecipeResults.NO_RECIPE;
 
         processingLogic.clear();
         processingLogic.setMetaTEController(this);
@@ -653,7 +654,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             result = processingLogic.process();
         }
 
-        if (result == null || !result.wasSuccessful()) return result;
+        if (!result.wasSuccessful()) return result;
 
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         mEfficiencyIncrease = 10000;

@@ -16,6 +16,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -235,7 +237,7 @@ public class GT_MetaTileEntity_NanoForge extends
         return new ProcessingLogic() {
 
             @Override
-            protected CheckRecipeResult checkRecipe(GT_Recipe recipe) {
+            protected @Nonnull CheckRecipeResult checkRecipe(GT_Recipe recipe) {
                 return recipe.mSpecialValue <= mSpecialTier ? CheckRecipeResults.SUCCESSFUL
                     : CheckRecipeResults.NO_RECIPE;
             }
