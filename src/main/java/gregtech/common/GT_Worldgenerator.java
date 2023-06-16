@@ -156,6 +156,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
 
         @SubscribeEvent
         public void onWorldLoad(WorldEvent.Load event) {
+            oregenPattern = OregenPattern.AXISSYMMETRICAL;
             World world = event.world;
             if (!world.isRemote && world.provider.dimensionId == 0) {
                 if (world.getWorldInfo()
