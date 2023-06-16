@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
@@ -161,7 +162,7 @@ public class ReflectionHelper {
      * @param packageName The package name
      * @return The class nodes
      */
-    public static Collection<ClassNode> getClasses(String packageName) throws IOException, SecurityException {
+    public static Collection<ClassNode> getClasses(String packageName) throws IOException {
         ClassLoader classLoader = Thread.currentThread()
             .getContextClassLoader();
         assert classLoader != null;
@@ -170,9 +171,7 @@ public class ReflectionHelper {
         if (resource == null) throw new FileNotFoundException();
         if (!resource.getProtocol()
             .equals("jar")) return Collections.emptySet();
-        String jarPath = resource.getPath();
-
-        try (JarFile jar = new JarFile(jarPath.substring(5, jarPath.indexOf('!')))) {
+        try (JarFile jar = ((JarURLConnection) resource.openConnection()).getJarFile()) {
             return jar.stream()
                 .filter(
                     j -> !j.isDirectory() && j.getName()
