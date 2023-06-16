@@ -21,8 +21,7 @@ public class ProcessingLogic {
 
     protected IVoidable controller;
     protected IHasWorldObjectAndCoords tileEntity;
-    protected GT_Recipe_Map recipeMap;
-    protected Supplier<GT_Recipe_Map> mapSupplier;
+    protected Supplier<GT_Recipe_Map> recipeMapSupplier;
     protected GT_Recipe lastRecipe;
     protected ItemStack[] inputItems;
     protected ItemStack[] outputItems;
@@ -100,12 +99,11 @@ public class ProcessingLogic {
     }
 
     public ProcessingLogic setRecipeMap(GT_Recipe_Map recipeMap) {
-        this.recipeMap = recipeMap;
-        return this;
+        return setRecipeMapSupplier(() -> recipeMap);
     }
 
     public ProcessingLogic setRecipeMapSupplier(Supplier<GT_Recipe_Map> supplier) {
-        this.mapSupplier = supplier;
+        this.recipeMapSupplier = supplier;
         return this;
     }
 
@@ -173,11 +171,9 @@ public class ProcessingLogic {
     }
 
     public CheckRecipeResult process() {
-        if (recipeMap == null && mapSupplier == null) return CheckRecipeResults.NO_RECIPE;
+        if (recipeMapSupplier == null) return CheckRecipeResults.NO_RECIPE;
 
-        if (mapSupplier != null) {
-            recipeMap = mapSupplier.get();
-        }
+        GT_Recipe_Map recipeMap = recipeMapSupplier.get();
         if (recipeMap == null) return CheckRecipeResults.NO_RECIPE;
 
         GT_Recipe recipe = recipeMap
