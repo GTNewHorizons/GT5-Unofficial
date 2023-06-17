@@ -131,7 +131,9 @@ public class GT_Worldgenerator implements IWorldGenerator {
         if (oregenPattern == OregenPattern.EQUAL_SPACING) {
             return Math.floorMod(chunkX, 3) == 1 && Math.floorMod(chunkZ, 3) == 1;
         }
-        // AXISSYMMETRICAL - and next if statement here or convert to switch when expanding OregenPattern enum
+        // add next if statement here or convert to switch when expanding OregenPattern enum
+
+        // AXISSYMMETRICAL
         return Math.abs(chunkX) % 3 == 1 && Math.abs(chunkZ) % 3 == 1;
     }
 
@@ -145,6 +147,17 @@ public class GT_Worldgenerator implements IWorldGenerator {
         }
 
         public static void loadData(World world) {
+            if (world.getWorldInfo()
+                .getWorldTotalTime() == 0L) {
+                // The world has just been created -> use newest pattern
+                oregenPattern = OregenPattern.values()[OregenPattern.values().length - 1];
+            } else {
+                // This is an old world. Use legacy pattern for now, readFromNBT may change this if
+                // GregTech_OregenPattern.dat is present
+                oregenPattern = OregenPattern.AXISSYMMETRICAL;
+            }
+
+            // load OregenPatternSavedData
             WorldSavedData instance = world.mapStorage
                 .loadData(OregenPatternSavedData.class, OregenPatternSavedData.NAME);
             if (instance == null) {
@@ -156,14 +169,8 @@ public class GT_Worldgenerator implements IWorldGenerator {
 
         @SubscribeEvent
         public void onWorldLoad(WorldEvent.Load event) {
-            oregenPattern = OregenPattern.AXISSYMMETRICAL;
-            World world = event.world;
+            final World world = event.world;
             if (!world.isRemote && world.provider.dimensionId == 0) {
-                if (world.getWorldInfo()
-                    .getWorldTotalTime() == 0L) {
-                    // The world has just been created
-                    oregenPattern = OregenPattern.values()[OregenPattern.values().length - 1];
-                }
                 loadData(world);
             }
         }
@@ -186,6 +193,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
     }
 
     public enum OregenPattern {
+        // The last value is used when creating a new world
         AXISSYMMETRICAL,
         EQUAL_SPACING;
     }
