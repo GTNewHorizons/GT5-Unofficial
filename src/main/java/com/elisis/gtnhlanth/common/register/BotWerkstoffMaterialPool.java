@@ -191,15 +191,6 @@ public class BotWerkstoffMaterialPool implements Runnable {
             new Werkstoff.GenerationFeatures().disable().addCells(),
             29923,
             SET_METALLIC);
-    public static final Werkstoff Monomethylhydrazine = new Werkstoff(
-            new short[] { 0xff, 0x61, 0x00 },
-            "Monomethylhydrazine",
-            subscriptNumbers("CH6N2"),
-            new Werkstoff.Stats(),
-            COMPOUND,
-            new Werkstoff.GenerationFeatures().disable().addCells(),
-            29924,
-            SET_METALLIC);
     public static final Werkstoff EthylAcetate = new Werkstoff(
             new short[] { 0x0c, 0xfb, 0x32b },
             "Ethyl Acetate",
