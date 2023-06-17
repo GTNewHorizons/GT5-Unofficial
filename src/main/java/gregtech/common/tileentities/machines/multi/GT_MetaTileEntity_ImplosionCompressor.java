@@ -20,6 +20,7 @@ import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_CubicMultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -102,6 +103,11 @@ public class GT_MetaTileEntity_ImplosionCompressor
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
+    }
+
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic();
     }
 
     @Override

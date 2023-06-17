@@ -1170,7 +1170,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic();
+        return null;
     }
 
     public void updateSlots() {
