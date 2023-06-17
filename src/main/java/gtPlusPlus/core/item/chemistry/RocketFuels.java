@@ -13,8 +13,6 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTPP_Recipe;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.lib.CORE;
@@ -138,28 +136,6 @@ public class RocketFuels extends ItemPackage {
                 20 * 48,
                 240,
                 2);
-
-        FluidStack aBartWorksMonomethylhydrazine = FluidUtils.getWildcardFluidStack("Monomethylhydrazine", 1000);
-        if (aBartWorksMonomethylhydrazine != null) {
-            Logger.INFO("Found BW Monomethylhydrazine, adding compat recipe.");
-            CORE.RA.addDistilleryRecipe(
-                    GT_Utility.getIntegratedCircuit(24),
-                    FluidUtils.getFluidStack(Monomethylhydrazine, 1000),
-                    aBartWorksMonomethylhydrazine,
-                    null,
-                    20,
-                    8,
-                    false);
-
-            CORE.RA.addDistilleryRecipe(
-                    GT_Utility.getIntegratedCircuit(24),
-                    aBartWorksMonomethylhydrazine,
-                    FluidUtils.getFluidStack(Monomethylhydrazine, 1000),
-                    null,
-                    20,
-                    8,
-                    false);
-        }
     }
 
     private static void createLOH() {
