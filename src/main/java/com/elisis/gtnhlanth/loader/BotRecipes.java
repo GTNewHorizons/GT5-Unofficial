@@ -3,7 +3,6 @@ package com.elisis.gtnhlanth.loader;
 import static com.elisis.gtnhlanth.common.register.BotWerkstoffMaterialPool.*;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.OrePrefixes.*;
-import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -366,23 +365,6 @@ public class BotRecipes {
                 null,
                 50,
                 480);
-
-        if (GTPlusPlus.isModLoaded()) {
-            // N2H4 + C2H6O4S = SO3 + CH6N2 + CH4O
-            GT_Values.RA.addChemicalRecipe(
-                    getModItem(GTPlusPlus.ID, "Hydrazine", 1),
-                    Materials.Empty.getCells(1),
-                    DimethylSulfate.getFluidOrGas(1000),
-                    Materials.SulfurTrioxide.getGas(1000),
-                    Monomethylhydrazine.get(cell, 1),
-                    Materials.Methanol.getCells(1),
-                    80,
-                    16000);
-        }
-
-        cells.stackSize = 1;
-
-        // unsimetrical hydazine
 
         // 2HNO3 + C3H8 = 2CH3NO2 + 2H2O + C
         GT_Values.RA.addCrackingRecipe(
