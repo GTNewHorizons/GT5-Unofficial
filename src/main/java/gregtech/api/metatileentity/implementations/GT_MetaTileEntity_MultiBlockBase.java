@@ -60,6 +60,7 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -642,6 +643,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         processingLogic.setAvailableVoltage(getMaxInputVoltage());
         processingLogic.setAvailableAmperage(1);
         processingLogic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
+        processingLogic.setRecipeLocking(this, isRecipeLockingEnabled());
         processingLogic.setInputFluids(getStoredFluids());
         if (isInputSeparationEnabled()) {
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
@@ -1667,6 +1669,16 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     @Override
+    public IHasWorldObjectAndCoords getWorldObject() {
+        return getBaseMetaTileEntity();
+    }
+
+    @Override
+    public ItemStack getControllerSlot() {
+        return mInventory[1];
+    }
+
+    @Override
     public Pos2d getPowerSwitchButtonPos() {
         return new Pos2d(174, 148);
     }
@@ -1804,6 +1816,16 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     @Override
     public void setRecipeLocking(boolean enabled) {
         this.mLockedToSingleRecipe = enabled;
+    }
+
+    @Override
+    public void setSingleRecipeCheck(GT_Single_Recipe_Check recipeCheck) {
+        mSingleRecipeCheck = recipeCheck;
+    }
+
+    @Override
+    public GT_Single_Recipe_Check getSingleRecipeCheck() {
+        return mSingleRecipeCheck;
     }
 
     @Override

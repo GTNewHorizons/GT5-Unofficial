@@ -3,6 +3,7 @@ package gregtech.api.util;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.XSTR;
@@ -14,6 +15,14 @@ public class GT_ParallelHelper {
      * Machine used for calculation
      */
     private IVoidable machine;
+    /**
+     * Machine used for single recipe locking calculation
+     */
+    private IRecipeLockable singleRecipeMachine;
+    /**
+     * Is locked to a single recipe?
+     */
+    private boolean isRecipeLocked;
     /**
      * Recipe used when trying to calculate parallels
      */
@@ -133,6 +142,12 @@ public class GT_ParallelHelper {
         return this;
     }
 
+    public GT_ParallelHelper setRecipeLocked(IRecipeLockable singleRecipeMachine, boolean isRecipeLocked) {
+        this.singleRecipeMachine = singleRecipeMachine;
+        this.isRecipeLocked = isRecipeLocked;
+        return this;
+    }
+
     /**
      * Sets the items available for the recipe check
      */
@@ -186,7 +201,7 @@ public class GT_ParallelHelper {
      * modifier of 1 does nothing
      */
     public GT_ParallelHelper enableBatchMode(int aBatchModifier) {
-        mBatchMode = true;
+        mBatchMode = aBatchModifier > 1;
         mBatchModifier = aBatchModifier;
         return this;
     }
@@ -266,6 +281,11 @@ public class GT_ParallelHelper {
         }
         ItemStack[] tItemInputs = null;
         FluidStack[] tFluidInputs = null;
+        GT_Single_Recipe_Check.Builder tSingleRecipeCheckBuilder = null;
+        GT_Single_Recipe_Check recipeCheck = null;
+        if (isRecipeLocked && singleRecipeMachine != null) {
+            recipeCheck = singleRecipeMachine.getSingleRecipeCheck();
+        }
         long tCurrentUsage = 0;
         // see if people want to consume their inputs with the Parallel Helper or not
         if (mConsume) {
@@ -293,6 +313,13 @@ public class GT_ParallelHelper {
         if (mBatchMode) {
             mMaxParallel *= mBatchModifier;
         }
+        // If the machine is recipe locked and the recipe lock builder isn't set up yet,
+        // we may only do one parallel, to build it. Also, consumption needs to be enabled to build
+        if (isRecipeLocked && mConsume && recipeCheck == null && singleRecipeMachine != null) {
+            mMaxParallel = 1;
+            tSingleRecipeCheckBuilder = GT_Single_Recipe_Check.builder(singleRecipeMachine)
+                .setBefore(tItemInputs, tFluidInputs);
+        }
         // Let's look at how many parallels we can get with void protection
         if (protectExcessItem || protectExcessFluid) {
             if (machine == null) {
@@ -311,27 +338,43 @@ public class GT_ParallelHelper {
         // Consume inputs to determine normal parallel
         for (; mCurrentParallel < mMaxParallel / mBatchModifier
             && tCurrentUsage < (mAvailableEUt - tRecipeEUt); mCurrentParallel++) {
-            if (mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs)) {
-                tCurrentUsage += tRecipeEUt;
+            if (isRecipeLocked && recipeCheck != null) {
+                if (recipeCheck.checkRecipeInputs(mConsume)) {
+                    tCurrentUsage += tRecipeEUt;
+                } else {
+                    break;
+                }
             } else {
-                break;
+                if (mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs)) {
+                    tCurrentUsage += tRecipeEUt;
+                } else {
+                    break;
+                }
             }
         }
 
         // If Batch Mode is enabled determine how many extra parallels we can get
         if (mBatchMode) {
             int tExtraParallels = 0;
-            while (tExtraParallels < mCurrentParallel * (mBatchModifier - 1)
-                && mRecipe.isRecipeInputEqual(false, false, tFluidInputs, tItemInputs)) {
-                mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs);
-                tExtraParallels++;
+            if (isRecipeLocked && recipeCheck != null) {
+                while (tExtraParallels < mCurrentParallel * (mBatchModifier - 1)
+                    && recipeCheck.checkRecipeInputs(false)) {
+                    recipeCheck.checkRecipeInputs(true);
+                    tExtraParallels++;
+                }
+            } else {
+                while (tExtraParallels < mCurrentParallel * (mBatchModifier - 1)
+                    && mRecipe.isRecipeInputEqual(false, false, tFluidInputs, tItemInputs)) {
+                    mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs);
+                    tExtraParallels++;
+                }
             }
             mDurationMultiplier = 1.0f + (float) tExtraParallels / mCurrentParallel;
             mCurrentParallel += tExtraParallels;
         }
 
         // If we want to calculate outputs we do it here
-        if (mCalculateOutputs) {
+        if (mCalculateOutputs && mCurrentParallel > 0) {
             if (mRecipe.mOutputs != null) {
                 mItemOutputs = new ItemStack[mRecipe.mOutputs.length];
                 for (int i = 0; i < mRecipe.mOutputs.length; i++) {
@@ -360,6 +403,17 @@ public class GT_ParallelHelper {
                     }
                 }
             }
+        }
+
+        if (isRecipeLocked && mConsume
+            && recipeCheck == null
+            && mCurrentParallel > 0
+            && tSingleRecipeCheckBuilder != null
+            && singleRecipeMachine != null) {
+            singleRecipeMachine.setSingleRecipeCheck(
+                tSingleRecipeCheckBuilder.setAfter(tItemInputs, tFluidInputs)
+                    .setRecipe(mRecipe)
+                    .build());
         }
     }
 }

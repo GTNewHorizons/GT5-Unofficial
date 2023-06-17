@@ -11,6 +11,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.CheckRecipeResult;
 import gregtech.api.enums.CheckRecipeResults;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
+import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_OverclockCalculator;
@@ -22,6 +23,7 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 public class ProcessingLogic {
 
     protected IVoidable controller;
+    protected IRecipeLockable recipeLockableController;
     protected IHasWorldObjectAndCoords tileEntity;
     protected Supplier<GT_Recipe_Map> recipeMapSupplier;
     protected GT_Recipe lastRecipe;
@@ -39,6 +41,7 @@ public class ProcessingLogic {
     protected int overClockPowerIncrease = 4;
     protected boolean protectItems;
     protected boolean protectFluids;
+    protected boolean isRecipeLocked;
     protected int parallels = 1;
     protected Supplier<Integer> parallelSupplier;
     protected int batchSize = 1;
@@ -82,6 +85,12 @@ public class ProcessingLogic {
 
     public ProcessingLogic setCurrentOutputFluids(FluidStack... currentOutputFluids) {
         this.currentOutputFluids = currentOutputFluids;
+        return this;
+    }
+
+    public ProcessingLogic setRecipeLocking(IRecipeLockable recipeLockableController, boolean isRecipeLocked) {
+        this.recipeLockableController = recipeLockableController;
+        this.isRecipeLocked = isRecipeLocked;
         return this;
     }
 
@@ -179,8 +188,15 @@ public class ProcessingLogic {
         GT_Recipe_Map recipeMap = recipeMapSupplier.get();
         if (recipeMap == null) return CheckRecipeResults.NO_RECIPE;
 
-        GT_Recipe recipe = recipeMap
-            .findRecipe(tileEntity, lastRecipe, false, availableVoltage, inputFluids, inputItems);
+        GT_Recipe recipe;
+
+        if (isRecipeLocked && recipeLockableController != null
+            && recipeLockableController.getSingleRecipeCheck() != null) {
+            recipe = recipeLockableController.getSingleRecipeCheck()
+                .getRecipe();
+        } else {
+            recipe = recipeMap.findRecipe(tileEntity, lastRecipe, false, availableVoltage, inputFluids, inputItems);
+        }
 
         if (recipe != null) {
             CheckRecipeResult result = validateRecipe(recipe);
@@ -221,6 +237,7 @@ public class ProcessingLogic {
             .setFluidInputs(inputFluids)
             .setAvailableEUt(availableVoltage * availableAmperage)
             .setMachine(controller, protectItems, protectFluids)
+            .setRecipeLocked(recipeLockableController, isRecipeLocked)
             .setMaxParallel(parallels)
             .enableBatchMode(batchSize)
             .enableConsumption()
