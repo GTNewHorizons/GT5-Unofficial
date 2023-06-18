@@ -23,7 +23,7 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 public class ProcessingLogic {
 
     protected IVoidable controller;
-    protected IRecipeLockable recipeLockableController;
+    protected IRecipeLockable recipeLockableMachine;
     protected IHasWorldObjectAndCoords tileEntity;
     protected Supplier<GT_Recipe_Map> recipeMapSupplier;
     protected GT_Recipe lastRecipe;
@@ -88,8 +88,8 @@ public class ProcessingLogic {
         return this;
     }
 
-    public ProcessingLogic setRecipeLocking(IRecipeLockable recipeLockableController, boolean isRecipeLocked) {
-        this.recipeLockableController = recipeLockableController;
+    public ProcessingLogic setRecipeLocking(IRecipeLockable recipeLockableMachine, boolean isRecipeLocked) {
+        this.recipeLockableMachine = recipeLockableMachine;
         this.isRecipeLocked = isRecipeLocked;
         return this;
     }
@@ -190,9 +190,8 @@ public class ProcessingLogic {
 
         GT_Recipe recipe;
 
-        if (isRecipeLocked && recipeLockableController != null
-            && recipeLockableController.getSingleRecipeCheck() != null) {
-            recipe = recipeLockableController.getSingleRecipeCheck()
+        if (isRecipeLocked && recipeLockableMachine != null && recipeLockableMachine.getSingleRecipeCheck() != null) {
+            recipe = recipeLockableMachine.getSingleRecipeCheck()
                 .getRecipe();
         } else {
             recipe = recipeMap.findRecipe(tileEntity, lastRecipe, false, availableVoltage, inputFluids, inputItems);
@@ -237,7 +236,7 @@ public class ProcessingLogic {
             .setFluidInputs(inputFluids)
             .setAvailableEUt(availableVoltage * availableAmperage)
             .setMachine(controller, protectItems, protectFluids)
-            .setRecipeLocked(recipeLockableController, isRecipeLocked)
+            .setRecipeLocked(recipeLockableMachine, isRecipeLocked)
             .setMaxParallel(parallels)
             .enableBatchMode(batchSize)
             .enableConsumption()
