@@ -28,7 +28,6 @@ import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -78,6 +77,7 @@ import gregtech.api.util.GT_PlayedSound;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
+import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.render.GT_CapeRenderer;
@@ -762,8 +762,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
 
         if (aEvent.player.isSneaking() && aTileEntity instanceof IGregTechTileEntity gtEntity
             && gtEntity.getMetaTileEntity() instanceof MetaPipeEntity) {
-            if (aEvent.currentItem != null && GregTech_API.METATILEENTITIES[Items.feather
-                .getDamage(aEvent.currentItem)] instanceof MetaPipeEntity) {
+            if (aEvent.currentItem != null && aEvent.currentItem.getItem() instanceof GT_Item_Machines
+                && GregTech_API.METATILEENTITIES[aEvent.currentItem.getItemDamage()] instanceof MetaPipeEntity) {
                 drawGrid(aEvent, false, false, false);
             }
         }
@@ -1006,7 +1006,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
                 || GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSolderingToolList)
                 || GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCrowbarList)
                 || GregTech_API.sCovers.containsKey(new GT_ItemStack(tCurrentItem))
-                || (GregTech_API.METATILEENTITIES[Items.feather.getDamage(tCurrentItem)] instanceof MetaPipeEntity
+                || (tCurrentItem.getItem() instanceof GT_Item_Machines
+                    && GregTech_API.METATILEENTITIES[tCurrentItem.getItemDamage()] instanceof MetaPipeEntity
                     && player.isSneaking())) {
                 hide |= 0x2;
             }
