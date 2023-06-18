@@ -743,10 +743,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .metadata(RESEARCH_TIME, 2 * HOURS)
                 .itemInputs(
                     ItemList.Casing_Fusion_Coil.get(1),
-                    new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 1 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 1 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 1 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 1 },
+                    new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 4 },
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.NaquadahAlloy, 4),
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmiridium, 4),
                     ItemList.Field_Generator_LuV.get(2),
@@ -765,10 +762,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .metadata(RESEARCH_TIME, 4 * HOURS)
                 .itemInputs(
                     ItemList.Casing_Fusion_Coil.get(1),
-                    new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 1 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 1 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 1 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 1 },
+                    new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4 },
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Europium, 4),
                     ItemList.Field_Generator_ZPM.get(2),
                     ItemList.Circuit_Wafer_PPIC.get(48),
@@ -786,10 +780,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .metadata(RESEARCH_TIME, 6 * HOURS)
                 .itemInputs(
                     ItemList.Casing_Fusion_Coil.get(1),
-                    new Object[] { OrePrefixes.circuit.get(Materials.Infinite), 1 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.Infinite), 1 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.Infinite), 1 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.Infinite), 1 },
+                    new Object[] { OrePrefixes.circuit.get(Materials.Infinite), 4 },
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Americium, 4),
                     ItemList.Field_Generator_UV.get(2),
                     ItemList.Circuit_Wafer_QPIC.get(64),
