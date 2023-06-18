@@ -64,7 +64,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
+import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 import gregtech.api.net.GT_Packet_ClientPreference;
 import gregtech.api.objects.GT_ItemStack;
@@ -760,10 +760,10 @@ public class GT_Client extends GT_Proxy implements Runnable {
 
         if (!(aTileEntity instanceof ICoverable)) return;
 
-        if (aTileEntity instanceof IGregTechTileEntity gtEntity
-            && gtEntity.getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable) {
+        if (aEvent.player.isSneaking() && aTileEntity instanceof IGregTechTileEntity gtEntity
+            && gtEntity.getMetaTileEntity() instanceof MetaPipeEntity) {
             if (aEvent.currentItem != null && GregTech_API.METATILEENTITIES[Items.feather
-                .getDamage(aEvent.currentItem)] instanceof GT_MetaPipeEntity_Cable) {
+                .getDamage(aEvent.currentItem)] instanceof MetaPipeEntity) {
                 drawGrid(aEvent, false, false, false);
             }
         }
@@ -1006,8 +1006,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
                 || GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSolderingToolList)
                 || GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCrowbarList)
                 || GregTech_API.sCovers.containsKey(new GT_ItemStack(tCurrentItem))
-                || GregTech_API.METATILEENTITIES[Items.feather
-                    .getDamage(tCurrentItem)] instanceof GT_MetaPipeEntity_Cable) {
+                || (GregTech_API.METATILEENTITIES[Items.feather.getDamage(tCurrentItem)] instanceof MetaPipeEntity
+                    && player.isSneaking())) {
                 hide |= 0x2;
             }
             return hide;
