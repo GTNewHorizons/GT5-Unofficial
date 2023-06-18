@@ -354,90 +354,22 @@ public class ChemicalBathRecipes implements Runnable {
             .addTo(sChemicalBathRecipes);
 
         // Custom Sodium Persulfate Ore Processing Recipes
+        Materials[] materialList = new Materials[] { Materials.Tantalite, Materials.Pyrolusite, Materials.Quartzite,
+            Materials.CertusQuartz, Materials.Bauxite, Materials.Thorium, Materials.Stibnite };
 
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Tantalite, 1))
-            .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Tantalite, 1),
-                Materials.Tantalum.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
-            .outputChances(10000, 3000, 4000)
-            .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
-            .noFluidOutputs()
-            .duration(40 * SECONDS)
-            .eut(8)
-            .addTo(sChemicalBathRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Pyrolusite, 1))
-            .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Pyrolusite, 1),
-                Materials.Manganese.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
-            .outputChances(10000, 7000, 4000)
-            .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
-            .noFluidOutputs()
-            .duration(40 * SECONDS)
-            .eut(8)
-            .addTo(sChemicalBathRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Quartzite, 1))
-            .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Quartzite, 1),
-                Materials.CertusQuartz.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
-            .outputChances(10000, 3000, 4000)
-            .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
-            .noFluidOutputs()
-            .duration(40 * SECONDS)
-            .eut(8)
-            .addTo(sChemicalBathRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.CertusQuartz, 1))
-            .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.CertusQuartz, 1),
-                Materials.Barium.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
-            .outputChances(10000, 7000, 4000)
-            .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
-            .noFluidOutputs()
-            .duration(40 * SECONDS)
-            .eut(8)
-            .addTo(sChemicalBathRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Bauxite, 1))
-            .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Bauxite, 1),
-                Materials.Rutile.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
-            .outputChances(10000, 5000, 4000)
-            .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
-            .noFluidOutputs()
-            .duration(40 * SECONDS)
-            .eut(8)
-            .addTo(sChemicalBathRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Thorium, 1))
-            .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Thorium, 1),
-                Materials.Uranium.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
-            .outputChances(10000, 3000, 4000)
-            .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
-            .noFluidOutputs()
-            .duration(40 * SECONDS)
-            .eut(8)
-            .addTo(sChemicalBathRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Stibnite, 1))
-            .itemOutputs(
-                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Stibnite, 1),
-                Materials.Antimony.getDust(1),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
-            .outputChances(10000, 5000, 4000)
-            .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
-            .noFluidOutputs()
-            .duration(40 * SECONDS)
-            .eut(8)
-            .addTo(sChemicalBathRecipes);
+        for (Materials material : materialList) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushed, material, 1))
+                .itemOutputs(
+                    GT_OreDictUnificator.get(OrePrefixes.crushedPurified, material, 1),
+                    Materials.Tantalum.getDust(1),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
+                .outputChances(10000, 3000, 4000)
+                .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
+                .noFluidOutputs()
+                .duration(40 * SECONDS)
+                .eut(8)
+                .addTo(sChemicalBathRecipes);
+        }
     }
 }
