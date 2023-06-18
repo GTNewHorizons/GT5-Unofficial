@@ -93,7 +93,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
+    protected boolean checkRecipe() {
         mEfficiencyIncrease = 100;
         // use the standard overclock mechanism to determine duration and estimate a maximum consumption
         calculateOverclockedNessMultiInternal(40, 45 * Math.max(1, mHeight - 1), 1, getMaxInputVoltage(), false);
