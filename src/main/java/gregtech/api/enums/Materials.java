@@ -17,6 +17,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -2780,10 +2782,18 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         return MATERIALS_MAP;
     }
 
+    @Nonnull
     public static Materials get(String aMaterialName) {
-        Materials aMaterial = getMaterialsMap().get(aMaterialName);
-        if (aMaterial != null) return aMaterial;
-        return Materials._NULL;
+        return getWithFallback(aMaterialName, Materials._NULL);
+    }
+
+    @Nonnull
+    public static Materials getWithFallback(String name, @Nonnull Materials fallback) {
+        Materials material = getMaterialsMap().get(name);
+        if (material != null) {
+            return material;
+        }
+        return fallback;
     }
 
     public static Materials getRealMaterial(String aMaterialName) {

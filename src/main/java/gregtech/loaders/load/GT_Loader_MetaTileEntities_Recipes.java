@@ -1,6 +1,5 @@
 package gregtech.loaders.load;
 
-import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.BuildCraftFactory;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.Gendustry;
@@ -28,6 +27,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe.SpecialEffects;
+import gregtech.api.util.ExternalMaterials;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -54,8 +54,6 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
     private static final long bitsd = GT_ModHandler.RecipeBits.DISMANTLEABLE | bits;
 
     private static void run1() {
-        Materials LuVMat2 = BartWorks.isModLoaded() ? Materials.get("Rhodium-PlatedPalladium") : Materials.Chrome;
-
         GT_ModHandler.addCraftingRecipe(
             ItemList.Casing_Pipe_Polytetrafluoroethylene.get(1L),
             bits,
@@ -99,7 +97,8 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         GT_ModHandler.addCraftingRecipe(
             ItemList.Casing_LuV.get(1L),
             bits,
-            new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P', OrePrefixes.plate.get(LuVMat2) });
+            new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P',
+                OrePrefixes.plate.get(ExternalMaterials.getRhodiumPlatedPalladium()) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Casing_ZPM.get(1L),
             bits,
@@ -418,7 +417,8 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             ItemList.Hull_LuV.get(1L),
             GT_ModHandler.RecipeBits.REVERSIBLE,
             new Object[] { aTextCableHull, 'M', ItemList.Casing_LuV, 'C',
-                OrePrefixes.cableGt01.get(Materials.VanadiumGallium), 'H', OrePrefixes.plate.get(LuVMat2), 'P',
+                OrePrefixes.cableGt01.get(Materials.VanadiumGallium), 'H',
+                OrePrefixes.plate.get(ExternalMaterials.getRhodiumPlatedPalladium()), 'P',
                 OrePrefixes.plate.get(Materials.Polytetrafluoroethylene) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Hull_ZPM.get(1L),
@@ -491,7 +491,8 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 ItemList.Hull_LuV.get(1L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
                 new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_LuV, 'C',
-                    OrePrefixes.cableGt01.get(Materials.VanadiumGallium), 'H', OrePrefixes.plate.get(LuVMat2), 'P',
+                    OrePrefixes.cableGt01.get(Materials.VanadiumGallium), 'H',
+                    OrePrefixes.plate.get(ExternalMaterials.getRhodiumPlatedPalladium()), 'P',
                     OrePrefixes.plate.get(Materials.Polytetrafluoroethylene) });
             GT_ModHandler.addCraftingRecipe(
                 ItemList.Hull_ZPM.get(1L),

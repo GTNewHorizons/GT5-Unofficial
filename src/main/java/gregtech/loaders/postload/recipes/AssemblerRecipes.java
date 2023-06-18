@@ -48,6 +48,7 @@ import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.util.ExternalMaterials;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -67,9 +68,6 @@ public class AssemblerRecipes implements Runnable {
         this.loadOutputBusesRecipes();
         this.loadOutputHatchesRecipes();
         this.withIC2NuclearControl();
-
-        Materials LuVMat = BartWorks.isModLoaded() ? Materials.get("Ruridit") : Materials.Osmiridium;
-        Materials LuVMat2 = BartWorks.isModLoaded() ? Materials.get("Rhodium-PlatedPalladium") : Materials.Chrome;
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -1629,7 +1627,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.SamariumMagnetic, 1),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, LuVMat, 16),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, ExternalMaterials.getRuridit(), 16),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.LuV_Coil.get(1))
             .noFluidInputs()
@@ -2149,7 +2147,9 @@ public class AssemblerRecipes implements Runnable {
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, LuVMat2, 8), GT_Utility.getIntegratedCircuit(8))
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.plate, ExternalMaterials.getRhodiumPlatedPalladium(), 8),
+                GT_Utility.getIntegratedCircuit(8))
             .itemOutputs(ItemList.Casing_LuV.get(1))
             .noFluidInputs()
             .noFluidOutputs()
@@ -7371,13 +7371,13 @@ public class AssemblerRecipes implements Runnable {
     }
 
     public void withBartWorks() {
-        if (BartWorks.isModLoaded()) {
+        if (!BartWorks.isModLoaded()) {
             return;
         }
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                getModItem(BartWorks.ID, "gt.bwMetaGeneratedplate", 6L, 88),
+                GT_OreDictUnificator.get(OrePrefixes.plate, ExternalMaterials.getRhodiumPlatedPalladium(), 6),
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Chrome, 1))
             .itemOutputs(ItemList.Casing_Advanced_Rhodium_Palladium.get(1))
             .noFluidInputs()
