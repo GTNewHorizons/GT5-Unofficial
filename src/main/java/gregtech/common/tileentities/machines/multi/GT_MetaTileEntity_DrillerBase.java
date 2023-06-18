@@ -414,7 +414,8 @@ public abstract class GT_MetaTileEntity_DrillerBase
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
+    protected boolean checkRecipe() {
+        ItemStack controllerStack = getControllerSlot();
         // Public pipe actions
         setElectricityStats();
         int oldYHead = yHead;
@@ -422,11 +423,29 @@ public abstract class GT_MetaTileEntity_DrillerBase
             stopMachine();
             return false;
         }
+        startRecipeProcessing();
         putMiningPipesFromInputsInController();
+        endRecipeProcessing();
         return switch (workState) {
-            case STATE_DOWNWARD -> workingDownward(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
-            case STATE_AT_BOTTOM -> workingAtBottom(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
-            case STATE_UPWARD -> workingUpward(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
+            case STATE_DOWNWARD -> workingDownward(
+                controllerStack,
+                xDrill,
+                yDrill,
+                zDrill,
+                xPipe,
+                zPipe,
+                yHead,
+                oldYHead);
+            case STATE_AT_BOTTOM -> workingAtBottom(
+                controllerStack,
+                xDrill,
+                yDrill,
+                zDrill,
+                xPipe,
+                zPipe,
+                yHead,
+                oldYHead);
+            case STATE_UPWARD -> workingUpward(controllerStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
             default -> false;
         };
     }
