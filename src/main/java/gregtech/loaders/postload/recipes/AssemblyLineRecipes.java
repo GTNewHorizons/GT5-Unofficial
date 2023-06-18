@@ -798,10 +798,7 @@ public class AssemblyLineRecipes implements Runnable {
             .metadata(RESEARCH_TIME, 4 * HOURS)
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 16),
-                new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 1 },
+                new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 4 },
                 ItemList.Energy_LapotronicOrb2.get(8),
                 ItemList.Field_Generator_LuV.get(2),
                 ItemList.Circuit_Wafer_SoC2.get(64),
@@ -823,10 +820,7 @@ public class AssemblyLineRecipes implements Runnable {
             .metadata(RESEARCH_TIME, 4 * HOURS)
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 32),
-                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 1 },
+                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4 },
                 ItemList.Energy_Module.get(8),
                 ItemList.Field_Generator_ZPM.get(2),
                 ItemList.Circuit_Wafer_HPIC.get(64),
