@@ -141,7 +141,7 @@ public class OverridesConfig {
     @SuppressWarnings("UnstableApiUsage")
     public static void LoadConfig() {
         LOG.info("Loading Config");
-        if (overrideFile == null) overrideFile = Config.getConfigFile("MobOverrides.cfg");
+        if (overrideFile == null) overrideFile = Config.getConfigFile("MobOverrides.json");
         if (!overrideFile.exists()) writeExampleFile();
         Reader reader = null;
         try {
