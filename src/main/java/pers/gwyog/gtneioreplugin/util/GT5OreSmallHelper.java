@@ -20,13 +20,12 @@ public class GT5OreSmallHelper {
 
     private static final int SMALL_ORE_BASE_META = 16000;
     public static boolean restrictBiomeSupport = false;
-    public static boolean gcBasicSupport = false;
-    public static List<ItemStack> oreSmallList = new ArrayList<>();
-    public static HashMap<String, OreSmallWrapper> mapOreSmallWrapper = new HashMap<>();
-    public static HashMap<String, Short> mapOreDropUnlocalizedNameToOreMeta = new HashMap<>();
-    public static HashMap<Short, List<ItemStack>> mapOreMetaToOreDrops = new HashMap<>();
-    public static HashMap<OreSmallWrapper, String> bufferedDims = new HashMap<>();
-    public static HashMap<String, SmallOreDimensionWrapper> dimToSmallOreWrapper = new HashMap<>();
+    public static final List<ItemStack> oreSmallList = new ArrayList<>();
+    public static final HashMap<String, OreSmallWrapper> mapOreSmallWrapper = new HashMap<>();
+    public static final HashMap<String, Short> mapOreDropUnlocalizedNameToOreMeta = new HashMap<>();
+    public static final HashMap<Short, List<ItemStack>> mapOreMetaToOreDrops = new HashMap<>();
+    public static final HashMap<OreSmallWrapper, String> bufferedDims = new HashMap<>();
+    public static final HashMap<String, SmallOreDimensionWrapper> dimToSmallOreWrapper = new HashMap<>();
 
     public static class SmallOreDimensionWrapper {
 
@@ -46,7 +45,7 @@ public class GT5OreSmallHelper {
         }
     }
 
-    public GT5OreSmallHelper() {
+    public static void init() {
         checkExtraSupport();
         ItemStack stack;
         Materials material;
@@ -148,17 +147,12 @@ public class GT5OreSmallHelper {
         Class<?> clazzGTOreSmall = null;
         try {
             clazzGTOreSmall = Class.forName("gregtech.common" + ".GT_Worldgen_GT_Ore_SmallPieces");
-        } catch (ClassNotFoundException e) {}
+        } catch (ClassNotFoundException ignored) {}
         if (clazzGTOreSmall != null) {
             try {
                 clazzGTOreSmall.getField("mRestrictBiome");
                 restrictBiomeSupport = true;
-            } catch (Exception e) {}
-            try {
-                clazzGTOreSmall.getField("mMoon");
-                clazzGTOreSmall.getField("mMars");
-                gcBasicSupport = true;
-            } catch (Exception e) {}
+            } catch (Exception ignored) {}
         }
     }
 
@@ -169,12 +163,12 @@ public class GT5OreSmallHelper {
 
     public static class OreSmallWrapper {
 
-        public String oreGenName;
-        public short oreMeta;
-        public String worldGenHeightRange;
-        public short amountPerChunk;
-        public String restrictBiome;
+        public final String oreGenName;
+        public final short oreMeta;
+        public final String worldGenHeightRange;
+        public final short amountPerChunk;
 
+        @SuppressWarnings("unused")
         public Materials getOreMaterial() {
             return oreMaterial;
         }

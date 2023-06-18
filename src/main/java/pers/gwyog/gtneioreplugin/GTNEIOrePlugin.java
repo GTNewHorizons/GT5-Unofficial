@@ -19,7 +19,6 @@ import pers.gwyog.gtneioreplugin.util.CSVMaker;
 import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
 import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
 import pers.gwyog.gtneioreplugin.util.GT5UndergroundFluidHelper;
-import pers.gwyog.gtneioreplugin.util.GuiRecipeHelper;
 
 @Mod(
         modid = GTNEIOrePlugin.MODID,
@@ -35,7 +34,6 @@ public class GTNEIOrePlugin {
     public static boolean csv = false;
     public static String CSVname;
     public static String CSVnameSmall;
-    public static boolean toolTips = true;
     public static int maxTooltipLines = 11;
     public static final CreativeTabs creativeTab = new CreativeTabs(MODID) {
 
@@ -66,7 +64,6 @@ public class GTNEIOrePlugin {
                 "ALL",
                 event.getModConfigurationDirectory() + "/GTNH-Small-Ores-Sheet.csv",
                 "rename the oresheet here, it will appear in /config");
-        toolTips = c.tConfig.getBoolean("DimTooltip", "ALL", true, "Activates Dimension Tooltips");
         maxTooltipLines = c.tConfig.getInt(
                 "MaxToolTipLines",
                 "ALL",
@@ -86,11 +83,10 @@ public class GTNEIOrePlugin {
 
     @EventHandler
     public void onLoadComplete(FMLLoadCompleteEvent event) {
-        new GT5OreLayerHelper();
-        new GT5OreSmallHelper();
-        new GT5UndergroundFluidHelper();
+        GT5OreLayerHelper.init();
+        GT5OreSmallHelper.init();
+        GT5UndergroundFluidHelper.init();
         if (event.getSide() == Side.CLIENT) {
-            new GuiRecipeHelper();
             if (csv) {
                 new CSVMaker().run();
             }

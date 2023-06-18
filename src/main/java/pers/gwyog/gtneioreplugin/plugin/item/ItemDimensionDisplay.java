@@ -2,8 +2,6 @@ package pers.gwyog.gtneioreplugin.plugin.item;
 
 import static pers.gwyog.gtneioreplugin.GTNEIOrePlugin.LOG;
 
-import java.util.Objects;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -44,14 +42,6 @@ public class ItemDimensionDisplay extends ItemBlock {
             return ((BlockDimensionDisplay) Block.getBlockFromItem(stack.getItem())).getDimension();
         }
         return null;
-    }
-
-    public static boolean isDimensionEqual(ItemStack stack1, ItemStack stack2) {
-        if (!(stack1.getItem() instanceof ItemDimensionDisplay)
-                || !(stack2.getItem() instanceof ItemDimensionDisplay)) {
-            return false;
-        }
-        return Objects.equals(getDimension(stack1), getDimension(stack2));
     }
 
     @Override

@@ -36,13 +36,13 @@ public class GT5OreLayerHelper {
     }
 
     private static final int DIMENSION_COUNT = 33;
-    public static Integer[] weightPerWorld = new Integer[DIMENSION_COUNT];
-    public static Integer[] DimIDs = new Integer[DIMENSION_COUNT];
-    public static HashMap<String, OreLayerWrapper> mapOreLayerWrapper = new HashMap<>();
-    public static HashMap<OreLayerWrapper, String> bufferedDims = new HashMap<>();
-    public static HashMap<String, NormalOreDimensionWrapper> dimToOreWrapper = new HashMap<>();
+    public static final Integer[] weightPerWorld = new Integer[DIMENSION_COUNT];
+    public static final Integer[] DimIDs = new Integer[DIMENSION_COUNT];
+    public static final HashMap<String, OreLayerWrapper> mapOreLayerWrapper = new HashMap<>();
+    public static final HashMap<OreLayerWrapper, String> bufferedDims = new HashMap<>();
+    public static final HashMap<String, NormalOreDimensionWrapper> dimToOreWrapper = new HashMap<>();
 
-    public GT5OreLayerHelper() {
+    public static void init() {
         Arrays.fill(weightPerWorld, 0);
         Arrays.fill(DimIDs, 0);
         for (GT_Worldgen_GT_Ore_Layer tWorldGen : GT_Worldgen_GT_Ore_Layer.sList)
@@ -82,10 +82,9 @@ public class GT5OreLayerHelper {
 
     public static class OreLayerWrapper {
 
-        public String veinName, worldGenHeightRange;
-        public short[] Meta = new short[4];
-        public short randomWeight, size, density;
-        public List<Integer> Weight = new ArrayList<>();
+        public final String veinName, worldGenHeightRange;
+        public final short[] Meta = new short[4];
+        public final short randomWeight, size, density;
 
         public final Materials mPrimaryVeinMaterial;
         public final Materials mSecondaryMaterial;

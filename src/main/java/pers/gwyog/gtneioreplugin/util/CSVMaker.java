@@ -21,31 +21,29 @@ public class CSVMaker implements Runnable {
 
     public CSVMaker() {}
 
-    public static List<Oremix> Combsort(List<Oremix> liste) {
+    public static List<Oremix> Combsort(List<Oremix> list) {
         try {
-            List<Oremix> liste2 = new ArrayList<Oremix>(liste.size());
-            for (Oremix element : liste) {
-                liste2.add(element);
-            }
+            List<Oremix> list2 = new ArrayList<>(list.size());
+            list2.addAll(list);
 
-            int schritt = liste2.size();
-            boolean vertauscht = false;
+            int step = list2.size();
+            boolean swapped;
             do {
-                vertauscht = false;
-                if (schritt > 1) {
-                    schritt = (int) (schritt / 1.3);
+                swapped = false;
+                if (step > 1) {
+                    step = (int) (step / 1.3);
                 }
-                for (int i = 0; i < liste2.size() - schritt; i++) {
-                    if (liste2.get(i).getOreName().substring(0, 3)
-                            .compareTo((liste2.get(i + schritt).getOreName().substring(0, 3))) > 0) {
-                        Oremix tmp = (Oremix) liste2.get(i);
-                        liste2.set(i, liste2.get(i + schritt));
-                        liste2.set(i + schritt, (Oremix) tmp);
-                        vertauscht = true;
+                for (int i = 0; i < list2.size() - step; i++) {
+                    if (list2.get(i).getOreName().substring(0, 3)
+                            .compareTo((list2.get(i + step).getOreName().substring(0, 3))) > 0) {
+                        Oremix tmp = list2.get(i);
+                        list2.set(i, list2.get(i + step));
+                        list2.set(i + step, tmp);
+                        swapped = true;
                     }
                 }
-            } while (vertauscht || schritt > 1);
-            return liste2;
+            } while (swapped || step > 1);
+            return list2;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

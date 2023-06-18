@@ -27,8 +27,7 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
         drawSmallOreName(oreSmall);
         drawSmallOreInfo(oreSmall);
 
-        String sDimNames = GT5OreSmallHelper.bufferedDims.get(oreSmall);
-        drawDimNames(sDimNames);
+        drawDimNames();
 
         drawSeeAllRecipesLabel();
     }
@@ -128,18 +127,6 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
         return I18n.format("gtnop.gui.smallOreStat.name");
     }
 
-    /**
-     * The dimension names for a given recipe identifier
-     *
-     * @param recipe identifier
-     * @return A CSV string of dimension name abbreviations
-     */
-    @Override
-    protected String getDimensionNames(int recipe) {
-        OreSmallWrapper oreSmall = getSmallOre(recipe);
-        return GT5OreSmallHelper.bufferedDims.get(oreSmall);
-    }
-
     private String[] getDimNameArrayFromVeinName(String veinName) {
         OreSmallWrapper oreSmall = GT5OreSmallHelper.mapOreSmallWrapper.get(veinName);
         String[] dims = DimensionHelper.parseDimNames(GT5OreSmallHelper.bufferedDims.get(oreSmall));
@@ -149,10 +136,10 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
 
     public class CachedOreSmallRecipe extends CachedRecipe {
 
-        public String oreGenName;
-        public PositionedStack positionedStackOreSmall;
-        public PositionedStack positionedStackMaterialDust;
-        public List<PositionedStack> positionedDropStackList;
+        public final String oreGenName;
+        public final PositionedStack positionedStackOreSmall;
+        public final PositionedStack positionedStackMaterialDust;
+        public final List<PositionedStack> positionedDropStackList;
         private final List<PositionedStack> dimensionDisplayItems = new ArrayList<>();
 
         public CachedOreSmallRecipe(String oreGenName, List<ItemStack> stackList, List<ItemStack> materialDustStackList,

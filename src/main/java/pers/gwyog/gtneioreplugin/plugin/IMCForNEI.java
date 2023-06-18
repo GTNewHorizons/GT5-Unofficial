@@ -48,6 +48,7 @@ public class IMCForNEI {
         FMLInterModComms.sendMessage("NotEnoughItems", "registerHandlerInfo", aNBT);
     }
 
+    @SuppressWarnings("SameParameterValue")
     private static void sendCatalyst(String name, String itemStack, int priority) {
         NBTTagCompound aNBT = new NBTTagCompound();
         aNBT.setString("handlerID", name);
@@ -56,6 +57,7 @@ public class IMCForNEI {
         FMLInterModComms.sendMessage("NotEnoughItems", "registerCatalystInfo", aNBT);
     }
 
+    @SuppressWarnings("SameParameterValue")
     private static void sendCatalyst(String name, String itemStack) {
         sendCatalyst(name, itemStack, 0);
     }

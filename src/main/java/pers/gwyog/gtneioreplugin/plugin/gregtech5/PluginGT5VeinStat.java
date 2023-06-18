@@ -80,8 +80,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         drawVeinLayerNames(oreLayer);
         drawVeinInfo(oreLayer);
 
-        String sDimNames = GT5OreLayerHelper.bufferedDims.get(oreLayer);
-        drawDimNames(sDimNames);
+        drawDimNames();
 
         drawSeeAllRecipesLabel();
     }
@@ -132,18 +131,6 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         return I18n.format("gtnop.gui.veinStat.name");
     }
 
-    /**
-     * The dimension names for a given recipe identifier
-     *
-     * @param recipe identifier
-     * @return A CSV string of dimension name abbreviations
-     */
-    @Override
-    protected String getDimensionNames(int recipe) {
-        OreLayerWrapper oreLayer = getOreLayer(recipe);
-        return GT5OreLayerHelper.bufferedDims.get(oreLayer);
-    }
-
     private String[] getDimNameArrayFromVeinName(String veinName) {
         OreLayerWrapper oreLayer = GT5OreLayerHelper.mapOreLayerWrapper.get(veinName);
         String[] dims = DimensionHelper.parseDimNames(GT5OreLayerHelper.bufferedDims.get(oreLayer));
@@ -153,11 +140,11 @@ public class PluginGT5VeinStat extends PluginGT5Base {
 
     public class CachedVeinStatRecipe extends CachedRecipe {
 
-        public String veinName;
-        public PositionedStack positionedStackPrimary;
-        public PositionedStack positionedStackSecondary;
-        public PositionedStack positionedStackBetween;
-        public PositionedStack positionedStackSporadic;
+        public final String veinName;
+        public final PositionedStack positionedStackPrimary;
+        public final PositionedStack positionedStackSecondary;
+        public final PositionedStack positionedStackBetween;
+        public final PositionedStack positionedStackSporadic;
         private final List<PositionedStack> dimensionDisplayItems = new ArrayList<>();
 
         public CachedVeinStatRecipe(String veinName, List<ItemStack> stackListPrimary,

@@ -7,6 +7,7 @@ import pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5SmallOreStat;
 import pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid;
 import pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5VeinStat;
 
+@SuppressWarnings("unused")
 public class NEIPluginConfig implements IConfigureNEI {
 
     @Override

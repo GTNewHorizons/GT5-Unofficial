@@ -65,13 +65,13 @@ public class StringPaddingHack {
     /**
      * Pads strings with spaces so that they are of equal length and adds to that the number of spaces specified and up
      * to 3 if minExtraSpaces is below 3. Added spaces might be bold.
-     *
+     * <p>
      * Relies on the quirk of bold space characters being 1 pixel wider than regular space characters in the default
      * font renderer.
      *
      * @param strings        List of strings
      * @param minExtraSpaces The minimum number of extra spaces to add
-     * @return List of strings padded with spaces to an equal length
+     * @return Array of strings padded with spaces to an equal length
      */
     public static String[] padStrings(String[] strings, int minExtraSpaces) {
         int[] widths = getStringWidths(strings);

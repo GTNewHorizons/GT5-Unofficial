@@ -24,6 +24,7 @@ public class PluginGT5UndergroundFluid extends PluginBase {
     private static final int lineSpace = 20;
     private static final int xDimensionDisplay = 30;
     private static final int halfItemLength = 16 / 2;
+    private static final DecimalFormat format = new DecimalFormat("0.#");
 
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
@@ -100,12 +101,7 @@ public class PluginGT5UndergroundFluid extends PluginBase {
         int y = 50;
         CachedUndergroundFluidRecipe recipe = (CachedUndergroundFluidRecipe) this.arecipes.get(recipeIndex);
         for (int i = 0; i < recipe.dimensionDisplayItems.size(); i++) {
-            GuiDraw.drawStringC(
-                    new DecimalFormat("0.#").format((double) recipe.chances.get(i) / 100) + "%",
-                    xChance,
-                    y,
-                    black,
-                    false);
+            GuiDraw.drawStringC(format.format((double) recipe.chances.get(i) / 100) + "%", xChance, y, black, false);
             GuiDraw.drawStringC(
                     recipe.minAmounts.get(i).toString() + "-" + recipe.maxAmounts.get(i).toString(),
                     xAmount,

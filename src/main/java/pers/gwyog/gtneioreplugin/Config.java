@@ -8,7 +8,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 public class Config {
 
-    public Configuration tConfig;
+    public final Configuration tConfig;
 
     public Config(FMLPreInitializationEvent preinit, String cfgname) {
         File tFile = new File(preinit.getModConfigurationDirectory(), cfgname);
