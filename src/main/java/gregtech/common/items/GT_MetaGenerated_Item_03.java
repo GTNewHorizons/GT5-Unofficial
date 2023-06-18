@@ -773,7 +773,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
             addItem(
                 214,
                 "Dryer Upgrade",
-                "Dryer upgrade for Industrial Apiary/n Maximum Installed: 8/n * Humidity -25%/n * Energy Consumption +5%",
+                "Dryer upgrade for Industrial Apiary/n Maximum Installed: 10/n * Humidity -12.5%/n * Energy Consumption +2.5%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_AUTOMATION.set(
             addItem(
@@ -785,7 +785,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
             addItem(
                 216,
                 "Humidifier Upgrade",
-                "Humidifier upgrade for Industrial Apiary/n Maximum Installed: 8/n * Humidity +25%/n * Energy Consumption +5%",
+                "Humidifier upgrade for Industrial Apiary/n Maximum Installed: 10/n * Humidity +12.5%/n * Energy Consumption +2.5%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_HELL.set(
             addItem(
@@ -809,7 +809,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
             addItem(
                 220,
                 "Cooler Upgrade",
-                "Cooler upgrade for Industrial Apiary/n Maximum Installed: 8/n * Temperature -25%/n * Energy Consumption +5%",
+                "Cooler upgrade for Industrial Apiary/n Maximum Installed: 10/n * Temperature -12.5%/n * Energy Consumption +2.5%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_LIFESPAN.set(
             addItem(
