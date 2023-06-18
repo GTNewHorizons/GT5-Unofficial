@@ -362,7 +362,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushed, material, 1))
                 .itemOutputs(
                     GT_OreDictUnificator.get(OrePrefixes.crushedPurified, material, 1),
-                    Materials.Tantalum.getDust(1),
+                    material.getDust(1),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1))
                 .outputChances(10000, 3000, 4000)
                 .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
