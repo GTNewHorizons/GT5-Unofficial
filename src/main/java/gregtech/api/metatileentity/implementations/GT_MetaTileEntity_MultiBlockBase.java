@@ -1123,6 +1123,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return rList;
     }
 
+    @Override
     public ArrayList<FluidStack> getStoredFluids() {
         ArrayList<FluidStack> rList = new ArrayList<>();
         for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
@@ -1146,6 +1147,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return rList;
     }
 
+    @Override
     public ArrayList<ItemStack> getStoredInputs() {
         ArrayList<ItemStack> rList = new ArrayList<>();
         for (GT_MetaTileEntity_Hatch_InputBus tHatch : mInputBusses) {
