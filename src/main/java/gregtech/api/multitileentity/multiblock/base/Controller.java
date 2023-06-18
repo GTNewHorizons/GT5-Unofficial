@@ -1643,7 +1643,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     @Override
-    public IHasWorldObjectAndCoords getWorldObject() {
+    public IHasWorldObjectAndCoords getIHasWorldObjectAndCoords() {
         return this;
     }
 

@@ -14,7 +14,7 @@ import gregtech.api.util.GT_Single_Recipe_Check;
 public interface IRecipeLockable {
 
     /**
-     * Override this if you are a multi-block that has added support for single recipe locking.
+     * @return if this machine supports single recipe locking.
      */
     boolean supportsSingleRecipeLocking();
 
@@ -49,7 +49,7 @@ public interface IRecipeLockable {
         return null;
     }
 
-    IHasWorldObjectAndCoords getWorldObject();
+    IHasWorldObjectAndCoords getIHasWorldObjectAndCoords();
 
     default GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return null;

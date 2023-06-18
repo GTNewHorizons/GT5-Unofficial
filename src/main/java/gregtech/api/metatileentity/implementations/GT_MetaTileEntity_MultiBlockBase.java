@@ -60,7 +60,6 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -1666,11 +1665,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     @Override
     public void enableWorking() {
         getBaseMetaTileEntity().enableWorking();
-    }
-
-    @Override
-    public IHasWorldObjectAndCoords getWorldObject() {
-        return getBaseMetaTileEntity();
     }
 
     @Override

@@ -290,8 +290,12 @@ public class GT_Single_Recipe_Check {
             .map(FluidStack::loadFluidStackFromNBT)
             .toArray(FluidStack[]::new);
         int eut = tag.getInteger("eut");
-        GT_Recipe found = recipeMap
-            .findRecipe(parent.getWorldObject(), false, GT_Values.V[GT_Utility.getTier(eut)], fInputs, inputs);
+        GT_Recipe found = recipeMap.findRecipe(
+            parent.getIHasWorldObjectAndCoords(),
+            false,
+            GT_Values.V[GT_Utility.getTier(eut)],
+            fInputs,
+            inputs);
         int[] chances = tag.getIntArray("chances");
         if (found == null || !GT_Utility.equals(inputs, found.mInputs)
             || !Arrays.equals(fInputs, found.mFluidInputs)

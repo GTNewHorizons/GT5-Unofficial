@@ -48,6 +48,7 @@ import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMachineCallback;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Config;
@@ -114,14 +115,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
      * <p>
      * The constructor can be overloaded as follows:
      * <blockquote>
-     * 
+     *
      * <pre>
-     * 
+     *
      * public GT_MetaTileEntity_EBench(int id, String name, String nameRegional) {
      *     super(id, name, nameRegional);
      * }
      * </pre>
-     * 
+     *
      * </blockquote>
      *
      * @param aID the machine ID
@@ -184,6 +185,10 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     public boolean isValid() {
         return getBaseMetaTileEntity() != null && getBaseMetaTileEntity().getMetaTileEntity() == this
             && !getBaseMetaTileEntity().isDead();
+    }
+
+    public IHasWorldObjectAndCoords getIHasWorldObjectAndCoords() {
+        return getBaseMetaTileEntity();
     }
 
     @Override
