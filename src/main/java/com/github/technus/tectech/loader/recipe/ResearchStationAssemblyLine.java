@@ -2572,7 +2572,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                             FluidUtils.getFluidStack("molten.metastable oganesson", 144 * 256 * 4),
                             FluidUtils.getFluidStack("molten.shirabon", 144 * 256 * 4), },
                     CustomItemList.Machine_Multi_EyeOfHarmony.get(1),
-                    5 * MINUTES,
+                    400 * MINUTES,
                     (int) TierEU.RECIPE_UMV);
         }
 
