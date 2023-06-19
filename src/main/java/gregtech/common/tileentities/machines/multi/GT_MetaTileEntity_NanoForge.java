@@ -37,8 +37,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.CheckRecipeResult;
-import gregtech.api.enums.CheckRecipeResults;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -47,6 +45,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -238,8 +238,8 @@ public class GT_MetaTileEntity_NanoForge extends
 
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(GT_Recipe recipe) {
-                return recipe.mSpecialValue <= mSpecialTier ? CheckRecipeResults.SUCCESSFUL
-                    : CheckRecipeResults.NO_RECIPE;
+                return recipe.mSpecialValue <= mSpecialTier ? CheckRecipeResultRegistry.SUCCESSFUL
+                    : CheckRecipeResultRegistry.NO_RECIPE;
             }
         };
     }

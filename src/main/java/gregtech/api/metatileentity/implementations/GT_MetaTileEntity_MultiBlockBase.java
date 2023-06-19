@@ -33,6 +33,7 @@ import org.jetbrains.annotations.TestOnly;
 import org.lwjgl.input.Keyboard;
 
 import com.google.common.collect.Iterables;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -46,8 +47,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.CheckRecipeResult;
-import gregtech.api.enums.CheckRecipeResults;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.VoidingMode;
@@ -64,6 +63,8 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
@@ -77,6 +78,7 @@ import gregtech.api.util.OutputHatchWrapper;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
+import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
@@ -106,6 +108,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     protected boolean inputSeparation = getDefaultInputSeparationMode();
     protected VoidingMode voidingMode = getDefaultVoidingMode();
     protected boolean batchMode = getDefaultBatchMode();
+    private @Nonnull CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NONE;
+
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
     protected static final String VOIDING_MODE_NBT_KEY = "voidingMode";
@@ -452,7 +456,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (result.wasSuccessful() && getProcessStartSound() != null) {
             sendLoopStart(PROCESS_START_SOUND_INDEX);
         }
-        errorDisplayString = result.getTransKey();
+        this.checkRecipeResult = result;
         endRecipeProcessing();
         return result.wasSuccessful();
     }
@@ -631,13 +635,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public CheckRecipeResult checkProcessing() {
         // If no logic is found, try legacy checkRecipe
         if (processingLogic == null) {
-            return checkRecipe(mInventory[1]) ? CheckRecipeResults.SUCCESSFUL : CheckRecipeResults.NO_RECIPE;
+            return checkRecipe(mInventory[1]) ? CheckRecipeResultRegistry.SUCCESSFUL
+                : CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        CheckRecipeResult result = CheckRecipeResults.NO_RECIPE;
+        CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
 
         processingLogic.clear();
-        processingLogic.setMetaTEController(this);
+        processingLogic.setMachine(this);
         processingLogic.setRecipeMapSupplier(this::getRecipeMap);
         processingLogic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
         processingLogic.setRecipeLocking(this, isRecipeLockingEnabled());
@@ -659,10 +664,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         mEfficiencyIncrease = 10000;
 
-        if (processingLogic.getCalculatedEut() > Integer.MAX_VALUE) return CheckRecipeResults.NO_RECIPE;
+        if (processingLogic.getCalculatedEut() > Integer.MAX_VALUE) return CheckRecipeResultRegistry.NO_RECIPE;
         mEUt = (int) processingLogic.getCalculatedEut();
 
-        if (processingLogic.getDuration() > Integer.MAX_VALUE) return CheckRecipeResults.NO_RECIPE;
+        if (processingLogic.getDuration() > Integer.MAX_VALUE) return CheckRecipeResultRegistry.NO_RECIPE;
         mMaxProgresstime = (int) processingLogic.getDuration();
 
         if (mEUt > 0) {
@@ -1878,8 +1883,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {}
 
-    private String errorDisplayString;
-
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         screenElements.setSynced(false)
             .setSpace(0)
@@ -1952,16 +1955,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             new TextWidget(GT_Utility.trans("142", "Running perfectly.")).setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(
                     widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
-        screenElements
-            .widget(
-                TextWidget
-                    .dynamicString(
-                        () -> errorDisplayString != null ? StatCollector.translateToLocal(errorDisplayString) : "")
-                    .setEnabled(widget -> errorDisplayString != null))
-            .widget(
-                new FakeSyncWidget.StringSyncer(
-                    () -> errorDisplayString,
-                    (displayString) -> errorDisplayString = displayString));
+        screenElements.widget(
+            TextWidget.dynamicString(() -> checkRecipeResult.getDisplayString())
+                .setTextAlignment(Alignment.CenterLeft)
+                .setEnabled(widget -> checkRecipeResult.getDisplayString() != null))
+            .widget(new CheckRecipeResultSyncer(() -> checkRecipeResult, (result) -> checkRecipeResult = result));
 
         screenElements.widget(
             new TextWidget(GT_Utility.trans("143", "Missing Mining Pipe")).setDefaultColor(COLOR_TEXT_WHITE.get())

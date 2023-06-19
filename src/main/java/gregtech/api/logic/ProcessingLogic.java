@@ -8,12 +8,11 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.CheckRecipeResult;
-import gregtech.api.enums.CheckRecipeResults;
-import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
@@ -22,9 +21,8 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class ProcessingLogic {
 
-    protected IVoidable controller;
+    protected IVoidable machine;
     protected IRecipeLockable recipeLockableMachine;
-    protected IHasWorldObjectAndCoords tileEntity;
     protected Supplier<GT_Recipe_Map> recipeMapSupplier;
     protected GT_Recipe lastRecipe;
     protected ItemStack[] inputItems;
@@ -118,18 +116,9 @@ public class ProcessingLogic {
         return this;
     }
 
-    public ProcessingLogic setController(IVoidable controller) {
-        this.controller = controller;
+    public ProcessingLogic setMachine(IVoidable machine) {
+        this.machine = machine;
         return this;
-    }
-
-    public ProcessingLogic setTileEntity(IHasWorldObjectAndCoords tileEntity) {
-        this.tileEntity = tileEntity;
-        return this;
-    }
-
-    public ProcessingLogic setMetaTEController(GT_MetaTileEntity_MultiBlockBase metaTEController) {
-        return setController(metaTEController).setTileEntity(metaTEController.getBaseMetaTileEntity());
     }
 
     public ProcessingLogic setDuration(long duration) {
@@ -183,21 +172,25 @@ public class ProcessingLogic {
 
     @Nonnull
     public CheckRecipeResult process() {
-        if (recipeMapSupplier == null) return CheckRecipeResults.NO_RECIPE;
+        if (recipeMapSupplier == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
         GT_Recipe_Map recipeMap = recipeMapSupplier.get();
-        if (recipeMap == null) return CheckRecipeResults.NO_RECIPE;
+        if (recipeMap == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        GT_Recipe recipe;
+        FindRecipeResult findRecipeResult;
 
         if (isRecipeLocked && recipeLockableMachine != null && recipeLockableMachine.getSingleRecipeCheck() != null) {
-            recipe = recipeLockableMachine.getSingleRecipeCheck()
-                .getRecipe();
+            findRecipeResult = FindRecipeResult.ofSuccess(
+                recipeLockableMachine.getSingleRecipeCheck()
+                    .getRecipe());
         } else {
-            recipe = recipeMap.findRecipe(tileEntity, lastRecipe, false, availableVoltage, inputFluids, inputItems);
+            findRecipeResult = recipeMap
+                .findRecipeWithResult(lastRecipe, false, false, availableVoltage, inputFluids, null, inputItems);
         }
 
-        if (recipe != null) {
+        GT_Recipe recipe;
+        if (findRecipeResult.isSuccessful()) {
+            recipe = findRecipeResult.getRecipeNonNull();
             CheckRecipeResult result = validateRecipe(recipe);
             if (!result.wasSuccessful()) {
                 return result;
@@ -205,18 +198,22 @@ public class ProcessingLogic {
                 lastRecipe = recipe;
             }
         } else {
-            return CheckRecipeResults.NO_RECIPE;
+            if (findRecipeResult.getState() == FindRecipeResult.State.INSUFFICIENT_VOLTAGE) {
+                return CheckRecipeResultRegistry.insufficientPower(findRecipeResult.getRecipeNonNull().mEUt);
+            } else {
+                return CheckRecipeResultRegistry.NO_RECIPE;
+            }
         }
 
         GT_ParallelHelper helper = createParallelHelper(recipe);
 
-        if (helper == null || helper.getCurrentParallel() <= 0) return CheckRecipeResults.OUTPUT_FULL;
+        if (helper == null || helper.getCurrentParallel() <= 0) return CheckRecipeResultRegistry.OUTPUT_FULL;
 
         GT_OverclockCalculator calculator = createOverclockCalculator(recipe, helper);
 
         if (calculator == null || calculator.getConsumption() == Long.MAX_VALUE - 1
             || calculator.getDuration() == Integer.MAX_VALUE - 1) {
-            return CheckRecipeResults.NO_RECIPE;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         calculatedEut = calculator.getConsumption();
@@ -224,7 +221,7 @@ public class ProcessingLogic {
         outputItems = helper.getItemOutputs();
         outputFluids = helper.getFluidOutputs();
 
-        return CheckRecipeResults.SUCCESSFUL;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     protected GT_ParallelHelper createParallelHelper(GT_Recipe recipe) {
@@ -235,7 +232,7 @@ public class ProcessingLogic {
             .setItemInputs(inputItems)
             .setFluidInputs(inputFluids)
             .setAvailableEUt(availableVoltage * availableAmperage)
-            .setMachine(controller, protectItems, protectFluids)
+            .setMachine(machine, protectItems, protectFluids)
             .setRecipeLocked(recipeLockableMachine, isRecipeLocked)
             .setMaxParallel(parallels)
             .enableBatchMode(batchSize)
@@ -246,7 +243,7 @@ public class ProcessingLogic {
 
     @Nonnull
     protected CheckRecipeResult validateRecipe(GT_Recipe recipe) {
-        return CheckRecipeResults.SUCCESSFUL;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     protected GT_OverclockCalculator createOverclockCalculator(GT_Recipe recipe, GT_ParallelHelper helper) {
