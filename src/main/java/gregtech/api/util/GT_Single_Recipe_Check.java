@@ -315,7 +315,7 @@ public class GT_Single_Recipe_Check {
             || !Arrays.equals(fInputs, found.mFluidInputs)
             || !GT_Utility.equals(outputs, found.mOutputs)
             || !Arrays.equals(fOutputs, found.mFluidOutputs)
-            || (!Arrays.equals(chances, found.mChances))
+            || !Arrays.equals(chances, found.mChances)
             || found.mDuration != tag.getInteger("duration")
             || found.mEUt != eut
             || found.mSpecialValue != tag.getInteger("specialValue")) return null;
