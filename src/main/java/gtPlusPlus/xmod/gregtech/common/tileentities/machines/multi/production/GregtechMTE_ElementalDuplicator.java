@@ -78,9 +78,10 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType()).addInfo("Produces Elemental Material from UU Matter")
                 .addInfo("Speed: +100% | EU Usage: 100% | Parallel: 8 * Tier").addInfo("Maximum 1x of each bus/hatch.")
-                .addInfo("Does not require both Output Hatch & Bus").addPollutionAmount(getPollutionPerSecond(null))
-                .addSeparator().beginStructureBlock(9, 6, 9, true).addController("Top Center")
-                .addCasingInfoMin("Elemental Confinement Shell", 138, false)
+                .addInfo("Requires circuit 1-16 in your Data Orb Repository")
+                .addInfo("depending on what Data Orb you want to prioritize")
+                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(9, 6, 9, true)
+                .addController("Top Center").addCasingInfoMin("Elemental Confinement Shell", 138, false)
                 .addCasingInfoMin("Matter Fabricator Casing", 24, false)
                 .addCasingInfoMin("Particle Containment Casing", 24, false)
                 .addCasingInfoMin("Matter Generation Coil", 24, false)
