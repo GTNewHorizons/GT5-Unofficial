@@ -639,11 +639,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         processingLogic.clear();
         processingLogic.setMetaTEController(this);
         processingLogic.setRecipeMapSupplier(this::getRecipeMap);
-        processingLogic.setAvailableVoltage(getMaxInputVoltage());
-        processingLogic.setAvailableAmperage(1);
         processingLogic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
         processingLogic.setRecipeLocking(this, isRecipeLockingEnabled());
         processingLogic.setInputFluids(getStoredFluids());
+        setProcessingLogicPower(processingLogic);
         if (isInputSeparationEnabled()) {
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
                 processingLogic.setInputItems(bus.mInventory);
@@ -675,6 +674,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
         updateSlots();
         return result;
+    }
+
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(getMaxInputVoltage());
+        logic.setAvailableAmperage(1);
     }
 
     /**
