@@ -41,6 +41,7 @@ public class ProcessingLogic {
     protected boolean protectFluids;
     protected boolean isRecipeLocked;
     protected int parallels = 1;
+    protected int calculatedParallels = 0;
     protected Supplier<Integer> parallelSupplier;
     protected int batchSize = 1;
 
@@ -167,6 +168,7 @@ public class ProcessingLogic {
         this.outputFluids = null;
         this.calculatedEut = 0;
         this.duration = 0;
+        this.calculatedParallels = 0;
         return this;
     }
 
@@ -207,17 +209,31 @@ public class ProcessingLogic {
 
         GT_ParallelHelper helper = createParallelHelper(recipe);
 
-        if (helper == null || helper.getCurrentParallel() <= 0) return CheckRecipeResultRegistry.OUTPUT_FULL;
+        if (helper == null) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        helper.build();
+
+        if (helper.getCurrentParallel() <= 0) return CheckRecipeResultRegistry.OUTPUT_FULL;
+
+        calculatedParallels = helper.getCurrentParallel();
 
         GT_OverclockCalculator calculator = createOverclockCalculator(recipe, helper);
 
-        if (calculator == null || calculator.getConsumption() == Long.MAX_VALUE - 1
-            || calculator.getDuration() == Integer.MAX_VALUE - 1) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
+        // We allow OC calculator to be null. If so we don't OC.
+        if (calculator == null) {
+            calculatedEut = recipe.mEUt;
+            duration = recipe.mDuration;
+        } else {
+            calculator.calculate();
+            if (calculator.getConsumption() == Long.MAX_VALUE - 1
+                || calculator.getDuration() == Integer.MAX_VALUE - 1) {
+                return CheckRecipeResultRegistry.NO_RECIPE;
+            }
+
+            calculatedEut = calculator.getConsumption();
+            duration = calculator.getDuration();
         }
 
-        calculatedEut = calculator.getConsumption();
-        duration = calculator.getDuration();
         outputItems = helper.getItemOutputs();
         outputFluids = helper.getFluidOutputs();
 
@@ -237,8 +253,7 @@ public class ProcessingLogic {
             .setMaxParallel(parallels)
             .enableBatchMode(batchSize)
             .enableConsumption()
-            .enableOutputCalculation()
-            .build();
+            .enableOutputCalculation();
     }
 
     @Nonnull
@@ -253,8 +268,7 @@ public class ProcessingLogic {
             .setAmperage(availableAmperage)
             .setEUt(availableVoltage)
             .setDurationDecreasePerOC(overClockTimeReduction)
-            .setEUtIncreasePerOC(overClockPowerIncrease)
-            .calculate();
+            .setEUtIncreasePerOC(overClockPowerIncrease);
     }
 
     public ItemStack[] getOutputItems() {

@@ -48,6 +48,11 @@ public class CheckRecipeResultRegistry {
      * Default unknown state.
      */
     public static final CheckRecipeResult NONE = SimpleCheckRecipeResult.ofFailureFactory("none");
+    /**
+     * Found recipe, but cannot process it because bio upgrade is missing.
+     */
+    public static final CheckRecipeResult BIO_UPGRADE_MISSING = SimpleCheckRecipeResult
+        .ofFailureFactory("bio_upgrade_missing");
 
     /**
      * Found recipe, but cannot process it because the machine cannot handle its voltage.
@@ -63,12 +68,21 @@ public class CheckRecipeResultRegistry {
         return new ResultInsufficientHeat(required);
     }
 
+    /**
+     * Found recipe, but cannot process it because the machine is tiered and its tier is too low.
+     */
+    public static CheckRecipeResult insufficientMachineTier(long required) {
+        return new ResultInsufficientMachineTier(required);
+    }
+
     static {
         register(SUCCESSFUL);
         register(NO_RECIPE);
         register(OUTPUT_FULL);
         register(NONE);
+        register(BIO_UPGRADE_MISSING);
         register(new ResultInsufficientPower(0));
         register(new ResultInsufficientHeat(0));
+        register(new ResultInsufficientMachineTier(0));
     }
 }
