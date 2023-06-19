@@ -83,7 +83,6 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.modularui.ControllerWithOptionalFeatures;
-import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
@@ -1640,11 +1639,6 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 fluid.amount -= filled;
             }
         }
-    }
-
-    @Override
-    public IHasWorldObjectAndCoords getIHasWorldObjectAndCoords() {
-        return this;
     }
 
     @Override

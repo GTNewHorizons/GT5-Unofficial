@@ -49,8 +49,6 @@ public interface IRecipeLockable {
         return null;
     }
 
-    IHasWorldObjectAndCoords getIHasWorldObjectAndCoords();
-
     default GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return null;
     }

@@ -11,10 +11,8 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.CheckRecipeResult;
 import gregtech.api.enums.CheckRecipeResults;
 import gregtech.api.enums.FindRecipeResult;
-import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
@@ -25,7 +23,6 @@ public class ProcessingLogic {
 
     protected IVoidable machine;
     protected IRecipeLockable recipeLockableMachine;
-    protected IHasWorldObjectAndCoords tileEntity;
     protected Supplier<GT_Recipe_Map> recipeMapSupplier;
     protected GT_Recipe lastRecipe;
     protected ItemStack[] inputItems;
@@ -124,15 +121,6 @@ public class ProcessingLogic {
         return this;
     }
 
-    public ProcessingLogic setTileEntity(IHasWorldObjectAndCoords tileEntity) {
-        this.tileEntity = tileEntity;
-        return this;
-    }
-
-    public ProcessingLogic setMetaTEController(GT_MetaTileEntity_MultiBlockBase metaTEController) {
-        return setMachine(metaTEController).setTileEntity(metaTEController.getBaseMetaTileEntity());
-    }
-
     public ProcessingLogic setDuration(long duration) {
         this.duration = duration;
         return this;
@@ -196,15 +184,8 @@ public class ProcessingLogic {
                 recipeLockableMachine.getSingleRecipeCheck()
                     .getRecipe());
         } else {
-            findRecipeResult = recipeMap.findRecipeWithResult(
-                tileEntity,
-                lastRecipe,
-                false,
-                false,
-                availableVoltage,
-                inputFluids,
-                null,
-                inputItems);
+            findRecipeResult = recipeMap
+                .findRecipeWithResult(lastRecipe, false, false, availableVoltage, inputFluids, null, inputItems);
         }
 
         GT_Recipe recipe;

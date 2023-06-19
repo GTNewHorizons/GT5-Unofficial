@@ -3926,11 +3926,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         // TODO: make this final after migrating BW
+        @SuppressWarnings("unused")
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated,
             boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot,
             ItemStack... aInputs) {
             FindRecipeResult result = findRecipeWithResult(
-                aTileEntity,
                 aRecipe,
                 aNotUnificated,
                 aDontCheckStackSizes,
@@ -3944,8 +3944,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         /**
          * finds a Recipe matching the aFluid and ItemStack Inputs.
          *
-         * @param aTileEntity          an Object representing the current coordinates of the executing
-         *                             Block/Entity/Whatever. This may be null, especially during Startup.
          * @param aRecipe              in case this is != null it will try to use this Recipe first when looking things
          *                             up.
          * @param aNotUnificated       if this is T the Recipe searcher will unificate the ItemStack Inputs
@@ -3959,9 +3957,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * @return Result of the recipe search
          */
         @Nonnull
-        public FindRecipeResult findRecipeWithResult(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe,
-            boolean aNotUnificated, boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids,
-            ItemStack aSpecialSlot, ItemStack... aInputs) {
+        public FindRecipeResult findRecipeWithResult(GT_Recipe aRecipe, boolean aNotUnificated,
+            boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot,
+            ItemStack... aInputs) {
             // No Recipes? Well, nothing to be found then.
             if (mRecipeList.isEmpty()) return NOT_FOUND;
 
@@ -4882,9 +4880,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Nonnull
         @Override
-        public FindRecipeResult findRecipeWithResult(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe,
-            boolean aNotUnificated, boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids,
-            ItemStack aSpecialSlot, ItemStack... aInputs) {
+        public FindRecipeResult findRecipeWithResult(GT_Recipe aRecipe, boolean aNotUnificated,
+            boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot,
+            ItemStack... aInputs) {
             if (aInputs == null || aInputs.length == 0 || aInputs[0] == null) return NOT_FOUND;
             if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, aFluids, aInputs))
                 return FindRecipeResult.ofSuccess(aRecipe);
@@ -4939,9 +4937,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Nonnull
         @Override
-        public FindRecipeResult findRecipeWithResult(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe,
-            boolean aNotUnificated, boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids,
-            ItemStack aSpecialSlot, ItemStack... aInputs) {
+        public FindRecipeResult findRecipeWithResult(GT_Recipe aRecipe, boolean aNotUnificated,
+            boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot,
+            ItemStack... aInputs) {
             if (aInputs == null || aInputs.length == 0 || aInputs[0] == null) return NOT_FOUND;
             if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, aFluids, aInputs))
                 return FindRecipeResult.ofSuccess(aRecipe);
@@ -5059,12 +5057,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Nonnull
         @Override
-        public FindRecipeResult findRecipeWithResult(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe,
-            boolean aNotUnificated, boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids,
-            ItemStack aSpecialSlot, ItemStack... aInputs) {
+        public FindRecipeResult findRecipeWithResult(GT_Recipe aRecipe, boolean aNotUnificated,
+            boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot,
+            ItemStack... aInputs) {
             if (aInputs == null || aInputs.length == 0 || !ItemList.IC2_Scrapbox.isStackEqual(aInputs[0], false, true))
                 return super.findRecipeWithResult(
-                    aTileEntity,
                     aRecipe,
                     aNotUnificated,
                     aDontCheckStackSizes,
@@ -5074,7 +5071,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aInputs);
             ItemStack tOutput = GT_ModHandler.getRandomScrapboxDrop();
             if (tOutput == null) return super.findRecipeWithResult(
-                aTileEntity,
                 aRecipe,
                 aNotUnificated,
                 aDontCheckStackSizes,
@@ -5136,11 +5132,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Nonnull
         @Override
-        public FindRecipeResult findRecipeWithResult(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe,
-            boolean aNotUnificated, boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids,
-            ItemStack aSpecialSlot, ItemStack... aInputs) {
+        public FindRecipeResult findRecipeWithResult(GT_Recipe aRecipe, boolean aNotUnificated,
+            boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot,
+            ItemStack... aInputs) {
             FindRecipeResult result = super.findRecipeWithResult(
-                aTileEntity,
                 aRecipe,
                 aNotUnificated,
                 aDontCheckStackSizes,
@@ -5237,9 +5232,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Nonnull
         @Override
-        public FindRecipeResult findRecipeWithResult(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe,
-            boolean aNotUnificated, boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids,
-            ItemStack aSpecialSlot, ItemStack... aInputs) {
+        public FindRecipeResult findRecipeWithResult(GT_Recipe aRecipe, boolean aNotUnificated,
+            boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot,
+            ItemStack... aInputs) {
             if (aInputs == null || aInputs.length == 0 || aInputs[0] == null) return NOT_FOUND;
             if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, aFluids, aInputs))
                 return FindRecipeResult.ofSuccess(aRecipe);
@@ -5292,12 +5287,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Nonnull
         @Override
-        public FindRecipeResult findRecipeWithResult(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe,
-            boolean aNotUnificated, boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids,
-            ItemStack aSpecialSlot, ItemStack... aInputs) {
+        public FindRecipeResult findRecipeWithResult(GT_Recipe aRecipe, boolean aNotUnificated,
+            boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot,
+            ItemStack... aInputs) {
             if (aInputs == null || aInputs.length == 0 || aInputs[0] == null || !GregTech_API.sPostloadFinished)
                 return super.findRecipeWithResult(
-                    aTileEntity,
                     aRecipe,
                     aNotUnificated,
                     aDontCheckStackSizes,
@@ -5306,7 +5300,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aSpecialSlot,
                     aInputs);
             FindRecipeResult result = super.findRecipeWithResult(
-                aTileEntity,
                 aRecipe,
                 aNotUnificated,
                 aDontCheckStackSizes,
@@ -5412,12 +5405,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Nonnull
         @Override
-        public FindRecipeResult findRecipeWithResult(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe,
-            boolean aNotUnificated, boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids,
-            ItemStack aSpecialSlot, ItemStack... aInputs) {
+        public FindRecipeResult findRecipeWithResult(GT_Recipe aRecipe, boolean aNotUnificated,
+            boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot,
+            ItemStack... aInputs) {
 
             FindRecipeResult result = super.findRecipeWithResult(
-                aTileEntity,
                 aRecipe,
                 true,
                 aDontCheckStackSizes,
@@ -5482,11 +5474,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Nonnull
         @Override
-        public FindRecipeResult findRecipeWithResult(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe,
-            boolean aNotUnificated, boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids,
-            ItemStack aSpecialSlot, ItemStack... aInputs) {
+        public FindRecipeResult findRecipeWithResult(GT_Recipe aRecipe, boolean aNotUnificated,
+            boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot,
+            ItemStack... aInputs) {
             FindRecipeResult result = super.findRecipeWithResult(
-                aTileEntity,
                 aRecipe,
                 aNotUnificated,
                 aDontCheckStackSizes,
@@ -5584,11 +5575,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         @Nonnull
         @Override
-        public FindRecipeResult findRecipeWithResult(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe,
-            boolean aNotUnificated, boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids,
-            ItemStack aSpecialSlot, ItemStack... aInputs) {
+        public FindRecipeResult findRecipeWithResult(GT_Recipe aRecipe, boolean aNotUnificated,
+            boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot,
+            ItemStack... aInputs) {
             FindRecipeResult result = super.findRecipeWithResult(
-                aTileEntity,
                 aRecipe,
                 aNotUnificated,
                 aDontCheckStackSizes,
@@ -5613,7 +5603,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
             if (!result.isSuccessful()) {
                 ItemStack tOutput = GT_ModHandler.getAllRecipeOutput(
-                    aTileEntity == null ? null : aTileEntity.getWorld(),
+                    null,
                     aInputs[0],
                     aInputs[0],
                     aInputs[0],
@@ -5642,10 +5632,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     return recipe != null ? FindRecipeResult.ofSuccess(recipe) : NOT_FOUND;
                 }
 
-                tOutput = GT_ModHandler.getAllRecipeOutput(
-                    aTileEntity == null ? null : aTileEntity.getWorld(),
-                    aInputs[0],
-                    ItemList.DYE_ONLY_ITEMS[aDye.mIndex].get(1));
+                tOutput = GT_ModHandler
+                    .getAllRecipeOutput(null, aInputs[0], ItemList.DYE_ONLY_ITEMS[aDye.mIndex].get(1));
                 if (tOutput != null) {
                     GT_Recipe recipe = addRecipe(
                         new GT_Recipe(

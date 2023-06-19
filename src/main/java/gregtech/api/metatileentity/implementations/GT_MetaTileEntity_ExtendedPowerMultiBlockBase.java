@@ -141,7 +141,7 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
         CheckRecipeResult result = CheckRecipeResults.NO_RECIPE;
 
         processingLogic.clear();
-        processingLogic.setMetaTEController(this);
+        processingLogic.setMachine(this);
         processingLogic.setRecipeMapSupplier(this::getRecipeMap);
         processingLogic.setAvailableVoltage(getMaxInputVoltage());
         processingLogic.setAvailableAmperage(1);
