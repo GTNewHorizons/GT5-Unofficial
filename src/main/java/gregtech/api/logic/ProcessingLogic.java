@@ -22,7 +22,7 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class ProcessingLogic {
 
-    protected IVoidable controller;
+    protected IVoidable machine;
     protected IRecipeLockable recipeLockableMachine;
     protected IHasWorldObjectAndCoords tileEntity;
     protected Supplier<GT_Recipe_Map> recipeMapSupplier;
@@ -118,8 +118,8 @@ public class ProcessingLogic {
         return this;
     }
 
-    public ProcessingLogic setController(IVoidable controller) {
-        this.controller = controller;
+    public ProcessingLogic setMachine(IVoidable machine) {
+        this.machine = machine;
         return this;
     }
 
@@ -129,7 +129,7 @@ public class ProcessingLogic {
     }
 
     public ProcessingLogic setMetaTEController(GT_MetaTileEntity_MultiBlockBase metaTEController) {
-        return setController(metaTEController).setTileEntity(metaTEController.getBaseMetaTileEntity());
+        return setMachine(metaTEController).setTileEntity(metaTEController.getBaseMetaTileEntity());
     }
 
     public ProcessingLogic setDuration(long duration) {
@@ -235,7 +235,7 @@ public class ProcessingLogic {
             .setItemInputs(inputItems)
             .setFluidInputs(inputFluids)
             .setAvailableEUt(availableVoltage * availableAmperage)
-            .setMachine(controller, protectItems, protectFluids)
+            .setMachine(machine, protectItems, protectFluids)
             .setRecipeLocked(recipeLockableMachine, isRecipeLocked)
             .setMaxParallel(parallels)
             .enableBatchMode(batchSize)
