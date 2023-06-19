@@ -5,17 +5,17 @@ import net.minecraft.util.StatCollector;
 
 import gregtech.api.util.GT_Utility;
 
-public class ResultInsufficientVoltage implements CheckRecipeResult {
+public class ResultInsufficientPower implements CheckRecipeResult {
 
     private long required;
 
-    ResultInsufficientVoltage(long required) {
+    ResultInsufficientPower(long required) {
         this.required = required;
     }
 
     @Override
     public String getID() {
-        return "insufficient_voltage";
+        return "insufficient_power";
     }
 
     @Override
@@ -26,14 +26,14 @@ public class ResultInsufficientVoltage implements CheckRecipeResult {
     @Override
     public String getDisplayString() {
         return StatCollector.translateToLocalFormatted(
-            "GT5U.gui.text.insufficient_voltage",
+            "GT5U.gui.text.insufficient_power",
             GT_Utility.formatNumbers(required),
             GT_Utility.getColoredTierNameFromVoltage(required));
     }
 
     @Override
     public CheckRecipeResult newInstance() {
-        return new ResultInsufficientVoltage(0);
+        return new ResultInsufficientPower(0);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ResultInsufficientVoltage implements CheckRecipeResult {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ResultInsufficientVoltage that = (ResultInsufficientVoltage) o;
+        ResultInsufficientPower that = (ResultInsufficientPower) o;
         return required == that.required;
     }
 }

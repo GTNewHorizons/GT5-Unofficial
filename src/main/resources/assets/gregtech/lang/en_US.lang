@@ -229,7 +229,7 @@ GT5U.gui.text.success=§aProcessing recipe
 GT5U.gui.text.no_recipe=§8No valid recipe found
 GT5U.gui.text.output_full=§8Not enough output space
 GT5U.gui.text.none=
-GT5U.gui.text.insufficient_voltage=§8Insufficient voltage. Required: %s EU/t (%s§8)
+GT5U.gui.text.insufficient_power=§8Recipe needs more power to start. Required: %s EU/t (%s§8)
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 

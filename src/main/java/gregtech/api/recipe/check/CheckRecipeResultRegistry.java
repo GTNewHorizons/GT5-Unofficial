@@ -52,8 +52,8 @@ public class CheckRecipeResultRegistry {
     /**
      * Found recipe, but cannot process it because the machine cannot handle its voltage.
      */
-    public static CheckRecipeResult insufficientVoltage(long required) {
-        return new ResultInsufficientVoltage(required);
+    public static CheckRecipeResult insufficientPower(long required) {
+        return new ResultInsufficientPower(required);
     }
 
     static {
@@ -61,6 +61,6 @@ public class CheckRecipeResultRegistry {
         register(NO_RECIPE);
         register(OUTPUT_FULL);
         register(NONE);
-        register(new ResultInsufficientVoltage(0));
+        register(new ResultInsufficientPower(0));
     }
 }
