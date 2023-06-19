@@ -39,8 +39,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.CheckRecipeResult;
-import gregtech.api.enums.CheckRecipeResults;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
@@ -52,6 +50,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
@@ -207,8 +207,8 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
 
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(GT_Recipe recipe) {
-                return recipe.mSpecialValue <= mHeatingCapacity ? CheckRecipeResults.SUCCESSFUL
-                    : CheckRecipeResults.NO_RECIPE;
+                return recipe.mSpecialValue <= mHeatingCapacity ? CheckRecipeResultRegistry.SUCCESSFUL
+                    : CheckRecipeResultRegistry.NO_RECIPE;
             }
         };
     }

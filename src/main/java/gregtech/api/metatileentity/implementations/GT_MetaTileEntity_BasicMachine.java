@@ -56,7 +56,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.FindRecipeResult;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.GT_Container_BasicMachine;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
@@ -69,6 +68,7 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ClientPreference;
 import gregtech.api.util.GT_CoverBehaviorBase;

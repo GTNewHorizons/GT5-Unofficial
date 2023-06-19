@@ -225,10 +225,11 @@ GT5U.gui.button.lock_recipe=Lock Recipe
 GT5U.gui.button.down_tier=Down Tier
 GT5U.gui.button.tier=Tier:
 GT5U.gui.button.forbidden=§4Cannot change mode for this machine
-GT5U.gui.text.processing=Processing recipe
-GT5U.gui.text.no_recipe=No valid recipe found
-GT5U.gui.text.output_full=Not enough output space
-GT5U.gui.text.insufficient_voltage=Insufficient Voltage
+GT5U.gui.text.success=§aProcessing recipe
+GT5U.gui.text.no_recipe=§8No valid recipe found
+GT5U.gui.text.output_full=§8Not enough output space
+GT5U.gui.text.none=
+GT5U.gui.text.insufficient_voltage=§8Insufficient voltage. Required: %s EU/t (%s§8)
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 

@@ -8,11 +8,11 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.CheckRecipeResult;
-import gregtech.api.enums.CheckRecipeResults;
-import gregtech.api.enums.FindRecipeResult;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
@@ -172,10 +172,10 @@ public class ProcessingLogic {
 
     @Nonnull
     public CheckRecipeResult process() {
-        if (recipeMapSupplier == null) return CheckRecipeResults.NO_RECIPE;
+        if (recipeMapSupplier == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
         GT_Recipe_Map recipeMap = recipeMapSupplier.get();
-        if (recipeMap == null) return CheckRecipeResults.NO_RECIPE;
+        if (recipeMap == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
         FindRecipeResult findRecipeResult;
 
@@ -199,21 +199,21 @@ public class ProcessingLogic {
             }
         } else {
             if (findRecipeResult.getState() == FindRecipeResult.State.INSUFFICIENT_VOLTAGE) {
-                return CheckRecipeResults.INSUFFICIENT_VOLTAGE;
+                return CheckRecipeResultRegistry.insufficientVoltage(findRecipeResult.getRecipeNonNull().mEUt);
             } else {
-                return CheckRecipeResults.NO_RECIPE;
+                return CheckRecipeResultRegistry.NO_RECIPE;
             }
         }
 
         GT_ParallelHelper helper = createParallelHelper(recipe);
 
-        if (helper == null || helper.getCurrentParallel() <= 0) return CheckRecipeResults.OUTPUT_FULL;
+        if (helper == null || helper.getCurrentParallel() <= 0) return CheckRecipeResultRegistry.OUTPUT_FULL;
 
         GT_OverclockCalculator calculator = createOverclockCalculator(recipe, helper);
 
         if (calculator == null || calculator.getConsumption() == Long.MAX_VALUE - 1
             || calculator.getDuration() == Integer.MAX_VALUE - 1) {
-            return CheckRecipeResults.NO_RECIPE;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         calculatedEut = calculator.getConsumption();
@@ -221,7 +221,7 @@ public class ProcessingLogic {
         outputItems = helper.getItemOutputs();
         outputFluids = helper.getFluidOutputs();
 
-        return CheckRecipeResults.SUCCESSFUL;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     protected GT_ParallelHelper createParallelHelper(GT_Recipe recipe) {
@@ -243,7 +243,7 @@ public class ProcessingLogic {
 
     @Nonnull
     protected CheckRecipeResult validateRecipe(GT_Recipe recipe) {
-        return CheckRecipeResults.SUCCESSFUL;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     protected GT_OverclockCalculator createOverclockCalculator(GT_Recipe recipe, GT_ParallelHelper helper) {

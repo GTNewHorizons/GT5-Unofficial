@@ -501,6 +501,9 @@ public class GT_Utility {
         return GT_Values.TIER_COLORS[tier] + GT_Values.VN[tier] + EnumChatFormatting.RESET;
     }
 
+    /**
+     * @return e.g. {@code " (LV)"}
+     */
     @Nonnull
     public static String getTierNameWithParentheses(long voltage) {
         byte tier = getTier(voltage);

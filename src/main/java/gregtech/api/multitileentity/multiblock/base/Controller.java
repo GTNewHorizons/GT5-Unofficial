@@ -71,8 +71,6 @@ import com.gtnewhorizons.modularui.common.widget.TabContainer;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
-import gregtech.api.enums.CheckRecipeResult;
-import gregtech.api.enums.CheckRecipeResults;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.OrePrefixes;
@@ -97,6 +95,8 @@ import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
 import gregtech.api.multitileentity.multiblock.casing.FunctionalCasing;
 import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
@@ -1677,7 +1677,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         }
         ProcessingLogic logic = ((ProcessingLogicHost) this).getProcessingLogic();
         logic.clear();
-        CheckRecipeResult result = CheckRecipeResults.NO_RECIPE;
+        CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
         if (isSeparateInputs()) {
             // TODO: Add separation with fluids
             for (Pair<ItemStack[], String> inventory : getItemInputsForEachInventory()) {

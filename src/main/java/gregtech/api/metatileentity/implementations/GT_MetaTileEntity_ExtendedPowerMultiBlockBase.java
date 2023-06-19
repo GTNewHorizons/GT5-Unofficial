@@ -15,9 +15,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import gregtech.api.enums.CheckRecipeResult;
-import gregtech.api.enums.CheckRecipeResults;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Utility;
 
@@ -135,10 +135,11 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
         // If no logic is found, try legacy checkRecipe
         if (processingLogic == null) {
             // noinspection deprecation
-            return checkRecipe(mInventory[1]) ? CheckRecipeResults.SUCCESSFUL : CheckRecipeResults.NO_RECIPE;
+            return checkRecipe(mInventory[1]) ? CheckRecipeResultRegistry.SUCCESSFUL
+                : CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        CheckRecipeResult result = CheckRecipeResults.NO_RECIPE;
+        CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
 
         processingLogic.clear();
         processingLogic.setMachine(this);
@@ -165,7 +166,7 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
 
         lEUt = processingLogic.getCalculatedEut();
 
-        if (processingLogic.getDuration() > Integer.MAX_VALUE) return CheckRecipeResults.NO_RECIPE;
+        if (processingLogic.getDuration() > Integer.MAX_VALUE) return CheckRecipeResultRegistry.NO_RECIPE;
         mMaxProgresstime = (int) processingLogic.getDuration();
 
         if (lEUt > 0) {

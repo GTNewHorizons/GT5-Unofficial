@@ -1,4 +1,4 @@
-package gregtech.api.enums;
+package gregtech.api.recipe.check;
 
 import java.util.Objects;
 
