@@ -1,5 +1,8 @@
 package gregtech.api.enums;
 
+/**
+ * Class to indicate the result of recipe check in the machine.
+ */
 public class CheckRecipeResult {
 
     private final boolean success;

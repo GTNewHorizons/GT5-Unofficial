@@ -228,6 +228,7 @@ GT5U.gui.button.forbidden=§4Cannot change mode for this machine
 GT5U.gui.text.processing=Processing recipe
 GT5U.gui.text.no_recipe=No valid recipe found
 GT5U.gui.text.output_full=Not enough output space
+GT5U.gui.text.insufficient_voltage=Insufficient Voltage
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 

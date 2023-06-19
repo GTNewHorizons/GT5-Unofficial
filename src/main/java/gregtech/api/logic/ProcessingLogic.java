@@ -10,6 +10,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.CheckRecipeResult;
 import gregtech.api.enums.CheckRecipeResults;
+import gregtech.api.enums.FindRecipeResult;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
@@ -188,16 +189,27 @@ public class ProcessingLogic {
         GT_Recipe_Map recipeMap = recipeMapSupplier.get();
         if (recipeMap == null) return CheckRecipeResults.NO_RECIPE;
 
-        GT_Recipe recipe;
+        FindRecipeResult findRecipeResult;
 
         if (isRecipeLocked && recipeLockableMachine != null && recipeLockableMachine.getSingleRecipeCheck() != null) {
-            recipe = recipeLockableMachine.getSingleRecipeCheck()
-                .getRecipe();
+            findRecipeResult = FindRecipeResult.ofSuccess(
+                recipeLockableMachine.getSingleRecipeCheck()
+                    .getRecipe());
         } else {
-            recipe = recipeMap.findRecipe(tileEntity, lastRecipe, false, availableVoltage, inputFluids, inputItems);
+            findRecipeResult = recipeMap.findRecipeWithResult(
+                tileEntity,
+                lastRecipe,
+                false,
+                false,
+                availableVoltage,
+                inputFluids,
+                null,
+                inputItems);
         }
 
-        if (recipe != null) {
+        GT_Recipe recipe;
+        if (findRecipeResult.isSuccessful()) {
+            recipe = findRecipeResult.getRecipeNonNull();
             CheckRecipeResult result = validateRecipe(recipe);
             if (!result.wasSuccessful()) {
                 return result;
@@ -205,7 +217,11 @@ public class ProcessingLogic {
                 lastRecipe = recipe;
             }
         } else {
-            return CheckRecipeResults.NO_RECIPE;
+            if (findRecipeResult.getState() == FindRecipeResult.State.INSUFFICIENT_VOLTAGE) {
+                return CheckRecipeResults.INSUFFICIENT_VOLTAGE;
+            } else {
+                return CheckRecipeResults.NO_RECIPE;
+            }
         }
 
         GT_ParallelHelper helper = createParallelHelper(recipe);

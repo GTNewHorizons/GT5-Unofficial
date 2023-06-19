@@ -56,6 +56,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.FindRecipeResult;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.GT_Container_BasicMachine;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
@@ -1085,15 +1086,25 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public int checkRecipe(boolean skipOC) {
         GT_Recipe_Map tMap = getRecipeList();
         if (tMap == null) return DID_NOT_FIND_RECIPE;
-        GT_Recipe tRecipe = tMap.findRecipe(
+        FindRecipeResult result = tMap.findRecipeWithResult(
             getBaseMetaTileEntity(),
             mLastRecipe,
+            false,
             false,
             V[mTier],
             new FluidStack[] { getFillableStack() },
             getSpecialSlot(),
             getAllInputs());
-        if (tRecipe == null) return DID_NOT_FIND_RECIPE;
+        if (result.getState() == FindRecipeResult.State.EXPLODE && getBaseMetaTileEntity() != null) {
+            getBaseMetaTileEntity().doExplosion(V[mTier] * 4);
+            return DID_NOT_FIND_RECIPE;
+        }
+        if (result.getState() == FindRecipeResult.State.ON_FIRE && getBaseMetaTileEntity() != null) {
+            getBaseMetaTileEntity().setOnFire();
+            return DID_NOT_FIND_RECIPE;
+        }
+        if (!result.isSuccessful()) return DID_NOT_FIND_RECIPE;
+        GT_Recipe tRecipe = result.getRecipeNonNull();
 
         if (GT_Mod.gregtechproxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100 || tRecipe.mSpecialValue == -300)
             && !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId))
