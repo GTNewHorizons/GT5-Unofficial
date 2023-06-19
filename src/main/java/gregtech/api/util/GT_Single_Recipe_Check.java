@@ -197,38 +197,56 @@ public class GT_Single_Recipe_Check {
         // we don't yet have a mean to uniquely name a recipe, this will have to make do.
         // consider move serialization code to GT_Recipe once this has been proven to work
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setTag("inputs", writeList(recipe.mInputs, GT_Utility::saveItem));
-        tag.setTag("outputs", writeList(recipe.mOutputs, GT_Utility::saveItem));
-        tag.setIntArray("chances", recipe.mChances);
-        tag.setTag(
-            "fInputs",
-            writeList(recipe.mFluidInputs, s -> s == null ? new NBTTagCompound() : s.writeToNBT(new NBTTagCompound())));
-        tag.setTag(
-            "fOutputs",
-            writeList(
-                recipe.mFluidOutputs,
-                s -> s == null ? new NBTTagCompound() : s.writeToNBT(new NBTTagCompound())));
+        if (recipe == null) return tag;
+
+        if (recipe.mInputs != null) {
+            tag.setTag("inputs", writeList(recipe.mInputs, GT_Utility::saveItem));
+        }
+        if (recipe.mOutputs != null) {
+            tag.setTag("outputs", writeList(recipe.mOutputs, GT_Utility::saveItem));
+        }
+        if (recipe.mChances != null) {
+            tag.setIntArray("chances", recipe.mChances);
+        }
+        if (recipe.mFluidInputs != null) {
+            tag.setTag(
+                "fInputs",
+                writeList(
+                    recipe.mFluidInputs,
+                    s -> s == null ? new NBTTagCompound() : s.writeToNBT(new NBTTagCompound())));
+        }
+        if (recipe.mFluidOutputs != null) {
+            tag.setTag(
+                "fOutputs",
+                writeList(
+                    recipe.mFluidOutputs,
+                    s -> s == null ? new NBTTagCompound() : s.writeToNBT(new NBTTagCompound())));
+        }
         tag.setInteger("eut", recipe.mEUt);
         tag.setInteger("duration", recipe.mDuration);
         tag.setInteger("specialValue", recipe.mSpecialValue);
-        tag.setTag("itemCost", writeList(itemCost.entrySet(), e -> {
-            NBTTagCompound ret = new NBTTagCompound();
-            ret.setTag(
-                "id",
-                e.getKey()
-                    .writeToNBT());
-            ret.setInteger("count", e.getValue());
-            return ret;
-        }));
-        tag.setTag("fluidCost", writeList(fluidCost.entrySet(), e -> {
-            NBTTagCompound ret = new NBTTagCompound();
-            ret.setString(
-                "id",
-                e.getKey()
-                    .getName());
-            ret.setInteger("count", e.getValue());
-            return ret;
-        }));
+        if (itemCost != null) {
+            tag.setTag("itemCost", writeList(itemCost.entrySet(), e -> {
+                NBTTagCompound ret = new NBTTagCompound();
+                ret.setTag(
+                    "id",
+                    e.getKey()
+                        .writeToNBT());
+                ret.setInteger("count", e.getValue());
+                return ret;
+            }));
+        }
+        if (fluidCost != null) {
+            tag.setTag("fluidCost", writeList(fluidCost.entrySet(), e -> {
+                NBTTagCompound ret = new NBTTagCompound();
+                ret.setString(
+                    "id",
+                    e.getKey()
+                        .getName());
+                ret.setInteger("count", e.getValue());
+                return ret;
+            }));
+        }
         return tag;
     }
 
@@ -292,11 +310,12 @@ public class GT_Single_Recipe_Check {
         GT_Recipe found = recipeMap
             .findRecipe(parent.getBaseMetaTileEntity(), false, GT_Values.V[GT_Utility.getTier(eut)], fInputs, inputs);
         int[] chances = tag.getIntArray("chances");
+        if (chances.length == 0) chances = null;
         if (found == null || !GT_Utility.equals(inputs, found.mInputs)
             || !Arrays.equals(fInputs, found.mFluidInputs)
             || !GT_Utility.equals(outputs, found.mOutputs)
             || !Arrays.equals(fOutputs, found.mFluidOutputs)
-            || !Arrays.equals(chances, found.mChances)
+            || (!Arrays.equals(chances, found.mChances))
             || found.mDuration != tag.getInteger("duration")
             || found.mEUt != eut
             || found.mSpecialValue != tag.getInteger("specialValue")) return null;
