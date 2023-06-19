@@ -226,10 +226,10 @@ GT5U.gui.button.down_tier=Down Tier
 GT5U.gui.button.tier=Tier:
 GT5U.gui.button.forbidden=§4Cannot change mode for this machine
 GT5U.gui.text.success=§aProcessing recipe
-GT5U.gui.text.no_recipe=§8No valid recipe found
-GT5U.gui.text.output_full=§8Not enough output space
+GT5U.gui.text.no_recipe=§7No valid recipe found
+GT5U.gui.text.output_full=§7Not enough output space
 GT5U.gui.text.none=
-GT5U.gui.text.insufficient_power=§8Recipe needs more power to start. Required: %s EU/t (%s§8)
+GT5U.gui.text.insufficient_power=§7Recipe needs more power to start. Required: %s EU/t (%s§7)
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
