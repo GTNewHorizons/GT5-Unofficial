@@ -208,7 +208,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(GT_Recipe recipe) {
                 return recipe.mSpecialValue <= mHeatingCapacity ? CheckRecipeResultRegistry.SUCCESSFUL
-                    : CheckRecipeResultRegistry.NO_RECIPE;
+                    : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
         };
     }

@@ -56,11 +56,19 @@ public class CheckRecipeResultRegistry {
         return new ResultInsufficientPower(required);
     }
 
+    /**
+     * Found recipe, but cannot process it because the machine cannot handle its heat.
+     */
+    public static CheckRecipeResult insufficientHeat(long required) {
+        return new ResultInsufficientHeat(required);
+    }
+
     static {
         register(SUCCESSFUL);
         register(NO_RECIPE);
         register(OUTPUT_FULL);
         register(NONE);
         register(new ResultInsufficientPower(0));
+        register(new ResultInsufficientHeat(0));
     }
 }
