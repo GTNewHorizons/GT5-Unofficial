@@ -7,9 +7,9 @@ import gregtech.api.util.GT_Utility;
 
 public class ResultInsufficientMachineTier implements CheckRecipeResult {
 
-    private long required;
+    private int required;
 
-    ResultInsufficientMachineTier(long required) {
+    ResultInsufficientMachineTier(int required) {
         this.required = required;
     }
 
@@ -31,17 +31,17 @@ public class ResultInsufficientMachineTier implements CheckRecipeResult {
 
     @Override
     public CheckRecipeResult newInstance() {
-        return new ResultInsufficientHeat(0);
+        return new ResultInsufficientMachineTier(0);
     }
 
     @Override
     public void encode(PacketBuffer buffer) {
-        buffer.writeLong(required);
+        buffer.writeVarIntToBuffer(required);
     }
 
     @Override
     public void decode(PacketBuffer buffer) {
-        required = buffer.readLong();
+        required = buffer.readVarIntFromBuffer();
     }
 
     @Override

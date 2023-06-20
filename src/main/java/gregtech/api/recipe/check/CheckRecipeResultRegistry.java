@@ -41,7 +41,7 @@ public class CheckRecipeResultRegistry {
      */
     public static final CheckRecipeResult NO_RECIPE = SimpleCheckRecipeResult.ofFailureFactory("no_recipe");
     /**
-     * Found recipe, but cannot process it because output is full.
+     * Cannot process recipe because output is full.
      */
     public static final CheckRecipeResult OUTPUT_FULL = SimpleCheckRecipeResult.ofFailureFactory("output_full");
     /**
@@ -49,29 +49,29 @@ public class CheckRecipeResultRegistry {
      */
     public static final CheckRecipeResult NONE = SimpleCheckRecipeResult.ofFailureFactory("none");
     /**
-     * Found recipe, but cannot process it because bio upgrade is missing.
+     * Cannot process recipe because bio upgrade is missing.
      */
     public static final CheckRecipeResult BIO_UPGRADE_MISSING = SimpleCheckRecipeResult
         .ofFailureFactory("bio_upgrade_missing");
 
     /**
-     * Found recipe, but cannot process it because the machine cannot handle its voltage.
+     * Cannot process recipe because the machine cannot handle required EUt.
      */
     public static CheckRecipeResult insufficientPower(long required) {
         return new ResultInsufficientPower(required);
     }
 
     /**
-     * Found recipe, but cannot process it because the machine cannot handle its heat.
+     * Cannot process recipe because the machine cannot handle its heat.
      */
     public static CheckRecipeResult insufficientHeat(int required) {
         return new ResultInsufficientHeat(required);
     }
 
     /**
-     * Found recipe, but cannot process it because the machine is tiered and its tier is too low.
+     * Cannot process recipe because the machine is tiered and its tier is too low.
      */
-    public static CheckRecipeResult insufficientMachineTier(long required) {
+    public static CheckRecipeResult insufficientMachineTier(int required) {
         return new ResultInsufficientMachineTier(required);
     }
 
