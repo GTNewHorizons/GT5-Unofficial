@@ -21,7 +21,8 @@ import static net.minecraft.util.EnumChatFormatting.GRAY;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -33,9 +34,14 @@ import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
+import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
 
@@ -136,56 +142,51 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
     long mWirelessEUt = 0;
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        if (aStack != null && aStack.getItem() instanceof GT_IntegratedCircuit_Item) {
-            multiplier = aStack.stackSize * max(1, aStack.getItemDamage());
-        }
-
-        return processRecipe(getCompactedInputs(), getCompactedFluids());
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sTranscendentPlasmaMixerRecipes;
     }
 
-    boolean processRecipe(ItemStack[] items, FluidStack[] fluids) {
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-        GT_Recipe originalRecipe = GT_Recipe.GT_Recipe_Map.sTranscendentPlasmaMixerRecipes
-            .findRecipe(getBaseMetaTileEntity(), false, Long.MAX_VALUE, fluids, items);
-
-        if (originalRecipe == null) {
-            return false;
-        }
-        mWirelessEUt = 10L * (long) originalRecipe.mEUt * (long) multiplier;
-        // 100L - recipe takes 100 ticks
-        if (!addEUToGlobalEnergyMap(ownerUUID, mWirelessEUt * -100L)) {
-            return false;
-        }
-
-        // Fluid handling.
-        {
-            // Output items/fluids.
-            GT_Recipe modifiedRecipe = originalRecipe.copy();
-
-            // Multiply up the input plasmas.
-            for (FluidStack fluidStack : modifiedRecipe.mFluidInputs) {
-                fluidStack.amount *= multiplier;
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(GT_Recipe recipe) {
+                mWirelessEUt = 10L * (long) recipe.mEUt * (long) multiplier;
+                if (!addEUToGlobalEnergyMap(ownerUUID, -mWirelessEUt * recipe.mDuration)) {
+                    return CheckRecipeResultRegistry.insufficientPower(mWirelessEUt * recipe.mDuration);
+                }
+                return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
-            // Multiply up the output fluid.
-            modifiedRecipe.mFluidOutputs[0].amount *= multiplier;
+            @Override
+            protected GT_OverclockCalculator createOverclockCalculator(GT_Recipe recipe, GT_ParallelHelper helper) {
+                return null;
+            }
 
-            if (!canOutputAll(modifiedRecipe)) return false;
+            @NotNull
+            @Override
+            public CheckRecipeResult process() {
+                CheckRecipeResult result = super.process();
+                // Power will be directly consumed through wireless
+                setCalculatedEut(0);
+                return result;
+            }
+        }.setParallelSupplier(() -> {
+            ItemStack controllerStack = getControllerSlot();
+            if (controllerStack != null && controllerStack.getItem() instanceof GT_IntegratedCircuit_Item) {
+                multiplier = controllerStack.stackSize * max(1, controllerStack.getItemDamage());
+            }
+            return multiplier;
+        });
+    }
 
-            // Takes items/fluids from hatches/busses.
-            if (!modifiedRecipe.isRecipeInputEqual(true, fluids, items)) return false;
-
-            mOutputFluids = modifiedRecipe.mFluidOutputs;
-            mOutputItems = modifiedRecipe.mOutputs;
-        }
-
-        mMaxProgresstime = 100;
-        mEUt = 0;
-
-        updateSlots();
-
-        return true;
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        // The voltage is only used for recipe finding
+        logic.setAvailableVoltage(Long.MAX_VALUE);
+        logic.setAvailableAmperage(1);
     }
 
     @Override
