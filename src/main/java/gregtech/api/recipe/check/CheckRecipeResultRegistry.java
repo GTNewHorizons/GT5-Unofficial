@@ -53,6 +53,27 @@ public class CheckRecipeResultRegistry {
      */
     public static final CheckRecipeResult BIO_UPGRADE_MISSING = SimpleCheckRecipeResult
         .ofFailureFactory("bio_upgrade_missing");
+    /**
+     * Cannot find valid fuel for generator.
+     */
+    public static final CheckRecipeResult NO_FUEL_FOUND = SimpleCheckRecipeResult.ofFailureFactory("no_fuel");
+    /**
+     * Cannot find valid turbine.
+     */
+    public static final CheckRecipeResult NO_TURBINE_FOUND = SimpleCheckRecipeResult.ofFailureFactory("no_turbine");
+    /**
+     * All requirements met to generator power.
+     */
+    public static final CheckRecipeResult GENERATING = SimpleCheckRecipeResult.ofSuccessFactory("generating");
+    /**
+     * Cannot find lubricant.
+     */
+    public static final CheckRecipeResult NO_LUBRICANT = SimpleCheckRecipeResult.ofSuccessFactory("no_lubricant");
+    /**
+     * Found fuel is of too high quality.
+     */
+    public static final CheckRecipeResult FUEL_QUALITY_TOO_HIGH = SimpleCheckRecipeResult
+        .ofSuccessFactory("fuel_quality_too_high");
 
     /**
      * Cannot process recipe because the machine cannot handle required EUt.
@@ -77,10 +98,15 @@ public class CheckRecipeResultRegistry {
 
     static {
         register(SUCCESSFUL);
+        register(GENERATING);
         register(NO_RECIPE);
         register(OUTPUT_FULL);
         register(NONE);
         register(BIO_UPGRADE_MISSING);
+        register(NO_FUEL_FOUND);
+        register(NO_TURBINE_FOUND);
+        register(NO_LUBRICANT);
+        register(FUEL_QUALITY_TOO_HIGH);
         register(new ResultInsufficientPower(0));
         register(new ResultInsufficientHeat(0));
         register(new ResultInsufficientMachineTier(0));

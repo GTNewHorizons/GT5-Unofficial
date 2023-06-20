@@ -1978,6 +1978,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         screenElements.widget(
             new TextWidget(GT_Utility.trans("144", "Missing Turbine Rotor")).setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> {
+                    if (getBaseMetaTileEntity().isAllowedToWork()) return false;
                     if (getBaseMetaTileEntity().getErrorDisplayID() == 0
                         && this instanceof GT_MetaTileEntity_LargeTurbine) {
                         final ItemStack tItem = inventorySlot.getMcSlot()
