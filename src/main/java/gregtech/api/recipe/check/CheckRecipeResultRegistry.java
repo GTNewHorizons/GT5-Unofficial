@@ -68,12 +68,16 @@ public class CheckRecipeResultRegistry {
     /**
      * Cannot find lubricant.
      */
-    public static final CheckRecipeResult NO_LUBRICANT = SimpleCheckRecipeResult.ofSuccessFactory("no_lubricant");
+    public static final CheckRecipeResult NO_LUBRICANT = SimpleCheckRecipeResult.ofFailureFactory("no_lubricant");
     /**
      * Found fuel is of too high quality.
      */
     public static final CheckRecipeResult FUEL_QUALITY_TOO_HIGH = SimpleCheckRecipeResult
-        .ofSuccessFactory("fuel_quality_too_high");
+        .ofFailureFactory("fuel_quality_too_high");
+    /**
+     * No data sticks found.
+     */
+    public static final CheckRecipeResult NO_DATA_STICKS = SimpleCheckRecipeResult.ofFailureFactory("no_data_sticks");
 
     /**
      * Cannot process recipe because the machine cannot handle required EUt.
@@ -107,6 +111,7 @@ public class CheckRecipeResultRegistry {
         register(NO_TURBINE_FOUND);
         register(NO_LUBRICANT);
         register(FUEL_QUALITY_TOO_HIGH);
+        register(NO_DATA_STICKS);
         register(new ResultInsufficientPower(0));
         register(new ResultInsufficientHeat(0));
         register(new ResultInsufficientMachineTier(0));
