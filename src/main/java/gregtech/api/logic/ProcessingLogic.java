@@ -179,6 +179,10 @@ public class ProcessingLogic {
         GT_Recipe_Map recipeMap = recipeMapSupplier.get();
         if (recipeMap == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
+        if (parallelSupplier != null) {
+            parallels = parallelSupplier.get();
+        }
+
         FindRecipeResult findRecipeResult;
 
         if (isRecipeLocked && recipeLockableMachine != null && recipeLockableMachine.getSingleRecipeCheck() != null) {
@@ -241,9 +245,6 @@ public class ProcessingLogic {
     }
 
     protected GT_ParallelHelper createParallelHelper(GT_Recipe recipe) {
-        if (parallelSupplier != null) {
-            parallels = parallelSupplier.get();
-        }
         return new GT_ParallelHelper().setRecipe(recipe)
             .setItemInputs(inputItems)
             .setFluidInputs(inputFluids)
