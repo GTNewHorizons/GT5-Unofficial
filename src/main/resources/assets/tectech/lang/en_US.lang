@@ -755,6 +755,7 @@ gt.blockmachines.multimachine.em.infuser.hint=1 - Classic Hatches or High Power 
 gt.blockmachines.multimachine.em.infuser.desc.0=Controller block of the Energy Infuser
 gt.blockmachines.multimachine.em.infuser.desc.1=Can be used to charge items (lossless)
 gt.blockmachines.multimachine.em.infuser.desc.2=Can be fed with UU-Matter to repair items
+gt.blockmachines.multimachine.em.infuser.desc.3=Stocking Bus is not supported
 gt.blockmachines.multimachine.em.infuser.Structure.HighPowerCasing=Layer 1 and 5
 gt.blockmachines.multimachine.em.infuser.Structure.MolecularCoil=Layer 2 and 4
 gt.blockmachines.multimachine.em.infuser.Structure.MolecularCasing=Layer 3
