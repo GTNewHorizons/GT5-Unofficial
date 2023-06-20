@@ -64,7 +64,7 @@ public class CheckRecipeResultRegistry {
     /**
      * Found recipe, but cannot process it because the machine cannot handle its heat.
      */
-    public static CheckRecipeResult insufficientHeat(long required) {
+    public static CheckRecipeResult insufficientHeat(int required) {
         return new ResultInsufficientHeat(required);
     }
 

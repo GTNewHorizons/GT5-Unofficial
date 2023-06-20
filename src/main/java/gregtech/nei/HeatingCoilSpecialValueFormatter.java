@@ -16,15 +16,7 @@ public class HeatingCoilSpecialValueFormatter implements INEISpecialInfoFormatte
 
         List<String> result = new ArrayList<>();
         result.add(applyPrefixAndSuffix.apply(heat));
-
-        for (HeatingCoilLevel heatLevel : HeatingCoilLevel.values()) {
-            if (heatLevel == HeatingCoilLevel.None || heatLevel == HeatingCoilLevel.ULV) continue;
-            if (heatLevel.getHeat() >= heat) {
-                result.add(" (" + heatLevel.getName() + ")");
-                return result;
-            }
-        }
-        result.add(" (" + HeatingCoilLevel.MAX.getName() + "+)");
+        result.add(" (" + HeatingCoilLevel.getDisplayNameFromHeat(heat, false) + ")");
         return result;
     }
 }

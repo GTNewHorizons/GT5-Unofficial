@@ -231,7 +231,7 @@ GT5U.gui.text.output_full=§7Not enough output space
 GT5U.gui.text.none=
 GT5U.gui.text.bio_upgrade_missing=§7Recipe needs Bio Upgrade to start
 GT5U.gui.text.insufficient_power=§7Recipe needs more power to start. Required: %s EU/t (%s§7)
-GT5U.gui.text.insufficient_heat=§7Recipe needs more heat to start. Required: %s K
+GT5U.gui.text.insufficient_heat=§7Recipe needs more heat to start. Required: %s K (%s§7)
 GT5U.gui.text.insufficient_machine_tier=§7Recipe needs higher structure tier. Required: %s
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit

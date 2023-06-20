@@ -3,13 +3,14 @@ package gregtech.api.recipe.check;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
 
+import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.util.GT_Utility;
 
 public class ResultInsufficientHeat implements CheckRecipeResult {
 
-    private long required;
+    private int required;
 
-    ResultInsufficientHeat(long required) {
+    ResultInsufficientHeat(int required) {
         this.required = required;
     }
 
@@ -25,8 +26,10 @@ public class ResultInsufficientHeat implements CheckRecipeResult {
 
     @Override
     public String getDisplayString() {
-        return StatCollector
-            .translateToLocalFormatted("GT5U.gui.text.insufficient_heat", GT_Utility.formatNumbers(required));
+        return StatCollector.translateToLocalFormatted(
+            "GT5U.gui.text.insufficient_heat",
+            GT_Utility.formatNumbers(required),
+            HeatingCoilLevel.getDisplayNameFromHeat(required, true));
     }
 
     @Override
@@ -36,12 +39,12 @@ public class ResultInsufficientHeat implements CheckRecipeResult {
 
     @Override
     public void encode(PacketBuffer buffer) {
-        buffer.writeLong(required);
+        buffer.writeVarIntToBuffer(required);
     }
 
     @Override
     public void decode(PacketBuffer buffer) {
-        required = buffer.readLong();
+        required = buffer.readVarIntFromBuffer();
     }
 
     @Override
