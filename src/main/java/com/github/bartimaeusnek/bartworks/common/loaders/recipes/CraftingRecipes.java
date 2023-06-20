@@ -404,7 +404,7 @@ public class CraftingRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 1L), 'C',
                         "circuit" + Materials.Master, 'F', ItemList.Field_Generator_LuV.get(1L), 'E',
                         ItemList.Emitter_LuV.get(1L), 'S', ItemList.Sensor_LuV.get(1L), 'P',
-                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Chrome, 1L), });
+                        WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plate, 1), });
 
         // ClonalCellularSynthesisModule
         GT_ModHandler.addCraftingRecipe(
@@ -414,7 +414,7 @@ public class CraftingRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.Naquadah, 1L), 'C',
                         "circuit" + Materials.Master, 'F', ItemList.Field_Generator_LuV.get(1L), 'E',
                         ItemList.Emitter_LuV.get(1L), 'S', ItemList.Sensor_LuV.get(1L), 'P',
-                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Chrome, 1L), });
+                        WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plate, 1), });
 
         GT_ModHandler.addCraftingRecipe(
                 new GT_TileEntity_BioVat(

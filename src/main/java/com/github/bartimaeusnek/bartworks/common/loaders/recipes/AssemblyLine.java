@@ -12,7 +12,11 @@ import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OreDictUnificator;
 
 public class AssemblyLine implements Runnable {
@@ -58,7 +62,8 @@ public class AssemblyLine implements Runnable {
                 24000,
                 new ItemStack[] { ItemList.Machine_LuV_CircuitAssembler.get(1L), ItemList.Robot_Arm_LuV.get(4L),
                         ItemList.Electric_Motor_LuV.get(4L), ItemList.Field_Generator_LuV.get(1L),
-                        ItemList.Emitter_LuV.get(1L), ItemList.Sensor_LuV.get(1L), Materials.Chrome.getPlates(8) },
+                        ItemList.Emitter_LuV.get(1L), ItemList.Sensor_LuV.get(1L),
+                        WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plate, 8) },
                 new FluidStack[] { new FluidStack(solderIndalloy, 1440) },
                 ItemRegistry.cal.copy(),
                 24000,
