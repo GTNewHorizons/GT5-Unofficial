@@ -729,6 +729,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mMaxProgresstime = 0;
         mEfficiencyIncrease = 0;
         getBaseMetaTileEntity().disableWorking();
+        checkRecipeResult = CheckRecipeResultRegistry.NONE;
     }
 
     public void criticalStopMachine() {
@@ -1957,8 +1958,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
         screenElements.widget(
             TextWidget.dynamicString(() -> checkRecipeResult.getDisplayString())
+                .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
-                .setEnabled(widget -> checkRecipeResult.getDisplayString() != null))
+                .setEnabled(widget -> GT_Utility.isStringValid(checkRecipeResult.getDisplayString())))
             .widget(new CheckRecipeResultSyncer(() -> checkRecipeResult, (result) -> checkRecipeResult = result));
 
         screenElements.widget(
