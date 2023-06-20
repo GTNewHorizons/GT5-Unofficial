@@ -414,8 +414,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
     }
 
     @Override
-    protected boolean checkRecipe() {
-        ItemStack controllerStack = getControllerSlot();
+    public boolean checkRecipe(ItemStack controllerStack) {
         // Public pipe actions
         setElectricityStats();
         int oldYHead = yHead;
@@ -423,9 +422,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
             stopMachine();
             return false;
         }
-        startRecipeProcessing();
         putMiningPipesFromInputsInController();
-        endRecipeProcessing();
         return switch (workState) {
             case STATE_DOWNWARD -> workingDownward(
                 controllerStack,
