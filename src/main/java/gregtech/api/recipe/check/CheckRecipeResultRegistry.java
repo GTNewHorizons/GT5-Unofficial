@@ -41,6 +41,10 @@ public class CheckRecipeResultRegistry {
      */
     public static final CheckRecipeResult SUCCESSFUL = SimpleCheckRecipeResult.ofSuccessFactory("success");
     /**
+     * All requirements met to generator power.
+     */
+    public static final CheckRecipeResult GENERATING = SimpleCheckRecipeResult.ofSuccessFactory("generating");
+    /**
      * Cannot find recipe.
      */
     public static final CheckRecipeResult NO_RECIPE = SimpleCheckRecipeResult.ofFailureFactory("no_recipe");
@@ -65,10 +69,6 @@ public class CheckRecipeResultRegistry {
      * Cannot find valid turbine.
      */
     public static final CheckRecipeResult NO_TURBINE_FOUND = SimpleCheckRecipeResult.ofFailureFactory("no_turbine");
-    /**
-     * All requirements met to generator power.
-     */
-    public static final CheckRecipeResult GENERATING = SimpleCheckRecipeResult.ofSuccessFactory("generating");
     /**
      * Cannot find lubricant.
      */

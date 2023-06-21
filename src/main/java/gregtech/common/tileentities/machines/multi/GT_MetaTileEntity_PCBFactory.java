@@ -542,8 +542,8 @@ public class GT_MetaTileEntity_PCBFactory extends
                         }
                     }
                 }
-                parallels = (int) Math.max(Math.ceil(Math.log(numberOfNanites) / Math.log(2) + 0.00001), 1);
-                mMaxParallel = parallels;
+                maxParallel = (int) Math.max(Math.ceil(Math.log(numberOfNanites) / Math.log(2) + 0.00001), 1);
+                mMaxParallel = maxParallel;
 
                 int recipeBitMap = recipe.mSpecialValue;
 

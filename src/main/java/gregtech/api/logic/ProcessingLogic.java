@@ -43,9 +43,9 @@ public class ProcessingLogic {
     protected boolean protectItems;
     protected boolean protectFluids;
     protected boolean isRecipeLocked;
-    protected int parallels = 1;
+    protected int maxParallel = 1;
     protected int calculatedParallels = 0;
-    protected Supplier<Integer> parallelSupplier;
+    protected Supplier<Integer> maxParallelSupplier;
     protected int batchSize = 1;
 
     public ProcessingLogic() {}
@@ -72,11 +72,17 @@ public class ProcessingLogic {
         return this;
     }
 
+    /**
+     * Overwrites item output result of the calculation.
+     */
     public ProcessingLogic setOutputItems(ItemStack... itemOutputs) {
         this.outputItems = itemOutputs;
         return this;
     }
 
+    /**
+     * Overwrites fluid output result of the calculation.
+     */
     public ProcessingLogic setOutputFluids(FluidStack... fluidOutputs) {
         this.outputFluids = fluidOutputs;
         return this;
@@ -92,22 +98,34 @@ public class ProcessingLogic {
         return this;
     }
 
+    /**
+     * Enables single recipe locking mode.
+     */
     public ProcessingLogic setRecipeLocking(IRecipeLockable recipeLockableMachine, boolean isRecipeLocked) {
         this.recipeLockableMachine = recipeLockableMachine;
         this.isRecipeLocked = isRecipeLocked;
         return this;
     }
 
-    public ProcessingLogic setParallels(int parallels) {
-        this.parallels = parallels;
+    /**
+     * Sets max amount of parallel.
+     */
+    public ProcessingLogic setMaxParallel(int maxParallel) {
+        this.maxParallel = maxParallel;
         return this;
     }
 
-    public ProcessingLogic setParallelSupplier(Supplier<Integer> supplier) {
-        this.parallelSupplier = supplier;
+    /**
+     * Sets method to get max amount of parallel.
+     */
+    public ProcessingLogic setMaxParallelSupplier(Supplier<Integer> supplier) {
+        this.maxParallelSupplier = supplier;
         return this;
     }
 
+    /**
+     * Sets batch size for batch mode.
+     */
     public ProcessingLogic setBatchSize(int size) {
         this.batchSize = size;
         return this;
@@ -122,26 +140,44 @@ public class ProcessingLogic {
         return this;
     }
 
+    /**
+     * Sets machine this logic runs on.
+     */
     public ProcessingLogic setMachine(IVoidable machine) {
         this.machine = machine;
         return this;
     }
 
+    /**
+     * Overwrites duration result of the calculation.
+     */
     public ProcessingLogic setDuration(long duration) {
         this.duration = duration;
         return this;
     }
 
+    /**
+     * Overwrites EU/t result of the calculation.
+     */
     public ProcessingLogic setCalculatedEut(long calculatedEut) {
         this.calculatedEut = calculatedEut;
         return this;
     }
 
+    /**
+     * Sets voltage of the machine. It doesn't need to be actual voltage (excluding amperage) of the machine;
+     * For example, most of the multiblock machines set maximum possible input power (including amperage) as voltage
+     * and 1 as amperage. That way recipemap search will be executed with overclocked voltage.
+     */
     public ProcessingLogic setAvailableVoltage(long voltage) {
         availableVoltage = voltage;
         return this;
     }
 
+    /**
+     * Sets amperage of the machine. This amperage doesn't involve in EU/t when searching recipemap.
+     * Useful for preventing tier skip but still considering amperage for parallel.
+     */
     public ProcessingLogic setAvailableAmperage(long amperage) {
         availableAmperage = amperage;
         return this;
@@ -153,12 +189,18 @@ public class ProcessingLogic {
         return this;
     }
 
+    /**
+     * Sets custom overclock ratio. By default, it's 2/4.
+     */
     public ProcessingLogic setOverclock(int timeReduction, int powerIncrease) {
         this.overClockTimeReduction = timeReduction;
         this.overClockPowerIncrease = powerIncrease;
         return this;
     }
 
+    /**
+     * Sets overclock ratio to 4/4.
+     */
     public ProcessingLogic enablePerfectOverclock() {
         return this.setOverclock(4, 4);
     }
@@ -189,8 +231,8 @@ public class ProcessingLogic {
         GT_Recipe_Map recipeMap = recipeMapSupplier.get();
         if (recipeMap == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        if (parallelSupplier != null) {
-            parallels = parallelSupplier.get();
+        if (maxParallelSupplier != null) {
+            maxParallel = maxParallelSupplier.get();
         }
 
         FindRecipeResult findRecipeResult;
@@ -264,7 +306,7 @@ public class ProcessingLogic {
             .setAvailableEUt(availableVoltage * availableAmperage)
             .setMachine(machine, protectItems, protectFluids)
             .setRecipeLocked(recipeLockableMachine, isRecipeLocked)
-            .setMaxParallel(parallels)
+            .setMaxParallel(maxParallel)
             .enableBatchMode(batchSize)
             .enableConsumption()
             .enableOutputCalculation();

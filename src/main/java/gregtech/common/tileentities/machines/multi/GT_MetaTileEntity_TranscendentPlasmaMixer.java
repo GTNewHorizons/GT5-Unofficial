@@ -173,7 +173,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
                 setCalculatedEut(0);
                 return result;
             }
-        }.setParallelSupplier(() -> {
+        }.setMaxParallelSupplier(() -> {
             ItemStack controllerStack = getControllerSlot();
             if (controllerStack != null && controllerStack.getItem() instanceof GT_IntegratedCircuit_Item) {
                 multiplier = controllerStack.stackSize * max(1, controllerStack.getItemDamage());

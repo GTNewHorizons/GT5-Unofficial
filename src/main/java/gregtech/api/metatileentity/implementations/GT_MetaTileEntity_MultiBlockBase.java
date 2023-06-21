@@ -703,7 +703,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(getMaxInputVoltage());
+        // Since multi-amp hatch does not extend GT energy hatch, we don't need to worry about tier skip
+        // by using getMaxInputPower instead of getMaxInputVoltage.
+        logic.setAvailableVoltage(getMaxInputPower());
         logic.setAvailableAmperage(1);
     }
 
@@ -912,6 +914,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return injected > 0;
     }
 
+    /**
+     * Sums up voltage of energy hatches. Amperage does not matter.
+     */
     public long getMaxInputVoltage() {
         long rVoltage = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
@@ -920,6 +925,21 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return rVoltage;
     }
 
+    /**
+     * Sums up max input EU/t of energy hatches, amperage included.
+     */
+    public long getMaxInputPower() {
+        long eut = 0;
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) if (isValidMetaTileEntity(tHatch)) {
+            IGregTechTileEntity baseTile = tHatch.getBaseMetaTileEntity();
+            eut += baseTile.getInputVoltage() * baseTile.getInputAmperage();
+        }
+        return eut;
+    }
+
+    /**
+     * Returns voltage tier of energy hatches. If multiple tiers are found, returns 0.
+     */
     public long getInputVoltageTier() {
         long rTier = 0;
         if (mEnergyHatches.size() > 0) {
