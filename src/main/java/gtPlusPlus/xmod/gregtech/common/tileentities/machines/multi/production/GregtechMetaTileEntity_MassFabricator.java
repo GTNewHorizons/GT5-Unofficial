@@ -297,8 +297,8 @@ public class GregtechMetaTileEntity_MassFabricator
                 0);
 
         GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
-                .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes)
-                .enableConsumption().enableOutputCalculation().setController(this);
+                .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setEUtModifier(aEUPercent / 100.0f)
+                .setMaxParallel(aMaxParallelRecipes).enableConsumption().enableOutputCalculation().setController(this);
 
         if (batchMode) {
             helper.enableBatchMode(128);
@@ -310,9 +310,13 @@ public class GregtechMetaTileEntity_MassFabricator
             return false;
         }
 
+        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+        this.mEfficiencyIncrease = 10000;
+
         GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tEnergy)
                 .setDuration(tRecipe.mDuration).setEUtDiscount(aEUPercent / 100.0f)
-                .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent)).setParallel(helper.getCurrentParallel())
+                .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
+                .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplier()))
                 .calculate();
         lEUt = -calculator.getConsumption();
         mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
