@@ -325,7 +325,7 @@ public class ProcessingLogic {
      */
     protected GT_OverclockCalculator createOverclockCalculator(GT_Recipe recipe, GT_ParallelHelper helper) {
         return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
-            .setParallel(helper.getCurrentParallel())
+            .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplier()))
             .setDuration(recipe.mDuration)
             .setAmperage(availableAmperage)
             .setEUt(availableVoltage)
