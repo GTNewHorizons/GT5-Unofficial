@@ -68,7 +68,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
     }
 
     @Override
-    protected boolean checkRecipe() {
+    public boolean checkRecipe(ItemStack aStack) {
         if (!checkRecursiveBlocks()) {
             mEfficiency = 0;
             mEfficiencyIncrease = 0;

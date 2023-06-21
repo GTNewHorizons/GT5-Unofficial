@@ -29,6 +29,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.TestOnly;
 import org.lwjgl.input.Keyboard;
 
@@ -450,11 +451,22 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
     }
 
-    protected boolean checkRecipe() {
+    /**
+     * Starts checking recipe with some operations needed to actually run the check. Overriding this without due care
+     * may result in dupe of items, hence it's marked as final.
+     * <p>
+     * See {@link #createProcessingLogic()} or {@link #checkProcessing()} for what you want to override.
+     *
+     * @return If Successfully found recipe and/or started processing
+     */
+    protected final boolean checkRecipe() {
         startRecipeProcessing();
         CheckRecipeResult result = checkProcessing();
-        if (result.wasSuccessful() && getProcessStartSound() != null) {
-            sendLoopStart(PROCESS_START_SOUND_INDEX);
+        if (!CheckRecipeResultRegistry.isRegistered(result.getID())) {
+            throw new RuntimeException(String.format("Result %s is not registered for registry", result.getID()));
+        }
+        if (result.wasSuccessful()) {
+            sendStartMultiBlockSoundLoop();
         }
         this.checkRecipeResult = result;
         endRecipeProcessing();
@@ -533,6 +545,12 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             }
         }
         return mPollution < 10000;
+    }
+
+    protected void sendStartMultiBlockSoundLoop() {
+        if (getProcessStartSound() != null) {
+            sendLoopStart(PROCESS_START_SOUND_INDEX);
+        }
     }
 
     @Override
@@ -622,15 +640,18 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public abstract boolean isCorrectMachinePart(ItemStack aStack);
 
     /**
-     * Checks the Recipe
-     *
-     * @deprecated Use {@link #checkProcessing()} instead
+     * @deprecated Use {@link #createProcessingLogic()} or {@link #checkProcessing()}
      */
     @Deprecated
     public boolean checkRecipe(ItemStack aStack) {
         return false;
     }
 
+    /**
+     * Checks recipe and setup machine if it's successful.
+     * <p>
+     * For generic machine working with recipemap, use {@link #createProcessingLogic()} to make use of shared codebase.
+     */
     @Nonnull
     public CheckRecipeResult checkProcessing() {
         // If no logic is found, try legacy checkRecipe
@@ -1178,10 +1199,17 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return rList;
     }
 
+    @Override
     public GT_Recipe_Map getRecipeMap() {
         return null;
     }
 
+    /**
+     * Creates logic to run recipe check based on recipemap. This runs only once, on class instantiation.
+     * <p>
+     * If this machine doesn't use recipemap or does some complex things, override {@link #checkProcessing()}.
+     */
+    @ApiStatus.OverrideOnly
     protected ProcessingLogic createProcessingLogic() {
         return null;
     }

@@ -18,6 +18,9 @@ import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
+/**
+ * Logic class to calculate result of recipe check from inputs, based on recipemap.
+ */
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class ProcessingLogic {
 
@@ -46,6 +49,8 @@ public class ProcessingLogic {
     protected int batchSize = 1;
 
     public ProcessingLogic() {}
+
+    // === Setters ===
 
     public ProcessingLogic setInputItems(ItemStack... itemInputs) {
         this.inputItems = itemInputs;
@@ -159,7 +164,7 @@ public class ProcessingLogic {
     }
 
     /**
-     * Clears calculated outputs, and provided machine inputs
+     * Clears calculated results and provided machine inputs to prepare for the next machine operation.
      */
     public ProcessingLogic clear() {
         this.inputItems = null;
@@ -172,6 +177,11 @@ public class ProcessingLogic {
         return this;
     }
 
+    // === Logic ===
+
+    /**
+     * Executes the recipe check: Find recipe from recipemap, Calculate parallel, overclock and outputs.
+     */
     @Nonnull
     public CheckRecipeResult process() {
         if (recipeMapSupplier == null) return CheckRecipeResultRegistry.NO_RECIPE;
@@ -244,6 +254,9 @@ public class ProcessingLogic {
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
+    /**
+     * Override to tweak parallel logic if needed.
+     */
     protected GT_ParallelHelper createParallelHelper(GT_Recipe recipe) {
         return new GT_ParallelHelper().setRecipe(recipe)
             .setItemInputs(inputItems)
@@ -257,11 +270,17 @@ public class ProcessingLogic {
             .enableOutputCalculation();
     }
 
+    /**
+     * Override to do additional check for finding recipe if needed, mainly for special value of the recipe.
+     */
     @Nonnull
     protected CheckRecipeResult validateRecipe(GT_Recipe recipe) {
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
+    /**
+     * Override to tweak overclock logic if needed.
+     */
     protected GT_OverclockCalculator createOverclockCalculator(GT_Recipe recipe, GT_ParallelHelper helper) {
         return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
             .setParallel(helper.getCurrentParallel())
@@ -271,6 +290,8 @@ public class ProcessingLogic {
             .setDurationDecreasePerOC(overClockTimeReduction)
             .setEUtIncreasePerOC(overClockPowerIncrease);
     }
+
+    // === Getters ===
 
     public ItemStack[] getOutputItems() {
         return outputItems;

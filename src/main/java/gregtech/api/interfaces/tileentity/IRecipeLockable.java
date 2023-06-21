@@ -49,7 +49,5 @@ public interface IRecipeLockable {
         return null;
     }
 
-    default GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return null;
-    }
+    GT_Recipe.GT_Recipe_Map getRecipeMap();
 }

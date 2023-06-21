@@ -13,7 +13,7 @@ public class CheckRecipeResultRegistry {
      * @param sample Sample object to register
      */
     public static void register(CheckRecipeResult sample) {
-        if (registry.containsKey(sample.getID())) {
+        if (isRegistered(sample.getID())) {
             throw new IllegalStateException(
                 String.format(
                     "ID %s is already registered for %s",
@@ -26,10 +26,14 @@ public class CheckRecipeResultRegistry {
     }
 
     public static CheckRecipeResult getSampleFromRegistry(String id) {
-        if (!registry.containsKey(id)) {
+        if (!isRegistered(id)) {
             throw new RuntimeException("Unknown id: " + id);
         }
         return registry.get(id);
+    }
+
+    public static boolean isRegistered(String id) {
+        return registry.containsKey(id);
     }
 
     /**
@@ -75,7 +79,7 @@ public class CheckRecipeResultRegistry {
     public static final CheckRecipeResult FUEL_QUALITY_TOO_HIGH = SimpleCheckRecipeResult
         .ofFailureFactory("fuel_quality_too_high");
     /**
-     * No data sticks found.
+     * No data sticks found for Assembly Line.
      */
     public static final CheckRecipeResult NO_DATA_STICKS = SimpleCheckRecipeResult.ofFailureFactory("no_data_sticks");
 

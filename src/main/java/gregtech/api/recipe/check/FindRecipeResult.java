@@ -48,16 +48,31 @@ public class FindRecipeResult {
         return Objects.requireNonNull(recipe);
     }
 
+    /**
+     * Successfully found recipe.
+     */
     public static FindRecipeResult ofSuccess(@Nonnull GT_Recipe recipe) {
         return new FindRecipeResult(State.FOUND, Objects.requireNonNull(recipe));
     }
 
+    /**
+     * Recipe was found, but voltage is not sufficient to run.
+     */
     public static FindRecipeResult ofInsufficientVoltage(@Nonnull GT_Recipe recipe) {
         return new FindRecipeResult(State.INSUFFICIENT_VOLTAGE, Objects.requireNonNull(recipe));
     }
 
+    /**
+     * No recipe found.
+     */
     public static final FindRecipeResult NOT_FOUND = new FindRecipeResult(State.NOT_FOUND, null);
+    /**
+     * For Microwave.
+     */
     public static final FindRecipeResult EXPLODE = new FindRecipeResult(State.EXPLODE, null);
+    /**
+     * For Microwave.
+     */
     public static final FindRecipeResult ON_FIRE = new FindRecipeResult(State.ON_FIRE, null);
 
     public enum State {

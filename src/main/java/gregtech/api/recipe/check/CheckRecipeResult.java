@@ -3,8 +3,10 @@ package gregtech.api.recipe.check;
 import net.minecraft.network.PacketBuffer;
 
 /**
- * Class to indicate the result of recipe check in the machine. Sample instance must be registered to
- * {@link CheckRecipeResultRegistry}.
+ * Class to indicate the result of recipe check in the machine. It doesn't need to be actual result of recipemap check,
+ * but can also be status of whether to start the machine. Examples can be found at {@link CheckRecipeResultRegistry}.
+ * <p>
+ * Sample instance must be registered to {@link CheckRecipeResultRegistry}.
  */
 public interface CheckRecipeResult {
 
