@@ -221,6 +221,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_Exten
         while (!list.isEmpty()) {
             List<ItemStack> toOutputNow = mappingFunction.apply(list.get(0));
             if (!ignoreEmptiness && emptySlots < toOutputNow.size()) break;
+            emptySlots -= toOutputNow.size();
             list.remove(0);
             wasSomethingRemoved = true;
             for (ItemStack stack : toOutputNow) {
