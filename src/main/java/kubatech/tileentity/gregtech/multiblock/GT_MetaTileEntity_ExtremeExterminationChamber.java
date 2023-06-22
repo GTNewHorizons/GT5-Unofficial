@@ -510,6 +510,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
             this.mMaxProgresstime = 400;
         } else {
             if (getMaxInputEu() < recipe.mEUt) return false;
+            if (recipe.alwaysinfernal && getMaxInputEu() < recipe.mEUt * 8) return false;
 
             double attackDamage = DIAMOND_SPIKES_DAMAGE; // damage from spikes
             GT_MetaTileEntity_Hatch_InputBus inputbus = this.mInputBusses.size() == 0 ? null : this.mInputBusses.get(0);

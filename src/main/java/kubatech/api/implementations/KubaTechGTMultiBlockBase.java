@@ -25,6 +25,8 @@ import static kubatech.api.Variables.ln4;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Function;
 
 import net.minecraft.item.ItemStack;
@@ -48,6 +50,8 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 
 public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T>>
     extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T> {
@@ -194,6 +198,36 @@ public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_Exten
 
     public double getVoltageTierExact() {
         return Math.log((double) getMaxInputEu() / 8d) / ln4 + 1e-8d;
+    }
+
+    protected boolean tryOutputAll(List<ItemStack> list) {
+        return tryOutputAll(list, l -> Collections.singletonList((ItemStack) l));
+    }
+
+    protected boolean tryOutputAll(List<?> list, Function<Object, List<ItemStack>> mappingFunction) {
+        if (list == null || list.isEmpty() || mappingFunction == null) return false;
+        int emptySlots = 0;
+        boolean ignoreEmptiness = false;
+        for (GT_MetaTileEntity_Hatch_OutputBus i : mOutputBusses) {
+            if (i instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
+                ignoreEmptiness = true;
+                break;
+            }
+            for (int j = 0; j < i.getSizeInventory(); j++)
+                if (i.isValidSlot(j)) if (i.getStackInSlot(j) == null) emptySlots++;
+        }
+        if (emptySlots == 0 && !ignoreEmptiness) return false;
+        boolean wasSomethingRemoved = false;
+        while (!list.isEmpty()) {
+            List<ItemStack> toOutputNow = mappingFunction.apply(list.get(0));
+            if (!ignoreEmptiness && emptySlots < toOutputNow.size()) break;
+            list.remove(0);
+            wasSomethingRemoved = true;
+            for (ItemStack stack : toOutputNow) {
+                addOutput(stack);
+            }
+        }
+        return wasSomethingRemoved;
     }
 
     @Override

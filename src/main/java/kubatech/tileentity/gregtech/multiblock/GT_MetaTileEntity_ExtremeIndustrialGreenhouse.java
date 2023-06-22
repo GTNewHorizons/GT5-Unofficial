@@ -121,7 +121,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
@@ -129,7 +128,6 @@ import gregtech.common.GT_DummyWorld;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_Item_Ores;
 import gregtech.common.blocks.GT_TileEntity_Ores;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.Crops;
 import ic2.core.Ic2Items;
@@ -214,6 +212,17 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
 
     public GT_MetaTileEntity_ExtremeIndustrialGreenhouse(String aName) {
         super(aName);
+    }
+
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+        if (getBaseMetaTileEntity().isServerSide()) tryOutputAll(mStorage, s -> {
+            ArrayList<ItemStack> l = new ArrayList<>(2);
+            l.add(((GreenHouseSlot) s).input.copy());
+            if (((GreenHouseSlot) s).undercrop != null) l.add(((GreenHouseSlot) s).undercrop.copy());
+            return l;
+        });
     }
 
     @Override
@@ -415,22 +424,12 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
                     if (mStorage.size() >= mMaxSlots) break;
                 }
             } else if (setupphase == 2) {
-                int emptySlots = 0;
-                boolean ignoreEmptiness = false;
-                for (GT_MetaTileEntity_Hatch_OutputBus i : mOutputBusses) {
-                    if (i instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
-                        ignoreEmptiness = true;
-                        break;
-                    }
-                    for (int j = 0; j < i.getSizeInventory(); j++)
-                        if (i.isValidSlot(j)) if (i.getStackInSlot(j) == null) emptySlots++;
-                }
-                while (mStorage.size() > 0) {
-                    if (!ignoreEmptiness && (emptySlots -= 2) < 0) break;
-                    this.addOutput(this.mStorage.get(0).input.copy());
-                    if (this.mStorage.get(0).undercrop != null) this.addOutput(this.mStorage.get(0).undercrop.copy());
-                    this.mStorage.remove(0);
-                }
+                tryOutputAll(mStorage, s -> {
+                    ArrayList<ItemStack> l = new ArrayList<>(2);
+                    l.add(((GreenHouseSlot) s).input.copy());
+                    if (((GreenHouseSlot) s).undercrop != null) l.add(((GreenHouseSlot) s).undercrop.copy());
+                    return l;
+                });
             }
 
             this.updateSlots();

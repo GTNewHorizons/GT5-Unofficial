@@ -245,6 +245,13 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         super(aName);
     }
 
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+        if (getBaseMetaTileEntity().isServerSide())
+            tryOutputAll(mStorage, s -> Collections.singletonList(((BeeSimulator) s).queenStack));
+    }
+
     private boolean isCacheDirty = true;
     private final HashMap<String, String> flowersCache = new HashMap<>();
     private final HashSet<String> flowersCheck = new HashSet<>();
@@ -461,11 +468,8 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                 }
                 updateSlots();
             } else if (mPrimaryMode == 1 && mStorage.size() > 0) {
-                for (int i = 0, imax = Math.min(10, mStorage.size()); i < imax; i++) {
-                    addOutput(mStorage.get(0).queenStack);
-                    mStorage.remove(0);
+                if (tryOutputAll(mStorage, s -> Collections.singletonList(((BeeSimulator) s).queenStack)))
                     isCacheDirty = true;
-                }
             } else return false;
             mMaxProgresstime = 10;
             mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
