@@ -236,6 +236,7 @@ GT5U.gui.text.fuel_quality_too_high=§7Fuel quality too high to run without boos
 GT5U.gui.text.no_data_sticks=§7No Data Sticks found
 GT5U.gui.text.none=
 GT5U.gui.text.bio_upgrade_missing=§7Recipe needs Bio Upgrade to start
+GT5U.gui.text.cleanroom_running=§aCleanroom running
 GT5U.gui.text.insufficient_power=§7Recipe needs more power to start. Required: %s EU/t (%s§7)
 GT5U.gui.text.insufficient_heat=§7Recipe needs more heat to start. Required: %s K (%s§7)
 GT5U.gui.text.insufficient_machine_tier=§7Recipe needs higher structure tier. Required: %s
