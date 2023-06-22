@@ -1017,6 +1017,9 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     @Override
     public void disableWorking() {
         mWorks = false;
+        if (hasValidMetaTileEntity()) {
+            mMetaTileEntity.onDisableWorking();
+        }
     }
 
     @Override
@@ -1057,6 +1060,9 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     @Override
     public void setActive(boolean aActive) {
         mActive = aActive;
+        if (hasValidMetaTileEntity()) {
+            mMetaTileEntity.onSetActive(aActive);
+        }
     }
 
     @Override

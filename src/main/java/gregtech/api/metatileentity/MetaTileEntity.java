@@ -316,6 +316,10 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         }
     }
 
+    public void onSetActive(boolean active) {}
+
+    public void onDisableWorking() {}
+
     @Override
     public void inValidate() {
         /* Do nothing */
