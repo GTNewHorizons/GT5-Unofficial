@@ -1716,6 +1716,10 @@ public class GT_Utility {
                 || Items.feather.getDamage(aStack2) == W);
     }
 
+    public static boolean areStacksEqualOrNull(ItemStack stack1, ItemStack stack2) {
+        return (stack1 == null && stack2 == null) || GT_Utility.areStacksEqual(stack1, stack2);
+    }
+
     /**
      * Treat both null list, or both null item stack at same list position as equal.
      * <p>

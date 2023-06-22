@@ -3106,6 +3106,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         private boolean mUsesSpecialSlot = false;
 
         /**
+         * Whether this recipemap checks for equality of special slot when searching recipe.
+         */
+        private boolean isSpecialSlotSensitive = false;
+
+        /**
          * How many fluid inputs does this recipemap has at most. Currently used only for NEI slot placements and does
          * not actually restrict number of fluids used in the recipe.
          */
@@ -3189,6 +3194,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         private int neiTextColorOverride = -1;
 
         private INEISpecialInfoFormatter neiSpecialInfoFormatter;
+
         private final boolean checkForCollision = true;
         private boolean allowNoInput;
         private boolean allowNoInputFluid;
@@ -3291,6 +3297,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         public GT_Recipe_Map setDisableOptimize(boolean disableOptimize) {
             this.disableOptimize = disableOptimize;
+            return this;
+        }
+
+        public GT_Recipe_Map setSpecialSlotSensitive(boolean isSpecialSlotSensitive) {
+            this.isSpecialSlotSensitive = isSpecialSlotSensitive;
             return this;
         }
 
@@ -3993,24 +4004,37 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
             // Check the Recipe which has been used last time in order to not have to search for it again, if possible.
             if (aRecipe != null) if (!aRecipe.mFakeRecipe && aRecipe.mCanBeBuffered
-                && aRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs))
-                return aRecipe.mEnabled && aVoltage * mAmperage >= aRecipe.mEUt ? FindRecipeResult.ofSuccess(aRecipe)
-                    : FindRecipeResult.ofInsufficientVoltage(aRecipe);
+                && aRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
+                    if (!isSpecialSlotSensitive
+                        || GT_Utility.areStacksEqualOrNull((ItemStack) aRecipe.mSpecialItems, aSpecialSlot)) {
+                        return aRecipe.mEnabled && aVoltage * mAmperage >= aRecipe.mEUt
+                            ? FindRecipeResult.ofSuccess(aRecipe)
+                            : FindRecipeResult.ofInsufficientVoltage(aRecipe);
+                    }
+                }
 
             // Now look for the Recipes inside the Item HashMaps, but only when the Recipes usually have Items.
             if (mUsualInputCount > 0 && aInputs != null) for (ItemStack tStack : aInputs) if (tStack != null) {
                 Collection<GT_Recipe> tRecipes = mRecipeItemMap.get(new GT_ItemStack(tStack));
                 if (tRecipes != null) for (GT_Recipe tRecipe : tRecipes) if (!tRecipe.mFakeRecipe
-                    && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs))
-                    return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt
-                        ? FindRecipeResult.ofSuccess(tRecipe)
-                        : FindRecipeResult.ofInsufficientVoltage(tRecipe);
+                    && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
+                        if (!isSpecialSlotSensitive
+                            || GT_Utility.areStacksEqualOrNull((ItemStack) tRecipe.mSpecialItems, aSpecialSlot)) {
+                            return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt
+                                ? FindRecipeResult.ofSuccess(tRecipe)
+                                : FindRecipeResult.ofInsufficientVoltage(tRecipe);
+                        }
+                    }
                 tRecipes = mRecipeItemMap.get(new GT_ItemStack(tStack, true));
                 if (tRecipes != null) for (GT_Recipe tRecipe : tRecipes) if (!tRecipe.mFakeRecipe
-                    && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs))
-                    return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt
-                        ? FindRecipeResult.ofSuccess(tRecipe)
-                        : FindRecipeResult.ofInsufficientVoltage(tRecipe);
+                    && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
+                        if (!isSpecialSlotSensitive
+                            || GT_Utility.areStacksEqualOrNull((ItemStack) tRecipe.mSpecialItems, aSpecialSlot)) {
+                            return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt
+                                ? FindRecipeResult.ofSuccess(tRecipe)
+                                : FindRecipeResult.ofInsufficientVoltage(tRecipe);
+                        }
+                    }
             }
 
             // If the minimal Amount of Items for the Recipe is 0, then it could be a Fluid-Only Recipe, so check that
@@ -4018,10 +4042,14 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             if (mMinimalInputItems == 0 && aFluids != null) for (FluidStack aFluid : aFluids) if (aFluid != null) {
                 Collection<GT_Recipe> tRecipes = mRecipeFluidMap.get(aFluid.getFluid());
                 if (tRecipes != null) for (GT_Recipe tRecipe : tRecipes) if (!tRecipe.mFakeRecipe
-                    && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs))
-                    return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt
-                        ? FindRecipeResult.ofSuccess(tRecipe)
-                        : FindRecipeResult.ofInsufficientVoltage(tRecipe);
+                    && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
+                        if (!isSpecialSlotSensitive
+                            || GT_Utility.areStacksEqualOrNull((ItemStack) tRecipe.mSpecialItems, aSpecialSlot)) {
+                            return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt
+                                ? FindRecipeResult.ofSuccess(tRecipe)
+                                : FindRecipeResult.ofInsufficientVoltage(tRecipe);
+                        }
+                    }
             }
 
             // And nothing has been found.
