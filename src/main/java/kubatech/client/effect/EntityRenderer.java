@@ -41,10 +41,11 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.glu.GLU;
 
+import com.kuba6000.mobsinfo.api.utils.MobUtils;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import kubatech.Tags;
-import kubatech.api.utils.MobUtils;
 import kubatech.config.Config;
 
 @SideOnly(Side.CLIENT)

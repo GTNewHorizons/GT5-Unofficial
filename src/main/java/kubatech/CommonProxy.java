@@ -39,6 +39,7 @@ import kubatech.api.LoaderReference;
 import kubatech.commands.CommandHandler;
 import kubatech.config.Config;
 import kubatech.loaders.MTLoader;
+import kubatech.loaders.MobHandlerLoader;
 import kubatech.loaders.RecipeLoader;
 import kubatech.loaders.TCLoader;
 import kubatech.savedata.PlayerDataManager;
@@ -56,6 +57,7 @@ public class CommonProxy {
         MinecraftForge.EVENT_BUS.register(new PlayerDataManager());
         registerItems();
         registerBlocks();
+        MobHandlerLoader.init();
     }
 
     public void init(FMLInitializationEvent event) {

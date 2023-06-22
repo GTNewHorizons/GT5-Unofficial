@@ -11,7 +11,6 @@ import cpw.mods.fml.relauncher.FMLLaunchHandler;
 public enum Mixin {
 
     // Minecraft
-    EnchantmentHelperMixin("minecraft.EnchantmentHelperMixin", VANILLA),
     WorldMixin("minecraft.WorldMixin", VANILLA),
     EntityAccessor("minecraft.EntityAccessor", VANILLA),
     EntityLivingAccessor("minecraft.EntityLivingAccessor", VANILLA),
@@ -47,10 +46,10 @@ public enum Mixin {
                 .isClient())
             && new HashSet<>(loadedMods).containsAll(targetedMods);
     }
-}
 
-enum Side {
-    BOTH,
-    CLIENT,
-    SERVER
+    enum Side {
+        BOTH,
+        CLIENT,
+        SERVER
+    }
 }

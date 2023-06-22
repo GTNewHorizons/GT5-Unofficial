@@ -2,25 +2,6 @@
 
 repositories {
     maven {
-        name = "GTNH Maven"
-        url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
-    }
-    maven {
-        name = "ic2"
-        url = "http://maven.ic2.player.to/"
-        metadataSources {
-            mavenPom()
-            artifact()
-        }
-    }
-    maven {
-        url "https://cursemaven.com"
-    }
-    maven {
-        name = "jitpack.io"
-        url = "https://jitpack.io"
-    }
-    maven {
         url 'https://repo.openmods.info/artifactory/openmods/'
     }
 }

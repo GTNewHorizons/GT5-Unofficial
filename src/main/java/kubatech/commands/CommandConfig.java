@@ -31,10 +31,9 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 
-import kubatech.api.network.LoadConfigPacket;
 import kubatech.config.Config;
 import kubatech.kubatech;
-import kubatech.loaders.MobRecipeLoader;
+import kubatech.network.LoadConfigPacket;
 
 @CommandHandler.ChildCommand
 public class CommandConfig extends CommandBase {
@@ -48,7 +47,7 @@ public class CommandConfig extends CommandBase {
         final String key;
 
         Translations() {
-            key = "command.config." + this.name()
+            key = "kubatech.command.config." + this.name()
                 .toLowerCase();
         }
 
@@ -93,7 +92,6 @@ public class CommandConfig extends CommandBase {
             return;
         }
         Config.synchronizeConfiguration();
-        MobRecipeLoader.processMobRecipeMap();
         MinecraftServer.getServer()
             .getConfigurationManager().playerEntityList.forEach(p -> {
                 if (!(p instanceof EntityPlayerMP)) return;

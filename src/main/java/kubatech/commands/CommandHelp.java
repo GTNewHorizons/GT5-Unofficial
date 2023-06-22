@@ -39,7 +39,7 @@ public class CommandHelp extends CommandBase {
         final String key;
 
         Translations() {
-            key = "command.help." + this.name()
+            key = "kubatech.command.help." + this.name()
                 .toLowerCase();
         }
 

@@ -24,6 +24,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.kuba6000.mobsinfo.api.MobRecipe.MobNameToRecipeMap;
 import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
@@ -41,7 +42,6 @@ import static kubatech.api.Variables.StructureHologram;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Random;
 import java.util.UUID;
 
@@ -92,6 +92,7 @@ import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.kuba6000.mobsinfo.api.utils.ItemID;
 import com.mojang.authlib.GameProfile;
 
 import WayofTime.alchemicalWizardry.api.alchemy.energy.ReagentRegistry;
@@ -122,18 +123,16 @@ import kubatech.Tags;
 import kubatech.api.LoaderReference;
 import kubatech.api.helpers.ReflectionHelper;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
-import kubatech.api.network.CustomTileEntityPacket;
 import kubatech.api.tileentity.CustomTileEntityPacketHandler;
 import kubatech.api.utils.FastRandom;
-import kubatech.api.utils.ItemID;
 import kubatech.client.effect.EntityRenderer;
-import kubatech.loaders.MobRecipeLoader;
+import kubatech.loaders.MobHandlerLoader;
+import kubatech.network.CustomTileEntityPacket;
 
 public class GT_MetaTileEntity_ExtremeExterminationChamber
     extends KubaTechGTMultiBlockBase<GT_MetaTileEntity_ExtremeExterminationChamber>
     implements CustomTileEntityPacketHandler, ISurvivalConstructable {
 
-    public static final HashMap<String, MobRecipeLoader.MobRecipe> MobNameToRecipeMap = new HashMap<>();
     public static final double DIAMOND_SPIKES_DAMAGE = 9d;
     // Powered spawner with octadic capacitor spawns ~22/min ~= 0.366/sec ~= 2.72s/spawn ~= 54.54t/spawn
     public static final int MOB_SPAWN_INTERVAL = 55;
@@ -369,10 +368,10 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         if (message.getDataBoolean()) {
             renderEntity = true;
             String mobType = message.getDataString();
-            MobRecipeLoader.MobRecipe r = MobNameToRecipeMap.get(mobType);
+            MobHandlerLoader.MobEECRecipe r = MobHandlerLoader.recipeMap.get(mobType);
             if (r != null) {
                 if (entityRenderer == null) setupEntityRenderer(getBaseMetaTileEntity(), 40);
-                entityRenderer.setEntity(r.entity);
+                entityRenderer.setEntity(r.recipe.entity);
             } else entityRenderer.setEntity(null);
         } else {
             renderEntity = false;
@@ -496,10 +495,10 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         if (mobType.equals("Skeleton") && getBaseMetaTileEntity().getWorld().provider instanceof WorldProviderHell
             && rand.nextInt(5) > 0) mobType = "witherSkeleton";
 
-        MobRecipeLoader.MobRecipe recipe = MobNameToRecipeMap.get(mobType);
+        MobHandlerLoader.MobEECRecipe recipe = MobHandlerLoader.recipeMap.get(mobType);
 
         if (recipe == null) return false;
-        if (!recipe.isPeacefulAllowed && this.getBaseMetaTileEntity()
+        if (!recipe.recipe.isPeacefulAllowed && this.getBaseMetaTileEntity()
             .getWorld().difficultySetting == EnumDifficulty.PEACEFUL) return false;
 
         if (isInRitualMode && isRitualValid()) {
@@ -510,7 +509,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
             this.mMaxProgresstime = 400;
         } else {
             if (getMaxInputEu() < recipe.mEUt) return false;
-            if (recipe.alwaysinfernal && getMaxInputEu() < recipe.mEUt * 8) return false;
+            if (recipe.recipe.alwaysinfernal && getMaxInputEu() < recipe.mEUt * 8) return false;
 
             double attackDamage = DIAMOND_SPIKES_DAMAGE; // damage from spikes
             GT_MetaTileEntity_Hatch_InputBus inputbus = this.mInputBusses.size() == 0 ? null : this.mInputBusses.get(0);
@@ -539,7 +538,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 weaponCache.isValid = true;
                 weaponCache.looting = Math
                     .min(4, EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, lootingHolder));
-                weaponCache.id = ItemID.create_NoCopy(lootingHolder, true, true);
+                weaponCache.id = ItemID.createNoCopy(lootingHolder, true, true);
             }
             if (weaponCache.isValid) attackDamage += weaponCache.attackDamage;
 
@@ -558,7 +557,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 Item lootingHolderItem = lootingHolder.getItem();
                 for (int i = 0; i < times + 1; i++) {
                     // noinspection ConstantConditions
-                    if (!lootingHolderItem.hitEntity(lootingHolder, recipe.entity, EECPlayer)) break;
+                    if (!lootingHolderItem.hitEntity(lootingHolder, recipe.recipe.entity, EECPlayer)) break;
                     if (lootingHolder.stackSize == 0) {
                         // noinspection ConstantConditions
                         inputbus.setInventorySlotContents(0, null);

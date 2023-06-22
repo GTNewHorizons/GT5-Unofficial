@@ -49,8 +49,8 @@ import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 import kubatech.api.enums.ItemList;
 import kubatech.api.helpers.ReflectionHelper;
-import kubatech.api.network.CustomTileEntityPacket;
-import kubatech.api.network.LoadConfigPacket;
+import kubatech.network.CustomTileEntityPacket;
+import kubatech.network.LoadConfigPacket;
 
 @SuppressWarnings("unused")
 @Mod(
@@ -60,6 +60,7 @@ import kubatech.api.network.LoadConfigPacket;
     acceptedMinecraftVersions = "[1.7.10]",
     dependencies = "required-after: gregtech; " + "required-after: gtnhmixins@[2.0.1,); "
         + "required-after: modularui; "
+        + "required-after: mobsinfo; "
         + "after: EnderIO; "
         + "after: AWWayofTime; "
         + "after: ExtraUtilities; "

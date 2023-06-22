@@ -51,59 +51,10 @@ public class Config {
 
     public static class MobHandler {
 
-        public static boolean mobHandlerEnabled = true;
-
-        public enum _CacheRegenerationTrigger {
-
-            Never,
-            ModAdditionRemoval,
-            ModAdditionRemovalChange,
-            Always;
-
-            public static _CacheRegenerationTrigger get(int oridinal) {
-                return values()[oridinal];
-            }
-        }
-
-        public static _CacheRegenerationTrigger regenerationTrigger = _CacheRegenerationTrigger.ModAdditionRemovalChange;
-        public static boolean includeEmptyMobs = true;
-        public static String[] mobBlacklist;
         public static double playerOnlyDropsModifier = .1d;
 
         private static void load(Configuration configuration) {
             Category category = Category.MOB_HANDLER;
-            mobHandlerEnabled = configuration
-                .get(category.get(), "Enabled", true, "Enable \"Mob Drops\" NEI page and Extreme Extermination Chamber")
-                .getBoolean();
-            StringBuilder c = new StringBuilder("When will cache regeneration trigger? ");
-            for (_CacheRegenerationTrigger value : _CacheRegenerationTrigger.values()) c.append(value.ordinal())
-                .append(" - ")
-                .append(value.name())
-                .append(", ");
-            regenerationTrigger = _CacheRegenerationTrigger.get(
-                configuration
-                    .get(
-                        category.get(),
-                        "CacheRegenerationTrigger",
-                        _CacheRegenerationTrigger.ModAdditionRemovalChange.ordinal(),
-                        c.toString())
-                    .getInt());
-            includeEmptyMobs = configuration
-                .get(category.get(), "IncludeEmptyMobs", true, "Include mobs that have no drops in NEI")
-                .getBoolean();
-            mobBlacklist = configuration
-                .get(
-                    category.get(),
-                    "MobBlacklist",
-                    new String[] { "Giant", "Thaumcraft.TravelingTrunk", "chisel.snowman", "OpenBlocks.Luggage",
-                        "OpenBlocks.MiniMe", "SpecialMobs.SpecialCreeper", "SpecialMobs.SpecialZombie",
-                        "SpecialMobs.SpecialPigZombie", "SpecialMobs.SpecialSlime", "SpecialMobs.SpecialSkeleton",
-                        "SpecialMobs.SpecialEnderman", "SpecialMobs.SpecialCaveSpider", "SpecialMobs.SpecialGhast",
-                        "SpecialMobs.SpecialWitch", "SpecialMobs.SpecialSpider", "TwilightForest.HydraHead",
-                        "TwilightForest.RovingCube", "TwilightForest.Harbinger Cube", "TwilightForest.Adherent",
-                        "SpecialMobs.SpecialSilverfish", },
-                    "These mobs will be skipped when generating recipe map")
-                .getStringList();
             playerOnlyDropsModifier = configuration
                 .get(
                     category.get(),

@@ -1,40 +1,26 @@
 #This file is a translation file for KubaTech
 
 #NEI
-mobhandler.normal_drops=Normal drops
-mobhandler.rare_drops=Rare drops
-mobhandler.additional_drops=Additional drops
-mobhandler.infernal_drops=Infernal drops
-mobhandler.infernal_cannot=Cannot spawn infernal
-mobhandler.infernal_can=Can spawn infernal
-mobhandler.infernal_always=Always spawns infernal
-mobhandler.mod=Mod: 
-mobhandler.max_health=Max health: 
-mobhandler.boss=BOSS
-mobhandler.cannot_use_vial=Can't be in soul vial
-mobhandler.chance=Chance: %.2f%%
-mobhandler.average_reminder=§7§oPlease remember that these are average drops.
-mobhandler.lootable=Looting is applied
-mobhandler.player_only=§7Hard player-only
-mobhandler.eec_chance=§5Chance to drop in EEC: %.2f%%
+kubatech.mobhandler.eec_chance=§5Chance to drop in EEC: %.2f%%
+kubatech.mobhandler.eec_disabled=§5Does not drop in EEC
 
 #Commands
-commandhandler.invalid=§cInvalid use ! The proper use of this command is /%s
-commandhandler.cant_find=§cCan't find command option %s
-commandhandler.generic_help=§cYou can also use "/kubatech help" to get possible commands
-commandhandler.usage=<option>
-command.help.possible_commands=Possible commands: 
-command.help.usage=- Shows all possible commands
-command.config.invalid_option=§cInvalid option ! Possible options: reload
-command.config.success=§aConfig reloaded successfully !
-command.config.usage=<option>
+kubatech.commandhandler.invalid=§cInvalid use ! The proper use of this command is /%s
+kubatech.commandhandler.cant_find=§cCan't find command option %s
+kubatech.commandhandler.generic_help=§cYou can also use "/kubatech help" to get possible commands
+kubatech.commandhandler.usage=<option>
+kubatech.command.help.possible_commands=Possible commands: 
+kubatech.command.help.usage=- Shows all possible commands
+kubatech.command.config.invalid_option=§cInvalid option ! Possible options: reload
+kubatech.command.config.success=§aConfig reloaded successfully !
+kubatech.command.config.usage=<option>
 
-command.tea.invalid_option=§cInvalid usage !
-command.tea.player_not_found=§cPlayer not found !
-command.tea.success_get=Player %s has %d Tea
-command.tea.success_set=Player %s now has %d Tea
-command.tea.success_add=Player %s now has %d Tea
-command.tea.usage=<username> get/set/add (<amount>)
+kubatech.command.tea.invalid_option=§cInvalid usage !
+kubatech.command.tea.player_not_found=§cPlayer not found !
+kubatech.command.tea.success_get=Player %s has %d Tea
+kubatech.command.tea.success_set=Player %s now has %d Tea
+kubatech.command.tea.success_add=Player %s now has %d Tea
+kubatech.command.tea.usage=<username> get/set/add (<amount>)
 
 
 #Blocks

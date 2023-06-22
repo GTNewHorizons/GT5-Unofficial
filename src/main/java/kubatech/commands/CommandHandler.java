@@ -56,7 +56,7 @@ public class CommandHandler extends CommandBase {
         final String key;
 
         Translations() {
-            key = "commandhandler." + this.name()
+            key = "kubatech.commandhandler." + this.name()
                 .toLowerCase();
         }
 

@@ -29,10 +29,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import com.kuba6000.mobsinfo.api.utils.ItemID;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import kubatech.api.LoaderReference;
 import kubatech.api.enums.ItemList;
-import kubatech.api.utils.ItemID;
 import kubatech.loaders.item.items.TeaUltimate;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApiHelper;
@@ -81,7 +82,7 @@ public class TCLoader {
             ItemList.WhiteTea.get(1), ItemList.YellowTea.get(1) };
 
         final HashSet<ItemID> componentsHashed = Arrays.stream(components)
-            .map(stack -> ItemID.create_NoCopy(stack, true, false, true))
+            .map(stack -> ItemID.createNoCopy(stack, true, false, true))
             .collect(Collectors.toCollection(HashSet::new));
 
         // noinspection unchecked
@@ -106,7 +107,7 @@ public class TCLoader {
                             return false;
                         if (componentsHashed.size() > input.size()) return false;
                         HashSet<ItemID> hashedInputs = input.stream()
-                            .map(stack -> ItemID.create_NoCopy(stack, true, false, true))
+                            .map(stack -> ItemID.createNoCopy(stack, true, false, true))
                             .collect(Collectors.toCollection(HashSet::new));
                         return hashedInputs.containsAll(componentsHashed);
                     }

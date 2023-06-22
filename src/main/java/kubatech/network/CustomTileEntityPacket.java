@@ -18,7 +18,7 @@
  * spotless:on
  */
 
-package kubatech.api.network;
+package kubatech.network;
 
 import java.nio.charset.StandardCharsets;
 

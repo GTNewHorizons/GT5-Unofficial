@@ -40,13 +40,8 @@ import kubatech.Tags;
 
 public class NEI_Config implements IConfigureNEI {
 
-    public static boolean isAdded = true;
-
     @Override
     public void loadConfig() {
-        isAdded = false;
-        new Mob_Handler();
-        isAdded = true;
         API.hideItem(LegendaryBlackTea.get(1));
         API.hideItem(LegendaryButterflyTea.get(1));
         API.hideItem(LegendaryEarlGrayTea.get(1));

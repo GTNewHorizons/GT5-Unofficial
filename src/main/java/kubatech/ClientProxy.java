@@ -30,7 +30,6 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import kubatech.api.utils.ModUtils;
-import kubatech.loaders.MobRecipeLoader;
 import kubatech.nei.IMCForNEI;
 
 @SuppressWarnings("unused")
@@ -72,6 +71,5 @@ public class ClientProxy extends CommonProxy {
 
     public void loadComplete(FMLLoadCompleteEvent event) {
         super.loadComplete(event);
-        MobRecipeLoader.generateMobRecipeMap();
     }
 }

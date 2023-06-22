@@ -195,9 +195,6 @@ public class RecipeLoader {
         // Runs on server start
         if (lateRecipesInitialized) return;
         lateRecipesInitialized = true;
-
-        MobRecipeLoader.generateMobRecipeMap();
-        MobRecipeLoader.processMobRecipeMap();
     }
 
     private static void RegisterTeaLine() {

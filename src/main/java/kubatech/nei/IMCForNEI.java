@@ -29,10 +29,7 @@ import kubatech.api.LoaderReference;
 public class IMCForNEI {
 
     public static void IMCSender() {
-
-        sendHandler("kubatech.mobhandler", "minecraft:diamond_sword", 168, 192, 1, 6);
-        sendCatalyst("kubatech.mobhandler", "minecraft:diamond_sword");
-        if (LoaderReference.EnderIO) sendCatalyst("kubatech.mobhandler", "gregtech:gt.blockmachines:14201");
+        if (LoaderReference.EnderIO) sendCatalyst("mobsinfo.mobhandler", "gregtech:gt.blockmachines:14201");
     }
 
     private static void sendHandler(String aName, String aBlock, int width, int height, int maxrecipesperpage,
