@@ -42,6 +42,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynam
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -229,13 +230,13 @@ public class GT_MetaTileEntity_DieselEngine
 
                 // Check to prevent burning HOG without consuming it, if not boosted
                 if (!boostEu && fuelValue > getNominalOutput()) {
-                    return CheckRecipeResultRegistry.FUEL_QUALITY_TOO_HIGH;
+                    return SimpleCheckRecipeResult.ofFailure("fuel_quality_too_high");
                 }
 
                 // Deplete Lubricant. 1000L should = 1 hour of runtime (if baseEU = 2048)
                 if ((mRuntime % 72 == 0 || mRuntime == 0)
                     && !depleteInput(Materials.Lubricant.getFluid((boostEu ? 2L : 1L) * getAdditiveFactor())))
-                    return CheckRecipeResultRegistry.NO_LUBRICANT;
+                    return SimpleCheckRecipeResult.ofFailure("no_lubricant");
 
                 fuelRemaining = tFluid.amount; // Record available fuel
                 this.mEUt = mEfficiency < 2000 ? 0 : getNominalOutput(); // Output 0 if startup is less than 20%

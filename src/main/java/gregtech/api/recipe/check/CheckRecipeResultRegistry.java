@@ -3,7 +3,7 @@ package gregtech.api.recipe.check;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CheckRecipeResultRegistry {
+public final class CheckRecipeResultRegistry {
 
     private static final Map<String, CheckRecipeResult> registry = new HashMap<>();
 
@@ -39,49 +39,35 @@ public class CheckRecipeResultRegistry {
     /**
      * Successfully found recipe.
      */
-    public static final CheckRecipeResult SUCCESSFUL = SimpleCheckRecipeResult.ofSuccessFactory("success");
+    public static final CheckRecipeResult SUCCESSFUL = SimpleCheckRecipeResult.ofSuccess("success");
     /**
      * All requirements met to generator power.
      */
-    public static final CheckRecipeResult GENERATING = SimpleCheckRecipeResult.ofSuccessFactory("generating");
+    public static final CheckRecipeResult GENERATING = SimpleCheckRecipeResult.ofSuccess("generating");
     /**
      * Cannot find recipe.
      */
-    public static final CheckRecipeResult NO_RECIPE = SimpleCheckRecipeResult.ofFailureFactory("no_recipe");
+    public static final CheckRecipeResult NO_RECIPE = SimpleCheckRecipeResult.ofFailure("no_recipe");
     /**
      * Cannot process recipe because output is full.
      */
-    public static final CheckRecipeResult OUTPUT_FULL = SimpleCheckRecipeResult.ofFailureFactory("output_full");
+    public static final CheckRecipeResult OUTPUT_FULL = SimpleCheckRecipeResult.ofFailure("output_full");
     /**
      * Default unknown state.
      */
-    public static final CheckRecipeResult NONE = SimpleCheckRecipeResult.ofFailureFactory("none");
-    /**
-     * Cannot process recipe because bio upgrade is missing.
-     */
-    public static final CheckRecipeResult BIO_UPGRADE_MISSING = SimpleCheckRecipeResult
-        .ofFailureFactory("bio_upgrade_missing");
+    public static final CheckRecipeResult NONE = SimpleCheckRecipeResult.ofFailure("none");
     /**
      * Cannot find valid fuel for generator.
      */
-    public static final CheckRecipeResult NO_FUEL_FOUND = SimpleCheckRecipeResult.ofFailureFactory("no_fuel");
+    public static final CheckRecipeResult NO_FUEL_FOUND = SimpleCheckRecipeResult.ofFailure("no_fuel");
     /**
      * Cannot find valid turbine.
      */
-    public static final CheckRecipeResult NO_TURBINE_FOUND = SimpleCheckRecipeResult.ofFailureFactory("no_turbine");
-    /**
-     * Cannot find lubricant.
-     */
-    public static final CheckRecipeResult NO_LUBRICANT = SimpleCheckRecipeResult.ofFailureFactory("no_lubricant");
-    /**
-     * Found fuel is of too high quality.
-     */
-    public static final CheckRecipeResult FUEL_QUALITY_TOO_HIGH = SimpleCheckRecipeResult
-        .ofFailureFactory("fuel_quality_too_high");
+    public static final CheckRecipeResult NO_TURBINE_FOUND = SimpleCheckRecipeResult.ofFailure("no_turbine");
     /**
      * No data sticks found for Assembly Line.
      */
-    public static final CheckRecipeResult NO_DATA_STICKS = SimpleCheckRecipeResult.ofFailureFactory("no_data_sticks");
+    public static final CheckRecipeResult NO_DATA_STICKS = SimpleCheckRecipeResult.ofFailure("no_data_sticks");
 
     /**
      * Cannot process recipe because the machine cannot handle required EUt.
@@ -105,17 +91,7 @@ public class CheckRecipeResultRegistry {
     }
 
     static {
-        register(SUCCESSFUL);
-        register(GENERATING);
-        register(NO_RECIPE);
-        register(OUTPUT_FULL);
-        register(NONE);
-        register(BIO_UPGRADE_MISSING);
-        register(NO_FUEL_FOUND);
-        register(NO_TURBINE_FOUND);
-        register(NO_LUBRICANT);
-        register(FUEL_QUALITY_TOO_HIGH);
-        register(NO_DATA_STICKS);
+        register(new SimpleCheckRecipeResult(false, ""));
         register(new ResultInsufficientPower(0));
         register(new ResultInsufficientHeat(0));
         register(new ResultInsufficientMachineTier(0));

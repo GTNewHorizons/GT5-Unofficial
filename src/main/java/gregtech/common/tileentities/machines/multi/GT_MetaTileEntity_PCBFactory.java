@@ -76,6 +76,7 @@ import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -550,7 +551,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                 int recipeBitMap = recipe.mSpecialValue;
 
                 if (((recipeBitMap & mBioBitMap) == mBioBitMap && mBioUpgrade))
-                    return CheckRecipeResultRegistry.BIO_UPGRADE_MISSING;
+                    return SimpleCheckRecipeResult.ofFailure("bio_upgrade_missing");
 
                 int requiredPCBTier = 0;
                 if ((recipeBitMap & mTier3BitMap) == mTier3BitMap) requiredPCBTier = 3;
