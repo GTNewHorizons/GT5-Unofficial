@@ -3883,11 +3883,13 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return aFluid != null && mRecipeFluidNameMap.contains(aFluid.getName());
         }
 
+        @Nullable
         public final GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, boolean aNotUnificated, long aVoltage,
             FluidStack[] aFluids, ItemStack... aInputs) {
             return findRecipe(aTileEntity, null, aNotUnificated, aVoltage, aFluids, null, aInputs);
         }
 
+        @Nullable
         public final GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, boolean aNotUnificated,
             boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack... aInputs) {
             return findRecipe(
@@ -3901,11 +3903,13 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 aInputs);
         }
 
+        @Nullable
         public final GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe,
             boolean aNotUnificated, long aVoltage, FluidStack[] aFluids, ItemStack... aInputs) {
             return findRecipe(aTileEntity, aRecipe, aNotUnificated, aVoltage, aFluids, null, aInputs);
         }
 
+        @Nullable
         public final GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe,
             boolean aNotUnificated, boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids,
             ItemStack... aInputs) {
@@ -3920,6 +3924,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 aInputs);
         }
 
+        @Nullable
         public final GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe,
             boolean aNotUnificated, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
             return findRecipe(aTileEntity, aRecipe, aNotUnificated, false, aVoltage, aFluids, aSpecialSlot, aInputs);
@@ -3927,6 +3932,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         // TODO: make this final after migrating BW
         @SuppressWarnings("unused")
+        @Nullable
         public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated,
             boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot,
             ItemStack... aInputs) {

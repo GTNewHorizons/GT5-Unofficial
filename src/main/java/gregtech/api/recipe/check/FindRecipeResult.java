@@ -41,7 +41,7 @@ public class FindRecipeResult {
     }
 
     /**
-     * Recipe cannot be null if state == FOUND or INSUFFICIENT_VOLTAGE.
+     * You should use this ONLY WHEN state == FOUND or INSUFFICIENT_VOLTAGE.
      */
     @Nonnull
     public GT_Recipe getRecipeNonNull() {

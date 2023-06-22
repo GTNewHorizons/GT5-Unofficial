@@ -299,7 +299,7 @@ public class ProcessingLogic {
     /**
      * Override to tweak parallel logic if needed.
      */
-    protected GT_ParallelHelper createParallelHelper(GT_Recipe recipe) {
+    protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
         return new GT_ParallelHelper().setRecipe(recipe)
             .setItemInputs(inputItems)
             .setFluidInputs(inputFluids)

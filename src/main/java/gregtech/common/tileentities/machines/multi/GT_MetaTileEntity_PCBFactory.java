@@ -20,6 +20,8 @@ import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -571,7 +573,7 @@ public class GT_MetaTileEntity_PCBFactory extends
             }
 
             @Override
-            protected GT_ParallelHelper createParallelHelper(GT_Recipe recipe) {
+            protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
                 return super.createParallelHelper(recipe)
                     .setEUtModifier((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled));
             }

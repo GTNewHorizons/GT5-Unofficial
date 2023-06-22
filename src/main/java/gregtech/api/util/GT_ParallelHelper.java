@@ -1,5 +1,9 @@
 package gregtech.api.util;
 
+import java.util.Objects;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -137,8 +141,8 @@ public class GT_ParallelHelper {
     /**
      * Sets the recipe, which will be used for the parallel calculation
      */
-    public GT_ParallelHelper setRecipe(GT_Recipe aRecipe) {
-        mRecipe = aRecipe;
+    public GT_ParallelHelper setRecipe(@Nonnull GT_Recipe aRecipe) {
+        mRecipe = Objects.requireNonNull(aRecipe);
         return this;
     }
 
@@ -221,6 +225,9 @@ public class GT_ParallelHelper {
     public GT_ParallelHelper build() {
         if (mBuilt) {
             throw new IllegalStateException("Tried to build twice");
+        }
+        if (mRecipe == null) {
+            throw new IllegalStateException("Recipe is not set");
         }
         mBuilt = true;
         determineParallel();
