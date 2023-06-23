@@ -68,7 +68,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
@@ -83,7 +82,6 @@ import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DrillerBase;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -2026,18 +2024,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 .setEnabled(widget -> GT_Utility.isStringValid(checkRecipeResult.getDisplayString())))
             .widget(new CheckRecipeResultSyncer(() -> checkRecipeResult, (result) -> checkRecipeResult = result));
 
-        screenElements.widget(
-            new TextWidget(GT_Utility.trans("143", "Missing Mining Pipe")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> {
-                    if (getBaseMetaTileEntity().getErrorDisplayID() == 0
-                        && this instanceof GT_MetaTileEntity_DrillerBase) {
-                        final ItemStack tItem = inventorySlot.getMcSlot()
-                            .getStack();
-                        return tItem == null
-                            || !GT_Utility.areStacksEqual(tItem, GT_ModHandler.getIC2Item("miningPipe", 1L));
-                    }
-                    return false;
-                }));
         screenElements.widget(
             new TextWidget(GT_Utility.trans("144", "Missing Turbine Rotor")).setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> {
