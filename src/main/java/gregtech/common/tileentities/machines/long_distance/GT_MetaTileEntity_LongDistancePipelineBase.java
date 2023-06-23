@@ -19,6 +19,7 @@
  */
 package gregtech.common.tileentities.machines.long_distance;
 
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static mcp.mobius.waila.api.SpecialChars.BLUE;
 import static mcp.mobius.waila.api.SpecialChars.GOLD;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
@@ -57,7 +58,13 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_MetaTileEntity_BasicHull_NonElectric {
 
+    protected static final int INPUT_INDEX = 0;
+    protected static final int OUTPUT_INDEX = 1;
+    protected static final int SIDE_UP_DOWN_INDEX = 2;
+    protected static final int SIDE_LEFT_RIGHT_INDEX = 3;
+
     public static int minimalDistancePoints = 64;
+
     protected GT_MetaTileEntity_LongDistancePipelineBase mTarget = null;
     // these two are updated by machine block update thread, so must be volatile
     protected volatile GT_MetaTileEntity_LongDistancePipelineBase mSender = null;
@@ -72,6 +79,13 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
     public GT_MetaTileEntity_LongDistancePipelineBase(String aName, int aTier, String aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return new String[] { "Only one Input and Output are allowed per pipeline",
+            "Only Input and Output have to be chunkloaded", "Transfer rate is solely limited by input rate",
+            "Minimum distance: " + minimalDistancePoints + " blocks" };
     }
 
     @Override
@@ -167,13 +181,13 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
             final ChunkCoordinates coords = mSender.getCoords();
             aList.addAll(
                 Arrays.asList(
-                    "Is the Target",
-                    "Sender is at: X: " + coords.posX + " Y: " + coords.posY + " Z: " + coords.posZ));
+                    "Is Pipeline Output",
+                    "Pipeline Input is at: X: " + coords.posX + " Y: " + coords.posY + " Z: " + coords.posZ));
         } else {
             aList.addAll(
                 Arrays.asList(
-                    checkTarget() ? "Has Target" : "Has no loaded Target",
-                    "Target should be around: X: " + mTargetPos.posX
+                    checkTarget() ? "Is connected to Pipeline Output" : "Pipeline Output is not connected/chunkloaded",
+                    "Pipeline Output should be around: X: " + mTargetPos.posX
                         + " Y: "
                         + mTargetPos.posY
                         + " Z: "
@@ -222,7 +236,7 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
                     ChunkCoordinates tCoords;
                     tWires.add(aCoords);
 
-                    // For each direction, if we haven't already visisted that coordinate, add it to the end of the
+                    // For each direction, if we haven't already visited that coordinate, add it to the end of the
                     // queue
                     if (tVisited.add(tCoords = new ChunkCoordinates(aCoords.posX + 1, aCoords.posY, aCoords.posZ)))
                         tQueue.add(tCoords);
@@ -292,14 +306,8 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
 
     @Override
     public void onMachineBlockUpdate() {
-        // GT_Mod.GT_FML_LOGGER.info("You're dead to me");
         mTargetPos = null;
         mSender = null;
-    }
-
-    @Override
-    public ITexture[][][] getTextureSet(ITexture[] aTextures) {
-        return new ITexture[0][0][0];
     }
 
     @Override
@@ -307,26 +315,89 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
         return true;
     }
 
+    abstract public ITexture[] getTextureOverlays();
+
+    @Override
+    public ITexture[][][] getTextureSet(ITexture[] aTextures) {
+        ITexture[][][] rTextures = new ITexture[4][17][];
+        ITexture[] overlays = getTextureOverlays();
+        for (int i = 0; i < rTextures[0].length; i++) {
+            rTextures[INPUT_INDEX][i] = new ITexture[] { MACHINE_CASINGS[mTier][i], overlays[INPUT_INDEX] };
+            rTextures[OUTPUT_INDEX][i] = new ITexture[] { MACHINE_CASINGS[mTier][i], overlays[OUTPUT_INDEX] };
+            rTextures[SIDE_UP_DOWN_INDEX][i] = new ITexture[] { MACHINE_CASINGS[mTier][i],
+                overlays[SIDE_UP_DOWN_INDEX] };
+            rTextures[SIDE_LEFT_RIGHT_INDEX][i] = new ITexture[] { MACHINE_CASINGS[mTier][i],
+                overlays[SIDE_LEFT_RIGHT_INDEX] };
+        }
+        return rTextures;
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        colorIndex += 1;
+        if (sideDirection == facingDirection) return mTextures[INPUT_INDEX][colorIndex];
+        else if (sideDirection == facingDirection.getOpposite()) return mTextures[OUTPUT_INDEX][colorIndex];
+        else {
+            switch (facingDirection) {
+                case UP, DOWN -> {
+                    return mTextures[SIDE_UP_DOWN_INDEX][colorIndex];
+                }
+                case NORTH -> {
+                    switch (sideDirection) {
+                        case DOWN, UP -> {
+                            return mTextures[SIDE_UP_DOWN_INDEX][colorIndex];
+                        }
+                        case EAST, WEST -> {
+                            return mTextures[SIDE_LEFT_RIGHT_INDEX][colorIndex];
+                        }
+                        default -> {}
+                    }
+                }
+                case SOUTH -> {
+                    switch (sideDirection) {
+                        case DOWN, UP -> {
+                            return mTextures[SIDE_UP_DOWN_INDEX][colorIndex];
+                        }
+                        case EAST, WEST -> {
+                            return mTextures[SIDE_LEFT_RIGHT_INDEX][colorIndex];
+                        }
+                        default -> {}
+                    }
+                }
+                case EAST, WEST -> {
+                    return mTextures[SIDE_LEFT_RIGHT_INDEX][colorIndex];
+                }
+                default -> {}
+            }
+        }
+        return mTextures[INPUT_INDEX][colorIndex]; // dummy
+    }
+
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
-        final NBTTagCompound tag = accessor.getNBTData();
         final ForgeDirection facing = getBaseMetaTileEntity().getFrontFacing();
         final ForgeDirection side = accessor.getSide();
+
+        final NBTTagCompound tag = accessor.getNBTData();
+        final boolean hasInput = tag.getBoolean("hasInput");
+        final boolean hasInputTooClose = tag.getBoolean("hasInputTooClose");
+        final boolean hasOutput = tag.getBoolean("hasOutput");
+        final boolean hasOutputTooClose = tag.getBoolean("hasOutputTooClose");
 
         if (side == facing) currentTip.add(GOLD + "Pipeline Input" + RESET);
         else if (side == facing.getOpposite()) currentTip.add(BLUE + "Pipeline Output" + RESET);
         else currentTip.add("Pipeline Side");
 
-        if (tag.getBoolean("hasSender")) currentTip.add("Other End of Input: " + GREEN + "distance" + RESET);
-        else if (tag.getBoolean("hasTooCloseSender"))
-            currentTip.add("Other End of Input: " + RED + "too close" + RESET);
-        else currentTip.add("Other End of Input: " + YELLOW + "cannot found(may need to update other end)" + RESET);
+        if (!hasInput && !hasInputTooClose && !hasOutput && !hasOutputTooClose) {
+            currentTip.add(YELLOW + "Not connected" + RESET);
+        }
 
-        if (tag.getBoolean("hasTarget")) currentTip.add("Other End of Output: " + GREEN + "distance" + RESET);
-        else if (tag.getBoolean("hasTooCloseTarget"))
-            currentTip.add("Other End of Output: " + RED + "too close" + RESET);
-        else currentTip.add("Other End of Output: " + YELLOW + "cannot found" + RESET);
+        if (hasInput) currentTip.add(GREEN + "Connected to " + GOLD + "Input" + RESET);
+        else if (hasInputTooClose) currentTip.add(RED + "Connected Input too close" + RESET);
+        else if (hasOutput) currentTip.add(GREEN + "Connected to " + BLUE + "Output" + RESET);
+        else if (hasOutputTooClose) currentTip.add(RED + "Connected Output too close" + RESET);
 
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }
@@ -336,9 +407,9 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
 
-        tag.setBoolean("hasSender", mSender != null);
-        tag.setBoolean("hasTooCloseSender", mTooCloseSender != null);
-        tag.setBoolean("hasTarget", mTarget != null && mTarget != this);
-        tag.setBoolean("hasTooCloseTarget", mTooCloseTarget != null);
+        tag.setBoolean("hasInput", mSender != null);
+        tag.setBoolean("hasInputTooClose", mTooCloseSender != null);
+        tag.setBoolean("hasOutput", mTarget != null && mTarget != this);
+        tag.setBoolean("hasOutputTooClose", mTooCloseTarget != null);
     }
 }
