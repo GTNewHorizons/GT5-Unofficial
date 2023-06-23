@@ -166,8 +166,8 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
 
         lEUt = processingLogic.getCalculatedEut();
 
-        if (processingLogic.getDuration() > Integer.MAX_VALUE) return CheckRecipeResultRegistry.NO_RECIPE;
-        mMaxProgresstime = (int) processingLogic.getDuration();
+        if (processingLogic.getDuration() == Integer.MAX_VALUE) return CheckRecipeResultRegistry.NO_RECIPE;
+        mMaxProgresstime = processingLogic.getDuration();
 
         if (lEUt > 0) {
             lEUt = (-lEUt);

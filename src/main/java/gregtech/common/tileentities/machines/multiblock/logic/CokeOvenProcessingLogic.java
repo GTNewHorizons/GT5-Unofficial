@@ -39,7 +39,7 @@ public class CokeOvenProcessingLogic extends ProcessingLogic {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
         input.stackSize -= 1;
-        setDuration((long) NORMAL_RECIPE_TIME * timeMultiplier);
+        setDuration(NORMAL_RECIPE_TIME * timeMultiplier);
         setOutputItems(output);
 
         return originalStackSize > input.stackSize ? CheckRecipeResultRegistry.SUCCESSFUL

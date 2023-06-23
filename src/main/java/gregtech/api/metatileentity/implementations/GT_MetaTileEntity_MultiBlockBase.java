@@ -687,8 +687,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (processingLogic.getCalculatedEut() > Integer.MAX_VALUE) return CheckRecipeResultRegistry.NO_RECIPE;
         mEUt = (int) processingLogic.getCalculatedEut();
 
-        if (processingLogic.getDuration() > Integer.MAX_VALUE) return CheckRecipeResultRegistry.NO_RECIPE;
-        mMaxProgresstime = (int) processingLogic.getDuration();
+        if (processingLogic.getDuration() == Integer.MAX_VALUE) return CheckRecipeResultRegistry.NO_RECIPE;
+        mMaxProgresstime = processingLogic.getDuration();
 
         if (mEUt > 0) {
             mEUt = (-mEUt);
