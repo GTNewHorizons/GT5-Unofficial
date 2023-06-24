@@ -145,6 +145,7 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
         processingLogic.setMachine(this);
         processingLogic.setRecipeMapSupplier(this::getRecipeMap);
         processingLogic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
+        processingLogic.setRecipeLocking(this, isRecipeLockingEnabled());
         processingLogic.setInputFluids(getStoredFluids());
         setProcessingLogicPower(processingLogic);
         if (isInputSeparationEnabled()) {
