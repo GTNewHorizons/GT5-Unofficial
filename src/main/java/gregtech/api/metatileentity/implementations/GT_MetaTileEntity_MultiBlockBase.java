@@ -467,7 +467,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
      * <p>
      * See {@link #createProcessingLogic()} or {@link #checkProcessing()} for what you want to override.
      *
-     * @return If Successfully found recipe and/or started processing
+     * @return If successfully found recipe and/or started processing
      */
     protected final boolean checkRecipe() {
         startRecipeProcessing();
