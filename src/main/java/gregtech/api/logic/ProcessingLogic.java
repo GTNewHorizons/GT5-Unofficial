@@ -35,7 +35,7 @@ public class ProcessingLogic {
     protected FluidStack[] outputFluids;
     protected FluidStack[] currentOutputFluids;
     protected long calculatedEut;
-    protected long duration;
+    protected int duration;
     protected long availableVoltage;
     protected long availableAmperage;
     protected int overClockTimeReduction = 2;
@@ -151,7 +151,7 @@ public class ProcessingLogic {
     /**
      * Overwrites duration result of the calculation.
      */
-    public ProcessingLogic setDuration(long duration) {
+    public ProcessingLogic setDuration(int duration) {
         this.duration = duration;
         return this;
     }
@@ -343,7 +343,7 @@ public class ProcessingLogic {
         return outputFluids;
     }
 
-    public long getDuration() {
+    public int getDuration() {
         return duration;
     }
 
