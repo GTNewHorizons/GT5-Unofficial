@@ -101,7 +101,7 @@ public class RecipeLoader_ChemicalSkips {
         CORE.RA.addQuantumTransformerRecipe(
                 new ItemStack[] { Materials.Carbon.getDust(32), Materials.Bismuth.getDust(32),
                         ItemUtils.getSimpleStack(GenericChem.mAdhesionPromoterCatalyst, 0) },
-                new FluidStack[] { Materials.Oxygen.getFluid(10000), Materials.Hydrogen.getFluid(10000) },
+                new FluidStack[] { Materials.Oxygen.getGas(10000), Materials.Hydrogen.getGas(10000) },
                 new FluidStack[] { MISC_MATERIALS.ETHYL_CYANOACRYLATE.getFluidStack(1000 * 32),
                         Materials.AdvancedGlue.getFluid(1000 * 16), ALLOY.INDALLOY_140.getFluidStack(144 * 64),
                         Materials.SolderingAlloy.getMolten(144 * 128) },
