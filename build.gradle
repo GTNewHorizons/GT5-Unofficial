@@ -1,4 +1,4 @@
-//version: 1683705740
+//version: 1685785062
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -69,7 +69,7 @@ plugins {
     id 'com.diffplug.spotless' version '6.13.0' apply false // 6.13.0 is the last jvm8 supporting version
     id 'com.modrinth.minotaur' version '2.+' apply false
     id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
-    id 'com.gtnewhorizons.retrofuturagradle' version '1.3.11'
+    id 'com.gtnewhorizons.retrofuturagradle' version '1.3.14'
 }
 
 print("You might want to check out './gradlew :faq' if your build fails.\n")
@@ -730,7 +730,7 @@ dependencies {
         java17Dependencies("com.github.GTNewHorizons:lwjgl3ify:${lwjgl3ifyVersion}")
     }
     if (modId != 'hodgepodge') {
-        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.2.8')
+        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.2.13')
     }
 
     java17PatchDependencies('net.minecraft:launchwrapper:1.15') {transitive = false}
@@ -1276,12 +1276,14 @@ tasks.register('faq') {
     description = 'Prints frequently asked questions about building a project'
 
     doLast {
-        print("If your build fails to fetch dependencies, they might have been deleted and replaced by newer " +
-            "versions.\nCheck if the versions you try to fetch are still on the distributing sites.\n" +
-            "The links can be found in repositories.gradle and build.gradle:repositories, " +
-            "not build.gradle:buildscript.repositories - this one is for gradle plugin metadata.\n\n" +
+        print("If your build fails to fetch dependencies, run './gradlew updateDependencies'. " +
+            "Or you can manually check if the versions are still on the distributing sites - " +
+            "the links can be found in repositories.gradle and build.gradle:repositories, " +
+            "but not build.gradle:buildscript.repositories - those ones are for gradle plugin metadata.\n\n" +
             "If your build fails to recognize the syntax of new Java versions, enable Jabel in your " +
-            "gradle.properties. See how it's done in GTNH ExampleMod/gradle.properties.")
+            "gradle.properties. See how it's done in GTNH ExampleMod/gradle.properties. " +
+            "However, keep in mind that Jabel enables only syntax features, but not APIs that were introduced in " +
+            "Java 9 or later.")
     }
 }
 

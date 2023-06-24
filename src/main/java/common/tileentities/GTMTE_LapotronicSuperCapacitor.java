@@ -687,7 +687,7 @@ public class GTMTE_LapotronicSuperCapacitor
 
         // Draw energy from GT hatches
         for (GT_MetaTileEntity_Hatch_Energy eHatch : super.mEnergyHatches) {
-            if (eHatch == null || eHatch.getBaseMetaTileEntity().isInvalidTileEntity()) {
+            if (eHatch == null || !eHatch.isValid()) {
                 continue;
             }
             final long power = getPowerToDraw(eHatch.maxEUInput() * eHatch.maxAmperesIn());
@@ -700,7 +700,7 @@ public class GTMTE_LapotronicSuperCapacitor
 
         // Output energy to GT hatches
         for (GT_MetaTileEntity_Hatch_Dynamo eDynamo : super.mDynamoHatches) {
-            if (eDynamo == null || eDynamo.getBaseMetaTileEntity().isInvalidTileEntity()) {
+            if (eDynamo == null || !eDynamo.isValid()) {
                 continue;
             }
             final long power = getPowerToPush(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut());
@@ -713,7 +713,7 @@ public class GTMTE_LapotronicSuperCapacitor
 
         // Draw energy from TT hatches
         for (GT_MetaTileEntity_Hatch_EnergyMulti eHatch : mEnergyHatchesTT) {
-            if (eHatch == null || eHatch.getBaseMetaTileEntity().isInvalidTileEntity()) {
+            if (eHatch == null || !eHatch.isValid()) {
                 continue;
             }
             final long power = getPowerToDraw(eHatch.maxEUInput() * eHatch.maxAmperesIn());
@@ -726,8 +726,7 @@ public class GTMTE_LapotronicSuperCapacitor
 
         // Output energy to TT hatches
         for (GT_MetaTileEntity_Hatch_DynamoMulti eDynamo : mDynamoHatchesTT) {
-            if (eDynamo == null || eDynamo.getBaseMetaTileEntity() == null
-                    || eDynamo.getBaseMetaTileEntity().isInvalidTileEntity()) {
+            if (eDynamo == null || !eDynamo.isValid()) {
                 continue;
             }
             final long power = getPowerToPush(eDynamo.maxEUOutput() * eDynamo.maxAmperesOut());
@@ -740,7 +739,7 @@ public class GTMTE_LapotronicSuperCapacitor
 
         // Draw energy from TT Laser hatches
         for (GT_MetaTileEntity_Hatch_EnergyTunnel eHatch : mEnergyTunnelsTT) {
-            if (eHatch == null || eHatch.getBaseMetaTileEntity().isInvalidTileEntity()) {
+            if (eHatch == null || !eHatch.isValid()) {
                 continue;
             }
             final long ttLaserWattage = eHatch.maxEUInput() * eHatch.Amperes - (eHatch.Amperes / 20);
@@ -754,7 +753,7 @@ public class GTMTE_LapotronicSuperCapacitor
 
         // Output energy to TT Laser hatches
         for (GT_MetaTileEntity_Hatch_DynamoTunnel eDynamo : mDynamoTunnelsTT) {
-            if (eDynamo == null || eDynamo.getBaseMetaTileEntity().isInvalidTileEntity()) {
+            if (eDynamo == null || !eDynamo.isValid()) {
                 continue;
             }
             final long ttLaserWattage = eDynamo.maxEUOutput() * eDynamo.Amperes - (eDynamo.Amperes / 20);
