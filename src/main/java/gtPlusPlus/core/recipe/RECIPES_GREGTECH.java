@@ -1443,7 +1443,7 @@ public class RECIPES_GREGTECH {
                 Materials.Potassium.getDust(9),
                 Materials.Lithium.getDust(9),
                 Materials.Sulfur.getDust(9),
-                Materials.Hydrogen.getFluid(5000),
+                Materials.Hydrogen.getGas(5000),
                 null,
                 ALLOY.LEAGRISIUM.getDust(50),
                 20 * 60,
