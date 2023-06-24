@@ -328,14 +328,14 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     /**
-     * Pushes steam to Fluid inventories at all sides except Front.
+     * Pushes steam to Fluid inventories at all sides except Front and Bottom.
      *
      * @param aBaseMetaTileEntity The tile-entity instance of this Boiler
      */
     protected void pushSteamToInventories(IGregTechTileEntity aBaseMetaTileEntity) {
         if (mSteam == null || mSteam.amount == 0) return;
         for (final ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-            if (direction == aBaseMetaTileEntity.getFrontFacing()) continue;
+            if (direction == aBaseMetaTileEntity.getFrontFacing() || direction == ForgeDirection.DOWN) continue;
             if (this.mSteam == null) break;
             pushSteamToSide(aBaseMetaTileEntity, direction);
         }
