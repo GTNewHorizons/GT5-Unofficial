@@ -316,6 +316,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         }
     }
 
+    public void onTickFail(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {}
+
     public void onSetActive(boolean active) {}
 
     public void onDisableWorking() {}
