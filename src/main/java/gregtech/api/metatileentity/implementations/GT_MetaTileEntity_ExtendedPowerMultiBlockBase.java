@@ -144,10 +144,9 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
         processingLogic.clear();
         processingLogic.setMachine(this);
         processingLogic.setRecipeMapSupplier(this::getRecipeMap);
-        processingLogic.setAvailableVoltage(getMaxInputVoltage());
-        processingLogic.setAvailableAmperage(1);
         processingLogic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
         processingLogic.setInputFluids(getStoredFluids());
+        setProcessingLogicPower(processingLogic);
         if (isInputSeparationEnabled()) {
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
                 processingLogic.setInputItems(bus.mInventory);
