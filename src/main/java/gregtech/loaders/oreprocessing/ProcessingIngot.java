@@ -43,6 +43,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
         boolean aNoSmashing = aMaterial.contains(SubTag.NO_SMASHING);
+        boolean aStretchy = aMaterial.contains(SubTag.STRETCHY);
         boolean aNoSmelting = aMaterial.contains(SubTag.NO_SMELTING);
         long aMaterialMass = aMaterial.getMass();
         boolean aSpecialRecipeReq = aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)
@@ -105,7 +106,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                         GT_Proxy.tBits,
                         new Object[] { ToolDictNames.craftingToolMortar, OrePrefixes.ingot.get(aMaterial) });
                 }
-                if (!aNoSmashing) {
+                if (!aNoSmashing || aStretchy) {
                     // Forge hammer recipes
                     if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                         GT_Values.RA.stdBuilder()
@@ -200,7 +201,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 }
             }
             case ingotDouble -> {
-                if (!aNoSmashing) {
+                if (!aNoSmashing || aStretchy) {
                     // bender recipes
                     {
                         GT_Values.RA.stdBuilder()
@@ -234,7 +235,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 }
             }
             case ingotTriple -> {
-                if (!aNoSmashing) {
+                if (!aNoSmashing || aStretchy) {
                     // Bender recipes
                     {
                         GT_Values.RA.stdBuilder()
@@ -268,7 +269,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 }
             }
             case ingotQuadruple -> {
-                if (!aNoSmashing) {
+                if (!aNoSmashing || aStretchy) {
                     // Bender recipes
                     {
                         GT_Values.RA.stdBuilder()
@@ -294,7 +295,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 }
             }
             case ingotQuintuple -> {
-                if (!aNoSmashing) {
+                if (!aNoSmashing || aStretchy) {
                     // Bender recipes
                     {
                         GT_Values.RA.stdBuilder()

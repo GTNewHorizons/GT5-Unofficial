@@ -926,17 +926,29 @@ public enum OrePrefixes {
             SubTag.MAGICAL,
             new ICondition.And<>(SubTag.TRANSPARENT, SubTag.HAS_COLOR));
 
-        plateDouble.mCondition = new ICondition.Or<>(SubTag.PAPER, new ICondition.Not<>(SubTag.NO_SMASHING));
-        plateTriple.mCondition = new ICondition.Or<>(SubTag.PAPER, new ICondition.Not<>(SubTag.NO_SMASHING));
-        plateQuadruple.mCondition = new ICondition.Or<>(SubTag.PAPER, new ICondition.Not<>(SubTag.NO_SMASHING));
-        plateQuintuple.mCondition = new ICondition.Or<>(SubTag.PAPER, new ICondition.Not<>(SubTag.NO_SMASHING));
+        plateDouble.mCondition = new ICondition.Or<>(
+            SubTag.PAPER,
+            new ICondition.Not<>(SubTag.NO_SMASHING),
+            SubTag.STRETCHY);
+        plateTriple.mCondition = new ICondition.Or<>(
+            SubTag.PAPER,
+            new ICondition.Not<>(SubTag.NO_SMASHING),
+            SubTag.STRETCHY);
+        plateQuadruple.mCondition = new ICondition.Or<>(
+            SubTag.PAPER,
+            new ICondition.Not<>(SubTag.NO_SMASHING),
+            SubTag.STRETCHY);
+        plateQuintuple.mCondition = new ICondition.Or<>(
+            SubTag.PAPER,
+            new ICondition.Not<>(SubTag.NO_SMASHING),
+            SubTag.STRETCHY);
 
-        plateDense.mCondition = new ICondition.Not<>(SubTag.NO_SMASHING);
+        plateDense.mCondition = new ICondition.Or<>(new ICondition.Not<>(SubTag.NO_SMASHING), SubTag.STRETCHY);
 
-        ingotDouble.mCondition = new ICondition.Not<>(SubTag.NO_SMASHING);
-        ingotTriple.mCondition = new ICondition.Not<>(SubTag.NO_SMASHING);
-        ingotQuadruple.mCondition = new ICondition.Not<>(SubTag.NO_SMASHING);
-        ingotQuintuple.mCondition = new ICondition.Not<>(SubTag.NO_SMASHING);
+        ingotDouble.mCondition = new ICondition.Or<>(new ICondition.Not<>(SubTag.NO_SMASHING), SubTag.STRETCHY);
+        ingotTriple.mCondition = new ICondition.Or<>(new ICondition.Not<>(SubTag.NO_SMASHING), SubTag.STRETCHY);
+        ingotQuadruple.mCondition = new ICondition.Or<>(new ICondition.Not<>(SubTag.NO_SMASHING), SubTag.STRETCHY);
+        ingotQuintuple.mCondition = new ICondition.Or<>(new ICondition.Not<>(SubTag.NO_SMASHING), SubTag.STRETCHY);
 
         wireFine.mCondition = SubTag.METAL;
 
