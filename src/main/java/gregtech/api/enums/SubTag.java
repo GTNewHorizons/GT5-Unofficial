@@ -83,7 +83,7 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      */
     public static final SubTag NO_WORKING = getNewSubTag("NO_WORKING");
     /**
-     * This Material cannot be used for regular Metal working techniques since it is not possible to bend it. Already
+     * This Material cannot be used for regular Metal working techniques. Already
      * listed are: Rubber, Plastic, Paper, Wood, Stone
      */
     public static final SubTag NO_SMASHING = getNewSubTag("NO_SMASHING");
