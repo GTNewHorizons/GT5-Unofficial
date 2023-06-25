@@ -338,9 +338,12 @@ public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<Preci
                 .addInfo("But gives more parallel with more advanced one.").addInfo("It is 100% faster in Normal Mode.")
                 .addInfo("MK-I = 32x, MK-II = 64x, MK-III = 128x").addPollutionAmount(getPollutionPerSecond(null))
                 .addInfo("The structure is too complex!").addInfo(BLUE_PRINT_INFO).addSeparator()
-                .addController("Front bottom").addInputHatch("Any Casing").addInputBus("Any Casing")
-                .addOutputHatch("Any Casing").addOutputBus("Any Casing").addEnergyHatch("Any Casing")
-                .addMufflerHatch("Any Casing").addMaintenanceHatch("Any Casing").toolTipFinisher("Good Generator");
+                .beginStructureBlock(9, 5, 5, true).addController("Front bottom")
+                .addCasingInfoExactly("Machine Casing", 21, true).addCasingInfoExactly("Glass (EV+)", 42, false)
+                .addCasingInfoRange("Precise Electronic Unit Casing", 42, 86, true).addInputHatch("Any Casing")
+                .addInputBus("Any Casing").addOutputHatch("Any Casing").addOutputBus("Any Casing")
+                .addEnergyHatch("Any Casing").addMufflerHatch("Any Casing").addMaintenanceHatch("Any Casing")
+                .toolTipFinisher("Good Generator");
         return tt;
     }
 
