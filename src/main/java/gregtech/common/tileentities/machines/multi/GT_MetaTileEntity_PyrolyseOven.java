@@ -21,7 +21,8 @@ import static gregtech.api.util.GT_StructureUtility.ofCoil;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -37,12 +38,12 @@ import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Single_Recipe_Check;
-import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_PyrolyseOven
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_PyrolyseOven> implements ISurvivalConstructable {
@@ -157,56 +158,20 @@ public class GT_MetaTileEntity_PyrolyseOven
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        long tVoltage = getMaxInputVoltage();
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-        GT_Recipe tRecipe;
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-        if (mLockedToSingleRecipe && mSingleRecipeCheck != null) {
-            if (!mSingleRecipeCheck.checkRecipeInputsSingleStack(true)) {
-                return false;
+            @NotNull
+            @Override
+            public CheckRecipeResult process() {
+                CheckRecipeResult result = super.process();
+                if (!result.wasSuccessful()) {
+                    return result;
+                }
+                duration = Math.max(duration * 2 / (1 + coilHeat.getTier()), 1);
+                return result;
             }
-
-            tRecipe = mSingleRecipeCheck.getRecipe();
-        } else {
-            ItemStack[] tInputs = getCompactedInputs();
-            FluidStack[] tFluids = getCompactedFluids();
-
-            if (tInputs.length == 0) return false;
-
-            GT_Single_Recipe_Check.Builder tSingleRecipeCheckBuilder = null;
-            if (mLockedToSingleRecipe) {
-                // We're locked to a single recipe, but haven't built the recipe checker yet.
-                // Build the checker on next successful recipe.
-                tSingleRecipeCheckBuilder = GT_Single_Recipe_Check.builder(this)
-                    .setBefore(tInputs, tFluids);
-            }
-
-            tRecipe = GT_Recipe.GT_Recipe_Map.sPyrolyseRecipes
-                .findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
-
-            if (tRecipe == null || !canOutputAll(tRecipe) || !tRecipe.isRecipeInputEqual(true, tFluids, tInputs))
-                return false;
-
-            if (mLockedToSingleRecipe) {
-                mSingleRecipeCheck = tSingleRecipeCheckBuilder.setAfter(tInputs, tFluids)
-                    .setRecipe(tRecipe)
-                    .build();
-            }
-        }
-
-        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-
-        calculateOverclockedNessMultiInternal(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage, false);
-        // In case recipe is too OP for that machine
-        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) return false;
-        if (this.mEUt > 0) this.mEUt = (-this.mEUt);
-        this.mMaxProgresstime = Math.max(mMaxProgresstime * 2 / (1 + coilHeat.getTier()), 1);
-        if (tRecipe.mOutputs.length > 0) this.mOutputItems = new ItemStack[] { tRecipe.getOutput(0) };
-        if (tRecipe.mFluidOutputs.length > 0) this.mOutputFluids = new FluidStack[] { tRecipe.getFluidOutput(0) };
-        updateSlots();
-        return true;
+        };
     }
 
     @Override

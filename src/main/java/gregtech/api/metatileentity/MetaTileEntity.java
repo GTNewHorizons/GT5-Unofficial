@@ -114,14 +114,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
      * <p>
      * The constructor can be overloaded as follows:
      * <blockquote>
-     * 
+     *
      * <pre>
-     * 
+     *
      * public GT_MetaTileEntity_EBench(int id, String name, String nameRegional) {
      *     super(id, name, nameRegional);
      * }
      * </pre>
-     * 
+     *
      * </blockquote>
      *
      * @param aID the machine ID
@@ -315,6 +315,12 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
             aBaseMetaTileEntity.issueTextureUpdate();
         }
     }
+
+    public void onTickFail(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {}
+
+    public void onSetActive(boolean active) {}
+
+    public void onDisableWorking() {}
 
     @Override
     public void inValidate() {

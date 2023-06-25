@@ -8,8 +8,7 @@ import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
@@ -30,6 +29,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -55,6 +56,9 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -182,6 +186,18 @@ public class GT_MetaTileEntity_ProcessingArray
     }
 
     @Override
+    protected void sendStartMultiBlockSoundLoop() {
+        int length = mInventory[1].getUnlocalizedName()
+            .length();
+        String aMachineName = mInventory[1].getUnlocalizedName()
+            .substring(17, length - 8); // trim "gt.blockmachines." and ".tier.xx"
+        SoundResource sound = GT_ProcessingArray_Manager.getSoundResource(aMachineName);
+        if (sound != null) {
+            sendLoopStart((byte) sound.id);
+        }
+    }
+
+    @Override
     public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
         super.startSoundLoop(aIndex, aX, aY, aZ);
         SoundResource sound = SoundResource.get(aIndex < 0 ? aIndex + 256 : 0);
@@ -191,34 +207,17 @@ public class GT_MetaTileEntity_ProcessingArray
     }
 
     @Override
-    protected boolean checkRecipe() {
-        startRecipeProcessing();
-        boolean result = checkRecipe(mInventory[1]);
-        if (result) {
-            int length = mInventory[1].getUnlocalizedName()
-                .length();
-            String aMachineName = mInventory[1].getUnlocalizedName()
-                .substring(17, length - 8);
-            SoundResource sound = GT_ProcessingArray_Manager.getSoundResource(aMachineName);
-            if (sound != null) {
-                sendLoopStart((byte) sound.id);
-            }
-        }
-        endRecipeProcessing();
-        return result;
-    }
-
-    @Override
-    public boolean checkRecipe(ItemStack aStack) {
+    @NotNull
+    public CheckRecipeResult checkProcessing() {
         if (mLockedToSingleRecipe && mSingleRecipeCheck != null) {
             return processLockedRecipe();
         }
 
-        if (!isCorrectMachinePart(mInventory[1])) {
-            return false;
+        if (!isCorrectMachinePart(getControllerSlot())) {
+            return SimpleCheckRecipeResult.ofFailure("no_machine");
         }
         GT_Recipe.GT_Recipe_Map map = getRecipeMap();
-        if (map == null) return false;
+        if (map == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
         if (!mMachineName.equals(mInventory[1].getUnlocalizedName())) {
             mLastRecipe = null;
@@ -238,7 +237,8 @@ public class GT_MetaTileEntity_ProcessingArray
                     if (tInputBus.getStackInSlot(i) != null) tInputList.add(tInputBus.getStackInSlot(i));
                 }
                 ItemStack[] tInputs = tInputList.toArray(new ItemStack[0]);
-                if (processRecipe(tInputs, tFluids, map)) return true;
+                CheckRecipeResult result = processRecipe(tInputs, tFluids, map);
+                if (result.wasSuccessful()) return result;
                 else tInputList.clear();
             }
         } else {
@@ -246,7 +246,7 @@ public class GT_MetaTileEntity_ProcessingArray
             ItemStack[] tInputs = tInputList.toArray(new ItemStack[0]);
             return processRecipe(tInputs, tFluids, map);
         }
-        return false;
+        return CheckRecipeResultRegistry.NO_RECIPE;
     }
 
     private void setTierAndMult() {
@@ -259,7 +259,7 @@ public class GT_MetaTileEntity_ProcessingArray
         }
     }
 
-    public boolean processLockedRecipe() {
+    public CheckRecipeResult processLockedRecipe() {
         GT_Single_Recipe_Check_Processing_Array tSingleRecipeCheck = (GT_Single_Recipe_Check_Processing_Array) mSingleRecipeCheck;
 
         if (mLastRecipe == null) {
@@ -277,8 +277,8 @@ public class GT_MetaTileEntity_ProcessingArray
             1);
     }
 
-    public boolean processRecipe(ItemStack[] tInputs, FluidStack[] tFluids, GT_Recipe.GT_Recipe_Map map) {
-        if (tInputs.length == 0 && tFluids.length == 0) return false;
+    public CheckRecipeResult processRecipe(ItemStack[] tInputs, FluidStack[] tFluids, GT_Recipe.GT_Recipe_Map map) {
+        if (tInputs.length == 0 && tFluids.length == 0) return CheckRecipeResultRegistry.NO_RECIPE;
         GT_Recipe tRecipe = map.findRecipe(
             getBaseMetaTileEntity(),
             mLastRecipe,
@@ -286,9 +286,10 @@ public class GT_MetaTileEntity_ProcessingArray
             gregtech.api.enums.GT_Values.V[tTier],
             tFluids,
             tInputs);
-        if (tRecipe == null) return false;
+        if (tRecipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
         if (GT_Mod.gregtechproxy.mLowGravProcessing && tRecipe.mSpecialValue == -100
-            && !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId)) return false;
+            && !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId))
+            return SimpleCheckRecipeResult.ofFailure("high_gravity");
 
         GT_Single_Recipe_Check_Processing_Array.Builder tSingleRecipeCheckBuilder = null;
         if (mLockedToSingleRecipe) {
@@ -327,12 +328,12 @@ public class GT_MetaTileEntity_ProcessingArray
         return processRecipeOutputs(tRecipe, map.mAmperage, i, multiplier);
     }
 
-    public boolean processRecipeOutputs(GT_Recipe aRecipe, int aAmperage, int parallel, int multiplier) {
+    public CheckRecipeResult processRecipeOutputs(GT_Recipe aRecipe, int aAmperage, int parallel, int multiplier) {
         this.mEUPerTick = 0;
         this.mOutputItems = null;
         this.mOutputFluids = null;
         if (parallel == 0) {
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         this.mMaxProgresstime = aRecipe.mDuration * multiplier;
@@ -346,9 +347,10 @@ public class GT_MetaTileEntity_ProcessingArray
             GT_Values.V[tTier],
             false);
         // In case recipe is too OP for that machine
-        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUPerTick == Long.MAX_VALUE - 1) return false;
+        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUPerTick == Long.MAX_VALUE - 1)
+            return CheckRecipeResultRegistry.NO_RECIPE;
         mEUPerTick = mEUPerTick * parallel;
-        if (mEUPerTick == Long.MAX_VALUE - 1) return false;
+        if (mEUPerTick == Long.MAX_VALUE - 1) return CheckRecipeResultRegistry.NO_RECIPE;
 
         if (mEUPerTick > 0) {
             mEUPerTick = (-mEUPerTick);
@@ -389,7 +391,7 @@ public class GT_MetaTileEntity_ProcessingArray
             .toArray(ItemStack[]::new);
         this.mOutputFluids = tFOut;
         updateSlots();
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     private static Stream<ItemStack> splitOversizedStack(ItemStack aStack) {

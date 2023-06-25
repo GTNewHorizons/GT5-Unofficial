@@ -22,12 +22,13 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 
 /** Used by machines that are locked to a single recipe, for fast computation. */
 public class GT_Single_Recipe_Check {
 
-    protected final GT_MetaTileEntity_MultiBlockBase multiBlockBase;
+    protected final IRecipeLockable multiBlockBase;
     protected final GT_Recipe recipe;
     protected final ImmutableMap<GT_Utility.ItemId, Integer> itemCost;
     protected final ImmutableMap<Fluid, Integer> fluidCost;
@@ -35,7 +36,7 @@ public class GT_Single_Recipe_Check {
     protected final int totalItemCost;
     protected final int totalFluidCost;
 
-    protected GT_Single_Recipe_Check(GT_MetaTileEntity_MultiBlockBase multiBlockBase, GT_Recipe recipe,
+    protected GT_Single_Recipe_Check(IRecipeLockable multiBlockBase, GT_Recipe recipe,
         ImmutableMap<GT_Utility.ItemId, Integer> itemCost, ImmutableMap<Fluid, Integer> fluidCost) {
         this.multiBlockBase = multiBlockBase;
         this.recipe = recipe;
@@ -263,14 +264,14 @@ public class GT_Single_Recipe_Check {
     }
 
     @Nullable
-    public static GT_Single_Recipe_Check tryLoad(GT_MetaTileEntity_MultiBlockBase parent, NBTTagCompound tag) {
+    public static GT_Single_Recipe_Check tryLoad(IRecipeLockable parent, NBTTagCompound tag) {
         return tryLoad(parent, parent.getRecipeMap(), tag);
     }
 
     @Nullable
 
-    public static GT_Single_Recipe_Check tryLoad(GT_MetaTileEntity_MultiBlockBase parent,
-        GT_Recipe.GT_Recipe_Map recipeMap, NBTTagCompound tag) {
+    public static GT_Single_Recipe_Check tryLoad(IRecipeLockable parent, GT_Recipe.GT_Recipe_Map recipeMap,
+        NBTTagCompound tag) {
         GT_Recipe found = tryFindRecipe(parent, recipeMap, tag);
         if (found == null) return null;
         return new GT_Single_Recipe_Check(parent, found, loadItemCost(tag), loadFluidCost(tag));
@@ -291,7 +292,7 @@ public class GT_Single_Recipe_Check {
                     t -> t.getInteger("count")));
     }
 
-    protected static GT_Recipe tryFindRecipe(GT_MetaTileEntity_MultiBlockBase parent, GT_Recipe.GT_Recipe_Map recipeMap,
+    protected static GT_Recipe tryFindRecipe(IRecipeLockable parent, GT_Recipe.GT_Recipe_Map recipeMap,
         NBTTagCompound tag) {
         if (tag == null || tag.hasNoTags()) return null;
         ItemStack[] inputs = GT_Utility.streamCompounds(tag.getTagList("inputs", Constants.NBT.TAG_COMPOUND))
@@ -307,8 +308,7 @@ public class GT_Single_Recipe_Check {
             .map(FluidStack::loadFluidStackFromNBT)
             .toArray(FluidStack[]::new);
         int eut = tag.getInteger("eut");
-        GT_Recipe found = recipeMap
-            .findRecipe(parent.getBaseMetaTileEntity(), false, GT_Values.V[GT_Utility.getTier(eut)], fInputs, inputs);
+        GT_Recipe found = recipeMap.findRecipe(null, false, GT_Values.V[GT_Utility.getTier(eut)], fInputs, inputs);
         int[] chances = tag.getIntArray("chances");
         if (chances.length == 0) chances = null;
         if (found == null || !GT_Utility.equals(inputs, found.mInputs)
@@ -322,7 +322,7 @@ public class GT_Single_Recipe_Check {
         return found;
     }
 
-    protected static Map<GT_Utility.ItemId, Integer> buildItemMap(GT_MetaTileEntity_MultiBlockBase multiBlockBase) {
+    protected static Map<GT_Utility.ItemId, Integer> buildItemMap(IRecipeLockable multiBlockBase) {
         Map<GT_Utility.ItemId, Integer> itemMap = new HashMap<>();
         for (ItemStack itemStack : multiBlockBase.getStoredInputs()) {
             itemMap.merge(GT_Utility.ItemId.create(itemStack), itemStack.stackSize, Integer::sum);
@@ -330,7 +330,7 @@ public class GT_Single_Recipe_Check {
         return itemMap;
     }
 
-    protected static Map<Fluid, Integer> buildFluidMap(GT_MetaTileEntity_MultiBlockBase multiBlockBase) {
+    protected static Map<Fluid, Integer> buildFluidMap(IRecipeLockable multiBlockBase) {
         Map<Fluid, Integer> fluidMap = new HashMap<>();
         for (FluidStack fluidStack : multiBlockBase.getStoredFluids()) {
             fluidMap.merge(fluidStack.getFluid(), fluidStack.amount, Integer::sum);
@@ -338,13 +338,13 @@ public class GT_Single_Recipe_Check {
         return fluidMap;
     }
 
-    public static Builder builder(GT_MetaTileEntity_MultiBlockBase multiBlockBase) {
+    public static Builder builder(IRecipeLockable multiBlockBase) {
         return new Builder(multiBlockBase);
     }
 
     public static final class Builder {
 
-        private final GT_MetaTileEntity_MultiBlockBase multiBlockBase;
+        private final IRecipeLockable multiBlockBase;
 
         // In order to compute which items and fluids are consumed by the recipe, we compare the
         // multi-block's items and fluids before and after inputs are consumed by the recipe.
@@ -355,7 +355,7 @@ public class GT_Single_Recipe_Check {
 
         private GT_Recipe recipe;
 
-        private Builder(GT_MetaTileEntity_MultiBlockBase multiBlockBase) {
+        private Builder(IRecipeLockable multiBlockBase) {
             this.multiBlockBase = multiBlockBase;
         }
 

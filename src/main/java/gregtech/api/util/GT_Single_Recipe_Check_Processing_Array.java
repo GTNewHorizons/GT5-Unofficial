@@ -14,7 +14,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.ImmutableMap;
 
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.interfaces.tileentity.IRecipeLockable;
 
 /** Processing Array-specialized version of {@link gregtech.api.util.GT_Single_Recipe_Check}. */
 public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Check {
@@ -26,7 +26,7 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
      */
     protected final ItemStack machineStack;
 
-    protected GT_Single_Recipe_Check_Processing_Array(GT_MetaTileEntity_MultiBlockBase multiBlockBase, GT_Recipe recipe,
+    protected GT_Single_Recipe_Check_Processing_Array(IRecipeLockable multiBlockBase, GT_Recipe recipe,
         ImmutableMap<GT_Utility.ItemId, Integer> itemCost, ImmutableMap<Fluid, Integer> fluidCost, int recipeAmperage,
         ItemStack machineStack) {
         super(multiBlockBase, recipe, itemCost, fluidCost);
@@ -51,7 +51,7 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
 
     /** Returns the number of parallel recipes, or 0 if recipe is not satisfied at all. */
     public int checkRecipeInputs(boolean consumeInputs, int maxParallel) {
-        if (!GT_Utility.areStacksEqual(machineStack, multiBlockBase.mInventory[1])) {
+        if (!GT_Utility.areStacksEqual(machineStack, multiBlockBase.getControllerSlot())) {
             // Machine stack was modified. This is not allowed, so stop processing.
             return 0;
         }
@@ -139,8 +139,8 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
 
     @Nullable
 
-    public static GT_Single_Recipe_Check tryLoad(GT_MetaTileEntity_MultiBlockBase parent,
-        GT_Recipe.GT_Recipe_Map recipeMap, NBTTagCompound tag, ItemStack machineStack) {
+    public static GT_Single_Recipe_Check tryLoad(IRecipeLockable parent, GT_Recipe.GT_Recipe_Map recipeMap,
+        NBTTagCompound tag, ItemStack machineStack) {
         if (recipeMap == null || machineStack == null) return null;
         GT_Recipe found = tryFindRecipe(parent, recipeMap, tag);
         if (found == null) return null;
@@ -153,13 +153,13 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
             machineStack.copy());
     }
 
-    public static Builder processingArrayBuilder(GT_MetaTileEntity_MultiBlockBase multiBlockBase) {
+    public static Builder processingArrayBuilder(IRecipeLockable multiBlockBase) {
         return new Builder(multiBlockBase);
     }
 
     public static final class Builder {
 
-        private final GT_MetaTileEntity_MultiBlockBase multiBlockBase;
+        private final IRecipeLockable multiBlockBase;
 
         // In order to compute which items and fluids are consumed by the recipe, we compare the
         // multi-block's items and fluids before and after inputs are consumed by the recipe.
@@ -171,7 +171,7 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
         private GT_Recipe recipe;
         private int recipeAmperage;
 
-        private Builder(GT_MetaTileEntity_MultiBlockBase multiBlockBase) {
+        private Builder(IRecipeLockable multiBlockBase) {
             this.multiBlockBase = multiBlockBase;
         }
 
@@ -238,7 +238,8 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
                 itemCostBuilder.build(),
                 fluidCostBuilder.build(),
                 recipeAmperage,
-                multiBlockBase.mInventory[1].copy());
+                multiBlockBase.getControllerSlot()
+                    .copy());
         }
     }
 }
