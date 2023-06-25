@@ -141,7 +141,7 @@ public class ProcessingLogic {
     }
 
     /**
-     * Sets machine used for void protection logic (namely, parallel logic.)
+     * Sets machine used for void protection logic.
      */
     public ProcessingLogic setMachine(IVoidable machine) {
         this.machine = machine;

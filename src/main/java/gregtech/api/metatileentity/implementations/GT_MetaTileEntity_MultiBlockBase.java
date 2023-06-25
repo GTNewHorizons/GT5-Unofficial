@@ -417,6 +417,17 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
     }
 
+    @Override
+    public void onTickFail(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onTickFail(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            aBaseMetaTileEntity.disableWorking();
+            checkRecipeResult = CheckRecipeResultRegistry.CRASH;
+            // Don't let `onSetActive` to overwrite
+            isScheduledForResetCheckRecipeResult = false;
+        }
+    }
+
     private void checkMaintenance() {
         if (disableMaintenance) {
             mWrench = true;
@@ -456,7 +467,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
      * <p>
      * See {@link #createProcessingLogic()} or {@link #checkProcessing()} for what you want to override.
      *
-     * @return If Successfully found recipe and/or started processing
+     * @return If successfully found recipe and/or started processing
      */
     protected final boolean checkRecipe() {
         startRecipeProcessing();
@@ -1727,17 +1738,21 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     @Override
     public boolean isAllowedToWork() {
-        return getBaseMetaTileEntity().isAllowedToWork();
+        return getBaseMetaTileEntity() != null && getBaseMetaTileEntity().isAllowedToWork();
     }
 
     @Override
     public void disableWorking() {
-        getBaseMetaTileEntity().disableWorking();
+        if (getBaseMetaTileEntity() != null) {
+            getBaseMetaTileEntity().disableWorking();
+        }
     }
 
     @Override
     public void enableWorking() {
-        getBaseMetaTileEntity().enableWorking();
+        if (getBaseMetaTileEntity() != null) {
+            getBaseMetaTileEntity().enableWorking();
+        }
     }
 
     @Override
@@ -2021,7 +2036,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             TextWidget.dynamicString(() -> checkRecipeResult.getDisplayString())
                 .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
-                .setEnabled(widget -> GT_Utility.isStringValid(checkRecipeResult.getDisplayString())))
+                .setEnabled(
+                    widget -> (isAllowedToWork() || checkRecipeResult.equals(CheckRecipeResultRegistry.CRASH))
+                        && GT_Utility.isStringValid(checkRecipeResult.getDisplayString())))
             .widget(new CheckRecipeResultSyncer(() -> checkRecipeResult, (result) -> checkRecipeResult = result));
 
         screenElements.widget(

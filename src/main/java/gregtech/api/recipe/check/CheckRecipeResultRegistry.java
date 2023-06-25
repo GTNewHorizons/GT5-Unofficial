@@ -57,6 +57,10 @@ public final class CheckRecipeResultRegistry {
      */
     public static final CheckRecipeResult NONE = SimpleCheckRecipeResult.ofFailure("none");
     /**
+     * Code crashed.
+     */
+    public static final CheckRecipeResult CRASH = SimpleCheckRecipeResult.ofFailure("crash");
+    /**
      * Cannot find valid fuel for generator.
      */
     public static final CheckRecipeResult NO_FUEL_FOUND = SimpleCheckRecipeResult.ofFailure("no_fuel");
