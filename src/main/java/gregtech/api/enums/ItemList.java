@@ -1602,8 +1602,9 @@ public enum ItemList implements IItemContainer {
 
     Long_Distance_Pipeline_Fluid_Pipe,
     Long_Distance_Pipeline_Item_Pipe,
-
+    Hatch_Input_Bus_ME,
     Hatch_Output_Bus_ME,
+    Hatch_Input_ME,
     Hatch_Output_ME,
 
     NULL,
@@ -2000,8 +2001,6 @@ public enum ItemList implements IItemContainer {
 
     VOLUMETRIC_FLASK,
 
-    Hatch_Input_Bus_ME,
-    Hatch_CraftingInput_Bus_ME,
     AdvDebugStructureWriter,
 
     Superconducting_Magnet_Solenoid_MV,

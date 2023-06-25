@@ -116,6 +116,8 @@ public class GT_MetaTileEntity_Hatch_Input extends GT_MetaTileEntity_Hatch {
         return false;
     }
 
+    public void startRecipeProcessing() {}
+
     @Override
     public boolean doesEmptyContainers() {
         return true;

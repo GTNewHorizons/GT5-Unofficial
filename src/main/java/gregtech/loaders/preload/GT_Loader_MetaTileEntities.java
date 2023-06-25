@@ -22,7 +22,6 @@ import gregtech.common.tileentities.machines.steam.*;
 import gregtech.common.tileentities.storage.*;
 
 // Free IDs left for machines in GT as of 29th of July 2022 - Colen. Please try use them up in order.
-// 358
 // 359
 // 366
 // 367
@@ -543,8 +542,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             ItemList.Hatch_Input_Bus_ME.set(
                 new GT_MetaTileEntity_Hatch_InputBus_ME(2711, "hatch.input_bus.me", "Stocking Input Bus (ME)")
                     .getStackForm(1L));
-            // ItemList.Hatch_CraftingInput_Bus_ME.set(new GT_MetaTileEntity_Hatch_CraftingInputBus_ME(2712,
-            // "hatch.crafting_input_bus.me", "Crafting Input Bus (ME)").getStackForm(1L));
+            ItemList.Hatch_Input_ME.set(
+                new GT_MetaTileEntity_Hatch_Input_ME(2712, "hatch.input.me", "Stocking Input Hatch (ME)")
+                    .getStackForm(1L));
             ItemList.Hatch_Output_ME.set(
                 new GT_MetaTileEntity_Hatch_Output_ME(2713, "hatch.output.me", "Output Hatch (ME)").getStackForm(1L));
         }
