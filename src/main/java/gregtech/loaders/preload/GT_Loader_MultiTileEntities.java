@@ -5,6 +5,7 @@ import static gregtech.api.multitileentity.enums.GT_MultiTileCasing.*;
 import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.*;
 import static gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing.*;
 
+import gregtech.common.tileentities.machines.multiblock.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
@@ -28,8 +29,6 @@ import gregtech.common.tileentities.casings.upgrade.Inventory;
 import gregtech.common.tileentities.casings.upgrade.Laser;
 import gregtech.common.tileentities.casings.upgrade.Tank;
 import gregtech.common.tileentities.casings.upgrade.Wireless;
-import gregtech.common.tileentities.machines.multiblock.*;
-import gregtech.common.tileentities.machines.multiblock.AdvChemicalProcessor;
 
 public class GT_Loader_MultiTileEntities implements Runnable {
 
@@ -111,15 +110,27 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .outputInventorySize(16)
             .tankCapacity(128000L)
             .register();
-        MACHINE_REGISTRY.create(4, LaserEngraver.class)
-            .name("Big Laser Engraver")
-            .category("MultiblockController")
+        MACHINE_REGISTRY.create(3, LayeredCokeBattery.class)
+            .name("Layered Coke Foundry")
+            .category("Multiblock Controller")
             .setBlock(MACHINE_BLOCK)
-            .textureFolder("BigLaserEngraver")
+            .material(Materials.Iron)
+            .textureFolder("macerator")
+            .tankCapacity(128000L)
             .inputInventorySize(16)
             .outputInventorySize(16)
-            .tankCapacity(128000L)
             .register();
+        MACHINE_REGISTRY.create(4, LaserEngraver.class)
+            .name("Big Laser Engraver")
+            .category("Multiblock Controller")
+            .setBlock(MACHINE_BLOCK)
+            .material(Materials.Iron)
+            .textureFolder("BigLaserEngraver")
+            .tankCapacity(128000L)
+            .inputInventorySize(16)
+            .outputInventorySize(16)
+            .register();
+
     }
 
     private static void registerCasings() {
@@ -166,6 +177,30 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .category("MultiBlock Casing")
             .setBlock(CASING_BLOCK)
             .textureFolder("BlackLaserEngraver")
+            .register();
+        CASING_REGISTRY.create(LaserEngraverUpgrade1.getId(), BasicCasing.class)
+            .name("Crude Laser Engraver Casing")
+            .category("MultiBlock Casing")
+            .setBlock(CASING_BLOCK)
+            .textureFolder("laserengraverupgrade1")
+            .register();
+        CASING_REGISTRY.create(LaserEngraverUpgrade2.getId(), BasicCasing.class)
+            .name("Advanced Laser Engraver Casing")
+            .category("MultiBlock Casing")
+            .setBlock(CASING_BLOCK)
+            .textureFolder("laserengraverupgrade2")
+            .register();
+        CASING_REGISTRY.create(LaserEngraverUpgrade3.getId(), BasicCasing.class)
+            .name("Ultimate Laser Engraver Casing")
+            .category("MultiBlock Casing")
+            .setBlock(CASING_BLOCK)
+            .textureFolder("laserengraverupgrade3")
+            .register();
+        CASING_REGISTRY.create(LaserEngraverUpgrade4.getId(), BasicCasing.class)
+            .name("Superb Laser Engraver Casing")
+            .category("MultiBlock Casing")
+            .setBlock(CASING_BLOCK)
+            .textureFolder("laserengraverupgrade4")
             .register();
 
     }

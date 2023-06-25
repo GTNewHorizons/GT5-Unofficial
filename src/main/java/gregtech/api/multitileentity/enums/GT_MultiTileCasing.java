@@ -10,6 +10,10 @@ public enum GT_MultiTileCasing {
     LaserEngraver(4),
     Mirror(5),
     BlackLaserEngraverCasing(6),
+    LaserEngraverUpgrade1(7),
+    LaserEngraverUpgrade2(8),
+    LaserEngraverUpgrade3(9),
+    LaserEngraverUpgrade4(10),
     NONE(GT_Values.W);
 
     private final int meta;
