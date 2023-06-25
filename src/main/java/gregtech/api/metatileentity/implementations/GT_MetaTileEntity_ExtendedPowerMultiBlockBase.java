@@ -16,6 +16,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
@@ -177,6 +178,12 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
 
         updateSlots();
         return result;
+    }
+
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(getAverageInputVoltage());
+        logic.setAvailableAmperage(getMaxInputAmps());
     }
 
     @Override

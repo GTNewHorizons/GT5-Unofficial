@@ -245,6 +245,12 @@ public class GT_MetaTileEntity_NanoForge extends
     }
 
     @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(getMaxInputEu());
+        logic.setAvailableAmperage(1);
+    }
+
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mSpecialTier = 0;
         if (aStack == null) return false;
