@@ -41,48 +41,73 @@ public class TranscendentMetalRenderer extends GT_GeneratedMaterial_Renderer {
     }
 
     @Override
-    protected void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon, boolean shouldModulateColor) {
+    protected void renderRegularItem(ItemRenderType type, ItemStack itemStack, IIcon icon, boolean shouldModulateColor) {
         GL11.glPushMatrix();
-        applyEffect(type, ((IGT_ItemWithMaterialRenderer) aStack.getItem()).getRGBa(aStack), shouldModulateColor);
-        super.renderRegularItem(type, aStack, icon, false);
+        applyEffect(type, ((IGT_ItemWithMaterialRenderer) itemStack.getItem()).getRGBa(itemStack), shouldModulateColor, itemStack.hashCode() * itemStack.stackSize);
+
+        if (!(itemStack.getItem() instanceof IGT_ItemWithMaterialRenderer aItem)) return;
+
+        if (shouldModulateColor) {
+            short[] tModulation = aItem.getRGBa(itemStack);
+            GL11.glColor3f(tModulation[0] / 255.0F, tModulation[1] / 255.0F, tModulation[2] / 255.0F);
+        }
+
+//        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+//            GT_RenderUtil.renderItemIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+//        } else {
+        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+            GL11.glScalef(16, 16, 32);
+        }
+            ItemRenderer.renderItemIn2D(
+                Tessellator.instance,
+                icon.getMaxU(),
+                icon.getMinV(),
+                icon.getMinU(),
+                icon.getMaxV(),
+                icon.getIconWidth(),
+                icon.getIconHeight(),
+                0.0625F);
+//        }
+
+
         GL11.glPopMatrix();
     }
 
     @Override
     protected void renderContainedFluid(ItemRenderType type, FluidStack aFluidStack, IIcon fluidIcon) {
-        GL11.glPushMatrix();
-
-        Fluid fluid = aFluidStack.getFluid();
-        applyEffect(type, GT_Util.getRGBaArray(fluid.getColor()), true);
-
-        TextureUtils.bindAtlas(fluid.getSpriteNumber());
-        GL11.glDepthFunc(GL11.GL_EQUAL);
-        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
-            GT_RenderUtil.renderItemIcon(fluidIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
-        } else {
-            ItemRenderer.renderItemIn2D(
-                Tessellator.instance,
-                fluidIcon.getMaxU(),
-                fluidIcon.getMinV(),
-                fluidIcon.getMinU(),
-                fluidIcon.getMaxV(),
-                fluidIcon.getIconWidth(),
-                fluidIcon.getIconHeight(),
-                0.0625F);
-        }
-        GL11.glDepthFunc(GL11.GL_LEQUAL);
-        GL11.glPopMatrix();
+//        GL11.glPushMatrix();
+//
+//        Fluid fluid = aFluidStack.getFluid();
+//        applyEffect(type, GT_Util.getRGBaArray(fluid.getColor()), true, fluidIcon.hashCode());
+//
+//        TextureUtils.bindAtlas(fluid.getSpriteNumber());
+//        GL11.glDepthFunc(GL11.GL_EQUAL);
+//        if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+//            GT_RenderUtil.renderItemIcon(fluidIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+//        } else {
+//            ItemRenderer.renderItemIn2D(
+//                Tessellator.instance,
+//                fluidIcon.getMaxU(),
+//                fluidIcon.getMinV(),
+//                fluidIcon.getMinU(),
+//                fluidIcon.getMaxV(),
+//                fluidIcon.getIconWidth(),
+//                fluidIcon.getIconHeight(),
+//                0.0625F);
+//        }
+//        GL11.glDepthFunc(GL11.GL_LEQUAL);
+//        GL11.glPopMatrix();
     }
 
     @Override
     protected void renderItemOverlay(ItemRenderType type, IIcon overlay) {
         GL11.glPushMatrix();
-        applyEffect(type, null, false);
+        applyEffect(type, null, false, overlay.hashCode());
         super.renderItemOverlay(type, overlay);
         GL11.glPopMatrix();
     }
 
-    private void applyEffect(ItemRenderType type, short[] modulation, boolean shouldModulateColor) {
+    private void applyEffect(ItemRenderType type, short[] modulation, boolean shouldModulateColor, int itemStackHash) {
         long animationTicks = GT_Mod.gregtechproxy.getAnimationTicks();
         int frameCurrent = frameIndex[(int) (animationTicks / 2 % frameIndex.length)];
         int frameNext = frameIndex[(int) ((animationTicks + 2) / 2 % frameIndex.length)];
@@ -93,7 +118,10 @@ public class TranscendentMetalRenderer extends GT_GeneratedMaterial_Renderer {
         } else {
             GL11.glTranslatef(0.5f, 0.5f, 0.0f);
         }
-        GL11.glRotatef(linearInterpolation(frameRotation, frameCurrent, frameNext, partialTicks), 0, 0, 1);
+
+        float itemStackRenderOffset = (itemStackHash % 360);
+        itemStackRenderOffset = 0;
+        GL11.glRotatef((GT_Mod.gregtechproxy.getAnimationTicks() * 3.5f + itemStackRenderOffset) % 360, 0.3f, 0.5f, 0.5f);
         if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
             GL11.glTranslatef(-8f, -8f, 0f);
         } else {
