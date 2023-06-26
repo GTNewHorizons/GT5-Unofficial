@@ -311,7 +311,7 @@ public class ProcessingLogic {
 
     protected double calculateDuration(GT_Recipe recipe, GT_ParallelHelper helper, GT_OverclockCalculator calculator) {
         if (calculator == null) {
-            return recipe.mEUt * helper.getDurationMultiplierDouble();
+            return recipe.mDuration * helper.getDurationMultiplierDouble();
         }
         return calculator.getDuration() * helper.getDurationMultiplierDouble();
     }
