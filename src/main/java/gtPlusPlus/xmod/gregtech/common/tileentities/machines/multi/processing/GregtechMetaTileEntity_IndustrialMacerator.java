@@ -14,9 +14,13 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -40,6 +44,8 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GregtechMetaTileEntity_IndustrialMacerator extends
         GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMacerator> implements ISurvivalConstructable {
@@ -354,7 +360,7 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
         if (aNBT == null || !aNBT.hasKey("mTier")) {
             tier = 1;
         } else {
-            tier = 2;
+            tier = aNBT.getInteger("mTier");
         }
         tooltip.add(StatCollector.translateToLocalFormatted("tooltip.large_macerator.tier", tier));
     }
@@ -404,5 +410,22 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
     @Override
     public boolean isOverclockerUpgradable() {
         return true;
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+            int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("tier", controllerTier);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+            IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        if (tag.hasKey("tier")) {
+            currentTip.add("Tier: " + EnumChatFormatting.YELLOW + tag.getInteger("tier") + EnumChatFormatting.RESET);
+        }
     }
 }
