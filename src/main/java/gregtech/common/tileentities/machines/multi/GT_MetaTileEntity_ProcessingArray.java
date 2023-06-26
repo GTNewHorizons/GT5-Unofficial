@@ -67,6 +67,8 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
+import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_ProcessingArray_Manager;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
@@ -230,6 +232,17 @@ public class GT_MetaTileEntity_ProcessingArray extends
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
+            @Override
+            protected GT_OverclockCalculator createOverclockCalculator(GT_Recipe recipe, GT_ParallelHelper helper) {
+                return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
+                    .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplierDouble()))
+                    .setDuration((int) Math.ceil(recipe.mDuration * helper.getDurationMultiplierDouble()))
+                    .setAmperage(availableAmperage)
+                    .setEUt(availableVoltage)
+                    .setDurationDecreasePerOC(overClockTimeReduction)
+                    .setEUtIncreasePerOC(overClockPowerIncrease);
+            }
+
             @Nonnull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
@@ -246,11 +259,11 @@ public class GT_MetaTileEntity_ProcessingArray extends
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(GT_Values.V[tTier]);
         GT_Recipe_Map recipeMap = getRecipeMap();
-        logic.setAvailableAmperage(recipeMap != null ? recipeMap.mAmperage : 1);
+        logic.setAvailableAmperage((long) (recipeMap != null ? recipeMap.mAmperage : 1) * getMaxParallel());
     }
 
     private void setTierAndMult() {
-        IMetaTileEntity aMachine = GT_Item_Machines.getMetaTileEntity(mInventory[1]);
+        IMetaTileEntity aMachine = GT_Item_Machines.getMetaTileEntity(getControllerSlot());
         if (aMachine instanceof GT_MetaTileEntity_TieredMachineBlock) {
             tTier = ((GT_MetaTileEntity_TieredMachineBlock) aMachine).mTier;
         } else {
@@ -264,10 +277,10 @@ public class GT_MetaTileEntity_ProcessingArray extends
     }
 
     private int getMaxParallel() {
-        if (mInventory[1] == null) {
+        if (getControllerSlot() == null) {
             return 0;
         }
-        return mInventory[1].stackSize << mMult;
+        return getControllerSlot().stackSize << mMult;
     }
 
     @Override
