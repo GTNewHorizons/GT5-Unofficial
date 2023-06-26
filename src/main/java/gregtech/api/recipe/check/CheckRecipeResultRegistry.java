@@ -72,6 +72,14 @@ public final class CheckRecipeResultRegistry {
      * No data sticks found for Assembly Line.
      */
     public static final CheckRecipeResult NO_DATA_STICKS = SimpleCheckRecipeResult.ofFailure("no_data_sticks");
+    /**
+     * EU/t overflowed.
+     */
+    public static final CheckRecipeResult POWER_OVERFLOW = SimpleCheckRecipeResult.ofFailure("power_overflow");
+    /**
+     * Progress time overflowed.
+     */
+    public static final CheckRecipeResult DURATION_OVERFLOW = SimpleCheckRecipeResult.ofFailure("duration_overflow");
 
     /**
      * Cannot process recipe because the machine cannot handle required EUt.
