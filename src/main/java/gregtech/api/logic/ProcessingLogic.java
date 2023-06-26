@@ -13,6 +13,7 @@ import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.FindRecipeResult;
+import gregtech.api.recipe.check.SingleRecipeCheck;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
@@ -236,8 +237,14 @@ public class ProcessingLogic {
         }
 
         FindRecipeResult findRecipeResult;
-
         if (isRecipeLocked && recipeLockableMachine != null && recipeLockableMachine.getSingleRecipeCheck() != null) {
+            // Recipe checker is already built, we'll use it
+            SingleRecipeCheck singleRecipeCheck = recipeLockableMachine.getSingleRecipeCheck();
+            // Validate recipe here, otherwise machine will show "not enough output space"
+            // even if recipe cannot be found
+            if (singleRecipeCheck.checkRecipeInputs(false, 1, inputItems, inputFluids) == 0) {
+                return CheckRecipeResultRegistry.NO_RECIPE;
+            }
             findRecipeResult = FindRecipeResult.ofSuccess(
                 recipeLockableMachine.getSingleRecipeCheck()
                     .getRecipe());
@@ -281,14 +288,22 @@ public class ProcessingLogic {
             duration = recipe.mDuration;
         } else {
             calculator.calculate();
-            if (calculator.getConsumption() == Long.MAX_VALUE - 1
-                || calculator.getDuration() == Integer.MAX_VALUE - 1) {
-                return CheckRecipeResultRegistry.NO_RECIPE;
+            if (calculator.getConsumption() == Long.MAX_VALUE) {
+                return CheckRecipeResultRegistry.POWER_OVERFLOW;
+            }
+            if (calculator.getDuration() == Integer.MAX_VALUE) {
+                return CheckRecipeResultRegistry.DURATION_OVERFLOW;
             }
 
             calculatedEut = calculator.getConsumption();
             duration = calculator.getDuration();
         }
+
+        double finalDuration = duration * helper.getDurationMultiplierDouble();
+        if (finalDuration >= Integer.MAX_VALUE) {
+            return CheckRecipeResultRegistry.DURATION_OVERFLOW;
+        }
+        duration = (int) finalDuration;
 
         outputItems = helper.getItemOutputs();
         outputFluids = helper.getFluidOutputs();
@@ -316,7 +331,7 @@ public class ProcessingLogic {
      * Override to do additional check for finding recipe if needed, mainly for special value of the recipe.
      */
     @Nonnull
-    protected CheckRecipeResult validateRecipe(GT_Recipe recipe) {
+    protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -325,7 +340,7 @@ public class ProcessingLogic {
      */
     protected GT_OverclockCalculator createOverclockCalculator(GT_Recipe recipe, GT_ParallelHelper helper) {
         return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
-            .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplier()))
+            .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplierDouble()))
             .setDuration(recipe.mDuration)
             .setAmperage(availableAmperage)
             .setEUt(availableVoltage)

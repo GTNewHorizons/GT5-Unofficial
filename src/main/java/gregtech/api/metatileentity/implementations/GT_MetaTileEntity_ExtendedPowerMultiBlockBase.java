@@ -146,6 +146,7 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
         processingLogic.setMachine(this);
         processingLogic.setRecipeMapSupplier(this::getRecipeMap);
         processingLogic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
+        processingLogic.setBatchSize(isBatchModeEnabled() ? getMaxBatchSize() : 1);
         processingLogic.setRecipeLocking(this, isRecipeLockingEnabled());
         processingLogic.setInputFluids(getStoredFluids());
         setProcessingLogicPower(processingLogic);
@@ -165,14 +166,15 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
             result = processingLogic.process();
         }
 
+        // inputs are consumed by `process()`
+        updateSlots();
+
         if (!result.wasSuccessful()) return result;
 
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         mEfficiencyIncrease = 10000;
 
         lEUt = processingLogic.getCalculatedEut();
-
-        if (processingLogic.getDuration() == Integer.MAX_VALUE) return CheckRecipeResultRegistry.NO_RECIPE;
         mMaxProgresstime = processingLogic.getDuration();
 
         if (lEUt > 0) {
@@ -182,7 +184,6 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
         mOutputItems = processingLogic.getOutputItems();
         mOutputFluids = processingLogic.getOutputFluids();
 
-        updateSlots();
         return result;
     }
 

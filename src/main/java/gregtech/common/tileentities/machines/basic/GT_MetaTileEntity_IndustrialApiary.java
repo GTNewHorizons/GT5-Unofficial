@@ -249,6 +249,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         super.saveNBTData(aNBT);
         aNBT.setInteger("mSpeed", mSpeed);
         aNBT.setBoolean("mLockedSpeed", mLockedSpeed);
+        aNBT.setBoolean("mAutoQueen", mAutoQueen);
         if (usedQueen != null) aNBT.setTag("usedQueen", usedQueen.writeToNBT(new NBTTagCompound()));
         aNBT.setBoolean("retrievingPollenInThisOperation", retrievingPollenInThisOperation);
         aNBT.setInteger("pollinationDelay", pollinationDelay);
@@ -260,6 +261,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         super.loadNBTData(aNBT);
         mSpeed = aNBT.getInteger("mSpeed");
         mLockedSpeed = aNBT.getBoolean("mLockedSpeed");
+        if (aNBT.hasKey("mAutoQueen")) mAutoQueen = aNBT.getBoolean("mAutoQueen");
         if (aNBT.hasKey("usedQueen")) usedQueen = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("usedQueen"));
         retrievingPollenInThisOperation = aNBT.getBoolean("retrievingPollenInThisOperation");
         pollinationDelay = aNBT.getInteger("pollinationDelay");

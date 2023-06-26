@@ -57,6 +57,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.objects.GT_ItemStack;
@@ -126,7 +127,7 @@ import ic2.api.recipe.RecipeOutput;
     guiFactory = "gregtech.client.GT_GuiFactory",
     dependencies = " required-after:IC2;" + " required-after:structurelib;"
         + " required-after:gtnhlib@[0.0.8,);"
-        + " required-after:modularui@[1.1.7,);"
+        + " required-after:modularui@[1.1.12,);"
         + " after:dreamcraft;"
         + " after:Forestry;"
         + " after:PFAAGeologica;"
@@ -290,6 +291,8 @@ public class GT_Mod implements IGT_Mod {
         GregTech_API.sPreloadFinished = true;
         GT_Log.out.println("GT_Mod: Preload-Phase finished!");
         GT_Log.ore.println("GT_Mod: Preload-Phase finished!");
+
+        GT_UIInfos.init();
 
         for (Runnable tRunnable : GregTech_API.sAfterGTPreload) {
             try {

@@ -549,7 +549,8 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                     .setBackground(GT_UITextures.TRANSPARENT)
                     .setPos(58, 41))
             .widget(
-                new TextWidget("Liquid Amount").setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(StatCollector.translateToLocal("GT5U.machines.digitaltank.fluid.amount"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 20))
             .widget(
                 TextWidget.dynamicString(() -> GT_Utility.parseNumberToString(mFluid != null ? mFluid.amount : 0))
@@ -557,20 +558,22 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                     .setPos(10, 30))
             .widget(
                 new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                    .setPos(98, 28)
+                    .setPos(98, 16)
                     .setSize(71, 45))
-            .widget(new FluidLockWidget(this).setPos(149, 53))
+            .widget(new FluidLockWidget(this).setPos(149, 41))
             .widget(
-                new TextWidget("Locked Fluid").setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(101, 32))
+                new TextWidget(StatCollector.translateToLocal("GT5U.machines.digitaltank.lockfluid.label"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(101, 20))
             .widget(TextWidget.dynamicString(() -> {
                 FluidStack fluidStack = FluidRegistry.getFluidStack(lockedFluidName, 1);
-                return fluidStack != null ? fluidStack.getLocalizedName() : "None";
+                return fluidStack != null ? fluidStack.getLocalizedName()
+                    : StatCollector.translateToLocal("GT5U.machines.digitaltank.lockfluid.empty");
             })
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setTextAlignment(Alignment.CenterLeft)
                 .setMaxWidth(65)
-                .setPos(101, 42))
+                .setPos(101, 30))
             .widget(new CycleButtonWidget().setToggle(() -> mOutputFluid, val -> {
                 mOutputFluid = val;
                 if (!mOutputFluid) {
@@ -653,7 +656,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                 .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_TANK_VOID_EXCESS)
                 .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.voidoverflow.tooltip"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(133, 7)
+                .setPos(98, 63)
                 .setSize(18, 18))
             .widget(new CycleButtonWidget().setToggle(() -> mVoidFluidFull, val -> {
                 mVoidFluidFull = val;
@@ -670,7 +673,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                 .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_TANK_VOID_ALL)
                 .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.voidfull.tooltip"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(151, 7)
+                .setPos(116, 63)
                 .setSize(18, 18));
     }
 }

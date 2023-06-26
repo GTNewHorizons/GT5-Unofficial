@@ -3052,6 +3052,14 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         .orElse(Collections.emptyList())));
         }
 
+        @Nullable
+        public static GT_Recipe_Map findRecipeMap(@Nonnull String unlocalizedName) {
+            return sMappings.stream()
+                .filter(m -> unlocalizedName.equals(m.mUnlocalizedName))
+                .findFirst()
+                .orElse(null);
+        }
+
         /**
          * HashMap of Recipes based on their Items
          */

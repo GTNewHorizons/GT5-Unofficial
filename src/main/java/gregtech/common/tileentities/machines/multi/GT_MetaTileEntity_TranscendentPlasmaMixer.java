@@ -18,6 +18,8 @@ import static java.lang.Math.max;
 import static net.minecraft.util.EnumChatFormatting.GOLD;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -152,7 +154,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(GT_Recipe recipe) {
+            protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
                 mWirelessEUt = 10L * (long) recipe.mEUt * (long) multiplier;
                 if (!addEUToGlobalEnergyMap(ownerUUID, -mWirelessEUt * recipe.mDuration)) {
                     return CheckRecipeResultRegistry.insufficientPower(mWirelessEUt * recipe.mDuration);

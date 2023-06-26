@@ -59,9 +59,11 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 import gregtech.api.net.GT_Packet_ClientPreference;
 import gregtech.api.objects.GT_ItemStack;
@@ -75,6 +77,7 @@ import gregtech.api.util.GT_PlayedSound;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
+import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.render.GT_CapeRenderer;
@@ -757,6 +760,14 @@ public class GT_Client extends GT_Proxy implements Runnable {
 
         if (!(aTileEntity instanceof ICoverable)) return;
 
+        if (aEvent.player.isSneaking() && aTileEntity instanceof IGregTechTileEntity gtEntity
+            && gtEntity.getMetaTileEntity() instanceof MetaPipeEntity) {
+            if (aEvent.currentItem != null && aEvent.currentItem.getItem() instanceof GT_Item_Machines
+                && GregTech_API.METATILEENTITIES[aEvent.currentItem.getItemDamage()] instanceof MetaPipeEntity) {
+                drawGrid(aEvent, false, false, false);
+            }
+        }
+
         if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sWireCutterList)
             || GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sSolderingToolList)
             || (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sSoftHammerList)
@@ -994,7 +1005,10 @@ public class GT_Client extends GT_Proxy implements Runnable {
                 || GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWireCutterList)
                 || GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSolderingToolList)
                 || GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCrowbarList)
-                || GregTech_API.sCovers.containsKey(new GT_ItemStack(tCurrentItem))) {
+                || GregTech_API.sCovers.containsKey(new GT_ItemStack(tCurrentItem))
+                || (tCurrentItem.getItem() instanceof GT_Item_Machines
+                    && GregTech_API.METATILEENTITIES[tCurrentItem.getItemDamage()] instanceof MetaPipeEntity
+                    && player.isSneaking())) {
                 hide |= 0x2;
             }
             return hide;

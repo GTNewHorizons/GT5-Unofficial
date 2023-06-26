@@ -11,6 +11,7 @@ import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.XSTR;
+import gregtech.api.recipe.check.SingleRecipeCheck;
 
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class GT_ParallelHelper {
@@ -92,7 +93,7 @@ public class GT_ParallelHelper {
     /**
      * What is the duration multiplier with batch mode enabled
      */
-    private float mDurationMultiplier;
+    private double mDurationMultiplier;
     /**
      * Modifier which is applied on the recipe eut. Useful for GT++ machines
      */
@@ -247,7 +248,7 @@ public class GT_ParallelHelper {
     /**
      * @return The duration multiplier if batch mode was enabled for the multiblock
      */
-    public float getDurationMultiplier() {
+    public double getDurationMultiplierDouble() {
         if (!mBuilt) {
             throw new IllegalStateException("Tried to get duration multiplier before building");
         }
@@ -255,6 +256,14 @@ public class GT_ParallelHelper {
             return mDurationMultiplier;
         }
         return 1;
+    }
+
+    /**
+     * @deprecated Use {@link #getDurationMultiplierDouble()}
+     */
+    @Deprecated
+    public float getDurationMultiplier() {
+        return (float) getDurationMultiplierDouble();
     }
 
     /**
@@ -286,47 +295,50 @@ public class GT_ParallelHelper {
         if (mRecipe.mEUt > mAvailableEUt) {
             return;
         }
-        ItemStack[] tItemInputs = null;
-        FluidStack[] tFluidInputs = null;
-        GT_Single_Recipe_Check.Builder tSingleRecipeCheckBuilder = null;
-        GT_Single_Recipe_Check recipeCheck = null;
-        if (isRecipeLocked && singleRecipeMachine != null) {
-            recipeCheck = singleRecipeMachine.getSingleRecipeCheck();
+        if (mItemInputs == null) {
+            mItemInputs = new ItemStack[0];
         }
-        long tCurrentUsage = 0;
-        // see if people want to consume their inputs with the Parallel Helper or not
+        if (mFluidInputs == null) {
+            mFluidInputs = new FluidStack[0];
+        }
+
+        ItemStack[] tItemInputs;
+        FluidStack[] tFluidInputs;
+        // see if people want to consume their inputs or not
         if (mConsume) {
             tItemInputs = mItemInputs;
             tFluidInputs = mFluidInputs;
         } else {
-            if (mItemInputs == null) {
-                tItemInputs = new ItemStack[] {};
-            } else {
-                tItemInputs = new ItemStack[mItemInputs.length];
-                for (int i = 0; i < mItemInputs.length; i++) {
-                    tItemInputs[i] = mItemInputs[i].copy();
-                }
+            // copy to prevent consuming original inputs
+            tItemInputs = new ItemStack[mItemInputs.length];
+            for (int i = 0; i < mItemInputs.length; i++) {
+                tItemInputs[i] = mItemInputs[i].copy();
             }
-
-            if (mFluidInputs == null) {
-                mFluidInputs = new FluidStack[] {};
-            } else {
-                tFluidInputs = new FluidStack[mFluidInputs.length];
-                for (int i = 0; i < mFluidInputs.length; i++) {
-                    tFluidInputs[i] = mFluidInputs[i].copy();
-                }
+            tFluidInputs = new FluidStack[mFluidInputs.length];
+            for (int i = 0; i < mFluidInputs.length; i++) {
+                tFluidInputs[i] = mFluidInputs[i].copy();
             }
         }
+
         if (mBatchMode) {
             mMaxParallel *= mBatchModifier;
         }
-        // If the machine is recipe locked and the recipe lock builder isn't set up yet,
-        // we may only do one parallel, to build it. Also, consumption needs to be enabled to build
-        if (isRecipeLocked && mConsume && recipeCheck == null && singleRecipeMachine != null) {
-            mMaxParallel = 1;
-            tSingleRecipeCheckBuilder = GT_Single_Recipe_Check.builder(singleRecipeMachine)
-                .setBefore(tItemInputs, tFluidInputs);
+
+        SingleRecipeCheck recipeCheck = null;
+        SingleRecipeCheck.Builder tSingleRecipeCheckBuilder = null;
+        if (isRecipeLocked && singleRecipeMachine != null) {
+            recipeCheck = singleRecipeMachine.getSingleRecipeCheck();
+            if (recipeCheck == null) {
+                // Machine is configured to lock to a single recipe, but haven't built the recipe checker yet.
+                // Build the checker on next successful recipe.
+                GT_Recipe.GT_Recipe_Map recipeMap = singleRecipeMachine.getRecipeMap();
+                if (recipeMap != null) {
+                    tSingleRecipeCheckBuilder = SingleRecipeCheck.builder(recipeMap)
+                        .setBefore(tItemInputs, tFluidInputs);
+                }
+            }
         }
+
         // Let's look at how many parallels we can get with void protection
         if (protectExcessItem || protectExcessFluid) {
             if (machine == null) {
@@ -341,38 +353,41 @@ public class GT_ParallelHelper {
             mMaxParallel = Math.min(voidProtectionHelper.getMaxParallel(), mMaxParallel);
         }
 
-        float tRecipeEUt = mRecipe.mEUt * mEUtModifier;
+        final int tRecipeEUt = (int) Math.ceil(mRecipe.mEUt * mEUtModifier);
+        final int batchCorrectedMaxParallel = mMaxParallel / mBatchModifier;
         // Consume inputs to determine normal parallel
-        for (; mCurrentParallel < mMaxParallel / mBatchModifier
-            && tCurrentUsage < (mAvailableEUt - tRecipeEUt); mCurrentParallel++) {
-            if (isRecipeLocked && recipeCheck != null) {
-                if (recipeCheck.checkRecipeInputs(mConsume)) {
-                    tCurrentUsage += tRecipeEUt;
-                } else {
+        if (recipeCheck != null) {
+            int actualMaxParallel = (int) Math.min(batchCorrectedMaxParallel, mAvailableEUt / tRecipeEUt);
+            mCurrentParallel = recipeCheck.checkRecipeInputs(true, actualMaxParallel, tItemInputs, tFluidInputs);
+        } else {
+            long tCurrentUsage = 0;
+            boolean builtRecipeCheck = false;
+            for (; mCurrentParallel < batchCorrectedMaxParallel
+                && tCurrentUsage < (mAvailableEUt - tRecipeEUt); mCurrentParallel++) {
+                if (!mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs)) {
                     break;
                 }
-            } else {
-                if (mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs)) {
-                    tCurrentUsage += tRecipeEUt;
-                } else {
-                    break;
+                tCurrentUsage += tRecipeEUt;
+                if (tSingleRecipeCheckBuilder != null && !builtRecipeCheck) {
+                    // If recipe checker is not built yet, build and set it
+                    SingleRecipeCheck builtCheck = tSingleRecipeCheckBuilder.setAfter(tItemInputs, tFluidInputs)
+                        .setRecipe(mRecipe)
+                        .build();
+                    singleRecipeMachine.setSingleRecipeCheck(builtCheck);
+                    builtRecipeCheck = true;
                 }
             }
         }
 
         // If Batch Mode is enabled determine how many extra parallels we can get
-        if (mBatchMode) {
+        if (mBatchMode && mCurrentParallel > 0) {
             int tExtraParallels = 0;
-            if (isRecipeLocked && recipeCheck != null) {
-                while (tExtraParallels < mCurrentParallel * (mBatchModifier - 1)
-                    && recipeCheck.checkRecipeInputs(false)) {
-                    recipeCheck.checkRecipeInputs(true);
-                    tExtraParallels++;
-                }
+            final int maxExtraParallels = mCurrentParallel * (mBatchModifier - 1);
+            if (recipeCheck != null) {
+                tExtraParallels = recipeCheck.checkRecipeInputs(true, maxExtraParallels, tItemInputs, tFluidInputs);
             } else {
-                while (tExtraParallels < mCurrentParallel * (mBatchModifier - 1)
-                    && mRecipe.isRecipeInputEqual(false, false, tFluidInputs, tItemInputs)) {
-                    mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs);
+                while (tExtraParallels < maxExtraParallels
+                    && mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs)) {
                     tExtraParallels++;
                 }
             }
@@ -410,17 +425,6 @@ public class GT_ParallelHelper {
                     }
                 }
             }
-        }
-
-        if (isRecipeLocked && mConsume
-            && recipeCheck == null
-            && mCurrentParallel > 0
-            && tSingleRecipeCheckBuilder != null
-            && singleRecipeMachine != null) {
-            singleRecipeMachine.setSingleRecipeCheck(
-                tSingleRecipeCheckBuilder.setAfter(tItemInputs, tFluidInputs)
-                    .setRecipe(mRecipe)
-                    .build());
         }
     }
 }
