@@ -151,15 +151,17 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
         processingLogic.setInputFluids(getStoredFluids());
         setProcessingLogicPower(processingLogic);
         if (isInputSeparationEnabled()) {
-            ArrayList<ItemStack> inputItems = new ArrayList<>();
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
+                List<ItemStack> inputItems = new ArrayList<>();
                 for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
-                    if (bus.getStackInSlot(i) != null) inputItems.add(bus.getStackInSlot(i));
+                    ItemStack stored = bus.getStackInSlot(i);
+                    if (stored != null) {
+                        inputItems.add(stored);
+                    }
                 }
                 processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
                 result = processingLogic.process();
                 if (result.wasSuccessful()) break;
-                else inputItems.clear();
             }
         } else {
             processingLogic.setInputItems(getStoredInputs());
