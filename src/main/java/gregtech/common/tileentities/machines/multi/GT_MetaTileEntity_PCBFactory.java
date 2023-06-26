@@ -583,6 +583,11 @@ public class GT_MetaTileEntity_PCBFactory extends
             @Override
             public CheckRecipeResult process() {
                 CheckRecipeResult result = super.process();
+
+                if (!result.wasSuccessful()) {
+                    return result;
+                }
+
                 mCurrentParallel = calculatedParallels;
 
                 ItemStack controllerStack = getControllerSlot();
