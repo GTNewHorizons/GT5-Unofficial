@@ -533,7 +533,7 @@ public class GT_MetaTileEntity_PCBFactory extends
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(GT_Recipe recipe) {
+            protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
                 // Here we check the dynamic parallels, which depend on the recipe
                 int numberOfNanites = 0;
                 ItemStack aNanite = recipe.getRepresentativeInput(1);
@@ -583,6 +583,11 @@ public class GT_MetaTileEntity_PCBFactory extends
             @Override
             public CheckRecipeResult process() {
                 CheckRecipeResult result = super.process();
+
+                if (!result.wasSuccessful()) {
+                    return result;
+                }
+
                 mCurrentParallel = calculatedParallels;
 
                 ItemStack controllerStack = getControllerSlot();
@@ -1030,7 +1035,8 @@ public class GT_MetaTileEntity_PCBFactory extends
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (!aNBT.hasKey(INPUT_SEPARATION_NBT_KEY)) {
+        if (aNBT.hasKey("mSeparate")) {
+            // backward compatibility
             inputSeparation = aNBT.getBoolean("mSeparate");
         }
         mBioUpgrade = aNBT.getBoolean("mBioUpgrade");

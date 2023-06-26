@@ -237,11 +237,17 @@ public class GT_MetaTileEntity_NanoForge extends
         return new ProcessingLogic() {
 
             @Override
-            protected @Nonnull CheckRecipeResult validateRecipe(GT_Recipe recipe) {
+            protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
                 return recipe.mSpecialValue <= mSpecialTier ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.NO_RECIPE;
             }
         };
+    }
+
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(getMaxInputEu());
+        logic.setAvailableAmperage(1);
     }
 
     @Override
@@ -315,7 +321,8 @@ public class GT_MetaTileEntity_NanoForge extends
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (!aNBT.hasKey(INPUT_SEPARATION_NBT_KEY)) {
+        if (aNBT.hasKey("mSeparate")) {
+            // backward compatibility
             inputSeparation = aNBT.getBoolean("mSeparate");
         }
         mSpecialTier = aNBT.getByte("mSpecialTier");

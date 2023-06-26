@@ -206,7 +206,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
             }
 
             @Override
-            protected @Nonnull CheckRecipeResult validateRecipe(GT_Recipe recipe) {
+            protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
                 return recipe.mSpecialValue <= mHeatingCapacity ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
@@ -383,6 +383,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         if (aNBT.hasKey("isBussesSeparate")) {
+            // backward compatibility
             inputSeparation = aNBT.getBoolean("isBussesSeparate");
         }
     }

@@ -66,12 +66,12 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SingleRecipeCheck;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.api.util.GT_Single_Recipe_Check;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
 import gregtech.api.util.OutputHatchWrapper;
@@ -114,7 +114,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
     protected static final String VOIDING_MODE_NBT_KEY = "voidingMode";
     protected static final String BATCH_MODE_NBT_KEY = "batchMode";
-    public GT_Single_Recipe_Check mSingleRecipeCheck = null;
+    protected SingleRecipeCheck mSingleRecipeCheck = null;
 
     public ArrayList<GT_MetaTileEntity_Hatch_Input> mInputHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Output> mOutputHatches = new ArrayList<>();
@@ -279,7 +279,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (supportsSingleRecipeLocking()) {
             mLockedToSingleRecipe = aNBT.getBoolean("mLockedToSingleRecipe");
             if (mLockedToSingleRecipe && aNBT.hasKey("mSingleRecipeCheck", Constants.NBT.TAG_COMPOUND)) {
-                GT_Single_Recipe_Check c = loadSingleRecipeChecker(aNBT.getCompoundTag("mSingleRecipeCheck"));
+                SingleRecipeCheck c = loadSingleRecipeChecker(aNBT.getCompoundTag("mSingleRecipeCheck"));
                 if (c != null) mSingleRecipeCheck = c;
                 // the old recipe is gone. we disable the machine to prevent making garbage in case of shared inputs
                 // maybe use a better way to inform player in the future.
@@ -317,8 +317,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mCrowbar = aNBT.getBoolean("mCrowbar");
     }
 
-    protected GT_Single_Recipe_Check loadSingleRecipeChecker(NBTTagCompound aNBT) {
-        return GT_Single_Recipe_Check.tryLoad(this, aNBT);
+    protected SingleRecipeCheck loadSingleRecipeChecker(NBTTagCompound aNBT) {
+        return SingleRecipeCheck.tryLoad(getRecipeMap(), aNBT);
     }
 
     @Override
@@ -676,12 +676,20 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         processingLogic.setMachine(this);
         processingLogic.setRecipeMapSupplier(this::getRecipeMap);
         processingLogic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
+        processingLogic.setBatchSize(isBatchModeEnabled() ? getMaxBatchSize() : 1);
         processingLogic.setRecipeLocking(this, isRecipeLockingEnabled());
         processingLogic.setInputFluids(getStoredFluids());
         setProcessingLogicPower(processingLogic);
         if (isInputSeparationEnabled()) {
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
-                processingLogic.setInputItems(bus.mInventory);
+                List<ItemStack> inputItems = new ArrayList<>();
+                for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                    ItemStack stored = bus.getStackInSlot(i);
+                    if (stored != null) {
+                        inputItems.add(stored);
+                    }
+                }
+                processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
                 result = processingLogic.process();
                 if (result.wasSuccessful()) break;
             }
@@ -690,15 +698,18 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             result = processingLogic.process();
         }
 
+        // inputs are consumed by `process()`
+        updateSlots();
+
         if (!result.wasSuccessful()) return result;
 
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         mEfficiencyIncrease = 10000;
 
-        if (processingLogic.getCalculatedEut() > Integer.MAX_VALUE) return CheckRecipeResultRegistry.NO_RECIPE;
+        if (processingLogic.getCalculatedEut() > Integer.MAX_VALUE) {
+            return CheckRecipeResultRegistry.POWER_OVERFLOW;
+        }
         mEUt = (int) processingLogic.getCalculatedEut();
-
-        if (processingLogic.getDuration() == Integer.MAX_VALUE) return CheckRecipeResultRegistry.NO_RECIPE;
         mMaxProgresstime = processingLogic.getDuration();
 
         if (mEUt > 0) {
@@ -708,7 +719,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mOutputItems = processingLogic.getOutputItems();
         mOutputFluids = processingLogic.getOutputFluids();
 
-        updateSlots();
         return result;
     }
 
@@ -717,6 +727,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         // by using getMaxInputPower instead of getMaxInputVoltage.
         logic.setAvailableVoltage(getMaxInputPower());
         logic.setAvailableAmperage(1);
+    }
+
+    protected int getMaxBatchSize() {
+        return 128;
     }
 
     /**
@@ -1184,7 +1198,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return rList;
     }
 
-    @Override
     public ArrayList<FluidStack> getStoredFluids() {
         ArrayList<FluidStack> rList = new ArrayList<>();
         for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
@@ -1208,7 +1221,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return rList;
     }
 
-    @Override
     public ArrayList<ItemStack> getStoredInputs() {
         ArrayList<ItemStack> rList = new ArrayList<>();
         for (GT_MetaTileEntity_Hatch_InputBus tHatch : mInputBusses) {
@@ -1755,7 +1767,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
     }
 
-    @Override
     public ItemStack getControllerSlot() {
         return mInventory[1];
     }
@@ -1897,16 +1908,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     @Override
     public void setRecipeLocking(boolean enabled) {
-        this.mLockedToSingleRecipe = enabled;
+        mLockedToSingleRecipe = enabled;
+        if (!enabled) {
+            setSingleRecipeCheck(null);
+        }
     }
 
     @Override
-    public void setSingleRecipeCheck(GT_Single_Recipe_Check recipeCheck) {
+    public void setSingleRecipeCheck(SingleRecipeCheck recipeCheck) {
         mSingleRecipeCheck = recipeCheck;
     }
 
     @Override
-    public GT_Single_Recipe_Check getSingleRecipeCheck() {
+    public SingleRecipeCheck getSingleRecipeCheck() {
         return mSingleRecipeCheck;
     }
 
@@ -2036,9 +2050,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             TextWidget.dynamicString(() -> checkRecipeResult.getDisplayString())
                 .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
-                .setEnabled(
-                    widget -> (isAllowedToWork() || checkRecipeResult.equals(CheckRecipeResultRegistry.CRASH))
-                        && GT_Utility.isStringValid(checkRecipeResult.getDisplayString())))
+                .setEnabled(widget -> GT_Utility.isStringValid(checkRecipeResult.getDisplayString())))
             .widget(new CheckRecipeResultSyncer(() -> checkRecipeResult, (result) -> checkRecipeResult = result));
 
         screenElements.widget(

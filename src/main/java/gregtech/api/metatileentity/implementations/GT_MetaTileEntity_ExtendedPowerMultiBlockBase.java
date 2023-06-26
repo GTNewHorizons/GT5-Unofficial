@@ -16,6 +16,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
@@ -145,12 +146,20 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
         processingLogic.setMachine(this);
         processingLogic.setRecipeMapSupplier(this::getRecipeMap);
         processingLogic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
+        processingLogic.setBatchSize(isBatchModeEnabled() ? getMaxBatchSize() : 1);
         processingLogic.setRecipeLocking(this, isRecipeLockingEnabled());
         processingLogic.setInputFluids(getStoredFluids());
         setProcessingLogicPower(processingLogic);
         if (isInputSeparationEnabled()) {
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
-                processingLogic.setInputItems(bus.mInventory);
+                List<ItemStack> inputItems = new ArrayList<>();
+                for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                    ItemStack stored = bus.getStackInSlot(i);
+                    if (stored != null) {
+                        inputItems.add(stored);
+                    }
+                }
+                processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
                 result = processingLogic.process();
                 if (result.wasSuccessful()) break;
             }
@@ -159,14 +168,15 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
             result = processingLogic.process();
         }
 
+        // inputs are consumed by `process()`
+        updateSlots();
+
         if (!result.wasSuccessful()) return result;
 
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         mEfficiencyIncrease = 10000;
 
         lEUt = processingLogic.getCalculatedEut();
-
-        if (processingLogic.getDuration() == Integer.MAX_VALUE) return CheckRecipeResultRegistry.NO_RECIPE;
         mMaxProgresstime = processingLogic.getDuration();
 
         if (lEUt > 0) {
@@ -176,8 +186,13 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
         mOutputItems = processingLogic.getOutputItems();
         mOutputFluids = processingLogic.getOutputFluids();
 
-        updateSlots();
         return result;
+    }
+
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(getAverageInputVoltage());
+        logic.setAvailableAmperage(getMaxInputAmps());
     }
 
     @Override

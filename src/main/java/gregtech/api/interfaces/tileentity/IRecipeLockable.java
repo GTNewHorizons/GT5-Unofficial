@@ -1,12 +1,7 @@
 package gregtech.api.interfaces.tileentity;
 
-import java.util.ArrayList;
-
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-
+import gregtech.api.recipe.check.SingleRecipeCheck;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Single_Recipe_Check;
 
 /**
  * Machines implementing this interface can have logic to lock to a single recipe.
@@ -29,25 +24,11 @@ public interface IRecipeLockable {
         return false;
     }
 
-    default GT_Single_Recipe_Check getSingleRecipeCheck() {
+    default SingleRecipeCheck getSingleRecipeCheck() {
         return null;
     }
 
-    default void setSingleRecipeCheck(GT_Single_Recipe_Check recipeCheck) {
-
-    }
-
-    default ArrayList<ItemStack> getStoredInputs() {
-        return new ArrayList<>();
-    }
-
-    default ArrayList<FluidStack> getStoredFluids() {
-        return new ArrayList<>();
-    }
-
-    default ItemStack getControllerSlot() {
-        return null;
-    }
+    default void setSingleRecipeCheck(SingleRecipeCheck recipeCheck) {}
 
     GT_Recipe.GT_Recipe_Map getRecipeMap();
 }
