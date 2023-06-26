@@ -285,7 +285,6 @@ public class ProcessingLogic {
         // We allow OC calculator to be null. If so we don't OC.
         if (calculator == null) {
             calculatedEut = recipe.mEUt;
-            duration = recipe.mDuration;
         } else {
             calculator.calculate();
             if (calculator.getConsumption() == Long.MAX_VALUE) {
@@ -296,10 +295,9 @@ public class ProcessingLogic {
             }
 
             calculatedEut = calculator.getConsumption();
-            duration = calculator.getDuration();
         }
 
-        double finalDuration = duration * helper.getDurationMultiplierDouble();
+        double finalDuration = calculateDuration(recipe, helper, calculator);
         if (finalDuration >= Integer.MAX_VALUE) {
             return CheckRecipeResultRegistry.DURATION_OVERFLOW;
         }
@@ -309,6 +307,13 @@ public class ProcessingLogic {
         outputFluids = helper.getFluidOutputs();
 
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    protected double calculateDuration(GT_Recipe recipe, GT_ParallelHelper helper, GT_OverclockCalculator calculator) {
+        if (calculator == null) {
+            return recipe.mEUt * helper.getDurationMultiplierDouble();
+        }
+        return calculator.getDuration() * helper.getDurationMultiplierDouble();
     }
 
     /**

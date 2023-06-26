@@ -233,6 +233,12 @@ public class GT_MetaTileEntity_ProcessingArray extends
         return new ProcessingLogic() {
 
             @Override
+            protected double calculateDuration(GT_Recipe recipe, GT_ParallelHelper helper,
+                GT_OverclockCalculator calculator) {
+                return calculator.getDuration();
+            }
+
+            @Override
             protected GT_OverclockCalculator createOverclockCalculator(GT_Recipe recipe, GT_ParallelHelper helper) {
                 return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
                     .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplierDouble()))
