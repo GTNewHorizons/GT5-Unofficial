@@ -54,14 +54,16 @@ public class SingleRecipeCheck {
     private final GT_Recipe recipe;
     @Nonnull
     private final GT_Recipe.GT_Recipe_Map recipeMap;
+    @Nonnull
     private final ImmutableMap<ItemId, Integer> itemCost;
+    @Nonnull
     private final ImmutableMap<Fluid, Integer> fluidCost;
 
     private final int totalItemCost;
     private final int totalFluidCost;
 
     private SingleRecipeCheck(@Nonnull GT_Recipe recipe, @Nonnull GT_Recipe.GT_Recipe_Map recipeMap,
-        ImmutableMap<ItemId, Integer> itemCost, ImmutableMap<Fluid, Integer> fluidCost) {
+        @Nonnull ImmutableMap<ItemId, Integer> itemCost, @Nonnull ImmutableMap<Fluid, Integer> fluidCost) {
         this.recipe = recipe;
         this.recipeMap = recipeMap;
         this.itemCost = itemCost;
@@ -188,17 +190,29 @@ public class SingleRecipeCheck {
         // Consider move serialization code to GT_Recipe once this has been proven to work
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("recipemap", recipeMap.mUnlocalizedName);
-        tag.setTag("inputs", writeList(recipe.mInputs, GT_Utility::saveItem));
-        tag.setTag("outputs", writeList(recipe.mOutputs, GT_Utility::saveItem));
-        tag.setIntArray("chances", recipe.mChances == null ? new int[0] : recipe.mChances);
-        tag.setTag(
-            "fInputs",
-            writeList(recipe.mFluidInputs, s -> s == null ? new NBTTagCompound() : s.writeToNBT(new NBTTagCompound())));
-        tag.setTag(
-            "fOutputs",
-            writeList(
-                recipe.mFluidOutputs,
-                s -> s == null ? new NBTTagCompound() : s.writeToNBT(new NBTTagCompound())));
+        if (recipe.mInputs != null) {
+            tag.setTag("inputs", writeList(recipe.mInputs, GT_Utility::saveItem));
+        }
+        if (recipe.mOutputs != null) {
+            tag.setTag("outputs", writeList(recipe.mOutputs, GT_Utility::saveItem));
+        }
+        if (recipe.mChances != null) {
+            tag.setIntArray("chances", recipe.mChances);
+        }
+        if (recipe.mFluidInputs != null) {
+            tag.setTag(
+                "fInputs",
+                writeList(
+                    recipe.mFluidInputs,
+                    s -> s == null ? new NBTTagCompound() : s.writeToNBT(new NBTTagCompound())));
+        }
+        if (recipe.mFluidOutputs != null) {
+            tag.setTag(
+                "fOutputs",
+                writeList(
+                    recipe.mFluidOutputs,
+                    s -> s == null ? new NBTTagCompound() : s.writeToNBT(new NBTTagCompound())));
+        }
         tag.setInteger("eut", recipe.mEUt);
         tag.setInteger("duration", recipe.mDuration);
         tag.setInteger("specialValue", recipe.mSpecialValue);
@@ -290,11 +304,12 @@ public class SingleRecipeCheck {
         int eut = tag.getInteger("eut");
         GT_Recipe found = recipeMap.findRecipe(null, false, GT_Values.V[GT_Utility.getTier(eut)], fInputs, inputs);
         int[] chances = tag.getIntArray("chances");
+        if (chances.length == 0) chances = null;
         if (found == null || !GT_Utility.equals(inputs, found.mInputs)
             || !Arrays.equals(fInputs, found.mFluidInputs)
             || !GT_Utility.equals(outputs, found.mOutputs)
             || !Arrays.equals(fOutputs, found.mFluidOutputs)
-            || !Arrays.equals(chances, found.mChances == null ? new int[0] : found.mChances)
+            || !Arrays.equals(chances, found.mChances)
             || found.mDuration != tag.getInteger("duration")
             || found.mEUt != eut
             || found.mSpecialValue != tag.getInteger("specialValue")) return null;

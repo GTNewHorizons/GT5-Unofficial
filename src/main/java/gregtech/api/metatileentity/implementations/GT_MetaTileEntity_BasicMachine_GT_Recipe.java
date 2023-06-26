@@ -43,6 +43,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.ExternalMaterials;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -401,7 +402,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 3    -> OrePrefixes.rotor.get(Materials.Steel);
                         case 4    -> OrePrefixes.rotor.get(Materials.StainlessSteel);
                         case 5    -> OrePrefixes.rotor.get(Materials.TungstenSteel);
-                        case 6    -> OrePrefixes.rotor.get(BartWorks.isModLoaded() ? Materials.get("Rhodium-PlatedPalladium") : Materials.Chrome);
+                        case 6    -> OrePrefixes.rotor.get(ExternalMaterials.getRhodiumPlatedPalladium());
                         case 7    -> OrePrefixes.rotor.get(Materials.Iridium);
                         default   -> OrePrefixes.rotor.get(Materials.Osmium);
                     };

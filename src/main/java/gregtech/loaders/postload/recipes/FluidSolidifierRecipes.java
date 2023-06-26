@@ -66,7 +66,7 @@ public class FluidSolidifierRecipes implements Runnable {
             flask.setTagCompound(nbtFlask);
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Mold_Ball.get(0))
-                .itemOutputs(getModItem(Thaumcraft.ID, "ItemResource", 1, 3))
+                .itemOutputs(flask)
                 .fluidInputs(new FluidStack(FluidRegistry.getFluid("molten.borosilicateglass"), 144))
                 .noFluidOutputs()
                 .duration(2 * SECONDS + 4 * TICKS)
