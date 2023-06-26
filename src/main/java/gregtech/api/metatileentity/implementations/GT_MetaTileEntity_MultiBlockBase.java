@@ -682,7 +682,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         setProcessingLogicPower(processingLogic);
         if (isInputSeparationEnabled()) {
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
-                processingLogic.setInputItems(bus.mInventory);
+                List<ItemStack> inputItems = new ArrayList<>();
+                for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                    ItemStack stored = bus.getStackInSlot(i);
+                    if (stored != null) {
+                        inputItems.add(stored);
+                    }
+                }
+                processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
                 result = processingLogic.process();
                 if (result.wasSuccessful()) break;
             }
