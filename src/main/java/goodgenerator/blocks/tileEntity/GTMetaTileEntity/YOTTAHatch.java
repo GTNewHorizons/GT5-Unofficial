@@ -66,7 +66,8 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
                 aNameRegional,
                 aTier,
                 0,
-                new String[] { "Special I/O port for EC2.", "Directly connected YOTTank with AE fluid storage system.",
+                new String[] { "Special I/O port for AE2FC.",
+                        "Directly connected YOTTank with AE fluid storage system.",
                         "Use screwdriver to set storage priority", "Use soldering iron to set read/write mode" });
     }
 
