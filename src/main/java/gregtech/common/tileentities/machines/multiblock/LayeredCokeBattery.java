@@ -194,6 +194,8 @@ public class LayeredCokeBattery extends StackableController<LayeredCokeBattery> 
             if (!checkPiece(getStackableStop(), buildState.stopBuilding())) {
                 return buildState.failBuilding();
             }
+        } else {
+            return buildState.failBuilding();
         }
 
         calculateTier();
