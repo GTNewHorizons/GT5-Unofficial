@@ -15,13 +15,17 @@ import gregtech.GT_Mod;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.util.GT_Util;
 
-
 public class TranscendentMetalRenderer extends GT_GeneratedMaterial_Renderer {
 
     @Override
-    protected void renderRegularItem(ItemRenderType type, ItemStack itemStack, IIcon icon, boolean shouldModulateColor) {
+    protected void renderRegularItem(ItemRenderType type, ItemStack itemStack, IIcon icon,
+        boolean shouldModulateColor) {
         GL11.glPushMatrix();
-        applyEffect(type, ((IGT_ItemWithMaterialRenderer) itemStack.getItem()).getRGBa(itemStack), shouldModulateColor, itemStack.hashCode() * itemStack.stackSize);
+        applyEffect(
+            type,
+            ((IGT_ItemWithMaterialRenderer) itemStack.getItem()).getRGBa(itemStack),
+            shouldModulateColor,
+            itemStack.hashCode() * itemStack.stackSize);
 
         if (!(itemStack.getItem() instanceof IGT_ItemWithMaterialRenderer aItem)) return;
 
@@ -33,16 +37,15 @@ public class TranscendentMetalRenderer extends GT_GeneratedMaterial_Renderer {
         if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
             GL11.glScalef(16, 16, 32);
         }
-            ItemRenderer.renderItemIn2D(
-                Tessellator.instance,
-                icon.getMaxU(),
-                icon.getMinV(),
-                icon.getMinU(),
-                icon.getMaxV(),
-                icon.getIconWidth(),
-                icon.getIconHeight(),
-                0.0625F);
-
+        ItemRenderer.renderItemIn2D(
+            Tessellator.instance,
+            icon.getMaxU(),
+            icon.getMinV(),
+            icon.getMinU(),
+            icon.getMaxV(),
+            icon.getIconWidth(),
+            icon.getIconHeight(),
+            0.0625F);
 
         GL11.glPopMatrix();
     }
@@ -60,15 +63,15 @@ public class TranscendentMetalRenderer extends GT_GeneratedMaterial_Renderer {
             GL11.glScalef(16, 16, 32);
         }
 
-            ItemRenderer.renderItemIn2D(
-                Tessellator.instance,
-                fluidIcon.getMaxU(),
-                fluidIcon.getMinV(),
-                fluidIcon.getMinU(),
-                fluidIcon.getMaxV(),
-                fluidIcon.getIconWidth(),
-                fluidIcon.getIconHeight(),
-                0.0625F);
+        ItemRenderer.renderItemIn2D(
+            Tessellator.instance,
+            fluidIcon.getMaxU(),
+            fluidIcon.getMinV(),
+            fluidIcon.getMinU(),
+            fluidIcon.getMaxV(),
+            fluidIcon.getIconWidth(),
+            fluidIcon.getIconHeight(),
+            0.0625F);
 
         GL11.glDepthFunc(GL11.GL_LEQUAL);
         GL11.glPopMatrix();
@@ -78,7 +81,6 @@ public class TranscendentMetalRenderer extends GT_GeneratedMaterial_Renderer {
     protected void renderItemOverlay(ItemRenderType type, IIcon overlay) {
         GL11.glPushMatrix();
         applyEffect(type, null, false, overlay.hashCode());
-        //super.renderItemOverlay(type, overlay);
 
         if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
             GL11.glScalef(16, 16, 32);
@@ -92,7 +94,6 @@ public class TranscendentMetalRenderer extends GT_GeneratedMaterial_Renderer {
             overlay.getIconWidth(),
             overlay.getIconHeight(),
             0.0625F);
-
 
         GL11.glPopMatrix();
     }
@@ -115,11 +116,7 @@ public class TranscendentMetalRenderer extends GT_GeneratedMaterial_Renderer {
         }
 
         if (shouldModulateColor) {
-            GL11.glColor4f(
-                modulation[0] / 255.0F,
-                modulation[1] / 255.0F,
-                modulation[2] / 255.0F,
-                255);
+            GL11.glColor4f(modulation[0] / 255.0F, modulation[1] / 255.0F, modulation[2] / 255.0F, 255);
         } else {
             GL11.glColor4f(1f, 1f, 1f, 255);
         }
