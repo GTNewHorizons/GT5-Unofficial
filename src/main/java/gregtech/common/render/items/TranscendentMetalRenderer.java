@@ -20,8 +20,12 @@ public class TranscendentMetalRenderer extends GT_GeneratedMaterial_Renderer {
     @Override
     protected void renderRegularItem(ItemRenderType type, ItemStack itemStack, IIcon icon,
         boolean shouldModulateColor) {
+
+        final IGT_ItemWithMaterialRenderer IGT_ItemRenderer = (IGT_ItemWithMaterialRenderer) itemStack.getItem();
+        if (IGT_ItemRenderer == null) return;
+
         GL11.glPushMatrix();
-        applyEffect(type, ((IGT_ItemWithMaterialRenderer) itemStack.getItem()).getRGBa(itemStack), shouldModulateColor);
+        applyEffect(type, IGT_ItemRenderer.getRGBa(itemStack), shouldModulateColor);
 
         if (!(itemStack.getItem() instanceof IGT_ItemWithMaterialRenderer aItem)) return;
 
