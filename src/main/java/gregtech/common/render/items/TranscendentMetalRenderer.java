@@ -51,10 +51,10 @@ public class TranscendentMetalRenderer extends GT_GeneratedMaterial_Renderer {
     }
 
     @Override
-    protected void renderContainedFluid(ItemRenderType type, FluidStack aFluidStack, IIcon fluidIcon) {
+    protected void renderContainedFluid(ItemRenderType type, FluidStack fluidStack, IIcon fluidIcon) {
         GL11.glPushMatrix();
 
-        Fluid fluid = aFluidStack.getFluid();
+        Fluid fluid = fluidStack.getFluid();
         applyEffect(type, GT_Util.getRGBaArray(fluid.getColor()), true);
 
         TextureUtils.bindAtlas(fluid.getSpriteNumber());
