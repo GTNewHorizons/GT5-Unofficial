@@ -17,7 +17,6 @@ public class Glasses {
             // Botania glass
             ofBlockUnlocalizedName(Botania.ID, "manaGlass", 0, false),
             ofBlockUnlocalizedName(Botania.ID, "elfGlass", 0, false),
-            ofBlockUnlocalizedName(Botania.ID, "hourglass", 0, false),
 
             // BartWorks glass
             ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks", 0, true),
