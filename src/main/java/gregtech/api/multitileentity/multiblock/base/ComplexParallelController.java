@@ -193,7 +193,7 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
 
     protected long getEutForComplexParallel(int index) {
         // As default behavior we'll give the parallel all remaining EU we have
-        return GT_Values.V[tier] - eut;
+        return GT_Values.V[tier] - processingLogic.getTotalEU();
     }
 
     @Override

@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUnlocalizedName;
-import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Mods.*;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.*;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ENERGY_IN;
@@ -13,12 +12,9 @@ import static gregtech.loaders.preload.GT_Loader_MultiTileEntities.UPGRADE_CASIN
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
 import gregtech.GT_Mod;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.fluid.FluidTankGT;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ComplexParallelProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.multitileentity.multiblock.base.Controller;
 import gregtech.api.util.*;
 import net.minecraft.item.ItemStack;
@@ -39,7 +35,6 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing;
 import gregtech.api.multitileentity.multiblock.base.ComplexParallelController;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -72,7 +67,6 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver> {
     protected final ArrayList<ArrayList<IFluidTank>> processFluidWhiteLists = new ArrayList<>(MAX_PROCESSES);
     protected static final int ITEM_WHITELIST_SLOTS = 8;
     protected static final int FLUID_WHITELIST_SLOTS = 8;
-
     public LaserEngraver() {
         super();
         for (int i = 0; i < MAX_PROCESSES; i++) {
@@ -290,55 +284,10 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver> {
         }
         return STRUCTURE_DEFINITION;
     }
-
     @Override
     protected void calculateTier() {
         super.calculateTier();
     }
-
-
-    @Override
-    protected boolean checkRecipe() {
-
-        GT_Recipe recipe = GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes
-            .findRecipe(this, false, GT_Values.V[tier], getInputFluids(), getInputItems());
-
-        if (recipe == null) return false;
-
-        if (recipe.mSpecialValue == -200 && GT_Mod.gregtechproxy.mEnableCleanroom && !isCleanroom) {
-            return false;
-        }
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(recipe)
-            .setFluidInputs(getInputFluids())
-            .setItemInputs(getInputItems())
-            .setAvailableEUt(gregtech.api.enums.GT_Values.V[tier])
-            .setMaxParallel((int) Math.ceil(16 + (tier - 1) * 16 + Math.pow(1.1474, (tier - 1))))
-            .enableOutputCalculation()
-            .enableConsumption()
-            .build();
-
-        if (helper.getCurrentParallel() == 0) return false;
-
-        setItemOutputs(helper.getItemOutputs());
-        setFluidOutputs(helper.getFluidOutputs());
-
-        eut = recipe.mEUt;
-        maxProgressTime = recipe.mDuration;
-
-        if (isSeparateInputs()) {
-            for (Pair<ItemStack[], String> tItemInputs : getItemInputsForEachInventory()) {
-                if (processRecipe(tItemInputs.getLeft(), tItemInputs.getRight())) {
-                    return true;
-                }
-            }
-            return false;
-        } else {
-            ItemStack[] tItemInputs = getInventoriesForInput().getStacks()
-                .toArray(new ItemStack[0]);
-            return processRecipe(tItemInputs, null);
-        }}
-
-
 
     @Override
     protected MultiChildWidget createMainPage(IWidgetBuilder<?> builder) {
@@ -380,7 +329,6 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver> {
         return GT_MultiTileCasing.LaserEngraver.getId();
     }
 
-
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
@@ -394,22 +342,4 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver> {
         return tt;
     }
 
-    private boolean processRecipe(ItemStack[] aItemInputs, String aInventory) {
-        GT_Recipe.GT_Recipe_Map tRecipeMap = GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes;
-        GT_Recipe tRecipe = tRecipeMap.findRecipe(this, false, TierEU.RECIPE_LV, null, aItemInputs);
-        if (tRecipe == null) {
-            return false;
-        }
-
-        if (!tRecipe.isRecipeInputEqual(true, false, 1, null, aItemInputs)) {
-            return false;
-        }
-
-        setDuration(tRecipe.mDuration);
-        setEut(tRecipe.mEUt);
-
-        setItemOutputs(aInventory, tRecipe.mOutputs);
-        setFluidOutputs(aInventory, tRecipe.mFluidOutputs);
-        return true;
-    }
-    }
+}
