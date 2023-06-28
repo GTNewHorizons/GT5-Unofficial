@@ -21,11 +21,7 @@ public class TranscendentMetalRenderer extends GT_GeneratedMaterial_Renderer {
     protected void renderRegularItem(ItemRenderType type, ItemStack itemStack, IIcon icon,
         boolean shouldModulateColor) {
         GL11.glPushMatrix();
-        applyEffect(
-            type,
-            ((IGT_ItemWithMaterialRenderer) itemStack.getItem()).getRGBa(itemStack),
-            shouldModulateColor,
-            itemStack.hashCode() * itemStack.stackSize);
+        applyEffect(type, ((IGT_ItemWithMaterialRenderer) itemStack.getItem()).getRGBa(itemStack), shouldModulateColor);
 
         if (!(itemStack.getItem() instanceof IGT_ItemWithMaterialRenderer aItem)) return;
 
@@ -55,7 +51,7 @@ public class TranscendentMetalRenderer extends GT_GeneratedMaterial_Renderer {
         GL11.glPushMatrix();
 
         Fluid fluid = aFluidStack.getFluid();
-        applyEffect(type, GT_Util.getRGBaArray(fluid.getColor()), true, fluidIcon.hashCode());
+        applyEffect(type, GT_Util.getRGBaArray(fluid.getColor()), true);
 
         TextureUtils.bindAtlas(fluid.getSpriteNumber());
         GL11.glDepthFunc(GL11.GL_EQUAL);
@@ -80,7 +76,7 @@ public class TranscendentMetalRenderer extends GT_GeneratedMaterial_Renderer {
     @Override
     protected void renderItemOverlay(ItemRenderType type, IIcon overlay) {
         GL11.glPushMatrix();
-        applyEffect(type, null, false, overlay.hashCode());
+        applyEffect(type, null, false);
 
         if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
             GL11.glScalef(16, 16, 32);
@@ -98,7 +94,7 @@ public class TranscendentMetalRenderer extends GT_GeneratedMaterial_Renderer {
         GL11.glPopMatrix();
     }
 
-    private void applyEffect(ItemRenderType type, short[] modulation, boolean shouldModulateColor, int itemStackHash) {
+    private void applyEffect(ItemRenderType type, short[] modulation, boolean shouldModulateColor) {
 
         if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
             GL11.glTranslatef(8f, 8f, 0f);
