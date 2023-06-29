@@ -57,7 +57,6 @@ public class Macerator extends StackableController<Macerator> {
                 .addElement('A', ofMuTECasings(ENERGY_IN, GT_MultiTileCasing.Macerator.getCasing()))
                 .addElement(
                     'B',
-
                     ofMuTECasings(FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT, GT_MultiTileCasing.Macerator.getCasing()))
                 .addElement('C', ofMuTECasings(NOTHING, GT_MultiTileCasing.Macerator.getCasing()))
                 .addElement('D', ofMuTECasings(NOTHING, GT_MultiTileCasing.Macerator.getCasing()))

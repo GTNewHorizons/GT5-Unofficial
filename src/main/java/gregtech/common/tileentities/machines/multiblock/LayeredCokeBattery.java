@@ -129,7 +129,6 @@ public class LayeredCokeBattery extends StackableController<LayeredCokeBattery> 
                 .addElement(
                     'A',
                     ofMuTECasings(
-
                         FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
                         GT_MultiTileCasing.Chemical.getCasing()))
                 .addElement(

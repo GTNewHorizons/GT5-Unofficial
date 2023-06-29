@@ -112,10 +112,8 @@ public class DistillationTower extends StackableController<DistillationTower> {
                 .addElement(
                     'C',
                     ofMuTECasings(
-
                         FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
                         GT_MultiTileCasing.Distillation.getCasing()))
-
                 .addElement('E', GT_StructureUtility.ofFrame(Materials.StainlessSteel))
                 .addElement('A', ofBlock(GregTech_API.sBlockCasings2, 0))
                 .addElement('B', ofBlock(GregTech_API.sBlockCasings2, 13))
