@@ -47,13 +47,13 @@ import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.logic.ComplexParallelProcessingLogic;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
-import gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing;
 import gregtech.api.multitileentity.multiblock.base.ComplexParallelController;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.GT_StructureUtilityMuTE;
 import gregtech.common.tileentities.casings.upgrade.Inventory;
 
 public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalProcessor> {
@@ -175,7 +175,7 @@ public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalP
 
     @Override
     public short getCasingRegistryID() {
-        return 0;
+        return GT_MultiTileCasing.Chemical.getRegistryId();
     }
 
     @Override
@@ -351,12 +351,11 @@ public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalP
                         { "       ", "       ", "       ", "       ", "       ", "  F F  ", "       " } })
                 .addElement(
                     'C',
-                    addMultiTileCasing(
-                        "gt.multitileentity.casings",
-                        getCasingMeta(),
-                        FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN))
+                    ofMuTECasings(
+                        FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
+                        GT_MultiTileCasing.Chemical.getCasing()))
                 .addElement('P', ofBlock(GregTech_API.sBlockCasings8, 1))
-                .addElement('T', addMotorCasings(NOTHING))
+                .addElement('T', ofMuTECasings(NOTHING, MOTOR_CASINGS))
                 .addElement(
                     'W',
                     GT_StructureUtility.ofCoil(AdvChemicalReactor::setCoilTier, AdvChemicalReactor::getCoilTier))
@@ -365,15 +364,10 @@ public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalP
                 .addElement('F', GT_StructureUtility.ofFrame(Materials.Steel))
                 .addElement(
                     'U',
-                    ofChain(
-                        addMultiTileCasing(
-                            UPGRADE_CASING_REGISTRY_NAME,
-                            GT_MultiTileUpgradeCasing.IV_Inventory.getId(),
-                            NOTHING),
-                        addMultiTileCasing(
-                            "gt.multitileentity.casings",
-                            getCasingMeta(),
-                            FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN)))
+                    ofMuTECasings(
+                        FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
+                        GT_MultiTileCasing.Chemical.getCasing(),
+                        GT_StructureUtilityMuTE.INVENTORY_CASINGS))
                 .build();
         }
         return STRUCTURE_DEFINITION;
