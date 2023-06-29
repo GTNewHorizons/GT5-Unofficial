@@ -6,9 +6,7 @@ import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -75,6 +73,7 @@ import gregtech.api.util.VoidProtectionHelper;
 import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DrillerBase;
@@ -1086,21 +1085,27 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     public ArrayList<ItemStack> getStoredInputs() {
         ArrayList<ItemStack> rList = new ArrayList<>();
+        HashMap<String, ItemStack> rInputBusMeList = new HashMap<>();
         for (GT_MetaTileEntity_Hatch_InputBus tHatch : mInputBusses) {
             tHatch.mRecipeMap = getRecipeMap();
             if (isValidMetaTileEntity(tHatch)) {
-                for (int i = tHatch.getBaseMetaTileEntity()
-                    .getSizeInventory() - 1; i >= 0; i--) {
-                    if (tHatch.getBaseMetaTileEntity()
-                        .getStackInSlot(i) != null)
-                        rList.add(
-                            tHatch.getBaseMetaTileEntity()
-                                .getStackInSlot(i));
+                IGregTechTileEntity tileEntity = tHatch.getBaseMetaTileEntity();
+                if (tHatch instanceof GT_MetaTileEntity_Hatch_InputBus_ME) {
+                    for (int i = tileEntity.getSizeInventory() - 1; i >= 0; i--) {
+                        ItemStack itemStack = tileEntity.getStackInSlot(i);
+                        if (itemStack != null) rInputBusMeList.put(itemStack.toString(), itemStack);
+                    }
+                } else {
+                    for (int i = tileEntity.getSizeInventory() - 1; i >= 0; i--) {
+                        ItemStack itemStack = tileEntity.getStackInSlot(i);
+                        if (itemStack != null) rList.add(itemStack);
+                    }
                 }
             }
         }
         if (getStackInSlot(1) != null && getStackInSlot(1).getUnlocalizedName()
             .startsWith("gt.integrated_circuit")) rList.add(getStackInSlot(1));
+        if (rInputBusMeList.size() != 0) rList.addAll(rInputBusMeList.values());
         return rList;
     }
 
