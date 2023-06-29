@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multiblock;
 
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_OUT;
+import static gregtech.api.util.GT_StructureUtilityMuTE.ofMuTECasings;
 
 import java.util.List;
 
@@ -98,7 +99,7 @@ public class CokeOven extends Controller<CokeOven> implements PollutionLogicHost
                 .addShape(
                     MAIN,
                     new String[][] { { "AAA", "A~A", "AAA" }, { "AAA", "A-A", "AAA" }, { "AAA", "AAA", "AAA" } })
-                .addElement('A', addMultiTileCasing("gt.multitileentity.casings", getCasingMeta(), ITEM_IN | ITEM_OUT))
+                .addElement('A', ofMuTECasings(ITEM_IN | ITEM_OUT, GT_MultiTileCasing.CokeOven.getCasing()))
                 .build();
         }
         return STRUCTURE_DEFINITION;
