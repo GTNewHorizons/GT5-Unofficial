@@ -8,6 +8,8 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_OUT;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHING;
+import static gregtech.api.util.GT_StructureUtilityMuTE.MOTOR_CASINGS;
+import static gregtech.api.util.GT_StructureUtilityMuTE.ofMuTECasings;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -126,19 +128,18 @@ public class LayeredCokeBattery extends StackableController<LayeredCokeBattery> 
                             { "AAAAAAAAAAAAA", "AAAAAAAAAAAAA", "AAAAAAAAAAAAA" } }))
                 .addElement(
                     'A',
-                    addMultiTileCasing(
-                        "gt.multitileentity.casings",
-                        GT_MultiTileCasing.Chemical.getId(),
-                        FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN))
+                    ofMuTECasings(
+
+                        FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
+                        GT_MultiTileCasing.Chemical.getCasing()))
                 .addElement(
                     'B',
-                    addMultiTileCasing(
-                        "gt.multitileentity.casings",
-                        getCasingMeta(),
-                        FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN))
+                    ofMuTECasings(
+                        FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
+                        GT_MultiTileCasing.Distillation.getCasing()))
                 .addElement('C', ofBlock(GregTech_API.sBlockCasings4, 1))
                 .addElement('D', GT_StructureUtility.ofFrame(Materials.Steel))
-                .addElement('E', addMotorCasings(NOTHING))
+                .addElement('E', ofMuTECasings(NOTHING, MOTOR_CASINGS))
                 .addElement(
                     'F',
                     ofChain(

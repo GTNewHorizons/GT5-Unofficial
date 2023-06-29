@@ -4,14 +4,13 @@ import static com.google.common.primitives.Ints.saturatedCast;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.Mods.*;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ENERGY_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_OUT;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_OUT;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHING;
-import static gregtech.loaders.preload.GT_Loader_MultiTileEntities.UPGRADE_CASING_REGISTRY_NAME;
+import static gregtech.api.util.GT_StructureUtilityMuTE.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,12 +49,12 @@ import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.logic.ComplexParallelProcessingLogic;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
-import gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing;
 import gregtech.api.multitileentity.multiblock.base.ComplexParallelController;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.GT_StructureUtilityMuTE;
 import gregtech.common.tileentities.casings.upgrade.Inventory;
 
 public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalProcessor> {
@@ -174,7 +173,7 @@ public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalP
 
     @Override
     public short getCasingRegistryID() {
-        return 0;
+        return GT_MultiTileCasing.Chemical.getRegistryId();
     }
 
     @Override
@@ -350,12 +349,11 @@ public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalP
                         { "       ", "       ", "       ", "       ", "       ", "  F F  ", "       " } })
                 .addElement(
                     'C',
-                    addMultiTileCasing(
-                        "gt.multitileentity.casings",
-                        getCasingMeta(),
-                        FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN))
+                    ofMuTECasings(
+                        FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
+                        GT_MultiTileCasing.Chemical.getCasing()))
                 .addElement('P', ofBlock(GregTech_API.sBlockCasings8, 1))
-                .addElement('T', addMotorCasings(NOTHING))
+                .addElement('T', ofMuTECasings(NOTHING, MOTOR_CASINGS))
                 .addElement(
                     'W',
                     GT_StructureUtility.ofCoil(AdvChemicalProcessor::setCoilTier, AdvChemicalProcessor::getCoilTier))
@@ -364,15 +362,10 @@ public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalP
                 .addElement('G', Glasses.chainAllGlasses())
                 .addElement(
                     'U',
-                    ofChain(
-                        addMultiTileCasing(
-                            UPGRADE_CASING_REGISTRY_NAME,
-                            GT_MultiTileUpgradeCasing.IV_Inventory.getId(),
-                            NOTHING),
-                        addMultiTileCasing(
-                            "gt.multitileentity.casings",
-                            getCasingMeta(),
-                            FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN)))
+                    ofMuTECasings(
+                        FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
+                        GT_MultiTileCasing.Chemical.getCasing(),
+                        GT_StructureUtilityMuTE.INVENTORY_CASINGS))
                 .build();
         }
         return STRUCTURE_DEFINITION;

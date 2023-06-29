@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.multitileentity.MultiTileEntityContainer;
@@ -187,7 +188,7 @@ public class GT_StructureUtilityMuTE {
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
                 final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry
-                    .getRegistry(validCasings[0].registryId);
+                    .getRegistry(validCasings[0].getRegistryId());
                 if (tRegistry == null) {
                     GT_FML_LOGGER.error("NULL REGISTRY");
                     return false;
@@ -224,7 +225,8 @@ public class GT_StructureUtilityMuTE {
      */
     public static class MuTEStructureCasing {
 
-        private final int registryId;
+        private String registryName;
+        private int registryId = GT_Values.W;
         private final int defaultMeta;
         private final HashSet<Integer> validIds;
 
@@ -233,16 +235,30 @@ public class GT_StructureUtilityMuTE {
             if (validIds == null || validIds.length == 0 || registry == null) {
                 throw new IllegalArgumentException();
             }
-            registryId = Block.getIdFromBlock(registry.mBlock);
+            this.registryName = registryName;
             this.validIds = new HashSet<>(Arrays.asList(validIds));
             this.defaultMeta = validIds[0];
         }
 
         public boolean isCasingValid(int registryId, int id) {
-            if (this.registryId != registryId) {
+            if (getRegistryId() != registryId) {
                 return false;
             }
             return validIds.contains(id);
+        }
+
+        public int getDefaultMeta() {
+            return defaultMeta;
+        }
+
+        public int getRegistryId() {
+            // TODO: MuTE registry seems to somehow shift, probably due to NBT shenanigans. Lazy init circumvents this
+            // but it should be properly fixed in the future
+            if (registryId == GT_Values.W) {
+                MultiTileEntityRegistry registry = MultiTileEntityRegistry.getRegistry(registryName);
+                registryId = Block.getIdFromBlock(registry.mBlock);
+            }
+            return registryId;
         }
     }
 }
