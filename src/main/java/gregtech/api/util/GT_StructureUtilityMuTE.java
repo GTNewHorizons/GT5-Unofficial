@@ -173,14 +173,9 @@ public class GT_StructureUtilityMuTE {
                 if (mIcons == null) {
                     mIcons = new IIcon[6];
                     Arrays.fill(mIcons, TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex].getIcon());
-                    // Arrays.fill(mIcons, getTexture(aCasing);
-                    // for (byte i : ALL_VALID_SIDES) {
-                    // mIcons[i] = aCasing.getIcon(i, aMeta);
-                    // }
                 }
                 final short[] RGBA = DEFAULT;
                 StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, RGBA);
-                // StructureLibAPI.hintParticle(world, x, y, z, aCasing, aMeta);
                 return true;
             }
 
