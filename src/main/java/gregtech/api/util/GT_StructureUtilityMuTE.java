@@ -6,7 +6,6 @@ import static gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing.*;
 import static gregtech.loaders.preload.GT_Loader_MultiTileEntities.*;
 
 import java.util.Arrays;
-import java.util.HashSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -228,7 +227,7 @@ public class GT_StructureUtilityMuTE {
         private String registryName;
         private int registryId = GT_Values.W;
         private final int defaultMeta;
-        private final HashSet<Integer> validIds;
+        private final Integer[] validIds;
 
         public MuTEStructureCasing(String registryName, Integer... validIds) {
             MultiTileEntityRegistry registry = MultiTileEntityRegistry.getRegistry(registryName);
@@ -236,7 +235,7 @@ public class GT_StructureUtilityMuTE {
                 throw new IllegalArgumentException();
             }
             this.registryName = registryName;
-            this.validIds = new HashSet<>(Arrays.asList(validIds));
+            this.validIds = validIds;
             this.defaultMeta = validIds[0];
         }
 
@@ -244,7 +243,12 @@ public class GT_StructureUtilityMuTE {
             if (getRegistryId() != registryId) {
                 return false;
             }
-            return validIds.contains(id);
+            for (Integer validId : validIds) {
+                if (validId == id) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public int getDefaultMeta() {
