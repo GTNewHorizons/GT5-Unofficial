@@ -37,7 +37,6 @@ import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.common.blocks.GT_Block_Machines;
 import gregtech.common.render.GT_Renderer_Block;
-import gtPlusPlus.xmod.gregtech.common.blocks.GTPP_Block_Machines;
 import gtPlusPlus.xmod.gregtech.common.helpers.GT_MethodHelper;
 
 public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
@@ -1205,7 +1204,7 @@ public class GTPP_Render_MachineBlock extends GT_Renderer_Block {
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
         aMeta += 30400;
-        if (aBlock instanceof GT_Block_Machines || aBlock instanceof GTPP_Block_Machines) {
+        if (aBlock instanceof GT_Block_Machines) {
             if (aMeta > 0 && aMeta < GregTech_API.METATILEENTITIES.length
                     && GregTech_API.METATILEENTITIES[aMeta] != null
                     && !GregTech_API.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer)) {

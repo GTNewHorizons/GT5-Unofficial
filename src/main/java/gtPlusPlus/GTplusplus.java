@@ -29,7 +29,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.FishPondFakeRecipe;
 import gregtech.api.util.GTPP_Recipe;
@@ -155,10 +154,6 @@ public class GTplusplus implements ActionListener {
     public GTplusplus() {
         super();
         INIT_PHASE.SUPER.setPhaseActive(true);
-
-        for (int i = 12; i < 16; i++) {
-            GregTech_API.registerTileEntityConstructor(i, Meta_GT_Proxy::constructCustomGregtechMetaTileEntityByMeta);
-        }
     }
 
     // Pre-Init
@@ -317,46 +312,6 @@ public class GTplusplus implements ActionListener {
         mInvalidCount[6] = RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
                 GTPP_Recipe.GTPP_Recipe_Map.sReactorProcessingUnitRecipes,
                 GTPP_Recipe.GTPP_Recipe_Map.sNuclearSaltProcessingPlantRecipes);
-        /*
-         * //Large Centrifuge generation mOriginalCount[0] =
-         * GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList.size(); for (GT_Recipe x :
-         * GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.mRecipeList) { if (x != null) { if
-         * (ItemUtils.checkForInvalidItems(x.mInputs, x.mOutputs)) { if
-         * (CORE.RA.addMultiblockCentrifugeRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances,
-         * x.mDuration, x.mEUt, x.mSpecialValue)) { mValidCount[0]++; } else { mInvalidCount[0]++; } } else {
-         * Logger.INFO("[Recipe] Error generating Large Centrifuge recipe.");
-         * Logger.INFO("Inputs: "+ItemUtils.getArrayStackNames(x.mInputs));
-         * Logger.INFO("Fluid Inputs: "+ItemUtils.getArrayStackNames(x.mFluidInputs));
-         * Logger.INFO("Outputs: "+ItemUtils.getArrayStackNames(x.mOutputs));
-         * Logger.INFO("Fluid Outputs: "+ItemUtils.getArrayStackNames(x.mFluidOutputs)); } } else { mInvalidCount[0]++;
-         * } } if (GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.size() < 1) { for (GT_Recipe
-         * a : GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList) {
-         * GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.add(a); } } //Large Electrolyzer generation
-         * mOriginalCount[1] = GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList.size(); for (GT_Recipe x :
-         * GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList) { if (x != null) { if
-         * (ItemUtils.checkForInvalidItems(x.mInputs, x.mOutputs)) { if
-         * (CORE.RA.addMultiblockElectrolyzerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances,
-         * x.mDuration, x.mEUt, x.mSpecialValue)) { mValidCount[1]++; } else { mInvalidCount[1]++; } } else {
-         * Logger.INFO("[Recipe] Error generating Large Electrolyzer recipe.");
-         * Logger.INFO("Inputs: "+ItemUtils.getArrayStackNames(x.mInputs));
-         * Logger.INFO("Fluid Inputs: "+ItemUtils.getArrayStackNames(x.mFluidInputs));
-         * Logger.INFO("Outputs: "+ItemUtils.getArrayStackNames(x.mOutputs));
-         * Logger.INFO("Fluid Outputs: "+ItemUtils.getArrayStackNames(x.mFluidOutputs)); } } else { mInvalidCount[1]++;
-         * } } if (GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mRecipeList.size() < 1) { for
-         * (GT_Recipe a : GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.mRecipeList) {
-         * GTPP_Recipe.GTPP_Recipe_Map.sMultiblockElectrolyzerRecipes_GT.add(a); } } //Advanced Vacuum Freezer
-         * generation mOriginalCount[2] = GT_Recipe.GT_Recipe_Map.sVacuumRecipes.mRecipeList.size(); for (GT_Recipe x :
-         * GT_Recipe.GT_Recipe_Map.sVacuumRecipes.mRecipeList) { if (x != null &&
-         * RecipeUtils.doesGregtechRecipeHaveEqualCells(x)) { if (ItemUtils.checkForInvalidItems(x.mInputs, x.mOutputs))
-         * { if (CORE.RA.addAdvancedFreezerRecipe(x.mInputs, x.mFluidInputs, x.mFluidOutputs, x.mOutputs, x.mChances,
-         * x.mDuration, x.mEUt, x.mSpecialValue)) { mValidCount[2]++; } } else { mInvalidCount[2]++; } } else {
-         * mInvalidCount[2]++; } } //Redo plasma recipes in Adv. Vac.
-         * //Meta_GT_Proxy.generatePlasmaRecipesForAdvVacFreezer(); String[] machineName = new String[] {"Centrifuge",
-         * "Electrolyzer", "Vacuum Freezer"}; for (int i=0;i<3;i++) {
-         * Logger.INFO("[Recipe] Generated "+mValidCount[i]+" recipes for the Industrial "+machineName[i]
-         * +". The original machine can process "+mOriginalCount[i]+" recipes, meaning "+mInvalidCount[i]
-         * +" are invalid for this Multiblock's processing in some way."); }
-         */
     }
 
     protected void dumpGtRecipeMap(final GT_Recipe_Map r) {

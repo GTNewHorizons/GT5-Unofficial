@@ -765,18 +765,6 @@ public enum GregtechItemList implements GregtechItemContainer {
     ColdTrap_IV,
     ColdTrap_ZPM,
 
-    // Breakers
-    BreakerBox_ULV,
-    BreakerBox_LV,
-    BreakerBox_MV,
-    BreakerBox_HV,
-    BreakerBox_EV,
-    BreakerBox_IV,
-    BreakerBox_LuV,
-    BreakerBox_ZPM,
-    BreakerBox_UV,
-    BreakerBox_MAX,
-
     // Solar Generators
     GT_Solar_ULV,
     GT_Solar_LV,
