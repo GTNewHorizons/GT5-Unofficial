@@ -61,7 +61,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
             aName,
             aNameRegional,
             1,
-            new String[] { "Item Output for Multiblocks", "Stores directly into ME", },
+            new String[] { "Item Output for Multiblocks", "Stores directly into ME",
+                "Can cache infinite amount of items.", "Change cache behavior by right-clicking with screwdriver." },
             0);
     }
 
