@@ -69,6 +69,9 @@ import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.TickTime;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -1728,7 +1731,10 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                     .addTooltip("Item Input Inventory")
                     .setPos(20 * (page - 1), -20))
                 .addPage(
-                    new MultiChildWidget().addChild(getItemInventoryInputGUI())
+                    new MultiChildWidget().addChild(
+                        input.getGuiPart()
+                            .setSize(18 * 4 + 4, 18 * 5)
+                            .setPos(52, 7))
                         .addChild(getGregTechLogo().setPos(147, 86))
                         .setSize(getGUIWidth(), getGUIHeight()));
         }
