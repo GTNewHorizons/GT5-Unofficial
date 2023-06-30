@@ -6,7 +6,10 @@ import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -1105,7 +1108,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
         if (getStackInSlot(1) != null && getStackInSlot(1).getUnlocalizedName()
             .startsWith("gt.integrated_circuit")) rList.add(getStackInSlot(1));
-        if (rInputBusMeList.size() != 0) rList.addAll(rInputBusMeList.values());
+        if (!rInputBusMeList.isEmpty()) rList.addAll(rInputBusMeList.values());
         return rList;
     }
 
