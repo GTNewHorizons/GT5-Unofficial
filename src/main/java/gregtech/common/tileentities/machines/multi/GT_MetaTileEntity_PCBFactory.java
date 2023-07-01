@@ -550,7 +550,7 @@ public class GT_MetaTileEntity_PCBFactory extends
 
                 int recipeBitMap = recipe.mSpecialValue;
 
-                if (((recipeBitMap & mBioBitMap) == mBioBitMap && mBioUpgrade))
+                if (((recipeBitMap & mBioBitMap) == mBioBitMap && !mBioUpgrade))
                     return SimpleCheckRecipeResult.ofFailure("bio_upgrade_missing");
 
                 int requiredPCBTier = 0;
@@ -566,7 +566,9 @@ public class GT_MetaTileEntity_PCBFactory extends
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(GT_Recipe recipe, GT_ParallelHelper helper) {
                 if (!mOCTier1 && !mOCTier2) return null;
-                GT_OverclockCalculator calculator = super.createOverclockCalculator(recipe, helper);
+                GT_OverclockCalculator calculator = super.createOverclockCalculator(recipe, helper)
+                    .setEUtDiscount((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
+                    .setSpeedBoost((float) Math.pow(mRoughnessMultiplier, 2));
                 if (mOCTier2) {
                     calculator.enablePerfectOC();
                 }
