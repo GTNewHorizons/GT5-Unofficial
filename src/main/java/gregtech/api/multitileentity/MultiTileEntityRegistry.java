@@ -38,7 +38,7 @@ public class MultiTileEntityRegistry {
     // TODO: NBT sensitive or not? Starting with not for now
     private static final ItemStackMap<MultiTileEntityRegistry> REGISTRIES = new ItemStackMap<>(false);
     private static final HashSet<Class<?>> sRegisteredTileEntities = new HashSet<>();
-    private static final HashMap<Integer, MultiTileEntityContainer> cachedTileEntityContainers = new HashMap<>();
+    private final HashMap<Integer, MultiTileEntityContainer> cachedTileEntityContainers = new HashMap<>();
 
     public HashMap<Short, CreativeTab> mCreativeTabs = new HashMap<>();
     public Map<Short, MultiTileEntityClassContainer> mRegistry = new HashMap<>();
