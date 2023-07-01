@@ -179,7 +179,7 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
                         x.mTierLimit = Math.max(x.mTierLimit, 6);
                     }, ofBlock(Loaders.essentiaCell, 2)), onElementPass(x -> {
                         x.mStableValue += 10;
-                        x.mTierLimit = Math.max(x.mTierLimit, 7);
+                        x.mTierLimit = Math.max(x.mTierLimit, 8);
                     },
                             ofBlock(Loaders.essentiaCell, 3))))
                     .addElement(
