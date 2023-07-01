@@ -2,6 +2,7 @@ package gregtech.common.render.items;
 
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
@@ -21,16 +22,13 @@ public class TranscendentMetalRenderer extends GT_GeneratedMaterial_Renderer {
     protected void renderRegularItem(ItemRenderType type, ItemStack itemStack, IIcon icon,
         boolean shouldModulateColor) {
 
-        final IGT_ItemWithMaterialRenderer IGT_ItemRenderer = (IGT_ItemWithMaterialRenderer) itemStack.getItem();
-        if (IGT_ItemRenderer == null) return;
+        if (!(itemStack.getItem() instanceof final IGT_ItemWithMaterialRenderer itemRenderer)) return;
 
         GL11.glPushMatrix();
-        applyEffect(type, IGT_ItemRenderer.getRGBa(itemStack), shouldModulateColor);
-
-        if (!(itemStack.getItem() instanceof IGT_ItemWithMaterialRenderer aItem)) return;
+        applyEffect(type, itemRenderer.getRGBa(itemStack), shouldModulateColor);
 
         if (shouldModulateColor) {
-            short[] tModulation = aItem.getRGBa(itemStack);
+            short[] tModulation = itemRenderer.getRGBa(itemStack);
             GL11.glColor3f(tModulation[0] / 255.0F, tModulation[1] / 255.0F, tModulation[2] / 255.0F);
         }
 
