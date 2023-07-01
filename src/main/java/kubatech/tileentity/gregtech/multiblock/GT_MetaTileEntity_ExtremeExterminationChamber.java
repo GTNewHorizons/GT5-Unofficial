@@ -250,33 +250,33 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Powered Spawner")
-            .addInfo("Controller block for Extreme Extermination Chamber")
+            .addInfo("Controller block for the Extreme Extermination Chamber")
             .addInfo(Author)
-            .addInfo("Spawns and Exterminates monsters for you")
-            .addInfo("You have to insert the powered spawner in controller")
+            .addInfo("Spawns and exterminates monsters for you.")
+            .addInfo("You have to insert the powered spawner in the controller.")
             .addInfo("Base energy usage: 2,000 EU/t")
-            .addInfo("Supports perfect OC, minimum time: 20 ticks, after that multiplies the outputs")
-            .addInfo("Recipe time is based on mob health")
-            .addInfo("You can additionally put a weapon to the ULV input bus")
-            .addInfo("It will speed up the process and apply looting level from the weapon (maximum 4 levels)")
+            .addInfo("Supports perfect OC, minimum time: 20 ticks, after that multiplies the outputs.")
+            .addInfo("Recipe time is based on mob health.")
+            .addInfo("You can additionally put a weapon in the ULV input bus.")
+            .addInfo("It will speed up the process and apply the looting level from the weapon (maximum 4 levels).")
             .addInfo(EnumChatFormatting.RED + "Enchanting the spikes inside does nothing!")
-            .addInfo("Also produces 120 Liquid XP per operation")
-            .addInfo("If the mob spawns infernal")
-            .addInfo("it will drain 8 times more power")
-            .addInfo("You can prevent infernal spawns by shift clicking with a screwdriver")
-            .addInfo("Note: If the mob has forced infernal spawn, it will do it anyway")
-            .addInfo("You can enable ritual mode with a screwdriver")
-            .addInfo("When in ritual mode and Well Of Suffering ritual is built directly on the machine in center")
-            .addInfo("The mobs will start to buffer and die very slowly by a ritual")
-            .addInfo("You can disable mob animation with a soldering iron")
+            .addInfo("Also produces 120 Liquid XP per operation.")
+            .addInfo("If the mob spawns infernal,")
+            .addInfo("it will drain 8 times more power.")
+            .addInfo("You can prevent infernal spawns by shift clicking with a screwdriver.")
+            .addInfo("Note: If the mob has forced infernal spawn, it will do it anyway.")
+            .addInfo("You can enable ritual mode with a screwdriver.")
+            .addInfo("When in ritual mode and the Well Of Suffering ritual is built directly centered on the machine,")
+            .addInfo("the mobs will start to buffer and die very slowly by the ritual.")
+            .addInfo("You can disable mob animation with a soldering iron.")
             .addInfo(StructureHologram)
             .addSeparator()
             .beginStructureBlock(5, 7, 5, true)
             .addController("Front Bottom Center")
-            .addCasingInfoMin("Solid Steel Machine Casing", 10, false)
-            .addOtherStructurePart("Borosilicate Glass", "All walls without corners")
-            .addStructureInfo("The glass tier limits the Energy Input tier")
-            .addOtherStructurePart("Steel Frame Box", "All vertical corners (except top and bottom)")
+            .addCasingInfoMin("Solid Steel Machine Casing", 35, false)
+            .addOtherStructurePart("Borosilicate Glass", "Side walls without edges or corners")
+            .addStructureInfo("The glass tier limits the Energy Hatch tier")
+            .addOtherStructurePart("Steel Frame Box", "All vertical edges without corners")
             .addOtherStructurePart("Diamond spikes", "Inside second layer")
             .addOutputBus("Any bottom casing", 1)
             .addOtherStructurePart(
@@ -619,7 +619,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mGlassTier = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0)) return false;
-        if (mCasing < 10 || mMaintenanceHatches.size() != 1
+        if (mCasing < 35 || mMaintenanceHatches.size() != 1
             || mEnergyHatches.size() == 0
             || !(mInputBusses.size() == 0 || (mInputBusses.size() == 1 && mInputBusses.get(0).mTier == 0)))
             return false;
