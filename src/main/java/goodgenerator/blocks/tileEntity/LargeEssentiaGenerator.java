@@ -18,6 +18,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
@@ -79,7 +80,17 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
         mEssentiaHatch.clear();
         return structureCheck_EM(mName, 4, 0, 4) && (mDynamoHatches.size() + eDynamoMulti.size()) == 1
                 && checkHatchTier()
+                && checkNoLaser()
                 && updateEssentiaHatchState();
+    }
+
+    private boolean checkNoLaser() {
+        for (GT_MetaTileEntity_Hatch_DynamoMulti tHatch : eDynamoMulti) {
+            if (tHatch instanceof GT_MetaTileEntity_Hatch_DynamoTunnel) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean checkHatchTier() {
@@ -479,8 +490,9 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Essentia Generator").addInfo("Controller block for the Large Essentia Generator")
-                .addInfo("Maybe some thaumaturages are upset by it. . .").addInfo("Transform essentia into energy!")
+                .addInfo("Maybe some Thaumaturges are upset by it. . .").addInfo("Transform Essentia into energy!")
                 .addInfo("The Diffusion Cell determines the highest hatch tier that the LEG can accept.")
+                .addInfo("Supports normal Dynamo Hatches or TecTech ones for up to 64A, but no Laser Hatches.")
                 .addInfo("You can find more information about this generator in the Thaumonomicon.")
                 .addInfo("The structure is too complex!").addInfo(BLUE_PRINT_INFO).addSeparator()
                 .addMaintenanceHatch("Hint block with dot 1").addInputHatch("Hint block with dot 1")
