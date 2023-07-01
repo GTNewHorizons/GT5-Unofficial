@@ -776,44 +776,6 @@ public class GT_MetaTileEntity_PCBFactory extends
     }
 
     @Override
-    protected void calculateOverclockedNessMultiInternal(long aEUt, int aDuration, int mAmperage, long maxInputVoltage,
-        boolean perfectOC) {
-        int hatches = Math.max(getExoticEnergyHatches().size(), 1);
-        long zTime = aDuration;
-        long zEUt = aEUt;
-        if (maxInputVoltage < zEUt) {
-            this.lEUt = Long.MAX_VALUE - 1;
-            this.mMaxProgresstime = Integer.MAX_VALUE - 1;
-            return;
-        }
-
-        while (zEUt < maxInputVoltage) {
-            zEUt = zEUt << 2;
-            zTime = zTime >> (perfectOC ? 2 : 1);
-            if (zTime <= 1) {
-                break;
-            }
-        }
-
-        if (zTime <= 0) {
-            zTime = 1;
-        }
-
-        while (zEUt * mAmperage > maxInputVoltage * getMaxInputAmps() / hatches) {
-            zEUt = zEUt >> 2;
-            zTime = zTime << (perfectOC ? 2 : 1);
-        }
-
-        if (zEUt > maxInputVoltage) {
-            zEUt = zEUt >> 2;
-            zTime = zTime << (perfectOC ? 2 : 1);
-        }
-
-        this.lEUt = zEUt * mAmperage;
-        this.mMaxProgresstime = (int) zTime;
-    }
-
-    @Override
     protected long getActualEnergyUsage() {
         return (-this.lEUt * 10000) / Math.min(Math.max(1000, mEfficiency), 10000);
     }
