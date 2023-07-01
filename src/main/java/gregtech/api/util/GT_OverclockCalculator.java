@@ -15,7 +15,7 @@ public class GT_OverclockCalculator {
      * GT++ machines
      * mHeatDiscountAmount - The value used for discount final eut per 900 heat
      */
-    private float mEUtDiscount = 1, mSpeedBoost = 1, mHeatDiscountAmount = 0.95f;
+    private double mEUtDiscount = 1, mSpeedBoost = 1, mHeatDiscountAmount = 0.95f;
     /**
      * mEUtIncreasePerOC - How much the bits should be moved to the left when it is overclocking (Going up, 2 meaning
      * it is multiplied with 4x)

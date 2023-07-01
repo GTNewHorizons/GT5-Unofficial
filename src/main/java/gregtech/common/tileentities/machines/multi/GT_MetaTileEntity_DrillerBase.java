@@ -33,6 +33,8 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -53,6 +55,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.objects.GT_ChunkManager;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
@@ -414,21 +418,38 @@ public abstract class GT_MetaTileEntity_DrillerBase
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
+    @NotNull
+    public CheckRecipeResult checkProcessing() {
+        ItemStack controllerStack = getControllerSlot();
         // Public pipe actions
         setElectricityStats();
         int oldYHead = yHead;
         if (!checkPipesAndSetYHead() || !isEnergyEnough()) {
             stopMachine();
-            return false;
+            return SimpleCheckRecipeResult.ofFailure("no_mining_pipe");
         }
         putMiningPipesFromInputsInController();
-        return switch (workState) {
-            case STATE_DOWNWARD -> workingDownward(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
-            case STATE_AT_BOTTOM -> workingAtBottom(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
-            case STATE_UPWARD -> workingUpward(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
-            default -> false;
-        };
+        switch (workState) {
+            case STATE_DOWNWARD -> {
+                return workingDownward(controllerStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead)
+                    ? SimpleCheckRecipeResult.ofSuccess("drilling")
+                    : SimpleCheckRecipeResult.ofFailure("extracting_pipe");
+
+            }
+            case STATE_AT_BOTTOM -> {
+                return workingAtBottom(controllerStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead)
+                    ? SimpleCheckRecipeResult.ofSuccess("drilling")
+                    : SimpleCheckRecipeResult.ofFailure("no_mining_pipe");
+            }
+            case STATE_UPWARD -> {
+                return workingUpward(controllerStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead)
+                    ? SimpleCheckRecipeResult.ofSuccess("retracting_pipe")
+                    : SimpleCheckRecipeResult.ofFailure("no_mining_pipe");
+            }
+            default -> {
+                return SimpleCheckRecipeResult.ofFailure("no_mining_pipe");
+            }
+        }
     }
 
     @Override

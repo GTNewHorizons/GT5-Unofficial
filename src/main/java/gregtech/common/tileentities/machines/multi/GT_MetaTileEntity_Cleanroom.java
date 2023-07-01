@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -33,6 +35,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TooltipMultiBlockBase;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -116,15 +120,16 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
         return new String[] { "The structure in both X and Z axis has to be a square." };
     }
 
+    @Nonnull
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
+    public CheckRecipeResult checkProcessing() {
         mEfficiencyIncrease = 100;
         // use the standard overclock mechanism to determine duration and estimate a maximum consumption
         calculateOverclockedNessMultiInternal(40, 45 * Math.max(1, mHeight - 1), 1, getMaxInputVoltage(), false);
         // negate it to trigger the special energy consumption function. divide by 10 to get the actual final
         // consumption.
         mEUt /= -10;
-        return true;
+        return SimpleCheckRecipeResult.ofSuccess("cleanroom_running");
     }
 
     @Override

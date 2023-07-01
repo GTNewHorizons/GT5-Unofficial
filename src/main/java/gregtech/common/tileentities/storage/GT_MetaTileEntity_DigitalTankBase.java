@@ -476,6 +476,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         return allowOverflow() ? Integer.MAX_VALUE : getRealCapacity();
     }
 
+    @Override
     public int getRealCapacity() {
         return commonSizeCompute(mTier);
     }
