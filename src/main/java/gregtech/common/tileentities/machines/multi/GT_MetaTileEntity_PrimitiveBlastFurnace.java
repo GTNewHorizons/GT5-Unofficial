@@ -370,11 +370,6 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         }
     }
 
-    @Override
-    public Class<?> getType() {
-        return GT_MetaTileEntity_Cleanroom.class;
-    }
-
     protected GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes;
     }
