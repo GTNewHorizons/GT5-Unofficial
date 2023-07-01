@@ -38,6 +38,7 @@ public class MultiTileEntityRegistry {
     // TODO: NBT sensitive or not? Starting with not for now
     private static final ItemStackMap<MultiTileEntityRegistry> REGISTRIES = new ItemStackMap<>(false);
     private static final HashSet<Class<?>> sRegisteredTileEntities = new HashSet<>();
+    private final HashMap<Integer, MultiTileEntityContainer> cachedTileEntityContainers = new HashMap<>();
 
     public HashMap<Short, CreativeTab> mCreativeTabs = new HashMap<>();
     public Map<Short, MultiTileEntityClassContainer> mRegistry = new HashMap<>();
@@ -265,6 +266,15 @@ public class MultiTileEntityRegistry {
             Items.feather.getDamage(aStack),
             aStack.getTagCompound());
         return tContainer == null ? null : tContainer.mTileEntity;
+    }
+
+    public MultiTileEntityContainer getCachedTileEntityContainer(ItemStack stack) {
+        MultiTileEntityContainer container = cachedTileEntityContainers.get(Items.feather.getDamage(stack));
+        if (container == null) {
+            container = getNewTileEntityContainer(stack);
+            cachedTileEntityContainers.put(Items.feather.getDamage(stack), container);
+        }
+        return container;
     }
 
     public MultiTileEntityContainer getNewTileEntityContainer(ItemStack aStack) {

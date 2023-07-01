@@ -51,7 +51,7 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
     @SuppressWarnings("unchecked")
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         final MultiTileEntityContainer tTileEntityContainer = mBlock.mMultiTileEntityRegistry
-            .getNewTileEntityContainer(aStack);
+            .getCachedTileEntityContainer(aStack);
         if (tTileEntityContainer == null) {
             aList.add("INVALID ITEM!");
             return;
@@ -186,7 +186,7 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
         final MultiTileEntityClassContainer tContainer = mBlock.mMultiTileEntityRegistry.getClassContainer(aStack);
         if (tContainer == null) return;
         final MultiTileEntityContainer tTileEntityContainer = mBlock.mMultiTileEntityRegistry
-            .getNewTileEntityContainer(aStack);
+            .getCachedTileEntityContainer(aStack);
         if (tTileEntityContainer != null && tTileEntityContainer.mTileEntity instanceof IItemUpdatable itemUpdatable) {
             itemUpdatable.updateItemStack(aStack);
         }
@@ -197,7 +197,7 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
         final MultiTileEntityClassContainer tContainer = mBlock.mMultiTileEntityRegistry.getClassContainer(aStack);
         if (tContainer == null) return;
         final MultiTileEntityContainer tTileEntityContainer = mBlock.mMultiTileEntityRegistry
-            .getNewTileEntityContainer(aStack);
+            .getCachedTileEntityContainer(aStack);
         if (tTileEntityContainer != null && tTileEntityContainer.mTileEntity instanceof IItemUpdatable itemUpdatable) {
             itemUpdatable.updateItemStack(aStack, aWorld, aX, aY, aZ);
         }
@@ -208,7 +208,7 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
         final MultiTileEntityClassContainer tContainer = mBlock.mMultiTileEntityRegistry.getClassContainer(aStack);
         if (tContainer == null) return 1;
         final MultiTileEntityContainer tTileEntityContainer = mBlock.mMultiTileEntityRegistry
-            .getNewTileEntityContainer(aStack);
+            .getCachedTileEntityContainer(aStack);
         if (tTileEntityContainer != null
             && tTileEntityContainer.mTileEntity instanceof IMTE_GetMaxStackSize maxStackSize) {
             return maxStackSize.getMaxStackSize(aStack, tContainer.mStackSize);
@@ -224,7 +224,7 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
     @Override
     public FluidStack getFluid(ItemStack aStack) {
         final MultiTileEntityContainer tTileEntityContainer = mBlock.mMultiTileEntityRegistry
-            .getNewTileEntityContainer(aStack);
+            .getCachedTileEntityContainer(aStack);
         if (tTileEntityContainer != null
             && tTileEntityContainer.mTileEntity instanceof IFluidContainerItem fluidContainerItem) {
             final FluidStack rFluid = fluidContainerItem.getFluid(aStack);
@@ -237,7 +237,7 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
     @Override
     public int getCapacity(ItemStack aStack) {
         final MultiTileEntityContainer tTileEntityContainer = mBlock.mMultiTileEntityRegistry
-            .getNewTileEntityContainer(aStack);
+            .getCachedTileEntityContainer(aStack);
         if (tTileEntityContainer != null
             && tTileEntityContainer.mTileEntity instanceof IFluidContainerItem fluidContainerItem) {
             final int rCapacity = fluidContainerItem.getCapacity(aStack);
@@ -250,7 +250,7 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
     @Override
     public int fill(ItemStack aStack, FluidStack aFluid, boolean aDoFill) {
         final MultiTileEntityContainer tTileEntityContainer = mBlock.mMultiTileEntityRegistry
-            .getNewTileEntityContainer(aStack);
+            .getCachedTileEntityContainer(aStack);
         if (tTileEntityContainer != null
             && tTileEntityContainer.mTileEntity instanceof IFluidContainerItem fluidContainerItem) {
             final int tFilled = fluidContainerItem.fill(aStack, aFluid, aDoFill);
@@ -263,7 +263,7 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
     @Override
     public FluidStack drain(ItemStack aStack, int aMaxDrain, boolean aDoDrain) {
         final MultiTileEntityContainer tTileEntityContainer = mBlock.mMultiTileEntityRegistry
-            .getNewTileEntityContainer(aStack);
+            .getCachedTileEntityContainer(aStack);
         if (tTileEntityContainer != null
             && tTileEntityContainer.mTileEntity instanceof IFluidContainerItem fluidContainerItem) {
             final FluidStack rFluid = fluidContainerItem.drain(aStack, aMaxDrain, aDoDrain);
