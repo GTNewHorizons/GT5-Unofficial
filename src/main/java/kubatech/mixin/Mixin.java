@@ -12,11 +12,6 @@ public enum Mixin {
 
     // Minecraft
     WorldMixin("minecraft.WorldMixin", VANILLA),
-    EntityAccessor("minecraft.EntityAccessor", VANILLA),
-    EntityLivingAccessor("minecraft.EntityLivingAccessor", VANILLA),
-    EntityLivingBaseAccessor("minecraft.EntityLivingBaseAccessor", VANILLA),
-    EntitySlimeAccessor("minecraft.EntitySlimeAccessor", VANILLA),
-    RendererLivingEntityAccessor("minecraft.RendererLivingEntityAccessor", VANILLA),
     StringTranslateMixin("minecraft.StringTranslateMixin", VANILLA),
     LanguageRegistryMixin("minecraft.LanguageRegistryMixin", VANILLA),
     LocaleMixin("minecraft.LocaleMixin", Side.CLIENT, VANILLA),

@@ -92,6 +92,7 @@ import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.kuba6000.mobsinfo.api.utils.FastRandom;
 import com.kuba6000.mobsinfo.api.utils.ItemID;
 import com.mojang.authlib.GameProfile;
 
@@ -124,7 +125,6 @@ import kubatech.api.LoaderReference;
 import kubatech.api.helpers.ReflectionHelper;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.api.tileentity.CustomTileEntityPacketHandler;
-import kubatech.api.utils.FastRandom;
 import kubatech.client.effect.EntityRenderer;
 import kubatech.loaders.MobHandlerLoader;
 import kubatech.network.CustomTileEntityPacket;
@@ -618,6 +618,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mGlassTier = 0;
+        mCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0)) return false;
         if (mCasing < 35 || mMaintenanceHatches.size() != 1
             || mEnergyHatches.size() == 0
