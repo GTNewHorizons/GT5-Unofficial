@@ -19,7 +19,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.GT_Pollution;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 
 @SuppressWarnings("unused") // Unused API is expected within scope
 public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
@@ -108,11 +107,6 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
                     .getWorld(),
                 ParticleFX.LARGE_SMOKE.toString());
         }
-    }
-
-    @Override
-    public Class<?> getType() {
-        return GT_MetaTileEntity_Cleanroom.class;
     }
 
     @Override

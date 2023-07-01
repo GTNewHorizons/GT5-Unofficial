@@ -8,7 +8,9 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM_ACTIV
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM_GLOW;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -23,9 +25,10 @@ import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.interfaces.ICleanroom;
+import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMachineCallback;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
@@ -33,11 +36,11 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TooltipMult
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
 
 public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiBlockBase
-    implements IConstructable, ISecondaryDescribable {
+    implements IConstructable, ISecondaryDescribable, ICleanroom {
 
+    private final Set<ICleanroomReceiver> cleanroomReceivers = new HashSet<>();
     private int mHeight = -1;
 
     public GT_MetaTileEntity_Cleanroom(int aID, String aName, String aNameRegional) {
@@ -51,6 +54,27 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Cleanroom(mName);
+    }
+
+    @Override
+    public int getCleanness() {
+        return mEfficiency;
+    }
+
+    @Override
+    public boolean isValidCleanroom() {
+        return isValid() && mMachine;
+    }
+
+    @Override
+    public void pollute() {
+        mEfficiency = 0;
+        mWrench = false;
+        mScrewdriver = false;
+        mSoftHammer = false;
+        mHardHammer = false;
+        mSolderingTool = false;
+        mCrowbar = false;
     }
 
     @Override
@@ -119,6 +143,8 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
         final HashMap<String, Integer> otherBlocks = new HashMap<>();
         boolean doorState = false;
         this.mUpdate = 100;
+        cleanroomReceivers.forEach(r -> r.setCleanroom(null));
+        cleanroomReceivers.clear();
 
         if (debugCleanroom) {
             GT_Log.out.println("Cleanroom: Checking machine");
@@ -273,7 +299,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
             } else if (e.getValue() > ratio * ce.percentage) return false;
         }
 
-        setCallbacks(x, y, z, aBaseMetaTileEntity);
+        setCleanroomReceivers(x, y, z, aBaseMetaTileEntity);
 
         if (doorState) {
             this.mEfficiency = Math.max(0, this.mEfficiency - 200);
@@ -286,38 +312,16 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
         return true;
     }
 
-    public void doMaintenanceIssue() {
-        mWrench = false;
-        mScrewdriver = false;
-        mSoftHammer = false;
-        mHardHammer = false;
-        mSolderingTool = false;
-        mCrowbar = false;
-    }
-
-    private void setCallbacks(int x, int y, int z, IGregTechTileEntity aBaseMetaTileEntity) {
-        for (int dX = -x + 1; dX <= x - 1; dX++)
+    private void setCleanroomReceivers(int x, int y, int z, IGregTechTileEntity aBaseMetaTileEntity) {
+        for (int dX = -x + 1; dX <= x - 1; dX++) {
             for (int dZ = -z + 1; dZ <= z - 1; dZ++) for (int dY = -1; dY >= y + 1; dY--) {
                 TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityOffset(dX, dY, dZ);
-
-                if (tTileEntity instanceof IGregTechTileEntity) {
-                    IMetaTileEntity iMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-
-                    if (iMetaTileEntity instanceof IMachineCallback<?>)
-                        checkAndSetCallback((IMachineCallback<?>) iMetaTileEntity);
-
-                } else if (tTileEntity instanceof IMachineCallback<?>)
-                    checkAndSetCallback((IMachineCallback<?>) tTileEntity);
+                if (tTileEntity instanceof ICleanroomReceiver receiver) {
+                    receiver.setCleanroom(this);
+                    cleanroomReceivers.add(receiver);
+                }
             }
-    }
-
-    @SuppressWarnings("unchecked")
-    private void checkAndSetCallback(IMachineCallback<?> iMachineCallback) {
-        if (debugCleanroom) GT_Log.out.println(
-            "Cleanroom: IMachineCallback detected, checking for cleanroom: "
-                + (iMachineCallback.getType() == this.getClass()));
-        if (iMachineCallback.getType() == this.getClass())
-            ((IMachineCallback<GT_MetaTileEntity_Cleanroom>) iMachineCallback).setCallbackBase(this);
+        }
     }
 
     @Override
@@ -344,11 +348,6 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                         .build()) };
         }
         return new ITexture[] { TextureFactory.of(BLOCK_PLASCRETE) };
-    }
-
-    @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return null;
     }
 
     @Override

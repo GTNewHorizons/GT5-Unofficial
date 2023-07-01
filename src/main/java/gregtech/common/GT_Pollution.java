@@ -22,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.ChunkPosition;
@@ -38,14 +39,13 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.interfaces.metatileentity.IMachineCallback;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.ICleanroom;
+import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GT_Packet_Pollution;
 import gregtech.api.util.GT_ChunkAssociatedData;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_PollutionRenderer;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 
 public class GT_Pollution {
 
@@ -304,28 +304,32 @@ public class GT_Pollution {
         return dimensionWisePollution.computeIfAbsent(world.provider.dimensionId, i -> new GT_Pollution(world));
     }
 
-    /** @see #addPollution(World, int, int, int) */
-    @SuppressWarnings("rawtypes")
+    /** @see #addPollution(TileEntity, int) */
     public static void addPollution(IGregTechTileEntity te, int aPollution) {
-        if (!GT_Mod.gregtechproxy.mPollution || aPollution == 0 || te.isClientSide()) return;
-        IMetaTileEntity iMetaTileEntity = te.getMetaTileEntity();
+        addPollution((TileEntity) te, aPollution);
+    }
 
-        if (iMetaTileEntity instanceof IMachineCallback) {
-            if (((IMachineCallback) iMetaTileEntity).getCallbackBase() instanceof GT_MetaTileEntity_Cleanroom) {
-                if (aPollution > 0) {
-                    ((GT_MetaTileEntity_Cleanroom) ((IMachineCallback) iMetaTileEntity).getCallbackBase())
-                        .doMaintenanceIssue();
-                }
+    /**
+     * Also pollutes cleanroom if {@code te} is an instance of {@link ICleanroomReceiver}.
+     *
+     * @see #addPollution(World, int, int, int)
+     */
+    public static void addPollution(TileEntity te, int aPollution) {
+        if (!GT_Mod.gregtechproxy.mPollution || aPollution == 0 || te.getWorldObj().isRemote) return;
+
+        if (aPollution > 0 && te instanceof ICleanroomReceiver receiver) {
+            ICleanroom cleanroom = receiver.getCleanroom();
+            if (cleanroom != null && cleanroom.isValidCleanroom()) {
+                cleanroom.pollute();
             }
         }
 
-        mutatePollution(te.getWorld(), te.getXCoord() >> 4, te.getZCoord() >> 4, d -> d.changeAmount(aPollution), null);
+        addPollution(te.getWorldObj(), te.xCoord >> 4, te.zCoord >> 4, aPollution);
     }
 
     /** @see #addPollution(World, int, int, int) */
     public static void addPollution(Chunk ch, int aPollution) {
-        if (!GT_Mod.gregtechproxy.mPollution || aPollution == 0 || ch.worldObj.isRemote) return;
-        mutatePollution(ch.worldObj, ch.xPosition, ch.zPosition, d -> d.changeAmount(aPollution), null);
+        addPollution(ch.worldObj, ch.xPosition, ch.zPosition, aPollution);
     }
 
     /**

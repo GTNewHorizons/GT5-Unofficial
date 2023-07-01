@@ -25,6 +25,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 
 import appeng.api.implementations.IPowerChannelState;
@@ -44,8 +46,9 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.modularui.GUITextureSet;
+import gregtech.api.interfaces.ICleanroom;
+import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
-import gregtech.api.interfaces.metatileentity.IMachineCallback;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
@@ -72,7 +75,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * GT_MetaTileEntity_E_Furnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
  */
 @SuppressWarnings("unused")
-public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallback<MetaTileEntity> {
+public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomReceiver {
 
     /**
      * Only assigned for the MetaTileEntity in the List! Also only used to get the localized Name for the ItemStack and
@@ -99,7 +102,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     public boolean doTickProfilingInThisTick = true;
 
-    private MetaTileEntity mCallBackTile;
+    private ICleanroom cleanroom;
 
     /**
      * accessibility to this Field is no longer given, see below
@@ -114,14 +117,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
      * <p>
      * The constructor can be overloaded as follows:
      * <blockquote>
-     * 
+     *
      * <pre>
-     * 
+     *
      * public GT_MetaTileEntity_EBench(int id, String name, String nameRegional) {
      *     super(id, name, nameRegional);
      * }
      * </pre>
-     * 
+     *
      * </blockquote>
      *
      * @param aID the machine ID
@@ -388,19 +391,15 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         /* Do nothing */
     }
 
+    @Nullable
     @Override
-    public MetaTileEntity getCallbackBase() {
-        return mCallBackTile;
+    public ICleanroom getCleanroom() {
+        return cleanroom;
     }
 
     @Override
-    public void setCallbackBase(MetaTileEntity callback) {
-        this.mCallBackTile = callback;
-    }
-
-    @Override
-    public Class<?> getType() {
-        return null;
+    public void setCleanroom(ICleanroom cleanroom) {
+        this.cleanroom = cleanroom;
     }
 
     @Override

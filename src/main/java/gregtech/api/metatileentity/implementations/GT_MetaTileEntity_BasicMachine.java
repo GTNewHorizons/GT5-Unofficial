@@ -62,6 +62,7 @@ import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.SteamTexture;
+import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
@@ -81,7 +82,6 @@ import gregtech.api.util.GT_Waila;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.power.BasicMachineEUPower;
 import gregtech.common.power.Power;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -1103,26 +1103,29 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             mOutputBlocked++;
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         }
-        if (tRecipe.mSpecialValue == -200
-            && (getCallbackBase() == null || !(getCallbackBase() instanceof GT_MetaTileEntity_Cleanroom)
-                || ((GT_MetaTileEntity_Cleanroom) getCallbackBase()).mEfficiency == 0))
-            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+        ICleanroom cleanroom = getCleanroom();
+        if (tRecipe.mSpecialValue == -200 || tRecipe.mSpecialValue == -300) {
+            if (cleanroom == null || !cleanroom.isValidCleanroom() || cleanroom.getCleanness() == 0) {
+                return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+            }
+        }
         if (!tRecipe.isRecipeInputEqual(true, new FluidStack[] { getFillableStack() }, getAllInputs()))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         for (int i = 0; i < mOutputItems.length; i++)
             if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i))
                 mOutputItems[i] = tRecipe.getOutput(i);
-        if (tRecipe.mSpecialValue == -200 || tRecipe.mSpecialValue == -300)
-            for (int i = 0; i < mOutputItems.length; i++)
-                if (mOutputItems[i] != null && getBaseMetaTileEntity().getRandomNumber(10000)
-                    > ((GT_MetaTileEntity_Cleanroom) getCallbackBase()).mEfficiency) {
-                        if (debugCleanroom) {
-                            GT_Log.out.println(
-                                "BasicMachine: Voiding output due to efficiency failure. mEfficiency = "
-                                    + ((GT_MetaTileEntity_Cleanroom) getCallbackBase()).mEfficiency);
-                        }
-                        mOutputItems[i] = null;
+        if (tRecipe.mSpecialValue == -200 || tRecipe.mSpecialValue == -300) {
+            assert cleanroom != null;
+            for (int i = 0; i < mOutputItems.length; i++) if (mOutputItems[i] != null
+                && getBaseMetaTileEntity().getRandomNumber(10000) > cleanroom.getCleanness()) {
+                    if (debugCleanroom) {
+                        GT_Log.out.println(
+                            "BasicMachine: Voiding output due to cleanness failure. Cleanness = "
+                                + cleanroom.getCleanness());
                     }
+                    mOutputItems[i] = null;
+                }
+        }
         mOutputFluid = tRecipe.getFluidOutput(0);
         if (!skipOC) {
             calculateOverclockedNess(tRecipe);
