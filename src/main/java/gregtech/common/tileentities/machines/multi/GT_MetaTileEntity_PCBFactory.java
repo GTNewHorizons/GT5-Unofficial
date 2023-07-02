@@ -564,6 +564,16 @@ public class GT_MetaTileEntity_PCBFactory extends
             }
 
             @Override
+            protected double calculateDuration(GT_Recipe recipe, GT_ParallelHelper helper,
+                GT_OverclockCalculator calculator) {
+                if (calculator == null) {
+                    return Math.ceil(
+                        recipe.mDuration * helper.getDurationMultiplierDouble() * Math.pow(mRoughnessMultiplier, 2));
+                }
+                return calculator.getDuration() * helper.getDurationMultiplierDouble();
+            }
+
+            @Override
             protected GT_OverclockCalculator createOverclockCalculator(GT_Recipe recipe, GT_ParallelHelper helper) {
                 if (!mOCTier1 && !mOCTier2) return null;
                 GT_OverclockCalculator calculator = super.createOverclockCalculator(recipe, helper)
