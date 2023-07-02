@@ -113,7 +113,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
 
     @Override
     public String[] getStructureDescription(ItemStack itemStack) {
-        return new String[] { "The structure in both X and Z axis has to be a square." };
+        return new String[] { "The base can be rectangular." };
     }
 
     @Override
