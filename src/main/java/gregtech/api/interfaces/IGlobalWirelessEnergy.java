@@ -137,6 +137,15 @@ public interface IGlobalWirelessEnergy {
         return GlobalEnergyTeam.getOrDefault(GlobalEnergyName.getOrDefault(username, ""), "");
     }
 
+    /**
+     *
+     * @param username
+     * @return
+     */
+    default String getRawUUIDFromUsername(String username) {
+        return GlobalEnergyName.getOrDefault(username, "");
+    }
+
     static void clearGlobalEnergyInformationMaps() {
         // Do not use this unless you are 100% certain you know what you are doing.
         GlobalEnergy.clear();
