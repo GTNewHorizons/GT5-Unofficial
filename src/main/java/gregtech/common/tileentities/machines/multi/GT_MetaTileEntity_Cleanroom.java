@@ -179,12 +179,12 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                 }
             }
         }
-        // detect room square for filters
+        // detect rectangular area of filters
         for (int i = -x + 1; i < x; i++) {
             for (int j = -z + 1; j < z; j++) {
                 if (i == 0 && j == 0) continue;
-                final Block tBlock = aBaseMetaTileEntity.getBlockOffset(j, 0, i);
-                final int tMeta = aBaseMetaTileEntity.getMetaIDOffset(j, 0, i);
+                final Block tBlock = aBaseMetaTileEntity.getBlockOffset(i, 0, j);
+                final int tMeta = aBaseMetaTileEntity.getMetaIDOffset(i, 0, j);
                 if (tBlock != GregTech_API.sBlockCasings3 && tMeta != 11) {
                     if (debugCleanroom) {
                         GT_Log.out.println("Cleanroom: This is not a filter.");
