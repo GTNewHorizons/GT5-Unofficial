@@ -5,6 +5,7 @@ import static com.google.common.primitives.Ints.saturatedCast;
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 public class FluidStackHandler implements FluidHandler {
@@ -33,12 +34,13 @@ public class FluidStackHandler implements FluidHandler {
     }
 
     @Override
-    public FluidStack insertFluid(int tank, FluidStack fluid, boolean simulate) {
-        return new FluidStack(
-            fluid,
-            saturatedCast(
-                fluids.get(tank)
-                    .fill(fluid.getFluid(), fluid.amount, simulate)));
+    public FluidStack insertFluid(int tank, Fluid fluid, long amount, boolean simulate) {
+        return fluid == null ? null
+            : new FluidStack(
+                fluid,
+                saturatedCast(
+                    fluids.get(tank)
+                        .fill(fluid, amount, simulate)));
     }
 
     @Override
@@ -48,7 +50,7 @@ public class FluidStackHandler implements FluidHandler {
     }
 
     @Override
-    public long getTankLimit(int tank) {
+    public long getTankCapacity(int tank) {
         return fluids.get(tank)
             .getCapacity();
     }

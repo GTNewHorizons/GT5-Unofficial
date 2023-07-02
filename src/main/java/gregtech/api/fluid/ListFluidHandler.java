@@ -2,6 +2,7 @@ package gregtech.api.fluid;
 
 import java.util.Iterator;
 
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -37,14 +38,14 @@ public class ListFluidHandler implements FluidHandler {
     }
 
     @Override
-    public FluidStack insertFluid(int tank, FluidStack fluid, boolean simulate) {
+    public FluidStack insertFluid(int tank, Fluid fluid, long amount, boolean simulate) {
         if (tank < 0) {
             throw new RuntimeException("Tank " + tank + " not in valid range - [0," + this.getTanks() + ")");
         }
 
         Pair<? extends FluidHandler, Integer> result = findFluidHandler(tank);
         return result.getLeft()
-            .insertFluid(result.getRight(), fluid, simulate);
+            .insertFluid(result.getRight(), fluid, amount, simulate);
     }
 
     @Override
@@ -59,14 +60,14 @@ public class ListFluidHandler implements FluidHandler {
     }
 
     @Override
-    public long getTankLimit(int tank) {
+    public long getTankCapacity(int tank) {
         if (tank < 0) {
             throw new RuntimeException("Tank " + tank + " not in valid range - [0," + this.getTanks() + ")");
         }
 
         Pair<? extends FluidHandler, Integer> result = findFluidHandler(tank);
         return result.getLeft()
-            .getTankLimit(result.getRight());
+            .getTankCapacity(result.getRight());
     }
 
     @Override

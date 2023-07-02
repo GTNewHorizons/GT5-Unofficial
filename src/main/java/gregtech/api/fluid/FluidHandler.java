@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 public interface FluidHandler {
@@ -15,12 +16,12 @@ public interface FluidHandler {
     FluidStack getFluidInSlot(int tank);
 
     @Nullable
-    FluidStack insertFluid(int tank, FluidStack fluid, boolean simulate);
+    FluidStack insertFluid(int tank, Fluid fluid, long amount, boolean simulate);
 
     @Nullable
     FluidStack extractFluid(int tank, int amount, boolean simulate);
 
-    long getTankLimit(int tank);
+    long getTankCapacity(int tank);
 
     long getTankAmount(int tank);
 

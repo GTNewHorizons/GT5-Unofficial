@@ -72,12 +72,15 @@ import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.VoidingMode;
+import gregtech.api.fluid.FluidHandler;
+import gregtech.api.fluid.FluidStackHandler;
 import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.modularui.ControllerWithOptionalFeatures;
+import gregtech.api.interfaces.modularui.FluidHandlerSlot;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
@@ -1864,13 +1867,15 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         return new ListItemHandler(multiBlockOutputInventory.values());
     }
 
+    FluidHandler handler = new FluidStackHandler(16, 10000);
+
     protected Widget getFluidInventoryInputGUI() {
         final IFluidTank[] tanks = getTanksForInput();
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
-        for (int rows = 0; rows * 4 < tanks.length; rows++) {
-            final int columnsToMake = Math.min(tanks.length - rows * 4, 4);
+        for (int rows = 0; rows * 4 < handler.getTanks(); rows++) {
+            final int columnsToMake = Math.min(handler.getTanks() - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
-                final FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
+                final FluidSlotWidget fluidSlot = new FluidHandlerSlot(handler, rows * 4 + column);
                 scrollable.widget(
                     fluidSlot.setPos(column * 18, rows * 18)
                         .setSize(18, 18));
