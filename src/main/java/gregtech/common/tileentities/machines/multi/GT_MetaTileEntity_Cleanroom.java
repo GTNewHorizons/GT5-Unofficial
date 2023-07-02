@@ -186,6 +186,9 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                 final Block tBlock = aBaseMetaTileEntity.getBlockOffset(j, 0, i);
                 final int tMeta = aBaseMetaTileEntity.getMetaIDOffset(j, 0, i);
                 if (tBlock != GregTech_API.sBlockCasings3 && tMeta != 11) {
+                    if (debugCleanroom) {
+                        GT_Log.out.println("Cleanroom: This is not a filter.");
+                    }
                     return false;
                 }
             }
@@ -272,8 +275,10 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                                             if (config.containsKey(key)) {
                                                 otherBlocks.compute(key, (k, v) -> v == null ? 1 : v + 1);
                                             } else {
-                                                if (debugCleanroom) GT_Log.out.println(
-                                                    "Cleanroom: not allowed block " + tBlock.getUnlocalizedName());
+                                                if (debugCleanroom) {
+                                                    GT_Log.out.println(
+                                                        "Cleanroom: not allowed block " + tBlock.getUnlocalizedName());
+                                                }
                                                 return false;
                                             }
                                         }
@@ -288,15 +293,33 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
         if (this.mMaintenanceHatches.size() != 1 || this.mEnergyHatches.size() != 1
             || mDoorCount > 4
             || mHullCount > 10) {
+            if (debugCleanroom) {
+                GT_Log.out.println("Cleanroom: Incorrect number of doors, hulls, or hatches.");
+            }
             return false;
         }
-        if (mPlascreteCount < 20) return false;
+        if (mPlascreteCount < 20) {
+            if (debugCleanroom) {
+                GT_Log.out.println("Cleanroom: Could not find 20 Plascrete.");
+            }
+            return false;
+        }
         final float ratio = (((float) mPlascreteCount) / 100f);
         for (Map.Entry<String, Integer> e : otherBlocks.entrySet()) {
             final ConfigEntry ce = config.get(e.getKey());
             if (ce.allowedCount > 0) { // count has priority
-                if (e.getValue() > ce.allowedCount) return false;
-            } else if (e.getValue() > ratio * ce.percentage) return false;
+                if (e.getValue() > ce.allowedCount) {
+                    if (debugCleanroom) {
+                        GT_Log.out.println("Cleanroom: Absolute count too high for a block.");
+                    }
+                    return false;
+                }
+            } else if (e.getValue() > ratio * ce.percentage) {
+                if (debugCleanroom) {
+                    GT_Log.out.println("Cleanroom: Relative count too high for a block.");
+                }
+                return false;
+            }
         }
 
         setCleanroomReceivers(x, y, z, aBaseMetaTileEntity);
@@ -309,6 +332,9 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
             aBaseMetaTileEntity.setInternalOutputRedstoneSignal(tSide, t);
         }
         this.mHeight = -y;
+        if (debugCleanroom) {
+            GT_Log.out.println("Cleanroom: Check successful.");
+        }
         return true;
     }
 
