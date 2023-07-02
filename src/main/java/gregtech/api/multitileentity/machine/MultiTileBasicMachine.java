@@ -116,14 +116,6 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
             nbt.setBoolean(NBT.ACTIVE, active);
         }
 
-        if (inputInventory != null && inputInventory.getSlots() > 0) {
-            writeInventory(nbt, inputInventory, NBT.INV_INPUT_LIST);
-        }
-
-        if (outputInventory != null && outputInventory.getSlots() > 0) {
-            writeInventory(nbt, outputInventory, NBT.INV_OUTPUT_LIST);
-        }
-
         for (int i = 0; i < inputTanks.length; i++) {
             inputTanks[i].writeToNBT(nbt, NBT.TANK_IN + i);
         }
@@ -146,6 +138,17 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         nbt.setLong(NBT.TOTAL_BURN_TIME, totalBurnTime);
         nbt.setBoolean(NBT.ALLOWED_WORK, canWork);
         nbt.setBoolean(NBT.ACTIVE, active);
+    }
+
+    protected void saveItemLogic(NBTTagCompound nbt) {
+        NBTTagList nbtListInput = input.saveToNBT();
+        nbt.setTag(NBT.INV_INPUT_LIST, nbtListInput);
+        NBTTagList nbtListOutput = output.saveToNBT();
+        nbt.setTag(NBT.INV_OUTPUT_LIST, nbtListOutput);
+    }
+
+    protected void saveFluidLogic(NBTTagCompound nbt) {
+
     }
 
     protected void writeFluids(NBTTagCompound nbt, FluidStack[] fluids, String fluidListTag) {
@@ -246,8 +249,17 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         active = nbt.getBoolean(NBT.ACTIVE);
     }
 
-    protected void loadInventory(NBTTagCompound aNBT, IItemHandlerModifiable inv, String invListTag) {
-        final NBTTagList tList = aNBT.getTagList(invListTag, 10);
+    protected void loadItemLogic(NBTTagCompound nbt) {
+        input.loadFromNBT(nbt.getTagList(NBT.INV_INPUT_LIST, 10));
+        output.loadFromNBT(nbt.getTagList(NBT.INV_OUTPUT_LIST, 10));
+    }
+
+    protected void loadFluidLogic(NBTTagCompound nbt) {
+
+    }
+
+    protected void loadInventory(NBTTagCompound nbt, IItemHandlerModifiable inv, String invListTag) {
+        final NBTTagList tList = nbt.getTagList(invListTag, 10);
         for (int i = 0; i < tList.tagCount(); i++) {
             final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
             final int tSlot = tNBT.getShort("s");

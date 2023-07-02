@@ -57,6 +57,10 @@ public class ItemInventoryLogic {
         this.connectedFluidInventory = connectedFluidTank;
     }
 
+    /**
+     * 
+     * @return The Item Inventory Logic as an NBTTagList to be saved in another nbt as how one wants.
+     */
     public NBTTagList saveToNBT() {
         final NBTTagList tList = new NBTTagList();
         for (int slot = 0; slot < inventory.getSlots(); slot++) {
@@ -71,6 +75,9 @@ public class ItemInventoryLogic {
         return tList;
     }
 
+    /**
+     * Loads the Item Inventory Logic from an NBTTagList.
+     */
     public void loadFromNBT(NBTTagList nbtList) {
         for (int i = 0; i < nbtList.tagCount(); i++) {
             final NBTTagCompound tNBT = nbtList.getCompoundTagAt(i);
