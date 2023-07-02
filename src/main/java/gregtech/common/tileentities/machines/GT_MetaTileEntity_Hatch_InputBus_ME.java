@@ -546,7 +546,10 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 .setPos(80, 10))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullItemList, this::setAutoPullItemList))
             .widget(
-                new SlotWidget(inventoryHandler, getManualSlot()).setBackground(getGUITextureSet().getItemSlot())
+                new SlotWidget(inventoryHandler, getManualSlot())
+                    // ghost slots are prioritized over manual slot
+                    .setShiftClickPriority(11)
+                    .setBackground(getGUITextureSet().getItemSlot())
                     .setPos(79, 45));
     }
 
