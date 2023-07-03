@@ -6,6 +6,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTI
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -50,7 +52,7 @@ import gregtech.api.util.GT_Utility;
 public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_Output implements IPowerChannelState {
 
     private BaseActionSource requestSource = null;
-    private AENetworkProxy gridProxy = null;
+    private @Nullable AENetworkProxy gridProxy = null;
     final IItemList<IAEFluidStack> fluidCache = GregTech_API.mAE2 ? AEApi.instance()
         .storage()
         .createFluidList() : null;
@@ -240,7 +242,9 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
                 fluids.appendTag(tag);
             }
             aNBT.setTag("cachedFluids", fluids);
-            gridProxy.writeToNBT(aNBT);
+            if (gridProxy != null) {
+                gridProxy.writeToNBT(aNBT);
+            }
         }
     }
 

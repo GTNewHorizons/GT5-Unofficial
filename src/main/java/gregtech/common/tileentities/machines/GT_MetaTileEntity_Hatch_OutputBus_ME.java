@@ -6,6 +6,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_HATCH_ACTIVE;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -46,7 +48,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
     implements IPowerChannelState {
 
     private BaseActionSource requestSource = null;
-    private AENetworkProxy gridProxy = null;
+    private @Nullable AENetworkProxy gridProxy = null;
     final IItemList<IAEItemStack> itemCache = GregTech_API.mAE2 ? AEApi.instance()
         .storage()
         .createItemList() : null;
