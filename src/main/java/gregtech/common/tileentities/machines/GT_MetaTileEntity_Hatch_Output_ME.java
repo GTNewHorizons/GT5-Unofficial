@@ -242,9 +242,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
                 fluids.appendTag(tag);
             }
             aNBT.setTag("cachedFluids", fluids);
-            if (gridProxy != null) {
-                gridProxy.writeToNBT(aNBT);
-            }
+            getProxy().writeToNBT(aNBT);
         }
     }
 

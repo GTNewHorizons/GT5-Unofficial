@@ -174,8 +174,8 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         aNBT.setIntArray("sizes", sizes);
         aNBT.setBoolean("autoStock", autoPullItemList);
         aNBT.setInteger("minAutoPullStackSize", minAutoPullStackSize);
-        if (GregTech_API.mAE2 && gridProxy != null) {
-            gridProxy.writeToNBT(aNBT);
+        if (GregTech_API.mAE2) {
+            getProxy().writeToNBT(aNBT);
         }
     }
 
