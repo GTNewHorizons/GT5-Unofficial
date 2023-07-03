@@ -117,7 +117,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
 
     @Override
     public String[] getStructureDescription(ItemStack itemStack) {
-        return new String[] { "The structure in both X and Z axis has to be a square." };
+        return new String[] { "The base can be rectangular." };
     }
 
     @Nonnull
@@ -184,13 +184,16 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                 }
             }
         }
-        // detect room square for filters
+        // detect rectangular area of filters
         for (int i = -x + 1; i < x; i++) {
             for (int j = -z + 1; j < z; j++) {
                 if (i == 0 && j == 0) continue;
-                final Block tBlock = aBaseMetaTileEntity.getBlockOffset(j, 0, i);
-                final int tMeta = aBaseMetaTileEntity.getMetaIDOffset(j, 0, i);
+                final Block tBlock = aBaseMetaTileEntity.getBlockOffset(i, 0, j);
+                final int tMeta = aBaseMetaTileEntity.getMetaIDOffset(i, 0, j);
                 if (tBlock != GregTech_API.sBlockCasings3 && tMeta != 11) {
+                    if (debugCleanroom) {
+                        GT_Log.out.println("Cleanroom: This is not a filter.");
+                    }
                     return false;
                 }
             }
@@ -277,8 +280,10 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                                             if (config.containsKey(key)) {
                                                 otherBlocks.compute(key, (k, v) -> v == null ? 1 : v + 1);
                                             } else {
-                                                if (debugCleanroom) GT_Log.out.println(
-                                                    "Cleanroom: not allowed block " + tBlock.getUnlocalizedName());
+                                                if (debugCleanroom) {
+                                                    GT_Log.out.println(
+                                                        "Cleanroom: not allowed block " + tBlock.getUnlocalizedName());
+                                                }
                                                 return false;
                                             }
                                         }
@@ -293,15 +298,33 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
         if (this.mMaintenanceHatches.size() != 1 || this.mEnergyHatches.size() != 1
             || mDoorCount > 4
             || mHullCount > 10) {
+            if (debugCleanroom) {
+                GT_Log.out.println("Cleanroom: Incorrect number of doors, hulls, or hatches.");
+            }
             return false;
         }
-        if (mPlascreteCount < 20) return false;
+        if (mPlascreteCount < 20) {
+            if (debugCleanroom) {
+                GT_Log.out.println("Cleanroom: Could not find 20 Plascrete.");
+            }
+            return false;
+        }
         final float ratio = (((float) mPlascreteCount) / 100f);
         for (Map.Entry<String, Integer> e : otherBlocks.entrySet()) {
             final ConfigEntry ce = config.get(e.getKey());
             if (ce.allowedCount > 0) { // count has priority
-                if (e.getValue() > ce.allowedCount) return false;
-            } else if (e.getValue() > ratio * ce.percentage) return false;
+                if (e.getValue() > ce.allowedCount) {
+                    if (debugCleanroom) {
+                        GT_Log.out.println("Cleanroom: Absolute count too high for a block.");
+                    }
+                    return false;
+                }
+            } else if (e.getValue() > ratio * ce.percentage) {
+                if (debugCleanroom) {
+                    GT_Log.out.println("Cleanroom: Relative count too high for a block.");
+                }
+                return false;
+            }
         }
 
         setCleanroomReceivers(x, y, z, aBaseMetaTileEntity);
@@ -314,6 +337,9 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
             aBaseMetaTileEntity.setInternalOutputRedstoneSignal(tSide, t);
         }
         this.mHeight = -y;
+        if (debugCleanroom) {
+            GT_Log.out.println("Cleanroom: Check successful.");
+        }
         return true;
     }
 

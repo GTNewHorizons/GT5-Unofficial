@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -69,7 +71,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
     private static final int SLOT_COUNT = 16;
     private BaseActionSource requestSource = null;
-    private AENetworkProxy gridProxy = null;
+    private @Nullable AENetworkProxy gridProxy = null;
     private final ItemStack[] shadowInventory = new ItemStack[SLOT_COUNT];
     private final int[] savedStackSizes = new int[SLOT_COUNT];
     private boolean processingRecipe = false;
@@ -173,7 +175,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         aNBT.setBoolean("autoStock", autoPullItemList);
         aNBT.setInteger("minAutoPullStackSize", minAutoPullStackSize);
         if (GregTech_API.mAE2) {
-            gridProxy.writeToNBT(aNBT);
+            getProxy().writeToNBT(aNBT);
         }
     }
 
