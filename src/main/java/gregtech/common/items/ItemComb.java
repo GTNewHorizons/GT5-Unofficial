@@ -253,9 +253,9 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             new ItemStack[] { GT_Bees.drop.getStackForType(DropType.LAPIS),
                 GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.LapotronDust", 1, 0),
                 GT_ModHandler.getModItem(MagicBees.ID, "wax", 1, 2) },
-            new int[] { 20 * 100, 15 * 100, 40 * 100 },
+            new int[] { 20 * 100, 100 * 100, 40 * 100 },
             Voltage.HV,
-            196);
+            240);
         addCentrifugeToMaterial(
             CombType.PYROTHEUM,
             new Materials[] { Materials.Blaze, Materials.Pyrotheum },
