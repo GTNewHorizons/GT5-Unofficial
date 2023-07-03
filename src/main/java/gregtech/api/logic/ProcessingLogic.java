@@ -39,8 +39,8 @@ public class ProcessingLogic {
     protected int duration;
     protected long availableVoltage;
     protected long availableAmperage;
-    protected int overClockTimeReduction = 2;
-    protected int overClockPowerIncrease = 4;
+    protected int overClockTimeReduction = 1;
+    protected int overClockPowerIncrease = 2;
     protected boolean protectItems;
     protected boolean protectFluids;
     protected boolean isRecipeLocked;
@@ -203,7 +203,7 @@ public class ProcessingLogic {
      * Sets overclock ratio to 4/4.
      */
     public ProcessingLogic enablePerfectOverclock() {
-        return this.setOverclock(4, 4);
+        return this.setOverclock(2, 2);
     }
 
     /**
