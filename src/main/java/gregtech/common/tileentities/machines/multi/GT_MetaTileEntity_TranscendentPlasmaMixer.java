@@ -162,9 +162,11 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
+            @Nonnull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(GT_Recipe recipe, GT_ParallelHelper helper) {
-                return null;
+            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe,
+                @Nonnull GT_ParallelHelper helper) {
+                return GT_OverclockCalculator.ofNoOverclock(recipe);
             }
 
             @NotNull

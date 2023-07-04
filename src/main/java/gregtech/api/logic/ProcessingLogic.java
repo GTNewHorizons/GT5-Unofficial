@@ -191,7 +191,8 @@ public class ProcessingLogic {
     }
 
     /**
-     * Sets custom overclock ratio. By default, it's 2/4.
+     * Sets custom overclock ratio. 2/4 by default.
+     * Parameters represent number of bit shift, so 1 -> 2x, 2 -> 4x.
      */
     public ProcessingLogic setOverclock(int timeReduction, int powerIncrease) {
         this.overClockTimeReduction = timeReduction;
@@ -272,8 +273,6 @@ public class ProcessingLogic {
 
         GT_ParallelHelper helper = createParallelHelper(recipe);
 
-        if (helper == null) return CheckRecipeResultRegistry.NO_RECIPE;
-
         helper.build();
 
         if (helper.getCurrentParallel() <= 0) return CheckRecipeResultRegistry.OUTPUT_FULL;
@@ -282,20 +281,15 @@ public class ProcessingLogic {
 
         GT_OverclockCalculator calculator = createOverclockCalculator(recipe, helper);
 
-        // We allow OC calculator to be null. If so we don't OC.
-        if (calculator == null) {
-            calculatedEut = recipe.mEUt;
-        } else {
-            calculator.calculate();
-            if (calculator.getConsumption() == Long.MAX_VALUE) {
-                return CheckRecipeResultRegistry.POWER_OVERFLOW;
-            }
-            if (calculator.getDuration() == Integer.MAX_VALUE) {
-                return CheckRecipeResultRegistry.DURATION_OVERFLOW;
-            }
-
-            calculatedEut = calculator.getConsumption();
+        calculator.calculate();
+        if (calculator.getConsumption() == Long.MAX_VALUE) {
+            return CheckRecipeResultRegistry.POWER_OVERFLOW;
         }
+        if (calculator.getDuration() == Integer.MAX_VALUE) {
+            return CheckRecipeResultRegistry.DURATION_OVERFLOW;
+        }
+
+        calculatedEut = calculator.getConsumption();
 
         double finalDuration = calculateDuration(recipe, helper, calculator);
         if (finalDuration >= Integer.MAX_VALUE) {
@@ -309,16 +303,18 @@ public class ProcessingLogic {
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-    protected double calculateDuration(GT_Recipe recipe, GT_ParallelHelper helper, GT_OverclockCalculator calculator) {
-        if (calculator == null) {
-            return recipe.mDuration * helper.getDurationMultiplierDouble();
-        }
+    /**
+     * Override to tweak final duration that will be set as a result of this logic class.
+     */
+    protected double calculateDuration(@Nonnull GT_Recipe recipe, @Nonnull GT_ParallelHelper helper,
+        @Nonnull GT_OverclockCalculator calculator) {
         return calculator.getDuration() * helper.getDurationMultiplierDouble();
     }
 
     /**
      * Override to tweak parallel logic if needed.
      */
+    @Nonnull
     protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
         return new GT_ParallelHelper().setRecipe(recipe)
             .setItemInputs(inputItems)
@@ -343,7 +339,9 @@ public class ProcessingLogic {
     /**
      * Override to tweak overclock logic if needed.
      */
-    protected GT_OverclockCalculator createOverclockCalculator(GT_Recipe recipe, GT_ParallelHelper helper) {
+    @Nonnull
+    protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe,
+        @Nonnull GT_ParallelHelper helper) {
         return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
             .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplierDouble()))
             .setDuration(recipe.mDuration)

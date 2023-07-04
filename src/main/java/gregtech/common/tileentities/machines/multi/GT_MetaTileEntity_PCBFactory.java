@@ -564,27 +564,31 @@ public class GT_MetaTileEntity_PCBFactory extends
             }
 
             @Override
-            protected double calculateDuration(GT_Recipe recipe, GT_ParallelHelper helper,
-                GT_OverclockCalculator calculator) {
-                if (calculator == null) {
-                    return Math.ceil(
-                        recipe.mDuration * helper.getDurationMultiplierDouble() * Math.pow(mRoughnessMultiplier, 2));
+            protected double calculateDuration(@Nonnull GT_Recipe recipe, @Nonnull GT_ParallelHelper helper,
+                @Nonnull GT_OverclockCalculator calculator) {
+                if (isNoOC()) {
+                    return super.calculateDuration(recipe, helper, calculator) * getDurationMultiplierFromRoughness();
                 }
-                return calculator.getDuration() * helper.getDurationMultiplierDouble();
+                return super.calculateDuration(recipe, helper, calculator);
             }
 
+            @Nonnull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(GT_Recipe recipe, GT_ParallelHelper helper) {
-                if (!mOCTier1 && !mOCTier2) return null;
+            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe,
+                @Nonnull GT_ParallelHelper helper) {
+                if (isNoOC()) {
+                    return GT_OverclockCalculator.ofNoOverclock(recipe);
+                }
                 GT_OverclockCalculator calculator = super.createOverclockCalculator(recipe, helper)
                     .setEUtDiscount((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
-                    .setSpeedBoost((float) Math.pow(mRoughnessMultiplier, 2));
+                    .setSpeedBoost(getDurationMultiplierFromRoughness());
                 if (mOCTier2) {
                     calculator.enablePerfectOC();
                 }
                 return calculator;
             }
 
+            @Nonnull
             @Override
             protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
                 return super.createParallelHelper(recipe)
@@ -626,6 +630,14 @@ public class GT_MetaTileEntity_PCBFactory extends
                 return result;
             }
         };
+    }
+
+    private boolean isNoOC() {
+        return !mOCTier1 && !mOCTier2;
+    }
+
+    private float getDurationMultiplierFromRoughness() {
+        return (float) Math.pow(mRoughnessMultiplier, 2);
     }
 
     private int ticker = 0;

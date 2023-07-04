@@ -193,8 +193,10 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
+            @Nonnull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(GT_Recipe recipe, GT_ParallelHelper helper) {
+            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe,
+                @Nonnull GT_ParallelHelper helper) {
                 return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
                     .setDuration(recipe.mDuration)
                     .setEUt(availableVoltage)

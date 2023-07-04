@@ -1,5 +1,7 @@
 package gregtech.api.util;
 
+import javax.annotation.Nonnull;
+
 public class GT_OverclockCalculator {
 
     /**
@@ -40,6 +42,15 @@ public class GT_OverclockCalculator {
 
     private static final int HEAT_DISCOUNT_THRESHOLD = 900;
     private static final int HEAT_PERFECT_OVERCLOCK_THRESHOLD = 1800;
+
+    /**
+     * Creates calculator that doesn't do OC at all.
+     */
+    public static GT_OverclockCalculator ofNoOverclock(@Nonnull GT_Recipe recipe) {
+        return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
+            .setDuration(recipe.mDuration)
+            .setEUt(recipe.mEUt);
+    }
 
     /**
      * An Overclock helper for calculating overclocks in many different situations
