@@ -257,9 +257,8 @@ public class CommonProxy {
         }
 
         // GalaxySpace Support
-        if (ReflectionUtils.doesClassExist("galaxyspace.SolarSystem.moons.europa.entities.EntityEvolvedColdBlaze")) {
-            Class<?> aColdBlaze = ReflectionUtils
-                    .getClass("galaxyspace.SolarSystem.moons.europa.entities.EntityEvolvedColdBlaze");
+        if (ReflectionUtils.doesClassExist("galaxyspace.core.entity.mob.EntityEvolvedColdBlaze")) {
+            Class<?> aColdBlaze = ReflectionUtils.getClass("galaxyspace.core.entity.mob.EntityEvolvedColdBlaze");
             ItemStack aSmallBlizz, aTinyBlizz, aSmallCryo, aTinyCryo;
             aSmallBlizz = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallBlizz", 1);
             aTinyBlizz = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyBlizz", 1);
