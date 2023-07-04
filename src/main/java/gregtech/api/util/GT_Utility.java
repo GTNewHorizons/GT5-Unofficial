@@ -501,6 +501,9 @@ public class GT_Utility {
         return GT_Values.TIER_COLORS[tier] + GT_Values.VN[tier] + EnumChatFormatting.RESET;
     }
 
+    /**
+     * @return e.g. {@code " (LV)"}
+     */
     @Nonnull
     public static String getTierNameWithParentheses(long voltage) {
         byte tier = getTier(voltage);
@@ -1711,6 +1714,10 @@ public class GT_Utility {
             && (Items.feather.getDamage(aStack1) == Items.feather.getDamage(aStack2)
                 || Items.feather.getDamage(aStack1) == W
                 || Items.feather.getDamage(aStack2) == W);
+    }
+
+    public static boolean areStacksEqualOrNull(ItemStack stack1, ItemStack stack2) {
+        return (stack1 == null && stack2 == null) || GT_Utility.areStacksEqual(stack1, stack2);
     }
 
     /**
