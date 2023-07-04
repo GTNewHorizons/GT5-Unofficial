@@ -366,8 +366,8 @@ public class AdditionalRecipes {
                 480000000);
         GT_Values.RA.addFusionReactorRecipe(
                 WerkstoffLoader.Californium.getMolten(32),
-                WerkstoffLoader.Calcium.getMolten(144),
-                WerkstoffLoader.Oganesson.getFluidOrGas(144),
+                WerkstoffLoader.Calcium.getMolten(720),
+                WerkstoffLoader.Oganesson.getFluidOrGas(720),
                 420,
                 49152,
                 600000000);
