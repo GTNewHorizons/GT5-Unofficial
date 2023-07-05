@@ -1776,6 +1776,23 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(46, "Oberon")); // Oberon Dim
         }
     }),
+    INFUSEDGOLD(GT_BranchDefinition.SPACE, "Infused Gold", false, new Color(0x80641E), new Color(0xFFC83C),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.GOLD), 0.20f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.INFUSEDGOLD), 0.30f);
+            beeSpecies.setHumidity(DAMP);
+            beeSpecies.setTemperature(ICY);
+            beeSpecies.setNocturnal();
+            beeSpecies.setHasEffect();
+        }, template -> {}, new Consumer<>() {
+
+            @Override
+            public void accept(GT_BeeDefinition dis) {
+                IBeeMutationCustom tMutation = dis.registerMutation(GOLD, HAUMEA, 5);
+                tMutation.requireResource(GregTech_API.sBlockMetal3, 10);
+                tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(83, "Haumea")); // Haumea Dim
+            }
+        }),
     MYSTERIOUSCRYSTAL(GT_BranchDefinition.SPACE, "MysteriousCrystal", false, new Color(0x3CB371), new Color(0x16856C),
         beeSpecies -> {
             beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SPACE), 0.42f);

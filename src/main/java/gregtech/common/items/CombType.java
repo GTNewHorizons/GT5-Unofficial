@@ -210,6 +210,7 @@ public enum CombType {
     AWAKENEDDRACONIUM(163, "awakeneddraconium", true, Materials.DraconiumAwakened, 50, 0xD41238, 0xFFA157,
         ItemComb.Voltage.MV),
     PALLADIUM(164, "palladium", true, Materials.Palladium, 50, 0x8B8B8B, 0xF1D9D9, ItemComb.Voltage.MV),
+    INFUSEDGOLD(165, "infusedgold", true, Materials.InfusedGold, 50, 0x80641E, 0xFFC83C, ItemComb.Voltage.IV),
 
     // ALWAYS KEEP _NULL AT THE BOTTOM
     _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);
