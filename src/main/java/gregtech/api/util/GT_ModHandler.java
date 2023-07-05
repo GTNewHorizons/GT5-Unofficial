@@ -528,7 +528,7 @@ public class GT_ModHandler {
      */
     public static boolean addSmeltingRecipe(ItemStack aInput, ItemStack aOutput) {
         aOutput = GT_OreDictUnificator.get(true, aOutput);
-        if (aInput == null || aOutput == null || GT_Utility.getContainerItem(aInput, false) != null) return false;
+        if (aInput == null || aOutput == null) return false;
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.smelting, aInput, true)) return false;
         FurnaceRecipes.smelting()
             .func_151394_a(aInput, GT_Utility.copyOrNull(aOutput), 0.0F);
