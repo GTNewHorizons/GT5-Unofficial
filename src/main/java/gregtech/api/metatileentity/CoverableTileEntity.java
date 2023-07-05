@@ -5,44 +5,26 @@ import static gregtech.api.enums.GT_Values.NW;
 import static gregtech.api.util.GT_LanguageManager.FACES;
 import static gregtech.api.util.GT_LanguageManager.getTranslation;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
-import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.Column;
-import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
@@ -625,102 +607,102 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         }
     }
 
-    protected ModularWindow createCoverWindow(EntityPlayer player, ForgeDirection side) {
-        return getCoverInfoAtSide(side).createWindow(player);
-    }
+    // protected ModularWindow createCoverWindow(EntityPlayer player, ForgeDirection side) {
+    // return getCoverInfoAtSide(side).createWindow(player);
+    // }
 
     protected static final int COVER_WINDOW_ID_START = 1;
 
-    @Override
-    public void addCoverTabs(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        final int COVER_TAB_LEFT = -16, COVER_TAB_TOP = 1, COVER_TAB_HEIGHT = 20, COVER_TAB_WIDTH = 18,
-            COVER_TAB_SPACING = 2, ICON_SIZE = 16;
-        final boolean flipHorizontally = GT_Mod.gregtechproxy.mCoverTabsFlipped;
+    // @Override
+    // public void addCoverTabs(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // final int COVER_TAB_LEFT = -16, COVER_TAB_TOP = 1, COVER_TAB_HEIGHT = 20, COVER_TAB_WIDTH = 18,
+    // COVER_TAB_SPACING = 2, ICON_SIZE = 16;
+    // final boolean flipHorizontally = GT_Mod.gregtechproxy.mCoverTabsFlipped;
+    //
+    // final Column columnWidget = new Column();
+    // builder.widget(columnWidget);
+    // final int xPos = flipHorizontally ? (getGUIWidth() - COVER_TAB_LEFT - COVER_TAB_WIDTH) : COVER_TAB_LEFT;
+    // if (GT_Mod.gregtechproxy.mCoverTabsVisible) {
+    // columnWidget.setPos(xPos, COVER_TAB_TOP)
+    // .setEnabled(
+    // widget -> ((Column) widget).getChildren()
+    // .stream()
+    // .anyMatch(Widget::isEnabled));
+    // } else {
+    // columnWidget.setEnabled(false);
+    // }
+    // columnWidget.setAlignment(MainAxisAlignment.SPACE_BETWEEN)
+    // .setSpace(COVER_TAB_SPACING);
+    //
+    // for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+    // buildContext.addSyncedWindow(
+    // direction.ordinal() + COVER_WINDOW_ID_START,
+    // player -> createCoverWindow(player, direction));
+    // columnWidget.addChild(new MultiChildWidget().addChild(new ButtonWidget() {
+    //
+    // @Override
+    // public IDrawable[] getBackground() {
+    // final List<IDrawable> backgrounds = new ArrayList<>();
+    // final GUITextureSet tabIconSet = getGUITextureSet();
+    //
+    // if (getCoverBehaviorAtSideNew(direction).hasCoverGUI()) {
+    // if (isHovering()) {
+    // backgrounds.add(
+    // flipHorizontally ? tabIconSet.getCoverTabHighlightFlipped()
+    // : tabIconSet.getCoverTabHighlight());
+    // } else {
+    // backgrounds.add(
+    // flipHorizontally ? tabIconSet.getCoverTabNormalFlipped()
+    // : tabIconSet.getCoverTabNormal());
+    // }
+    // } else {
+    // backgrounds.add(
+    // flipHorizontally ? tabIconSet.getCoverTabDisabledFlipped()
+    // : tabIconSet.getCoverTabDisabled());
+    // }
+    // return backgrounds.toArray(new IDrawable[] {});
+    // }
+    // }.setOnClick((clickData, widget) -> onTabClicked(clickData, widget, direction))
+    // .dynamicTooltip(() -> getCoverTabTooltip(direction))
+    // .setSize(COVER_TAB_WIDTH, COVER_TAB_HEIGHT))
+    // .addChild(
+    // new ItemDrawable(() -> getCoverItemAtSide(direction)).asWidget()
+    // .setPos(
+    // (COVER_TAB_WIDTH - ICON_SIZE) / 2 + (flipHorizontally ? -1 : 1),
+    // (COVER_TAB_HEIGHT - ICON_SIZE) / 2))
+    // .setEnabled(widget -> getCoverItemAtSide(direction) != null));
+    // }
+    // }
 
-        final Column columnWidget = new Column();
-        builder.widget(columnWidget);
-        final int xPos = flipHorizontally ? (getGUIWidth() - COVER_TAB_LEFT - COVER_TAB_WIDTH) : COVER_TAB_LEFT;
-        if (GT_Mod.gregtechproxy.mCoverTabsVisible) {
-            columnWidget.setPos(xPos, COVER_TAB_TOP)
-                .setEnabled(
-                    widget -> ((Column) widget).getChildren()
-                        .stream()
-                        .anyMatch(Widget::isEnabled));
-        } else {
-            columnWidget.setEnabled(false);
-        }
-        columnWidget.setAlignment(MainAxisAlignment.SPACE_BETWEEN)
-            .setSpace(COVER_TAB_SPACING);
+    // @SideOnly(Side.CLIENT)
+    // protected List<String> getCoverTabTooltip(ForgeDirection side) {
+    // final String[] SIDE_TOOLTIPS = new String[] { "GT5U.interface.coverTabs.down", "GT5U.interface.coverTabs.up",
+    // "GT5U.interface.coverTabs.north", "GT5U.interface.coverTabs.south", "GT5U.interface.coverTabs.west",
+    // "GT5U.interface.coverTabs.east" };
+    // final CoverInfo coverInfo = getCoverInfoAtSide(side);
+    // final ItemStack coverItem = coverInfo.getDisplayStack();
+    // if (coverItem == null) return Collections.emptyList();
+    // final boolean coverHasGUI = coverInfo.hasCoverGUI();
+    //
+    // final List<String> tooltip = coverItem.getTooltip(Minecraft.getMinecraft().thePlayer, true);
+    // for (int i = 0; i < tooltip.size(); i++) {
+    // if (i == 0) {
+    // tooltip.set(
+    // 0,
+    // (coverHasGUI ? EnumChatFormatting.UNDERLINE : EnumChatFormatting.DARK_GRAY)
+    // + StatCollector.translateToLocal(SIDE_TOOLTIPS[side.ordinal()])
+    // + (coverHasGUI ? EnumChatFormatting.RESET + ": " : ": " + EnumChatFormatting.RESET)
+    // + tooltip.get(0));
+    // } else {
+    // tooltip.set(i, EnumChatFormatting.GRAY + tooltip.get(i));
+    // }
+    // }
+    // return tooltip;
+    // }
 
-        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-            buildContext.addSyncedWindow(
-                direction.ordinal() + COVER_WINDOW_ID_START,
-                player -> createCoverWindow(player, direction));
-            columnWidget.addChild(new MultiChildWidget().addChild(new ButtonWidget() {
-
-                @Override
-                public IDrawable[] getBackground() {
-                    final List<IDrawable> backgrounds = new ArrayList<>();
-                    final GUITextureSet tabIconSet = getGUITextureSet();
-
-                    if (getCoverBehaviorAtSideNew(direction).hasCoverGUI()) {
-                        if (isHovering()) {
-                            backgrounds.add(
-                                flipHorizontally ? tabIconSet.getCoverTabHighlightFlipped()
-                                    : tabIconSet.getCoverTabHighlight());
-                        } else {
-                            backgrounds.add(
-                                flipHorizontally ? tabIconSet.getCoverTabNormalFlipped()
-                                    : tabIconSet.getCoverTabNormal());
-                        }
-                    } else {
-                        backgrounds.add(
-                            flipHorizontally ? tabIconSet.getCoverTabDisabledFlipped()
-                                : tabIconSet.getCoverTabDisabled());
-                    }
-                    return backgrounds.toArray(new IDrawable[] {});
-                }
-            }.setOnClick((clickData, widget) -> onTabClicked(clickData, widget, direction))
-                .dynamicTooltip(() -> getCoverTabTooltip(direction))
-                .setSize(COVER_TAB_WIDTH, COVER_TAB_HEIGHT))
-                .addChild(
-                    new ItemDrawable(() -> getCoverItemAtSide(direction)).asWidget()
-                        .setPos(
-                            (COVER_TAB_WIDTH - ICON_SIZE) / 2 + (flipHorizontally ? -1 : 1),
-                            (COVER_TAB_HEIGHT - ICON_SIZE) / 2))
-                .setEnabled(widget -> getCoverItemAtSide(direction) != null));
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    protected List<String> getCoverTabTooltip(ForgeDirection side) {
-        final String[] SIDE_TOOLTIPS = new String[] { "GT5U.interface.coverTabs.down", "GT5U.interface.coverTabs.up",
-            "GT5U.interface.coverTabs.north", "GT5U.interface.coverTabs.south", "GT5U.interface.coverTabs.west",
-            "GT5U.interface.coverTabs.east" };
-        final CoverInfo coverInfo = getCoverInfoAtSide(side);
-        final ItemStack coverItem = coverInfo.getDisplayStack();
-        if (coverItem == null) return Collections.emptyList();
-        final boolean coverHasGUI = coverInfo.hasCoverGUI();
-
-        final List<String> tooltip = coverItem.getTooltip(Minecraft.getMinecraft().thePlayer, true);
-        for (int i = 0; i < tooltip.size(); i++) {
-            if (i == 0) {
-                tooltip.set(
-                    0,
-                    (coverHasGUI ? EnumChatFormatting.UNDERLINE : EnumChatFormatting.DARK_GRAY)
-                        + StatCollector.translateToLocal(SIDE_TOOLTIPS[side.ordinal()])
-                        + (coverHasGUI ? EnumChatFormatting.RESET + ": " : ": " + EnumChatFormatting.RESET)
-                        + tooltip.get(0));
-            } else {
-                tooltip.set(i, EnumChatFormatting.GRAY + tooltip.get(i));
-            }
-        }
-        return tooltip;
-    }
-
-    protected void onTabClicked(Widget.ClickData ignoredClickData, Widget widget, ForgeDirection side) {
-        if (isClientSide()) return;
-        widget.getContext()
-            .openSyncedWindow(side.ordinal() + COVER_WINDOW_ID_START);
-    }
+    // protected void onTabClicked(Widget.ClickData ignoredClickData, Widget widget, ForgeDirection side) {
+    // if (isClientSide()) return;
+    // widget.getContext()
+    // .openSyncedWindow(side.ordinal() + COVER_WINDOW_ID_START);
+    // }
 }

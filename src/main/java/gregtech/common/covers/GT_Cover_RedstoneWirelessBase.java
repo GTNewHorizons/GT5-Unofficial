@@ -4,20 +4,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
-import com.gtnewhorizons.modularui.api.math.MathExpression;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-
 import gregtech.api.GregTech_API;
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
-import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 
 public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
 
@@ -169,67 +161,67 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
         return true;
     }
 
-    @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
-        return new RedstoneWirelessBaseUIFactory(buildContext).createWindow();
-    }
+    // @Override
+    // public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    // return new RedstoneWirelessBaseUIFactory(buildContext).createWindow();
+    // }
 
-    private class RedstoneWirelessBaseUIFactory extends UIFactory {
-
-        private static final int startX = 10;
-        private static final int startY = 25;
-        private static final int spaceX = 18;
-        private static final int spaceY = 18;
-
-        public RedstoneWirelessBaseUIFactory(GT_CoverUIBuildContext buildContext) {
-            super(buildContext);
-        }
-
-        @Override
-        protected int getGUIWidth() {
-            return 250;
-        }
-
-        @SuppressWarnings("PointlessArithmeticExpression")
-        @Override
-        protected void addUIWidgets(ModularWindow.Builder builder) {
-            builder
-                .widget(
-                    new CoverDataControllerWidget<>(
-                        this::getCoverData,
-                        this::setCoverData,
-                        GT_Cover_RedstoneWirelessBase.this).addFollower(
-                            new CoverDataFollower_TextFieldWidget<>(),
-                            coverData -> String.valueOf(getFlagFrequency(convert(coverData))),
-                            (coverData, text) -> new ISerializableObject.LegacyCoverData(
-                                (int) MathExpression.parseMathExpression(text) | getFlagCheckbox(convert(coverData))),
-                            widget -> widget.setOnScrollNumbers()
-                                .setNumbers(0, MAX_CHANNEL)
-                                .setFocusOnGuiOpen(true)
-                                .setPos(spaceX * 0, spaceY * 0 + 2)
-                                .setSize(spaceX * 4 - 3, 12))
-                            .addFollower(
-                                CoverDataFollower_ToggleButtonWidget.ofCheck(),
-                                coverData -> getFlagCheckbox(convert(coverData)) > 0,
-                                (coverData, state) -> new ISerializableObject.LegacyCoverData(
-                                    getFlagFrequency(convert(coverData)) | (state ? CHECKBOX_MASK : 0)),
-                                widget -> widget.setPos(spaceX * 0, spaceY * 2))
-                            .setPos(startX, startY))
-                .widget(
-                    new TextWidget(GT_Utility.trans("246", "Frequency")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0))
-                .widget(
-                    new TextWidget(GT_Utility.trans("602", "Use Private Frequency"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 1, startY + spaceY * 2 + 4));
-        }
-
-        private int getFlagFrequency(int coverVariable) {
-            return coverVariable & PUBLIC_MASK;
-        }
-
-        private int getFlagCheckbox(int coverVariable) {
-            return coverVariable & CHECKBOX_MASK;
-        }
-    }
+    // private class RedstoneWirelessBaseUIFactory extends UIFactory {
+    //
+    // private static final int startX = 10;
+    // private static final int startY = 25;
+    // private static final int spaceX = 18;
+    // private static final int spaceY = 18;
+    //
+    // public RedstoneWirelessBaseUIFactory(GT_CoverUIBuildContext buildContext) {
+    // super(buildContext);
+    // }
+    //
+    // @Override
+    // protected int getGUIWidth() {
+    // return 250;
+    // }
+    //
+    // @SuppressWarnings("PointlessArithmeticExpression")
+    // @Override
+    // protected void addUIWidgets(ModularWindow.Builder builder) {
+    // builder
+    // .widget(
+    // new CoverDataControllerWidget<>(
+    // this::getCoverData,
+    // this::setCoverData,
+    // GT_Cover_RedstoneWirelessBase.this).addFollower(
+    // new CoverDataFollower_TextFieldWidget<>(),
+    // coverData -> String.valueOf(getFlagFrequency(convert(coverData))),
+    // (coverData, text) -> new ISerializableObject.LegacyCoverData(
+    // (int) MathExpression.parseMathExpression(text) | getFlagCheckbox(convert(coverData))),
+    // widget -> widget.setOnScrollNumbers()
+    // .setNumbers(0, MAX_CHANNEL)
+    // .setFocusOnGuiOpen(true)
+    // .setPos(spaceX * 0, spaceY * 0 + 2)
+    // .setSize(spaceX * 4 - 3, 12))
+    // .addFollower(
+    // CoverDataFollower_ToggleButtonWidget.ofCheck(),
+    // coverData -> getFlagCheckbox(convert(coverData)) > 0,
+    // (coverData, state) -> new ISerializableObject.LegacyCoverData(
+    // getFlagFrequency(convert(coverData)) | (state ? CHECKBOX_MASK : 0)),
+    // widget -> widget.setPos(spaceX * 0, spaceY * 2))
+    // .setPos(startX, startY))
+    // .widget(
+    // new TextWidget(GT_Utility.trans("246", "Frequency")).setDefaultColor(COLOR_TEXT_GRAY.get())
+    // .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0))
+    // .widget(
+    // new TextWidget(GT_Utility.trans("602", "Use Private Frequency"))
+    // .setDefaultColor(COLOR_TEXT_GRAY.get())
+    // .setPos(startX + spaceX * 1, startY + spaceY * 2 + 4));
+    // }
+    //
+    // private int getFlagFrequency(int coverVariable) {
+    // return coverVariable & PUBLIC_MASK;
+    // }
+    //
+    // private int getFlagCheckbox(int coverVariable) {
+    // return coverVariable & CHECKBOX_MASK;
+    // }
+    // }
 }

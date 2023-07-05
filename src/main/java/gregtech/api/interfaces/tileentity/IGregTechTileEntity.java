@@ -17,8 +17,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddInventorySlots;
-import gregtech.api.interfaces.modularui.IGetGUITextureSet;
 import gregtech.common.blocks.GT_Block_Machines;
 
 /**
@@ -30,7 +28,7 @@ import gregtech.common.blocks.GT_Block_Machines;
  */
 public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTileEntity, ICoverable, IFluidHandler,
     ITurnable, IGregTechDeviceInformation, IUpgradableMachine, IDigitalChest, IDescribable, IMachineBlockUpdateable,
-    IGregtechWailaProvider, IGetGUITextureSet, IAddInventorySlots {
+    IGregtechWailaProvider {
 
     /**
      * gets the Error displayed on the GUI

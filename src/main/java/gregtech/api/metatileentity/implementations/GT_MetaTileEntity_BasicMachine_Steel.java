@@ -11,7 +11,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.power.Power;
 import gregtech.common.power.SteamPower;
@@ -22,8 +21,7 @@ import gregtech.common.power.SteamPower;
  * This is the main construct for my Basic Machines such as the Automatic Extractor Extend this class to make a simple
  * Machine
  */
-public abstract class GT_MetaTileEntity_BasicMachine_Steel extends GT_MetaTileEntity_BasicMachine_Bronze
-    implements IGetTitleColor {
+public abstract class GT_MetaTileEntity_BasicMachine_Steel extends GT_MetaTileEntity_BasicMachine_Bronze {
 
     public GT_MetaTileEntity_BasicMachine_Steel(int aID, String aName, String aNameRegional, String aDescription,
         int aInputSlotCount, int aOutputSlotCount, boolean aHighPressure) {
@@ -143,8 +141,8 @@ public abstract class GT_MetaTileEntity_BasicMachine_Steel extends GT_MetaTileEn
         return SteamVariant.STEEL;
     }
 
-    @Override
-    public int getTitleColor() {
-        return COLOR_TITLE_WHITE.get();
-    }
+    // @Override
+    // public int getTitleColor() {
+    // return COLOR_TITLE_WHITE.get();
+    // }
 }

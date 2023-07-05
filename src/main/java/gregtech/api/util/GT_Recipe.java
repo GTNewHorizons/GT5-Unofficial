@@ -42,7 +42,6 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -72,14 +71,10 @@ import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import appeng.util.ReadableNumberConverter;
 import codechicken.lib.gui.GuiDraw;
@@ -1125,8 +1120,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             true,
             true).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_CRUSHED_ORE)
                 .setSlotOverlay(false, true, GT_UITextures.OVERLAY_SLOT_DUST)
-                .setRecipeConfigFile("thermalcentrifuge", FIRST_ITEM_INPUT)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+                .setRecipeConfigFile("thermalcentrifuge", FIRST_ITEM_INPUT);
         public static final GT_Recipe_Map sCompressorRecipes = new GT_Recipe_Map(
             new HashSet<>(750),
             "gt.recipe.compressor",
@@ -1200,7 +1194,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             E,
             true,
             false).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_FURNACE)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
                 .setSlotOverlaySteam(false, GT_UITextures.OVERLAY_SLOT_FURNACE_STEAM)
                 .setProgressBarSteam(GT_UITextures.PROGRESSBAR_ARROW_STEAM);
         public static final GT_Recipe_Map sMicrowaveRecipes = new GT_Recipe_Map_Microwave(
@@ -1218,8 +1211,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1,
             E,
             true,
-            false).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_FURNACE)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+            false).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_FURNACE);
 
         public static final GT_Recipe_Map sScannerFakeRecipes = new GT_Recipe_Map(
             new HashSet<>(300),
@@ -1237,8 +1229,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             E,
             true,
             true).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_MICROSCOPE)
-                .setSlotOverlay(false, false, true, true, GT_UITextures.OVERLAY_SLOT_DATA_ORB)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+                .setSlotOverlay(false, false, true, true, GT_UITextures.OVERLAY_SLOT_DATA_ORB);
         public static final GT_Recipe_Map sRockBreakerFakeRecipes = new GT_Recipe_Map(
             new HashSet<>(200),
             "gt.recipe.rockbreaker",
@@ -1272,7 +1263,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1,
             E,
             true,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+            true);
         public static final GT_Recipe_Map sReplicatorFakeRecipes = new ReplicatorFakeMap(
             new HashSet<>(100),
             "gt.recipe.replicator",
@@ -1290,8 +1281,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             true,
             true).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_CANISTER)
                 .setSlotOverlay(true, false, GT_UITextures.OVERLAY_SLOT_UUM)
-                .setSlotOverlay(false, false, true, true, GT_UITextures.OVERLAY_SLOT_DATA_ORB)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+                .setSlotOverlay(false, false, true, true, GT_UITextures.OVERLAY_SLOT_DATA_ORB);
         public static final GT_Recipe_Map sAssemblylineVisualRecipes = new GT_Recipe_Map_AssemblyLineFake(
             new HashSet<>(110),
             "gt.recipe.fakeAssemblylineProcess",
@@ -1328,8 +1318,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1,
             E,
             true,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
-                .setRecipeConfigFile("arcfurnace", FIRST_ITEM_INPUT);
+            true).setRecipeConfigFile("arcfurnace", FIRST_ITEM_INPUT);
         /**
          * Usually, but not always, you should use {@link GT_RecipeConstants#UniversalArcFurnace} instead.
          */
@@ -1348,8 +1337,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1,
             E,
             true,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
-                .setRecipeConfigFile("arcfurnace", FIRST_ITEM_INPUT);
+            true).setRecipeConfigFile("arcfurnace", FIRST_ITEM_INPUT);
         public static final GT_Recipe_Map sPrinterRecipes = new GT_Recipe_Map_Printer(
             new HashSet<>(5),
             "gt.recipe.printer",
@@ -1368,8 +1356,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             true).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_PAGE_BLANK)
                 .setSlotOverlay(false, true, GT_UITextures.OVERLAY_SLOT_PAGE_PRINTED)
                 .setSlotOverlay(false, false, true, true, GT_UITextures.OVERLAY_SLOT_DATA_STICK)
-                .setRecipeConfigFile("printer", FIRST_ITEM_INPUT)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+                .setRecipeConfigFile("printer", FIRST_ITEM_INPUT);
         public static final GT_Recipe_Map sSifterRecipes = new GT_Recipe_Map(
             new HashSet<>(105),
             "gt.recipe.sifter",
@@ -1423,7 +1410,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             E,
             true,
             true).setSlotOverlay(false, false, false, GT_UITextures.OVERLAY_SLOT_LENS)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
                 .setRecipeConfigFile("laserengraving", FIRST_ITEM_OUTPUT)
                 .setUsualFluidInputCount(2)
                 .setUsualFluidOutputCount(2);
@@ -1464,8 +1450,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             true).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_DUST)
                 .setSlotOverlay(false, true, true, GT_UITextures.OVERLAY_SLOT_GEM)
                 .setSlotOverlay(false, true, false, GT_UITextures.OVERLAY_SLOT_DUST)
-                .setRecipeConfigFile("autoclave", FIRST_ITEM_INPUT)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+                .setRecipeConfigFile("autoclave", FIRST_ITEM_INPUT);
         public static final GT_Recipe_Map sElectroMagneticSeparatorRecipes = new GT_Recipe_Map(
             new HashSet<>(50),
             "gt.recipe.electromagneticseparator",
@@ -1702,8 +1687,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                             r.mFluidInputs = new FluidStack[] {
                                 Materials.PulsatingIron.getMolten(r.mFluidInputs[0].amount) };
                     }
-                })
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+                });
         public static final GT_Recipe_Map sFluidExtractionRecipes = new GT_Recipe_Map(
             new HashSet<>(15000),
             "gt.recipe.fluidextractor",
@@ -1751,8 +1735,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             true,
             true).setSlotOverlay(false, false, false, GT_UITextures.OVERLAY_SLOT_BOX)
                 .setRecipeConfigFile("boxing", FIRST_ITEM_OUTPUT)
-                .setSlotOverlay(false, true, GT_UITextures.OVERLAY_SLOT_BOXED)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+                .setSlotOverlay(false, true, GT_UITextures.OVERLAY_SLOT_BOXED);
         public static final GT_Recipe_Map sUnboxinatorRecipes = new GT_Recipe_Map_Unboxinator(
             new HashSet<>(2500),
             "gt.recipe.unpackager",
@@ -1769,8 +1752,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             E,
             true,
             true).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_BOXED)
-                .setRecipeConfigFile("unboxing", FIRST_ITEM_OUTPUT)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+                .setRecipeConfigFile("unboxing", FIRST_ITEM_OUTPUT);
         /**
          * Usually, but not always, you should use {@link GT_RecipeConstants#Fusion} instead.
          */
@@ -1789,8 +1771,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1,
             " EU",
             true,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
-                .useComparatorForNEI(true)
+            true).useComparatorForNEI(true)
                 .setUsualFluidInputCount(2)
                 .setRecipeConfigFile("fusion", FIRST_FLUID_OUTPUT)
                 .setDisableOptimize(true)
@@ -1813,8 +1794,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1,
             " EU",
             true,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
-                .setUsualFluidInputCount(16)
+            true).setUsualFluidInputCount(16)
                 .setUsualFluidOutputCount(16)
                 .setNEITransferRect(new Rectangle(79, 34, 18, 18))
                 .setLogoPos(80, 61)
@@ -1878,8 +1858,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1,
             " K",
             false,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
-                .setRecipeConfigFile("blastfurnace", FIRST_ITEM_INPUT)
+            true).setRecipeConfigFile("blastfurnace", FIRST_ITEM_INPUT)
                 .setNEISpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE);
         /**
          * Use {@link GT_RecipeConstants#COIL_HEAT} as heat level.
@@ -1899,8 +1878,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1,
             " K",
             false,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
-                .setUsualFluidInputCount(9)
+            true).setUsualFluidInputCount(9)
                 .setUsualFluidOutputCount(9)
                 .setDisableOptimize(true)
                 .setNEISpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE);
@@ -1952,27 +1930,27 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
             IDrawable projectTexture;
 
-            @Override
-            public ModularWindow.Builder createNEITemplate(IItemHandlerModifiable itemInputsInventory,
-                IItemHandlerModifiable itemOutputsInventory, IItemHandlerModifiable specialSlotInventory,
-                IItemHandlerModifiable fluidInputsInventory, IItemHandlerModifiable fluidOutputsInventory,
-                Supplier<Float> progressSupplier, Pos2d windowOffset) {
-                ModularWindow.Builder builder = super.createNEITemplate(
-                    itemInputsInventory,
-                    itemOutputsInventory,
-                    specialSlotInventory,
-                    fluidInputsInventory,
-                    fluidOutputsInventory,
-                    progressSupplier,
-                    windowOffset);
-                addRecipeSpecificDrawable(
-                    builder,
-                    windowOffset,
-                    () -> projectTexture,
-                    new Pos2d(124, 28),
-                    new Size(18, 18));
-                return builder;
-            }
+            // @Override
+            // public ModularWindow.Builder createNEITemplate(IItemHandlerModifiable itemInputsInventory,
+            // IItemHandlerModifiable itemOutputsInventory, IItemHandlerModifiable specialSlotInventory,
+            // IItemHandlerModifiable fluidInputsInventory, IItemHandlerModifiable fluidOutputsInventory,
+            // Supplier<Float> progressSupplier, Pos2d windowOffset) {
+            // ModularWindow.Builder builder = super.createNEITemplate(
+            // itemInputsInventory,
+            // itemOutputsInventory,
+            // specialSlotInventory,
+            // fluidInputsInventory,
+            // fluidOutputsInventory,
+            // progressSupplier,
+            // windowOffset);
+            // addRecipeSpecificDrawable(
+            // builder,
+            // windowOffset,
+            // () -> projectTexture,
+            // new Pos2d(124, 28),
+            // new Size(18, 18));
+            // return builder;
+            // }
 
             @Override
             public List<Pos2d> getItemInputPositions(int itemInputCount) {
@@ -2019,28 +1997,28 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 }
             }
 
-            @Override
-            public void addProgressBarUI(ModularWindow.Builder builder, Supplier<Float> progressSupplier,
-                Pos2d windowOffset) {
-                int bar1Width = 17;
-                int bar2Width = 18;
-                builder.widget(
-                    new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_1, 17)
-                        .setDirection(ProgressBar.Direction.RIGHT)
-                        .setProgress(() -> progressSupplier.get() * ((float) (bar1Width + bar2Width) / bar1Width))
-                        .setSynced(false, false)
-                        .setPos(new Pos2d(70, 28).add(windowOffset))
-                        .setSize(bar1Width, 72));
-                builder.widget(
-                    new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_2, 18)
-                        .setDirection(ProgressBar.Direction.RIGHT)
-                        .setProgress(
-                            () -> (progressSupplier.get() - ((float) bar1Width / (bar1Width + bar2Width)))
-                                * ((float) (bar1Width + bar2Width) / bar2Width))
-                        .setSynced(false, false)
-                        .setPos(new Pos2d(106, 28).add(windowOffset))
-                        .setSize(bar2Width, 72));
-            }
+            // @Override
+            // public void addProgressBarUI(ModularWindow.Builder builder, Supplier<Float> progressSupplier,
+            // Pos2d windowOffset) {
+            // int bar1Width = 17;
+            // int bar2Width = 18;
+            // builder.widget(
+            // new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_1, 17)
+            // .setDirection(ProgressBar.Direction.RIGHT)
+            // .setProgress(() -> progressSupplier.get() * ((float) (bar1Width + bar2Width) / bar1Width))
+            // .setSynced(false, false)
+            // .setPos(new Pos2d(70, 28).add(windowOffset))
+            // .setSize(bar1Width, 72));
+            // builder.widget(
+            // new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_2, 18)
+            // .setDirection(ProgressBar.Direction.RIGHT)
+            // .setProgress(
+            // () -> (progressSupplier.get() - ((float) bar1Width / (bar1Width + bar2Width)))
+            // * ((float) (bar1Width + bar2Width) / bar2Width))
+            // .setSynced(false, false)
+            // .setPos(new Pos2d(106, 28).add(windowOffset))
+            // .setSize(bar2Width, 72));
+            // }
         }.setRenderRealStackSizes(false)
             .setUsualFluidInputCount(4)
             .setNEIBackgroundOffset(2, 23)
@@ -2135,80 +2113,77 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1,
             E,
             false,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
-                .setRecipeEmitter(builder -> {
-                    Optional<GT_Recipe> rr = builder.validateInputCount(1, 2)
-                        .validateOutputCount(1, 2)
-                        .validateNoInputFluid()
-                        .validateNoOutputFluid()
-                        .noOptimize()
-                        .build();
-                    if (!rr.isPresent()) return Collections.emptyList();
-                    ItemStack aInput1 = builder.getItemInputBasic(0);
-                    ItemStack aInput2 = builder.getItemInputBasic(1);
-                    ItemStack aOutput1 = builder.getItemOutput(0);
-                    ItemStack aOutput2 = builder.getItemOutput(1);
-                    if ((aInput1 == null && aInput2 == null) || (aOutput1 == null && aOutput2 == null))
-                        return Collections.emptyList();
-                    int aCoalAmount = builder.getMetadata(ADDITIVE_AMOUNT);
-                    if (aCoalAmount <= 0) return Collections.emptyList();
-                    GT_RecipeTemplate coll = asTemplate(rr.get());
+            true).setRecipeEmitter(builder -> {
+                Optional<GT_Recipe> rr = builder.validateInputCount(1, 2)
+                    .validateOutputCount(1, 2)
+                    .validateNoInputFluid()
+                    .validateNoOutputFluid()
+                    .noOptimize()
+                    .build();
+                if (!rr.isPresent()) return Collections.emptyList();
+                ItemStack aInput1 = builder.getItemInputBasic(0);
+                ItemStack aInput2 = builder.getItemInputBasic(1);
+                ItemStack aOutput1 = builder.getItemOutput(0);
+                ItemStack aOutput2 = builder.getItemOutput(1);
+                if ((aInput1 == null && aInput2 == null) || (aOutput1 == null && aOutput2 == null))
+                    return Collections.emptyList();
+                int aCoalAmount = builder.getMetadata(ADDITIVE_AMOUNT);
+                if (aCoalAmount <= 0) return Collections.emptyList();
+                GT_RecipeTemplate coll = asTemplate(rr.get());
+                for (Materials coal : new Materials[] { Materials.Coal, Materials.Charcoal }) {
+                    coll.derive()
+                        .setInputs(aInput1, aInput2, coal.getGems(aCoalAmount))
+                        .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDustTiny(aCoalAmount));
+                    coll.derive()
+                        .setInputs(aInput1, aInput2, coal.getDust(aCoalAmount))
+                        .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDustTiny(aCoalAmount));
+                }
+                int aDuration = builder.duration;
+                if (Railcraft.isModLoaded()) {
+                    coll.derive()
+                        .setInputs(aInput1, aInput2, RailcraftToolItems.getCoalCoke(aCoalAmount / 2))
+                        .setOutputs(aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount / 2))
+                        .setDuration(aDuration * 2 / 3);
+                }
+                if (GTPlusPlus.isModLoaded()) {
+                    ItemStack cactusCoke = GT_ModHandler.getModItem(GTPlusPlus.ID, "itemCactusCoke", aCoalAmount * 2L);
+                    ItemStack sugarCoke = GT_ModHandler.getModItem(GTPlusPlus.ID, "itemSugarCoke", aCoalAmount * 2L);
+                    coll.derive()
+                        .setInputs(aInput1, aInput2, cactusCoke)
+                        .setOutputs(aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2))
+                        .setDuration(aDuration * 2 / 3);
+                    coll.derive()
+                        .setInputs(aInput1, aInput2, sugarCoke)
+                        .setOutputs(aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2))
+                        .setDuration(aDuration * 2 / 3);
+                }
+                if ((aInput1 == null || aInput1.stackSize <= 6) && (aInput2 == null || aInput2.stackSize <= 6)
+                    && (aOutput1 == null || aOutput1.stackSize <= 6)
+                    && (aOutput2 == null || aOutput2.stackSize <= 6)) {
+                    // we don't use GT_Utility.mul() here. It does not have the truncating we need here.
+                    aInput1 = GT_Utility.multiplyStack(10L, aInput1);
+                    aInput2 = GT_Utility.multiplyStack(10L, aInput2);
+                    aOutput1 = GT_Utility.multiplyStack(10L, aOutput1);
+                    aOutput2 = GT_Utility.multiplyStack(10L, aOutput2);
                     for (Materials coal : new Materials[] { Materials.Coal, Materials.Charcoal }) {
                         coll.derive()
-                            .setInputs(aInput1, aInput2, coal.getGems(aCoalAmount))
-                            .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDustTiny(aCoalAmount));
+                            .setInputs(aInput1, aInput2, coal.getBlocks(aCoalAmount))
+                            .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDust(aCoalAmount))
+                            .setDuration(aDuration * 10);
                         coll.derive()
-                            .setInputs(aInput1, aInput2, coal.getDust(aCoalAmount))
-                            .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDustTiny(aCoalAmount));
+                            .setInputs(aInput1, aInput2, coal.getBlocks(aCoalAmount))
+                            .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDust(aCoalAmount))
+                            .setDuration(aDuration * 10);
                     }
-                    int aDuration = builder.duration;
                     if (Railcraft.isModLoaded()) {
                         coll.derive()
-                            .setInputs(aInput1, aInput2, RailcraftToolItems.getCoalCoke(aCoalAmount / 2))
-                            .setOutputs(aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount / 2))
-                            .setDuration(aDuration * 2 / 3);
+                            .setInputs(aInput1, aInput2, EnumCube.COKE_BLOCK.getItem(aCoalAmount / 2))
+                            .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aCoalAmount / 2))
+                            .setDuration(aDuration * 20 / 3);
                     }
-                    if (GTPlusPlus.isModLoaded()) {
-                        ItemStack cactusCoke = GT_ModHandler
-                            .getModItem(GTPlusPlus.ID, "itemCactusCoke", aCoalAmount * 2L);
-                        ItemStack sugarCoke = GT_ModHandler
-                            .getModItem(GTPlusPlus.ID, "itemSugarCoke", aCoalAmount * 2L);
-                        coll.derive()
-                            .setInputs(aInput1, aInput2, cactusCoke)
-                            .setOutputs(aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2))
-                            .setDuration(aDuration * 2 / 3);
-                        coll.derive()
-                            .setInputs(aInput1, aInput2, sugarCoke)
-                            .setOutputs(aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2))
-                            .setDuration(aDuration * 2 / 3);
-                    }
-                    if ((aInput1 == null || aInput1.stackSize <= 6) && (aInput2 == null || aInput2.stackSize <= 6)
-                        && (aOutput1 == null || aOutput1.stackSize <= 6)
-                        && (aOutput2 == null || aOutput2.stackSize <= 6)) {
-                        // we don't use GT_Utility.mul() here. It does not have the truncating we need here.
-                        aInput1 = GT_Utility.multiplyStack(10L, aInput1);
-                        aInput2 = GT_Utility.multiplyStack(10L, aInput2);
-                        aOutput1 = GT_Utility.multiplyStack(10L, aOutput1);
-                        aOutput2 = GT_Utility.multiplyStack(10L, aOutput2);
-                        for (Materials coal : new Materials[] { Materials.Coal, Materials.Charcoal }) {
-                            coll.derive()
-                                .setInputs(aInput1, aInput2, coal.getBlocks(aCoalAmount))
-                                .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDust(aCoalAmount))
-                                .setDuration(aDuration * 10);
-                            coll.derive()
-                                .setInputs(aInput1, aInput2, coal.getBlocks(aCoalAmount))
-                                .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDust(aCoalAmount))
-                                .setDuration(aDuration * 10);
-                        }
-                        if (Railcraft.isModLoaded()) {
-                            coll.derive()
-                                .setInputs(aInput1, aInput2, EnumCube.COKE_BLOCK.getItem(aCoalAmount / 2))
-                                .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aCoalAmount / 2))
-                                .setDuration(aDuration * 20 / 3);
-                        }
-                    }
-                    return coll.getAll();
-                })
+                }
+                return coll.getAll();
+            })
                 .setRecipeConfigFile("primitiveblastfurnace", FIRST_ITEM_INPUT);
         /**
          * Uses {@link GT_RecipeConstants#ADDITIVE_AMOUNT} for TNT/ITNT/... amount. Value is truncated to [0, 64]
@@ -2284,8 +2259,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1,
             E,
             false,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
-                .setRecipeConfigFile("vacuumfreezer", FIRST_ITEM_INPUT)
+            true).setRecipeConfigFile("vacuumfreezer", FIRST_ITEM_INPUT)
                 .setRecipeEmitter(b -> {
                     b.noOptimize();
                     FluidStack in, out;
@@ -2375,8 +2349,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1,
             E,
             true,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
-                .setDisableOptimize(true)
+            true).setDisableOptimize(true)
                 .setRecipeConfigFile("pyrolyse", FIRST_ITEM_INPUT);
         public static final GT_Recipe_Map sWiremillRecipes = new GT_Recipe_Map(
             new HashSet<>(450),
@@ -2447,7 +2420,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     "alloysmelting",
                     r -> GT_Config
                         .getStackConfigName(GT_Utility.isArrayOfLength(r.mInputs, 1) ? r.mInputs[0] : r.mOutputs[0]))
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
                 .setSlotOverlaySteam(false, GT_UITextures.OVERLAY_SLOT_FURNACE_STEAM)
                 .setProgressBarSteam(GT_UITextures.PROGRESSBAR_ARROW_STEAM);
         public static final GT_Recipe_Map sAssemblerRecipes = new GT_Recipe_Map_Assembler(
@@ -2523,7 +2495,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1,
             E,
             true,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+            true);
         public static final GT_Recipe_Map sLatheRecipes = new GT_Recipe_Map(
             new HashSet<>(1150),
             "gt.recipe.lathe",
@@ -2687,8 +2659,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             E,
             true,
             true).setSlotOverlay(true, false, GT_UITextures.OVERLAY_SLOT_UUA)
-                .setSlotOverlay(true, true, GT_UITextures.OVERLAY_SLOT_UUM)
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+                .setSlotOverlay(true, true, GT_UITextures.OVERLAY_SLOT_UUM);
         public static final GT_Recipe_Map_Fuel sDieselFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
             new HashSet<>(20),
             "gt.recipe.dieselgeneratorfuel",
@@ -2704,7 +2675,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1000,
             " EU",
             true,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+            true);
         public static final GT_Recipe_Map_Fuel sExtremeDieselFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
             new HashSet<>(20),
             "gt.recipe.extremedieselgeneratorfuel",
@@ -2720,7 +2691,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1000,
             " EU",
             true,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+            true);
         public static final GT_Recipe_Map_Fuel sTurbineFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
             new HashSet<>(25),
             "gt.recipe.gasturbinefuel",
@@ -2736,7 +2707,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1000,
             " EU",
             true,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+            true);
         public static final GT_Recipe_Map_Fuel sHotFuels = new GT_Recipe_Map_Fuel(
             new HashSet<>(10),
             "gt.recipe.thermalgeneratorfuel",
@@ -2768,7 +2739,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1000,
             " EU",
             true,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+            true);
         public static final GT_Recipe_Map_Fuel sPlasmaFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
             new HashSet<>(100),
             "gt.recipe.plasmageneratorfuels",
@@ -2784,7 +2755,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1000,
             " EU",
             true,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+            true);
         public static final GT_Recipe_Map_Fuel sMagicFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
             new HashSet<>(100),
             "gt.recipe.magicfuels",
@@ -2800,7 +2771,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1000,
             " EU",
             true,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+            true);
         public static final GT_Recipe_Map_Fuel sSmallNaquadahReactorFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
             new HashSet<>(1),
             "gt.recipe.smallnaquadahreactor",
@@ -2816,7 +2787,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1000,
             " EU",
             true,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+            true);
         public static final GT_Recipe_Map_Fuel sLargeNaquadahReactorFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
             new HashSet<>(1),
             "gt.recipe.largenaquadahreactor",
@@ -2832,7 +2803,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1000,
             " EU",
             true,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+            true);
         public static final GT_Recipe_Map_Fuel sHugeNaquadahReactorFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
             new HashSet<>(1),
             "gt.recipe.fluidnaquadahreactor",
@@ -2848,7 +2819,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1000,
             " EU",
             true,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+            true);
         public static final GT_Recipe_Map_Fuel sExtremeNaquadahReactorFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
             new HashSet<>(1),
             "gt.recipe.hugenaquadahreactor",
@@ -2864,7 +2835,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1000,
             " EU",
             true,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+            true);
         public static final GT_Recipe_Map_Fuel sUltraHugeNaquadahReactorFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
             new HashSet<>(1),
             "gt.recipe.extrahugenaquadahreactor",
@@ -2880,7 +2851,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1000,
             " EU",
             true,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+            true);
         public static final GT_Recipe_Map_Fuel sFluidNaquadahReactorFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
             new HashSet<>(1),
             "gt.recipe.fluidfuelnaquadahreactor",
@@ -2896,7 +2867,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1000,
             " EU",
             true,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+            true);
         public static final GT_Recipe_Map sMultiblockElectrolyzerRecipes = new GT_Recipe_Map(
             new HashSet<>(300),
             "gt.recipe.largeelectrolyzer",
@@ -2949,7 +2920,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             false).setRecipeEmitter(GT_RecipeMapUtil::buildRecipeForMultiblockNoCircuit)
                 .setDisableOptimize(true);
         public static final GT_Recipe_Map_LargeBoilerFakeFuels sLargeBoilerFakeFuels = (GT_Recipe_Map_LargeBoilerFakeFuels) new GT_Recipe_Map_LargeBoilerFakeFuels()
-            .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
             .setDisableOptimize(true);
 
         public static final GT_Recipe_Map sNanoForge = new GT_Recipe_Map(
@@ -4041,97 +4011,97 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             };
         }
 
-        /**
-         * Adds slot backgrounds, progressBar, etc.
-         */
-        public ModularWindow.Builder createNEITemplate(IItemHandlerModifiable itemInputsInventory,
-            IItemHandlerModifiable itemOutputsInventory, IItemHandlerModifiable specialSlotInventory,
-            IItemHandlerModifiable fluidInputsInventory, IItemHandlerModifiable fluidOutputsInventory,
-            Supplier<Float> progressSupplier, Pos2d windowOffset) {
-            ModularWindow.Builder builder = ModularWindow.builder(neiBackgroundSize)
-                .setBackground(ModularUITextures.VANILLA_BACKGROUND);
+        // /**
+        // * Adds slot backgrounds, progressBar, etc.
+        // */
+        // public ModularWindow.Builder createNEITemplate(IItemHandlerModifiable itemInputsInventory,
+        // IItemHandlerModifiable itemOutputsInventory, IItemHandlerModifiable specialSlotInventory,
+        // IItemHandlerModifiable fluidInputsInventory, IItemHandlerModifiable fluidOutputsInventory,
+        // Supplier<Float> progressSupplier, Pos2d windowOffset) {
+        // ModularWindow.Builder builder = ModularWindow.builder(neiBackgroundSize)
+        // .setBackground(ModularUITextures.VANILLA_BACKGROUND);
+        //
+        // UIHelper.forEachSlots(
+        // (i, backgrounds, pos) -> builder.widget(
+        // SlotWidget.phantom(itemInputsInventory, i)
+        // .setBackground(backgrounds)
+        // .setPos(pos)
+        // .setSize(18, 18)),
+        // (i, backgrounds, pos) -> builder.widget(
+        // SlotWidget.phantom(itemOutputsInventory, i)
+        // .setBackground(backgrounds)
+        // .setPos(pos)
+        // .setSize(18, 18)),
+        // (i, backgrounds, pos) -> {
+        // if (usesSpecialSlot()) builder.widget(
+        // SlotWidget.phantom(specialSlotInventory, 0)
+        // .setBackground(backgrounds)
+        // .setPos(pos)
+        // .setSize(18, 18));
+        // },
+        // (i, backgrounds, pos) -> builder.widget(
+        // SlotWidget.phantom(fluidInputsInventory, i)
+        // .setBackground(backgrounds)
+        // .setPos(pos)
+        // .setSize(18, 18)),
+        // (i, backgrounds, pos) -> builder.widget(
+        // SlotWidget.phantom(fluidOutputsInventory, i)
+        // .setBackground(backgrounds)
+        // .setPos(pos)
+        // .setSize(18, 18)),
+        // ModularUITextures.ITEM_SLOT,
+        // ModularUITextures.FLUID_SLOT,
+        // this,
+        // mUsualInputCount,
+        // mUsualOutputCount,
+        // getUsualFluidInputCount(),
+        // getUsualFluidOutputCount(),
+        // SteamVariant.NONE,
+        // windowOffset);
+        //
+        // addProgressBarUI(builder, progressSupplier, windowOffset);
+        // addGregTechLogoUI(builder, windowOffset);
+        //
+        // for (Pair<IDrawable, Pair<Size, Pos2d>> specialTexture : specialTextures) {
+        // builder.widget(
+        // new DrawableWidget().setDrawable(specialTexture.getLeft())
+        // .setSize(
+        // specialTexture.getRight()
+        // .getLeft())
+        // .setPos(
+        // specialTexture.getRight()
+        // .getRight()
+        // .add(windowOffset)));
+        // }
+        //
+        // return builder;
+        // }
 
-            UIHelper.forEachSlots(
-                (i, backgrounds, pos) -> builder.widget(
-                    SlotWidget.phantom(itemInputsInventory, i)
-                        .setBackground(backgrounds)
-                        .setPos(pos)
-                        .setSize(18, 18)),
-                (i, backgrounds, pos) -> builder.widget(
-                    SlotWidget.phantom(itemOutputsInventory, i)
-                        .setBackground(backgrounds)
-                        .setPos(pos)
-                        .setSize(18, 18)),
-                (i, backgrounds, pos) -> {
-                    if (usesSpecialSlot()) builder.widget(
-                        SlotWidget.phantom(specialSlotInventory, 0)
-                            .setBackground(backgrounds)
-                            .setPos(pos)
-                            .setSize(18, 18));
-                },
-                (i, backgrounds, pos) -> builder.widget(
-                    SlotWidget.phantom(fluidInputsInventory, i)
-                        .setBackground(backgrounds)
-                        .setPos(pos)
-                        .setSize(18, 18)),
-                (i, backgrounds, pos) -> builder.widget(
-                    SlotWidget.phantom(fluidOutputsInventory, i)
-                        .setBackground(backgrounds)
-                        .setPos(pos)
-                        .setSize(18, 18)),
-                ModularUITextures.ITEM_SLOT,
-                ModularUITextures.FLUID_SLOT,
-                this,
-                mUsualInputCount,
-                mUsualOutputCount,
-                getUsualFluidInputCount(),
-                getUsualFluidOutputCount(),
-                SteamVariant.NONE,
-                windowOffset);
+        // public void addProgressBarUI(ModularWindow.Builder builder, Supplier<Float> progressSupplier,
+        // Pos2d windowOffset) {
+        // builder.widget(
+        // new ProgressBar().setTexture(getProgressBarTexture(), 20)
+        // .setDirection(progressBarDirection)
+        // .setProgress(progressSupplier)
+        // .setSynced(false, false)
+        // .setPos(progressBarPos.add(windowOffset))
+        // .setSize(progressBarSize));
+        // }
 
-            addProgressBarUI(builder, progressSupplier, windowOffset);
-            addGregTechLogoUI(builder, windowOffset);
+        // public void addGregTechLogoUI(ModularWindow.Builder builder, Pos2d windowOffset) {
+        // builder.widget(
+        // new DrawableWidget().setDrawable(logo)
+        // .setSize(logoSize)
+        // .setPos(logoPos.add(windowOffset)));
+        // }
 
-            for (Pair<IDrawable, Pair<Size, Pos2d>> specialTexture : specialTextures) {
-                builder.widget(
-                    new DrawableWidget().setDrawable(specialTexture.getLeft())
-                        .setSize(
-                            specialTexture.getRight()
-                                .getLeft())
-                        .setPos(
-                            specialTexture.getRight()
-                                .getRight()
-                                .add(windowOffset)));
-            }
-
-            return builder;
-        }
-
-        public void addProgressBarUI(ModularWindow.Builder builder, Supplier<Float> progressSupplier,
-            Pos2d windowOffset) {
-            builder.widget(
-                new ProgressBar().setTexture(getProgressBarTexture(), 20)
-                    .setDirection(progressBarDirection)
-                    .setProgress(progressSupplier)
-                    .setSynced(false, false)
-                    .setPos(progressBarPos.add(windowOffset))
-                    .setSize(progressBarSize));
-        }
-
-        public void addGregTechLogoUI(ModularWindow.Builder builder, Pos2d windowOffset) {
-            builder.widget(
-                new DrawableWidget().setDrawable(logo)
-                    .setSize(logoSize)
-                    .setPos(logoPos.add(windowOffset)));
-        }
-
-        public void addRecipeSpecificDrawable(ModularWindow.Builder builder, Pos2d windowOffset,
-            Supplier<IDrawable> supplier, Pos2d pos, Size size) {
-            builder.widget(
-                new DrawableWidget().setDrawable(supplier)
-                    .setSize(size)
-                    .setPos(pos.add(windowOffset)));
-        }
+        // public void addRecipeSpecificDrawable(ModularWindow.Builder builder, Pos2d windowOffset,
+        // Supplier<IDrawable> supplier, Pos2d pos, Size size) {
+        // builder.widget(
+        // new DrawableWidget().setDrawable(supplier)
+        // .setSize(size)
+        // .setPos(pos.add(windowOffset)));
+        // }
 
         /**
          * Overriding this method allows custom NEI stack placement
@@ -4507,22 +4477,22 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return UIHelper.getGridPositions(fluidOutputCount, 106, yOrigin + getItemRowCount() * 18, xDirMaxCount);
         }
 
-        @Override
-        public ModularWindow.Builder createNEITemplate(IItemHandlerModifiable itemInputsInventory,
-            IItemHandlerModifiable itemOutputsInventory, IItemHandlerModifiable specialSlotInventory,
-            IItemHandlerModifiable fluidInputsInventory, IItemHandlerModifiable fluidOutputsInventory,
-            Supplier<Float> progressSupplier, Pos2d windowOffset) {
-            // Delay setter so that calls to #setUsualFluidInputCount and #setUsualFluidOutputCount are considered
-            setNEIBackgroundSize(172, 82 + (Math.max(getItemRowCount() + getFluidRowCount() - 4, 0)) * 18);
-            return super.createNEITemplate(
-                itemInputsInventory,
-                itemOutputsInventory,
-                specialSlotInventory,
-                fluidInputsInventory,
-                fluidOutputsInventory,
-                progressSupplier,
-                windowOffset);
-        }
+        // @Override
+        // public ModularWindow.Builder createNEITemplate(IItemHandlerModifiable itemInputsInventory,
+        // IItemHandlerModifiable itemOutputsInventory, IItemHandlerModifiable specialSlotInventory,
+        // IItemHandlerModifiable fluidInputsInventory, IItemHandlerModifiable fluidOutputsInventory,
+        // Supplier<Float> progressSupplier, Pos2d windowOffset) {
+        // // Delay setter so that calls to #setUsualFluidInputCount and #setUsualFluidOutputCount are considered
+        // setNEIBackgroundSize(172, 82 + (Math.max(getItemRowCount() + getFluidRowCount() - 4, 0)) * 18);
+        // return super.createNEITemplate(
+        // itemInputsInventory,
+        // itemOutputsInventory,
+        // specialSlotInventory,
+        // fluidInputsInventory,
+        // fluidOutputsInventory,
+        // progressSupplier,
+        // windowOffset);
+        // }
 
         private int getItemRowCount() {
             return (Math.max(mUsualInputCount, mUsualOutputCount) - 1) / xDirMaxCount + 1;
@@ -6033,7 +6003,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             setLogo(GT_UITextures.PICTURE_RADIATION_WARNING);
             setLogoPos(152, 24);
             setNEIBackgroundSize(172, 60);
-            setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
         }
 
         /**
@@ -6503,34 +6472,34 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return UIHelper.getGridPositions(fluidInputCount, 106, 8, 1);
         }
 
-        @Override
-        public void addProgressBarUI(ModularWindow.Builder builder, Supplier<Float> progressSupplier,
-            Pos2d windowOffset) {
-            int bar1Width = 17;
-            int bar2Width = 18;
-            builder.widget(
-                new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_1, 17)
-                    .setDirection(ProgressBar.Direction.RIGHT)
-                    .setProgress(() -> progressSupplier.get() * ((float) (bar1Width + bar2Width) / bar1Width))
-                    .setSynced(false, false)
-                    .setPos(new Pos2d(88, 8).add(windowOffset))
-                    .setSize(bar1Width, 72));
-            builder.widget(
-                new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_2, 18)
-                    .setDirection(ProgressBar.Direction.RIGHT)
-                    .setProgress(
-                        () -> (progressSupplier.get() - ((float) bar1Width / (bar1Width + bar2Width)))
-                            * ((float) (bar1Width + bar2Width) / bar2Width))
-                    .setSynced(false, false)
-                    .setPos(new Pos2d(124, 8).add(windowOffset))
-                    .setSize(bar2Width, 72));
-            builder.widget(
-                new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_3, 18)
-                    .setDirection(ProgressBar.Direction.UP)
-                    .setProgress(progressSupplier)
-                    .setSynced(false, false)
-                    .setPos(new Pos2d(146, 26).add(windowOffset))
-                    .setSize(10, 18));
-        }
+        // @Override
+        // public void addProgressBarUI(ModularWindow.Builder builder, Supplier<Float> progressSupplier,
+        // Pos2d windowOffset) {
+        // int bar1Width = 17;
+        // int bar2Width = 18;
+        // builder.widget(
+        // new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_1, 17)
+        // .setDirection(ProgressBar.Direction.RIGHT)
+        // .setProgress(() -> progressSupplier.get() * ((float) (bar1Width + bar2Width) / bar1Width))
+        // .setSynced(false, false)
+        // .setPos(new Pos2d(88, 8).add(windowOffset))
+        // .setSize(bar1Width, 72));
+        // builder.widget(
+        // new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_2, 18)
+        // .setDirection(ProgressBar.Direction.RIGHT)
+        // .setProgress(
+        // () -> (progressSupplier.get() - ((float) bar1Width / (bar1Width + bar2Width)))
+        // * ((float) (bar1Width + bar2Width) / bar2Width))
+        // .setSynced(false, false)
+        // .setPos(new Pos2d(124, 8).add(windowOffset))
+        // .setSize(bar2Width, 72));
+        // builder.widget(
+        // new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ASSEMBLY_LINE_3, 18)
+        // .setDirection(ProgressBar.Direction.UP)
+        // .setProgress(progressSupplier)
+        // .setSynced(false, false)
+        // .setPos(new Pos2d(146, 26).add(windowOffset))
+        // .setSize(10, 18));
+        // }
     }
 }

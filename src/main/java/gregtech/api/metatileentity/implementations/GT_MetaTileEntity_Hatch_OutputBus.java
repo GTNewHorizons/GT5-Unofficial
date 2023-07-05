@@ -9,20 +9,16 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-
 import gregtech.GT_Mod;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.extensions.ArrayExt;
 
-public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch implements IAddUIWidgets {
+public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch {
 
     public GT_MetaTileEntity_Hatch_OutputBus(int aID, String aName, String aNameRegional, int aTier) {
         this(aID, aName, aNameRegional, aTier, getSlots(aTier));
@@ -184,13 +180,13 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
         }
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        switch (mTier) {
-            case 0 -> getBaseMetaTileEntity().add1by1Slot(builder);
-            case 1 -> getBaseMetaTileEntity().add2by2Slots(builder);
-            case 2 -> getBaseMetaTileEntity().add3by3Slots(builder);
-            default -> getBaseMetaTileEntity().add4by4Slots(builder);
-        }
-    }
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // switch (mTier) {
+    // case 0 -> getBaseMetaTileEntity().add1by1Slot(builder);
+    // case 1 -> getBaseMetaTileEntity().add2by2Slots(builder);
+    // case 2 -> getBaseMetaTileEntity().add3by3Slots(builder);
+    // default -> getBaseMetaTileEntity().add4by4Slots(builder);
+    // }
+    // }
 }

@@ -10,18 +10,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
-import com.gtnewhorizons.modularui.api.math.MathExpression;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.GT_Cover_LiquidMeter;
-import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
 import io.netty.buffer.ByteBuf;
 
 public class GT_Cover_WirelessFluidDetector
@@ -120,49 +113,49 @@ public class GT_Cover_WirelessFluidDetector
 
     // GUI stuff
 
-    @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
-        return new WirelessFluidDetectorUIFactory(buildContext).createWindow();
-    }
+    // @Override
+    // public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    // return new WirelessFluidDetectorUIFactory(buildContext).createWindow();
+    // }
 
-    private class WirelessFluidDetectorUIFactory extends AdvancedRedstoneTransmitterBaseUIFactory {
-
-        public WirelessFluidDetectorUIFactory(GT_CoverUIBuildContext buildContext) {
-            super(buildContext);
-        }
-
-        @Override
-        protected int getFrequencyRow() {
-            return 1;
-        }
-
-        @Override
-        protected int getButtonRow() {
-            return 2;
-        }
-
-        @Override
-        protected void addUIWidgets(ModularWindow.Builder builder) {
-            super.addUIWidgets(builder);
-            builder.widget(
-                new TextWidget(GT_Utility.trans("222", "Fluid threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(startX + spaceX * 5, 4 + startY));
-        }
-
-        @Override
-        protected void addUIForDataController(CoverDataControllerWidget<FluidTransmitterData> controller) {
-            super.addUIForDataController(controller);
-            controller.addFollower(
-                new CoverDataFollower_TextFieldWidget<>(),
-                coverData -> String.valueOf(coverData.threshold),
-                (coverData, state) -> {
-                    coverData.threshold = (int) MathExpression.parseMathExpression(state);
-                    return coverData;
-                },
-                widget -> widget.setOnScrollNumbers()
-                    .setNumbers(0, Integer.MAX_VALUE)
-                    .setPos(1, 2)
-                    .setSize(spaceX * 5 - 4, 12));
-        }
-    }
+    // private class WirelessFluidDetectorUIFactory extends AdvancedRedstoneTransmitterBaseUIFactory {
+    //
+    // public WirelessFluidDetectorUIFactory(GT_CoverUIBuildContext buildContext) {
+    // super(buildContext);
+    // }
+    //
+    // @Override
+    // protected int getFrequencyRow() {
+    // return 1;
+    // }
+    //
+    // @Override
+    // protected int getButtonRow() {
+    // return 2;
+    // }
+    //
+    // @Override
+    // protected void addUIWidgets(ModularWindow.Builder builder) {
+    // super.addUIWidgets(builder);
+    // builder.widget(
+    // new TextWidget(GT_Utility.trans("222", "Fluid threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
+    // .setPos(startX + spaceX * 5, 4 + startY));
+    // }
+    //
+    // @Override
+    // protected void addUIForDataController(CoverDataControllerWidget<FluidTransmitterData> controller) {
+    // super.addUIForDataController(controller);
+    // controller.addFollower(
+    // new CoverDataFollower_TextFieldWidget<>(),
+    // coverData -> String.valueOf(coverData.threshold),
+    // (coverData, state) -> {
+    // coverData.threshold = (int) MathExpression.parseMathExpression(state);
+    // return coverData;
+    // },
+    // widget -> widget.setOnScrollNumbers()
+    // .setNumbers(0, Integer.MAX_VALUE)
+    // .setPos(1, 2)
+    // .setSize(spaceX * 5 - 4, 12));
+    // }
+    // }
 }

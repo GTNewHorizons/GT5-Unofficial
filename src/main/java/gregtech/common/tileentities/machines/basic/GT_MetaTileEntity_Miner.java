@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.debugBlockMiner;
-import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.ArrayList;
 
@@ -18,19 +17,9 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.math.Size;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ProgressBar;
-
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.render.TextureFactory;
@@ -42,8 +31,7 @@ import gregtech.common.misc.GT_DrillingLogicDelegate;
 import gregtech.common.misc.GT_IDrillingLogicDelegateOwner;
 
 @SuppressWarnings("ObjectEquality")
-public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
-    implements GT_IDrillingLogicDelegateOwner, IAddUIWidgets {
+public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine implements GT_IDrillingLogicDelegateOwner {
 
     static final int[] RADIUS = { 8, 8, 16, 24, 32 }; // Miner radius per tier
     static final int[] SPEED = { 160, 160, 80, 40, 20 }; // Miner cycle time per tier
@@ -425,19 +413,19 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
         return pipe;
     }
 
-    private static final FallbackableUITexture progressBarTexture = new FallbackableUITexture(
-        UITexture.fullImage(GregTech.ID, "gui/progressbar/miner"),
-        GT_UITextures.PROGRESSBAR_CANNER);
+    // private static final FallbackableUITexture progressBarTexture = new FallbackableUITexture(
+    // UITexture.fullImage(GregTech.ID, "gui/progressbar/miner"),
+    // GT_UITextures.PROGRESSBAR_CANNER);
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        builder.widget(
-            createProgressBar(
-                progressBarTexture.get(),
-                20,
-                ProgressBar.Direction.RIGHT,
-                new Pos2d(78, 24),
-                new Size(20, 18)));
-    }
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // super.addUIWidgets(builder, buildContext);
+    // builder.widget(
+    // createProgressBar(
+    // progressBarTexture.get(),
+    // 20,
+    // ProgressBar.Direction.RIGHT,
+    // new Pos2d(78, 24),
+    // new Size(20, 18)));
+    // }
 }

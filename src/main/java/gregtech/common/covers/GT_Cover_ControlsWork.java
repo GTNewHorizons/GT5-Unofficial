@@ -5,11 +5,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.covers.IControlsWorkCover;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -17,8 +12,6 @@ import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
-import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 
 public class GT_Cover_ControlsWork extends GT_CoverBehavior implements IControlsWorkCover {
 
@@ -179,95 +172,95 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior implements IControls
         return true;
     }
 
-    @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
-        return new ControlsWorkUIFactory(buildContext).createWindow();
-    }
+    // @Override
+    // public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    // return new ControlsWorkUIFactory(buildContext).createWindow();
+    // }
 
-    private class ControlsWorkUIFactory extends UIFactory {
-
-        private static final int startX = 10;
-        private static final int startY = 25;
-        private static final int spaceX = 18;
-        private static final int spaceY = 18;
-
-        public ControlsWorkUIFactory(GT_CoverUIBuildContext buildContext) {
-            super(buildContext);
-        }
-
-        @SuppressWarnings("PointlessArithmeticExpression")
-        @Override
-        protected void addUIWidgets(ModularWindow.Builder builder) {
-            builder
-                .widget(
-                    new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        this::getCoverData,
-                        this::setCoverData,
-                        GT_Cover_ControlsWork.this,
-                        (id, coverData) -> !getClickable(id, convert(coverData)),
-                        (id, coverData) -> new ISerializableObject.LegacyCoverData(
-                            getNewCoverVariable(id, convert(coverData))))
-                                .addToggleButton(
-                                    0,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON)
-                                        .setPos(spaceX * 0, spaceY * 0))
-                                .addToggleButton(
-                                    1,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                                        .setPos(spaceX * 0, spaceY * 1))
-                                .addToggleButton(
-                                    2,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CROSS)
-                                        .setPos(spaceX * 0, spaceY * 2))
-                                .setPos(startX, startY))
-                .widget(
-                    new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, GT_Cover_ControlsWork.this)
-                        .addFollower(
-                            CoverDataFollower_ToggleButtonWidget.ofCheckAndCross(),
-                            coverData -> convert(coverData) > 2,
-                            (coverData, state) -> new ISerializableObject.LegacyCoverData(
-                                adjustCoverVariable(state, convert(coverData))),
-                            widget -> widget.setPos(spaceX * 0, spaceY * 3))
-                        .setPos(startX, startY))
-                .widget(
-                    new TextWidget(GT_Utility.trans("243", "Enable with Redstone"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 0))
-                .widget(
-                    new TextWidget(GT_Utility.trans("244", "Disable with Redstone"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 1))
-                .widget(
-                    new TextWidget(GT_Utility.trans("245", "Disable machine")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 2))
-                .widget(
-                    new TextWidget(GT_Utility.trans("507", "Safe Mode")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 3));
-        }
-
-        private int getNewCoverVariable(int id, int coverVariable) {
-            if (coverVariable > 2) {
-                return id + 3;
-            } else {
-                return id;
-            }
-        }
-
-        private boolean getClickable(int id, int coverVariable) {
-            return ((id != coverVariable && id != coverVariable - 3) || id == 3);
-        }
-
-        private int adjustCoverVariable(boolean safeMode, int coverVariable) {
-            if (safeMode && coverVariable <= 2) {
-                coverVariable += 3;
-            }
-            if (!safeMode && coverVariable > 2) {
-                coverVariable -= 3;
-            }
-            return coverVariable;
-        }
-    }
+    // private class ControlsWorkUIFactory extends UIFactory {
+    //
+    // private static final int startX = 10;
+    // private static final int startY = 25;
+    // private static final int spaceX = 18;
+    // private static final int spaceY = 18;
+    //
+    // public ControlsWorkUIFactory(GT_CoverUIBuildContext buildContext) {
+    // super(buildContext);
+    // }
+    //
+    // @SuppressWarnings("PointlessArithmeticExpression")
+    // @Override
+    // protected void addUIWidgets(ModularWindow.Builder builder) {
+    // builder
+    // .widget(
+    // new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
+    // this::getCoverData,
+    // this::setCoverData,
+    // GT_Cover_ControlsWork.this,
+    // (id, coverData) -> !getClickable(id, convert(coverData)),
+    // (id, coverData) -> new ISerializableObject.LegacyCoverData(
+    // getNewCoverVariable(id, convert(coverData))))
+    // .addToggleButton(
+    // 0,
+    // CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+    // widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON)
+    // .setPos(spaceX * 0, spaceY * 0))
+    // .addToggleButton(
+    // 1,
+    // CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+    // widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
+    // .setPos(spaceX * 0, spaceY * 1))
+    // .addToggleButton(
+    // 2,
+    // CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+    // widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CROSS)
+    // .setPos(spaceX * 0, spaceY * 2))
+    // .setPos(startX, startY))
+    // .widget(
+    // new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, GT_Cover_ControlsWork.this)
+    // .addFollower(
+    // CoverDataFollower_ToggleButtonWidget.ofCheckAndCross(),
+    // coverData -> convert(coverData) > 2,
+    // (coverData, state) -> new ISerializableObject.LegacyCoverData(
+    // adjustCoverVariable(state, convert(coverData))),
+    // widget -> widget.setPos(spaceX * 0, spaceY * 3))
+    // .setPos(startX, startY))
+    // .widget(
+    // new TextWidget(GT_Utility.trans("243", "Enable with Redstone"))
+    // .setDefaultColor(COLOR_TEXT_GRAY.get())
+    // .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 0))
+    // .widget(
+    // new TextWidget(GT_Utility.trans("244", "Disable with Redstone"))
+    // .setDefaultColor(COLOR_TEXT_GRAY.get())
+    // .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 1))
+    // .widget(
+    // new TextWidget(GT_Utility.trans("245", "Disable machine")).setDefaultColor(COLOR_TEXT_GRAY.get())
+    // .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 2))
+    // .widget(
+    // new TextWidget(GT_Utility.trans("507", "Safe Mode")).setDefaultColor(COLOR_TEXT_GRAY.get())
+    // .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 3));
+    // }
+    //
+    // private int getNewCoverVariable(int id, int coverVariable) {
+    // if (coverVariable > 2) {
+    // return id + 3;
+    // } else {
+    // return id;
+    // }
+    // }
+    //
+    // private boolean getClickable(int id, int coverVariable) {
+    // return ((id != coverVariable && id != coverVariable - 3) || id == 3);
+    // }
+    //
+    // private int adjustCoverVariable(boolean safeMode, int coverVariable) {
+    // if (safeMode && coverVariable <= 2) {
+    // coverVariable += 3;
+    // }
+    // if (!safeMode && coverVariable > 2) {
+    // coverVariable -= 3;
+    // }
+    // return coverVariable;
+    // }
+    // }
 }

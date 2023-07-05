@@ -6,17 +6,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 
@@ -25,16 +15,15 @@ import gregtech.api.util.GT_Utility;
  * <p>
  * This is the main construct for my generic Tanks. Filling and emptying behavior have to be implemented manually
  */
-public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_TieredMachineBlock
-    implements IAddUIWidgets {
+public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_TieredMachineBlock {
 
     public FluidStack mFluid;
     // Due to class initializing order, getCapacity might not work properly at this time.
     // So we pass supplier instead of current value here.
-    protected final FluidStackTank fluidTank = new FluidStackTank(
-        () -> mFluid,
-        fluidStack -> mFluid = fluidStack,
-        this::getRealCapacity);
+    // protected final FluidStackTank fluidTank = new FluidStackTank(
+    // () -> mFluid,
+    // fluidStack -> mFluid = fluidStack,
+    // this::getRealCapacity);
 
     /**
      * @param aInvSlotCount should be 3
@@ -289,37 +278,37 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
         // Do nothing
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                .setPos(7, 16)
-                .setSize(71, 45))
-            .widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_GAUGE)
-                    .setPos(79, 34)
-                    .setSize(18, 18))
-            .widget(
-                new SlotWidget(inventoryHandler, getInputSlot())
-                    .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
-                    .setPos(79, 16))
-            .widget(
-                new SlotWidget(inventoryHandler, getOutputSlot())
-                    .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
-                    .setPos(79, 52))
-            .widget(
-                createFluidSlot().setBackground(GT_UITextures.TRANSPARENT)
-                    .setPos(58, 41))
-            .widget(
-                new TextWidget("Liquid Amount").setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(10, 20))
-            .widget(
-                TextWidget.dynamicString(() -> GT_Utility.parseNumberToString(mFluid != null ? mFluid.amount : 0))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(10, 30));
-    }
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // builder.widget(
+    // new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+    // .setPos(7, 16)
+    // .setSize(71, 45))
+    // .widget(
+    // new DrawableWidget().setDrawable(GT_UITextures.PICTURE_GAUGE)
+    // .setPos(79, 34)
+    // .setSize(18, 18))
+    // .widget(
+    // new SlotWidget(inventoryHandler, getInputSlot())
+    // .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
+    // .setPos(79, 16))
+    // .widget(
+    // new SlotWidget(inventoryHandler, getOutputSlot())
+    // .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
+    // .setPos(79, 52))
+    // .widget(
+    // createFluidSlot().setBackground(GT_UITextures.TRANSPARENT)
+    // .setPos(58, 41))
+    // .widget(
+    // new TextWidget("Liquid Amount").setDefaultColor(COLOR_TEXT_WHITE.get())
+    // .setPos(10, 20))
+    // .widget(
+    // TextWidget.dynamicString(() -> GT_Utility.parseNumberToString(mFluid != null ? mFluid.amount : 0))
+    // .setDefaultColor(COLOR_TEXT_WHITE.get())
+    // .setPos(10, 30));
+    // }
 
-    protected FluidSlotWidget createFluidSlot() {
-        return new FluidSlotWidget(fluidTank);
-    }
+    // protected FluidSlotWidget createFluidSlot() {
+    // return new FluidSlotWidget(fluidTank);
+    // }
 }

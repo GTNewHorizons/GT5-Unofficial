@@ -3,10 +3,6 @@ package gregtech.common.tileentities.machines.multiblock;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_OUT;
 
-import java.util.List;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
@@ -14,15 +10,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.logic.PollutionLogic;
 import gregtech.api.logic.ProcessingLogic;
@@ -109,49 +97,49 @@ public class CokeOven extends Controller<CokeOven> implements PollutionLogicHost
         return false;
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new SlotWidget(inputInventory, 0).setPos(18, 18)
-                .setSize(18, 18));
-        builder.widget(
-            new SlotWidget(outputInventory, 0).setPos(36, 36)
-                .setSize(18, 18));
-        builder.widget(createButtons(builder));
-    }
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // builder.widget(
+    // new SlotWidget(inputInventory, 0).setPos(18, 18)
+    // .setSize(18, 18));
+    // builder.widget(
+    // new SlotWidget(outputInventory, 0).setPos(36, 36)
+    // .setSize(18, 18));
+    // builder.widget(createButtons(builder));
+    // }
 
-    @Override
-    protected void addTitleTextStyle(ModularWindow.Builder builder, String title) {
-        final int TAB_PADDING = 3;
-        final int TITLE_PADDING = 2;
-        int titleWidth = 0, titleHeight = 0;
-        if (NetworkUtils.isClient()) {
-            final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-            final List<String> titleLines = fontRenderer
-                .listFormattedStringToWidth(title, getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2);
-            titleWidth = titleLines.size() > 1 ? getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2
-                : fontRenderer.getStringWidth(title);
-            titleHeight = titleLines.size() * fontRenderer.FONT_HEIGHT + (titleLines.size() - 1);
-        }
-
-        final DrawableWidget tab = new DrawableWidget();
-        final TextWidget text = new TextWidget(title).setDefaultColor(getTitleColor())
-            .setTextAlignment(Alignment.CenterLeft)
-            .setMaxWidth(titleWidth);
-        if (GT_Mod.gregtechproxy.mTitleTabStyle == 1) {
-            tab.setDrawable(getGUITextureSet().getTitleTabAngular())
-                .setPos(0, -(titleHeight + TAB_PADDING) + 1)
-                .setSize(getGUIWidth(), titleHeight + TAB_PADDING * 2);
-            text.setPos(TAB_PADDING + TITLE_PADDING, -titleHeight + TAB_PADDING);
-        } else {
-            tab.setDrawable(getGUITextureSet().getTitleTabDark())
-                .setPos(0, -(titleHeight + TAB_PADDING * 2) + 1)
-                .setSize(titleWidth + (TAB_PADDING + TITLE_PADDING) * 2, titleHeight + TAB_PADDING * 2 - 1);
-            text.setPos(TAB_PADDING + TITLE_PADDING, -titleHeight);
-        }
-        builder.widget(tab)
-            .widget(text);
-    }
+    // @Override
+    // protected void addTitleTextStyle(ModularWindow.Builder builder, String title) {
+    // final int TAB_PADDING = 3;
+    // final int TITLE_PADDING = 2;
+    // int titleWidth = 0, titleHeight = 0;
+    // if (NetworkUtils.isClient()) {
+    // final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+    // final List<String> titleLines = fontRenderer
+    // .listFormattedStringToWidth(title, getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2);
+    // titleWidth = titleLines.size() > 1 ? getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2
+    // : fontRenderer.getStringWidth(title);
+    // titleHeight = titleLines.size() * fontRenderer.FONT_HEIGHT + (titleLines.size() - 1);
+    // }
+    //
+    // final DrawableWidget tab = new DrawableWidget();
+    // final TextWidget text = new TextWidget(title).setDefaultColor(getTitleColor())
+    // .setTextAlignment(Alignment.CenterLeft)
+    // .setMaxWidth(titleWidth);
+    // if (GT_Mod.gregtechproxy.mTitleTabStyle == 1) {
+    // tab.setDrawable(getGUITextureSet().getTitleTabAngular())
+    // .setPos(0, -(titleHeight + TAB_PADDING) + 1)
+    // .setSize(getGUIWidth(), titleHeight + TAB_PADDING * 2);
+    // text.setPos(TAB_PADDING + TITLE_PADDING, -titleHeight + TAB_PADDING);
+    // } else {
+    // tab.setDrawable(getGUITextureSet().getTitleTabDark())
+    // .setPos(0, -(titleHeight + TAB_PADDING * 2) + 1)
+    // .setSize(titleWidth + (TAB_PADDING + TITLE_PADDING) * 2, titleHeight + TAB_PADDING * 2 - 1);
+    // text.setPos(TAB_PADDING + TITLE_PADDING, -titleHeight);
+    // }
+    // builder.widget(tab)
+    // .widget(text);
+    // }
 
     @Override
     public String getLocalName() {

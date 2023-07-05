@@ -11,11 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -24,8 +20,6 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.GT_Cover_NeedMaintainance;
-import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
 public class GT_Cover_WirelessMaintenanceDetector
@@ -186,57 +180,57 @@ public class GT_Cover_WirelessMaintenanceDetector
     private static final String[] extraTexts = new String[] { "No Issues", ">= 1 Issue", ">= 2 Issues", ">= 3 Issues",
         ">= 4 Issues", ">= 5 Issues", "Rotor < 80%", "Rotor < 100%" };
 
-    @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
-        return new WirelessMaintenanceDetectorUIFactory(buildContext).createWindow();
-    }
+    // @Override
+    // public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    // return new WirelessMaintenanceDetectorUIFactory(buildContext).createWindow();
+    // }
 
-    private class WirelessMaintenanceDetectorUIFactory extends AdvancedRedstoneTransmitterBaseUIFactory {
-
-        public WirelessMaintenanceDetectorUIFactory(GT_CoverUIBuildContext buildContext) {
-            super(buildContext);
-        }
-
-        @Override
-        protected int getGUIHeight() {
-            return 143;
-        }
-
-        @Override
-        protected int getFrequencyRow() {
-            return 0;
-        }
-
-        @Override
-        protected int getButtonRow() {
-            return 1;
-        }
-
-        @Override
-        protected void addUIWidgets(ModularWindow.Builder builder) {
-            super.addUIWidgets(builder);
-            for (int i = 0; i < 8; i++) {
-                builder.widget(
-                    new TextWidget(extraTexts[i]).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * (i % 2 == 0 ? 1 : 7), 4 + startY + spaceY * (2 + i / 2)));
-            }
-        }
-
-        @Override
-        protected void addUIForDataController(CoverDataControllerWidget<MaintenanceTransmitterData> controller) {
-            super.addUIForDataController(controller);
-            for (int i = 0; i < 8; i++) {
-                final int index = i;
-                controller.addFollower(
-                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                    coverData -> coverData.mode == MaintenanceMode.values()[index],
-                    (coverData, state) -> {
-                        coverData.mode = MaintenanceMode.values()[index];
-                        return coverData;
-                    },
-                    widget -> widget.setToggleTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK, GT_UITextures.TRANSPARENT)
-                        .setPos(spaceX * (index % 2 == 0 ? 0 : 6), spaceY * (2 + index / 2)));
-            }
-        }
-    }
+    // private class WirelessMaintenanceDetectorUIFactory extends AdvancedRedstoneTransmitterBaseUIFactory {
+    //
+    // public WirelessMaintenanceDetectorUIFactory(GT_CoverUIBuildContext buildContext) {
+    // super(buildContext);
+    // }
+    //
+    // @Override
+    // protected int getGUIHeight() {
+    // return 143;
+    // }
+    //
+    // @Override
+    // protected int getFrequencyRow() {
+    // return 0;
+    // }
+    //
+    // @Override
+    // protected int getButtonRow() {
+    // return 1;
+    // }
+    //
+    // @Override
+    // protected void addUIWidgets(ModularWindow.Builder builder) {
+    // super.addUIWidgets(builder);
+    // for (int i = 0; i < 8; i++) {
+    // builder.widget(
+    // new TextWidget(extraTexts[i]).setDefaultColor(COLOR_TEXT_GRAY.get())
+    // .setPos(startX + spaceX * (i % 2 == 0 ? 1 : 7), 4 + startY + spaceY * (2 + i / 2)));
+    // }
+    // }
+    //
+    // @Override
+    // protected void addUIForDataController(CoverDataControllerWidget<MaintenanceTransmitterData> controller) {
+    // super.addUIForDataController(controller);
+    // for (int i = 0; i < 8; i++) {
+    // final int index = i;
+    // controller.addFollower(
+    // CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+    // coverData -> coverData.mode == MaintenanceMode.values()[index],
+    // (coverData, state) -> {
+    // coverData.mode = MaintenanceMode.values()[index];
+    // return coverData;
+    // },
+    // widget -> widget.setToggleTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK, GT_UITextures.TRANSPARENT)
+    // .setPos(spaceX * (index % 2 == 0 ? 0 : 6), spaceY * (2 + index / 2)));
+    // }
+    // }
+    // }
 }

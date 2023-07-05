@@ -44,7 +44,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.GT_GUIColorOverride;
-import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
@@ -152,7 +151,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
         mInventory = new ItemStack[aInvSlotCount];
         mName = aName;
         inventoryHandler = new ItemStackHandler(mInventory);
-        colorOverride = GT_GUIColorOverride.get(getGUITextureSet().getMainBackground().location);
+        // colorOverride = GT_GUIColorOverride.get(getGUITextureSet().getMainBackground().location);
     }
 
     /**
@@ -1232,10 +1231,10 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
         return "";
     }
 
-    @Override
-    public GUITextureSet getGUITextureSet() {
-        return GUITextureSet.DEFAULT;
-    }
+    // @Override
+    // public GUITextureSet getGUITextureSet() {
+    // return GUITextureSet.DEFAULT;
+    // }
 
     @Override
     public int getGUIColorization() {

@@ -1,17 +1,9 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.GT;
-import static gregtech.api.metatileentity.BaseTileEntity.BATTERY_SLOT_TOOLTIP;
-import static gregtech.api.metatileentity.BaseTileEntity.BATTERY_SLOT_TOOLTIP_ALT;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-
-import gregtech.api.enums.GT_Values;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GT_Utility;
 
 public abstract class GT_MetaTileEntity_TieredMachineBlock extends MetaTileEntity {
 
@@ -102,25 +94,25 @@ public abstract class GT_MetaTileEntity_TieredMachineBlock extends MetaTileEntit
      */
     public abstract ITexture[][][] getTextureSet(ITexture[] aTextures);
 
-    protected SlotWidget createChargerSlot(int x, int y) {
-        final String batterySlotTooltipKey;
-        final Object[] batterySlotTooltipArgs;
-        final String pTier1 = GT_Utility.getColoredTierNameFromTier(mTier);
-        if (mTier == GT_Values.VN.length - 1) {
-            batterySlotTooltipKey = BATTERY_SLOT_TOOLTIP_ALT;
-            batterySlotTooltipArgs = new String[] { pTier1 };
-        } else {
-            batterySlotTooltipKey = BATTERY_SLOT_TOOLTIP;
-            batterySlotTooltipArgs = new String[] { pTier1, GT_Utility.getColoredTierNameFromTier((byte) (mTier + 1)) };
-        }
-        return createChargerSlot(x, y, batterySlotTooltipKey, batterySlotTooltipArgs);
-    }
+    // protected SlotWidget createChargerSlot(int x, int y) {
+    // final String batterySlotTooltipKey;
+    // final Object[] batterySlotTooltipArgs;
+    // final String pTier1 = GT_Utility.getColoredTierNameFromTier(mTier);
+    // if (mTier == GT_Values.VN.length - 1) {
+    // batterySlotTooltipKey = BATTERY_SLOT_TOOLTIP_ALT;
+    // batterySlotTooltipArgs = new String[] { pTier1 };
+    // } else {
+    // batterySlotTooltipKey = BATTERY_SLOT_TOOLTIP;
+    // batterySlotTooltipArgs = new String[] { pTier1, GT_Utility.getColoredTierNameFromTier((byte) (mTier + 1)) };
+    // }
+    // return createChargerSlot(x, y, batterySlotTooltipKey, batterySlotTooltipArgs);
+    // }
 
-    protected SlotWidget createChargerSlot(int x, int y, String tooltipKey, Object[] tooltipArgs) {
-        return (SlotWidget) new SlotWidget(inventoryHandler, rechargerSlotStartIndex()).disableShiftInsert()
-            .setGTTooltip(() -> mTooltipCache.getData(tooltipKey, tooltipArgs))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CHARGER)
-            .setPos(x, y);
-    }
+    // protected SlotWidget createChargerSlot(int x, int y, String tooltipKey, Object[] tooltipArgs) {
+    // return (SlotWidget) new SlotWidget(inventoryHandler, rechargerSlotStartIndex()).disableShiftInsert()
+    // .setGTTooltip(() -> mTooltipCache.getData(tooltipKey, tooltipArgs))
+    // .setTooltipShowUpDelay(TOOLTIP_DELAY)
+    // .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CHARGER)
+    // .setPos(x, y);
+    // }
 }

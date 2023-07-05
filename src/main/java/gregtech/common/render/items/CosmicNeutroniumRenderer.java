@@ -2,6 +2,8 @@ package gregtech.common.render.items;
 
 import static gregtech.common.render.GT_RenderUtil.colorGTItem;
 
+import java.awt.*;
+
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -12,18 +14,16 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-
 import gregtech.api.enums.Textures;
 import gregtech.common.render.GT_RenderUtil;
 
 public class CosmicNeutroniumRenderer extends GT_GeneratedMaterial_Renderer {
 
     // spotless:off
-    private static final Pos2d point0 = new Pos2d(0  - 10, 0  - 10);
-    private static final Pos2d point1 = new Pos2d(17 + 10, 0  - 10);
-    private static final Pos2d point2 = new Pos2d(17 + 10, 17 + 10);
-    private static final Pos2d point3 = new Pos2d(0  - 10, 17 + 10);
+    private static final Point point0 = new Point(0  - 10, 0  - 10);
+    private static final Point point1 = new Point(17 + 10, 0  - 10);
+    private static final Point point2 = new Point(17 + 10, 17 + 10);
+    private static final Point point3 = new Point(0  - 10, 17 + 10);
     // spotless:on
 
     private void drawHalo(ItemRenderType type) {

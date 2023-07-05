@@ -4,7 +4,6 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK_GLOW;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.List;
 
@@ -23,33 +22,19 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IFluidLockable;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.modularui.widget.FluidLockWidget;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntity_BasicTank
-    implements IFluidLockable, IAddUIWidgets, IAddGregtechLogo {
+public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntity_BasicTank implements IFluidLockable {
 
     public boolean mOutputFluid = false, mVoidFluidPart = false, mVoidFluidFull = false, mLockFluid = false;
     protected String lockedFluidName = null;
@@ -520,154 +505,154 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         else if (tag.hasKey("mFluid")) tag.removeTag("mFluid");
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        fluidTank.setAllowOverflow(allowOverflow());
-        fluidTank.setPreventDraining(mLockFluid);
-
-        FluidSlotWidget fluidSlotWidget = new FluidSlotWidget(fluidTank);
-        builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                .setPos(7, 16)
-                .setSize(71, 45))
-            .widget(
-                new SlotWidget(inventoryHandler, getInputSlot())
-                    .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
-                    .setPos(79, 16))
-            .widget(
-                new SlotWidget(inventoryHandler, getOutputSlot()).setAccess(true, false)
-                    .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
-                    .setPos(79, 43))
-            .widget(
-                fluidSlotWidget.setOnClickContainer(widget -> onEmptyingContainerWhenEmpty())
-                    .setBackground(GT_UITextures.TRANSPARENT)
-                    .setPos(58, 41))
-            .widget(
-                new TextWidget(StatCollector.translateToLocal("GT5U.machines.digitaltank.fluid.amount"))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(10, 20))
-            .widget(
-                TextWidget.dynamicString(() -> GT_Utility.parseNumberToString(mFluid != null ? mFluid.amount : 0))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(10, 30))
-            .widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                    .setPos(98, 16)
-                    .setSize(71, 45))
-            .widget(new FluidLockWidget(this).setPos(149, 41))
-            .widget(
-                new TextWidget(StatCollector.translateToLocal("GT5U.machines.digitaltank.lockfluid.label"))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(101, 20))
-            .widget(TextWidget.dynamicString(() -> {
-                FluidStack fluidStack = FluidRegistry.getFluidStack(lockedFluidName, 1);
-                return fluidStack != null ? fluidStack.getLocalizedName()
-                    : StatCollector.translateToLocal("GT5U.machines.digitaltank.lockfluid.empty");
-            })
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setTextAlignment(Alignment.CenterLeft)
-                .setMaxWidth(65)
-                .setPos(101, 30))
-            .widget(new CycleButtonWidget().setToggle(() -> mOutputFluid, val -> {
-                mOutputFluid = val;
-                if (!mOutputFluid) {
-                    GT_Utility.sendChatToPlayer(
-                        buildContext.getPlayer(),
-                        GT_Utility.trans("262", "Fluid Auto Output Disabled"));
-                } else {
-                    GT_Utility.sendChatToPlayer(
-                        buildContext.getPlayer(),
-                        GT_Utility.trans("263", "Fluid Auto Output Enabled"));
-                }
-            })
-                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID)
-                .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.autooutput.tooltip"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(7, 63)
-                .setSize(18, 18))
-            .widget(new CycleButtonWidget().setToggle(() -> mLockFluid, val -> {
-                lockFluid(val);
-                fluidTank.setPreventDraining(mLockFluid);
-
-                String inBrackets;
-                if (mLockFluid) {
-                    if (mFluid == null) {
-                        setLockedFluidName(null);
-                        inBrackets = GT_Utility
-                            .trans("264", "currently none, will be locked to the next that is put in");
-                    } else {
-                        setLockedFluidName(
-                            getDrainableStack().getFluid()
-                                .getName());
-                        inBrackets = getDrainableStack().getLocalizedName();
-                    }
-                    GT_Utility.sendChatToPlayer(
-                        buildContext.getPlayer(),
-                        String.format("%s (%s)", GT_Utility.trans("265", "1 specific Fluid"), inBrackets));
-                } else {
-                    fluidTank.drain(0, true);
-                    GT_Utility.sendChatToPlayer(
-                        buildContext.getPlayer(),
-                        GT_Utility.trans("266", "Lock Fluid Mode Disabled"));
-                }
-                fluidSlotWidget.notifyTooltipChange();
-            })
-                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_LOCK)
-                .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.lockfluid.tooltip"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(25, 63)
-                .setSize(18, 18))
-            .widget(new CycleButtonWidget().setToggle(() -> mAllowInputFromOutputSide, val -> {
-                mAllowInputFromOutputSide = val;
-                if (!mAllowInputFromOutputSide) {
-                    GT_Utility.sendChatToPlayer(buildContext.getPlayer(), GT_Utility.getTrans("096"));
-                } else {
-                    GT_Utility.sendChatToPlayer(buildContext.getPlayer(), GT_Utility.getTrans("095"));
-                }
-            })
-                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE)
-                .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.inputfromoutput.tooltip"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(43, 63)
-                .setSize(18, 18))
-            .widget(new CycleButtonWidget().setToggle(() -> mVoidFluidPart, val -> {
-                mVoidFluidPart = val;
-                fluidTank.setAllowOverflow(allowOverflow());
-                if (!mVoidFluidPart) {
-                    GT_Utility.sendChatToPlayer(
-                        buildContext.getPlayer(),
-                        GT_Utility.trans("267", "Overflow Voiding Mode Disabled"));
-                } else {
-                    GT_Utility.sendChatToPlayer(
-                        buildContext.getPlayer(),
-                        GT_Utility.trans("268", "Overflow Voiding Mode Enabled"));
-                }
-            })
-                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_TANK_VOID_EXCESS)
-                .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.voidoverflow.tooltip"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(98, 63)
-                .setSize(18, 18))
-            .widget(new CycleButtonWidget().setToggle(() -> mVoidFluidFull, val -> {
-                mVoidFluidFull = val;
-                fluidTank.setAllowOverflow(allowOverflow());
-                if (!mVoidFluidFull) {
-                    GT_Utility
-                        .sendChatToPlayer(buildContext.getPlayer(), GT_Utility.trans("269", "Void Full Mode Disabled"));
-                } else {
-                    GT_Utility
-                        .sendChatToPlayer(buildContext.getPlayer(), GT_Utility.trans("270", "Void Full Mode Enabled"));
-                }
-            })
-                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_TANK_VOID_ALL)
-                .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.voidfull.tooltip"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(116, 63)
-                .setSize(18, 18));
-    }
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // fluidTank.setAllowOverflow(allowOverflow());
+    // fluidTank.setPreventDraining(mLockFluid);
+    //
+    // FluidSlotWidget fluidSlotWidget = new FluidSlotWidget(fluidTank);
+    // builder.widget(
+    // new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+    // .setPos(7, 16)
+    // .setSize(71, 45))
+    // .widget(
+    // new SlotWidget(inventoryHandler, getInputSlot())
+    // .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
+    // .setPos(79, 16))
+    // .widget(
+    // new SlotWidget(inventoryHandler, getOutputSlot()).setAccess(true, false)
+    // .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
+    // .setPos(79, 43))
+    // .widget(
+    // fluidSlotWidget.setOnClickContainer(widget -> onEmptyingContainerWhenEmpty())
+    // .setBackground(GT_UITextures.TRANSPARENT)
+    // .setPos(58, 41))
+    // .widget(
+    // new
+    // TextWidget(StatCollector.translateToLocal("GT5U.machines.digitaltank.fluid.amount")).setDefaultColor(COLOR_TEXT_WHITE.get())
+    // .setPos(10, 20))
+    // .widget(
+    // TextWidget.dynamicString(() -> GT_Utility.parseNumberToString(mFluid != null ? mFluid.amount : 0))
+    // .setDefaultColor(COLOR_TEXT_WHITE.get())
+    // .setPos(10, 30))
+    // .widget(
+    // new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+    // .setPos(98, 16)
+    // .setSize(71, 45))
+    // .widget(new FluidLockWidget(this).setPos(149, 53))
+    // .widget(
+    // new TextWidget(StatCollector.translateToLocal("GT5U.machines.digitaltank.lockfluid.label"))
+    // .setDefaultColor(COLOR_TEXT_WHITE.get())
+    // .setPos(101, 20))
+    // .widget(TextWidget.dynamicString(() -> {
+    // FluidStack fluidStack = FluidRegistry.getFluidStack(lockedFluidName, 1);
+    // return fluidStack != null ? fluidStack.getLocalizedName()
+    // : StatCollector.translateToLocal("GT5U.machines.digitaltank.lockfluid.empty");
+    // })
+    // .setDefaultColor(COLOR_TEXT_WHITE.get())
+    // .setTextAlignment(Alignment.CenterLeft)
+    // .setMaxWidth(65)
+    // .setPos(101, 30))
+    // .widget(new CycleButtonWidget().setToggle(() -> mOutputFluid, val -> {
+    // mOutputFluid = val;
+    // if (!mOutputFluid) {
+    // GT_Utility.sendChatToPlayer(
+    // buildContext.getPlayer(),
+    // GT_Utility.trans("262", "Fluid Auto Output Disabled"));
+    // } else {
+    // GT_Utility.sendChatToPlayer(
+    // buildContext.getPlayer(),
+    // GT_Utility.trans("263", "Fluid Auto Output Enabled"));
+    // }
+    // })
+    // .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+    // .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID)
+    // .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.autooutput.tooltip"))
+    // .setTooltipShowUpDelay(TOOLTIP_DELAY)
+    // .setPos(7, 63)
+    // .setSize(18, 18))
+    // .widget(new CycleButtonWidget().setToggle(() -> mLockFluid, val -> {
+    // lockFluid(val);
+    // fluidTank.setPreventDraining(mLockFluid);
+    //
+    // String inBrackets;
+    // if (mLockFluid) {
+    // if (mFluid == null) {
+    // setLockedFluidName(null);
+    // inBrackets = GT_Utility
+    // .trans("264", "currently none, will be locked to the next that is put in");
+    // } else {
+    // setLockedFluidName(
+    // getDrainableStack().getFluid()
+    // .getName());
+    // inBrackets = getDrainableStack().getLocalizedName();
+    // }
+    // GT_Utility.sendChatToPlayer(
+    // buildContext.getPlayer(),
+    // String.format("%s (%s)", GT_Utility.trans("265", "1 specific Fluid"), inBrackets));
+    // } else {
+    // fluidTank.drain(0, true);
+    // GT_Utility.sendChatToPlayer(
+    // buildContext.getPlayer(),
+    // GT_Utility.trans("266", "Lock Fluid Mode Disabled"));
+    // }
+    // fluidSlotWidget.notifyTooltipChange();
+    // })
+    // .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+    // .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_LOCK)
+    // .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.lockfluid.tooltip"))
+    // .setTooltipShowUpDelay(TOOLTIP_DELAY)
+    // .setPos(25, 63)
+    // .setSize(18, 18))
+    // .widget(new CycleButtonWidget().setToggle(() -> mAllowInputFromOutputSide, val -> {
+    // mAllowInputFromOutputSide = val;
+    // if (!mAllowInputFromOutputSide) {
+    // GT_Utility.sendChatToPlayer(buildContext.getPlayer(), GT_Utility.getTrans("096"));
+    // } else {
+    // GT_Utility.sendChatToPlayer(buildContext.getPlayer(), GT_Utility.getTrans("095"));
+    // }
+    // })
+    // .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+    // .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE)
+    // .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.inputfromoutput.tooltip"))
+    // .setTooltipShowUpDelay(TOOLTIP_DELAY)
+    // .setPos(43, 63)
+    // .setSize(18, 18))
+    // .widget(new CycleButtonWidget().setToggle(() -> mVoidFluidPart, val -> {
+    // mVoidFluidPart = val;
+    // fluidTank.setAllowOverflow(allowOverflow());
+    // if (!mVoidFluidPart) {
+    // GT_Utility.sendChatToPlayer(
+    // buildContext.getPlayer(),
+    // GT_Utility.trans("267", "Overflow Voiding Mode Disabled"));
+    // } else {
+    // GT_Utility.sendChatToPlayer(
+    // buildContext.getPlayer(),
+    // GT_Utility.trans("268", "Overflow Voiding Mode Enabled"));
+    // }
+    // })
+    // .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+    // .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_TANK_VOID_EXCESS)
+    // .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.voidoverflow.tooltip"))
+    // .setTooltipShowUpDelay(TOOLTIP_DELAY)
+    // .setPos(98, 63)
+    // .setSize(18, 18))
+    // .widget(new CycleButtonWidget().setToggle(() -> mVoidFluidFull, val -> {
+    // mVoidFluidFull = val;
+    // fluidTank.setAllowOverflow(allowOverflow());
+    // if (!mVoidFluidFull) {
+    // GT_Utility
+    // .sendChatToPlayer(buildContext.getPlayer(), GT_Utility.trans("269", "Void Full Mode Disabled"));
+    // } else {
+    // GT_Utility
+    // .sendChatToPlayer(buildContext.getPlayer(), GT_Utility.trans("270", "Void Full Mode Enabled"));
+    // }
+    // })
+    // .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+    // .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_TANK_VOID_ALL)
+    // .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.digitaltank.voidfull.tooltip"))
+    // .setTooltipShowUpDelay(TOOLTIP_DELAY)
+    // .setPos(116, 63)
+    // .setSize(18, 18));
+    // }
 }

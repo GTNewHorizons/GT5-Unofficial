@@ -9,20 +9,13 @@ import net.minecraft.network.Packet;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import appeng.api.crafting.ICraftingIconProvider;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
-import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
-import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Log;
@@ -195,23 +188,23 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity
      * Modular UI Support
      */
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IAddUIWidgets) {
-            ((IAddUIWidgets) getMetaTileEntity()).addUIWidgets(builder, buildContext);
-            return;
-        }
-        super.addUIWidgets(builder, buildContext);
-    }
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IAddUIWidgets) {
+    // ((IAddUIWidgets) getMetaTileEntity()).addUIWidgets(builder, buildContext);
+    // return;
+    // }
+    // super.addUIWidgets(builder, buildContext);
+    // }
 
-    @Override
-    public void bindPlayerInventoryUI(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IBindPlayerInventoryUI) {
-            ((IBindPlayerInventoryUI) getMetaTileEntity()).bindPlayerInventoryUI(builder, buildContext);
-            return;
-        }
-        super.bindPlayerInventoryUI(builder, buildContext);
-    }
+    // @Override
+    // public void bindPlayerInventoryUI(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IBindPlayerInventoryUI) {
+    // ((IBindPlayerInventoryUI) getMetaTileEntity()).bindPlayerInventoryUI(builder, buildContext);
+    // return;
+    // }
+    // super.bindPlayerInventoryUI(builder, buildContext);
+    // }
 
     @Override
     public IConfigurationCircuitSupport getConfigurationCircuitSupport() {
@@ -256,14 +249,14 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity
         return super.doesBindPlayerInventory();
     }
 
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IAddGregtechLogo) {
-            ((IAddGregtechLogo) getMetaTileEntity()).addGregTechLogo(builder);
-            return;
-        }
-        super.addGregTechLogo(builder);
-    }
+    // @Override
+    // public void addGregTechLogo(ModularWindow.Builder builder) {
+    // if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IAddGregtechLogo) {
+    // ((IAddGregtechLogo) getMetaTileEntity()).addGregTechLogo(builder);
+    // return;
+    // }
+    // super.addGregTechLogo(builder);
+    // }
 
     @Override
     public ItemStack getStackForm(long aAmount) {
@@ -273,13 +266,13 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity
         return super.getStackForm(aAmount);
     }
 
-    @Override
-    public int getTitleColor() {
-        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IGetTitleColor) {
-            return ((IGetTitleColor) getMetaTileEntity()).getTitleColor();
-        }
-        return super.getTitleColor();
-    }
+    // @Override
+    // public int getTitleColor() {
+    // if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IGetTitleColor) {
+    // return ((IGetTitleColor) getMetaTileEntity()).getTitleColor();
+    // }
+    // return super.getTitleColor();
+    // }
 
     @Override
     public int getGUIColorization() {
@@ -297,13 +290,13 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity
         return defaultColor;
     }
 
-    @Override
-    public GUITextureSet getGUITextureSet() {
-        if (hasValidMetaTileEntity()) {
-            return getMetaTileEntity().getGUITextureSet();
-        }
-        return super.getGUITextureSet();
-    }
+    // @Override
+    // public GUITextureSet getGUITextureSet() {
+    // if (hasValidMetaTileEntity()) {
+    // return getMetaTileEntity().getGUITextureSet();
+    // }
+    // return super.getGUITextureSet();
+    // }
 
     @Override
     public ItemStack getMachineCraftingIcon() {

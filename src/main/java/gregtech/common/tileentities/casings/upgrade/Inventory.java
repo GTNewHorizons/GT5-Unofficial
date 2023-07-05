@@ -5,10 +5,6 @@ import java.util.UUID;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
-
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
@@ -84,20 +80,20 @@ public class Inventory extends UpgradeCasing {
         return true;
     }
 
-    @Override
-    public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new TextFieldWidget().setGetter(() -> mInventoryName)
-                .setSetter((val) -> {
-                    mInventoryName = val;
-                    final IMultiBlockController controller = getTarget(false);
-                    if (controller != null) {
-                        controller.changeInventoryName(mInventoryName, mInventoryID.toString(), mType);
-                    }
-                })
-                .setSize(100, 25)
-                .setPos(50, 30));
-    }
+    // @Override
+    // public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
+    // builder.widget(
+    // new TextFieldWidget().setGetter(() -> mInventoryName)
+    // .setSetter((val) -> {
+    // mInventoryName = val;
+    // final IMultiBlockController controller = getTarget(false);
+    // if (controller != null) {
+    // controller.changeInventoryName(mInventoryName, mInventoryID.toString(), mType);
+    // }
+    // })
+    // .setSize(100, 25)
+    // .setPos(50, 30));
+    // }
 
     @Override
     public GT_Packet_MultiTileEntity getClientDataPacket() {

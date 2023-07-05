@@ -3,19 +3,13 @@ package gregtech.common.tileentities.automation;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_CHESTBUFFER;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_CHESTBUFFER_GLOW;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Buffer;
 import gregtech.api.render.TextureFactory;
 
-public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer implements IAddUIWidgets {
+public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer {
 
     private static final int[] tickRate = { 400, 200, 100, 20, 4, 1, 1, 1, 1, 1, 1, 1, 1 };
     private static final int[] maxStacks = { 1, 1, 1, 1, 1, 1, 2, 4, 8, 16, 32, 64, 128 };
@@ -118,20 +112,20 @@ public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer impl
         return tier > 9 ? MAX : Math.min(maxStacks[tier], MAX);
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        addEmitEnergyButton(builder);
-        addEmitRedstoneButton(builder);
-        addInvertRedstoneButton(builder);
-        addStockingModeButton(builder);
-        builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(69, true))
-                .setPos(80, 60)
-                .setSize(69, 22));
-        addMainUI(builder);
-    }
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // addEmitEnergyButton(builder);
+    // addEmitRedstoneButton(builder);
+    // addInvertRedstoneButton(builder);
+    // addStockingModeButton(builder);
+    // builder.widget(
+    // new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(69, true))
+    // .setPos(80, 60)
+    // .setSize(69, 22));
+    // addMainUI(builder);
+    // }
 
-    protected void addMainUI(ModularWindow.Builder builder) {
-        addInventorySlots(builder);
-    }
+    // protected void addMainUI(ModularWindow.Builder builder) {
+    // addInventorySlots(builder);
+    // }
 }

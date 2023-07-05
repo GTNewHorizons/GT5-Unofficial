@@ -5,29 +5,16 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
-import com.gtnewhorizons.modularui.api.math.MathExpression;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.BaseTextFieldWidget;
 
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.GT_Cover_ItemMeter;
-import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
-import gregtech.common.gui.modularui.widget.ItemWatcherSlotWidget;
-import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import io.netty.buffer.ByteBuf;
 
 public class GT_Cover_WirelessItemDetector
@@ -142,127 +129,127 @@ public class GT_Cover_WirelessItemDetector
 
     // GUI stuff
 
-    @Override
-    public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
-        return new WirelessItemDetectorUIFactory(buildContext).createWindow();
-    }
+    // @Override
+    // public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
+    // return new WirelessItemDetectorUIFactory(buildContext).createWindow();
+    // }
 
-    private class WirelessItemDetectorUIFactory extends AdvancedRedstoneTransmitterBaseUIFactory {
-
-        private static final String ALL_TEXT = "All";
-
-        private int maxSlot;
-        private int maxThreshold;
-
-        public WirelessItemDetectorUIFactory(GT_CoverUIBuildContext buildContext) {
-            super(buildContext);
-        }
-
-        @Override
-        protected int getFrequencyRow() {
-            return 0;
-        }
-
-        @Override
-        protected int getButtonRow() {
-            return 1;
-        }
-
-        @Override
-        protected void addUIWidgets(ModularWindow.Builder builder) {
-            setMaxSlot();
-            setMaxThreshold();
-            super.addUIWidgets(builder);
-            builder.widget(
-                new ItemWatcherSlotWidget().setGetter(this::getTargetItem)
-                    .setPos(startX + spaceX * 4 - 1, startY + spaceY * 3))
-                .widget(
-                    new TextWidget(GT_Utility.trans("221", "Item threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2))
-                .widget(
-                    new TextWidget(GT_Utility.trans("254.0", "Detect Slot")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 5, 4 + startY + spaceY * 3));
-        }
-
-        @Override
-        protected void addUIForDataController(CoverDataControllerWidget<ItemTransmitterData> controller) {
-            super.addUIForDataController(controller);
-            controller.addFollower(
-                new CoverDataFollower_TextFieldWidget<>(),
-                coverData -> String.valueOf(coverData.threshold),
-                (coverData, state) -> {
-                    coverData.threshold = (int) MathExpression.parseMathExpression(state);
-                    return coverData;
-                },
-                widget -> widget.setOnScrollNumbers(1, 10, 64)
-                    .setNumbers(0, maxThreshold)
-                    .setPos(1, 2 + spaceY * 2)
-                    .setSize(spaceX * 5 - 4, 12))
-                .addFollower(
-                    new CoverDataFollower_TextFieldWidget<>(),
-                    coverData -> getSlotTextFieldContent(coverData.slot),
-                    (coverData, state) -> {
-                        coverData.slot = getIntFromText(state);
-                        return coverData;
-                    },
-                    widget -> widget.setOnScrollText()
-                        .setValidator(val -> {
-                            final int valSlot = getIntFromText(val);
-                            if (valSlot > -1) {
-                                return widget.getDecimalFormatter()
-                                    .format(Math.min(valSlot, maxSlot));
-                            } else {
-                                return ALL_TEXT;
-                            }
-                        })
-                        .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
-                        .setPos(1, 2 + spaceY * 3)
-                        .setSize(spaceX * 4 - 8, 12));
-        }
-
-        private void setMaxSlot() {
-            final ICoverable tile = getUIBuildContext().getTile();
-            if (!tile.isDead() && tile instanceof IGregTechTileEntity gtTile
-                && !(gtTile.getMetaTileEntity() instanceof GT_MetaTileEntity_DigitalChestBase)) {
-                maxSlot = tile.getSizeInventory() - 1;
-            } else {
-                maxSlot = -1;
-            }
-        }
-
-        private void setMaxThreshold() {
-            final ICoverable tile = getUIBuildContext().getTile();
-            if (!tile.isDead() && tile instanceof IGregTechTileEntity gtTile
-                && gtTile.getMetaTileEntity() instanceof GT_MetaTileEntity_DigitalChestBase) {
-                maxThreshold = gtTile.getMaxItemCount();
-            } else {
-                maxThreshold = maxSlot > 0 ? maxSlot * 64 : Integer.MAX_VALUE;
-            }
-        }
-
-        private int getIntFromText(String text) {
-            try {
-                return (int) MathExpression.parseMathExpression(text, -1);
-            } catch (Exception e) {
-                return -1;
-            }
-        }
-
-        private String getSlotTextFieldContent(int val) {
-            return val < 0 ? ALL_TEXT : String.valueOf(val);
-        }
-
-        private ItemStack getTargetItem() {
-            final ICoverable tile = getUIBuildContext().getTile();
-            final ItemTransmitterData coverVariable = getCoverData();
-            if (coverVariable != null && coverVariable.slot >= 0
-                && tile instanceof TileEntity
-                && !tile.isDead()
-                && tile.getSizeInventory() >= coverVariable.slot) {
-                return tile.getStackInSlot(coverVariable.slot);
-            } else {
-                return null;
-            }
-        }
-    }
+    // private class WirelessItemDetectorUIFactory extends AdvancedRedstoneTransmitterBaseUIFactory {
+    //
+    // private static final String ALL_TEXT = "All";
+    //
+    // private int maxSlot;
+    // private int maxThreshold;
+    //
+    // public WirelessItemDetectorUIFactory(GT_CoverUIBuildContext buildContext) {
+    // super(buildContext);
+    // }
+    //
+    // @Override
+    // protected int getFrequencyRow() {
+    // return 0;
+    // }
+    //
+    // @Override
+    // protected int getButtonRow() {
+    // return 1;
+    // }
+    //
+    // @Override
+    // protected void addUIWidgets(ModularWindow.Builder builder) {
+    // setMaxSlot();
+    // setMaxThreshold();
+    // super.addUIWidgets(builder);
+    // builder.widget(
+    // new ItemWatcherSlotWidget().setGetter(this::getTargetItem)
+    // .setPos(startX + spaceX * 4 - 1, startY + spaceY * 3))
+    // .widget(
+    // new TextWidget(GT_Utility.trans("221", "Item threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
+    // .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2))
+    // .widget(
+    // new TextWidget(GT_Utility.trans("254.0", "Detect Slot")).setDefaultColor(COLOR_TEXT_GRAY.get())
+    // .setPos(startX + spaceX * 5, 4 + startY + spaceY * 3));
+    // }
+    //
+    // @Override
+    // protected void addUIForDataController(CoverDataControllerWidget<ItemTransmitterData> controller) {
+    // super.addUIForDataController(controller);
+    // controller.addFollower(
+    // new CoverDataFollower_TextFieldWidget<>(),
+    // coverData -> String.valueOf(coverData.threshold),
+    // (coverData, state) -> {
+    // coverData.threshold = (int) MathExpression.parseMathExpression(state);
+    // return coverData;
+    // },
+    // widget -> widget.setOnScrollNumbers(1, 10, 64)
+    // .setNumbers(0, maxThreshold)
+    // .setPos(1, 2 + spaceY * 2)
+    // .setSize(spaceX * 5 - 4, 12))
+    // .addFollower(
+    // new CoverDataFollower_TextFieldWidget<>(),
+    // coverData -> getSlotTextFieldContent(coverData.slot),
+    // (coverData, state) -> {
+    // coverData.slot = getIntFromText(state);
+    // return coverData;
+    // },
+    // widget -> widget.setOnScrollText()
+    // .setValidator(val -> {
+    // final int valSlot = getIntFromText(val);
+    // if (valSlot > -1) {
+    // return widget.getDecimalFormatter()
+    // .format(Math.min(valSlot, maxSlot));
+    // } else {
+    // return ALL_TEXT;
+    // }
+    // })
+    // .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
+    // .setPos(1, 2 + spaceY * 3)
+    // .setSize(spaceX * 4 - 8, 12));
+    // }
+    //
+    // private void setMaxSlot() {
+    // final ICoverable tile = getUIBuildContext().getTile();
+    // if (!tile.isDead() && tile instanceof IGregTechTileEntity gtTile
+    // && !(gtTile.getMetaTileEntity() instanceof GT_MetaTileEntity_DigitalChestBase)) {
+    // maxSlot = tile.getSizeInventory() - 1;
+    // } else {
+    // maxSlot = -1;
+    // }
+    // }
+    //
+    // private void setMaxThreshold() {
+    // final ICoverable tile = getUIBuildContext().getTile();
+    // if (!tile.isDead() && tile instanceof IGregTechTileEntity gtTile
+    // && gtTile.getMetaTileEntity() instanceof GT_MetaTileEntity_DigitalChestBase) {
+    // maxThreshold = gtTile.getMaxItemCount();
+    // } else {
+    // maxThreshold = maxSlot > 0 ? maxSlot * 64 : Integer.MAX_VALUE;
+    // }
+    // }
+    //
+    // private int getIntFromText(String text) {
+    // try {
+    // return (int) MathExpression.parseMathExpression(text, -1);
+    // } catch (Exception e) {
+    // return -1;
+    // }
+    // }
+    //
+    // private String getSlotTextFieldContent(int val) {
+    // return val < 0 ? ALL_TEXT : String.valueOf(val);
+    // }
+    //
+    // private ItemStack getTargetItem() {
+    // final ICoverable tile = getUIBuildContext().getTile();
+    // final ItemTransmitterData coverVariable = getCoverData();
+    // if (coverVariable != null && coverVariable.slot >= 0
+    // && tile instanceof TileEntity
+    // && !tile.isDead()
+    // && tile.getSizeInventory() >= coverVariable.slot) {
+    // return tile.getStackInSlot(coverVariable.slot);
+    // } else {
+    // return null;
+    // }
+    // }
+    // }
 }

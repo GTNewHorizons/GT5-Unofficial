@@ -10,14 +10,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.ProgressBar;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -26,11 +18,7 @@ import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
-import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.objects.GT_ItemStack;
@@ -40,8 +28,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GT_Pollution;
 
-public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTank
-    implements IGetTitleColor, IAddUIWidgets {
+public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTank {
 
     public static final byte SOUND_EVENT_LET_OFF_EXCESS_STEAM = 1;
     public int mTemperature = 20;
@@ -414,98 +401,98 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
         return SteamVariant.BRONZE;
     }
 
-    protected IDrawable[] getFuelSlotBackground() {
-        return new IDrawable[] { getGUITextureSet().getItemSlot(),
-            GT_UITextures.OVERLAY_SLOT_COAL_STEAM.get(getSteamVariant()) };
-    }
+    // protected IDrawable[] getFuelSlotBackground() {
+    // return new IDrawable[] { getGUITextureSet().getItemSlot(),
+    // GT_UITextures.OVERLAY_SLOT_COAL_STEAM.get(getSteamVariant()) };
+    // }
 
-    protected IDrawable[] getAshSlotBackground() {
-        return new IDrawable[] { getGUITextureSet().getItemSlot(),
-            GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()) };
-    }
+    // protected IDrawable[] getAshSlotBackground() {
+    // return new IDrawable[] { getGUITextureSet().getItemSlot(),
+    // GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()) };
+    // }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new SlotWidget(inventoryHandler, 0).setPos(43, 25)
-                .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotIn()))
-            .widget(
-                new SlotWidget(inventoryHandler, 1).setPos(43, 61)
-                    .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotOut()))
-            .widget(createFuelSlot())
-            .widget(createAshSlot())
-            .widget(
-                new ProgressBar().setProgress(() -> mSteam == null ? 0 : (float) mSteam.amount / getCapacity())
-                    .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_STEAM, 10)
-                    .setDirection(ProgressBar.Direction.UP)
-                    .setPos(70, 25)
-                    .setSize(10, 54))
-            .widget(
-                new ProgressBar().setProgress(() -> mFluid == null ? 0 : (float) mFluid.amount / getCapacity())
-                    .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_WATER, 10)
-                    .setDirection(ProgressBar.Direction.UP)
-                    .setPos(83, 25)
-                    .setSize(10, 54))
-            .widget(
-                new ProgressBar().setProgress(() -> (float) mTemperature / maxProgresstime())
-                    .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_HEAT, 10)
-                    .setDirection(ProgressBar.Direction.UP)
-                    .setPos(96, 25)
-                    .setSize(10, 54))
-            .widget(
-                new ProgressBar()
-                    // cap minimum so that one can easily see there's fuel remaining
-                    .setProgress(() -> mProcessingEnergy > 0 ? Math.max((float) mProcessingEnergy / 1000, 1f / 5) : 0)
-                    .setTexture(getProgressbarFuel(), 14)
-                    .setDirection(ProgressBar.Direction.UP)
-                    .setPos(116, 45)
-                    .setSize(14, 14))
-            .widget(
-                new DrawableWidget().setDrawable(getOverlaySlotCanister())
-                    .setPos(43, 43)
-                    .setSize(18, 18));
-    }
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // builder.widget(
+    // new SlotWidget(inventoryHandler, 0).setPos(43, 25)
+    // .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotIn()))
+    // .widget(
+    // new SlotWidget(inventoryHandler, 1).setPos(43, 61)
+    // .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotOut()))
+    // .widget(createFuelSlot())
+    // .widget(createAshSlot())
+    // .widget(
+    // new ProgressBar().setProgress(() -> mSteam == null ? 0 : (float) mSteam.amount / getCapacity())
+    // .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_STEAM, 10)
+    // .setDirection(ProgressBar.Direction.UP)
+    // .setPos(70, 25)
+    // .setSize(10, 54))
+    // .widget(
+    // new ProgressBar().setProgress(() -> mFluid == null ? 0 : (float) mFluid.amount / getCapacity())
+    // .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_WATER, 10)
+    // .setDirection(ProgressBar.Direction.UP)
+    // .setPos(83, 25)
+    // .setSize(10, 54))
+    // .widget(
+    // new ProgressBar().setProgress(() -> (float) mTemperature / maxProgresstime())
+    // .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_HEAT, 10)
+    // .setDirection(ProgressBar.Direction.UP)
+    // .setPos(96, 25)
+    // .setSize(10, 54))
+    // .widget(
+    // new ProgressBar()
+    // // cap minimum so that one can easily see there's fuel remaining
+    // .setProgress(() -> mProcessingEnergy > 0 ? Math.max((float) mProcessingEnergy / 1000, 1f / 5) : 0)
+    // .setTexture(getProgressbarFuel(), 14)
+    // .setDirection(ProgressBar.Direction.UP)
+    // .setPos(116, 45)
+    // .setSize(14, 14))
+    // .widget(
+    // new DrawableWidget().setDrawable(getOverlaySlotCanister())
+    // .setPos(43, 43)
+    // .setSize(18, 18));
+    // }
+    //
+    // protected SlotWidget createFuelSlot() {
+    // return (SlotWidget) new SlotWidget(inventoryHandler, 2).setPos(115, 61)
+    // .setBackground(getFuelSlotBackground());
+    // }
+    //
+    // protected SlotWidget createAshSlot() {
+    // return (SlotWidget) new SlotWidget(inventoryHandler, 3).setAccess(true, false)
+    // .setPos(115, 25)
+    // .setBackground(getAshSlotBackground());
+    // }
 
-    protected SlotWidget createFuelSlot() {
-        return (SlotWidget) new SlotWidget(inventoryHandler, 2).setPos(115, 61)
-            .setBackground(getFuelSlotBackground());
-    }
+    // @Override
+    // public GUITextureSet getGUITextureSet() {
+    // return GUITextureSet.STEAM.apply(getSteamVariant());
+    // }
 
-    protected SlotWidget createAshSlot() {
-        return (SlotWidget) new SlotWidget(inventoryHandler, 3).setAccess(true, false)
-            .setPos(115, 25)
-            .setBackground(getAshSlotBackground());
-    }
-
-    @Override
-    public GUITextureSet getGUITextureSet() {
-        return GUITextureSet.STEAM.apply(getSteamVariant());
-    }
-
-    @Override
-    public int getTitleColor() {
-        return getSteamVariant() == SteamVariant.BRONZE ? COLOR_TITLE.get() : COLOR_TITLE_WHITE.get();
-    }
+    // @Override
+    // public int getTitleColor() {
+    // return getSteamVariant() == SteamVariant.BRONZE ? COLOR_TITLE.get() : COLOR_TITLE_WHITE.get();
+    // }
 
     // for GT++
 
-    protected IDrawable getOverlaySlotIn() {
-        return GT_UITextures.OVERLAY_SLOT_IN_STEAM.get(getSteamVariant());
-    }
-
-    protected IDrawable getOverlaySlotOut() {
-        return GT_UITextures.OVERLAY_SLOT_OUT_STEAM.get(getSteamVariant());
-    }
-
-    protected IDrawable getOverlaySlotCanister() {
-        return GT_UITextures.OVERLAY_SLOT_CANISTER_STEAM.get(getSteamVariant());
-    }
-
-    protected UITexture getProgressbarEmpty() {
-        return GT_UITextures.PROGRESSBAR_BOILER_EMPTY_STEAM.get(getSteamVariant());
-    }
-
-    protected UITexture getProgressbarFuel() {
-        return GT_UITextures.PROGRESSBAR_FUEL_STEAM.get(getSteamVariant());
-    }
+    // protected IDrawable getOverlaySlotIn() {
+    // return GT_UITextures.OVERLAY_SLOT_IN_STEAM.get(getSteamVariant());
+    // }
+    //
+    // protected IDrawable getOverlaySlotOut() {
+    // return GT_UITextures.OVERLAY_SLOT_OUT_STEAM.get(getSteamVariant());
+    // }
+    //
+    // protected IDrawable getOverlaySlotCanister() {
+    // return GT_UITextures.OVERLAY_SLOT_CANISTER_STEAM.get(getSteamVariant());
+    // }
+    //
+    // protected UITexture getProgressbarEmpty() {
+    // return GT_UITextures.PROGRESSBAR_BOILER_EMPTY_STEAM.get(getSteamVariant());
+    // }
+    //
+    // protected UITexture getProgressbarFuel() {
+    // return GT_UITextures.PROGRESSBAR_FUEL_STEAM.get(getSteamVariant());
+    // }
 }

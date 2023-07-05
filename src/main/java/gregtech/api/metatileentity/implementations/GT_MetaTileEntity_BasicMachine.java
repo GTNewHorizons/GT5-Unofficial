@@ -4,23 +4,15 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
-import static gregtech.api.metatileentity.BaseTileEntity.FLUID_TRANSFER_TOOLTIP;
-import static gregtech.api.metatileentity.BaseTileEntity.ITEM_TRANSFER_TOOLTIP;
-import static gregtech.api.metatileentity.BaseTileEntity.NEI_TRANSFER_STEAM_TOOLTIP;
-import static gregtech.api.metatileentity.BaseTileEntity.NEI_TRANSFER_VOLTAGE_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.POWER_SOURCE_KEY;
-import static gregtech.api.metatileentity.BaseTileEntity.SPECIAL_SLOT_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.STALLED_STUTTERING_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.STALLED_VENT_TOOLTIP;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.metatileentity.BaseTileEntity.UNUSED_SLOT_TOOLTIP;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.UNKNOWN;
 import static net.minecraftforge.common.util.ForgeDirection.UP;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,34 +28,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import org.apache.commons.lang3.tuple.Pair;
-
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.math.Size;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
-import com.gtnewhorizons.modularui.common.widget.ProgressBar;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.render.TextureFactory;
@@ -76,7 +47,6 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
-import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.power.BasicMachineEUPower;
 import gregtech.common.power.Power;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -89,7 +59,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * Machine
  */
 public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_BasicTank
-    implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets {
+    implements IConfigurationCircuitSupport {
 
     /**
      * return values for checkRecipe()
@@ -116,10 +86,10 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     protected GT_Recipe mLastRecipe = null;
 
     private FluidStack mFluidOut;
-    protected final FluidStackTank fluidOutputTank = new FluidStackTank(
-        () -> mFluidOut,
-        fluidStack -> mFluidOut = fluidStack,
-        this::getCapacity);
+    // protected final FluidStackTank fluidOutputTank = new FluidStackTank(
+    // () -> mFluidOut,
+    // fluidStack -> mFluidOut = fluidStack,
+    // this::getCapacity);
 
     /**
      * @param aOverlays 0 = SideFacingActive 1 = SideFacingInactive 2 = FrontFacingActive 3 = FrontFacingInactive 4 =
@@ -1244,235 +1214,235 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         return 63;
     }
 
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        if (getRecipeList() != null) {
-            getRecipeList().addGregTechLogoUI(builder, new Pos2d(0, 0));
-        } else {
-            builder.widget(
-                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                    .setSize(17, 17)
-                    .setPos(152, 63));
-        }
-    }
+    // @Override
+    // public void addGregTechLogo(ModularWindow.Builder builder) {
+    // if (getRecipeList() != null) {
+    // getRecipeList().addGregTechLogoUI(builder, new Pos2d(0, 0));
+    // } else {
+    // builder.widget(
+    // new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
+    // .setSize(17, 17)
+    // .setPos(152, 63));
+    // }
+    // }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        if (!isSteampowered()) {
-            builder.widget(createFluidAutoOutputButton());
-            builder.widget(createItemAutoOutputButton());
-        }
-
-        addIOSlots(builder);
-
-        builder.widget(createChargerSlot(79, 62));
-        if (getRecipeList() != null) {
-            builder.widget(
-                setNEITransferRect(
-                    createProgressBar(
-                        isSteampowered() ? getRecipeList().getProgressBarTextureSteam(getSteamVariant())
-                            : getRecipeList().getProgressBarTexture(),
-                        getRecipeList().getProgressBarImageSize(),
-                        getRecipeList().progressBarDirection,
-                        getRecipeList().progressBarPos,
-                        getRecipeList().progressBarSize),
-                    getRecipeList().mNEIName));
-            addProgressBarSpecialTextures(builder);
-        }
-        builder.widget(
-            createErrorStatusArea(
-                builder,
-                isSteampowered() ? GT_UITextures.PICTURE_STALLED_STEAM : GT_UITextures.PICTURE_STALLED_ELECTRICITY));
-    }
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // if (!isSteampowered()) {
+    // builder.widget(createFluidAutoOutputButton());
+    // builder.widget(createItemAutoOutputButton());
+    // }
+    //
+    // addIOSlots(builder);
+    //
+    // builder.widget(createChargerSlot(79, 62));
+    // if (getRecipeList() != null) {
+    // builder.widget(
+    // setNEITransferRect(
+    // createProgressBar(
+    // isSteampowered() ? getRecipeList().getProgressBarTextureSteam(getSteamVariant())
+    // : getRecipeList().getProgressBarTexture(),
+    // getRecipeList().getProgressBarImageSize(),
+    // getRecipeList().progressBarDirection,
+    // getRecipeList().progressBarPos,
+    // getRecipeList().progressBarSize),
+    // getRecipeList().mNEIName));
+    // addProgressBarSpecialTextures(builder);
+    // }
+    // builder.widget(
+    // createErrorStatusArea(
+    // builder,
+    // isSteampowered() ? GT_UITextures.PICTURE_STALLED_STEAM : GT_UITextures.PICTURE_STALLED_ELECTRICITY));
+    // }
 
     /**
      * Adds item I/O, special item, and fluid I/O slots.
      */
-    protected void addIOSlots(ModularWindow.Builder builder) {
-        final boolean hasFluidInput = getRecipeList() != null ? (getRecipeList().hasFluidInputs())
-            : (getCapacity() != 0);
-        final boolean hasFluidOutput = getRecipeList() != null && getRecipeList().hasFluidOutputs();
-        UIHelper.forEachSlots(
-            (i, backgrounds, pos) -> builder.widget(createItemInputSlot(i, backgrounds, pos)),
-            (i, backgrounds, pos) -> builder.widget(createItemOutputSlot(i, backgrounds, pos)),
-            (i, backgrounds, pos) -> builder.widget(createSpecialSlot(backgrounds, pos)),
-            (i, backgrounds, pos) -> builder.widget(createFluidInputSlot(backgrounds, pos)),
-            (i, backgrounds, pos) -> builder.widget(createFluidOutputSlot(backgrounds, pos)),
-            getGUITextureSet().getItemSlot(),
-            getGUITextureSet().getFluidSlot(),
-            getRecipeList(),
-            mInputSlotCount,
-            mOutputItems.length,
-            hasFluidInput ? 1 : 0,
-            hasFluidOutput ? 1 : 0,
-            getSteamVariant(),
-            Pos2d.ZERO);
-    }
+    // protected void addIOSlots(ModularWindow.Builder builder) {
+    // final boolean hasFluidInput = getRecipeList() != null ? (getRecipeList().hasFluidInputs())
+    // : (getCapacity() != 0);
+    // final boolean hasFluidOutput = getRecipeList() != null && getRecipeList().hasFluidOutputs();
+    // UIHelper.forEachSlots(
+    // (i, backgrounds, pos) -> builder.widget(createItemInputSlot(i, backgrounds, pos)),
+    // (i, backgrounds, pos) -> builder.widget(createItemOutputSlot(i, backgrounds, pos)),
+    // (i, backgrounds, pos) -> builder.widget(createSpecialSlot(backgrounds, pos)),
+    // (i, backgrounds, pos) -> builder.widget(createFluidInputSlot(backgrounds, pos)),
+    // (i, backgrounds, pos) -> builder.widget(createFluidOutputSlot(backgrounds, pos)),
+    // getGUITextureSet().getItemSlot(),
+    // getGUITextureSet().getFluidSlot(),
+    // getRecipeList(),
+    // mInputSlotCount,
+    // mOutputItems.length,
+    // hasFluidInput ? 1 : 0,
+    // hasFluidOutput ? 1 : 0,
+    // getSteamVariant(),
+    // Pos2d.ZERO);
+    // }
 
     /**
      * Override this as needed instead of calling.
      */
-    protected SlotWidget createItemInputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
-        return (SlotWidget) new SlotWidget(inventoryHandler, getInputSlot() + index).setAccess(true, true)
-            .setBackground(backgrounds)
-            .setPos(pos);
-    }
+    // protected SlotWidget createItemInputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
+    // return (SlotWidget) new SlotWidget(inventoryHandler, getInputSlot() + index).setAccess(true, true)
+    // .setBackground(backgrounds)
+    // .setPos(pos);
+    // }
 
     /**
      * Override this as needed instead of calling.
      */
-    protected SlotWidget createItemOutputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
-        return (SlotWidget) new SlotWidget(inventoryHandler, getOutputSlot() + index).setAccess(true, false)
-            .setBackground(backgrounds)
-            .setPos(pos);
-    }
+    // protected SlotWidget createItemOutputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
+    // return (SlotWidget) new SlotWidget(inventoryHandler, getOutputSlot() + index).setAccess(true, false)
+    // .setBackground(backgrounds)
+    // .setPos(pos);
+    // }
 
     /**
      * Override this as needed instead of calling.
      */
-    protected SlotWidget createSpecialSlot(IDrawable[] backgrounds, Pos2d pos) {
-        return (SlotWidget) new SlotWidget(inventoryHandler, getSpecialSlotIndex()).setAccess(true, true)
-            .disableShiftInsert()
-            .setGTTooltip(
-                () -> mTooltipCache.getData(
-                    getRecipeList() != null && getRecipeList().usesSpecialSlot() ? SPECIAL_SLOT_TOOLTIP
-                        : UNUSED_SLOT_TOOLTIP))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setBackground(backgrounds)
-            .setPos(pos);
-    }
+    // protected SlotWidget createSpecialSlot(IDrawable[] backgrounds, Pos2d pos) {
+    // return (SlotWidget) new SlotWidget(inventoryHandler, getSpecialSlotIndex()).setAccess(true, true)
+    // .disableShiftInsert()
+    // .setGTTooltip(
+    // () -> mTooltipCache.getData(
+    // getRecipeList() != null && getRecipeList().usesSpecialSlot() ? SPECIAL_SLOT_TOOLTIP
+    // : UNUSED_SLOT_TOOLTIP))
+    // .setTooltipShowUpDelay(TOOLTIP_DELAY)
+    // .setBackground(backgrounds)
+    // .setPos(pos);
+    // }
 
-    protected FluidSlotWidget createFluidInputSlot(IDrawable[] backgrounds, Pos2d pos) {
-        return (FluidSlotWidget) new FluidSlotWidget(fluidTank).setBackground(backgrounds)
-            .setPos(pos);
-    }
+    // protected FluidSlotWidget createFluidInputSlot(IDrawable[] backgrounds, Pos2d pos) {
+    // return (FluidSlotWidget) new FluidSlotWidget(fluidTank).setBackground(backgrounds)
+    // .setPos(pos);
+    // }
 
-    protected FluidSlotWidget createFluidOutputSlot(IDrawable[] backgrounds, Pos2d pos) {
-        return (FluidSlotWidget) new FluidSlotWidget(fluidOutputTank).setInteraction(true, false)
-            .setBackground(backgrounds)
-            .setPos(pos);
-    }
+    // protected FluidSlotWidget createFluidOutputSlot(IDrawable[] backgrounds, Pos2d pos) {
+    // return (FluidSlotWidget) new FluidSlotWidget(fluidOutputTank).setInteraction(true, false)
+    // .setBackground(backgrounds)
+    // .setPos(pos);
+    // }
 
-    @Override
-    protected SlotWidget createChargerSlot(int x, int y) {
-        if (isSteampowered()) {
-            return (SlotWidget) createChargerSlot(x, y, UNUSED_SLOT_TOOLTIP, new String[0])
-                .setBackground(getGUITextureSet().getItemSlot());
-        } else {
-            return super.createChargerSlot(x, y);
-        }
-    }
+    // @Override
+    // protected SlotWidget createChargerSlot(int x, int y) {
+    // if (isSteampowered()) {
+    // return (SlotWidget) createChargerSlot(x, y, UNUSED_SLOT_TOOLTIP, new String[0])
+    // .setBackground(getGUITextureSet().getItemSlot());
+    // } else {
+    // return super.createChargerSlot(x, y);
+    // }
+    // }
 
-    protected CycleButtonWidget createItemAutoOutputButton() {
-        return (CycleButtonWidget) new CycleButtonWidget().setToggle(() -> mItemTransfer, val -> mItemTransfer = val)
-            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM)
-            .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-            .setGTTooltip(() -> mTooltipCache.getData(ITEM_TRANSFER_TOOLTIP))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(25, 62)
-            .setSize(18, 18);
-    }
+    // protected CycleButtonWidget createItemAutoOutputButton() {
+    // return (CycleButtonWidget) new CycleButtonWidget().setToggle(() -> mItemTransfer, val -> mItemTransfer = val)
+    // .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM)
+    // .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+    // .setGTTooltip(() -> mTooltipCache.getData(ITEM_TRANSFER_TOOLTIP))
+    // .setTooltipShowUpDelay(TOOLTIP_DELAY)
+    // .setPos(25, 62)
+    // .setSize(18, 18);
+    // }
 
-    protected CycleButtonWidget createFluidAutoOutputButton() {
-        return (CycleButtonWidget) new CycleButtonWidget().setToggle(() -> mFluidTransfer, val -> mFluidTransfer = val)
-            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID)
-            .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-            .setGTTooltip(() -> mTooltipCache.getData(FLUID_TRANSFER_TOOLTIP))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(7, 62)
-            .setSize(18, 18);
-    }
+    // protected CycleButtonWidget createFluidAutoOutputButton() {
+    // return (CycleButtonWidget) new CycleButtonWidget().setToggle(() -> mFluidTransfer, val -> mFluidTransfer = val)
+    // .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID)
+    // .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+    // .setGTTooltip(() -> mTooltipCache.getData(FLUID_TRANSFER_TOOLTIP))
+    // .setTooltipShowUpDelay(TOOLTIP_DELAY)
+    // .setPos(7, 62)
+    // .setSize(18, 18);
+    // }
 
-    protected ProgressBar createProgressBar(UITexture texture, int imageSize, ProgressBar.Direction direction,
-        Pos2d pos, Size size) {
-        final ProgressBar ret = new ProgressBar();
-        ret.setProgress(() -> maxProgresstime() != 0 ? (float) getProgresstime() / maxProgresstime() : 0)
-            .setTexture(texture, imageSize)
-            .setDirection(direction)
-            .setPos(pos)
-            .setSize(size);
-        return ret;
-    }
+    // protected ProgressBar createProgressBar(UITexture texture, int imageSize, ProgressBar.Direction direction,
+    // Pos2d pos, Size size) {
+    // final ProgressBar ret = new ProgressBar();
+    // ret.setProgress(() -> maxProgresstime() != 0 ? (float) getProgresstime() / maxProgresstime() : 0)
+    // .setTexture(texture, imageSize)
+    // .setDirection(direction)
+    // .setPos(pos)
+    // .setSize(size);
+    // return ret;
+    // }
 
     public boolean hasNEITransferRect() {
         return getRecipeList() != null;
     }
 
-    protected Widget setNEITransferRect(Widget widget, String transferRectID) {
-        if (hasNEITransferRect()) {
-            final Power powerInfo = getPower();
-            final String transferRectTooltip;
-            if (isSteampowered()) {
-                transferRectTooltip = StatCollector
-                    .translateToLocalFormatted(NEI_TRANSFER_STEAM_TOOLTIP, powerInfo.getTierString());
-            } else {
-                transferRectTooltip = StatCollector
-                    .translateToLocalFormatted(NEI_TRANSFER_VOLTAGE_TOOLTIP, powerInfo.getTierString());
-            }
-            widget.setNEITransferRect(transferRectID, new Object[] { powerInfo }, transferRectTooltip);
-        }
-        return widget;
-    }
+    // protected Widget setNEITransferRect(Widget widget, String transferRectID) {
+    // if (hasNEITransferRect()) {
+    // final Power powerInfo = getPower();
+    // final String transferRectTooltip;
+    // if (isSteampowered()) {
+    // transferRectTooltip = StatCollector
+    // .translateToLocalFormatted(NEI_TRANSFER_STEAM_TOOLTIP, powerInfo.getTierString());
+    // } else {
+    // transferRectTooltip = StatCollector
+    // .translateToLocalFormatted(NEI_TRANSFER_VOLTAGE_TOOLTIP, powerInfo.getTierString());
+    // }
+    // widget.setNEITransferRect(transferRectID, new Object[] { powerInfo }, transferRectTooltip);
+    // }
+    // return widget;
+    // }
 
-    protected void addProgressBarSpecialTextures(ModularWindow.Builder builder) {
-        if (isSteampowered()) {
-            for (Pair<SteamTexture, Pair<Size, Pos2d>> specialTexture : getRecipeList().specialTexturesSteam) {
-                builder.widget(
-                    new DrawableWidget().setDrawable(
-                        specialTexture.getLeft()
-                            .get(getSteamVariant()))
-                        .setSize(
-                            specialTexture.getRight()
-                                .getLeft())
-                        .setPos(
-                            specialTexture.getRight()
-                                .getRight()));
-            }
-        } else {
-            for (Pair<IDrawable, Pair<Size, Pos2d>> specialTexture : getRecipeList().specialTextures) {
-                builder.widget(
-                    new DrawableWidget().setDrawable(specialTexture.getLeft())
-                        .setSize(
-                            specialTexture.getRight()
-                                .getLeft())
-                        .setPos(
-                            specialTexture.getRight()
-                                .getRight()));
-            }
-        }
-    }
+    // protected void addProgressBarSpecialTextures(ModularWindow.Builder builder) {
+    // if (isSteampowered()) {
+    // for (Pair<SteamTexture, Pair<Size, Pos2d>> specialTexture : getRecipeList().specialTexturesSteam) {
+    // builder.widget(
+    // new DrawableWidget().setDrawable(
+    // specialTexture.getLeft()
+    // .get(getSteamVariant()))
+    // .setSize(
+    // specialTexture.getRight()
+    // .getLeft())
+    // .setPos(
+    // specialTexture.getRight()
+    // .getRight()));
+    // }
+    // } else {
+    // for (Pair<IDrawable, Pair<Size, Pos2d>> specialTexture : getRecipeList().specialTextures) {
+    // builder.widget(
+    // new DrawableWidget().setDrawable(specialTexture.getLeft())
+    // .setSize(
+    // specialTexture.getRight()
+    // .getLeft())
+    // .setPos(
+    // specialTexture.getRight()
+    // .getRight()));
+    // }
+    // }
+    // }
 
-    protected DrawableWidget createErrorStatusArea(ModularWindow.Builder builder, IDrawable picture) {
-        return (DrawableWidget) new DrawableWidget().setDrawable(picture)
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setEnabled(
-                widget -> !widget.getTooltip()
-                    .isEmpty())
-            .dynamicTooltip(this::getErrorDescriptions)
-            .dynamicTooltipShift(this::getErrorDescriptionsShift)
-            .setPos(79, 44)
-            .setSize(18, 18)
-            .attachSyncer(
-                new FakeSyncWidget.BooleanSyncer(() -> mStuttering, val -> mStuttering = val),
-                builder,
-                (widget, val) -> widget.notifyTooltipChange())
-            .attachSyncer(
-                new FakeSyncWidget.IntegerSyncer(
-                    () -> getBaseMetaTileEntity().getErrorDisplayID(),
-                    val -> getBaseMetaTileEntity().setErrorDisplayID(val)),
-                builder,
-                (widget, val) -> widget.notifyTooltipChange());
-    }
+    // protected DrawableWidget createErrorStatusArea(ModularWindow.Builder builder, IDrawable picture) {
+    // return (DrawableWidget) new DrawableWidget().setDrawable(picture)
+    // .setTooltipShowUpDelay(TOOLTIP_DELAY)
+    // .setEnabled(
+    // widget -> !widget.getTooltip()
+    // .isEmpty())
+    // .dynamicTooltip(this::getErrorDescriptions)
+    // .dynamicTooltipShift(this::getErrorDescriptionsShift)
+    // .setPos(79, 44)
+    // .setSize(18, 18)
+    // .attachSyncer(
+    // new FakeSyncWidget.BooleanSyncer(() -> mStuttering, val -> mStuttering = val),
+    // builder,
+    // (widget, val) -> widget.notifyTooltipChange())
+    // .attachSyncer(
+    // new FakeSyncWidget.IntegerSyncer(
+    // () -> getBaseMetaTileEntity().getErrorDisplayID(),
+    // val -> getBaseMetaTileEntity().setErrorDisplayID(val)),
+    // builder,
+    // (widget, val) -> widget.notifyTooltipChange());
+    // }
 
-    protected List<String> getErrorDescriptions() {
-        final GT_TooltipDataCache.TooltipData tooltip = getErrorTooltip();
-        return tooltip != null ? tooltip.text : Collections.emptyList();
-    }
+    // protected List<String> getErrorDescriptions() {
+    // final GT_TooltipDataCache.TooltipData tooltip = getErrorTooltip();
+    // return tooltip != null ? tooltip.text : Collections.emptyList();
+    // }
 
-    protected List<String> getErrorDescriptionsShift() {
-        final GT_TooltipDataCache.TooltipData tooltip = getErrorTooltip();
-        return tooltip != null ? tooltip.shiftText : Collections.emptyList();
-    }
+    // protected List<String> getErrorDescriptionsShift() {
+    // final GT_TooltipDataCache.TooltipData tooltip = getErrorTooltip();
+    // return tooltip != null ? tooltip.shiftText : Collections.emptyList();
+    // }
 
     protected GT_TooltipDataCache.TooltipData getErrorTooltip() {
         if (isSteampowered()) {

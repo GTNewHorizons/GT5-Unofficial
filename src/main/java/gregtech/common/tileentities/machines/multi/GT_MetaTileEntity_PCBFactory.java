@@ -19,7 +19,6 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -38,28 +37,12 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
-import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -1128,232 +1111,234 @@ public class GT_MetaTileEntity_PCBFactory extends
         return data;
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        buildContext.addSyncedWindow(10, this::createConfigurationWindow);
-        builder.widget(
-            new ButtonWidget().setOnClick(
-                (clickData, widget) -> {
-                    if (!widget.isClient()) widget.getContext()
-                        .openSyncedWindow(10);
-                })
-                .setSize(16, 16)
-                .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
-                    ret.add(GT_UITextures.OVERLAY_BUTTON_CYCLIC);
-                    return ret.toArray(new IDrawable[0]);
-                })
-                .addTooltip("Configuration Menu")
-                .setPos(174, 130))
-            .widget(
-                new TextWidget(new Text("Tier")).setTextAlignment(Alignment.Center)
-                    .setScale(0.91f)
-                    .setSize(20, 16)
-                    .setPos(173, 98))
-            .widget(
-                new TextFieldWidget().setGetterInt(() -> mSetTier)
-                    .setSetterInt(val -> mSetTier = val)
-                    .setNumbers(1, 3)
-                    .setTextColor(Color.WHITE.normal)
-                    .setTextAlignment(Alignment.Center)
-                    .addTooltip("PCB Factory Tier")
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                    .setSize(18, 18)
-                    .setPos(173, 110));
-    }
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // super.addUIWidgets(builder, buildContext);
+    // buildContext.addSyncedWindow(10, this::createConfigurationWindow);
+    // builder.widget(
+    // new ButtonWidget().setOnClick(
+    // (clickData, widget) -> {
+    // if (!widget.isClient()) widget.getContext()
+    // .openSyncedWindow(10);
+    // })
+    // .setSize(16, 16)
+    // .setBackground(() -> {
+    // List<UITexture> ret = new ArrayList<>();
+    // ret.add(GT_UITextures.BUTTON_STANDARD);
+    // ret.add(GT_UITextures.OVERLAY_BUTTON_CYCLIC);
+    // return ret.toArray(new IDrawable[0]);
+    // })
+    // .addTooltip("Configuration Menu")
+    // .setPos(174, 130))
+    // .widget(
+    // new TextWidget(new Text("Tier")).setTextAlignment(Alignment.Center)
+    // .setScale(0.91f)
+    // .setSize(20, 16)
+    // .setPos(173, 98))
+    // .widget(
+    // new TextFieldWidget().setGetterInt(() -> mSetTier)
+    // .setSetterInt(val -> mSetTier = val)
+    // .setNumbers(1, 3)
+    // .setTextColor(Color.WHITE.normal)
+    // .setTextAlignment(Alignment.Center)
+    // .addTooltip("PCB Factory Tier")
+    // .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+    // .setSize(18, 18)
+    // .setPos(173, 110));
+    // }
 
-    protected ModularWindow createConfigurationWindow(final EntityPlayer player) {
-        ModularWindow.Builder builder = ModularWindow.builder(200, 160);
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-        builder.setGuiTint(getGUIColorization());
-        builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
-                .setPos(5, 5)
-                .setSize(16, 16))
-            .widget(new TextWidget("Configuration Menu").setPos(25, 9))
-            .widget(
-                ButtonWidget.closeWindowButton(true)
-                    .setPos(185, 3))
-            .widget(
-                new DynamicPositionedColumn().setSynced(false)
-                    .widget(
-                        new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mBioUpgrade, val -> {
-                            mBioUpgrade = val;
-                            if (!mBioUpgrade) {
-                                GT_Utility
-                                    .sendChatToPlayer(player, GT_Utility.trans("339.1", "Biochamber Upgrade Disabled"));
-                            } else {
-                                GT_Utility
-                                    .sendChatToPlayer(player, GT_Utility.trans("339", "Biochamber Upgrade Enabled"));
-                            }
-                        })
-                            .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                            .setSize(90, 18)
-                            .addTooltip(
-                                "Enables nanites to construct organic circuitry. Required for Bioware and Wetware boards."))
-                            .addChild(
-                                new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
-                                    .setSize(18, 18))
-                            .addChild(
-                                new TextWidget("Biochamber").setTextAlignment(Alignment.Center)
-                                    .setPos(23, 5))
-                            .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                    .widget(new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mBioRotate, val -> {
-                        mBioRotate = val;
-                        if (!mBioRotate) {
-                            GT_Utility
-                                .sendChatToPlayer(player, GT_Utility.trans("340.1", "Rotated biochamber disabled"));
-                        } else {
-                            GT_Utility.sendChatToPlayer(player, GT_Utility.trans("340", "Rotated biochamber enabled"));
-                        }
-                    })
-                        .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                        .setSize(90, 18)
-                        .addTooltip("Rotates the biochamber by 90 degrees."))
-                        .addChild(
-                            new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
-                                .setSize(18, 18))
-                        .addChild(
-                            new TextWidget("Bio Rotation").setTextAlignment(Alignment.Center)
-                                .setPos(23, 5))
-                        .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                    .widget(new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mOCTier1, val -> {
-                        mOCTier1 = val;
-                        if (!mOCTier1) {
-                            GT_Utility.sendChatToPlayer(player, GT_Utility.trans("341.1", "Tier 1 cooling disabled"));
-                        } else {
-                            GT_Utility.sendChatToPlayer(player, GT_Utility.trans("341", "Tier 1 cooling enabled"));
-                        }
-                    })
-                        .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                        .setSize(90, 18)
-                        .addTooltip(
-                            "Allows for overclocking. Requires 10 L/s of distilled water. Cooling upgrades are mutually exclusive."))
-                        .addChild(
-                            new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
-                                .setSize(18, 18))
-                        .addChild(
-                            new TextWidget("Liquid Cooling").setTextAlignment(Alignment.Center)
-                                .setPos(20, 5))
-                        .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                    .widget(new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mOCTier2, val -> {
-                        mOCTier2 = val;
-                        if (!mOCTier2) {
-                            GT_Utility.sendChatToPlayer(player, GT_Utility.trans("342.1", "Tier 2 cooling disabled"));
-                        } else {
-                            GT_Utility.sendChatToPlayer(player, GT_Utility.trans("342", "Tier 2 cooling enabled"));
-                        }
-                    })
-                        .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                        .setSize(90, 18)
-                        .addTooltip(
-                            "Enables perfect overclocking by allowing nanites to work with extreme speed and efficiency. Uses 10 L/s of Super Coolant."))
-                        .addChild(
-                            new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
-                                .setSize(18, 18))
-                        .addChild(
-                            new TextWidget("Thermosink").setTextAlignment(Alignment.Center)
-                                .setPos(20, 5))
-                        .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                    .widget(
-                        new TextWidget(new Text("Trace Size")).setSize(90, 18)
-                            .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
-                            .setPos(0, 4))
-                    .widget(
-                        new TextFieldWidget().setGetterInt(() -> (int) ((1f / mRoughnessMultiplier) * 100f))
-                            .setSetterInt(val -> mRoughnessMultiplier = 100f / val)
-                            .setNumbers(50, 200)
-                            .setTextColor(Color.WHITE.normal)
-                            .setTextAlignment(Alignment.Center)
-                            .addTooltip(
-                                "Set the trace size. Smaller traces allow material savings but take longer to fabricate. Larger traces waste material but are fast. 50-200 μm.")
-                            .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                            .setSize(90, 16))
-                    .widget(
-                        new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CROSS)
-                            .setSize(18, 18)
-                            .addTooltip(new Text("Can't change configuration when running !").color(Color.RED.dark(3)))
-                            .setEnabled(widget -> getBaseMetaTileEntity().isActive()))
-                    .setPos(10, 25))
-            .widget(
-                new DynamicPositionedColumn().setSynced(false)
-                    .widget(
-                        new TextWidget(new Text("Bio Upgrade Offsets")).setSize(72, 18)
-                            .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                    .widget(
-                        new DynamicPositionedRow().setSynced(false)
-                            .widget(
-                                new TextFieldWidget().setGetterInt(() -> mBioOffsets[0])
-                                    .setSetterInt(val -> mBioOffsets[0] = val)
-                                    .setNumbers(-16, 16)
-                                    .setTextColor(Color.WHITE.normal)
-                                    .setTextAlignment(Alignment.Center)
-                                    .addTooltip("X Offset")
-                                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                                    .setSize(36, 18))
-                            .widget(
-                                new TextFieldWidget().setGetterInt(() -> mBioOffsets[1])
-                                    .setSetterInt(val -> mBioOffsets[1] = val)
-                                    .setNumbers(-16, 16)
-                                    .setTextColor(Color.WHITE.normal)
-                                    .setTextAlignment(Alignment.Center)
-                                    .addTooltip("Z Offset")
-                                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                                    .setSize(36, 18))
-                            .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                    .widget(
-                        new TextWidget(new Text("Cooler Tier 1 Offsets")).setSize(72, 18)
-                            .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                    .widget(
-                        new DynamicPositionedRow().setSynced(false)
-                            .widget(
-                                new TextFieldWidget().setGetterInt(() -> mOCTier1Offsets[0])
-                                    .setSetterInt(val -> mOCTier1Offsets[0] = val)
-                                    .setNumbers(-16, 16)
-                                    .setTextColor(Color.WHITE.normal)
-                                    .setTextAlignment(Alignment.Center)
-                                    .addTooltip("X Offset")
-                                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                                    .setSize(36, 18))
-                            .widget(
-                                new TextFieldWidget().setGetterInt(() -> mOCTier1Offsets[1])
-                                    .setSetterInt(val -> mOCTier1Offsets[1] = val)
-                                    .setNumbers(-16, 16)
-                                    .setTextColor(Color.WHITE.normal)
-                                    .setTextAlignment(Alignment.Center)
-                                    .addTooltip("Z Offset")
-                                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                                    .setSize(36, 18))
-                            .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                    .widget(
-                        new TextWidget(new Text("Cooler Tier 2 Offsets")).setSize(72, 18)
-                            .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                    .widget(
-                        new DynamicPositionedRow().setSynced(false)
-                            .widget(
-                                new TextFieldWidget().setGetterInt(() -> mOCTier2Offsets[0])
-                                    .setSetterInt(val -> mOCTier2Offsets[0] = val)
-                                    .setNumbers(-16, 16)
-                                    .setTextColor(Color.WHITE.normal)
-                                    .setTextAlignment(Alignment.Center)
-                                    .addTooltip("X Offset")
-                                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                                    .setSize(36, 18))
-                            .widget(
-                                new TextFieldWidget().setGetterInt(() -> mOCTier2Offsets[1])
-                                    .setSetterInt(val -> mOCTier2Offsets[1] = val)
-                                    .setNumbers(-16, 16)
-                                    .setTextColor(Color.WHITE.normal)
-                                    .setTextAlignment(Alignment.Center)
-                                    .addTooltip("Z Offset")
-                                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                                    .setSize(36, 18))
-                            .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                    .setPos(110, 25));
-        return builder.build();
-    }
+    // protected ModularWindow createConfigurationWindow(final EntityPlayer player) {
+    // ModularWindow.Builder builder = ModularWindow.builder(200, 160);
+    // builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+    // builder.setGuiTint(getGUIColorization());
+    // builder.widget(
+    // new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+    // .setPos(5, 5)
+    // .setSize(16, 16))
+    // .widget(new TextWidget("Configuration Menu").setPos(25, 9))
+    // .widget(
+    // ButtonWidget.closeWindowButton(true)
+    // .setPos(185, 3))
+    // .widget(
+    // new DynamicPositionedColumn().setSynced(false)
+    // .widget(
+    // new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mBioUpgrade, val -> {
+    // mBioUpgrade = val;
+    // if (!mBioUpgrade) {
+    // GT_Utility
+    // .sendChatToPlayer(player, GT_Utility.trans("339.1", "Biochamber Upgrade Disabled"));
+    // } else {
+    // GT_Utility
+    // .sendChatToPlayer(player, GT_Utility.trans("339", "Biochamber Upgrade Enabled"));
+    // }
+    // })
+    // .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+    // .setSize(90, 18)
+    // .addTooltip(
+    // "Enables nanites to construct organic circuitry. Required for Bioware and Wetware boards."))
+    // .addChild(
+    // new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+    // .setSize(18, 18))
+    // .addChild(
+    // new TextWidget("Biochamber").setTextAlignment(Alignment.Center)
+    // .setPos(23, 5))
+    // .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+    // .widget(new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mBioRotate, val -> {
+    // mBioRotate = val;
+    // if (!mBioRotate) {
+    // GT_Utility
+    // .sendChatToPlayer(player, GT_Utility.trans("340.1", "Rotated biochamber disabled"));
+    // } else {
+    // GT_Utility.sendChatToPlayer(player, GT_Utility.trans("340", "Rotated biochamber enabled"));
+    // }
+    // })
+    // .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+    // .setSize(90, 18)
+    // .addTooltip("Rotates the biochamber by 90 degrees."))
+    // .addChild(
+    // new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+    // .setSize(18, 18))
+    // .addChild(
+    // new TextWidget("Bio Rotation").setTextAlignment(Alignment.Center)
+    // .setPos(23, 5))
+    // .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+    // .widget(new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mOCTier1, val -> {
+    // mOCTier1 = val;
+    // if (!mOCTier1) {
+    // GT_Utility.sendChatToPlayer(player, GT_Utility.trans("341.1", "Tier 1 cooling disabled"));
+    // } else {
+    // GT_Utility.sendChatToPlayer(player, GT_Utility.trans("341", "Tier 1 cooling enabled"));
+    // }
+    // })
+    // .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+    // .setSize(90, 18)
+    // .addTooltip(
+    // "Allows for overclocking. Requires 10 L/s of distilled water. Cooling upgrades are mutually exclusive."))
+    // .addChild(
+    // new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+    // .setSize(18, 18))
+    // .addChild(
+    // new TextWidget("Liquid Cooling").setTextAlignment(Alignment.Center)
+    // .setPos(20, 5))
+    // .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+    // .widget(new MultiChildWidget().addChild(new CycleButtonWidget().setToggle(() -> mOCTier2, val -> {
+    // mOCTier2 = val;
+    // if (!mOCTier2) {
+    // GT_Utility.sendChatToPlayer(player, GT_Utility.trans("342.1", "Tier 2 cooling disabled"));
+    // } else {
+    // GT_Utility.sendChatToPlayer(player, GT_Utility.trans("342", "Tier 2 cooling enabled"));
+    // }
+    // })
+    // .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+    // .setSize(90, 18)
+    // .addTooltip(
+    // "Enables perfect overclocking by allowing nanites to work with extreme speed and efficiency. Uses 10 L/s of Super
+    // Coolant."))
+    // .addChild(
+    // new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+    // .setSize(18, 18))
+    // .addChild(
+    // new TextWidget("Thermosink").setTextAlignment(Alignment.Center)
+    // .setPos(20, 5))
+    // .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+    // .widget(
+    // new TextWidget(new Text("Trace Size")).setSize(90, 18)
+    // .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
+    // .setPos(0, 4))
+    // .widget(
+    // new TextFieldWidget().setGetterInt(() -> (int) ((1f / mRoughnessMultiplier) * 100f))
+    // .setSetterInt(val -> mRoughnessMultiplier = 100f / val)
+    // .setNumbers(50, 200)
+    // .setTextColor(Color.WHITE.normal)
+    // .setTextAlignment(Alignment.Center)
+    // .addTooltip(
+    // "Set the trace size. Smaller traces allow material savings but take longer to fabricate. Larger traces waste
+    // material but are fast. 50-200 μm.")
+    // .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+    // .setSize(90, 16))
+    // .widget(
+    // new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CROSS)
+    // .setSize(18, 18)
+    // .addTooltip(new Text("Can't change configuration when running !").color(Color.RED.dark(3)))
+    // .setEnabled(widget -> getBaseMetaTileEntity().isActive()))
+    // .setPos(10, 25))
+    // .widget(
+    // new DynamicPositionedColumn().setSynced(false)
+    // .widget(
+    // new TextWidget(new Text("Bio Upgrade Offsets")).setSize(72, 18)
+    // .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+    // .widget(
+    // new DynamicPositionedRow().setSynced(false)
+    // .widget(
+    // new TextFieldWidget().setGetterInt(() -> mBioOffsets[0])
+    // .setSetterInt(val -> mBioOffsets[0] = val)
+    // .setNumbers(-16, 16)
+    // .setTextColor(Color.WHITE.normal)
+    // .setTextAlignment(Alignment.Center)
+    // .addTooltip("X Offset")
+    // .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+    // .setSize(36, 18))
+    // .widget(
+    // new TextFieldWidget().setGetterInt(() -> mBioOffsets[1])
+    // .setSetterInt(val -> mBioOffsets[1] = val)
+    // .setNumbers(-16, 16)
+    // .setTextColor(Color.WHITE.normal)
+    // .setTextAlignment(Alignment.Center)
+    // .addTooltip("Z Offset")
+    // .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+    // .setSize(36, 18))
+    // .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+    // .widget(
+    // new TextWidget(new Text("Cooler Tier 1 Offsets")).setSize(72, 18)
+    // .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+    // .widget(
+    // new DynamicPositionedRow().setSynced(false)
+    // .widget(
+    // new TextFieldWidget().setGetterInt(() -> mOCTier1Offsets[0])
+    // .setSetterInt(val -> mOCTier1Offsets[0] = val)
+    // .setNumbers(-16, 16)
+    // .setTextColor(Color.WHITE.normal)
+    // .setTextAlignment(Alignment.Center)
+    // .addTooltip("X Offset")
+    // .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+    // .setSize(36, 18))
+    // .widget(
+    // new TextFieldWidget().setGetterInt(() -> mOCTier1Offsets[1])
+    // .setSetterInt(val -> mOCTier1Offsets[1] = val)
+    // .setNumbers(-16, 16)
+    // .setTextColor(Color.WHITE.normal)
+    // .setTextAlignment(Alignment.Center)
+    // .addTooltip("Z Offset")
+    // .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+    // .setSize(36, 18))
+    // .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+    // .widget(
+    // new TextWidget(new Text("Cooler Tier 2 Offsets")).setSize(72, 18)
+    // .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+    // .widget(
+    // new DynamicPositionedRow().setSynced(false)
+    // .widget(
+    // new TextFieldWidget().setGetterInt(() -> mOCTier2Offsets[0])
+    // .setSetterInt(val -> mOCTier2Offsets[0] = val)
+    // .setNumbers(-16, 16)
+    // .setTextColor(Color.WHITE.normal)
+    // .setTextAlignment(Alignment.Center)
+    // .addTooltip("X Offset")
+    // .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+    // .setSize(36, 18))
+    // .widget(
+    // new TextFieldWidget().setGetterInt(() -> mOCTier2Offsets[1])
+    // .setSetterInt(val -> mOCTier2Offsets[1] = val)
+    // .setNumbers(-16, 16)
+    // .setTextColor(Color.WHITE.normal)
+    // .setTextAlignment(Alignment.Center)
+    // .addTooltip("Z Offset")
+    // .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
+    // .setSize(36, 18))
+    // .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+    // .setPos(110, 25));
+    // return builder.build();
+    // }
 
     @Override
     public boolean supportsVoidProtection() {

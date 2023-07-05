@@ -14,16 +14,10 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
-
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_ModHandler;
@@ -38,8 +32,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * This is the main construct for my Basic Machines such as the Automatic Extractor Extend this class to make a simple
  * Machine
  */
-public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_TieredMachineBlock
-    implements IAddUIWidgets {
+public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_TieredMachineBlock {
 
     public boolean mCharge = false, mDecharge = false;
     public int mBatteryCount = 0, mChargeableCount = 0;
@@ -372,65 +365,65 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
         return true;
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        switch (mInventory.length) {
-            case 4 -> builder.widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 2)
-                    .startFromSlot(0)
-                    .endAtSlot(3)
-                    .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
-
-                        @Override
-                        public int getSlotStackLimit() {
-                            return 1;
-                        }
-                    })
-                    .background(getGUITextureSet().getItemSlot())
-                    .build()
-                    .setPos(70, 25));
-            case 9 -> builder.widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 3)
-                    .startFromSlot(0)
-                    .endAtSlot(8)
-                    .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
-
-                        @Override
-                        public int getSlotStackLimit() {
-                            return 1;
-                        }
-                    })
-                    .background(getGUITextureSet().getItemSlot())
-                    .build()
-                    .setPos(61, 16));
-            case 16 -> builder.widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 4)
-                    .startFromSlot(0)
-                    .endAtSlot(15)
-                    .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
-
-                        @Override
-                        public int getSlotStackLimit() {
-                            return 1;
-                        }
-                    })
-                    .background(getGUITextureSet().getItemSlot())
-                    .build()
-                    .setPos(52, 7));
-            default -> builder.widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 1)
-                    .startFromSlot(0)
-                    .endAtSlot(0)
-                    .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
-
-                        @Override
-                        public int getSlotStackLimit() {
-                            return 1;
-                        }
-                    })
-                    .background(getGUITextureSet().getItemSlot())
-                    .build()
-                    .setPos(79, 34));
-        }
-    }
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // switch (mInventory.length) {
+    // case 4 -> builder.widget(
+    // SlotGroup.ofItemHandler(inventoryHandler, 2)
+    // .startFromSlot(0)
+    // .endAtSlot(3)
+    // .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
+    //
+    // @Override
+    // public int getSlotStackLimit() {
+    // return 1;
+    // }
+    // })
+    // .background(getGUITextureSet().getItemSlot())
+    // .build()
+    // .setPos(70, 25));
+    // case 9 -> builder.widget(
+    // SlotGroup.ofItemHandler(inventoryHandler, 3)
+    // .startFromSlot(0)
+    // .endAtSlot(8)
+    // .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
+    //
+    // @Override
+    // public int getSlotStackLimit() {
+    // return 1;
+    // }
+    // })
+    // .background(getGUITextureSet().getItemSlot())
+    // .build()
+    // .setPos(61, 16));
+    // case 16 -> builder.widget(
+    // SlotGroup.ofItemHandler(inventoryHandler, 4)
+    // .startFromSlot(0)
+    // .endAtSlot(15)
+    // .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
+    //
+    // @Override
+    // public int getSlotStackLimit() {
+    // return 1;
+    // }
+    // })
+    // .background(getGUITextureSet().getItemSlot())
+    // .build()
+    // .setPos(52, 7));
+    // default -> builder.widget(
+    // SlotGroup.ofItemHandler(inventoryHandler, 1)
+    // .startFromSlot(0)
+    // .endAtSlot(0)
+    // .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
+    //
+    // @Override
+    // public int getSlotStackLimit() {
+    // return 1;
+    // }
+    // })
+    // .background(getGUITextureSet().getItemSlot())
+    // .build()
+    // .setPos(79, 34));
+    // }
+    // }
 }

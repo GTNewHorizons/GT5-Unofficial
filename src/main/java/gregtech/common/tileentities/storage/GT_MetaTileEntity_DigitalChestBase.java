@@ -19,12 +19,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.IMEMonitorHandlerReceiver;
 import appeng.api.storage.StorageChannel;
@@ -35,9 +29,7 @@ import appeng.util.item.ItemList;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.AE2DigitalChestHandler;
@@ -48,7 +40,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEntity_TieredMachineBlock
-    implements IMEMonitor<IAEItemStack>, IAddUIWidgets {
+    implements IMEMonitor<IAEItemStack> {
 
     protected boolean mVoidOverflow = false;
     protected boolean mDisableFilter;
@@ -522,36 +514,36 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
         tag.setTag("itemType", is.writeToNBT(new NBTTagCompound()));
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                .setPos(7, 16)
-                .setSize(71, 45))
-            .widget(
-                new SlotWidget(inventoryHandler, 0)
-                    .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
-                    .setPos(79, 16))
-            .widget(
-                new SlotWidget(inventoryHandler, 1).setAccess(true, false)
-                    .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
-                    .setPos(79, 52))
-            .widget(
-                SlotWidget.phantom(inventoryHandler, 2)
-                    .disableInteraction()
-                    .setBackground(GT_UITextures.TRANSPARENT)
-                    .setPos(59, 42))
-            .widget(
-                new TextWidget("Item Amount").setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(10, 20))
-            .widget(
-                TextWidget
-                    .dynamicString(
-                        () -> GT_Utility.parseNumberToString(
-                            this instanceof GT_MetaTileEntity_QuantumChest
-                                ? ((GT_MetaTileEntity_QuantumChest) this).mItemCount
-                                : 0))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(10, 30));
-    }
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // builder.widget(
+    // new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+    // .setPos(7, 16)
+    // .setSize(71, 45))
+    // .widget(
+    // new SlotWidget(inventoryHandler, 0)
+    // .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
+    // .setPos(79, 16))
+    // .widget(
+    // new SlotWidget(inventoryHandler, 1).setAccess(true, false)
+    // .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
+    // .setPos(79, 52))
+    // .widget(
+    // SlotWidget.phantom(inventoryHandler, 2)
+    // .disableInteraction()
+    // .setBackground(GT_UITextures.TRANSPARENT)
+    // .setPos(59, 42))
+    // .widget(
+    // new TextWidget("Item Amount").setDefaultColor(COLOR_TEXT_WHITE.get())
+    // .setPos(10, 20))
+    // .widget(
+    // TextWidget
+    // .dynamicString(
+    // () -> GT_Utility.parseNumberToString(
+    // this instanceof GT_MetaTileEntity_QuantumChest
+    // ? ((GT_MetaTileEntity_QuantumChest) this).mItemCount
+    // : 0))
+    // .setDefaultColor(COLOR_TEXT_WHITE.get())
+    // .setPos(10, 30));
+    // }
 }

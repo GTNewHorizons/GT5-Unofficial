@@ -16,22 +16,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -41,7 +32,7 @@ import gregtech.api.util.GT_Utility;
 import ic2.core.IHasGui;
 import ic2.core.item.ItemToolbox;
 
-public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch implements IAddUIWidgets {
+public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch {
 
     private static ItemStack[] sAutoMaintenanceInputs;
     public boolean mWrench = false, mScrewdriver = false, mSoftHammer = false, mHardHammer = false,
@@ -315,39 +306,39 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
         return false;
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        if (mAuto) {
-            getBaseMetaTileEntity().add2by2Slots(builder);
-        } else {
-            builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.SLOT_MAINTENANCE)
-                    .setPos(78, 33)
-                    .setSize(20, 20))
-                .widget(new SlotWidget(BaseSlot.empty()) {
-
-                    @Override
-                    public boolean handleDragAndDrop(ItemStack draggedStack, int button) {
-                        return false;
-                    }
-
-                    @Override
-                    protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
-                        if (cursorStack == null) return;
-                        onToolClick(cursorStack, getContext().getPlayer());
-                        if (cursorStack.stackSize < 1) {
-                            getContext().getPlayer().inventory.setItemStack(null);
-                        }
-                        if (getContext().getPlayer() instanceof EntityPlayerMP) {
-                            ((EntityPlayerMP) getContext().getPlayer()).updateHeldItem();
-                        }
-                    }
-                }.disableShiftInsert()
-                    .setBackground(GT_UITextures.TRANSPARENT)
-                    .setPos(79, 34))
-                .widget(
-                    new TextWidget("Click with Tool to repair.").setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(8, 12));
-        }
-    }
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // if (mAuto) {
+    // getBaseMetaTileEntity().add2by2Slots(builder);
+    // } else {
+    // builder.widget(
+    // new DrawableWidget().setDrawable(GT_UITextures.SLOT_MAINTENANCE)
+    // .setPos(78, 33)
+    // .setSize(20, 20))
+    // .widget(new SlotWidget(BaseSlot.empty()) {
+    //
+    // @Override
+    // public boolean handleDragAndDrop(ItemStack draggedStack, int button) {
+    // return false;
+    // }
+    //
+    // @Override
+    // protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
+    // if (cursorStack == null) return;
+    // onToolClick(cursorStack, getContext().getPlayer());
+    // if (cursorStack.stackSize < 1) {
+    // getContext().getPlayer().inventory.setItemStack(null);
+    // }
+    // if (getContext().getPlayer() instanceof EntityPlayerMP) {
+    // ((EntityPlayerMP) getContext().getPlayer()).updateHeldItem();
+    // }
+    // }
+    // }.disableShiftInsert()
+    // .setBackground(GT_UITextures.TRANSPARENT)
+    // .setPos(79, 34))
+    // .widget(
+    // new TextWidget("Click with Tool to repair.").setDefaultColor(COLOR_TEXT_GRAY.get())
+    // .setPos(8, 12));
+    // }
+    // }
 }

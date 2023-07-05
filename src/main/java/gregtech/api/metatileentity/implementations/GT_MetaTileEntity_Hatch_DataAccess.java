@@ -7,19 +7,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-
 import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_AssemblyLineUtils;
 
-public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch implements IAddUIWidgets {
+public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch {
 
     private int timeout = 4;
 
@@ -139,14 +134,14 @@ public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch 
         GT_AssemblyLineUtils.processDataStick(aStack);
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        if (mTier == 4) {
-            getBaseMetaTileEntity()
-                .add2by2Slots(builder, getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CIRCUIT);
-        } else {
-            getBaseMetaTileEntity()
-                .add4by4Slots(builder, getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CIRCUIT);
-        }
-    }
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // if (mTier == 4) {
+    // getBaseMetaTileEntity()
+    // .add2by2Slots(builder, getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CIRCUIT);
+    // } else {
+    // getBaseMetaTileEntity()
+    // .add4by4Slots(builder, getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CIRCUIT);
+    // }
+    // }
 }

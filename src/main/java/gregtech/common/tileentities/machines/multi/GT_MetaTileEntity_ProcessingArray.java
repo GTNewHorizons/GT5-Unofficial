@@ -14,7 +14,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine.isValidForLowGravity;
 
 import java.util.ArrayList;
@@ -33,11 +32,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -45,7 +39,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -680,26 +673,26 @@ public class GT_MetaTileEntity_ProcessingArray
         return true;
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-
-        builder.widget(
-            new ButtonWidget().setOnClick((clickData, widget) -> downtierUEV = !downtierUEV)
-                .setPlayClickSound(true)
-                .setBackground(() -> {
-                    if (downtierUEV) {
-                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
-                            GT_UITextures.OVERLAY_BUTTON_DOWN_TIERING_ON };
-                    } else {
-                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
-                            GT_UITextures.OVERLAY_BUTTON_DOWN_TIERING_OFF };
-                    }
-                })
-                .setPos(80, 91)
-                .setSize(16, 16)
-                .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.down_tier"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> downtierUEV, val -> downtierUEV = val));
-    }
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // super.addUIWidgets(builder, buildContext);
+    //
+    // builder.widget(
+    // new ButtonWidget().setOnClick((clickData, widget) -> downtierUEV = !downtierUEV)
+    // .setPlayClickSound(true)
+    // .setBackground(() -> {
+    // if (downtierUEV) {
+    // return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
+    // GT_UITextures.OVERLAY_BUTTON_DOWN_TIERING_ON };
+    // } else {
+    // return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
+    // GT_UITextures.OVERLAY_BUTTON_DOWN_TIERING_OFF };
+    // }
+    // })
+    // .setPos(80, 91)
+    // .setSize(16, 16)
+    // .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.down_tier"))
+    // .setTooltipShowUpDelay(TOOLTIP_DELAY))
+    // .widget(new FakeSyncWidget.BooleanSyncer(() -> downtierUEV, val -> downtierUEV = val));
+    // }
 }

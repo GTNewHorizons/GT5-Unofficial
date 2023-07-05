@@ -16,7 +16,6 @@ import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,17 +28,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidTank;
-
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.*;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.fluid.FluidTankGT;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
@@ -690,45 +681,45 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         return getTarget(true) != null;
     }
 
-    protected void addItemInventory(Builder builder, UIBuildContext buildContext) {
-        final IMultiBlockController controller = getTarget(false);
-        if (controller == null) {
-            return;
-        }
-        final IItemHandlerModifiable inv = controller.getInventoryForGUI(this);
-        final Scrollable scrollable = new Scrollable().setVerticalScroll();
-        for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
-            int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
-            for (int column = 0; column < columnsToMake; column++) {
-                scrollable.widget(
-                    new SlotWidget(inv, rows * 4 + column).setPos(column * 18, rows * 18)
-                        .setSize(18, 18));
-            }
-        }
-        builder.widget(
-            scrollable.setSize(18 * 4 + 4, 18 * 4)
-                .setPos(52, 18));
-        DropDownWidget dropDown = new DropDownWidget();
-        dropDown.addDropDownItemsSimple(
-            controller.getInventoryNames(this),
-            (buttonWidget, index, label, setSelected) -> buttonWidget.setOnClick((clickData, widget) -> {
-                if (getNameOfInventoryFromIndex(controller, index).equals(Controller.ALL_INVENTORIES_NAME)) {
-                    mLockedInventory = GT_Values.E;
-                    mLockedInventoryIndex = 0;
-                } else {
-                    mLockedInventory = getNameOfInventoryFromIndex(controller, index);
-                    mLockedInventoryIndex = index;
-                }
-                setSelected.run();
-            }),
-            true);
-        builder.widget(
-            dropDown.setSelected(mLockedInventoryIndex)
-                .setExpandedMaxHeight(60)
-                .setDirection(DropDownWidget.Direction.DOWN)
-                .setPos(53, 5)
-                .setSize(70, 11));
-    }
+    // protected void addItemInventory(Builder builder, UIBuildContext buildContext) {
+    // final IMultiBlockController controller = getTarget(false);
+    // if (controller == null) {
+    // return;
+    // }
+    // final IItemHandlerModifiable inv = controller.getInventoryForGUI(this);
+    // final Scrollable scrollable = new Scrollable().setVerticalScroll();
+    // for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
+    // int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
+    // for (int column = 0; column < columnsToMake; column++) {
+    // scrollable.widget(
+    // new SlotWidget(inv, rows * 4 + column).setPos(column * 18, rows * 18)
+    // .setSize(18, 18));
+    // }
+    // }
+    // builder.widget(
+    // scrollable.setSize(18 * 4 + 4, 18 * 4)
+    // .setPos(52, 18));
+    // DropDownWidget dropDown = new DropDownWidget();
+    // dropDown.addDropDownItemsSimple(
+    // controller.getInventoryNames(this),
+    // (buttonWidget, index, label, setSelected) -> buttonWidget.setOnClick((clickData, widget) -> {
+    // if (getNameOfInventoryFromIndex(controller, index).equals(Controller.ALL_INVENTORIES_NAME)) {
+    // mLockedInventory = GT_Values.E;
+    // mLockedInventoryIndex = 0;
+    // } else {
+    // mLockedInventory = getNameOfInventoryFromIndex(controller, index);
+    // mLockedInventoryIndex = index;
+    // }
+    // setSelected.run();
+    // }),
+    // true);
+    // builder.widget(
+    // dropDown.setSelected(mLockedInventoryIndex)
+    // .setExpandedMaxHeight(60)
+    // .setDirection(DropDownWidget.Direction.DOWN)
+    // .setPos(53, 5)
+    // .setSize(70, 11));
+    // }
 
     protected String getNameOfInventoryFromIndex(final IMultiBlockController controller, int index) {
         final List<String> invNames = controller.getInventoryIDs(this);
@@ -766,119 +757,119 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         return null;
     }
 
-    protected void addFluidInventory(Builder builder, UIBuildContext buildContext) {
-        final IMultiBlockController controller = getTarget(false);
-        if (controller == null) {
-            return;
-        }
-        builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                .setPos(7, 4)
-                .setSize(85, 95));
-        if (modeSelected(FLUID_OUT)) {
-            builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                    .setPos(getGUIWidth() - 77, 4)
-                    .setSize(70, 40))
-                .widget(
-                    new TextWidget("Locked Fluid").setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(getGUIWidth() - 72, 8));
-        }
-        final IFluidTank[] tanks = controller.getFluidTanksForGUI(this);
-        final Scrollable scrollable = new Scrollable().setVerticalScroll();
-        for (int rows = 0; rows * 4 < tanks.length; rows++) {
-            int columnsToMake = Math.min(tanks.length - rows * 4, 4);
-            for (int column = 0; column < columnsToMake; column++) {
-                FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
-                if (modeSelected(FLUID_OUT)) {
-                    fluidSlot.setInteraction(true, false);
-                }
-                scrollable.widget(
-                    fluidSlot.setPos(column * 18, rows * 18)
-                        .setSize(18, 18));
-            }
-        }
-        builder.widget(
-            scrollable.setSize(18 * 4 + 4, 18 * 4)
-                .setPos(12, 21));
-        DropDownWidget dropDown = new DropDownWidget();
-        dropDown.addDropDownItemsSimple(
-            controller.getTankArrayNames(this),
-            (buttonWidget, index, label, setSelected) -> buttonWidget.setOnClick((clickData, widget) -> {
-                if (getNameOfTankArrayFromIndex(controller, index).equals(Controller.ALL_INVENTORIES_NAME)) {
-                    mLockedInventory = GT_Values.E;
-                    mLockedInventoryIndex = 0;
-                } else {
-                    mLockedInventory = getNameOfTankArrayFromIndex(controller, index);
-                    mLockedInventoryIndex = index;
-                }
-                setSelected.run();
-            }),
-            true);
-        builder.widget(
-            dropDown.setSelected(mLockedInventoryIndex)
-                .setExpandedMaxHeight(60)
-                .setDirection(DropDownWidget.Direction.DOWN)
-                .setPos(13, 8)
-                .setSize(70, 11));
-    }
+    // protected void addFluidInventory(Builder builder, UIBuildContext buildContext) {
+    // final IMultiBlockController controller = getTarget(false);
+    // if (controller == null) {
+    // return;
+    // }
+    // builder.widget(
+    // new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+    // .setPos(7, 4)
+    // .setSize(85, 95));
+    // if (modeSelected(FLUID_OUT)) {
+    // builder.widget(
+    // new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+    // .setPos(getGUIWidth() - 77, 4)
+    // .setSize(70, 40))
+    // .widget(
+    // new TextWidget("Locked Fluid").setDefaultColor(COLOR_TEXT_WHITE.get())
+    // .setPos(getGUIWidth() - 72, 8));
+    // }
+    // final IFluidTank[] tanks = controller.getFluidTanksForGUI(this);
+    // final Scrollable scrollable = new Scrollable().setVerticalScroll();
+    // for (int rows = 0; rows * 4 < tanks.length; rows++) {
+    // int columnsToMake = Math.min(tanks.length - rows * 4, 4);
+    // for (int column = 0; column < columnsToMake; column++) {
+    // FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
+    // if (modeSelected(FLUID_OUT)) {
+    // fluidSlot.setInteraction(true, false);
+    // }
+    // scrollable.widget(
+    // fluidSlot.setPos(column * 18, rows * 18)
+    // .setSize(18, 18));
+    // }
+    // }
+    // builder.widget(
+    // scrollable.setSize(18 * 4 + 4, 18 * 4)
+    // .setPos(12, 21));
+    // DropDownWidget dropDown = new DropDownWidget();
+    // dropDown.addDropDownItemsSimple(
+    // controller.getTankArrayNames(this),
+    // (buttonWidget, index, label, setSelected) -> buttonWidget.setOnClick((clickData, widget) -> {
+    // if (getNameOfTankArrayFromIndex(controller, index).equals(Controller.ALL_INVENTORIES_NAME)) {
+    // mLockedInventory = GT_Values.E;
+    // mLockedInventoryIndex = 0;
+    // } else {
+    // mLockedInventory = getNameOfTankArrayFromIndex(controller, index);
+    // mLockedInventoryIndex = index;
+    // }
+    // setSelected.run();
+    // }),
+    // true);
+    // builder.widget(
+    // dropDown.setSelected(mLockedInventoryIndex)
+    // .setExpandedMaxHeight(60)
+    // .setDirection(DropDownWidget.Direction.DOWN)
+    // .setPos(13, 8)
+    // .setSize(70, 11));
+    // }
 
-    @Override
-    public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
-        if (modeSelected(ITEM_IN, ITEM_OUT)) {
-            addItemInventory(builder, buildContext);
-            return;
-        }
-        if (modeSelected(FLUID_IN, FLUID_OUT)) {
-            addFluidInventory(builder, buildContext);
-            if (modeSelected(FLUID_OUT)) {
-                builder.widget(
-                    SlotGroup.ofFluidTanks(Collections.singletonList(configurationTank), 1)
-                        .startFromSlot(0)
-                        .endAtSlot(0)
-                        .phantom(true)
-                        .build()
-                        .setPos(getGUIWidth() - 72, 20));
-            }
-            return;
-        }
-    }
+    // @Override
+    // public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
+    // if (modeSelected(ITEM_IN, ITEM_OUT)) {
+    // addItemInventory(builder, buildContext);
+    // return;
+    // }
+    // if (modeSelected(FLUID_IN, FLUID_OUT)) {
+    // addFluidInventory(builder, buildContext);
+    // if (modeSelected(FLUID_OUT)) {
+    // builder.widget(
+    // SlotGroup.ofFluidTanks(Collections.singletonList(configurationTank), 1)
+    // .startFromSlot(0)
+    // .endAtSlot(0)
+    // .phantom(true)
+    // .build()
+    // .setPos(getGUIWidth() - 72, 20));
+    // }
+    // return;
+    // }
+    // }
 
-    @Override
-    public ModularWindow createWindow(UIBuildContext buildContext) {
-        if (isServerSide()) {
-            issueClientUpdate();
-        }
-        System.out.println("MultiBlockPart::createWindow");
-        if (modeSelected(NOTHING, ENERGY_IN, ENERGY_OUT) || mMode == NOTHING) {
-            IMultiBlockController controller = getTarget(false);
-            if (controller == null) {
-                return super.createWindow(buildContext);
-            }
-            return controller.createWindowGUI(buildContext);
-        }
-        return super.createWindow(buildContext);
-    }
+    // @Override
+    // public ModularWindow createWindow(UIBuildContext buildContext) {
+    // if (isServerSide()) {
+    // issueClientUpdate();
+    // }
+    // System.out.println("MultiBlockPart::createWindow");
+    // if (modeSelected(NOTHING, ENERGY_IN, ENERGY_OUT) || mMode == NOTHING) {
+    // IMultiBlockController controller = getTarget(false);
+    // if (controller == null) {
+    // return super.createWindow(buildContext);
+    // }
+    // return controller.createWindowGUI(buildContext);
+    // }
+    // return super.createWindow(buildContext);
+    // }
 
     @Override
     protected int getGUIHeight() {
         return super.getGUIHeight() + 20;
     }
 
-    @Override
-    public void addGregTechLogo(Builder builder) {
-        if (modeSelected(ITEM_IN, ITEM_OUT)) {
-            builder.widget(
-                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                    .setSize(17, 17)
-                    .setPos(152, 74));
-        } else if (modeSelected(FLUID_IN, FLUID_OUT)) {
-            builder.widget(
-                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                    .setSize(17, 17)
-                    .setPos(152, 82));
-        } else {
-            super.addGregTechLogo(builder);
-        }
-    }
+    // @Override
+    // public void addGregTechLogo(Builder builder) {
+    // if (modeSelected(ITEM_IN, ITEM_OUT)) {
+    // builder.widget(
+    // new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
+    // .setSize(17, 17)
+    // .setPos(152, 74));
+    // } else if (modeSelected(FLUID_IN, FLUID_OUT)) {
+    // builder.widget(
+    // new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
+    // .setSize(17, 17)
+    // .setPos(152, 82));
+    // } else {
+    // super.addGregTechLogo(builder);
+    // }
+    // }
 }

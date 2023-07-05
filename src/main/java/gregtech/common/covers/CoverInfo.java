@@ -9,10 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-
 import gregtech.api.GregTech_API;
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_CoverBehaviorBase;
@@ -159,15 +156,15 @@ public final class CoverInfo {
         return getCoverBehavior().getDescription(coverSide, coverID, coverData, null);
     }
 
-    public ModularWindow createWindow(EntityPlayer player) {
-        final GT_CoverUIBuildContext buildContext = new GT_CoverUIBuildContext(
-            player,
-            coverID,
-            coverSide,
-            coveredTile.get(),
-            true);
-        return getCoverBehavior().createWindow(buildContext);
-    }
+    // public ModularWindow createWindow(EntityPlayer player) {
+    // final GT_CoverUIBuildContext buildContext = new GT_CoverUIBuildContext(
+    // player,
+    // coverID,
+    // coverSide,
+    // coveredTile.get(),
+    // true);
+    // return getCoverBehavior().createWindow(buildContext);
+    // }
 
     public boolean isGUIClickable() {
         return getCoverBehavior().isGUIClickable(coverSide, coverID, coverData, coveredTile.get());

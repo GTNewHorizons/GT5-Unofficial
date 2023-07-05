@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,22 +18,6 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import com.google.common.collect.ImmutableList;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.math.Size;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
@@ -52,22 +35,18 @@ import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEItemStack;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.modularui.widget.AESlotWidget;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch_InputBus
-    implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState {
+    implements IConfigurationCircuitSupport, IPowerChannelState {
 
     private static final int SLOT_COUNT = 16;
     private BaseActionSource requestSource = null;
@@ -472,126 +451,126 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         return aIndex == getManualSlot();
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        final SlotWidget[] aeSlotWidgets = new SlotWidget[16];
-        buildContext.addSyncedWindow(CONFIG_WINDOW_ID, this::createStackSizeConfigurationWindow);
-        builder.widget(
-            SlotGroup.ofItemHandler(inventoryHandler, 4)
-                .startFromSlot(0)
-                .endAtSlot(15)
-                .phantom(true)
-                .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_ARROW_ME)
-                .widgetCreator(slot -> new SlotWidget(slot) {
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // final SlotWidget[] aeSlotWidgets = new SlotWidget[16];
+    // buildContext.addSyncedWindow(CONFIG_WINDOW_ID, this::createStackSizeConfigurationWindow);
+    // builder.widget(
+    // SlotGroup.ofItemHandler(inventoryHandler, 4)
+    // .startFromSlot(0)
+    // .endAtSlot(15)
+    // .phantom(true)
+    // .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_ARROW_ME)
+    // .widgetCreator(slot -> new SlotWidget(slot) {
+    //
+    // @Override
+    // protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
+    // if (clickData.mouseButton != 0 || autoPullItemList) return;
+    // final int aSlotIndex = getMcSlot().getSlotIndex();
+    // if (cursorStack == null) {
+    // getMcSlot().putStack(null);
+    // } else {
+    // if (containsSuchStack(cursorStack)) return;
+    // getMcSlot().putStack(GT_Utility.copyAmount(1L, cursorStack));
+    // }
+    // if (getBaseMetaTileEntity().isServerSide()) {
+    // final ItemStack newInfo = updateInformationSlot(aSlotIndex, cursorStack);
+    // aeSlotWidgets[getMcSlot().getSlotIndex()].getMcSlot()
+    // .putStack(newInfo);
+    // }
+    // }
+    //
+    // private boolean containsSuchStack(ItemStack tStack) {
+    // for (int i = 0; i < 16; ++i) {
+    // if (GT_Utility.areStacksEqual(mInventory[i], tStack, false)) return true;
+    // }
+    // return false;
+    // }
+    // })
+    // .build()
+    // .setPos(7, 9))
+    // .widget(
+    // SlotGroup.ofItemHandler(inventoryHandler, 4)
+    // .startFromSlot(16)
+    // .endAtSlot(31)
+    // .phantom(true)
+    // .background(GT_UITextures.SLOT_DARK_GRAY)
+    // .widgetCreator(
+    // slot -> aeSlotWidgets[slot.getSlotIndex() - 16] = new AESlotWidget(slot).disableInteraction())
+    // .build()
+    // .setPos(97, 9))
+    // .widget(
+    // new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_DOUBLE)
+    // .setPos(82, 30)
+    // .setSize(12, 12))
+    // .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+    // if (clickData.mouseButton == 0) {
+    // setAutoPullItemList(!autoPullItemList);
+    // } else if (clickData.mouseButton == 1 && !widget.isClient()) {
+    // widget.getContext()
+    // .openSyncedWindow(CONFIG_WINDOW_ID);
+    // }
+    // })
+    // .setPlayClickSound(true)
+    // .setBackground(() -> {
+    // List<UITexture> ret = new ArrayList<>();
+    // ret.add(GT_UITextures.BUTTON_STANDARD);
+    // if (autoPullItemList) ret.add(GT_UITextures.OVERLAY_BUTTON_AUTOPULL_ME);
+    // else ret.add(GT_UITextures.OVERLAY_BUTTON_AUTOPULL_ME_DISABLED);
+    // return ret.toArray(new IDrawable[0]);
+    // })
+    // .addTooltips(
+    // ImmutableList.of(
+    // "Click to toggle automatic item pulling from ME.",
+    // "Right-Click to edit minimum stack size for item pulling."))
+    // .setSize(16, 16)
+    // .setPos(80, 10))
+    // .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullItemList, this::setAutoPullItemList))
+    // .widget(
+    // new SlotWidget(inventoryHandler, getManualSlot())
+    // // ghost slots are prioritized over manual slot
+    // .setShiftClickPriority(11)
+    // .setBackground(getGUITextureSet().getItemSlot())
+    // .setPos(79, 45));
+    // }
 
-                    @Override
-                    protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
-                        if (clickData.mouseButton != 0 || autoPullItemList) return;
-                        final int aSlotIndex = getMcSlot().getSlotIndex();
-                        if (cursorStack == null) {
-                            getMcSlot().putStack(null);
-                        } else {
-                            if (containsSuchStack(cursorStack)) return;
-                            getMcSlot().putStack(GT_Utility.copyAmount(1L, cursorStack));
-                        }
-                        if (getBaseMetaTileEntity().isServerSide()) {
-                            final ItemStack newInfo = updateInformationSlot(aSlotIndex, cursorStack);
-                            aeSlotWidgets[getMcSlot().getSlotIndex()].getMcSlot()
-                                .putStack(newInfo);
-                        }
-                    }
+    // protected ModularWindow createStackSizeConfigurationWindow(final EntityPlayer player) {
+    // final int WIDTH = 78;
+    // final int HEIGHT = 40;
+    // final int PARENT_WIDTH = getGUIWidth();
+    // final int PARENT_HEIGHT = getGUIHeight();
+    // ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
+    // builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+    // builder.setGuiTint(getGUIColorization());
+    // builder.setDraggable(true);
+    // builder.setPos(
+    // (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
+    // .add(
+    // Alignment.TopRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
+    // .add(WIDTH - 3, 0)));
+    // builder.widget(
+    // new TextWidget("Min Stack Size").setPos(3, 2)
+    // .setSize(74, 14))
+    // .widget(
+    // new TextFieldWidget().setSetterInt(val -> minAutoPullStackSize = val)
+    // .setGetterInt(() -> minAutoPullStackSize)
+    // .setNumbers(1, Integer.MAX_VALUE)
+    // .setOnScrollNumbers(1, 4, 64)
+    // .setTextAlignment(Alignment.Center)
+    // .setTextColor(Color.WHITE.normal)
+    // .setSize(36, 18)
+    // .setPos(19, 18)
+    // .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD));
+    // return builder.build();
+    // }
 
-                    private boolean containsSuchStack(ItemStack tStack) {
-                        for (int i = 0; i < 16; ++i) {
-                            if (GT_Utility.areStacksEqual(mInventory[i], tStack, false)) return true;
-                        }
-                        return false;
-                    }
-                })
-                .build()
-                .setPos(7, 9))
-            .widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 4)
-                    .startFromSlot(16)
-                    .endAtSlot(31)
-                    .phantom(true)
-                    .background(GT_UITextures.SLOT_DARK_GRAY)
-                    .widgetCreator(
-                        slot -> aeSlotWidgets[slot.getSlotIndex() - 16] = new AESlotWidget(slot).disableInteraction())
-                    .build()
-                    .setPos(97, 9))
-            .widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_DOUBLE)
-                    .setPos(82, 30)
-                    .setSize(12, 12))
-            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (clickData.mouseButton == 0) {
-                    setAutoPullItemList(!autoPullItemList);
-                } else if (clickData.mouseButton == 1 && !widget.isClient()) {
-                    widget.getContext()
-                        .openSyncedWindow(CONFIG_WINDOW_ID);
-                }
-            })
-                .setPlayClickSound(true)
-                .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
-                    if (autoPullItemList) ret.add(GT_UITextures.OVERLAY_BUTTON_AUTOPULL_ME);
-                    else ret.add(GT_UITextures.OVERLAY_BUTTON_AUTOPULL_ME_DISABLED);
-                    return ret.toArray(new IDrawable[0]);
-                })
-                .addTooltips(
-                    ImmutableList.of(
-                        "Click to toggle automatic item pulling from ME.",
-                        "Right-Click to edit minimum stack size for item pulling."))
-                .setSize(16, 16)
-                .setPos(80, 10))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullItemList, this::setAutoPullItemList))
-            .widget(
-                new SlotWidget(inventoryHandler, getManualSlot())
-                    // ghost slots are prioritized over manual slot
-                    .setShiftClickPriority(11)
-                    .setBackground(getGUITextureSet().getItemSlot())
-                    .setPos(79, 45));
-    }
-
-    protected ModularWindow createStackSizeConfigurationWindow(final EntityPlayer player) {
-        final int WIDTH = 78;
-        final int HEIGHT = 40;
-        final int PARENT_WIDTH = getGUIWidth();
-        final int PARENT_HEIGHT = getGUIHeight();
-        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-        builder.setGuiTint(getGUIColorization());
-        builder.setDraggable(true);
-        builder.setPos(
-            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
-                .add(
-                    Alignment.TopRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
-                        .add(WIDTH - 3, 0)));
-        builder.widget(
-            new TextWidget("Min Stack Size").setPos(3, 2)
-                .setSize(74, 14))
-            .widget(
-                new TextFieldWidget().setSetterInt(val -> minAutoPullStackSize = val)
-                    .setGetterInt(() -> minAutoPullStackSize)
-                    .setNumbers(1, Integer.MAX_VALUE)
-                    .setOnScrollNumbers(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(36, 18)
-                    .setPos(19, 18)
-                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD));
-        return builder.build();
-    }
-
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                .setSize(17, 17)
-                .setPos(80, 63));
-    }
+    // @Override
+    // public void addGregTechLogo(ModularWindow.Builder builder) {
+    // builder.widget(
+    // new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
+    // .setSize(17, 17)
+    // .setPos(80, 63));
+    // }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,

@@ -3,13 +3,8 @@ package gregtech.common.tileentities.automation;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_RECIPEFILTER;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_RECIPEFILTER_GLOW;
 
-import java.util.Collections;
-import java.util.List;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
-import com.gtnewhorizons.modularui.api.drawable.Text;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -98,8 +93,8 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
         return mRecipeMap != null && mRecipeMap.containsInput(aStack);
     }
 
-    @Override
-    protected List<Text> getEmptySlotTooltip() {
-        return Collections.singletonList(Text.localised("GT5U.recipe_filter.representation_slot.tooltip"));
-    }
+    // @Override
+    // protected List<Text> getEmptySlotTooltip() {
+    // return Collections.singletonList(Text.localised("GT5U.recipe_filter.representation_slot.tooltip"));
+    // }
 }

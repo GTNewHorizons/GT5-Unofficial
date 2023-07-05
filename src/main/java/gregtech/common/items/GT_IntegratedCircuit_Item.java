@@ -26,8 +26,6 @@ import net.minecraftforge.common.util.FakePlayer;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.gtnewhorizons.modularui.api.UIInfos;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -44,7 +42,6 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
 
 public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetworkUpdatableItem {
 
@@ -293,15 +290,15 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
     }
 
     private void openSelectorGui(ItemStack configurator, int meta, EntityPlayer player) {
-        UIInfos.openClientUI(
-            player,
-            buildContext -> new SelectItemUIFactory(
-                StatCollector.translateToLocal("GT5U.item.programmed_circuit.select.header"),
-                configurator,
-                GT_IntegratedCircuit_Item::onConfigured,
-                ALL_VARIANTS,
-                meta,
-                true).createWindow(buildContext));
+        // UIInfos.openClientUI(
+        // player,
+        // buildContext -> new SelectItemUIFactory(
+        // StatCollector.translateToLocal("GT5U.item.programmed_circuit.select.header"),
+        // configurator,
+        // GT_IntegratedCircuit_Item::onConfigured,
+        // ALL_VARIANTS,
+        // meta,
+        // true).createWindow(buildContext));
     }
 
     private static void onConfigured(ItemStack stack) {

@@ -19,29 +19,18 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-
 import gregtech.GT_Mod;
 import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IFluidLockable;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.modularui.widget.FluidLockWidget;
 
-public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch
-    implements IFluidStore, IFluidLockable, IAddUIWidgets {
+public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch implements IFluidStore, IFluidLockable {
 
     private String lockedFluidName = null;
     private WeakReference<EntityPlayer> playerThatLockedfluid = null;
@@ -478,25 +467,25 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch
                         .getUnlocalizedName())) };
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                .setPos(98, 16)
-                .setSize(71, 45))
-            .widget(new FluidLockWidget(this).setPos(149, 41))
-            .widget(
-                new TextWidget("Locked Fluid").setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(101, 20))
-            .widget(TextWidget.dynamicString(() -> {
-                FluidStack fluidStack = FluidRegistry.getFluidStack(lockedFluidName, 1);
-                return fluidStack != null ? fluidStack.getLocalizedName() : "None";
-            })
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setTextAlignment(Alignment.CenterLeft)
-                .setMaxWidth(65)
-                .setPos(101, 30))
-            .widget(new FakeSyncWidget.ByteSyncer(() -> mMode, val -> mMode = val));
-    }
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // super.addUIWidgets(builder, buildContext);
+    // builder.widget(
+    // new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+    // .setPos(98, 16)
+    // .setSize(71, 45))
+    // .widget(new FluidLockWidget(this).setPos(149, 41))
+    // .widget(
+    // new TextWidget("Locked Fluid").setDefaultColor(COLOR_TEXT_WHITE.get())
+    // .setPos(101, 20))
+    // .widget(TextWidget.dynamicString(() -> {
+    // FluidStack fluidStack = FluidRegistry.getFluidStack(lockedFluidName, 1);
+    // return fluidStack != null ? fluidStack.getLocalizedName() : "None";
+    // })
+    // .setDefaultColor(COLOR_TEXT_WHITE.get())
+    // .setTextAlignment(Alignment.CenterLeft)
+    // .setMaxWidth(65)
+    // .setPos(101, 30))
+    // .widget(new FakeSyncWidget.ByteSyncer(() -> mMode, val -> mMode = val));
+    // }
 }

@@ -13,20 +13,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import com.google.common.io.ByteArrayDataInput;
-import com.gtnewhorizons.modularui.api.math.MathExpression;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
-import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
 public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_AdvancedWirelessRedstoneBase.WirelessData>
@@ -226,75 +219,75 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
         return true;
     }
 
-    protected abstract class AdvancedWirelessRedstoneBaseUIFactory extends UIFactory {
-
-        protected static final int startX = 10;
-        protected static final int startY = 25;
-        protected static final int spaceX = 18;
-        protected static final int spaceY = 18;
-
-        public AdvancedWirelessRedstoneBaseUIFactory(GT_CoverUIBuildContext buildContext) {
-            super(buildContext);
-        }
-
-        @Override
-        protected int getGUIWidth() {
-            return 250;
-        }
-
-        @Override
-        protected void addUIWidgets(ModularWindow.Builder builder) {
-            final int privateExtraColumn = isShiftPrivateLeft() ? 1 : 5;
-
-            CoverDataControllerWidget<T> dataController = new CoverDataControllerWidget<>(
-                this::getCoverData,
-                this::setCoverData,
-                GT_Cover_AdvancedWirelessRedstoneBase.this);
-            dataController.setPos(startX, startY);
-            addUIForDataController(dataController);
-
-            builder.widget(dataController)
-                .widget(
-                    new TextWidget(GT_Utility.trans("246", "Frequency")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 5, 4 + startY + spaceY * getFrequencyRow()))
-                .widget(
-                    new TextWidget(GT_Utility.trans("602", "Use Private Frequency"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * privateExtraColumn, 4 + startY + spaceY * getButtonRow()));
-        }
-
-        protected void addUIForDataController(CoverDataControllerWidget<T> controller) {
-            controller.addFollower(
-                new CoverDataFollower_TextFieldWidget<>(),
-                coverData -> String.valueOf(coverData.frequency),
-                (coverData, state) -> {
-                    coverData.frequency = (int) MathExpression.parseMathExpression(state);
-                    return coverData;
-                },
-                widget -> widget.setOnScrollNumbers()
-                    .setNumbers(0, Integer.MAX_VALUE)
-                    .setFocusOnGuiOpen(true)
-                    .setPos(1, 2 + spaceY * getFrequencyRow())
-                    .setSize(spaceX * 5 - 4, 12))
-                .addFollower(
-                    CoverDataFollower_ToggleButtonWidget.ofCheck(),
-                    coverData -> coverData.uuid != null,
-                    (coverData, state) -> {
-                        if (state) {
-                            coverData.uuid = getUIBuildContext().getPlayer()
-                                .getUniqueID();
-                        } else {
-                            coverData.uuid = null;
-                        }
-                        return coverData;
-                    },
-                    widget -> widget.setPos(0, spaceY * getButtonRow()));
-        }
-
-        protected abstract int getFrequencyRow();
-
-        protected abstract int getButtonRow();
-
-        protected abstract boolean isShiftPrivateLeft();
-    }
+    // protected abstract class AdvancedWirelessRedstoneBaseUIFactory extends UIFactory {
+    //
+    // protected static final int startX = 10;
+    // protected static final int startY = 25;
+    // protected static final int spaceX = 18;
+    // protected static final int spaceY = 18;
+    //
+    // public AdvancedWirelessRedstoneBaseUIFactory(GT_CoverUIBuildContext buildContext) {
+    // super(buildContext);
+    // }
+    //
+    // @Override
+    // protected int getGUIWidth() {
+    // return 250;
+    // }
+    //
+    // @Override
+    // protected void addUIWidgets(ModularWindow.Builder builder) {
+    // final int privateExtraColumn = isShiftPrivateLeft() ? 1 : 5;
+    //
+    // CoverDataControllerWidget<T> dataController = new CoverDataControllerWidget<>(
+    // this::getCoverData,
+    // this::setCoverData,
+    // GT_Cover_AdvancedWirelessRedstoneBase.this);
+    // dataController.setPos(startX, startY);
+    // addUIForDataController(dataController);
+    //
+    // builder.widget(dataController)
+    // .widget(
+    // new TextWidget(GT_Utility.trans("246", "Frequency")).setDefaultColor(COLOR_TEXT_GRAY.get())
+    // .setPos(startX + spaceX * 5, 4 + startY + spaceY * getFrequencyRow()))
+    // .widget(
+    // new TextWidget(GT_Utility.trans("602", "Use Private Frequency"))
+    // .setDefaultColor(COLOR_TEXT_GRAY.get())
+    // .setPos(startX + spaceX * privateExtraColumn, 4 + startY + spaceY * getButtonRow()));
+    // }
+    //
+    // protected void addUIForDataController(CoverDataControllerWidget<T> controller) {
+    // controller.addFollower(
+    // new CoverDataFollower_TextFieldWidget<>(),
+    // coverData -> String.valueOf(coverData.frequency),
+    // (coverData, state) -> {
+    // coverData.frequency = (int) MathExpression.parseMathExpression(state);
+    // return coverData;
+    // },
+    // widget -> widget.setOnScrollNumbers()
+    // .setNumbers(0, Integer.MAX_VALUE)
+    // .setFocusOnGuiOpen(true)
+    // .setPos(1, 2 + spaceY * getFrequencyRow())
+    // .setSize(spaceX * 5 - 4, 12))
+    // .addFollower(
+    // CoverDataFollower_ToggleButtonWidget.ofCheck(),
+    // coverData -> coverData.uuid != null,
+    // (coverData, state) -> {
+    // if (state) {
+    // coverData.uuid = getUIBuildContext().getPlayer()
+    // .getUniqueID();
+    // } else {
+    // coverData.uuid = null;
+    // }
+    // return coverData;
+    // },
+    // widget -> widget.setPos(0, spaceY * getButtonRow()));
+    // }
+    //
+    // protected abstract int getFrequencyRow();
+    //
+    // protected abstract int getButtonRow();
+    //
+    // protected abstract boolean isShiftPrivateLeft();
+    // }
 }

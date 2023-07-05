@@ -15,19 +15,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.TierEU;
-import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
@@ -346,26 +339,26 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
         return SteamVariant.BRONZE;
     }
 
-    @Override
-    public GUITextureSet getGUITextureSet() {
-        return GUITextureSet.STEAM.apply(getSteamVariant());
-    }
+    // @Override
+    // public GUITextureSet getGUITextureSet() {
+    // return GUITextureSet.STEAM.apply(getSteamVariant());
+    // }
 
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                .setSize(17, 17)
-                .setPos(152, 63));
-    }
+    // @Override
+    // public void addGregTechLogo(ModularWindow.Builder builder) {
+    // builder.widget(
+    // new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
+    // .setSize(17, 17)
+    // .setPos(152, 63));
+    // }
 
-    @Override
-    protected FluidSlotWidget createFluidInputSlot(IDrawable[] backgrounds, Pos2d pos) {
-        return null;
-    }
+    // @Override
+    // protected FluidSlotWidget createFluidInputSlot(IDrawable[] backgrounds, Pos2d pos) {
+    // return null;
+    // }
 
-    @Override
-    protected FluidSlotWidget createFluidOutputSlot(IDrawable[] backgrounds, Pos2d pos) {
-        return null;
-    }
+    // @Override
+    // protected FluidSlotWidget createFluidOutputSlot(IDrawable[] backgrounds, Pos2d pos) {
+    // return null;
+    // }
 }

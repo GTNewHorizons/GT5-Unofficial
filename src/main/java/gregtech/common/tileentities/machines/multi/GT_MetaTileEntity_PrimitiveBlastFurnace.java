@@ -23,22 +23,13 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ProgressBar;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ParticleFX;
-import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.gui.modularui.GUITextureSet;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
-import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
@@ -49,7 +40,7 @@ import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GT_Pollution;
 
 public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEntity
-    implements IAlignment, ISurvivalConstructable, IAddUIWidgets, IGetTitleColor {
+    implements IAlignment, ISurvivalConstructable {
 
     public static final int INPUT_SLOTS = 3, OUTPUT_SLOTS = 3;
     private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_PrimitiveBlastFurnace>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -502,60 +493,60 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                 hintsOnly);
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder
-            .widget(
-                new SlotWidget(inventoryHandler, 0)
-                    .setBackground(
-                        getGUITextureSet().getItemSlot(),
-                        GT_UITextures.OVERLAY_SLOT_INGOT_STEAM.get(getSteamVariant()))
-                    .setPos(33, 15))
-            .widget(
-                new SlotWidget(inventoryHandler, 1)
-                    .setBackground(
-                        getGUITextureSet().getItemSlot(),
-                        GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()))
-                    .setPos(33, 33))
-            .widget(
-                new SlotWidget(inventoryHandler, 2)
-                    .setBackground(
-                        getGUITextureSet().getItemSlot(),
-                        GT_UITextures.OVERLAY_SLOT_FURNACE_STEAM.get(getSteamVariant()))
-                    .setPos(33, 51))
-            .widget(
-                new SlotWidget(inventoryHandler, 3).setAccess(true, false)
-                    .setBackground(
-                        getGUITextureSet().getItemSlot(),
-                        GT_UITextures.OVERLAY_SLOT_INGOT_STEAM.get(getSteamVariant()))
-                    .setPos(85, 24))
-            .widget(
-                new SlotWidget(inventoryHandler, 4).setAccess(true, false)
-                    .setBackground(
-                        getGUITextureSet().getItemSlot(),
-                        GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()))
-                    .setPos(103, 24))
-            .widget(
-                new SlotWidget(inventoryHandler, 5).setAccess(true, false)
-                    .setBackground(
-                        getGUITextureSet().getItemSlot(),
-                        GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()))
-                    .setPos(121, 24))
-            .widget(
-                new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ARROW_2_STEAM.get(getSteamVariant()), 20)
-                    .setProgress(() -> (float) mProgresstime / mMaxProgresstime)
-                    .setNEITransferRect(getRecipeMap().mNEIName)
-                    .setPos(58, 24)
-                    .setSize(20, 18));
-    }
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // builder
+    // .widget(
+    // new SlotWidget(inventoryHandler, 0)
+    // .setBackground(
+    // getGUITextureSet().getItemSlot(),
+    // GT_UITextures.OVERLAY_SLOT_INGOT_STEAM.get(getSteamVariant()))
+    // .setPos(33, 15))
+    // .widget(
+    // new SlotWidget(inventoryHandler, 1)
+    // .setBackground(
+    // getGUITextureSet().getItemSlot(),
+    // GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()))
+    // .setPos(33, 33))
+    // .widget(
+    // new SlotWidget(inventoryHandler, 2)
+    // .setBackground(
+    // getGUITextureSet().getItemSlot(),
+    // GT_UITextures.OVERLAY_SLOT_FURNACE_STEAM.get(getSteamVariant()))
+    // .setPos(33, 51))
+    // .widget(
+    // new SlotWidget(inventoryHandler, 3).setAccess(true, false)
+    // .setBackground(
+    // getGUITextureSet().getItemSlot(),
+    // GT_UITextures.OVERLAY_SLOT_INGOT_STEAM.get(getSteamVariant()))
+    // .setPos(85, 24))
+    // .widget(
+    // new SlotWidget(inventoryHandler, 4).setAccess(true, false)
+    // .setBackground(
+    // getGUITextureSet().getItemSlot(),
+    // GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()))
+    // .setPos(103, 24))
+    // .widget(
+    // new SlotWidget(inventoryHandler, 5).setAccess(true, false)
+    // .setBackground(
+    // getGUITextureSet().getItemSlot(),
+    // GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()))
+    // .setPos(121, 24))
+    // .widget(
+    // new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ARROW_2_STEAM.get(getSteamVariant()), 20)
+    // .setProgress(() -> (float) mProgresstime / mMaxProgresstime)
+    // .setNEITransferRect(getRecipeMap().mNEIName)
+    // .setPos(58, 24)
+    // .setSize(20, 18));
+    // }
 
-    @Override
-    public GUITextureSet getGUITextureSet() {
-        return GUITextureSet.STEAM.apply(getSteamVariant());
-    }
+    // @Override
+    // public GUITextureSet getGUITextureSet() {
+    // return GUITextureSet.STEAM.apply(getSteamVariant());
+    // }
 
-    @Override
-    public int getTitleColor() {
-        return getSteamVariant() == SteamVariant.BRONZE ? COLOR_TITLE.get() : COLOR_TITLE_WHITE.get();
-    }
+    // @Override
+    // public int getTitleColor() {
+    // return getSteamVariant() == SteamVariant.BRONZE ? COLOR_TITLE.get() : COLOR_TITLE_WHITE.get();
+    // }
 }

@@ -33,8 +33,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 
-import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
@@ -248,13 +246,13 @@ public abstract class MultiTileEntity extends CoverableTileEntity
             readCoverNBT(nbt);
             readMultiTileNBT(nbt);
 
-            if (NetworkUtils.isDedicatedClient()) {
-                if (GregTech_API.sBlockIcons == null && nbt.hasKey(NBT.TEXTURE_FOLDER)) {
-                    loadTextures(nbt.getString(NBT.TEXTURE_FOLDER));
-                } else {
-                    copyTextures();
-                }
-            }
+            // if (NetworkUtils.isDedicatedClient()) {
+            // if (GregTech_API.sBlockIcons == null && nbt.hasKey(NBT.TEXTURE_FOLDER)) {
+            // loadTextures(nbt.getString(NBT.TEXTURE_FOLDER));
+            // } else {
+            // copyTextures();
+            // }
+            // }
 
             if (mSidedRedstone.length != 6) mSidedRedstone = new byte[] { 15, 15, 15, 15, 15, 15 };
 

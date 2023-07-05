@@ -50,23 +50,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureElementChain;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
-import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.forge.IItemHandler;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.forge.ListItemHandler;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.*;
-import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
-import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
-import com.gtnewhorizons.modularui.common.widget.Scrollable;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TabButton;
-import com.gtnewhorizons.modularui.common.widget.TabContainer;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gnu.trove.list.TIntList;
@@ -77,7 +64,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.fluid.FluidTankGT;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.modularui.ControllerWithOptionalFeatures;
@@ -1716,202 +1702,202 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
      * GUI Work - Multiblock GUI related methods
      */
 
-    @Override
-    public ModularWindow createWindow(UIBuildContext buildContext) {
-        System.out.println("MultiBlockController::createWindow");
-
-        buildContext.setValidator(getValidator());
-        final ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
-        builder.setBackground(getGUITextureSet().getMainBackground());
-        builder.setGuiTint(getGUIColorization());
-        if (doesBindPlayerInventory()) {
-            bindPlayerInventoryUI(builder, buildContext);
-        }
-        addUIWidgets(builder, buildContext);
-        addTitleToUI(builder);
-        addCoverTabs(builder, buildContext);
-        return builder.build();
-    }
+    // @Override
+    // public ModularWindow createWindow(UIBuildContext buildContext) {
+    // System.out.println("MultiBlockController::createWindow");
+    //
+    // buildContext.setValidator(getValidator());
+    // final ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
+    // builder.setBackground(getGUITextureSet().getMainBackground());
+    // builder.setGuiTint(getGUIColorization());
+    // if (doesBindPlayerInventory()) {
+    // bindPlayerInventoryUI(builder, buildContext);
+    // }
+    // addUIWidgets(builder, buildContext);
+    // addTitleToUI(builder);
+    // addCoverTabs(builder, buildContext);
+    // return builder.build();
+    // }
 
     @Override
     public boolean hasGui(ForgeDirection side) {
         return true;
     }
 
-    @Override
-    protected void addTitleTextStyle(ModularWindow.Builder builder, String title) {
-        // leave empty
-    }
+    // @Override
+    // protected void addTitleTextStyle(ModularWindow.Builder builder, String title) {
+    // // leave empty
+    // }
 
     @Override
     public int getGUIHeight() {
         return 192;
     }
 
-    protected Widget getGregTechLogo() {
-        return new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-            .setSize(17, 17);
-    }
+    // protected Widget getGregTechLogo() {
+    // return new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
+    // .setSize(17, 17);
+    // }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        if (isServerSide()) {
-            for (UpgradeCasing tPart : upgradeCasings) {
-                if (!(tPart instanceof Inventory)) continue;
-                tPart.issueClientUpdate();
-            }
-        }
-        int page = 0;
-        TabContainer tabs = new TabContainer().setButtonSize(20, 24);
-        tabs.addTabButton(
-            new TabButton(page++)
-                .setBackground(
-                    false,
-                    ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f),
-                    new ItemDrawable(getStackForm(1)).withFixedSize(16, 16)
-                        .withOffset(2, 4))
-                .setBackground(
-                    true,
-                    ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f),
-                    new ItemDrawable(getStackForm(1)).withFixedSize(16, 16)
-                        .withOffset(2, 4))
-                .addTooltip(getLocalName())
-                .setPos(20 * (page - 1), -20))
-            .addPage(createMainPage(builder).setSize(getGUIWidth(), getGUIHeight()));
-        if (hasItemInput()) {
-            tabs.addTabButton(
-                new TabButton(page++)
-                    .setBackground(
-                        false,
-                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
-                        GT_UITextures.PICTURE_ITEM_IN.withFixedSize(16, 16)
-                            .withOffset(2, 4))
-                    .setBackground(
-                        true,
-                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
-                        GT_UITextures.PICTURE_ITEM_IN.withFixedSize(16, 16)
-                            .withOffset(2, 4))
-                    .setPos(20 * (page - 1), -20))
-                .addPage(
-                    new MultiChildWidget().addChild(getItemInventoryInputGUI())
-                        .addChild(getGregTechLogo().setPos(147, 86))
-                        .setSize(getGUIWidth(), getGUIHeight()));
-        }
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // if (isServerSide()) {
+    // for (UpgradeCasing tPart : upgradeCasings) {
+    // if (!(tPart instanceof Inventory)) continue;
+    // tPart.issueClientUpdate();
+    // }
+    // }
+    // int page = 0;
+    // TabContainer tabs = new TabContainer().setButtonSize(20, 24);
+    // tabs.addTabButton(
+    // new TabButton(page++)
+    // .setBackground(
+    // false,
+    // ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f),
+    // new ItemDrawable(getStackForm(1)).withFixedSize(16, 16)
+    // .withOffset(2, 4))
+    // .setBackground(
+    // true,
+    // ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f),
+    // new ItemDrawable(getStackForm(1)).withFixedSize(16, 16)
+    // .withOffset(2, 4))
+    // .addTooltip(getLocalName())
+    // .setPos(20 * (page - 1), -20))
+    // .addPage(createMainPage(builder).setSize(getGUIWidth(), getGUIHeight()));
+    // if (hasItemInput()) {
+    // tabs.addTabButton(
+    // new TabButton(page++)
+    // .setBackground(
+    // false,
+    // ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
+    // GT_UITextures.PICTURE_ITEM_IN.withFixedSize(16, 16)
+    // .withOffset(2, 4))
+    // .setBackground(
+    // true,
+    // ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
+    // GT_UITextures.PICTURE_ITEM_IN.withFixedSize(16, 16)
+    // .withOffset(2, 4))
+    // .setPos(20 * (page - 1), -20))
+    // .addPage(
+    // new MultiChildWidget().addChild(getItemInventoryInputGUI())
+    // .addChild(getGregTechLogo().setPos(147, 86))
+    // .setSize(getGUIWidth(), getGUIHeight()));
+    // }
+    //
+    // if (hasItemOutput()) {
+    // tabs.addTabButton(
+    // new TabButton(page++)
+    // .setBackground(
+    // false,
+    // ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
+    // GT_UITextures.PICTURE_ITEM_OUT.withFixedSize(16, 16)
+    // .withOffset(2, 4))
+    // .setBackground(
+    // true,
+    // ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
+    // GT_UITextures.PICTURE_ITEM_OUT.withFixedSize(16, 16)
+    // .withOffset(2, 4))
+    // .setPos(20 * (page - 1), -20))
+    // .addPage(
+    // new MultiChildWidget().addChild(getItemInventoryOutputGUI())
+    // .addChild(getGregTechLogo().setPos(147, 86))
+    // .setSize(getGUIWidth(), getGUIHeight()));
+    // }
+    //
+    // if (hasFluidInput()) {
+    // tabs.addTabButton(
+    // new TabButton(page++)
+    // .setBackground(
+    // false,
+    // ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
+    // GT_UITextures.PICTURE_FLUID_IN.withFixedSize(16, 16)
+    // .withOffset(2, 4))
+    // .setBackground(
+    // true,
+    // ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
+    // GT_UITextures.PICTURE_FLUID_IN.withFixedSize(16, 16)
+    // .withOffset(2, 4))
+    // .setPos(20 * (page - 1), -20))
+    // .addPage(
+    // new MultiChildWidget().addChild(getFluidInventoryInputGUI())
+    // .addChild(getGregTechLogo().setPos(147, 86))
+    // .setSize(getGUIWidth(), getGUIHeight()));
+    // }
+    //
+    // if (hasFluidOutput()) {
+    // tabs.addTabButton(
+    // new TabButton(page++)
+    // .setBackground(
+    // false,
+    // ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
+    // GT_UITextures.PICTURE_FLUID_OUT.withFixedSize(16, 16)
+    // .withOffset(2, 4))
+    // .setBackground(
+    // true,
+    // ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
+    // GT_UITextures.PICTURE_FLUID_OUT.withFixedSize(16, 16)
+    // .withOffset(2, 4))
+    // .setPos(20 * (page - 1), -20))
+    // .addPage(
+    // new MultiChildWidget().addChild(getFluidInventoryOutputGUI())
+    // .addChild(getGregTechLogo().setPos(147, 86))
+    // .setSize(getGUIWidth(), getGUIHeight()));
+    // }
+    // builder.widget(tabs);
+    // }
 
-        if (hasItemOutput()) {
-            tabs.addTabButton(
-                new TabButton(page++)
-                    .setBackground(
-                        false,
-                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
-                        GT_UITextures.PICTURE_ITEM_OUT.withFixedSize(16, 16)
-                            .withOffset(2, 4))
-                    .setBackground(
-                        true,
-                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
-                        GT_UITextures.PICTURE_ITEM_OUT.withFixedSize(16, 16)
-                            .withOffset(2, 4))
-                    .setPos(20 * (page - 1), -20))
-                .addPage(
-                    new MultiChildWidget().addChild(getItemInventoryOutputGUI())
-                        .addChild(getGregTechLogo().setPos(147, 86))
-                        .setSize(getGUIWidth(), getGUIHeight()));
-        }
+    // protected MultiChildWidget createMainPage(IWidgetBuilder<?> builder) {
+    // MultiChildWidget page = new MultiChildWidget();
+    // page.addChild(
+    // new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+    // .setPos(7, 4)
+    // .setSize(160, 75))
+    // .addChild(createButtons(builder));
+    // return page;
+    // }
 
-        if (hasFluidInput()) {
-            tabs.addTabButton(
-                new TabButton(page++)
-                    .setBackground(
-                        false,
-                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
-                        GT_UITextures.PICTURE_FLUID_IN.withFixedSize(16, 16)
-                            .withOffset(2, 4))
-                    .setBackground(
-                        true,
-                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
-                        GT_UITextures.PICTURE_FLUID_IN.withFixedSize(16, 16)
-                            .withOffset(2, 4))
-                    .setPos(20 * (page - 1), -20))
-                .addPage(
-                    new MultiChildWidget().addChild(getFluidInventoryInputGUI())
-                        .addChild(getGregTechLogo().setPos(147, 86))
-                        .setSize(getGUIWidth(), getGUIHeight()));
-        }
+    // protected MultiChildWidget createButtons(IWidgetBuilder<?> builder) {
+    // MultiChildWidget buttons = new MultiChildWidget();
+    // buttons.setSize(16, 167)
+    // .setPos(7, 86);
+    // buttons.addChild(createPowerSwitchButton(builder))
+    // .addChild(createVoidExcessButton(builder))
+    // .addChild(createInputSeparationButton(builder))
+    // .addChild(createBatchModeButton(builder))
+    // .addChild(createLockToSingleRecipeButton(builder));
+    //
+    // return buttons;
+    // }
 
-        if (hasFluidOutput()) {
-            tabs.addTabButton(
-                new TabButton(page++)
-                    .setBackground(
-                        false,
-                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
-                        GT_UITextures.PICTURE_FLUID_OUT.withFixedSize(16, 16)
-                            .withOffset(2, 4))
-                    .setBackground(
-                        true,
-                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
-                        GT_UITextures.PICTURE_FLUID_OUT.withFixedSize(16, 16)
-                            .withOffset(2, 4))
-                    .setPos(20 * (page - 1), -20))
-                .addPage(
-                    new MultiChildWidget().addChild(getFluidInventoryOutputGUI())
-                        .addChild(getGregTechLogo().setPos(147, 86))
-                        .setSize(getGUIWidth(), getGUIHeight()));
-        }
-        builder.widget(tabs);
-    }
+    // protected Widget getItemInventoryInputGUI() {
+    // final IItemHandlerModifiable inv = getInventoriesForInput();
+    // final Scrollable scrollable = new Scrollable().setVerticalScroll();
+    // for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
+    // final int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
+    // for (int column = 0; column < columnsToMake; column++) {
+    // scrollable.widget(
+    // new SlotWidget(inv, rows * 4 + column).setPos(column * 18, rows * 18)
+    // .setSize(18, 18));
+    // }
+    // }
+    // return scrollable.setSize(18 * 4 + 4, 18 * 5)
+    // .setPos(52, 7);
+    // }
 
-    protected MultiChildWidget createMainPage(IWidgetBuilder<?> builder) {
-        MultiChildWidget page = new MultiChildWidget();
-        page.addChild(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                .setPos(7, 4)
-                .setSize(160, 75))
-            .addChild(createButtons(builder));
-        return page;
-    }
-
-    protected MultiChildWidget createButtons(IWidgetBuilder<?> builder) {
-        MultiChildWidget buttons = new MultiChildWidget();
-        buttons.setSize(16, 167)
-            .setPos(7, 86);
-        buttons.addChild(createPowerSwitchButton(builder))
-            .addChild(createVoidExcessButton(builder))
-            .addChild(createInputSeparationButton(builder))
-            .addChild(createBatchModeButton(builder))
-            .addChild(createLockToSingleRecipeButton(builder));
-
-        return buttons;
-    }
-
-    protected Widget getItemInventoryInputGUI() {
-        final IItemHandlerModifiable inv = getInventoriesForInput();
-        final Scrollable scrollable = new Scrollable().setVerticalScroll();
-        for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
-            final int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
-            for (int column = 0; column < columnsToMake; column++) {
-                scrollable.widget(
-                    new SlotWidget(inv, rows * 4 + column).setPos(column * 18, rows * 18)
-                        .setSize(18, 18));
-            }
-        }
-        return scrollable.setSize(18 * 4 + 4, 18 * 5)
-            .setPos(52, 7);
-    }
-
-    protected Widget getItemInventoryOutputGUI() {
-        final IItemHandlerModifiable inv = getInventoriesForOutput();
-        final Scrollable scrollable = new Scrollable().setVerticalScroll();
-        for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
-            final int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
-            for (int column = 0; column < columnsToMake; column++) {
-                scrollable.widget(
-                    new SlotWidget(inv, rows * 4 + column).setPos(column * 18, rows * 18)
-                        .setSize(18, 18));
-            }
-        }
-        return scrollable.setSize(18 * 4 + 4, 18 * 5)
-            .setPos(52, 7);
-    }
+    // protected Widget getItemInventoryOutputGUI() {
+    // final IItemHandlerModifiable inv = getInventoriesForOutput();
+    // final Scrollable scrollable = new Scrollable().setVerticalScroll();
+    // for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
+    // final int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
+    // for (int column = 0; column < columnsToMake; column++) {
+    // scrollable.widget(
+    // new SlotWidget(inv, rows * 4 + column).setPos(column * 18, rows * 18)
+    // .setSize(18, 18));
+    // }
+    // }
+    // return scrollable.setSize(18 * 4 + 4, 18 * 5)
+    // .setPos(52, 7);
+    // }
 
     protected IItemHandlerModifiable getInventoriesForInput() {
         return new ListItemHandler(multiBlockInputInventory.values());
@@ -1921,43 +1907,43 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         return new ListItemHandler(multiBlockOutputInventory.values());
     }
 
-    protected Widget getFluidInventoryInputGUI() {
-        final IFluidTank[] tanks = getTanksForInput();
-        final Scrollable scrollable = new Scrollable().setVerticalScroll();
-        for (int rows = 0; rows * 4 < tanks.length; rows++) {
-            final int columnsToMake = Math.min(tanks.length - rows * 4, 4);
-            for (int column = 0; column < columnsToMake; column++) {
-                final FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
-                scrollable.widget(
-                    fluidSlot.setPos(column * 18, rows * 18)
-                        .setSize(18, 18));
-            }
-        }
-        return scrollable.setSize(18 * 4 + 4, 18 * 5)
-            .setPos(52, 7);
-    }
+    // protected Widget getFluidInventoryInputGUI() {
+    // final IFluidTank[] tanks = getTanksForInput();
+    // final Scrollable scrollable = new Scrollable().setVerticalScroll();
+    // for (int rows = 0; rows * 4 < tanks.length; rows++) {
+    // final int columnsToMake = Math.min(tanks.length - rows * 4, 4);
+    // for (int column = 0; column < columnsToMake; column++) {
+    // final FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
+    // scrollable.widget(
+    // fluidSlot.setPos(column * 18, rows * 18)
+    // .setSize(18, 18));
+    // }
+    // }
+    // return scrollable.setSize(18 * 4 + 4, 18 * 5)
+    // .setPos(52, 7);
+    // }
 
-    protected Widget getFluidInventoryOutputGUI() {
-        final IFluidTank[] tanks = getTanksForOutput();
-        final Scrollable scrollable = new Scrollable().setVerticalScroll();
-        for (int rows = 0; rows * 4 < tanks.length; rows++) {
-            final int columnsToMake = Math.min(tanks.length - rows * 4, 4);
-            for (int column = 0; column < columnsToMake; column++) {
-                final FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
-                fluidSlot.setInteraction(true, false);
-                scrollable.widget(
-                    fluidSlot.setPos(column * 18, rows * 18)
-                        .setSize(18, 18));
-            }
-        }
-        return scrollable.setSize(18 * 4 + 4, 18 * 5)
-            .setPos(52, 7);
-    }
+    // protected Widget getFluidInventoryOutputGUI() {
+    // final IFluidTank[] tanks = getTanksForOutput();
+    // final Scrollable scrollable = new Scrollable().setVerticalScroll();
+    // for (int rows = 0; rows * 4 < tanks.length; rows++) {
+    // final int columnsToMake = Math.min(tanks.length - rows * 4, 4);
+    // for (int column = 0; column < columnsToMake; column++) {
+    // final FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
+    // fluidSlot.setInteraction(true, false);
+    // scrollable.widget(
+    // fluidSlot.setPos(column * 18, rows * 18)
+    // .setSize(18, 18));
+    // }
+    // }
+    // return scrollable.setSize(18 * 4 + 4, 18 * 5)
+    // .setPos(52, 7);
+    // }
 
-    @Override
-    public Pos2d getPowerSwitchButtonPos() {
-        return new Pos2d(144, 0);
-    }
+    // @Override
+    // public Pos2d getPowerSwitchButtonPos() {
+    // return new Pos2d(144, 0);
+    // }
 
     @Override
     public boolean supportsVoidProtection() {
@@ -2001,10 +1987,10 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         return false;
     }
 
-    @Override
-    public Pos2d getVoidingModeButtonPos() {
-        return new Pos2d(54, 0);
-    }
+    // @Override
+    // public Pos2d getVoidingModeButtonPos() {
+    // return new Pos2d(54, 0);
+    // }
 
     @Override
     public boolean supportsInputSeparation() {
@@ -2021,10 +2007,10 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         this.separateInputs = enabled;
     }
 
-    @Override
-    public Pos2d getInputSeparationButtonPos() {
-        return new Pos2d(36, 0);
-    }
+    // @Override
+    // public Pos2d getInputSeparationButtonPos() {
+    // return new Pos2d(36, 0);
+    // }
 
     @Override
     public boolean supportsBatchMode() {
@@ -2041,10 +2027,10 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         this.batchMode = mode;
     }
 
-    @Override
-    public Pos2d getBatchModeButtonPos() {
-        return new Pos2d(18, 0);
-    }
+    // @Override
+    // public Pos2d getBatchModeButtonPos() {
+    // return new Pos2d(18, 0);
+    // }
 
     @Override
     public boolean supportsSingleRecipeLocking() {
@@ -2061,15 +2047,15 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         this.recipeLock = enabled;
     }
 
-    @Override
-    public Pos2d getRecipeLockingButtonPos() {
-        return new Pos2d(0, 0);
-    }
+    // @Override
+    // public Pos2d getRecipeLockingButtonPos() {
+    // return new Pos2d(0, 0);
+    // }
 
-    @Override
-    public ModularWindow createWindowGUI(UIBuildContext buildContext) {
-        return createWindow(buildContext);
-    }
+    // @Override
+    // public ModularWindow createWindowGUI(UIBuildContext buildContext) {
+    // return createWindow(buildContext);
+    // }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,

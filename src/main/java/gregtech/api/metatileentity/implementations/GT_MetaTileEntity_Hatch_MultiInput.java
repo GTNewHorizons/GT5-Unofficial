@@ -7,29 +7,21 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
-import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
-
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 
-public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_Input implements IAddUIWidgets {
+public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_Input {
 
     private final FluidStack[] mStoredFluid;
-    private final FluidStackTank[] fluidTanks;
+    // private final FluidStackTank[] fluidTanks;
     public final int mCapacityPer;
 
     public GT_MetaTileEntity_Hatch_MultiInput(int aID, int aSlot, String aName, String aNameRegional, int aTier) {
         super(aID, aSlot, aName, aNameRegional, aTier);
         this.mStoredFluid = new FluidStack[aSlot];
-        fluidTanks = new FluidStackTank[aSlot];
+        // fluidTanks = new FluidStackTank[aSlot];
         mCapacityPer = 8000 * (1 << aTier) / aSlot;
     }
 
@@ -37,14 +29,14 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
         ITexture[][][] aTextures) {
         super(aName, aSlot, aTier, aDescription, aTextures);
         this.mStoredFluid = new FluidStack[aSlot];
-        fluidTanks = new FluidStackTank[aSlot];
+        // fluidTanks = new FluidStackTank[aSlot];
         mCapacityPer = 8000 * (1 << aTier) / aSlot;
         for (int i = 0; i < aSlot; i++) {
             final int index = i;
-            fluidTanks[i] = new FluidStackTank(
-                () -> mStoredFluid[index],
-                fluid -> mStoredFluid[index] = fluid,
-                mCapacityPer);
+            // fluidTanks[i] = new FluidStackTank(
+            // () -> mStoredFluid[index],
+            // fluid -> mStoredFluid[index] = fluid,
+            // mCapacityPer);
         }
     }
 
@@ -277,16 +269,16 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
         return aIndex >= 4;
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        final int SLOT_NUMBER = 4;
-        final Pos2d[] positions = new Pos2d[] { new Pos2d(70, 25), new Pos2d(88, 25), new Pos2d(70, 43),
-            new Pos2d(88, 43), };
-
-        for (int i = 0; i < SLOT_NUMBER; i++) {
-            builder.widget(
-                new FluidSlotWidget(fluidTanks[i]).setBackground(ModularUITextures.FLUID_SLOT)
-                    .setPos(positions[i]));
-        }
-    }
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // final int SLOT_NUMBER = 4;
+    // final Pos2d[] positions = new Pos2d[] { new Pos2d(70, 25), new Pos2d(88, 25), new Pos2d(70, 43),
+    // new Pos2d(88, 43), };
+    //
+    // for (int i = 0; i < SLOT_NUMBER; i++) {
+    // builder.widget(
+    // new FluidSlotWidget(fluidTanks[i]).setBackground(ModularUITextures.FLUID_SLOT)
+    // .setPos(positions[i]));
+    // }
+    // }
 }

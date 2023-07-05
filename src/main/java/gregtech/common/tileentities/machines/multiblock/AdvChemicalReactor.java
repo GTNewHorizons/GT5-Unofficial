@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -28,20 +27,11 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.fluid.FluidTankGT;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.logic.ComplexParallelProcessingLogic;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.ComplexParallelController;
@@ -311,69 +301,69 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
         }
     }
 
-    @Override
-    protected MultiChildWidget createMainPage(IWidgetBuilder<?> builder) {
-        MultiChildWidget child = super.createMainPage(builder);
-        for (int i = 0; i < MAX_PROCESSES; i++) {
-            final int processIndex = i;
-            child.addChild(
-                new ButtonWidget().setPlayClickSound(true)
-                    .setOnClick(
-                        (clickData, widget) -> {
-                            if (!widget.isClient()) widget.getContext()
-                                .openSyncedWindow(PROCESS_WINDOW_BASE_ID + processIndex);
-                        })
-                    .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_WHITELIST)
-                    .setSize(18, 18)
-                    .setPos(20 * i + 18, 18));
-        }
-        return child;
-    }
+    // @Override
+    // protected MultiChildWidget createMainPage(IWidgetBuilder<?> builder) {
+    // MultiChildWidget child = super.createMainPage(builder);
+    // for (int i = 0; i < MAX_PROCESSES; i++) {
+    // final int processIndex = i;
+    // child.addChild(
+    // new ButtonWidget().setPlayClickSound(true)
+    // .setOnClick(
+    // (clickData, widget) -> {
+    // if (!widget.isClient()) widget.getContext()
+    // .openSyncedWindow(PROCESS_WINDOW_BASE_ID + processIndex);
+    // })
+    // .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_WHITELIST)
+    // .setSize(18, 18)
+    // .setPos(20 * i + 18, 18));
+    // }
+    // return child;
+    // }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        for (int i = 0; i < MAX_PROCESSES; i++) {
-            final int processIndex = i;
-            buildContext.addSyncedWindow(
-                PROCESS_WINDOW_BASE_ID + i,
-                (player) -> createProcessConfigWindow(player, processIndex));
-        }
-        buildContext.addCloseListener(() -> {
-            // Reset HashSet, we will let it re-generate on next item output
-            if (wasWhitelistOpened) {
-                for (int i = 0; i < MAX_PROCESSES; i++) {
-                    processWhitelists.set(i, null);
-                }
-                wasWhitelistOpened = false;
-            }
-        });
-    }
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // super.addUIWidgets(builder, buildContext);
+    // for (int i = 0; i < MAX_PROCESSES; i++) {
+    // final int processIndex = i;
+    // buildContext.addSyncedWindow(
+    // PROCESS_WINDOW_BASE_ID + i,
+    // (player) -> createProcessConfigWindow(player, processIndex));
+    // }
+    // buildContext.addCloseListener(() -> {
+    // // Reset HashSet, we will let it re-generate on next item output
+    // if (wasWhitelistOpened) {
+    // for (int i = 0; i < MAX_PROCESSES; i++) {
+    // processWhitelists.set(i, null);
+    // }
+    // wasWhitelistOpened = false;
+    // }
+    // });
+    // }
 
-    protected ModularWindow createProcessConfigWindow(final EntityPlayer player, final int processIndex) {
-        wasWhitelistOpened = true;
-        ModularWindow.Builder builder = ModularWindow.builder(86, 100);
-        builder.widget(
-            new TextWidget("Process " + processIndex).setTextAlignment(Alignment.Center)
-                .setPos(13, 7));
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-        builder.widget(
-            SlotGroup.ofItemHandler(processWhitelistInventoryHandlers.get(processIndex), 4)
-                .startFromSlot(0)
-                .endAtSlot(ITEM_WHITELIST_SLOTS - 1)
-                .phantom(true)
-                .background(getGUITextureSet().getItemSlot())
-                .build()
-                .setPos(7, 19));
-        builder.widget(
-            SlotGroup.ofFluidTanks(processFluidWhiteLists.get(processIndex), 4)
-                .startFromSlot(0)
-                .endAtSlot(FLUID_WHITELIST_SLOTS - 1)
-                .phantom(true)
-                .build()
-                .setPos(7, 55));
-        return builder.build();
-    }
+    // protected ModularWindow createProcessConfigWindow(final EntityPlayer player, final int processIndex) {
+    // wasWhitelistOpened = true;
+    // ModularWindow.Builder builder = ModularWindow.builder(86, 100);
+    // builder.widget(
+    // new TextWidget("Process " + processIndex).setTextAlignment(Alignment.Center)
+    // .setPos(13, 7));
+    // builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+    // builder.widget(
+    // SlotGroup.ofItemHandler(processWhitelistInventoryHandlers.get(processIndex), 4)
+    // .startFromSlot(0)
+    // .endAtSlot(ITEM_WHITELIST_SLOTS - 1)
+    // .phantom(true)
+    // .background(getGUITextureSet().getItemSlot())
+    // .build()
+    // .setPos(7, 19));
+    // builder.widget(
+    // SlotGroup.ofFluidTanks(processFluidWhiteLists.get(processIndex), 4)
+    // .startFromSlot(0)
+    // .endAtSlot(FLUID_WHITELIST_SLOTS - 1)
+    // .phantom(true)
+    // .build()
+    // .setPos(7, 55));
+    // return builder.build();
+    // }
 
     @Override
     public String getTileEntityName() {
