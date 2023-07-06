@@ -28,6 +28,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -41,6 +43,8 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.LightingHelper;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
@@ -226,12 +230,15 @@ public abstract class GT_MetaTileEntity_LargeTurbine
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        if ((counter & 7) == 0 && (aStack == null || !(aStack.getItem() instanceof GT_MetaGenerated_Tool)
-            || aStack.getItemDamage() < 170
-            || aStack.getItemDamage() > 179)) {
+    @NotNull
+    public CheckRecipeResult checkProcessing() {
+        ItemStack controllerSlot = getControllerSlot();
+        if ((counter & 7) == 0
+            && (controllerSlot == null || !(controllerSlot.getItem() instanceof GT_MetaGenerated_Tool)
+                || controllerSlot.getItemDamage() < 170
+                || controllerSlot.getItemDamage() > 179)) {
             stopMachine();
-            return false;
+            return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
         }
         ArrayList<FluidStack> tFluids = getStoredFluids();
         if (!tFluids.isEmpty()) {
@@ -244,24 +251,25 @@ public abstract class GT_MetaTileEntity_LargeTurbine
                     .hasInventoryBeenModified()) {
                 counter = 0;
                 baseEff = GT_Utility.safeInt(
-                    (long) ((5F + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));
-                optFlow = GT_Utility
-                    .safeInt(
-                        (long) Math.max(
-                            Float.MIN_NORMAL,
-                            ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack)
-                                .getSpeedMultiplier() * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolSpeed
-                                * 50));
+                    (long) ((5F
+                        + ((GT_MetaGenerated_Tool) controllerSlot.getItem()).getToolCombatDamage(controllerSlot))
+                        * 1000F));
+                optFlow = GT_Utility.safeInt(
+                    (long) Math.max(
+                        Float.MIN_NORMAL,
+                        ((GT_MetaGenerated_Tool) controllerSlot.getItem()).getToolStats(controllerSlot)
+                            .getSpeedMultiplier() * GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mToolSpeed
+                            * 50));
 
-                overflowMultiplier = getOverflowMultiplier(aStack);
+                overflowMultiplier = getOverflowMultiplier(controllerSlot);
 
-                flowMultipliers[0] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mSteamMultiplier;
-                flowMultipliers[1] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mGasMultiplier;
-                flowMultipliers[2] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mPlasmaMultiplier;
+                flowMultipliers[0] = GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mSteamMultiplier;
+                flowMultipliers[1] = GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mGasMultiplier;
+                flowMultipliers[2] = GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mPlasmaMultiplier;
 
                 if (optFlow <= 0 || baseEff <= 0) {
                     stopMachine(); // in case the turbine got removed
-                    return false;
+                    return CheckRecipeResultRegistry.NO_FUEL_FOUND;
                 }
             } else {
                 counter++;
@@ -288,12 +296,12 @@ public abstract class GT_MetaTileEntity_LargeTurbine
             // stopMachine();
             this.mEUt = 0;
             this.mEfficiency = 0;
-            return false;
+            return CheckRecipeResultRegistry.NO_FUEL_FOUND;
         } else {
             this.mMaxProgresstime = 1;
             this.mEfficiencyIncrease = 10;
             // Overvoltage is handled inside the MultiBlockBase when pushing out to dynamos. no need to do it here.
-            return true;
+            return CheckRecipeResultRegistry.GENERATING;
         }
     }
 

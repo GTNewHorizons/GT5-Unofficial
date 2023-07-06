@@ -243,6 +243,8 @@ public class VoidProtectionHelper {
         Map<ItemStack, ParallelData> tParallels = new ItemStackMap<>();
         int tSlotsFree = 0;
         for (ItemStack tItem : itemOutputs) {
+            // GT_RecipeBuilder doesn't handle null item output
+            if (tItem == null) continue;
             tItemOutputMap.merge(tItem, tItem.stackSize, Integer::sum);
             tParallels.put(tItem, new ParallelData(0, 0));
         }

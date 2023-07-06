@@ -1,5 +1,7 @@
 package gregtech.api.util;
 
+import javax.annotation.Nonnull;
+
 public class GT_OverclockCalculator {
 
     /**
@@ -15,7 +17,7 @@ public class GT_OverclockCalculator {
      * GT++ machines
      * mHeatDiscountAmount - The value used for discount final eut per 900 heat
      */
-    private float mEUtDiscount = 1, mSpeedBoost = 1, mHeatDiscountAmount = 0.95f;
+    private double mEUtDiscount = 1, mSpeedBoost = 1, mHeatDiscountAmount = 0.95f;
     /**
      * mEUtIncreasePerOC - How much the bits should be moved to the left when it is overclocking (Going up, 2 meaning
      * it is multiplied with 4x)
@@ -40,6 +42,15 @@ public class GT_OverclockCalculator {
 
     private static final int HEAT_DISCOUNT_THRESHOLD = 900;
     private static final int HEAT_PERFECT_OVERCLOCK_THRESHOLD = 1800;
+
+    /**
+     * Creates calculator that doesn't do OC at all.
+     */
+    public static GT_OverclockCalculator ofNoOverclock(@Nonnull GT_Recipe recipe) {
+        return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
+            .setDuration(recipe.mDuration)
+            .setEUt(recipe.mEUt);
+    }
 
     /**
      * An Overclock helper for calculating overclocks in many different situations
