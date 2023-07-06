@@ -1326,6 +1326,17 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addProcessGT(CombType.MYTRYL, new Materials[] { Materials.Mytryl }, Voltage.IV);
         addProcessGT(CombType.QUANTIUM, new Materials[] { Materials.Quantium }, Voltage.IV);
         addProcessGT(CombType.ORIHARUKON, new Materials[] { Materials.Oriharukon }, Voltage.IV);
+        addProcessGT(CombType.INFUSEDGOLD, new Materials[] { Materials.InfusedGold }, Voltage.IV);
+        addCentrifugeToMaterial(
+            CombType.INFUSEDGOLD,
+            new Materials[] { Materials.InfusedGold, Materials.Gold },
+            new int[] { (GT_Mod.gregtechproxy.mNerfedCombs ? 20 : 50) * 100,
+                (GT_Mod.gregtechproxy.mNerfedCombs ? 10 : 30) * 100 },
+            new int[] {},
+            Voltage.IV,
+            200,
+            NI,
+            10 * 100);
         addProcessGT(CombType.MYSTERIOUSCRYSTAL, new Materials[] { Materials.MysteriousCrystal }, Voltage.LuV);
         addCentrifugeToMaterial(
             CombType.MYSTERIOUSCRYSTAL,
