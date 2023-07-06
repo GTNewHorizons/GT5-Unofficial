@@ -723,9 +723,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        // Since multi-amp hatch does not extend GT energy hatch, we don't need to worry about tier skip
-        // by using getMaxInputPower instead of getMaxInputVoltage.
-        logic.setAvailableVoltage(getMaxInputPower());
+        logic.setAvailableVoltage(V[GT_Utility.getTier(getMaxInputVoltage())]);
         logic.setAvailableAmperage(1);
     }
 
