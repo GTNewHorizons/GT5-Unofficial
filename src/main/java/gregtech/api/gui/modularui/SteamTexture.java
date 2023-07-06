@@ -1,7 +1,9 @@
 package gregtech.api.gui.modularui;
 
-import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import static gregtech.api.gui.modularui.GT_UITextures.GUI_PATH;
+
+import com.cleanroommc.modularui.drawable.AdaptableUITexture;
+import com.cleanroommc.modularui.drawable.UITexture;
 
 import gregtech.api.enums.SteamVariant;
 
@@ -20,22 +22,34 @@ public class SteamTexture {
         this.primitiveTexture = primitiveTexture;
     }
 
-    public static SteamTexture fullImage(String mod, String location) {
+    public static SteamTexture fullImage(String location, boolean canApplyTheme) {
         return new SteamTexture(
-            UITexture.fullImage(mod, String.format(location, SteamVariant.BRONZE)),
-            UITexture.fullImage(mod, String.format(location, SteamVariant.STEEL)),
-            UITexture.fullImage(mod, String.format(location, SteamVariant.PRIMITIVE)));
+            UITexture.fullImage(GUI_PATH.apply(String.format(location, SteamVariant.BRONZE)), canApplyTheme),
+            UITexture.fullImage(GUI_PATH.apply(String.format(location, SteamVariant.STEEL)), canApplyTheme),
+            UITexture.fullImage(GUI_PATH.apply(String.format(location, SteamVariant.PRIMITIVE)), canApplyTheme));
     }
 
-    public static SteamTexture adaptableTexture(String mod, String location, int imageWidth, int imageHeight,
+    public static SteamTexture adaptableTexture(String location, int imageWidth, int imageHeight,
         int borderWidthPixel) {
         return new SteamTexture(
-            AdaptableUITexture
-                .of(mod, String.format(location, SteamVariant.BRONZE), imageWidth, imageHeight, borderWidthPixel),
-            AdaptableUITexture
-                .of(mod, String.format(location, SteamVariant.STEEL), imageWidth, imageHeight, borderWidthPixel),
-            AdaptableUITexture
-                .of(mod, String.format(location, SteamVariant.PRIMITIVE), imageWidth, imageHeight, borderWidthPixel));
+            UITexture.builder()
+                .location(GUI_PATH.apply(String.format(location, SteamVariant.BRONZE)))
+                .imageSize(imageWidth, imageHeight)
+                .adaptable(borderWidthPixel)
+                .canApplyTheme()
+                .build(),
+            UITexture.builder()
+                .location(GUI_PATH.apply(String.format(location, SteamVariant.STEEL)))
+                .imageSize(imageWidth, imageHeight)
+                .adaptable(borderWidthPixel)
+                .canApplyTheme()
+                .build(),
+            UITexture.builder()
+                .location(GUI_PATH.apply(String.format(location, SteamVariant.PRIMITIVE)))
+                .imageSize(imageWidth, imageHeight)
+                .adaptable(borderWidthPixel)
+                .canApplyTheme()
+                .build());
     }
 
     public UITexture get(SteamVariant variant) {

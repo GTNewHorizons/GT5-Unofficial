@@ -6,7 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
+import com.cleanroommc.modularui.api.future.IItemHandlerModifiable;
 
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 

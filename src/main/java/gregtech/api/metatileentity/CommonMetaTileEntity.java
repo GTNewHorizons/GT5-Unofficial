@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.cleanroommc.modularui.api.future.ItemStackHandler;
 
 import appeng.api.crafting.ICraftingIconProvider;
 import gregtech.GT_Mod;

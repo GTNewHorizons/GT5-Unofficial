@@ -19,7 +19,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
 
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.cleanroommc.modularui.api.future.ItemStackHandler;
 
 import appeng.api.crafting.ICraftingIconProvider;
 import cpw.mods.fml.relauncher.Side;

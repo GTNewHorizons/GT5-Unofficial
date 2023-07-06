@@ -1,6 +1,5 @@
 package gregtech.common.misc.spaceprojects.enums;
 
-import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.common.misc.spaceprojects.enums.SpaceBodyType.AsteroidBelt;
 import static gregtech.common.misc.spaceprojects.enums.SpaceBodyType.DwarfPlanet;
 import static gregtech.common.misc.spaceprojects.enums.SpaceBodyType.GasGiant;
@@ -11,8 +10,9 @@ import static gregtech.common.misc.spaceprojects.enums.SpaceBodyType.Star;
 import static gregtech.common.misc.spaceprojects.enums.StarType.GClass;
 import static gregtech.common.misc.spaceprojects.enums.StarType.NotAStar;
 
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.cleanroommc.modularui.drawable.UITexture;
 
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
 
@@ -73,7 +73,7 @@ public enum SolarSystem implements ISpaceBody {
     SolarSystem(SpaceBodyType aType, StarType aStarType) {
         star = aStarType;
         spaceBody = aType;
-        texture = UITexture.fullImage(GregTech.ID, "solarsystem/" + getName());
+        texture = GT_UITextures.simple("solarsystem/" + getName());
         SpaceProjectManager.addLocation(this);
     }
 

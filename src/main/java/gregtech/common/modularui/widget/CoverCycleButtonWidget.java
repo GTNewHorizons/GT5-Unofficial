@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.widget;
+package gregtech.common.modularui.widget;
 
 /**
  * Fires click action on mouse release, not on press. Draws different backgrounds depending on whether the mouse is

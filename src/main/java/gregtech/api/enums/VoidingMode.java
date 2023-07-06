@@ -2,7 +2,7 @@ package gregtech.api.enums;
 
 import javax.annotation.Nonnull;
 
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.cleanroommc.modularui.drawable.UITexture;
 
 import gregtech.api.gui.modularui.GT_UITextures;
 

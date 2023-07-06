@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.widget;
+package gregtech.common.modularui.widget;
 
 /**
  * Determines button state with cover data.

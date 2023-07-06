@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.uifactory;
+package gregtech.common.modularui.uifactory;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;

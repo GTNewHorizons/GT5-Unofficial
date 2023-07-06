@@ -26,7 +26,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.cleanroommc.modularui.api.future.ItemStackHandler;
 
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.energy.IEnergyGrid;

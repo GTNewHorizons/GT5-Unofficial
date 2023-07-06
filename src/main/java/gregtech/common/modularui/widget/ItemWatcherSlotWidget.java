@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.widget;
+package gregtech.common.modularui.widget;
 
 /**
  * Watches specific ItemStack and pulls changes from it. Player cannot interact with slot, other than viewing NEI recipe

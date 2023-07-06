@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.widget;
+package gregtech.common.modularui.widget;
 
 // public class CoverDataFollower_ToggleButtonWidget<T extends ISerializableObject> extends CoverCycleButtonWidget
 // implements IDataFollowerWidget<T, Boolean> {

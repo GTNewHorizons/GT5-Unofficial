@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.widget;
+package gregtech.common.modularui.widget;
 
 // public class CoverDataControllerWidget<T extends ISerializableObject> extends DataControllerWidget<T> {
 //

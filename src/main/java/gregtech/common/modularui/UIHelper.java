@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui;
+package gregtech.common.modularui;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,12 +7,12 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.math.Pos2d;
 
 public class UIHelper {
 

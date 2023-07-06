@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.widget;
+package gregtech.common.modularui.widget;
 
 // public class CoverDataFollower_TextFieldWidget<T extends ISerializableObject> extends TextFieldWidget
 // implements IDataFollowerWidget<T, String> {

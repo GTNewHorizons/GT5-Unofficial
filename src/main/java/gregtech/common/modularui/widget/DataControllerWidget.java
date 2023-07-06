@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui.widget;
+package gregtech.common.modularui.widget;
 
 /**
  * Controls state of child widgets with specific data, and allows centralized control of multiple widgets. e.g. clicking

@@ -23,10 +23,10 @@ import net.minecraftforge.fluids.IFluidTank;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.cleanroommc.modularui.api.future.ItemStackHandler;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;

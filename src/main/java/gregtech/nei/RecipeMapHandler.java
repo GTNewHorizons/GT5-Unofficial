@@ -2,7 +2,7 @@ package gregtech.nei;
 
 import net.minecraft.client.Minecraft;
 
-import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.cleanroommc.modularui.drawable.GuiTextures;
 
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.api.gui.GT_GUIColorOverride;
@@ -21,7 +21,7 @@ abstract class RecipeMapHandler extends TemplateRecipeHandler {
 
     RecipeMapHandler(GT_Recipe.GT_Recipe_Map mRecipeMap) {
         this.mRecipeMap = mRecipeMap;
-        colorOverride = GT_GUIColorOverride.get(ModularUITextures.VANILLA_BACKGROUND.location);
+        colorOverride = GT_GUIColorOverride.get(GuiTextures.BACKGROUND.location);
     }
 
     GT_Recipe.GT_Recipe_Map getRecipeMap() {
