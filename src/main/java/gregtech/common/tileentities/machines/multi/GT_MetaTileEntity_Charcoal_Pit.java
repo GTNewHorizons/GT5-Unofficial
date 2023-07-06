@@ -9,6 +9,8 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.ArrayList;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,6 +29,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TooltipMultiBlockBase;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -62,14 +66,15 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
         return true;
     }
 
+    @Nonnull
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
+    public CheckRecipeResult checkProcessing() {
         if (!checkRecursiveBlocks()) {
             mEfficiency = 0;
             mEfficiencyIncrease = 0;
             mMaxProgresstime = 0;
             running = false;
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         if (mEfficiency == 0) {
@@ -79,13 +84,13 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
 
             // adds all the pollution at once when the recipe starts
             GT_Pollution.addPollution(getBaseMetaTileEntity(), mMaxProgresstime * getPollutionPerTick(null));
-            return true;
+            return CheckRecipeResultRegistry.SUCCESSFUL;
         } else {
             mEfficiency = 0;
             mEfficiencyIncrease = 0;
             mMaxProgresstime = 0;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
-        return false;
     }
 
     private boolean checkRecursiveBlocks() {

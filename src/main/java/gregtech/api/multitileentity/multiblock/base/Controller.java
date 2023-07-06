@@ -95,7 +95,10 @@ import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
 import gregtech.api.multitileentity.multiblock.casing.FunctionalCasing;
 import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
 import gregtech.common.tileentities.casings.upgrade.Inventory;
@@ -1675,7 +1678,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         }
         ProcessingLogic logic = ((ProcessingLogicHost) this).getProcessingLogic();
         logic.clear();
-        boolean result = false;
+        CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
         if (isSeparateInputs()) {
             // TODO: Add separation with fluids
             for (Pair<ItemStack[], String> inventory : getItemInputsForEachInventory()) {
@@ -1684,7 +1687,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 result = logic.setInputItems(inventory.getLeft())
                     .setCurrentOutputItems(getOutputItems())
                     .process();
-                if (result) {
+                if (result.wasSuccessful()) {
                     inventoryName = inventory.getRight();
                     break;
                 }
@@ -1698,10 +1701,10 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 .process();
         }
         setDuration(logic.getDuration());
-        setEut(logic.getEut());
+        setEut(logic.getCalculatedEut());
         setItemOutputs(logic.getOutputItems());
         setFluidOutputs(logic.getOutputFluids());
-        return result;
+        return result.wasSuccessful();
     }
 
     public IItemHandlerModifiable getOutputInventory() {
@@ -2064,6 +2067,11 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     @Override
     public void setRecipeLocking(boolean enabled) {
         this.recipeLock = enabled;
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return null;
     }
 
     @Override

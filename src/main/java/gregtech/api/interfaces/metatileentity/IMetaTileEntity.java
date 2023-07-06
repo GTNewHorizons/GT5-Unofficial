@@ -298,8 +298,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     void receiveClientEvent(byte aEventID, byte aValue);
 
     /**
-     * Called to actually play the Sound. Do not insert Client/Server checks. That is already done for you. Do not
-     * use @playSoundEffect, Minecraft doesn't like that at all. Use @playSound instead.
+     * Called to actually play the sound on client side. Client/Server check is already done.
      */
     void doSound(byte aIndex, double aX, double aY, double aZ);
 
