@@ -189,6 +189,10 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      */
     public static final SubTag STRETCHY = getNewSubTag("STRETCHY");
     /**
+     * If this Material is soft (and can be made into a Soft Mallet even if it's not wooden or bouncy)
+     */
+    public static final SubTag SOFT = getNewSubTag("SOFT");
+    /**
      * If this Material is grindable with a simple Mortar
      */
     public static final SubTag MORTAR_GRINDABLE = getNewSubTag("MORTAR_GRINDABLE");
