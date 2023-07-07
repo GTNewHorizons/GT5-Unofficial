@@ -25,11 +25,12 @@ public class GT_MetaTileEntity_Hatch_QuadrupleHumongous extends GT_MetaTileEntit
     public final int mCapacityPer;
     private final int Capacity = 500000000;
 
-    public GT_MetaTileEntity_Hatch_QuadrupleHumongous(int aID, int aSlot, String aName, String aNameRegional, int aTier) {
-        super(aID, aSlot, aName, aNameRegional, aTier);
+    public GT_MetaTileEntity_Hatch_QuadrupleHumongous(int aID, int aSlot, String aName, String aNameRegional) {
+        super(aID, aSlot, aName, aNameRegional,0);
         this.mStoredFluid = new FluidStack[aSlot];
         fluidTanks = new FluidStackTank[aSlot];
         mCapacityPer = Capacity;
+        this.mDescriptionArray[1] = "Capacity: 500,000,000L";
     }
 
     public GT_MetaTileEntity_Hatch_QuadrupleHumongous(String aName, int aSlot, int aTier, String[] aDescription,
