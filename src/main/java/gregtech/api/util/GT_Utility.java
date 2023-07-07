@@ -497,6 +497,9 @@ public class GT_Utility {
      * Rounds down partial voltage that exceeds tiered voltage, e.g. 4096 -> 2048 (EV)
      */
     public static long roundDownVoltage(long voltage) {
+        if (voltage > V[V.length - 1]) {
+            return voltage;
+        }
         return V[GT_Utility.getTier(voltage)];
     }
 

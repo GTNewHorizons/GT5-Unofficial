@@ -246,7 +246,7 @@ public class GT_MetaTileEntity_NanoForge extends
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GT_Utility.roundDownVoltage(getMaxInputEu()));
+        logic.setAvailableVoltage(getMaxInputEu());
         logic.setAvailableAmperage(1);
     }
 
