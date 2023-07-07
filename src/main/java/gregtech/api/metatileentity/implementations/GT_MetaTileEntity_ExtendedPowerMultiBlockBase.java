@@ -191,7 +191,7 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(getAverageInputVoltage());
+        logic.setAvailableVoltage(GT_Utility.roundDownVoltage(getAverageInputVoltage()));
         logic.setAvailableAmperage(getMaxInputAmps());
     }
 

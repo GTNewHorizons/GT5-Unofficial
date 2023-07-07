@@ -493,6 +493,13 @@ public class GT_Utility {
         return ceilDiv(voltage, GT_Values.V[tier]);
     }
 
+    /**
+     * Rounds down partial voltage that exceeds tiered voltage, e.g. 4096 -> 2048 (EV)
+     */
+    public static long roundDownVoltage(long voltage) {
+        return V[GT_Utility.getTier(voltage)];
+    }
+
     public static String getColoredTierNameFromVoltage(long voltage) {
         return getColoredTierNameFromTier(getTier(voltage));
     }
