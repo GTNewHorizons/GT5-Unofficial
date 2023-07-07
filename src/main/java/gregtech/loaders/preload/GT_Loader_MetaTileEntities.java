@@ -2,7 +2,6 @@ package gregtech.loaders.preload;
 
 import static gregtech.api.enums.Mods.Forestry;
 
-import gregtech.api.metatileentity.implementations.*;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.GT_Mod;
@@ -12,6 +11,26 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
+import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
+import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Frame;
+import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Item;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicBatteryBuffer;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_QuadrupleHumongous;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Transformer;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Wireless_Dynamo;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Wireless_Hatch;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -571,7 +590,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 719,
                 4,
                 "hatch.humongous.input",
-                "Humongous Quadruple Input Hatch" ).getStackForm(1L));
+                "Humongous Quadruple Input Hatch").getStackForm(1L));
 
         ItemList.Hatch_Output_ULV.set(
             new GT_MetaTileEntity_Hatch_Output(60, "hatch.output.tier.00", "Output Hatch (ULV)", 0).getStackForm(1L));
