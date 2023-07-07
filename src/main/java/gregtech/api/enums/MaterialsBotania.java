@@ -211,6 +211,7 @@ public class MaterialsBotania {
         Dreamwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
         ManaDiamond.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         BotaniaDragonstone.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        GaiaSpirit.add(SubTag.WOOD);
 
         // Botania native items
         ingot.mNotGeneratedItems.add(Manasteel);
