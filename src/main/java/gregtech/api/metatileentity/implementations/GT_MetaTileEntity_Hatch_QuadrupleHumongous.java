@@ -1,22 +1,24 @@
 package gregtech.api.metatileentity.implementations;
 
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_INPUT_HATCH_2x2;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_INPUT_HATCH_2x2;
 
 public class GT_MetaTileEntity_Hatch_QuadrupleHumongous extends GT_MetaTileEntity_Hatch_Input implements IAddUIWidgets {
 
@@ -26,7 +28,7 @@ public class GT_MetaTileEntity_Hatch_QuadrupleHumongous extends GT_MetaTileEntit
     private final int Capacity = 500000000;
 
     public GT_MetaTileEntity_Hatch_QuadrupleHumongous(int aID, int aSlot, String aName, String aNameRegional) {
-        super(aID, aSlot, aName, aNameRegional,0);
+        super(aID, aSlot, aName, aNameRegional, 0);
         this.mStoredFluid = new FluidStack[aSlot];
         fluidTanks = new FluidStackTank[aSlot];
         mCapacityPer = Capacity;
@@ -34,7 +36,7 @@ public class GT_MetaTileEntity_Hatch_QuadrupleHumongous extends GT_MetaTileEntit
     }
 
     public GT_MetaTileEntity_Hatch_QuadrupleHumongous(String aName, int aSlot, int aTier, String[] aDescription,
-                                              ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aSlot, aTier, aDescription, aTextures);
         this.mStoredFluid = new FluidStack[aSlot];
         fluidTanks = new FluidStackTank[aSlot];
