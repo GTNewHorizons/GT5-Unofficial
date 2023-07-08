@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_WIRELESS_LASER;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_WIRELESS_MULTI_16A;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_WIRELESS_MULTI_4A;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_WIRELESS_MULTI_64A;
@@ -66,6 +67,9 @@ public class GT_MetaTileEntity_Hatch_WirelessMulti extends GT_MetaTileEntity_Hat
             case 64:
                 TEXTURE_OVERLAY = OVERLAYS_ENERGY_IN_WIRELESS_MULTI_64A;
                 break;
+            default:
+                TEXTURE_OVERLAY = OVERLAYS_ENERGY_IN_WIRELESS_LASER;
+                break;
         }
         return new ITexture[] { aBaseTexture, TEXTURE_OVERLAY[mTier] };
     }
@@ -81,6 +85,9 @@ public class GT_MetaTileEntity_Hatch_WirelessMulti extends GT_MetaTileEntity_Hat
                 break;
             case 64:
                 TEXTURE_OVERLAY = OVERLAYS_ENERGY_IN_WIRELESS_MULTI_64A;
+                break;
+            default:
+                TEXTURE_OVERLAY = OVERLAYS_ENERGY_IN_WIRELESS_LASER;
                 break;
         }
         return new ITexture[] { aBaseTexture, TEXTURE_OVERLAY[mTier] };

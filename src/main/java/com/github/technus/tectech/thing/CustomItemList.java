@@ -295,6 +295,13 @@ public enum CustomItemList implements IItemContainer {
     eM_energyTunnel6_UXV,
     eM_energyTunnel7_UXV,
     eM_energyTunnel9001,
+    eM_energyWirelessTunnel1_UXV,
+    eM_energyWirelessTunnel2_UXV,
+    eM_energyWirelessTunnel3_UXV,
+    eM_energyWirelessTunnel4_UXV,
+    eM_energyWirelessTunnel5_UXV,
+    eM_energyWirelessTunnel6_UXV,
+    eM_energyWirelessTunnel7_UXV,
 
     eM_in_UV,
     eM_in_UHV,

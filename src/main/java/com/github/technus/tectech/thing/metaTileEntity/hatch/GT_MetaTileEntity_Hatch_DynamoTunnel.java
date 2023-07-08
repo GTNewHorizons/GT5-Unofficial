@@ -29,22 +29,24 @@ import gregtech.api.util.GT_Utility;
 public class GT_MetaTileEntity_Hatch_DynamoTunnel extends GT_MetaTileEntity_Hatch_DynamoMulti
         implements IConnectsToEnergyTunnel {
 
-    public GT_MetaTileEntity_Hatch_DynamoTunnel(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
+    public GT_MetaTileEntity_Hatch_DynamoTunnel(int ID, String unlocalisedName, String localisedName, int tier,
+            int amps) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
+                ID,
+                unlocalisedName,
+                localisedName,
+                tier,
                 0,
                 new String[] { CommonValues.TEC_MARK_GENERAL,
                         translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.0"),
                         translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": "
                                 + EnumChatFormatting.YELLOW
-                                + GT_Utility.formatNumbers(aAmp * V[aTier])
+                                + GT_Utility.formatNumbers(amps * V[tier])
                                 + EnumChatFormatting.RESET
                                 + " EU/t" },
-                aAmp); // Energy extracting terminal for Multiblocks
-        TT_Utility.setTier(aTier, this);
+                amps);
+
+        TT_Utility.setTier(tier, this);
     }
 
     public GT_MetaTileEntity_Hatch_DynamoTunnel(String aName, int aTier, int aAmp, String[] aDescription,

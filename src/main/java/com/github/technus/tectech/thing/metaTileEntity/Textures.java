@@ -60,6 +60,8 @@ public class Textures {
             "iconsets/OVERLAY_ENERGY_ON_WIRELESS_4A");
     private static final IIconContainer OVERLAY_ENERGY_ON_WIRELESS_16A = new CustomIcon(
             "iconsets/OVERLAY_ENERGY_ON_WIRELESS_16A");
+    private static final IIconContainer OVERLAY_ENERGY_ON_WIRELESS_LASER = new CustomIcon(
+            "iconsets/OVERLAY_ENERGY_ON_WIRELESS_LASER");
     private static final IIconContainer MACHINE_UEV_SIDE = new CustomIcon("iconsets/MACHINE_UEV_SIDE");
     private static final IIconContainer MACHINE_UIV_SIDE = new CustomIcon("iconsets/MACHINE_UIV_SIDE");
     private static final IIconContainer MACHINE_UMV_SIDE = new CustomIcon("iconsets/MACHINE_UMV_SIDE");
@@ -268,6 +270,23 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 25, 43, 255, 0 }),
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 25, 43, 255, 0 }),
             TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 25, 43, 255, 0 }) };
+
+    public static final ITexture[] OVERLAYS_ENERGY_IN_WIRELESS_LASER = {
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER, new short[] { 255, 255, 255, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER, new short[] { 255, 255, 255, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER, new short[] { 255, 255, 255, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER, new short[] { 255, 255, 255, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER, new short[] { 255, 255, 255, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER, new short[] { 255, 255, 255, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER, new short[] { 255, 255, 255, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER, new short[] { 255, 255, 255, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER, new short[] { 255, 255, 255, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER, new short[] { 255, 255, 255, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER, new short[] { 255, 255, 255, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER, new short[] { 255, 255, 255, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER, new short[] { 255, 255, 255, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER, new short[] { 255, 255, 255, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS_LASER, new short[] { 255, 255, 255, 0 }) };
 
     public static ITexture[][] MACHINE_CASINGS_TT = new ITexture[15][17];
 
