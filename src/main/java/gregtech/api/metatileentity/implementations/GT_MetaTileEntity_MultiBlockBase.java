@@ -460,14 +460,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
         if (timeElapsed >= 100) return aTick % 100 == 0;
 
-        return timeElapsed == 1 ||
-            timeElapsed == 2 ||
-            timeElapsed == 5 ||
-            timeElapsed == 10 ||
-            timeElapsed == 20 ||
-            timeElapsed == 40 ||
-            timeElapsed == 60 ||
-            timeElapsed == 80;
+        return timeElapsed == 1 || timeElapsed == 2
+            || timeElapsed == 5
+            || timeElapsed == 10
+            || timeElapsed == 20
+            || timeElapsed == 40
+            || timeElapsed == 60
+            || timeElapsed == 80;
     }
 
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
