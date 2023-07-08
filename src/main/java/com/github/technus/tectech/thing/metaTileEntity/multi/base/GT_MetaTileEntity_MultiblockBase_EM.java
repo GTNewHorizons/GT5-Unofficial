@@ -195,6 +195,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
     // if u need to force some things to be fixed - u might need to override doRandomMaintenanceDamage
     protected byte minRepairStatus = 3;
 
+    // whether there is a maintenance hatch in the multi and whether checks are necessary (for now only used in a
+    // transformer)
+    protected boolean hasMaintenanceChecks = true;
+
     // is power pass cover present
     public boolean ePowerPassCover = false;
 
@@ -3210,4 +3214,14 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
     }
 
     // endregion
+
+    protected void turnOffMaintenance() {
+        mWrench = true;
+        mScrewdriver = true;
+        mSoftHammer = true;
+        mHardHammer = true;
+        mSolderingTool = true;
+        mCrowbar = true;
+        hasMaintenanceChecks = false;
+    }
 }
