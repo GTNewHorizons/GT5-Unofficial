@@ -123,6 +123,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     @SideOnly(Side.CLIENT)
     protected GT_SoundLoop activitySoundLoop;
 
+    private long mLastWorkingTick = 0;
+
     protected static final byte INTERRUPT_SOUND_INDEX = 8;
     protected static final byte PROCESS_START_SOUND_INDEX = 1;
 
@@ -452,6 +454,22 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return result;
     }
 
+    private boolean shouldCheckRecipeThisTick(long aTick) {
+        // Perform more frequent recipe change after the machine just shuts down.
+        long timeElapsed = aTick - mLastWorkingTick;
+
+        if (timeElapsed >= 100) return aTick % 100 == 0;
+
+        return timeElapsed == 1 ||
+            timeElapsed == 2 ||
+            timeElapsed == 5 ||
+            timeElapsed == 10 ||
+            timeElapsed == 20 ||
+            timeElapsed == 40 ||
+            timeElapsed == 60 ||
+            timeElapsed == 80;
+    }
+
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) {
             if (onRunningTick(mInventory[1])) {
@@ -481,6 +499,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     mProgresstime = 0;
                     mMaxProgresstime = 0;
                     mEfficiencyIncrease = 0;
+                    mLastWorkingTick = aTick;
                     if (aBaseMetaTileEntity.isAllowedToWork()) {
                         checkRecipe();
                     }
@@ -497,7 +516,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 }
             }
         } else {
-            if (aTick % 100 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
+            if (shouldCheckRecipeThisTick(aTick) || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
                 || aBaseMetaTileEntity.hasInventoryBeenModified()) {
 
                 if (aBaseMetaTileEntity.isAllowedToWork()) {
