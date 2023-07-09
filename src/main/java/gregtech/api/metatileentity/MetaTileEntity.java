@@ -319,6 +319,12 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
         }
     }
 
+    public void onTickFail(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {}
+
+    public void onSetActive(boolean active) {}
+
+    public void onDisableWorking() {}
+
     @Override
     public void inValidate() {
         /* Do nothing */

@@ -5,6 +5,8 @@ import static gregtech.api.enums.GT_Values.VN;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,6 +16,9 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Utility;
 
@@ -124,6 +129,70 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
                 else tag.setLong("energyUsage", -lEUt * mEfficiency / 10000);
             }
         }
+    }
+
+    @Override
+    public @Nonnull CheckRecipeResult checkProcessing() {
+        // If no logic is found, try legacy checkRecipe
+        if (processingLogic == null) {
+            // noinspection deprecation
+            return checkRecipe(mInventory[1]) ? CheckRecipeResultRegistry.SUCCESSFUL
+                : CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
+
+        processingLogic.clear();
+        processingLogic.setMachine(this);
+        processingLogic.setRecipeMapSupplier(this::getRecipeMap);
+        processingLogic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
+        processingLogic.setBatchSize(isBatchModeEnabled() ? getMaxBatchSize() : 1);
+        processingLogic.setRecipeLocking(this, isRecipeLockingEnabled());
+        processingLogic.setInputFluids(getStoredFluids());
+        setProcessingLogicPower(processingLogic);
+        if (isInputSeparationEnabled()) {
+            for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
+                List<ItemStack> inputItems = new ArrayList<>();
+                for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                    ItemStack stored = bus.getStackInSlot(i);
+                    if (stored != null) {
+                        inputItems.add(stored);
+                    }
+                }
+                processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+                result = processingLogic.process();
+                if (result.wasSuccessful()) break;
+            }
+        } else {
+            processingLogic.setInputItems(getStoredInputs());
+            result = processingLogic.process();
+        }
+
+        // inputs are consumed by `process()`
+        updateSlots();
+
+        if (!result.wasSuccessful()) return result;
+
+        mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+        mEfficiencyIncrease = 10000;
+
+        lEUt = processingLogic.getCalculatedEut();
+        mMaxProgresstime = processingLogic.getDuration();
+
+        if (lEUt > 0) {
+            lEUt = (-lEUt);
+        }
+
+        mOutputItems = processingLogic.getOutputItems();
+        mOutputFluids = processingLogic.getOutputFluids();
+
+        return result;
+    }
+
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(GT_Utility.roundDownVoltage(getAverageInputVoltage()));
+        logic.setAvailableAmperage(getMaxInputAmps());
     }
 
     @Override

@@ -33,6 +33,8 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -50,6 +52,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.objects.GT_ChunkManager;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -661,18 +665,19 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        boolean recipe_process = processRecipe(getCompactedInputs(), getCompactedFluids());
+    @NotNull
+    public CheckRecipeResult checkProcessing() {
+        CheckRecipeResult recipe_process = processRecipe(getCompactedInputs(), getCompactedFluids());
 
         // If recipe cannot be found then continuity is broken and reset running time to 0.
-        if (!recipe_process) {
+        if (!recipe_process.wasSuccessful()) {
             resetDiscount();
         }
 
         return recipe_process;
     }
 
-    protected boolean processRecipe(ItemStack[] tItems, FluidStack[] tFluids) {
+    protected CheckRecipeResult processRecipe(ItemStack[] tItems, FluidStack[] tFluids) {
 
         // Gets the EU input of the
         long tTotalEU = GT_ExoticEnergyInputHelper.getTotalEuMulti(getExoticAndNormalEnergyHatchList());
@@ -682,10 +687,11 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
             .findRecipe(getBaseMetaTileEntity(), false, tTotalEU, tFluids, tItems);
 
         // Check if recipe found.
-        if (tRecipe_0 == null) return false;
+        if (tRecipe_0 == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
         // If coil heat capacity is too low, refuse to start recipe.
-        if (mHeatingCapacity <= tRecipe_0.mSpecialValue) return false;
+        if (mHeatingCapacity <= tRecipe_0.mSpecialValue)
+            return CheckRecipeResultRegistry.insufficientHeat(tRecipe_0.mSpecialValue);
 
         // Reduce fuel quantity if machine has been running for long enough.
         GT_Recipe tRecipe_1 = tRecipe_0.copy();
@@ -705,9 +711,9 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
             }
         }
 
-        if (!canOutputAll(tRecipe_1)) return false;
+        if (!canOutputAll(tRecipe_1)) return CheckRecipeResultRegistry.OUTPUT_FULL;
         // Takes items/fluids from hatches/busses.
-        if (!tRecipe_1.isRecipeInputEqual(true, tFluids, tItems)) return false;
+        if (!tRecipe_1.isRecipeInputEqual(true, tFluids, tItems)) return CheckRecipeResultRegistry.NO_RECIPE;
 
         // Logic for overclocking calculations.
         double EU_input_tier = log(tTotalEU) / log4;
@@ -727,7 +733,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
 
         // All conditions met so increment running_time.
         running_time += mMaxProgresstime;
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     @Override

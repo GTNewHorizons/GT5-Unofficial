@@ -1,5 +1,7 @@
 package gregtech.api.enums;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.util.StatCollector;
 
 public enum HeatingCoilLevel {
@@ -32,7 +34,7 @@ public enum HeatingCoilLevel {
     }
 
     /**
-     * @return the coil tier, used for discount in the Pyrolyse Oven for example.
+     * @return the coil tier, used for discount in the Pyrolyse Oven for example. LV == 0
      */
     public byte getTier() {
         return (byte) (this.ordinal() - 2);
@@ -52,14 +54,41 @@ public enum HeatingCoilLevel {
         return 1 << Math.max(0, this.ordinal() - 5);
     }
 
+    /**
+     * @return Translated name of this coil
+     */
     public String getName() {
         return StatCollector.translateToLocal("GT5U.coil." + this);
     }
 
+    @Nonnull
     public static HeatingCoilLevel getFromTier(byte tier) {
         if (tier < 0 || tier > getMaxTier()) return HeatingCoilLevel.None;
 
         return VALUES[tier + 2];
+    }
+
+    /**
+     * @param applyColor Whether to apply tiered color
+     * @return Translated coil name. Heat exceeding MAX is represented as "Eternal+".
+     */
+    @Nonnull
+    public static String getDisplayNameFromHeat(int heat, boolean applyColor) {
+        for (HeatingCoilLevel heatLevel : VALUES) {
+            if (heatLevel == HeatingCoilLevel.None || heatLevel == HeatingCoilLevel.ULV) continue;
+            if (heatLevel.getHeat() >= heat) {
+                String name = heatLevel.getName();
+                if (applyColor) {
+                    name = GT_Values.TIER_COLORS[heatLevel.getTier() + 1] + name;
+                }
+                return name;
+            }
+        }
+        String name = HeatingCoilLevel.MAX.getName() + "+";
+        if (applyColor) {
+            name = GT_Values.TIER_COLORS[HeatingCoilLevel.MAX.getTier() + 1] + name;
+        }
+        return name;
     }
 
     public static int size() {
