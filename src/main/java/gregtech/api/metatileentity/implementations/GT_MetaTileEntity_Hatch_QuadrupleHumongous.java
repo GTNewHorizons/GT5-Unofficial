@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -17,13 +16,14 @@ public class GT_MetaTileEntity_Hatch_QuadrupleHumongous extends GT_MetaTileEntit
     }
 
     public GT_MetaTileEntity_Hatch_QuadrupleHumongous(String aName, int aSlot, int aTier, String[] aDescription,
-                                                      ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aSlot, aTier, aDescription, aTextures);
-        mCapacityPer= Capacity;
-        }
+        mCapacityPer = Capacity;
+    }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Hatch_QuadrupleHumongous(mName, getMaxType(), mTier, mDescriptionArray, mTextures);
 
-    }}
+    }
+}
