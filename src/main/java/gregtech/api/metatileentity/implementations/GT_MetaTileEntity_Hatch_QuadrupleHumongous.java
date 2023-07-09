@@ -23,6 +23,5 @@ public class GT_MetaTileEntity_Hatch_QuadrupleHumongous extends GT_MetaTileEntit
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Hatch_QuadrupleHumongous(mName, getMaxType(), mTier, mDescriptionArray, mTextures);
-
     }
 }
