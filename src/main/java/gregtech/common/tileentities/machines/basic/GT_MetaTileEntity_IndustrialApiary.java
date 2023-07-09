@@ -115,6 +115,8 @@ import gregtech.api.util.GT_ApiaryModifier;
 import gregtech.api.util.GT_ApiaryUpgrade;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicMachine
     implements IBeeHousing, IBeeHousingInventory, IErrorLogic, IBeeModifier, IBeeListener, IAddUIWidgets {
@@ -1443,6 +1445,48 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 break;
             }
             return null;
+        }
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        if (tag.hasKey("queen")) {
+            currenttip.add(
+                "Current Queen: " + EnumChatFormatting.GREEN + StatCollector.translateToLocal(tag.getString("queen")));
+        }
+        if (tag.hasKey("errors")) {
+            NBTTagCompound errorNbt = tag.getCompoundTag("errors");
+            for (int i = 0; i < errorNbt.getInteger("size"); i++) {
+                currenttip.add(
+                    "Error: " + EnumChatFormatting.RED
+                        + StatCollector.translateToLocal("for." + errorNbt.getString("e" + i)));
+            }
+        }
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        if (usedQueen != null) {
+            tag.setString(
+                "queen",
+                beeRoot.getMember(usedQueen)
+                    .getGenome()
+                    .getPrimary()
+                    .getUnlocalizedName());
+        }
+        if (hasErrors()) {
+            NBTTagCompound errorNbt = new NBTTagCompound();
+            int errorCounter = 0;
+            for (IErrorState error : mErrorStates) {
+                errorNbt.setString("e" + errorCounter++, error.getDescription());
+            }
+            errorNbt.setInteger("size", errorCounter);
+            tag.setTag("errors", errorNbt);
         }
     }
 }
