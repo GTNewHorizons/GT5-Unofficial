@@ -6,19 +6,18 @@ import gregtech.api.metatileentity.MetaTileEntity;
 
 public class GT_MetaTileEntity_Hatch_QuadrupleHumongous extends GT_MetaTileEntity_Hatch_MultiInput {
 
-    public final int mCapacityPer;
-    private final int Capacity = 500000000;
-
     public GT_MetaTileEntity_Hatch_QuadrupleHumongous(int aID, int aSlot, String aName, String aNameRegional) {
         super(aID, aSlot, aName, aNameRegional, 0);
-        mCapacityPer = Capacity;
-        this.mDescriptionArray[1] = "Capacity: 500,000,000L";
     }
 
     public GT_MetaTileEntity_Hatch_QuadrupleHumongous(String aName, int aSlot, int aTier, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aSlot, aTier, aDescription, aTextures);
-        mCapacityPer = Capacity;
+    }
+
+    @Override
+    public int getCapacityPerTank(int aTier, int aSlot) {
+        return 500000000;
     }
 
     @Override

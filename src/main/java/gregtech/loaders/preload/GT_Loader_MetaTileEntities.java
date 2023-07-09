@@ -589,7 +589,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_Hatch_QuadrupleHumongous(
                 719,
                 4,
-                "hatch.humongous.input",
+                "hatch.multi.input.tier.11",
                 "Humongous Quadruple Input Hatch").getStackForm(1L));
 
         ItemList.Hatch_Output_ULV.set(
