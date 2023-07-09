@@ -17,7 +17,7 @@ public class GT_MetaTileEntity_Hatch_QuadrupleHumongous extends GT_MetaTileEntit
 
     @Override
     public int getCapacityPerTank(int aTier, int aSlot) {
-        return 500000000;
+        return 500_000_000;
     }
 
     @Override
