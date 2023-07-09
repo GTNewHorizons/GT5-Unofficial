@@ -1061,6 +1061,9 @@ public enum ItemList implements IItemContainer {
     Hatch_Input_Multi_2x2_UHV,
     Hatch_Input_Multi_2x2_UEV,
     Hatch_Input_Multi_2x2_UIV,
+    Hatch_Input_Multi_2x2_UMV,
+    Hatch_Input_Multi_2x2_UXV,
+    Hatch_Input_Multi_2x2_Humongous,
 
     Hatch_Input_Bus_ULV,
     Hatch_Input_Bus_LV,
