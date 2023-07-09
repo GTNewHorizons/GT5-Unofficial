@@ -277,7 +277,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
             updateFuel(aBaseMetaTileEntity, aTick);
     }
 
-    private void ventSteamIfTankIsFull() {
+    protected void ventSteamIfTankIsFull() {
         if ((this.mSteam != null) && (this.mSteam.amount > getCapacity())) {
             sendSound(SOUND_EVENT_LET_OFF_EXCESS_STEAM);
             this.mSteam.amount = getCapacity() * 3 / 4;
