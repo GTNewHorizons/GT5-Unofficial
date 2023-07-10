@@ -55,7 +55,6 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
-import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
@@ -336,11 +335,6 @@ public class GTMTE_LapotronicSuperCapacitor
     @Override
     public IStructureDefinition<GTMTE_LapotronicSuperCapacitor> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
-    }
-
-    @Override
-    protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
     }
 
     private void processInputHatch(GT_MetaTileEntity_Hatch aHatch, int aBaseCasingIndex) {
