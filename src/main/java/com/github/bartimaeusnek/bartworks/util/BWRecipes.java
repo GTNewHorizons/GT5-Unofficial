@@ -45,13 +45,10 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
-import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -812,85 +809,7 @@ public class BWRecipes {
                     aNEISpecialValuePost,
                     aShowVoltageAmperageInNEI,
                     aNEIAllowed);
-        }
-
-        /**
-         * finds a Recipe matching the aFluid, aSpecial and ItemStack Inputs.
-         *
-         * @param aTileEntity          an Object representing the current coordinates of the executing
-         *                             Block/Entity/Whatever. This may be null, especially during Startup.
-         * @param aRecipe              in case this is != null it will try to use this Recipe first when looking things
-         *                             up.
-         * @param aNotUnificated       if this is T the Recipe searcher will unificate the ItemStack Inputs
-         * @param aDontCheckStackSizes if set to false will only return recipes that can be executed at least once with
-         *                             the provided input
-         * @param aVoltage             Voltage of the Machine or Long.MAX_VALUE if it has no Voltage
-         * @param aFluids              the Fluid Inputs
-         * @param aSpecialSlot         the content of the Special Slot, the regular Manager doesn't do anything with
-         *                             this, but some custom ones do. Like this one.
-         * @param aInputs              the Item Inputs
-         * @return the Recipe it has found or null for no matching Recipe
-         */
-        public GT_Recipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GT_Recipe aRecipe, boolean aNotUnificated,
-                boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot,
-                ItemStack... aInputs) {
-            // No Recipes? Well, nothing to be found then.
-            if (mRecipeList.isEmpty()) return null;
-
-            // Some Recipe Classes require a certain amount of Inputs of certain kinds. Like "at least 1 Fluid + 1
-            // Stack" or "at least 2 Stacks" before they start searching for Recipes.
-            // This improves Performance massively, especially if people leave things like Circuits, Molds or Shapes in
-            // their Machines to select Sub Recipes.
-            if (GregTech_API.sPostloadFinished) {
-                if (mMinimalInputFluids > 0) {
-                    if (aFluids == null) return null;
-                    int tAmount = 0;
-                    for (FluidStack aFluid : aFluids) if (aFluid != null) tAmount++;
-                    if (tAmount < mMinimalInputFluids) return null;
-                }
-                if (mMinimalInputItems > 0) {
-                    if (aInputs == null) return null;
-                    int tAmount = 0;
-                    for (ItemStack aInput : aInputs) if (aInput != null) tAmount++;
-                    if (tAmount < mMinimalInputItems) return null;
-                }
-            }
-
-            // Unification happens here in case the Input isn't already unificated.
-            if (aNotUnificated) aInputs = GT_OreDictUnificator.getStackArray(true, (Object) aInputs);
-
-            // Check the Recipe which has been used last time in order to not have to search for it again, if possible.
-            if (aRecipe != null) if (!aRecipe.mFakeRecipe && aRecipe.mCanBeBuffered
-                    && aRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)
-                    && BW_Util.areStacksEqualOrNull((ItemStack) aRecipe.mSpecialItems, aSpecialSlot))
-                return aRecipe.mEnabled && aVoltage * mAmperage >= aRecipe.mEUt ? aRecipe : null;
-
-            // Now look for the Recipes inside the Item HashMaps, but only when the Recipes usually have Items.
-            if (mUsualInputCount > 0 && aInputs != null) for (ItemStack tStack : aInputs) if (tStack != null) {
-                Collection<GT_Recipe> tRecipes = mRecipeItemMap.get(new GT_ItemStack(tStack));
-                if (tRecipes != null) for (GT_Recipe tRecipe : tRecipes) if (!tRecipe.mFakeRecipe
-                        && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)
-                        && BW_Util.areStacksEqualOrNull((ItemStack) tRecipe.mSpecialItems, aSpecialSlot))
-                    return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
-                tRecipes = mRecipeItemMap.get(new GT_ItemStack(GT_Utility.copyMetaData(GT_Values.W, tStack)));
-                if (tRecipes != null) for (GT_Recipe tRecipe : tRecipes) if (!tRecipe.mFakeRecipe
-                        && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)
-                        && BW_Util.areStacksEqualOrNull((ItemStack) tRecipe.mSpecialItems, aSpecialSlot))
-                    return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
-            }
-
-            // If the minimal Amount of Items for the Recipe is 0, then it could be a Fluid-Only Recipe, so check that
-            // Map too.
-            if (mMinimalInputItems == 0 && aFluids != null) for (FluidStack aFluid : aFluids) if (aFluid != null) {
-                Collection<GT_Recipe> tRecipes = mRecipeFluidMap.get(aFluid.getFluid());
-                if (tRecipes != null) for (GT_Recipe tRecipe : tRecipes) if (!tRecipe.mFakeRecipe
-                        && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)
-                        && BW_Util.areStacksEqualOrNull((ItemStack) tRecipe.mSpecialItems, aSpecialSlot))
-                    return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
-            }
-
-            // And nothing has been found.
-            return null;
+            setSpecialSlotSensitive(true);
         }
     }
 
