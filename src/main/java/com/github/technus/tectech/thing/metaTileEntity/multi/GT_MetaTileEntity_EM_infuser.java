@@ -15,6 +15,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
@@ -29,6 +31,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import ic2.api.item.ElectricItem;
@@ -152,7 +156,8 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
+    @NotNull
+    protected CheckRecipeResult checkProcessing_EM() {
         for (GT_MetaTileEntity_Hatch_InputBus inputBus : mInputBusses) {
             if (inputBus instanceof GT_MetaTileEntity_Hatch_InputBus_ME) continue;
             for (int i = 0; i < inputBus.getSizeInventory(); i++) {
@@ -167,11 +172,11 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
                 } else {
                     mEfficiencyIncrease = 10000;
                     mMaxProgresstime = 20;
-                    return true;
+                    return SimpleCheckRecipeResult.ofSuccess("charging");
                 }
             }
         }
-        return false;
+        return SimpleCheckRecipeResult.ofFailure("no_chargeable_item");
     }
 
     @Override

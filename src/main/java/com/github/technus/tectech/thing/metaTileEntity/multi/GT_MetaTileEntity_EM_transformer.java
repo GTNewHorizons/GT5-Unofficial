@@ -19,6 +19,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
@@ -33,6 +35,8 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 
 /**
@@ -99,7 +103,8 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
+    @NotNull
+    protected CheckRecipeResult checkProcessing_EM() {
         if (ePowerPass) {
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = 20;
@@ -109,7 +114,8 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
         }
         eAmpereFlow = 0;
         mEUt = 0;
-        return ePowerPass;
+        return ePowerPass ? SimpleCheckRecipeResult.ofSuccess("routing")
+                : SimpleCheckRecipeResult.ofFailure("no_routing");
     }
 
     @Override

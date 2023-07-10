@@ -55,6 +55,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.loader.NetworkDispatcher;
@@ -101,6 +102,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -587,18 +590,22 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
+    @NotNull
+    protected CheckRecipeResult checkProcessing_EM() {
         checkPlasmaBoost();
 
-        if (!histHighSetting.getStatus(false).isOk || !histLowSetting.getStatus(false).isOk
-                || !transferRadiusTowerSetting.getStatus(false).isOk
-                || !transferRadiusTransceiverSetting.getStatus(false).isOk
-                || !transferRadiusCoverUltimateSetting.getStatus(false).isOk
-                || !outputVoltageSetting.getStatus(false).isOk
-                || !outputCurrentSetting.getStatus(false).isOk
-                || !sortTimeMinSetting.getStatus(false).isOk
-                || !overDriveSetting.getStatus(false).isOk)
-            return false;
+        if (!histHighSetting.getStatus(false).isOk || !histLowSetting.getStatus(false).isOk)
+            return SimpleCheckRecipeResult.ofFailure("invalid_hysteresis");
+        if (!transferRadiusTowerSetting.getStatus(false).isOk || !transferRadiusTransceiverSetting.getStatus(false).isOk
+                || !transferRadiusCoverUltimateSetting.getStatus(false).isOk)
+            return SimpleCheckRecipeResult.ofFailure("invalid_transfer_radius");
+        if (!outputVoltageSetting.getStatus(false).isOk)
+            return SimpleCheckRecipeResult.ofFailure("invalid_voltage_setting");
+        if (!outputCurrentSetting.getStatus(false).isOk)
+            return SimpleCheckRecipeResult.ofFailure("invalid_current_setting");
+        if (!sortTimeMinSetting.getStatus(false).isOk) return SimpleCheckRecipeResult.ofFailure("invalid_time_setting");
+        if (!overDriveSetting.getStatus(false).isOk)
+            return SimpleCheckRecipeResult.ofFailure("invalid_overdrive_setting");
 
         mEfficiencyIncrease = 10000;
         mMaxProgresstime = 20;
@@ -619,7 +626,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         if (vTier < 0) {
             // Returning true to allow for 'passive running'
             outputVoltageMax = 0;
-            return true;
+            return SimpleCheckRecipeResult.ofSuccess("routing");
         } else if (vTier > mTier && getEUVar() > 0) {
             explodeMultiblock();
         }
@@ -641,7 +648,7 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
                 energyCapacity += capacitorData[2];
             }
         }
-        return true;
+        return SimpleCheckRecipeResult.ofSuccess("routing");
     }
 
     @Override

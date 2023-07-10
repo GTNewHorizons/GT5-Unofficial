@@ -37,6 +37,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
 import com.github.technus.tectech.Reference;
@@ -105,6 +106,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffl
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -311,12 +314,24 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
      * Checks Recipes (when all machine is complete and can work)
      * <p>
      * can get/set Parameters here also
+     * 
+     * @deprecated Use {@link #createProcessingLogic()} ()} or {@link #checkProcessing_EM()}
      *
      * @param itemStack item in the controller
      * @return is recipe is valid
      */
+    @Deprecated
     public boolean checkRecipe_EM(ItemStack itemStack) {
         return false;
+    }
+
+    @NotNull
+    protected CheckRecipeResult checkProcessing_EM() {
+        if (processingLogic == null) {
+            return checkRecipe_EM(getControllerSlot()) ? CheckRecipeResultRegistry.SUCCESSFUL
+                    : CheckRecipeResultRegistry.NO_RECIPE;
+        }
+        return super.checkProcessing();
     }
 
     /**
@@ -1104,6 +1119,15 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         return result;
     }
 
+    @NotNull
+    @Override
+    public final CheckRecipeResult checkProcessing() {
+        hatchesStatusUpdate_EM();
+        CheckRecipeResult result = checkProcessing_EM();
+        hatchesStatusUpdate_EM();
+        return result;
+    }
+
     /**
      * callback for updating parameters and new hatches
      */
@@ -1295,7 +1319,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
                                     mEfficiencyIncrease = 0;
 
                                     if (aBaseMetaTileEntity.isAllowedToWork()) {
-                                        if (checkRecipe(mInventory[1])) {
+                                        if (checkRecipe()) {
                                             mEfficiency = Math.max(
                                                     0,
                                                     min(
@@ -1315,7 +1339,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
                               // }
                         } else if (RECIPE_AT == Tick || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) {
                             if (aBaseMetaTileEntity.isAllowedToWork()) {
-                                if (checkRecipe(mInventory[1])) {
+                                if (checkRecipe()) {
                                     mEfficiency = Math.max(
                                             0,
                                             min(

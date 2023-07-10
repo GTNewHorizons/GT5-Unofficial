@@ -958,6 +958,28 @@ gt.blockmachines.debug.tt.writer.desc.0=Scans Blocks Around
 gt.blockmachines.debug.tt.writer.desc.1=Prints Multiblock NonTE structure check code
 gt.blockmachines.debug.tt.writer.desc.2=ABC axises aligned to machine front
 
+GT5U.gui.text.computing=§aComputing
+GT5U.gui.text.providing_data=§aProviding Data
+GT5U.gui.text.routing=§aRouting
+GT5U.gui.text.researching=§aResearching
+GT5U.gui.text.charging=§aCharging
+GT5U.gui.text.microwaving=§aMicrowaving
+GT5U.gui.text.no_routing=§7Can't route
+GT5U.gui.text.invalid_timer=§7Invalid timer
+GT5U.gui.text.no_research_item=§7No valid item to research
+GT5U.gui.text.no_chargeable_item=§7No chargeable item
+GT5U.gui.text.no_computing=§7Can't compute
+GT5U.gui.text.no_data=§7Can't output data
+GT5U.gui.text.no_planet_block=§7Missing planet block
+GT5U.gui.text.no_helium=§7Not enough Helium
+GT5U.gui.text.no_hydrogen=§7Not enough Hydrogen
+GT5U.gui.text.invalid_hysteresis=§7Invalid hysteresis settings
+GT5U.gui.text.invalid_transfer_radius=§7Invalid transfer radius settings
+GT5U.gui.text.invalid_voltage_setting=§7Invalid voltage setting
+GT5U.gui.text.invalid_current_setting=§7Invalid current setting
+GT5U.gui.text.invalid_time_setting=§7Invalid time setting
+GT5U.gui.text.invalid_overdrive_setting=§7Invalid overdrive setting
+
 #Keywords and phrases
 #Example: ID:3
 tt.keyword.ID=ID

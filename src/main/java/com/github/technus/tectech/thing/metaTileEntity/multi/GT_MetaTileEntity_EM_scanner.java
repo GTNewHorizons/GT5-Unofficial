@@ -23,6 +23,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.jetbrains.annotations.NotNull;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
@@ -49,6 +50,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -231,12 +235,14 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
+    @NotNull
+    protected CheckRecipeResult checkProcessing_EM() {
+        ItemStack controllerStack = getControllerSlot();
         eRecipe = null;
         if (!eInputHatches.isEmpty() && eInputHatches.get(0).getContentHandler().hasStacks()
                 && !eOutputHatches.isEmpty()) {
             EMInstanceStackMap researchEM = eInputHatches.get(0).getContentHandler();
-            if (ItemList.Tool_DataOrb.isStackEqual(itemStack, false, true)) {
+            if (ItemList.Tool_DataOrb.isStackEqual(controllerStack, false, true)) {
                 GT_Recipe scannerRecipe = null;
                 for (EMInstanceStack stackEM : researchEM.valuesToArray()) {
                     objectsScanned = null;
@@ -268,9 +274,9 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                     eRequiredData = (short) (scannerRecipe.mSpecialValue >>> 16);
                     eAmpereFlow = (short) (scannerRecipe.mSpecialValue & 0xFFFF);
                     mEUt = scannerRecipe.mEUt;
-                    return true;
+                    return SimpleCheckRecipeResult.ofSuccess("researching");
                 }
-            } else if (CustomItemList.scanContainer.isStackEqual(itemStack, false, true)) {
+            } else if (CustomItemList.scanContainer.isStackEqual(controllerStack, false, true)) {
                 eRecipe = null;
                 if (researchEM.hasStacks()) {
                     objectsScanned = researchEM.takeAll();
@@ -302,13 +308,15 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                     computationRemaining = computationRequired *= 20;
                     mMaxProgresstime = 20; // const
                     mEfficiencyIncrease = 10000;
-                    return true;
+                    return SimpleCheckRecipeResult.ofSuccess("researching");
                 }
+            } else {
+                return CheckRecipeResultRegistry.NO_DATA_STICKS;
             }
         }
         objectResearched = null;
         computationRemaining = 0;
-        return false;
+        return SimpleCheckRecipeResult.ofFailure("no_research_item");
     }
 
     @Override

@@ -28,6 +28,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.github.technus.tectech.mechanics.dataTransport.QuantumDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
@@ -54,6 +56,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.IGT_HatchAdder;
 
@@ -232,14 +237,15 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
+    @NotNull
+    protected CheckRecipeResult checkProcessing_EM() {
         parametrization.setToDefaults(false, true);
         eAvailableData = 0;
         double maxTemp = 0;
         double overClockRatio = overclock.get();
         double overVoltageRatio = overvolt.get();
         if (Double.isNaN(overClockRatio) || Double.isNaN(overVoltageRatio)) {
-            return false;
+            return SimpleCheckRecipeResult.ofFailure("no_computing");
         }
         if (overclock.getStatus(true).isOk && overvolt.getStatus(true).isOk) {
             float eut = V[8] * (float) overVoltageRatio * (float) overClockRatio;
@@ -247,7 +253,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                 mEUt = -(int) eut;
             } else {
                 mEUt = -(int) V[8];
-                return false;
+                return CheckRecipeResultRegistry.POWER_OVERFLOW;
             }
             short thingsActive = 0;
             int rackComputation;
@@ -281,7 +287,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                 mEfficiencyIncrease = 10000;
                 maxCurrentTemp.set(maxTemp);
                 availableData.set(eAvailableData);
-                return true;
+                return SimpleCheckRecipeResult.ofSuccess("computing");
             } else {
                 eAvailableData = 0;
                 mEUt = -(int) V[8];
@@ -290,10 +296,10 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                 mEfficiencyIncrease = 10000;
                 maxCurrentTemp.set(maxTemp);
                 availableData.set(eAvailableData);
-                return true;
+                return SimpleCheckRecipeResult.ofSuccess("no_computing");
             }
         }
-        return false;
+        return SimpleCheckRecipeResult.ofFailure("no_computing");
     }
 
     @Override

@@ -46,6 +46,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import com.github.technus.tectech.recipe.EyeOfHarmonyRecipe;
 import com.github.technus.tectech.thing.block.TileEyeOfHarmony;
@@ -72,6 +73,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
@@ -1072,9 +1076,11 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     private long currentCircuitMultiplier = 0;
 
     @Override
-    public boolean checkRecipe_EM(ItemStack aStack) {
-        if (aStack == null) {
-            return false;
+    @NotNull
+    protected CheckRecipeResult checkProcessing_EM() {
+        ItemStack controllerStack = getControllerSlot();
+        if (controllerStack == null) {
+            return SimpleCheckRecipeResult.ofFailure("no_planet_block");
         }
 
         lagPreventer++;
@@ -1082,17 +1088,19 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             lagPreventer = 0;
             // No item in multi gui slot.
 
-            currentRecipe = eyeOfHarmonyRecipeStorage.recipeLookUp(aStack);
+            currentRecipe = eyeOfHarmonyRecipeStorage.recipeLookUp(controllerStack);
             if (currentRecipe == null) {
-                return false;
+                return CheckRecipeResultRegistry.NO_RECIPE;
             }
-            if (processRecipe(currentRecipe)) {
-                return true;
+            CheckRecipeResult result = processRecipe(currentRecipe);
+
+            if (result.wasSuccessful()) {
+                return result;
             }
 
             currentRecipe = null;
         }
-        return false;
+        return CheckRecipeResultRegistry.NO_RECIPE;
     }
 
     private long getHydrogenStored() {
@@ -1103,7 +1111,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         return validFluidMap.get(Materials.Helium.getGas(1));
     }
 
-    public boolean processRecipe(EyeOfHarmonyRecipe recipeObject) {
+    public CheckRecipeResult processRecipe(EyeOfHarmonyRecipe recipeObject) {
 
         // Get circuit damage, clamp it and then use it later for overclocking.
         ItemStack circuit = mInputBusses.get(0).getStackInSlot(0);
@@ -1114,34 +1122,32 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         }
 
         // Debug mode, overwrites the required fluids to initiate the recipe to 100L of each.
-        if (EOH_DEBUG_MODE) {
-            if ((getHydrogenStored() < 100) || (getHeliumStored() < 100)) {
-                return false;
-            }
-        } else {
-            if ((getHydrogenStored() < currentRecipe.getHydrogenRequirement())
-                    || (getHeliumStored() < currentRecipe.getHeliumRequirement())) {
-                return false;
-            }
+        if ((EOH_DEBUG_MODE && getHydrogenStored() < 100)
+                || (getHydrogenStored() < currentRecipe.getHydrogenRequirement())) {
+            return SimpleCheckRecipeResult.ofFailure("no_hydrogen");
+        }
+        if ((EOH_DEBUG_MODE && getHeliumStored() < 100) || (getHeliumStored() < currentRecipe.getHeliumRequirement())) {
+            return SimpleCheckRecipeResult.ofFailure("no_helium");
         }
 
         if (spacetimeCompressionFieldMetadata == -1) {
-            return false;
+            return CheckRecipeResultRegistry
+                    .insufficientMachineTier((int) recipeObject.getSpacetimeCasingTierRequired());
         }
 
         // Check tier of spacetime compression blocks is high enough.
         if ((spacetimeCompressionFieldMetadata + 1) < recipeObject.getSpacetimeCasingTierRequired()) {
-            return false;
+            return CheckRecipeResultRegistry
+                    .insufficientMachineTier((int) recipeObject.getSpacetimeCasingTierRequired());
         }
 
         startEU = recipeObject.getEUStartCost();
 
         // Remove EU from the users network.
-        if (!addEUToGlobalEnergyMap(
-                userUUID,
-                (long) (-startEU * (Math.log(currentCircuitMultiplier + 1) / LOG_BASE_CONSTANT + 1)
-                        * pow(0.77, currentCircuitMultiplier)))) {
-            return false;
+        long usedEU = (long) (-startEU * (Math.log(currentCircuitMultiplier + 1) / LOG_BASE_CONSTANT + 1)
+                * pow(0.77, currentCircuitMultiplier));
+        if (!addEUToGlobalEnergyMap(userUUID, usedEU)) {
+            return CheckRecipeResultRegistry.insufficientPower(usedEU);
         }
 
         mMaxProgresstime = recipeProcessTimeCalculator(
@@ -1194,7 +1200,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         }
 
         recipeRunning = true;
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     private void createRenderBlock(final EyeOfHarmonyRecipe currentRecipe) {

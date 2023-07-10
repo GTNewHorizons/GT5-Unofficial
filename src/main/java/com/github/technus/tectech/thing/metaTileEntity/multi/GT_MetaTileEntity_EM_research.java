@@ -36,6 +36,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.jetbrains.annotations.NotNull;
 
 import com.github.technus.tectech.recipe.TT_recipe;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
@@ -58,6 +59,9 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -346,27 +350,29 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
+    @NotNull
+    protected CheckRecipeResult checkProcessing_EM() {
+        ItemStack controllerStack = getControllerSlot();
         tRecipe = null;
         aRecipe = null;
         if (!eHolders.isEmpty() && eHolders.get(0).mInventory[0] != null) {
             holdItem = eHolders.get(0).mInventory[0].copy();
-            if (ItemList.Tool_DataStick.isStackEqual(itemStack, false, true)) {
+            if (ItemList.Tool_DataStick.isStackEqual(controllerStack, false, true)) {
                 for (GT_Recipe.GT_Recipe_AssemblyLine assRecipe : TT_recipe.GT_Recipe_MapTT.sAssemblylineRecipes) {
                     if (GT_Utility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
                         machineType = assembly;
                         tRecipe = assRecipe;
                         // if found
-                        if (iterateRecipes()) return true;
+                        if (iterateRecipes()) return SimpleCheckRecipeResult.ofSuccess("researching");
                     }
                 }
-            } else if (ItemList.Tool_DataOrb.isStackEqual(itemStack, false, true)) {
+            } else if (ItemList.Tool_DataOrb.isStackEqual(controllerStack, false, true)) {
                 for (TT_recipe.TT_assLineRecipe assRecipeTT : TT_recipe.TT_Recipe_Map.sMachineRecipes.recipeList()) {
                     if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, holdItem, true)) {
                         aRecipe = assRecipeTT;
                         machineType = machine;
                         // if found
-                        if (iterateRecipes()) return true;
+                        if (iterateRecipes()) return SimpleCheckRecipeResult.ofSuccess("researching");
                     }
                 }
                 for (TT_recipe.TT_assLineRecipe assRecipeTT : TT_recipe.TT_Recipe_Map.sCrafterRecipes.recipeList()) {
@@ -374,9 +380,11 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                         aRecipe = assRecipeTT;
                         machineType = crafter;
                         // if found
-                        if (iterateRecipes()) return true;
+                        if (iterateRecipes()) return SimpleCheckRecipeResult.ofSuccess("researching");
                     }
                 }
+            } else {
+                return CheckRecipeResultRegistry.NO_DATA_STICKS;
             }
         }
         holdItem = null;
@@ -384,7 +392,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         for (GT_MetaTileEntity_Hatch_Holder r : eHolders) {
             r.getBaseMetaTileEntity().setActive(false);
         }
-        return false;
+        return SimpleCheckRecipeResult.ofFailure("no_research_item");
     }
 
     @Override

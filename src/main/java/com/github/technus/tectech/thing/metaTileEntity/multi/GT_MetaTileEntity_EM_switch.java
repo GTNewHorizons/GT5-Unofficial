@@ -21,6 +21,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.mechanics.dataTransport.QuantumDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
@@ -41,6 +43,8 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 
 /**
@@ -119,7 +123,8 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
+    @NotNull
+    protected CheckRecipeResult checkProcessing_EM() {
         short thingsActive = 0;
         for (GT_MetaTileEntity_Hatch_InputData di : eInputData) {
             if (di.q != null) {
@@ -133,9 +138,9 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
             eAmpereFlow = 1 + (thingsActive >> 2);
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
-            return true;
+            return SimpleCheckRecipeResult.ofSuccess("routing");
         }
-        return false;
+        return SimpleCheckRecipeResult.ofFailure("no_routing");
     }
 
     @Override
