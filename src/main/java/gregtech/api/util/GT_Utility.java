@@ -493,6 +493,16 @@ public class GT_Utility {
         return ceilDiv(voltage, GT_Values.V[tier]);
     }
 
+    /**
+     * Rounds down partial voltage that exceeds tiered voltage, e.g. 4096 -> 2048 (EV)
+     */
+    public static long roundDownVoltage(long voltage) {
+        if (voltage > V[V.length - 1]) {
+            return voltage;
+        }
+        return V[GT_Utility.getTier(voltage)];
+    }
+
     public static String getColoredTierNameFromVoltage(long voltage) {
         return getColoredTierNameFromTier(getTier(voltage));
     }
@@ -501,6 +511,9 @@ public class GT_Utility {
         return GT_Values.TIER_COLORS[tier] + GT_Values.VN[tier] + EnumChatFormatting.RESET;
     }
 
+    /**
+     * @return e.g. {@code " (LV)"}
+     */
     @Nonnull
     public static String getTierNameWithParentheses(long voltage) {
         byte tier = getTier(voltage);
@@ -1711,6 +1724,10 @@ public class GT_Utility {
             && (Items.feather.getDamage(aStack1) == Items.feather.getDamage(aStack2)
                 || Items.feather.getDamage(aStack1) == W
                 || Items.feather.getDamage(aStack2) == W);
+    }
+
+    public static boolean areStacksEqualOrNull(ItemStack stack1, ItemStack stack2) {
+        return (stack1 == null && stack2 == null) || GT_Utility.areStacksEqual(stack1, stack2);
     }
 
     /**

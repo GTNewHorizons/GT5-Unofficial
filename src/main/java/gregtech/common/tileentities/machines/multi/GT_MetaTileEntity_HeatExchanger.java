@@ -23,6 +23,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -38,6 +40,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMul
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
@@ -176,8 +180,9 @@ public class GT_MetaTileEntity_HeatExchanger extends
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        if (mInputHotFluidHatch.getFluid() == null) return true;
+    @NotNull
+    public CheckRecipeResult checkProcessing() {
+        if (mInputHotFluidHatch.getFluid() == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
         int fluidAmountToConsume = mInputHotFluidHatch.getFluidAmount(); // how much fluid is in hatch
 
@@ -224,7 +229,7 @@ public class GT_MetaTileEntity_HeatExchanger extends
                 } else {
                     // If we're working with neither, fail out
                     superheated_threshold = 0;
-                    return false;
+                    return CheckRecipeResultRegistry.NO_RECIPE;
                 }
 
         superheated = fluidAmountToConsume >= superheated_threshold; // set the internal superheated flag if we have
@@ -243,7 +248,7 @@ public class GT_MetaTileEntity_HeatExchanger extends
             mOutputColdFluidHatch.fill(FluidRegistry.getFluidStack("molten.solarsaltcold", fluidAmountToConsume), true);
         }
         this.mEfficiencyIncrease = 80;
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     private int useWater(int steam) {

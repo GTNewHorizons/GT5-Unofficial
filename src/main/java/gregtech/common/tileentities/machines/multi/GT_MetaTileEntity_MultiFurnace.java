@@ -22,6 +22,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -35,6 +37,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -142,9 +146,10 @@ public class GT_MetaTileEntity_MultiFurnace
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
+    @NotNull
+    public CheckRecipeResult checkProcessing() {
         ArrayList<ItemStack> tInputList = getStoredInputs();
-        if (tInputList.isEmpty()) return false;
+        if (tInputList.isEmpty()) return CheckRecipeResultRegistry.NO_RECIPE;
 
         int mVolatage = GT_Utility.safeInt(getMaxInputVoltage());
         int tMaxParallel = this.mLevel;
@@ -182,15 +187,16 @@ public class GT_MetaTileEntity_MultiFurnace
             this.mEfficiencyIncrease = 10000;
             calculateOverclockedNessMultiInternal(4, 512, 1, mVolatage, false);
             // In case recipe is too OP for that machine
-            if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) return false;
+            if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                return CheckRecipeResultRegistry.NO_RECIPE;
 
             this.mEUt = GT_Utility.safeInt(((long) mEUt) * (this.mLevel / 8) / (long) this.mCostDiscount, 1);
-            if (mEUt == Integer.MAX_VALUE - 1) return false;
+            if (mEUt == Integer.MAX_VALUE - 1) return CheckRecipeResultRegistry.NO_RECIPE;
 
             if (this.mEUt > 0) this.mEUt = (-this.mEUt);
         }
         updateSlots();
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     @Override

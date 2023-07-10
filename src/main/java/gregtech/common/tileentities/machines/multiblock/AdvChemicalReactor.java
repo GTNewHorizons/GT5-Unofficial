@@ -78,9 +78,12 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
             }
             processFluidWhiteLists.add(processFluidTanks);
         }
-        processingLogic = new ComplexParallelProcessingLogic(
-            GT_Recipe.GT_Recipe_Map_LargeChemicalReactor.sChemicalRecipes,
-            MAX_PROCESSES);
+        processingLogic = new ComplexParallelProcessingLogic(getRecipeMap(), MAX_PROCESSES);
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map_LargeChemicalReactor.sChemicalRecipes;
     }
 
     @Override

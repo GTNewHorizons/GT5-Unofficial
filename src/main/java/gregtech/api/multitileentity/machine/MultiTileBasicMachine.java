@@ -42,6 +42,7 @@ import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.base.TickableMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileMachine;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
+import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.client.GT_SoundLoop;
@@ -539,17 +540,17 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         }
         ProcessingLogic logic = ((ProcessingLogicHost) this).getProcessingLogic();
         logic.clear();
-        boolean result = logic.setInputItems(getInputItems())
+        CheckRecipeResult result = logic.setInputItems(getInputItems())
             .setInputFluids(getInputFluids())
             .setCurrentOutputItems(
                 outputInventory.getStacks()
                     .toArray(new ItemStack[0]))
             .process();
         setDuration(logic.getDuration());
-        setEut(logic.getEut());
+        setEut(logic.getCalculatedEut());
         setItemOutputs(logic.getOutputItems());
         setFluidOutputs(logic.getOutputFluids());
-        return result;
+        return result.wasSuccessful();
     }
 
     /**
