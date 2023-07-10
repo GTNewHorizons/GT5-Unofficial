@@ -51,7 +51,7 @@ public class ProcessingLogic {
 
     public ProcessingLogic() {}
 
-    // === Setters ===
+    // region Setters
 
     public ProcessingLogic setInputItems(ItemStack... itemInputs) {
         this.inputItems = itemInputs;
@@ -221,7 +221,9 @@ public class ProcessingLogic {
         return this;
     }
 
-    // === Logic ===
+    // endregion
+
+    // region Logic
 
     /**
      * Executes the recipe check: Find recipe from recipemap, Calculate parallel, overclock and outputs.
@@ -351,7 +353,9 @@ public class ProcessingLogic {
             .setEUtIncreasePerOC(overClockPowerIncrease);
     }
 
-    // === Getters ===
+    // endregion
+
+    // region Getters
 
     public ItemStack[] getOutputItems() {
         return outputItems;
@@ -368,4 +372,6 @@ public class ProcessingLogic {
     public long getCalculatedEut() {
         return calculatedEut;
     }
+
+    // endregion
 }
