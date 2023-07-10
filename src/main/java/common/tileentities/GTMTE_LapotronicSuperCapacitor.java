@@ -338,11 +338,6 @@ public class GTMTE_LapotronicSuperCapacitor
         return STRUCTURE_DEFINITION;
     }
 
-    @Override
-    protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
-    }
-
     private void processInputHatch(GT_MetaTileEntity_Hatch aHatch, int aBaseCasingIndex) {
         mMaxEUIn += aHatch.maxEUInput() * aHatch.maxAmperesIn();
         aHatch.updateTexture(aBaseCasingIndex);
