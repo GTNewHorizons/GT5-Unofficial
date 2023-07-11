@@ -991,7 +991,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                 + EnumChatFormatting.GRAY
                                 + " Reinforced Temporal Structure Casing.")
                 .addStructureInfo(
-                        EnumChatFormatting.GOLD + "32"
+                        EnumChatFormatting.GOLD + "31"
                                 + EnumChatFormatting.GRAY
                                 + " Infinite SpaceTime Energy Boundary Casing.")
                 .addStructureInfo(
