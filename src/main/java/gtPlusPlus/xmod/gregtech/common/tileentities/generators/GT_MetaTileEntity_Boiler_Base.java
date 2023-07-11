@@ -172,6 +172,7 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
     }
 
     // This type of machine can have different water and steam capacities.
+    @Override
     public int getSteamCapacity() {
         return 2 * getCapacity();
     }
@@ -209,17 +210,6 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
         int burnTime = getBurnTime(fuelStack);
         if (burnTime > 0 && this.mTemperature <= 101) {
             consumeFuel(tile, fuelStack, burnTime);
-        }
-    }
-
-    @Override
-    protected void produceSteam(int aAmount) {
-        super.produceSteam(aAmount);
-
-        if (mSteam.amount > getSteamCapacity()) {
-            sendSound(SOUND_EVENT_LET_OFF_EXCESS_STEAM);
-
-            mSteam.amount = getSteamCapacity();
         }
     }
 

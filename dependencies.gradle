@@ -1,19 +1,19 @@
 dependencies {
 
-    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.43.80:dev')
-    api("com.github.GTNewHorizons:bartworks:0.7.17:dev")
+    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.43.123:dev')
+    api("com.github.GTNewHorizons:bartworks:0.7.27:dev")
 
     implementation('curse.maven:cofh-core-69162:2388751')
     // https://www.curseforge.com/minecraft/mc-mods/advancedsolarpanels
     implementation('curse.maven:advsolar-362768:2885953')
 
     compileOnly('com.github.GTNewHorizons:Baubles:1.0.1.16:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:EnderCore:0.2.14:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:EnderCore:0.2.16:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:SC2:2.0.2:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:Binnie:2.1.2:dev') {transitive = false}
+    compileOnly('com.github.GTNewHorizons:Binnie:2.1.6:dev') {transitive = false}
     compileOnly('curse.maven:PlayerAPI-228969:2248928') {transitive=false}
     compileOnly('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:Chisel:2.11.0-GTNH:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:Chisel:2.11.3-GTNH:dev') {transitive=false}
 
-    runtimeOnly('com.github.GTNewHorizons:ForestryMC:4.6.7:dev') {transitive=false}
+    runtimeOnly('com.github.GTNewHorizons:ForestryMC:4.6.10:dev') {transitive=false}
 }
