@@ -308,7 +308,8 @@ GT5U.machines.advdebugstructurewriter.gui.highlight.tooltip=Show Bounding Box
 GT5U.machines.advdebugstructurewriter.gui.transpose.tooltip=Transpose
 GT5U.machines.nei_transfer.steam.tooltip=%s steam recipes
 GT5U.machines.nei_transfer.voltage.tooltip=Recipes available in %s
-GT5U.machines.emit_energy.tooltip=Emit Energy to output side
+GT5U.machines.emit_energy.tooltip=Emit energy to output side
+GT5U.machines.emit_redstone.tooltip=Emit redstone if no slot is free
 
 GT5U.recipe_filter.representation_slot.tooltip=Click with a machine to set filter
 GT5U.type_filter.representation_slot.tooltip.0=left click to forward

@@ -17,9 +17,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -46,6 +51,8 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     private static final int FRONT_INDEX = 5;
 
     private static final String EMIT_ENERGY_TOOLTIP = "GT5U.machines.emit_energy.tooltip";
+    private static final String EMIT_REDSTONE_TOOLTIP = "GT5U.machines.emit_redstone.tooltip";
+    private static final int BUTTON_SIZE = 18;
 
     public int mMaxStackSize = 64;
     public static int MAX = 8;
@@ -467,33 +474,13 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     protected void addEmitEnergyButton(ModularWindow.Builder builder) {
-        builder.widget(new CycleButtonWidget().setToggle(() -> bOutput, val -> bOutput = val)
-            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY)
-            .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-            .setGTTooltip(() -> mTooltipCache.getData(EMIT_ENERGY_TOOLTIP))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(7, 62)
-            .setSize(18, 18));
+        builder.widget(createToggleButton(() -> bOutput, val -> bOutput = val,
+            GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY, EMIT_ENERGY_TOOLTIP, 0));
     }
 
     protected void addEmitRedstoneButton(ModularWindow.Builder builder) {
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-            bRedstoneIfFull = !bRedstoneIfFull;
-            if (bRedstoneIfFull) {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans("118", "Emit Redstone if no Slot is free"));
-            } else {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans("119", "Don't emit Redstone"));
-            }
-        })
-            .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EMIT_REDSTONE)
-            .setPos(25, 62)
-            .setSize(18, 18));
+        builder.widget(createToggleButton(() -> bRedstoneIfFull, val -> bRedstoneIfFull = val,
+            GT_UITextures.OVERLAY_BUTTON_EMIT_REDSTONE, EMIT_REDSTONE_TOOLTIP, 1));
     }
 
     protected void addInvertRedstoneButton(ModularWindow.Builder builder) {
@@ -513,7 +500,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
         })
             .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_INVERT_REDSTONE)
             .setPos(43, 62)
-            .setSize(18, 18));
+            .setSize(BUTTON_SIZE, BUTTON_SIZE));
     }
 
     protected void addStockingModeButton(ModularWindow.Builder builder) {
@@ -537,7 +524,20 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
         })
             .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_STOCKING_MODE)
             .setPos(61, 62)
-            .setSize(18, 18));
+            .setSize(BUTTON_SIZE, BUTTON_SIZE));
+    }
+
+    private Widget createToggleButton(Supplier<Boolean> getter,
+                                      Consumer<Boolean> setter,
+                                      UITexture picture,
+                                      String tooltip, int buttonPosition) {
+        return new CycleButtonWidget().setToggle(getter, setter)
+            .setStaticTexture(picture)
+            .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+            .setGTTooltip(() -> mTooltipCache.getData(tooltip))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(7 + (buttonPosition * BUTTON_SIZE), 62)
+            .setSize(BUTTON_SIZE, BUTTON_SIZE);
     }
 
     protected void addInventorySlots(ModularWindow.Builder builder) {
