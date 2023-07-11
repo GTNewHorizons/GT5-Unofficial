@@ -391,7 +391,9 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
         return 16000;
     }
 
-    protected int getSteamCapacity() { return getCapacity(); }
+    protected int getSteamCapacity() {
+        return getCapacity();
+    }
 
     protected abstract int getProductionPerSecond();
 
