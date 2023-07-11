@@ -590,7 +590,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
         long stored = aHatch.getEUVar();
         long voltage = aHatch.maxEUInput() * aHatch.maxAmperesIn();
 
-        if (voltage > stored) {
+        if (voltage > stored || (voltage + this.getEUVar() > this.mBatteryCapacity)) {
             return 0;
         }
 
