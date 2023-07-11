@@ -400,16 +400,16 @@ public class GT_ParallelHelper {
             if (mRecipe.mOutputs != null) {
                 mItemOutputs = new ItemStack[mRecipe.mOutputs.length];
                 for (int i = 0; i < mRecipe.mOutputs.length; i++) {
-                    if (mRecipe.getOutputChance(i) >= XSTR.XSTR_INSTANCE.nextInt(10000)) {
-                        if (mRecipe.getOutput(i) == null) {
-                            mItemOutputs[i] = null;
-                        } else {
-                            ItemStack tItem = mRecipe.getOutput(i)
-                                .copy();
-                            tItem.stackSize *= mCurrentParallel;
-                            mItemOutputs[i] = tItem;
-                        }
+                    int totalChance = mRecipe.getOutputChance(i) * mCurrentParallel;
+                    int items = totalChance / 10000;
+                    int leftChance = totalChance % 10000;
+                    if (leftChance > 0 && leftChance >= XSTR.XSTR_INSTANCE.nextInt(10000)) {
+                        items++;
                     }
+                    ItemStack item = mRecipe.getOutput(i)
+                        .copy();
+                    item.stackSize = items;
+                    mItemOutputs[i] = item;
                 }
             }
             if (mRecipe.mFluidOutputs != null) {
