@@ -11,6 +11,7 @@ import static gregtech.api.enums.Textures.BlockIcons.ARROW_UP;
 import static gregtech.api.enums.Textures.BlockIcons.ARROW_UP_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,6 +44,8 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     private static final int ARROW_LEFT_INDEX = 3;
     private static final int ARROW_UP_INDEX = 4;
     private static final int FRONT_INDEX = 5;
+
+    private static final String EMIT_ENERGY_TOOLTIP = "GT5U.machines.emit_energy.tooltip";
 
     public int mMaxStackSize = 64;
     public static int MAX = 8;
@@ -463,21 +467,11 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     protected void addEmitEnergyButton(ModularWindow.Builder builder) {
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-            bOutput = !bOutput;
-            if (bOutput) {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans("116", "Emit Energy to Outputside"));
-            } else {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans("117", "Don't emit Energy"));
-            }
-        })
-            .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY)
+        builder.widget(new CycleButtonWidget().setToggle(() -> bOutput, val -> bOutput = val)
+            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY)
+            .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+            .setGTTooltip(() -> mTooltipCache.getData(EMIT_ENERGY_TOOLTIP))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(7, 62)
             .setSize(18, 18));
     }

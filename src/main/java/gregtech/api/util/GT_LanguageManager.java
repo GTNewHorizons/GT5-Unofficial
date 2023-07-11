@@ -269,8 +269,8 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_113", "Outputs only Items");
         addStringLocalization("Interaction_DESCRIPTION_Index_114", "Outputs only misc. Fluids");
         addStringLocalization("Interaction_DESCRIPTION_Index_115", "Outputs nothing");
-        addStringLocalization("Interaction_DESCRIPTION_Index_116", "Emit Energy to Outputside");
-        addStringLocalization("Interaction_DESCRIPTION_Index_117", "Don't emit Energy");
+        // 116 moved to lang files
+        // 117 obsolete
         addStringLocalization("Interaction_DESCRIPTION_Index_118", "Emit Redstone if no Slot is free");
         addStringLocalization("Interaction_DESCRIPTION_Index_119", "Don't emit Redstone");
         addStringLocalization("Interaction_DESCRIPTION_Index_120", "Invert Redstone");
