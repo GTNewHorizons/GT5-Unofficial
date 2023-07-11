@@ -53,6 +53,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     private static final String EMIT_ENERGY_TOOLTIP = "GT5U.machines.emit_energy.tooltip";
     private static final String EMIT_REDSTONE_TOOLTIP = "GT5U.machines.emit_redstone.tooltip";
     private static final String INVERT_REDSTONE_TOOLTIP = "GT5U.machines.invert_redstone.tooltip";
+    private static final String STOCKING_MODE_TOOLTIP = "GT5U.machines.buffer_stocking_mode.tooltip";
     private static final int BUTTON_SIZE = 18;
 
     public int mMaxStackSize = 64;
@@ -490,27 +491,8 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     protected void addStockingModeButton(ModularWindow.Builder builder) {
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-            bStockingMode = !bStockingMode;
-            if (bStockingMode) {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans(
-                        "217",
-                        "Stocking mode. Keeps this many items in destination input slots. This mode can be server unfriendly."));
-            } else {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans(
-                        "218",
-                        "Transfer size mode. Add exactly this many items in destination input slots as long as there is room."));
-            }
-        })
-            .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_STOCKING_MODE)
-            .setPos(61, 62)
-            .setSize(BUTTON_SIZE, BUTTON_SIZE));
+        builder.widget(createToggleButton(() -> bStockingMode, val -> bStockingMode = val,
+            GT_UITextures.OVERLAY_BUTTON_STOCKING_MODE, STOCKING_MODE_TOOLTIP, 3));
     }
 
     private Widget createToggleButton(Supplier<Boolean> getter,
