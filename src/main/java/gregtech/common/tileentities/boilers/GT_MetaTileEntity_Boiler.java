@@ -278,9 +278,9 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     protected void ventSteamIfTankIsFull() {
-        if ((this.mSteam != null) && (this.mSteam.amount > getCapacity())) {
+        if ((this.mSteam != null) && (this.mSteam.amount > getSteamCapacity())) {
             sendSound(SOUND_EVENT_LET_OFF_EXCESS_STEAM);
-            this.mSteam.amount = getCapacity() * 3 / 4;
+            this.mSteam.amount = getSteamCapacity() * 3 / 4;
         }
     }
 
@@ -391,6 +391,8 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
         return 16000;
     }
 
+    protected int getSteamCapacity() { return getCapacity(); }
+
     protected abstract int getProductionPerSecond();
 
     protected abstract int getMaxTemperature();
@@ -440,7 +442,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
             .widget(createFuelSlot())
             .widget(createAshSlot())
             .widget(
-                new ProgressBar().setProgress(() -> mSteam == null ? 0 : (float) mSteam.amount / getCapacity())
+                new ProgressBar().setProgress(() -> mSteam == null ? 0 : (float) mSteam.amount / getSteamCapacity())
                     .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_STEAM, 10)
                     .setDirection(ProgressBar.Direction.UP)
                     .setPos(70, 25)
