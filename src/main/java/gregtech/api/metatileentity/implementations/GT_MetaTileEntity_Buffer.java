@@ -52,6 +52,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
 
     private static final String EMIT_ENERGY_TOOLTIP = "GT5U.machines.emit_energy.tooltip";
     private static final String EMIT_REDSTONE_TOOLTIP = "GT5U.machines.emit_redstone.tooltip";
+    private static final String INVERT_REDSTONE_TOOLTIP = "GT5U.machines.invert_redstone.tooltip";
     private static final int BUTTON_SIZE = 18;
 
     public int mMaxStackSize = 64;
@@ -484,23 +485,8 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     protected void addInvertRedstoneButton(ModularWindow.Builder builder) {
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-            bInvert = !bInvert;
-            if (bInvert) {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans("120", "Invert Redstone"));
-            } else {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans("121", "Don't invert Redstone"));
-            }
-        })
-            .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_INVERT_REDSTONE)
-            .setPos(43, 62)
-            .setSize(BUTTON_SIZE, BUTTON_SIZE));
+        builder.widget(createToggleButton(() -> bInvert, val -> bInvert = val,
+            GT_UITextures.OVERLAY_BUTTON_INVERT_REDSTONE, INVERT_REDSTONE_TOOLTIP, 2));
     }
 
     protected void addStockingModeButton(ModularWindow.Builder builder) {

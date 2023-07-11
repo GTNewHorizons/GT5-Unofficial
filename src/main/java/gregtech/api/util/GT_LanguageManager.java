@@ -273,8 +273,8 @@ public class GT_LanguageManager {
         // 117 obsolete
         // 118 moved to lang files
         // 119 obsolete
-        addStringLocalization("Interaction_DESCRIPTION_Index_120", "Invert Redstone");
-        addStringLocalization("Interaction_DESCRIPTION_Index_121", "Don't invert Redstone");
+        // 120 moved to lang files
+        // 121 obsolete
         addStringLocalization("Interaction_DESCRIPTION_Index_122", "Emit Redstone if slots contain something");
         addStringLocalization("Interaction_DESCRIPTION_Index_123", "Don't emit Redstone");
         addStringLocalization("Interaction_DESCRIPTION_Index_124", "Invert Filter");
