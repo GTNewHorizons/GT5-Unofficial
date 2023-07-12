@@ -305,6 +305,23 @@ public class GT_Multiblock_Tooltip_Builder {
 
     /**
      * Add a line of information about the structure:<br>
+     * (indent)countx casingName (tiered)
+     *
+     * @param casingName Name of the Casing.
+     * @param isTiered   Flag if this casing accepts multiple tiers (e.g. coils)
+     * @param countColor Color of the casing count text
+     * @param textColor  Color of the casing name text
+     * @return Instance this method was called on.
+     */
+    public GT_Multiblock_Tooltip_Builder addCasingInfoExactlyColored(String casingName, EnumChatFormatting textColor,
+        int count, EnumChatFormatting countColor, boolean isTiered) {
+        sLines
+            .add(countColor + TAB + count + "x " + RESET + textColor + casingName + (isTiered ? " " + TT_tiered : ""));
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
      * (indent)minCountx casingName (minimum) (tiered)
      *
      * @param casingName Name of the Casing.
@@ -318,6 +335,32 @@ public class GT_Multiblock_Tooltip_Builder {
                 + minCount
                 + "x "
                 + EnumChatFormatting.GRAY
+                + casingName
+                + " "
+                + TT_minimum
+                + (isTiered ? " " + TT_tiered : ""));
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * (indent)minCountx casingName (minimum) (tiered)
+     *
+     * @param casingName Name of the Casing.
+     * @param minCount   Minimum needed for valid structure check.
+     * @param isTiered   Flag if this casing accepts multiple tiers (e.g. coils)
+     * @param countColor Color of the casing count text
+     * @param textColor  Color of the casing name text
+     * @return Instance this method was called on.
+     */
+    public GT_Multiblock_Tooltip_Builder addCasingInfoMinColored(String casingName, EnumChatFormatting textColor,
+        int minCount, EnumChatFormatting countColor, boolean isTiered) {
+        sLines.add(
+            countColor + TAB
+                + minCount
+                + "x "
+                + RESET
+                + textColor
                 + casingName
                 + " "
                 + TT_minimum
@@ -347,6 +390,36 @@ public class GT_Multiblock_Tooltip_Builder {
                 + maxCount
                 + "x "
                 + EnumChatFormatting.GRAY
+                + casingName
+                + (isTiered ? " " + TT_tiered : ""));
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * (indent)minCountx - maxCountx casingName (minimum) (tiered)
+     *
+     * @param casingName Name of the Casing.
+     * @param minCount   Minimum needed for valid structure check.
+     * @param maxCount   Maximum needed for valid structure check.
+     * @param isTiered   Flag if this casing accepts multiple tiers (e.g. coils)
+     * @param countColor Color of the casing count text
+     * @param textColor  Color of the casing name text
+     * @return Instance this method was called on.
+     */
+    public GT_Multiblock_Tooltip_Builder addCasingInfoRangeColored(String casingName, EnumChatFormatting textColor,
+        int minCount, int maxCount, EnumChatFormatting countColor, boolean isTiered) {
+        sLines.add(
+            countColor + TAB
+                + minCount
+                + "x"
+                + EnumChatFormatting.GRAY
+                + " - "
+                + countColor
+                + maxCount
+                + "x "
+                + RESET
+                + textColor
                 + casingName
                 + (isTiered ? " " + TT_tiered : ""));
         return this;
