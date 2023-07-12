@@ -9,7 +9,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
@@ -24,6 +23,7 @@ import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase implements IAddUIWidgets {
 
+    private static final String IGNORE_NBT_TOOLTIP = "GT5U.machines" + ".ignore_nbt.tooltip";
     public boolean bIgnoreNBT = false;
 
     public GT_MetaTileEntity_Filter(int aID, String aName, String aNameRegional, int aTier) {
@@ -117,27 +117,11 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase imple
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-            bIgnoreNBT = !bIgnoreNBT;
-            if (bIgnoreNBT) {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans("126", "Ignore NBT"));
-            } else {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans("127", "NBT has to match"));
-            }
-        })
-            .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_NBT)
-            .setPos(79, 62)
-            .setSize(18, 18))
-            .widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_WHITE.apply(9, false))
-                    .setPos(6, 19)
-                    .setSize(9, 24))
+        addAllowNbtButton(builder);
+        builder.widget(
+            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_WHITE.apply(9, false))
+                .setPos(6, 19)
+                .setSize(9, 24))
             .widget(
                 new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_BLUE.apply(24, true))
                     .setPos(71, 19)
@@ -166,5 +150,15 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase imple
                     .endAtSlot(8)
                     .build()
                     .setPos(97, 4));
+    }
+
+    private void addAllowNbtButton(ModularWindow.Builder builder) {
+        builder.widget(
+            createToggleButton(
+                () -> bIgnoreNBT,
+                val -> bIgnoreNBT = val,
+                GT_UITextures.OVERLAY_BUTTON_NBT,
+                IGNORE_NBT_TOOLTIP,
+                4));
     }
 }

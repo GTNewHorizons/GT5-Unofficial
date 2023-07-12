@@ -281,8 +281,8 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_124.1", "Blacklist Mode");
         // 125 obsolete
         addStringLocalization("Interaction_DESCRIPTION_Index_125.1", "Whitelist Mode");
-        addStringLocalization("Interaction_DESCRIPTION_Index_126", "Ignore NBT");
-        addStringLocalization("Interaction_DESCRIPTION_Index_127", "NBT has to match");
+        // 126 moved to lang files
+        // 127 obsolete
         addStringLocalization("Interaction_DESCRIPTION_Index_128", "Redstone");
         addStringLocalization("Interaction_DESCRIPTION_Index_128.1", "Redstone ");
         addStringLocalization("Interaction_DESCRIPTION_Index_129", "Energy");
