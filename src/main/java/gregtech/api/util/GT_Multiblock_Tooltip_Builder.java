@@ -183,9 +183,13 @@ public class GT_Multiblock_Tooltip_Builder {
                     + COLON
                     + EnumChatFormatting.GOLD
                     + w
+                    + EnumChatFormatting.GRAY
                     + "x"
+                    + EnumChatFormatting.GOLD
                     + h
+                    + EnumChatFormatting.GRAY
                     + "x"
+                    + EnumChatFormatting.GOLD
                     + l
                     + EnumChatFormatting.GRAY
                     + " ("
