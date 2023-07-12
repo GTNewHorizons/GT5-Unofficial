@@ -400,11 +400,12 @@ public class GT_ParallelHelper {
             if (mRecipe.mOutputs != null) {
                 mItemOutputs = new ItemStack[mRecipe.mOutputs.length];
                 for (int i = 0; i < mRecipe.mOutputs.length; i++) {
-                    int totalChance = mRecipe.getOutputChance(i) * mCurrentParallel;
-                    int items = totalChance / 10000;
-                    int leftChance = totalChance % 10000;
-                    if (leftChance > 0 && leftChance >= XSTR.XSTR_INSTANCE.nextInt(10000)) {
-                        items++;
+                    int items = 0;
+                    int itemStackSize = mRecipe.getOutput(i).stackSize;
+                    for (int roll = 0; roll < mCurrentParallel; roll++) {
+                        if (mRecipe.getOutputChance(i) >= XSTR.XSTR_INSTANCE.nextInt(10000)) {
+                            items += itemStackSize;
+                        }
                     }
                     ItemStack item = mRecipe.getOutput(i)
                         .copy();
