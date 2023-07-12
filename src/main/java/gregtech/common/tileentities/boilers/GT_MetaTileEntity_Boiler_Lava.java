@@ -447,7 +447,7 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     public FluidTankInfo[] getTankInfo(ForgeDirection side) {
         return new FluidTankInfo[] { super.getTankInfo(side)[0],
             new FluidTankInfo(this.lavaTank.getFluid(), this.lavaTank.getCapacity()),
-            new FluidTankInfo(getDrainableStack(), getCapacity()) };
+            new FluidTankInfo(getDrainableStack(), getSteamCapacity()) };
     }
 
     // @Override
@@ -470,7 +470,7 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     // .setPos(115, 61))
     // .widget(createAshSlot())
     // .widget(
-    // new ProgressBar().setProgress(() -> mSteam == null ? 0 : (float) mSteam.amount / getCapacity())
+    // new ProgressBar().setProgress(() -> mSteam == null ? 0 : (float) mSteam.amount / getSteamCapacity())
     // .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_STEAM, 10)
     // .setDirection(ProgressBar.Direction.UP)
     // .setPos(70, 25)

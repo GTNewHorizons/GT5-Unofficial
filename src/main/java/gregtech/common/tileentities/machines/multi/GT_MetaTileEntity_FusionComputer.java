@@ -22,6 +22,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -41,6 +43,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -272,7 +276,8 @@ public abstract class GT_MetaTileEntity_FusionComputer extends
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
+    @NotNull
+    public CheckRecipeResult checkProcessing() {
         ArrayList<FluidStack> tFluidList = getStoredFluids();
         int tFluidList_sS = tFluidList.size();
         for (int i = 0; i < tFluidList_sS - 1; i++) {
@@ -303,9 +308,9 @@ public abstract class GT_MetaTileEntity_FusionComputer extends
             if ((tRecipe == null && !mRunningOnLoad) || (maxEUStore() < tRecipe.mSpecialValue)) {
                 turnCasingActive(false);
                 this.mLastRecipe = null;
-                return false;
+                return CheckRecipeResultRegistry.NO_RECIPE;
             }
-            if (!canOutputAll(tRecipe)) return false;
+            if (!canOutputAll(tRecipe)) return CheckRecipeResultRegistry.OUTPUT_FULL;
             if (mRunningOnLoad || tRecipe.isRecipeInputEqual(true, tFluids)) {
                 this.mLastRecipe = tRecipe;
                 this.mEUt = (this.mLastRecipe.mEUt * overclock(this.mLastRecipe.mSpecialValue));
@@ -314,10 +319,10 @@ public abstract class GT_MetaTileEntity_FusionComputer extends
                 this.mOutputFluids = this.mLastRecipe.mFluidOutputs;
                 turnCasingActive(true);
                 mRunningOnLoad = false;
-                return true;
+                return CheckRecipeResultRegistry.SUCCESSFUL;
             }
         }
-        return false;
+        return CheckRecipeResultRegistry.NO_RECIPE;
     }
 
     public abstract int tierOverclock();

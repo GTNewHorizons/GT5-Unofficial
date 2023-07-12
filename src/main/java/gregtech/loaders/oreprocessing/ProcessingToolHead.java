@@ -55,6 +55,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
         boolean aSpecialRecipeReq2 = aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)
             && !aMaterial.contains(SubTag.NO_WORKING);
         boolean aNoWorking = aMaterial.contains(SubTag.NO_WORKING);
+        boolean aProducesSoftMallet = aMaterial.contains(SubTag.BOUNCY) || aMaterial.contains(SubTag.WOOD)
+            || aMaterial.contains(SubTag.SOFT);
         switch (aPrefix) {
             case toolHeadArrow -> {
                 if (aMaterial.mStandardMoltenFluid != null)
@@ -1177,8 +1179,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             GT_Utility.getIntegratedCircuit(14))
                         .itemOutputs(
                             GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                (aMaterial.contains(SubTag.BOUNCY)) || (aMaterial.contains(SubTag.WOOD))
-                                    ? GT_MetaGenerated_Tool_01.SOFTMALLET
+                                aProducesSoftMallet ? GT_MetaGenerated_Tool_01.SOFTMALLET
                                     : GT_MetaGenerated_Tool_01.HARDHAMMER,
                                 1,
                                 aMaterial,
@@ -1193,8 +1194,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 if ((aMaterial != Materials.Stone) && (aMaterial != Materials.Flint)) {
                     GT_ModHandler.addShapelessCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            (aMaterial.contains(SubTag.BOUNCY)) || (aMaterial.contains(SubTag.WOOD))
-                                ? GT_MetaGenerated_Tool_01.SOFTMALLET
+                            aProducesSoftMallet ? GT_MetaGenerated_Tool_01.SOFTMALLET
                                 : GT_MetaGenerated_Tool_01.HARDHAMMER,
                             1,
                             aMaterial,
@@ -1204,8 +1204,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
                     GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            (aMaterial.contains(SubTag.BOUNCY)) || (aMaterial.contains(SubTag.WOOD))
-                                ? GT_MetaGenerated_Tool_01.SOFTMALLET
+                            aProducesSoftMallet ? GT_MetaGenerated_Tool_01.SOFTMALLET
                                 : GT_MetaGenerated_Tool_01.HARDHAMMER,
                             1,
                             aMaterial,
@@ -1218,8 +1217,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             'S', OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
                     GT_ModHandler.addCraftingRecipe(
                         GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            (aMaterial.contains(SubTag.BOUNCY)) || (aMaterial.contains(SubTag.WOOD))
-                                ? GT_MetaGenerated_Tool_01.SOFTMALLET
+                            aProducesSoftMallet ? GT_MetaGenerated_Tool_01.SOFTMALLET
                                 : GT_MetaGenerated_Tool_01.HARDHAMMER,
                             1,
                             aMaterial,

@@ -30,6 +30,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.TestOnly;
 import org.lwjgl.input.Keyboard;
 
@@ -48,14 +49,17 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.ControllerWithOptionalFeatures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SingleRecipeCheck;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.api.util.GT_Single_Recipe_Check;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
 import gregtech.api.util.OutputHatchWrapper;
@@ -90,11 +94,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     protected boolean inputSeparation = getDefaultInputSeparationMode();
     protected VoidingMode voidingMode = getDefaultVoidingMode();
     protected boolean batchMode = getDefaultBatchMode();
+    private @Nonnull CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NONE;
+    private boolean isScheduledForResetCheckRecipeResult;
+
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
     protected static final String VOIDING_MODE_NBT_KEY = "voidingMode";
     protected static final String BATCH_MODE_NBT_KEY = "batchMode";
-    public GT_Single_Recipe_Check mSingleRecipeCheck = null;
+    protected SingleRecipeCheck mSingleRecipeCheck = null;
 
     public ArrayList<GT_MetaTileEntity_Hatch_Input> mInputHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Output> mOutputHatches = new ArrayList<>();
@@ -105,14 +112,18 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public ArrayList<GT_MetaTileEntity_Hatch_Energy> mEnergyHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Maintenance> mMaintenanceHatches = new ArrayList<>();
     protected List<GT_MetaTileEntity_Hatch> mExoticEnergyHatches = new ArrayList<>();
+    protected final ProcessingLogic processingLogic;
     @SideOnly(Side.CLIENT)
     protected GT_SoundLoop activitySoundLoop;
+
+    private long mLastWorkingTick = 0;
 
     protected static final byte INTERRUPT_SOUND_INDEX = 8;
     protected static final byte PROCESS_START_SOUND_INDEX = 1;
 
     public GT_MetaTileEntity_MultiBlockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 2);
+        this.processingLogic = null;
         GT_MetaTileEntity_MultiBlockBase.disableMaintenance = GregTech_API.sMachineFile
             .get(ConfigCategories.machineconfig, "MultiBlockMachines.disableMaintenance", false);
         this.damageFactorLow = GregTech_API.sMachineFile
@@ -124,6 +135,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     public GT_MetaTileEntity_MultiBlockBase(String aName) {
         super(aName, 2);
+        this.processingLogic = createProcessingLogic();
         GT_MetaTileEntity_MultiBlockBase.disableMaintenance = GregTech_API.sMachineFile
             .get(ConfigCategories.machineconfig, "MultiBlockMachines.disableMaintenance", false);
         this.damageFactorLow = GregTech_API.sMachineFile
@@ -256,7 +268,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (supportsSingleRecipeLocking()) {
             mLockedToSingleRecipe = aNBT.getBoolean("mLockedToSingleRecipe");
             if (mLockedToSingleRecipe && aNBT.hasKey("mSingleRecipeCheck", Constants.NBT.TAG_COMPOUND)) {
-                GT_Single_Recipe_Check c = loadSingleRecipeChecker(aNBT.getCompoundTag("mSingleRecipeCheck"));
+                SingleRecipeCheck c = loadSingleRecipeChecker(aNBT.getCompoundTag("mSingleRecipeCheck"));
                 if (c != null) mSingleRecipeCheck = c;
                 // the old recipe is gone. we disable the machine to prevent making garbage in case of shared inputs
                 // maybe use a better way to inform player in the future.
@@ -294,8 +306,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mCrowbar = aNBT.getBoolean("mCrowbar");
     }
 
-    protected GT_Single_Recipe_Check loadSingleRecipeChecker(NBTTagCompound aNBT) {
-        return GT_Single_Recipe_Check.tryLoad(this, aNBT);
+    protected SingleRecipeCheck loadSingleRecipeChecker(NBTTagCompound aNBT) {
+        return SingleRecipeCheck.tryLoad(getRecipeMap(), aNBT);
     }
 
     @Override
@@ -394,6 +406,17 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
     }
 
+    @Override
+    public void onTickFail(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onTickFail(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            aBaseMetaTileEntity.disableWorking();
+            checkRecipeResult = CheckRecipeResultRegistry.CRASH;
+            // Don't let `onSetActive` to overwrite
+            isScheduledForResetCheckRecipeResult = false;
+        }
+    }
+
     private void checkMaintenance() {
         if (disableMaintenance) {
             mWrench = true;
@@ -427,14 +450,41 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
     }
 
-    protected boolean checkRecipe() {
+    /**
+     * Starts checking recipe with some operations needed to actually run the check. Overriding this without due care
+     * may result in dupe of items, hence it's marked as final.
+     * <p>
+     * See {@link #createProcessingLogic()} or {@link #checkProcessing()} for what you want to override.
+     *
+     * @return If successfully found recipe and/or started processing
+     */
+    protected final boolean checkRecipe() {
         startRecipeProcessing();
-        boolean result = checkRecipe(mInventory[1]);
-        if (result && getProcessStartSound() != null) {
-            sendLoopStart(PROCESS_START_SOUND_INDEX);
+        CheckRecipeResult result = checkProcessing();
+        if (!CheckRecipeResultRegistry.isRegistered(result.getID())) {
+            throw new RuntimeException(String.format("Result %s is not registered for registry", result.getID()));
         }
+        if (result.wasSuccessful()) {
+            sendStartMultiBlockSoundLoop();
+        }
+        this.checkRecipeResult = result;
         endRecipeProcessing();
-        return result;
+        return result.wasSuccessful();
+    }
+
+    private boolean shouldCheckRecipeThisTick(long aTick) {
+        // Perform more frequent recipe change after the machine just shuts down.
+        long timeElapsed = aTick - mLastWorkingTick;
+
+        if (timeElapsed >= 100) return aTick % 100 == 0;
+
+        return timeElapsed == 5 || timeElapsed == 12
+            || timeElapsed == 20
+            || timeElapsed == 30
+            || timeElapsed == 40
+            || timeElapsed == 55
+            || timeElapsed == 70
+            || timeElapsed == 85;
     }
 
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -466,6 +516,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     mProgresstime = 0;
                     mMaxProgresstime = 0;
                     mEfficiencyIncrease = 0;
+                    mLastWorkingTick = aTick;
                     if (aBaseMetaTileEntity.isAllowedToWork()) {
                         checkRecipe();
                     }
@@ -482,7 +533,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 }
             }
         } else {
-            if (aTick % 100 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
+            if (shouldCheckRecipeThisTick(aTick) || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
                 || aBaseMetaTileEntity.hasInventoryBeenModified()) {
 
                 if (aBaseMetaTileEntity.isAllowedToWork()) {
@@ -509,6 +560,12 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             }
         }
         return mPollution < 10000;
+    }
+
+    protected void sendStartMultiBlockSoundLoop() {
+        if (getProcessStartSound() != null) {
+            sendLoopStart(PROCESS_START_SOUND_INDEX);
+        }
     }
 
     @Override
@@ -598,9 +655,86 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public abstract boolean isCorrectMachinePart(ItemStack aStack);
 
     /**
-     * Checks the Recipe
+     * @deprecated Use {@link #createProcessingLogic()} or {@link #checkProcessing()}
      */
-    public abstract boolean checkRecipe(ItemStack aStack);
+    @Deprecated
+    public boolean checkRecipe(ItemStack aStack) {
+        return false;
+    }
+
+    /**
+     * Checks recipe and setup machine if it's successful.
+     * <p>
+     * For generic machine working with recipemap, use {@link #createProcessingLogic()} to make use of shared codebase.
+     */
+    @Nonnull
+    public CheckRecipeResult checkProcessing() {
+        // If no logic is found, try legacy checkRecipe
+        if (processingLogic == null) {
+            return checkRecipe(mInventory[1]) ? CheckRecipeResultRegistry.SUCCESSFUL
+                : CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
+
+        processingLogic.clear();
+        processingLogic.setMachine(this);
+        processingLogic.setRecipeMapSupplier(this::getRecipeMap);
+        processingLogic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
+        processingLogic.setBatchSize(isBatchModeEnabled() ? getMaxBatchSize() : 1);
+        processingLogic.setRecipeLocking(this, isRecipeLockingEnabled());
+        processingLogic.setInputFluids(getStoredFluids());
+        setProcessingLogicPower(processingLogic);
+        if (isInputSeparationEnabled()) {
+            for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
+                List<ItemStack> inputItems = new ArrayList<>();
+                for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                    ItemStack stored = bus.getStackInSlot(i);
+                    if (stored != null) {
+                        inputItems.add(stored);
+                    }
+                }
+                processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+                result = processingLogic.process();
+                if (result.wasSuccessful()) break;
+            }
+        } else {
+            processingLogic.setInputItems(getStoredInputs());
+            result = processingLogic.process();
+        }
+
+        // inputs are consumed by `process()`
+        updateSlots();
+
+        if (!result.wasSuccessful()) return result;
+
+        mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+        mEfficiencyIncrease = 10000;
+
+        if (processingLogic.getCalculatedEut() > Integer.MAX_VALUE) {
+            return CheckRecipeResultRegistry.POWER_OVERFLOW;
+        }
+        mEUt = (int) processingLogic.getCalculatedEut();
+        mMaxProgresstime = processingLogic.getDuration();
+
+        if (mEUt > 0) {
+            mEUt = (-mEUt);
+        }
+
+        mOutputItems = processingLogic.getOutputItems();
+        mOutputFluids = processingLogic.getOutputFluids();
+
+        return result;
+    }
+
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(GT_Utility.roundDownVoltage(getMaxInputVoltage()));
+        logic.setAvailableAmperage(1);
+    }
+
+    protected int getMaxBatchSize() {
+        return 128;
+    }
 
     /**
      * Checks the Machine. You have to assign the MetaTileEntities for the Hatches here.
@@ -645,6 +779,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mMaxProgresstime = 0;
         mEfficiencyIncrease = 0;
         getBaseMetaTileEntity().disableWorking();
+        checkRecipeResult = CheckRecipeResultRegistry.NONE;
     }
 
     public void criticalStopMachine() {
@@ -806,6 +941,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return injected > 0;
     }
 
+    /**
+     * Sums up voltage of energy hatches. Amperage does not matter.
+     */
     public long getMaxInputVoltage() {
         long rVoltage = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
@@ -814,6 +952,21 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return rVoltage;
     }
 
+    /**
+     * Sums up max input EU/t of energy hatches, amperage included.
+     */
+    public long getMaxInputPower() {
+        long eut = 0;
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) if (isValidMetaTileEntity(tHatch)) {
+            IGregTechTileEntity baseTile = tHatch.getBaseMetaTileEntity();
+            eut += baseTile.getInputVoltage() * baseTile.getInputAmperage();
+        }
+        return eut;
+    }
+
+    /**
+     * Returns voltage tier of energy hatches. If multiple tiers are found, returns 0.
+     */
     public long getInputVoltageTier() {
         long rTier = 0;
         if (mEnergyHatches.size() > 0) {
@@ -1097,7 +1250,18 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return rList;
     }
 
+    @Override
     public GT_Recipe_Map getRecipeMap() {
+        return null;
+    }
+
+    /**
+     * Creates logic to run recipe check based on recipemap. This runs only once, on class instantiation.
+     * <p>
+     * If this machine doesn't use recipemap or does some complex things, override {@link #checkProcessing()}.
+     */
+    @ApiStatus.OverrideOnly
+    protected ProcessingLogic createProcessingLogic() {
         return null;
     }
 
@@ -1490,6 +1654,20 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
     }
 
+    @Override
+    public void onSetActive(boolean active) {
+        if (isScheduledForResetCheckRecipeResult && !active) {
+            checkRecipeResult = CheckRecipeResultRegistry.NONE;
+            isScheduledForResetCheckRecipeResult = false;
+        }
+    }
+
+    @Override
+    public void onDisableWorking() {
+        // This prevents deleting result instantly when turning off machine
+        isScheduledForResetCheckRecipeResult = true;
+    }
+
     protected void setMufflers(boolean state) {
         for (GT_MetaTileEntity_Hatch_Muffler aMuffler : mMufflerHatches) {
             final IGregTechTileEntity iGTTileEntity = aMuffler.getBaseMetaTileEntity();
@@ -1581,17 +1759,25 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     @Override
     public boolean isAllowedToWork() {
-        return getBaseMetaTileEntity().isAllowedToWork();
+        return getBaseMetaTileEntity() != null && getBaseMetaTileEntity().isAllowedToWork();
     }
 
     @Override
     public void disableWorking() {
-        getBaseMetaTileEntity().disableWorking();
+        if (getBaseMetaTileEntity() != null) {
+            getBaseMetaTileEntity().disableWorking();
+        }
     }
 
     @Override
     public void enableWorking() {
-        getBaseMetaTileEntity().enableWorking();
+        if (getBaseMetaTileEntity() != null) {
+            getBaseMetaTileEntity().enableWorking();
+        }
+    }
+
+    public ItemStack getControllerSlot() {
+        return mInventory[1];
     }
 
     // @Override
@@ -1731,7 +1917,20 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     @Override
     public void setRecipeLocking(boolean enabled) {
-        this.mLockedToSingleRecipe = enabled;
+        mLockedToSingleRecipe = enabled;
+        if (!enabled) {
+            setSingleRecipeCheck(null);
+        }
+    }
+
+    @Override
+    public void setSingleRecipeCheck(SingleRecipeCheck recipeCheck) {
+        mSingleRecipeCheck = recipeCheck;
+    }
+
+    @Override
+    public SingleRecipeCheck getSingleRecipeCheck() {
+        return mSingleRecipeCheck;
     }
 
     // @Override
@@ -1851,22 +2050,17 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     // new TextWidget(GT_Utility.trans("142", "Running perfectly.")).setDefaultColor(COLOR_TEXT_WHITE.get())
     // .setEnabled(
     // widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
-    //
     // screenElements.widget(
-    // new TextWidget(GT_Utility.trans("143", "Missing Mining Pipe")).setDefaultColor(COLOR_TEXT_WHITE.get())
-    // .setEnabled(widget -> {
-    // if (getBaseMetaTileEntity().getErrorDisplayID() == 0
-    // && this instanceof GT_MetaTileEntity_DrillerBase) {
-    // final ItemStack tItem = inventorySlot.getMcSlot()
-    // .getStack();
-    // return tItem == null
-    // || !GT_Utility.areStacksEqual(tItem, GT_ModHandler.getIC2Item("miningPipe", 1L));
-    // }
-    // return false;
-    // }));
+    // TextWidget.dynamicString(() -> checkRecipeResult.getDisplayString())
+    // .setSynced(false)
+    // .setTextAlignment(Alignment.CenterLeft)
+    // .setEnabled(widget -> GT_Utility.isStringValid(checkRecipeResult.getDisplayString())))
+    // .widget(new CheckRecipeResultSyncer(() -> checkRecipeResult, (result) -> checkRecipeResult = result));
+    //
     // screenElements.widget(
     // new TextWidget(GT_Utility.trans("144", "Missing Turbine Rotor")).setDefaultColor(COLOR_TEXT_WHITE.get())
     // .setEnabled(widget -> {
+    // if (getBaseMetaTileEntity().isAllowedToWork()) return false;
     // if (getBaseMetaTileEntity().getErrorDisplayID() == 0
     // && this instanceof GT_MetaTileEntity_LargeTurbine) {
     // final ItemStack tItem = inventorySlot.getMcSlot()

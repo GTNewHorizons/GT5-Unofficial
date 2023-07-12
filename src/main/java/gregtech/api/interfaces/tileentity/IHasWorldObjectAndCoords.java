@@ -135,8 +135,9 @@ public interface IHasWorldObjectAndCoords {
     boolean isDead();
 
     /**
-     * Sends a Block Event to the Client TileEntity, the byte Parameters are only for validation as Minecraft doesn't
-     * properly write Packet Data.
+     * Sends a Block Event to the Client TileEntity.
+     * 
+     * @param aValue value to sync
      */
     void sendBlockEvent(byte aID, byte aValue);
 

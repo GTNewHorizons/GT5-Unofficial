@@ -264,10 +264,10 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
             updateFuel(aBaseMetaTileEntity, aTick);
     }
 
-    private void ventSteamIfTankIsFull() {
-        if ((this.mSteam != null) && (this.mSteam.amount > getCapacity())) {
+    protected void ventSteamIfTankIsFull() {
+        if ((this.mSteam != null) && (this.mSteam.amount > getSteamCapacity())) {
             sendSound(SOUND_EVENT_LET_OFF_EXCESS_STEAM);
-            this.mSteam.amount = getCapacity() * 3 / 4;
+            this.mSteam.amount = getSteamCapacity() * 3 / 4;
         }
     }
 
@@ -378,6 +378,10 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
         return 16000;
     }
 
+    protected int getSteamCapacity() {
+        return getCapacity();
+    }
+
     protected abstract int getProductionPerSecond();
 
     protected abstract int getMaxTemperature();
@@ -465,8 +469,45 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     // }
 
     // @Override
-    // public GUITextureSet getGUITextureSet() {
-    // return GUITextureSet.STEAM.apply(getSteamVariant());
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // builder.widget(
+    // new SlotWidget(inventoryHandler, 0).setPos(43, 25)
+    // .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotIn()))
+    // .widget(
+    // new SlotWidget(inventoryHandler, 1).setPos(43, 61)
+    // .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotOut()))
+    // .widget(createFuelSlot())
+    // .widget(createAshSlot())
+    // .widget(
+    // new ProgressBar().setProgress(() -> mSteam == null ? 0 : (float) mSteam.amount / getSteamCapacity())
+    // .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_STEAM, 10)
+    // .setDirection(ProgressBar.Direction.UP)
+    // .setPos(70, 25)
+    // .setSize(10, 54))
+    // .widget(
+    // new ProgressBar().setProgress(() -> mFluid == null ? 0 : (float) mFluid.amount / getCapacity())
+    // .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_WATER, 10)
+    // .setDirection(ProgressBar.Direction.UP)
+    // .setPos(83, 25)
+    // .setSize(10, 54))
+    // .widget(
+    // new ProgressBar().setProgress(() -> (float) mTemperature / maxProgresstime())
+    // .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_HEAT, 10)
+    // .setDirection(ProgressBar.Direction.UP)
+    // .setPos(96, 25)
+    // .setSize(10, 54))
+    // .widget(
+    // new ProgressBar()
+    // // cap minimum so that one can easily see there's fuel remaining
+    // .setProgress(() -> mProcessingEnergy > 0 ? Math.max((float) mProcessingEnergy / 1000, 1f / 5) : 0)
+    // .setTexture(getProgressbarFuel(), 14)
+    // .setDirection(ProgressBar.Direction.UP)
+    // .setPos(116, 45)
+    // .setSize(14, 14))
+    // .widget(
+    // new DrawableWidget().setDrawable(getOverlaySlotCanister())
+    // .setPos(43, 43)
+    // .setSize(18, 18));
     // }
 
     // @Override

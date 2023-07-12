@@ -37,6 +37,7 @@ import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ClientPreference;
 import gregtech.api.util.GT_CoverBehaviorBase;
@@ -1006,15 +1007,24 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public int checkRecipe(boolean skipOC) {
         GT_Recipe_Map tMap = getRecipeList();
         if (tMap == null) return DID_NOT_FIND_RECIPE;
-        GT_Recipe tRecipe = tMap.findRecipe(
-            getBaseMetaTileEntity(),
+        FindRecipeResult result = tMap.findRecipeWithResult(
             mLastRecipe,
+            false,
             false,
             V[mTier],
             new FluidStack[] { getFillableStack() },
             getSpecialSlot(),
             getAllInputs());
-        if (tRecipe == null) return DID_NOT_FIND_RECIPE;
+        if (result.getState() == FindRecipeResult.State.EXPLODE && getBaseMetaTileEntity() != null) {
+            getBaseMetaTileEntity().doExplosion(V[mTier] * 4);
+            return DID_NOT_FIND_RECIPE;
+        }
+        if (result.getState() == FindRecipeResult.State.ON_FIRE && getBaseMetaTileEntity() != null) {
+            getBaseMetaTileEntity().setOnFire();
+            return DID_NOT_FIND_RECIPE;
+        }
+        if (!result.isSuccessful()) return DID_NOT_FIND_RECIPE;
+        GT_Recipe tRecipe = result.getRecipeNonNull();
 
         if (GT_Mod.gregtechproxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100 || tRecipe.mSpecialValue == -300)
             && !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId))

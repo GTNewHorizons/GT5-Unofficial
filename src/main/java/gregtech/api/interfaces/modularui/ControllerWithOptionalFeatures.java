@@ -1,5 +1,6 @@
 package gregtech.api.interfaces.modularui;
 
+import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
 
 /**
@@ -13,7 +14,7 @@ import gregtech.api.interfaces.tileentity.IVoidable;
  * <li>Recipe locking</li>
  * </ul>
  */
-public interface ControllerWithOptionalFeatures extends IVoidable {
+public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockable {
 
     boolean isAllowedToWork();
 
@@ -212,22 +213,6 @@ public interface ControllerWithOptionalFeatures extends IVoidable {
     // }
     // return (ButtonWidget) button;
     // }
-
-    /**
-     * Override this if you are a multi-block that has added support for single recipe locking.
-     */
-    boolean supportsSingleRecipeLocking();
-
-    /**
-     * @return true if recipe locking is enabled, else false. This is getter is used for displaying the icon in the GUI
-     */
-    boolean isRecipeLockingEnabled();
-
-    void setRecipeLocking(boolean enabled);
-
-    default boolean getDefaultRecipeLockingMode() {
-        return false;
-    }
 
     // Pos2d getRecipeLockingButtonPos();
 

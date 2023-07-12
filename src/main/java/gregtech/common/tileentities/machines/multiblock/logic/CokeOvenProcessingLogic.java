@@ -4,10 +4,14 @@ import static gregtech.api.enums.Mods.Railcraft;
 import static net.minecraftforge.oredict.OreDictionary.getOreID;
 import static net.minecraftforge.oredict.OreDictionary.getOreIDs;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
@@ -24,21 +28,22 @@ public class CokeOvenProcessingLogic extends ProcessingLogic {
     private int timeMultiplier = 1;
 
     @Override
-    public boolean process() {
+    public @Nonnull CheckRecipeResult process() {
         if (inputItems == null || inputItems[0] == null) {
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
         ItemStack input = inputItems[0];
         int originalStackSize = input.stackSize;
         ItemStack output = findRecipe(input);
         if (currentOutputItems != null && currentOutputItems[0] != null && !currentOutputItems[0].isItemEqual(output)) {
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
         input.stackSize -= 1;
-        setDuration((long) NORMAL_RECIPE_TIME * timeMultiplier);
+        setDuration(NORMAL_RECIPE_TIME * timeMultiplier);
         setOutputItems(output);
 
-        return originalStackSize > input.stackSize;
+        return originalStackSize > input.stackSize ? CheckRecipeResultRegistry.SUCCESSFUL
+            : CheckRecipeResultRegistry.NO_RECIPE;
     }
 
     protected ItemStack findRecipe(ItemStack input) {
