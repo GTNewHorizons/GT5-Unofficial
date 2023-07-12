@@ -23,6 +23,7 @@ import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase implements IAddUIWidgets {
 
+    private static final int NUM_FILTER_SLOTS = 9;
     private static final String IGNORE_NBT_TOOLTIP = "GT5U.machines.ignore_nbt.tooltip";
     private boolean ignoreNbt = false;
 
@@ -86,24 +87,24 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase imple
             return false;
         }
         if (this.invertFilter) {
-            for (byte i = 9; i < 18; i = (byte) (i + 1)) {
-                if (GT_Utility.areStacksEqual(this.mInventory[i], aStack, this.ignoreNbt)) {
+            for (int i = 0; i < NUM_FILTER_SLOTS; i++) {
+                if (GT_Utility.areStacksEqual(this.mInventory[FILTER_SLOT_INDEX + i], aStack, this.ignoreNbt)) {
                     return false;
                 }
             }
             return true;
         }
-        return GT_Utility.areStacksEqual(this.mInventory[(aIndex + 9)], aStack, this.ignoreNbt);
+        return GT_Utility.areStacksEqual(this.mInventory[(FILTER_SLOT_INDEX + aIndex)], aStack, this.ignoreNbt);
     }
 
     @Override
     protected void handleRedstoneOutput(IGregTechTileEntity aBaseMetaTileEntity) {
         if (bRedstoneIfFull) {
             int emptySlots = 0;
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < NUM_FILTER_SLOTS; i++) {
                 if (mInventory[i] == null) ++emptySlots;
             }
-            if (!bInvert) emptySlots = 9 - emptySlots;
+            if (!bInvert) emptySlots = NUM_FILTER_SLOTS - emptySlots;
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) emptySlots);
             }
