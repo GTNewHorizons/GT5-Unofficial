@@ -321,8 +321,8 @@ GT5U.machines.ignore_nbt.tooltip=Ignore item NBT
 GT5U.machines.ignore_nbt.tooltip.extended=§7By default, item NBT must match.
 
 GT5U.recipe_filter.representation_slot.tooltip=Click with a machine to set filter
-GT5U.type_filter.representation_slot.tooltip.0=left click to forward
-GT5U.type_filter.representation_slot.tooltip.1=right click to back
+GT5U.type_filter.representation_slot.tooltip=§7Left click to cycle forward
+GT5U.type_filter.representation_slot.tooltip.1=§7Right click to cycle back
 
 GT5U.gui.select.current=Current:
 GT5U.gui.button.power_switch=Power Switch

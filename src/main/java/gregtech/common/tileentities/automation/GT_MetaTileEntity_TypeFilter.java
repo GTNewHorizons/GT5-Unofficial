@@ -26,6 +26,7 @@ import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilter {
 
+    private static final String REPRESENTATION_SLOT_TOOLTIP = "GT5U.type_filter.representation_slot.tooltip";
     public int mRotationIndex = 0;
     public OrePrefixes mPrefix = OrePrefixes.ore;
 
@@ -163,10 +164,6 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
 
     @Override
     protected List<String> getItemExtraTooltip() {
-        return Arrays.asList(
-            EnumChatFormatting.DARK_GRAY
-                + StatCollector.translateToLocal("GT5U.type_filter.representation_slot.tooltip.0"),
-            EnumChatFormatting.DARK_GRAY
-                + StatCollector.translateToLocal("GT5U.type_filter.representation_slot.tooltip.1"));
+        return mTooltipCache.getData(REPRESENTATION_SLOT_TOOLTIP).text;
     }
 }
