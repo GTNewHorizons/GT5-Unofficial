@@ -25,7 +25,7 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
     public static final int BUFFER_SLOT_COUNT = 9;
     public static final int SPECIAL_SLOT_INDEX = 9;
     private static final String ALLOW_NBT_TOOLTIP = "GT5U.machines.allow_nbt.tooltip";
-    public boolean bNBTAllowed = false;
+    private boolean allowNbt = false;
 
     public GT_MetaTileEntity_SpecialFilter(int aID, String aName, String aNameRegional, int aTier,
         String[] aDescription) {
@@ -48,20 +48,20 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("bNBTAllowed", this.bNBTAllowed);
+        aNBT.setBoolean("bNBTAllowed", this.allowNbt);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.bNBTAllowed = aNBT.getBoolean("bNBTAllowed");
+        this.allowNbt = aNBT.getBoolean("bNBTAllowed");
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return (super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack))
-            && ((this.bNBTAllowed) || (!aStack.hasTagCompound()))
+            && ((this.allowNbt) || (!aStack.hasTagCompound()))
             && (this.isStackAllowed(aStack) != this.invertFilter);
     }
 
@@ -126,8 +126,8 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
     private void addAllowNbtButton(ModularWindow.Builder builder) {
         builder.widget(
             createToggleButton(
-                () -> bNBTAllowed,
-                val -> bNBTAllowed = val,
+                () -> allowNbt,
+                val -> allowNbt = val,
                 GT_UITextures.OVERLAY_BUTTON_NBT,
                 ALLOW_NBT_TOOLTIP,
                 4));
