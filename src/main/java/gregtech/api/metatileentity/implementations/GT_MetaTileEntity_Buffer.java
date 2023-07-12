@@ -513,7 +513,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                 3));
     }
 
-    private Widget createToggleButton(Supplier<Boolean> getter, Consumer<Boolean> setter, UITexture picture,
+    protected Widget createToggleButton(Supplier<Boolean> getter, Consumer<Boolean> setter, UITexture picture,
         String tooltip, int buttonPosition) {
         return new CycleButtonWidget().setToggle(getter, setter)
             .setStaticTexture(picture)

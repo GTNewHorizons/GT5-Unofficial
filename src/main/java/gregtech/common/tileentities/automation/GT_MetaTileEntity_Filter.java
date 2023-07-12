@@ -18,14 +18,13 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Buffer;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_FilterBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer implements IAddUIWidgets {
+public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase implements IAddUIWidgets {
 
     public boolean bIgnoreNBT = false;
-    public boolean bInvertFilter = false;
 
     public GT_MetaTileEntity_Filter(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -76,14 +75,12 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer implement
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("bInvertFilter", this.bInvertFilter);
         aNBT.setBoolean("bIgnoreNBT", this.bIgnoreNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.bInvertFilter = aNBT.getBoolean("bInvertFilter");
         this.bIgnoreNBT = aNBT.getBoolean("bIgnoreNBT");
     }
 
@@ -127,40 +124,24 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer implement
         addEmitEnergyButton(builder);
         addEmitRedstoneButton(builder);
         addInvertRedstoneButton(builder);
+        addInvertFilterButton(builder);
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-            bInvertFilter = !bInvertFilter;
-            if (bInvertFilter) {
+            bIgnoreNBT = !bIgnoreNBT;
+            if (bIgnoreNBT) {
                 GT_Utility.sendChatToPlayer(
                     widget.getContext()
                         .getPlayer(),
-                    GT_Utility.trans("124", "Invert Filter"));
+                    GT_Utility.trans("126", "Ignore NBT"));
             } else {
                 GT_Utility.sendChatToPlayer(
                     widget.getContext()
                         .getPlayer(),
-                    GT_Utility.trans("125", "Don't invert Filter"));
+                    GT_Utility.trans("127", "NBT has to match"));
             }
         })
-            .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_INVERT_FILTER)
-            .setPos(61, 62)
+            .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_NBT)
+            .setPos(79, 62)
             .setSize(18, 18))
-            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                bIgnoreNBT = !bIgnoreNBT;
-                if (bIgnoreNBT) {
-                    GT_Utility.sendChatToPlayer(
-                        widget.getContext()
-                            .getPlayer(),
-                        GT_Utility.trans("126", "Ignore NBT"));
-                } else {
-                    GT_Utility.sendChatToPlayer(
-                        widget.getContext()
-                            .getPlayer(),
-                        GT_Utility.trans("127", "NBT has to match"));
-                }
-            })
-                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_NBT)
-                .setPos(79, 62)
-                .setSize(18, 18))
             .widget(
                 new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_WHITE.apply(9, false))
                     .setPos(6, 19)

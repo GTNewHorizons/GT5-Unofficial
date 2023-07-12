@@ -277,9 +277,9 @@ public class GT_LanguageManager {
         // 121 obsolete
         addStringLocalization("Interaction_DESCRIPTION_Index_122", "Emit Redstone if slots contain something");
         addStringLocalization("Interaction_DESCRIPTION_Index_123", "Don't emit Redstone");
-        addStringLocalization("Interaction_DESCRIPTION_Index_124", "Invert Filter");
+        // 124 moved to lang files
         addStringLocalization("Interaction_DESCRIPTION_Index_124.1", "Blacklist Mode");
-        addStringLocalization("Interaction_DESCRIPTION_Index_125", "Don't invert Filter");
+        // 125 obsolete
         addStringLocalization("Interaction_DESCRIPTION_Index_125.1", "Whitelist Mode");
         addStringLocalization("Interaction_DESCRIPTION_Index_126", "Ignore NBT");
         addStringLocalization("Interaction_DESCRIPTION_Index_127", "NBT has to match");

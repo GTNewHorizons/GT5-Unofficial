@@ -314,6 +314,7 @@ GT5U.machines.invert_redstone.tooltip=Invert redstone
 GT5U.machines.buffer_stocking_mode.tooltip=Enable stocking mode
 GT5U.machines.buffer_stocking_mode.tooltip.extended=Keeps this many items in destination rather than transfer items in batches of this amount.
 GT5U.machines.buffer_stocking_mode.tooltip.extended.1=This mode can be server unfriendly.
+GT5U.machines.invert_filter.tooltip=Invert Filter
 
 GT5U.recipe_filter.representation_slot.tooltip=Click with a machine to set filter
 GT5U.type_filter.representation_slot.tooltip.0=left click to forward
