@@ -23,7 +23,7 @@ import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase implements IAddUIWidgets {
 
-    private static final String IGNORE_NBT_TOOLTIP = "GT5U.machines" + ".ignore_nbt.tooltip";
+    private static final String IGNORE_NBT_TOOLTIP = "GT5U.machines.ignore_nbt.tooltip";
     private boolean ignoreNbt = false;
 
     public GT_MetaTileEntity_Filter(int aID, String aName, String aNameRegional, int aTier) {
