@@ -21,17 +21,15 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
 import gregtech.api.gui.modularui.GT_UIInfos;
@@ -476,29 +474,47 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     protected void addEmitEnergyButton(ModularWindow.Builder builder) {
-        builder.widget(createToggleButton(() -> bOutput, val -> bOutput = val,
-            GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY, EMIT_ENERGY_TOOLTIP, 0));
+        builder.widget(
+            createToggleButton(
+                () -> bOutput,
+                val -> bOutput = val,
+                GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY,
+                EMIT_ENERGY_TOOLTIP,
+                0));
     }
 
     protected void addEmitRedstoneButton(ModularWindow.Builder builder) {
-        builder.widget(createToggleButton(() -> bRedstoneIfFull, val -> bRedstoneIfFull = val,
-            GT_UITextures.OVERLAY_BUTTON_EMIT_REDSTONE, EMIT_REDSTONE_TOOLTIP, 1));
+        builder.widget(
+            createToggleButton(
+                () -> bRedstoneIfFull,
+                val -> bRedstoneIfFull = val,
+                GT_UITextures.OVERLAY_BUTTON_EMIT_REDSTONE,
+                EMIT_REDSTONE_TOOLTIP,
+                1));
     }
 
     protected void addInvertRedstoneButton(ModularWindow.Builder builder) {
-        builder.widget(createToggleButton(() -> bInvert, val -> bInvert = val,
-            GT_UITextures.OVERLAY_BUTTON_INVERT_REDSTONE, INVERT_REDSTONE_TOOLTIP, 2));
+        builder.widget(
+            createToggleButton(
+                () -> bInvert,
+                val -> bInvert = val,
+                GT_UITextures.OVERLAY_BUTTON_INVERT_REDSTONE,
+                INVERT_REDSTONE_TOOLTIP,
+                2));
     }
 
     protected void addStockingModeButton(ModularWindow.Builder builder) {
-        builder.widget(createToggleButton(() -> bStockingMode, val -> bStockingMode = val,
-            GT_UITextures.OVERLAY_BUTTON_STOCKING_MODE, STOCKING_MODE_TOOLTIP, 3));
+        builder.widget(
+            createToggleButton(
+                () -> bStockingMode,
+                val -> bStockingMode = val,
+                GT_UITextures.OVERLAY_BUTTON_STOCKING_MODE,
+                STOCKING_MODE_TOOLTIP,
+                3));
     }
 
-    private Widget createToggleButton(Supplier<Boolean> getter,
-                                      Consumer<Boolean> setter,
-                                      UITexture picture,
-                                      String tooltip, int buttonPosition) {
+    private Widget createToggleButton(Supplier<Boolean> getter, Consumer<Boolean> setter, UITexture picture,
+        String tooltip, int buttonPosition) {
         return new CycleButtonWidget().setToggle(getter, setter)
             .setStaticTexture(picture)
             .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
