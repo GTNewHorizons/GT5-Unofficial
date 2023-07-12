@@ -49,7 +49,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     private static final int FRONT_INDEX = 5;
 
     private static final String EMIT_ENERGY_TOOLTIP = "GT5U.machines.emit_energy.tooltip";
-    private static final String EMIT_REDSTONE_TOOLTIP = "GT5U.machines.emit_redstone.tooltip";
+    private static final String EMIT_REDSTONE_IF_FULL_TOOLTIP = "GT5U.machines.emit_redstone_if_full.tooltip";
     private static final String INVERT_REDSTONE_TOOLTIP = "GT5U.machines.invert_redstone.tooltip";
     private static final String STOCKING_MODE_TOOLTIP = "GT5U.machines.buffer_stocking_mode.tooltip";
     private static final int BUTTON_SIZE = 18;
@@ -483,13 +483,13 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                 0));
     }
 
-    protected void addEmitRedstoneButton(ModularWindow.Builder builder) {
+    protected void addEmitRedstoneIfFullButton(ModularWindow.Builder builder) {
         builder.widget(
             createToggleButton(
                 () -> bRedstoneIfFull,
                 val -> bRedstoneIfFull = val,
                 GT_UITextures.OVERLAY_BUTTON_EMIT_REDSTONE,
-                EMIT_REDSTONE_TOOLTIP,
+                EMIT_REDSTONE_IF_FULL_TOOLTIP,
                 1));
     }
 

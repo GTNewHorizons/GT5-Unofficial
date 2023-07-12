@@ -121,7 +121,7 @@ public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer impl
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         addEmitEnergyButton(builder);
-        addEmitRedstoneButton(builder);
+        addEmitRedstoneIfFullButton(builder);
         addInvertRedstoneButton(builder);
         addStockingModeButton(builder);
         builder.widget(

@@ -98,24 +98,6 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase imple
     }
 
     @Override
-    protected void handleRedstoneOutput(IGregTechTileEntity aBaseMetaTileEntity) {
-        if (bRedstoneIfFull) {
-            int emptySlots = 0;
-            for (int i = 0; i < NUM_FILTER_SLOTS; i++) {
-                if (mInventory[i] == null) ++emptySlots;
-            }
-            if (!bInvert) emptySlots = NUM_FILTER_SLOTS - emptySlots;
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) emptySlots);
-            }
-        } else {
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 0);
-            }
-        }
-    }
-
-    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
         addAllowNbtButton(builder);

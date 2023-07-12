@@ -194,7 +194,7 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         addEmitEnergyButton(builder);
-        addEmitRedstoneButton(builder);
+        addEmitRedstoneIfFullButton(builder);
         addInvertRedstoneButton(builder);
         builder.widget(
             new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(87, true))
