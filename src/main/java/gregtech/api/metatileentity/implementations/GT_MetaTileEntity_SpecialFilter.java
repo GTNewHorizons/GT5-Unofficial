@@ -11,7 +11,6 @@ import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -20,12 +19,12 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_Utility;
 
 public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_FilterBase implements IAddUIWidgets {
 
     public static final int BUFFER_SLOT_COUNT = 9;
     public static final int SPECIAL_SLOT_INDEX = 9;
+    private static final String ALLOW_NBT_TOOLTIP = "GT5U.machines.allow_nbt.tooltip";
     public boolean bNBTAllowed = false;
 
     public GT_MetaTileEntity_SpecialFilter(int aID, String aName, String aNameRegional, int aTier,
@@ -79,27 +78,11 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-            bNBTAllowed = !bNBTAllowed;
-            if (bNBTAllowed) {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans("126", "Ignore NBT"));
-            } else {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans("127", "NBT has to match"));
-            }
-        })
-            .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_NBT)
-            .setPos(79, 62)
-            .setSize(18, 18))
-            .widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_WHITE.apply(27, false))
-                    .setPos(6, 19)
-                    .setSize(27, 24))
+        addAllowNbtButton(builder);
+        builder.widget(
+            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_WHITE.apply(27, false))
+                .setPos(6, 19)
+                .setSize(27, 24))
             .widget(
                 new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_BLUE.apply(42, true))
                     .setPos(53, 19)
@@ -138,5 +121,15 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
                     .endAtSlot(8)
                     .build()
                     .setPos(97, 4));
+    }
+
+    private void addAllowNbtButton(ModularWindow.Builder builder) {
+        builder.widget(
+            createToggleButton(
+                () -> bNBTAllowed,
+                val -> bNBTAllowed = val,
+                GT_UITextures.OVERLAY_BUTTON_NBT,
+                ALLOW_NBT_TOOLTIP,
+                4));
     }
 }
