@@ -11,7 +11,7 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 public abstract class GT_MetaTileEntity_FilterBase extends GT_MetaTileEntity_Buffer implements IAddUIWidgets {
 
     private static final String INVERT_FILTER_TOOLTIP = "GT5U.machines.invert_filter.tooltip";
-    public boolean bInvertFilter = false;
+    protected boolean invertFilter = false;
 
     public GT_MetaTileEntity_FilterBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
         String aDescription) {
@@ -36,20 +36,20 @@ public abstract class GT_MetaTileEntity_FilterBase extends GT_MetaTileEntity_Buf
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("bInvertFilter", this.bInvertFilter);
+        aNBT.setBoolean("bInvertFilter", this.invertFilter);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.bInvertFilter = aNBT.getBoolean("bInvertFilter");
+        this.invertFilter = aNBT.getBoolean("bInvertFilter");
     }
 
     protected void addInvertFilterButton(ModularWindow.Builder builder) {
         builder.widget(
             createToggleButton(
-                () -> bInvertFilter,
-                val -> bInvertFilter = val,
+                () -> invertFilter,
+                val -> invertFilter = val,
                 GT_UITextures.OVERLAY_BUTTON_INVERT_FILTER,
                 INVERT_FILTER_TOOLTIP,
                 3));

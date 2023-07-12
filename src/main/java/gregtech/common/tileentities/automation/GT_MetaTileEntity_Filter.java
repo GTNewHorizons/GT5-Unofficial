@@ -90,7 +90,7 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase imple
         if (!super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack)) {
             return false;
         }
-        if (this.bInvertFilter) {
+        if (this.invertFilter) {
             for (byte i = 9; i < 18; i = (byte) (i + 1)) {
                 if (GT_Utility.areStacksEqual(this.mInventory[i], aStack, this.bIgnoreNBT)) {
                     return false;

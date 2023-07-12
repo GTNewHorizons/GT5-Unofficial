@@ -68,7 +68,7 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
         ItemStack aStack) {
         return (super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack))
             && ((this.bNBTAllowed) || (!aStack.hasTagCompound()))
-            && (this.isStackAllowed(aStack) != this.bInvertFilter);
+            && (this.isStackAllowed(aStack) != this.invertFilter);
     }
 
     protected abstract boolean isStackAllowed(ItemStack aStack);
