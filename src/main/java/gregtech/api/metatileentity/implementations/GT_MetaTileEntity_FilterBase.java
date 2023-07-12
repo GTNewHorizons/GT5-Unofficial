@@ -12,6 +12,7 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 public abstract class GT_MetaTileEntity_FilterBase extends GT_MetaTileEntity_Buffer implements IAddUIWidgets {
 
     private static final String INVERT_FILTER_TOOLTIP = "GT5U.machines.invert_filter.tooltip";
+    protected static final int FILTER_SLOT_INDEX = 9;
     protected boolean invertFilter = false;
 
     public GT_MetaTileEntity_FilterBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
@@ -36,7 +37,7 @@ public abstract class GT_MetaTileEntity_FilterBase extends GT_MetaTileEntity_Buf
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        return aIndex < 9;
+        return aIndex < FILTER_SLOT_INDEX;
     }
 
     @Override

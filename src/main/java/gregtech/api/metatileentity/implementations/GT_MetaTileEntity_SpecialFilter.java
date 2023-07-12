@@ -22,8 +22,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_FilterBase implements IAddUIWidgets {
 
-    public static final int BUFFER_SLOT_COUNT = 9;
-    public static final int SPECIAL_SLOT_INDEX = 9;
     private static final String ALLOW_NBT_TOOLTIP = "GT5U.machines.allow_nbt.tooltip";
     private boolean allowNbt = false;
 

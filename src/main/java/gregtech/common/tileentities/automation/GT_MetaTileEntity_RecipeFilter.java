@@ -51,12 +51,12 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
             if (mte instanceof GT_MetaTileEntity_BasicMachine machine) {
                 GT_Recipe.GT_Recipe_Map recipeList = machine.getRecipeList();
                 if (recipeList != null) {
-                    mInventory[SPECIAL_SLOT_INDEX] = machine.getStackForm(1);
+                    mInventory[FILTER_SLOT_INDEX] = machine.getStackForm(1);
                     mRecipeMap = recipeList;
                     return;
                 }
             }
-            mInventory[SPECIAL_SLOT_INDEX] = null;
+            mInventory[FILTER_SLOT_INDEX] = null;
             mRecipeMap = null;
         }
     }

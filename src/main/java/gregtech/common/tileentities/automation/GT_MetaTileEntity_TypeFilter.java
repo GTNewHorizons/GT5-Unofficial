@@ -4,13 +4,10 @@ import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER_GLOW;
 
-import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 import com.google.common.collect.ImmutableList;
 
@@ -127,16 +124,16 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if ((!getBaseMetaTileEntity().isServerSide()) || ((aTick % 8L != 0L) && mRotationIndex != -1)) return;
         if (this.mPrefix.mPrefixedItems.isEmpty()) {
-            this.mInventory[SPECIAL_SLOT_INDEX] = null;
+            this.mInventory[FILTER_SLOT_INDEX] = null;
             return;
         }
-        this.mInventory[SPECIAL_SLOT_INDEX] = GT_Utility.copyAmount(
+        this.mInventory[FILTER_SLOT_INDEX] = GT_Utility.copyAmount(
             1L,
             this.mPrefix.mPrefixedItems
                 .get(this.mRotationIndex = (this.mRotationIndex + 1) % this.mPrefix.mPrefixedItems.size()));
-        if (this.mInventory[SPECIAL_SLOT_INDEX] == null) return;
-        if (this.mInventory[SPECIAL_SLOT_INDEX].getItemDamage() == W) this.mInventory[9].setItemDamage(0);
-        this.mInventory[SPECIAL_SLOT_INDEX].setStackDisplayName(this.mPrefix.toString());
+        if (this.mInventory[FILTER_SLOT_INDEX] == null) return;
+        if (this.mInventory[FILTER_SLOT_INDEX].getItemDamage() == W) this.mInventory[9].setItemDamage(0);
+        this.mInventory[FILTER_SLOT_INDEX].setStackDisplayName(this.mPrefix.toString());
     }
 
     @Override
