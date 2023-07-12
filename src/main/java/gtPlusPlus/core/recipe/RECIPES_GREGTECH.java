@@ -1137,7 +1137,7 @@ public class RECIPES_GREGTECH {
          */
 
         CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { ItemUtils.getSimpleStack(ModItems.itemRope, 6) },
+                new ItemStack[] { ItemUtils.getSimpleStack(ModItems.itemRope, 6), ItemUtils.getGregtechCircuit(6) },
                 null,
                 ItemUtils.getSimpleStack(ModBlocks.blockNet, 2),
                 1 * 20,

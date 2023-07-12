@@ -98,10 +98,18 @@ public class CoalTar extends ItemPackage {
         // C2H4 + C6H6 = C8H10
         GT_Values.RA.addChemicalRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 2),
-                ItemUtils.getItemStackOfAmountFromOreDict("cellBenzene", 2),
-                null,
+                ItemUtils.getGregtechCircuit(1),
+                FluidUtils.getFluidStack("benzene", 2000),
                 FluidUtils.getFluidStack("fluid.ethylbenzene", 2000),
-                ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 4),
+                ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
+                300);
+
+        GT_Values.RA.addChemicalRecipe(
+                ItemUtils.getItemStackOfAmountFromOreDict("cellBenzene", 2),
+                ItemUtils.getGregtechCircuit(1),
+                FluidUtils.getFluidStack("ethylene", 2000),
+                FluidUtils.getFluidStack("fluid.ethylbenzene", 2000),
+                ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
                 300);
     }
 
