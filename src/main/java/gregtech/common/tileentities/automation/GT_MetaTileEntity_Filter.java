@@ -24,7 +24,7 @@ import gregtech.api.util.GT_Utility;
 public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase implements IAddUIWidgets {
 
     private static final String IGNORE_NBT_TOOLTIP = "GT5U.machines" + ".ignore_nbt.tooltip";
-    public boolean bIgnoreNBT = false;
+    private boolean ignoreNbt = false;
 
     public GT_MetaTileEntity_Filter(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -70,13 +70,13 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase imple
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("bIgnoreNBT", this.bIgnoreNBT);
+        aNBT.setBoolean("bIgnoreNBT", this.ignoreNbt);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.bIgnoreNBT = aNBT.getBoolean("bIgnoreNBT");
+        this.ignoreNbt = aNBT.getBoolean("bIgnoreNBT");
     }
 
     @Override
@@ -87,13 +87,13 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase imple
         }
         if (this.invertFilter) {
             for (byte i = 9; i < 18; i = (byte) (i + 1)) {
-                if (GT_Utility.areStacksEqual(this.mInventory[i], aStack, this.bIgnoreNBT)) {
+                if (GT_Utility.areStacksEqual(this.mInventory[i], aStack, this.ignoreNbt)) {
                     return false;
                 }
             }
             return true;
         }
-        return GT_Utility.areStacksEqual(this.mInventory[(aIndex + 9)], aStack, this.bIgnoreNBT);
+        return GT_Utility.areStacksEqual(this.mInventory[(aIndex + 9)], aStack, this.ignoreNbt);
     }
 
     @Override
@@ -155,8 +155,8 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase imple
     private void addAllowNbtButton(ModularWindow.Builder builder) {
         builder.widget(
             createToggleButton(
-                () -> bIgnoreNBT,
-                val -> bIgnoreNBT = val,
+                () -> ignoreNbt,
+                val -> ignoreNbt = val,
                 GT_UITextures.OVERLAY_BUTTON_NBT,
                 IGNORE_NBT_TOOLTIP,
                 4));
