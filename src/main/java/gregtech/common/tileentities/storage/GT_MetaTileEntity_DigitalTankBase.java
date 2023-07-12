@@ -135,6 +135,15 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                         + GT_Utility.formatNumbers(tContents.amount)
                         + " L"
                         + EnumChatFormatting.GRAY);
+            } else if (stack.stackTagCompound.hasKey("lockedFluidName")) {
+                String fluidName = stack.stackTagCompound.getString("lockedFluidName");
+                Fluid fluid = FluidRegistry.getFluid(fluidName);
+                if (fluid == null) return;
+                // noinspection deprecation
+                tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.item.tank.locked_to",
+                        EnumChatFormatting.YELLOW + fluid.getLocalizedName()));
             }
         }
     }
