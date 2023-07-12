@@ -44,11 +44,6 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return aIndex < 9;
-    }
-
     public abstract void clickTypeIcon(boolean aRightClick, ItemStack aHandStack);
 
     @Override
@@ -83,10 +78,7 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        addEmitEnergyButton(builder);
-        addEmitRedstoneButton(builder);
-        addInvertRedstoneButton(builder);
-        addInvertFilterButton(builder);
+        super.addUIWidgets(builder, buildContext);
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
             bNBTAllowed = !bNBTAllowed;
             if (bNBTAllowed) {

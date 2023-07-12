@@ -3,6 +3,7 @@ package gregtech.api.metatileentity.implementations;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -34,6 +35,11 @@ public abstract class GT_MetaTileEntity_FilterBase extends GT_MetaTileEntity_Buf
     }
 
     @Override
+    public boolean isValidSlot(int aIndex) {
+        return aIndex < 9;
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("bInvertFilter", this.invertFilter);
@@ -45,7 +51,15 @@ public abstract class GT_MetaTileEntity_FilterBase extends GT_MetaTileEntity_Buf
         this.invertFilter = aNBT.getBoolean("bInvertFilter");
     }
 
-    protected void addInvertFilterButton(ModularWindow.Builder builder) {
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        addEmitEnergyButton(builder);
+        addEmitRedstoneButton(builder);
+        addInvertRedstoneButton(builder);
+        addInvertFilterButton(builder);
+    }
+
+    private void addInvertFilterButton(ModularWindow.Builder builder) {
         builder.widget(
             createToggleButton(
                 () -> invertFilter,

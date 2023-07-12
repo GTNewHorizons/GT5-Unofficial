@@ -68,11 +68,6 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase imple
     }
 
     @Override
-    public boolean isValidSlot(int aIndex) {
-        return aIndex < 9;
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("bIgnoreNBT", this.bIgnoreNBT);
@@ -121,10 +116,7 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase imple
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        addEmitEnergyButton(builder);
-        addEmitRedstoneButton(builder);
-        addInvertRedstoneButton(builder);
-        addInvertFilterButton(builder);
+        super.addUIWidgets(builder, buildContext);
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
             bIgnoreNBT = !bIgnoreNBT;
             if (bIgnoreNBT) {
