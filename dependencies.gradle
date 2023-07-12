@@ -38,7 +38,7 @@ dependencies {
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
     api("com.github.GTNewHorizons:NotEnoughItems:2.3.70-GTNH:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.0.13:dev")
-    api("com.github.GTNewHorizons:ModularUI2:2.0.5-1.7.10:dev")
+    api("com.github.GTNewHorizons:ModularUI2:2.0.6-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.6.0:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-235-GTNH:dev")
     implementation("com.github.GTNewHorizons:Eternal-Singularity:1.1.0:dev")
