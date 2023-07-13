@@ -1626,19 +1626,12 @@ public class RecipeLoader_02 {
                 if (output == null) output = FluidRegistry.getFluidStack("molten." + tOutName, tPlasma.amount);
                 if (output != null) {
                     long waterAmount = (long) tUnit * 3 * tPlasma.amount / 160;
-                    long superHeatedSteamAmount = (long) tUnit * 3 * tPlasma.amount;
                     long criticalSteamAmount = (long) tUnit * 3 * tPlasma.amount / 100;
-                    while (superHeatedSteamAmount > Integer.MAX_VALUE) {
-                        GT_Log.out.print("Superheated steam amount exceeded max int for plasma " + tOutName);
-                        waterAmount /= 2;
-                        superHeatedSteamAmount /= 2;
-                        criticalSteamAmount /= 2;
-                    }
                     MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
                             tPlasma,
                             output,
                             FluidRegistry.getFluidStack("ic2distilledwater", (int) waterAmount),
-                            FluidRegistry.getFluidStack("ic2superheatedsteam", (int) superHeatedSteamAmount),
+                            FluidRegistry.getFluidStack("ic2superheatedsteam", 0), // Plasma always outputs SC steam.
                             FluidRegistry.getFluidStack("supercriticalsteam", (int) criticalSteamAmount),
                             1);
                 }
