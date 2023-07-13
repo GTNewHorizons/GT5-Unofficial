@@ -119,8 +119,8 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase imple
                     .setSize(54, 54))
             .widget(
                 SlotGroup.ofItemHandler(inventoryHandler, 3)
-                    .startFromSlot(9)
-                    .endAtSlot(17)
+                    .startFromSlot(FILTER_SLOT_INDEX)
+                    .endAtSlot(FILTER_SLOT_INDEX + NUM_FILTER_SLOTS - 1)
                     .phantom(true)
                     .applyForWidget(
                         widget -> widget.disableShiftInsert()
@@ -130,7 +130,7 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase imple
             .widget(
                 SlotGroup.ofItemHandler(inventoryHandler, 3)
                     .startFromSlot(0)
-                    .endAtSlot(8)
+                    .endAtSlot(NUM_INVENTORY_SLOTS - 1)
                     .build()
                     .setPos(97, 4));
     }
