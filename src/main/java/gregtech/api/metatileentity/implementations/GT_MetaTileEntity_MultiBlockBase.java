@@ -692,14 +692,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
 
-        processingLogic.clear();
-        processingLogic.setMachine(this);
-        processingLogic.setRecipeMapSupplier(this::getRecipeMap);
-        processingLogic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
-        processingLogic.setBatchSize(isBatchModeEnabled() ? getMaxBatchSize() : 1);
-        processingLogic.setRecipeLocking(this, isRecipeLockingEnabled());
-        processingLogic.setInputFluids(getStoredFluids());
-        setProcessingLogicPower(processingLogic);
+        setupProcessingLogic(processingLogic);
+
         if (isInputSeparationEnabled()) {
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
                 List<ItemStack> inputItems = new ArrayList<>();
@@ -740,6 +734,17 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mOutputFluids = processingLogic.getOutputFluids();
 
         return result;
+    }
+
+    protected void setupProcessingLogic(ProcessingLogic logic) {
+        logic.clear();
+        logic.setMachine(this);
+        logic.setRecipeMapSupplier(this::getRecipeMap);
+        logic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
+        logic.setBatchSize(isBatchModeEnabled() ? getMaxBatchSize() : 1);
+        logic.setRecipeLocking(this, isRecipeLockingEnabled());
+        logic.setInputFluids(getStoredFluids());
+        setProcessingLogicPower(logic);
     }
 
     protected void setProcessingLogicPower(ProcessingLogic logic) {
@@ -1998,6 +2003,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {}
 
+    protected boolean shouldDisplayRecipeIssue() {
+        return true;
+    }
+
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         screenElements.setSynced(false)
             .setSpace(0)
@@ -2074,7 +2083,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             TextWidget.dynamicString(() -> checkRecipeResult.getDisplayString())
                 .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
-                .setEnabled(widget -> GT_Utility.isStringValid(checkRecipeResult.getDisplayString())))
+                .setEnabled(
+                    widget -> GT_Utility.isStringValid(checkRecipeResult.getDisplayString())
+                        && shouldDisplayRecipeIssue()))
             .widget(new CheckRecipeResultSyncer(() -> checkRecipeResult, (result) -> checkRecipeResult = result));
 
         screenElements.widget(
