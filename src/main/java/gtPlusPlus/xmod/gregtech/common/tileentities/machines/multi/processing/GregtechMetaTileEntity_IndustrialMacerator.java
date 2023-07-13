@@ -83,7 +83,7 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 6, 3, true)
                 .addController("Bottom center").addCasingInfoMin("Maceration Stack Casings (After upgrade)", 26, false)
                 .addCasingInfoMin("Stable Titanium Casings (Before upgrade)", 26, false).addInputBus("Bottom casing", 1)
-                .addEnergyHatch("Bottom casing", 1).addMaintenanceHatch("Bottom casing", 1)
+                .addEnergyHatch("Any casing", 1).addMaintenanceHatch("Any casing", 1)
                 .addOutputBus("One per layer except bottom layer", 2)
                 .addMufflerHatch("Any casing except bottom layer", 2).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
