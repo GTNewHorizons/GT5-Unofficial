@@ -1,7 +1,5 @@
 package gregtech.api.util;
 
-import static net.minecraft.util.EnumChatFormatting.RESET;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -97,7 +95,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addMachineType(String machine) {
-        iLines.add(TT_machineType + COLON + EnumChatFormatting.YELLOW + machine + RESET);
+        iLines.add(TT_machineType + COLON + EnumChatFormatting.YELLOW + machine + EnumChatFormatting.RESET);
         return this;
     }
 
@@ -147,65 +145,35 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder beginStructureBlock(int w, int h, int l, boolean hollow) {
-        if (hollow) {
-            sLines.add(
-                EnumChatFormatting.WHITE + TT_dimensions
-                    + COLON
-                    + EnumChatFormatting.GOLD
-                    + w
-                    + EnumChatFormatting.GRAY
-                    + "x"
-                    + EnumChatFormatting.GOLD
-                    + h
-                    + EnumChatFormatting.GRAY
-                    + "x"
-                    + EnumChatFormatting.GOLD
-                    + l
-                    + EnumChatFormatting.GRAY
-                    + " ("
-                    + EnumChatFormatting.GOLD
-                    + "W"
-                    + EnumChatFormatting.GRAY
-                    + "x"
-                    + EnumChatFormatting.GOLD
-                    + "H"
-                    + EnumChatFormatting.GRAY
-                    + "x"
-                    + EnumChatFormatting.GOLD
-                    + "L"
-                    + EnumChatFormatting.GRAY
-                    + ") "
-                    + EnumChatFormatting.RED
-                    + TT_hollow);
-        } else {
-            sLines.add(
-                EnumChatFormatting.WHITE + TT_dimensions
-                    + COLON
-                    + EnumChatFormatting.GOLD
-                    + w
-                    + EnumChatFormatting.GRAY
-                    + "x"
-                    + EnumChatFormatting.GOLD
-                    + h
-                    + EnumChatFormatting.GRAY
-                    + "x"
-                    + EnumChatFormatting.GOLD
-                    + l
-                    + EnumChatFormatting.GRAY
-                    + " ("
-                    + EnumChatFormatting.GOLD
-                    + "W"
-                    + EnumChatFormatting.GRAY
-                    + "x"
-                    + EnumChatFormatting.GOLD
-                    + "H"
-                    + EnumChatFormatting.GRAY
-                    + "x"
-                    + EnumChatFormatting.GOLD
-                    + "L"
-                    + EnumChatFormatting.GRAY
-                    + ") ");
-        }
+        sLines.add(
+            EnumChatFormatting.WHITE + TT_dimensions
+                + COLON
+                + EnumChatFormatting.GOLD
+                + w
+                + EnumChatFormatting.GRAY
+                + "x"
+                + EnumChatFormatting.GOLD
+                + h
+                + EnumChatFormatting.GRAY
+                + "x"
+                + EnumChatFormatting.GOLD
+                + l
+                + EnumChatFormatting.GRAY
+                + " ("
+                + EnumChatFormatting.GOLD
+                + "W"
+                + EnumChatFormatting.GRAY
+                + "x"
+                + EnumChatFormatting.GOLD
+                + "H"
+                + EnumChatFormatting.GRAY
+                + "x"
+                + EnumChatFormatting.GOLD
+                + "L"
+                + EnumChatFormatting.GRAY
+                + ") "
+                + EnumChatFormatting.RED
+                + (hollow ? EnumChatFormatting.RED + TT_hollow : ""));
         sLines.add(EnumChatFormatting.WHITE + TT_structure + COLON);
         return this;
     }
@@ -297,14 +265,12 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addCasingInfoExactly(String casingName, int count, boolean isTiered) {
-        sLines.add(
-            EnumChatFormatting.GOLD + TAB
-                + count
-                + "x "
-                + EnumChatFormatting.GRAY
-                + casingName
-                + (isTiered ? " " + TT_tiered : ""));
-        return this;
+        return addCasingInfoExactlyColored(
+            casingName,
+            EnumChatFormatting.GRAY,
+            count,
+            EnumChatFormatting.GOLD,
+            isTiered);
     }
 
     /**
@@ -319,8 +285,14 @@ public class GT_Multiblock_Tooltip_Builder {
      */
     public GT_Multiblock_Tooltip_Builder addCasingInfoExactlyColored(String casingName, EnumChatFormatting textColor,
         int count, EnumChatFormatting countColor, boolean isTiered) {
-        sLines
-            .add(countColor + TAB + count + "x " + RESET + textColor + casingName + (isTiered ? " " + TT_tiered : ""));
+        sLines.add(
+            countColor + TAB
+                + count
+                + "x "
+                + EnumChatFormatting.RESET
+                + textColor
+                + casingName
+                + (isTiered ? " " + TT_tiered : ""));
         return this;
     }
 
@@ -334,16 +306,12 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addCasingInfoMin(String casingName, int minCount, boolean isTiered) {
-        sLines.add(
-            EnumChatFormatting.GOLD + TAB
-                + minCount
-                + "x "
-                + EnumChatFormatting.GRAY
-                + casingName
-                + " "
-                + TT_minimum
-                + (isTiered ? " " + TT_tiered : ""));
-        return this;
+        return addCasingInfoMinColored(
+            casingName,
+            EnumChatFormatting.GRAY,
+            minCount,
+            EnumChatFormatting.GOLD,
+            isTiered);
     }
 
     /**
@@ -363,7 +331,7 @@ public class GT_Multiblock_Tooltip_Builder {
             countColor + TAB
                 + minCount
                 + "x "
-                + RESET
+                + EnumChatFormatting.RESET
                 + textColor
                 + casingName
                 + " "
@@ -384,19 +352,13 @@ public class GT_Multiblock_Tooltip_Builder {
      */
     public GT_Multiblock_Tooltip_Builder addCasingInfoRange(String casingName, int minCount, int maxCount,
         boolean isTiered) {
-        sLines.add(
-            EnumChatFormatting.GOLD + TAB
-                + minCount
-                + "x"
-                + EnumChatFormatting.GRAY
-                + " - "
-                + EnumChatFormatting.GOLD
-                + maxCount
-                + "x "
-                + EnumChatFormatting.GRAY
-                + casingName
-                + (isTiered ? " " + TT_tiered : ""));
-        return this;
+        return addCasingInfoRangeColored(
+            casingName,
+            EnumChatFormatting.GRAY,
+            minCount,
+            maxCount,
+            EnumChatFormatting.GOLD,
+            isTiered);
     }
 
     /**
@@ -422,7 +384,7 @@ public class GT_Multiblock_Tooltip_Builder {
                 + countColor
                 + maxCount
                 + "x "
-                + RESET
+                + EnumChatFormatting.RESET
                 + textColor
                 + casingName
                 + (isTiered ? " " + TT_tiered : ""));
@@ -726,7 +688,7 @@ public class GT_Multiblock_Tooltip_Builder {
             TT_hold + " "
                 + EnumChatFormatting.BOLD
                 + "[LSHIFT]"
-                + RESET
+                + EnumChatFormatting.RESET
                 + EnumChatFormatting.GRAY
                 + " "
                 + TT_todisplay);
