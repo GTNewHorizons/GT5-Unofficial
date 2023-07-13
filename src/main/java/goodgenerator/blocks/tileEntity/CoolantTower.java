@@ -27,6 +27,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
@@ -188,17 +189,33 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
 
     @Override
     public boolean checkRecipe_EM(ItemStack aStack) {
-        this.mMaxProgresstime = 100;
+        this.mMaxProgresstime = 20;
         int steam = 0;
-        for (FluidStack steams : getStoredFluids()) {
-            if (GT_Utility.areFluidsEqual(steams, GT_ModHandler.getSteam(1))) {
-                steam += steams.amount;
-            }
+
+        for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
+            steam += maybeDrainHatch(tHatch);
         }
-        steam = steam / 160 * 160;
-        depleteInput(GT_ModHandler.getSteam(steam));
         addOutput(GT_ModHandler.getDistilledWater(steam / 160));
         return true;
+    }
+
+    private int maybeDrainHatch(GT_MetaTileEntity_Hatch_Input tHatch) {
+        if (!isValidMetaTileEntity(tHatch)) return 0;
+        if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
+            int drained = 0;
+            for (FluidStack maybeSteam : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
+                drained += maybeDrainSteam(tHatch, maybeSteam);
+            }
+            return drained;
+        }
+        return maybeDrainSteam(tHatch, tHatch.getFillableStack());
+    }
+
+    private int maybeDrainSteam(GT_MetaTileEntity_Hatch_Input tHatch, FluidStack maybeSteam) {
+        if (!isValidMetaTileEntity(tHatch) || maybeSteam == null) return 0;
+        if (!GT_Utility.areFluidsEqual(maybeSteam, GT_ModHandler.getSteam(1))) return 0;
+        FluidStack defoSteam = tHatch.drain(ForgeDirection.UNKNOWN, maybeSteam, true);
+        return defoSteam.amount;
     }
 
     @Override
