@@ -1,5 +1,6 @@
 package com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules;
 
+import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 
@@ -16,6 +17,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.gui.TecTechUITextures;
@@ -48,6 +51,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.XSTR;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
@@ -218,13 +224,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
     /**
      * Check if any recipe can be started with the given inputs
      *
-     * @param aStack Item stack that is placed in the controller GUI
      * @return True if a recipe could be started, else false
      */
     @Override
-    public boolean checkRecipe_EM(ItemStack aStack) {
-        if (gregtech.api.enums.GT_Values.V[tTier] * (long) parallelSetting.get() > getEUVar()) {
-            return false;
+    public @NotNull CheckRecipeResult checkProcessing_EM() {
+        if (V[tTier] * (long) parallelSetting.get() > getEUVar()) {
+            return CheckRecipeResultRegistry.insufficientPower(V[tTier] * (long) parallelSetting.get());
         }
 
         lEUt = 0;
@@ -235,7 +240,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
         mOutputItems = null;
         mOutputFluids = null;
         if (getStoredFluids().size() <= 0) {
-            return false;
+            return SimpleCheckRecipeResult.ofFailure("no_plasma");
         }
 
         // Look for a valid plasma to start a mining operation
@@ -243,19 +248,20 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
             int availablePlasmaTier = getTierFromPlasma(fluidStack);
             if (availablePlasmaTier > 0) {
                 // Check if valid inputs for a mining operation are present
-                if (process(
+                CheckRecipeResult result = process(
                         getStoredInputs().toArray(new ItemStack[0]),
                         getStoredFluids().toArray(new FluidStack[0]),
                         availablePlasmaTier,
                         fluidStack,
-                        getParallels(fluidStack, getPlasmaUsageFromTier(availablePlasmaTier)))) {
+                        getParallels(fluidStack, getPlasmaUsageFromTier(availablePlasmaTier)));
+                if (result.wasSuccessful()) {
                     cycleDistance();
-                    return true;
+                    return result;
                 }
             }
         }
         cycleDistance();
-        return false;
+        return CheckRecipeResultRegistry.NO_RECIPE;
     }
 
     /**
@@ -265,14 +271,14 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
      * @param fluidInputs Fluid inputs
      * @return Multiblock control structure that contains all process data or null if nothing can be processed
      */
-    public boolean process(ItemStack[] inputs, FluidStack[] fluidInputs, int availablePlasmaTier, FluidStack plasma,
-            int maxParallels) {
+    public CheckRecipeResult process(ItemStack[] inputs, FluidStack[] fluidInputs, int availablePlasmaTier,
+            FluidStack plasma, int maxParallels) {
         // Check inputs
-        if ((inputs == null && fluidInputs == null) || plasma == null) {
-            return false;
+        if ((inputs == null && fluidInputs == null)) {
+            return SimpleCheckRecipeResult.ofFailure("no_plasma");
         }
-        if (availablePlasmaTier <= 0) {
-            return false;
+        if (plasma == null || availablePlasmaTier <= 0) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         // Get all asteroid pools that this drone can pull from
@@ -291,7 +297,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
 
         // Return if no recipe was found
         if (recipes == null || recipes.size() <= 0) {
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         float compModifier = 1f;
@@ -312,23 +318,26 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
         IG_Recipe.IG_SpaceMiningRecipe tRecipe = recipes.get(recipeIndex);
 
         // Make sure recipe really exists and we have enough power
-        if (tRecipe == null || tRecipe.mEUt > tVoltage) {
-            return false;
+        if (tRecipe == null) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+        if (tRecipe.mEUt > tVoltage) {
+            return CheckRecipeResultRegistry.insufficientPower(tRecipe.mEUt);
         }
 
         // Limit parallels by available computation, return if not enough computation is available
         maxParallels = (int) Math.min(maxParallels, getAvailableData_EM() / (tRecipe.computation * compModifier));
         if (maxParallels <= 0) {
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         // Check how many parallels we can actually do, return if none
         GT_ParallelHelper helper = new GT_ParallelHelper().setMaxParallel(maxParallels).setRecipe(tRecipe)
                 .setFluidInputs(fluidInputs).setItemInputs(inputs).setAvailableEUt(GT_Values.V[tTier])
-                .setController(this).enableConsumption().build();
+                .setMachine(this, false, false).enableConsumption().build();
         int parallels = helper.getCurrentParallel();
         if (parallels <= 0) {
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         // Randomly generate ore stacks with the given chances, ores and size
@@ -357,7 +366,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
                 }
             }
         } catch (Exception ignored) {
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         plasma.amount = (int) Math.max(
@@ -373,7 +382,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
         eRequiredData = (int) Math.ceil(tRecipe.computation * parallels * compModifier);
         mMaxProgresstime = getRecipeTime(tRecipe.mDuration, availablePlasmaTier);
         mEfficiencyIncrease = 10000;
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     /**
@@ -405,16 +414,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
      * @return Usage of the input plasma tier
      */
     protected int getPlasmaUsageFromTier(int plasmaTier) {
-        switch (plasmaTier) {
-            case 1:
-                return PLASMA_HELIUM_USAGE;
-            case 2:
-                return PLASMA_BISMUTH_USAGE;
-            case 3:
-                return PLASMA_RADON_USAGE;
-            default:
-                return 0;
-        }
+        return switch (plasmaTier) {
+            case 1 -> PLASMA_HELIUM_USAGE;
+            case 2 -> PLASMA_BISMUTH_USAGE;
+            case 3 -> PLASMA_RADON_USAGE;
+            default -> 0;
+        };
     }
 
     /**
