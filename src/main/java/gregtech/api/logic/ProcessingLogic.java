@@ -29,6 +29,7 @@ public class ProcessingLogic {
     protected IRecipeLockable recipeLockableMachine;
     protected Supplier<GT_Recipe_Map> recipeMapSupplier;
     protected GT_Recipe lastRecipe;
+    protected ItemStack specialSlotItem;
     protected ItemStack[] inputItems;
     protected ItemStack[] outputItems;
     protected ItemStack[] currentOutputItems;
@@ -70,6 +71,11 @@ public class ProcessingLogic {
 
     public ProcessingLogic setInputFluids(List<FluidStack> fluidInputs) {
         this.inputFluids = fluidInputs.toArray(new FluidStack[0]);
+        return this;
+    }
+
+    public ProcessingLogic setSpecialSlotItem(ItemStack specialSlotItem) {
+        this.specialSlotItem = specialSlotItem;
         return this;
     }
 
@@ -213,6 +219,7 @@ public class ProcessingLogic {
     public ProcessingLogic clear() {
         this.inputItems = null;
         this.inputFluids = null;
+        this.specialSlotItem = null;
         this.outputItems = null;
         this.outputFluids = null;
         this.calculatedEut = 0;
@@ -252,8 +259,14 @@ public class ProcessingLogic {
                 recipeLockableMachine.getSingleRecipeCheck()
                     .getRecipe());
         } else {
-            findRecipeResult = recipeMap
-                .findRecipeWithResult(lastRecipe, false, false, availableVoltage, inputFluids, null, inputItems);
+            findRecipeResult = recipeMap.findRecipeWithResult(
+                lastRecipe,
+                false,
+                false,
+                availableVoltage,
+                inputFluids,
+                specialSlotItem,
+                inputItems);
         }
 
         GT_Recipe recipe;
