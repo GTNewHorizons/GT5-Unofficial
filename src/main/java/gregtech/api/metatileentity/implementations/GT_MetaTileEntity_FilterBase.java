@@ -1,7 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -9,14 +9,14 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
-import net.minecraftforge.common.util.ForgeDirection;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public abstract class GT_MetaTileEntity_FilterBase extends GT_MetaTileEntity_Buffer implements IAddUIWidgets {
+
     private static final String INVERT_FILTER_TOOLTIP = "GT5U.machines.invert_filter.tooltip";
     protected static final int FILTER_SLOT_INDEX = 9;
     protected static final int NUM_INVENTORY_SLOTS = 9;
-    private static final String EMIT_REDSTONE_GRADUALLY_TOOLTIP = "GT5U" +
-        ".machines.emit_redstone_gradually.tooltip";
+    private static final String EMIT_REDSTONE_GRADUALLY_TOOLTIP = "GT5U" + ".machines.emit_redstone_gradually.tooltip";
     protected boolean invertFilter = false;
 
     public GT_MetaTileEntity_FilterBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,

@@ -46,19 +46,17 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
 
     @Override
     public void clickTypeIcon(boolean aRightClick, ItemStack aHandStack) {
-        if (!aRightClick) {
-            IMetaTileEntity mte = GT_Item_Machines.getMetaTileEntity(aHandStack);
-            if (mte instanceof GT_MetaTileEntity_BasicMachine machine) {
-                GT_Recipe.GT_Recipe_Map recipeList = machine.getRecipeList();
-                if (recipeList != null) {
-                    mInventory[FILTER_SLOT_INDEX] = machine.getStackForm(1);
-                    mRecipeMap = recipeList;
-                    return;
-                }
+        IMetaTileEntity mte = GT_Item_Machines.getMetaTileEntity(aHandStack);
+        if (mte instanceof GT_MetaTileEntity_BasicMachine machine) {
+            GT_Recipe.GT_Recipe_Map recipeList = machine.getRecipeList();
+            if (recipeList != null) {
+                mInventory[FILTER_SLOT_INDEX] = machine.getStackForm(1);
+                mRecipeMap = recipeList;
+                return;
             }
-            mInventory[FILTER_SLOT_INDEX] = null;
-            mRecipeMap = null;
         }
+        mInventory[FILTER_SLOT_INDEX] = null;
+        mRecipeMap = null;
     }
 
     @Override
