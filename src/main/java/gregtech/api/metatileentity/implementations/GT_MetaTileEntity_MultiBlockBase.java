@@ -2003,7 +2003,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {}
 
-    protected boolean shouldDisplayRecipeIssue() {
+    protected boolean shouldDisplayCheckRecipeResult() {
         return true;
     }
 
@@ -2085,7 +2085,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(
                     widget -> GT_Utility.isStringValid(checkRecipeResult.getDisplayString())
-                        && shouldDisplayRecipeIssue()))
+                        && shouldDisplayCheckRecipeResult()))
             .widget(new CheckRecipeResultSyncer(() -> checkRecipeResult, (result) -> checkRecipeResult = result));
 
         screenElements.widget(
