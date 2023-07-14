@@ -18,6 +18,8 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.github.technus.tectech.thing.gui.TecTechUITextures;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_infuser;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
@@ -54,6 +56,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ChunkManager;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
@@ -658,22 +662,21 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
     // region Recipe
 
     /**
-     * Keep the machine going if enabled, it wont execute any recipes
+     * Keep the machine going if enabled, it won't execute any recipes
      *
-     * @param aStack Item stack in the controller GUI (none)
      * @return True if enabled, else false
      */
     @Override
-    public boolean checkRecipe_EM(ItemStack aStack) {
+    public @NotNull CheckRecipeResult checkProcessing_EM() {
         if (getBaseMetaTileEntity().isAllowedToWork()) {
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = 20;
-            return true;
+            return CheckRecipeResultRegistry.SUCCESSFUL;
         }
 
         mEfficiencyIncrease = 0;
         mMaxProgresstime = 0;
-        return false;
+        return CheckRecipeResultRegistry.NO_RECIPE;
     }
 
     // endregion
