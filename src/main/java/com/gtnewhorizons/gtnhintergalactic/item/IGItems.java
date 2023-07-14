@@ -32,6 +32,7 @@ public class IGItems {
     public static ItemStack SpaceElevatorModuleMinerT3;
     public static ItemStack SpaceElevatorModulePumpT1;
     public static ItemStack SpaceElevatorModulePumpT2;
+    public static ItemStack SpaceElevatorModulePumpT3;
     public static ItemStack SpaceElevatorModuleManager;
     public static ItemStack SpaceElevatorModuleResearch;
 

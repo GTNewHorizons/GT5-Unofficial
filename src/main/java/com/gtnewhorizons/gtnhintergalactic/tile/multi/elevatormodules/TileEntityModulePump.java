@@ -517,4 +517,95 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
             return tt;
         }
     }
+
+    public static class TileEntityModulePumpT3 extends TileEntityModulePump {
+
+        /** Voltage tier of this module */
+        protected static final int MODULE_VOLTAGE_TIER = 11;
+        /** Tier of this module */
+        protected static final int MODULE_TIER = 3;
+        /** Minimum motor tier that is needed for this module */
+        protected static final int MINIMUM_MOTOR_TIER = 4;
+        /** Maximum amount of parallels of one recipe */
+        protected static final int MAX_PARALLELS = 16;
+        /** Maximum amount of different recipes that can be done at once */
+        protected static final int MAX_PARALLEL_RECIPES = 4;
+
+        /**
+         * Create a new T2 mining module controller
+         *
+         * @param aID           ID of the controller
+         * @param aName         Name of the controller
+         * @param aNameRegional Localized name of the controller
+         */
+        public TileEntityModulePumpT3(int aID, String aName, String aNameRegional) {
+            super(aID, aName, aNameRegional, MODULE_VOLTAGE_TIER, MODULE_TIER, MINIMUM_MOTOR_TIER);
+        }
+
+        /**
+         * Create a new T2 mining module controller
+         *
+         * @param aName Name of the controller
+         */
+        public TileEntityModulePumpT3(String aName) {
+            super(aName, MODULE_VOLTAGE_TIER, MODULE_TIER, MINIMUM_MOTOR_TIER);
+        }
+
+        /**
+         * Get the number of parallels that this module can handle
+         *
+         * @return Number of possible parallels
+         */
+        protected int getParallels() {
+            return MAX_PARALLELS;
+        }
+
+        /**
+         * Get the number of parallel recipes that this module can handle
+         *
+         * @return Number of possible parallel recipes
+         */
+        protected int getParallelRecipes() {
+            return MAX_PARALLEL_RECIPES;
+        }
+
+        /**
+         * Get a new meta tile entity of this controller
+         *
+         * @param iGregTechTileEntity this
+         * @return New meta tile entity
+         */
+        @Override
+        public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
+            return new TileEntityModulePumpT3(mName);
+        }
+
+        /**
+         * Create the tooltip of this controller
+         *
+         * @return Tooltip builder
+         */
+        @Override
+        protected GT_Multiblock_Tooltip_Builder createTooltip() {
+            final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+            tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc0"))
+                    .addInfo(
+                            EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
+                                    + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t3.desc1"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc3"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT4"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc4"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc5"))
+                    .addSeparator().beginStructureBlock(1, 5, 2, false)
+                    .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
+                    .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
+            return tt;
+        }
+    }
 }
