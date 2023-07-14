@@ -120,6 +120,8 @@ gt.blockcasings.ig.motor.t5.desc1=Kachow
 gt.blockcasings.ig.motor.desc2=Unlocks %s Module-Slots in the Space Elevator
 
 # GUI
+GT5U.gui.text.no_space_station=Not on a space station
+GT5U.gui.text.invalid_depth=Invalid depth
 ig.text.project=Project
 ig.text.upgrades=Upgrades
 ig.text.start=Start

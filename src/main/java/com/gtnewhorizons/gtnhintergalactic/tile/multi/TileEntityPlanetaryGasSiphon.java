@@ -7,6 +7,9 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -55,6 +58,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings1;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Gas Siphon, used to extract gas from gas planets, when placed on a space station in their orbit
@@ -66,6 +70,7 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
 
     /** Lore string, which will be randomly picked from a selection each time the resources are reloaded */
     @LoreHolder("gt.blockmachines.multimachine.ig.siphon.lore")
+    @SuppressWarnings("unused")
     private static String loreTooltip;
     /** Main structure of the machine */
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -252,29 +257,26 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
     /**
      * Check if this machine can perform a recipe
      *
-     * @param controllerStack Item in the controller
      * @return True if recipe was started, else false
      */
     @Override
-    public boolean checkRecipe(ItemStack controllerStack) {
+    public @NotNull CheckRecipeResult checkProcessing() {
         // return early if no input busses are present, the first bus is invalid or the TE is not on a space station
-        if (mInputBusses.isEmpty() || !isValidMetaTileEntity(mInputBusses.get(0))
-                || !(this.getBaseMetaTileEntity().getWorld().provider instanceof IOrbitDimension)) {
-            depth = 0;
-            mEUt = 0;
-            mEfficiency = 0;
-            return false;
+        if (mInputBusses.isEmpty() || !isValidMetaTileEntity(mInputBusses.get(0))) {
+            resetMachine(true);
+            return SimpleCheckRecipeResult.ofFailure("no_mining_pipe");
+        }
+        if (!(this.getBaseMetaTileEntity().getWorld().provider instanceof IOrbitDimension provider)) {
+            resetMachine(true);
+            return SimpleCheckRecipeResult.ofFailure("no_space_station");
         }
 
-        IOrbitDimension provider = (IOrbitDimension) this.getBaseMetaTileEntity().getWorld().provider;
         Map<Integer, FluidStack> planetRecipes = GasSiphonRecipes.RECIPES.get(provider.getPlanetToOrbit());
 
         // return early if there are no recipes for the planet the station is orbiting
         if (planetRecipes == null) {
-            depth = 0;
-            mEUt = 0;
-            mEfficiency = 0;
-            return false;
+            resetMachine(true);
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         GT_MetaTileEntity_Hatch_InputBus bus = mInputBusses.get(0);
@@ -297,22 +299,19 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
 
         // return early if not enough mining pipes are in the input bus
         if (depth == 0 || numPipes < depth * 64) {
-            mEUt = 0;
-            mEfficiency = 0;
-            return false;
+            resetMachine(false);
+            return SimpleCheckRecipeResult.ofFailure("no_mining_pipe");
         }
 
         FluidStack recipeFluid = planetRecipes.get(depth);
 
         // return early if invalid depth
         if (recipeFluid == null) {
-            depth = 0;
-            mEUt = 0;
-            mEfficiency = 0;
-            return false;
+            resetMachine(true);
+            return SimpleCheckRecipeResult.ofFailure("invalid_depth");
         }
         if (!canOutputAll(new FluidStack[] { recipeFluid })) {
-            return false;
+            return CheckRecipeResultRegistry.OUTPUT_FULL;
         }
 
         // calculate overclockedness
@@ -323,9 +322,8 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
         // apply recipe
         if (ocLevel < 0) {
             // no underclocking allowed
-            mEUt = 0;
-            mEfficiency = 0;
-            return false;
+            resetMachine(false);
+            return CheckRecipeResultRegistry.insufficientPower(recipeEUt);
         }
         fluid = recipeFluid.copy();
         if (ocLevel == 0) {
@@ -341,7 +339,7 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
         mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
         mEfficiencyIncrease = 10000;
         mMaxProgresstime = 20;
-        return true;
+        return SimpleCheckRecipeResult.ofSuccess("drilling");
     }
 
     /**
@@ -450,6 +448,19 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
     }
 
     /**
+     * Reset the stats of the siphon
+     *
+     * @param resetDepth should depth be reset too?
+     */
+    private void resetMachine(boolean resetDepth) {
+        if (resetDepth) {
+            depth = 0;
+        }
+        mEUt = 0;
+        mEfficiency = 0;
+    }
+
+    /**
      * Callback that will be invoked when the machine is broken
      */
     @Override
@@ -524,8 +535,7 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
                 if (isBartworksLoaded) {
                     ItemStack stack = WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.blockCasingAdvanced);
-                    if (stack.getItem() instanceof ItemBlock) {
-                        ItemBlock item = (ItemBlock) stack.getItem();
+                    if (stack.getItem() instanceof ItemBlock item) {
                         return item.placeBlockAt(
                                 stack,
                                 null,
@@ -549,8 +559,7 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
             public boolean check(T t, World world, int x, int y, int z) {
                 if (isBartworksLoaded) {
                     TileEntity tile = world.getTileEntity(x, y, z);
-                    if (tile instanceof BW_MetaGeneratedBlocks_CasingAdvanced_TE) {
-                        BW_MetaGeneratedBlocks_CasingAdvanced_TE tileCasingAdvanced = (BW_MetaGeneratedBlocks_CasingAdvanced_TE) tile;
+                    if (tile instanceof BW_MetaGeneratedBlocks_CasingAdvanced_TE tileCasingAdvanced) {
                         if (tileCasingAdvanced.isInvalid()) return false;
                         return tileCasingAdvanced.mMetaData == WerkstoffLoader.LuVTierMaterial.getmID();
                     }
