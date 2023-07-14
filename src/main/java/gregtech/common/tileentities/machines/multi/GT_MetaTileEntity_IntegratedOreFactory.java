@@ -725,8 +725,8 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
             case 1 -> {
                 des.add(AQUA + CRUSH + ARROW);
                 des.add(AQUA + WASH + ARROW);
-                des.add(AQUA + CENTRIFUGE + ARROW);
-                des.add(AQUA + CRUSH + ' ');
+                des.add(AQUA + CRUSH + ARROW);
+                des.add(AQUA + CENTRIFUGE + ' ');
             }
             case 2 -> {
                 des.add(AQUA + CRUSH + ARROW);
