@@ -124,6 +124,7 @@ GT5U.gui.text.no_space_station=§7Not on a space station
 GT5U.gui.text.invalid_depth=§7Invalid depth
 GT5U.gui.text.missing_project=§7Missing §b%s §7 at §b%s
 GT5U.gui.text.no_plasma=§7Not enough plasma
+GT5U.gui.text.no_project_selected=§7Not working on any project
 ig.text.project=Project
 ig.text.upgrades=Upgrades
 ig.text.start=Start

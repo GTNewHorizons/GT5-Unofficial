@@ -1,5 +1,6 @@
 package com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules;
 
+import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 import static net.minecraft.util.EnumChatFormatting.WHITE;
@@ -16,6 +17,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.github.technus.tectech.thing.gui.TecTechUITextures;
 import com.gtnewhorizons.gtnhintergalactic.Tags;
 import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
@@ -31,6 +34,9 @@ import com.gtnewhorizons.modularui.common.widget.*;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
@@ -132,9 +138,12 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
-        if (projectWorkingOn == null || gregtech.api.enums.GT_Values.V[tTier] > getEUVar()) {
-            return false;
+    public @NotNull CheckRecipeResult checkProcessing_EM() {
+        if (projectWorkingOn == null) {
+            return SimpleCheckRecipeResult.ofFailure("no_project_selected");
+        }
+        if (V[tTier] > getEUVar()) {
+            return CheckRecipeResultRegistry.insufficientPower(V[tTier]);
         }
 
         GT_Recipe recipe = null;
@@ -168,20 +177,20 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
         }
 
         if (recipe == null) {
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         if (!recipe.isRecipeInputEqual(
                 true,
                 getStoredFluids().toArray(new FluidStack[0]),
                 getStoredInputs().toArray(new ItemStack[0]))) {
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         mMaxProgresstime = projectWorkingOn.getProjectBuildTime();
         mEUt = recipe.mEUt;
 
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     @Override
