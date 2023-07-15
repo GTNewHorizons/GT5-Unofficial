@@ -9,7 +9,6 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
-import gregtech.api.enums.MachineType;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -21,6 +20,7 @@ import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
@@ -54,7 +54,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         | GT_ModHandler.RecipeBits.BUFFERED;
     private static final long bitsd = GT_ModHandler.RecipeBits.DISMANTLEABLE | bits;
 
-    private static void registerMachineTypes(){
+    private static void registerMachineTypes() {
         registerAlloySmelter();
         registerArcFurnace();
         registerAutoclave();
@@ -97,14 +97,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         registerWiremill();
     }
 
-    private static void registerAlloySmelter(){
+    private static void registerAlloySmelter() {
         ItemList.Machine_LV_AlloySmelter.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 201,
                 "basicmachine.alloysmelter.tier.01",
                 "Basic Alloy Smelter",
                 1,
-                "HighTech combination Smelter "+ MachineType.ALLOY_SMELTER.type(),
+                "HighTech combination Smelter " + MachineType.ALLOY_SMELTER.type(),
                 GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes,
                 2,
                 1,
@@ -128,7 +128,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.alloysmelter.tier.02",
                 "Advanced Alloy Smelter",
                 2,
-                "HighTech combination Smelter "+ MachineType.ALLOY_SMELTER.type(),
+                "HighTech combination Smelter " + MachineType.ALLOY_SMELTER.type(),
                 GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes,
                 2,
                 1,
@@ -152,7 +152,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.alloysmelter.tier.03",
                 "Advanced Alloy Smelter II",
                 3,
-                "HighTech combination Smelter "+ MachineType.ALLOY_SMELTER.type(),
+                "HighTech combination Smelter " + MachineType.ALLOY_SMELTER.type(),
                 GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes,
                 2,
                 1,
@@ -176,7 +176,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.alloysmelter.tier.04",
                 "Advanced Alloy Smelter III",
                 4,
-                "HighTech combination Smelter "+ MachineType.ALLOY_SMELTER.type(),
+                "HighTech combination Smelter " + MachineType.ALLOY_SMELTER.type(),
                 GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes,
                 2,
                 1,
@@ -200,7 +200,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.alloysmelter.tier.05",
                 "Advanced Alloy Smelter IV",
                 5,
-                "HighTech combination Smelter "+ MachineType.ALLOY_SMELTER.type(),
+                "HighTech combination Smelter " + MachineType.ALLOY_SMELTER.type(),
                 GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes,
                 2,
                 1,
@@ -220,14 +220,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE }).getStackForm(1L));
     }
 
-    private static void registerAssembler(){
+    private static void registerAssembler() {
         ItemList.Machine_LV_Assembler.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 211,
                 "basicmachine.assembler.tier.01",
                 "Basic Assembling Machine",
                 1,
-                "Avengers, Assemble! "+MachineType.ASSEMBLER.type(),
+                "Avengers, Assemble! " + MachineType.ASSEMBLER.type(),
                 GT_Recipe.GT_Recipe_Map.sAssemblerRecipes,
                 6,
                 1,
@@ -251,7 +251,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.assembler.tier.02",
                 "Advanced Assembling Machine",
                 2,
-                "Avengers, Assemble! "+MachineType.ASSEMBLER.type(),
+                "Avengers, Assemble! " + MachineType.ASSEMBLER.type(),
                 GT_Recipe.GT_Recipe_Map.sAssemblerRecipes,
                 9,
                 1,
@@ -275,7 +275,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.assembler.tier.03",
                 "Advanced Assembling Machine II",
                 3,
-                "Avengers, Assemble! "+MachineType.ASSEMBLER.type(),
+                "Avengers, Assemble! " + MachineType.ASSEMBLER.type(),
                 GT_Recipe.GT_Recipe_Map.sAssemblerRecipes,
                 9,
                 1,
@@ -299,7 +299,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.assembler.tier.04",
                 "Advanced Assembling Machine III",
                 4,
-                "Avengers, Assemble! "+MachineType.ASSEMBLER.type(),
+                "Avengers, Assemble! " + MachineType.ASSEMBLER.type(),
                 GT_Recipe.GT_Recipe_Map.sAssemblerRecipes,
                 9,
                 1,
@@ -323,7 +323,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.assembler.tier.05",
                 "Advanced Assembling Machine IV",
                 5,
-                "Avengers, Assemble! "+MachineType.ASSEMBLER.type(),
+                "Avengers, Assemble! " + MachineType.ASSEMBLER.type(),
                 GT_Recipe.GT_Recipe_Map.sAssemblerRecipes,
                 9,
                 1,
@@ -343,14 +343,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
     }
 
-    private static void registerBendingMachine(){
+    private static void registerBendingMachine() {
         ItemList.Machine_LV_Bender.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 221,
                 "basicmachine.bender.tier.01",
                 "Basic Bending Machine",
                 1,
-                "Boo, he's bad! We want BENDER!!! "+MachineType.BENDING_MACHINE.type(),
+                "Boo, he's bad! We want BENDER!!! " + MachineType.BENDING_MACHINE.type(),
                 GT_Recipe.GT_Recipe_Map.sBenderRecipes,
                 2,
                 1,
@@ -375,7 +375,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.bender.tier.02",
                 "Advanced Bending Machine",
                 2,
-                "Boo, he's bad! We want BENDER!!! "+MachineType.BENDING_MACHINE.type(),
+                "Boo, he's bad! We want BENDER!!! " + MachineType.BENDING_MACHINE.type(),
                 GT_Recipe.GT_Recipe_Map.sBenderRecipes,
                 2,
                 1,
@@ -400,7 +400,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.bender.tier.03",
                 "Advanced Bending Machine II",
                 3,
-                "Boo, he's bad! We want BENDER!!! "+MachineType.BENDING_MACHINE.type(),
+                "Boo, he's bad! We want BENDER!!! " + MachineType.BENDING_MACHINE.type(),
                 GT_Recipe.GT_Recipe_Map.sBenderRecipes,
                 2,
                 1,
@@ -425,7 +425,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.bender.tier.04",
                 "Advanced Bending Machine III",
                 4,
-                "Boo, he's bad! We want BENDER!!! "+MachineType.BENDING_MACHINE.type(),
+                "Boo, he's bad! We want BENDER!!! " + MachineType.BENDING_MACHINE.type(),
                 GT_Recipe.GT_Recipe_Map.sBenderRecipes,
                 2,
                 1,
@@ -450,7 +450,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.bender.tier.05",
                 "Advanced Bending Machine IV",
                 5,
-                "Boo, he's bad! We want BENDER!!! "+MachineType.BENDING_MACHINE.type(),
+                "Boo, he's bad! We want BENDER!!! " + MachineType.BENDING_MACHINE.type(),
                 GT_Recipe.GT_Recipe_Map.sBenderRecipes,
                 2,
                 1,
@@ -471,14 +471,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
     }
 
-    private static void registerCanner(){
+    private static void registerCanner() {
         ItemList.Machine_LV_Canner.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 231,
                 "basicmachine.canner.tier.01",
                 "Basic Canning Machine",
                 1,
-                "Unmobile Food Canning Machine GTA4 "+MachineType.CANNER.type(),
+                "Unmobile Food Canning Machine GTA4 " + MachineType.CANNER.type(),
                 GT_Recipe.GT_Recipe_Map.sCannerRecipes,
                 2,
                 2,
@@ -503,7 +503,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.canner.tier.02",
                 "Advanced Canning Machine",
                 2,
-                "Unmobile Food Canning Machine GTA4 "+MachineType.CANNER.type(),
+                "Unmobile Food Canning Machine GTA4 " + MachineType.CANNER.type(),
                 GT_Recipe.GT_Recipe_Map.sCannerRecipes,
                 2,
                 2,
@@ -528,7 +528,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.canner.tier.03",
                 "Advanced Canning Machine II",
                 3,
-                "Unmobile Food Canning Machine GTA4 "+MachineType.CANNER.type(),
+                "Unmobile Food Canning Machine GTA4 " + MachineType.CANNER.type(),
                 GT_Recipe.GT_Recipe_Map.sCannerRecipes,
                 2,
                 2,
@@ -553,7 +553,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.canner.tier.04",
                 "Advanced Canning Machine III",
                 4,
-                "Unmobile Food Canning Machine GTA4 "+MachineType.CANNER.type(),
+                "Unmobile Food Canning Machine GTA4 " + MachineType.CANNER.type(),
                 GT_Recipe.GT_Recipe_Map.sCannerRecipes,
                 2,
                 2,
@@ -578,7 +578,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.canner.tier.05",
                 "Advanced Canning Machine IV",
                 5,
-                "Unmobile Food Canning Machine GTA4 "+MachineType.CANNER.type(),
+                "Unmobile Food Canning Machine GTA4 " + MachineType.CANNER.type(),
                 GT_Recipe.GT_Recipe_Map.sCannerRecipes,
                 2,
                 2,
@@ -599,14 +599,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
     }
 
-    private static void registerCompressor(){
+    private static void registerCompressor() {
         ItemList.Machine_LV_Compressor.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 241,
                 "basicmachine.compressor.tier.01",
                 "Basic Compressor",
                 1,
-                "Compress-O-Matic C77 "+MachineType.COMPRESSOR.type(),
+                "Compress-O-Matic C77 " + MachineType.COMPRESSOR.type(),
                 GT_Recipe.GT_Recipe_Map.sCompressorRecipes,
                 1,
                 1,
@@ -630,7 +630,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.compressor.tier.02",
                 "Advanced Compressor",
                 2,
-                "Compress-O-Matic C77 "+MachineType.COMPRESSOR.type(),
+                "Compress-O-Matic C77 " + MachineType.COMPRESSOR.type(),
                 GT_Recipe.GT_Recipe_Map.sCompressorRecipes,
                 1,
                 1,
@@ -654,7 +654,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.compressor.tier.03",
                 "Advanced Compressor II",
                 3,
-                "Compress-O-Matic C77 "+MachineType.COMPRESSOR.type(),
+                "Compress-O-Matic C77 " + MachineType.COMPRESSOR.type(),
                 GT_Recipe.GT_Recipe_Map.sCompressorRecipes,
                 1,
                 1,
@@ -678,7 +678,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.compressor.tier.04",
                 "Advanced Compressor III",
                 4,
-                "Compress-O-Matic C77 "+MachineType.COMPRESSOR.type(),
+                "Compress-O-Matic C77 " + MachineType.COMPRESSOR.type(),
                 GT_Recipe.GT_Recipe_Map.sCompressorRecipes,
                 1,
                 1,
@@ -702,7 +702,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.compressor.tier.05",
                 "Singularity Compressor",
                 5,
-                "Compress-O-Matic C77 "+MachineType.COMPRESSOR.type(),
+                "Compress-O-Matic C77 " + MachineType.COMPRESSOR.type(),
                 GT_Recipe.GT_Recipe_Map.sCompressorRecipes,
                 1,
                 1,
@@ -722,14 +722,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
     }
 
-    private static void registerCuttingMachine(){
+    private static void registerCuttingMachine() {
         ItemList.Machine_LV_Cutter.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 251,
                 "basicmachine.cutter.tier.01",
                 "Basic Cutting Machine",
                 1,
-                "Slice'N Dice "+MachineType.CUTTING_MACHINE.type(),
+                "Slice'N Dice " + MachineType.CUTTING_MACHINE.type(),
                 GT_Recipe.GT_Recipe_Map.sCutterRecipes,
                 1,
                 2,
@@ -748,14 +748,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS, 'B', OreDictNames.craftingDiamondBlade })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_MV_Cutter.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 252,
                 "basicmachine.cutter.tier.02",
                 "Advanced Cutting Machine",
                 2,
-                "Slice'N Dice "+MachineType.CUTTING_MACHINE.type(),
+                new String[] { "Slice'N Dice ", MachineType.CUTTING_MACHINE.type() },
                 GT_Recipe.GT_Recipe_Map.sCutterRecipes,
                 2,
                 2,
@@ -774,14 +774,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS, 'B', OreDictNames.craftingDiamondBlade })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_HV_Cutter.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 253,
                 "basicmachine.cutter.tier.03",
                 "Advanced Cutting Machine II",
                 3,
-                "Slice'N Dice "+MachineType.CUTTING_MACHINE.type(),
+                "Slice'N Dice " + MachineType.CUTTING_MACHINE.type(),
                 GT_Recipe.GT_Recipe_Map.sCutterRecipes,
                 2,
                 4,
@@ -800,14 +800,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS, 'B', OreDictNames.craftingDiamondBlade })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_EV_Cutter.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 254,
                 "basicmachine.cutter.tier.04",
                 "Advanced Cutting Machine III",
                 4,
-                "Slice'N Dice "+MachineType.CUTTING_MACHINE.type(),
+                "Slice'N Dice " + MachineType.CUTTING_MACHINE.type(),
                 GT_Recipe.GT_Recipe_Map.sCutterRecipes,
                 2,
                 4,
@@ -826,14 +826,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS, 'B', OreDictNames.craftingDiamondBlade })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_IV_Cutter.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 255,
                 "basicmachine.cutter.tier.05",
                 "Advanced Cutting Machine IV",
                 5,
-                "Slice'N Dice "+MachineType.CUTTING_MACHINE.type(),
+                "Slice'N Dice " + MachineType.CUTTING_MACHINE.type(),
                 GT_Recipe.GT_Recipe_Map.sCutterRecipes,
                 2,
                 4,
@@ -852,17 +852,17 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS, 'B', OreDictNames.craftingDiamondBlade })
-                .getStackForm(1L));
+                        .getStackForm(1L));
     }
 
-    private static void registerFurnace(){
+    private static void registerFurnace() {
         ItemList.Machine_LV_E_Furnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 261,
                 "basicmachine.e_furnace.tier.01",
                 "Basic Electric Furnace",
                 1,
-                "Not like using a Commodore 64 "+MachineType.FURNACE.type(),
+                "Not like using a Commodore 64 " + MachineType.FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sFurnaceRecipes,
                 1,
                 1,
@@ -880,14 +880,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING }).setProgressBarTextureName("E_Furnace")
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_MV_E_Furnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 262,
                 "basicmachine.e_furnace.tier.02",
                 "Advanced Electric Furnace",
                 2,
-                "Not like using a Commodore 64 "+MachineType.FURNACE.type(),
+                "Not like using a Commodore 64 " + MachineType.FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sFurnaceRecipes,
                 1,
                 1,
@@ -905,14 +905,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING }).setProgressBarTextureName("E_Furnace")
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_HV_E_Furnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 263,
                 "basicmachine.e_furnace.tier.03",
                 "Advanced Electric Furnace II",
                 3,
-                "Not like using a Commodore 64 "+MachineType.FURNACE.type(),
+                "Not like using a Commodore 64 " + MachineType.FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sFurnaceRecipes,
                 1,
                 1,
@@ -930,14 +930,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING }).setProgressBarTextureName("E_Furnace")
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_EV_E_Furnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 264,
                 "basicmachine.e_furnace.tier.04",
                 "Advanced Electric Furnace III",
                 4,
-                "Not like using a Commodore 64 "+MachineType.FURNACE.type(),
+                "Not like using a Commodore 64 " + MachineType.FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sFurnaceRecipes,
                 1,
                 1,
@@ -955,14 +955,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING }).setProgressBarTextureName("E_Furnace")
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_IV_E_Furnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 265,
                 "basicmachine.e_furnace.tier.05",
                 "Electron Exitement Processor",
                 5,
-                "Not like using a Commodore 64 "+MachineType.FURNACE.type(),
+                "Not like using a Commodore 64 " + MachineType.FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sFurnaceRecipes,
                 1,
                 1,
@@ -980,7 +980,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING }).setProgressBarTextureName("E_Furnace")
-                .getStackForm(1L));
+                        .getStackForm(1L));
 
         ItemList.Machine_LV_Microwave.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -988,7 +988,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.microwave.tier.01",
                 "Basic Microwave",
                 1,
-                "Did you really read the instruction Manual? "+MachineType.FURNACE.type(),
+                "Did you really read the instruction Manual? " + MachineType.FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sMicrowaveRecipes,
                 1,
                 1,
@@ -1006,14 +1006,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'L', OrePrefixes.plate.get(Materials.Lead) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_MV_Microwave.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 312,
                 "basicmachine.microwave.tier.02",
                 "Advanced Microwave",
                 2,
-                "Did you really read the instruction Manual? "+MachineType.FURNACE.type(),
+                "Did you really read the instruction Manual? " + MachineType.FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sMicrowaveRecipes,
                 1,
                 1,
@@ -1031,14 +1031,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'L', OrePrefixes.plate.get(Materials.Lead) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_HV_Microwave.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 313,
                 "basicmachine.microwave.tier.03",
                 "Advanced Microwave II",
                 3,
-                "Did you really read the instruction Manual? "+MachineType.FURNACE.type(),
+                "Did you really read the instruction Manual? " + MachineType.FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sMicrowaveRecipes,
                 1,
                 1,
@@ -1056,14 +1056,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'L', OrePrefixes.plate.get(Materials.Lead) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_EV_Microwave.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 314,
                 "basicmachine.microwave.tier.04",
                 "Advanced Microwave III",
                 4,
-                "Did you really read the instruction Manual? "+MachineType.FURNACE.type(),
+                "Did you really read the instruction Manual? " + MachineType.FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sMicrowaveRecipes,
                 1,
                 1,
@@ -1081,14 +1081,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'L', OrePrefixes.plate.get(Materials.Lead) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_IV_Microwave.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 315,
                 "basicmachine.microwave.tier.05",
                 "Advanced Microwave IV",
                 5,
-                "Did you really read the instruction Manual? "+MachineType.FURNACE.type(),
+                "Did you really read the instruction Manual? " + MachineType.FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sMicrowaveRecipes,
                 1,
                 1,
@@ -1106,7 +1106,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'L', OrePrefixes.plate.get(Materials.Lead) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
 
         ItemList.Machine_LV_Oven.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -1114,7 +1114,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.e_oven.tier.01",
                 "Basic Electric Oven",
                 1,
-                "Just a Furnace with a different Design "+MachineType.FURNACE.type(),
+                "Just a Furnace with a different Design " + MachineType.FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sFurnaceRecipes,
                 1,
                 1,
@@ -1131,14 +1131,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING }).setProgressBarTextureName("E_Oven")
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_MV_Oven.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 672,
                 "basicmachine.e_oven.tier.02",
                 "Advanced Electric Oven",
                 2,
-                "Just a Furnace with a different Design "+MachineType.FURNACE.type(),
+                "Just a Furnace with a different Design " + MachineType.FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sFurnaceRecipes,
                 1,
                 1,
@@ -1155,14 +1155,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING }).setProgressBarTextureName("E_Oven")
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_HV_Oven.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 673,
                 "basicmachine.e_oven.tier.03",
                 "Advanced Electric Oven II",
                 3,
-                "Just a Furnace with a different Design "+MachineType.FURNACE.type(),
+                "Just a Furnace with a different Design " + MachineType.FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sFurnaceRecipes,
                 1,
                 1,
@@ -1179,14 +1179,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING }).setProgressBarTextureName("E_Oven")
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_EV_Oven.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 674,
                 "basicmachine.e_oven.tier.04",
                 "Advanced Electric Oven III",
                 4,
-                "Just a Furnace with a different Design "+MachineType.FURNACE.type(),
+                "Just a Furnace with a different Design " + MachineType.FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sFurnaceRecipes,
                 1,
                 1,
@@ -1203,14 +1203,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING }).setProgressBarTextureName("E_Oven")
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_IV_Oven.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 675,
                 "basicmachine.e_oven.tier.05",
                 "Advanced Electric Oven IV",
                 5,
-                "Just a Furnace with a different Design "+MachineType.FURNACE.type(),
+                "Just a Furnace with a different Design " + MachineType.FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sFurnaceRecipes,
                 1,
                 1,
@@ -1227,17 +1227,17 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING }).setProgressBarTextureName("E_Oven")
-                .getStackForm(1L));
+                        .getStackForm(1L));
     }
 
-    private static void registerExtractor(){
+    private static void registerExtractor() {
         ItemList.Machine_LV_Extractor.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 271,
                 "basicmachine.extractor.tier.01",
                 "Basic Extractor",
                 1,
-                "Dejuicer-Device of Doom - D123 "+MachineType.EXTRACTOR.type(),
+                "Dejuicer-Device of Doom - D123 " + MachineType.EXTRACTOR.type(),
                 GT_Recipe.GT_Recipe_Map.sExtractorRecipes,
                 1,
                 1,
@@ -1262,7 +1262,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.extractor.tier.02",
                 "Advanced Extractor",
                 2,
-                "Dejuicer-Device of Doom - D123 "+MachineType.EXTRACTOR.type(),
+                "Dejuicer-Device of Doom - D123 " + MachineType.EXTRACTOR.type(),
                 GT_Recipe.GT_Recipe_Map.sExtractorRecipes,
                 1,
                 1,
@@ -1287,7 +1287,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.extractor.tier.03",
                 "Advanced Extractor II",
                 3,
-                "Dejuicer-Device of Doom - D123 "+MachineType.EXTRACTOR.type(),
+                "Dejuicer-Device of Doom - D123 " + MachineType.EXTRACTOR.type(),
                 GT_Recipe.GT_Recipe_Map.sExtractorRecipes,
                 1,
                 1,
@@ -1312,7 +1312,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.extractor.tier.04",
                 "Advanced Extractor III",
                 4,
-                "Dejuicer-Device of Doom - D123 "+MachineType.EXTRACTOR.type(),
+                "Dejuicer-Device of Doom - D123 " + MachineType.EXTRACTOR.type(),
                 GT_Recipe.GT_Recipe_Map.sExtractorRecipes,
                 1,
                 1,
@@ -1337,7 +1337,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.extractor.tier.05",
                 "Vacuum Extractor",
                 5,
-                "Dejuicer-Device of Doom - D123 "+MachineType.EXTRACTOR.type(),
+                "Dejuicer-Device of Doom - D123 " + MachineType.EXTRACTOR.type(),
                 GT_Recipe.GT_Recipe_Map.sExtractorRecipes,
                 1,
                 1,
@@ -1358,14 +1358,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
     }
 
-    private static void registerExtruder(){
+    private static void registerExtruder() {
         ItemList.Machine_LV_Extruder.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 281,
                 "basicmachine.extruder.tier.01",
                 "Basic Extruder",
                 1,
-                "Universal Machine for Metal Working "+MachineType.EXTRUDER.type(),
+                "Universal Machine for Metal Working " + MachineType.EXTRUDER.type(),
                 GT_Recipe.GT_Recipe_Map.sExtruderRecipes,
                 2,
                 1,
@@ -1389,7 +1389,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.extruder.tier.02",
                 "Advanced Extruder",
                 2,
-                "Universal Machine for Metal Working "+MachineType.EXTRUDER.type(),
+                "Universal Machine for Metal Working " + MachineType.EXTRUDER.type(),
                 GT_Recipe.GT_Recipe_Map.sExtruderRecipes,
                 2,
                 1,
@@ -1413,7 +1413,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.extruder.tier.03",
                 "Advanced Extruder II",
                 3,
-                "Universal Machine for Metal Working "+MachineType.EXTRUDER.type(),
+                "Universal Machine for Metal Working " + MachineType.EXTRUDER.type(),
                 GT_Recipe.GT_Recipe_Map.sExtruderRecipes,
                 2,
                 1,
@@ -1437,7 +1437,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.extruder.tier.04",
                 "Advanced Extruder III",
                 4,
-                "Universal Machine for Metal Working "+MachineType.EXTRUDER.type(),
+                "Universal Machine for Metal Working " + MachineType.EXTRUDER.type(),
                 GT_Recipe.GT_Recipe_Map.sExtruderRecipes,
                 2,
                 1,
@@ -1461,7 +1461,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.extruder.tier.05",
                 "Advanced Extruder IV",
                 5,
-                "Universal Machine for Metal Working "+MachineType.EXTRUDER.type(),
+                "Universal Machine for Metal Working " + MachineType.EXTRUDER.type(),
                 GT_Recipe.GT_Recipe_Map.sExtruderRecipes,
                 2,
                 1,
@@ -1481,14 +1481,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE }).getStackForm(1L));
     }
 
-    private static void registerLathe(){
+    private static void registerLathe() {
         ItemList.Machine_LV_Lathe.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 291,
                 "basicmachine.lathe.tier.01",
                 "Basic Lathe",
                 1,
-                "Produces Rods more efficiently "+MachineType.LATHE.type(),
+                "Produces Rods more efficiently " + MachineType.LATHE.type(),
                 GT_Recipe.GT_Recipe_Map.sLatheRecipes,
                 1,
                 2,
@@ -1506,14 +1506,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'D', OrePrefixes.gem.get(Materials.Diamond) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_MV_Lathe.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 292,
                 "basicmachine.lathe.tier.02",
                 "Advanced Lathe",
                 2,
-                "Produces Rods more efficiently "+MachineType.LATHE.type(),
+                "Produces Rods more efficiently " + MachineType.LATHE.type(),
                 GT_Recipe.GT_Recipe_Map.sLatheRecipes,
                 1,
                 2,
@@ -1538,7 +1538,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.lathe.tier.03",
                 "Advanced Lathe II",
                 3,
-                "Produces Rods more efficiently "+MachineType.LATHE.type(),
+                "Produces Rods more efficiently " + MachineType.LATHE.type(),
                 GT_Recipe.GT_Recipe_Map.sLatheRecipes,
                 1,
                 2,
@@ -1556,14 +1556,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'D', OreDictNames.craftingIndustrialDiamond })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_EV_Lathe.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 294,
                 "basicmachine.lathe.tier.04",
                 "Advanced Lathe III",
                 4,
-                "Produces Rods more efficiently "+MachineType.LATHE.type(),
+                "Produces Rods more efficiently " + MachineType.LATHE.type(),
                 GT_Recipe.GT_Recipe_Map.sLatheRecipes,
                 1,
                 2,
@@ -1581,14 +1581,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'D', OreDictNames.craftingIndustrialDiamond })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_IV_Lathe.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 295,
                 "basicmachine.lathe.tier.05",
                 "Advanced Lathe IV",
                 5,
-                "Produces Rods more efficiently "+MachineType.LATHE.type(),
+                "Produces Rods more efficiently " + MachineType.LATHE.type(),
                 GT_Recipe.GT_Recipe_Map.sLatheRecipes,
                 1,
                 2,
@@ -1606,17 +1606,17 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'D', OreDictNames.craftingIndustrialDiamond })
-                .getStackForm(1L));
+                        .getStackForm(1L));
     }
 
-    private static void registerMacerator(){
+    private static void registerMacerator() {
         ItemList.Machine_LV_Macerator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 301,
                 "basicmachine.macerator.tier.01",
                 "Basic Macerator",
                 1,
-                "Schreddering your Ores "+MachineType.MACERATOR.type(),
+                "Schreddering your Ores " + MachineType.MACERATOR.type(),
                 GT_Recipe.GT_Recipe_Map.sMaceratorRecipes,
                 1,
                 1,
@@ -1634,14 +1634,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OrePrefixes.gem.get(Materials.Diamond) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_MV_Macerator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 302,
                 "basicmachine.macerator.tier.02",
                 "Advanced Macerator",
                 2,
-                "Schreddering your Ores "+MachineType.MACERATOR.type(),
+                "Schreddering your Ores " + MachineType.MACERATOR.type(),
                 GT_Recipe.GT_Recipe_Map.sMaceratorRecipes,
                 1,
                 1,
@@ -1666,7 +1666,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.macerator.tier.03",
                 "Universal Macerator",
                 3,
-                "Schreddering your Ores with Byproducts "+ MachineType.MACERATOR_PULVERIZER.type(),
+                "Schreddering your Ores with Byproducts " + MachineType.MACERATOR_PULVERIZER.type(),
                 GT_Recipe.GT_Recipe_Map.sMaceratorRecipes,
                 1,
                 2,
@@ -1684,14 +1684,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OreDictNames.craftingGrinder })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_EV_Macerator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 304,
                 "basicmachine.macerator.tier.04",
                 "Universal Pulverizer",
                 4,
-                "Schreddering your Ores with Byproducts "+MachineType.MACERATOR_PULVERIZER.type(),
+                "Schreddering your Ores with Byproducts " + MachineType.MACERATOR_PULVERIZER.type(),
                 GT_Recipe.GT_Recipe_Map.sMaceratorRecipes,
                 1,
                 3,
@@ -1709,14 +1709,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OreDictNames.craftingGrinder })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_IV_Macerator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 305,
                 "basicmachine.macerator.tier.05",
                 "Blend-O-Matic 9001",
                 5,
-                "Schreddering your Ores with Byproducts "+MachineType.MACERATOR_PULVERIZER.type(),
+                "Schreddering your Ores with Byproducts " + MachineType.MACERATOR_PULVERIZER.type(),
                 GT_Recipe.GT_Recipe_Map.sMaceratorRecipes,
                 1,
                 4,
@@ -1734,17 +1734,17 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OreDictNames.craftingGrinder })
-                .getStackForm(1L));
+                        .getStackForm(1L));
     }
 
-    private static void registerPrinter(){
+    private static void registerPrinter() {
         ItemList.Machine_LV_Printer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 321,
                 "basicmachine.printer.tier.01",
                 "Basic Printer",
                 1,
-                "It can copy Books and paint Stuff "+MachineType.PRINTER.type(),
+                "It can copy Books and paint Stuff " + MachineType.PRINTER.type(),
                 GT_Recipe.GT_Recipe_Map.sPrinterRecipes,
                 1,
                 1,
@@ -1768,7 +1768,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.printer.tier.02",
                 "Advanced Printer",
                 2,
-                "It can copy Books and paint Stuff "+MachineType.PRINTER.type(),
+                "It can copy Books and paint Stuff " + MachineType.PRINTER.type(),
                 GT_Recipe.GT_Recipe_Map.sPrinterRecipes,
                 1,
                 1,
@@ -1792,7 +1792,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.printer.tier.03",
                 "Advanced Printer II",
                 3,
-                "It can copy Books and paint Stuff "+MachineType.PRINTER.type(),
+                "It can copy Books and paint Stuff " + MachineType.PRINTER.type(),
                 GT_Recipe.GT_Recipe_Map.sPrinterRecipes,
                 1,
                 1,
@@ -1816,7 +1816,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.printer.tier.04",
                 "Advanced Printer III",
                 4,
-                "It can copy Books and paint Stuff "+MachineType.PRINTER.type(),
+                "It can copy Books and paint Stuff " + MachineType.PRINTER.type(),
                 GT_Recipe.GT_Recipe_Map.sPrinterRecipes,
                 1,
                 1,
@@ -1840,7 +1840,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.printer.tier.05",
                 "Advanced Printer IV",
                 5,
-                "It can copy Books and paint Stuff "+MachineType.PRINTER.type(),
+                "It can copy Books and paint Stuff " + MachineType.PRINTER.type(),
                 GT_Recipe.GT_Recipe_Map.sPrinterRecipes,
                 1,
                 1,
@@ -1864,7 +1864,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.printer.tier.06",
                 "Advanced Printer V",
                 6,
-                "It can copy Books and paint Stuff "+MachineType.PRINTER.type(),
+                "It can copy Books and paint Stuff " + MachineType.PRINTER.type(),
                 GT_Recipe.GT_Recipe_Map.sPrinterRecipes,
                 1,
                 1,
@@ -1888,7 +1888,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.printer.tier.07",
                 "Advanced Printer VI",
                 7,
-                "It can copy Books and paint Stuff "+MachineType.PRINTER.type(),
+                "It can copy Books and paint Stuff " + MachineType.PRINTER.type(),
                 GT_Recipe.GT_Recipe_Map.sPrinterRecipes,
                 1,
                 1,
@@ -1912,7 +1912,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.printer.tier.08",
                 "Advanced Printer VII",
                 8,
-                "It can copy Books and paint Stuff "+MachineType.PRINTER.type(),
+                "It can copy Books and paint Stuff " + MachineType.PRINTER.type(),
                 GT_Recipe.GT_Recipe_Map.sPrinterRecipes,
                 1,
                 1,
@@ -1932,14 +1932,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
     }
 
-    private static void registerRecycler(){
+    private static void registerRecycler() {
         ItemList.Machine_LV_Recycler.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 331,
                 "basicmachine.recycler.tier.01",
                 "Basic Recycler",
                 1,
-                "Compress, burn, obliterate and filter EVERYTHING "+MachineType.RECYCLER.type(),
+                "Compress, burn, obliterate and filter EVERYTHING " + MachineType.RECYCLER.type(),
                 GT_Recipe.GT_Recipe_Map.sRecyclerRecipes,
                 1,
                 1,
@@ -1957,14 +1957,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OrePrefixes.dust.get(Materials.Glowstone) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_MV_Recycler.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 332,
                 "basicmachine.recycler.tier.02",
                 "Advanced Recycler",
                 2,
-                "Compress, burn, obliterate and filter EVERYTHING "+MachineType.RECYCLER.type(),
+                "Compress, burn, obliterate and filter EVERYTHING " + MachineType.RECYCLER.type(),
                 GT_Recipe.GT_Recipe_Map.sRecyclerRecipes,
                 1,
                 1,
@@ -1982,14 +1982,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OrePrefixes.dust.get(Materials.Glowstone) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_HV_Recycler.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 333,
                 "basicmachine.recycler.tier.03",
                 "Advanced Recycler II",
                 3,
-                "Compress, burn, obliterate and filter EVERYTHING "+MachineType.RECYCLER.type(),
+                "Compress, burn, obliterate and filter EVERYTHING " + MachineType.RECYCLER.type(),
                 GT_Recipe.GT_Recipe_Map.sRecyclerRecipes,
                 1,
                 1,
@@ -2007,14 +2007,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OrePrefixes.dust.get(Materials.Glowstone) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_EV_Recycler.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 334,
                 "basicmachine.recycler.tier.04",
                 "Advanced Recycler III",
                 4,
-                "Compress, burn, obliterate and filter EVERYTHING "+MachineType.RECYCLER.type(),
+                "Compress, burn, obliterate and filter EVERYTHING " + MachineType.RECYCLER.type(),
                 GT_Recipe.GT_Recipe_Map.sRecyclerRecipes,
                 1,
                 1,
@@ -2032,14 +2032,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OrePrefixes.dust.get(Materials.Glowstone) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_IV_Recycler.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 335,
                 "basicmachine.recycler.tier.05",
                 "The Oblitterator",
                 5,
-                "Compress, burn, obliterate and filter EVERYTHING "+MachineType.RECYCLER.type(),
+                "Compress, burn, obliterate and filter EVERYTHING " + MachineType.RECYCLER.type(),
                 GT_Recipe.GT_Recipe_Map.sRecyclerRecipes,
                 1,
                 1,
@@ -2057,17 +2057,17 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OrePrefixes.dust.get(Materials.Glowstone) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
     }
 
-    private static void registerWiremill(){
+    private static void registerWiremill() {
         ItemList.Machine_LV_Wiremill.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 351,
                 "basicmachine.wiremill.tier.01",
                 "Basic Wiremill",
                 1,
-                "Produces Wires more efficiently "+MachineType.WIREMILL.type(),
+                "Produces Wires more efficiently " + MachineType.WIREMILL.type(),
                 GT_Recipe.GT_Recipe_Map.sWiremillRecipes,
                 2,
                 1,
@@ -2091,7 +2091,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.wiremill.tier.02",
                 "Advanced Wiremill",
                 2,
-                "Produces Wires more efficiently "+MachineType.WIREMILL.type(),
+                "Produces Wires more efficiently " + MachineType.WIREMILL.type(),
                 GT_Recipe.GT_Recipe_Map.sWiremillRecipes,
                 2,
                 1,
@@ -2115,7 +2115,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.wiremill.tier.03",
                 "Advanced Wiremill II",
                 3,
-                "Produces Wires more efficiently "+MachineType.WIREMILL.type(),
+                "Produces Wires more efficiently " + MachineType.WIREMILL.type(),
                 GT_Recipe.GT_Recipe_Map.sWiremillRecipes,
                 2,
                 1,
@@ -2139,7 +2139,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.wiremill.tier.04",
                 "Advanced Wiremill III",
                 4,
-                "Produces Wires more efficiently "+MachineType.WIREMILL.type(),
+                "Produces Wires more efficiently " + MachineType.WIREMILL.type(),
                 GT_Recipe.GT_Recipe_Map.sWiremillRecipes,
                 2,
                 1,
@@ -2163,7 +2163,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.wiremill.tier.05",
                 "Advanced Wiremill IV",
                 5,
-                "Produces Wires more efficiently "+MachineType.WIREMILL.type(),
+                "Produces Wires more efficiently " + MachineType.WIREMILL.type(),
                 GT_Recipe.GT_Recipe_Map.sWiremillRecipes,
                 2,
                 1,
@@ -2183,14 +2183,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
     }
 
-    private static void registerCentrifuge(){
+    private static void registerCentrifuge() {
         ItemList.Machine_LV_Centrifuge.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 361,
                 "basicmachine.centrifuge.tier.01",
                 "Basic Centrifuge",
                 1,
-                "Separating Molecules "+MachineType.CENTRIFUGE.type(),
+                "Separating Molecules " + MachineType.CENTRIFUGE.type(),
                 GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes,
                 2,
                 6,
@@ -2213,7 +2213,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.centrifuge.tier.02",
                 "Advanced Centrifuge",
                 2,
-                "Separating Molecules "+MachineType.CENTRIFUGE.type(),
+                "Separating Molecules " + MachineType.CENTRIFUGE.type(),
                 GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes,
                 2,
                 6,
@@ -2236,7 +2236,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.centrifuge.tier.03",
                 "Turbo Centrifuge",
                 3,
-                "Separating Molecules "+MachineType.CENTRIFUGE.type(),
+                "Separating Molecules " + MachineType.CENTRIFUGE.type(),
                 GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes,
                 2,
                 6,
@@ -2259,7 +2259,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.centrifuge.tier.04",
                 "Molecular Separator",
                 4,
-                "Separating Molecules "+MachineType.CENTRIFUGE.type(),
+                "Separating Molecules " + MachineType.CENTRIFUGE.type(),
                 GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes,
                 2,
                 6,
@@ -2282,7 +2282,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.centrifuge.tier.05",
                 "Molecular Cyclone",
                 5,
-                "Separating Molecules "+MachineType.CENTRIFUGE.type(),
+                "Separating Molecules " + MachineType.CENTRIFUGE.type(),
                 GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes,
                 2,
                 6,
@@ -2301,14 +2301,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
     }
 
-    private static void registerElectrolyser(){
+    private static void registerElectrolyser() {
         ItemList.Machine_LV_Electrolyzer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 371,
                 "basicmachine.electrolyzer.tier.01",
                 "Basic Electrolyzer",
                 1,
-                "Electrolyzing Molecules "+MachineType.ELECTROLYZER.type(),
+                "Electrolyzing Molecules " + MachineType.ELECTROLYZER.type(),
                 GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes,
                 2,
                 6,
@@ -2332,7 +2332,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.electrolyzer.tier.02",
                 "Advanced Electrolyzer",
                 2,
-                "Electrolyzing Molecules "+MachineType.ELECTROLYZER.type(),
+                "Electrolyzing Molecules " + MachineType.ELECTROLYZER.type(),
                 GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes,
                 2,
                 6,
@@ -2356,7 +2356,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.electrolyzer.tier.03",
                 "Advanced Electrolyzer II",
                 3,
-                "Electrolyzing Molecules "+MachineType.ELECTROLYZER.type(),
+                "Electrolyzing Molecules " + MachineType.ELECTROLYZER.type(),
                 GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes,
                 2,
                 6,
@@ -2380,7 +2380,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.electrolyzer.tier.04",
                 "Advanced Electrolyzer III",
                 4,
-                "Electrolyzing Molecules "+MachineType.ELECTROLYZER.type(),
+                "Electrolyzing Molecules " + MachineType.ELECTROLYZER.type(),
                 GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes,
                 2,
                 6,
@@ -2404,7 +2404,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.electrolyzer.tier.05",
                 "Molecular Disintegrator E-4908",
                 5,
-                "Electrolyzing Molecules "+MachineType.ELECTROLYZER.type(),
+                "Electrolyzing Molecules " + MachineType.ELECTROLYZER.type(),
                 GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes,
                 2,
                 6,
@@ -2424,14 +2424,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
     }
 
-    private static void registerThermalCentrifuge(){
+    private static void registerThermalCentrifuge() {
         ItemList.Machine_LV_ThermalCentrifuge.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 381,
                 "basicmachine.thermalcentrifuge.tier.01",
                 "Basic Thermal Centrifuge",
                 1,
-                "Separating Ores more precisely "+MachineType.THERMAL_CENTRIFUGE.type(),
+                "Separating Ores more precisely " + MachineType.THERMAL_CENTRIFUGE.type(),
                 GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes,
                 1,
                 3,
@@ -2455,7 +2455,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.thermalcentrifuge.tier.02",
                 "Advanced Thermal Centrifuge",
                 2,
-                "Separating Ores more precisely "+MachineType.THERMAL_CENTRIFUGE.type(),
+                "Separating Ores more precisely " + MachineType.THERMAL_CENTRIFUGE.type(),
                 GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes,
                 1,
                 3,
@@ -2479,7 +2479,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.thermalcentrifuge.tier.03",
                 "Advanced Thermal Centrifuge II",
                 3,
-                "Separating Ores more precisely "+MachineType.THERMAL_CENTRIFUGE.type(),
+                "Separating Ores more precisely " + MachineType.THERMAL_CENTRIFUGE.type(),
                 GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes,
                 1,
                 3,
@@ -2503,7 +2503,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.thermalcentrifuge.tier.04",
                 "Advanced Thermal Centrifuge III",
                 4,
-                "Separating Ores more precisely "+MachineType.THERMAL_CENTRIFUGE.type(),
+                "Separating Ores more precisely " + MachineType.THERMAL_CENTRIFUGE.type(),
                 GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes,
                 1,
                 3,
@@ -2527,7 +2527,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.thermalcentrifuge.tier.05",
                 "Blaze Sweatshop T-6350",
                 5,
-                "Separating Ores more precisely "+MachineType.THERMAL_CENTRIFUGE.type(),
+                "Separating Ores more precisely " + MachineType.THERMAL_CENTRIFUGE.type(),
                 GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes,
                 1,
                 3,
@@ -2547,14 +2547,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE }).getStackForm(1L));
     }
 
-    private static void registerOreWasher(){
+    private static void registerOreWasher() {
         ItemList.Machine_LV_OreWasher.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 391,
                 "basicmachine.orewasher.tier.01",
                 "Basic Ore Washing Plant",
                 1,
-                "Getting more Byproducts from your Ores "+MachineType.ORE_WASHER.type(),
+                "Getting more Byproducts from your Ores " + MachineType.ORE_WASHER.type(),
                 GT_Recipe.GT_Recipe_Map.sOreWasherRecipes,
                 1,
                 3,
@@ -2579,7 +2579,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.orewasher.tier.02",
                 "Advanced Ore Washing Plant",
                 2,
-                "Getting more Byproducts from your Ores "+MachineType.ORE_WASHER.type(),
+                "Getting more Byproducts from your Ores " + MachineType.ORE_WASHER.type(),
                 GT_Recipe.GT_Recipe_Map.sOreWasherRecipes,
                 1,
                 3,
@@ -2604,7 +2604,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.orewasher.tier.03",
                 "Advanced Ore Washing Plant II",
                 3,
-                "Getting more Byproducts from your Ores "+MachineType.ORE_WASHER.type(),
+                "Getting more Byproducts from your Ores " + MachineType.ORE_WASHER.type(),
                 GT_Recipe.GT_Recipe_Map.sOreWasherRecipes,
                 1,
                 3,
@@ -2629,7 +2629,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.orewasher.tier.04",
                 "Advanced Ore Washing Plant III",
                 4,
-                "Getting more Byproducts from your Ores "+MachineType.ORE_WASHER.type(),
+                "Getting more Byproducts from your Ores " + MachineType.ORE_WASHER.type(),
                 GT_Recipe.GT_Recipe_Map.sOreWasherRecipes,
                 1,
                 3,
@@ -2654,7 +2654,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.orewasher.tier.05",
                 "Repurposed Laundry-Washer I-360",
                 5,
-                "Getting more Byproducts from your Ores "+MachineType.ORE_WASHER.type(),
+                "Getting more Byproducts from your Ores " + MachineType.ORE_WASHER.type(),
                 GT_Recipe.GT_Recipe_Map.sOreWasherRecipes,
                 1,
                 3,
@@ -2675,14 +2675,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP }).getStackForm(1L));
     }
 
-    private static void registerUnpackager(){
+    private static void registerUnpackager() {
         ItemList.Machine_LV_Unboxinator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 411,
                 "basicmachine.unboxinator.tier.01",
                 "Basic Unpackager",
                 1,
-                "Grabs things out of Boxes "+MachineType.UNPACKAGER.type(),
+                "Grabs things out of Boxes " + MachineType.UNPACKAGER.type(),
                 GT_Recipe.GT_Recipe_Map.sUnboxinatorRecipes,
                 1,
                 2,
@@ -2700,14 +2700,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_MV_Unboxinator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 412,
                 "basicmachine.unboxinator.tier.02",
                 "Advanced Unpackager",
                 2,
-                "Grabs things out of Boxes "+MachineType.UNPACKAGER.type(),
+                "Grabs things out of Boxes " + MachineType.UNPACKAGER.type(),
                 GT_Recipe.GT_Recipe_Map.sUnboxinatorRecipes,
                 1,
                 2,
@@ -2725,14 +2725,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_HV_Unboxinator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 413,
                 "basicmachine.unboxinator.tier.03",
                 "Advanced Unpackager II",
                 3,
-                "Grabs things out of Boxes "+MachineType.UNPACKAGER.type(),
+                "Grabs things out of Boxes " + MachineType.UNPACKAGER.type(),
                 GT_Recipe.GT_Recipe_Map.sUnboxinatorRecipes,
                 1,
                 2,
@@ -2750,14 +2750,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_EV_Unboxinator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 414,
                 "basicmachine.unboxinator.tier.04",
                 "Advanced Unpackager III",
                 4,
-                "Grabs things out of Boxes "+MachineType.UNPACKAGER.type(),
+                "Grabs things out of Boxes " + MachineType.UNPACKAGER.type(),
                 GT_Recipe.GT_Recipe_Map.sUnboxinatorRecipes,
                 1,
                 2,
@@ -2775,14 +2775,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_IV_Unboxinator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 415,
                 "basicmachine.unboxinator.tier.05",
                 "Unboxinator",
                 5,
-                "Grabs things out of Boxes "+MachineType.UNPACKAGER.type(),
+                "Grabs things out of Boxes " + MachineType.UNPACKAGER.type(),
                 GT_Recipe.GT_Recipe_Map.sUnboxinatorRecipes,
                 1,
                 2,
@@ -2800,14 +2800,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_LuV_Unboxinator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 416,
                 "basicmachine.unboxinator.tier.06",
                 "Unboxinator",
                 6,
-                "Grabs things out of Boxes "+MachineType.UNPACKAGER.type(),
+                "Grabs things out of Boxes " + MachineType.UNPACKAGER.type(),
                 GT_Recipe.GT_Recipe_Map.sUnboxinatorRecipes,
                 1,
                 2,
@@ -2825,14 +2825,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_ZPM_Unboxinator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 417,
                 "basicmachine.unboxinator.tier.07",
                 "Unboxinator",
                 7,
-                "Grabs things out of Boxes "+MachineType.UNPACKAGER.type(),
+                "Grabs things out of Boxes " + MachineType.UNPACKAGER.type(),
                 GT_Recipe.GT_Recipe_Map.sUnboxinatorRecipes,
                 1,
                 2,
@@ -2850,14 +2850,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_UV_Unboxinator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 418,
                 "basicmachine.unboxinator.tier.08",
                 "Unboxinator",
                 8,
-                "Grabs things out of Boxes "+MachineType.UNPACKAGER.type(),
+                "Grabs things out of Boxes " + MachineType.UNPACKAGER.type(),
                 GT_Recipe.GT_Recipe_Map.sUnboxinatorRecipes,
                 1,
                 2,
@@ -2875,17 +2875,17 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
     }
 
-    private static void registerChemicalReactor(){
+    private static void registerChemicalReactor() {
         ItemList.Machine_LV_ChemicalReactor.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 421,
                 "basicmachine.chemicalreactor.tier.01",
                 "Basic Chemical Reactor",
                 1,
-                "Letting Chemicals react with each other "+MachineType.CHEMICAL_REACTOR.type(),
+                "Letting Chemicals react with each other " + MachineType.CHEMICAL_REACTOR.type(),
                 GT_Recipe.GT_Recipe_Map.sChemicalRecipes,
                 2,
                 2,
@@ -2910,7 +2910,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.chemicalreactor.tier.02",
                 "Advanced Chemical Reactor",
                 2,
-                "Letting Chemicals react with each other "+MachineType.CHEMICAL_REACTOR.type(),
+                "Letting Chemicals react with each other " + MachineType.CHEMICAL_REACTOR.type(),
                 GT_Recipe.GT_Recipe_Map.sChemicalRecipes,
                 2,
                 2,
@@ -2935,7 +2935,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.chemicalreactor.tier.03",
                 "Advanced Chemical Reactor II",
                 3,
-                "Letting Chemicals react with each other "+MachineType.CHEMICAL_REACTOR.type(),
+                "Letting Chemicals react with each other " + MachineType.CHEMICAL_REACTOR.type(),
                 GT_Recipe.GT_Recipe_Map.sChemicalRecipes,
                 2,
                 2,
@@ -2960,7 +2960,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.chemicalreactor.tier.04",
                 "Advanced Chemical Reactor III",
                 4,
-                "Letting Chemicals react with each other "+MachineType.CHEMICAL_REACTOR.type(),
+                "Letting Chemicals react with each other " + MachineType.CHEMICAL_REACTOR.type(),
                 GT_Recipe.GT_Recipe_Map.sChemicalRecipes,
                 2,
                 2,
@@ -2985,7 +2985,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.chemicalreactor.tier.05",
                 "Advanced Chemical Reactor IV",
                 5,
-                "Letting Chemicals react with each other "+MachineType.CHEMICAL_REACTOR.type(),
+                "Letting Chemicals react with each other " + MachineType.CHEMICAL_REACTOR.type(),
                 GT_Recipe.GT_Recipe_Map.sChemicalRecipes,
                 2,
                 2,
@@ -3003,17 +3003,17 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OrePrefixes.pipeHuge.get(Materials.Plastic) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
     }
 
-    private static void registerFluidCanner(){
+    private static void registerFluidCanner() {
         ItemList.Machine_LV_FluidCanner.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 431,
                 "basicmachine.fluidcanner.tier.01",
                 "Basic Fluid Canner",
                 1,
-                "Puts Fluids into and out of Containers "+MachineType.FLUID_CANNER.type(),
+                "Puts Fluids into and out of Containers " + MachineType.FLUID_CANNER.type(),
                 GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes,
                 1,
                 1,
@@ -3037,7 +3037,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.fluidcanner.tier.02",
                 "Advanced Fluid Canner",
                 2,
-                "Puts Fluids into and out of Containers "+MachineType.FLUID_CANNER.type(),
+                "Puts Fluids into and out of Containers " + MachineType.FLUID_CANNER.type(),
                 GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes,
                 1,
                 1,
@@ -3061,7 +3061,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.fluidcanner.tier.03",
                 "Quick Fluid Canner",
                 3,
-                "Puts Fluids into and out of Containers "+MachineType.FLUID_CANNER.type(),
+                "Puts Fluids into and out of Containers " + MachineType.FLUID_CANNER.type(),
                 GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes,
                 1,
                 1,
@@ -3085,7 +3085,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.fluidcanner.tier.04",
                 "Turbo Fluid Canner",
                 4,
-                "Puts Fluids into and out of Containers "+MachineType.FLUID_CANNER.type(),
+                "Puts Fluids into and out of Containers " + MachineType.FLUID_CANNER.type(),
                 GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes,
                 1,
                 1,
@@ -3109,7 +3109,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.fluidcanner.tier.05",
                 "Instant Fluid Canner",
                 5,
-                "Puts Fluids into and out of Containers "+MachineType.FLUID_CANNER.type(),
+                "Puts Fluids into and out of Containers " + MachineType.FLUID_CANNER.type(),
                 GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes,
                 1,
                 1,
@@ -3129,14 +3129,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
     }
 
-    private static void registerMatterAmplifier(){
+    private static void registerMatterAmplifier() {
         ItemList.Machine_LV_Amplifab.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 471,
                 "basicmachine.amplifab.tier.01",
                 "Basic Amplifabricator",
                 1,
-                "Extracting UU Amplifier "+MachineType.MATTER_AMPLIFIER.type(),
+                "Extracting UU Amplifier " + MachineType.MATTER_AMPLIFIER.type(),
                 GT_Recipe.GT_Recipe_Map.sAmplifiers,
                 1,
                 1,
@@ -3160,7 +3160,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.amplifab.tier.02",
                 "Advanced Amplifabricator",
                 2,
-                "Extracting UU Amplifier "+MachineType.MATTER_AMPLIFIER.type(),
+                "Extracting UU Amplifier " + MachineType.MATTER_AMPLIFIER.type(),
                 GT_Recipe.GT_Recipe_Map.sAmplifiers,
                 1,
                 1,
@@ -3184,7 +3184,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.amplifab.tier.03",
                 "Advanced Amplifabricator II",
                 3,
-                "Extracting UU Amplifier "+MachineType.MATTER_AMPLIFIER.type(),
+                "Extracting UU Amplifier " + MachineType.MATTER_AMPLIFIER.type(),
                 GT_Recipe.GT_Recipe_Map.sAmplifiers,
                 1,
                 1,
@@ -3208,7 +3208,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.amplifab.tier.04",
                 "Advanced Amplifabricator III",
                 4,
-                "Extracting UU Amplifier "+MachineType.MATTER_AMPLIFIER.type(),
+                "Extracting UU Amplifier " + MachineType.MATTER_AMPLIFIER.type(),
                 GT_Recipe.GT_Recipe_Map.sAmplifiers,
                 1,
                 1,
@@ -3232,7 +3232,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.amplifab.tier.05",
                 "Advanced Amplifabricator IV",
                 5,
-                "Extracting UU Amplifier "+MachineType.MATTER_AMPLIFIER.type(),
+                "Extracting UU Amplifier " + MachineType.MATTER_AMPLIFIER.type(),
                 GT_Recipe.GT_Recipe_Map.sAmplifiers,
                 1,
                 1,
@@ -3252,14 +3252,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4 }).getStackForm(1L));
     }
 
-    private static void registerFermenter(){
+    private static void registerFermenter() {
         ItemList.Machine_LV_Fermenter.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 501,
                 "basicmachine.fermenter.tier.01",
                 "Basic Fermenter",
                 1,
-                "Fermenting Fluids "+MachineType.FERMENTER.type(),
+                "Fermenting Fluids " + MachineType.FERMENTER.type(),
                 GT_Recipe.GT_Recipe_Map.sFermentingRecipes,
                 1,
                 1,
@@ -3284,7 +3284,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.fermenter.tier.02",
                 "Advanced Fermenter",
                 2,
-                "Fermenting Fluids "+MachineType.FERMENTER.type(),
+                "Fermenting Fluids " + MachineType.FERMENTER.type(),
                 GT_Recipe.GT_Recipe_Map.sFermentingRecipes,
                 1,
                 1,
@@ -3309,7 +3309,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.fermenter.tier.03",
                 "Advanced Fermenter II",
                 3,
-                "Fermenting Fluids "+MachineType.FERMENTER.type(),
+                "Fermenting Fluids " + MachineType.FERMENTER.type(),
                 GT_Recipe.GT_Recipe_Map.sFermentingRecipes,
                 1,
                 1,
@@ -3334,7 +3334,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.fermenter.tier.04",
                 "Advanced Fermenter III",
                 4,
-                "Fermenting Fluids "+MachineType.FERMENTER.type(),
+                "Fermenting Fluids " + MachineType.FERMENTER.type(),
                 GT_Recipe.GT_Recipe_Map.sFermentingRecipes,
                 1,
                 1,
@@ -3359,7 +3359,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.fermenter.tier.05",
                 "Advanced Fermenter IV",
                 5,
-                "Fermenting Fluids "+MachineType.FERMENTER.type(),
+                "Fermenting Fluids " + MachineType.FERMENTER.type(),
                 GT_Recipe.GT_Recipe_Map.sFermentingRecipes,
                 1,
                 1,
@@ -3380,14 +3380,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
     }
 
-    private static void registerFluidExtractor(){
+    private static void registerFluidExtractor() {
         ItemList.Machine_LV_FluidExtractor.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 511,
                 "basicmachine.fluidextractor.tier.01",
                 "Basic Fluid Extractor",
                 1,
-                "Extracting Fluids from Items "+MachineType.FLUID_EXTRACTOR.type(),
+                "Extracting Fluids from Items " + MachineType.FLUID_EXTRACTOR.type(),
                 GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes,
                 1,
                 1,
@@ -3412,7 +3412,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.fluidextractor.tier.02",
                 "Advanced Fluid Extractor",
                 2,
-                "Extracting Fluids from Items "+MachineType.FLUID_EXTRACTOR.type(),
+                "Extracting Fluids from Items " + MachineType.FLUID_EXTRACTOR.type(),
                 GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes,
                 1,
                 1,
@@ -3437,7 +3437,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.fluidextractor.tier.03",
                 "Advanced Fluid Extractor II",
                 3,
-                "Extracting Fluids from Items "+MachineType.FLUID_EXTRACTOR.type(),
+                "Extracting Fluids from Items " + MachineType.FLUID_EXTRACTOR.type(),
                 GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes,
                 1,
                 1,
@@ -3462,7 +3462,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.fluidextractor.tier.04",
                 "Advanced Fluid Extractor III",
                 4,
-                "Extracting Fluids from Items "+MachineType.FLUID_EXTRACTOR.type(),
+                "Extracting Fluids from Items " + MachineType.FLUID_EXTRACTOR.type(),
                 GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes,
                 1,
                 1,
@@ -3487,7 +3487,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.fluidextractor.tier.05",
                 "Advanced Fluid Extractor IV",
                 5,
-                "Extracting Fluids from Items "+MachineType.FLUID_EXTRACTOR.type(),
+                "Extracting Fluids from Items " + MachineType.FLUID_EXTRACTOR.type(),
                 GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes,
                 1,
                 1,
@@ -3509,14 +3509,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
 
     }
 
-    private static void registerFluidSolidifier(){
+    private static void registerFluidSolidifier() {
         ItemList.Machine_LV_FluidSolidifier.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 521,
                 "basicmachine.fluidsolidifier.tier.01",
                 "Basic Fluid Solidifier",
                 1,
-                "Cools Fluids down to form Solids "+MachineType.FLUID_SOLIDIFIER.type(),
+                "Cools Fluids down to form Solids " + MachineType.FLUID_SOLIDIFIER.type(),
                 GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes,
                 1,
                 1,
@@ -3534,14 +3534,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_MV_FluidSolidifier.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 522,
                 "basicmachine.fluidsolidifier.tier.02",
                 "Advanced Fluid Solidifier",
                 2,
-                "Cools Fluids down to form Solids "+MachineType.FLUID_SOLIDIFIER.type(),
+                "Cools Fluids down to form Solids " + MachineType.FLUID_SOLIDIFIER.type(),
                 GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes,
                 1,
                 1,
@@ -3559,14 +3559,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_HV_FluidSolidifier.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 523,
                 "basicmachine.fluidsolidifier.tier.03",
                 "Advanced Fluid Solidifier II",
                 3,
-                "Cools Fluids down to form Solids "+MachineType.FLUID_SOLIDIFIER.type(),
+                "Cools Fluids down to form Solids " + MachineType.FLUID_SOLIDIFIER.type(),
                 GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes,
                 1,
                 1,
@@ -3584,14 +3584,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_EV_FluidSolidifier.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 524,
                 "basicmachine.fluidsolidifier.tier.04",
                 "Advanced Fluid Solidifier III",
                 4,
-                "Cools Fluids down to form Solids "+MachineType.FLUID_SOLIDIFIER.type(),
+                "Cools Fluids down to form Solids " + MachineType.FLUID_SOLIDIFIER.type(),
                 GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes,
                 1,
                 1,
@@ -3609,14 +3609,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_IV_FluidSolidifier.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 525,
                 "basicmachine.fluidsolidifier.tier.05",
                 "Advanced Fluid Solidifier IV",
                 5,
-                "Cools Fluids down to form Solids "+MachineType.FLUID_SOLIDIFIER.type(),
+                "Cools Fluids down to form Solids " + MachineType.FLUID_SOLIDIFIER.type(),
                 GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes,
                 1,
                 1,
@@ -3634,17 +3634,17 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
     }
 
-    private static void registerCircuitAssembler(){
+    private static void registerCircuitAssembler() {
         ItemList.Machine_LV_CircuitAssembler.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 1180,
                 "basicmachine.circuitassembler.tier.01",
                 "Basic Circuit Assembler",
                 1,
-                "Pick-n-Place all over the place "+MachineType.CIRCUIT_ASSEMBLER.type(),
+                "Pick-n-Place all over the place " + MachineType.CIRCUIT_ASSEMBLER.type(),
                 GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes,
                 6,
                 1,
@@ -3669,7 +3669,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.circuitassembler.tier.02",
                 "Advanced Circuit Assembler",
                 2,
-                "Pick-n-Place all over the place "+MachineType.CIRCUIT_ASSEMBLER.type(),
+                "Pick-n-Place all over the place " + MachineType.CIRCUIT_ASSEMBLER.type(),
                 GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes,
                 6,
                 1,
@@ -3694,7 +3694,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.circuitassembler.tier.03",
                 "Advanced Circuit Assembler II",
                 3,
-                "Pick-n-Place all over the place "+MachineType.CIRCUIT_ASSEMBLER.type(),
+                "Pick-n-Place all over the place " + MachineType.CIRCUIT_ASSEMBLER.type(),
                 GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes,
                 6,
                 1,
@@ -3719,7 +3719,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.circuitassembler.tier.04",
                 "Advanced Circuit Assembler III",
                 4,
-                "Pick-n-Place all over the place "+MachineType.CIRCUIT_ASSEMBLER.type(),
+                "Pick-n-Place all over the place " + MachineType.CIRCUIT_ASSEMBLER.type(),
                 GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes,
                 6,
                 1,
@@ -3744,7 +3744,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.circuitassembler.tier.05",
                 "Advanced Circuit Assembler IV",
                 5,
-                "Pick-n-Place all over the place "+MachineType.CIRCUIT_ASSEMBLER.type(),
+                "Pick-n-Place all over the place " + MachineType.CIRCUIT_ASSEMBLER.type(),
                 GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes,
                 6,
                 1,
@@ -3769,7 +3769,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.circuitassembler.tier.06",
                 "Advanced Circuit Assembler V",
                 6,
-                "Pick-n-Place all over the place "+MachineType.CIRCUIT_ASSEMBLER.type(),
+                "Pick-n-Place all over the place " + MachineType.CIRCUIT_ASSEMBLER.type(),
                 GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes,
                 6,
                 1,
@@ -3794,7 +3794,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.circuitassembler.tier.07",
                 "Advanced Circuit Assembler VI",
                 7,
-                "Pick-n-Place all over the place "+MachineType.CIRCUIT_ASSEMBLER.type(),
+                "Pick-n-Place all over the place " + MachineType.CIRCUIT_ASSEMBLER.type(),
                 GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes,
                 6,
                 1,
@@ -3819,7 +3819,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.circuitassembler.tier.08",
                 "Advanced Circuit Assembler VII",
                 8,
-                "Pick-n-Place all over the place "+MachineType.CIRCUIT_ASSEMBLER.type(),
+                "Pick-n-Place all over the place " + MachineType.CIRCUIT_ASSEMBLER.type(),
                 GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes,
                 6,
                 1,
@@ -3840,14 +3840,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER }).getStackForm(1L));
     }
 
-    private static void registerArcFurnace(){
+    private static void registerArcFurnace() {
         ItemList.Machine_LV_ArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 651,
                 "basicmachine.arcfurnace.tier.01",
                 "Basic Arc Furnace",
                 1,
-                ""+ MachineType.ARC_FURNACE.type(),
+                "" + MachineType.ARC_FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes,
                 1,
                 4,
@@ -3864,7 +3864,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'G', OrePrefixes.cell.get(Materials.Graphite) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
 
         ItemList.Machine_MV_ArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -3872,7 +3872,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.arcfurnace.tier.02",
                 "Advanced Arc Furnace",
                 2,
-                ""+ MachineType.ARC_FURNACE.type(),
+                "" + MachineType.ARC_FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes,
                 1,
                 4,
@@ -3889,14 +3889,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'G', OrePrefixes.cell.get(Materials.Graphite) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_HV_ArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 653,
                 "basicmachine.arcfurnace.tier.03",
                 "Advanced Arc Furnace II",
                 3,
-                ""+ MachineType.ARC_FURNACE.type(),
+                "" + MachineType.ARC_FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes,
                 1,
                 4,
@@ -3913,7 +3913,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'G', OrePrefixes.cell.get(Materials.Graphite) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
 
         ItemList.Machine_EV_ArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -3921,7 +3921,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.arcfurnace.tier.04",
                 "Advanced Arc Furnace III",
                 4,
-                ""+ MachineType.ARC_FURNACE.type(),
+                "" + MachineType.ARC_FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes,
                 1,
                 9,
@@ -3938,7 +3938,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'G', OrePrefixes.cell.get(Materials.Graphite) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
 
         ItemList.Machine_IV_ArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -3946,7 +3946,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.arcfurnace.tier.05",
                 "Advanced Arc Furnace IV",
                 5,
-                ""+ MachineType.ARC_FURNACE.type(),
+                "" + MachineType.ARC_FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes,
                 1,
                 9,
@@ -3963,17 +3963,17 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'G', OrePrefixes.cell.get(Materials.Graphite) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
     }
 
-    private static void registerPlasmaArcFurnace(){
+    private static void registerPlasmaArcFurnace() {
         ItemList.Machine_LV_PlasmaArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 661,
                 "basicmachine.plasmaarcfurnace.tier.01",
                 "Basic Plasma Arc Furnace",
                 1,
-                ""+ MachineType.PLASMA_ARC_FURNACE.type(),
+                "" + MachineType.PLASMA_ARC_FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sPlasmaArcFurnaceRecipes,
                 1,
                 4,
@@ -3991,14 +3991,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'T',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'G', OrePrefixes.cell.get(Materials.Graphite) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_MV_PlasmaArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 662,
                 "basicmachine.plasmaarcfurnace.tier.02",
                 "Advanced Plasma Arc Furnace",
                 2,
-                ""+ MachineType.PLASMA_ARC_FURNACE.type(),
+                "" + MachineType.PLASMA_ARC_FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sPlasmaArcFurnaceRecipes,
                 1,
                 4,
@@ -4016,14 +4016,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'T',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'G', OrePrefixes.cell.get(Materials.Graphite) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_HV_PlasmaArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 663,
                 "basicmachine.plasmaarcfurnace.tier.03",
                 "Advanced Plasma Arc Furnace II",
                 3,
-                ""+ MachineType.PLASMA_ARC_FURNACE.type(),
+                "" + MachineType.PLASMA_ARC_FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sPlasmaArcFurnaceRecipes,
                 1,
                 4,
@@ -4041,14 +4041,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'T',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'G', OrePrefixes.cell.get(Materials.Graphite) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_EV_PlasmaArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 664,
                 "basicmachine.plasmaarcfurnace.tier.04",
                 "Advanced Plasma Arc Furnace III",
                 4,
-                ""+ MachineType.PLASMA_ARC_FURNACE.type(),
+                "" + MachineType.PLASMA_ARC_FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sPlasmaArcFurnaceRecipes,
                 1,
                 9,
@@ -4066,14 +4066,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'T',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'G', OrePrefixes.cell.get(Materials.Graphite) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_IV_PlasmaArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 665,
                 "basicmachine.plasmaarcfurnace.tier.05",
                 "Advanced Plasma Arc Furnace IV",
                 5,
-                ""+ MachineType.PLASMA_ARC_FURNACE.type(),
+                "" + MachineType.PLASMA_ARC_FURNACE.type(),
                 GT_Recipe.GT_Recipe_Map.sPlasmaArcFurnaceRecipes,
                 1,
                 9,
@@ -4091,17 +4091,17 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'T',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'G', OrePrefixes.cell.get(Materials.Graphite) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
     }
 
-    private static void registerDistillery(){
+    private static void registerDistillery() {
         ItemList.Machine_LV_Distillery.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 531,
                 "basicmachine.distillery.tier.01",
                 "Basic Distillery",
                 1,
-                "Extracting the most relevant Parts of Fluids "+MachineType.DISTILLERY.type(),
+                "Extracting the most relevant Parts of Fluids " + MachineType.DISTILLERY.type(),
                 GT_Recipe.GT_Recipe_Map.sDistilleryRecipes,
                 1,
                 1,
@@ -4127,7 +4127,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.distillery.tier.02",
                 "Advanced Distillery",
                 2,
-                "Extracting the most relevant Parts of Fluids "+MachineType.DISTILLERY.type(),
+                "Extracting the most relevant Parts of Fluids " + MachineType.DISTILLERY.type(),
                 GT_Recipe.GT_Recipe_Map.sDistilleryRecipes,
                 1,
                 1,
@@ -4153,7 +4153,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.distillery.tier.03",
                 "Advanced Distillery II",
                 3,
-                "Extracting the most relevant Parts of Fluids "+MachineType.DISTILLERY.type(),
+                "Extracting the most relevant Parts of Fluids " + MachineType.DISTILLERY.type(),
                 GT_Recipe.GT_Recipe_Map.sDistilleryRecipes,
                 1,
                 1,
@@ -4179,7 +4179,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.distillery.tier.04",
                 "Advanced Distillery III",
                 4,
-                "Extracting the most relevant Parts of Fluids "+MachineType.DISTILLERY.type(),
+                "Extracting the most relevant Parts of Fluids " + MachineType.DISTILLERY.type(),
                 GT_Recipe.GT_Recipe_Map.sDistilleryRecipes,
                 1,
                 1,
@@ -4205,7 +4205,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.distillery.tier.05",
                 "Advanced Distillery IV",
                 5,
-                "Extracting the most relevant Parts of Fluids "+MachineType.DISTILLERY.type(),
+                "Extracting the most relevant Parts of Fluids " + MachineType.DISTILLERY.type(),
                 GT_Recipe.GT_Recipe_Map.sDistilleryRecipes,
                 1,
                 1,
@@ -4227,14 +4227,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
     }
 
-    private static void registerChemicalBath(){
+    private static void registerChemicalBath() {
         ItemList.Machine_LV_ChemicalBath.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 541,
                 "basicmachine.chemicalbath.tier.01",
                 "Basic Chemical Bath",
                 1,
-                "Bathing Ores in Chemicals to separate them "+MachineType.CHEMICAL_BATH.type(),
+                "Bathing Ores in Chemicals to separate them " + MachineType.CHEMICAL_BATH.type(),
                 GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes,
                 1,
                 3,
@@ -4259,7 +4259,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.chemicalbath.tier.02",
                 "Advanced Chemical Bath",
                 2,
-                "Bathing Ores in Chemicals to separate them "+MachineType.CHEMICAL_BATH.type(),
+                "Bathing Ores in Chemicals to separate them " + MachineType.CHEMICAL_BATH.type(),
                 GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes,
                 1,
                 3,
@@ -4284,7 +4284,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.chemicalbath.tier.03",
                 "Advanced Chemical Bath II",
                 3,
-                "Bathing Ores in Chemicals to separate them "+MachineType.CHEMICAL_BATH.type(),
+                "Bathing Ores in Chemicals to separate them " + MachineType.CHEMICAL_BATH.type(),
                 GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes,
                 1,
                 3,
@@ -4309,7 +4309,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.chemicalbath.tier.04",
                 "Advanced Chemical Bath III",
                 4,
-                "Bathing Ores in Chemicals to separate them "+MachineType.CHEMICAL_BATH.type(),
+                "Bathing Ores in Chemicals to separate them " + MachineType.CHEMICAL_BATH.type(),
                 GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes,
                 1,
                 3,
@@ -4334,7 +4334,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.chemicalbath.tier.05",
                 "Advanced Chemical Bath IV",
                 5,
-                "Bathing Ores in Chemicals to separate them "+MachineType.CHEMICAL_BATH.type(),
+                "Bathing Ores in Chemicals to separate them " + MachineType.CHEMICAL_BATH.type(),
                 GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes,
                 1,
                 3,
@@ -4355,14 +4355,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
     }
 
-    private static void registerPolarizer(){
+    private static void registerPolarizer() {
         ItemList.Machine_LV_Polarizer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 551,
                 "basicmachine.polarizer.tier.01",
                 "Basic Polarizer",
                 1,
-                "Bipolarising your Magnets "+MachineType.POLARIZER.type(),
+                "Bipolarising your Magnets " + MachineType.POLARIZER.type(),
                 GT_Recipe.GT_Recipe_Map.sPolarizerRecipes,
                 1,
                 1,
@@ -4385,7 +4385,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.polarizer.tier.02",
                 "Advanced Polarizer",
                 2,
-                "Bipolarising your Magnets "+MachineType.POLARIZER.type(),
+                "Bipolarising your Magnets " + MachineType.POLARIZER.type(),
                 GT_Recipe.GT_Recipe_Map.sPolarizerRecipes,
                 1,
                 1,
@@ -4408,7 +4408,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.polarizer.tier.03",
                 "Advanced Polarizer II",
                 3,
-                "Bipolarising your Magnets "+MachineType.POLARIZER.type(),
+                "Bipolarising your Magnets " + MachineType.POLARIZER.type(),
                 GT_Recipe.GT_Recipe_Map.sPolarizerRecipes,
                 1,
                 1,
@@ -4431,7 +4431,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.polarizer.tier.04",
                 "Advanced Polarizer III",
                 4,
-                "Bipolarising your Magnets "+MachineType.POLARIZER.type(),
+                "Bipolarising your Magnets " + MachineType.POLARIZER.type(),
                 GT_Recipe.GT_Recipe_Map.sPolarizerRecipes,
                 1,
                 1,
@@ -4454,7 +4454,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.polarizer.tier.05",
                 "Advanced Polarizer IV",
                 5,
-                "Bipolarising your Magnets "+MachineType.POLARIZER.type(),
+                "Bipolarising your Magnets " + MachineType.POLARIZER.type(),
                 GT_Recipe.GT_Recipe_Map.sPolarizerRecipes,
                 1,
                 1,
@@ -4474,14 +4474,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
 
     }
 
-    private static void registerElectromagneticSeparator(){
+    private static void registerElectromagneticSeparator() {
         ItemList.Machine_LV_ElectromagneticSeparator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 561,
                 "basicmachine.electromagneticseparator.tier.01",
                 "Basic Electromagnetic Separator",
                 1,
-                "Separating the magnetic Ores from the rest "+MachineType.ELECTROMAGNETIC_SEPARATOR.type(),
+                "Separating the magnetic Ores from the rest " + MachineType.ELECTROMAGNETIC_SEPARATOR.type(),
                 GT_Recipe.GT_Recipe_Map.sElectroMagneticSeparatorRecipes,
                 1,
                 3,
@@ -4506,7 +4506,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.electromagneticseparator.tier.02",
                 "Advanced Electromagnetic Separator",
                 2,
-                "Separating the magnetic Ores from the rest "+MachineType.ELECTROMAGNETIC_SEPARATOR.type(),
+                "Separating the magnetic Ores from the rest " + MachineType.ELECTROMAGNETIC_SEPARATOR.type(),
                 GT_Recipe.GT_Recipe_Map.sElectroMagneticSeparatorRecipes,
                 1,
                 3,
@@ -4531,7 +4531,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.electromagneticseparator.tier.03",
                 "Advanced Electromagnetic Separator II",
                 3,
-                "Separating the magnetic Ores from the rest "+MachineType.ELECTROMAGNETIC_SEPARATOR.type(),
+                "Separating the magnetic Ores from the rest " + MachineType.ELECTROMAGNETIC_SEPARATOR.type(),
                 GT_Recipe.GT_Recipe_Map.sElectroMagneticSeparatorRecipes,
                 1,
                 3,
@@ -4556,7 +4556,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.electromagneticseparator.tier.04",
                 "Advanced Electromagnetic Separator III",
                 4,
-                "Separating the magnetic Ores from the rest "+MachineType.ELECTROMAGNETIC_SEPARATOR.type(),
+                "Separating the magnetic Ores from the rest " + MachineType.ELECTROMAGNETIC_SEPARATOR.type(),
                 GT_Recipe.GT_Recipe_Map.sElectroMagneticSeparatorRecipes,
                 1,
                 3,
@@ -4581,7 +4581,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.electromagneticseparator.tier.05",
                 "Advanced Electromagnetic Separator IV",
                 5,
-                "Separating the magnetic Ores from the rest "+MachineType.ELECTROMAGNETIC_SEPARATOR.type(),
+                "Separating the magnetic Ores from the rest " + MachineType.ELECTROMAGNETIC_SEPARATOR.type(),
                 GT_Recipe.GT_Recipe_Map.sElectroMagneticSeparatorRecipes,
                 1,
                 3,
@@ -4602,14 +4602,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
     }
 
-    private static void registerAutoclave(){
+    private static void registerAutoclave() {
         ItemList.Machine_LV_Autoclave.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 571,
                 "basicmachine.autoclave.tier.01",
                 "Basic Autoclave",
                 1,
-                "Crystallizing your Dusts "+MachineType.AUTOCLAVE.type(),
+                "Crystallizing your Dusts " + MachineType.AUTOCLAVE.type(),
                 GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes,
                 2,
                 2,
@@ -4634,7 +4634,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.autoclave.tier.02",
                 "Advanced Autoclave",
                 2,
-                "Crystallizing your Dusts "+MachineType.AUTOCLAVE.type(),
+                "Crystallizing your Dusts " + MachineType.AUTOCLAVE.type(),
                 GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes,
                 2,
                 2,
@@ -4659,7 +4659,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.autoclave.tier.03",
                 "Advanced Autoclave II",
                 3,
-                "Crystallizing your Dusts "+MachineType.AUTOCLAVE.type(),
+                "Crystallizing your Dusts " + MachineType.AUTOCLAVE.type(),
                 GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes,
                 2,
                 3,
@@ -4684,7 +4684,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.autoclave.tier.04",
                 "Advanced Autoclave III",
                 4,
-                "Crystallizing your Dusts "+MachineType.AUTOCLAVE.type(),
+                "Crystallizing your Dusts " + MachineType.AUTOCLAVE.type(),
                 GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes,
                 2,
                 4,
@@ -4709,7 +4709,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.autoclave.tier.05",
                 "Advanced Autoclave IV",
                 5,
-                "Crystallizing your Dusts "+MachineType.AUTOCLAVE.type(),
+                "Crystallizing your Dusts " + MachineType.AUTOCLAVE.type(),
                 GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes,
                 2,
                 4,
@@ -4730,14 +4730,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
     }
 
-    private static void registerMixer(){
+    private static void registerMixer() {
         ItemList.Machine_LV_Mixer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 581,
                 "basicmachine.mixer.tier.01",
                 "Basic Mixer",
                 1,
-                "Will it Blend? "+MachineType.MIXER.type(),
+                "Will it Blend? " + MachineType.MIXER.type(),
                 GT_Recipe.GT_Recipe_Map.sMixerRecipes,
                 6,
                 1,
@@ -4761,7 +4761,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.mixer.tier.02",
                 "Advanced Mixer",
                 2,
-                "Will it Blend? "+MachineType.MIXER.type(),
+                "Will it Blend? " + MachineType.MIXER.type(),
                 GT_Recipe.GT_Recipe_Map.sMixerRecipes,
                 6,
                 1,
@@ -4785,7 +4785,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.mixer.tier.03",
                 "Advanced Mixer II",
                 3,
-                "Will it Blend? "+MachineType.MIXER.type(),
+                "Will it Blend? " + MachineType.MIXER.type(),
                 GT_Recipe.GT_Recipe_Map.sMixerRecipes,
                 6,
                 4,
@@ -4809,7 +4809,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.mixer.tier.04",
                 "Advanced Mixer III",
                 4,
-                "Will it Blend? "+MachineType.MIXER.type(),
+                "Will it Blend? " + MachineType.MIXER.type(),
                 GT_Recipe.GT_Recipe_Map.sMixerRecipes,
                 9,
                 4,
@@ -4833,7 +4833,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.mixer.tier.05",
                 "Advanced Mixer IV",
                 5,
-                "Will it Blend? "+MachineType.MIXER.type(),
+                "Will it Blend? " + MachineType.MIXER.type(),
                 GT_Recipe.GT_Recipe_Map.sMixerRecipes,
                 9,
                 4,
@@ -4853,14 +4853,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
     }
 
-    private static void registerLaserEngraver(){
+    private static void registerLaserEngraver() {
         ItemList.Machine_LV_LaserEngraver.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 591,
                 "basicmachine.laserengraver.tier.01",
                 "Basic Precision Laser Engraver",
                 1,
-                "Don't look directly at the Laser "+MachineType.LASER_ENGRAVER.type(),
+                "Don't look directly at the Laser " + MachineType.LASER_ENGRAVER.type(),
                 GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes,
                 2,
                 1,
@@ -4885,7 +4885,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.laserengraver.tier.02",
                 "Advanced Precision Laser Engraver",
                 2,
-                "Don't look directly at the Laser "+MachineType.LASER_ENGRAVER.type(),
+                "Don't look directly at the Laser " + MachineType.LASER_ENGRAVER.type(),
                 GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes,
                 2,
                 1,
@@ -4910,7 +4910,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.laserengraver.tier.03",
                 "Advanced Precision Laser Engraver II",
                 3,
-                "Don't look directly at the Laser "+MachineType.LASER_ENGRAVER.type(),
+                "Don't look directly at the Laser " + MachineType.LASER_ENGRAVER.type(),
                 GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes,
                 2,
                 1,
@@ -4935,7 +4935,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.laserengraver.tier.04",
                 "Advanced Precision Laser Engraver III",
                 4,
-                "Don't look directly at the Laser "+MachineType.LASER_ENGRAVER.type(),
+                "Don't look directly at the Laser " + MachineType.LASER_ENGRAVER.type(),
                 GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes,
                 4,
                 1,
@@ -4960,7 +4960,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.laserengraver.tier.05",
                 "Advanced Precision Laser Engraver IV",
                 5,
-                "Don't look directly at the Laser "+MachineType.LASER_ENGRAVER.type(),
+                "Don't look directly at the Laser " + MachineType.LASER_ENGRAVER.type(),
                 GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes,
                 4,
                 1,
@@ -4981,14 +4981,14 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
     }
 
-    private static void registerFormingPress(){
+    private static void registerFormingPress() {
         ItemList.Machine_LV_Press.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 601,
                 "basicmachine.press.tier.01",
                 "Basic Forming Press",
                 1,
-                "Imprinting Images into things "+MachineType.FORMING_PRESS.type(),
+                "Imprinting Images into things " + MachineType.FORMING_PRESS.type(),
                 GT_Recipe.GT_Recipe_Map.sPressRecipes,
                 2,
                 1,
@@ -5012,7 +5012,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.press.tier.02",
                 "Advanced Forming Press",
                 2,
-                "Imprinting Images into things "+MachineType.FORMING_PRESS.type(),
+                "Imprinting Images into things " + MachineType.FORMING_PRESS.type(),
                 GT_Recipe.GT_Recipe_Map.sPressRecipes,
                 2,
                 1,
@@ -5036,7 +5036,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.press.tier.03",
                 "Advanced Forming Press II",
                 3,
-                "Imprinting Images into things "+MachineType.FORMING_PRESS.type(),
+                "Imprinting Images into things " + MachineType.FORMING_PRESS.type(),
                 GT_Recipe.GT_Recipe_Map.sPressRecipes,
                 4,
                 1,
@@ -5060,7 +5060,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.press.tier.04",
                 "Advanced Forming Press III",
                 4,
-                "Imprinting Images into things "+MachineType.FORMING_PRESS.type(),
+                "Imprinting Images into things " + MachineType.FORMING_PRESS.type(),
                 GT_Recipe.GT_Recipe_Map.sPressRecipes,
                 4,
                 1,
@@ -5084,7 +5084,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 "basicmachine.press.tier.05",
                 "Advanced Forming Press IV",
                 5,
-                "Imprinting Images into things "+MachineType.FORMING_PRESS.type(),
+                "Imprinting Images into things " + MachineType.FORMING_PRESS.type(),
                 GT_Recipe.GT_Recipe_Map.sPressRecipes,
                 6,
                 1,
@@ -5104,7 +5104,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
     }
 
-    private static void registerForgeHammer(){
+    private static void registerForgeHammer() {
         ItemList.Machine_LV_Hammer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 611,
@@ -5124,13 +5124,13 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 false,
                 SpecialEffects.MAIN_RANDOM_SPARKS,
                 "HAMMER",
-                new Object[]{aTextWirePump, aTextCableHull, "WAW", 'M',
+                new Object[] { aTextWirePump, aTextCableHull, "WAW", 'M',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'O',
-                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil})
-                .getStackForm(1L));
+                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil })
+                        .getStackForm(1L));
         ItemList.Machine_MV_Hammer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 612,
@@ -5150,13 +5150,13 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 false,
                 SpecialEffects.MAIN_RANDOM_SPARKS,
                 "HAMMER",
-                new Object[]{aTextWirePump, aTextCableHull, "WAW", 'M',
+                new Object[] { aTextWirePump, aTextCableHull, "WAW", 'M',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'O',
-                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil})
-                .getStackForm(1L));
+                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil })
+                        .getStackForm(1L));
         ItemList.Machine_HV_Hammer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 613,
@@ -5176,13 +5176,13 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 false,
                 SpecialEffects.MAIN_RANDOM_SPARKS,
                 "HAMMER",
-                new Object[]{aTextWirePump, aTextCableHull, "WAW", 'M',
+                new Object[] { aTextWirePump, aTextCableHull, "WAW", 'M',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'O',
-                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil})
-                .getStackForm(1L));
+                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil })
+                        .getStackForm(1L));
         ItemList.Machine_EV_Hammer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 614,
@@ -5202,13 +5202,13 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 false,
                 SpecialEffects.MAIN_RANDOM_SPARKS,
                 "HAMMER",
-                new Object[]{aTextWirePump, aTextCableHull, "WAW", 'M',
+                new Object[] { aTextWirePump, aTextCableHull, "WAW", 'M',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'O',
-                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil})
-                .getStackForm(1L));
+                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil })
+                        .getStackForm(1L));
         ItemList.Machine_IV_Hammer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 615,
@@ -5228,16 +5228,16 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 false,
                 SpecialEffects.MAIN_RANDOM_SPARKS,
                 "HAMMER",
-                new Object[]{aTextWirePump, aTextCableHull, "WAW", 'M',
+                new Object[] { aTextWirePump, aTextCableHull, "WAW", 'M',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'O',
-                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil})
-                .getStackForm(1L));
+                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil })
+                        .getStackForm(1L));
     }
 
-    private static void registerFluidHeater(){
+    private static void registerFluidHeater() {
         ItemList.Machine_LV_FluidHeater.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 621,
@@ -5257,13 +5257,13 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 false,
                 SpecialEffects.NONE,
                 "FLUID_HEATER",
-                new Object[]{"OGO", aTextPlateMotor, aTextWireCoil, 'M',
+                new Object[] { "OGO", aTextPlateMotor, aTextWireCoil, 'M',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'O',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS}).getStackForm(1L));
+                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
         ItemList.Machine_MV_FluidHeater.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 622,
@@ -5283,13 +5283,13 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 false,
                 SpecialEffects.NONE,
                 "FLUID_HEATER",
-                new Object[]{"OGO", aTextPlateMotor, aTextWireCoil, 'M',
+                new Object[] { "OGO", aTextPlateMotor, aTextWireCoil, 'M',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'O',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS}).getStackForm(1L));
+                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
         ItemList.Machine_HV_FluidHeater.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 623,
@@ -5309,13 +5309,13 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 false,
                 SpecialEffects.NONE,
                 "FLUID_HEATER",
-                new Object[]{"OGO", aTextPlateMotor, aTextWireCoil, 'M',
+                new Object[] { "OGO", aTextPlateMotor, aTextWireCoil, 'M',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'O',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS}).getStackForm(1L));
+                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
         ItemList.Machine_EV_FluidHeater.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 624,
@@ -5335,13 +5335,13 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 false,
                 SpecialEffects.NONE,
                 "FLUID_HEATER",
-                new Object[]{"OGO", aTextPlateMotor, aTextWireCoil, 'M',
+                new Object[] { "OGO", aTextPlateMotor, aTextWireCoil, 'M',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'O',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS}).getStackForm(1L));
+                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
         ItemList.Machine_IV_FluidHeater.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 625,
@@ -5361,16 +5361,16 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 false,
                 SpecialEffects.NONE,
                 "FLUID_HEATER",
-                new Object[]{"OGO", aTextPlateMotor, aTextWireCoil, 'M',
+                new Object[] { "OGO", aTextPlateMotor, aTextWireCoil, 'M',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'O',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
-                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS}).getStackForm(1L));
+                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
     }
 
-    private static void registerSlicer(){
+    private static void registerSlicer() {
         ItemList.Machine_LV_Slicer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 631,
@@ -5390,12 +5390,12 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 false,
                 SpecialEffects.NONE,
                 "SLICER",
-                new Object[]{aTextWireCoil, "PMV", aTextWireCoil, 'M',
+                new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'V',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
+                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
         ItemList.Machine_MV_Slicer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 632,
@@ -5415,12 +5415,12 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 false,
                 SpecialEffects.NONE,
                 "SLICER",
-                new Object[]{aTextWireCoil, "PMV", aTextWireCoil, 'M',
+                new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'V',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
+                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
         ItemList.Machine_HV_Slicer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 633,
@@ -5440,12 +5440,12 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 false,
                 SpecialEffects.NONE,
                 "SLICER",
-                new Object[]{aTextWireCoil, "PMV", aTextWireCoil, 'M',
+                new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'V',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
+                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
         ItemList.Machine_EV_Slicer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 634,
@@ -5465,12 +5465,12 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 false,
                 SpecialEffects.NONE,
                 "SLICER",
-                new Object[]{aTextWireCoil, "PMV", aTextWireCoil, 'M',
+                new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'V',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
+                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
         ItemList.Machine_IV_Slicer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 635,
@@ -5490,15 +5490,15 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 false,
                 SpecialEffects.NONE,
                 "SLICER",
-                new Object[]{aTextWireCoil, "PMV", aTextWireCoil, 'M',
+                new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'V',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
+                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
     }
 
-    private static void registerSifter(){
+    private static void registerSifter() {
         ItemList.Machine_LV_Sifter.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 641,
@@ -5518,10 +5518,10 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 false,
                 SpecialEffects.NONE,
                 "SIFTER",
-                new Object[]{"WFW", aTextPlateMotor, "CFC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
+                new Object[] { "WFW", aTextPlateMotor, "CFC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'F', OreDictNames.craftingFilter, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
+                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
         ItemList.Machine_MV_Sifter.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 642,
@@ -5541,10 +5541,10 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 false,
                 SpecialEffects.NONE,
                 "SIFTER",
-                new Object[]{"WFW", aTextPlateMotor, "CFC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
+                new Object[] { "WFW", aTextPlateMotor, "CFC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'F', OreDictNames.craftingFilter, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
+                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
         ItemList.Machine_HV_Sifter.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 643,
@@ -5564,10 +5564,10 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 false,
                 SpecialEffects.NONE,
                 "SIFTER",
-                new Object[]{"WFW", aTextPlateMotor, "CFC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
+                new Object[] { "WFW", aTextPlateMotor, "CFC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'F', OreDictNames.craftingFilter, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
+                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
         ItemList.Machine_EV_Sifter.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 644,
@@ -5587,10 +5587,10 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 false,
                 SpecialEffects.NONE,
                 "SIFTER",
-                new Object[]{"WFW", aTextPlateMotor, "CFC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
+                new Object[] { "WFW", aTextPlateMotor, "CFC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'F', OreDictNames.craftingFilter, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
+                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
         ItemList.Machine_IV_Sifter.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 645,
@@ -5610,10 +5610,10 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 false,
                 SpecialEffects.NONE,
                 "SIFTER",
-                new Object[]{"WFW", aTextPlateMotor, "CFC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
+                new Object[] { "WFW", aTextPlateMotor, "CFC", 'M', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL, 'P',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON, 'F', OreDictNames.craftingFilter, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
-                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE}).getStackForm(1L));
+                    GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
     }
 
     private static void run1() {
@@ -6661,7 +6661,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             new Object[] { "T", "M", 'M', ItemList.Battery_Buffer_2by2_MAX, 'T', OreDictNames.craftingChest });
     }
 
-    private static void run2(){
+    private static void run2() {
         GT_ModHandler.addCraftingRecipe(
             ItemList.Machine_LV_Scanner.get(1L),
             bitsd,
@@ -7436,8 +7436,6 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 API.hideItem(ItemList.Machine_Multi_Cleanroom.get(1L));
             }
         }
-
-
 
         GT_ModHandler.addCraftingRecipe(
             ItemList.Machine_HV_LightningRod.get(1L),

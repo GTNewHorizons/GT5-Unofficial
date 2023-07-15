@@ -70,6 +70,31 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
         String aDescription, GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
         int aGUIParameterA, int aGUIParameterB, String aGUIName, ResourceLocation aSound, boolean aSharedTank,
         boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
+        this(
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            new String[] { aDescription },
+            aRecipes,
+            aInputSlots,
+            aOutputSlots,
+            aTankCapacity,
+            aGUIParameterA,
+            aGUIParameterB,
+            aGUIName,
+            aSound,
+            aSharedTank,
+            aRequiresFluidForFiltering,
+            aSpecialEffect,
+            aOverlays,
+            aRecipe);
+    }
+
+    public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
+        String[] aDescription, GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
+        int aGUIParameterA, int aGUIParameterB, String aGUIName, ResourceLocation aSound, boolean aSharedTank,
+        boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
         super(
             aID,
             aName,
@@ -425,6 +450,31 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
 
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
         String aDescription, GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, boolean usesFluids,
+        int aGUIParameterA, int aGUIParameterB, String aGUIName, SoundResource aSound, boolean aSharedTank,
+        boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
+        this(
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            aDescription,
+            aRecipes,
+            aInputSlots,
+            aOutputSlots,
+            usesFluids ? getCapacityForTier(aTier) : 0,
+            aGUIParameterA,
+            aGUIParameterB,
+            aGUIName,
+            aSound.resourceLocation,
+            aSharedTank,
+            aRequiresFluidForFiltering,
+            aSpecialEffect,
+            aOverlays,
+            aRecipe);
+    }
+
+    public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
+        String[] aDescription, GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, boolean usesFluids,
         int aGUIParameterA, int aGUIParameterB, String aGUIName, SoundResource aSound, boolean aSharedTank,
         boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
         this(

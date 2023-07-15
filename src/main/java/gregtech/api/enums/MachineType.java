@@ -1,5 +1,7 @@
 package gregtech.api.enums;
+
 import com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler;
+
 public enum MachineType {
 
     ALLOY_SMELTER("Alloy Smelter"),
@@ -45,11 +47,12 @@ public enum MachineType {
     WIREMILL("Wiremill");
 
     private final String name;
-    private MachineType(String machineType){
-        this.name = "Machine type: "+ AnimatedTooltipHandler.YELLOW+machineType;
+
+    private MachineType(String machineType) {
+        this.name = "Machine type: " + AnimatedTooltipHandler.YELLOW + machineType;
     }
 
-    public String type(){
+    public String type() {
         return this.name;
     }
 }
