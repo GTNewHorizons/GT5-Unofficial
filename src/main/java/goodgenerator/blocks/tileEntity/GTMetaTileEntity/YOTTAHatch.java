@@ -269,7 +269,7 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
             } else {
                 long added = host.mStorage.subtract(host.mStorageCurrent).longValue();
                 if (doFill) host.addFluid(added);
-                return added;
+                return host.getIsVoidExcessEnabled() ? resource.getStackSize() : added;
             }
         }
         return 0;
