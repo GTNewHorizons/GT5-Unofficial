@@ -6,7 +6,6 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 
 /**
  * Check recipe error that will be displayed when the user doesn't have the right space project
@@ -108,10 +107,5 @@ public class ResultNoSpaceProject implements CheckRecipeResult {
         if (o == null || getClass() != o.getClass()) return false;
         ResultNoSpaceProject that = (ResultNoSpaceProject) o;
         return neededLocation.equals(that.neededLocation) && neededProject.equals(that.neededProject);
-    }
-
-    // Register this error type
-    static {
-        CheckRecipeResultRegistry.register(new ResultNoSpaceProject("", ""));
     }
 }
