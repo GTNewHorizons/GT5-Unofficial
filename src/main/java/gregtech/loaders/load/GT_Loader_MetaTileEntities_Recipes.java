@@ -98,6 +98,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
         registerUnpackager();
         registerWiremill();
     }
+
     private static void registerAlloySmelter() {
         ItemList.Machine_LV_AlloySmelter.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -220,6 +221,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE }).getStackForm(1L));
     }
+
     private static void registerArcFurnace() {
         ItemList.Machine_LV_ArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -244,7 +246,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'G', OrePrefixes.cell.get(Materials.Graphite) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
 
         ItemList.Machine_MV_ArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -269,7 +271,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'G', OrePrefixes.cell.get(Materials.Graphite) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_HV_ArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 653,
@@ -293,7 +295,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'G', OrePrefixes.cell.get(Materials.Graphite) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
 
         ItemList.Machine_EV_ArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -318,7 +320,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'G', OrePrefixes.cell.get(Materials.Graphite) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
 
         ItemList.Machine_IV_ArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -343,8 +345,9 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     'P', GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'G', OrePrefixes.cell.get(Materials.Graphite) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
     }
+
     private static void registerAssembler() {
         ItemList.Machine_LV_Assembler.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -467,6 +470,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
     }
+
     private static void registerAutoclave() {
         ItemList.Machine_LV_Autoclave.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -594,6 +598,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
     }
+
     private static void registerBendingMachine() {
         ItemList.Machine_LV_Bender.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -721,6 +726,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
     }
+
     private static void registerCanner() {
         ItemList.Machine_LV_Canner.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -848,6 +854,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
     }
+
     private static void registerCentrifuge() {
         ItemList.Machine_LV_Centrifuge.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -965,6 +972,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
     }
+
     private static void registerChemicalBath() {
         ItemList.Machine_LV_ChemicalBath.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -1092,6 +1100,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
     }
+
     private static void registerChemicalReactor() {
         ItemList.Machine_LV_ChemicalReactor.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -1217,8 +1226,9 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OrePrefixes.pipeHuge.get(Materials.Plastic) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
     }
+
     private static void registerCircuitAssembler() {
         ItemList.Machine_LV_CircuitAssembler.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -1421,6 +1431,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'E',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER }).getStackForm(1L));
     }
+
     private static void registerCompressor() {
         ItemList.Machine_LV_Compressor.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -1543,6 +1554,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
     }
+
     private static void registerCuttingMachine() {
         ItemList.Machine_LV_Cutter.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -1675,6 +1687,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS, 'B', OreDictNames.craftingDiamondBlade })
                         .getStackForm(1L));
     }
+
     private static void registerDistillery() {
         ItemList.Machine_LV_Distillery.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -1807,7 +1820,8 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
     }
-    private static void registerElectricFurnace(){
+
+    private static void registerElectricFurnace() {
         ItemList.Machine_LV_E_Furnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 261,
@@ -1832,7 +1846,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING }).setProgressBarTextureName("E_Furnace")
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_MV_E_Furnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 262,
@@ -1857,7 +1871,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING }).setProgressBarTextureName("E_Furnace")
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_HV_E_Furnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 263,
@@ -1882,7 +1896,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING }).setProgressBarTextureName("E_Furnace")
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_EV_E_Furnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 264,
@@ -1907,7 +1921,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING }).setProgressBarTextureName("E_Furnace")
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_IV_E_Furnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 265,
@@ -1932,9 +1946,10 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING }).setProgressBarTextureName("E_Furnace")
-                .getStackForm(1L));
+                        .getStackForm(1L));
 
     }
+
     private static void registerElectrolyser() {
         ItemList.Machine_LV_Electrolyzer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -2057,6 +2072,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'I', OrePrefixes.wireGt01.get(Materials.HSSG), 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
     }
+
     private static void registerElectromagneticSeparator() {
         ItemList.Machine_LV_ElectromagneticSeparator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -2184,6 +2200,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
     }
+
     private static void registerExtractor() {
         ItemList.Machine_LV_Extractor.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -2311,6 +2328,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
     }
+
     private static void registerExtruder() {
         ItemList.Machine_LV_Extruder.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -2433,6 +2451,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE }).getStackForm(1L));
     }
+
     private static void registerFermenter() {
         ItemList.Machine_LV_Fermenter.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -2560,6 +2579,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
     }
+
     private static void registerFluidCanner() {
         ItemList.Machine_LV_FluidCanner.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -2682,6 +2702,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
     }
+
     private static void registerFluidExtractor() {
         ItemList.Machine_LV_FluidExtractor.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -2810,6 +2831,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
 
     }
+
     private static void registerFluidHeater() {
         ItemList.Machine_LV_FluidHeater.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -2942,6 +2964,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
     }
+
     private static void registerFluidSolidifier() {
         ItemList.Machine_LV_FluidSolidifier.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -2967,7 +2990,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_MV_FluidSolidifier.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 522,
@@ -2992,7 +3015,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_HV_FluidSolidifier.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 523,
@@ -3017,7 +3040,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_EV_FluidSolidifier.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 524,
@@ -3042,7 +3065,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_IV_FluidSolidifier.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 525,
@@ -3067,8 +3090,9 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
     }
+
     private static void registerForgeHammer() {
         ItemList.Machine_LV_Hammer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -3095,7 +3119,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'O',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_MV_Hammer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 612,
@@ -3121,7 +3145,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'O',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_HV_Hammer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 613,
@@ -3147,7 +3171,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'O',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_EV_Hammer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 614,
@@ -3173,7 +3197,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'O',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_IV_Hammer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 615,
@@ -3199,8 +3223,9 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'O',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE, 'A', OreDictNames.craftingAnvil })
-                .getStackForm(1L));
+                        .getStackForm(1L));
     }
+
     private static void registerFormingPress() {
         ItemList.Machine_LV_Press.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -3323,6 +3348,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
     }
+
     private static void registerLaserEngraver() {
         ItemList.Machine_LV_LaserEngraver.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -3450,6 +3476,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
     }
+
     private static void registerLathe() {
         ItemList.Machine_LV_Lathe.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -3577,6 +3604,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'D', OreDictNames.craftingIndustrialDiamond })
                         .getStackForm(1L));
     }
+
     private static void registerMacerator() {
         ItemList.Machine_LV_Macerator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -3704,7 +3732,8 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OreDictNames.craftingGrinder })
                         .getStackForm(1L));
     }
-    //matter amplifier broken
+
+    // matter amplifier broken
     private static void registerMatterAmplifier() {
         ItemList.Machine_LV_Amplifab.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -3827,7 +3856,8 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4 }).getStackForm(1L));
     }
-    private static void registerMicrowave(){
+
+    private static void registerMicrowave() {
         ItemList.Machine_LV_Microwave.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 311,
@@ -3852,7 +3882,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'L', OrePrefixes.plate.get(Materials.Lead) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_MV_Microwave.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 312,
@@ -3877,7 +3907,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'L', OrePrefixes.plate.get(Materials.Lead) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_HV_Microwave.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 313,
@@ -3902,7 +3932,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'L', OrePrefixes.plate.get(Materials.Lead) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_EV_Microwave.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 314,
@@ -3927,7 +3957,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'L', OrePrefixes.plate.get(Materials.Lead) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_IV_Microwave.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 315,
@@ -3952,8 +3982,9 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'L', OrePrefixes.plate.get(Materials.Lead) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
     }
+
     private static void registerMixer() {
         ItemList.Machine_LV_Mixer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -4076,6 +4107,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
     }
+
     private static void registerOreWasher() {
         ItemList.Machine_LV_OreWasher.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -4203,6 +4235,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP }).getStackForm(1L));
     }
+
     private static void registerOven() {
         ItemList.Machine_LV_Oven.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -4227,7 +4260,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING }).setProgressBarTextureName("E_Oven")
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_MV_Oven.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 672,
@@ -4251,7 +4284,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING }).setProgressBarTextureName("E_Oven")
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_HV_Oven.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 673,
@@ -4275,7 +4308,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING }).setProgressBarTextureName("E_Oven")
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_EV_Oven.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 674,
@@ -4299,7 +4332,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING }).setProgressBarTextureName("E_Oven")
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_IV_Oven.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 675,
@@ -4323,8 +4356,9 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING }).setProgressBarTextureName("E_Oven")
-                .getStackForm(1L));
+                        .getStackForm(1L));
     }
+
     private static void registerPlasmaArcFurnace() {
         ItemList.Machine_LV_PlasmaArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -4350,7 +4384,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'T',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'G', OrePrefixes.cell.get(Materials.Graphite) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_MV_PlasmaArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 662,
@@ -4375,7 +4409,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'T',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'G', OrePrefixes.cell.get(Materials.Graphite) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_HV_PlasmaArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 663,
@@ -4400,7 +4434,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'T',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'G', OrePrefixes.cell.get(Materials.Graphite) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_EV_PlasmaArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 664,
@@ -4425,7 +4459,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'T',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'G', OrePrefixes.cell.get(Materials.Graphite) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_IV_PlasmaArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 665,
@@ -4450,8 +4484,9 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'T',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP, 'G', OrePrefixes.cell.get(Materials.Graphite) })
-                .getStackForm(1L));
+                        .getStackForm(1L));
     }
+
     private static void registerPolarizer() {
         ItemList.Machine_LV_Polarizer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -4570,6 +4605,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
 
     }
+
     private static void registerPrinter() {
         ItemList.Machine_LV_Printer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -4764,6 +4800,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
     }
+
     private static void registerRecycler() {
         ItemList.Machine_LV_Recycler.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -4891,6 +4928,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'G', OrePrefixes.dust.get(Materials.Glowstone) })
                         .getStackForm(1L));
     }
+
     private static void registerSifter() {
         ItemList.Machine_LV_Sifter.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -5008,6 +5046,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
     }
+
     private static void registerSlicer() {
         ItemList.Machine_LV_Slicer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -5135,6 +5174,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
     }
+
     private static void registerThermalCentrifuge() {
         ItemList.Machine_LV_ThermalCentrifuge.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -5257,6 +5297,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'O',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE }).getStackForm(1L));
     }
+
     private static void registerUnpackager() {
         ItemList.Machine_LV_Unboxinator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
@@ -5282,7 +5323,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_MV_Unboxinator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 412,
@@ -5307,7 +5348,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_HV_Unboxinator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 413,
@@ -5332,7 +5373,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_EV_Unboxinator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 414,
@@ -5357,7 +5398,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_IV_Unboxinator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 415,
@@ -5382,7 +5423,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_LuV_Unboxinator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 416,
@@ -5407,7 +5448,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_ZPM_Unboxinator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 417,
@@ -5432,7 +5473,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
         ItemList.Machine_UV_Unboxinator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                 418,
@@ -5457,8 +5498,9 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR, 'C',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE, 'B', OreDictNames.craftingChest })
-                .getStackForm(1L));
+                        .getStackForm(1L));
     }
+
     private static void registerWiremill() {
         ItemList.Machine_LV_Wiremill.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
