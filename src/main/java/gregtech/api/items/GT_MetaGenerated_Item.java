@@ -17,7 +17,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -45,6 +44,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
 import squeek.applecore.api.food.FoodValues;
 import squeek.applecore.api.food.IEdible;
+import squeek.applecore.api.food.ItemFoodProxy;
 
 /**
  * @author Gregorius Techneticies
@@ -332,14 +332,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
         if (tStat != null) {
             if (AppleCore.isModLoaded()) {
                 aPlayer.getFoodStats()
-                    .func_151686_a(
-                        (ItemFood) GT_Utility.callConstructor(
-                            "squeek.applecore.api.food.ItemFoodProxy.ItemFoodProxy",
-                            0,
-                            null,
-                            true,
-                            this),
-                        aStack);
+                    .func_151686_a(new ItemFoodProxy(this), aStack);
             } else {
                 aPlayer.getFoodStats()
                     .addStats(tStat.getFoodLevel(this, aStack, aPlayer), tStat.getSaturation(this, aStack, aPlayer));
