@@ -28,6 +28,7 @@ import gregtech.common.tileentities.casings.upgrade.Inventory;
 import gregtech.common.tileentities.casings.upgrade.Laser;
 import gregtech.common.tileentities.casings.upgrade.Tank;
 import gregtech.common.tileentities.casings.upgrade.Wireless;
+import gregtech.common.tileentities.casings.upgrade.Heater;
 import gregtech.common.tileentities.machines.multiblock.AdvChemicalProcessor;
 import gregtech.common.tileentities.machines.multiblock.CokeOven;
 import gregtech.common.tileentities.machines.multiblock.DistillationTower;
@@ -525,6 +526,42 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .setBlock(COMPONENT_CASING_BLOCK)
             .textureFolder("wireless")
             .tier(11)
+            .register();
+
+        UPGRADE_CASING_REGISTRY.create(Heater_Prototype.getId(), Heater.class)
+            .name("Prototype Heater Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("heater")
+            .tier(1)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Heater_IndustrialGrade.getId(), Heater.class)
+            .name("Industrial-Grade Heater Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("heater")
+            .tier(4)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Heater_NextGen.getId(), Heater.class)
+            .name("Next-Gen Heater Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("heater")
+            .tier(7)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Heater_Omnipotent.getId(), Heater.class)
+            .name("Omnipotent Heater Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("heater")
+            .tier(10)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Heater_OmegaType.getId(), Heater.class)
+            .name("OMEGA-Type Heater Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("heater")
+            .tier(12)
             .register();
     }
 

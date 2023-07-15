@@ -9,4 +9,8 @@ public interface UpgradableMuTE {
     void setLaserSupport(boolean canUse);
 
     void setMaxAmperage(long amperage);
+
+    void increaseHeaterCount();
+
+    void decreaseHeaterCount();
 }

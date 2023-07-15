@@ -757,6 +757,16 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         this.amperage = amperage;
     }
 
+    @Override
+    public void increaseHeaterCount() {
+        this.heaterCount += 1;
+    }
+
+    @Override
+    public void decreaseHeaterCount() {
+        this.heaterCount -= 1;
+    }
+
     protected void clearSpecialLists() {
         upgradeCasings.clear();
         functionalCasings.clear();

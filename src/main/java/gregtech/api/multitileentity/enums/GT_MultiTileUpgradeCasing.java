@@ -47,6 +47,11 @@ public enum GT_MultiTileUpgradeCasing {
     Laser(40),
     Wireless(41),
     Cleanroom(42),
+    Heater_Prototype(100),
+    Heater_IndustrialGrade(101),
+    Heater_NextGen(102),
+    Heater_Omnipotent(103),
+    Heater_OmegaType(104),
     NONE(GT_Values.W);
 
     private final int meta;
