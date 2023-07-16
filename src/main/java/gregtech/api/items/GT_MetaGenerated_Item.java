@@ -17,6 +17,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -332,7 +333,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
         if (tStat != null) {
             if (AppleCore.isModLoaded()) {
                 aPlayer.getFoodStats()
-                    .func_151686_a(new ItemFoodProxy(this), aStack);
+                    .func_151686_a(getFoodProxy(this), aStack);
             } else {
                 aPlayer.getFoodStats()
                     .addStats(tStat.getFoodLevel(this, aStack, aPlayer), tStat.getSaturation(this, aStack, aPlayer));
@@ -340,6 +341,11 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
             tStat.onEaten(this, aStack, aPlayer);
         }
         return aStack;
+    }
+
+    @Optional.Method(modid = Mods.Names.APPLE_CORE)
+    private static ItemFood getFoodProxy(Object edible) {
+        return new ItemFoodProxy((IEdible) edible);
     }
 
     @Override
