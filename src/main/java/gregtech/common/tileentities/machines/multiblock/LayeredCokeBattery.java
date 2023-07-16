@@ -8,6 +8,8 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_OUT;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHING;
+import static gregtech.api.util.GT_StructureUtilityMuTE.HEATER_CASINGS;
+import static gregtech.api.util.GT_StructureUtilityMuTE.INSULATOR_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.MOTOR_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.ofMuTECasings;
 
@@ -86,6 +88,7 @@ public class LayeredCokeBattery extends StackableController<LayeredCokeBattery> 
     @Override
     public IStructureDefinition<LayeredCokeBattery> getStructureDefinition() {
         if (STRUCTURE_DEFINITION_MEGA == null) {
+            resetMucCount();
             STRUCTURE_DEFINITION_MEGA = StructureDefinition.<LayeredCokeBattery>builder()
                 .addShape(
                     STRUCTURE_PIECE_BASE,
@@ -105,7 +108,7 @@ public class LayeredCokeBattery extends StackableController<LayeredCokeBattery> 
                 .addShape(
                     STACKABLE_MIDDLE,
                     transpose(
-                        new String[][] { { "ADFFFFAFFFFDA", "AAAAAAAAAAAAA" }, { " B    A    B ", "AAAAAAAAAAAAA" },
+                        new String[][] { { "ADFFFFHFFFFDA", "AAAAAAAAAAAAA" }, { " B    A    B ", "AAAAAAAAAAAAA" },
                             { "CB    A    BC", "AAAAAAAAAAAAA" }, { " B    A    B ", "AAAAAAAAAAAAA" },
                             { " B    A    B ", "AAAAAAAAAAAAA" }, { " B    A    B ", "AAAAAAAAAAAAA" },
                             { " B    A    B ", "AAAAAAAAAAAAA" }, { " B    A    B ", "AAAAAAAAAAAAA" },
@@ -146,6 +149,7 @@ public class LayeredCokeBattery extends StackableController<LayeredCokeBattery> 
                         ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks", 0, true),
                         ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks2", 0, true),
                         ofBlockUnlocalizedName(Thaumcraft.ID, "blockCosmeticOpaque", 2, false)))
+                .addElement('H', ofMuTECasings(NOTHING, HEATER_CASINGS, INSULATOR_CASINGS))
                 .build();
         }
         return STRUCTURE_DEFINITION_MEGA;

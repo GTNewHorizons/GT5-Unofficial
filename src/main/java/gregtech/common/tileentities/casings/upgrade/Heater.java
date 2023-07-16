@@ -12,14 +12,14 @@ public class Heater extends UpgradeCasing {
 
     @Override
     protected void customWork(IMultiBlockController target) {
-        target.increaseHeaterCount();
+        target.increaseMucCount("heater", this.tier);
     }
 
     @Override
     public boolean breakBlock() {
         final IMultiBlockController controller = getTarget(false);
         if (controller != null) {
-            controller.decreaseHeaterCount();
+            controller.resetMucCount();
         }
         return super.breakBlock();
     }

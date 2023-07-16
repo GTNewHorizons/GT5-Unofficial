@@ -10,7 +10,7 @@ public interface UpgradableMuTE {
 
     void setMaxAmperage(long amperage);
 
-    void increaseHeaterCount();
+    void increaseMucCount(String casingType, int tier);
 
-    void decreaseHeaterCount();
+    void resetMucCount();
 }

@@ -1,6 +1,5 @@
 package gregtech.api.multitileentity.multiblock.base;
 
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.*;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 import static mcp.mobius.waila.api.SpecialChars.*;
 
@@ -758,13 +757,29 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     @Override
-    public void increaseHeaterCount() {
-        this.heaterCount += 1;
+    public void increaseMucCount(String casingType, int tier) {
+        Integer[] casingCount = mucMap.get(casingType);
+        if (tier <= 2) {
+            casingCount[0] += 1;
+        }
+        else if (tier <= 5) {
+            casingCount[1] += 1;
+        }
+        else if (tier <= 8) {
+            casingCount[2] += 1;
+        }
+        else if (tier <= 11) {
+            casingCount[3] += 1;
+        }
+        else {
+            casingCount[4] += 1;
+        }
+        mucMap.put(casingType, casingCount);
     }
 
     @Override
-    public void decreaseHeaterCount() {
-        this.heaterCount -= 1;
+    public void resetMucCount() {
+        mucMap = createMucMap();
     }
 
     protected void clearSpecialLists() {
