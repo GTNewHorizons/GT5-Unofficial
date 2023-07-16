@@ -88,7 +88,6 @@ public class LayeredCokeBattery extends StackableController<LayeredCokeBattery> 
     @Override
     public IStructureDefinition<LayeredCokeBattery> getStructureDefinition() {
         if (STRUCTURE_DEFINITION_MEGA == null) {
-            resetMucCount();
             STRUCTURE_DEFINITION_MEGA = StructureDefinition.<LayeredCokeBattery>builder()
                 .addShape(
                     STRUCTURE_PIECE_BASE,
@@ -157,6 +156,7 @@ public class LayeredCokeBattery extends StackableController<LayeredCokeBattery> 
 
     public boolean checkMachine() {
         stackCount = 0;
+        resetMucCount();
 
         buildState.startBuilding(getStartingStructureOffset());
         if (!checkPiece(STRUCTURE_PIECE_BASE, buildState.getCurrentOffset())) return buildState.failBuilding();
