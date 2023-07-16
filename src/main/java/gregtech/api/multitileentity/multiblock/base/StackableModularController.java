@@ -2,6 +2,7 @@ package gregtech.api.multitileentity.multiblock.base;
 
 import gregtech.api.multitileentity.interfaces.UpgradableModularMuTE;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,26 +20,20 @@ public abstract class StackableModularController<T extends StackableModularContr
     @Override
     public void increaseMucCount(String casingType, int tier) {
         Integer[] casingCount = mucMap.get(casingType);
-        if (tier <= 2) {
-            casingCount[0] += 1;
+
+        switch (tier) {
+            case 0, 1, 2 -> casingCount[0] += 1;
+            case 3, 4, 5 -> casingCount[1] += 1;
+            case 6, 7, 8 -> casingCount[2] += 1;
+            case 9, 10, 11 -> casingCount[3] += 1;
+            default -> casingCount[4] += 1;
         }
-        else if (tier <= 5) {
-            casingCount[1] += 1;
-        }
-        else if (tier <= 8) {
-            casingCount[2] += 1;
-        }
-        else if (tier <= 11) {
-            casingCount[3] += 1;
-        }
-        else {
-            casingCount[4] += 1;
-        }
-        mucMap.put(casingType, casingCount);
     }
 
     @Override
     public void resetMucCount() {
-        mucMap = createMucMap();
+        mucMap.forEach((type, casingCount) -> {
+            Arrays.fill(casingCount, 0);
+        });
     }
 }
