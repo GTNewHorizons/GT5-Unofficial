@@ -3587,22 +3587,22 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
         ItemList.AdvDebugStructureWriter.set(
             new GT_MetaTileEntity_AdvDebugStructureWriter(
-                349,
+                ADVANCED_DEBUG_STRUCTURE_WRITTER.ID,
                 "advdebugstructurewriter",
                 "Advanced Debug Structure Writer",
                 5).getStackForm(1L));
         ItemList.Hatch_Maintenance.set(
-            new GT_MetaTileEntity_Hatch_Maintenance(90, "hatch.maintenance", "Maintenance Hatch", 1).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Maintenance(MAINTENANCE_HATCH.ID, "hatch.maintenance", "Maintenance Hatch", 1).getStackForm(1L));
         ItemList.Hatch_AutoMaintenance.set(
-            new GT_MetaTileEntity_Hatch_Maintenance(111, "hatch.maintenance.auto", "Auto Maintenance Hatch", 6, true)
+            new GT_MetaTileEntity_Hatch_Maintenance(AUTO_MAINTENANCE_HATCH.ID, "hatch.maintenance.auto", "Auto Maintenance Hatch", 6, true)
                 .getStackForm(1L));
         ItemList.Hatch_DataAccess_EV.set(
-            new GT_MetaTileEntity_Hatch_DataAccess(145, "hatch.dataaccess", "Data Access Hatch", 4).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_DataAccess(DATA_ACCESS_HATCH.ID, "hatch.dataaccess", "Data Access Hatch", 4).getStackForm(1L));
         ItemList.Hatch_DataAccess_LuV.set(
-            new GT_MetaTileEntity_Hatch_DataAccess(146, "hatch.dataaccess.adv", "Advanced Data Access Hatch", 6)
+            new GT_MetaTileEntity_Hatch_DataAccess(ADVANCED_DATA_ACCESS_HATCH.ID, "hatch.dataaccess.adv", "Advanced Data Access Hatch", 6)
                 .getStackForm(1L));
         ItemList.Hatch_DataAccess_UV.set(
-            new GT_MetaTileEntity_Hatch_DataAccess(147, "hatch.dataaccess.auto", "Automatable Data Access Hatch", 8)
+            new GT_MetaTileEntity_Hatch_DataAccess(AUTOMATABLE_DATA_ACCESS_HATCH.ID, "hatch.dataaccess.auto", "Automatable Data Access Hatch", 8)
                 .getStackForm(1L));
         generateWiresAndPipes();
     }
