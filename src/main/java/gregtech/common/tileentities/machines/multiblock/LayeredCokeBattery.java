@@ -28,13 +28,13 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
-import gregtech.api.multitileentity.multiblock.base.StackableController;
+import gregtech.api.multitileentity.multiblock.base.StackableModularController;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.common.tileentities.machines.multiblock.logic.GenericProcessingLogic;
 
-public class LayeredCokeBattery extends StackableController<LayeredCokeBattery> implements ProcessingLogicHost {
+public class LayeredCokeBattery extends StackableModularController<LayeredCokeBattery> implements ProcessingLogicHost {
 
     private static IStructureDefinition<LayeredCokeBattery> STRUCTURE_DEFINITION_MEGA = null;
     protected static final String STRUCTURE_PIECE_BASE = "T1";

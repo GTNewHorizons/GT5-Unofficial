@@ -6,10 +6,6 @@ import static gregtech.api.enums.GT_Values.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -74,7 +70,6 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     protected long eut = 0;
     protected int tier = 0;
 
-    protected Map<String, Integer[]> mucMap = createMucMap();
     protected long maxProgressTime = 0;
     protected long progressTime = 0;
     protected long burnTime = 0;
@@ -1001,12 +996,5 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
                     getZCoord());
             }
         }
-    }
-
-    protected static Map<String, Integer[]> createMucMap() {
-        Map<String, Integer[]> mucCount = new HashMap<>();
-        mucCount.put("heater", new Integer[]{0, 0, 0, 0, 0});
-        mucCount.put("insulator", new Integer[]{0, 0, 0, 0, 0});
-        return mucCount;
     }
 }

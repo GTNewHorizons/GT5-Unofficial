@@ -756,31 +756,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         this.amperage = amperage;
     }
 
-    @Override
-    public void increaseMucCount(String casingType, int tier) {
-        Integer[] casingCount = mucMap.get(casingType);
-        if (tier <= 2) {
-            casingCount[0] += 1;
-        }
-        else if (tier <= 5) {
-            casingCount[1] += 1;
-        }
-        else if (tier <= 8) {
-            casingCount[2] += 1;
-        }
-        else if (tier <= 11) {
-            casingCount[3] += 1;
-        }
-        else {
-            casingCount[4] += 1;
-        }
-        mucMap.put(casingType, casingCount);
-    }
 
-    @Override
-    public void resetMucCount() {
-        mucMap = createMucMap();
-    }
 
     protected void clearSpecialLists() {
         upgradeCasings.clear();
