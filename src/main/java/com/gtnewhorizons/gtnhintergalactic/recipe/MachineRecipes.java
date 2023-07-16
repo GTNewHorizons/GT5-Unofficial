@@ -354,6 +354,38 @@ public class MachineRecipes implements Runnable {
                 .itemOutputs(IGItems.SpaceElevatorModulePumpT2).fluidInputs(new FluidStack(solderUEV, 4608))
                 .noFluidOutputs().duration(2 * MINUTE).eut(TierEU.RECIPE_UIV).noOptimize().addTo(sAssemblerRecipes);
 
+        // Pump Module MK-III
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+                IGItems.SpaceElevatorModulePumpT2,
+                67108864,
+                32767,
+                256000000,
+                4,
+                new Object[] { ItemList.OilDrillInfinite.get(16), GT_Utility.copyAmount(16, IGItems.PlanetaryGasSiphon),
+                        CustomItemList.enderLinkFluidCover.get(32),
+                        GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.BlackDwarfMatter, 4),
+                        new Object[] { OrePrefixes.circuit.get(Materials.Exotic), 16 },
+                        ItemList.Electric_Pump_UMV.get(8),
+                        GT_OreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.BlackDwarfMatter, 4),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.WhiteDwarfMatter, 64) },
+                new FluidStack[] { new FluidStack(solderUEV, 9216), MaterialsUEVplus.Eternity.getMolten(2304) },
+                IGItems.SpaceElevatorModulePumpT3,
+                2 * MINUTE,
+                (int) TierEU.RECIPE_UMV);
+
+        // Pump Module MK-III - Assembler alt
+        RA.stdBuilder()
+                .itemInputs(
+                        GT_Utility.copyAmount(4, IGItems.SpaceElevatorModulePumpT2),
+                        GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.BlackDwarfMatter, 8),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Exotic, 16),
+                        ItemList.Electric_Pump_UMV.get(8),
+                        GT_OreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.BlackDwarfMatter, 8),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.WhiteDwarfMatter, 64),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.Eternity, 16))
+                .itemOutputs(IGItems.SpaceElevatorModulePumpT3).fluidInputs(new FluidStack(solderUEV, 9216))
+                .noFluidOutputs().duration(2 * MINUTE).eut(TierEU.RECIPE_UIV).noOptimize().addTo(sAssemblerRecipes);
+
         // Assembler Module MK-I
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 preciseAssembler_1,
