@@ -1890,7 +1890,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         for (int rows = 0; rows * 4 < handler.getTanks(); rows++) {
             final int columnsToMake = Math.min(handler.getTanks() - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
-                final FluidHandlerSlot fluidSlot = new FluidHandlerSlot(handler, rows * 4 + column);
+                final FluidSlotWidget fluidSlot = new FluidSlotWidget(handler, rows * 4 + column);
                 scrollable.widget(
                     fluidSlot.setPos(column * 18, rows * 18)
                         .setSize(18, 18));

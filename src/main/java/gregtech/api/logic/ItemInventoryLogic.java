@@ -112,7 +112,6 @@ public class ItemInventoryLogic {
     }
 
     public void sort() {
-        System.out.println("sorting");
         Map<ItemHolder, Integer> itemsToSort = new HashMap<>();
         List<ItemHolder> items = new ArrayList<>();
 

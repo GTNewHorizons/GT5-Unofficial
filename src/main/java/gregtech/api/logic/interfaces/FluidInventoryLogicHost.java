@@ -7,7 +7,9 @@ import gregtech.api.logic.FluidInventoryLogic;
 
 public interface FluidInventoryLogicHost {
 
-    FluidInventoryLogic getFluidLogic();
+    default FluidInventoryLogic getFluidLogic() {
+        return getFluidLogic(InventoryType.Input);
+    }
 
     FluidInventoryLogic getFluidLogic(InventoryType type);
 
