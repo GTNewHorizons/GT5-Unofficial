@@ -9,7 +9,14 @@ import java.util.Map;
 
 public abstract class StackableModularController<T extends StackableModularController<T>> extends StackableController<T> implements UpgradableModularMuTE {
 
-    protected Map<UpgradeCasings, Integer[]> mucMap = createMucMap();
+    private Map<UpgradeCasings, Integer[]> mucMap;
+
+    protected Map<UpgradeCasings, Integer[]> getMucMap() {
+        if (mucMap == null) {
+            mucMap = createMucMap();
+        }
+        return mucMap;
+    }
 
     protected static Map<UpgradeCasings, Integer[]> createMucMap() {
         Map<UpgradeCasings, Integer[]> mucCount = new HashMap<>();
@@ -20,7 +27,8 @@ public abstract class StackableModularController<T extends StackableModularContr
 
     @Override
     public void increaseMucCount(UpgradeCasings casingType, int tier) {
-        Integer[] casingCount = mucMap.get(casingType);
+        Map<UpgradeCasings, Integer[]> mucCounters = getMucMap();
+        Integer[] casingCount = mucCounters.get(casingType);
 
         switch (tier) {
             case 0, 1, 2 -> casingCount[0] += 1;
@@ -33,7 +41,8 @@ public abstract class StackableModularController<T extends StackableModularContr
 
     @Override
     public void resetMucCount() {
-        mucMap.forEach((type, casingCount) -> {
+        Map<UpgradeCasings, Integer[]> mucCounters = getMucMap();
+        mucCounters.forEach((type, casingCount) -> {
             Arrays.fill(casingCount, 0);
         });
     }
