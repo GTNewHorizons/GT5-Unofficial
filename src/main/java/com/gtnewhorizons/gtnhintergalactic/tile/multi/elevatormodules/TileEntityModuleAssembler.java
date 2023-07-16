@@ -29,6 +29,8 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
+import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.power.BasicMachineEUPower;
 import gregtech.common.power.Power;
@@ -114,7 +116,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(V[tTier]);
-        logic.setAvailableAmperage(V[tTier]);
+        logic.setAvailableAmperage(getMaxParallels());
     }
 
     /**
@@ -123,6 +125,13 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
+
+            @NotNull
+            @Override
+            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe,
+                    @NotNull GT_ParallelHelper helper) {
+                return super.createOverclockCalculator(recipe, helper).setAmperage(helper.getCurrentParallel());
+            }
 
             @NotNull
             @Override

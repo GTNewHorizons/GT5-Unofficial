@@ -108,7 +108,7 @@ public class TileEntityModuleResearch extends TileEntityModuleBase {
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(V[tTier]);
-        logic.setAvailableAmperage(V[tTier]);
+        logic.setAvailableAmperage(1);
     }
 
     /**
