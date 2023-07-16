@@ -1,8 +1,10 @@
 package gregtech.api.enums;
+
 /*
-No more magic numbers about TE's IDs. Yay!!!
+ * No more magic numbers about TE's IDs. Yay!!!
  */
 public enum MetaTileEntityIDs {
+
     ALLOY_SMELTER_LV(201),
     ALLOY_SMELTER_MV(202),
     ALLOY_SMELTER_HV(203),
@@ -83,10 +85,11 @@ public enum MetaTileEntityIDs {
     ARC_FURNACE_MV(652),
     ARC_FURNACE_HV(653),
     ARC_FURNACE_EV(654),
-    ARC_FURNACE_IV(655),
-    ;
+    ARC_FURNACE_IV(655),;
+
     public final int ID;
-    private MetaTileEntityIDs(int ID){
+
+    private MetaTileEntityIDs(int ID) {
         this.ID = ID;
     }
 }

@@ -353,12 +353,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         + EnumChatFormatting.RESET
         + " to use this.";
 
-    private static void registerMultiblockControllers(){
+    private static void registerMultiblockControllers() {
         ItemList.Machine_Bricked_BlastFurnace.set(
             new GT_MetaTileEntity_BrickedBlastFurnace(140, "multimachine.brickedblastfurnace", "Bricked Blast Furnace")
                 .getStackForm(1L));
 
-        //deprecated since ages, maybe time to remove it from the game?
+        // deprecated since ages, maybe time to remove it from the game?
         ItemList.Machine_Bronze_BlastFurnace.set(
             new GT_MetaTileEntity_BronzeBlastFurnace(108, "bronzemachine.blastfurnace", "Bronze Plated Blast Furnace")
                 .getStackForm(1L));
@@ -393,7 +393,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 1023,
                 "multimachine.boiler.tungstensteel",
                 "Large Tungstensteel Boiler").getStackForm(1L));
-
 
         ItemList.FusionComputer_LuV.set(
             new GT_MetaTileEntity_FusionComputer1(1193, "fusioncomputer.tier.06", "Fusion Control Computer Mark I")
@@ -512,7 +511,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             .set(new GT_MetaTileEntity_NanoForge(357, "multimachine.nanoforge", "Nano Forge").getStackForm(1));
 
     }
-    private static void registerSteamMachines(){
+
+    private static void registerSteamMachines() {
         ItemList.Machine_Bronze_Furnace
             .set(new GT_MetaTileEntity_Furnace_Bronze(103, "bronzemachine.furnace", "Steam Furnace").getStackForm(1L));
         ItemList.Machine_Bronze_Macerator.set(
@@ -530,7 +530,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 .getStackForm(1L));
 
     }
-    private static void registerHPSteamMachines(){
+
+    private static void registerHPSteamMachines() {
         ItemList.Machine_HP_Extractor.set(
             new GT_MetaTileEntity_Extractor_Steel(110, "hpmachine.extractor", "High Pressure Extractor")
                 .getStackForm(1L));
@@ -549,7 +550,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_AlloySmelter_Steel(119, "hpmachine.alloysmelter", "High Pressure Alloy Smelter")
                 .getStackForm(1L));
     }
-    private static void registerLocker(){
+
+    private static void registerLocker() {
         ItemList.Locker_ULV
             .set(new GT_MetaTileEntity_Locker(150, "locker.tier.00", "Ultra Low Voltage Locker", 0).getStackForm(1L));
         ItemList.Locker_LV
@@ -571,7 +573,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Locker_MAX.set(
             new GT_MetaTileEntity_Locker(159, "locker.tier.09", "Highly Ultimate Voltage Locker", 9).getStackForm(1L));
     }
-    private static void registerScanner(){
+
+    private static void registerScanner() {
         ItemList.Machine_LV_Scanner.set(
             new GT_MetaTileEntity_Scanner(341, "basicmachine.scanner.tier.01", "Basic Scanner", 1).getStackForm(1L));
         ItemList.Machine_MV_Scanner.set(
@@ -586,7 +589,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_Scanner(345, "basicmachine.scanner.tier.05", "Advanced Scanner IV", 5)
                 .getStackForm(1L));
     }
-    private static void registerPackager(){
+
+    private static void registerPackager() {
         ItemList.Machine_LV_Boxinator.set(
             new GT_MetaTileEntity_Boxinator(401, "basicmachine.boxinator.tier.01", "Basic Packager", 1)
                 .getStackForm(1L));
@@ -608,7 +612,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Machine_UV_Boxinator.set(
             new GT_MetaTileEntity_Boxinator(408, "basicmachine.boxinator.tier.08", "Boxinator", 8).getStackForm(1L));
     }
-    private static void registerRockBreaker(){
+
+    private static void registerRockBreaker() {
         ItemList.Machine_LV_RockBreaker.set(
             new GT_MetaTileEntity_RockBreaker(441, "basicmachine.rockbreaker.tier.01", "Basic Rock Breaker", 1)
                 .getStackForm(1L));
@@ -628,6 +633,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Cryogenic Magma Solidifier R-8200",
                 5).getStackForm(1L));
     }
+
     private static void registerIndustrialApiary() {
         if (Forestry.isModLoaded()) {
             ItemList.Machine_IndustrialApiary.set(
@@ -635,7 +641,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                     .getStackForm(1L));
         }
     }
-    private static void registerMassFab(){
+
+    private static void registerMassFab() {
         ItemList.Machine_LV_Massfab.set(
             new GT_MetaTileEntity_Massfabricator(461, "basicmachine.massfab.tier.01", "Basic Mass Fabricator", 1)
                 .getStackForm(1L));
@@ -652,7 +659,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_Massfabricator(465, "basicmachine.massfab.tier.05", "Advanced Mass Fabricator IV", 5)
                 .getStackForm(1L));
     }
-    private static void registerReplicator(){
+
+    private static void registerReplicator() {
         ItemList.Machine_LV_Replicator.set(
             new GT_MetaTileEntity_Replicator(481, "basicmachine.replicator.tier.01", "Basic Replicator", 1)
                 .getStackForm(1L));
@@ -669,7 +677,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_Replicator(485, "basicmachine.replicator.tier.05", "Advanced Replicator IV", 5)
                 .getStackForm(1L));
     }
-    private static void registerBrewery(){
+
+    private static void registerBrewery() {
         ItemList.Machine_LV_Brewery.set(
             new GT_MetaTileEntity_PotionBrewer(491, "basicmachine.brewery.tier.01", "Basic Brewery", 1)
                 .getStackForm(1L));
@@ -686,7 +695,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_PotionBrewer(495, "basicmachine.brewery.tier.05", "Advanced Brewery IV", 5)
                 .getStackForm(1L));
     }
-    private static void registerMiner(){
+
+    private static void registerMiner() {
         ItemList.Machine_LV_Miner
             .set(new GT_MetaTileEntity_Miner(679, "basicmachine.miner.tier.01", "Basic Miner", 1).getStackForm(1L));
         ItemList.Machine_MV_Miner
@@ -694,7 +704,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Machine_HV_Miner
             .set(new GT_MetaTileEntity_Miner(681, "basicmachine.miner.tier.03", "Advanced Miner", 3).getStackForm(1L));
     }
-    private static void registerPump(){
+
+    private static void registerPump() {
         ItemList.Pump_LV
             .set(new GT_MetaTileEntity_Pump(1140, "basicmachine.pump.tier.01", "Basic Pump", 1).getStackForm(1L));
         ItemList.Pump_MV
@@ -706,11 +717,13 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Pump_IV
             .set(new GT_MetaTileEntity_Pump(1144, "basicmachine.pump.tier.05", "Advanced Pump IV", 5).getStackForm(1L));
     }
-    private static void registerTeleporter(){
+
+    private static void registerTeleporter() {
         ItemList.Teleporter
             .set(new GT_MetaTileEntity_Teleporter(1145, "basicmachine.teleporter", "Teleporter", 9).getStackForm(1L));
     }
-    private static void registerMonsterRepellator(){
+
+    private static void registerMonsterRepellator() {
         ItemList.MobRep_LV.set(
             new GT_MetaTileEntity_MonsterRepellent(1146, "basicmachine.mobrep.tier.01", "Basic Monster Repellator", 1)
                 .getStackForm(1L));
@@ -757,7 +770,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Advanced Monster Repellator VII",
                 8).getStackForm(1L));
     }
-    private static void registerSeismicProspector(){
+
+    private static void registerSeismicProspector() {
         ItemList.Seismic_Prospector_LV.set(
             new GT_MetaTileEntity_SeismicProspector(
                 1156,
@@ -777,7 +791,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Seismic Prospector HV",
                 3).getStackForm(1));
     }
-    private static void registerAdvancedSeismicProspector(){
+
+    private static void registerAdvancedSeismicProspector() {
         ItemList.Seismic_Prospector_Adv_LV.set(
             new GT_MetaTileEntity_AdvSeismicProspector(
                 2102,
@@ -811,7 +826,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 11 * 16 / 2,
                 2).getStackForm(1));
     }
-    private static void registerMicrowaveEnergyTransmitter(){
+
+    private static void registerMicrowaveEnergyTransmitter() {
         ItemList.MicroTransmitter_HV.set(
             new GT_MetaTileEntity_MicrowaveEnergyTransmitter(
                 1161,
@@ -849,7 +865,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "UV Microwave Energy Transmitter",
                 8).getStackForm(1L));
     }
-    private static void registerChestBuffer(){
+
+    private static void registerChestBuffer() {
         ItemList.Automation_ChestBuffer_ULV.set(
             new GT_MetaTileEntity_ChestBuffer(
                 9230,
@@ -893,7 +910,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Highly Ultimate Voltage Chest Buffer",
                 9).getStackForm(1L));
     }
-    private static void registerItemFilter(){
+
+    private static void registerItemFilter() {
         ItemList.Automation_Filter_ULV.set(
             new GT_MetaTileEntity_Filter(9240, "automation.filter.tier.00", "Ultra Low Voltage Item Filter", 0)
                 .getStackForm(1L));
@@ -925,7 +943,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_Filter(9249, "automation.filter.tier.09", "Highly Ultimate Voltage Item Filter", 9)
                 .getStackForm(1L));
     }
-    private static void registerTypeFilter(){
+
+    private static void registerTypeFilter() {
         ItemList.Automation_TypeFilter_ULV.set(
             new GT_MetaTileEntity_TypeFilter(9250, "automation.typefilter.tier.00", "Ultra Low Voltage Type Filter", 0)
                 .getStackForm(1L));
@@ -960,7 +979,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Highly Ultimate Voltage Type Filter",
                 9).getStackForm(1L));
     }
-    private static void registerRegulator(){
+
+    private static void registerRegulator() {
         ItemList.Automation_Regulator_ULV.set(
             new GT_MetaTileEntity_Regulator(9270, "automation.regulator.tier.00", "Ultra Low Voltage Regulator", 0)
                 .getStackForm(1L));
@@ -995,7 +1015,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Highly Ultimate Voltage Regulator",
                 9).getStackForm(1L));
     }
-    private static void registerSuperBuffer(){
+
+    private static void registerSuperBuffer() {
         ItemList.Automation_SuperBuffer_ULV.set(
             new GT_MetaTileEntity_SuperBuffer(
                 9300,
@@ -1039,7 +1060,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Highly Ultimate Voltage Super Buffer",
                 9).getStackForm(1L));
     }
-    private static void registerItemDistributor(){
+
+    private static void registerItemDistributor() {
         ItemList.Automation_ItemDistributor_ULV.set(
             new GT_MetaTileEntity_ItemDistributor(
                 9320,
@@ -1101,7 +1123,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "MAX Voltage Item Distributor",
                 9).getStackForm(1L));
     }
-    private static void registerRecipeFilter(){
+
+    private static void registerRecipeFilter() {
         ItemList.Automation_RecipeFilter_ULV.set(
             new GT_MetaTileEntity_RecipeFilter(
                 9330,
@@ -1154,7 +1177,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Highly Ultimate Voltage Recipe Filter",
                 9).getStackForm(1L));
     }
-    private static void registerMachineHull(){
+
+    private static void registerMachineHull() {
         ItemList.Hull_Bronze.set(
             new GT_MetaTileEntity_BasicHull_Bronze(1, "hull.bronze", "Bronze Hull", 0, "For your first Steam Machines")
                 .getStackForm(1L));
@@ -1198,7 +1222,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_BasicHull(19, "hull.tier.09", "UHV Machine Hull", 9, imagination).getStackForm(1L));
 
     }
-    private static void registerTransformer(){
+
+    private static void registerTransformer() {
         ItemList.Transformer_LV_ULV.set(
             new GT_MetaTileEntity_Transformer(
                 20,
@@ -1263,7 +1288,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 8,
                 "UHV -> UV (Use Soft Mallet to invert)").getStackForm(1L));
     }
-    private static void registerDynamoHatch(){
+
+    private static void registerDynamoHatch() {
         ItemList.Hatch_Dynamo_ULV.set(
             new GT_MetaTileEntity_Hatch_Dynamo(30, "hatch.dynamo.tier.00", "ULV Dynamo Hatch", 0).getStackForm(1L));
         ItemList.Hatch_Dynamo_LV
@@ -1285,7 +1311,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hatch_Dynamo_MAX.set(
             new GT_MetaTileEntity_Hatch_Dynamo(39, "hatch.dynamo.tier.09", "UHV Dynamo Hatch", 9).getStackForm(1L));
     }
-    private static void registerEnergyHatch(){
+
+    private static void registerEnergyHatch() {
         // 1234
         ItemList.Hatch_Energy_ULV.set(
             new GT_MetaTileEntity_Hatch_Energy(40, "hatch.energy.tier.00", "ULV Energy Hatch", 0).getStackForm(1L));
@@ -1308,7 +1335,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hatch_Energy_MAX.set(
             new GT_MetaTileEntity_Hatch_Energy(49, "hatch.energy.tier.09", "UHV Energy Hatch", 9).getStackForm(1L));
     }
-    private static void registerInputHatch(){
+
+    private static void registerInputHatch() {
         ItemList.Hatch_Input_ULV
             .set(new GT_MetaTileEntity_Hatch_Input(50, "hatch.input.tier.00", "Input Hatch (ULV)", 0).getStackForm(1L));
         ItemList.Hatch_Input_LV
@@ -1330,7 +1358,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hatch_Input_MAX
             .set(new GT_MetaTileEntity_Hatch_Input(59, "hatch.input.tier.09", "Input Hatch (UHV)", 9).getStackForm(1L));
     }
-    private static void registerQuadrupleInputHatch(){
+
+    private static void registerQuadrupleInputHatch() {
         ItemList.Hatch_Input_Multi_2x2_EV.set(
             new GT_MetaTileEntity_Hatch_MultiInput(200, 4, "hatch.multi.input.tier.01", "Quadruple Input Hatch (EV)", 4)
                 .getStackForm(1L));
@@ -1397,7 +1426,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "hatch.multi.input.tier.11",
                 "Humongous Quadruple Input Hatch").getStackForm(1L));
     }
-    private static void registerOutputHatch(){
+
+    private static void registerOutputHatch() {
         ItemList.Hatch_Output_ULV.set(
             new GT_MetaTileEntity_Hatch_Output(60, "hatch.output.tier.00", "Output Hatch (ULV)", 0).getStackForm(1L));
         ItemList.Hatch_Output_LV.set(
@@ -1419,7 +1449,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hatch_Output_MAX.set(
             new GT_MetaTileEntity_Hatch_Output(69, "hatch.output.tier.09", "Output Hatch (UHV)", 9).getStackForm(1L));
     }
-    private static void registerQuantumTank(){
+
+    private static void registerQuantumTank() {
         ItemList.Quantum_Tank_LV
             .set(new GT_MetaTileEntity_QuantumTank(120, "quantum.tank.tier.06", "Quantum Tank I", 6).getStackForm(1L));
         ItemList.Quantum_Tank_MV
@@ -1431,7 +1462,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Quantum_Tank_IV
             .set(new GT_MetaTileEntity_QuantumTank(124, "quantum.tank.tier.10", "Quantum Tank V", 10).getStackForm(1L));
     }
-    private static void registerQuantumChest(){
+
+    private static void registerQuantumChest() {
         ItemList.Quantum_Chest_LV.set(
             new GT_MetaTileEntity_QuantumChest(125, "quantum.chest.tier.06", "Quantum Chest I", 6).getStackForm(1L));
         ItemList.Quantum_Chest_MV.set(
@@ -1443,7 +1475,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Quantum_Chest_IV.set(
             new GT_MetaTileEntity_QuantumChest(129, "quantum.chest.tier.10", "Quantum Chest V", 10).getStackForm(1L));
     }
-    private static void registerSuperTank(){
+
+    private static void registerSuperTank() {
         ItemList.Super_Tank_LV
             .set(new GT_MetaTileEntity_SuperTank(130, "super.tank.tier.01", "Super Tank I", 1).getStackForm(1L));
         ItemList.Super_Tank_MV
@@ -1455,7 +1488,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Super_Tank_IV
             .set(new GT_MetaTileEntity_SuperTank(134, "super.tank.tier.05", "Super Tank V", 5).getStackForm(1L));
     }
-    private static void registerSuperChest(){
+
+    private static void registerSuperChest() {
         ItemList.Super_Chest_LV
             .set(new GT_MetaTileEntity_SuperChest(135, "super.chest.tier.01", "Super Chest I", 1).getStackForm(1L));
         ItemList.Super_Chest_MV
@@ -1467,7 +1501,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Super_Chest_IV
             .set(new GT_MetaTileEntity_SuperChest(139, "super.chest.tier.05", "Super Chest V", 5).getStackForm(1L));
     }
-    private static void registerLongDistancePipe(){
+
+    private static void registerLongDistancePipe() {
         ItemList.Long_Distance_Pipeline_Fluid.set(
             new GT_MetaTileEntity_LongDistancePipelineFluid(
                 2700,
@@ -1481,7 +1516,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Long Distance Item Pipeline",
                 1).getStackForm(1L));
     }
-    private static void registerAE2Hatches(){
+
+    private static void registerAE2Hatches() {
         if (GregTech_API.mAE2) {
             ItemList.Hatch_Output_Bus_ME.set(
                 new GT_MetaTileEntity_Hatch_OutputBus_ME(2710, "hatch.output_bus.me", "Output Bus (ME)")
@@ -1493,7 +1529,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 new GT_MetaTileEntity_Hatch_Output_ME(2713, "hatch.output.me", "Output Hatch (ME)").getStackForm(1L));
         }
     }
-    private static void registerInputBus(){
+
+    private static void registerInputBus() {
 
         ItemList.Hatch_Input_Bus_ULV.set(
             new GT_MetaTileEntity_Hatch_InputBus(70, "hatch.input_bus.tier.00", "Input Bus (ULV)", 0).getStackForm(1L));
@@ -1516,7 +1553,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hatch_Input_Bus_MAX.set(
             new GT_MetaTileEntity_Hatch_InputBus(79, "hatch.input_bus.tier.09", "Input Bus (UHV)", 9).getStackForm(1L));
     }
-    private static void registerOutputBus(){
+
+    private static void registerOutputBus() {
         ItemList.Hatch_Output_Bus_ULV.set(
             new GT_MetaTileEntity_Hatch_OutputBus(80, "hatch.output_bus.tier.00", "Output Bus (ULV)", 0)
                 .getStackForm(1L));
@@ -1548,7 +1586,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_Hatch_OutputBus(89, "hatch.output_bus.tier.09", "Output Bus (UHV)", 9)
                 .getStackForm(1L));
     }
-    private static void registerMufflerHatch(){
+
+    private static void registerMufflerHatch() {
         ItemList.Hatch_Muffler_LV.set(
             new GT_MetaTileEntity_Hatch_Muffler(91, "hatch.muffler.tier.01", "Muffler Hatch (LV)", 1).getStackForm(1L));
         ItemList.Hatch_Muffler_MV.set(
@@ -1571,7 +1610,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_Hatch_Muffler(99, "hatch.muffler.tier.09", "Muffler Hatch (UHV)", 9)
                 .getStackForm(1L));
     }
-    private static void registerBoiler(){
+
+    private static void registerBoiler() {
         ItemList.Machine_Bronze_Boiler
             .set(new GT_MetaTileEntity_Boiler_Bronze(100, "boiler.bronze", "Small Coal Boiler").getStackForm(1L));
         ItemList.Machine_Steel_Boiler
@@ -1584,7 +1624,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_Boiler_Solar_Steel(114, "boiler.steel.solar", "High Pressure Solar Boiler")
                 .getStackForm(1L));
     }
-    private static void registerBatteryBuffer1x1(){
+
+    private static void registerBatteryBuffer1x1() {
         ItemList.Battery_Buffer_1by1_ULV.set(
             new GT_MetaTileEntity_BasicBatteryBuffer(
                 160,
@@ -1666,7 +1707,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 1).getStackForm(1L));
     }
-    private static void registerBatteryBuffer2x2(){
+
+    private static void registerBatteryBuffer2x2() {
         ItemList.Battery_Buffer_2by2_ULV.set(
             new GT_MetaTileEntity_BasicBatteryBuffer(
                 170,
@@ -1748,7 +1790,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 4).getStackForm(1L));
     }
-    private static void registerBatteryBuffer3x3(){
+
+    private static void registerBatteryBuffer3x3() {
         ItemList.Battery_Buffer_3by3_ULV.set(
             new GT_MetaTileEntity_BasicBatteryBuffer(
                 180,
@@ -1830,7 +1873,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 9).getStackForm(1L));
     }
-    private static void registerBatteryBuffer4x4(){
+
+    private static void registerBatteryBuffer4x4() {
         ItemList.Battery_Buffer_4by4_ULV.set(
             new GT_MetaTileEntity_BasicBatteryBuffer(
                 190,
@@ -1912,7 +1956,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "",
                 16).getStackForm(1L));
     }
-    private static void registerCharger4x4(){
+
+    private static void registerCharger4x4() {
         ItemList.Battery_Charger_4by4_ULV.set(
             new GT_MetaTileEntity_Charger(
                 690,
@@ -1994,70 +2039,41 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Each battery gives 8A in/4A out (min 4A/2A)",
                 4).getStackForm(1L));
     }
-    private static void registerWirelessEnergyHatch(){
+
+    private static void registerWirelessEnergyHatch() {
 
         // Wireless Energy Hatches
 
         ItemList.Wireless_Hatch_Energy_ULV.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
-                206,
-                "hatch.wireless.receiver.tier.00",
-                "ULV Wireless Energy Hatch",
-                0).getStackForm(1L));
+            new GT_MetaTileEntity_Wireless_Hatch(206, "hatch.wireless.receiver.tier.00", "ULV Wireless Energy Hatch", 0)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_LV.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
-                207,
-                "hatch.wireless.receiver.tier.01",
-                "LV Wireless Energy Hatch",
-                1).getStackForm(1L));
+            new GT_MetaTileEntity_Wireless_Hatch(207, "hatch.wireless.receiver.tier.01", "LV Wireless Energy Hatch", 1)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_MV.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
-                208,
-                "hatch.wireless.receiver.tier.02",
-                "MV Wireless Energy Hatch",
-                2).getStackForm(1L));
+            new GT_MetaTileEntity_Wireless_Hatch(208, "hatch.wireless.receiver.tier.02", "MV Wireless Energy Hatch", 2)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_HV.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
-                209,
-                "hatch.wireless.receiver.tier.03",
-                "HV Wireless Energy Hatch",
-                3).getStackForm(1L));
+            new GT_MetaTileEntity_Wireless_Hatch(209, "hatch.wireless.receiver.tier.03", "HV Wireless Energy Hatch", 3)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_EV.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
-                216,
-                "hatch.wireless.receiver.tier.04",
-                "EV Wireless Energy Hatch",
-                4).getStackForm(1L));
+            new GT_MetaTileEntity_Wireless_Hatch(216, "hatch.wireless.receiver.tier.04", "EV Wireless Energy Hatch", 4)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_IV.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
-                217,
-                "hatch.wireless.receiver.tier.05",
-                "IV Wireless Energy Hatch",
-                5).getStackForm(1L));
+            new GT_MetaTileEntity_Wireless_Hatch(217, "hatch.wireless.receiver.tier.05", "IV Wireless Energy Hatch", 5)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_LuV.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
-                218,
-                "hatch.wireless.receiver.tier.06",
-                "LuV Wireless Energy Hatch",
-                6).getStackForm(1L));
+            new GT_MetaTileEntity_Wireless_Hatch(218, "hatch.wireless.receiver.tier.06", "LuV Wireless Energy Hatch", 6)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_ZPM.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
-                219,
-                "hatch.wireless.receiver.tier.07",
-                "ZPM Wireless Energy Hatch",
-                7).getStackForm(1L));
+            new GT_MetaTileEntity_Wireless_Hatch(219, "hatch.wireless.receiver.tier.07", "ZPM Wireless Energy Hatch", 7)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UV.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
-                227,
-                "hatch.wireless.receiver.tier.08",
-                "UV Wireless Energy Hatch",
-                8).getStackForm(1L));
+            new GT_MetaTileEntity_Wireless_Hatch(227, "hatch.wireless.receiver.tier.08", "UV Wireless Energy Hatch", 8)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UHV.set(
-            new GT_MetaTileEntity_Wireless_Hatch(
-                229,
-                "hatch.wireless.receiver.tier.09",
-                "UHV Wireless Energy Hatch",
-                9).getStackForm(1L));
+            new GT_MetaTileEntity_Wireless_Hatch(229, "hatch.wireless.receiver.tier.09", "UHV Wireless Energy Hatch", 9)
+                .getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UEV.set(
             new GT_MetaTileEntity_Wireless_Hatch(
                 266,
@@ -2089,7 +2105,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "MAX Wireless Energy Hatch",
                 14).getStackForm(1L));
     }
-    private static void registerWirelessDynamoHatch(){
+
+    private static void registerWirelessDynamoHatch() {
         // Wireless Dynamo Hatches
 
         ItemList.Wireless_Dynamo_Energy_ULV.set(
@@ -2183,7 +2200,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "MAX Wireless Energy Dynamo",
                 14).getStackForm(1L));
     }
-    private static void registerLightningRods(){
+
+    private static void registerLightningRods() {
         ItemList.Machine_HV_LightningRod.set(
             new GT_MetaTileEntity_LightningRod(1174, "basicgenerator.lightningrod.03", "Lightning Rod", 3)
                 .getStackForm(1));
@@ -2194,7 +2212,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_LightningRod(1176, "basicgenerator.lightningrod.05", "Lightning Rod III", 5)
                 .getStackForm(1));
     }
-    private static void registerCombustionGenerators(){
+
+    private static void registerCombustionGenerators() {
         ItemList.Generator_Diesel_LV.set(
             new GT_MetaTileEntity_DieselGenerator(
                 1110,
@@ -2214,7 +2233,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Turbo Combustion Generator",
                 3).getStackForm(1L));
     }
-    private static void registerGasTurbines(){
+
+    private static void registerGasTurbines() {
         ItemList.Generator_Gas_Turbine_LV.set(
             new GT_MetaTileEntity_GasTurbine(1115, "basicgenerator.gasturbine.tier.01", "Basic Gas Turbine", 1, 95)
                 .getStackForm(1L));
@@ -2231,7 +2251,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_GasTurbine(1119, "basicgenerator.gasturbine.tier.05", "Turbo Gas Turbine III", 5, 50)
                 .getStackForm(1L));
     }
-    private static void registerSteamTurbines(){
+
+    private static void registerSteamTurbines() {
         ItemList.Generator_Steam_Turbine_LV.set(
             new GT_MetaTileEntity_SteamTurbine(1120, "basicgenerator.steamturbine.tier.01", "Basic Steam Turbine", 1)
                 .getStackForm(1L));
@@ -2242,44 +2263,46 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_SteamTurbine(1122, "basicgenerator.steamturbine.tier.03", "Turbo Steam Turbine", 3)
                 .getStackForm(1L));
     }
-    private static void registerNaquadahReactors(){
+
+    private static void registerNaquadahReactors() {
         ItemList.Generator_Naquadah_Mark_I.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 1190,
                 "basicgenerator.naquadah.tier.04",
-                new String[]{"Requires Enriched Naquadah Bolts"},
+                new String[] { "Requires Enriched Naquadah Bolts" },
                 "Naquadah Reactor Mark I",
                 4).getStackForm(1L));
         ItemList.Generator_Naquadah_Mark_II.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 1191,
                 "basicgenerator.naquadah.tier.05",
-                new String[]{"Requires Enriched Naquadah Rods"},
+                new String[] { "Requires Enriched Naquadah Rods" },
                 "Naquadah Reactor Mark II",
                 5).getStackForm(1L));
         ItemList.Generator_Naquadah_Mark_III.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 1192,
                 "basicgenerator.naquadah.tier.06",
-                new String[]{"Requires Enriched Naquadah Long Rods"},
+                new String[] { "Requires Enriched Naquadah Long Rods" },
                 "Naquadah Reactor Mark III",
                 6).getStackForm(1L));
         ItemList.Generator_Naquadah_Mark_IV.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 1188,
                 "basicgenerator.naquadah.tier.07",
-                new String[]{"Requires Naquadria Bolts"},
+                new String[] { "Requires Naquadria Bolts" },
                 "Naquadah Reactor Mark IV",
                 7).getStackForm(1L));
         ItemList.Generator_Naquadah_Mark_V.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 1189,
                 "basicgenerator.naquadah.tier.08",
-                new String[]{"Requires Naquadria Rods"},
+                new String[] { "Requires Naquadria Rods" },
                 "Naquadah Reactor Mark V",
                 8).getStackForm(1L));
     }
-    private static void registerMagicEnergyConverters(){
+
+    private static void registerMagicEnergyConverters() {
         ItemList.MagicEnergyConverter_LV.set(
             new GT_MetaTileEntity_MagicEnergyConverter(
                 1123,
@@ -2299,7 +2322,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Master Magic Energy Converter",
                 3).getStackForm(1L));
     }
-    private static void registerMagicEnergyAbsorbers(){
+
+    private static void registerMagicEnergyAbsorbers() {
         ItemList.MagicEnergyAbsorber_LV.set(
             new GT_MetaTileEntity_MagicalEnergyAbsorber(
                 1127,
@@ -2325,7 +2349,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Grandmaster Magic Energy Absorber",
                 4).getStackForm(1L));
     }
-    private static void registerPlasmaGenerators(){
+
+    private static void registerPlasmaGenerators() {
         ItemList.Generator_Plasma_IV.set(
             new GT_MetaTileEntity_PlasmaGenerator(
                 1196,

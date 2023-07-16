@@ -10,7 +10,6 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -757,7 +756,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
         ItemList.Machine_MV_Canner.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-            CANNER_MV.ID,
+                CANNER_MV.ID,
                 "basicmachine.canner.tier.02",
                 "Advanced Canning Machine",
                 2,
