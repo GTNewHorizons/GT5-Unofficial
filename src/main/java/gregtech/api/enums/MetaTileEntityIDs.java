@@ -6,6 +6,7 @@ package gregtech.api.enums;
  * please, pretty please, insert it at the correct place.
  */
 public enum MetaTileEntityIDs {
+
     HULL_BRONZE(1),
     HULL_BRICKED_BRONZE(2),
     HULL_STEEL(3),

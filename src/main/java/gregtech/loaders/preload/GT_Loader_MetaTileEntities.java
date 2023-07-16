@@ -1,7 +1,7 @@
 package gregtech.loaders.preload;
 
-import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.MetaTileEntityIDs.*;
+import static gregtech.api.enums.Mods.Forestry;
 
 import net.minecraft.util.EnumChatFormatting;
 
@@ -142,7 +142,6 @@ import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumChest;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_QuantumTank;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperChest;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_SuperTank;
-import scala.tools.nsc.interactive.REPL;
 
 // Free IDs left for machines in GT as of 29th of July 2022 - Colen. Please try use them up in order.
 // 358
@@ -357,24 +356,38 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void registerMultiblockControllers() {
         ItemList.Machine_Bricked_BlastFurnace.set(
-            new GT_MetaTileEntity_BrickedBlastFurnace(BRICKED_BLAST_FURNACE_CONTROLLER.ID, "multimachine.brickedblastfurnace", "Bricked Blast Furnace")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_BrickedBlastFurnace(
+                BRICKED_BLAST_FURNACE_CONTROLLER.ID,
+                "multimachine.brickedblastfurnace",
+                "Bricked Blast Furnace").getStackForm(1L));
 
         // deprecated since ages, maybe time to remove it from the game?
         ItemList.Machine_Bronze_BlastFurnace.set(
-            new GT_MetaTileEntity_BronzeBlastFurnace(BRONZE_BLAST_FURNACE_CONTROLLER.ID, "bronzemachine.blastfurnace", "Bronze Plated Blast Furnace")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_BronzeBlastFurnace(
+                BRONZE_BLAST_FURNACE_CONTROLLER.ID,
+                "bronzemachine.blastfurnace",
+                "Bronze Plated Blast Furnace").getStackForm(1L));
 
         ItemList.Machine_Multi_BlastFurnace.set(
-            new GT_MetaTileEntity_ElectricBlastFurnace(EBF_CONTROLLER.ID, "multimachine.blastfurnace", "Electric Blast Furnace")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_ElectricBlastFurnace(
+                EBF_CONTROLLER.ID,
+                "multimachine.blastfurnace",
+                "Electric Blast Furnace").getStackForm(1L));
         ItemList.Machine_Multi_ImplosionCompressor.set(
-            new GT_MetaTileEntity_ImplosionCompressor(IMPLOSION_COMPRESSOR_CONTROLLER.ID, "multimachine.implosioncompressor", "Implosion Compressor")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_ImplosionCompressor(
+                IMPLOSION_COMPRESSOR_CONTROLLER.ID,
+                "multimachine.implosioncompressor",
+                "Implosion Compressor").getStackForm(1L));
         ItemList.Machine_Multi_VacuumFreezer.set(
-            new GT_MetaTileEntity_VacuumFreezer(VACUUM_FREEZER_CONTROLLER.ID, "multimachine.vacuumfreezer", "Vacuum Freezer").getStackForm(1L));
+            new GT_MetaTileEntity_VacuumFreezer(
+                VACUUM_FREEZER_CONTROLLER.ID,
+                "multimachine.vacuumfreezer",
+                "Vacuum Freezer").getStackForm(1L));
         ItemList.Machine_Multi_Furnace.set(
-            new GT_MetaTileEntity_MultiFurnace(MULTI_SMELTER_CONTROLLER.ID, "multimachine.multifurnace", "Multi Smelter").getStackForm(1L));
+            new GT_MetaTileEntity_MultiFurnace(
+                MULTI_SMELTER_CONTROLLER.ID,
+                "multimachine.multifurnace",
+                "Multi Smelter").getStackForm(1L));
         ItemList.Machine_Multi_PlasmaForge.set(
             new GT_MetaTileEntity_PlasmaForge(
                 DTPF_CONTROLLER.ID,
@@ -382,14 +395,20 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Dimensionally Transcendent Plasma Forge").getStackForm(1L));
 
         ItemList.Machine_Multi_LargeBoiler_Bronze.set(
-            new GT_MetaTileEntity_LargeBoiler_Bronze(LARGE_BRONZE_BOILER_CONTROLLER.ID, "multimachine.boiler.bronze", "Large Bronze Boiler")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_LargeBoiler_Bronze(
+                LARGE_BRONZE_BOILER_CONTROLLER.ID,
+                "multimachine.boiler.bronze",
+                "Large Bronze Boiler").getStackForm(1L));
         ItemList.Machine_Multi_LargeBoiler_Steel.set(
-            new GT_MetaTileEntity_LargeBoiler_Steel(LARGE_STEEL_BOILER_CONTROLLER.ID, "multimachine.boiler.steel", "Large Steel Boiler")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_LargeBoiler_Steel(
+                LARGE_STEEL_BOILER_CONTROLLER.ID,
+                "multimachine.boiler.steel",
+                "Large Steel Boiler").getStackForm(1L));
         ItemList.Machine_Multi_LargeBoiler_Titanium.set(
-            new GT_MetaTileEntity_LargeBoiler_Titanium(LARGE_TITANIUM_BOILER_CONTROLLER.ID, "multimachine.boiler.titanium", "Large Titanium Boiler")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_LargeBoiler_Titanium(
+                LARGE_TITANIUM_BOILER_CONTROLLER.ID,
+                "multimachine.boiler.titanium",
+                "Large Titanium Boiler").getStackForm(1L));
         ItemList.Machine_Multi_LargeBoiler_TungstenSteel.set(
             new GT_MetaTileEntity_LargeBoiler_TungstenSteel(
                 LARGE_TUNGSTENSTEEL_BOILER_CONTROLLER.ID,
@@ -397,34 +416,52 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Large Tungstensteel Boiler").getStackForm(1L));
 
         ItemList.FusionComputer_LuV.set(
-            new GT_MetaTileEntity_FusionComputer1(FUSION_CONTROLLER_MKI.ID, "fusioncomputer.tier.06", "Fusion Control Computer Mark I")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_FusionComputer1(
+                FUSION_CONTROLLER_MKI.ID,
+                "fusioncomputer.tier.06",
+                "Fusion Control Computer Mark I").getStackForm(1L));
         ItemList.FusionComputer_ZPMV.set(
-            new GT_MetaTileEntity_FusionComputer2(FUSION_CONTROLLER_MKII.ID, "fusioncomputer.tier.07", "Fusion Control Computer Mark II")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_FusionComputer2(
+                FUSION_CONTROLLER_MKII.ID,
+                "fusioncomputer.tier.07",
+                "Fusion Control Computer Mark II").getStackForm(1L));
         ItemList.FusionComputer_UV.set(
-            new GT_MetaTileEntity_FusionComputer3(FUSION_CONTROLLER_MKIII.ID, "fusioncomputer.tier.08", "Fusion Control Computer Mark III")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_FusionComputer3(
+                FUSION_CONTROLLER_MKIII.ID,
+                "fusioncomputer.tier.08",
+                "Fusion Control Computer Mark III").getStackForm(1L));
 
         ItemList.Processing_Array.set(
-            new GT_MetaTileEntity_ProcessingArray(PROCESSING_ARRAY_CONTROLLER.ID, "multimachine.processingarray", "Processing Array")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_ProcessingArray(
+                PROCESSING_ARRAY_CONTROLLER.ID,
+                "multimachine.processingarray",
+                "Processing Array").getStackForm(1L));
         ItemList.Distillation_Tower.set(
-            new GT_MetaTileEntity_DistillationTower(DISTILLATION_TOWER_CONTROLLER.ID, "multimachine.distillationtower", "Distillation Tower")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_DistillationTower(
+                DISTILLATION_TOWER_CONTROLLER.ID,
+                "multimachine.distillationtower",
+                "Distillation Tower").getStackForm(1L));
         ItemList.Ore_Processor.set(
-            new GT_MetaTileEntity_IntegratedOreFactory(INTEGRATED_ORE_FACTORY_CONTROLLER.ID, "multimachine.oreprocessor", "Integrated Ore Factory")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_IntegratedOreFactory(
+                INTEGRATED_ORE_FACTORY_CONTROLLER.ID,
+                "multimachine.oreprocessor",
+                "Integrated Ore Factory").getStackForm(1L));
 
         ItemList.LargeSteamTurbine.set(
-            new GT_MetaTileEntity_LargeTurbine_Steam(LARGE_STEAM_TURBINE_CONTROLLER.ID, "multimachine.largeturbine", "Large Steam Turbine")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_LargeTurbine_Steam(
+                LARGE_STEAM_TURBINE_CONTROLLER.ID,
+                "multimachine.largeturbine",
+                "Large Steam Turbine").getStackForm(1L));
         ItemList.LargeGasTurbine.set(
-            new GT_MetaTileEntity_LargeTurbine_Gas(LARGE_GAS_TURBINE_CONTROLLER.ID, "multimachine.largegasturbine", "Large Gas Turbine")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_LargeTurbine_Gas(
+                LARGE_GAS_TURBINE_CONTROLLER.ID,
+                "multimachine.largegasturbine",
+                "Large Gas Turbine").getStackForm(1L));
         ItemList.LargeHPSteamTurbine.set(
-            new GT_MetaTileEntity_LargeTurbine_HPSteam(LARGE_HP_STEAM_TURBINE_CONTROLLER.ID, "multimachine.largehpturbine", "Large HP Steam Turbine")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_LargeTurbine_HPSteam(
+                LARGE_HP_STEAM_TURBINE_CONTROLLER.ID,
+                "multimachine.largehpturbine",
+                "Large HP Steam Turbine").getStackForm(1L));
         ItemList.LargeAdvancedGasTurbine.set(
             new GT_MetaTileEntity_LargeTurbine_GasAdvanced(
                 LARGE_ADVANCED_GAS_TURBINE_CONTROLLER.ID,
@@ -437,28 +474,42 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Transcendent Plasma Mixer").getStackForm(1));
 
         ItemList.LargePlasmaTurbine.set(
-            new GT_MetaTileEntity_LargeTurbine_Plasma(LARGE_PLASMA_TURBINE_CONTROLLER.ID, "multimachine.largeplasmaturbine", "Large Plasma Generator")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_LargeTurbine_Plasma(
+                LARGE_PLASMA_TURBINE_CONTROLLER.ID,
+                "multimachine.largeplasmaturbine",
+                "Large Plasma Generator").getStackForm(1L));
         ItemList.Machine_Multi_HeatExchanger.set(
-            new GT_MetaTileEntity_HeatExchanger(LARGE_HEAT_EXCHANGER_CONTROLLER.ID, "multimachine.heatexchanger", "Large Heat Exchanger")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_HeatExchanger(
+                LARGE_HEAT_EXCHANGER_CONTROLLER.ID,
+                "multimachine.heatexchanger",
+                "Large Heat Exchanger").getStackForm(1L));
         ItemList.Charcoal_Pile.set(
-            new GT_MetaTileEntity_Charcoal_Pit(CHARCOAL_PILE_IGNITER_CONTROLLER.ID, "multimachine.charcoalpile", "Charcoal Pile Igniter")
-                .getStackForm(1));
+            new GT_MetaTileEntity_Charcoal_Pit(
+                CHARCOAL_PILE_IGNITER_CONTROLLER.ID,
+                "multimachine.charcoalpile",
+                "Charcoal Pile Igniter").getStackForm(1));
 
         // Converter recipes in case you had old one lying around
         ItemList.OilDrill1.set(
-            new GT_MetaTileEntity_OilDrill1(MULTIBLOCK_PUMP_MKI_CONTROLLER.ID, "multimachine.oildrill1", "Oil/Gas/Fluid Drilling Rig")
-                .getStackForm(1));
+            new GT_MetaTileEntity_OilDrill1(
+                MULTIBLOCK_PUMP_MKI_CONTROLLER.ID,
+                "multimachine.oildrill1",
+                "Oil/Gas/Fluid Drilling Rig").getStackForm(1));
         ItemList.OilDrill2.set(
-            new GT_MetaTileEntity_OilDrill2(MULTILOCK_PUMP_MKII_CONTROLLER.ID, "multimachine.oildrill2", "Oil/Gas/Fluid Drilling Rig II")
-                .getStackForm(1));
+            new GT_MetaTileEntity_OilDrill2(
+                MULTILOCK_PUMP_MKII_CONTROLLER.ID,
+                "multimachine.oildrill2",
+                "Oil/Gas/Fluid Drilling Rig II").getStackForm(1));
         ItemList.OilDrill3.set(
-            new GT_MetaTileEntity_OilDrill3(MULTILOCK_PUMP_MKIII_CONTROLLER.ID, "multimachine.oildrill3", "Oil/Gas/Fluid Drilling Rig III")
-                .getStackForm(1));
+            new GT_MetaTileEntity_OilDrill3(
+                MULTILOCK_PUMP_MKIII_CONTROLLER.ID,
+                "multimachine.oildrill3",
+                "Oil/Gas/Fluid Drilling Rig III").getStackForm(1));
         ItemList.OilDrill4.set(
-            new GT_MetaTileEntity_OilDrill4(MULTILOCK_PUMP_MKIV_CONTROLLER.ID, "multimachine.oildrill4", "Oil/Gas/Fluid Drilling Rig IV")
-                .getStackForm(1));
+            new GT_MetaTileEntity_OilDrill4(
+                MULTILOCK_PUMP_MKIV_CONTROLLER.ID,
+                "multimachine.oildrill4",
+                "Oil/Gas/Fluid Drilling Rig IV").getStackForm(1));
         ItemList.OilDrillInfinite.set(
             new GT_MetaTileEntity_OilDrillInfinite(
                 MULTIBLOCK_PUMP_INFINITE_CONTROLLER.ID,
@@ -466,121 +517,167 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Infinite Oil/Gas/Fluid Drilling Rig").getStackForm(1));
 
         ItemList.ConcreteBackfiller1.set(
-            new GT_MetaTileEntity_ConcreteBackfiller1(CONCRETE_BACKFILLER_I_CONTROLLER.ID, "multimachine.concretebackfiller1", "Concrete Backfiller")
-                .getStackForm(1));
+            new GT_MetaTileEntity_ConcreteBackfiller1(
+                CONCRETE_BACKFILLER_I_CONTROLLER.ID,
+                "multimachine.concretebackfiller1",
+                "Concrete Backfiller").getStackForm(1));
         ItemList.ConcreteBackfiller2.set(
             new GT_MetaTileEntity_ConcreteBackfiller2(
                 CONCRETE_BACKFILLER_II_CONTROLLER.ID,
                 "multimachine.concretebackfiller3",
                 "Advanced Concrete Backfiller").getStackForm(1));
         ItemList.OreDrill1.set(
-            new GT_MetaTileEntity_OreDrillingPlant1(ORE_DRILL_MKI_CONTROLLER.ID, "multimachine.oredrill1", "Ore Drilling Plant")
-                .getStackForm(1));
+            new GT_MetaTileEntity_OreDrillingPlant1(
+                ORE_DRILL_MKI_CONTROLLER.ID,
+                "multimachine.oredrill1",
+                "Ore Drilling Plant").getStackForm(1));
         ItemList.OreDrill2.set(
-            new GT_MetaTileEntity_OreDrillingPlant2(ORE_DRILL_MKII_CONTROLLER.ID, "multimachine.oredrill2", "Ore Drilling Plant II")
-                .getStackForm(1));
+            new GT_MetaTileEntity_OreDrillingPlant2(
+                ORE_DRILL_MKII_CONTROLLER.ID,
+                "multimachine.oredrill2",
+                "Ore Drilling Plant II").getStackForm(1));
         ItemList.OreDrill3.set(
-            new GT_MetaTileEntity_OreDrillingPlant3(ORE_DRILL_MKIII_CONTROLLER.ID, "multimachine.oredrill3", "Ore Drilling Plant III")
-                .getStackForm(1));
+            new GT_MetaTileEntity_OreDrillingPlant3(
+                ORE_DRILL_MKIII_CONTROLLER.ID,
+                "multimachine.oredrill3",
+                "Ore Drilling Plant III").getStackForm(1));
         ItemList.OreDrill4.set(
-            new GT_MetaTileEntity_OreDrillingPlant4(ORE_DRILL_MKIV_CONTROLLER.ID, "multimachine.oredrill4", "Ore Drilling Plant IV")
-                .getStackForm(1));
+            new GT_MetaTileEntity_OreDrillingPlant4(
+                ORE_DRILL_MKIV_CONTROLLER.ID,
+                "multimachine.oredrill4",
+                "Ore Drilling Plant IV").getStackForm(1));
 
-        ItemList.PyrolyseOven
-            .set(new GT_MetaTileEntity_PyrolyseOven(PYROLYSE_OVEN_CONTROLLER.ID, "multimachine.pyro", "Pyrolyse Oven").getStackForm(1));
-        ItemList.OilCracker
-            .set(new GT_MetaTileEntity_OilCracker(OIL_CRACKER_CONTROLLER.ID, "multimachine.cracker", "Oil Cracking Unit").getStackForm(1));
+        ItemList.PyrolyseOven.set(
+            new GT_MetaTileEntity_PyrolyseOven(PYROLYSE_OVEN_CONTROLLER.ID, "multimachine.pyro", "Pyrolyse Oven")
+                .getStackForm(1));
+        ItemList.OilCracker.set(
+            new GT_MetaTileEntity_OilCracker(OIL_CRACKER_CONTROLLER.ID, "multimachine.cracker", "Oil Cracking Unit")
+                .getStackForm(1));
 
         ItemList.Machine_Multi_Assemblyline.set(
-            new GT_MetaTileEntity_AssemblyLine(ASSEMBLING_LINE_CONTROLLER.ID, "multimachine.assemblyline", "Assembling Line").getStackForm(1L));
+            new GT_MetaTileEntity_AssemblyLine(
+                ASSEMBLING_LINE_CONTROLLER.ID,
+                "multimachine.assemblyline",
+                "Assembling Line").getStackForm(1L));
         ItemList.Machine_Multi_DieselEngine.set(
-            new GT_MetaTileEntity_DieselEngine(COMBUSTION_ENGINE_CONTROLLER.ID, "multimachine.dieselengine", "Combustion Engine")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_DieselEngine(
+                COMBUSTION_ENGINE_CONTROLLER.ID,
+                "multimachine.dieselengine",
+                "Combustion Engine").getStackForm(1L));
         ItemList.Machine_Multi_ExtremeDieselEngine.set(
             new GT_MetaTileEntity_ExtremeDieselEngine(
                 EXTREME_COMBUSTION_ENGINE_CONTROLLER.ID,
                 "multimachine.extremedieselengine",
                 "Extreme Combustion Engine").getStackForm(1L));
         ItemList.Machine_Multi_Cleanroom.set(
-            new GT_MetaTileEntity_Cleanroom(CLEANROOM_CONTROLLER.ID, "multimachine.cleanroom", "Cleanroom Controller").getStackForm(1));
+            new GT_MetaTileEntity_Cleanroom(CLEANROOM_CONTROLLER.ID, "multimachine.cleanroom", "Cleanroom Controller")
+                .getStackForm(1));
 
         ItemList.Machine_Multi_LargeChemicalReactor.set(
-            new GT_MetaTileEntity_LargeChemicalReactor(LCR_CONTROLLER.ID, "multimachine.chemicalreactor", "Large Chemical Reactor")
+            new GT_MetaTileEntity_LargeChemicalReactor(
+                LCR_CONTROLLER.ID,
+                "multimachine.chemicalreactor",
+                "Large Chemical Reactor").getStackForm(1));
+        ItemList.PCBFactory.set(
+            new GT_MetaTileEntity_PCBFactory(PCB_FACTORY_CONTROLLER.ID, "multimachine.pcbfactory", "PCB Factory")
                 .getStackForm(1));
-        ItemList.PCBFactory
-            .set(new GT_MetaTileEntity_PCBFactory(PCB_FACTORY_CONTROLLER.ID, "multimachine.pcbfactory", "PCB Factory").getStackForm(1));
-        ItemList.NanoForge
-            .set(new GT_MetaTileEntity_NanoForge(NANO_FORGE_CONTROLLER.ID, "multimachine.nanoforge", "Nano Forge").getStackForm(1));
+        ItemList.NanoForge.set(
+            new GT_MetaTileEntity_NanoForge(NANO_FORGE_CONTROLLER.ID, "multimachine.nanoforge", "Nano Forge")
+                .getStackForm(1));
 
     }
 
     private static void registerSteamMachines() {
-        ItemList.Machine_Bronze_Furnace
-            .set(new GT_MetaTileEntity_Furnace_Bronze(STEAM_FURNACE.ID, "bronzemachine.furnace", "Steam Furnace").getStackForm(1L));
-        ItemList.Machine_Bronze_Macerator.set(
-            new GT_MetaTileEntity_Macerator_Bronze(STEAM_MACERATOR.ID, "bronzemachine.macerator", "Steam Macerator").getStackForm(1L));
-        ItemList.Machine_Bronze_Extractor.set(
-            new GT_MetaTileEntity_Extractor_Bronze(STEAM_EXTRACTOR.ID, "bronzemachine.extractor", "Steam Extractor").getStackForm(1L));
-        ItemList.Machine_Bronze_Hammer.set(
-            new GT_MetaTileEntity_ForgeHammer_Bronze(STEAM_FORGE_HAMMER.ID, "bronzemachine.hammer", "Steam Forge Hammer")
+        ItemList.Machine_Bronze_Furnace.set(
+            new GT_MetaTileEntity_Furnace_Bronze(STEAM_FURNACE.ID, "bronzemachine.furnace", "Steam Furnace")
                 .getStackForm(1L));
+        ItemList.Machine_Bronze_Macerator.set(
+            new GT_MetaTileEntity_Macerator_Bronze(STEAM_MACERATOR.ID, "bronzemachine.macerator", "Steam Macerator")
+                .getStackForm(1L));
+        ItemList.Machine_Bronze_Extractor.set(
+            new GT_MetaTileEntity_Extractor_Bronze(STEAM_EXTRACTOR.ID, "bronzemachine.extractor", "Steam Extractor")
+                .getStackForm(1L));
+        ItemList.Machine_Bronze_Hammer.set(
+            new GT_MetaTileEntity_ForgeHammer_Bronze(
+                STEAM_FORGE_HAMMER.ID,
+                "bronzemachine.hammer",
+                "Steam Forge Hammer").getStackForm(1L));
         ItemList.Machine_Bronze_Compressor.set(
             new GT_MetaTileEntity_Compressor_Bronze(STEAM_COMPRESSOR.ID, "bronzemachine.compressor", "Steam Compressor")
                 .getStackForm(1L));
         ItemList.Machine_Bronze_AlloySmelter.set(
-            new GT_MetaTileEntity_AlloySmelter_Bronze(STEAM_ALLOY_SMELTER.ID, "bronzemachine.alloysmelter", "Steam Alloy Smelter")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_AlloySmelter_Bronze(
+                STEAM_ALLOY_SMELTER.ID,
+                "bronzemachine.alloysmelter",
+                "Steam Alloy Smelter").getStackForm(1L));
 
     }
 
     private static void registerHPSteamMachines() {
         ItemList.Machine_HP_Extractor.set(
-            new GT_MetaTileEntity_Extractor_Steel(HP_STEAM_EXTRACTOR.ID, "hpmachine.extractor", "High Pressure Extractor")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Extractor_Steel(
+                HP_STEAM_EXTRACTOR.ID,
+                "hpmachine.extractor",
+                "High Pressure Extractor").getStackForm(1L));
         ItemList.Machine_HP_Furnace.set(
-            new GT_MetaTileEntity_Furnace_Steel(HP_STEAM_FURNACE.ID, "hpmachine.furnace", "High Pressure Furnace").getStackForm(1L));
+            new GT_MetaTileEntity_Furnace_Steel(HP_STEAM_FURNACE.ID, "hpmachine.furnace", "High Pressure Furnace")
+                .getStackForm(1L));
         ItemList.Machine_HP_Macerator.set(
-            new GT_MetaTileEntity_Macerator_Steel(HP_STEAM_MACERATOR.ID, "hpmachine.macerator", "High Pressure Macerator")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Macerator_Steel(
+                HP_STEAM_MACERATOR.ID,
+                "hpmachine.macerator",
+                "High Pressure Macerator").getStackForm(1L));
         ItemList.Machine_HP_Hammer.set(
-            new GT_MetaTileEntity_ForgeHammer_Steel(HP_STEAM_FORGE_HAMMER.ID, "hpmachine.hammer", "High Pressure Forge Hammer")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_ForgeHammer_Steel(
+                HP_STEAM_FORGE_HAMMER.ID,
+                "hpmachine.hammer",
+                "High Pressure Forge Hammer").getStackForm(1L));
         ItemList.Machine_HP_Compressor.set(
-            new GT_MetaTileEntity_Compressor_Steel(HP_STEAM_COMPRESSOR.ID, "hpmachine.compressor", "High Pressure Compressor")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Compressor_Steel(
+                HP_STEAM_COMPRESSOR.ID,
+                "hpmachine.compressor",
+                "High Pressure Compressor").getStackForm(1L));
         ItemList.Machine_HP_AlloySmelter.set(
-            new GT_MetaTileEntity_AlloySmelter_Steel(HP_STEAM_ALLOY_SMELTER.ID, "hpmachine.alloysmelter", "High Pressure Alloy Smelter")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_AlloySmelter_Steel(
+                HP_STEAM_ALLOY_SMELTER.ID,
+                "hpmachine.alloysmelter",
+                "High Pressure Alloy Smelter").getStackForm(1L));
     }
 
     private static void registerLocker() {
-        ItemList.Locker_ULV
-            .set(new GT_MetaTileEntity_Locker(LOCKER_ULV.ID, "locker.tier.00", "Ultra Low Voltage Locker", 0).getStackForm(1L));
-        ItemList.Locker_LV
-            .set(new GT_MetaTileEntity_Locker(LOCKER_LV.ID, "locker.tier.01", "Low Voltage Locker", 1).getStackForm(1L));
-        ItemList.Locker_MV
-            .set(new GT_MetaTileEntity_Locker(LOCKER_MV.ID, "locker.tier.02", "Medium Voltage Locker", 2).getStackForm(1L));
-        ItemList.Locker_HV
-            .set(new GT_MetaTileEntity_Locker(LOCKER_HV.ID, "locker.tier.03", "High Voltage Locker", 3).getStackForm(1L));
-        ItemList.Locker_EV
-            .set(new GT_MetaTileEntity_Locker(LOCKER_EV.ID, "locker.tier.04", "Extreme Voltage Locker", 4).getStackForm(1L));
-        ItemList.Locker_IV
-            .set(new GT_MetaTileEntity_Locker(LOCKER_IV.ID, "locker.tier.05", "Insane Voltage Locker", 5).getStackForm(1L));
-        ItemList.Locker_LuV
-            .set(new GT_MetaTileEntity_Locker(LOCKER_LuV.ID, "locker.tier.06", "Ludicrous Voltage Locker", 6).getStackForm(1L));
-        ItemList.Locker_ZPM
-            .set(new GT_MetaTileEntity_Locker(LOCKER_ZPM.ID, "locker.tier.07", "ZPM Voltage Locker", 7).getStackForm(1L));
-        ItemList.Locker_UV
-            .set(new GT_MetaTileEntity_Locker(LOCKER_UV.ID, "locker.tier.08", "Ultimate Voltage Locker", 8).getStackForm(1L));
+        ItemList.Locker_ULV.set(
+            new GT_MetaTileEntity_Locker(LOCKER_ULV.ID, "locker.tier.00", "Ultra Low Voltage Locker", 0)
+                .getStackForm(1L));
+        ItemList.Locker_LV.set(
+            new GT_MetaTileEntity_Locker(LOCKER_LV.ID, "locker.tier.01", "Low Voltage Locker", 1).getStackForm(1L));
+        ItemList.Locker_MV.set(
+            new GT_MetaTileEntity_Locker(LOCKER_MV.ID, "locker.tier.02", "Medium Voltage Locker", 2).getStackForm(1L));
+        ItemList.Locker_HV.set(
+            new GT_MetaTileEntity_Locker(LOCKER_HV.ID, "locker.tier.03", "High Voltage Locker", 3).getStackForm(1L));
+        ItemList.Locker_EV.set(
+            new GT_MetaTileEntity_Locker(LOCKER_EV.ID, "locker.tier.04", "Extreme Voltage Locker", 4).getStackForm(1L));
+        ItemList.Locker_IV.set(
+            new GT_MetaTileEntity_Locker(LOCKER_IV.ID, "locker.tier.05", "Insane Voltage Locker", 5).getStackForm(1L));
+        ItemList.Locker_LuV.set(
+            new GT_MetaTileEntity_Locker(LOCKER_LuV.ID, "locker.tier.06", "Ludicrous Voltage Locker", 6)
+                .getStackForm(1L));
+        ItemList.Locker_ZPM.set(
+            new GT_MetaTileEntity_Locker(LOCKER_ZPM.ID, "locker.tier.07", "ZPM Voltage Locker", 7).getStackForm(1L));
+        ItemList.Locker_UV.set(
+            new GT_MetaTileEntity_Locker(LOCKER_UV.ID, "locker.tier.08", "Ultimate Voltage Locker", 8)
+                .getStackForm(1L));
         ItemList.Locker_MAX.set(
-            new GT_MetaTileEntity_Locker(LOCKER_UHV.ID, "locker.tier.09", "Highly Ultimate Voltage Locker", 9).getStackForm(1L));
+            new GT_MetaTileEntity_Locker(LOCKER_UHV.ID, "locker.tier.09", "Highly Ultimate Voltage Locker", 9)
+                .getStackForm(1L));
     }
 
     private static void registerScanner() {
         ItemList.Machine_LV_Scanner.set(
-            new GT_MetaTileEntity_Scanner(SCANNER_LV.ID, "basicmachine.scanner.tier.01", "Basic Scanner", 1).getStackForm(1L));
+            new GT_MetaTileEntity_Scanner(SCANNER_LV.ID, "basicmachine.scanner.tier.01", "Basic Scanner", 1)
+                .getStackForm(1L));
         ItemList.Machine_MV_Scanner.set(
-            new GT_MetaTileEntity_Scanner(SCANNER_MV.ID, "basicmachine.scanner.tier.02", "Advanced Scanner", 2).getStackForm(1L));
+            new GT_MetaTileEntity_Scanner(SCANNER_MV.ID, "basicmachine.scanner.tier.02", "Advanced Scanner", 2)
+                .getStackForm(1L));
         ItemList.Machine_HV_Scanner.set(
             new GT_MetaTileEntity_Scanner(SCANNER_HV.ID, "basicmachine.scanner.tier.03", "Advanced Scanner II", 3)
                 .getStackForm(1L));
@@ -603,31 +700,50 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_Boxinator(PACKAGER_HV.ID, "basicmachine.boxinator.tier.03", "Advanced Packager II", 3)
                 .getStackForm(1L));
         ItemList.Machine_EV_Boxinator.set(
-            new GT_MetaTileEntity_Boxinator(PACKAGER_EV.ID, "basicmachine.boxinator.tier.04", "Advanced Packager III", 4)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Boxinator(
+                PACKAGER_EV.ID,
+                "basicmachine.boxinator.tier.04",
+                "Advanced Packager III",
+                4).getStackForm(1L));
         ItemList.Machine_IV_Boxinator.set(
-            new GT_MetaTileEntity_Boxinator(PACKAGER_IV.ID, "basicmachine.boxinator.tier.05", "Boxinator", 5).getStackForm(1L));
+            new GT_MetaTileEntity_Boxinator(PACKAGER_IV.ID, "basicmachine.boxinator.tier.05", "Boxinator", 5)
+                .getStackForm(1L));
         ItemList.Machine_LuV_Boxinator.set(
-            new GT_MetaTileEntity_Boxinator(PACKAGER_LuV.ID, "basicmachine.boxinator.tier.06", "Boxinator", 6).getStackForm(1L));
+            new GT_MetaTileEntity_Boxinator(PACKAGER_LuV.ID, "basicmachine.boxinator.tier.06", "Boxinator", 6)
+                .getStackForm(1L));
         ItemList.Machine_ZPM_Boxinator.set(
-            new GT_MetaTileEntity_Boxinator(PACKAGER_ZPM.ID, "basicmachine.boxinator.tier.07", "Boxinator", 7).getStackForm(1L));
+            new GT_MetaTileEntity_Boxinator(PACKAGER_ZPM.ID, "basicmachine.boxinator.tier.07", "Boxinator", 7)
+                .getStackForm(1L));
         ItemList.Machine_UV_Boxinator.set(
-            new GT_MetaTileEntity_Boxinator(PACKAGER_UV.ID, "basicmachine.boxinator.tier.08", "Boxinator", 8).getStackForm(1L));
+            new GT_MetaTileEntity_Boxinator(PACKAGER_UV.ID, "basicmachine.boxinator.tier.08", "Boxinator", 8)
+                .getStackForm(1L));
     }
 
     private static void registerRockBreaker() {
         ItemList.Machine_LV_RockBreaker.set(
-            new GT_MetaTileEntity_RockBreaker(ROCK_BREAKER_LV.ID, "basicmachine.rockbreaker.tier.01", "Basic Rock Breaker", 1)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_RockBreaker(
+                ROCK_BREAKER_LV.ID,
+                "basicmachine.rockbreaker.tier.01",
+                "Basic Rock Breaker",
+                1).getStackForm(1L));
         ItemList.Machine_MV_RockBreaker.set(
-            new GT_MetaTileEntity_RockBreaker(ROCK_BREAKER_MV.ID, "basicmachine.rockbreaker.tier.02", "Advanced Rock Breaker", 2)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_RockBreaker(
+                ROCK_BREAKER_MV.ID,
+                "basicmachine.rockbreaker.tier.02",
+                "Advanced Rock Breaker",
+                2).getStackForm(1L));
         ItemList.Machine_HV_RockBreaker.set(
-            new GT_MetaTileEntity_RockBreaker(ROCK_BREAKER_HV.ID, "basicmachine.rockbreaker.tier.03", "Advanced Rock Breaker II", 3)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_RockBreaker(
+                ROCK_BREAKER_HV.ID,
+                "basicmachine.rockbreaker.tier.03",
+                "Advanced Rock Breaker II",
+                3).getStackForm(1L));
         ItemList.Machine_EV_RockBreaker.set(
-            new GT_MetaTileEntity_RockBreaker(ROCK_BREAKER_EV.ID, "basicmachine.rockbreaker.tier.04", "Advanced Rock Breaker III", 4)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_RockBreaker(
+                ROCK_BREAKER_EV.ID,
+                "basicmachine.rockbreaker.tier.04",
+                "Advanced Rock Breaker III",
+                4).getStackForm(1L));
         ItemList.Machine_IV_RockBreaker.set(
             new GT_MetaTileEntity_RockBreaker(
                 ROCK_BREAKER_IV.ID,
@@ -639,27 +755,45 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     private static void registerIndustrialApiary() {
         if (Forestry.isModLoaded()) {
             ItemList.Machine_IndustrialApiary.set(
-                new GT_MetaTileEntity_IndustrialApiary(INDUSTRIAL_APIARY.ID, "basicmachine.industrialapiary", "Industrial Apiary", 8)
-                    .getStackForm(1L));
+                new GT_MetaTileEntity_IndustrialApiary(
+                    INDUSTRIAL_APIARY.ID,
+                    "basicmachine.industrialapiary",
+                    "Industrial Apiary",
+                    8).getStackForm(1L));
         }
     }
 
     private static void registerMassFab() {
         ItemList.Machine_LV_Massfab.set(
-            new GT_MetaTileEntity_Massfabricator(MASS_FABRICATOR_LV.ID, "basicmachine.massfab.tier.01", "Basic Mass Fabricator", 1)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Massfabricator(
+                MASS_FABRICATOR_LV.ID,
+                "basicmachine.massfab.tier.01",
+                "Basic Mass Fabricator",
+                1).getStackForm(1L));
         ItemList.Machine_MV_Massfab.set(
-            new GT_MetaTileEntity_Massfabricator(MASS_FABRICATOR_MV.ID, "basicmachine.massfab.tier.02", "Advanced Mass Fabricator", 2)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Massfabricator(
+                MASS_FABRICATOR_MV.ID,
+                "basicmachine.massfab.tier.02",
+                "Advanced Mass Fabricator",
+                2).getStackForm(1L));
         ItemList.Machine_HV_Massfab.set(
-            new GT_MetaTileEntity_Massfabricator(MASS_FABRICATOR_HV.ID, "basicmachine.massfab.tier.03", "Advanced Mass Fabricator II", 3)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Massfabricator(
+                MASS_FABRICATOR_HV.ID,
+                "basicmachine.massfab.tier.03",
+                "Advanced Mass Fabricator II",
+                3).getStackForm(1L));
         ItemList.Machine_EV_Massfab.set(
-            new GT_MetaTileEntity_Massfabricator(MASS_FABRICATOR_EV.ID, "basicmachine.massfab.tier.04", "Advanced Mass Fabricator III", 4)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Massfabricator(
+                MASS_FABRICATOR_EV.ID,
+                "basicmachine.massfab.tier.04",
+                "Advanced Mass Fabricator III",
+                4).getStackForm(1L));
         ItemList.Machine_IV_Massfab.set(
-            new GT_MetaTileEntity_Massfabricator(MASS_FABRICATOR_IV.ID, "basicmachine.massfab.tier.05", "Advanced Mass Fabricator IV", 5)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Massfabricator(
+                MASS_FABRICATOR_IV.ID,
+                "basicmachine.massfab.tier.05",
+                "Advanced Mass Fabricator IV",
+                5).getStackForm(1L));
     }
 
     private static void registerReplicator() {
@@ -667,17 +801,29 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_Replicator(REPLICATOR_LV.ID, "basicmachine.replicator.tier.01", "Basic Replicator", 1)
                 .getStackForm(1L));
         ItemList.Machine_MV_Replicator.set(
-            new GT_MetaTileEntity_Replicator(REPLICATOR_MV.ID, "basicmachine.replicator.tier.02", "Advanced Replicator", 2)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Replicator(
+                REPLICATOR_MV.ID,
+                "basicmachine.replicator.tier.02",
+                "Advanced Replicator",
+                2).getStackForm(1L));
         ItemList.Machine_HV_Replicator.set(
-            new GT_MetaTileEntity_Replicator(REPLICATOR_HV.ID, "basicmachine.replicator.tier.03", "Advanced Replicator II", 3)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Replicator(
+                REPLICATOR_HV.ID,
+                "basicmachine.replicator.tier.03",
+                "Advanced Replicator II",
+                3).getStackForm(1L));
         ItemList.Machine_EV_Replicator.set(
-            new GT_MetaTileEntity_Replicator(REPLICATOR_EV.ID, "basicmachine.replicator.tier.04", "Advanced Replicator III", 4)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Replicator(
+                REPLICATOR_EV.ID,
+                "basicmachine.replicator.tier.04",
+                "Advanced Replicator III",
+                4).getStackForm(1L));
         ItemList.Machine_IV_Replicator.set(
-            new GT_MetaTileEntity_Replicator(REPLICATOR_IV.ID, "basicmachine.replicator.tier.05", "Advanced Replicator IV", 5)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Replicator(
+                REPLICATOR_IV.ID,
+                "basicmachine.replicator.tier.05",
+                "Advanced Replicator IV",
+                5).getStackForm(1L));
     }
 
     private static void registerBrewery() {
@@ -699,36 +845,44 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private static void registerMiner() {
-        ItemList.Machine_LV_Miner
-            .set(new GT_MetaTileEntity_Miner(MINER_LV.ID, "basicmachine.miner.tier.01", "Basic Miner", 1).getStackForm(1L));
-        ItemList.Machine_MV_Miner
-            .set(new GT_MetaTileEntity_Miner(MINER_MV.ID, "basicmachine.miner.tier.02", "Good Miner", 2).getStackForm(1L));
-        ItemList.Machine_HV_Miner
-            .set(new GT_MetaTileEntity_Miner(MINER_HV.ID, "basicmachine.miner.tier.03", "Advanced Miner", 3).getStackForm(1L));
+        ItemList.Machine_LV_Miner.set(
+            new GT_MetaTileEntity_Miner(MINER_LV.ID, "basicmachine.miner.tier.01", "Basic Miner", 1).getStackForm(1L));
+        ItemList.Machine_MV_Miner.set(
+            new GT_MetaTileEntity_Miner(MINER_MV.ID, "basicmachine.miner.tier.02", "Good Miner", 2).getStackForm(1L));
+        ItemList.Machine_HV_Miner.set(
+            new GT_MetaTileEntity_Miner(MINER_HV.ID, "basicmachine.miner.tier.03", "Advanced Miner", 3)
+                .getStackForm(1L));
     }
 
     private static void registerPump() {
         ItemList.Pump_LV
             .set(new GT_MetaTileEntity_Pump(PUMP_LV.ID, "basicmachine.pump.tier.01", "Basic Pump", 1).getStackForm(1L));
-        ItemList.Pump_MV
-            .set(new GT_MetaTileEntity_Pump(PUMP_MV.ID, "basicmachine.pump.tier.02", "Advanced Pump", 2).getStackForm(1L));
-        ItemList.Pump_HV
-            .set(new GT_MetaTileEntity_Pump(PUMP_HV.ID, "basicmachine.pump.tier.03", "Advanced Pump II", 3).getStackForm(1L));
+        ItemList.Pump_MV.set(
+            new GT_MetaTileEntity_Pump(PUMP_MV.ID, "basicmachine.pump.tier.02", "Advanced Pump", 2).getStackForm(1L));
+        ItemList.Pump_HV.set(
+            new GT_MetaTileEntity_Pump(PUMP_HV.ID, "basicmachine.pump.tier.03", "Advanced Pump II", 3)
+                .getStackForm(1L));
         ItemList.Pump_EV.set(
-            new GT_MetaTileEntity_Pump(PUMP_EV.ID, "basicmachine.pump.tier.04", "Advanced Pump III", 4).getStackForm(1L));
-        ItemList.Pump_IV
-            .set(new GT_MetaTileEntity_Pump(PUMP_IV.ID, "basicmachine.pump.tier.05", "Advanced Pump IV", 5).getStackForm(1L));
+            new GT_MetaTileEntity_Pump(PUMP_EV.ID, "basicmachine.pump.tier.04", "Advanced Pump III", 4)
+                .getStackForm(1L));
+        ItemList.Pump_IV.set(
+            new GT_MetaTileEntity_Pump(PUMP_IV.ID, "basicmachine.pump.tier.05", "Advanced Pump IV", 5)
+                .getStackForm(1L));
     }
 
     private static void registerTeleporter() {
-        ItemList.Teleporter
-            .set(new GT_MetaTileEntity_Teleporter(TELEPORTER.ID, "basicmachine.teleporter", "Teleporter", 9).getStackForm(1L));
+        ItemList.Teleporter.set(
+            new GT_MetaTileEntity_Teleporter(TELEPORTER.ID, "basicmachine.teleporter", "Teleporter", 9)
+                .getStackForm(1L));
     }
 
     private static void registerMonsterRepellator() {
         ItemList.MobRep_LV.set(
-            new GT_MetaTileEntity_MonsterRepellent(MONSTER_REPELLATOR_LV.ID, "basicmachine.mobrep.tier.01", "Basic Monster Repellator", 1)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_MonsterRepellent(
+                MONSTER_REPELLATOR_LV.ID,
+                "basicmachine.mobrep.tier.01",
+                "Basic Monster Repellator",
+                1).getStackForm(1L));
         ItemList.MobRep_MV.set(
             new GT_MetaTileEntity_MonsterRepellent(
                 MONSTER_REPELLATOR_MV.ID,
@@ -876,20 +1030,35 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Ultra Low Voltage Chest Buffer",
                 0).getStackForm(1L));
         ItemList.Automation_ChestBuffer_LV.set(
-            new GT_MetaTileEntity_ChestBuffer(CHEST_BUFFER_LV.ID, "automation.chestbuffer.tier.01", "Low Voltage Chest Buffer", 1)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_ChestBuffer(
+                CHEST_BUFFER_LV.ID,
+                "automation.chestbuffer.tier.01",
+                "Low Voltage Chest Buffer",
+                1).getStackForm(1L));
         ItemList.Automation_ChestBuffer_MV.set(
-            new GT_MetaTileEntity_ChestBuffer(CHEST_BUFFER_MV.ID, "automation.chestbuffer.tier.02", "Medium Voltage Chest Buffer", 2)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_ChestBuffer(
+                CHEST_BUFFER_MV.ID,
+                "automation.chestbuffer.tier.02",
+                "Medium Voltage Chest Buffer",
+                2).getStackForm(1L));
         ItemList.Automation_ChestBuffer_HV.set(
-            new GT_MetaTileEntity_ChestBuffer(CHEST_BUFFER_HV.ID, "automation.chestbuffer.tier.03", "High Voltage Chest Buffer", 3)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_ChestBuffer(
+                CHEST_BUFFER_HV.ID,
+                "automation.chestbuffer.tier.03",
+                "High Voltage Chest Buffer",
+                3).getStackForm(1L));
         ItemList.Automation_ChestBuffer_EV.set(
-            new GT_MetaTileEntity_ChestBuffer(CHEST_BUFFER_EV.ID, "automation.chestbuffer.tier.04", "Extreme Voltage Chest Buffer", 4)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_ChestBuffer(
+                CHEST_BUFFER_EV.ID,
+                "automation.chestbuffer.tier.04",
+                "Extreme Voltage Chest Buffer",
+                4).getStackForm(1L));
         ItemList.Automation_ChestBuffer_IV.set(
-            new GT_MetaTileEntity_ChestBuffer(CHEST_BUFFER_IV.ID, "automation.chestbuffer.tier.05", "Insane Voltage Chest Buffer", 5)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_ChestBuffer(
+                CHEST_BUFFER_IV.ID,
+                "automation.chestbuffer.tier.05",
+                "Insane Voltage Chest Buffer",
+                5).getStackForm(1L));
         ItemList.Automation_ChestBuffer_LuV.set(
             new GT_MetaTileEntity_ChestBuffer(
                 CHEST_BUFFER_LuV.ID,
@@ -897,8 +1066,11 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Ludicrous Voltage Chest Buffer",
                 6).getStackForm(1L));
         ItemList.Automation_ChestBuffer_ZPM.set(
-            new GT_MetaTileEntity_ChestBuffer(CHEST_BUFFER_ZPM.ID, "automation.chestbuffer.tier.07", "ZPM Voltage Chest Buffer", 7)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_ChestBuffer(
+                CHEST_BUFFER_ZPM.ID,
+                "automation.chestbuffer.tier.07",
+                "ZPM Voltage Chest Buffer",
+                7).getStackForm(1L));
         ItemList.Automation_ChestBuffer_UV.set(
             new GT_MetaTileEntity_ChestBuffer(
                 CHEST_BUFFER_UV.ID,
@@ -915,67 +1087,116 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void registerItemFilter() {
         ItemList.Automation_Filter_ULV.set(
-            new GT_MetaTileEntity_Filter(ITEM_FILTER_ULV.ID, "automation.filter.tier.00", "Ultra Low Voltage Item Filter", 0)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Filter(
+                ITEM_FILTER_ULV.ID,
+                "automation.filter.tier.00",
+                "Ultra Low Voltage Item Filter",
+                0).getStackForm(1L));
         ItemList.Automation_Filter_LV.set(
             new GT_MetaTileEntity_Filter(ITEM_FILTER_LV.ID, "automation.filter.tier.01", "Low Voltage Item Filter", 1)
                 .getStackForm(1L));
         ItemList.Automation_Filter_MV.set(
-            new GT_MetaTileEntity_Filter(ITEM_FILTER_MV.ID, "automation.filter.tier.02", "Medium Voltage Item Filter", 2)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Filter(
+                ITEM_FILTER_MV.ID,
+                "automation.filter.tier.02",
+                "Medium Voltage Item Filter",
+                2).getStackForm(1L));
         ItemList.Automation_Filter_HV.set(
             new GT_MetaTileEntity_Filter(ITEM_FILTER_HV.ID, "automation.filter.tier.03", "High Voltage Item Filter", 3)
                 .getStackForm(1L));
         ItemList.Automation_Filter_EV.set(
-            new GT_MetaTileEntity_Filter(ITEM_FILTER_EV.ID, "automation.filter.tier.04", "Extreme Voltage Item Filter", 4)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Filter(
+                ITEM_FILTER_EV.ID,
+                "automation.filter.tier.04",
+                "Extreme Voltage Item Filter",
+                4).getStackForm(1L));
         ItemList.Automation_Filter_IV.set(
-            new GT_MetaTileEntity_Filter(ITEM_FILTER_IV.ID, "automation.filter.tier.05", "Insane Voltage Item Filter", 5)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Filter(
+                ITEM_FILTER_IV.ID,
+                "automation.filter.tier.05",
+                "Insane Voltage Item Filter",
+                5).getStackForm(1L));
         ItemList.Automation_Filter_LuV.set(
-            new GT_MetaTileEntity_Filter(ITEM_FILTER_LuV.ID, "automation.filter.tier.06", "Ludicrous Voltage Item Filter", 6)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Filter(
+                ITEM_FILTER_LuV.ID,
+                "automation.filter.tier.06",
+                "Ludicrous Voltage Item Filter",
+                6).getStackForm(1L));
         ItemList.Automation_Filter_ZPM.set(
             new GT_MetaTileEntity_Filter(ITEM_FILTER_ZPM.ID, "automation.filter.tier.07", "ZPM Voltage Item Filter", 7)
                 .getStackForm(1L));
         ItemList.Automation_Filter_UV.set(
-            new GT_MetaTileEntity_Filter(ITEM_FILTER_UV.ID, "automation.filter.tier.08", "Ultimate Voltage Item Filter", 8)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Filter(
+                ITEM_FILTER_UV.ID,
+                "automation.filter.tier.08",
+                "Ultimate Voltage Item Filter",
+                8).getStackForm(1L));
         ItemList.Automation_Filter_MAX.set(
-            new GT_MetaTileEntity_Filter(ITEM_FILTER_UHV.ID, "automation.filter.tier.09", "Highly Ultimate Voltage Item Filter", 9)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Filter(
+                ITEM_FILTER_UHV.ID,
+                "automation.filter.tier.09",
+                "Highly Ultimate Voltage Item Filter",
+                9).getStackForm(1L));
     }
 
     private static void registerTypeFilter() {
         ItemList.Automation_TypeFilter_ULV.set(
-            new GT_MetaTileEntity_TypeFilter(TYPE_FILTER_ULV.ID, "automation.typefilter.tier.00", "Ultra Low Voltage Type Filter", 0)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_TypeFilter(
+                TYPE_FILTER_ULV.ID,
+                "automation.typefilter.tier.00",
+                "Ultra Low Voltage Type Filter",
+                0).getStackForm(1L));
         ItemList.Automation_TypeFilter_LV.set(
-            new GT_MetaTileEntity_TypeFilter(TYPE_FILTER_LV.ID, "automation.typefilter.tier.01", "Low Voltage Type Filter", 1)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_TypeFilter(
+                TYPE_FILTER_LV.ID,
+                "automation.typefilter.tier.01",
+                "Low Voltage Type Filter",
+                1).getStackForm(1L));
         ItemList.Automation_TypeFilter_MV.set(
-            new GT_MetaTileEntity_TypeFilter(TYPE_FILTER_MV.ID, "automation.typefilter.tier.02", "Medium Voltage Type Filter", 2)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_TypeFilter(
+                TYPE_FILTER_MV.ID,
+                "automation.typefilter.tier.02",
+                "Medium Voltage Type Filter",
+                2).getStackForm(1L));
         ItemList.Automation_TypeFilter_HV.set(
-            new GT_MetaTileEntity_TypeFilter(TYPE_FILTER_HV.ID, "automation.typefilter.tier.03", "High Voltage Type Filter", 3)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_TypeFilter(
+                TYPE_FILTER_HV.ID,
+                "automation.typefilter.tier.03",
+                "High Voltage Type Filter",
+                3).getStackForm(1L));
         ItemList.Automation_TypeFilter_EV.set(
-            new GT_MetaTileEntity_TypeFilter(TYPE_FILTER_EV.ID, "automation.typefilter.tier.04", "Extreme Voltage Type Filter", 4)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_TypeFilter(
+                TYPE_FILTER_EV.ID,
+                "automation.typefilter.tier.04",
+                "Extreme Voltage Type Filter",
+                4).getStackForm(1L));
         ItemList.Automation_TypeFilter_IV.set(
-            new GT_MetaTileEntity_TypeFilter(TYPE_FILTER_IV.ID, "automation.typefilter.tier.05", "Insane Voltage Type Filter", 5)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_TypeFilter(
+                TYPE_FILTER_IV.ID,
+                "automation.typefilter.tier.05",
+                "Insane Voltage Type Filter",
+                5).getStackForm(1L));
         ItemList.Automation_TypeFilter_LuV.set(
-            new GT_MetaTileEntity_TypeFilter(TYPE_FILTER_LuV.ID, "automation.typefilter.tier.06", "Ludicrous Voltage Type Filter", 6)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_TypeFilter(
+                TYPE_FILTER_LuV.ID,
+                "automation.typefilter.tier.06",
+                "Ludicrous Voltage Type Filter",
+                6).getStackForm(1L));
         ItemList.Automation_TypeFilter_ZPM.set(
-            new GT_MetaTileEntity_TypeFilter(TYPE_FILTER_ZPM.ID, "automation.typefilter.tier.07", "ZPM Voltage Type Filter", 7)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_TypeFilter(
+                TYPE_FILTER_ZPM.ID,
+                "automation.typefilter.tier.07",
+                "ZPM Voltage Type Filter",
+                7).getStackForm(1L));
         ItemList.Automation_TypeFilter_UV.set(
-            new GT_MetaTileEntity_TypeFilter(TYPE_FILTER_UV.ID, "automation.typefilter.tier.08", "Ultimate Voltage Type Filter", 8)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_TypeFilter(
+                TYPE_FILTER_UV.ID,
+                "automation.typefilter.tier.08",
+                "Ultimate Voltage Type Filter",
+                8).getStackForm(1L));
         ItemList.Automation_TypeFilter_MAX.set(
-            new GT_MetaTileEntity_TypeFilter(TYPE_FILTER_UHV.ID,
+            new GT_MetaTileEntity_TypeFilter(
+                TYPE_FILTER_UHV.ID,
                 "automation.typefilter.tier.09",
                 "Highly Ultimate Voltage Type Filter",
                 9).getStackForm(1L));
@@ -983,74 +1204,125 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void registerRegulator() {
         ItemList.Automation_Regulator_ULV.set(
-            new GT_MetaTileEntity_Regulator(VOLTAGE_REGULATOR_ULV.ID, "automation.regulator.tier.00", "Ultra Low Voltage Regulator", 0)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Regulator(
+                VOLTAGE_REGULATOR_ULV.ID,
+                "automation.regulator.tier.00",
+                "Ultra Low Voltage Regulator",
+                0).getStackForm(1L));
         ItemList.Automation_Regulator_LV.set(
-            new GT_MetaTileEntity_Regulator(VOLTAGE_REGULATOR_LV.ID, "automation.regulator.tier.01", "Low Voltage Regulator", 1)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Regulator(
+                VOLTAGE_REGULATOR_LV.ID,
+                "automation.regulator.tier.01",
+                "Low Voltage Regulator",
+                1).getStackForm(1L));
         ItemList.Automation_Regulator_MV.set(
-            new GT_MetaTileEntity_Regulator(VOLTAGE_REGULATOR_MV.ID, "automation.regulator.tier.02", "Medium Voltage Regulator", 2)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Regulator(
+                VOLTAGE_REGULATOR_MV.ID,
+                "automation.regulator.tier.02",
+                "Medium Voltage Regulator",
+                2).getStackForm(1L));
         ItemList.Automation_Regulator_HV.set(
-            new GT_MetaTileEntity_Regulator(VOLTAGE_REGULATOR_HV.ID, "automation.regulator.tier.03", "High Voltage Regulator", 3)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Regulator(
+                VOLTAGE_REGULATOR_HV.ID,
+                "automation.regulator.tier.03",
+                "High Voltage Regulator",
+                3).getStackForm(1L));
         ItemList.Automation_Regulator_EV.set(
-            new GT_MetaTileEntity_Regulator(VOLTAGE_REGULATOR_EV.ID, "automation.regulator.tier.04", "Extreme Voltage Regulator", 4)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Regulator(
+                VOLTAGE_REGULATOR_EV.ID,
+                "automation.regulator.tier.04",
+                "Extreme Voltage Regulator",
+                4).getStackForm(1L));
         ItemList.Automation_Regulator_IV.set(
-            new GT_MetaTileEntity_Regulator(VOLTAGE_REGULATOR_IV.ID, "automation.regulator.tier.05", "Insane Voltage Regulator", 5)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Regulator(
+                VOLTAGE_REGULATOR_IV.ID,
+                "automation.regulator.tier.05",
+                "Insane Voltage Regulator",
+                5).getStackForm(1L));
         ItemList.Automation_Regulator_LuV.set(
-            new GT_MetaTileEntity_Regulator(VOLTAGE_REGULATOR_LuV.ID, "automation.regulator.tier.06", "Ludicrous Voltage Regulator", 6)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Regulator(
+                VOLTAGE_REGULATOR_LuV.ID,
+                "automation.regulator.tier.06",
+                "Ludicrous Voltage Regulator",
+                6).getStackForm(1L));
         ItemList.Automation_Regulator_ZPM.set(
-            new GT_MetaTileEntity_Regulator(VOLTAGE_REGULATOR_ZPM.ID, "automation.regulator.tier.07", "ZPM Voltage Regulator", 7)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Regulator(
+                VOLTAGE_REGULATOR_ZPM.ID,
+                "automation.regulator.tier.07",
+                "ZPM Voltage Regulator",
+                7).getStackForm(1L));
         ItemList.Automation_Regulator_UV.set(
-            new GT_MetaTileEntity_Regulator(VOLTAGE_REGULATOR_UV.ID, "automation.regulator.tier.08", "Ultimate Voltage Regulator", 8)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_Regulator(
+                VOLTAGE_REGULATOR_UV.ID,
+                "automation.regulator.tier.08",
+                "Ultimate Voltage Regulator",
+                8).getStackForm(1L));
         ItemList.Automation_Regulator_MAX.set(
-            new GT_MetaTileEntity_Regulator(VOLTAGE_REGULATOR_UHV.ID, "automation.regulator.tier.09",
+            new GT_MetaTileEntity_Regulator(
+                VOLTAGE_REGULATOR_UHV.ID,
+                "automation.regulator.tier.09",
                 "Highly Ultimate Voltage Regulator",
                 9).getStackForm(1L));
     }
 
     private static void registerSuperBuffer() {
         ItemList.Automation_SuperBuffer_ULV.set(
-            new GT_MetaTileEntity_SuperBuffer(SUPER_BUFFER_ULV.ID,
+            new GT_MetaTileEntity_SuperBuffer(
+                SUPER_BUFFER_ULV.ID,
                 "automation.superbuffer.tier.00",
                 "Ultra Low Voltage Super Buffer",
                 0).getStackForm(1L));
         ItemList.Automation_SuperBuffer_LV.set(
-            new GT_MetaTileEntity_SuperBuffer(SUPER_BUFFER_LV.ID, "automation.superbuffer.tier.01", "Low Voltage Super Buffer", 1)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_SuperBuffer(
+                SUPER_BUFFER_LV.ID,
+                "automation.superbuffer.tier.01",
+                "Low Voltage Super Buffer",
+                1).getStackForm(1L));
         ItemList.Automation_SuperBuffer_MV.set(
-            new GT_MetaTileEntity_SuperBuffer(SUPER_BUFFER_MV.ID, "automation.superbuffer.tier.02", "Medium Voltage Super Buffer", 2)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_SuperBuffer(
+                SUPER_BUFFER_MV.ID,
+                "automation.superbuffer.tier.02",
+                "Medium Voltage Super Buffer",
+                2).getStackForm(1L));
         ItemList.Automation_SuperBuffer_HV.set(
-            new GT_MetaTileEntity_SuperBuffer(SUPER_BUFFER_HV.ID, "automation.superbuffer.tier.03", "High Voltage Super Buffer", 3)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_SuperBuffer(
+                SUPER_BUFFER_HV.ID,
+                "automation.superbuffer.tier.03",
+                "High Voltage Super Buffer",
+                3).getStackForm(1L));
         ItemList.Automation_SuperBuffer_EV.set(
-            new GT_MetaTileEntity_SuperBuffer(SUPER_BUFFER_EV.ID, "automation.superbuffer.tier.04", "Extreme Voltage Super Buffer", 4)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_SuperBuffer(
+                SUPER_BUFFER_EV.ID,
+                "automation.superbuffer.tier.04",
+                "Extreme Voltage Super Buffer",
+                4).getStackForm(1L));
         ItemList.Automation_SuperBuffer_IV.set(
-            new GT_MetaTileEntity_SuperBuffer(SUPER_BUFFER_IV.ID, "automation.superbuffer.tier.05", "Insane Voltage Super Buffer", 5)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_SuperBuffer(
+                SUPER_BUFFER_IV.ID,
+                "automation.superbuffer.tier.05",
+                "Insane Voltage Super Buffer",
+                5).getStackForm(1L));
         ItemList.Automation_SuperBuffer_LuV.set(
-            new GT_MetaTileEntity_SuperBuffer(SUPER_BUFFER_LuV.ID,
+            new GT_MetaTileEntity_SuperBuffer(
+                SUPER_BUFFER_LuV.ID,
                 "automation.superbuffer.tier.06",
                 "Ludicrous Voltage Super Buffer",
                 6).getStackForm(1L));
         ItemList.Automation_SuperBuffer_ZPM.set(
-            new GT_MetaTileEntity_SuperBuffer(SUPER_BUFFER_ZPM.ID, "automation.superbuffer.tier.07", "ZPM Voltage Super Buffer", 7)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_SuperBuffer(
+                SUPER_BUFFER_ZPM.ID,
+                "automation.superbuffer.tier.07",
+                "ZPM Voltage Super Buffer",
+                7).getStackForm(1L));
         ItemList.Automation_SuperBuffer_UV.set(
-            new GT_MetaTileEntity_SuperBuffer(SUPER_BUFFER_UV.ID,
+            new GT_MetaTileEntity_SuperBuffer(
+                SUPER_BUFFER_UV.ID,
                 "automation.superbuffer.tier.08",
                 "Ultimate Voltage Super Buffer",
                 8).getStackForm(1L));
         ItemList.Automation_SuperBuffer_MAX.set(
-            new GT_MetaTileEntity_SuperBuffer(SUPER_BUFFER_UHV.ID,
+            new GT_MetaTileEntity_SuperBuffer(
+                SUPER_BUFFER_UHV.ID,
                 "automation.superbuffer.tier.09",
                 "Highly Ultimate Voltage Super Buffer",
                 9).getStackForm(1L));
@@ -1058,52 +1330,62 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void registerItemDistributor() {
         ItemList.Automation_ItemDistributor_ULV.set(
-            new GT_MetaTileEntity_ItemDistributor(ITEM_DISTRIBUTOR_ULV.ID,
+            new GT_MetaTileEntity_ItemDistributor(
+                ITEM_DISTRIBUTOR_ULV.ID,
                 "automation.itemdistributor.tier.00",
                 "Ultra Low Voltage Item Distributor",
                 0).getStackForm(1L));
         ItemList.Automation_ItemDistributor_LV.set(
-            new GT_MetaTileEntity_ItemDistributor(ITEM_DISTRIBUTOR_LV.ID,
+            new GT_MetaTileEntity_ItemDistributor(
+                ITEM_DISTRIBUTOR_LV.ID,
                 "automation.itemdistributor.tier.01",
                 "Low Voltage Item Distributor",
                 1).getStackForm(1L));
         ItemList.Automation_ItemDistributor_MV.set(
-            new GT_MetaTileEntity_ItemDistributor(ITEM_DISTRIBUTOR_MV.ID,
+            new GT_MetaTileEntity_ItemDistributor(
+                ITEM_DISTRIBUTOR_MV.ID,
                 "automation.itemdistributor.tier.02",
                 "Medium Voltage Item Distributor",
                 2).getStackForm(1L));
         ItemList.Automation_ItemDistributor_HV.set(
-            new GT_MetaTileEntity_ItemDistributor(ITEM_DISTRIBUTOR_HV.ID,
+            new GT_MetaTileEntity_ItemDistributor(
+                ITEM_DISTRIBUTOR_HV.ID,
                 "automation.itemdistributor.tier.03",
                 "High Voltage Item Distributor",
                 3).getStackForm(1L));
         ItemList.Automation_ItemDistributor_EV.set(
-            new GT_MetaTileEntity_ItemDistributor(ITEM_DISTRIBUTOR_EV.ID,
+            new GT_MetaTileEntity_ItemDistributor(
+                ITEM_DISTRIBUTOR_EV.ID,
                 "automation.itemdistributor.tier.04",
                 "Extreme Voltage Item Distributor",
                 4).getStackForm(1L));
         ItemList.Automation_ItemDistributor_IV.set(
-            new GT_MetaTileEntity_ItemDistributor(ITEM_DISTRIBUTOR_IV.ID,
+            new GT_MetaTileEntity_ItemDistributor(
+                ITEM_DISTRIBUTOR_IV.ID,
                 "automation.itemdistributor.tier.05",
                 "Insane Voltage Item Distributor",
                 5).getStackForm(1L));
         ItemList.Automation_ItemDistributor_LuV.set(
-            new GT_MetaTileEntity_ItemDistributor(ITEM_DISTRIBUTOR_LuV.ID,
+            new GT_MetaTileEntity_ItemDistributor(
+                ITEM_DISTRIBUTOR_LuV.ID,
                 "automation.itemdistributor.tier.06",
                 "Ludicrous Voltage Item Distributor",
                 6).getStackForm(1L));
         ItemList.Automation_ItemDistributor_ZPM.set(
-            new GT_MetaTileEntity_ItemDistributor(ITEM_DISTRIBUTOR_ZPM.ID,
+            new GT_MetaTileEntity_ItemDistributor(
+                ITEM_DISTRIBUTOR_ZPM.ID,
                 "automation.itemdistributor.tier.07",
                 "ZPM Voltage Item Distributor",
                 7).getStackForm(1L));
         ItemList.Automation_ItemDistributor_UV.set(
-            new GT_MetaTileEntity_ItemDistributor(ITEM_DISTRIBUTOR_UV.ID,
+            new GT_MetaTileEntity_ItemDistributor(
+                ITEM_DISTRIBUTOR_UV.ID,
                 "automation.itemdistributor.tier.08",
                 "Ultimate Voltage Item Distributor",
                 8).getStackForm(1L));
         ItemList.Automation_ItemDistributor_MAX.set(
-            new GT_MetaTileEntity_ItemDistributor(ITEM_DISTRIBUTOR_UHV.ID,
+            new GT_MetaTileEntity_ItemDistributor(
+                ITEM_DISTRIBUTOR_UHV.ID,
                 "automation.itemdistributor.tier.09",
                 "MAX Voltage Item Distributor",
                 9).getStackForm(1L));
@@ -1111,46 +1393,62 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void registerRecipeFilter() {
         ItemList.Automation_RecipeFilter_ULV.set(
-            new GT_MetaTileEntity_RecipeFilter(RECIPE_FILTER_ULV.ID,
+            new GT_MetaTileEntity_RecipeFilter(
+                RECIPE_FILTER_ULV.ID,
                 "automation.recipefilter.tier.00",
                 "Ultra Low Voltage Recipe Filter",
                 0).getStackForm(1L));
         ItemList.Automation_RecipeFilter_LV.set(
-            new GT_MetaTileEntity_RecipeFilter(RECIPE_FILTER_LV.ID, "automation.recipefilter.tier.01", "Low Voltage Recipe Filter", 1)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_RecipeFilter(
+                RECIPE_FILTER_LV.ID,
+                "automation.recipefilter.tier.01",
+                "Low Voltage Recipe Filter",
+                1).getStackForm(1L));
         ItemList.Automation_RecipeFilter_MV.set(
-            new GT_MetaTileEntity_RecipeFilter(RECIPE_FILTER_MV.ID,
+            new GT_MetaTileEntity_RecipeFilter(
+                RECIPE_FILTER_MV.ID,
                 "automation.recipefilter.tier.02",
                 "Medium Voltage Recipe Filter",
                 2).getStackForm(1L));
         ItemList.Automation_RecipeFilter_HV.set(
-            new GT_MetaTileEntity_RecipeFilter(RECIPE_FILTER_HV.ID, "automation.recipefilter.tier.03", "High Voltage Recipe Filter", 3)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_RecipeFilter(
+                RECIPE_FILTER_HV.ID,
+                "automation.recipefilter.tier.03",
+                "High Voltage Recipe Filter",
+                3).getStackForm(1L));
         ItemList.Automation_RecipeFilter_EV.set(
-            new GT_MetaTileEntity_RecipeFilter(RECIPE_FILTER_EV.ID,
+            new GT_MetaTileEntity_RecipeFilter(
+                RECIPE_FILTER_EV.ID,
                 "automation.recipefilter.tier.04",
                 "Extreme Voltage Recipe Filter",
                 4).getStackForm(1L));
         ItemList.Automation_RecipeFilter_IV.set(
-            new GT_MetaTileEntity_RecipeFilter(RECIPE_FILTER_IV.ID,
+            new GT_MetaTileEntity_RecipeFilter(
+                RECIPE_FILTER_IV.ID,
                 "automation.recipefilter.tier.05",
                 "Insane Voltage Recipe Filter",
                 5).getStackForm(1L));
         ItemList.Automation_RecipeFilter_LuV.set(
-            new GT_MetaTileEntity_RecipeFilter(RECIPE_FILTER_LuV.ID,
+            new GT_MetaTileEntity_RecipeFilter(
+                RECIPE_FILTER_LuV.ID,
                 "automation.recipefilter.tier.06",
                 "Ludicrous Voltage Recipe Filter",
                 6).getStackForm(1L));
         ItemList.Automation_RecipeFilter_ZPM.set(
-            new GT_MetaTileEntity_RecipeFilter(RECIPE_FILTER_ZPM.ID, "automation.recipefilter.tier.07", "ZPM Voltage Recipe Filter", 7)
-                .getStackForm(1L));
+            new GT_MetaTileEntity_RecipeFilter(
+                RECIPE_FILTER_ZPM.ID,
+                "automation.recipefilter.tier.07",
+                "ZPM Voltage Recipe Filter",
+                7).getStackForm(1L));
         ItemList.Automation_RecipeFilter_UV.set(
-            new GT_MetaTileEntity_RecipeFilter(RECIPE_FILTER_UV.ID,
+            new GT_MetaTileEntity_RecipeFilter(
+                RECIPE_FILTER_UV.ID,
                 "automation.recipefilter.tier.08",
                 "Ultimate Voltage Recipe Filter",
                 8).getStackForm(1L));
         ItemList.Automation_RecipeFilter_MAX.set(
-            new GT_MetaTileEntity_RecipeFilter(RECIPE_FILTER_UHV.ID,
+            new GT_MetaTileEntity_RecipeFilter(
+                RECIPE_FILTER_UHV.ID,
                 "automation.recipefilter.tier.09",
                 "Highly Ultimate Voltage Recipe Filter",
                 9).getStackForm(1L));
@@ -1158,8 +1456,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void registerMachineHull() {
         ItemList.Hull_Bronze.set(
-            new GT_MetaTileEntity_BasicHull_Bronze(HULL_BRONZE.ID, "hull.bronze", "Bronze Hull", 0, "For your first Steam Machines")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_BasicHull_Bronze(
+                HULL_BRONZE.ID,
+                "hull.bronze",
+                "Bronze Hull",
+                0,
+                "For your first Steam Machines").getStackForm(1L));
         ItemList.Hull_Bronze_Bricks.set(
             new GT_MetaTileEntity_BasicHull_BronzeBricks(
                 HULL_BRICKED_BRONZE.ID,
@@ -1168,8 +1470,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 0,
                 "For your first Steam Machines").getStackForm(1L));
         ItemList.Hull_HP.set(
-            new GT_MetaTileEntity_BasicHull_Steel(HULL_STEEL.ID, "hull.steel", "Steel Hull", 0, "For improved Steam Machines")
-                .getStackForm(1L));
+            new GT_MetaTileEntity_BasicHull_Steel(
+                HULL_STEEL.ID,
+                "hull.steel",
+                "Steel Hull",
+                0,
+                "For improved Steam Machines").getStackForm(1L));
         ItemList.Hull_HP_Bricks.set(
             new GT_MetaTileEntity_BasicHull_SteelBricks(
                 HULL_WROUGHT_IRON.ID,
@@ -1179,78 +1485,97 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "For improved Steam Machines").getStackForm(1L));
 
         ItemList.Hull_ULV.set(
-            new GT_MetaTileEntity_BasicHull(HULL_ULV.ID, "hull.tier.00", "ULV Machine Hull", 0, imagination).getStackForm(1L));
+            new GT_MetaTileEntity_BasicHull(HULL_ULV.ID, "hull.tier.00", "ULV Machine Hull", 0, imagination)
+                .getStackForm(1L));
         ItemList.Hull_LV.set(
-            new GT_MetaTileEntity_BasicHull(HULL_LV.ID, "hull.tier.01", "LV Machine Hull", 1, imagination).getStackForm(1L));
+            new GT_MetaTileEntity_BasicHull(HULL_LV.ID, "hull.tier.01", "LV Machine Hull", 1, imagination)
+                .getStackForm(1L));
         ItemList.Hull_MV.set(
-            new GT_MetaTileEntity_BasicHull(HULL_MV.ID, "hull.tier.02", "MV Machine Hull", 2, imagination).getStackForm(1L));
+            new GT_MetaTileEntity_BasicHull(HULL_MV.ID, "hull.tier.02", "MV Machine Hull", 2, imagination)
+                .getStackForm(1L));
         ItemList.Hull_HV.set(
-            new GT_MetaTileEntity_BasicHull(HULL_HV.ID, "hull.tier.03", "HV Machine Hull", 3, imagination).getStackForm(1L));
+            new GT_MetaTileEntity_BasicHull(HULL_HV.ID, "hull.tier.03", "HV Machine Hull", 3, imagination)
+                .getStackForm(1L));
         ItemList.Hull_EV.set(
-            new GT_MetaTileEntity_BasicHull(HULL_EV.ID, "hull.tier.04", "EV Machine Hull", 4, imagination).getStackForm(1L));
+            new GT_MetaTileEntity_BasicHull(HULL_EV.ID, "hull.tier.04", "EV Machine Hull", 4, imagination)
+                .getStackForm(1L));
         ItemList.Hull_IV.set(
-            new GT_MetaTileEntity_BasicHull(HULL_IV.ID, "hull.tier.05", "IV Machine Hull", 5, imagination).getStackForm(1L));
+            new GT_MetaTileEntity_BasicHull(HULL_IV.ID, "hull.tier.05", "IV Machine Hull", 5, imagination)
+                .getStackForm(1L));
         ItemList.Hull_LuV.set(
-            new GT_MetaTileEntity_BasicHull(HULL_LuV.ID, "hull.tier.06", "LuV Machine Hull", 6, imagination).getStackForm(1L));
+            new GT_MetaTileEntity_BasicHull(HULL_LuV.ID, "hull.tier.06", "LuV Machine Hull", 6, imagination)
+                .getStackForm(1L));
         ItemList.Hull_ZPM.set(
-            new GT_MetaTileEntity_BasicHull(HULL_ZPM.ID, "hull.tier.07", "ZPM Machine Hull", 7, imagination).getStackForm(1L));
+            new GT_MetaTileEntity_BasicHull(HULL_ZPM.ID, "hull.tier.07", "ZPM Machine Hull", 7, imagination)
+                .getStackForm(1L));
         ItemList.Hull_UV.set(
-            new GT_MetaTileEntity_BasicHull(HULL_UV.ID, "hull.tier.08", "UV Machine Hull", 8, imagination).getStackForm(1L));
+            new GT_MetaTileEntity_BasicHull(HULL_UV.ID, "hull.tier.08", "UV Machine Hull", 8, imagination)
+                .getStackForm(1L));
         ItemList.Hull_MAX.set(
-            new GT_MetaTileEntity_BasicHull(HULL_UHV.ID, "hull.tier.09", "UHV Machine Hull", 9, imagination).getStackForm(1L));
+            new GT_MetaTileEntity_BasicHull(HULL_UHV.ID, "hull.tier.09", "UHV Machine Hull", 9, imagination)
+                .getStackForm(1L));
     }
 
     private static void registerTransformer() {
         ItemList.Transformer_LV_ULV.set(
-            new GT_MetaTileEntity_Transformer(transformer_LV_ULV.ID,
+            new GT_MetaTileEntity_Transformer(
+                transformer_LV_ULV.ID,
                 "transformer.tier.00",
                 "Ultra Low Voltage Transformer",
                 0,
                 "LV -> ULV (Use Soft Mallet to invert)").getStackForm(1L));
         ItemList.Transformer_MV_LV.set(
-            new GT_MetaTileEntity_Transformer(transformer_MV_LV.ID,
+            new GT_MetaTileEntity_Transformer(
+                transformer_MV_LV.ID,
                 "transformer.tier.01",
                 "Low Voltage Transformer",
                 1,
                 "MV -> LV (Use Soft Mallet to invert)").getStackForm(1L));
         ItemList.Transformer_HV_MV.set(
-            new GT_MetaTileEntity_Transformer(transformer_HV_MV.ID,
+            new GT_MetaTileEntity_Transformer(
+                transformer_HV_MV.ID,
                 "transformer.tier.02",
                 "Medium Voltage Transformer",
                 2,
                 "HV -> MV (Use Soft Mallet to invert)").getStackForm(1L));
         ItemList.Transformer_EV_HV.set(
-            new GT_MetaTileEntity_Transformer(transformer_EV_HV.ID,
+            new GT_MetaTileEntity_Transformer(
+                transformer_EV_HV.ID,
                 "transformer.tier.03",
                 "High Voltage Transformer",
                 3,
                 "EV -> HV (Use Soft Mallet to invert)").getStackForm(1L));
         ItemList.Transformer_IV_EV.set(
-            new GT_MetaTileEntity_Transformer(transformer_IV_EV.ID,
+            new GT_MetaTileEntity_Transformer(
+                transformer_IV_EV.ID,
                 "transformer.tier.04",
                 "Extreme Transformer",
                 4,
                 "IV -> EV (Use Soft Mallet to invert)").getStackForm(1L));
         ItemList.Transformer_LuV_IV.set(
-            new GT_MetaTileEntity_Transformer(transformer_LuV_IV.ID,
+            new GT_MetaTileEntity_Transformer(
+                transformer_LuV_IV.ID,
                 "transformer.tier.05",
                 "Insane Transformer",
                 5,
                 "LuV -> IV (Use Soft Mallet to invert)").getStackForm(1L));
         ItemList.Transformer_ZPM_LuV.set(
-            new GT_MetaTileEntity_Transformer(transformer_ZPM_LuV.ID,
+            new GT_MetaTileEntity_Transformer(
+                transformer_ZPM_LuV.ID,
                 "transformer.tier.06",
                 "Ludicrous Transformer",
                 6,
                 "ZPM -> LuV (Use Soft Mallet to invert)").getStackForm(1L));
         ItemList.Transformer_UV_ZPM.set(
-            new GT_MetaTileEntity_Transformer(transformer_UV_ZPM.ID,
+            new GT_MetaTileEntity_Transformer(
+                transformer_UV_ZPM.ID,
                 "transformer.tier.07",
                 "ZPM Voltage Transformer",
                 7,
                 "UV -> ZPM (Use Soft Mallet to invert)").getStackForm(1L));
         ItemList.Transformer_MAX_UV.set(
-            new GT_MetaTileEntity_Transformer(transformer_UHV_UV.ID,
+            new GT_MetaTileEntity_Transformer(
+                transformer_UHV_UV.ID,
                 "transformer.tier.08",
                 "Ultimate Transformer",
                 8,
@@ -1259,82 +1584,118 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void registerDynamoHatch() {
         ItemList.Hatch_Dynamo_ULV.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_ULV.ID, "hatch.dynamo.tier.00", "ULV Dynamo Hatch", 0).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_ULV.ID, "hatch.dynamo.tier.00", "ULV Dynamo Hatch", 0)
+                .getStackForm(1L));
         ItemList.Hatch_Dynamo_LV.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_LV.ID, "hatch.dynamo.tier.01", "LV Dynamo Hatch", 1).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_LV.ID, "hatch.dynamo.tier.01", "LV Dynamo Hatch", 1)
+                .getStackForm(1L));
         ItemList.Hatch_Dynamo_MV.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_MV.ID, "hatch.dynamo.tier.02", "MV Dynamo Hatch", 2).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_MV.ID, "hatch.dynamo.tier.02", "MV Dynamo Hatch", 2)
+                .getStackForm(1L));
         ItemList.Hatch_Dynamo_HV.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_HV.ID, "hatch.dynamo.tier.03", "HV Dynamo Hatch", 3).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_HV.ID, "hatch.dynamo.tier.03", "HV Dynamo Hatch", 3)
+                .getStackForm(1L));
         ItemList.Hatch_Dynamo_EV.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_EV.ID, "hatch.dynamo.tier.04", "EV Dynamo Hatch", 4).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_EV.ID, "hatch.dynamo.tier.04", "EV Dynamo Hatch", 4)
+                .getStackForm(1L));
         ItemList.Hatch_Dynamo_IV.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_IV.ID, "hatch.dynamo.tier.05", "IV Dynamo Hatch", 5).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_IV.ID, "hatch.dynamo.tier.05", "IV Dynamo Hatch", 5)
+                .getStackForm(1L));
         ItemList.Hatch_Dynamo_LuV.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_LuV.ID, "hatch.dynamo.tier.06", "LuV Dynamo Hatch", 6).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_LuV.ID, "hatch.dynamo.tier.06", "LuV Dynamo Hatch", 6)
+                .getStackForm(1L));
         ItemList.Hatch_Dynamo_ZPM.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_ZPM.ID, "hatch.dynamo.tier.07", "ZPM Dynamo Hatch", 7).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_ZPM.ID, "hatch.dynamo.tier.07", "ZPM Dynamo Hatch", 7)
+                .getStackForm(1L));
         ItemList.Hatch_Dynamo_UV.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_UV.ID, "hatch.dynamo.tier.08", "UV Dynamo Hatch", 8).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_UV.ID, "hatch.dynamo.tier.08", "UV Dynamo Hatch", 8)
+                .getStackForm(1L));
         ItemList.Hatch_Dynamo_MAX.set(
-            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_UHV.ID, "hatch.dynamo.tier.09", "UHV Dynamo Hatch", 9).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Dynamo(DYNAMO_HATCH_UHV.ID, "hatch.dynamo.tier.09", "UHV Dynamo Hatch", 9)
+                .getStackForm(1L));
     }
 
     private static void registerEnergyHatch() {
         ItemList.Hatch_Energy_ULV.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_ULV.ID, "hatch.energy.tier.00", "ULV Energy Hatch", 0).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_ULV.ID, "hatch.energy.tier.00", "ULV Energy Hatch", 0)
+                .getStackForm(1L));
         ItemList.Hatch_Energy_LV.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_LV.ID, "hatch.energy.tier.01", "LV Energy Hatch", 1).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_LV.ID, "hatch.energy.tier.01", "LV Energy Hatch", 1)
+                .getStackForm(1L));
         ItemList.Hatch_Energy_MV.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_MV.ID, "hatch.energy.tier.02", "MV Energy Hatch", 2).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_MV.ID, "hatch.energy.tier.02", "MV Energy Hatch", 2)
+                .getStackForm(1L));
         ItemList.Hatch_Energy_HV.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_HV.ID, "hatch.energy.tier.03", "HV Energy Hatch", 3).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_HV.ID, "hatch.energy.tier.03", "HV Energy Hatch", 3)
+                .getStackForm(1L));
         ItemList.Hatch_Energy_EV.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_EV.ID, "hatch.energy.tier.04", "EV Energy Hatch", 4).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_EV.ID, "hatch.energy.tier.04", "EV Energy Hatch", 4)
+                .getStackForm(1L));
         ItemList.Hatch_Energy_IV.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_IV.ID, "hatch.energy.tier.05", "IV Energy Hatch", 5).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_IV.ID, "hatch.energy.tier.05", "IV Energy Hatch", 5)
+                .getStackForm(1L));
         ItemList.Hatch_Energy_LuV.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_LuV.ID, "hatch.energy.tier.06", "LuV Energy Hatch", 6).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_LuV.ID, "hatch.energy.tier.06", "LuV Energy Hatch", 6)
+                .getStackForm(1L));
         ItemList.Hatch_Energy_ZPM.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_ZPM.ID, "hatch.energy.tier.07", "ZPM Energy Hatch", 7).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_ZPM.ID, "hatch.energy.tier.07", "ZPM Energy Hatch", 7)
+                .getStackForm(1L));
         ItemList.Hatch_Energy_UV.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_UV.ID, "hatch.energy.tier.08", "UV Energy Hatch", 8).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_UV.ID, "hatch.energy.tier.08", "UV Energy Hatch", 8)
+                .getStackForm(1L));
         ItemList.Hatch_Energy_MAX.set(
-            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_UHV.ID, "hatch.energy.tier.09", "UHV Energy Hatch", 9).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Energy(ENERGY_HATCH_UHV.ID, "hatch.energy.tier.09", "UHV Energy Hatch", 9)
+                .getStackForm(1L));
     }
 
     private static void registerInputHatch() {
         ItemList.Hatch_Input_ULV.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_ULV.ID, "hatch.input.tier.00", "Input Hatch (ULV)", 0).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_ULV.ID, "hatch.input.tier.00", "Input Hatch (ULV)", 0)
+                .getStackForm(1L));
         ItemList.Hatch_Input_LV.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_LV.ID, "hatch.input.tier.01", "Input Hatch (LV)", 1).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_LV.ID, "hatch.input.tier.01", "Input Hatch (LV)", 1)
+                .getStackForm(1L));
         ItemList.Hatch_Input_MV.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_MV.ID, "hatch.input.tier.02", "Input Hatch (MV)", 2).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_MV.ID, "hatch.input.tier.02", "Input Hatch (MV)", 2)
+                .getStackForm(1L));
         ItemList.Hatch_Input_HV.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_HV.ID, "hatch.input.tier.03", "Input Hatch (HV)", 3).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_HV.ID, "hatch.input.tier.03", "Input Hatch (HV)", 3)
+                .getStackForm(1L));
         ItemList.Hatch_Input_EV.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_EV.ID, "hatch.input.tier.04", "Input Hatch (EV)", 4).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_EV.ID, "hatch.input.tier.04", "Input Hatch (EV)", 4)
+                .getStackForm(1L));
         ItemList.Hatch_Input_IV.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_IV.ID, "hatch.input.tier.05", "Input Hatch (IV)", 5).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_IV.ID, "hatch.input.tier.05", "Input Hatch (IV)", 5)
+                .getStackForm(1L));
         ItemList.Hatch_Input_LuV.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_LuV.ID, "hatch.input.tier.06", "Input Hatch (LuV)", 6).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_LuV.ID, "hatch.input.tier.06", "Input Hatch (LuV)", 6)
+                .getStackForm(1L));
         ItemList.Hatch_Input_ZPM.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_ZPM.ID, "hatch.input.tier.07", "Input Hatch (ZPM)", 7).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_ZPM.ID, "hatch.input.tier.07", "Input Hatch (ZPM)", 7)
+                .getStackForm(1L));
         ItemList.Hatch_Input_UV.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UV.ID, "hatch.input.tier.08", "Input Hatch (UV)", 8).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UV.ID, "hatch.input.tier.08", "Input Hatch (UV)", 8)
+                .getStackForm(1L));
         ItemList.Hatch_Input_MAX.set(
-            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UHV.ID, "hatch.input.tier.09", "Input Hatch (UHV)", 9).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Input(INPUT_HATCH_UHV.ID, "hatch.input.tier.09", "Input Hatch (UHV)", 9)
+                .getStackForm(1L));
     }
 
     private static void registerQuadrupleInputHatch() {
-            ItemList.Hatch_Input_Multi_2x2_EV.set(
-                new GT_MetaTileEntity_Hatch_MultiInput(
-                    QUADRUPLE_INPUT_HATCHES_EV.ID, 4, "hatch.multi.input.tier.01", "Quadruple Input Hatch (EV)", 4)
-                    .getStackForm(1L));
+        ItemList.Hatch_Input_Multi_2x2_EV.set(
+            new GT_MetaTileEntity_Hatch_MultiInput(
+                QUADRUPLE_INPUT_HATCHES_EV.ID,
+                4,
+                "hatch.multi.input.tier.01",
+                "Quadruple Input Hatch (EV)",
+                4).getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_IV.set(
             new GT_MetaTileEntity_Hatch_MultiInput(
-                QUADRUPLE_INPUT_HATCHES_IV.ID, 4, "hatch.multi.input.tier.02", "Quadruple Input Hatch (IV)", 5)
-                .getStackForm(1L));
+                QUADRUPLE_INPUT_HATCHES_IV.ID,
+                4,
+                "hatch.multi.input.tier.02",
+                "Quadruple Input Hatch (IV)",
+                5).getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_LuV.set(
             new GT_MetaTileEntity_Hatch_MultiInput(
                 QUADRUPLE_INPUT_HATCHES_LuV.ID,
@@ -1351,8 +1712,11 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 7).getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_UV.set(
             new GT_MetaTileEntity_Hatch_MultiInput(
-                QUADRUPLE_INPUT_HATCHES_UV.ID, 4, "hatch.multi.input.tier.05", "Quadruple Input Hatch (UV)", 8)
-                .getStackForm(1L));
+                QUADRUPLE_INPUT_HATCHES_UV.ID,
+                4,
+                "hatch.multi.input.tier.05",
+                "Quadruple Input Hatch (UV)",
+                8).getStackForm(1L));
         ItemList.Hatch_Input_Multi_2x2_UHV.set(
             new GT_MetaTileEntity_Hatch_MultiInput(
                 QUADRUPLE_INPUT_HATCHES_UHV.ID,
@@ -1399,97 +1763,107 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void registerOutputHatch() {
         ItemList.Hatch_Output_ULV.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_ULV.ID, "hatch.output.tier.00", "Output Hatch (ULV)", 0).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_ULV.ID, "hatch.output.tier.00", "Output Hatch (ULV)", 0)
+                .getStackForm(1L));
         ItemList.Hatch_Output_LV.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_LV.ID, "hatch.output.tier.01", "Output Hatch (LV)", 1).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_LV.ID, "hatch.output.tier.01", "Output Hatch (LV)", 1)
+                .getStackForm(1L));
         ItemList.Hatch_Output_MV.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_MV.ID, "hatch.output.tier.02", "Output Hatch (MV)", 2).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_MV.ID, "hatch.output.tier.02", "Output Hatch (MV)", 2)
+                .getStackForm(1L));
         ItemList.Hatch_Output_HV.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_HV.ID, "hatch.output.tier.03", "Output Hatch (HV)", 3).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_HV.ID, "hatch.output.tier.03", "Output Hatch (HV)", 3)
+                .getStackForm(1L));
         ItemList.Hatch_Output_EV.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_EV.ID, "hatch.output.tier.04", "Output Hatch (EV)", 4).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_EV.ID, "hatch.output.tier.04", "Output Hatch (EV)", 4)
+                .getStackForm(1L));
         ItemList.Hatch_Output_IV.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_IV.ID, "hatch.output.tier.05", "Output Hatch (IV)", 5).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_IV.ID, "hatch.output.tier.05", "Output Hatch (IV)", 5)
+                .getStackForm(1L));
         ItemList.Hatch_Output_LuV.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_LuV.ID, "hatch.output.tier.06", "Output Hatch (LuV)", 6).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_LuV.ID, "hatch.output.tier.06", "Output Hatch (LuV)", 6)
+                .getStackForm(1L));
         ItemList.Hatch_Output_ZPM.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_ZPM.ID, "hatch.output.tier.07", "Output Hatch (ZPM)", 7).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_ZPM.ID, "hatch.output.tier.07", "Output Hatch (ZPM)", 7)
+                .getStackForm(1L));
         ItemList.Hatch_Output_UV.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_UV.ID, "hatch.output.tier.08", "Output Hatch (UV)", 8).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_UV.ID, "hatch.output.tier.08", "Output Hatch (UV)", 8)
+                .getStackForm(1L));
         ItemList.Hatch_Output_MAX.set(
-            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_UHV.ID, "hatch.output.tier.09", "Output Hatch (UHV)", 9).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Output(OUTPUT_HATCH_UHV.ID, "hatch.output.tier.09", "Output Hatch (UHV)", 9)
+                .getStackForm(1L));
     }
 
     private static void registerQuantumTank() {
-            ItemList.Quantum_Tank_LV
-                .set(new GT_MetaTileEntity_QuantumTank(
-                    QUANTUM_TANK_LV.ID, "quantum.tank.tier.06", "Quantum Tank I", 6).getStackForm(1L));
-        ItemList.Quantum_Tank_MV
-            .set(new GT_MetaTileEntity_QuantumTank(
-                QUANTUM_TANK_MV.ID, "quantum.tank.tier.07", "Quantum Tank II", 7).getStackForm(1L));
+        ItemList.Quantum_Tank_LV.set(
+            new GT_MetaTileEntity_QuantumTank(QUANTUM_TANK_LV.ID, "quantum.tank.tier.06", "Quantum Tank I", 6)
+                .getStackForm(1L));
+        ItemList.Quantum_Tank_MV.set(
+            new GT_MetaTileEntity_QuantumTank(QUANTUM_TANK_MV.ID, "quantum.tank.tier.07", "Quantum Tank II", 7)
+                .getStackForm(1L));
         ItemList.Quantum_Tank_HV.set(
-            new GT_MetaTileEntity_QuantumTank(
-                QUANTUM_TANK_HV.ID, "quantum.tank.tier.08", "Quantum Tank III", 8).getStackForm(1L));
-        ItemList.Quantum_Tank_EV
-            .set(new GT_MetaTileEntity_QuantumTank(
-                QUANTUM_TANK_EV.ID, "quantum.tank.tier.09", "Quantum Tank IV", 9).getStackForm(1L));
-        ItemList.Quantum_Tank_IV
-            .set(new GT_MetaTileEntity_QuantumTank(
-                QUANTUM_TANK_IV.ID, "quantum.tank.tier.10", "Quantum Tank V", 10).getStackForm(1L));
+            new GT_MetaTileEntity_QuantumTank(QUANTUM_TANK_HV.ID, "quantum.tank.tier.08", "Quantum Tank III", 8)
+                .getStackForm(1L));
+        ItemList.Quantum_Tank_EV.set(
+            new GT_MetaTileEntity_QuantumTank(QUANTUM_TANK_EV.ID, "quantum.tank.tier.09", "Quantum Tank IV", 9)
+                .getStackForm(1L));
+        ItemList.Quantum_Tank_IV.set(
+            new GT_MetaTileEntity_QuantumTank(QUANTUM_TANK_IV.ID, "quantum.tank.tier.10", "Quantum Tank V", 10)
+                .getStackForm(1L));
     }
 
     private static void registerQuantumChest() {
         ItemList.Quantum_Chest_LV.set(
-                new GT_MetaTileEntity_QuantumChest(
-                    QUANTUM_CHEST_LV.ID, "quantum.chest.tier.06", "Quantum Chest I", 6).getStackForm(1L));
+            new GT_MetaTileEntity_QuantumChest(QUANTUM_CHEST_LV.ID, "quantum.chest.tier.06", "Quantum Chest I", 6)
+                .getStackForm(1L));
         ItemList.Quantum_Chest_MV.set(
-            new GT_MetaTileEntity_QuantumChest(
-                QUANTUM_CHEST_MV.ID, "quantum.chest.tier.07", "Quantum Chest II", 7).getStackForm(1L));
+            new GT_MetaTileEntity_QuantumChest(QUANTUM_CHEST_MV.ID, "quantum.chest.tier.07", "Quantum Chest II", 7)
+                .getStackForm(1L));
         ItemList.Quantum_Chest_HV.set(
-            new GT_MetaTileEntity_QuantumChest(
-                QUANTUM_CHEST_HV.ID, "quantum.chest.tier.08", "Quantum Chest III", 8).getStackForm(1L));
+            new GT_MetaTileEntity_QuantumChest(QUANTUM_CHEST_HV.ID, "quantum.chest.tier.08", "Quantum Chest III", 8)
+                .getStackForm(1L));
         ItemList.Quantum_Chest_EV.set(
-            new GT_MetaTileEntity_QuantumChest(
-                QUANTUM_CHEST_EV.ID, "quantum.chest.tier.09", "Quantum Chest IV", 9).getStackForm(1L));
+            new GT_MetaTileEntity_QuantumChest(QUANTUM_CHEST_EV.ID, "quantum.chest.tier.09", "Quantum Chest IV", 9)
+                .getStackForm(1L));
         ItemList.Quantum_Chest_IV.set(
-            new GT_MetaTileEntity_QuantumChest(
-                QUANTUM_CHEST_IV.ID, "quantum.chest.tier.10", "Quantum Chest V", 10).getStackForm(1L));
+            new GT_MetaTileEntity_QuantumChest(QUANTUM_CHEST_IV.ID, "quantum.chest.tier.10", "Quantum Chest V", 10)
+                .getStackForm(1L));
     }
 
     private static void registerSuperTank() {
-            ItemList.Super_Tank_LV
-                .set(new GT_MetaTileEntity_SuperTank(
-                    SUPER_TANK_LV.ID, "super.tank.tier.01", "Super Tank I", 1).getStackForm(1L));
-        ItemList.Super_Tank_MV
-            .set(new GT_MetaTileEntity_SuperTank(
-                SUPER_TANK_MV.ID, "super.tank.tier.02", "Super Tank II", 2).getStackForm(1L));
-        ItemList.Super_Tank_HV
-            .set(new GT_MetaTileEntity_SuperTank(
-                SUPER_TANK_HV.ID, "super.tank.tier.03", "Super Tank III", 3).getStackForm(1L));
-        ItemList.Super_Tank_EV
-            .set(new GT_MetaTileEntity_SuperTank(
-                SUPER_TANK_EV.ID, "super.tank.tier.04", "Super Tank IV", 4).getStackForm(1L));
-        ItemList.Super_Tank_IV
-            .set(new GT_MetaTileEntity_SuperTank(
-                SUPER_TANK_IV.ID, "super.tank.tier.05", "Super Tank V", 5).getStackForm(1L));
+        ItemList.Super_Tank_LV.set(
+            new GT_MetaTileEntity_SuperTank(SUPER_TANK_LV.ID, "super.tank.tier.01", "Super Tank I", 1)
+                .getStackForm(1L));
+        ItemList.Super_Tank_MV.set(
+            new GT_MetaTileEntity_SuperTank(SUPER_TANK_MV.ID, "super.tank.tier.02", "Super Tank II", 2)
+                .getStackForm(1L));
+        ItemList.Super_Tank_HV.set(
+            new GT_MetaTileEntity_SuperTank(SUPER_TANK_HV.ID, "super.tank.tier.03", "Super Tank III", 3)
+                .getStackForm(1L));
+        ItemList.Super_Tank_EV.set(
+            new GT_MetaTileEntity_SuperTank(SUPER_TANK_EV.ID, "super.tank.tier.04", "Super Tank IV", 4)
+                .getStackForm(1L));
+        ItemList.Super_Tank_IV.set(
+            new GT_MetaTileEntity_SuperTank(SUPER_TANK_IV.ID, "super.tank.tier.05", "Super Tank V", 5)
+                .getStackForm(1L));
     }
 
     private static void registerSuperChest() {
-            ItemList.Super_Chest_LV
-                .set(new GT_MetaTileEntity_SuperChest(
-                    SUPER_CHEST_LV.ID, "super.chest.tier.01", "Super Chest I", 1).getStackForm(1L));
-        ItemList.Super_Chest_MV
-            .set(new GT_MetaTileEntity_SuperChest(
-                SUPER_CHEST_MV.ID, "super.chest.tier.02", "Super Chest II", 2).getStackForm(1L));
-        ItemList.Super_Chest_HV
-            .set(new GT_MetaTileEntity_SuperChest(
-                SUPER_CHEST_HV.ID, "super.chest.tier.03", "Super Chest III", 3).getStackForm(1L));
-        ItemList.Super_Chest_EV
-            .set(new GT_MetaTileEntity_SuperChest(
-                SUPER_CHEST_EV.ID, "super.chest.tier.04", "Super Chest IV", 4).getStackForm(1L));
-        ItemList.Super_Chest_IV
-            .set(new GT_MetaTileEntity_SuperChest(
-                SUPER_CHEST_IV.ID, "super.chest.tier.05", "Super Chest V", 5).getStackForm(1L));
+        ItemList.Super_Chest_LV.set(
+            new GT_MetaTileEntity_SuperChest(SUPER_CHEST_LV.ID, "super.chest.tier.01", "Super Chest I", 1)
+                .getStackForm(1L));
+        ItemList.Super_Chest_MV.set(
+            new GT_MetaTileEntity_SuperChest(SUPER_CHEST_MV.ID, "super.chest.tier.02", "Super Chest II", 2)
+                .getStackForm(1L));
+        ItemList.Super_Chest_HV.set(
+            new GT_MetaTileEntity_SuperChest(SUPER_CHEST_HV.ID, "super.chest.tier.03", "Super Chest III", 3)
+                .getStackForm(1L));
+        ItemList.Super_Chest_EV.set(
+            new GT_MetaTileEntity_SuperChest(SUPER_CHEST_EV.ID, "super.chest.tier.04", "Super Chest IV", 4)
+                .getStackForm(1L));
+        ItemList.Super_Chest_IV.set(
+            new GT_MetaTileEntity_SuperChest(SUPER_CHEST_IV.ID, "super.chest.tier.05", "Super Chest V", 5)
+                .getStackForm(1L));
     }
 
     private static void registerLongDistancePipe() {
@@ -1513,34 +1887,47 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 new GT_MetaTileEntity_Hatch_OutputBus_ME(INPUT_BUS_ME.ID, "hatch.output_bus.me", "Output Bus (ME)")
                     .getStackForm(1L));
             ItemList.Hatch_Input_Bus_ME.set(
-                new GT_MetaTileEntity_Hatch_InputBus_ME(OUTPUT_BUS_ME.ID, "hatch.input_bus.me", "Stocking Input Bus (ME)")
-                    .getStackForm(1L));
+                new GT_MetaTileEntity_Hatch_InputBus_ME(
+                    OUTPUT_BUS_ME.ID,
+                    "hatch.input_bus.me",
+                    "Stocking Input Bus (ME)").getStackForm(1L));
             ItemList.Hatch_Output_ME.set(
-                new GT_MetaTileEntity_Hatch_Output_ME(OUTPUT_HATCH_ME.ID, "hatch.output.me", "Output Hatch (ME)").getStackForm(1L));
+                new GT_MetaTileEntity_Hatch_Output_ME(OUTPUT_HATCH_ME.ID, "hatch.output.me", "Output Hatch (ME)")
+                    .getStackForm(1L));
         }
     }
 
     private static void registerInputBus() {
         ItemList.Hatch_Input_Bus_ULV.set(
-            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_ULV.ID, "hatch.input_bus.tier.00", "Input Bus (ULV)", 0).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_ULV.ID, "hatch.input_bus.tier.00", "Input Bus (ULV)", 0)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Bus_LV.set(
-            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_LV.ID, "hatch.input_bus.tier.01", "Input Bus (LV)", 1).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_LV.ID, "hatch.input_bus.tier.01", "Input Bus (LV)", 1)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Bus_MV.set(
-            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_MV.ID, "hatch.input_bus.tier.02", "Input Bus (MV)", 2).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_MV.ID, "hatch.input_bus.tier.02", "Input Bus (MV)", 2)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Bus_HV.set(
-            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_HV.ID, "hatch.input_bus.tier.03", "Input Bus (HV)", 3).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_HV.ID, "hatch.input_bus.tier.03", "Input Bus (HV)", 3)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Bus_EV.set(
-            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_EV.ID, "hatch.input_bus.tier.04", "Input Bus (EV)", 4).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_EV.ID, "hatch.input_bus.tier.04", "Input Bus (EV)", 4)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Bus_IV.set(
-            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_IV.ID, "hatch.input_bus.tier.05", "Input Bus (IV)", 5).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_IV.ID, "hatch.input_bus.tier.05", "Input Bus (IV)", 5)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Bus_LuV.set(
-            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_LuV.ID, "hatch.input_bus.tier.06", "Input Bus (LuV)", 6).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_LuV.ID, "hatch.input_bus.tier.06", "Input Bus (LuV)", 6)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Bus_ZPM.set(
-            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_ZPM.ID, "hatch.input_bus.tier.07", "Input Bus (ZPM)", 7).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_ZPM.ID, "hatch.input_bus.tier.07", "Input Bus (ZPM)", 7)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Bus_UV.set(
-            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_UV.ID, "hatch.input_bus.tier.08", "Input Bus (UV)", 8).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_UV.ID, "hatch.input_bus.tier.08", "Input Bus (UV)", 8)
+                .getStackForm(1L));
         ItemList.Hatch_Input_Bus_MAX.set(
-            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_UHV.ID, "hatch.input_bus.tier.09", "Input Bus (UHV)", 9).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_InputBus(INPUT_BUS_UHV.ID, "hatch.input_bus.tier.09", "Input Bus (UHV)", 9)
+                .getStackForm(1L));
     }
 
     private static void registerOutputBus() {
@@ -1578,15 +1965,20 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void registerMufflerHatch() {
         ItemList.Hatch_Muffler_LV.set(
-            new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_LV.ID, "hatch.muffler.tier.01", "Muffler Hatch (LV)", 1).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_LV.ID, "hatch.muffler.tier.01", "Muffler Hatch (LV)", 1)
+                .getStackForm(1L));
         ItemList.Hatch_Muffler_MV.set(
-            new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_MV.ID, "hatch.muffler.tier.02", "Muffler Hatch (MV)", 2).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_MV.ID, "hatch.muffler.tier.02", "Muffler Hatch (MV)", 2)
+                .getStackForm(1L));
         ItemList.Hatch_Muffler_HV.set(
-            new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_HV.ID, "hatch.muffler.tier.03", "Muffler Hatch (HV)", 3).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_HV.ID, "hatch.muffler.tier.03", "Muffler Hatch (HV)", 3)
+                .getStackForm(1L));
         ItemList.Hatch_Muffler_EV.set(
-            new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_EV.ID, "hatch.muffler.tier.04", "Muffler Hatch (EV)", 4).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_EV.ID, "hatch.muffler.tier.04", "Muffler Hatch (EV)", 4)
+                .getStackForm(1L));
         ItemList.Hatch_Muffler_IV.set(
-            new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_IV.ID, "hatch.muffler.tier.05", "Muffler Hatch (IV)", 5).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_IV.ID, "hatch.muffler.tier.05", "Muffler Hatch (IV)", 5)
+                .getStackForm(1L));
         ItemList.Hatch_Muffler_LuV.set(
             new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_LuV.ID, "hatch.muffler.tier.06", "Muffler Hatch (LuV)", 6)
                 .getStackForm(1L));
@@ -1594,24 +1986,33 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_ZPM.ID, "hatch.muffler.tier.07", "Muffler Hatch (ZPM)", 7)
                 .getStackForm(1L));
         ItemList.Hatch_Muffler_UV.set(
-            new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_UV.ID, "hatch.muffler.tier.08", "Muffler Hatch (UV)", 8).getStackForm(1L));
+            new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_UV.ID, "hatch.muffler.tier.08", "Muffler Hatch (UV)", 8)
+                .getStackForm(1L));
         ItemList.Hatch_Muffler_MAX.set(
             new GT_MetaTileEntity_Hatch_Muffler(MUFFLER_HATCH_UHV.ID, "hatch.muffler.tier.09", "Muffler Hatch (UHV)", 9)
                 .getStackForm(1L));
     }
 
     private static void registerBoiler() {
-        ItemList.Machine_Bronze_Boiler
-            .set(new GT_MetaTileEntity_Boiler_Bronze(SMALL_COAL_BOILER.ID, "boiler.bronze", "Small Coal Boiler").getStackForm(1L));
-        ItemList.Machine_Steel_Boiler
-            .set(new GT_MetaTileEntity_Boiler_Steel(HIGH_PRESSURE_COAL_BOILER.ID, "boiler.steel", "High Pressure Coal Boiler").getStackForm(1L));
-        ItemList.Machine_Steel_Boiler_Lava
-            .set(new GT_MetaTileEntity_Boiler_Lava(HIGH_PRESSURE_LAVA_BOILER.ID, "boiler.lava", "High Pressure Lava Boiler").getStackForm(1L));
-        ItemList.Machine_Bronze_Boiler_Solar
-            .set(new GT_MetaTileEntity_Boiler_Solar(SIMPLE_SOLAR_BOILER.ID, "boiler.solar", "Simple Solar Boiler").getStackForm(1L));
-        ItemList.Machine_HP_Solar.set(
-            new GT_MetaTileEntity_Boiler_Solar_Steel( HIGH_PRESSURE_SOLAR_BOILER.ID, "boiler.steel.solar", "High Pressure Solar Boiler")
+        ItemList.Machine_Bronze_Boiler.set(
+            new GT_MetaTileEntity_Boiler_Bronze(SMALL_COAL_BOILER.ID, "boiler.bronze", "Small Coal Boiler")
                 .getStackForm(1L));
+        ItemList.Machine_Steel_Boiler.set(
+            new GT_MetaTileEntity_Boiler_Steel(
+                HIGH_PRESSURE_COAL_BOILER.ID,
+                "boiler.steel",
+                "High Pressure Coal Boiler").getStackForm(1L));
+        ItemList.Machine_Steel_Boiler_Lava.set(
+            new GT_MetaTileEntity_Boiler_Lava(HIGH_PRESSURE_LAVA_BOILER.ID, "boiler.lava", "High Pressure Lava Boiler")
+                .getStackForm(1L));
+        ItemList.Machine_Bronze_Boiler_Solar.set(
+            new GT_MetaTileEntity_Boiler_Solar(SIMPLE_SOLAR_BOILER.ID, "boiler.solar", "Simple Solar Boiler")
+                .getStackForm(1L));
+        ItemList.Machine_HP_Solar.set(
+            new GT_MetaTileEntity_Boiler_Solar_Steel(
+                HIGH_PRESSURE_SOLAR_BOILER.ID,
+                "boiler.steel.solar",
+                "High Pressure Solar Boiler").getStackForm(1L));
     }
 
     private static void registerBatteryBuffer1x1() {
@@ -1864,14 +2265,14 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private static void registerBatteryBuffer4x4() {
-            ItemList.Battery_Buffer_4by4_ULV.set(
-                new GT_MetaTileEntity_BasicBatteryBuffer(
-                    BATTERY_BUFFER_4_BY_4_ULV.ID,
-                    "batterybuffer.16.tier.00",
-                    "Ultra Low Voltage Battery Buffer",
-                    0,
-                    "",
-                    16).getStackForm(1L));
+        ItemList.Battery_Buffer_4by4_ULV.set(
+            new GT_MetaTileEntity_BasicBatteryBuffer(
+                BATTERY_BUFFER_4_BY_4_ULV.ID,
+                "batterybuffer.16.tier.00",
+                "Ultra Low Voltage Battery Buffer",
+                0,
+                "",
+                16).getStackForm(1L));
         ItemList.Battery_Buffer_4by4_LV.set(
             new GT_MetaTileEntity_BasicBatteryBuffer(
                 BATTERY_BUFFER_4_BY_4_LV.ID,
@@ -1947,14 +2348,14 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private static void registerCharger4x4() {
-            ItemList.Battery_Charger_4by4_ULV.set(
-                new GT_MetaTileEntity_Charger(
-                    BATTERY_CHARGER_4_BY_4_ULV.ID,
-                    "batterycharger.16.tier.00",
-                    "Ultra Low Voltage Battery Charger",
-                    0,
-                    "Each battery gives 8A in/4A out (min 4A/2A)",
-                    4).getStackForm(1L));
+        ItemList.Battery_Charger_4by4_ULV.set(
+            new GT_MetaTileEntity_Charger(
+                BATTERY_CHARGER_4_BY_4_ULV.ID,
+                "batterycharger.16.tier.00",
+                "Ultra Low Voltage Battery Charger",
+                0,
+                "Each battery gives 8A in/4A out (min 4A/2A)",
+                4).getStackForm(1L));
         ItemList.Battery_Charger_4by4_LV.set(
             new GT_MetaTileEntity_Charger(
                 BATTERY_CHARGER_4_BY_4_LV.ID,
@@ -2031,45 +2432,65 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void registerWirelessEnergyHatch() {
         ItemList.Wireless_Hatch_Energy_ULV.set(
-                new GT_MetaTileEntity_Wireless_Hatch(
-                    WIRELESS_HATCH_ENERGY_ULV.ID, "hatch.wireless.receiver.tier.00", "ULV Wireless Energy Hatch", 0)
-                    .getStackForm(1L));
+            new GT_MetaTileEntity_Wireless_Hatch(
+                WIRELESS_HATCH_ENERGY_ULV.ID,
+                "hatch.wireless.receiver.tier.00",
+                "ULV Wireless Energy Hatch",
+                0).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_LV.set(
             new GT_MetaTileEntity_Wireless_Hatch(
-                WIRELESS_HATCH_ENERGY_LV.ID, "hatch.wireless.receiver.tier.01", "LV Wireless Energy Hatch", 1)
-                .getStackForm(1L));
+                WIRELESS_HATCH_ENERGY_LV.ID,
+                "hatch.wireless.receiver.tier.01",
+                "LV Wireless Energy Hatch",
+                1).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_MV.set(
             new GT_MetaTileEntity_Wireless_Hatch(
-                WIRELESS_HATCH_ENERGY_MV.ID, "hatch.wireless.receiver.tier.02", "MV Wireless Energy Hatch", 2)
-                .getStackForm(1L));
+                WIRELESS_HATCH_ENERGY_MV.ID,
+                "hatch.wireless.receiver.tier.02",
+                "MV Wireless Energy Hatch",
+                2).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_HV.set(
             new GT_MetaTileEntity_Wireless_Hatch(
-                WIRELESS_HATCH_ENERGY_HV.ID, "hatch.wireless.receiver.tier.03", "HV Wireless Energy Hatch", 3)
-                .getStackForm(1L));
+                WIRELESS_HATCH_ENERGY_HV.ID,
+                "hatch.wireless.receiver.tier.03",
+                "HV Wireless Energy Hatch",
+                3).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_EV.set(
             new GT_MetaTileEntity_Wireless_Hatch(
-                WIRELESS_HATCH_ENERGY_EV.ID, "hatch.wireless.receiver.tier.04", "EV Wireless Energy Hatch", 4)
-                .getStackForm(1L));
+                WIRELESS_HATCH_ENERGY_EV.ID,
+                "hatch.wireless.receiver.tier.04",
+                "EV Wireless Energy Hatch",
+                4).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_IV.set(
             new GT_MetaTileEntity_Wireless_Hatch(
-                WIRELESS_HATCH_ENERGY_IV.ID, "hatch.wireless.receiver.tier.05", "IV Wireless Energy Hatch", 5)
-                .getStackForm(1L));
+                WIRELESS_HATCH_ENERGY_IV.ID,
+                "hatch.wireless.receiver.tier.05",
+                "IV Wireless Energy Hatch",
+                5).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_LuV.set(
             new GT_MetaTileEntity_Wireless_Hatch(
-                WIRELESS_HATCH_ENERGY_LuV.ID, "hatch.wireless.receiver.tier.06", "LuV Wireless Energy Hatch", 6)
-                .getStackForm(1L));
+                WIRELESS_HATCH_ENERGY_LuV.ID,
+                "hatch.wireless.receiver.tier.06",
+                "LuV Wireless Energy Hatch",
+                6).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_ZPM.set(
             new GT_MetaTileEntity_Wireless_Hatch(
-                WIRELESS_HATCH_ENERGY_ZPM.ID, "hatch.wireless.receiver.tier.07", "ZPM Wireless Energy Hatch", 7)
-                .getStackForm(1L));
+                WIRELESS_HATCH_ENERGY_ZPM.ID,
+                "hatch.wireless.receiver.tier.07",
+                "ZPM Wireless Energy Hatch",
+                7).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UV.set(
             new GT_MetaTileEntity_Wireless_Hatch(
-                WIRELESS_HATCH_ENERGY_UV.ID, "hatch.wireless.receiver.tier.08", "UV Wireless Energy Hatch", 8)
-                .getStackForm(1L));
+                WIRELESS_HATCH_ENERGY_UV.ID,
+                "hatch.wireless.receiver.tier.08",
+                "UV Wireless Energy Hatch",
+                8).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UHV.set(
             new GT_MetaTileEntity_Wireless_Hatch(
-                WIRELESS_HATCH_ENERGY_UHV.ID, "hatch.wireless.receiver.tier.09", "UHV Wireless Energy Hatch", 9)
-                .getStackForm(1L));
+                WIRELESS_HATCH_ENERGY_UHV.ID,
+                "hatch.wireless.receiver.tier.09",
+                "UHV Wireless Energy Hatch",
+                9).getStackForm(1L));
         ItemList.Wireless_Hatch_Energy_UEV.set(
             new GT_MetaTileEntity_Wireless_Hatch(
                 WIRELESS_HATCH_ENERGY_UEV.ID,
@@ -2104,11 +2525,11 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void registerWirelessDynamoHatch() {
         ItemList.Wireless_Dynamo_Energy_ULV.set(
-                new GT_MetaTileEntity_Wireless_Dynamo(
-                    WIRELESS_DYNAMO_ENERGY_HATCH_ULV.ID,
-                    "hatch.wireless.transmitter.tier.00",
-                    "ULV Wireless Energy Dynamo",
-                    0).getStackForm(1L));
+            new GT_MetaTileEntity_Wireless_Dynamo(
+                WIRELESS_DYNAMO_ENERGY_HATCH_ULV.ID,
+                "hatch.wireless.transmitter.tier.00",
+                "ULV Wireless Energy Dynamo",
+                0).getStackForm(1L));
         ItemList.Wireless_Dynamo_Energy_LV.set(
             new GT_MetaTileEntity_Wireless_Dynamo(
                 WIRELESS_DYNAMO_ENERGY_HATCH_LV.ID,
@@ -2196,27 +2617,33 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private static void registerLightningRods() {
-            ItemList.Machine_HV_LightningRod.set(
-                new GT_MetaTileEntity_LightningRod(
-                    LIGHTNING_ROD_HV.ID, "basicgenerator.lightningrod.03", "Lightning Rod", 3)
-                    .getStackForm(1));
+        ItemList.Machine_HV_LightningRod.set(
+            new GT_MetaTileEntity_LightningRod(
+                LIGHTNING_ROD_HV.ID,
+                "basicgenerator.lightningrod.03",
+                "Lightning Rod",
+                3).getStackForm(1));
         ItemList.Machine_EV_LightningRod.set(
             new GT_MetaTileEntity_LightningRod(
-                LIGHTNING_ROD_EV.ID, "basicgenerator.lightningrod.04", "Lightning Rod II", 4)
-                .getStackForm(1));
+                LIGHTNING_ROD_EV.ID,
+                "basicgenerator.lightningrod.04",
+                "Lightning Rod II",
+                4).getStackForm(1));
         ItemList.Machine_IV_LightningRod.set(
             new GT_MetaTileEntity_LightningRod(
-                LIGHTNING_ROD_IV.ID, "basicgenerator.lightningrod.05", "Lightning Rod III", 5)
-                .getStackForm(1));
+                LIGHTNING_ROD_IV.ID,
+                "basicgenerator.lightningrod.05",
+                "Lightning Rod III",
+                5).getStackForm(1));
     }
 
     private static void registerCombustionGenerators() {
         ItemList.Generator_Diesel_LV.set(
-                new GT_MetaTileEntity_DieselGenerator(
-                    COMBUSTION_GENERATOR_LV.ID,
-                    "basicgenerator.diesel.tier.01",
-                    "Basic Combustion Generator",
-                    1).getStackForm(1L));
+            new GT_MetaTileEntity_DieselGenerator(
+                COMBUSTION_GENERATOR_LV.ID,
+                "basicgenerator.diesel.tier.01",
+                "Basic Combustion Generator",
+                1).getStackForm(1L));
         ItemList.Generator_Diesel_MV.set(
             new GT_MetaTileEntity_DieselGenerator(
                 COMBUSTION_GENERATOR_MV.ID,
@@ -2232,51 +2659,72 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private static void registerGasTurbines() {
-            ItemList.Generator_Gas_Turbine_LV.set(
-                new GT_MetaTileEntity_GasTurbine(
-                    GAS_TURBINE_LV.ID, "basicgenerator.gasturbine.tier.01", "Basic Gas Turbine", 1, 95)
-                    .getStackForm(1L));
+        ItemList.Generator_Gas_Turbine_LV.set(
+            new GT_MetaTileEntity_GasTurbine(
+                GAS_TURBINE_LV.ID,
+                "basicgenerator.gasturbine.tier.01",
+                "Basic Gas Turbine",
+                1,
+                95).getStackForm(1L));
         ItemList.Generator_Gas_Turbine_MV.set(
             new GT_MetaTileEntity_GasTurbine(
-                GAS_TURBINE_MV.ID, "basicgenerator.gasturbine.tier.02", "Advanced Gas Turbine", 2, 90)
-                .getStackForm(1L));
+                GAS_TURBINE_MV.ID,
+                "basicgenerator.gasturbine.tier.02",
+                "Advanced Gas Turbine",
+                2,
+                90).getStackForm(1L));
         ItemList.Generator_Gas_Turbine_HV.set(
             new GT_MetaTileEntity_GasTurbine(
-                GAS_TURBINE_HV.ID, "basicgenerator.gasturbine.tier.03", "Turbo Gas Turbine", 3, 85)
-                .getStackForm(1L));
+                GAS_TURBINE_HV.ID,
+                "basicgenerator.gasturbine.tier.03",
+                "Turbo Gas Turbine",
+                3,
+                85).getStackForm(1L));
         ItemList.Generator_Gas_Turbine_EV.set(
             new GT_MetaTileEntity_GasTurbine(
-                GAS_TURBINE_EV.ID, "basicgenerator.gasturbine.tier.04", "Turbo Gas Turbine II", 4, 60)
-                .getStackForm(1L));
+                GAS_TURBINE_EV.ID,
+                "basicgenerator.gasturbine.tier.04",
+                "Turbo Gas Turbine II",
+                4,
+                60).getStackForm(1L));
         ItemList.Generator_Gas_Turbine_IV.set(
             new GT_MetaTileEntity_GasTurbine(
-                GAS_TURBINE_IV.ID, "basicgenerator.gasturbine.tier.05", "Turbo Gas Turbine III", 5, 50)
-                .getStackForm(1L));
+                GAS_TURBINE_IV.ID,
+                "basicgenerator.gasturbine.tier.05",
+                "Turbo Gas Turbine III",
+                5,
+                50).getStackForm(1L));
     }
 
     private static void registerSteamTurbines() {
         ItemList.Generator_Steam_Turbine_LV.set(
-                new GT_MetaTileEntity_SteamTurbine(
-                    STEAM_TURBINE_LV.ID, "basicgenerator.steamturbine.tier.01", "Basic Steam Turbine", 1)
-                    .getStackForm(1L));
+            new GT_MetaTileEntity_SteamTurbine(
+                STEAM_TURBINE_LV.ID,
+                "basicgenerator.steamturbine.tier.01",
+                "Basic Steam Turbine",
+                1).getStackForm(1L));
         ItemList.Generator_Steam_Turbine_MV.set(
             new GT_MetaTileEntity_SteamTurbine(
-                STEAM_TURBINE_MV.ID, "basicgenerator.steamturbine.tier.02", "Advanced Steam Turbine", 2)
-                .getStackForm(1L));
+                STEAM_TURBINE_MV.ID,
+                "basicgenerator.steamturbine.tier.02",
+                "Advanced Steam Turbine",
+                2).getStackForm(1L));
         ItemList.Generator_Steam_Turbine_HV.set(
             new GT_MetaTileEntity_SteamTurbine(
-                STEAM_TURBINE_HV.ID, "basicgenerator.steamturbine.tier.03", "Turbo Steam Turbine", 3)
-                .getStackForm(1L));
+                STEAM_TURBINE_HV.ID,
+                "basicgenerator.steamturbine.tier.03",
+                "Turbo Steam Turbine",
+                3).getStackForm(1L));
     }
 
     private static void registerNaquadahReactors() {
-            ItemList.Generator_Naquadah_Mark_I.set(
-                new GT_MetaTileEntity_NaquadahReactor(
-                    NAQUADAH_REACTOR_EV.ID,
-                    "basicgenerator.naquadah.tier.04",
-                    new String[] { "Requires Enriched Naquadah Bolts" },
-                    "Naquadah Reactor Mark I",
-                    4).getStackForm(1L));
+        ItemList.Generator_Naquadah_Mark_I.set(
+            new GT_MetaTileEntity_NaquadahReactor(
+                NAQUADAH_REACTOR_EV.ID,
+                "basicgenerator.naquadah.tier.04",
+                new String[] { "Requires Enriched Naquadah Bolts" },
+                "Naquadah Reactor Mark I",
+                4).getStackForm(1L));
         ItemList.Generator_Naquadah_Mark_II.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 NAQUADAH_REACTOR_IV.ID,
@@ -2308,12 +2756,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private static void registerMagicEnergyConverters() {
-            ItemList.MagicEnergyConverter_LV.set(
-                new GT_MetaTileEntity_MagicEnergyConverter(
-                    MAGIC_ENERGY_CONVERTER_LV.ID,
-                    "basicgenerator.magicenergyconverter.tier.01",
-                    "Novice Magic Energy Converter",
-                    1).getStackForm(1L));
+        ItemList.MagicEnergyConverter_LV.set(
+            new GT_MetaTileEntity_MagicEnergyConverter(
+                MAGIC_ENERGY_CONVERTER_LV.ID,
+                "basicgenerator.magicenergyconverter.tier.01",
+                "Novice Magic Energy Converter",
+                1).getStackForm(1L));
         ItemList.MagicEnergyConverter_MV.set(
             new GT_MetaTileEntity_MagicEnergyConverter(
                 MAGIC_ENERGY_CONVERTER_MV.ID,
@@ -2329,12 +2777,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private static void registerMagicEnergyAbsorbers() {
-            ItemList.MagicEnergyAbsorber_LV.set(
-                new GT_MetaTileEntity_MagicalEnergyAbsorber(
-                    MAGIC_ENERGY_ABSORBER_LV.ID,
-                    "basicgenerator.magicenergyabsorber.tier.01",
-                    "Novice Magic Energy Absorber",
-                    1).getStackForm(1L));
+        ItemList.MagicEnergyAbsorber_LV.set(
+            new GT_MetaTileEntity_MagicalEnergyAbsorber(
+                MAGIC_ENERGY_ABSORBER_LV.ID,
+                "basicgenerator.magicenergyabsorber.tier.01",
+                "Novice Magic Energy Absorber",
+                1).getStackForm(1L));
         ItemList.MagicEnergyAbsorber_MV.set(
             new GT_MetaTileEntity_MagicalEnergyAbsorber(
                 MAGIC_ENERGY_ABSORBER_MV.ID,
@@ -2357,11 +2805,11 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     private static void registerPlasmaGenerators() {
         ItemList.Generator_Plasma_IV.set(
-                new GT_MetaTileEntity_PlasmaGenerator(
-                    PLASMA_GENERATOR_IV.ID,
-                    "basicgenerator.plasmagenerator.tier.05",
-                    "Plasma Generator Mark I",
-                    4).getStackForm(1L));
+            new GT_MetaTileEntity_PlasmaGenerator(
+                PLASMA_GENERATOR_IV.ID,
+                "basicgenerator.plasmagenerator.tier.05",
+                "Plasma Generator Mark I",
+                4).getStackForm(1L));
         ItemList.Generator_Plasma_LuV.set(
             new GT_MetaTileEntity_PlasmaGenerator(
                 PLASMA_GENERATOR_LuV.ID,
