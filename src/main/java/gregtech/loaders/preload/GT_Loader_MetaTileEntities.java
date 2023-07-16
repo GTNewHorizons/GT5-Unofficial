@@ -353,11 +353,808 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         + EnumChatFormatting.RESET
         + " to use this.";
 
-    private static void run1() {
-
+    private static void registerMultiblockControllers(){
         ItemList.Machine_Bricked_BlastFurnace.set(
             new GT_MetaTileEntity_BrickedBlastFurnace(140, "multimachine.brickedblastfurnace", "Bricked Blast Furnace")
                 .getStackForm(1L));
+
+        //deprecated since ages, maybe time to remove it from the game?
+        ItemList.Machine_Bronze_BlastFurnace.set(
+            new GT_MetaTileEntity_BronzeBlastFurnace(108, "bronzemachine.blastfurnace", "Bronze Plated Blast Furnace")
+                .getStackForm(1L));
+
+        ItemList.Machine_Multi_BlastFurnace.set(
+            new GT_MetaTileEntity_ElectricBlastFurnace(1000, "multimachine.blastfurnace", "Electric Blast Furnace")
+                .getStackForm(1L));
+        ItemList.Machine_Multi_ImplosionCompressor.set(
+            new GT_MetaTileEntity_ImplosionCompressor(1001, "multimachine.implosioncompressor", "Implosion Compressor")
+                .getStackForm(1L));
+        ItemList.Machine_Multi_VacuumFreezer.set(
+            new GT_MetaTileEntity_VacuumFreezer(1002, "multimachine.vacuumfreezer", "Vacuum Freezer").getStackForm(1L));
+        ItemList.Machine_Multi_Furnace.set(
+            new GT_MetaTileEntity_MultiFurnace(1003, "multimachine.multifurnace", "Multi Smelter").getStackForm(1L));
+        ItemList.Machine_Multi_PlasmaForge.set(
+            new GT_MetaTileEntity_PlasmaForge(
+                1004,
+                "multimachine.plasmaforge",
+                "Dimensionally Transcendent Plasma Forge").getStackForm(1L));
+
+        ItemList.Machine_Multi_LargeBoiler_Bronze.set(
+            new GT_MetaTileEntity_LargeBoiler_Bronze(1020, "multimachine.boiler.bronze", "Large Bronze Boiler")
+                .getStackForm(1L));
+        ItemList.Machine_Multi_LargeBoiler_Steel.set(
+            new GT_MetaTileEntity_LargeBoiler_Steel(1021, "multimachine.boiler.steel", "Large Steel Boiler")
+                .getStackForm(1L));
+        ItemList.Machine_Multi_LargeBoiler_Titanium.set(
+            new GT_MetaTileEntity_LargeBoiler_Titanium(1022, "multimachine.boiler.titanium", "Large Titanium Boiler")
+                .getStackForm(1L));
+        ItemList.Machine_Multi_LargeBoiler_TungstenSteel.set(
+            new GT_MetaTileEntity_LargeBoiler_TungstenSteel(
+                1023,
+                "multimachine.boiler.tungstensteel",
+                "Large Tungstensteel Boiler").getStackForm(1L));
+
+
+        ItemList.FusionComputer_LuV.set(
+            new GT_MetaTileEntity_FusionComputer1(1193, "fusioncomputer.tier.06", "Fusion Control Computer Mark I")
+                .getStackForm(1L));
+        ItemList.FusionComputer_ZPMV.set(
+            new GT_MetaTileEntity_FusionComputer2(1194, "fusioncomputer.tier.07", "Fusion Control Computer Mark II")
+                .getStackForm(1L));
+        ItemList.FusionComputer_UV.set(
+            new GT_MetaTileEntity_FusionComputer3(1195, "fusioncomputer.tier.08", "Fusion Control Computer Mark III")
+                .getStackForm(1L));
+
+        ItemList.Processing_Array.set(
+            new GT_MetaTileEntity_ProcessingArray(1199, "multimachine.processingarray", "Processing Array")
+                .getStackForm(1L));
+        ItemList.Distillation_Tower.set(
+            new GT_MetaTileEntity_DistillationTower(1126, "multimachine.distillationtower", "Distillation Tower")
+                .getStackForm(1L));
+        ItemList.Ore_Processor.set(
+            new GT_MetaTileEntity_IntegratedOreFactory(1132, "multimachine.oreprocessor", "Integrated Ore Factory")
+                .getStackForm(1L));
+
+        ItemList.LargeSteamTurbine.set(
+            new GT_MetaTileEntity_LargeTurbine_Steam(1131, "multimachine.largeturbine", "Large Steam Turbine")
+                .getStackForm(1L));
+        ItemList.LargeGasTurbine.set(
+            new GT_MetaTileEntity_LargeTurbine_Gas(1151, "multimachine.largegasturbine", "Large Gas Turbine")
+                .getStackForm(1L));
+        ItemList.LargeHPSteamTurbine.set(
+            new GT_MetaTileEntity_LargeTurbine_HPSteam(1152, "multimachine.largehpturbine", "Large HP Steam Turbine")
+                .getStackForm(1L));
+        ItemList.LargeAdvancedGasTurbine.set(
+            new GT_MetaTileEntity_LargeTurbine_GasAdvanced(
+                1005,
+                "multimachine.largeadvancedgasturbine",
+                "Large Advanced Gas Turbine").getStackForm(1L));
+        ItemList.Machine_Multi_TranscendentPlasmaMixer.set(
+            new GT_MetaTileEntity_TranscendentPlasmaMixer(
+                1006,
+                "multimachine.transcendentplasmamixer",
+                "Transcendent Plasma Mixer").getStackForm(1));
+
+        ItemList.LargePlasmaTurbine.set(
+            new GT_MetaTileEntity_LargeTurbine_Plasma(1153, "multimachine.largeplasmaturbine", "Large Plasma Generator")
+                .getStackForm(1L));
+        ItemList.Machine_Multi_HeatExchanger.set(
+            new GT_MetaTileEntity_HeatExchanger(1154, "multimachine.heatexchanger", "Large Heat Exchanger")
+                .getStackForm(1L));
+        ItemList.Charcoal_Pile.set(
+            new GT_MetaTileEntity_Charcoal_Pit(1155, "multimachine.charcoalpile", "Charcoal Pile Igniter")
+                .getStackForm(1));
+
+        // Converter recipes in case you had old one lying around
+        ItemList.OilDrill1.set(
+            new GT_MetaTileEntity_OilDrill1(1157, "multimachine.oildrill1", "Oil/Gas/Fluid Drilling Rig")
+                .getStackForm(1));
+        ItemList.OilDrill2.set(
+            new GT_MetaTileEntity_OilDrill2(141, "multimachine.oildrill2", "Oil/Gas/Fluid Drilling Rig II")
+                .getStackForm(1));
+        ItemList.OilDrill3.set(
+            new GT_MetaTileEntity_OilDrill3(142, "multimachine.oildrill3", "Oil/Gas/Fluid Drilling Rig III")
+                .getStackForm(1));
+        ItemList.OilDrill4.set(
+            new GT_MetaTileEntity_OilDrill4(149, "multimachine.oildrill4", "Oil/Gas/Fluid Drilling Rig IV")
+                .getStackForm(1));
+        ItemList.OilDrillInfinite.set(
+            new GT_MetaTileEntity_OilDrillInfinite(
+                148,
+                "multimachine.oildrillinfinite",
+                "Infinite Oil/Gas/Fluid Drilling Rig").getStackForm(1));
+
+        ItemList.ConcreteBackfiller1.set(
+            new GT_MetaTileEntity_ConcreteBackfiller1(143, "multimachine.concretebackfiller1", "Concrete Backfiller")
+                .getStackForm(1));
+        ItemList.ConcreteBackfiller2.set(
+            new GT_MetaTileEntity_ConcreteBackfiller2(
+                144,
+                "multimachine.concretebackfiller3",
+                "Advanced Concrete Backfiller").getStackForm(1));
+        ItemList.OreDrill1.set(
+            new GT_MetaTileEntity_OreDrillingPlant1(1158, "multimachine.oredrill1", "Ore Drilling Plant")
+                .getStackForm(1));
+        ItemList.OreDrill2.set(
+            new GT_MetaTileEntity_OreDrillingPlant2(1177, "multimachine.oredrill2", "Ore Drilling Plant II")
+                .getStackForm(1));
+        ItemList.OreDrill3.set(
+            new GT_MetaTileEntity_OreDrillingPlant3(1178, "multimachine.oredrill3", "Ore Drilling Plant III")
+                .getStackForm(1));
+        ItemList.OreDrill4.set(
+            new GT_MetaTileEntity_OreDrillingPlant4(1179, "multimachine.oredrill4", "Ore Drilling Plant IV")
+                .getStackForm(1));
+
+        ItemList.PyrolyseOven
+            .set(new GT_MetaTileEntity_PyrolyseOven(1159, "multimachine.pyro", "Pyrolyse Oven").getStackForm(1));
+        ItemList.OilCracker
+            .set(new GT_MetaTileEntity_OilCracker(1160, "multimachine.cracker", "Oil Cracking Unit").getStackForm(1));
+
+        ItemList.Machine_Multi_Assemblyline.set(
+            new GT_MetaTileEntity_AssemblyLine(1170, "multimachine.assemblyline", "Assembling Line").getStackForm(1L));
+        ItemList.Machine_Multi_DieselEngine.set(
+            new GT_MetaTileEntity_DieselEngine(1171, "multimachine.dieselengine", "Combustion Engine")
+                .getStackForm(1L));
+        ItemList.Machine_Multi_ExtremeDieselEngine.set(
+            new GT_MetaTileEntity_ExtremeDieselEngine(
+                2105,
+                "multimachine.extremedieselengine",
+                "Extreme Combustion Engine").getStackForm(1L));
+        ItemList.Machine_Multi_Cleanroom.set(
+            new GT_MetaTileEntity_Cleanroom(1172, "multimachine.cleanroom", "Cleanroom Controller").getStackForm(1));
+
+        ItemList.Machine_Multi_LargeChemicalReactor.set(
+            new GT_MetaTileEntity_LargeChemicalReactor(1169, "multimachine.chemicalreactor", "Large Chemical Reactor")
+                .getStackForm(1));
+        ItemList.PCBFactory
+            .set(new GT_MetaTileEntity_PCBFactory(356, "multimachine.pcbfactory", "PCB Factory").getStackForm(1));
+        ItemList.NanoForge
+            .set(new GT_MetaTileEntity_NanoForge(357, "multimachine.nanoforge", "Nano Forge").getStackForm(1));
+
+    }
+    private static void registerSteamMachines(){
+        ItemList.Machine_Bronze_Furnace
+            .set(new GT_MetaTileEntity_Furnace_Bronze(103, "bronzemachine.furnace", "Steam Furnace").getStackForm(1L));
+        ItemList.Machine_Bronze_Macerator.set(
+            new GT_MetaTileEntity_Macerator_Bronze(106, "bronzemachine.macerator", "Steam Macerator").getStackForm(1L));
+        ItemList.Machine_Bronze_Extractor.set(
+            new GT_MetaTileEntity_Extractor_Bronze(109, "bronzemachine.extractor", "Steam Extractor").getStackForm(1L));
+        ItemList.Machine_Bronze_Hammer.set(
+            new GT_MetaTileEntity_ForgeHammer_Bronze(112, "bronzemachine.hammer", "Steam Forge Hammer")
+                .getStackForm(1L));
+        ItemList.Machine_Bronze_Compressor.set(
+            new GT_MetaTileEntity_Compressor_Bronze(115, "bronzemachine.compressor", "Steam Compressor")
+                .getStackForm(1L));
+        ItemList.Machine_Bronze_AlloySmelter.set(
+            new GT_MetaTileEntity_AlloySmelter_Bronze(118, "bronzemachine.alloysmelter", "Steam Alloy Smelter")
+                .getStackForm(1L));
+
+    }
+    private static void registerHPSteamMachines(){
+        ItemList.Machine_HP_Extractor.set(
+            new GT_MetaTileEntity_Extractor_Steel(110, "hpmachine.extractor", "High Pressure Extractor")
+                .getStackForm(1L));
+        ItemList.Machine_HP_Furnace.set(
+            new GT_MetaTileEntity_Furnace_Steel(104, "hpmachine.furnace", "High Pressure Furnace").getStackForm(1L));
+        ItemList.Machine_HP_Macerator.set(
+            new GT_MetaTileEntity_Macerator_Steel(107, "hpmachine.macerator", "High Pressure Macerator")
+                .getStackForm(1L));
+        ItemList.Machine_HP_Hammer.set(
+            new GT_MetaTileEntity_ForgeHammer_Steel(113, "hpmachine.hammer", "High Pressure Forge Hammer")
+                .getStackForm(1L));
+        ItemList.Machine_HP_Compressor.set(
+            new GT_MetaTileEntity_Compressor_Steel(116, "hpmachine.compressor", "High Pressure Compressor")
+                .getStackForm(1L));
+        ItemList.Machine_HP_AlloySmelter.set(
+            new GT_MetaTileEntity_AlloySmelter_Steel(119, "hpmachine.alloysmelter", "High Pressure Alloy Smelter")
+                .getStackForm(1L));
+    }
+    private static void registerLocker(){
+        ItemList.Locker_ULV
+            .set(new GT_MetaTileEntity_Locker(150, "locker.tier.00", "Ultra Low Voltage Locker", 0).getStackForm(1L));
+        ItemList.Locker_LV
+            .set(new GT_MetaTileEntity_Locker(151, "locker.tier.01", "Low Voltage Locker", 1).getStackForm(1L));
+        ItemList.Locker_MV
+            .set(new GT_MetaTileEntity_Locker(152, "locker.tier.02", "Medium Voltage Locker", 2).getStackForm(1L));
+        ItemList.Locker_HV
+            .set(new GT_MetaTileEntity_Locker(153, "locker.tier.03", "High Voltage Locker", 3).getStackForm(1L));
+        ItemList.Locker_EV
+            .set(new GT_MetaTileEntity_Locker(154, "locker.tier.04", "Extreme Voltage Locker", 4).getStackForm(1L));
+        ItemList.Locker_IV
+            .set(new GT_MetaTileEntity_Locker(155, "locker.tier.05", "Insane Voltage Locker", 5).getStackForm(1L));
+        ItemList.Locker_LuV
+            .set(new GT_MetaTileEntity_Locker(156, "locker.tier.06", "Ludicrous Voltage Locker", 6).getStackForm(1L));
+        ItemList.Locker_ZPM
+            .set(new GT_MetaTileEntity_Locker(157, "locker.tier.07", "ZPM Voltage Locker", 7).getStackForm(1L));
+        ItemList.Locker_UV
+            .set(new GT_MetaTileEntity_Locker(158, "locker.tier.08", "Ultimate Voltage Locker", 8).getStackForm(1L));
+        ItemList.Locker_MAX.set(
+            new GT_MetaTileEntity_Locker(159, "locker.tier.09", "Highly Ultimate Voltage Locker", 9).getStackForm(1L));
+    }
+    private static void registerScanner(){
+        ItemList.Machine_LV_Scanner.set(
+            new GT_MetaTileEntity_Scanner(341, "basicmachine.scanner.tier.01", "Basic Scanner", 1).getStackForm(1L));
+        ItemList.Machine_MV_Scanner.set(
+            new GT_MetaTileEntity_Scanner(342, "basicmachine.scanner.tier.02", "Advanced Scanner", 2).getStackForm(1L));
+        ItemList.Machine_HV_Scanner.set(
+            new GT_MetaTileEntity_Scanner(343, "basicmachine.scanner.tier.03", "Advanced Scanner II", 3)
+                .getStackForm(1L));
+        ItemList.Machine_EV_Scanner.set(
+            new GT_MetaTileEntity_Scanner(344, "basicmachine.scanner.tier.04", "Advanced Scanner III", 4)
+                .getStackForm(1L));
+        ItemList.Machine_IV_Scanner.set(
+            new GT_MetaTileEntity_Scanner(345, "basicmachine.scanner.tier.05", "Advanced Scanner IV", 5)
+                .getStackForm(1L));
+    }
+    private static void registerPackager(){
+        ItemList.Machine_LV_Boxinator.set(
+            new GT_MetaTileEntity_Boxinator(401, "basicmachine.boxinator.tier.01", "Basic Packager", 1)
+                .getStackForm(1L));
+        ItemList.Machine_MV_Boxinator.set(
+            new GT_MetaTileEntity_Boxinator(402, "basicmachine.boxinator.tier.02", "Advanced Packager", 2)
+                .getStackForm(1L));
+        ItemList.Machine_HV_Boxinator.set(
+            new GT_MetaTileEntity_Boxinator(403, "basicmachine.boxinator.tier.03", "Advanced Packager II", 3)
+                .getStackForm(1L));
+        ItemList.Machine_EV_Boxinator.set(
+            new GT_MetaTileEntity_Boxinator(404, "basicmachine.boxinator.tier.04", "Advanced Packager III", 4)
+                .getStackForm(1L));
+        ItemList.Machine_IV_Boxinator.set(
+            new GT_MetaTileEntity_Boxinator(405, "basicmachine.boxinator.tier.05", "Boxinator", 5).getStackForm(1L));
+        ItemList.Machine_LuV_Boxinator.set(
+            new GT_MetaTileEntity_Boxinator(406, "basicmachine.boxinator.tier.06", "Boxinator", 6).getStackForm(1L));
+        ItemList.Machine_ZPM_Boxinator.set(
+            new GT_MetaTileEntity_Boxinator(407, "basicmachine.boxinator.tier.07", "Boxinator", 7).getStackForm(1L));
+        ItemList.Machine_UV_Boxinator.set(
+            new GT_MetaTileEntity_Boxinator(408, "basicmachine.boxinator.tier.08", "Boxinator", 8).getStackForm(1L));
+    }
+    private static void registerRockBreaker(){
+        ItemList.Machine_LV_RockBreaker.set(
+            new GT_MetaTileEntity_RockBreaker(441, "basicmachine.rockbreaker.tier.01", "Basic Rock Breaker", 1)
+                .getStackForm(1L));
+        ItemList.Machine_MV_RockBreaker.set(
+            new GT_MetaTileEntity_RockBreaker(442, "basicmachine.rockbreaker.tier.02", "Advanced Rock Breaker", 2)
+                .getStackForm(1L));
+        ItemList.Machine_HV_RockBreaker.set(
+            new GT_MetaTileEntity_RockBreaker(443, "basicmachine.rockbreaker.tier.03", "Advanced Rock Breaker II", 3)
+                .getStackForm(1L));
+        ItemList.Machine_EV_RockBreaker.set(
+            new GT_MetaTileEntity_RockBreaker(444, "basicmachine.rockbreaker.tier.04", "Advanced Rock Breaker III", 4)
+                .getStackForm(1L));
+        ItemList.Machine_IV_RockBreaker.set(
+            new GT_MetaTileEntity_RockBreaker(
+                445,
+                "basicmachine.rockbreaker.tier.05",
+                "Cryogenic Magma Solidifier R-8200",
+                5).getStackForm(1L));
+    }
+    private static void registerIndustrialApiary() {
+        if (Forestry.isModLoaded()) {
+            ItemList.Machine_IndustrialApiary.set(
+                new GT_MetaTileEntity_IndustrialApiary(9399, "basicmachine.industrialapiary", "Industrial Apiary", 8)
+                    .getStackForm(1L));
+        }
+    }
+    private static void registerMassFab(){
+        ItemList.Machine_LV_Massfab.set(
+            new GT_MetaTileEntity_Massfabricator(461, "basicmachine.massfab.tier.01", "Basic Mass Fabricator", 1)
+                .getStackForm(1L));
+        ItemList.Machine_MV_Massfab.set(
+            new GT_MetaTileEntity_Massfabricator(462, "basicmachine.massfab.tier.02", "Advanced Mass Fabricator", 2)
+                .getStackForm(1L));
+        ItemList.Machine_HV_Massfab.set(
+            new GT_MetaTileEntity_Massfabricator(463, "basicmachine.massfab.tier.03", "Advanced Mass Fabricator II", 3)
+                .getStackForm(1L));
+        ItemList.Machine_EV_Massfab.set(
+            new GT_MetaTileEntity_Massfabricator(464, "basicmachine.massfab.tier.04", "Advanced Mass Fabricator III", 4)
+                .getStackForm(1L));
+        ItemList.Machine_IV_Massfab.set(
+            new GT_MetaTileEntity_Massfabricator(465, "basicmachine.massfab.tier.05", "Advanced Mass Fabricator IV", 5)
+                .getStackForm(1L));
+    }
+    private static void registerReplicator(){
+        ItemList.Machine_LV_Replicator.set(
+            new GT_MetaTileEntity_Replicator(481, "basicmachine.replicator.tier.01", "Basic Replicator", 1)
+                .getStackForm(1L));
+        ItemList.Machine_MV_Replicator.set(
+            new GT_MetaTileEntity_Replicator(482, "basicmachine.replicator.tier.02", "Advanced Replicator", 2)
+                .getStackForm(1L));
+        ItemList.Machine_HV_Replicator.set(
+            new GT_MetaTileEntity_Replicator(483, "basicmachine.replicator.tier.03", "Advanced Replicator II", 3)
+                .getStackForm(1L));
+        ItemList.Machine_EV_Replicator.set(
+            new GT_MetaTileEntity_Replicator(484, "basicmachine.replicator.tier.04", "Advanced Replicator III", 4)
+                .getStackForm(1L));
+        ItemList.Machine_IV_Replicator.set(
+            new GT_MetaTileEntity_Replicator(485, "basicmachine.replicator.tier.05", "Advanced Replicator IV", 5)
+                .getStackForm(1L));
+    }
+    private static void registerBrewery(){
+        ItemList.Machine_LV_Brewery.set(
+            new GT_MetaTileEntity_PotionBrewer(491, "basicmachine.brewery.tier.01", "Basic Brewery", 1)
+                .getStackForm(1L));
+        ItemList.Machine_MV_Brewery.set(
+            new GT_MetaTileEntity_PotionBrewer(492, "basicmachine.brewery.tier.02", "Advanced Brewery", 2)
+                .getStackForm(1L));
+        ItemList.Machine_HV_Brewery.set(
+            new GT_MetaTileEntity_PotionBrewer(493, "basicmachine.brewery.tier.03", "Advanced Brewery II", 3)
+                .getStackForm(1L));
+        ItemList.Machine_EV_Brewery.set(
+            new GT_MetaTileEntity_PotionBrewer(494, "basicmachine.brewery.tier.04", "Advanced Brewery III", 4)
+                .getStackForm(1L));
+        ItemList.Machine_IV_Brewery.set(
+            new GT_MetaTileEntity_PotionBrewer(495, "basicmachine.brewery.tier.05", "Advanced Brewery IV", 5)
+                .getStackForm(1L));
+    }
+    private static void registerMiner(){
+        ItemList.Machine_LV_Miner
+            .set(new GT_MetaTileEntity_Miner(679, "basicmachine.miner.tier.01", "Basic Miner", 1).getStackForm(1L));
+        ItemList.Machine_MV_Miner
+            .set(new GT_MetaTileEntity_Miner(680, "basicmachine.miner.tier.02", "Good Miner", 2).getStackForm(1L));
+        ItemList.Machine_HV_Miner
+            .set(new GT_MetaTileEntity_Miner(681, "basicmachine.miner.tier.03", "Advanced Miner", 3).getStackForm(1L));
+    }
+    private static void registerPump(){
+        ItemList.Pump_LV
+            .set(new GT_MetaTileEntity_Pump(1140, "basicmachine.pump.tier.01", "Basic Pump", 1).getStackForm(1L));
+        ItemList.Pump_MV
+            .set(new GT_MetaTileEntity_Pump(1141, "basicmachine.pump.tier.02", "Advanced Pump", 2).getStackForm(1L));
+        ItemList.Pump_HV
+            .set(new GT_MetaTileEntity_Pump(1142, "basicmachine.pump.tier.03", "Advanced Pump II", 3).getStackForm(1L));
+        ItemList.Pump_EV.set(
+            new GT_MetaTileEntity_Pump(1143, "basicmachine.pump.tier.04", "Advanced Pump III", 4).getStackForm(1L));
+        ItemList.Pump_IV
+            .set(new GT_MetaTileEntity_Pump(1144, "basicmachine.pump.tier.05", "Advanced Pump IV", 5).getStackForm(1L));
+    }
+    private static void registerTeleporter(){
+        ItemList.Teleporter
+            .set(new GT_MetaTileEntity_Teleporter(1145, "basicmachine.teleporter", "Teleporter", 9).getStackForm(1L));
+    }
+    private static void registerMonsterRepellator(){
+        ItemList.MobRep_LV.set(
+            new GT_MetaTileEntity_MonsterRepellent(1146, "basicmachine.mobrep.tier.01", "Basic Monster Repellator", 1)
+                .getStackForm(1L));
+        ItemList.MobRep_MV.set(
+            new GT_MetaTileEntity_MonsterRepellent(
+                1147,
+                "basicmachine.mobrep.tier.02",
+                "Advanced Monster Repellator",
+                2).getStackForm(1L));
+        ItemList.MobRep_HV.set(
+            new GT_MetaTileEntity_MonsterRepellent(
+                1148,
+                "basicmachine.mobrep.tier.03",
+                "Advanced Monster Repellator II",
+                3).getStackForm(1L));
+        ItemList.MobRep_EV.set(
+            new GT_MetaTileEntity_MonsterRepellent(
+                1149,
+                "basicmachine.mobrep.tier.04",
+                "Advanced Monster Repellator III",
+                4).getStackForm(1L));
+        ItemList.MobRep_IV.set(
+            new GT_MetaTileEntity_MonsterRepellent(
+                1150,
+                "basicmachine.mobrep.tier.05",
+                "Advanced Monster Repellator IV",
+                5).getStackForm(1L));
+        ItemList.MobRep_LuV.set(
+            new GT_MetaTileEntity_MonsterRepellent(
+                1135,
+                "basicmachine.mobrep.tier.06",
+                "Advanced Monster Repellator V",
+                6).getStackForm(1L));
+        ItemList.MobRep_ZPM.set(
+            new GT_MetaTileEntity_MonsterRepellent(
+                1136,
+                "basicmachine.mobrep.tier.07",
+                "Advanced Monster Repellator VI",
+                7).getStackForm(1L));
+        ItemList.MobRep_UV.set(
+            new GT_MetaTileEntity_MonsterRepellent(
+                1137,
+                "basicmachine.mobrep.tier.08",
+                "Advanced Monster Repellator VII",
+                8).getStackForm(1L));
+    }
+    private static void registerSeismicProspector(){
+        ItemList.Seismic_Prospector_LV.set(
+            new GT_MetaTileEntity_SeismicProspector(
+                1156,
+                "basicmachine.seismicprospector.01",
+                "Seismic Prospector LV",
+                1).getStackForm(1));
+        ItemList.Seismic_Prospector_MV.set(
+            new GT_MetaTileEntity_SeismicProspector(
+                2100,
+                "basicmachine.seismicprospector.02",
+                "Seismic Prospector MV",
+                2).getStackForm(1));
+        ItemList.Seismic_Prospector_HV.set(
+            new GT_MetaTileEntity_SeismicProspector(
+                2101,
+                "basicmachine.seismicprospector.03",
+                "Seismic Prospector HV",
+                3).getStackForm(1));
+    }
+    private static void registerAdvancedSeismicProspector(){
+        ItemList.Seismic_Prospector_Adv_LV.set(
+            new GT_MetaTileEntity_AdvSeismicProspector(
+                2102,
+                "basicmachine.seismicprospector.07",
+                "Advanced Seismic Prospector LV",
+                1,
+                5 * 16 / 2,
+                2).getStackForm(1));
+        ItemList.Seismic_Prospector_Adv_MV.set(
+            new GT_MetaTileEntity_AdvSeismicProspector(
+                2103,
+                "basicmachine.seismicprospector.06",
+                "Advanced Seismic Prospector MV",
+                2,
+                7 * 16 / 2,
+                2).getStackForm(1));
+        ItemList.Seismic_Prospector_Adv_HV.set(
+            new GT_MetaTileEntity_AdvSeismicProspector(
+                2104,
+                "basicmachine.seismicprospector.05",
+                "Advanced Seismic Prospector HV",
+                3,
+                9 * 16 / 2,
+                2).getStackForm(1));
+        ItemList.Seismic_Prospector_Adv_EV.set(
+            new GT_MetaTileEntity_AdvSeismicProspector(
+                1173,
+                "basicmachine.seismicprospector.04",
+                "Advanced Seismic Prospector EV",
+                4,
+                11 * 16 / 2,
+                2).getStackForm(1));
+    }
+    private static void registerMicrowaveEnergyTransmitter(){
+        ItemList.MicroTransmitter_HV.set(
+            new GT_MetaTileEntity_MicrowaveEnergyTransmitter(
+                1161,
+                "basicmachine.microtransmitter.03",
+                "HV Microwave Energy Transmitter",
+                3).getStackForm(1L));
+        ItemList.MicroTransmitter_EV.set(
+            new GT_MetaTileEntity_MicrowaveEnergyTransmitter(
+                1162,
+                "basicmachine.microtransmitter.04",
+                "EV Microwave Energy Transmitter",
+                4).getStackForm(1L));
+        ItemList.MicroTransmitter_IV.set(
+            new GT_MetaTileEntity_MicrowaveEnergyTransmitter(
+                1163,
+                "basicmachine.microtransmitter.05",
+                "IV Microwave Energy Transmitter",
+                5).getStackForm(1L));
+        ItemList.MicroTransmitter_LUV.set(
+            new GT_MetaTileEntity_MicrowaveEnergyTransmitter(
+                1164,
+                "basicmachine.microtransmitter.06",
+                "LuV Microwave Energy Transmitter",
+                6).getStackForm(1L));
+        ItemList.MicroTransmitter_ZPM.set(
+            new GT_MetaTileEntity_MicrowaveEnergyTransmitter(
+                1165,
+                "basicmachine.microtransmitter.07",
+                "ZPM Microwave Energy Transmitter",
+                7).getStackForm(1L));
+        ItemList.MicroTransmitter_UV.set(
+            new GT_MetaTileEntity_MicrowaveEnergyTransmitter(
+                1166,
+                "basicmachine.microtransmitter.08",
+                "UV Microwave Energy Transmitter",
+                8).getStackForm(1L));
+    }
+    private static void registerChestBuffer(){
+        ItemList.Automation_ChestBuffer_ULV.set(
+            new GT_MetaTileEntity_ChestBuffer(
+                9230,
+                "automation.chestbuffer.tier.00",
+                "Ultra Low Voltage Chest Buffer",
+                0).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_LV.set(
+            new GT_MetaTileEntity_ChestBuffer(9231, "automation.chestbuffer.tier.01", "Low Voltage Chest Buffer", 1)
+                .getStackForm(1L));
+        ItemList.Automation_ChestBuffer_MV.set(
+            new GT_MetaTileEntity_ChestBuffer(9232, "automation.chestbuffer.tier.02", "Medium Voltage Chest Buffer", 2)
+                .getStackForm(1L));
+        ItemList.Automation_ChestBuffer_HV.set(
+            new GT_MetaTileEntity_ChestBuffer(9233, "automation.chestbuffer.tier.03", "High Voltage Chest Buffer", 3)
+                .getStackForm(1L));
+        ItemList.Automation_ChestBuffer_EV.set(
+            new GT_MetaTileEntity_ChestBuffer(9234, "automation.chestbuffer.tier.04", "Extreme Voltage Chest Buffer", 4)
+                .getStackForm(1L));
+        ItemList.Automation_ChestBuffer_IV.set(
+            new GT_MetaTileEntity_ChestBuffer(9235, "automation.chestbuffer.tier.05", "Insane Voltage Chest Buffer", 5)
+                .getStackForm(1L));
+        ItemList.Automation_ChestBuffer_LuV.set(
+            new GT_MetaTileEntity_ChestBuffer(
+                9236,
+                "automation.chestbuffer.tier.06",
+                "Ludicrous Voltage Chest Buffer",
+                6).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_ZPM.set(
+            new GT_MetaTileEntity_ChestBuffer(9237, "automation.chestbuffer.tier.07", "ZPM Voltage Chest Buffer", 7)
+                .getStackForm(1L));
+        ItemList.Automation_ChestBuffer_UV.set(
+            new GT_MetaTileEntity_ChestBuffer(
+                9238,
+                "automation.chestbuffer.tier.08",
+                "Ultimate Voltage Chest Buffer",
+                8).getStackForm(1L));
+        ItemList.Automation_ChestBuffer_MAX.set(
+            new GT_MetaTileEntity_ChestBuffer(
+                9239,
+                "automation.chestbuffer.tier.09",
+                "Highly Ultimate Voltage Chest Buffer",
+                9).getStackForm(1L));
+    }
+    private static void registerItemFilter(){
+        ItemList.Automation_Filter_ULV.set(
+            new GT_MetaTileEntity_Filter(9240, "automation.filter.tier.00", "Ultra Low Voltage Item Filter", 0)
+                .getStackForm(1L));
+        ItemList.Automation_Filter_LV.set(
+            new GT_MetaTileEntity_Filter(9241, "automation.filter.tier.01", "Low Voltage Item Filter", 1)
+                .getStackForm(1L));
+        ItemList.Automation_Filter_MV.set(
+            new GT_MetaTileEntity_Filter(9242, "automation.filter.tier.02", "Medium Voltage Item Filter", 2)
+                .getStackForm(1L));
+        ItemList.Automation_Filter_HV.set(
+            new GT_MetaTileEntity_Filter(9243, "automation.filter.tier.03", "High Voltage Item Filter", 3)
+                .getStackForm(1L));
+        ItemList.Automation_Filter_EV.set(
+            new GT_MetaTileEntity_Filter(9244, "automation.filter.tier.04", "Extreme Voltage Item Filter", 4)
+                .getStackForm(1L));
+        ItemList.Automation_Filter_IV.set(
+            new GT_MetaTileEntity_Filter(9245, "automation.filter.tier.05", "Insane Voltage Item Filter", 5)
+                .getStackForm(1L));
+        ItemList.Automation_Filter_LuV.set(
+            new GT_MetaTileEntity_Filter(9246, "automation.filter.tier.06", "Ludicrous Voltage Item Filter", 6)
+                .getStackForm(1L));
+        ItemList.Automation_Filter_ZPM.set(
+            new GT_MetaTileEntity_Filter(9247, "automation.filter.tier.07", "ZPM Voltage Item Filter", 7)
+                .getStackForm(1L));
+        ItemList.Automation_Filter_UV.set(
+            new GT_MetaTileEntity_Filter(9248, "automation.filter.tier.08", "Ultimate Voltage Item Filter", 8)
+                .getStackForm(1L));
+        ItemList.Automation_Filter_MAX.set(
+            new GT_MetaTileEntity_Filter(9249, "automation.filter.tier.09", "Highly Ultimate Voltage Item Filter", 9)
+                .getStackForm(1L));
+    }
+    private static void registerTypeFilter(){
+        ItemList.Automation_TypeFilter_ULV.set(
+            new GT_MetaTileEntity_TypeFilter(9250, "automation.typefilter.tier.00", "Ultra Low Voltage Type Filter", 0)
+                .getStackForm(1L));
+        ItemList.Automation_TypeFilter_LV.set(
+            new GT_MetaTileEntity_TypeFilter(9251, "automation.typefilter.tier.01", "Low Voltage Type Filter", 1)
+                .getStackForm(1L));
+        ItemList.Automation_TypeFilter_MV.set(
+            new GT_MetaTileEntity_TypeFilter(9252, "automation.typefilter.tier.02", "Medium Voltage Type Filter", 2)
+                .getStackForm(1L));
+        ItemList.Automation_TypeFilter_HV.set(
+            new GT_MetaTileEntity_TypeFilter(9253, "automation.typefilter.tier.03", "High Voltage Type Filter", 3)
+                .getStackForm(1L));
+        ItemList.Automation_TypeFilter_EV.set(
+            new GT_MetaTileEntity_TypeFilter(9254, "automation.typefilter.tier.04", "Extreme Voltage Type Filter", 4)
+                .getStackForm(1L));
+        ItemList.Automation_TypeFilter_IV.set(
+            new GT_MetaTileEntity_TypeFilter(9255, "automation.typefilter.tier.05", "Insane Voltage Type Filter", 5)
+                .getStackForm(1L));
+        ItemList.Automation_TypeFilter_LuV.set(
+            new GT_MetaTileEntity_TypeFilter(9256, "automation.typefilter.tier.06", "Ludicrous Voltage Type Filter", 6)
+                .getStackForm(1L));
+        ItemList.Automation_TypeFilter_ZPM.set(
+            new GT_MetaTileEntity_TypeFilter(9257, "automation.typefilter.tier.07", "ZPM Voltage Type Filter", 7)
+                .getStackForm(1L));
+        ItemList.Automation_TypeFilter_UV.set(
+            new GT_MetaTileEntity_TypeFilter(9258, "automation.typefilter.tier.08", "Ultimate Voltage Type Filter", 8)
+                .getStackForm(1L));
+        ItemList.Automation_TypeFilter_MAX.set(
+            new GT_MetaTileEntity_TypeFilter(
+                9259,
+                "automation.typefilter.tier.09",
+                "Highly Ultimate Voltage Type Filter",
+                9).getStackForm(1L));
+    }
+    private static void registerRegulator(){
+        ItemList.Automation_Regulator_ULV.set(
+            new GT_MetaTileEntity_Regulator(9270, "automation.regulator.tier.00", "Ultra Low Voltage Regulator", 0)
+                .getStackForm(1L));
+        ItemList.Automation_Regulator_LV.set(
+            new GT_MetaTileEntity_Regulator(9271, "automation.regulator.tier.01", "Low Voltage Regulator", 1)
+                .getStackForm(1L));
+        ItemList.Automation_Regulator_MV.set(
+            new GT_MetaTileEntity_Regulator(9272, "automation.regulator.tier.02", "Medium Voltage Regulator", 2)
+                .getStackForm(1L));
+        ItemList.Automation_Regulator_HV.set(
+            new GT_MetaTileEntity_Regulator(9273, "automation.regulator.tier.03", "High Voltage Regulator", 3)
+                .getStackForm(1L));
+        ItemList.Automation_Regulator_EV.set(
+            new GT_MetaTileEntity_Regulator(9274, "automation.regulator.tier.04", "Extreme Voltage Regulator", 4)
+                .getStackForm(1L));
+        ItemList.Automation_Regulator_IV.set(
+            new GT_MetaTileEntity_Regulator(9275, "automation.regulator.tier.05", "Insane Voltage Regulator", 5)
+                .getStackForm(1L));
+        ItemList.Automation_Regulator_LuV.set(
+            new GT_MetaTileEntity_Regulator(9276, "automation.regulator.tier.06", "Ludicrous Voltage Regulator", 6)
+                .getStackForm(1L));
+        ItemList.Automation_Regulator_ZPM.set(
+            new GT_MetaTileEntity_Regulator(9277, "automation.regulator.tier.07", "ZPM Voltage Regulator", 7)
+                .getStackForm(1L));
+        ItemList.Automation_Regulator_UV.set(
+            new GT_MetaTileEntity_Regulator(9278, "automation.regulator.tier.08", "Ultimate Voltage Regulator", 8)
+                .getStackForm(1L));
+        ItemList.Automation_Regulator_MAX.set(
+            new GT_MetaTileEntity_Regulator(
+                9279,
+                "automation.regulator.tier.09",
+                "Highly Ultimate Voltage Regulator",
+                9).getStackForm(1L));
+    }
+    private static void registerSuperBuffer(){
+        ItemList.Automation_SuperBuffer_ULV.set(
+            new GT_MetaTileEntity_SuperBuffer(
+                9300,
+                "automation.superbuffer.tier.00",
+                "Ultra Low Voltage Super Buffer",
+                0).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_LV.set(
+            new GT_MetaTileEntity_SuperBuffer(9301, "automation.superbuffer.tier.01", "Low Voltage Super Buffer", 1)
+                .getStackForm(1L));
+        ItemList.Automation_SuperBuffer_MV.set(
+            new GT_MetaTileEntity_SuperBuffer(9302, "automation.superbuffer.tier.02", "Medium Voltage Super Buffer", 2)
+                .getStackForm(1L));
+        ItemList.Automation_SuperBuffer_HV.set(
+            new GT_MetaTileEntity_SuperBuffer(9303, "automation.superbuffer.tier.03", "High Voltage Super Buffer", 3)
+                .getStackForm(1L));
+        ItemList.Automation_SuperBuffer_EV.set(
+            new GT_MetaTileEntity_SuperBuffer(9304, "automation.superbuffer.tier.04", "Extreme Voltage Super Buffer", 4)
+                .getStackForm(1L));
+        ItemList.Automation_SuperBuffer_IV.set(
+            new GT_MetaTileEntity_SuperBuffer(9305, "automation.superbuffer.tier.05", "Insane Voltage Super Buffer", 5)
+                .getStackForm(1L));
+        ItemList.Automation_SuperBuffer_LuV.set(
+            new GT_MetaTileEntity_SuperBuffer(
+                9306,
+                "automation.superbuffer.tier.06",
+                "Ludicrous Voltage Super Buffer",
+                6).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_ZPM.set(
+            new GT_MetaTileEntity_SuperBuffer(9307, "automation.superbuffer.tier.07", "ZPM Voltage Super Buffer", 7)
+                .getStackForm(1L));
+        ItemList.Automation_SuperBuffer_UV.set(
+            new GT_MetaTileEntity_SuperBuffer(
+                9308,
+                "automation.superbuffer.tier.08",
+                "Ultimate Voltage Super Buffer",
+                8).getStackForm(1L));
+        ItemList.Automation_SuperBuffer_MAX.set(
+            new GT_MetaTileEntity_SuperBuffer(
+                9309,
+                "automation.superbuffer.tier.09",
+                "Highly Ultimate Voltage Super Buffer",
+                9).getStackForm(1L));
+    }
+    private static void registerItemDistributor(){
+        ItemList.Automation_ItemDistributor_ULV.set(
+            new GT_MetaTileEntity_ItemDistributor(
+                9320,
+                "automation.itemdistributor.tier.00",
+                "Ultra Low Voltage Item Distributor",
+                0).getStackForm(1L));
+        ItemList.Automation_ItemDistributor_LV.set(
+            new GT_MetaTileEntity_ItemDistributor(
+                9321,
+                "automation.itemdistributor.tier.01",
+                "Low Voltage Item Distributor",
+                1).getStackForm(1L));
+        ItemList.Automation_ItemDistributor_MV.set(
+            new GT_MetaTileEntity_ItemDistributor(
+                9322,
+                "automation.itemdistributor.tier.02",
+                "Medium Voltage Item Distributor",
+                2).getStackForm(1L));
+        ItemList.Automation_ItemDistributor_HV.set(
+            new GT_MetaTileEntity_ItemDistributor(
+                9323,
+                "automation.itemdistributor.tier.03",
+                "High Voltage Item Distributor",
+                3).getStackForm(1L));
+        ItemList.Automation_ItemDistributor_EV.set(
+            new GT_MetaTileEntity_ItemDistributor(
+                9324,
+                "automation.itemdistributor.tier.04",
+                "Extreme Voltage Item Distributor",
+                4).getStackForm(1L));
+        ItemList.Automation_ItemDistributor_IV.set(
+            new GT_MetaTileEntity_ItemDistributor(
+                9325,
+                "automation.itemdistributor.tier.05",
+                "Insane Voltage Item Distributor",
+                5).getStackForm(1L));
+        ItemList.Automation_ItemDistributor_LuV.set(
+            new GT_MetaTileEntity_ItemDistributor(
+                9326,
+                "automation.itemdistributor.tier.06",
+                "Ludicrous Voltage Item Distributor",
+                6).getStackForm(1L));
+        ItemList.Automation_ItemDistributor_ZPM.set(
+            new GT_MetaTileEntity_ItemDistributor(
+                9327,
+                "automation.itemdistributor.tier.07",
+                "ZPM Voltage Item Distributor",
+                7).getStackForm(1L));
+        ItemList.Automation_ItemDistributor_UV.set(
+            new GT_MetaTileEntity_ItemDistributor(
+                9328,
+                "automation.itemdistributor.tier.08",
+                "Ultimate Voltage Item Distributor",
+                8).getStackForm(1L));
+        ItemList.Automation_ItemDistributor_MAX.set(
+            new GT_MetaTileEntity_ItemDistributor(
+                9329,
+                "automation.itemdistributor.tier.09",
+                "MAX Voltage Item Distributor",
+                9).getStackForm(1L));
+    }
+    private static void registerRecipeFilter(){
+        ItemList.Automation_RecipeFilter_ULV.set(
+            new GT_MetaTileEntity_RecipeFilter(
+                9330,
+                "automation.recipefilter.tier.00",
+                "Ultra Low Voltage Recipe Filter",
+                0).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_LV.set(
+            new GT_MetaTileEntity_RecipeFilter(9331, "automation.recipefilter.tier.01", "Low Voltage Recipe Filter", 1)
+                .getStackForm(1L));
+        ItemList.Automation_RecipeFilter_MV.set(
+            new GT_MetaTileEntity_RecipeFilter(
+                9332,
+                "automation.recipefilter.tier.02",
+                "Medium Voltage Recipe Filter",
+                2).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_HV.set(
+            new GT_MetaTileEntity_RecipeFilter(9333, "automation.recipefilter.tier.03", "High Voltage Recipe Filter", 3)
+                .getStackForm(1L));
+        ItemList.Automation_RecipeFilter_EV.set(
+            new GT_MetaTileEntity_RecipeFilter(
+                9334,
+                "automation.recipefilter.tier.04",
+                "Extreme Voltage Recipe Filter",
+                4).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_IV.set(
+            new GT_MetaTileEntity_RecipeFilter(
+                9335,
+                "automation.recipefilter.tier.05",
+                "Insane Voltage Recipe Filter",
+                5).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_LuV.set(
+            new GT_MetaTileEntity_RecipeFilter(
+                9336,
+                "automation.recipefilter.tier.06",
+                "Ludicrous Voltage Recipe Filter",
+                6).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_ZPM.set(
+            new GT_MetaTileEntity_RecipeFilter(9337, "automation.recipefilter.tier.07", "ZPM Voltage Recipe Filter", 7)
+                .getStackForm(1L));
+        ItemList.Automation_RecipeFilter_UV.set(
+            new GT_MetaTileEntity_RecipeFilter(
+                9338,
+                "automation.recipefilter.tier.08",
+                "Ultimate Voltage Recipe Filter",
+                8).getStackForm(1L));
+        ItemList.Automation_RecipeFilter_MAX.set(
+            new GT_MetaTileEntity_RecipeFilter(
+                9339,
+                "automation.recipefilter.tier.09",
+                "Highly Ultimate Voltage Recipe Filter",
+                9).getStackForm(1L));
+    }
+    private static void registerMachineHull(){
         ItemList.Hull_Bronze.set(
             new GT_MetaTileEntity_BasicHull_Bronze(1, "hull.bronze", "Bronze Hull", 0, "For your first Steam Machines")
                 .getStackForm(1L));
@@ -400,6 +1197,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hull_MAX.set(
             new GT_MetaTileEntity_BasicHull(19, "hull.tier.09", "UHV Machine Hull", 9, imagination).getStackForm(1L));
 
+    }
+    private static void registerTransformer(){
         ItemList.Transformer_LV_ULV.set(
             new GT_MetaTileEntity_Transformer(
                 20,
@@ -463,7 +1262,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "Ultimate Transformer",
                 8,
                 "UHV -> UV (Use Soft Mallet to invert)").getStackForm(1L));
-
+    }
+    private static void registerDynamoHatch(){
         ItemList.Hatch_Dynamo_ULV.set(
             new GT_MetaTileEntity_Hatch_Dynamo(30, "hatch.dynamo.tier.00", "ULV Dynamo Hatch", 0).getStackForm(1L));
         ItemList.Hatch_Dynamo_LV
@@ -484,7 +1284,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             .set(new GT_MetaTileEntity_Hatch_Dynamo(38, "hatch.dynamo.tier.08", "UV Dynamo Hatch", 8).getStackForm(1L));
         ItemList.Hatch_Dynamo_MAX.set(
             new GT_MetaTileEntity_Hatch_Dynamo(39, "hatch.dynamo.tier.09", "UHV Dynamo Hatch", 9).getStackForm(1L));
-
+    }
+    private static void registerEnergyHatch(){
         // 1234
         ItemList.Hatch_Energy_ULV.set(
             new GT_MetaTileEntity_Hatch_Energy(40, "hatch.energy.tier.00", "ULV Energy Hatch", 0).getStackForm(1L));
@@ -506,7 +1307,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             .set(new GT_MetaTileEntity_Hatch_Energy(48, "hatch.energy.tier.08", "UV Energy Hatch", 8).getStackForm(1L));
         ItemList.Hatch_Energy_MAX.set(
             new GT_MetaTileEntity_Hatch_Energy(49, "hatch.energy.tier.09", "UHV Energy Hatch", 9).getStackForm(1L));
-
+    }
+    private static void registerInputHatch(){
         ItemList.Hatch_Input_ULV
             .set(new GT_MetaTileEntity_Hatch_Input(50, "hatch.input.tier.00", "Input Hatch (ULV)", 0).getStackForm(1L));
         ItemList.Hatch_Input_LV
@@ -527,6 +1329,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             .set(new GT_MetaTileEntity_Hatch_Input(58, "hatch.input.tier.08", "Input Hatch (UV)", 8).getStackForm(1L));
         ItemList.Hatch_Input_MAX
             .set(new GT_MetaTileEntity_Hatch_Input(59, "hatch.input.tier.09", "Input Hatch (UHV)", 9).getStackForm(1L));
+    }
+    private static void registerQuadrupleInputHatch(){
         ItemList.Hatch_Input_Multi_2x2_EV.set(
             new GT_MetaTileEntity_Hatch_MultiInput(200, 4, "hatch.multi.input.tier.01", "Quadruple Input Hatch (EV)", 4)
                 .getStackForm(1L));
@@ -585,13 +1389,15 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "hatch.multi.input.tier.10",
                 "Quadruple Input Hatch (UXV)",
                 13).getStackForm(1L));
+
         ItemList.Hatch_Input_Multi_2x2_Humongous.set(
             new GT_MetaTileEntity_Hatch_QuadrupleHumongous(
                 719,
                 4,
                 "hatch.multi.input.tier.11",
                 "Humongous Quadruple Input Hatch").getStackForm(1L));
-
+    }
+    private static void registerOutputHatch(){
         ItemList.Hatch_Output_ULV.set(
             new GT_MetaTileEntity_Hatch_Output(60, "hatch.output.tier.00", "Output Hatch (ULV)", 0).getStackForm(1L));
         ItemList.Hatch_Output_LV.set(
@@ -612,7 +1418,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_Hatch_Output(68, "hatch.output.tier.08", "Output Hatch (UV)", 8).getStackForm(1L));
         ItemList.Hatch_Output_MAX.set(
             new GT_MetaTileEntity_Hatch_Output(69, "hatch.output.tier.09", "Output Hatch (UHV)", 9).getStackForm(1L));
-
+    }
+    private static void registerQuantumTank(){
         ItemList.Quantum_Tank_LV
             .set(new GT_MetaTileEntity_QuantumTank(120, "quantum.tank.tier.06", "Quantum Tank I", 6).getStackForm(1L));
         ItemList.Quantum_Tank_MV
@@ -623,7 +1430,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             .set(new GT_MetaTileEntity_QuantumTank(123, "quantum.tank.tier.09", "Quantum Tank IV", 9).getStackForm(1L));
         ItemList.Quantum_Tank_IV
             .set(new GT_MetaTileEntity_QuantumTank(124, "quantum.tank.tier.10", "Quantum Tank V", 10).getStackForm(1L));
-
+    }
+    private static void registerQuantumChest(){
         ItemList.Quantum_Chest_LV.set(
             new GT_MetaTileEntity_QuantumChest(125, "quantum.chest.tier.06", "Quantum Chest I", 6).getStackForm(1L));
         ItemList.Quantum_Chest_MV.set(
@@ -634,7 +1442,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_QuantumChest(128, "quantum.chest.tier.09", "Quantum Chest IV", 9).getStackForm(1L));
         ItemList.Quantum_Chest_IV.set(
             new GT_MetaTileEntity_QuantumChest(129, "quantum.chest.tier.10", "Quantum Chest V", 10).getStackForm(1L));
-
+    }
+    private static void registerSuperTank(){
         ItemList.Super_Tank_LV
             .set(new GT_MetaTileEntity_SuperTank(130, "super.tank.tier.01", "Super Tank I", 1).getStackForm(1L));
         ItemList.Super_Tank_MV
@@ -645,7 +1454,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             .set(new GT_MetaTileEntity_SuperTank(133, "super.tank.tier.04", "Super Tank IV", 4).getStackForm(1L));
         ItemList.Super_Tank_IV
             .set(new GT_MetaTileEntity_SuperTank(134, "super.tank.tier.05", "Super Tank V", 5).getStackForm(1L));
-
+    }
+    private static void registerSuperChest(){
         ItemList.Super_Chest_LV
             .set(new GT_MetaTileEntity_SuperChest(135, "super.chest.tier.01", "Super Chest I", 1).getStackForm(1L));
         ItemList.Super_Chest_MV
@@ -656,7 +1466,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             .set(new GT_MetaTileEntity_SuperChest(138, "super.chest.tier.04", "Super Chest IV", 4).getStackForm(1L));
         ItemList.Super_Chest_IV
             .set(new GT_MetaTileEntity_SuperChest(139, "super.chest.tier.05", "Super Chest V", 5).getStackForm(1L));
-
+    }
+    private static void registerLongDistancePipe(){
         ItemList.Long_Distance_Pipeline_Fluid.set(
             new GT_MetaTileEntity_LongDistancePipelineFluid(
                 2700,
@@ -669,14 +1480,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "long.distance.pipeline.item",
                 "Long Distance Item Pipeline",
                 1).getStackForm(1L));
-
-        ItemList.AdvDebugStructureWriter.set(
-            new GT_MetaTileEntity_AdvDebugStructureWriter(
-                349,
-                "advdebugstructurewriter",
-                "Advanced Debug Structure Writer",
-                5).getStackForm(1L));
-
+    }
+    private static void registerAE2Hatches(){
         if (GregTech_API.mAE2) {
             ItemList.Hatch_Output_Bus_ME.set(
                 new GT_MetaTileEntity_Hatch_OutputBus_ME(2710, "hatch.output_bus.me", "Output Bus (ME)")
@@ -687,6 +1492,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             ItemList.Hatch_Output_ME.set(
                 new GT_MetaTileEntity_Hatch_Output_ME(2713, "hatch.output.me", "Output Hatch (ME)").getStackForm(1L));
         }
+    }
+    private static void registerInputBus(){
 
         ItemList.Hatch_Input_Bus_ULV.set(
             new GT_MetaTileEntity_Hatch_InputBus(70, "hatch.input_bus.tier.00", "Input Bus (ULV)", 0).getStackForm(1L));
@@ -708,7 +1515,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_Hatch_InputBus(78, "hatch.input_bus.tier.08", "Input Bus (UV)", 8).getStackForm(1L));
         ItemList.Hatch_Input_Bus_MAX.set(
             new GT_MetaTileEntity_Hatch_InputBus(79, "hatch.input_bus.tier.09", "Input Bus (UHV)", 9).getStackForm(1L));
-
+    }
+    private static void registerOutputBus(){
         ItemList.Hatch_Output_Bus_ULV.set(
             new GT_MetaTileEntity_Hatch_OutputBus(80, "hatch.output_bus.tier.00", "Output Bus (ULV)", 0)
                 .getStackForm(1L));
@@ -739,22 +1547,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hatch_Output_Bus_MAX.set(
             new GT_MetaTileEntity_Hatch_OutputBus(89, "hatch.output_bus.tier.09", "Output Bus (UHV)", 9)
                 .getStackForm(1L));
-
-        ItemList.Hatch_Maintenance.set(
-            new GT_MetaTileEntity_Hatch_Maintenance(90, "hatch.maintenance", "Maintenance Hatch", 1).getStackForm(1L));
-
-        ItemList.Hatch_AutoMaintenance.set(
-            new GT_MetaTileEntity_Hatch_Maintenance(111, "hatch.maintenance.auto", "Auto Maintenance Hatch", 6, true)
-                .getStackForm(1L));
-        ItemList.Hatch_DataAccess_EV.set(
-            new GT_MetaTileEntity_Hatch_DataAccess(145, "hatch.dataaccess", "Data Access Hatch", 4).getStackForm(1L));
-        ItemList.Hatch_DataAccess_LuV.set(
-            new GT_MetaTileEntity_Hatch_DataAccess(146, "hatch.dataaccess.adv", "Advanced Data Access Hatch", 6)
-                .getStackForm(1L));
-        ItemList.Hatch_DataAccess_UV.set(
-            new GT_MetaTileEntity_Hatch_DataAccess(147, "hatch.dataaccess.auto", "Automatable Data Access Hatch", 8)
-                .getStackForm(1L));
-
+    }
+    private static void registerMufflerHatch(){
         ItemList.Hatch_Muffler_LV.set(
             new GT_MetaTileEntity_Hatch_Muffler(91, "hatch.muffler.tier.01", "Muffler Hatch (LV)", 1).getStackForm(1L));
         ItemList.Hatch_Muffler_MV.set(
@@ -776,7 +1570,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Hatch_Muffler_MAX.set(
             new GT_MetaTileEntity_Hatch_Muffler(99, "hatch.muffler.tier.09", "Muffler Hatch (UHV)", 9)
                 .getStackForm(1L));
-
+    }
+    private static void registerBoiler(){
         ItemList.Machine_Bronze_Boiler
             .set(new GT_MetaTileEntity_Boiler_Bronze(100, "boiler.bronze", "Small Coal Boiler").getStackForm(1L));
         ItemList.Machine_Steel_Boiler
@@ -788,63 +1583,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Machine_HP_Solar.set(
             new GT_MetaTileEntity_Boiler_Solar_Steel(114, "boiler.steel.solar", "High Pressure Solar Boiler")
                 .getStackForm(1L));
-        ItemList.Machine_Bronze_BlastFurnace.set(
-            new GT_MetaTileEntity_BronzeBlastFurnace(108, "bronzemachine.blastfurnace", "Bronze Plated Blast Furnace")
-                .getStackForm(1L));
-        ItemList.Machine_Bronze_Furnace
-            .set(new GT_MetaTileEntity_Furnace_Bronze(103, "bronzemachine.furnace", "Steam Furnace").getStackForm(1L));
-        ItemList.Machine_HP_Furnace.set(
-            new GT_MetaTileEntity_Furnace_Steel(104, "hpmachine.furnace", "High Pressure Furnace").getStackForm(1L));
-        ItemList.Machine_Bronze_Macerator.set(
-            new GT_MetaTileEntity_Macerator_Bronze(106, "bronzemachine.macerator", "Steam Macerator").getStackForm(1L));
-        ItemList.Machine_HP_Macerator.set(
-            new GT_MetaTileEntity_Macerator_Steel(107, "hpmachine.macerator", "High Pressure Macerator")
-                .getStackForm(1L));
-        ItemList.Machine_Bronze_Extractor.set(
-            new GT_MetaTileEntity_Extractor_Bronze(109, "bronzemachine.extractor", "Steam Extractor").getStackForm(1L));
-        ItemList.Machine_HP_Extractor.set(
-            new GT_MetaTileEntity_Extractor_Steel(110, "hpmachine.extractor", "High Pressure Extractor")
-                .getStackForm(1L));
-        ItemList.Machine_Bronze_Hammer.set(
-            new GT_MetaTileEntity_ForgeHammer_Bronze(112, "bronzemachine.hammer", "Steam Forge Hammer")
-                .getStackForm(1L));
-        ItemList.Machine_HP_Hammer.set(
-            new GT_MetaTileEntity_ForgeHammer_Steel(113, "hpmachine.hammer", "High Pressure Forge Hammer")
-                .getStackForm(1L));
-        ItemList.Machine_Bronze_Compressor.set(
-            new GT_MetaTileEntity_Compressor_Bronze(115, "bronzemachine.compressor", "Steam Compressor")
-                .getStackForm(1L));
-        ItemList.Machine_HP_Compressor.set(
-            new GT_MetaTileEntity_Compressor_Steel(116, "hpmachine.compressor", "High Pressure Compressor")
-                .getStackForm(1L));
-        ItemList.Machine_Bronze_AlloySmelter.set(
-            new GT_MetaTileEntity_AlloySmelter_Bronze(118, "bronzemachine.alloysmelter", "Steam Alloy Smelter")
-                .getStackForm(1L));
-        ItemList.Machine_HP_AlloySmelter.set(
-            new GT_MetaTileEntity_AlloySmelter_Steel(119, "hpmachine.alloysmelter", "High Pressure Alloy Smelter")
-                .getStackForm(1L));
-
-        ItemList.Locker_ULV
-            .set(new GT_MetaTileEntity_Locker(150, "locker.tier.00", "Ultra Low Voltage Locker", 0).getStackForm(1L));
-        ItemList.Locker_LV
-            .set(new GT_MetaTileEntity_Locker(151, "locker.tier.01", "Low Voltage Locker", 1).getStackForm(1L));
-        ItemList.Locker_MV
-            .set(new GT_MetaTileEntity_Locker(152, "locker.tier.02", "Medium Voltage Locker", 2).getStackForm(1L));
-        ItemList.Locker_HV
-            .set(new GT_MetaTileEntity_Locker(153, "locker.tier.03", "High Voltage Locker", 3).getStackForm(1L));
-        ItemList.Locker_EV
-            .set(new GT_MetaTileEntity_Locker(154, "locker.tier.04", "Extreme Voltage Locker", 4).getStackForm(1L));
-        ItemList.Locker_IV
-            .set(new GT_MetaTileEntity_Locker(155, "locker.tier.05", "Insane Voltage Locker", 5).getStackForm(1L));
-        ItemList.Locker_LuV
-            .set(new GT_MetaTileEntity_Locker(156, "locker.tier.06", "Ludicrous Voltage Locker", 6).getStackForm(1L));
-        ItemList.Locker_ZPM
-            .set(new GT_MetaTileEntity_Locker(157, "locker.tier.07", "ZPM Voltage Locker", 7).getStackForm(1L));
-        ItemList.Locker_UV
-            .set(new GT_MetaTileEntity_Locker(158, "locker.tier.08", "Ultimate Voltage Locker", 8).getStackForm(1L));
-        ItemList.Locker_MAX.set(
-            new GT_MetaTileEntity_Locker(159, "locker.tier.09", "Highly Ultimate Voltage Locker", 9).getStackForm(1L));
-
+    }
+    private static void registerBatteryBuffer1x1(){
         ItemList.Battery_Buffer_1by1_ULV.set(
             new GT_MetaTileEntity_BasicBatteryBuffer(
                 160,
@@ -925,7 +1665,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 "",
                 1).getStackForm(1L));
-
+    }
+    private static void registerBatteryBuffer2x2(){
         ItemList.Battery_Buffer_2by2_ULV.set(
             new GT_MetaTileEntity_BasicBatteryBuffer(
                 170,
@@ -1006,7 +1747,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 "",
                 4).getStackForm(1L));
-
+    }
+    private static void registerBatteryBuffer3x3(){
         ItemList.Battery_Buffer_3by3_ULV.set(
             new GT_MetaTileEntity_BasicBatteryBuffer(
                 180,
@@ -1087,7 +1829,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 "",
                 9).getStackForm(1L));
-
+    }
+    private static void registerBatteryBuffer4x4(){
         ItemList.Battery_Buffer_4by4_ULV.set(
             new GT_MetaTileEntity_BasicBatteryBuffer(
                 190,
@@ -1168,7 +1911,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 "",
                 16).getStackForm(1L));
-
+    }
+    private static void registerCharger4x4(){
         ItemList.Battery_Charger_4by4_ULV.set(
             new GT_MetaTileEntity_Charger(
                 690,
@@ -1249,346 +1993,208 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 9,
                 "Each battery gives 8A in/4A out (min 4A/2A)",
                 4).getStackForm(1L));
-
-        {
-
-            // Wireless Energy Hatches
-
-            ItemList.Wireless_Hatch_Energy_ULV.set(
-                new GT_MetaTileEntity_Wireless_Hatch(
-                    206,
-                    "hatch.wireless.receiver.tier.00",
-                    "ULV Wireless Energy Hatch",
-                    0).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_LV.set(
-                new GT_MetaTileEntity_Wireless_Hatch(
-                    207,
-                    "hatch.wireless.receiver.tier.01",
-                    "LV Wireless Energy Hatch",
-                    1).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_MV.set(
-                new GT_MetaTileEntity_Wireless_Hatch(
-                    208,
-                    "hatch.wireless.receiver.tier.02",
-                    "MV Wireless Energy Hatch",
-                    2).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_HV.set(
-                new GT_MetaTileEntity_Wireless_Hatch(
-                    209,
-                    "hatch.wireless.receiver.tier.03",
-                    "HV Wireless Energy Hatch",
-                    3).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_EV.set(
-                new GT_MetaTileEntity_Wireless_Hatch(
-                    216,
-                    "hatch.wireless.receiver.tier.04",
-                    "EV Wireless Energy Hatch",
-                    4).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_IV.set(
-                new GT_MetaTileEntity_Wireless_Hatch(
-                    217,
-                    "hatch.wireless.receiver.tier.05",
-                    "IV Wireless Energy Hatch",
-                    5).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_LuV.set(
-                new GT_MetaTileEntity_Wireless_Hatch(
-                    218,
-                    "hatch.wireless.receiver.tier.06",
-                    "LuV Wireless Energy Hatch",
-                    6).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_ZPM.set(
-                new GT_MetaTileEntity_Wireless_Hatch(
-                    219,
-                    "hatch.wireless.receiver.tier.07",
-                    "ZPM Wireless Energy Hatch",
-                    7).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_UV.set(
-                new GT_MetaTileEntity_Wireless_Hatch(
-                    227,
-                    "hatch.wireless.receiver.tier.08",
-                    "UV Wireless Energy Hatch",
-                    8).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_UHV.set(
-                new GT_MetaTileEntity_Wireless_Hatch(
-                    229,
-                    "hatch.wireless.receiver.tier.09",
-                    "UHV Wireless Energy Hatch",
-                    9).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_UEV.set(
-                new GT_MetaTileEntity_Wireless_Hatch(
-                    266,
-                    "hatch.wireless.receiver.tier.10",
-                    "UEV Wireless Energy Hatch",
-                    10).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_UIV.set(
-                new GT_MetaTileEntity_Wireless_Hatch(
-                    267,
-                    "hatch.wireless.receiver.tier.11",
-                    "UIV Wireless Energy Hatch",
-                    11).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_UMV.set(
-                new GT_MetaTileEntity_Wireless_Hatch(
-                    268,
-                    "hatch.wireless.receiver.tier.12",
-                    "UMV Wireless Energy Hatch",
-                    12).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_UXV.set(
-                new GT_MetaTileEntity_Wireless_Hatch(
-                    269,
-                    "hatch.wireless.receiver.tier.13",
-                    "UXV Wireless Energy Hatch",
-                    13).getStackForm(1L));
-            ItemList.Wireless_Hatch_Energy_MAX.set(
-                new GT_MetaTileEntity_Wireless_Hatch(
-                    286,
-                    "hatch.wireless.receiver.tier.14",
-                    "MAX Wireless Energy Hatch",
-                    14).getStackForm(1L));
-
-            // Wireless Dynamo Hatches
-
-            ItemList.Wireless_Dynamo_Energy_ULV.set(
-                new GT_MetaTileEntity_Wireless_Dynamo(
-                    287,
-                    "hatch.wireless.transmitter.tier.00",
-                    "ULV Wireless Energy Dynamo",
-                    0).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_LV.set(
-                new GT_MetaTileEntity_Wireless_Dynamo(
-                    288,
-                    "hatch.wireless.transmitter.tier.01",
-                    "LV Wireless Energy Dynamo",
-                    1).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_MV.set(
-                new GT_MetaTileEntity_Wireless_Dynamo(
-                    289,
-                    "hatch.wireless.transmitter.tier.02",
-                    "MV Wireless Energy Dynamo",
-                    2).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_HV.set(
-                new GT_MetaTileEntity_Wireless_Dynamo(
-                    296,
-                    "hatch.wireless.transmitter.tier.03",
-                    "HV Wireless Energy Dynamo",
-                    3).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_EV.set(
-                new GT_MetaTileEntity_Wireless_Dynamo(
-                    297,
-                    "hatch.wireless.transmitter.tier.04",
-                    "EV Wireless Energy Dynamo",
-                    4).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_IV.set(
-                new GT_MetaTileEntity_Wireless_Dynamo(
-                    298,
-                    "hatch.wireless.transmitter.tier.05",
-                    "IV Wireless Energy Dynamo",
-                    5).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_LuV.set(
-                new GT_MetaTileEntity_Wireless_Dynamo(
-                    299,
-                    "hatch.wireless.transmitter.tier.06",
-                    "LuV Wireless Energy Dynamo",
-                    6).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_ZPM.set(
-                new GT_MetaTileEntity_Wireless_Dynamo(
-                    310,
-                    "hatch.wireless.transmitter.tier.07",
-                    "ZPM Wireless Energy Dynamo",
-                    7).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_UV.set(
-                new GT_MetaTileEntity_Wireless_Dynamo(
-                    316,
-                    "hatch.wireless.transmitter.tier.08",
-                    "UV Wireless Energy Dynamo",
-                    8).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_UHV.set(
-                new GT_MetaTileEntity_Wireless_Dynamo(
-                    317,
-                    "hatch.wireless.transmitter.tier.09",
-                    "UHV Wireless Energy Dynamo",
-                    9).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_UEV.set(
-                new GT_MetaTileEntity_Wireless_Dynamo(
-                    318,
-                    "hatch.wireless.transmitter.tier.10",
-                    "UEV Wireless Energy Dynamo",
-                    10).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_UIV.set(
-                new GT_MetaTileEntity_Wireless_Dynamo(
-                    319,
-                    "hatch.wireless.transmitter.tier.11",
-                    "UIV Wireless Energy Dynamo",
-                    11).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_UMV.set(
-                new GT_MetaTileEntity_Wireless_Dynamo(
-                    346,
-                    "hatch.wireless.transmitter.tier.12",
-                    "UMV Wireless Energy Dynamo",
-                    12).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_UXV.set(
-                new GT_MetaTileEntity_Wireless_Dynamo(
-                    347,
-                    "hatch.wireless.transmitter.tier.13",
-                    "UXV Wireless Energy Dynamo",
-                    13).getStackForm(1L));
-            ItemList.Wireless_Dynamo_Energy_MAX.set(
-                new GT_MetaTileEntity_Wireless_Dynamo(
-                    348,
-                    "hatch.wireless.transmitter.tier.14",
-                    "MAX Wireless Energy Dynamo",
-                    14).getStackForm(1L));
-        }
     }
+    private static void registerWirelessEnergyHatch(){
 
-    private static void run2() {
-        ItemList.Machine_LV_Scanner.set(
-            new GT_MetaTileEntity_Scanner(341, "basicmachine.scanner.tier.01", "Basic Scanner", 1).getStackForm(1L));
-        ItemList.Machine_MV_Scanner.set(
-            new GT_MetaTileEntity_Scanner(342, "basicmachine.scanner.tier.02", "Advanced Scanner", 2).getStackForm(1L));
-        ItemList.Machine_HV_Scanner.set(
-            new GT_MetaTileEntity_Scanner(343, "basicmachine.scanner.tier.03", "Advanced Scanner II", 3)
-                .getStackForm(1L));
-        ItemList.Machine_EV_Scanner.set(
-            new GT_MetaTileEntity_Scanner(344, "basicmachine.scanner.tier.04", "Advanced Scanner III", 4)
-                .getStackForm(1L));
-        ItemList.Machine_IV_Scanner.set(
-            new GT_MetaTileEntity_Scanner(345, "basicmachine.scanner.tier.05", "Advanced Scanner IV", 5)
-                .getStackForm(1L));
-        ItemList.Machine_LV_Boxinator.set(
-            new GT_MetaTileEntity_Boxinator(401, "basicmachine.boxinator.tier.01", "Basic Packager", 1)
-                .getStackForm(1L));
-        ItemList.Machine_MV_Boxinator.set(
-            new GT_MetaTileEntity_Boxinator(402, "basicmachine.boxinator.tier.02", "Advanced Packager", 2)
-                .getStackForm(1L));
-        ItemList.Machine_HV_Boxinator.set(
-            new GT_MetaTileEntity_Boxinator(403, "basicmachine.boxinator.tier.03", "Advanced Packager II", 3)
-                .getStackForm(1L));
-        ItemList.Machine_EV_Boxinator.set(
-            new GT_MetaTileEntity_Boxinator(404, "basicmachine.boxinator.tier.04", "Advanced Packager III", 4)
-                .getStackForm(1L));
-        ItemList.Machine_IV_Boxinator.set(
-            new GT_MetaTileEntity_Boxinator(405, "basicmachine.boxinator.tier.05", "Boxinator", 5).getStackForm(1L));
-        ItemList.Machine_LuV_Boxinator.set(
-            new GT_MetaTileEntity_Boxinator(406, "basicmachine.boxinator.tier.06", "Boxinator", 6).getStackForm(1L));
-        ItemList.Machine_ZPM_Boxinator.set(
-            new GT_MetaTileEntity_Boxinator(407, "basicmachine.boxinator.tier.07", "Boxinator", 7).getStackForm(1L));
-        ItemList.Machine_UV_Boxinator.set(
-            new GT_MetaTileEntity_Boxinator(408, "basicmachine.boxinator.tier.08", "Boxinator", 8).getStackForm(1L));
+        // Wireless Energy Hatches
 
-        ItemList.Machine_LV_RockBreaker.set(
-            new GT_MetaTileEntity_RockBreaker(441, "basicmachine.rockbreaker.tier.01", "Basic Rock Breaker", 1)
-                .getStackForm(1L));
-        ItemList.Machine_MV_RockBreaker.set(
-            new GT_MetaTileEntity_RockBreaker(442, "basicmachine.rockbreaker.tier.02", "Advanced Rock Breaker", 2)
-                .getStackForm(1L));
-        ItemList.Machine_HV_RockBreaker.set(
-            new GT_MetaTileEntity_RockBreaker(443, "basicmachine.rockbreaker.tier.03", "Advanced Rock Breaker II", 3)
-                .getStackForm(1L));
-        ItemList.Machine_EV_RockBreaker.set(
-            new GT_MetaTileEntity_RockBreaker(444, "basicmachine.rockbreaker.tier.04", "Advanced Rock Breaker III", 4)
-                .getStackForm(1L));
-        ItemList.Machine_IV_RockBreaker.set(
-            new GT_MetaTileEntity_RockBreaker(
-                445,
-                "basicmachine.rockbreaker.tier.05",
-                "Cryogenic Magma Solidifier R-8200",
+        ItemList.Wireless_Hatch_Energy_ULV.set(
+            new GT_MetaTileEntity_Wireless_Hatch(
+                206,
+                "hatch.wireless.receiver.tier.00",
+                "ULV Wireless Energy Hatch",
+                0).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_LV.set(
+            new GT_MetaTileEntity_Wireless_Hatch(
+                207,
+                "hatch.wireless.receiver.tier.01",
+                "LV Wireless Energy Hatch",
+                1).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_MV.set(
+            new GT_MetaTileEntity_Wireless_Hatch(
+                208,
+                "hatch.wireless.receiver.tier.02",
+                "MV Wireless Energy Hatch",
+                2).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_HV.set(
+            new GT_MetaTileEntity_Wireless_Hatch(
+                209,
+                "hatch.wireless.receiver.tier.03",
+                "HV Wireless Energy Hatch",
+                3).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_EV.set(
+            new GT_MetaTileEntity_Wireless_Hatch(
+                216,
+                "hatch.wireless.receiver.tier.04",
+                "EV Wireless Energy Hatch",
+                4).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_IV.set(
+            new GT_MetaTileEntity_Wireless_Hatch(
+                217,
+                "hatch.wireless.receiver.tier.05",
+                "IV Wireless Energy Hatch",
                 5).getStackForm(1L));
-
-        if (Forestry.isModLoaded()) {
-            ItemList.Machine_IndustrialApiary.set(
-                new GT_MetaTileEntity_IndustrialApiary(9399, "basicmachine.industrialapiary", "Industrial Apiary", 8)
-                    .getStackForm(1L));
-        }
-
-        ItemList.Machine_LV_Massfab.set(
-            new GT_MetaTileEntity_Massfabricator(461, "basicmachine.massfab.tier.01", "Basic Mass Fabricator", 1)
-                .getStackForm(1L));
-        ItemList.Machine_MV_Massfab.set(
-            new GT_MetaTileEntity_Massfabricator(462, "basicmachine.massfab.tier.02", "Advanced Mass Fabricator", 2)
-                .getStackForm(1L));
-        ItemList.Machine_HV_Massfab.set(
-            new GT_MetaTileEntity_Massfabricator(463, "basicmachine.massfab.tier.03", "Advanced Mass Fabricator II", 3)
-                .getStackForm(1L));
-        ItemList.Machine_EV_Massfab.set(
-            new GT_MetaTileEntity_Massfabricator(464, "basicmachine.massfab.tier.04", "Advanced Mass Fabricator III", 4)
-                .getStackForm(1L));
-        ItemList.Machine_IV_Massfab.set(
-            new GT_MetaTileEntity_Massfabricator(465, "basicmachine.massfab.tier.05", "Advanced Mass Fabricator IV", 5)
-                .getStackForm(1L));
-
-        ItemList.Machine_LV_Replicator.set(
-            new GT_MetaTileEntity_Replicator(481, "basicmachine.replicator.tier.01", "Basic Replicator", 1)
-                .getStackForm(1L));
-        ItemList.Machine_MV_Replicator.set(
-            new GT_MetaTileEntity_Replicator(482, "basicmachine.replicator.tier.02", "Advanced Replicator", 2)
-                .getStackForm(1L));
-        ItemList.Machine_HV_Replicator.set(
-            new GT_MetaTileEntity_Replicator(483, "basicmachine.replicator.tier.03", "Advanced Replicator II", 3)
-                .getStackForm(1L));
-        ItemList.Machine_EV_Replicator.set(
-            new GT_MetaTileEntity_Replicator(484, "basicmachine.replicator.tier.04", "Advanced Replicator III", 4)
-                .getStackForm(1L));
-        ItemList.Machine_IV_Replicator.set(
-            new GT_MetaTileEntity_Replicator(485, "basicmachine.replicator.tier.05", "Advanced Replicator IV", 5)
-                .getStackForm(1L));
-
-        ItemList.Machine_LV_Brewery.set(
-            new GT_MetaTileEntity_PotionBrewer(491, "basicmachine.brewery.tier.01", "Basic Brewery", 1)
-                .getStackForm(1L));
-        ItemList.Machine_MV_Brewery.set(
-            new GT_MetaTileEntity_PotionBrewer(492, "basicmachine.brewery.tier.02", "Advanced Brewery", 2)
-                .getStackForm(1L));
-        ItemList.Machine_HV_Brewery.set(
-            new GT_MetaTileEntity_PotionBrewer(493, "basicmachine.brewery.tier.03", "Advanced Brewery II", 3)
-                .getStackForm(1L));
-        ItemList.Machine_EV_Brewery.set(
-            new GT_MetaTileEntity_PotionBrewer(494, "basicmachine.brewery.tier.04", "Advanced Brewery III", 4)
-                .getStackForm(1L));
-        ItemList.Machine_IV_Brewery.set(
-            new GT_MetaTileEntity_PotionBrewer(495, "basicmachine.brewery.tier.05", "Advanced Brewery IV", 5)
-                .getStackForm(1L));
-
-        ItemList.Machine_LV_Miner
-            .set(new GT_MetaTileEntity_Miner(679, "basicmachine.miner.tier.01", "Basic Miner", 1).getStackForm(1L));
-        ItemList.Machine_MV_Miner
-            .set(new GT_MetaTileEntity_Miner(680, "basicmachine.miner.tier.02", "Good Miner", 2).getStackForm(1L));
-        ItemList.Machine_HV_Miner
-            .set(new GT_MetaTileEntity_Miner(681, "basicmachine.miner.tier.03", "Advanced Miner", 3).getStackForm(1L));
-
+        ItemList.Wireless_Hatch_Energy_LuV.set(
+            new GT_MetaTileEntity_Wireless_Hatch(
+                218,
+                "hatch.wireless.receiver.tier.06",
+                "LuV Wireless Energy Hatch",
+                6).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_ZPM.set(
+            new GT_MetaTileEntity_Wireless_Hatch(
+                219,
+                "hatch.wireless.receiver.tier.07",
+                "ZPM Wireless Energy Hatch",
+                7).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_UV.set(
+            new GT_MetaTileEntity_Wireless_Hatch(
+                227,
+                "hatch.wireless.receiver.tier.08",
+                "UV Wireless Energy Hatch",
+                8).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_UHV.set(
+            new GT_MetaTileEntity_Wireless_Hatch(
+                229,
+                "hatch.wireless.receiver.tier.09",
+                "UHV Wireless Energy Hatch",
+                9).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_UEV.set(
+            new GT_MetaTileEntity_Wireless_Hatch(
+                266,
+                "hatch.wireless.receiver.tier.10",
+                "UEV Wireless Energy Hatch",
+                10).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_UIV.set(
+            new GT_MetaTileEntity_Wireless_Hatch(
+                267,
+                "hatch.wireless.receiver.tier.11",
+                "UIV Wireless Energy Hatch",
+                11).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_UMV.set(
+            new GT_MetaTileEntity_Wireless_Hatch(
+                268,
+                "hatch.wireless.receiver.tier.12",
+                "UMV Wireless Energy Hatch",
+                12).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_UXV.set(
+            new GT_MetaTileEntity_Wireless_Hatch(
+                269,
+                "hatch.wireless.receiver.tier.13",
+                "UXV Wireless Energy Hatch",
+                13).getStackForm(1L));
+        ItemList.Wireless_Hatch_Energy_MAX.set(
+            new GT_MetaTileEntity_Wireless_Hatch(
+                286,
+                "hatch.wireless.receiver.tier.14",
+                "MAX Wireless Energy Hatch",
+                14).getStackForm(1L));
     }
+    private static void registerWirelessDynamoHatch(){
+        // Wireless Dynamo Hatches
 
-    private static void run3() {
-        ItemList.Machine_Multi_BlastFurnace.set(
-            new GT_MetaTileEntity_ElectricBlastFurnace(1000, "multimachine.blastfurnace", "Electric Blast Furnace")
-                .getStackForm(1L));
-        ItemList.Machine_Multi_ImplosionCompressor.set(
-            new GT_MetaTileEntity_ImplosionCompressor(1001, "multimachine.implosioncompressor", "Implosion Compressor")
-                .getStackForm(1L));
-        ItemList.Machine_Multi_VacuumFreezer.set(
-            new GT_MetaTileEntity_VacuumFreezer(1002, "multimachine.vacuumfreezer", "Vacuum Freezer").getStackForm(1L));
-        ItemList.Machine_Multi_Furnace.set(
-            new GT_MetaTileEntity_MultiFurnace(1003, "multimachine.multifurnace", "Multi Smelter").getStackForm(1L));
-        ItemList.Machine_Multi_PlasmaForge.set(
-            new GT_MetaTileEntity_PlasmaForge(
-                1004,
-                "multimachine.plasmaforge",
-                "Dimensionally Transcendent Plasma Forge").getStackForm(1L));
-
-        ItemList.Machine_Multi_LargeBoiler_Bronze.set(
-            new GT_MetaTileEntity_LargeBoiler_Bronze(1020, "multimachine.boiler.bronze", "Large Bronze Boiler")
-                .getStackForm(1L));
-        ItemList.Machine_Multi_LargeBoiler_Steel.set(
-            new GT_MetaTileEntity_LargeBoiler_Steel(1021, "multimachine.boiler.steel", "Large Steel Boiler")
-                .getStackForm(1L));
-        ItemList.Machine_Multi_LargeBoiler_Titanium.set(
-            new GT_MetaTileEntity_LargeBoiler_Titanium(1022, "multimachine.boiler.titanium", "Large Titanium Boiler")
-                .getStackForm(1L));
-        ItemList.Machine_Multi_LargeBoiler_TungstenSteel.set(
-            new GT_MetaTileEntity_LargeBoiler_TungstenSteel(
-                1023,
-                "multimachine.boiler.tungstensteel",
-                "Large Tungstensteel Boiler").getStackForm(1L));
-
+        ItemList.Wireless_Dynamo_Energy_ULV.set(
+            new GT_MetaTileEntity_Wireless_Dynamo(
+                287,
+                "hatch.wireless.transmitter.tier.00",
+                "ULV Wireless Energy Dynamo",
+                0).getStackForm(1L));
+        ItemList.Wireless_Dynamo_Energy_LV.set(
+            new GT_MetaTileEntity_Wireless_Dynamo(
+                288,
+                "hatch.wireless.transmitter.tier.01",
+                "LV Wireless Energy Dynamo",
+                1).getStackForm(1L));
+        ItemList.Wireless_Dynamo_Energy_MV.set(
+            new GT_MetaTileEntity_Wireless_Dynamo(
+                289,
+                "hatch.wireless.transmitter.tier.02",
+                "MV Wireless Energy Dynamo",
+                2).getStackForm(1L));
+        ItemList.Wireless_Dynamo_Energy_HV.set(
+            new GT_MetaTileEntity_Wireless_Dynamo(
+                296,
+                "hatch.wireless.transmitter.tier.03",
+                "HV Wireless Energy Dynamo",
+                3).getStackForm(1L));
+        ItemList.Wireless_Dynamo_Energy_EV.set(
+            new GT_MetaTileEntity_Wireless_Dynamo(
+                297,
+                "hatch.wireless.transmitter.tier.04",
+                "EV Wireless Energy Dynamo",
+                4).getStackForm(1L));
+        ItemList.Wireless_Dynamo_Energy_IV.set(
+            new GT_MetaTileEntity_Wireless_Dynamo(
+                298,
+                "hatch.wireless.transmitter.tier.05",
+                "IV Wireless Energy Dynamo",
+                5).getStackForm(1L));
+        ItemList.Wireless_Dynamo_Energy_LuV.set(
+            new GT_MetaTileEntity_Wireless_Dynamo(
+                299,
+                "hatch.wireless.transmitter.tier.06",
+                "LuV Wireless Energy Dynamo",
+                6).getStackForm(1L));
+        ItemList.Wireless_Dynamo_Energy_ZPM.set(
+            new GT_MetaTileEntity_Wireless_Dynamo(
+                310,
+                "hatch.wireless.transmitter.tier.07",
+                "ZPM Wireless Energy Dynamo",
+                7).getStackForm(1L));
+        ItemList.Wireless_Dynamo_Energy_UV.set(
+            new GT_MetaTileEntity_Wireless_Dynamo(
+                316,
+                "hatch.wireless.transmitter.tier.08",
+                "UV Wireless Energy Dynamo",
+                8).getStackForm(1L));
+        ItemList.Wireless_Dynamo_Energy_UHV.set(
+            new GT_MetaTileEntity_Wireless_Dynamo(
+                317,
+                "hatch.wireless.transmitter.tier.09",
+                "UHV Wireless Energy Dynamo",
+                9).getStackForm(1L));
+        ItemList.Wireless_Dynamo_Energy_UEV.set(
+            new GT_MetaTileEntity_Wireless_Dynamo(
+                318,
+                "hatch.wireless.transmitter.tier.10",
+                "UEV Wireless Energy Dynamo",
+                10).getStackForm(1L));
+        ItemList.Wireless_Dynamo_Energy_UIV.set(
+            new GT_MetaTileEntity_Wireless_Dynamo(
+                319,
+                "hatch.wireless.transmitter.tier.11",
+                "UIV Wireless Energy Dynamo",
+                11).getStackForm(1L));
+        ItemList.Wireless_Dynamo_Energy_UMV.set(
+            new GT_MetaTileEntity_Wireless_Dynamo(
+                346,
+                "hatch.wireless.transmitter.tier.12",
+                "UMV Wireless Energy Dynamo",
+                12).getStackForm(1L));
+        ItemList.Wireless_Dynamo_Energy_UXV.set(
+            new GT_MetaTileEntity_Wireless_Dynamo(
+                347,
+                "hatch.wireless.transmitter.tier.13",
+                "UXV Wireless Energy Dynamo",
+                13).getStackForm(1L));
+        ItemList.Wireless_Dynamo_Energy_MAX.set(
+            new GT_MetaTileEntity_Wireless_Dynamo(
+                348,
+                "hatch.wireless.transmitter.tier.14",
+                "MAX Wireless Energy Dynamo",
+                14).getStackForm(1L));
+    }
+    private static void registerLightningRods(){
+        ItemList.Machine_HV_LightningRod.set(
+            new GT_MetaTileEntity_LightningRod(1174, "basicgenerator.lightningrod.03", "Lightning Rod", 3)
+                .getStackForm(1));
+        ItemList.Machine_EV_LightningRod.set(
+            new GT_MetaTileEntity_LightningRod(1175, "basicgenerator.lightningrod.04", "Lightning Rod II", 4)
+                .getStackForm(1));
+        ItemList.Machine_IV_LightningRod.set(
+            new GT_MetaTileEntity_LightningRod(1176, "basicgenerator.lightningrod.05", "Lightning Rod III", 5)
+                .getStackForm(1));
+    }
+    private static void registerCombustionGenerators(){
         ItemList.Generator_Diesel_LV.set(
             new GT_MetaTileEntity_DieselGenerator(
                 1110,
@@ -1607,7 +2213,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "basicgenerator.diesel.tier.03",
                 "Turbo Combustion Generator",
                 3).getStackForm(1L));
-
+    }
+    private static void registerGasTurbines(){
         ItemList.Generator_Gas_Turbine_LV.set(
             new GT_MetaTileEntity_GasTurbine(1115, "basicgenerator.gasturbine.tier.01", "Basic Gas Turbine", 1, 95)
                 .getStackForm(1L));
@@ -1623,7 +2230,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Generator_Gas_Turbine_IV.set(
             new GT_MetaTileEntity_GasTurbine(1119, "basicgenerator.gasturbine.tier.05", "Turbo Gas Turbine III", 5, 50)
                 .getStackForm(1L));
-
+    }
+    private static void registerSteamTurbines(){
         ItemList.Generator_Steam_Turbine_LV.set(
             new GT_MetaTileEntity_SteamTurbine(1120, "basicgenerator.steamturbine.tier.01", "Basic Steam Turbine", 1)
                 .getStackForm(1L));
@@ -1633,43 +2241,45 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         ItemList.Generator_Steam_Turbine_HV.set(
             new GT_MetaTileEntity_SteamTurbine(1122, "basicgenerator.steamturbine.tier.03", "Turbo Steam Turbine", 3)
                 .getStackForm(1L));
-
+    }
+    private static void registerNaquadahReactors(){
         ItemList.Generator_Naquadah_Mark_I.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 1190,
                 "basicgenerator.naquadah.tier.04",
-                new String[] { "Requires Enriched Naquadah Bolts" },
+                new String[]{"Requires Enriched Naquadah Bolts"},
                 "Naquadah Reactor Mark I",
                 4).getStackForm(1L));
         ItemList.Generator_Naquadah_Mark_II.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 1191,
                 "basicgenerator.naquadah.tier.05",
-                new String[] { "Requires Enriched Naquadah Rods" },
+                new String[]{"Requires Enriched Naquadah Rods"},
                 "Naquadah Reactor Mark II",
                 5).getStackForm(1L));
         ItemList.Generator_Naquadah_Mark_III.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 1192,
                 "basicgenerator.naquadah.tier.06",
-                new String[] { "Requires Enriched Naquadah Long Rods" },
+                new String[]{"Requires Enriched Naquadah Long Rods"},
                 "Naquadah Reactor Mark III",
                 6).getStackForm(1L));
         ItemList.Generator_Naquadah_Mark_IV.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 1188,
                 "basicgenerator.naquadah.tier.07",
-                new String[] { "Requires Naquadria Bolts" },
+                new String[]{"Requires Naquadria Bolts"},
                 "Naquadah Reactor Mark IV",
                 7).getStackForm(1L));
         ItemList.Generator_Naquadah_Mark_V.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 1189,
                 "basicgenerator.naquadah.tier.08",
-                new String[] { "Requires Naquadria Rods" },
+                new String[]{"Requires Naquadria Rods"},
                 "Naquadah Reactor Mark V",
                 8).getStackForm(1L));
-
+    }
+    private static void registerMagicEnergyConverters(){
         ItemList.MagicEnergyConverter_LV.set(
             new GT_MetaTileEntity_MagicEnergyConverter(
                 1123,
@@ -1688,7 +2298,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "basicgenerator.magicenergyconverter.tier.03",
                 "Master Magic Energy Converter",
                 3).getStackForm(1L));
-
+    }
+    private static void registerMagicEnergyAbsorbers(){
         ItemList.MagicEnergyAbsorber_LV.set(
             new GT_MetaTileEntity_MagicalEnergyAbsorber(
                 1127,
@@ -1713,17 +2324,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "basicgenerator.magicenergyabsorber.tier.04",
                 "Grandmaster Magic Energy Absorber",
                 4).getStackForm(1L));
-
-        ItemList.FusionComputer_LuV.set(
-            new GT_MetaTileEntity_FusionComputer1(1193, "fusioncomputer.tier.06", "Fusion Control Computer Mark I")
-                .getStackForm(1L));
-        ItemList.FusionComputer_ZPMV.set(
-            new GT_MetaTileEntity_FusionComputer2(1194, "fusioncomputer.tier.07", "Fusion Control Computer Mark II")
-                .getStackForm(1L));
-        ItemList.FusionComputer_UV.set(
-            new GT_MetaTileEntity_FusionComputer3(1195, "fusioncomputer.tier.08", "Fusion Control Computer Mark III")
-                .getStackForm(1L));
-
+    }
+    private static void registerPlasmaGenerators(){
         ItemList.Generator_Plasma_IV.set(
             new GT_MetaTileEntity_PlasmaGenerator(
                 1196,
@@ -1742,271 +2344,9 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "basicgenerator.plasmagenerator.tier.07",
                 "Plasma Generator Mark III",
                 6).getStackForm(1L));
-
-        ItemList.Processing_Array.set(
-            new GT_MetaTileEntity_ProcessingArray(1199, "multimachine.processingarray", "Processing Array")
-                .getStackForm(1L));
-        ItemList.Distillation_Tower.set(
-            new GT_MetaTileEntity_DistillationTower(1126, "multimachine.distillationtower", "Distillation Tower")
-                .getStackForm(1L));
-        ItemList.Ore_Processor.set(
-            new GT_MetaTileEntity_IntegratedOreFactory(1132, "multimachine.oreprocessor", "Integrated Ore Factory")
-                .getStackForm(1L));
-
-        ItemList.LargeSteamTurbine.set(
-            new GT_MetaTileEntity_LargeTurbine_Steam(1131, "multimachine.largeturbine", "Large Steam Turbine")
-                .getStackForm(1L));
-        ItemList.LargeGasTurbine.set(
-            new GT_MetaTileEntity_LargeTurbine_Gas(1151, "multimachine.largegasturbine", "Large Gas Turbine")
-                .getStackForm(1L));
-        ItemList.LargeHPSteamTurbine.set(
-            new GT_MetaTileEntity_LargeTurbine_HPSteam(1152, "multimachine.largehpturbine", "Large HP Steam Turbine")
-                .getStackForm(1L));
-        ItemList.LargeAdvancedGasTurbine.set(
-            new GT_MetaTileEntity_LargeTurbine_GasAdvanced(
-                1005,
-                "multimachine.largeadvancedgasturbine",
-                "Large Advanced Gas Turbine").getStackForm(1L));
-        ItemList.Machine_Multi_TranscendentPlasmaMixer.set(
-            new GT_MetaTileEntity_TranscendentPlasmaMixer(
-                1006,
-                "multimachine.transcendentplasmamixer",
-                "Transcendent Plasma Mixer").getStackForm(1));
-
-        ItemList.LargePlasmaTurbine.set(
-            new GT_MetaTileEntity_LargeTurbine_Plasma(1153, "multimachine.largeplasmaturbine", "Large Plasma Generator")
-                .getStackForm(1L));
-
-        ItemList.Pump_LV
-            .set(new GT_MetaTileEntity_Pump(1140, "basicmachine.pump.tier.01", "Basic Pump", 1).getStackForm(1L));
-        ItemList.Pump_MV
-            .set(new GT_MetaTileEntity_Pump(1141, "basicmachine.pump.tier.02", "Advanced Pump", 2).getStackForm(1L));
-        ItemList.Pump_HV
-            .set(new GT_MetaTileEntity_Pump(1142, "basicmachine.pump.tier.03", "Advanced Pump II", 3).getStackForm(1L));
-        ItemList.Pump_EV.set(
-            new GT_MetaTileEntity_Pump(1143, "basicmachine.pump.tier.04", "Advanced Pump III", 4).getStackForm(1L));
-        ItemList.Pump_IV
-            .set(new GT_MetaTileEntity_Pump(1144, "basicmachine.pump.tier.05", "Advanced Pump IV", 5).getStackForm(1L));
-
-        ItemList.Teleporter
-            .set(new GT_MetaTileEntity_Teleporter(1145, "basicmachine.teleporter", "Teleporter", 9).getStackForm(1L));
-
-        ItemList.MobRep_LV.set(
-            new GT_MetaTileEntity_MonsterRepellent(1146, "basicmachine.mobrep.tier.01", "Basic Monster Repellator", 1)
-                .getStackForm(1L));
-        ItemList.MobRep_MV.set(
-            new GT_MetaTileEntity_MonsterRepellent(
-                1147,
-                "basicmachine.mobrep.tier.02",
-                "Advanced Monster Repellator",
-                2).getStackForm(1L));
-        ItemList.MobRep_HV.set(
-            new GT_MetaTileEntity_MonsterRepellent(
-                1148,
-                "basicmachine.mobrep.tier.03",
-                "Advanced Monster Repellator II",
-                3).getStackForm(1L));
-        ItemList.MobRep_EV.set(
-            new GT_MetaTileEntity_MonsterRepellent(
-                1149,
-                "basicmachine.mobrep.tier.04",
-                "Advanced Monster Repellator III",
-                4).getStackForm(1L));
-        ItemList.MobRep_IV.set(
-            new GT_MetaTileEntity_MonsterRepellent(
-                1150,
-                "basicmachine.mobrep.tier.05",
-                "Advanced Monster Repellator IV",
-                5).getStackForm(1L));
-        ItemList.MobRep_LuV.set(
-            new GT_MetaTileEntity_MonsterRepellent(
-                1135,
-                "basicmachine.mobrep.tier.06",
-                "Advanced Monster Repellator V",
-                6).getStackForm(1L));
-        ItemList.MobRep_ZPM.set(
-            new GT_MetaTileEntity_MonsterRepellent(
-                1136,
-                "basicmachine.mobrep.tier.07",
-                "Advanced Monster Repellator VI",
-                7).getStackForm(1L));
-        ItemList.MobRep_UV.set(
-            new GT_MetaTileEntity_MonsterRepellent(
-                1137,
-                "basicmachine.mobrep.tier.08",
-                "Advanced Monster Repellator VII",
-                8).getStackForm(1L));
-
-        ItemList.Machine_Multi_HeatExchanger.set(
-            new GT_MetaTileEntity_HeatExchanger(1154, "multimachine.heatexchanger", "Large Heat Exchanger")
-                .getStackForm(1L));
-        ItemList.Charcoal_Pile.set(
-            new GT_MetaTileEntity_Charcoal_Pit(1155, "multimachine.charcoalpile", "Charcoal Pile Igniter")
-                .getStackForm(1));
-        ItemList.Seismic_Prospector_LV.set(
-            new GT_MetaTileEntity_SeismicProspector(
-                1156,
-                "basicmachine.seismicprospector.01",
-                "Seismic Prospector LV",
-                1).getStackForm(1));
-        ItemList.Seismic_Prospector_MV.set(
-            new GT_MetaTileEntity_SeismicProspector(
-                2100,
-                "basicmachine.seismicprospector.02",
-                "Seismic Prospector MV",
-                2).getStackForm(1));
-        ItemList.Seismic_Prospector_HV.set(
-            new GT_MetaTileEntity_SeismicProspector(
-                2101,
-                "basicmachine.seismicprospector.03",
-                "Seismic Prospector HV",
-                3).getStackForm(1));
-
-        ItemList.Seismic_Prospector_Adv_LV.set(
-            new GT_MetaTileEntity_AdvSeismicProspector(
-                2102,
-                "basicmachine.seismicprospector.07",
-                "Advanced Seismic Prospector LV",
-                1,
-                5 * 16 / 2,
-                2).getStackForm(1));
-        ItemList.Seismic_Prospector_Adv_MV.set(
-            new GT_MetaTileEntity_AdvSeismicProspector(
-                2103,
-                "basicmachine.seismicprospector.06",
-                "Advanced Seismic Prospector MV",
-                2,
-                7 * 16 / 2,
-                2).getStackForm(1));
-        ItemList.Seismic_Prospector_Adv_HV.set(
-            new GT_MetaTileEntity_AdvSeismicProspector(
-                2104,
-                "basicmachine.seismicprospector.05",
-                "Advanced Seismic Prospector HV",
-                3,
-                9 * 16 / 2,
-                2).getStackForm(1));
-        ItemList.Seismic_Prospector_Adv_EV.set(
-            new GT_MetaTileEntity_AdvSeismicProspector(
-                1173,
-                "basicmachine.seismicprospector.04",
-                "Advanced Seismic Prospector EV",
-                4,
-                11 * 16 / 2,
-                2).getStackForm(1));
-
-        // Converter recipes in case you had old one lying around
-        ItemList.OilDrill1.set(
-            new GT_MetaTileEntity_OilDrill1(1157, "multimachine.oildrill1", "Oil/Gas/Fluid Drilling Rig")
-                .getStackForm(1));
-        ItemList.OilDrill2.set(
-            new GT_MetaTileEntity_OilDrill2(141, "multimachine.oildrill2", "Oil/Gas/Fluid Drilling Rig II")
-                .getStackForm(1));
-        ItemList.OilDrill3.set(
-            new GT_MetaTileEntity_OilDrill3(142, "multimachine.oildrill3", "Oil/Gas/Fluid Drilling Rig III")
-                .getStackForm(1));
-        ItemList.OilDrill4.set(
-            new GT_MetaTileEntity_OilDrill4(149, "multimachine.oildrill4", "Oil/Gas/Fluid Drilling Rig IV")
-                .getStackForm(1));
-        ItemList.OilDrillInfinite.set(
-            new GT_MetaTileEntity_OilDrillInfinite(
-                148,
-                "multimachine.oildrillinfinite",
-                "Infinite Oil/Gas/Fluid Drilling Rig").getStackForm(1));
-
-        ItemList.ConcreteBackfiller1.set(
-            new GT_MetaTileEntity_ConcreteBackfiller1(143, "multimachine.concretebackfiller1", "Concrete Backfiller")
-                .getStackForm(1));
-        ItemList.ConcreteBackfiller2.set(
-            new GT_MetaTileEntity_ConcreteBackfiller2(
-                144,
-                "multimachine.concretebackfiller3",
-                "Advanced Concrete Backfiller").getStackForm(1));
-        ItemList.OreDrill1.set(
-            new GT_MetaTileEntity_OreDrillingPlant1(1158, "multimachine.oredrill1", "Ore Drilling Plant")
-                .getStackForm(1));
-        ItemList.OreDrill2.set(
-            new GT_MetaTileEntity_OreDrillingPlant2(1177, "multimachine.oredrill2", "Ore Drilling Plant II")
-                .getStackForm(1));
-        ItemList.OreDrill3.set(
-            new GT_MetaTileEntity_OreDrillingPlant3(1178, "multimachine.oredrill3", "Ore Drilling Plant III")
-                .getStackForm(1));
-        ItemList.OreDrill4.set(
-            new GT_MetaTileEntity_OreDrillingPlant4(1179, "multimachine.oredrill4", "Ore Drilling Plant IV")
-                .getStackForm(1));
-
-        ItemList.PyrolyseOven
-            .set(new GT_MetaTileEntity_PyrolyseOven(1159, "multimachine.pyro", "Pyrolyse Oven").getStackForm(1));
-        ItemList.OilCracker
-            .set(new GT_MetaTileEntity_OilCracker(1160, "multimachine.cracker", "Oil Cracking Unit").getStackForm(1));
-        ItemList.MicroTransmitter_HV.set(
-            new GT_MetaTileEntity_MicrowaveEnergyTransmitter(
-                1161,
-                "basicmachine.microtransmitter.03",
-                "HV Microwave Energy Transmitter",
-                3).getStackForm(1L));
-        ItemList.MicroTransmitter_EV.set(
-            new GT_MetaTileEntity_MicrowaveEnergyTransmitter(
-                1162,
-                "basicmachine.microtransmitter.04",
-                "EV Microwave Energy Transmitter",
-                4).getStackForm(1L));
-        ItemList.MicroTransmitter_IV.set(
-            new GT_MetaTileEntity_MicrowaveEnergyTransmitter(
-                1163,
-                "basicmachine.microtransmitter.05",
-                "IV Microwave Energy Transmitter",
-                5).getStackForm(1L));
-        ItemList.MicroTransmitter_LUV.set(
-            new GT_MetaTileEntity_MicrowaveEnergyTransmitter(
-                1164,
-                "basicmachine.microtransmitter.06",
-                "LuV Microwave Energy Transmitter",
-                6).getStackForm(1L));
-        ItemList.MicroTransmitter_ZPM.set(
-            new GT_MetaTileEntity_MicrowaveEnergyTransmitter(
-                1165,
-                "basicmachine.microtransmitter.07",
-                "ZPM Microwave Energy Transmitter",
-                7).getStackForm(1L));
-        ItemList.MicroTransmitter_UV.set(
-            new GT_MetaTileEntity_MicrowaveEnergyTransmitter(
-                1166,
-                "basicmachine.microtransmitter.08",
-                "UV Microwave Energy Transmitter",
-                8).getStackForm(1L));
-        ItemList.Machine_Multi_Assemblyline.set(
-            new GT_MetaTileEntity_AssemblyLine(1170, "multimachine.assemblyline", "Assembling Line").getStackForm(1L));
-        ItemList.Machine_Multi_DieselEngine.set(
-            new GT_MetaTileEntity_DieselEngine(1171, "multimachine.dieselengine", "Combustion Engine")
-                .getStackForm(1L));
-        ItemList.Machine_Multi_ExtremeDieselEngine.set(
-            new GT_MetaTileEntity_ExtremeDieselEngine(
-                2105,
-                "multimachine.extremedieselengine",
-                "Extreme Combustion Engine").getStackForm(1L));
-        ItemList.Machine_Multi_Cleanroom.set(
-            new GT_MetaTileEntity_Cleanroom(1172, "multimachine.cleanroom", "Cleanroom Controller").getStackForm(1));
-
-        ItemList.Machine_HV_LightningRod.set(
-            new GT_MetaTileEntity_LightningRod(1174, "basicgenerator.lightningrod.03", "Lightning Rod", 3)
-                .getStackForm(1));
-        ItemList.Machine_EV_LightningRod.set(
-            new GT_MetaTileEntity_LightningRod(1175, "basicgenerator.lightningrod.04", "Lightning Rod II", 4)
-                .getStackForm(1));
-        ItemList.Machine_IV_LightningRod.set(
-            new GT_MetaTileEntity_LightningRod(1176, "basicgenerator.lightningrod.05", "Lightning Rod III", 5)
-                .getStackForm(1));
-        ItemList.Machine_Multi_LargeChemicalReactor.set(
-            new GT_MetaTileEntity_LargeChemicalReactor(1169, "multimachine.chemicalreactor", "Large Chemical Reactor")
-                .getStackForm(1));
-        ItemList.PCBFactory
-            .set(new GT_MetaTileEntity_PCBFactory(356, "multimachine.pcbfactory", "PCB Factory").getStackForm(1));
-        ItemList.NanoForge
-            .set(new GT_MetaTileEntity_NanoForge(357, "multimachine.nanoforge", "Nano Forge").getStackForm(1));
     }
 
-    private static void run4() {
+    private static void generateWiresAndPipes() {
         for (int i = 0; i < GregTech_API.sGeneratedMaterials.length; i++) {
             if (((GregTech_API.sGeneratedMaterials[i] != null)
                 && ((GregTech_API.sGeneratedMaterials[i].mTypes & 0x2) != 0))
@@ -2528,305 +2868,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         generateItemPipes(Materials.Nickel, Materials.Nickel.mName, 5700, 1);
         generateItemPipes(Materials.Cobalt, Materials.Cobalt.mName, 5710, 2);
         generateItemPipes(Materials.Aluminium, Materials.Aluminium.mName, 5720, 2);
-
-        ItemList.Automation_ChestBuffer_ULV.set(
-            new GT_MetaTileEntity_ChestBuffer(
-                9230,
-                "automation.chestbuffer.tier.00",
-                "Ultra Low Voltage Chest Buffer",
-                0).getStackForm(1L));
-        ItemList.Automation_ChestBuffer_LV.set(
-            new GT_MetaTileEntity_ChestBuffer(9231, "automation.chestbuffer.tier.01", "Low Voltage Chest Buffer", 1)
-                .getStackForm(1L));
-        ItemList.Automation_ChestBuffer_MV.set(
-            new GT_MetaTileEntity_ChestBuffer(9232, "automation.chestbuffer.tier.02", "Medium Voltage Chest Buffer", 2)
-                .getStackForm(1L));
-        ItemList.Automation_ChestBuffer_HV.set(
-            new GT_MetaTileEntity_ChestBuffer(9233, "automation.chestbuffer.tier.03", "High Voltage Chest Buffer", 3)
-                .getStackForm(1L));
-        ItemList.Automation_ChestBuffer_EV.set(
-            new GT_MetaTileEntity_ChestBuffer(9234, "automation.chestbuffer.tier.04", "Extreme Voltage Chest Buffer", 4)
-                .getStackForm(1L));
-        ItemList.Automation_ChestBuffer_IV.set(
-            new GT_MetaTileEntity_ChestBuffer(9235, "automation.chestbuffer.tier.05", "Insane Voltage Chest Buffer", 5)
-                .getStackForm(1L));
-        ItemList.Automation_ChestBuffer_LuV.set(
-            new GT_MetaTileEntity_ChestBuffer(
-                9236,
-                "automation.chestbuffer.tier.06",
-                "Ludicrous Voltage Chest Buffer",
-                6).getStackForm(1L));
-        ItemList.Automation_ChestBuffer_ZPM.set(
-            new GT_MetaTileEntity_ChestBuffer(9237, "automation.chestbuffer.tier.07", "ZPM Voltage Chest Buffer", 7)
-                .getStackForm(1L));
-        ItemList.Automation_ChestBuffer_UV.set(
-            new GT_MetaTileEntity_ChestBuffer(
-                9238,
-                "automation.chestbuffer.tier.08",
-                "Ultimate Voltage Chest Buffer",
-                8).getStackForm(1L));
-        ItemList.Automation_ChestBuffer_MAX.set(
-            new GT_MetaTileEntity_ChestBuffer(
-                9239,
-                "automation.chestbuffer.tier.09",
-                "Highly Ultimate Voltage Chest Buffer",
-                9).getStackForm(1L));
-
-        ItemList.Automation_Filter_ULV.set(
-            new GT_MetaTileEntity_Filter(9240, "automation.filter.tier.00", "Ultra Low Voltage Item Filter", 0)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_LV.set(
-            new GT_MetaTileEntity_Filter(9241, "automation.filter.tier.01", "Low Voltage Item Filter", 1)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_MV.set(
-            new GT_MetaTileEntity_Filter(9242, "automation.filter.tier.02", "Medium Voltage Item Filter", 2)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_HV.set(
-            new GT_MetaTileEntity_Filter(9243, "automation.filter.tier.03", "High Voltage Item Filter", 3)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_EV.set(
-            new GT_MetaTileEntity_Filter(9244, "automation.filter.tier.04", "Extreme Voltage Item Filter", 4)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_IV.set(
-            new GT_MetaTileEntity_Filter(9245, "automation.filter.tier.05", "Insane Voltage Item Filter", 5)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_LuV.set(
-            new GT_MetaTileEntity_Filter(9246, "automation.filter.tier.06", "Ludicrous Voltage Item Filter", 6)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_ZPM.set(
-            new GT_MetaTileEntity_Filter(9247, "automation.filter.tier.07", "ZPM Voltage Item Filter", 7)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_UV.set(
-            new GT_MetaTileEntity_Filter(9248, "automation.filter.tier.08", "Ultimate Voltage Item Filter", 8)
-                .getStackForm(1L));
-        ItemList.Automation_Filter_MAX.set(
-            new GT_MetaTileEntity_Filter(9249, "automation.filter.tier.09", "Highly Ultimate Voltage Item Filter", 9)
-                .getStackForm(1L));
-
-        ItemList.Automation_TypeFilter_ULV.set(
-            new GT_MetaTileEntity_TypeFilter(9250, "automation.typefilter.tier.00", "Ultra Low Voltage Type Filter", 0)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_LV.set(
-            new GT_MetaTileEntity_TypeFilter(9251, "automation.typefilter.tier.01", "Low Voltage Type Filter", 1)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_MV.set(
-            new GT_MetaTileEntity_TypeFilter(9252, "automation.typefilter.tier.02", "Medium Voltage Type Filter", 2)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_HV.set(
-            new GT_MetaTileEntity_TypeFilter(9253, "automation.typefilter.tier.03", "High Voltage Type Filter", 3)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_EV.set(
-            new GT_MetaTileEntity_TypeFilter(9254, "automation.typefilter.tier.04", "Extreme Voltage Type Filter", 4)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_IV.set(
-            new GT_MetaTileEntity_TypeFilter(9255, "automation.typefilter.tier.05", "Insane Voltage Type Filter", 5)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_LuV.set(
-            new GT_MetaTileEntity_TypeFilter(9256, "automation.typefilter.tier.06", "Ludicrous Voltage Type Filter", 6)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_ZPM.set(
-            new GT_MetaTileEntity_TypeFilter(9257, "automation.typefilter.tier.07", "ZPM Voltage Type Filter", 7)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_UV.set(
-            new GT_MetaTileEntity_TypeFilter(9258, "automation.typefilter.tier.08", "Ultimate Voltage Type Filter", 8)
-                .getStackForm(1L));
-        ItemList.Automation_TypeFilter_MAX.set(
-            new GT_MetaTileEntity_TypeFilter(
-                9259,
-                "automation.typefilter.tier.09",
-                "Highly Ultimate Voltage Type Filter",
-                9).getStackForm(1L));
-
-        ItemList.Automation_Regulator_ULV.set(
-            new GT_MetaTileEntity_Regulator(9270, "automation.regulator.tier.00", "Ultra Low Voltage Regulator", 0)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_LV.set(
-            new GT_MetaTileEntity_Regulator(9271, "automation.regulator.tier.01", "Low Voltage Regulator", 1)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_MV.set(
-            new GT_MetaTileEntity_Regulator(9272, "automation.regulator.tier.02", "Medium Voltage Regulator", 2)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_HV.set(
-            new GT_MetaTileEntity_Regulator(9273, "automation.regulator.tier.03", "High Voltage Regulator", 3)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_EV.set(
-            new GT_MetaTileEntity_Regulator(9274, "automation.regulator.tier.04", "Extreme Voltage Regulator", 4)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_IV.set(
-            new GT_MetaTileEntity_Regulator(9275, "automation.regulator.tier.05", "Insane Voltage Regulator", 5)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_LuV.set(
-            new GT_MetaTileEntity_Regulator(9276, "automation.regulator.tier.06", "Ludicrous Voltage Regulator", 6)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_ZPM.set(
-            new GT_MetaTileEntity_Regulator(9277, "automation.regulator.tier.07", "ZPM Voltage Regulator", 7)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_UV.set(
-            new GT_MetaTileEntity_Regulator(9278, "automation.regulator.tier.08", "Ultimate Voltage Regulator", 8)
-                .getStackForm(1L));
-        ItemList.Automation_Regulator_MAX.set(
-            new GT_MetaTileEntity_Regulator(
-                9279,
-                "automation.regulator.tier.09",
-                "Highly Ultimate Voltage Regulator",
-                9).getStackForm(1L));
-
-        ItemList.Automation_SuperBuffer_ULV.set(
-            new GT_MetaTileEntity_SuperBuffer(
-                9300,
-                "automation.superbuffer.tier.00",
-                "Ultra Low Voltage Super Buffer",
-                0).getStackForm(1L));
-        ItemList.Automation_SuperBuffer_LV.set(
-            new GT_MetaTileEntity_SuperBuffer(9301, "automation.superbuffer.tier.01", "Low Voltage Super Buffer", 1)
-                .getStackForm(1L));
-        ItemList.Automation_SuperBuffer_MV.set(
-            new GT_MetaTileEntity_SuperBuffer(9302, "automation.superbuffer.tier.02", "Medium Voltage Super Buffer", 2)
-                .getStackForm(1L));
-        ItemList.Automation_SuperBuffer_HV.set(
-            new GT_MetaTileEntity_SuperBuffer(9303, "automation.superbuffer.tier.03", "High Voltage Super Buffer", 3)
-                .getStackForm(1L));
-        ItemList.Automation_SuperBuffer_EV.set(
-            new GT_MetaTileEntity_SuperBuffer(9304, "automation.superbuffer.tier.04", "Extreme Voltage Super Buffer", 4)
-                .getStackForm(1L));
-        ItemList.Automation_SuperBuffer_IV.set(
-            new GT_MetaTileEntity_SuperBuffer(9305, "automation.superbuffer.tier.05", "Insane Voltage Super Buffer", 5)
-                .getStackForm(1L));
-        ItemList.Automation_SuperBuffer_LuV.set(
-            new GT_MetaTileEntity_SuperBuffer(
-                9306,
-                "automation.superbuffer.tier.06",
-                "Ludicrous Voltage Super Buffer",
-                6).getStackForm(1L));
-        ItemList.Automation_SuperBuffer_ZPM.set(
-            new GT_MetaTileEntity_SuperBuffer(9307, "automation.superbuffer.tier.07", "ZPM Voltage Super Buffer", 7)
-                .getStackForm(1L));
-        ItemList.Automation_SuperBuffer_UV.set(
-            new GT_MetaTileEntity_SuperBuffer(
-                9308,
-                "automation.superbuffer.tier.08",
-                "Ultimate Voltage Super Buffer",
-                8).getStackForm(1L));
-        ItemList.Automation_SuperBuffer_MAX.set(
-            new GT_MetaTileEntity_SuperBuffer(
-                9309,
-                "automation.superbuffer.tier.09",
-                "Highly Ultimate Voltage Super Buffer",
-                9).getStackForm(1L));
-
-        ItemList.Automation_ItemDistributor_ULV.set(
-            new GT_MetaTileEntity_ItemDistributor(
-                9320,
-                "automation.itemdistributor.tier.00",
-                "Ultra Low Voltage Item Distributor",
-                0).getStackForm(1L));
-        ItemList.Automation_ItemDistributor_LV.set(
-            new GT_MetaTileEntity_ItemDistributor(
-                9321,
-                "automation.itemdistributor.tier.01",
-                "Low Voltage Item Distributor",
-                1).getStackForm(1L));
-        ItemList.Automation_ItemDistributor_MV.set(
-            new GT_MetaTileEntity_ItemDistributor(
-                9322,
-                "automation.itemdistributor.tier.02",
-                "Medium Voltage Item Distributor",
-                2).getStackForm(1L));
-        ItemList.Automation_ItemDistributor_HV.set(
-            new GT_MetaTileEntity_ItemDistributor(
-                9323,
-                "automation.itemdistributor.tier.03",
-                "High Voltage Item Distributor",
-                3).getStackForm(1L));
-        ItemList.Automation_ItemDistributor_EV.set(
-            new GT_MetaTileEntity_ItemDistributor(
-                9324,
-                "automation.itemdistributor.tier.04",
-                "Extreme Voltage Item Distributor",
-                4).getStackForm(1L));
-        ItemList.Automation_ItemDistributor_IV.set(
-            new GT_MetaTileEntity_ItemDistributor(
-                9325,
-                "automation.itemdistributor.tier.05",
-                "Insane Voltage Item Distributor",
-                5).getStackForm(1L));
-        ItemList.Automation_ItemDistributor_LuV.set(
-            new GT_MetaTileEntity_ItemDistributor(
-                9326,
-                "automation.itemdistributor.tier.06",
-                "Ludicrous Voltage Item Distributor",
-                6).getStackForm(1L));
-        ItemList.Automation_ItemDistributor_ZPM.set(
-            new GT_MetaTileEntity_ItemDistributor(
-                9327,
-                "automation.itemdistributor.tier.07",
-                "ZPM Voltage Item Distributor",
-                7).getStackForm(1L));
-        ItemList.Automation_ItemDistributor_UV.set(
-            new GT_MetaTileEntity_ItemDistributor(
-                9328,
-                "automation.itemdistributor.tier.08",
-                "Ultimate Voltage Item Distributor",
-                8).getStackForm(1L));
-        ItemList.Automation_ItemDistributor_MAX.set(
-            new GT_MetaTileEntity_ItemDistributor(
-                9329,
-                "automation.itemdistributor.tier.09",
-                "MAX Voltage Item Distributor",
-                9).getStackForm(1L));
-
-        ItemList.Automation_RecipeFilter_ULV.set(
-            new GT_MetaTileEntity_RecipeFilter(
-                9330,
-                "automation.recipefilter.tier.00",
-                "Ultra Low Voltage Recipe Filter",
-                0).getStackForm(1L));
-        ItemList.Automation_RecipeFilter_LV.set(
-            new GT_MetaTileEntity_RecipeFilter(9331, "automation.recipefilter.tier.01", "Low Voltage Recipe Filter", 1)
-                .getStackForm(1L));
-        ItemList.Automation_RecipeFilter_MV.set(
-            new GT_MetaTileEntity_RecipeFilter(
-                9332,
-                "automation.recipefilter.tier.02",
-                "Medium Voltage Recipe Filter",
-                2).getStackForm(1L));
-        ItemList.Automation_RecipeFilter_HV.set(
-            new GT_MetaTileEntity_RecipeFilter(9333, "automation.recipefilter.tier.03", "High Voltage Recipe Filter", 3)
-                .getStackForm(1L));
-        ItemList.Automation_RecipeFilter_EV.set(
-            new GT_MetaTileEntity_RecipeFilter(
-                9334,
-                "automation.recipefilter.tier.04",
-                "Extreme Voltage Recipe Filter",
-                4).getStackForm(1L));
-        ItemList.Automation_RecipeFilter_IV.set(
-            new GT_MetaTileEntity_RecipeFilter(
-                9335,
-                "automation.recipefilter.tier.05",
-                "Insane Voltage Recipe Filter",
-                5).getStackForm(1L));
-        ItemList.Automation_RecipeFilter_LuV.set(
-            new GT_MetaTileEntity_RecipeFilter(
-                9336,
-                "automation.recipefilter.tier.06",
-                "Ludicrous Voltage Recipe Filter",
-                6).getStackForm(1L));
-        ItemList.Automation_RecipeFilter_ZPM.set(
-            new GT_MetaTileEntity_RecipeFilter(9337, "automation.recipefilter.tier.07", "ZPM Voltage Recipe Filter", 7)
-                .getStackForm(1L));
-        ItemList.Automation_RecipeFilter_UV.set(
-            new GT_MetaTileEntity_RecipeFilter(
-                9338,
-                "automation.recipefilter.tier.08",
-                "Ultimate Voltage Recipe Filter",
-                8).getStackForm(1L));
-        ItemList.Automation_RecipeFilter_MAX.set(
-            new GT_MetaTileEntity_RecipeFilter(
-                9339,
-                "automation.recipefilter.tier.09",
-                "Highly Ultimate Voltage Recipe Filter",
-                9).getStackForm(1L));
-
     }
 
     @SuppressWarnings("PointlessArithmeticExpression")
@@ -3008,10 +3049,85 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     @Override
     public void run() {
         GT_Log.out.println("GT_Mod: Registering MetaTileEntities.");
-        run1();
-        run2();
-        run3();
-        run4();
+        registerMachineHull();
+        registerTransformer();
+        registerDynamoHatch();
+        registerEnergyHatch();
+        registerInputHatch();
+        registerQuadrupleInputHatch();
+        registerOutputHatch();
+        registerQuantumTank();
+        registerQuantumChest();
+        registerSuperTank();
+        registerSuperChest();
+        registerLongDistancePipe();
+        registerAE2Hatches();
+        registerInputBus();
+        registerOutputBus();
+        registerMufflerHatch();
+        registerBoiler();
+        registerBatteryBuffer1x1();
+        registerBatteryBuffer2x2();
+        registerBatteryBuffer3x3();
+        registerBatteryBuffer4x4();
+        registerCharger4x4();
+        registerWirelessEnergyHatch();
+        registerWirelessDynamoHatch();
+        registerDynamoHatch();
+        registerSteamMachines();
+        registerHPSteamMachines();
+        registerLocker();
+        registerScanner();
+        registerPackager();
+        registerRockBreaker();
+        registerIndustrialApiary();
+        registerMassFab();
+        registerReplicator();
+        registerBrewery();
+        registerMiner();
+        registerPump();
+        registerTeleporter();
+        registerMonsterRepellator();
+        registerSeismicProspector();
+        registerAdvancedSeismicProspector();
+        registerMicrowaveEnergyTransmitter();
+        registerChestBuffer();
+        registerItemFilter();
+        registerTypeFilter();
+        registerRegulator();
+        registerSuperBuffer();
+        registerItemDistributor();
+        registerRecipeFilter();
+        registerLightningRods();
+        registerCombustionGenerators();
+        registerGasTurbines();
+        registerSteamTurbines();
+        registerNaquadahReactors();
+        registerMagicEnergyAbsorbers();
+        registerMagicEnergyConverters();
+        registerPlasmaGenerators();
+        registerMultiblockControllers();
+
+        ItemList.AdvDebugStructureWriter.set(
+            new GT_MetaTileEntity_AdvDebugStructureWriter(
+                349,
+                "advdebugstructurewriter",
+                "Advanced Debug Structure Writer",
+                5).getStackForm(1L));
+        ItemList.Hatch_Maintenance.set(
+            new GT_MetaTileEntity_Hatch_Maintenance(90, "hatch.maintenance", "Maintenance Hatch", 1).getStackForm(1L));
+        ItemList.Hatch_AutoMaintenance.set(
+            new GT_MetaTileEntity_Hatch_Maintenance(111, "hatch.maintenance.auto", "Auto Maintenance Hatch", 6, true)
+                .getStackForm(1L));
+        ItemList.Hatch_DataAccess_EV.set(
+            new GT_MetaTileEntity_Hatch_DataAccess(145, "hatch.dataaccess", "Data Access Hatch", 4).getStackForm(1L));
+        ItemList.Hatch_DataAccess_LuV.set(
+            new GT_MetaTileEntity_Hatch_DataAccess(146, "hatch.dataaccess.adv", "Advanced Data Access Hatch", 6)
+                .getStackForm(1L));
+        ItemList.Hatch_DataAccess_UV.set(
+            new GT_MetaTileEntity_Hatch_DataAccess(147, "hatch.dataaccess.auto", "Automatable Data Access Hatch", 8)
+                .getStackForm(1L));
+        generateWiresAndPipes();
     }
 
     private static void generateItemPipes(Materials aMaterial, String name, int startID, int baseInvSlots) {
