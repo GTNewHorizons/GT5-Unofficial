@@ -3353,7 +3353,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
     private static void registerLaserEngraver() {
         ItemList.Machine_LV_LaserEngraver.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                591,
+                LASER_ENGRAVER_LV.ID,
                 "basicmachine.laserengraver.tier.01",
                 "Basic Precision Laser Engraver",
                 1,
@@ -3378,7 +3378,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
         ItemList.Machine_MV_LaserEngraver.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                592,
+                LASER_ENGRAVER_MV.ID,
                 "basicmachine.laserengraver.tier.02",
                 "Advanced Precision Laser Engraver",
                 2,
@@ -3403,7 +3403,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
         ItemList.Machine_HV_LaserEngraver.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                593,
+                LASER_ENGRAVER_HV.ID,
                 "basicmachine.laserengraver.tier.03",
                 "Advanced Precision Laser Engraver II",
                 3,
@@ -3428,7 +3428,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
         ItemList.Machine_EV_LaserEngraver.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                594,
+                LASER_ENGRAVER_EV.ID,
                 "basicmachine.laserengraver.tier.04",
                 "Advanced Precision Laser Engraver III",
                 4,
@@ -3453,7 +3453,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
         ItemList.Machine_IV_LaserEngraver.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                595,
+                LASER_ENGRAVER_IV.ID,
                 "basicmachine.laserengraver.tier.05",
                 "Advanced Precision Laser Engraver IV",
                 5,
@@ -3481,7 +3481,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
     private static void registerLathe() {
         ItemList.Machine_LV_Lathe.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                291,
+                LATHE_LV.ID,
                 "basicmachine.lathe.tier.01",
                 "Basic Lathe",
                 1,
@@ -3506,7 +3506,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                         .getStackForm(1L));
         ItemList.Machine_MV_Lathe.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                292,
+                LATHE_MV.ID,
                 "basicmachine.lathe.tier.02",
                 "Advanced Lathe",
                 2,
@@ -3531,7 +3531,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     OrePrefixes.gemFlawless.get(Materials.Diamond) }).getStackForm(1L));
         ItemList.Machine_HV_Lathe.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                293,
+                LATHE_HV.ID,
                 "basicmachine.lathe.tier.03",
                 "Advanced Lathe II",
                 3,
@@ -3556,7 +3556,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                         .getStackForm(1L));
         ItemList.Machine_EV_Lathe.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                294,
+                LATHE_EV.ID,
                 "basicmachine.lathe.tier.04",
                 "Advanced Lathe III",
                 4,
@@ -3581,7 +3581,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                         .getStackForm(1L));
         ItemList.Machine_IV_Lathe.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                295,
+                LATHE_IV.ID,
                 "basicmachine.lathe.tier.05",
                 "Advanced Lathe IV",
                 5,
@@ -3609,7 +3609,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
     private static void registerMacerator() {
         ItemList.Machine_LV_Macerator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                301,
+                MACERATOR_LV.ID,
                 "basicmachine.macerator.tier.01",
                 "Basic Macerator",
                 1,
@@ -3634,7 +3634,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                         .getStackForm(1L));
         ItemList.Machine_MV_Macerator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                302,
+                MACERATOR_MV.ID,
                 "basicmachine.macerator.tier.02",
                 "Advanced Macerator",
                 2,
@@ -3659,7 +3659,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     OrePrefixes.gemFlawless.get(Materials.Diamond) }).getStackForm(1L));
         ItemList.Machine_HV_Macerator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                303,
+                MACERATOR_HV.ID,
                 "basicmachine.macerator.tier.03",
                 "Universal Macerator",
                 3,
@@ -3684,7 +3684,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                         .getStackForm(1L));
         ItemList.Machine_EV_Macerator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                304,
+                MACERATOR_EV.ID,
                 "basicmachine.macerator.tier.04",
                 "Universal Pulverizer",
                 4,
@@ -3709,7 +3709,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                         .getStackForm(1L));
         ItemList.Machine_IV_Macerator.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                305,
+                MACERATOR_IV.ID,
                 "basicmachine.macerator.tier.05",
                 "Blend-O-Matic 9001",
                 5,
@@ -3734,11 +3734,10 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                         .getStackForm(1L));
     }
 
-    // matter amplifier broken
     private static void registerMatterAmplifier() {
         ItemList.Machine_LV_Amplifab.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                471,
+                MATTER_AMPLIFIER_LV.ID,
                 "basicmachine.amplifab.tier.01",
                 "Basic Amplifabricator",
                 1,
@@ -3762,7 +3761,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4 }).getStackForm(1L));
         ItemList.Machine_MV_Amplifab.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                472,
+                MATTER_AMPLIFIER_MV.ID,
                 "basicmachine.amplifab.tier.02",
                 "Advanced Amplifabricator",
                 2,
@@ -3786,7 +3785,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4 }).getStackForm(1L));
         ItemList.Machine_HV_Amplifab.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                473,
+                MATTER_AMPLIFIER_HV.ID,
                 "basicmachine.amplifab.tier.03",
                 "Advanced Amplifabricator II",
                 3,
@@ -3810,7 +3809,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4 }).getStackForm(1L));
         ItemList.Machine_EV_Amplifab.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                474,
+                MATTER_AMPLIFIER_EV.ID,
                 "basicmachine.amplifab.tier.04",
                 "Advanced Amplifabricator III",
                 4,
@@ -3834,7 +3833,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4 }).getStackForm(1L));
         ItemList.Machine_IV_Amplifab.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                475,
+                MATTER_AMPLIFIER_IV.ID,
                 "basicmachine.amplifab.tier.05",
                 "Advanced Amplifabricator IV",
                 5,
@@ -3861,7 +3860,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
     private static void registerMicrowave() {
         ItemList.Machine_LV_Microwave.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                311,
+                MICROWAVE_OVEN_LV.ID,
                 "basicmachine.microwave.tier.01",
                 "Basic Microwave",
                 1,
@@ -3886,7 +3885,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                         .getStackForm(1L));
         ItemList.Machine_MV_Microwave.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                312,
+                MICROWAVE_OVEN_MV.ID,
                 "basicmachine.microwave.tier.02",
                 "Advanced Microwave",
                 2,
@@ -3911,7 +3910,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                         .getStackForm(1L));
         ItemList.Machine_HV_Microwave.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                313,
+                MICROWAVE_OVEN_HV.ID,
                 "basicmachine.microwave.tier.03",
                 "Advanced Microwave II",
                 3,
@@ -3936,7 +3935,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                         .getStackForm(1L));
         ItemList.Machine_EV_Microwave.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                314,
+                MICROWAVE_OVEN_EV.ID,
                 "basicmachine.microwave.tier.04",
                 "Advanced Microwave III",
                 4,
@@ -3961,7 +3960,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                         .getStackForm(1L));
         ItemList.Machine_IV_Microwave.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                315,
+                MICROWAVE_OVEN_IV.ID,
                 "basicmachine.microwave.tier.05",
                 "Advanced Microwave IV",
                 5,
@@ -3989,7 +3988,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
     private static void registerMixer() {
         ItemList.Machine_LV_Mixer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                581,
+                MIXER_LV.ID,
                 "basicmachine.mixer.tier.01",
                 "Basic Mixer",
                 1,
@@ -4013,7 +4012,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
         ItemList.Machine_MV_Mixer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                582,
+                MIXER_MV.ID,
                 "basicmachine.mixer.tier.02",
                 "Advanced Mixer",
                 2,
@@ -4037,7 +4036,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
         ItemList.Machine_HV_Mixer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                583,
+                MIXER_HV.ID,
                 "basicmachine.mixer.tier.03",
                 "Advanced Mixer II",
                 3,
@@ -4061,7 +4060,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
         ItemList.Machine_EV_Mixer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                584,
+                MIXER_EV.ID,
                 "basicmachine.mixer.tier.04",
                 "Advanced Mixer III",
                 4,
@@ -4085,7 +4084,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
         ItemList.Machine_IV_Mixer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                585,
+                MIXER_IV.ID,
                 "basicmachine.mixer.tier.05",
                 "Advanced Mixer IV",
                 5,
@@ -4112,7 +4111,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
     private static void registerOreWasher() {
         ItemList.Machine_LV_OreWasher.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                391,
+                ORE_WASHER_LV.ID,
                 "basicmachine.orewasher.tier.01",
                 "Basic Ore Washing Plant",
                 1,
@@ -4137,7 +4136,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP }).getStackForm(1L));
         ItemList.Machine_MV_OreWasher.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                392,
+                ORE_WASHER_MV.ID,
                 "basicmachine.orewasher.tier.02",
                 "Advanced Ore Washing Plant",
                 2,
@@ -4162,7 +4161,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP }).getStackForm(1L));
         ItemList.Machine_HV_OreWasher.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                393,
+                ORE_WASHER_HV.ID,
                 "basicmachine.orewasher.tier.03",
                 "Advanced Ore Washing Plant II",
                 3,
@@ -4187,7 +4186,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP }).getStackForm(1L));
         ItemList.Machine_EV_OreWasher.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                394,
+                ORE_WASHER_EV.ID,
                 "basicmachine.orewasher.tier.04",
                 "Advanced Ore Washing Plant III",
                 4,
@@ -4212,7 +4211,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP }).getStackForm(1L));
         ItemList.Machine_IV_OreWasher.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                395,
+                ORE_WASHER_IV.ID,
                 "basicmachine.orewasher.tier.05",
                 "Repurposed Laundry-Washer I-360",
                 5,
@@ -4240,7 +4239,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
     private static void registerOven() {
         ItemList.Machine_LV_Oven.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                671,
+                OVEN_LV.ID,
                 "basicmachine.e_oven.tier.01",
                 "Basic Electric Oven",
                 1,
@@ -4264,7 +4263,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                         .getStackForm(1L));
         ItemList.Machine_MV_Oven.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                672,
+                OVEN_MV.ID,
                 "basicmachine.e_oven.tier.02",
                 "Advanced Electric Oven",
                 2,
@@ -4288,7 +4287,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                         .getStackForm(1L));
         ItemList.Machine_HV_Oven.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                673,
+                OVEN_HV.ID,
                 "basicmachine.e_oven.tier.03",
                 "Advanced Electric Oven II",
                 3,
@@ -4312,7 +4311,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                         .getStackForm(1L));
         ItemList.Machine_EV_Oven.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                674,
+                OVEN_EV.ID,
                 "basicmachine.e_oven.tier.04",
                 "Advanced Electric Oven III",
                 4,
@@ -4336,7 +4335,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                         .getStackForm(1L));
         ItemList.Machine_IV_Oven.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                675,
+                OVEN_IV.ID,
                 "basicmachine.e_oven.tier.05",
                 "Advanced Electric Oven IV",
                 5,
@@ -4363,7 +4362,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
     private static void registerPlasmaArcFurnace() {
         ItemList.Machine_LV_PlasmaArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                661,
+                PLASMA_ARC_FURNACE_LV.ID,
                 "basicmachine.plasmaarcfurnace.tier.01",
                 "Basic Plasma Arc Furnace",
                 1,
@@ -4388,7 +4387,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                         .getStackForm(1L));
         ItemList.Machine_MV_PlasmaArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                662,
+                PLASMA_ARC_FURNACE_MV.ID,
                 "basicmachine.plasmaarcfurnace.tier.02",
                 "Advanced Plasma Arc Furnace",
                 2,
@@ -4413,7 +4412,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                         .getStackForm(1L));
         ItemList.Machine_HV_PlasmaArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                663,
+                PLASMA_ARC_FURNACE_HV.ID,
                 "basicmachine.plasmaarcfurnace.tier.03",
                 "Advanced Plasma Arc Furnace II",
                 3,
@@ -4438,7 +4437,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                         .getStackForm(1L));
         ItemList.Machine_EV_PlasmaArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                664,
+                PLASMA_ARC_FURNACE_EV.ID,
                 "basicmachine.plasmaarcfurnace.tier.04",
                 "Advanced Plasma Arc Furnace III",
                 4,
@@ -4463,7 +4462,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                         .getStackForm(1L));
         ItemList.Machine_IV_PlasmaArcFurnace.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                665,
+                PLASMA_ARC_FURNACE_IV.ID,
                 "basicmachine.plasmaarcfurnace.tier.05",
                 "Advanced Plasma Arc Furnace IV",
                 5,
@@ -4491,7 +4490,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
     private static void registerPolarizer() {
         ItemList.Machine_LV_Polarizer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                551,
+                POLARIZER_LV.ID,
                 "basicmachine.polarizer.tier.01",
                 "Basic Polarizer",
                 1,
@@ -4514,7 +4513,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
         ItemList.Machine_MV_Polarizer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                552,
+                POLARIZER_MV.ID,
                 "basicmachine.polarizer.tier.02",
                 "Advanced Polarizer",
                 2,
@@ -4537,7 +4536,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
         ItemList.Machine_HV_Polarizer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                553,
+                POLARIZER_HV.ID,
                 "basicmachine.polarizer.tier.03",
                 "Advanced Polarizer II",
                 3,
@@ -4560,7 +4559,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
         ItemList.Machine_EV_Polarizer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                554,
+                POLARIZER_EV.ID,
                 "basicmachine.polarizer.tier.04",
                 "Advanced Polarizer III",
                 4,
@@ -4583,7 +4582,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
         ItemList.Machine_IV_Polarizer.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                555,
+                POLARIZER_IV.ID,
                 "basicmachine.polarizer.tier.05",
                 "Advanced Polarizer IV",
                 5,
