@@ -44,12 +44,19 @@ public class GT_OverclockCalculator {
     private static final int HEAT_PERFECT_OVERCLOCK_THRESHOLD = 1800;
 
     /**
-     * Creates calculator that doesn't do OC at all.
+     * Creates calculator that doesn't do OC at all. Will use recipe duration.
      */
     public static GT_OverclockCalculator ofNoOverclock(@Nonnull GT_Recipe recipe) {
-        return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
-            .setDuration(recipe.mDuration)
-            .setEUt(recipe.mEUt);
+        return ofNoOverclock(recipe.mEUt, recipe.mDuration);
+    }
+
+    /**
+     * Creates calculator that doesn't do OC at all, with set duration.
+     */
+    public static GT_OverclockCalculator ofNoOverclock(long eut, int duration) {
+        return new GT_OverclockCalculator().setRecipeEUt(eut)
+            .setDuration(duration)
+            .setEUt(eut);
     }
 
     /**
