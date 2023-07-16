@@ -1027,7 +1027,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS }).getStackForm(1L));
         ItemList.Machine_HV_ChemicalBath.set(
             new GT_MetaTileEntity_BasicMachine_GT_Recipe(
-                CENTRIFUGE_HV.ID,
+                CHEMICAL_BATH_HV.ID,
                 "basicmachine.chemicalbath.tier.03",
                 "Advanced Chemical Bath II",
                 3,
@@ -5624,7 +5624,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE }).getStackForm(1L));
     }
 
-    private static void run1() {
+    private static void registerShapedCraftingRecipes() {
         GT_ModHandler.addCraftingRecipe(
             ItemList.Casing_Pipe_Polytetrafluoroethylene.get(1L),
             bits,
@@ -5888,46 +5888,6 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.Iridium), 'F',
                 OrePrefixes.frameGt.get(Materials.Iridium) });
 
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Casing_SolidSteel.get(1L),
-            bits,
-            new Object[] { ItemList.Casing_Stripes_A });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Casing_SolidSteel.get(1L),
-            bits,
-            new Object[] { ItemList.Casing_Stripes_B });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Casing_SolidSteel.get(1L),
-            bits,
-            new Object[] { ItemList.Casing_RadioactiveHazard });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Casing_SolidSteel.get(1L),
-            bits,
-            new Object[] { ItemList.Casing_BioHazard });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Casing_SolidSteel.get(1L),
-            bits,
-            new Object[] { ItemList.Casing_ExplosionHazard });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Casing_SolidSteel.get(1L),
-            bits,
-            new Object[] { ItemList.Casing_FireHazard });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Casing_SolidSteel.get(1L),
-            bits,
-            new Object[] { ItemList.Casing_AcidHazard });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Casing_SolidSteel.get(1L),
-            bits,
-            new Object[] { ItemList.Casing_MagicHazard });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Casing_SolidSteel.get(1L),
-            bits,
-            new Object[] { ItemList.Casing_FrostHazard });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Casing_SolidSteel.get(1L),
-            bits,
-            new Object[] { ItemList.Casing_NoiseHazard });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Machine_Bricked_BlastFurnace.get(1L),
             GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
@@ -6009,17 +5969,6 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             new Object[] { aTextCableHull, 'M', ItemList.Casing_MAX, 'C',
                 OrePrefixes.wireGt04.get(Materials.SuperconductorUV), 'H', OrePrefixes.plate.get(Materials.Neutronium),
                 'P', OrePrefixes.plate.get(Materials.Polybenzimidazole) });
-
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_ULV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_LV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_MV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_HV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_EV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_IV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_LuV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_ZPM.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_UV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_MAX.get(1L));
 
         if (GT_Mod.gregtechproxy.mHardMachineCasings) {
             GT_ModHandler.addCraftingRecipe(
@@ -6667,9 +6616,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             ItemList.Locker_MAX.get(1L),
             bitsd,
             new Object[] { "T", "M", 'M', ItemList.Battery_Buffer_2by2_MAX, 'T', OreDictNames.craftingChest });
-    }
 
-    private static void run2() {
         GT_ModHandler.addCraftingRecipe(
             ItemList.Machine_LV_Scanner.get(1L),
             bitsd,
@@ -6786,83 +6733,6 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 OrePrefixes.circuit.get(Materials.Elite), 'W', OrePrefixes.cableGt01.get(Materials.Tungsten), 'G',
                 new ItemStack(Blocks.glass, 1) });
 
-        if (Forestry.isModLoaded()) {
-
-            /* Conversion recipes */
-            // TODO: Move those recipes with the other recipes
-            if (Gendustry.isModLoaded()) {
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.Machine_IndustrialApiary.get(1L),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "IndustrialApiary", 1, 0) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_Frame.get(1),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "UpgradeFrame", 1) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_PRODUCTION.get(1L),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 0) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_PLAINS.get(1L),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 17) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_LIGHT.get(1L),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 11) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_FLOWERING.get(1L),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 2) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_WINTER.get(1L),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 20) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_DRYER.get(1L),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 5) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_AUTOMATION.get(1L),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 14) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_HUMIDIFIER.get(1L),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 4) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_HELL.get(1L),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 13) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_POLLEN.get(1L),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 22) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_DESERT.get(1L),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 16) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_COOLER.get(1L),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 7) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_LIFESPAN.get(1L),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 1) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_SEAL.get(1L),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 10) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_STABILIZER.get(1L),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 19) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_JUNGLE.get(1L),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 18) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_TERRITORY.get(1L),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 3) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_OCEAN.get(1L),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 21) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_SKY.get(1L),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 12) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_HEATER.get(1L),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 6) });
-                GT_ModHandler.addShapelessCraftingRecipe(
-                    ItemList.IndustrialApiary_Upgrade_SIEVE.get(1L),
-                    new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 15) });
-            }
-        }
-
         GT_ModHandler.addCraftingRecipe(
             ItemList.Machine_LV_Massfab.get(1L),
             bitsd,
@@ -6970,9 +6840,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 ItemList.Electric_Piston_HV, 'R', ItemList.Robot_Arm_HV, 'C',
                 OrePrefixes.circuit.get(Materials.Advanced), 'W', OrePrefixes.cableGt04.get(Materials.Gold), 'S',
                 ItemList.Sensor_HV });
-    }
 
-    private static void run3() {
         GT_ModHandler.addCraftingRecipe(
             ItemList.Machine_Multi_BlastFurnace.get(1L),
             bitsd,
@@ -7278,20 +7146,6 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 OrePrefixes.plate.get(Materials.AnyBronze), 'C', new ItemStack(Items.flint_and_steel, 1), 'X',
                 OrePrefixes.rotor.get(Materials.Steel), });
 
-        // Converter recipes in case you had old one lying around
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Seismic_Prospector_Adv_LV.get(1L),
-            bits,
-            new Object[] { ItemList.Seismic_Prospector_LV });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Seismic_Prospector_Adv_MV.get(1L),
-            bits,
-            new Object[] { ItemList.Seismic_Prospector_MV });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Seismic_Prospector_Adv_HV.get(1L),
-            bits,
-            new Object[] { ItemList.Seismic_Prospector_HV });
-
         GT_ModHandler.addCraftingRecipe(
             ItemList.Seismic_Prospector_Adv_LV.get(1L),
             bitsd,
@@ -7468,7 +7322,151 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 OrePrefixes.rotor.get(Materials.StainlessSteel), 'P',
                 OrePrefixes.pipeLarge.get(Materials.Polytetrafluoroethylene), 'M', ItemList.Electric_Motor_HV, 'B',
                 ItemList.Hull_HV });
-        GT_PCBFactoryMaterialLoader.load();
+    }
+
+    private static void registerShapelessCraftingRecipes() {
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Casing_SolidSteel.get(1L),
+            bits,
+            new Object[] { ItemList.Casing_Stripes_A });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Casing_SolidSteel.get(1L),
+            bits,
+            new Object[] { ItemList.Casing_Stripes_B });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Casing_SolidSteel.get(1L),
+            bits,
+            new Object[] { ItemList.Casing_RadioactiveHazard });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Casing_SolidSteel.get(1L),
+            bits,
+            new Object[] { ItemList.Casing_BioHazard });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Casing_SolidSteel.get(1L),
+            bits,
+            new Object[] { ItemList.Casing_ExplosionHazard });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Casing_SolidSteel.get(1L),
+            bits,
+            new Object[] { ItemList.Casing_FireHazard });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Casing_SolidSteel.get(1L),
+            bits,
+            new Object[] { ItemList.Casing_AcidHazard });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Casing_SolidSteel.get(1L),
+            bits,
+            new Object[] { ItemList.Casing_MagicHazard });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Casing_SolidSteel.get(1L),
+            bits,
+            new Object[] { ItemList.Casing_FrostHazard });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Casing_SolidSteel.get(1L),
+            bits,
+            new Object[] { ItemList.Casing_NoiseHazard });
+
+        if (Forestry.isModLoaded() && Gendustry.isModLoaded()) {
+            /* Conversion recipes */
+            // TODO: Move those recipes with the other recipes
+
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.Machine_IndustrialApiary.get(1L),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "IndustrialApiary", 1, 0) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.IndustrialApiary_Upgrade_Frame.get(1),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "UpgradeFrame", 1) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.IndustrialApiary_Upgrade_PRODUCTION.get(1L),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 0) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.IndustrialApiary_Upgrade_PLAINS.get(1L),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 17) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.IndustrialApiary_Upgrade_LIGHT.get(1L),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 11) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.IndustrialApiary_Upgrade_FLOWERING.get(1L),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 2) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.IndustrialApiary_Upgrade_WINTER.get(1L),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 20) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.IndustrialApiary_Upgrade_DRYER.get(1L),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 5) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.IndustrialApiary_Upgrade_AUTOMATION.get(1L),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 14) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.IndustrialApiary_Upgrade_HUMIDIFIER.get(1L),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 4) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.IndustrialApiary_Upgrade_HELL.get(1L),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 13) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.IndustrialApiary_Upgrade_POLLEN.get(1L),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 22) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.IndustrialApiary_Upgrade_DESERT.get(1L),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 16) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.IndustrialApiary_Upgrade_COOLER.get(1L),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 7) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.IndustrialApiary_Upgrade_LIFESPAN.get(1L),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 1) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.IndustrialApiary_Upgrade_SEAL.get(1L),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 10) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.IndustrialApiary_Upgrade_STABILIZER.get(1L),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 19) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.IndustrialApiary_Upgrade_JUNGLE.get(1L),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 18) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.IndustrialApiary_Upgrade_TERRITORY.get(1L),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 3) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.IndustrialApiary_Upgrade_OCEAN.get(1L),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 21) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.IndustrialApiary_Upgrade_SKY.get(1L),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 12) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.IndustrialApiary_Upgrade_HEATER.get(1L),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 6) });
+            GT_ModHandler.addShapelessCraftingRecipe(
+                ItemList.IndustrialApiary_Upgrade_SIEVE.get(1L),
+                new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 15) });
+
+        }
+        // Converter recipes in case you had old one lying around
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Seismic_Prospector_Adv_LV.get(1L),
+            bits,
+            new Object[] { ItemList.Seismic_Prospector_LV });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Seismic_Prospector_Adv_MV.get(1L),
+            bits,
+            new Object[] { ItemList.Seismic_Prospector_MV });
+        GT_ModHandler.addShapelessCraftingRecipe(
+            ItemList.Seismic_Prospector_Adv_HV.get(1L),
+            bits,
+            new Object[] { ItemList.Seismic_Prospector_HV });
+    }
+
+    private static void removeRecipes() {
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_ULV.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_LV.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_MV.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_HV.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_EV.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_IV.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_LuV.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_ZPM.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_UV.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_MAX.get(1L));
     }
 
     private static void run4() {
@@ -7983,11 +7981,12 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
 
     @Override
     public void run() {
+        removeRecipes();
+        registerShapelessCraftingRecipes();
+        registerShapedCraftingRecipes();
         GT_Log.out.println("GT_Mod: Recipes for MetaTileEntities.");
         registerMachineTypes();
-        run1();
-        run2();
-        run3();
+        GT_PCBFactoryMaterialLoader.load();
         run4();
     }
 }
