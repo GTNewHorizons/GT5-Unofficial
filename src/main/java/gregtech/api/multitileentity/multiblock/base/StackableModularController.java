@@ -1,9 +1,11 @@
 package gregtech.api.multitileentity.multiblock.base;
 
+import gregtech.api.multitileentity.interfaces.UpgradableModularMuTE;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class StackableModularController<T extends StackableModularController<T>> extends StackableController<T> {
+public abstract class StackableModularController<T extends StackableModularController<T>> extends StackableController<T> implements UpgradableModularMuTE {
 
     protected Map<String, Integer[]> mucMap = createMucMap();
 

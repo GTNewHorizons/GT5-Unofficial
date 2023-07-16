@@ -9,8 +9,4 @@ public interface UpgradableMuTE {
     void setLaserSupport(boolean canUse);
 
     void setMaxAmperage(long amperage);
-
-    void increaseMucCount(String casingType, int tier);
-
-    void resetMucCount();
 }
