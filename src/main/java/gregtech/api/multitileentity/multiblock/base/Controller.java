@@ -48,6 +48,9 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
+import com.gtnewhorizons.modularui.api.forge.FluidHandler;
+import com.gtnewhorizons.modularui.api.forge.FluidStackHandler;
+import com.gtnewhorizons.modularui.api.forge.FluidTankLong;
 import com.gtnewhorizons.modularui.api.forge.IItemHandler;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
@@ -72,16 +75,12 @@ import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.VoidingMode;
-import gregtech.api.fluid.FluidHandler;
-import gregtech.api.fluid.FluidStackHandler;
-import gregtech.api.fluid.FluidStackHolder;
 import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.modularui.ControllerWithOptionalFeatures;
-import gregtech.api.interfaces.modularui.FluidHandlerSlot;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
@@ -235,7 +234,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         NBTTagList handlerFluid = new NBTTagList();
         for (int i = 0; i < handler.getTanks(); i++) {
             NBTTagCompound fluid = new NBTTagCompound();
-            handler.getFluidHolderInTank(i)
+            handler.getFluidTank(i)
                 .saveToNBT(fluid);
             handlerFluid.appendTag(fluid);
         }
@@ -332,7 +331,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
         NBTTagList handlerFluid = nbt.getTagList("handlerFluid", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < handlerFluid.tagCount(); i++) {
-            handler.setFluidInTank(i, FluidStackHolder.loadFromNBT(handlerFluid.getCompoundTagAt(i)));
+            handler.setFluidInTank(i, FluidTankLong.loadFromNBT(handlerFluid.getCompoundTagAt(i)));
         }
     }
 
