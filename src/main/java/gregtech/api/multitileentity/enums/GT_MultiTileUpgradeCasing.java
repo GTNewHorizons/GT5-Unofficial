@@ -52,6 +52,11 @@ public enum GT_MultiTileUpgradeCasing {
     Heater_NextGen(102),
     Heater_Omnipotent(103),
     Heater_OmegaType(104),
+    Insulator_Prototype(105),
+    Insulator_IndustrialGrade(106),
+    Insulator_NextGen(107),
+    Insulator_Omnipotent(108),
+    Insulator_OmegaType(109),
     NONE(GT_Values.W);
 
     private final int meta;

@@ -43,6 +43,8 @@ public class GT_StructureUtilityMuTE {
     public static final MuTEStructureCasing LASER_CASINGS = UpgradeCasings.Laser.getCasing();
     public static final MuTEStructureCasing WIRELESS_CASINGS = UpgradeCasings.Wireless.getCasing();
     public static final MuTEStructureCasing CLEANROOM_CASINGS = UpgradeCasings.Cleanroom.getCasing();
+    public static final MuTEStructureCasing HEATER_CASINGS = UpgradeCasings.Heater.getCasing();
+    public static final MuTEStructureCasing INSULATOR_CASINGS = UpgradeCasings.Insulator.getCasing();
 
     public enum FunctionalCasings {
 
@@ -115,7 +117,13 @@ public class GT_StructureUtilityMuTE {
 
         Wireless(UPGRADE_CASING_REGISTRY_NAME, GT_MultiTileUpgradeCasing.Wireless.getId()),
 
-        Cleanroom(UPGRADE_CASING_REGISTRY_NAME, GT_MultiTileUpgradeCasing.Cleanroom.getId());
+        Cleanroom(UPGRADE_CASING_REGISTRY_NAME, GT_MultiTileUpgradeCasing.Cleanroom.getId()),
+
+        Heater(UPGRADE_CASING_REGISTRY_NAME, Heater_Prototype.getId(), Heater_IndustrialGrade.getId(),
+            Heater_NextGen.getId(), Heater_Omnipotent.getId(), Heater_OmegaType.getId()),
+
+        Insulator(UPGRADE_CASING_REGISTRY_NAME, Insulator_Prototype.getId(), Insulator_IndustrialGrade.getId(),
+            Insulator_NextGen.getId(), Insulator_Omnipotent.getId(), Insulator_OmegaType.getId());
 
         private final MuTEStructureCasing casing;
 
