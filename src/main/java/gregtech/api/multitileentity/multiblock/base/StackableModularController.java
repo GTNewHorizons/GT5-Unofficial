@@ -1,6 +1,7 @@
 package gregtech.api.multitileentity.multiblock.base;
 
 import gregtech.api.multitileentity.interfaces.UpgradableModularMuTE;
+import gregtech.api.util.GT_StructureUtilityMuTE.UpgradeCasings;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -8,17 +9,17 @@ import java.util.Map;
 
 public abstract class StackableModularController<T extends StackableModularController<T>> extends StackableController<T> implements UpgradableModularMuTE {
 
-    protected Map<String, Integer[]> mucMap = createMucMap();
+    protected Map<UpgradeCasings, Integer[]> mucMap = createMucMap();
 
-    protected static Map<String, Integer[]> createMucMap() {
-        Map<String, Integer[]> mucCount = new HashMap<>();
-        mucCount.put("heater", new Integer[]{0, 0, 0, 0, 0});
-        mucCount.put("insulator", new Integer[]{0, 0, 0, 0, 0});
+    protected static Map<UpgradeCasings, Integer[]> createMucMap() {
+        Map<UpgradeCasings, Integer[]> mucCount = new HashMap<>();
+        mucCount.put(UpgradeCasings.Heater, new Integer[]{0, 0, 0, 0, 0});
+        mucCount.put(UpgradeCasings.Insulator, new Integer[]{0, 0, 0, 0, 0});
         return mucCount;
     }
 
     @Override
-    public void increaseMucCount(String casingType, int tier) {
+    public void increaseMucCount(UpgradeCasings casingType, int tier) {
         Integer[] casingCount = mucMap.get(casingType);
 
         switch (tier) {
