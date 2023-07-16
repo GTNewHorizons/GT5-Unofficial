@@ -74,6 +74,7 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.fluid.FluidHandler;
 import gregtech.api.fluid.FluidStackHandler;
+import gregtech.api.fluid.FluidStackHolder;
 import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IDescribable;
@@ -230,6 +231,15 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         nbt.setBoolean(NBT.SEPARATE_INPUTS, separateInputs);
         nbt.setBoolean(NBT.RECIPE_LOCK, recipeLock);
         nbt.setBoolean(NBT.BATCH_MODE, batchMode);
+
+        NBTTagList handlerFluid = new NBTTagList();
+        for (int i = 0; i < handler.getTanks(); i++) {
+            NBTTagCompound fluid = new NBTTagCompound();
+            handler.getFluidHolderInTank(i)
+                .saveToNBT(fluid);
+            handlerFluid.appendTag(fluid);
+        }
+        nbt.setTag("handlerFluid", handlerFluid);
     }
 
     private void saveUpgradeInventoriesToNBT(NBTTagCompound nbt) {
@@ -319,6 +329,11 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         separateInputs = nbt.getBoolean(NBT.SEPARATE_INPUTS);
         recipeLock = nbt.getBoolean(NBT.RECIPE_LOCK);
         batchMode = nbt.getBoolean(NBT.BATCH_MODE);
+
+        NBTTagList handlerFluid = nbt.getTagList("handlerFluid", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < handlerFluid.tagCount(); i++) {
+            handler.setFluidInTank(i, FluidStackHolder.loadFromNBT(handlerFluid.getCompoundTagAt(i)));
+        }
     }
 
     private void loadUpgradeInventoriesFromNBT(NBTTagCompound nbt) {
@@ -1875,7 +1890,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         for (int rows = 0; rows * 4 < handler.getTanks(); rows++) {
             final int columnsToMake = Math.min(handler.getTanks() - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
-                final FluidSlotWidget fluidSlot = new FluidHandlerSlot(handler, rows * 4 + column);
+                final FluidHandlerSlot fluidSlot = new FluidHandlerSlot(handler, rows * 4 + column);
                 scrollable.widget(
                     fluidSlot.setPos(column * 18, rows * 18)
                         .setSize(18, 18));
@@ -2055,5 +2070,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             type = 0;
         }
         return packet;
+
     }
+
 }

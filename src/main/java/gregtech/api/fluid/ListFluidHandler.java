@@ -27,14 +27,14 @@ public class ListFluidHandler implements FluidHandler {
     }
 
     @Override
-    public FluidStack getFluidInSlot(int tank) {
+    public FluidStack getFluidInTank(int tank) {
         if (tank < 0) {
             throw new RuntimeException("Tank " + tank + " not in valid range - [0," + this.getTanks() + ")");
         }
 
         Pair<? extends FluidHandler, Integer> result = findFluidHandler(tank);
         return result.getLeft()
-            .getFluidInSlot(result.getRight());
+            .getFluidInTank(result.getRight());
     }
 
     @Override
@@ -81,17 +81,6 @@ public class ListFluidHandler implements FluidHandler {
             .getTankAmount(result.getRight());
     }
 
-    @Override
-    public void setFluidInTank(int tank, FluidStack fluid) {
-        if (tank < 0) {
-            throw new RuntimeException("Tank " + tank + " not in valid range - [0," + this.getTanks() + ")");
-        }
-
-        Pair<? extends FluidHandler, Integer> result = findFluidHandler(tank);
-        result.getLeft()
-            .setFluidInTank(result.getRight(), fluid);
-    }
-
     protected Pair<? extends FluidHandler, Integer> findFluidHandler(int tank) {
         int searching = 0;
         int amountOfTanks;
@@ -106,5 +95,27 @@ public class ListFluidHandler implements FluidHandler {
         }
 
         throw new RuntimeException("Tank " + tank + " not in valid range - [0," + this.getTanks() + ")");
+    }
+
+    @Override
+    public void setFluidInTank(int tank, Fluid fluid, long amount) {
+        if (tank < 0) {
+            throw new RuntimeException("Tank " + tank + " not in valid range - [0," + this.getTanks() + ")");
+        }
+
+        Pair<? extends FluidHandler, Integer> result = findFluidHandler(tank);
+        result.getLeft()
+            .setFluidInTank(result.getRight(), fluid, amount);
+    }
+
+    @Override
+    public FluidStackHolder getFluidHolderInTank(int tank) {
+        if (tank < 0) {
+            throw new RuntimeException("Tank " + tank + " not in valid range - [0," + this.getTanks() + ")");
+        }
+
+        Pair<? extends FluidHandler, Integer> result = findFluidHandler(tank);
+        return result.getLeft()
+            .getFluidHolderInTank(tank);
     }
 }

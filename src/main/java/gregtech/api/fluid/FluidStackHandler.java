@@ -28,7 +28,7 @@ public class FluidStackHandler implements FluidHandler {
     }
 
     @Override
-    public FluidStack getFluidInSlot(int tank) {
+    public FluidStack getFluidInTank(int tank) {
         return fluids.get(tank)
             .getFluidStack();
     }
@@ -62,9 +62,14 @@ public class FluidStackHandler implements FluidHandler {
     }
 
     @Override
-    public void setFluidInTank(int tank, FluidStack fluid) {
+    public void setFluidInTank(int tank, Fluid fluid, long amount) {
         fluids.get(tank)
-            .setFluid(fluid);
+            .setFluid(fluid, amount);
+    }
+
+    @Override
+    public FluidStackHolder getFluidHolderInTank(int tank) {
+        return fluids.get(tank);
     }
 
 }

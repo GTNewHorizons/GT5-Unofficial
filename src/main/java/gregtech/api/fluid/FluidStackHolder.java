@@ -2,7 +2,12 @@ package gregtech.api.fluid;
 
 import static com.google.common.primitives.Ints.saturatedCast;
 
+import java.io.IOException;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 /**
@@ -17,6 +22,8 @@ public class FluidStackHolder {
     private long capacity;
     private FluidStack internal;
     private boolean locked;
+    private int lastFluidAmountInStack;
+    private NBTTagCompound tag;
 
     public FluidStackHolder(Fluid fluid, long capacity, long amount) {
         this.fluid = fluid;
@@ -34,8 +41,30 @@ public class FluidStackHolder {
         this(null, capacity);
     }
 
+    /**
+     * Recommended to use {@link FluidStackHolder#drain(int, boolean)} and
+     * {@link FluidStackHolder#fill(Fluid, long, boolean)} for handling the fluids if not for recipes or GUI
+     */
     public FluidStack getFluidStack() {
+        if (fluid == null) {
+            return null;
+        }
+
+        if (internal == null) {
+            internal = new FluidStack(fluid, 0);
+        }
+
+        // if (internal.amount != lastFluidAmountInStack) {
+        // storedAmount -= lastFluidAmountInStack - internal.amount;
+        // }
+
+        lastFluidAmountInStack = internal.amount;
+        internal.amount = saturatedCast(storedAmount);
         return internal;
+    }
+
+    public Fluid getFluid() {
+        return fluid;
     }
 
     public long getCapacity() {
@@ -59,12 +88,13 @@ public class FluidStackHolder {
             return Math.min(capacity - storedAmount, amount);
         }
 
+        if (this.fluid == null) {
+            this.fluid = fluid;
+        }
+
         long amountFilled = Math.min(capacity - storedAmount, amount);
         this.storedAmount += amountFilled;
-        if (internal == null) {
-            internal = new FluidStack(fluid, 0);
-        }
-        internal.amount = saturatedCast(storedAmount);
+
         return amountFilled;
     }
 
@@ -92,9 +122,62 @@ public class FluidStackHolder {
         return fluidDrained;
     }
 
-    public void setFluid(FluidStack fluid) {
-        this.fluid = fluid.getFluid();
-        storedAmount = fluid.amount;
+    public void setFluid(Fluid fluid, long amount) {
+        this.fluid = fluid;
+        storedAmount = amount;
+        if (fluid == null) {
+            internal = null;
+            lastFluidAmountInStack = 0;
+            return;
+        }
         internal = new FluidStack(this.fluid, saturatedCast(storedAmount));
+        lastFluidAmountInStack = saturatedCast(storedAmount);
+    }
+
+    public void setFluid(Fluid fluid) {
+        setFluid(fluid, 0);
+    }
+
+    public static FluidStackHolder loadFromNBT(NBTTagCompound nbt) {
+        return new FluidStackHolder(
+            FluidRegistry.getFluid(nbt.getString("FluidName")),
+            nbt.getLong("Capacity"),
+            nbt.getLong("StoredAmount"));
+    }
+
+    public void saveToNBT(NBTTagCompound nbt) {
+        nbt.setString("FluidName", FluidRegistry.getFluidName(getFluid()));
+        nbt.setLong("StoredAmount", storedAmount);
+        nbt.setLong("Capacity", capacity);
+
+        if (tag != null) {
+            nbt.setTag("Tag", tag);
+        }
+    }
+
+    public static void writeToBuffer(PacketBuffer buffer, FluidStackHolder fluid) {
+        if (fluid == null) {
+            buffer.writeBoolean(true);
+        } else {
+            buffer.writeBoolean(false);
+            NBTTagCompound fluidTag = new NBTTagCompound();
+            fluid.saveToNBT(fluidTag);
+
+            try {
+                buffer.writeNBTTagCompoundToBuffer(fluidTag);
+            } catch (IOException ignored) {}
+        }
+    }
+
+    public static FluidStackHolder readFromBuffer(PacketBuffer buffer) throws IOException {
+        return buffer.readBoolean() ? null : loadFromNBT(buffer.readNBTTagCompoundFromBuffer());
+    }
+
+    public boolean isFluidEqual(FluidStackHolder cached) {
+        return getFluid() == cached.getFluid();
+    }
+
+    public FluidStackHolder copy() {
+        return new FluidStackHolder(fluid, capacity, storedAmount);
     }
 }

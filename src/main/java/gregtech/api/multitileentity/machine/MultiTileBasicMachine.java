@@ -1022,4 +1022,5 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
             case Output -> output;
         };
     }
+
 }

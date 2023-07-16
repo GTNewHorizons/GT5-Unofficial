@@ -13,7 +13,9 @@ public interface FluidHandler {
     int getTanks();
 
     @Nullable
-    FluidStack getFluidInSlot(int tank);
+    FluidStack getFluidInTank(int tank);
+
+    FluidStackHolder getFluidHolderInTank(int tank);
 
     @Nullable
     FluidStack insertFluid(int tank, Fluid fluid, long amount, boolean simulate);
@@ -33,11 +35,19 @@ public interface FluidHandler {
         List<FluidStack> ret = new ArrayList<>();
 
         for (int i = 0; i < this.getTanks(); ++i) {
-            ret.add(this.getFluidInSlot(i));
+            ret.add(this.getFluidInTank(i));
         }
 
         return ret;
     }
 
-    void setFluidInTank(int tank, FluidStack fluid);
+    void setFluidInTank(int tank, Fluid fluid, long amount);
+
+    default void setFluidInTank(int tank, Fluid fluid) {
+        setFluidInTank(tank, fluid, 0);
+    }
+
+    default void setFluidInTank(int tank, FluidStackHolder fluid) {
+        setFluidInTank(tank, fluid != null ? fluid.getFluid() : null, fluid != null ? fluid.getStoredAmount() : 0);
+    }
 }
