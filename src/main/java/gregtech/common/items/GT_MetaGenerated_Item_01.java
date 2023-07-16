@@ -3625,7 +3625,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Circuit_Data.set(
             addItem(
                 tLastID = 704,
-                "Workstation",
+                "Computer",
                 "An Extreme Circuit",
                 OrePrefixes.circuit.get(Materials.Data),
                 SubTag.NO_UNIFICATION));

@@ -1918,6 +1918,10 @@ public enum ItemList implements IItemContainer {
     GalliumArsenideCrystalSmallPart,
 
     Circuit_Microprocessor,
+	Circuit_Primitiveprocessor,
+	Circuit_Primitiveassembly,
+	Circuit_Primitivecomputer,
+	Circuit_Primitivemainframe,
     Circuit_Processor,
     Circuit_Computer,
     Circuit_Nanoprocessor,

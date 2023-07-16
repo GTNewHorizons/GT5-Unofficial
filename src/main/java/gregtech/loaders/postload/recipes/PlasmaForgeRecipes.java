@@ -33,6 +33,27 @@ public class PlasmaForgeRecipes implements Runnable {
             .eut(2_000_000_000)
             .metadata(COIL_HEAT, 13500)
             .addTo(sPlasmaForgeRecipes);
+			
+		// Cosmic Giga chad trophy.
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Field_Generator_UXV.get(64),
+                ItemList.Emitter_UXV.get(64),
+                ItemList.Sensor_UXV.get(64))
+            .fluidInputs(
+                MaterialsUEVplus.ExcitedDTSC.getFluid(100_000_000),
+				MaterialsUEVplus.PrimordialMatter.getFluid(25_000_000),
+                MaterialsUEVplus.Eternity.getMolten(10_368),
+                MaterialsUEVplus.Universium.getMolten(10_368),
+                MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(41_472),
+				MaterialsUEVplus.WhiteDwarfMatter.getMolten(20_736),
+				MaterialsUEVplus.BlackDwarfMatter.getMolten(20_736)))
+            .itemOutputs(ItemList.CosmicGigaChad.get(1))
+            .noFluidOutputs()
+            .duration(86400 * 40 * 4)
+            .eut(2_000_000_000)
+            .metadata(COIL_HEAT, 13500)
+            .addTo(sPlasmaForgeRecipes);
 
         // Quantum anomaly recipe bypass for UEV+. Avoids RNG.
         GT_Values.RA.stdBuilder()

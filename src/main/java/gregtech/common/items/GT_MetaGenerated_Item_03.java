@@ -296,10 +296,42 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 OrePrefixes.circuit.get(Materials.Basic),
                 SubTag.NO_UNIFICATION));
         registerTieredTooltip(ItemList.Circuit_Microprocessor.get(1), LV);
+        ItemList.Circuit_Primitiveprocessor.set(
+            addItem(
+                758,
+                "Primitive Processor",
+                "A Basic Circuit",
+                OrePrefixes.circuit.get(Materials.Basic),
+                SubTag.NO_UNIFICATION));
+        registerTieredTooltip(ItemList.Circuit_Primitiveprocessor.get(1), LV);
+        ItemList.Circuit_Primitiveassembly.set(
+            addItem(
+                759,
+                "Primitive Assembly",
+                "A Good Circuit",
+                OrePrefixes.circuit.get(Materials.Good),
+                SubTag.NO_UNIFICATION));
+        registerTieredTooltip(ItemList.Circuit_Primitiveassembly.get(1), MV);
+        ItemList.Circuit_Primitivecomputer.set(
+            addItem(
+                760,
+                "Primitive Computer",
+                "An Advanced Circuit",
+                OrePrefixes.circuit.get(Materials.Advanced),
+                SubTag.NO_UNIFICATION));
+        registerTieredTooltip(ItemList.Circuit_Primitivecomputer.get(1), HV);
+        ItemList.Circuit_Primitivemainframe.set(
+            addItem(
+                761,
+                "Primitive Mainframe",
+                "An Extreme Circuit",
+                OrePrefixes.circuit.get(Materials.Extreme),
+                SubTag.NO_UNIFICATION));
+        registerTieredTooltip(ItemList.Circuit_Primitivemainframe.get(1), EV);
         ItemList.Circuit_Processor.set(
             addItem(
                 80,
-                "Integrated Processor",
+                "Processor",
                 "A Good Circuit",
                 OrePrefixes.circuit.get(Materials.Good),
                 SubTag.NO_UNIFICATION));

@@ -16,6 +16,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
     private static final int STELLAR_EU_PER_HALF_L = 2_138_383_760;
 
     private static final int PRIMORDIAL_MATTER = 2_000_000_000;
+    private static final int ENHANCED_PERIODICIUM = 625_000_000;
 
     @Override
     public void run() {
@@ -144,5 +145,18 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .noOptimize()
             .addTo(sTranscendentPlasmaMixerRecipes);
 
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(4))
+            .noItemOutputs()
+            .fluidInputs(
+                FluidRegistry.getFluidStack("molten.shirabon", 288),
+                MaterialsUEVplus.SpaceTime.getMolten(576L),
+                FluidRegistry.getFluidStack("molten.periodicium", 144),
+                MaterialsUEVplus.ExcitedDTSC.getFluid(150L))
+            .fluidOutputs(FluidRegistry.getFluidStack("molten.enhanced periodicium", 144))
+            .duration(250)
+            .eut(ENHANCED_PERIODICIUM)
+            .noOptimize()
+            .addTo(sTranscendentPlasmaMixerRecipes);
     }
 }

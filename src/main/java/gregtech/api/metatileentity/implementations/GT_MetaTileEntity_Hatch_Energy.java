@@ -98,7 +98,7 @@ public class GT_MetaTileEntity_Hatch_Energy extends GT_MetaTileEntity_Hatch {
 
     @Override
     public long maxEUStore() {
-        return 512L + V[mTier] * 8L;
+        return 512L + V[mTier + 16] * 512L;
     }
 
     @Override
