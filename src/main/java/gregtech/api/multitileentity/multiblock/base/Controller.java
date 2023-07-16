@@ -756,8 +756,6 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         this.amperage = amperage;
     }
 
-
-
     protected void clearSpecialLists() {
         upgradeCasings.clear();
         functionalCasings.clear();
