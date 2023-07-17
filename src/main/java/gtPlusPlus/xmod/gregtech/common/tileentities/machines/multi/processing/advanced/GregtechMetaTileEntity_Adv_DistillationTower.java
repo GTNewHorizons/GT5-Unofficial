@@ -107,12 +107,10 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
                                             .atLeast(layeredOutputHatch, Energy, Maintenance)
                                             .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
                                             .casingIndex(getCasingTextureId()).dot(2).build(),
-                                    onElementPass(
-                                            GregtechMetaTileEntity_Adv_DistillationTower::onTopLayerFound,
-                                            ofHatchAdder(
-                                                    GregtechMetaTileEntity_Adv_DistillationTower::addMufflerToMachineList,
-                                                    getCasingTextureId(),
-                                                    3)),
+                                    ofHatchAdder(
+                                            GregtechMetaTileEntity_Adv_DistillationTower::addMufflerToMachineList,
+                                            getCasingTextureId(),
+                                            3),
                                     ofBlock(GregTech_API.sBlockCasings4, 1)))
                     .addElement(
                             'c',
