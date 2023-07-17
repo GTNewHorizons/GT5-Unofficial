@@ -7,6 +7,10 @@ BW_ItemBlocks.0.name=Etched Lapis Cell
 BW_ItemBlocks.1.name=Plated Lapis Cell
 GT_LESU_CASING.0.name=LESU Casing
 
+GT5U.gui.text.no_imprint=Missing imprint
+GT5U.gui.text.wrong_sievert_exactly=§7Wrong sievert. Requires exactly: %s §7Sv
+GT5U.gui.text.wrong_sievert_min=§7Wrong sievert. Requires at least: %s §7Sv
+
 itemGroup.bartworks=BartWorks Inter Temporal
 BW_Machinery_Casings.0.name=Nickel-Zinc Ferrite Block
 BW_Machinery_Casings.1.name=Transformer-Winding Block

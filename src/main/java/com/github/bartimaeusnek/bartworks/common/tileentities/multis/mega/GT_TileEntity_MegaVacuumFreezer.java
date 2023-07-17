@@ -14,18 +14,11 @@
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_BY_BARTWORKS;
-import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
-import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.Mods.TecTech;
+import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW;
@@ -33,41 +26,29 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZE
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
-import java.util.ArrayList;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-import com.github.bartimaeusnek.bartworks.util.BW_Util;
-import com.github.bartimaeusnek.bartworks.util.Pair;
-import com.github.bartimaeusnek.crossmod.tectech.helper.TecTechUtils;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
-@Optional.Interface(
-        iface = "com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti",
-        modid = Mods.Names.TECTECH,
-        striprefs = true)
 public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBlockBase<GT_TileEntity_MegaVacuumFreezer>
         implements ISurvivalConstructable {
 
@@ -157,13 +138,9 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
             .addElement('=', StructureElementAirNoHint.getInstance())
             .addElement(
                     'c',
-                    buildHatchAdder(GT_TileEntity_MegaVacuumFreezer.class).atLeast(
-                            TTEnabledEnergyHatchElement.INSTANCE,
-                            InputHatch,
-                            InputBus,
-                            OutputHatch,
-                            OutputBus,
-                            Maintenance).casingIndex(CASING_INDEX).dot(1)
+                    buildHatchAdder(GT_TileEntity_MegaVacuumFreezer.class)
+                            .atLeast(Energy.or(ExoticEnergy), InputHatch, InputBus, OutputHatch, OutputBus, Maintenance)
+                            .casingIndex(CASING_INDEX).dot(1)
                             .buildAndChain(onElementPass(x -> x.mCasing++, ofBlock(GregTech_API.sBlockCasings2, 1))))
             .build();
 
@@ -225,88 +202,17 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
     }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
-        ItemStack[] tInputs = this.getStoredInputs().toArray(new ItemStack[0]);
-        FluidStack[] tInputFluids = this.getStoredFluids().toArray(new FluidStack[0]);
-        ArrayList<ItemStack> outputItems = new ArrayList<>();
-        ArrayList<FluidStack> outputFluids = new ArrayList<>();
-
-        long nominalV = TecTech.isModLoaded() ? TecTechUtils.getnominalVoltageTT(this)
-                : BW_Util.getnominalVoltage(this);
-
-        byte tTier = (byte) Math.max(1, Math.min(GT_Utility.getTier(nominalV), V.length - 1));
-
-        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sVacuumRecipes
-                .findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], tInputFluids, tInputs);
-        boolean found_Recipe = false;
-        int processed = 0;
-        float tBatchMultiplier = 1.0f;
-
-        if (tRecipe != null) {
-            found_Recipe = true;
-            long tMaxPara = Math.min(ConfigHandler.megaMachinesMax, nominalV / tRecipe.mEUt);
-
-            if (batchMode && tMaxPara == ConfigHandler.megaMachinesMax) {
-                tMaxPara *= 128;
-            }
-
-            int tCurrentPara = handleParallelRecipe(tRecipe, tInputFluids, tInputs, (int) tMaxPara);
-            tBatchMultiplier = batchMode ? (float) Math.max(tCurrentPara / ConfigHandler.megaMachinesMax, 1.0f) : 1.0f;
-
-            this.updateSlots();
-            if (tCurrentPara <= 0) return false;
-            processed = Math.min(tCurrentPara, ConfigHandler.megaMachinesMax);
-            Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> Outputs = getMultiOutput(tRecipe, tCurrentPara);
-            outputFluids = Outputs.getKey();
-            outputItems = Outputs.getValue();
-        }
-
-        if (found_Recipe) {
-            this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-            this.mEfficiencyIncrease = 10000;
-
-            GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt)
-                    .setParallel(processed).setDuration(tRecipe.mDuration).setEUt(nominalV).calculate();
-
-            this.mMaxProgresstime = calculator.getDuration();
-            this.lEUt = calculator.getConsumption();
-
-            // In case recipe is too OP for that machine
-            if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.lEUt == Integer.MAX_VALUE - 1) return false;
-            if (this.lEUt > 0) {
-                this.lEUt = (-this.lEUt);
-            }
-
-            if (batchMode) {
-                this.mMaxProgresstime = (int) Math.ceil(this.mMaxProgresstime * tBatchMultiplier);
-            }
-
-            this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-            this.mOutputItems = new ItemStack[outputItems.size()];
-            this.mOutputItems = outputItems.toArray(this.mOutputItems);
-            this.mOutputFluids = new FluidStack[outputFluids.size()];
-            this.mOutputFluids = outputFluids.toArray(this.mOutputFluids);
-            return true;
-        }
-        return false;
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().setMaxParallel(ConfigHandler.megaMachinesMax);
     }
 
     // -------------- TEC TECH COMPAT ----------------
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (TecTech.isModLoaded()) {
-            this.getTecTechEnergyMultis().clear();
-            this.getTecTechEnergyTunnels().clear();
-        }
         this.mCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 7, 0)) return false;
-        return this.mMaintenanceHatches.size() == 1
-                && (TecTech.isModLoaded()
-                        ? (!this.getTecTechEnergyMultis().isEmpty() || !this.getTecTechEnergyTunnels().isEmpty()
-                                || !this.mEnergyHatches.isEmpty())
-                        : !this.mEnergyHatches.isEmpty())
-                && this.mCasing >= 900;
+        return this.mMaintenanceHatches.size() == 1 && this.mCasing >= 900;
     }
 
     @Override
@@ -333,6 +239,11 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
 
     @Override
     public boolean supportsBatchMode() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
         return true;
     }
 }

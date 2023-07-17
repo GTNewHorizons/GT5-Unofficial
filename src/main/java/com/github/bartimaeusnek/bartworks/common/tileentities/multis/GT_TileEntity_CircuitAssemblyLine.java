@@ -30,8 +30,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -43,11 +41,12 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.BW_Meta_Items;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
-import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -57,14 +56,18 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -82,6 +85,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     private static final String STRUCTURE_PIECE_NEXT = "next";
 
     private String imprintedItemName;
+    private ItemStack imprintedStack;
 
     private static final IStructureDefinition<GT_TileEntity_CircuitAssemblyLine> STRUCTURE_DEFINITION = StructureDefinition
             .<GT_TileEntity_CircuitAssemblyLine>builder()
@@ -148,7 +152,6 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     }
 
     private NBTTagCompound type = new NBTTagCompound();
-    private GT_Recipe bufferedRecipe;
 
     public GT_TileEntity_CircuitAssemblyLine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -204,64 +207,38 @@ public class GT_TileEntity_CircuitAssemblyLine extends
         super.saveNBTData(aNBT);
     }
 
-    private final Collection<GT_Recipe> GT_RECIPE_COLLECTION = new HashSet<>();
-
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
-        if (this.type.equals(new NBTTagCompound())) if (!this.imprintMachine(itemStack)) return false;
-
-        if (this.bufferedRecipe != null && this.bufferedRecipe.isRecipeInputEqual(
-                true,
-                false,
-                BW_Util.getFluidsFromInputHatches(this),
-                getStoredInputs().toArray(new ItemStack[0]))) {
-            setRecipeStats();
-            return true;
-        }
-
-        ItemStack stack = ItemStack.loadItemStackFromNBT(this.type);
-        imprintedItemName = GT_LanguageManager.getTranslateableItemStackName(stack);
-
-        if (stack == null) return false;
-
-        if (this.GT_RECIPE_COLLECTION.isEmpty()) {
-            for (GT_Recipe recipe : BWRecipes.instance.getMappingsFor((byte) 3).mRecipeList) {
-                if (GT_Utility.areStacksEqual(recipe.mOutputs[0], stack, true)) {
-                    this.GT_RECIPE_COLLECTION.add(recipe);
-                }
-            }
-        }
-
-        for (GT_Recipe recipe : this.GT_RECIPE_COLLECTION) {
-            if (!canOutputAll(recipe)) return false;
-            if (recipe.isRecipeInputEqual(
-                    true,
-                    false,
-                    BW_Util.getFluidsFromInputHatches(this),
-                    getStoredInputs().toArray(new ItemStack[0])))
-                this.bufferedRecipe = recipe;
-            else continue;
-
-            this.setRecipeStats();
-            return true;
-        }
-        return false;
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return BWRecipes.instance.getMappingsFor((byte) 3);
     }
 
-    private void setRecipeStats() {
-        calculatePerfectOverclockedNessMulti(
-                this.bufferedRecipe.mEUt,
-                this.bufferedRecipe.mDuration,
-                1,
-                this.getMaxInputVoltage());
-        if (this.mEUt > 0) this.mEUt = -this.mEUt;
-        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-        this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-        this.mOutputItems = this.bufferedRecipe.mOutputs;
-        this.mOutputFluids = this.bufferedRecipe.mFluidOutputs;
-        sendLoopStart((byte) 20);
-        this.updateSlots();
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().enablePerfectOverclock();
+    }
+
+    @NotNull
+    @Override
+    public CheckRecipeResult checkProcessing() {
+        if (this.type.equals(new NBTTagCompound()) && !this.imprintMachine(getControllerSlot()))
+            return SimpleCheckRecipeResult.ofFailure("no_imprint");
+        if (imprintedItemName == null || imprintedStack == null) {
+            imprintedStack = new ItemStack(BW_Meta_Items.getNEWCIRCUITS(), 1, 0);
+            imprintedStack.setTagCompound(type);
+            imprintedItemName = GT_LanguageManager.getTranslateableItemStackName(imprintedStack);
+        }
+        return super.checkProcessing();
+    }
+
+    @Override
+    protected void setupProcessingLogic(ProcessingLogic logic) {
+        super.setupProcessingLogic(logic);
+        logic.setSpecialSlotItem(imprintedStack);
+    }
+
+    @Override
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.IC2_MACHINES_MAGNETIZER_LOOP;
     }
 
     @Override
@@ -445,6 +422,11 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     }
 
     @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
+
+    @Override
     public boolean isRecipeLockingEnabled() {
         return imprintedItemName != null && !imprintedItemName.equals("");
     }
@@ -466,7 +448,6 @@ public class GT_TileEntity_CircuitAssemblyLine extends
             int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         String imprintedWith = getTypeForDisplay();
-        if (imprintedWith != "") tag.setString("ImprintedWith", imprintedWith);
-
+        if (!imprintedWith.isEmpty()) tag.setString("ImprintedWith", imprintedWith);
     }
 }

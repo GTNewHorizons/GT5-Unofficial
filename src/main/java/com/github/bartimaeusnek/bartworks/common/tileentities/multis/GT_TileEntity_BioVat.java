@@ -21,7 +21,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAn
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
@@ -31,7 +30,6 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -48,6 +46,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.github.bartimaeusnek.bartworks.API.SideReference;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
@@ -60,6 +60,7 @@ import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.BioCulture;
 import com.github.bartimaeusnek.bartworks.util.Coords;
 import com.github.bartimaeusnek.bartworks.util.MathUtils;
+import com.github.bartimaeusnek.bartworks.util.ResultWrongSievert;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -69,13 +70,15 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 
 public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_BioVat> {
 
@@ -86,7 +89,6 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
     private final HashSet<EntityPlayerMP> playerMPHashSet = new HashSet<>();
     private final ArrayList<GT_MetaTileEntity_RadioHatch> mRadHatches = new ArrayList<>();
     private int height = 1;
-    private GT_Recipe mLastRecipe;
     private Fluid mFluid = FluidRegistry.LAVA;
     private BioCulture mCulture;
     private ItemStack mStack;
@@ -168,14 +170,6 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
         return ret;
     }
 
-    public boolean isLiquidInput(byte aSide) {
-        return false;
-    }
-
-    public boolean isLiquidOutput(byte aSide) {
-        return false;
-    }
-
     private int getInputCapacity() {
         return this.mInputHatches.stream().mapToInt(GT_MetaTileEntity_Hatch_Input::getCapacity).sum();
     }
@@ -230,115 +224,60 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
         return MathUtils.clamp(1, ret, ConfigHandler.bioVatMaxParallelBonus);
     }
 
-    private List<ItemStack> getItemInputs() {
-        ArrayList<ItemStack> tInputList = this.getStoredInputs();
-        int tInputList_sS = tInputList.size();
-        for (int i = 0; i < tInputList_sS - 1; i++) {
-            for (int j = i + 1; j < tInputList_sS; j++) {
-                if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
-                    if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
-                        tInputList.remove(j--);
-                        tInputList_sS = tInputList.size();
-                    } else {
-                        tInputList.remove(i--);
-                        tInputList_sS = tInputList.size();
-                        break;
-                    }
-                }
-            }
-        }
-        return tInputList;
-    }
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-    private List<FluidStack> getFluidInputs() {
-        ArrayList<FluidStack> tFluidList = this.getStoredFluids();
-        int tFluidList_sS = tFluidList.size();
-        for (int i = 0; i < tFluidList_sS - 1; i++) {
-            for (int j = i + 1; j < tFluidList_sS; j++) {
-                if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
-                    if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
-                        tFluidList.remove(j--);
-                        tFluidList_sS = tFluidList.size();
-                    } else {
-                        tFluidList.remove(i--);
-                        tFluidList_sS = tFluidList.size();
-                        break;
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+                if (!BW_Util.areStacksEqualOrNull((ItemStack) recipe.mSpecialItems, getControllerSlot()))
+                    return CheckRecipeResultRegistry.NO_RECIPE;
+                int[] conditions = GT_TileEntity_BioVat.specialValueUnpack(recipe.mSpecialValue);
+                mNeededSievert = conditions[3];
+
+                if (mGlassTier < conditions[0]) {
+                    return CheckRecipeResultRegistry.insufficientMachineTier(conditions[0]);
+                }
+
+                if (conditions[2] == 0) {
+                    if (mSievert < mNeededSievert) {
+                        return ResultWrongSievert.insufficientSievert(mNeededSievert);
+                    }
+                } else {
+                    if (mSievert != conditions[3]) {
+                        return ResultWrongSievert.wrongSievert(conditions[3]);
                     }
                 }
+
+                return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        }
-        return tFluidList;
+
+            @NotNull
+            @Override
+            public CheckRecipeResult process() {
+                CheckRecipeResult result = super.process();
+                if (!result.wasSuccessful()) {
+                    return result;
+                }
+                // We already made sure the recipe runs. Now the vat looks for as many "parallels" as it can do
+                mExpectedMultiplier = getExpectedMultiplier(lastRecipe.getFluidOutput(0), true);
+                mTimes = 1;
+                for (int i = 1; i < mExpectedMultiplier; i++) {
+                    if (depleteInput(lastRecipe.mFluidInputs[0])) {
+                        mTimes++;
+                    }
+                }
+                this.outputFluids[0].amount *= mTimes;
+                return result;
+            }
+        };
     }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
-        GT_Recipe.GT_Recipe_Map gtRecipeMap = this.getRecipeMap();
-
-        if (gtRecipeMap == null) return false;
-
-        ItemStack[] tInputs = getItemInputs().toArray(new ItemStack[0]);
-        FluidStack[] tFluids = getFluidInputs().toArray(new FluidStack[0]);
-
-        if (tFluids.length <= 0) return false;
-
-        long tVoltage = getMaxInputVoltage();
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-        long tEnergy = V[tTier];
-
-        GT_Recipe gtRecipe = gtRecipeMap.findRecipe(
-                this.getBaseMetaTileEntity(),
-                this.mLastRecipe,
-                false,
-                tEnergy,
-                tFluids,
-                itemStack,
-                tInputs);
-
-        if (gtRecipe == null) return false;
-
-        assert gtRecipe.mFluidInputs.length == 1;
-        assert gtRecipe.mFluidOutputs.length == 1;
-
-        if (!BW_Util.areStacksEqualOrNull((ItemStack) gtRecipe.mSpecialItems, itemStack)) return false;
-
-        int[] conditions = GT_TileEntity_BioVat.specialValueUnpack(gtRecipe.mSpecialValue);
-
-        this.mNeededSievert = conditions[3];
-
-        if (conditions[2] == 0 ? (this.mSievert < this.mNeededSievert || this.mGlassTier < conditions[0])
-                : (this.mSievert != conditions[3] || this.mGlassTier < conditions[0]))
-            return false;
-
-        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-
-        if (!canOutputAll(gtRecipe)) return false;
-        if (!gtRecipe.isRecipeInputEqual(true, tFluids, tInputs)) return false;
-
-        final FluidStack recipeFluidOutput = gtRecipe.getFluidOutput(0);
-        final FluidStack recipeFluidInput = gtRecipe.mFluidInputs[0];
-
-        this.mExpectedMultiplier = this.getExpectedMultiplier(recipeFluidOutput, true);
-
-        this.mTimes = 1;
-        for (int i = 1; i < this.mExpectedMultiplier; i++) {
-            if (this.depleteInput(recipeFluidInput)) {
-                this.mTimes++;
-            }
-        }
-
-        this.mOutputFluids = new FluidStack[] {
-                new FluidStack(recipeFluidOutput, recipeFluidOutput.amount * this.mTimes) };
-
-        BW_Util.calculateOverclockedNessMulti(gtRecipe.mEUt, gtRecipe.mDuration, 1, tEnergy, this);
-
-        if (this.mEUt > 0) this.mEUt = -this.mEUt;
-        this.mProgresstime = 0;
-
-        if (gtRecipe.mCanBeBuffered) this.mLastRecipe = gtRecipe;
-
-        this.updateSlots();
-        return true;
+    protected void setupProcessingLogic(ProcessingLogic logic) {
+        super.setupProcessingLogic(logic);
+        logic.setSpecialSlotItem(getControllerSlot());
     }
 
     public FluidStack getStoredFluidOutputs() {

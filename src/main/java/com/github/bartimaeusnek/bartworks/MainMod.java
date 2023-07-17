@@ -61,6 +61,7 @@ import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.DownTierLoader;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
+import com.github.bartimaeusnek.bartworks.util.ResultWrongSievert;
 import com.github.bartimaeusnek.bartworks.util.log.DebugLog;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -75,6 +76,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Mods;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 
@@ -179,6 +181,8 @@ public final class MainMod {
 
         WerkstoffLoader.run();
         LocalisationLoader.localiseAll();
+
+        CheckRecipeResultRegistry.register(new ResultWrongSievert(0, ResultWrongSievert.NeededSievertType.EXACTLY));
 
         RadioHatchMaterialLoader.run();
     }

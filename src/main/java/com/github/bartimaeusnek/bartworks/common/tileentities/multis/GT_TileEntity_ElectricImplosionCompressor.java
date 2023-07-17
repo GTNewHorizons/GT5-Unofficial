@@ -18,7 +18,6 @@ import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTI
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.TT;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
@@ -27,16 +26,14 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.client.renderer.BW_EICPistonVisualizer;
@@ -64,6 +61,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.render.TextureFactory;
@@ -138,9 +136,7 @@ public class GT_TileEntity_ElectricImplosionCompressor
                     if (te.piston) {
                         Block candidate = world.getBlock(x, y, z);
                         int candidateMeta = world.getBlockMetadata(x, y, z);
-                        if (getTierOfBlock(candidate, candidateMeta) == -1) {
-                            return false;
-                        }
+                        return getTierOfBlock(candidate, candidateMeta) != -1;
                     }
                     return true;
                 }
@@ -190,7 +186,6 @@ public class GT_TileEntity_ElectricImplosionCompressor
                 add(Pair.of(GregTech_API.sBlockMetal9, 8));
             }
 
-            ;
         };
     }
 
@@ -260,67 +255,31 @@ public class GT_TileEntity_ElectricImplosionCompressor
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        lEUt = 0;
-        mOutputItems = null;
-        mOutputFluids = null;
-        long tTotalEU = getMaxInputEu();
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return eicMap;
+    }
 
-        // Only allow up to one tier skip
-        byte tTier = (byte) (mMaxHatchTier + 1);
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-        ItemStack[] tItemInputs = getStoredInputs().toArray(new ItemStack[0]);
-        FluidStack[] tFluidInputs = getStoredFluids().toArray(new FluidStack[0]);
-
-        if ((tItemInputs.length > 0) || (tFluidInputs.length > 0)) {
-            GT_Recipe tRecipe = eicMap.findRecipe(getBaseMetaTileEntity(), false, V[tTier], tFluidInputs, tItemInputs);
-            if (tRecipe == null) {
-                return false;
+            @NotNull
+            @Override
+            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe,
+                    @NotNull GT_ParallelHelper helper) {
+                // For overclocking we'll allow all power to be used
+                return super.createOverclockCalculator(recipe, helper).setEUt(getMaxInputEu()).setAmperage(1);
             }
+        }.setMaxParallelSupplier(() -> (int) Math.pow(4, Math.max(mBlockTier - 1, 0)));
+    }
 
-            int tCurrentMaxParallel = 1;
-            if (mBlockTier > 1) {
-                tCurrentMaxParallel = (int) Math.pow(4, Math.max(mBlockTier - 1, 0));
-            }
-
-            GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(tItemInputs)
-                    .setFluidInputs(tFluidInputs).setAvailableEUt(tTotalEU).setMaxParallel(tCurrentMaxParallel)
-                    .enableConsumption().enableOutputCalculation().setController(this);
-
-            if (batchMode) {
-                helper.enableBatchMode(128);
-            }
-
-            helper.build();
-
-            if (helper.getCurrentParallel() == 0) {
-                return false;
-            }
-
-            GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tTotalEU)
-                    .setDuration(tRecipe.mDuration)
-                    .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplier()))
-                    .calculate();
-
-            lEUt = -calculator.getConsumption();
-            mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
-
-            this.mEfficiency = 10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000;
-            this.mEfficiencyIncrease = 10000;
-
-            // In case recipe is too OP for that machine
-            if (mMaxProgresstime == Integer.MAX_VALUE - 1 && lEUt == Long.MAX_VALUE - 1) return false;
-            if (this.lEUt > 0) {
-                this.lEUt = -this.lEUt;
-            }
-
-            this.mOutputItems = helper.getItemOutputs();
-            this.mOutputFluids = helper.getFluidOutputs();
-
-            this.updateSlots();
-            return true;
-        }
-        return false;
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        long amperage = getMaxInputAmps();
+        long voltage = getAverageInputVoltage();
+        // We allow one OC, if there is enough amperage, no matter which type of hatch is used
+        logic.setAvailableVoltage(amperage >= 4 ? voltage * 4 : voltage);
+        logic.setAvailableAmperage(amperage >= 4 ? amperage / 4 : amperage);
     }
 
     private void updateChunkCoordinates() {
@@ -518,21 +477,6 @@ public class GT_TileEntity_ElectricImplosionCompressor
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 6, 0, elementBudget, env, false, true);
-    }
-
-    public boolean onWireCutterRightClick(ForgeDirection side, byte aWrenchingSide, EntityPlayer aPlayer, float aX,
-            float aY, float aZ) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-            } else {
-                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
-            }
-            return true;
-        }
-
-        return false;
     }
 
     @Override
