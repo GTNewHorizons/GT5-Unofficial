@@ -1,6 +1,5 @@
 package com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules;
 
-import static gregtech.api.enums.GT_Values.V;
 import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 
 import java.util.ArrayList;
@@ -48,7 +47,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 public abstract class TileEntityModulePump extends TileEntityModuleBase {
 
     /** Energy consumption of the module (1A UHV) */
-    public static final int ENERGY_CONSUMPTION = (int) GT_Values.VP[9];
+    public static final long ENERGY_CONSUMPTION = (int) GT_Values.VP[9];
 
     /** Input parameters */
     Parameters.Group.ParameterIn[] parallelSettings;
@@ -122,8 +121,9 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
      */
     @Override
     public @NotNull CheckRecipeResult checkProcessing_EM() {
-        if (V[tTier] * getParallelRecipes() * getParallels() > getEUVar()) {
-            return CheckRecipeResultRegistry.insufficientPower(V[tTier] * getParallelRecipes() * getParallels());
+        if (ENERGY_CONSUMPTION * getParallelRecipes() * getParallels() > getEUVar()) {
+            return CheckRecipeResultRegistry
+                    .insufficientPower(ENERGY_CONSUMPTION * getParallelRecipes() * getParallels());
         }
 
         List<FluidStack> outputs = new ArrayList<>();
@@ -524,13 +524,13 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
     public static class TileEntityModulePumpT3 extends TileEntityModulePump {
 
         /** Voltage tier of this module */
-        protected static final int MODULE_VOLTAGE_TIER = 11;
+        protected static final int MODULE_VOLTAGE_TIER = 13;
         /** Tier of this module */
         protected static final int MODULE_TIER = 3;
         /** Minimum motor tier that is needed for this module */
         protected static final int MINIMUM_MOTOR_TIER = 4;
         /** Maximum amount of parallels of one recipe */
-        protected static final int MAX_PARALLELS = 16;
+        protected static final int MAX_PARALLELS = 64;
         /** Maximum amount of different recipes that can be done at once */
         protected static final int MAX_PARALLEL_RECIPES = 4;
 
