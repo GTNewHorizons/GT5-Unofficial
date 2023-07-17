@@ -5,7 +5,6 @@ import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -15,16 +14,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_LongPowerUsageBase;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.GregTech_API;
@@ -34,18 +32,20 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
 
-public class ComponentAssemblyLine extends GT_MetaTileEntity_LongPowerUsageBase<ComponentAssemblyLine>
+public class ComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<ComponentAssemblyLine>
         implements ISurvivalConstructable {
 
     private int casingTier;
-    private GT_Recipe lastRecipe;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<ComponentAssemblyLine> STRUCTURE_DEFINITION = StructureDefinition
             .<ComponentAssemblyLine>builder()
@@ -262,45 +262,24 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_LongPowerUsageBase<
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        this.mEfficiencyIncrease = 10000;
-        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-        FluidStack[] tFluids = getStoredFluids().toArray(new FluidStack[0]);
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-        if (inputSeparation) {
-            ArrayList<ItemStack> tInputList = new ArrayList<>();
-            for (GT_MetaTileEntity_Hatch_InputBus tHatch : mInputBusses) {
-                IGregTechTileEntity tInputBus = tHatch.getBaseMetaTileEntity();
-                for (int i = tInputBus.getSizeInventory() - 1; i >= 0; i--) {
-                    if (tInputBus.getStackInSlot(i) != null) tInputList.add(tInputBus.getStackInSlot(i));
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+                if (recipe.mSpecialValue > casingTier + 1) {
+                    return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
                 }
-                ItemStack[] tInputs = tInputList.toArray(new ItemStack[0]);
-                if (processRecipe(tInputs, tFluids)) return true;
-                else tInputList.clear();
+                return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        } else {
-            ItemStack[] tItems = getStoredInputs().toArray(new ItemStack[0]);
-            return processRecipe(tItems, tFluids);
-        }
-        return false;
+        };
     }
 
-    private boolean processRecipe(ItemStack[] tInputs, FluidStack[] tFluidInputs) {
-        long totalEU = getRealVoltage();
-        this.lastRecipe = getRecipeMap()
-                .findRecipe(getBaseMetaTileEntity(), this.lastRecipe, false, totalEU, tFluidInputs, tInputs);
-        if (this.lastRecipe == null) return false;
-        if (this.lastRecipe.mSpecialValue > casingTier + 1) return false;
-        if (!this.lastRecipe.isRecipeInputEqual(true, tFluidInputs, tInputs)) return false;
-
-        calculateOverclockedNessMulti((long) this.lastRecipe.mEUt, this.lastRecipe.mDuration, 1, totalEU);
-        if (this.lEUt > 0) {
-            this.lEUt = (-this.lEUt);
-        }
-
-        mOutputItems = this.lastRecipe.mOutputs;
-        updateSlots();
-        return true;
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(getMaxInputEu());
+        logic.setAvailableAmperage(1);
     }
 
     @Override

@@ -17,6 +17,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -34,6 +36,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -205,7 +209,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack aStack) {
+    public @NotNull CheckRecipeResult checkProcessing_EM() {
 
         ArrayList<FluidStack> tFluids = getStoredFluids();
 
@@ -228,7 +232,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
             this.lEUt = (long) ((long) FuelAmount * recipe.mSpecialValue / 20.0D);
             this.mMaxProgresstime = 20;
             this.updateSlots();
-            return true;
+            return CheckRecipeResultRegistry.GENERATING;
         }
 
         for (GT_Recipe recipe : tGasFuels) {
@@ -245,7 +249,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
             this.lEUt = (long) ((long) FuelAmount * recipe.mSpecialValue / 20.0D);
             this.mMaxProgresstime = 20;
             this.updateSlots();
-            return true;
+            return CheckRecipeResultRegistry.GENERATING;
         }
 
         if (LoadedList.GTPP) {
@@ -264,11 +268,11 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
                 this.lEUt = (long) ((long) FuelAmount * recipe.mSpecialValue * 3 / 20.0D);
                 this.mMaxProgresstime = 20;
                 this.updateSlots();
-                return true;
+                return CheckRecipeResultRegistry.GENERATING;
             }
         }
 
-        return false;
+        return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
     @Override

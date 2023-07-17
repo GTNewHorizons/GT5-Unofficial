@@ -293,6 +293,8 @@ scanner.info.UX.0=Running Parallel
 scanner.info.CASS.tier=Casing Tier:
 
 #GUI Info
+GT5U.gui.text.node_too_small=§7Node too small
+
 gui.NeutronSensor.0=Input the value of Neutron Kinetic Energy.
 gui.NeutronSensor.1=e.g. >5000KeV, <=30MeV . . .
 gui.NeutronSensor.2=Valid

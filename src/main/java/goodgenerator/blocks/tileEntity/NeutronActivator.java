@@ -1,7 +1,5 @@
 package goodgenerator.blocks.tileEntity;
 
-import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
-import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
@@ -16,9 +14,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
-import com.github.bartimaeusnek.bartworks.util.Pair;
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
@@ -46,9 +44,11 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.objects.XSTR;
+import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
 
@@ -85,50 +85,42 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack aStack) {
-        this.mEfficiency = 10000;
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-        FluidStack[] inFluids = getStoredFluids().toArray(new FluidStack[0]);
-        ItemStack[] inItems = getStoredInputs().toArray(new ItemStack[0]);
-        int minNKE, maxNKE;
-
-        lastRecipe = getRecipeMap()
-                .findRecipe(this.getBaseMetaTileEntity(), lastRecipe, false, Integer.MAX_VALUE, inFluids, inItems);
-
-        if (lastRecipe != null) {
-            minNKE = (lastRecipe.mSpecialValue % 10000) * 1000000;
-            maxNKE = (lastRecipe.mSpecialValue / 10000) * 1000000;
-            if (batchMode) {
-                int pall = handleParallelRecipe(lastRecipe, inFluids, inItems, 128);
-                if (pall > 0) {
-                    mFloor = minNKE;
-                    mCeil = maxNKE;
-                    mMaxProgresstime = Math.max((int) (lastRecipe.mDuration * pall * Math.pow(0.9, height - 4)), 1);
-                    Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> Outputs = getMultiOutput(this.lastRecipe, pall);
-                    if (eV <= maxNKE && eV >= minNKE) {
-                        this.mOutputFluids = Outputs.getKey().toArray(new FluidStack[0]);
-                        this.mOutputItems = Outputs.getValue().toArray(new ItemStack[0]);
-                    } else {
-                        this.mOutputFluids = null;
-                        this.mOutputItems = new ItemStack[] { ItemRefer.Radioactive_Waste.get(4) };
-                    }
-                    return true;
-                }
-            } else if (lastRecipe.isRecipeInputEqual(true, inFluids, inItems)) {
-                mFloor = minNKE;
-                mCeil = maxNKE;
-                mMaxProgresstime = Math.max((int) (lastRecipe.mDuration * Math.pow(0.9, height - 4)), 1);
-                if (eV <= maxNKE && eV >= minNKE) {
-                    this.mOutputFluids = lastRecipe.mFluidOutputs;
-                    this.mOutputItems = lastRecipe.mOutputs;
-                } else {
-                    this.mOutputFluids = null;
-                    this.mOutputItems = new ItemStack[] { ItemRefer.Radioactive_Waste.get(4) };
-                }
-                return true;
+            @NotNull
+            @Override
+            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe,
+                    @NotNull GT_ParallelHelper helper) {
+                return GT_OverclockCalculator.ofNoOverclock(recipe)
+                        .setDuration((int) (recipe.mDuration * Math.pow(0.9f, height - 4)));
             }
-        }
-        return false;
+
+            @NotNull
+            @Override
+            public CheckRecipeResult process() {
+                CheckRecipeResult result = super.process();
+                if (!result.wasSuccessful()) {
+                    return result;
+                }
+                mFloor = (lastRecipe.mSpecialValue % 10000) * 1000000;
+                mCeil = (lastRecipe.mSpecialValue / 10000) * 1000000;
+                if (eV > mCeil || eV < mFloor) {
+                    setOutputItems(ItemRefer.Radioactive_Waste.get(4));
+                }
+                // NA does not consume power, its hatches do. Set it to 0 to be sure
+                calculatedEut = 0;
+                return result;
+            }
+        };
+    }
+
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        // NA does not use power, to prevent GT_ParallelHelper from failing we trick it into thinking
+        // we have infinite power
+        logic.setAvailableVoltage(Long.MAX_VALUE);
+        logic.setAvailableAmperage(1);
     }
 
     @Override
@@ -280,6 +272,26 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
 
     public int getCurrentNeutronKineticEnergy() {
         return eV;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean protectsExcessItem() {
+        return !eSafeVoid;
+    }
+
+    @Override
+    public boolean protectsExcessFluid() {
+        return !eSafeVoid;
     }
 
     @Override

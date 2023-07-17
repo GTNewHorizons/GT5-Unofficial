@@ -17,6 +17,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
@@ -37,6 +39,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.XSTR;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import thaumcraft.api.aspects.Aspect;
@@ -279,13 +284,12 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack aStack) {
-        if (!isFullPower()) return false;
+    public @NotNull CheckRecipeResult checkProcessing_EM() {
+        if (!isFullPower()) return SimpleCheckRecipeResult.ofFailure("node_too_small");
 
         ArrayList<ItemStack> tInputList = getStoredInputs();
-        // ArrayList<FluidStack> tFluidList = getStoredFluids();
 
-        if (tInputList.size() == 0) return false;
+        if (tInputList.size() == 0) return CheckRecipeResultRegistry.NO_RECIPE;
 
         int p = (int) this.mParallel;
         for (int i = tInputList.size() - 1; i >= 0; i--) {
@@ -327,7 +331,7 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
 
         this.updateSlots();
         if (this.mEUt > 0) this.mEUt = -this.mEUt;
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     private AspectList getEssentia(ItemStack itemStack, int amount) {

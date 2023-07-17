@@ -19,6 +19,8 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -43,6 +45,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AdvFusionPower;
 import gregtech.api.util.GT_HatchElementBuilder;
@@ -232,7 +236,7 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
             if (mEfficiency < 0) mEfficiency = 0;
             if (mRunningOnLoad && checkMachine(aBaseMetaTileEntity, mInventory[1])) {
                 this.mEUStore = aBaseMetaTileEntity.getStoredEU();
-                checkRecipe(mInventory[1]);
+                checkRecipe();
             }
             if (mUpdated) {
                 mUpdate = 50;
@@ -304,7 +308,7 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
                             mMaxProgresstime = 0;
                             mEfficiencyIncrease = 0;
                             this.mEUStore = getBaseMetaTileEntity().getStoredEU();
-                            if (aBaseMetaTileEntity.isAllowedToWork()) checkRecipe(mInventory[1]);
+                            if (aBaseMetaTileEntity.isAllowedToWork()) checkRecipe();
                         }
                     } else {
                         if (aTick % 100 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
@@ -312,7 +316,7 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
                             turnCasingActive(mMaxProgresstime > 0);
                             if (aBaseMetaTileEntity.isAllowedToWork()) {
                                 this.mEUStore = getBaseMetaTileEntity().getStoredEU();
-                                if (checkRecipe(mInventory[1])) {
+                                if (checkRecipe()) {
                                     if (this.mEUStore < this.mLastRecipe.mSpecialValue - this.mEUt) {
                                         mMaxProgresstime = 0;
                                         turnCasingActive(false);
@@ -409,7 +413,7 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
     public abstract int extraPara(int startEnergy);
 
     @Override
-    public boolean checkRecipe_EM(ItemStack aStack) {
+    public @NotNull CheckRecipeResult checkProcessing_EM() {
         ArrayList<FluidStack> tFluidList = getStoredFluids();
 
         if (tFluidList.size() > 1) {
@@ -420,7 +424,7 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
             if ((tRecipe == null && !mRunningOnLoad) || (tRecipe != null && (maxEUStore() < tRecipe.mSpecialValue))) {
                 turnCasingActive(false);
                 this.mLastRecipe = null;
-                return false;
+                return CheckRecipeResultRegistry.NO_RECIPE;
             }
             int pall = handleParallelRecipe(
                     tRecipe,
@@ -439,10 +443,10 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
                 this.mOutputFluids = getMultiOutput(mLastRecipe, pall).getKey().toArray(new FluidStack[0]);
                 turnCasingActive(true);
                 mRunningOnLoad = false;
-                return true;
+                return CheckRecipeResultRegistry.SUCCESSFUL;
             }
         }
-        return false;
+        return CheckRecipeResultRegistry.NO_RECIPE;
     }
 
     public long getMaxEUInput() {

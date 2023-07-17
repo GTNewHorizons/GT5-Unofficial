@@ -1,15 +1,12 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.ofGlassTieredMixed;
-import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
-import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -20,9 +17,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
-import com.github.bartimaeusnek.bartworks.util.Pair;
+import org.jetbrains.annotations.NotNull;
+
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -34,7 +31,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 
-import goodgenerator.blocks.tileEntity.base.GT_MetaTileEntity_LongPowerUsageBase;
 import goodgenerator.client.GUI.GG_UITextures;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
@@ -48,15 +44,20 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
+import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
-public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<PreciseAssembler>
+public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<PreciseAssembler>
         implements IConstructable, ISurvivalConstructable {
 
     private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK");
@@ -72,7 +73,6 @@ public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<Preci
     protected int machineTier;
     protected int mode;
     protected int energyHatchTier;
-    private GT_Recipe lastRecipe;
 
     public PreciseAssembler(String name) {
         super(name);
@@ -202,68 +202,33 @@ public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<Preci
     }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
-        if (casingTier < 0 || machineTier < 0) return false;
-        FluidStack[] inputFluids = getStoredFluids().toArray(new FluidStack[0]);
-        if (this.mode == 0) {
-            for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
-                if (!isValidMetaTileEntity(bus)) continue;
-                this.lastRecipe = getRecipeMap().findRecipe(
-                        this.getBaseMetaTileEntity(),
-                        this.lastRecipe,
-                        false,
-                        Math.min(getMachineVoltageLimit(), getRealVoltage()),
-                        inputFluids,
-                        getStoredItemFromHatch(bus));
-                if (this.lastRecipe != null && this.lastRecipe.mSpecialValue <= (casingTier + 1)) {
-                    this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-                    this.mEfficiencyIncrease = 10000;
-                    this.lastRecipe.isRecipeInputEqual(true, inputFluids, getStoredItemFromHatch(bus));
-                    mOutputItems = this.lastRecipe.mOutputs;
-                    calculateOverclockedNessMulti(this.lastRecipe.mEUt, this.lastRecipe.mDuration, 1, getRealVoltage());
-                    this.updateSlots();
-                    if (this.lEUt > 0) {
-                        this.lEUt = (-this.lEUt);
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
+
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+                if (mode == 0) {
+                    if (recipe.mSpecialValue > (casingTier + 1)) {
+                        return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
                     }
-                    return true;
                 }
+                return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        } else {
-            for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
-                if (!isValidMetaTileEntity(bus) || getStoredItemFromHatch(bus).length < 1) continue;
-                this.lastRecipe = getRecipeMap().findRecipe(
-                        this.getBaseMetaTileEntity(),
-                        this.lastRecipe,
-                        false,
-                        Math.min(getMachineVoltageLimit(), getRealVoltage()),
-                        inputFluids,
-                        getStoredItemFromHatch(bus));
-                if (this.lastRecipe != null) {
-                    this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-                    this.mEfficiencyIncrease = 10000;
-                    long fullInput = getRealVoltage();
-                    int pall = handleParallelRecipe(
-                            this.lastRecipe,
-                            inputFluids,
-                            getStoredItemFromHatch(bus),
-                            (int) Math.min((long) Math.pow(2, 4 + (casingTier + 1)), fullInput / this.lastRecipe.mEUt));
-                    if (pall <= 0) continue;
-                    Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> Outputs = getMultiOutput(this.lastRecipe, pall);
-                    mOutputItems = Outputs.getValue().toArray(new ItemStack[0]);
-                    calculateOverclockedNessMulti(
-                            (long) this.lastRecipe.mEUt * (long) pall,
-                            this.lastRecipe.mDuration / 2,
-                            1,
-                            getRealVoltage());
-                    this.updateSlots();
-                    if (this.lEUt > 0) {
-                        this.lEUt = (-this.lEUt);
-                    }
-                    return true;
-                }
+
+            @NotNull
+            @Override
+            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe,
+                    @NotNull GT_ParallelHelper helper) {
+                return super.createOverclockCalculator(recipe, helper).setSpeedBoost(0.5F);
             }
-        }
-        return false;
+        }.setMaxParallelSupplier(() -> (int) Math.pow(2, 4 + (casingTier + 1)));
+    }
+
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(getMachineVoltageLimit());
+        logic.setAvailableAmperage(getMaxInputAmps());
     }
 
     @Override
@@ -275,15 +240,6 @@ public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<Preci
         if (machineTier < 0) return 0;
         if (machineTier >= 9) return GT_Values.V[energyHatchTier];
         else return GT_Values.V[Math.min(machineTier, energyHatchTier)];
-    }
-
-    public ItemStack[] getStoredItemFromHatch(GT_MetaTileEntity_Hatch_InputBus tHatch) {
-        ArrayList<ItemStack> rList = new ArrayList<>();
-        for (int i = tHatch.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-            if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) != null)
-                rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(i));
-        }
-        return rList.toArray(new ItemStack[0]);
     }
 
     @Override
@@ -474,6 +430,11 @@ public class PreciseAssembler extends GT_MetaTileEntity_LongPowerUsageBase<Preci
 
     @Override
     public boolean isInputSeparationEnabled() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
         return true;
     }
 }

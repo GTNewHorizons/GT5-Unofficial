@@ -10,6 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -29,6 +31,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -188,7 +192,7 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack aStack) {
+    protected @NotNull CheckRecipeResult checkProcessing_EM() {
         this.mMaxProgresstime = 20;
         int steam = 0;
 
@@ -196,7 +200,7 @@ public class CoolantTower extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
             steam += maybeDrainHatch(tHatch);
         }
         addOutput(GT_ModHandler.getDistilledWater(steam / 160));
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     private int maybeDrainHatch(GT_MetaTileEntity_Hatch_Input tHatch) {

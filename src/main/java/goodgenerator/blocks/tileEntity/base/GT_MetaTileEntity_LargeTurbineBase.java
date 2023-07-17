@@ -19,6 +19,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -30,6 +32,8 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 
@@ -133,12 +137,14 @@ public abstract class GT_MetaTileEntity_LargeTurbineBase extends
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        if ((counter & 7) == 0 && (aStack == null || !(aStack.getItem() instanceof GT_MetaGenerated_Tool)
-                || aStack.getItemDamage() < 170
-                || aStack.getItemDamage() > 179)) {
+    public @NotNull CheckRecipeResult checkProcessing() {
+        ItemStack controllerSlot = getControllerSlot();
+        if ((counter & 7) == 0
+                && (controllerSlot == null || !(controllerSlot.getItem() instanceof GT_MetaGenerated_Tool)
+                        || controllerSlot.getItemDamage() < 170
+                        || controllerSlot.getItemDamage() > 179)) {
             stopMachine();
-            return false;
+            return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
         }
         ArrayList<FluidStack> tFluids = getStoredFluids();
         if (tFluids.size() > 0) {
@@ -148,16 +154,18 @@ public abstract class GT_MetaTileEntity_LargeTurbineBase extends
                     || this.getBaseMetaTileEntity().hasInventoryBeenModified()) {
                 counter = 0;
                 baseEff = GT_Utility.safeInt(
-                        (long) ((5F + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));
+                        (long) ((5F + ((GT_MetaGenerated_Tool) controllerSlot.getItem())
+                                .getToolCombatDamage(controllerSlot)) * 1000F));
                 optFlow = GT_Utility.safeInt(
                         (long) Math.max(
                                 Float.MIN_NORMAL,
-                                ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack).getSpeedMultiplier()
-                                        * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolSpeed
+                                ((GT_MetaGenerated_Tool) controllerSlot.getItem()).getToolStats(controllerSlot)
+                                        .getSpeedMultiplier()
+                                        * GT_MetaGenerated_Tool.getPrimaryMaterial(controllerSlot).mToolSpeed
                                         * 50));
                 if (optFlow <= 0 || baseEff <= 0) {
                     stopMachine(); // in case the turbine got removed
-                    return false;
+                    return CheckRecipeResultRegistry.NO_FUEL_FOUND;
                 }
             } else {
                 counter++;
@@ -182,12 +190,12 @@ public abstract class GT_MetaTileEntity_LargeTurbineBase extends
             // stopMachine();
             this.mEUt = 0;
             this.mEfficiency = 0;
-            return false;
+            return CheckRecipeResultRegistry.NO_FUEL_FOUND;
         } else {
             this.mMaxProgresstime = 1;
             this.mEfficiencyIncrease = 10;
             // Overvoltage is handled inside the MultiBlockBase when pushing out to dynamos. no need to do it here.
-            return true;
+            return CheckRecipeResultRegistry.GENERATING;
         }
     }
 

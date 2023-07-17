@@ -21,6 +21,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
@@ -41,6 +43,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
 
@@ -190,12 +194,12 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack aStack) {
+    public @NotNull CheckRecipeResult checkProcessing_EM() {
         tRunningRecipe = null;
-        if (mHotFluidHatch.getFluid() == null) return true;
+        if (mHotFluidHatch.getFluid() == null) return CheckRecipeResultRegistry.SUCCESSFUL;
         MyRecipeAdder.ExtremeHeatExchangerRecipe tRecipe = MyRecipeAdder.mXHeatExchangerFuelMap
                 .get(mHotFluidHatch.getFluid().getFluid());
-        if (tRecipe == null) return false;
+        if (tRecipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
         tRunningRecipe = tRecipe;
         this.hotName = mHotFluidHatch.getFluid().getFluid().getName();
         int tMaxConsume = tRecipe.getMaxHotFluidConsume();
@@ -224,7 +228,7 @@ public class ExtremeHeatExchanger extends GT_MetaTileEntity_TooltipMultiBlockBas
         mCooledFluidHatch.fill(new FluidStack(tRecipe.getCooledFluid(), tRealConsume), true);
         this.mEfficiencyIncrease = 160;
 
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     @Override

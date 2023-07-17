@@ -2,11 +2,7 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
-import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -15,11 +11,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
-import com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti;
+import org.jetbrains.annotations.NotNull;
+
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyTunnel;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -37,15 +32,19 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
+import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 
 public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
-        implements TecTechEnabledMulti, IConstructable, ISurvivalConstructable {
+        implements IConstructable, ISurvivalConstructable {
 
     private IStructureDefinition<FuelRefineFactory> multiDefinition = null;
     private int Tier = -1;
@@ -54,25 +53,17 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
 
     public FuelRefineFactory(String name) {
         super(name);
+        turnOffMaintenance();
     }
 
     public FuelRefineFactory(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
+        turnOffMaintenance();
     }
 
     @Override
-    public List<GT_MetaTileEntity_Hatch_Energy> getVanillaEnergyHatches() {
-        return this.mEnergyHatches;
-    }
-
-    @Override
-    public List<GT_MetaTileEntity_Hatch_EnergyTunnel> getTecTechEnergyTunnels() {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public List<GT_MetaTileEntity_Hatch_EnergyMulti> getTecTechEnergyMultis() {
-        return new ArrayList<>();
+    public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
+        if (!hasMaintenanceChecks) turnOffMaintenance();
     }
 
     @Override
@@ -190,12 +181,6 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
         cnt[0] = 0;
         cnt[1] = 0;
         cnt[2] = 0;
-        mWrench = true;
-        mScrewdriver = true;
-        mSoftHammer = true;
-        mHardHammer = true;
-        mSolderingTool = true;
-        mCrowbar = true;
         return structureCheck_EM(mName, 7, 12, 1) && getTier() != -1;
     }
 
@@ -211,64 +196,38 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack aStack) {
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return MyRecipeAdder.instance.FRF;
+    }
 
-        mWrench = true;
-        mScrewdriver = true;
-        mSoftHammer = true;
-        mHardHammer = true;
-        mSolderingTool = true;
-        mCrowbar = true;
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-        ArrayList<FluidStack> tFluids = getStoredFluids();
-        ArrayList<ItemStack> tItems = getStoredInputs();
-        MyRecipeAdder.NaqFuelRefineMapper tRecipes = MyRecipeAdder.instance.FRF;
-
-        for (int i = 0; i < tFluids.size() - 1; i++) {
-            for (int j = i + 1; j < tFluids.size(); j++) {
-                if (GT_Utility.areFluidsEqual(tFluids.get(i), tFluids.get(j))) {
-                    if ((tFluids.get(i)).amount >= (tFluids.get(j)).amount) {
-                        tFluids.remove(j--);
-                    } else {
-                        tFluids.remove(i--);
-                        break;
-                    }
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+                if (recipe.mSpecialValue > Tier) {
+                    return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
                 }
+                return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        }
 
-        for (int i = 0; i < tItems.size() - 1; i++) {
-            for (int j = i + 1; j < tItems.size(); j++) {
-                if (GT_Utility.areStacksEqual(tItems.get(i), tItems.get(j))) {
-                    if ((tItems.get(i)).stackSize >= (tItems.get(j)).stackSize) {
-                        tItems.remove(j--);
-                    } else {
-                        tItems.remove(i--);
-                        break;
-                    }
-                }
+            @NotNull
+            @Override
+            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe,
+                    @NotNull GT_ParallelHelper helper) {
+                long ocFactor = 1L << (Tier - recipe.mSpecialValue);
+                return GT_OverclockCalculator
+                        .ofNoOverclock(((long) recipe.mEUt) * ocFactor, (int) Math.max(recipe.mDuration / ocFactor, 1));
             }
-        }
+        };
+    }
 
-        FluidStack[] inFluids = tFluids.toArray(new FluidStack[0]);
-        ItemStack[] inItems = tItems.toArray(new ItemStack[0]);
-        this.mEfficiency = 10000;
-
-        long tPower = getMaxInputEnergy_EM();
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tPower));
-        GT_Recipe recipe = tRecipes.findRecipe(this.getBaseMetaTileEntity(), false, V[tTier], inFluids, inItems);
-        if (recipe != null) {
-            if (recipe.mSpecialValue > Tier) return false;
-            if (recipe.isRecipeInputEqual(true, inFluids, inItems)) {
-                mEUt = recipe.mEUt * (1 << (Tier - recipe.mSpecialValue));
-                mEUt = -Math.abs(mEUt);
-                mMaxProgresstime = recipe.mDuration / (1 << (Tier - recipe.mSpecialValue));
-                this.mOutputFluids = recipe.mFluidOutputs;
-                this.updateSlots();
-                return true;
-            }
-        }
-        return false;
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(getMaxInputEu());
+        logic.setAvailableAmperage(1);
     }
 
     public final boolean addToFRFList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -335,6 +294,16 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
         System.arraycopy(super.getInfoData(), 0, infoData, 0, super.getInfoData().length);
         infoData[super.getInfoData().length] = StatCollector.translateToLocal("scanner.info.FRF") + " " + this.Tier;
         return infoData;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 
     @Override

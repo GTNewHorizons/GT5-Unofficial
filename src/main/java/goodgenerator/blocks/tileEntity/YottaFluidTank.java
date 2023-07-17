@@ -21,6 +21,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.gui.TecTechUITextures;
@@ -47,6 +49,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 
@@ -141,10 +145,10 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack aStack) {
+    public @NotNull CheckRecipeResult checkProcessing_EM() {
         this.mEUt = 0;
         this.mMaxProgresstime = 20;
-        return true;
+        return SimpleCheckRecipeResult.ofSuccess("");
     }
 
     public boolean getIsVoidExcessEnabled() {
@@ -539,6 +543,11 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
             height--;
         }
         return built;
+    }
+
+    @Override
+    protected boolean shouldDisplayCheckRecipeResult() {
+        return false;
     }
 
     @Override

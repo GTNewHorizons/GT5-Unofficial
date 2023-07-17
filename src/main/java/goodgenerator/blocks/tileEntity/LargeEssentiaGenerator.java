@@ -16,6 +16,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
@@ -43,6 +45,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.XSTR;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
@@ -237,11 +241,11 @@ public class LargeEssentiaGenerator extends GT_MetaTileEntity_TooltipMultiBlockB
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack aStack) {
+    public @NotNull CheckRecipeResult checkProcessing_EM() {
         this.mEfficiency = 10000;
         this.mMaxProgresstime = 1;
         setEssentiaToEUVoltageAndAmp(getVoltageLimit(), getAmpLimit());
-        return true;
+        return CheckRecipeResultRegistry.GENERATING;
     }
 
     public int getVoltageLimit() {
