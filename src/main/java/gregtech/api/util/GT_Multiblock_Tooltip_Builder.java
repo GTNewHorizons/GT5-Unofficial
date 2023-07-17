@@ -145,12 +145,36 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder beginStructureBlock(int w, int h, int l, boolean hollow) {
-        if (hollow) {
-            sLines.add(TT_dimensions + COLON + w + "x" + h + "x" + l + " (WxHxL) " + TT_hollow);
-        } else {
-            sLines.add(TT_dimensions + COLON + w + "x" + h + "x" + l + " (WxHxL)");
-        }
-        sLines.add(TT_structure + COLON);
+        sLines.add(
+            EnumChatFormatting.WHITE + TT_dimensions
+                + COLON
+                + EnumChatFormatting.GOLD
+                + w
+                + EnumChatFormatting.GRAY
+                + "x"
+                + EnumChatFormatting.GOLD
+                + h
+                + EnumChatFormatting.GRAY
+                + "x"
+                + EnumChatFormatting.GOLD
+                + l
+                + EnumChatFormatting.GRAY
+                + " ("
+                + EnumChatFormatting.GOLD
+                + "W"
+                + EnumChatFormatting.GRAY
+                + "x"
+                + EnumChatFormatting.GOLD
+                + "H"
+                + EnumChatFormatting.GRAY
+                + "x"
+                + EnumChatFormatting.GOLD
+                + "L"
+                + EnumChatFormatting.GRAY
+                + ") "
+                + EnumChatFormatting.RED
+                + (hollow ? EnumChatFormatting.RED + TT_hollow : ""));
+        sLines.add(EnumChatFormatting.WHITE + TT_structure + COLON);
         return this;
     }
 
@@ -170,18 +194,37 @@ public class GT_Multiblock_Tooltip_Builder {
     public GT_Multiblock_Tooltip_Builder beginVariableStructureBlock(int wmin, int wmax, int hmin, int hmax, int lmin,
         int lmax, boolean hollow) {
         sLines.add(
-            TT_dimensions + COLON
+            EnumChatFormatting.WHITE + TT_dimensions
+                + COLON
+                + EnumChatFormatting.GOLD
                 + wmin
                 + (wmin != wmax ? "-" + wmax : "")
+                + EnumChatFormatting.GRAY
                 + "x"
+                + EnumChatFormatting.GOLD
                 + hmin
                 + (hmin != hmax ? "-" + hmax : "")
+                + EnumChatFormatting.GRAY
                 + "x"
+                + EnumChatFormatting.GOLD
                 + lmin
                 + (lmin != lmax ? "-" + lmax : "")
-                + " (WxHxL) "
-                + (hollow ? TT_hollow : ""));
-        sLines.add(TT_structure + COLON);
+                + EnumChatFormatting.GRAY
+                + " ("
+                + EnumChatFormatting.GOLD
+                + "W"
+                + EnumChatFormatting.GRAY
+                + "x"
+                + EnumChatFormatting.GOLD
+                + "H"
+                + EnumChatFormatting.GRAY
+                + "x"
+                + EnumChatFormatting.GOLD
+                + "L"
+                + EnumChatFormatting.GRAY
+                + ") "
+                + (hollow ? EnumChatFormatting.RED + TT_hollow : ""));
+        sLines.add(EnumChatFormatting.WHITE + TT_structure + COLON);
         return this;
     }
 
@@ -193,7 +236,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addController(String info) {
-        sLines.add(TAB + TT_controller + COLON + info);
+        sLines.add(TAB + EnumChatFormatting.WHITE + TT_controller + COLON + EnumChatFormatting.GRAY + info);
         return this;
     }
 
@@ -222,7 +265,34 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addCasingInfoExactly(String casingName, int count, boolean isTiered) {
-        sLines.add(TAB + count + "x " + casingName + (isTiered ? " " + TT_tiered : ""));
+        return addCasingInfoExactlyColored(
+            casingName,
+            EnumChatFormatting.GRAY,
+            count,
+            EnumChatFormatting.GOLD,
+            isTiered);
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * (indent)countx casingName (tiered)
+     *
+     * @param casingName Name of the Casing.
+     * @param isTiered   Flag if this casing accepts multiple tiers (e.g. coils)
+     * @param countColor Color of the casing count text
+     * @param textColor  Color of the casing name text
+     * @return Instance this method was called on.
+     */
+    public GT_Multiblock_Tooltip_Builder addCasingInfoExactlyColored(String casingName, EnumChatFormatting textColor,
+        int count, EnumChatFormatting countColor, boolean isTiered) {
+        sLines.add(
+            countColor + TAB
+                + count
+                + "x "
+                + EnumChatFormatting.RESET
+                + textColor
+                + casingName
+                + (isTiered ? " " + TT_tiered : ""));
         return this;
     }
 
@@ -236,7 +306,37 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addCasingInfoMin(String casingName, int minCount, boolean isTiered) {
-        sLines.add(TAB + minCount + "x " + casingName + " " + TT_minimum + (isTiered ? " " + TT_tiered : ""));
+        return addCasingInfoMinColored(
+            casingName,
+            EnumChatFormatting.GRAY,
+            minCount,
+            EnumChatFormatting.GOLD,
+            isTiered);
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * (indent)minCountx casingName (minimum) (tiered)
+     *
+     * @param casingName Name of the Casing.
+     * @param minCount   Minimum needed for valid structure check.
+     * @param isTiered   Flag if this casing accepts multiple tiers (e.g. coils)
+     * @param countColor Color of the casing count text
+     * @param textColor  Color of the casing name text
+     * @return Instance this method was called on.
+     */
+    public GT_Multiblock_Tooltip_Builder addCasingInfoMinColored(String casingName, EnumChatFormatting textColor,
+        int minCount, EnumChatFormatting countColor, boolean isTiered) {
+        sLines.add(
+            countColor + TAB
+                + minCount
+                + "x "
+                + EnumChatFormatting.RESET
+                + textColor
+                + casingName
+                + " "
+                + TT_minimum
+                + (isTiered ? " " + TT_tiered : ""));
         return this;
     }
 
@@ -252,7 +352,42 @@ public class GT_Multiblock_Tooltip_Builder {
      */
     public GT_Multiblock_Tooltip_Builder addCasingInfoRange(String casingName, int minCount, int maxCount,
         boolean isTiered) {
-        sLines.add(TAB + minCount + "x - " + maxCount + "x " + casingName + (isTiered ? " " + TT_tiered : ""));
+        return addCasingInfoRangeColored(
+            casingName,
+            EnumChatFormatting.GRAY,
+            minCount,
+            maxCount,
+            EnumChatFormatting.GOLD,
+            isTiered);
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * (indent)minCountx - maxCountx casingName (minimum) (tiered)
+     *
+     * @param casingName Name of the Casing.
+     * @param minCount   Minimum needed for valid structure check.
+     * @param maxCount   Maximum needed for valid structure check.
+     * @param isTiered   Flag if this casing accepts multiple tiers (e.g. coils)
+     * @param countColor Color of the casing count text
+     * @param textColor  Color of the casing name text
+     * @return Instance this method was called on.
+     */
+    public GT_Multiblock_Tooltip_Builder addCasingInfoRangeColored(String casingName, EnumChatFormatting textColor,
+        int minCount, int maxCount, EnumChatFormatting countColor, boolean isTiered) {
+        sLines.add(
+            countColor + TAB
+                + minCount
+                + "x"
+                + EnumChatFormatting.GRAY
+                + " - "
+                + countColor
+                + maxCount
+                + "x "
+                + EnumChatFormatting.RESET
+                + textColor
+                + casingName
+                + (isTiered ? " " + TT_tiered : ""));
         return this;
     }
 
@@ -265,7 +400,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addOtherStructurePart(String name, String info) {
-        sLines.add(TAB + name + COLON + info);
+        sLines.add(EnumChatFormatting.WHITE + TAB + name + COLON + EnumChatFormatting.GRAY + info);
         return this;
     }
 
@@ -277,7 +412,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addMaintenanceHatch(String info) {
-        sLines.add(TAB + TT_maintenancehatch + COLON + info);
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_maintenancehatch + COLON + EnumChatFormatting.GRAY + info);
         return this;
     }
 
@@ -289,7 +424,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addMufflerHatch(String info) {
-        sLines.add(TAB + TT_mufflerhatch + COLON + info);
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_mufflerhatch + COLON + EnumChatFormatting.GRAY + info);
         return this;
     }
 
@@ -301,7 +436,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addEnergyHatch(String info) {
-        sLines.add(TAB + TT_energyhatch + COLON + info);
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_energyhatch + COLON + EnumChatFormatting.GRAY + info);
         return this;
     }
 
@@ -313,7 +448,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addDynamoHatch(String info) {
-        sLines.add(TAB + TT_dynamohatch + COLON + info);
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_dynamohatch + COLON + EnumChatFormatting.GRAY + info);
         return this;
     }
 
@@ -325,7 +460,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addInputBus(String info) {
-        sLines.add(TAB + TT_inputbus + COLON + info);
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_inputbus + COLON + EnumChatFormatting.GRAY + info);
         return this;
     }
 
@@ -337,7 +472,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addInputHatch(String info) {
-        sLines.add(TAB + TT_inputhatch + COLON + info);
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_inputhatch + COLON + EnumChatFormatting.GRAY + info);
         return this;
     }
 
@@ -349,7 +484,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addOutputBus(String info) {
-        sLines.add(TAB + TT_outputbus + COLON + info);
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_outputbus + COLON + EnumChatFormatting.GRAY + info);
         return this;
     }
 
@@ -361,7 +496,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addOutputHatch(String info) {
-        sLines.add(TAB + TT_outputhatch + COLON + info);
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_outputhatch + COLON + EnumChatFormatting.GRAY + info);
         return this;
     }
 
@@ -375,7 +510,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addOtherStructurePart(String name, String info, int... dots) {
-        sLines.add(TAB + name + COLON + info);
+        sLines.add(EnumChatFormatting.WHITE + TAB + name + COLON + EnumChatFormatting.GRAY + info);
         for (int dot : dots) hBlocks.put(dot, name);
         return this;
     }
@@ -389,7 +524,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addMaintenanceHatch(String info, int... dots) {
-        sLines.add(TAB + TT_maintenancehatch + COLON + info);
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_maintenancehatch + COLON + EnumChatFormatting.GRAY + info);
         for (int dot : dots) hBlocks.put(dot, TT_maintenancehatch);
         return this;
     }
@@ -403,7 +538,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addMufflerHatch(String info, int... dots) {
-        sLines.add(TAB + TT_mufflerhatch + COLON + info);
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_mufflerhatch + COLON + EnumChatFormatting.GRAY + info);
         for (int dot : dots) hBlocks.put(dot, TT_mufflerhatch);
         return this;
     }
@@ -417,7 +552,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addEnergyHatch(String info, int... dots) {
-        sLines.add(TAB + TT_energyhatch + COLON + info);
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_energyhatch + COLON + EnumChatFormatting.GRAY + info);
         for (int dot : dots) hBlocks.put(dot, TT_energyhatch);
         return this;
     }
@@ -431,7 +566,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addDynamoHatch(String info, int... dots) {
-        sLines.add(TAB + TT_dynamohatch + COLON + info);
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_dynamohatch + COLON + EnumChatFormatting.GRAY + info);
         for (int dot : dots) hBlocks.put(dot, TT_dynamohatch);
         return this;
     }
@@ -445,7 +580,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addInputBus(String info, int... dots) {
-        sLines.add(TAB + TT_inputbus + COLON + info);
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_inputbus + COLON + EnumChatFormatting.GRAY + info);
         for (int dot : dots) hBlocks.put(dot, TT_inputbus);
         return this;
     }
@@ -459,7 +594,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addInputHatch(String info, int... dots) {
-        sLines.add(TAB + TT_inputhatch + COLON + info);
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_inputhatch + COLON + EnumChatFormatting.GRAY + info);
         for (int dot : dots) hBlocks.put(dot, TT_inputhatch);
         return this;
     }
@@ -473,7 +608,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addOutputBus(String info, int... dots) {
-        sLines.add(TAB + TT_outputbus + COLON + info);
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_outputbus + COLON + EnumChatFormatting.GRAY + info);
         for (int dot : dots) hBlocks.put(dot, TT_outputbus);
         return this;
     }
@@ -487,7 +622,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addOutputHatch(String info, int... dots) {
-        sLines.add(TAB + TT_outputhatch + COLON + info);
+        sLines.add(EnumChatFormatting.WHITE + TAB + TT_outputhatch + COLON + EnumChatFormatting.GRAY + info);
         for (int dot : dots) hBlocks.put(dot, TT_outputhatch);
         return this;
     }

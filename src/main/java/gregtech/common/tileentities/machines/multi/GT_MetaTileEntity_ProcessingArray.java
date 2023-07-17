@@ -496,6 +496,11 @@ public class GT_MetaTileEntity_ProcessingArray extends
     }
 
     @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
 
