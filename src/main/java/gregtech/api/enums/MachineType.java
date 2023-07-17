@@ -102,7 +102,7 @@ public enum MachineType {
     private final String name;
     private final String description;
 
-    private MachineType(String machineDescription, String machineType) {
+    MachineType(String machineDescription, String machineType) {
         this.description = StatCollector.translateToLocal(machineDescription);
         this.name = StatCollector.translateToLocal(machineType);
     }
