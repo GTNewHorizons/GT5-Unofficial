@@ -1,106 +1,110 @@
 package gregtech.api.enums;
 
+import net.minecraft.util.StatCollector;
 import com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler;
 
 public enum MachineType {
 
-    ALLOY_SMELTER(FunnyTexts.ALLOY_SMELTER, "Alloy Smelter"),
-    ARC_FURNACE(FunnyTexts.ARC_FURNACE, "Arc Furnace"),
-    ASSEMBLER(FunnyTexts.ASSEMBLER, "Assembler"),
-    AUTOCLAVE(FunnyTexts.AUTOCLAVE, "Autoclave"),
-    BENDING_MACHINE(FunnyTexts.BENDING_MACHINE, "Bending Machine"),
-    CANNER(FunnyTexts.CANNER, "Canner"),
-    CENTRIFUGE(FunnyTexts.CENTRIFUGE, "Centrifuge"),
-    CHEMICAL_BATH(FunnyTexts.CHEMICAL_BATH, "Chemical Bath"),
-    CHEMICAL_REACTOR(FunnyTexts.CHEMICAL_REACTOR, "Chemical Reactor"),
-    CIRCUIT_ASSEMBLER(FunnyTexts.CIRCUIT_ASSEMBLER, "Circuit Assembler"),
-    COMPRESSOR(FunnyTexts.COMPRESSOR, "Compressor"),
-    CUTTING_MACHINE(FunnyTexts.CUTTING_MACHINE, "Cutting Machine"),
-    DISTILLERY(FunnyTexts.DISTILLERY, "Distillery"),
-    ELECTRIC_FURNACE(FunnyTexts.ELECTRIC_FURNACE, "Furnace"),
-    ELECTROLYZER(FunnyTexts.ELECTROLYZER, "Electrolyzer"),
-    ELECTROMAGNETIC_SEPARATOR(FunnyTexts.ELECTROMAGNETIC_SEPARATOR, "Electromagnetic Separator"),
-    EXTRACTOR(FunnyTexts.EXTRACTOR, "Extractor"),
-    EXTRUDER(FunnyTexts.EXTRUDER, "Extruder"),
-    FERMENTER(FunnyTexts.FERMENTER, "Fermenter"),
-    FLUID_CANNER(FunnyTexts.FLUID_CANNER, "Fluid Canner"),
-    FLUID_EXTRACTOR(FunnyTexts.FLUID_EXTRACTOR, "Fluid Extractor"),
-    FLUID_SOLIDIFIER(FunnyTexts.FLUID_SOLIDIFIER, "Fluid Solidifier"),
-    FORGE_HAMMER(FunnyTexts.FORGE_HAMMER, "Forge Hammer"),
-    FORMING_PRESS(FunnyTexts.FORMING_PRESS, "Forming Press"),
-    FLUID_HEATER(FunnyTexts.FLUID_HEATER, "Fluid Heater"),
-    LASER_ENGRAVER(FunnyTexts.LASER_ENGRAVER, "Laser Engraver"),
-    LATHE(FunnyTexts.LATHE, "Lathe"),
-    MACERATOR(FunnyTexts.MACERATOR, "Macerator"),
-    MACERATOR_PULVERIZER(FunnyTexts.MACERATOR_PULVERIZER, "Macerator/Pulverizer"),
-    MATTER_AMPLIFIER(FunnyTexts.MATTER_AMPLIFIER, "Matter Amplifier"),
-    MICROWAVE(FunnyTexts.MICROWAVE, "Furnace"),
-    MIXER(FunnyTexts.MIXER, "Mixer"),
-    ORE_WASHER(FunnyTexts.ORE_WASHER, "Ore Washer"),
-    OVEN(FunnyTexts.OVEN, "Furnace"),
-    PLASMA_ARC_FURNACE(FunnyTexts.PLASMA_ARC_FURNACE, "Plasma Arc Furnace"),
-    POLARIZER(FunnyTexts.POLARIZER, "Polarizer"),
-    PRINTER(FunnyTexts.PRINTER, "Printer"),
-    RECYCLER(FunnyTexts.RECYCLER, "Recycler"),
-    SIFTER(FunnyTexts.SIFTER, "Sifter"),
-    SLICER(FunnyTexts.SLICER, "Slicer"),
-    THERMAL_CENTRIFUGE(FunnyTexts.THERMAL_CENTRIFUGE, "Thermal Centrifuge"),
-    UNPACKAGER(FunnyTexts.UNPACKAGER, "Unpackager"),
-    WIREMILL(FunnyTexts.WIREMILL, "Wiremill");
+    ALLOY_SMELTER(FunnyTexts.ALLOY_SMELTER, "GT5U.machines.types.alloy_smelter"),
+    ARC_FURNACE(FunnyTexts.ARC_FURNACE, "GT5U.machines.types.arc_furnace"),
+    ASSEMBLER(FunnyTexts.ASSEMBLER, "GT5U.machines.types.assembler"),
+    AUTOCLAVE(FunnyTexts.AUTOCLAVE, "GT5U.machines.types.autoclave"),
+    BENDING_MACHINE(FunnyTexts.BENDING_MACHINE, "GT5U.machines.types.bending_machine"),
+    CANNER(FunnyTexts.CANNER, "GT5U.machines.types.canner"),
+    CENTRIFUGE(FunnyTexts.CENTRIFUGE, "GT5U.machines.types.centrifuge"),
+    CHEMICAL_BATH(FunnyTexts.CHEMICAL_BATH, "GT5U.machines.types.chemical_bath"),
+    CHEMICAL_REACTOR(FunnyTexts.CHEMICAL_REACTOR, "GT5U.machines.types.chemical_reactor"),
+    CIRCUIT_ASSEMBLER(FunnyTexts.CIRCUIT_ASSEMBLER, "GT5U.machines.types.circuit_assembler"),
+    COMPRESSOR(FunnyTexts.COMPRESSOR, "GT5U.machines.types.compressor"),
+    CUTTING_MACHINE(FunnyTexts.CUTTING_MACHINE, "GT5U.machines.types.cutting_machine"),
+    DISTILLERY(FunnyTexts.DISTILLERY, "GT5U.machines.types.distillery"),
+    ELECTRIC_FURNACE(FunnyTexts.ELECTRIC_FURNACE, "GT5U.machines.types.electric_furnace"),
+    ELECTROLYZER(FunnyTexts.ELECTROLYZER, "GT5U.machines.types.electrolyzer"),
+    ELECTROMAGNETIC_SEPARATOR(FunnyTexts.ELECTROMAGNETIC_SEPARATOR, "GT5U.machines.types.electromagnetic_separator"),
+    EXTRACTOR(FunnyTexts.EXTRACTOR, "GT5U.machines.types.extractor"),
+    EXTRUDER(FunnyTexts.EXTRUDER, "GT5U.machines.types.extruder"),
+    FERMENTER(FunnyTexts.FERMENTER, "GT5U.machines.types.fermenter"),
+    FLUID_CANNER(FunnyTexts.FLUID_CANNER, "GT5U.machines.types.fluid_canner"),
+    FLUID_EXTRACTOR(FunnyTexts.FLUID_EXTRACTOR, "GT5U.machines.types.fluid_extractor"),
+    FLUID_SOLIDIFIER(FunnyTexts.FLUID_SOLIDIFIER, "GT5U.machines.types.fluid_solidifier"),
+    FORGE_HAMMER(FunnyTexts.FORGE_HAMMER, "GT5U.machines.types.forge_hammer"),
+    FORMING_PRESS(FunnyTexts.FORMING_PRESS, "GT5U.machines.types.forming_press"),
+    FLUID_HEATER(FunnyTexts.FLUID_HEATER, "GT5U.machines.types.fluid_heater"),
+    LASER_ENGRAVER(FunnyTexts.LASER_ENGRAVER, "GT5U.machines.types.laser_engraver"),
+    LATHE(FunnyTexts.LATHE, "GT5U.machines.types.lathe"),
+    MACERATOR(FunnyTexts.MACERATOR, "GT5U.machines.types.macerator"),
+    MACERATOR_PULVERIZER(FunnyTexts.MACERATOR_PULVERIZER, "GT5U.machines.types.macerator_pulverizer"),
+    MATTER_AMPLIFIER(FunnyTexts.MATTER_AMPLIFIER, "GT5U.machines.types.matter_amplifier"),
+    MICROWAVE(FunnyTexts.MICROWAVE, "GT5U.machines.types.microwave"),
+    MIXER(FunnyTexts.MIXER, "GT5U.machines.types.mixer"),
+    ORE_WASHER(FunnyTexts.ORE_WASHER, "GT5U.machines.types.ore_washer"),
+    OVEN(FunnyTexts.OVEN, "GT5U.machines.types.oven"),
+    PLASMA_ARC_FURNACE(FunnyTexts.PLASMA_ARC_FURNACE, "GT5U.machines.types.plasma_arc_furnace"),
+    POLARIZER(FunnyTexts.POLARIZER, "GT5U.machines.types.polarizer"),
+    PRINTER(FunnyTexts.PRINTER, "GT5U.machines.types.printer"),
+    RECYCLER(FunnyTexts.RECYCLER, "GT5U.machines.types.recycler"),
+    SIFTER(FunnyTexts.SIFTER, "GT5U.machines.types.sifter"),
+    SLICER(FunnyTexts.SLICER, "GT5U.machines.types.slicer"),
+    THERMAL_CENTRIFUGE(FunnyTexts.THERMAL_CENTRIFUGE, "GT5U.machines.types.thermal_centrifuge"),
+    UNPACKAGER(FunnyTexts.UNPACKAGER, "GT5U.machines.types.unpackager"),
+    WIREMILL(FunnyTexts.WIREMILL, "GT5U.machines.types.wiremill");
 
     public static class FunnyTexts {
 
-        public static final String ALLOY_SMELTER = "HighTech combination Smelter";
-        public static final String ARC_FURNACE = "";
-        public static final String ASSEMBLER = "Avengers, Assemble!";
-        public static final String AUTOCLAVE = "Crystallizing your Dusts";
-        public static final String BENDING_MACHINE = "Boo, he's bad! We want BENDER!!!";
-        public static final String CANNER = "Unmobile Food Canning Machine GTA4";
-        public static final String CENTRIFUGE = "Separating Molecules";
-        public static final String CHEMICAL_BATH = "Bathing Ores in Chemicals to separate them";
-        public static final String CHEMICAL_REACTOR = "Letting Chemicals react with each other";
-        public static final String CIRCUIT_ASSEMBLER = "Pick-n-Place all over the place";
-        public static final String COMPRESSOR = "Compress-O-Matic C77";
-        public static final String CUTTING_MACHINE = "Slice'N Dice";
-        public static final String DISTILLERY = "Extracting the most relevant Parts of Fluids";
-        public static final String ELECTRIC_FURNACE = "Not like using a Commodore 64";
-        public static final String ELECTROLYZER = "Electrolyzing Molecules";
-        public static final String ELECTROMAGNETIC_SEPARATOR = "Separating the magnetic Ores from the rest";
-        public static final String EXTRACTOR = "Dejuicer-Device of Doom - D123";
-        public static final String EXTRUDER = "Universal Machine for Metal Working";
-        public static final String FERMENTER = "Fermenting Fluids";
-        public static final String FLUID_CANNER = "Puts Fluids into and out of Containers";
-        public static final String FLUID_EXTRACTOR = "Extracting Fluids from Items";
-        public static final String FLUID_HEATER = "Heating up your Fluids";
-        public static final String FLUID_SOLIDIFIER = "Cools Fluids down to form Solids";
-        public static final String FORGE_HAMMER = "Stop, Hammertime!";
-        public static final String FORMING_PRESS = "Imprinting Images into things";
-        public static final String LASER_ENGRAVER = "Don't look directly at the Laser";
-        public static final String LATHE = "Produces Rods more efficiently";
-        public static final String MACERATOR = "Schreddering your Ores";
-        public static final String MACERATOR_PULVERIZER = "Schreddering your Ores";
-        public static final String MATTER_AMPLIFIER = "Extracting UU Amplifier";
-        public static final String MICROWAVE = "Did you really read the instruction Manual?";
-        public static final String MIXER = "Will it Blend?";
-        public static final String ORE_WASHER = "Getting more Byproducts from your Ores";
-        public static final String OVEN = "Just a Furnace with a different Design";
-        public static final String PLASMA_ARC_FURNACE = "";
-        public static final String POLARIZER = "Bipolarising your Magnets";
-        public static final String PRINTER = "It can copy Books and paint Stuff";
-        public static final String RECYCLER = "Compress, burn, obliterate and filter EVERYTHING";
-        public static final String SIFTER = "Stay calm and keep sifting";
-        public static final String SLICER = "Slice of Life";
-        public static final String THERMAL_CENTRIFUGE = "Separating Ores more precisely";
-        public static final String UNPACKAGER = "Grabs things out of Boxes";
-        public static final String WIREMILL = "Produces Wires more efficiently";
+        public static final String ALLOY_SMELTER = "GT5U.machines.types.alloy_smelter.description";
+        public static final String ARC_FURNACE = "GT5U.machines.types.arc_furnace.description";
+        public static final String ASSEMBLER = "GT5U.machines.types.assembler.description";
+        public static final String AUTOCLAVE = "GT5U.machines.types.autoclave.description";
+        public static final String BENDING_MACHINE = "GT5U.machines.types.bending_machine.description";
+        public static final String CANNER = "GT5U.machines.types.canner.description";
+        public static final String CENTRIFUGE = "GT5U.machines.types.centrifuge.description";
+        public static final String CHEMICAL_BATH = "GT5U.machines.types.chemical_bath.description";
+        public static final String CHEMICAL_REACTOR = "GT5U.machines.types.chemical_reactor.description";
+        public static final String CIRCUIT_ASSEMBLER = "GT5U.machines.types.circuit_assembler.description";
+        public static final String COMPRESSOR = "GT5U.machines.types.compressor.description";
+        public static final String CUTTING_MACHINE = "GT5U.machines.types.cutting_machine.description";
+        public static final String DISTILLERY = "GT5U.machines.types.distillery.description";
+        public static final String ELECTRIC_FURNACE = "GT5U.machines.types.electric_furnace.description";
+        public static final String ELECTROLYZER = "GT5U.machines.types.electrolyzer.description";
+        public static final String ELECTROMAGNETIC_SEPARATOR = "GT5U.machines.types.electromagnetic_separator.description";
+        public static final String EXTRACTOR = "GT5U.machines.types.extractor.description";
+        public static final String EXTRUDER = "GT5U.machines.types.extruder.description";
+        public static final String FERMENTER = "GT5U.machines.types.fermenter.description";
+        public static final String FLUID_CANNER = "GT5U.machines.types.fluid_canner.description";
+        public static final String FLUID_EXTRACTOR = "GT5U.machines.types.fluid_extractor.description";
+        public static final String FLUID_HEATER = "GT5U.machines.types.fluid_heater.description";
+        public static final String FLUID_SOLIDIFIER = "GT5U.machines.types.fluid_solidifier.description";
+        public static final String FORGE_HAMMER = "GT5U.machines.types.forge_hammer.description";
+        public static final String FORMING_PRESS = "GT5U.machines.types.forming_press.description";
+        public static final String LASER_ENGRAVER = "GT5U.machines.types.laser_engraver.description";
+        public static final String LATHE = "GT5U.machines.types.lathe.description";
+        public static final String MACERATOR = "GT5U.machines.types.macerator.description";
+        public static final String MACERATOR_PULVERIZER = "GT5U.machines.types.macerator_pulverizer.description";
+        public static final String MATTER_AMPLIFIER = "GT5U.machines.types.matter_amplifier.description";
+        public static final String MICROWAVE = "GT5U.machines.types.microwave.description";
+        public static final String MIXER = "GT5U.machines.types.mixer.description";
+        public static final String ORE_WASHER = "GT5U.machines.types.ore_washer.description";
+        public static final String OVEN = "GT5U.machines.types.oven.description";
+        public static final String PLASMA_ARC_FURNACE = "GT5U.machines.types.plasma_arc_furnace.description";
+        public static final String POLARIZER = "GT5U.machines.types.polarizer.description";
+        public static final String PRINTER = "GT5U.machines.types.printer.description";
+        public static final String RECYCLER = "GT5U.machines.types.recycler.description";
+        public static final String SIFTER = "GT5U.machines.types.sifter.description";
+        public static final String SLICER = "GT5U.machines.types.slicer.description";
+        public static final String THERMAL_CENTRIFUGE = "GT5U.machines.types.thermal_centrifuge.description";
+        public static final String UNPACKAGER = "GT5U.machines.types.unpackager.description";
+        public static final String WIREMILL = "GT5U.machines.types.wiremill.description";
     }
+
+
+    private static final String TT_machineType = StatCollector.translateToLocal("GT5U.MBTT.MachineType");
 
     private final String name;
     private final String description;
 
     private MachineType(String machineDescription, String machineType) {
-        this.description = machineDescription;
-        this.name = "Machine type: " + AnimatedTooltipHandler.YELLOW + machineType;
+        this.description = StatCollector.translateToLocal(machineDescription);
+        this.name = StatCollector.translateToLocal(machineType);
     }
 
     public String type() {
@@ -108,6 +112,7 @@ public enum MachineType {
     }
 
     public String[] tooltipDescription() {
-        return new String[] { this.description, this.name };
+        return new String[] { this.description,
+            TT_machineType + ": " + AnimatedTooltipHandler.YELLOW + this.name + AnimatedTooltipHandler.RESET};
     }
 }
