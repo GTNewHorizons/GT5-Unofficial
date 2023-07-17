@@ -329,7 +329,7 @@ public class GT_OverclockCalculator {
     /**
      * @return Number of performed overclocks
      */
-    public int gerPerformedOverclocks() {
+    public int getPerformedOverclocks() {
         if (!calculated) {
             calculate();
         }
