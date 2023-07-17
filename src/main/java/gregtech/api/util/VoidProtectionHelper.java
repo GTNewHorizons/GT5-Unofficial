@@ -173,7 +173,7 @@ public class VoidProtectionHelper {
 
         // Iterate over the outputs, calculating require stack spacing they will require.
         for (FluidStack aY : fluidOutputs) {
-            if (aY == null) {
+            if (aY == null || aY.amount <= 0) {
                 continue;
             }
             tFluidOutputMap.merge(aY, aY.amount, Integer::sum);
@@ -244,7 +244,9 @@ public class VoidProtectionHelper {
         int tSlotsFree = 0;
         for (ItemStack tItem : itemOutputs) {
             // GT_RecipeBuilder doesn't handle null item output
-            if (tItem == null) continue;
+            if (tItem == null || tItem.stackSize <= 0) {
+                continue;
+            }
             tItemOutputMap.merge(tItem, tItem.stackSize, Integer::sum);
             tParallels.put(tItem, new ParallelData(0, 0));
         }
