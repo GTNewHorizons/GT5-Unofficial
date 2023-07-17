@@ -49,7 +49,7 @@ public enum MachineType {
     UNPACKAGER(FunnyTexts.UNPACKAGER, "GT5U.machines.types.unpackager"),
     WIREMILL(FunnyTexts.WIREMILL, "GT5U.machines.types.wiremill");
 
-    public static class FunnyTexts {
+    private static class FunnyTexts {
 
         public static final String ALLOY_SMELTER = "GT5U.machines.types.alloy_smelter.description";
         public static final String ARC_FURNACE = "GT5U.machines.types.arc_furnace.description";
@@ -108,6 +108,10 @@ public enum MachineType {
     }
 
     public String type() {
+        return this.name;
+    }
+
+    public String description() {
         return this.name;
     }
 
