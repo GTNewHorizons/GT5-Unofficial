@@ -114,11 +114,8 @@ public final class ParametrizerMemoryCard extends Item {
                     NBTTagList tagList = tNBT.getTagList("paramList", Constants.NBT.TAG_COMPOUND);
                     for (int hatch = 0; hatch < 10; hatch++) {
                         NBTTagCompound tag = tagList.getCompoundTagAt(hatch);
-                        if (tag.hasKey("value0D", Constants.NBT.TAG_DOUBLE)
-                                && tag.hasKey("value1D", Constants.NBT.TAG_DOUBLE)) {
-                            controller.parametrization
-                                    .trySetParameters(hatch, tag.getDouble("value0D"), tag.getDouble("value1D"));
-                        }
+                        controller.parametrization
+                                .trySetParameters(hatch, tag.getDouble("value0D"), tag.getDouble("value1D"));
                     }
                 } else {
                     // from parametrizer
@@ -134,8 +131,10 @@ public final class ParametrizerMemoryCard extends Item {
                 for (int hatch = 0; hatch < 10; hatch++) {
                     NBTTagCompound tagChild = new NBTTagCompound();
                     Parameters.Group.ParameterIn[] parameters = controller.parametrization.getGroup(hatch).parameterIn;
-                    if (parameters[0] != null && parameters[1] != null) {
+                    if (parameters[0] != null) {
                         tagChild.setDouble("value0D", parameters[0].get());
+                    }
+                    if (parameters[1] != null) {
                         tagChild.setDouble("value1D", parameters[1].get());
                     }
                     tagList.appendTag(tagChild);
