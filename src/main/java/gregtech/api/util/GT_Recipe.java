@@ -3232,7 +3232,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * @param aRecipeList                a List you specify as Recipe List. Usually just an ArrayList with a
          *                                   pre-initialised Size.
          * @param aUnlocalizedName           the unlocalised Name of this Recipe Handler, used mainly for NEI.
-         * @param aLocalName                 the displayed Name inside the NEI Recipe GUI.
+         * @param aLocalName                 @deprecated the displayed Name inside the NEI Recipe GUI for optionally registering aUnlocalizedName
+                                             with the language manager
          * @param aNEIGUIPath                the displayed GUI Texture, usually just a Machine GUI. Auto-Attaches ".png"
          *                                   if forgotten.
          * @param aUsualInputCount           the usual amount of Input Slots this Recipe Class has.
@@ -3261,7 +3262,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             mMinimalInputItems = aMinimalInputItems;
             mMinimalInputFluids = aMinimalInputFluids;
             GregTech_API.sItemStackMappings.add(mRecipeItemMap);
-            GT_LanguageManager.addStringLocalization(mUnlocalizedName = aUnlocalizedName, aLocalName);
+            mUnlocalizedName = aUnlocalizedName;
+            if (aLocalName != null) {
+                GT_LanguageManager.addStringLocalization(mUnlocalizedName, aLocalName);
+            }
             mUniqueIdentifier = String.format(
                 "%s_%d_%d_%d_%d_%d",
                 aUnlocalizedName,
