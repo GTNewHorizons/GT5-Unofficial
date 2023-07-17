@@ -2896,6 +2896,9 @@ public class GT_Utility {
         return rStack;
     }
 
+    /**
+     * Unlike {@link #copyAmount(long, Object...)}, this method does not restrict stack size by 64.
+     */
     public static ItemStack copyAmountUnsafe(long aAmount, Object... aStacks) {
         ItemStack rStack = copy(aStacks);
         if (isStackInvalid(rStack)) return null;
