@@ -12,8 +12,6 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
 
-import java.util.ArrayList;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -48,6 +46,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
@@ -58,6 +57,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
+import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.power.FusionPower;
@@ -279,62 +280,81 @@ public abstract class GT_MetaTileEntity_FusionComputer
             return 1;
         }
         if (tierOverclock() == 2) {
-            return mStartEnergy < 160000000 ? 2 : 1;
+            return mStartEnergy <= 160000000 ? 2 : 1;
         }
         if (this.tierOverclock() == 4) {
-            return (mStartEnergy < 160000000 ? 4 : (mStartEnergy < 320000000 ? 2 : 1));
+            return (mStartEnergy <= 160000000 ? 4 : (mStartEnergy <= 320000000 ? 2 : 1));
         }
-        return (mStartEnergy < 160000000) ? 8 : ((mStartEnergy < 320000000) ? 4 : (mStartEnergy < 640000000) ? 2 : 1);
+        return (mStartEnergy <= 160000000) ? 8
+            : ((mStartEnergy <= 320000000) ? 4 : (mStartEnergy <= 640000000) ? 2 : 1);
     }
 
     @Override
-    @NotNull
-    public CheckRecipeResult checkProcessing() {
-        ArrayList<FluidStack> tFluidList = getStoredFluids();
-        int tFluidList_sS = tFluidList.size();
-        for (int i = 0; i < tFluidList_sS - 1; i++) {
-            for (int j = i + 1; j < tFluidList_sS; j++) {
-                if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
-                    if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
-                        tFluidList.remove(j--);
-                        tFluidList_sS = tFluidList.size();
-                    } else {
-                        tFluidList.remove(i--);
-                        tFluidList_sS = tFluidList.size();
-                        break;
-                    }
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sFusionRecipes;
+    }
+
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
+
+            @NotNull
+            @Override
+            protected GT_ParallelHelper createParallelHelper(@NotNull GT_Recipe recipe) {
+                // When the fusion first loads and is still processing, it does the recipe check without consuming.
+                if (mRunningOnLoad) {
+                    return new GT_ParallelHelper().setRecipe(recipe)
+                        .setItemInputs(inputItems)
+                        .setFluidInputs(inputFluids)
+                        .setAvailableEUt(availableVoltage * availableAmperage)
+                        .setMachine(machine, protectItems, protectFluids)
+                        .setRecipeLocked(recipeLockableMachine, isRecipeLocked)
+                        .setMaxParallel(maxParallel)
+                        .enableBatchMode(batchSize)
+                        .enableOutputCalculation();
                 }
-            }
-        }
-        if (tFluidList.size() > 1) {
-            FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
-            GT_Recipe tRecipe;
-
-            tRecipe = GT_Recipe.GT_Recipe_Map.sFusionRecipes
-                .findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, GT_Values.V[tier()], tFluids);
-            if (tRecipe == null) {
-                tRecipe = GT_Recipe.GT_Recipe_Map.sComplexFusionRecipes
-                    .findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, GT_Values.V[tier()], tFluids);
+                return super.createParallelHelper(recipe);
             }
 
-            if ((tRecipe == null && !mRunningOnLoad) || (maxEUStore() < tRecipe.mSpecialValue)) {
-                turnCasingActive(false);
-                this.mLastRecipe = null;
-                return CheckRecipeResultRegistry.NO_RECIPE;
+            @NotNull
+            @Override
+            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe,
+                @NotNull GT_ParallelHelper helper) {
+                int overclock = overclock(recipe.mSpecialValue);
+                // GT_OverclockCalculator is not suited for fusion style OC
+                return GT_OverclockCalculator
+                    .ofNoOverclock((long) recipe.mEUt * overclock, recipe.mDuration / overclock);
             }
-            if (!canOutputAll(tRecipe)) return CheckRecipeResultRegistry.OUTPUT_FULL;
-            if (mRunningOnLoad || tRecipe.isRecipeInputEqual(true, tFluids)) {
-                this.mLastRecipe = tRecipe;
-                this.mEUt = (this.mLastRecipe.mEUt * overclock(this.mLastRecipe.mSpecialValue));
-                this.mMaxProgresstime = this.mLastRecipe.mDuration / overclock(this.mLastRecipe.mSpecialValue);
-                this.mEfficiencyIncrease = 10000;
-                this.mOutputFluids = this.mLastRecipe.mFluidOutputs;
-                turnCasingActive(true);
-                mRunningOnLoad = false;
+
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+                if (!mRunningOnLoad && recipe.mSpecialValue > maxEUStore()) {
+                    return CheckRecipeResultRegistry.insufficientStartupPower(recipe.mSpecialValue);
+                }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        }
-        return CheckRecipeResultRegistry.NO_RECIPE;
+
+            @NotNull
+            @Override
+            public CheckRecipeResult process() {
+                CheckRecipeResult result = super.process();
+                if (mRunningOnLoad) mRunningOnLoad = false;
+                turnCasingActive(result.wasSuccessful());
+                if (result.wasSuccessful()) {
+                    mLastRecipe = lastRecipe;
+                } else {
+                    mLastRecipe = null;
+                }
+                return result;
+            }
+        };
+    }
+
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(GT_Values.V[tier()]);
+        logic.setAvailableAmperage(1);
     }
 
     public abstract int tierOverclock();

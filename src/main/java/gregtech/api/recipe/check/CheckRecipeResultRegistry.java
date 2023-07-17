@@ -102,10 +102,18 @@ public final class CheckRecipeResultRegistry {
         return new ResultInsufficientMachineTier(required);
     }
 
+    /**
+     * Cannot process recipe because the machine doesn't have enough startup power.
+     */
+    public static CheckRecipeResult insufficientStartupPower(int required) {
+        return new ResultInsufficientStartupPower(required);
+    }
+
     static {
         register(new SimpleCheckRecipeResult(false, ""));
         register(new ResultInsufficientPower(0));
         register(new ResultInsufficientHeat(0));
         register(new ResultInsufficientMachineTier(0));
+        register(new ResultInsufficientStartupPower(0));
     }
 }
