@@ -5,95 +5,95 @@ import com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler;
 
 public enum MachineType {
 
-    ALLOY_SMELTER(FunnyTexts.ALLOY_SMELTER, "GT5U.machines.types.alloy_smelter"),
-    ARC_FURNACE(FunnyTexts.ARC_FURNACE, "GT5U.machines.types.arc_furnace"),
-    ASSEMBLER(FunnyTexts.ASSEMBLER, "GT5U.machines.types.assembler"),
-    AUTOCLAVE(FunnyTexts.AUTOCLAVE, "GT5U.machines.types.autoclave"),
-    BENDING_MACHINE(FunnyTexts.BENDING_MACHINE, "GT5U.machines.types.bending_machine"),
-    CANNER(FunnyTexts.CANNER, "GT5U.machines.types.canner"),
-    CENTRIFUGE(FunnyTexts.CENTRIFUGE, "GT5U.machines.types.centrifuge"),
-    CHEMICAL_BATH(FunnyTexts.CHEMICAL_BATH, "GT5U.machines.types.chemical_bath"),
-    CHEMICAL_REACTOR(FunnyTexts.CHEMICAL_REACTOR, "GT5U.machines.types.chemical_reactor"),
-    CIRCUIT_ASSEMBLER(FunnyTexts.CIRCUIT_ASSEMBLER, "GT5U.machines.types.circuit_assembler"),
-    COMPRESSOR(FunnyTexts.COMPRESSOR, "GT5U.machines.types.compressor"),
-    CUTTING_MACHINE(FunnyTexts.CUTTING_MACHINE, "GT5U.machines.types.cutting_machine"),
-    DISTILLERY(FunnyTexts.DISTILLERY, "GT5U.machines.types.distillery"),
-    ELECTRIC_FURNACE(FunnyTexts.ELECTRIC_FURNACE, "GT5U.machines.types.electric_furnace"),
-    ELECTROLYZER(FunnyTexts.ELECTROLYZER, "GT5U.machines.types.electrolyzer"),
-    ELECTROMAGNETIC_SEPARATOR(FunnyTexts.ELECTROMAGNETIC_SEPARATOR, "GT5U.machines.types.electromagnetic_separator"),
-    EXTRACTOR(FunnyTexts.EXTRACTOR, "GT5U.machines.types.extractor"),
-    EXTRUDER(FunnyTexts.EXTRUDER, "GT5U.machines.types.extruder"),
-    FERMENTER(FunnyTexts.FERMENTER, "GT5U.machines.types.fermenter"),
-    FLUID_CANNER(FunnyTexts.FLUID_CANNER, "GT5U.machines.types.fluid_canner"),
-    FLUID_EXTRACTOR(FunnyTexts.FLUID_EXTRACTOR, "GT5U.machines.types.fluid_extractor"),
-    FLUID_SOLIDIFIER(FunnyTexts.FLUID_SOLIDIFIER, "GT5U.machines.types.fluid_solidifier"),
-    FORGE_HAMMER(FunnyTexts.FORGE_HAMMER, "GT5U.machines.types.forge_hammer"),
-    FORMING_PRESS(FunnyTexts.FORMING_PRESS, "GT5U.machines.types.forming_press"),
-    FLUID_HEATER(FunnyTexts.FLUID_HEATER, "GT5U.machines.types.fluid_heater"),
-    LASER_ENGRAVER(FunnyTexts.LASER_ENGRAVER, "GT5U.machines.types.laser_engraver"),
-    LATHE(FunnyTexts.LATHE, "GT5U.machines.types.lathe"),
-    MACERATOR(FunnyTexts.MACERATOR, "GT5U.machines.types.macerator"),
-    MACERATOR_PULVERIZER(FunnyTexts.MACERATOR_PULVERIZER, "GT5U.machines.types.macerator_pulverizer"),
-    MATTER_AMPLIFIER(FunnyTexts.MATTER_AMPLIFIER, "GT5U.machines.types.matter_amplifier"),
-    MICROWAVE(FunnyTexts.MICROWAVE, "GT5U.machines.types.microwave"),
-    MIXER(FunnyTexts.MIXER, "GT5U.machines.types.mixer"),
-    ORE_WASHER(FunnyTexts.ORE_WASHER, "GT5U.machines.types.ore_washer"),
-    OVEN(FunnyTexts.OVEN, "GT5U.machines.types.oven"),
-    PLASMA_ARC_FURNACE(FunnyTexts.PLASMA_ARC_FURNACE, "GT5U.machines.types.plasma_arc_furnace"),
-    POLARIZER(FunnyTexts.POLARIZER, "GT5U.machines.types.polarizer"),
-    PRINTER(FunnyTexts.PRINTER, "GT5U.machines.types.printer"),
-    RECYCLER(FunnyTexts.RECYCLER, "GT5U.machines.types.recycler"),
-    SIFTER(FunnyTexts.SIFTER, "GT5U.machines.types.sifter"),
-    SLICER(FunnyTexts.SLICER, "GT5U.machines.types.slicer"),
-    THERMAL_CENTRIFUGE(FunnyTexts.THERMAL_CENTRIFUGE, "GT5U.machines.types.thermal_centrifuge"),
-    UNPACKAGER(FunnyTexts.UNPACKAGER, "GT5U.machines.types.unpackager"),
-    WIREMILL(FunnyTexts.WIREMILL, "GT5U.machines.types.wiremill");
+    ALLOY_SMELTER(FunnyTexts.ALLOY_SMELTER, "gt.recipe.alloy_smelter"),
+    ARC_FURNACE(FunnyTexts.ARC_FURNACE, "gt.recipe.arc_furnace"),
+    ASSEMBLER(FunnyTexts.ASSEMBLER, "gt.recipe.assembler"),
+    AUTOCLAVE(FunnyTexts.AUTOCLAVE, "gt.recipe.autoclave"),
+    BENDING_MACHINE(FunnyTexts.BENDING_MACHINE, "gt.recipe.bending_machine"),
+    CANNER(FunnyTexts.CANNER, "gt.recipe.canner"),
+    CENTRIFUGE(FunnyTexts.CENTRIFUGE, "gt.recipe.centrifuge"),
+    CHEMICAL_BATH(FunnyTexts.CHEMICAL_BATH, "gt.recipe.chemical_bath"),
+    CHEMICAL_REACTOR(FunnyTexts.CHEMICAL_REACTOR, "gt.recipe.chemical_reactor"),
+    CIRCUIT_ASSEMBLER(FunnyTexts.CIRCUIT_ASSEMBLER, "gt.recipe.circuit_assembler"),
+    COMPRESSOR(FunnyTexts.COMPRESSOR, "gt.recipe.compressor"),
+    CUTTING_MACHINE(FunnyTexts.CUTTING_MACHINE, "gt.recipe.cutting_machine"),
+    DISTILLERY(FunnyTexts.DISTILLERY, "gt.recipe.distillery"),
+    ELECTRIC_FURNACE(FunnyTexts.ELECTRIC_FURNACE, "gt.recipe.electric_furnace"),
+    ELECTROLYZER(FunnyTexts.ELECTROLYZER, "gt.recipe.electrolyzer"),
+    ELECTROMAGNETIC_SEPARATOR(FunnyTexts.ELECTROMAGNETIC_SEPARATOR, "gt.recipe.electromagnetic_separator"),
+    EXTRACTOR(FunnyTexts.EXTRACTOR, "gt.recipe.extractor"),
+    EXTRUDER(FunnyTexts.EXTRUDER, "gt.recipe.extruder"),
+    FERMENTER(FunnyTexts.FERMENTER, "gt.recipe.fermenter"),
+    FLUID_CANNER(FunnyTexts.FLUID_CANNER, "gt.recipe.fluid_canner"),
+    FLUID_EXTRACTOR(FunnyTexts.FLUID_EXTRACTOR, "gt.recipe.fluid_extractor"),
+    FLUID_SOLIDIFIER(FunnyTexts.FLUID_SOLIDIFIER, "gt.recipe.fluid_solidifier"),
+    FORGE_HAMMER(FunnyTexts.FORGE_HAMMER, "gt.recipe.forge_hammer"),
+    FORMING_PRESS(FunnyTexts.FORMING_PRESS, "gt.recipe.forming_press"),
+    FLUID_HEATER(FunnyTexts.FLUID_HEATER, "gt.recipe.fluid_heater"),
+    LASER_ENGRAVER(FunnyTexts.LASER_ENGRAVER, "gt.recipe.laser_engraver"),
+    LATHE(FunnyTexts.LATHE, "gt.recipe.lathe"),
+    MACERATOR(FunnyTexts.MACERATOR, "gt.recipe.macerator"),
+    MACERATOR_PULVERIZER(FunnyTexts.MACERATOR_PULVERIZER, "gt.recipe.macerator_pulverizer"),
+    MATTER_AMPLIFIER(FunnyTexts.MATTER_AMPLIFIER, "gt.recipe.matter_amplifier"),
+    MICROWAVE(FunnyTexts.MICROWAVE, "gt.recipe.microwave"),
+    MIXER(FunnyTexts.MIXER, "gt.recipe.mixer"),
+    ORE_WASHER(FunnyTexts.ORE_WASHER, "gt.recipe.orewasher"),
+    OVEN(FunnyTexts.OVEN, "gt.recipe.oven"),
+    PLASMA_ARC_FURNACE(FunnyTexts.PLASMA_ARC_FURNACE, "gt.recipe.plasma_arc_furnace"),
+    POLARIZER(FunnyTexts.POLARIZER, "gt.recipe.polarizer"),
+    PRINTER(FunnyTexts.PRINTER, "gt.recipe.printer"),
+    RECYCLER(FunnyTexts.RECYCLER, "gt.recipe.recycler"),
+    SIFTER(FunnyTexts.SIFTER, "gt.recipe.sifter"),
+    SLICER(FunnyTexts.SLICER, "gt.recipe.slicer"),
+    THERMAL_CENTRIFUGE(FunnyTexts.THERMAL_CENTRIFUGE, "gt.recipe.thermal_centrifuge"),
+    UNPACKAGER(FunnyTexts.UNPACKAGER, "gt.recipe.unpackager"),
+    WIREMILL(FunnyTexts.WIREMILL, "gt.recipe.wiremill");
 
     private static class FunnyTexts {
 
-        public static final String ALLOY_SMELTER = "GT5U.machines.types.alloy_smelter.description";
-        public static final String ARC_FURNACE = "GT5U.machines.types.arc_furnace.description";
-        public static final String ASSEMBLER = "GT5U.machines.types.assembler.description";
-        public static final String AUTOCLAVE = "GT5U.machines.types.autoclave.description";
-        public static final String BENDING_MACHINE = "GT5U.machines.types.bending_machine.description";
-        public static final String CANNER = "GT5U.machines.types.canner.description";
-        public static final String CENTRIFUGE = "GT5U.machines.types.centrifuge.description";
-        public static final String CHEMICAL_BATH = "GT5U.machines.types.chemical_bath.description";
-        public static final String CHEMICAL_REACTOR = "GT5U.machines.types.chemical_reactor.description";
-        public static final String CIRCUIT_ASSEMBLER = "GT5U.machines.types.circuit_assembler.description";
-        public static final String COMPRESSOR = "GT5U.machines.types.compressor.description";
-        public static final String CUTTING_MACHINE = "GT5U.machines.types.cutting_machine.description";
-        public static final String DISTILLERY = "GT5U.machines.types.distillery.description";
-        public static final String ELECTRIC_FURNACE = "GT5U.machines.types.electric_furnace.description";
-        public static final String ELECTROLYZER = "GT5U.machines.types.electrolyzer.description";
-        public static final String ELECTROMAGNETIC_SEPARATOR = "GT5U.machines.types.electromagnetic_separator.description";
-        public static final String EXTRACTOR = "GT5U.machines.types.extractor.description";
-        public static final String EXTRUDER = "GT5U.machines.types.extruder.description";
-        public static final String FERMENTER = "GT5U.machines.types.fermenter.description";
-        public static final String FLUID_CANNER = "GT5U.machines.types.fluid_canner.description";
-        public static final String FLUID_EXTRACTOR = "GT5U.machines.types.fluid_extractor.description";
-        public static final String FLUID_HEATER = "GT5U.machines.types.fluid_heater.description";
-        public static final String FLUID_SOLIDIFIER = "GT5U.machines.types.fluid_solidifier.description";
-        public static final String FORGE_HAMMER = "GT5U.machines.types.forge_hammer.description";
-        public static final String FORMING_PRESS = "GT5U.machines.types.forming_press.description";
-        public static final String LASER_ENGRAVER = "GT5U.machines.types.laser_engraver.description";
-        public static final String LATHE = "GT5U.machines.types.lathe.description";
-        public static final String MACERATOR = "GT5U.machines.types.macerator.description";
-        public static final String MACERATOR_PULVERIZER = "GT5U.machines.types.macerator_pulverizer.description";
-        public static final String MATTER_AMPLIFIER = "GT5U.machines.types.matter_amplifier.description";
-        public static final String MICROWAVE = "GT5U.machines.types.microwave.description";
-        public static final String MIXER = "GT5U.machines.types.mixer.description";
-        public static final String ORE_WASHER = "GT5U.machines.types.ore_washer.description";
-        public static final String OVEN = "GT5U.machines.types.oven.description";
-        public static final String PLASMA_ARC_FURNACE = "GT5U.machines.types.plasma_arc_furnace.description";
-        public static final String POLARIZER = "GT5U.machines.types.polarizer.description";
-        public static final String PRINTER = "GT5U.machines.types.printer.description";
-        public static final String RECYCLER = "GT5U.machines.types.recycler.description";
-        public static final String SIFTER = "GT5U.machines.types.sifter.description";
-        public static final String SLICER = "GT5U.machines.types.slicer.description";
-        public static final String THERMAL_CENTRIFUGE = "GT5U.machines.types.thermal_centrifuge.description";
-        public static final String UNPACKAGER = "GT5U.machines.types.unpackager.description";
-        public static final String WIREMILL = "GT5U.machines.types.wiremill.description";
+        public static final String ALLOY_SMELTER = "gt.recipe.alloy_smelter.description";
+        public static final String ARC_FURNACE = "gt.recipe.arc_furnace.description";
+        public static final String ASSEMBLER = "gt.recipe.assembler.description";
+        public static final String AUTOCLAVE = "gt.recipe.autoclave.description";
+        public static final String BENDING_MACHINE = "gt.recipe.bending_machine.description";
+        public static final String CANNER = "gt.recipe.canner.description";
+        public static final String CENTRIFUGE = "gt.recipe.centrifuge.description";
+        public static final String CHEMICAL_BATH = "gt.recipe.chemical_bath.description";
+        public static final String CHEMICAL_REACTOR = "gt.recipe.chemical_reactor.description";
+        public static final String CIRCUIT_ASSEMBLER = "gt.recipe.circuit_assembler.description";
+        public static final String COMPRESSOR = "gt.recipe.compressor.description";
+        public static final String CUTTING_MACHINE = "gt.recipe.cutting_machine.description";
+        public static final String DISTILLERY = "gt.recipe.distillery.description";
+        public static final String ELECTRIC_FURNACE = "gt.recipe.electric_furnace.description";
+        public static final String ELECTROLYZER = "gt.recipe.electrolyzer.description";
+        public static final String ELECTROMAGNETIC_SEPARATOR = "gt.recipe.electromagnetic_separator.description";
+        public static final String EXTRACTOR = "gt.recipe.extractor.description";
+        public static final String EXTRUDER = "gt.recipe.extruder.description";
+        public static final String FERMENTER = "gt.recipe.fermenter.description";
+        public static final String FLUID_CANNER = "gt.recipe.fluid_canner.description";
+        public static final String FLUID_EXTRACTOR = "gt.recipe.fluid_extractor.description";
+        public static final String FLUID_HEATER = "gt.recipe.fluid_heater.description";
+        public static final String FLUID_SOLIDIFIER = "gt.recipe.fluid_solidifier.description";
+        public static final String FORGE_HAMMER = "gt.recipe.forge_hammer.description";
+        public static final String FORMING_PRESS = "gt.recipe.forming_press.description";
+        public static final String LASER_ENGRAVER = "gt.recipe.laser_engraver.description";
+        public static final String LATHE = "gt.recipe.lathe.description";
+        public static final String MACERATOR = "gt.recipe.macerator.description";
+        public static final String MACERATOR_PULVERIZER = "gt.recipe.macerator_pulverizer.description";
+        public static final String MATTER_AMPLIFIER = "gt.recipe.matter_amplifier.description";
+        public static final String MICROWAVE = "gt.recipe.microwave.description";
+        public static final String MIXER = "gt.recipe.mixer.description";
+        public static final String ORE_WASHER = "gt.recipe.orewasher.description";
+        public static final String OVEN = "gt.recipe.oven.description";
+        public static final String PLASMA_ARC_FURNACE = "gt.recipe.plasma_arc_furnace.description";
+        public static final String POLARIZER = "gt.recipe.polarizer.description";
+        public static final String PRINTER = "gt.recipe.printer.description";
+        public static final String RECYCLER = "gt.recipe.recycler.description";
+        public static final String SIFTER = "gt.recipe.sifter.description";
+        public static final String SLICER = "gt.recipe.slicer.description";
+        public static final String THERMAL_CENTRIFUGE = "gt.recipe.thermal_centrifuge.description";
+        public static final String UNPACKAGER = "gt.recipe.unpackager.description";
+        public static final String WIREMILL = "gt.recipe.wiremill.description";
     }
 
 
