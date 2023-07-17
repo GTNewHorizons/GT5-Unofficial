@@ -45,6 +45,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
 import squeek.applecore.api.food.FoodValues;
 import squeek.applecore.api.food.IEdible;
+import squeek.applecore.api.food.ItemFoodProxy;
 
 /**
  * @author Gregorius Techneticies
@@ -332,14 +333,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
         if (tStat != null) {
             if (AppleCore.isModLoaded()) {
                 aPlayer.getFoodStats()
-                    .func_151686_a(
-                        (ItemFood) GT_Utility.callConstructor(
-                            "squeek.applecore.api.food.ItemFoodProxy.ItemFoodProxy",
-                            0,
-                            null,
-                            true,
-                            this),
-                        aStack);
+                    .func_151686_a(getFoodProxy(this), aStack);
             } else {
                 aPlayer.getFoodStats()
                     .addStats(tStat.getFoodLevel(this, aStack, aPlayer), tStat.getSaturation(this, aStack, aPlayer));
@@ -347,6 +341,11 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
             tStat.onEaten(this, aStack, aPlayer);
         }
         return aStack;
+    }
+
+    @Optional.Method(modid = Mods.Names.APPLE_CORE)
+    private static ItemFood getFoodProxy(Object edible) {
+        return new ItemFoodProxy((IEdible) edible);
     }
 
     @Override
