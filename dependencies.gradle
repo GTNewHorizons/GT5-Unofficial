@@ -1,7 +1,7 @@
 dependencies {
-    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.43.57-pre:dev')
+    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.43.130:dev')
     api('com.github.GTNewHorizons:Galaxy-Space-GTNH:1.2.3-GTNH:dev')
-    api('com.github.GTNewHorizons:GoodGenerator:0.6.14-pre:dev')
+    api('com.github.GTNewHorizons:GoodGenerator:0.6.19:dev')
     compileOnly("com.github.GTNewHorizons:Hodgepodge:2.2.14:dev") {transitive = false}
-    devOnlyNonPublishable('com.github.GTNewHorizons:GTplusplus:1.9.21-pre:dev')
+    devOnlyNonPublishable('com.github.GTNewHorizons:GTplusplus:1.9.57:dev')
 }
