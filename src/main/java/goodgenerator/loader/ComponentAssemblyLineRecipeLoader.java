@@ -84,7 +84,7 @@ public class ComponentAssemblyLineRecipeLoader {
                             compactItems(fixedInputs, info.getRight()).toArray(new ItemStack[0]),
                             fixedFluids.toArray(new FluidStack[0]),
                             info.getLeft().get(OUTPUT_MULTIPLIER),
-                            recipe.mDuration * OUTPUT_MULTIPLIER,
+                            recipe.mDuration * INPUT_MULTIPLIER,
                             energy,
                             info.getRight());
                 }
@@ -144,7 +144,7 @@ public class ComponentAssemblyLineRecipeLoader {
                             fixedInputs.toArray(new ItemStack[0]),
                             fixedFluids.toArray(new FluidStack[0]),
                             info.getLeft().get(OUTPUT_MULTIPLIER), // The component output
-                            recipe.mDuration * OUTPUT_MULTIPLIER, // Takes as long as this many
+                            recipe.mDuration * INPUT_MULTIPLIER, // Takes as long as this many
                             recipe.mEUt,
                             info.getRight()); // Casing tier
                 }
