@@ -3463,3 +3463,7 @@ item.itemSimpleFiremaker.message.0=You light the fire pit.
 item.itemSimpleFiremaker.message.1=You somehow managed to set yourself on fire...
 item.itemSimpleFiremaker.message.2=You created a fire!
 item.itemSimpleFiremaker.message.3=Your attemp does nothing.
+
+//Added 17/07/23
+item.BasicGenericChemItem.29.name=Limpid Water Catalyst
+item.BasicGenericChemItem.30.name=Flawless Water Catalyst

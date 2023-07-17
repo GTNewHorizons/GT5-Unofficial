@@ -169,6 +169,19 @@ public class RecipeLoader_ChemicalSkips {
                 (int) TierEU.RECIPE_UHV,
                 2);
 
+        // Early Waterline skip (first 4 tiers)
+        CORE.RA.addQuantumTransformerRecipe(
+                new ItemStack[] { ItemUtils.getSimpleStack(GenericChem.mLimpidWaterCatalyst, 0) },
+                new FluidStack[] { Materials.Water.getFluid(40000L) },
+                new FluidStack[] { Materials.Grade1PurifiedWater.getFluid(20000L),
+                        Materials.Grade2PurifiedWater.getFluid(10000L), Materials.Grade3PurifiedWater.getFluid(5000L),
+                        Materials.Grade4PurifiedWater.getFluid(1000L) },
+                new ItemStack[] {},
+                new int[] { 2000, 2000, 2000, 2000, 2000 },
+                20 * 20,
+                (int) TierEU.RECIPE_UHV,
+                2);
+
         // Stem Cells
         CORE.RA.addQuantumTransformerRecipe(
                 new ItemStack[] { Materials.Calcium.getDust(32), Materials.MeatRaw.getDust(32),
@@ -239,6 +252,18 @@ public class RecipeLoader_ChemicalSkips {
                 (int) TierEU.RECIPE_UIV,
                 4);
 
+        // Advanced Waterline skip (last 4 tiers)
+        CORE.RA.addQuantumTransformerRecipe(
+                new ItemStack[] { ItemUtils.getSimpleStack(GenericChem.mFlawlessWaterCatalyst, 0) },
+                new FluidStack[] { Materials.Water.getFluid(40000L) },
+                new FluidStack[] { Materials.Grade5PurifiedWater.getFluid(20000L),
+                        Materials.Grade6PurifiedWater.getFluid(10000L), Materials.Grade7PurifiedWater.getFluid(5000L),
+                        Materials.Grade8PurifiedWater.getFluid(1000L) },
+                new ItemStack[] {},
+                new int[] { 2000, 2000, 2000, 2000, 2000 },
+                20 * 20,
+                (int) TierEU.RECIPE_UIV,
+                4);
     }
 
     private static void fusionReactorRecipes() {
@@ -319,6 +344,16 @@ public class RecipeLoader_ChemicalSkips {
                 (int) TierEU.RECIPE_UEV);
 
         CORE.RA.addSixSlotAssemblingRecipe(
+                new ItemStack[] { CI.getNumberedCircuit(10), CI.getEmptyCatalyst(1),
+                        WerkstoffLoader.Hedenbergit.get(OrePrefixes.lens, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 1, false),
+                        ItemList.Circuit_Silicon_Wafer6.get(64) },
+                ELEMENT.STANDALONE.HYPOGEN.getFluidStack(9216),
+                ItemUtils.getSimpleStack(GenericChem.mLimpidWaterCatalyst, 1),
+                60 * 20,
+                (int) TierEU.RECIPE_UEV);
+
+        CORE.RA.addSixSlotAssemblingRecipe(
                 new ItemStack[] { CI.getNumberedCircuit(10), CI.getEmptyCatalyst(1), Materials.Naquadah.getDust(64),
                         Materials.Adamantium.getDust(64), Materials.Silver.getNanite(1) },
                 ELEMENT.STANDALONE.HYPOGEN.getFluidStack(9216),
@@ -355,6 +390,16 @@ public class RecipeLoader_ChemicalSkips {
                         ItemList.Circuit_Chip_Biocell.get(64), MaterialsUEVplus.TranscendentMetal.getNanite(1) },
                 FluidUtils.getFluidStack("molten.shirabon", 92160),
                 ItemUtils.getSimpleStack(GenericChem.mBiologicalIntelligenceCatalyst, 1),
+                60 * 20,
+                (int) TierEU.RECIPE_UMV);
+
+        CORE.RA.addSixSlotAssemblingRecipe(
+                new ItemStack[] { CI.getNumberedCircuit(10), CI.getEmptyCatalyst(1),
+                        WerkstoffLoader.Hedenbergit.get(OrePrefixes.lens, 64),
+                        GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 64, false),
+                        ItemList.Circuit_Silicon_Wafer6.get(64) },
+                FluidUtils.getFluidStack("molten.shirabon", 92160),
+                ItemUtils.getSimpleStack(GenericChem.mFlawlessWaterCatalyst, 1),
                 60 * 20,
                 (int) TierEU.RECIPE_UMV);
 

@@ -25,7 +25,7 @@ public class ItemGenericChemBase extends Item {
 
     protected final IIcon base[];
 
-    private final int aMetaSize = 29;
+    private final int aMetaSize = 31;
 
     /*
      * 0 - Red Metal Catalyst //FeCu 1 - Yellow Metal Catalyst //WNi 2 - Blue Metal Catalyst //CoTi 3 - Orange Metal
@@ -40,7 +40,8 @@ public class ItemGenericChemBase extends Item {
      * thorium/uranium/plutonium skip) 22 - Rare-Earth Group Catalyst (for monaline skip) 23 - Simple Naquadah Catalyst
      * (for early naqline skip) 24 - Advanced Naquadah Catalyst (for late naqline skip) 25 - Raw Intelligence Catalyst
      * (for stem cells skip) 26 - Ultimate Plasticizer Catalyst (for late plastics skip) 27 - Biological Intelligence
-     * Catalyst (for bio cells skip) 28 - Temporal Harmonizer Catalyst (for Eternity processing)
+     * Catalyst (for bio cells skip) 28 - Temporal Harmonizer Catalyst (for Eternity processing) 29 - Limpid Water
+     * Catalyst (for early waterline skip) 30 - Flawless Water Catalyst (for advanced waterline skip)
      */
 
     public ItemGenericChemBase() {

@@ -1412,6 +1412,12 @@ public class ItemUtils {
         if (GT_Utility.areStacksEqual(aStack, GenericChem.TemporalHarmonyCatalyst, true)) {
             return true;
         }
+        if (GT_Utility.areStacksEqual(aStack, GenericChem.mLimpidWaterCatalyst, true)) {
+            return true;
+        }
+        if (GT_Utility.areStacksEqual(aStack, GenericChem.mFlawlessWaterCatalyst, true)) {
+            return true;
+        }
         return false;
     }
 
