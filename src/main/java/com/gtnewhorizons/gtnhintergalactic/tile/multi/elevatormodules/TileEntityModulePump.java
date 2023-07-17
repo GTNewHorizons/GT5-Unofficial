@@ -535,7 +535,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         protected static final int MAX_PARALLEL_RECIPES = 4;
 
         /**
-         * Create a new T2 mining module controller
+         * Create a new T3 mining module controller
          *
          * @param aID           ID of the controller
          * @param aName         Name of the controller
@@ -546,7 +546,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         }
 
         /**
-         * Create a new T2 mining module controller
+         * Create a new T3 mining module controller
          *
          * @param aName Name of the controller
          */
