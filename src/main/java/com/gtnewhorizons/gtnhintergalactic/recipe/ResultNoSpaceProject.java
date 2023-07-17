@@ -1,9 +1,9 @@
 package com.gtnewhorizons.gtnhintergalactic.recipe;
 
-import java.io.IOException;
-
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
+
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import gregtech.api.recipe.check.CheckRecipeResult;
 
@@ -13,6 +13,9 @@ import gregtech.api.recipe.check.CheckRecipeResult;
  * @author minecraft7771
  */
 public class ResultNoSpaceProject implements CheckRecipeResult {
+
+    /** Max length to read from network buffer */
+    private static final int MAX_STRING_LENGTH = 256;
 
     /** Project that is needed to run the recipe */
     private String neededProject;
@@ -72,12 +75,8 @@ public class ResultNoSpaceProject implements CheckRecipeResult {
      */
     @Override
     public void encode(PacketBuffer buffer) {
-        try {
-            buffer.writeStringToBuffer(neededLocation);
-            buffer.writeStringToBuffer(neededProject);
-        } catch (IOException ignored) {
-
-        }
+        NetworkUtils.writeStringSafe(buffer, neededLocation);
+        NetworkUtils.writeStringSafe(buffer, neededProject);
     }
 
     /**
@@ -87,12 +86,8 @@ public class ResultNoSpaceProject implements CheckRecipeResult {
      */
     @Override
     public void decode(PacketBuffer buffer) {
-        try {
-            neededLocation = buffer.readStringFromBuffer(256);
-            neededProject = buffer.readStringFromBuffer(256);
-        } catch (IOException ignored) {
-
-        }
+        neededLocation = NetworkUtils.readStringSafe(buffer, MAX_STRING_LENGTH);
+        neededProject = NetworkUtils.readStringSafe(buffer, MAX_STRING_LENGTH);
     }
 
     /**
