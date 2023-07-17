@@ -277,16 +277,16 @@ public abstract class GT_MetaTileEntity_FusionComputer
 
     public int overclock(int mStartEnergy) {
         if (tierOverclock() == 1) {
-            return 1;
+            return 0;
         }
         if (tierOverclock() == 2) {
-            return mStartEnergy <= 160000000 ? 2 : 1;
+            return mStartEnergy <= 160000000 ? 1 : 0;
         }
         if (this.tierOverclock() == 4) {
-            return (mStartEnergy <= 160000000 ? 4 : (mStartEnergy <= 320000000 ? 2 : 1));
+            return (mStartEnergy <= 160000000 ? 2 : (mStartEnergy <= 320000000 ? 1 : 0));
         }
-        return (mStartEnergy <= 160000000) ? 8
-            : ((mStartEnergy <= 320000000) ? 4 : (mStartEnergy <= 640000000) ? 2 : 1);
+        return (mStartEnergy <= 160000000) ? 3
+            : ((mStartEnergy <= 320000000) ? 2 : (mStartEnergy <= 640000000) ? 1 : 0);
     }
 
     @Override
@@ -320,10 +320,8 @@ public abstract class GT_MetaTileEntity_FusionComputer
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe,
                 @NotNull GT_ParallelHelper helper) {
-                int overclock = overclock(recipe.mSpecialValue);
-                // GT_OverclockCalculator is not suited for fusion style OC
-                return GT_OverclockCalculator
-                    .ofNoOverclock((long) recipe.mEUt * overclock, recipe.mDuration / overclock);
+                return super.createOverclockCalculator(recipe, helper)
+                    .limitOverclockCount(overclock(recipe.mSpecialValue));
             }
 
             @NotNull
@@ -348,7 +346,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
                 }
                 return result;
             }
-        };
+        }.setOverclock(1, 1);
     }
 
     @Override
