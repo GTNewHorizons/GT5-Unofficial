@@ -1,5 +1,6 @@
 package com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules;
 
+import static gregtech.api.enums.GT_Values.V;
 import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
@@ -32,6 +34,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -114,13 +118,12 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
     /**
      * Check if any recipe can be started with the given inputs
      *
-     * @param aStack Item stack that is placed in the controller GUI
      * @return True if a recipe could be started, else false
      */
     @Override
-    public boolean checkRecipe_EM(ItemStack aStack) {
-        if (gregtech.api.enums.GT_Values.V[tTier] * getParallelRecipes() * getParallels() > getEUVar()) {
-            return false;
+    public @NotNull CheckRecipeResult checkProcessing_EM() {
+        if (V[tTier] * getParallelRecipes() * getParallels() > getEUVar()) {
+            return CheckRecipeResultRegistry.insufficientPower(V[tTier] * getParallelRecipes() * getParallels());
         }
 
         List<FluidStack> outputs = new ArrayList<>();
@@ -169,7 +172,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         mEfficiencyIncrease = 10000;
         mMaxProgresstime = 20 * maxBatchSize;
 
-        return outputs.size() > 0;
+        return outputs.size() > 0 ? CheckRecipeResultRegistry.SUCCESSFUL : CheckRecipeResultRegistry.NO_RECIPE;
     }
 
     /**

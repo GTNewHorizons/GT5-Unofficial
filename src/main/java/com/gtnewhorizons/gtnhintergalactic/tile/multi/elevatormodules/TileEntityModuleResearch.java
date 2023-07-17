@@ -1,21 +1,24 @@
 package com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules;
 
+import static gregtech.api.enums.GT_Values.V;
 import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.gtnhintergalactic.Tags;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IG_Recipe;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IG_RecipeAdder;
+import com.gtnewhorizons.gtnhintergalactic.recipe.ResultNoSpaceProject;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
@@ -90,66 +93,47 @@ public class TileEntityModuleResearch extends TileEntityModuleBase {
     }
 
     /**
-     * Check if the multi can do a recipe
-     *
-     * @param aStack item in the controller
-     * @return True if a recipe can be done, else false
+     * @return The recipe map of this machine
      */
     @Override
-    public boolean checkRecipe_EM(ItemStack aStack) {
-        if (gregtech.api.enums.GT_Values.V[tTier] > getEUVar()) {
-            return false;
-        }
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return IG_RecipeAdder.instance.sSpaceResearchRecipes;
+    }
 
-        FluidStack[] fluids = getStoredFluids().toArray(new FluidStack[0]);
-        ItemStack[] items = getStoredInputs().toArray(new ItemStack[0]);
+    /**
+     * Set the power that is available to the processing logic
+     *
+     * @param logic Logic that will be configured
+     */
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(V[tTier]);
+        logic.setAvailableAmperage(1);
+    }
 
-        GT_Recipe recipe = IG_RecipeAdder.instance.sSpaceResearchRecipes.findRecipe(
-                getBaseMetaTileEntity(),
-                false,
-                false,
-                gregtech.api.enums.GT_Values.V[tTier],
-                fluids,
-                items);
+    /**
+     * @return Processing logic of this machine
+     */
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-        if (recipe == null) {
-            return false;
-        }
-
-        if (recipe.mSpecialValue > eAvailableData) {
-            return false;
-        }
-
-        if (recipe instanceof IG_Recipe) {
-            IG_Recipe gsRecipe = (IG_Recipe) recipe;
-            if (!ElevatorUtil.isProjectAvailable(
-                    getBaseMetaTileEntity().getOwnerUuid(),
-                    gsRecipe.getNeededSpaceProject(),
-                    gsRecipe.getNeededSpaceProjectLocation())) {
-                return false;
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+                if (lastRecipe != recipe && recipe instanceof IG_Recipe igRecipe) {
+                    String neededProject = igRecipe.getNeededSpaceProject();
+                    String neededLocation = igRecipe.getNeededSpaceProjectLocation();
+                    if (!ElevatorUtil.isProjectAvailable(
+                            getBaseMetaTileEntity().getOwnerUuid(),
+                            neededProject,
+                            neededLocation)) {
+                        return new ResultNoSpaceProject(neededProject, neededLocation);
+                    }
+                }
+                return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        }
-
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(recipe).setItemInputs(items).setFluidInputs(fluids)
-                .setAvailableEUt(gregtech.api.enums.GT_Values.V[tTier]).enableOutputCalculation().enableConsumption()
-                .setController(this);
-
-        helper.build();
-
-        if (helper.getCurrentParallel() == 0) {
-            return false;
-        }
-
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
-                .setEUt(gregtech.api.enums.GT_Values.V[tTier]).setDuration(recipe.mDuration)
-                .setParallel((int) Math.floor(helper.getCurrentParallel())).calculate();
-
-        lEUt = -calculator.getConsumption();
-        mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
-        mEfficiency = 10000;
-        mEfficiencyIncrease = 10000;
-        mOutputItems = helper.getItemOutputs();
-        return true;
+        };
     }
 
     @Override

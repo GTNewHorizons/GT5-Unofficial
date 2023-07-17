@@ -10,6 +10,7 @@ import com.gtnewhorizons.gtnhintergalactic.loader.RecipeLoader;
 import com.gtnewhorizons.gtnhintergalactic.nei.IMCForNEI;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IG_RecipeAdder;
 import com.gtnewhorizons.gtnhintergalactic.recipe.MachineRecipes;
+import com.gtnewhorizons.gtnhintergalactic.recipe.ResultNoSpaceProject;
 import com.gtnewhorizons.gtnhintergalactic.recipe.SpaceProjectRegistration;
 import com.gtnewhorizons.gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
 
@@ -19,6 +20,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 
 /**
  * Proxy used by both, the server and the client to load stuff
@@ -44,6 +46,7 @@ public class CommonProxy {
         new MachineLoader().run();
         IG_RecipeAdder.init();
         GameRegistry.registerTileEntity(TileEntitySpaceElevatorCable.class, "Space Elevator Cable");
+        CheckRecipeResultRegistry.register(new ResultNoSpaceProject("", ""));
     }
 
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
