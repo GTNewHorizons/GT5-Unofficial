@@ -64,6 +64,10 @@ public class MachineLoader implements Runnable {
                 14011,
                 "ProjectModulePumpT2",
                 GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t2.name")).getStackForm(1);
+        IGItems.SpaceElevatorModulePumpT3 = new TileEntityModulePump.TileEntityModulePumpT3(
+                14014,
+                "ProjectModulePumpT3",
+                GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t3.name")).getStackForm(1);
 
         IGItems.SpaceElevatorModuleManager = new TileEntityModuleManager(
                 14012,
