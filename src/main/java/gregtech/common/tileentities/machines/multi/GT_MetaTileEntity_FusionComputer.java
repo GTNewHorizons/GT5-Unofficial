@@ -440,11 +440,11 @@ public abstract class GT_MetaTileEntity_FusionComputer
                             if (aBaseMetaTileEntity.isAllowedToWork()) {
                                 this.mEUStore = aBaseMetaTileEntity.getStoredEU();
                                 if (checkRecipe()) {
-                                    if (this.mEUStore < this.mLastRecipe.mSpecialValue - this.mEUt) {
+                                    if (this.mEUStore < this.mLastRecipe.mSpecialValue + this.mEUt) {
                                         criticalStopMachine();
                                     }
                                     aBaseMetaTileEntity
-                                        .decreaseStoredEnergyUnits(this.mLastRecipe.mSpecialValue - this.mEUt, true);
+                                        .decreaseStoredEnergyUnits(this.mLastRecipe.mSpecialValue + this.mEUt, true);
                                 }
                             }
                             if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
