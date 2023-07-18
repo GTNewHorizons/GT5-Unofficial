@@ -51,6 +51,7 @@ public class ProcessingLogic {
     protected int batchSize = 1;
     protected float euModifier = 1.0f;
     protected float speedBoost = 1.0f;
+    protected boolean isRecipeMapDisabled = false;
 
     public ProcessingLogic() {}
 
@@ -184,6 +185,15 @@ public class ProcessingLogic {
     }
 
     /**
+     * This disables the use of a recipe map and therefor limits error codes.
+     * If you activate this you need to override {@link #findRecipe(GT_Recipe_Map)}
+     */
+    public ProcessingLogic disableRecipeMap() {
+        isRecipeMapDisabled = true;
+        return this;
+    }
+
+    /**
      * Sets voltage of the machine. It doesn't need to be actual voltage (excluding amperage) of the machine;
      * For example, most of the multiblock machines set maximum possible input power (including amperage) as voltage
      * and 1 as amperage. That way recipemap search will be executed with overclocked voltage.
@@ -252,7 +262,7 @@ public class ProcessingLogic {
         if (recipeMapSupplier == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
         GT_Recipe_Map recipeMap = recipeMapSupplier.get();
-        if (recipeMap == null) return CheckRecipeResultRegistry.NO_RECIPE;
+        if (recipeMap == null && !isRecipeMapDisabled) return CheckRecipeResultRegistry.NO_RECIPE;
 
         if (maxParallelSupplier != null) {
             maxParallel = maxParallelSupplier.get();
@@ -271,14 +281,7 @@ public class ProcessingLogic {
                 recipeLockableMachine.getSingleRecipeCheck()
                     .getRecipe());
         } else {
-            findRecipeResult = recipeMap.findRecipeWithResult(
-                lastRecipe,
-                false,
-                false,
-                availableVoltage,
-                inputFluids,
-                specialSlotItem,
-                inputItems);
+            findRecipeResult = findRecipe(recipeMap);
         }
 
         GT_Recipe recipe;
@@ -336,6 +339,16 @@ public class ProcessingLogic {
     protected double calculateDuration(@Nonnull GT_Recipe recipe, @Nonnull GT_ParallelHelper helper,
         @Nonnull GT_OverclockCalculator calculator) {
         return calculator.getDuration() * helper.getDurationMultiplierDouble();
+    }
+
+    /**
+     * Override if you don't work with regular gt recipe maps
+     */
+    @Nonnull
+    protected FindRecipeResult findRecipe(GT_Recipe_Map map) {
+        if (map == null) return FindRecipeResult.NOT_FOUND;
+        return map
+            .findRecipeWithResult(lastRecipe, false, false, availableVoltage, inputFluids, specialSlotItem, inputItems);
     }
 
     /**
