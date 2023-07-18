@@ -1,15 +1,36 @@
 package gregtech.api.logic;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
+
+import gregtech.api.util.GT_StructureUtilityMuTE.UpgradeCasings;
+
 public class ControllerItemLogic {
 
-    private HashMap<UUID, ItemInventoryLogic> inventories;
+    private final Map<UUID, ItemInventoryLogic> inventories = new HashMap<>();
+    private final Set<Pair<UUID, ItemInventoryLogic>> unallocatedInventories = new HashSet<>();
 
-    public void addInventory(UUID id, ItemInventoryLogic inventory) {
-        inventories.put(id, inventory);
+    public UUID addInventory(@NotNull ItemInventoryLogic inventory) {
+        Pair<UUID, ItemInventoryLogic>  found = checkIfInventoryExistsAsUnallocated(inventory);
+        if(inventory.isUpgradeInventory() && found != null) {
+            unallocatedInventories.remove(found);
+            inventories.put(found.getLeft(), found.getRight());
+            return found.getLeft();
+        }
+        UUID generatedUUID = UUID.randomUUID();
+        inventories.put(generatedUUID, inventory);
+        return generatedUUID;
+    }
+
+    private Pair<UUID, ItemInventoryLogic>  checkIfInventoryExistsAsUnallocated(@NotNull ItemInventoryLogic inventory) {
+        return unallocatedInventories.stream().filter(unallocated -> unallocated.getRight().getTier() == inventory.getTier()).findFirst().get();
     }
 
     /**
@@ -28,6 +49,7 @@ public class ControllerItemLogic {
     }
 
     public ItemInventoryLogic getInventoryLogic(UUID id) {
+        if (id == null) return getAllInventoryLogics();
         return inventories.get(id);
     }
 }

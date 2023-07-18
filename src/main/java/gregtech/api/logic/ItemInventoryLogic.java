@@ -7,12 +7,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.Constants;
 
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
@@ -21,32 +23,49 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.util.GT_Utility;
 
+/**
+ * @author BlueWeabo
+ */
 public class ItemInventoryLogic {
 
     protected String displayName;
     protected final IItemHandlerModifiable inventory;
     protected UUID connectedFluidInventory;
+    protected int tier;
+    protected boolean isUpgradeInventory;
 
-    public ItemInventoryLogic(int numberOfSlots) {
-        this(new ItemStackHandler(numberOfSlots));
+    public ItemInventoryLogic(int numberOfSlots, int tier) {
+        this(new ItemStackHandler(numberOfSlots), tier, false);
     }
 
-    public ItemInventoryLogic(IItemHandlerModifiable inventory) {
+    public ItemInventoryLogic(IItemHandlerModifiable inventory, int tier, boolean isUpgradeInventory) {
         this.inventory = inventory;
+        this.tier = tier;
+        this.isUpgradeInventory = isUpgradeInventory;
     }
 
     public ItemInventoryLogic(Collection<IItemHandlerModifiable> inventories) {
-        this(new ListItemHandler(inventories));
+        this(new ListItemHandler(inventories), -1, false);
     }
 
     public String getDisplayName() {
         return displayName;
     }
 
-    public void setDisplayName(String displayName) {
+    public int getTier() {
+        return tier;
+    }
+
+    public boolean isUpgradeInventory() {
+        return isUpgradeInventory;
+    }
+
+    public ItemInventoryLogic setDisplayName(String displayName) {
         this.displayName = displayName;
+        return this;
     }
 
     public UUID getConnectedFluidInventoryID() {
@@ -59,9 +78,10 @@ public class ItemInventoryLogic {
 
     /**
      * 
-     * @return The Item Inventory Logic as an NBTTagList to be saved in another nbt as how one wants.
+     * @return The Item Inventory Logic as an NBTTagCompound to be saved in another nbt as how one wants.
      */
-    public NBTTagList saveToNBT() {
+    public NBTTagCompound saveToNBT() {
+        final NBTTagCompound nbt = new NBTTagCompound();
         final NBTTagList tList = new NBTTagList();
         for (int slot = 0; slot < inventory.getSlots(); slot++) {
             final ItemStack tStack = inventory.getStackInSlot(slot);
@@ -72,18 +92,26 @@ public class ItemInventoryLogic {
             tStack.writeToNBT(tag);
             tList.appendTag(tag);
         }
-        return tList;
+        nbt.setTag("Inventory", tList);
+        nbt.setInteger("Tier", tier);
+        nbt.setString("DisplayName", displayName);
+        nbt.setBoolean("IsUpgradeInventory", isUpgradeInventory);
+        return nbt;
     }
 
     /**
-     * Loads the Item Inventory Logic from an NBTTagList.
+     * Loads the Item Inventory Logic from an NBTTagCompound.
      */
-    public void loadFromNBT(NBTTagList nbtList) {
+    public void loadFromNBT(NBTTagCompound nbt) {
+        NBTTagList nbtList = nbt.getTagList("Inventory", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < nbtList.tagCount(); i++) {
             final NBTTagCompound tNBT = nbtList.getCompoundTagAt(i);
             final int tSlot = tNBT.getShort("s");
             if (tSlot >= 0 && tSlot < inventory.getSlots()) inventory.setStackInSlot(tSlot, GT_Utility.loadItem(tNBT));
         }
+        tier = nbt.getInteger("Tier");
+        displayName = nbt.getString("DisplayName");
+        isUpgradeInventory = nbt.getBoolean("IsUpgradeInventory");
     }
 
     public IItemHandlerModifiable getInventory() {
@@ -92,6 +120,9 @@ public class ItemInventoryLogic {
 
     public ItemStack[] getStoredItems() {
         return inventory.getStacks()
+            .stream()
+            .filter(item -> item != null)
+            .collect(Collectors.toList())
             .toArray(new ItemStack[0]);
     }
 

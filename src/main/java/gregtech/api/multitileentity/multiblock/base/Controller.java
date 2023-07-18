@@ -1,6 +1,5 @@
 package gregtech.api.multitileentity.multiblock.base;
 
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.*;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 import static mcp.mobius.waila.api.SpecialChars.*;
 
@@ -48,9 +47,8 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
-import com.gtnewhorizons.modularui.api.forge.FluidHandler;
-import com.gtnewhorizons.modularui.api.forge.FluidStackHandler;
-import com.gtnewhorizons.modularui.api.forge.FluidTankLong;
+import com.gtnewhorizons.modularui.api.fluids.FluidTanksHandler;
+import com.gtnewhorizons.modularui.api.fluids.IFluidTanksHandler;
 import com.gtnewhorizons.modularui.api.forge.IItemHandler;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
@@ -329,7 +327,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
         NBTTagList handlerFluid = nbt.getTagList("handlerFluid", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < handlerFluid.tagCount(); i++) {
-            handler.setFluidInTank(i, FluidTankLong.loadFromNBT(handlerFluid.getCompoundTagAt(i)));
+            handler.getFluidTank(i)
+                .loadFromNBT(handlerFluid.getCompoundTagAt(i));
         }
     }
 
@@ -1879,7 +1878,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         return new ListItemHandler(multiBlockOutputInventory.values());
     }
 
-    FluidHandler handler = new FluidStackHandler(16, 10000);
+    IFluidTanksHandler handler = new FluidTanksHandler(16, 10000);
 
     protected Widget getFluidInventoryInputGUI() {
         final IFluidTank[] tanks = getTanksForInput();
