@@ -23,7 +23,6 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
-import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.util.GT_Utility;
 
 /**

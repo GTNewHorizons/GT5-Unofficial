@@ -10,16 +10,14 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.util.GT_StructureUtilityMuTE.UpgradeCasings;
-
 public class ControllerItemLogic {
 
     private final Map<UUID, ItemInventoryLogic> inventories = new HashMap<>();
     private final Set<Pair<UUID, ItemInventoryLogic>> unallocatedInventories = new HashSet<>();
 
     public UUID addInventory(@NotNull ItemInventoryLogic inventory) {
-        Pair<UUID, ItemInventoryLogic>  found = checkIfInventoryExistsAsUnallocated(inventory);
-        if(inventory.isUpgradeInventory() && found != null) {
+        Pair<UUID, ItemInventoryLogic> found = checkIfInventoryExistsAsUnallocated(inventory);
+        if (inventory.isUpgradeInventory() && found != null) {
             unallocatedInventories.remove(found);
             inventories.put(found.getLeft(), found.getRight());
             return found.getLeft();
@@ -29,8 +27,13 @@ public class ControllerItemLogic {
         return generatedUUID;
     }
 
-    private Pair<UUID, ItemInventoryLogic>  checkIfInventoryExistsAsUnallocated(@NotNull ItemInventoryLogic inventory) {
-        return unallocatedInventories.stream().filter(unallocated -> unallocated.getRight().getTier() == inventory.getTier()).findFirst().get();
+    private Pair<UUID, ItemInventoryLogic> checkIfInventoryExistsAsUnallocated(@NotNull ItemInventoryLogic inventory) {
+        return unallocatedInventories.stream()
+            .filter(
+                unallocated -> unallocated.getRight()
+                    .getTier() == inventory.getTier())
+            .findFirst()
+            .get();
     }
 
     /**
