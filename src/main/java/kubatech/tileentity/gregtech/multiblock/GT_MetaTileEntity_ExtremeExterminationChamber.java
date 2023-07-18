@@ -274,7 +274,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
             .beginStructureBlock(5, 7, 5, true)
             .addController("Front Bottom Center")
             .addCasingInfoMin("Solid Steel Machine Casing", 35, false)
-            .addOtherStructurePart("Borosilicate Glass", "Side walls without edges or corners")
+            .addOtherStructurePart("Tiered (HV+) Glass", "Side walls without edges or corners")
             .addStructureInfo("The glass tier limits the Energy Hatch tier")
             .addOtherStructurePart("Steel Frame Box", "All vertical edges without corners")
             .addOtherStructurePart("Diamond spikes", "Inside second layer")
