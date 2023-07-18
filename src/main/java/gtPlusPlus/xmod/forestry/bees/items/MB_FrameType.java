@@ -7,24 +7,27 @@ public enum MB_FrameType implements IBeeModifier {
 
     // ExtraBees Clone Frames
     // Name, FrameHP, territory (1f), Mutation rate, lifespan rate, production rate, genetic decay (1f)
-    COCOA("Chocolate", 240, 1.0f, 1.0f, 0.50f, 1.50f, 1f),
-    CAGE("Restraint", 240, 0.5f, 1.0f, 0.75f, 0.75f, 1f),
-    SOUL("Soul", 80, 1.0f, 1.5f, 0.75f, 0.25f, 1f),
-    CLAY("Healing", 240, 1.0f, 0.5f, 1.50f, 0.75f, 1f),
-    NOVA("Nova", 240, 1.0f, 100.0f, 0.0001f, 1.00f, 1f),
+    COCOA("Chocolate", 240, 1.0f, 1.0f, 0.50f, 0.50f, 1f), // production was 1.5x, now +0.5
+    CAGE("Restraint", 240, 0.5f, 1.0f, 0.75f, -0.25f, 1f), // production was 0.75x, now -0.25
+    SOUL("Soul", 80, 1.0f, 1.5f, 0.75f, -0.75f, 1f), // production was 0.25x, now -0.75
+    CLAY("Healing", 240, 1.0f, 0.5f, 1.50f, -0.25f, 1f), // production was 0.75x, now -0.25
+    NOVA("Nova", 240, 1.0f, 100.0f, 0.0001f, 0.00f, 1f), // production was 1x, now +0
 
     // Name, FrameHP, territory (1f), Mutation rate, lifespan rate, production rate, genetic decay (1f)
-    ACCELERATED("Accelerated", 175, 1f, 1.2f, 0.9f, 1.8f, 1f),
-    VOID("Void", 20, 1f, 1f, 0.0001f, 10f, 1f),
-    MUTAGENIC("Mutagenic", 3, 1f, 5f, 0.0001f, 10f, 1f),
-    BUSY("Busy", 2000, 1f, 0f, 3f, 4f, 1f),
-    USELESS("Useless", 100, 1f, 0f, 1f, 1f, 1f),
+    ACCELERATED("Accelerated", 175, 1f, 1.2f, 0.9f, 0.8f, 1f), // production was 1.8x, now +0.8
+    VOID("Void", 20, 1f, 1f, 0.0001f, 9f, 1f), // production was 10x, now +9
+    MUTAGENIC("Mutagenic", 3, 1f, 5f, 0.0001f, 9f, 1f), // production was 10x, now +9
+    BUSY("Busy", 2000, 1f, 0f, 3f, 3f, 1f), // production was 4x, now +3
+    USELESS("Useless", 100, 1f, 0f, 1f, 0f, 1f), // production was 1x, now +0
 
     // Frame Items added by bartimaeusnek
-    DECAYING("Decaying", 240, 1f, 1f, 1f, 1f, 10f), // enhanches decay to 10x
-    SLOWING("Slowing", 175, 1f, 0.5f, 2f, 0.5f, 1f), // reduces mutation, production rate and enhanches lifespan
-    STABILIZING("Stabilizing", 60, 1f, 0.1f, 1f, 0.1f, 0.5f), // reduces mutation, production and decay
-    ARBORISTS("Arborists", 240, 3f, 0f, 3f, 0f, 1f); // 3x territory and lifespan, sets mutation and production to zero
+    DECAYING("Decaying", 240, 1f, 1f, 1f, 0f, 10f), // enhanches decay to 10x // production was 1x, now +0
+    SLOWING("Slowing", 175, 1f, 0.5f, 2f, -0.5f, 1f), // reduces mutation, production rate and enhanches lifespan //
+                                                      // production was 0.5x, now -0.5
+    STABILIZING("Stabilizing", 60, 1f, 0.1f, 1f, -0.9f, 0.5f), // reduces mutation, production and decay // production
+                                                               // was 0.1x, now -0.9
+    ARBORISTS("Arborists", 240, 3f, 0f, 3f, -9001f, 1f); // 3x territory and lifespan, sets mutation and production to
+                                                         // zero // production was 0x, now -9001
 
     private final String frameName;
     public final int maxDamage;
