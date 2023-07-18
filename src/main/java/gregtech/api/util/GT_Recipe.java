@@ -2696,7 +2696,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sMassFabFakeRecipes = new GT_Recipe_Map(
             new HashSet<>(2),
             "gt.recipe.massfab",
-            "Mass Fabrication",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Massfabricator"),
             1,

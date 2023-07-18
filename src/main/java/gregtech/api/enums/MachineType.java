@@ -35,6 +35,7 @@ public enum MachineType {
     MACERATOR(FunnyTexts.MACERATOR, "gt.recipe.macerator"),
     MACERATOR_PULVERIZER(FunnyTexts.MACERATOR_PULVERIZER, "gt.recipe.macerator_pulverizer"),
     MATTER_AMPLIFIER(FunnyTexts.MATTER_AMPLIFIER, "gt.recipe.uuamplifier"),
+    MATTER_FABRICATOR(FunnyTexts.MATTER_FABRICATOR, "gt.recipe.massfab"),
     MICROWAVE(FunnyTexts.MICROWAVE, "gt.recipe.microwave"),
     MIXER(FunnyTexts.MIXER, "gt.recipe.mixer"),
     ORE_WASHER(FunnyTexts.ORE_WASHER, "gt.recipe.orewasher"),
@@ -84,6 +85,7 @@ public enum MachineType {
         public static final String MACERATOR = "gt.recipe.macerator.description";
         public static final String MACERATOR_PULVERIZER = "gt.recipe.macerator_pulverizer.description";
         public static final String MATTER_AMPLIFIER = "gt.recipe.uuamplifier.description";
+        public static final String MATTER_FABRICATOR = "gt.recipe.massfab.description";
         public static final String MICROWAVE = "gt.recipe.microwave.description";
         public static final String MIXER = "gt.recipe.mixer.description";
         public static final String ORE_WASHER = "gt.recipe.orewasher.description";

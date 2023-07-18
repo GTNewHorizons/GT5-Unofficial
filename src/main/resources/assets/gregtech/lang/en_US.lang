@@ -150,6 +150,8 @@ gt.recipe.macerator_pulverizer=Macerator/Pulverizer
 gt.recipe.macerator_pulverizer.description=Schreddering your Ores
 gt.recipe.uuamplifier=Matter Amplifier
 gt.recipe.uuamplifier.description=Extracting UU Amplifier
+gt.recipe.massfab=Mass Fabrication
+gt.recipe.massfab.description=UUM = Matter * Fabrication Squared
 gt.recipe.microwave=Furnace
 gt.recipe.microwave.description=Did you really read the instruction Manual?
 gt.recipe.mixer=Mixer

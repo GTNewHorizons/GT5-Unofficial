@@ -20,6 +20,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_MASSFAB_GLOW;
 
 import java.util.Arrays;
 
+import gregtech.api.enums.MachineType;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.ConfigCategories;
@@ -51,7 +52,7 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
             aNameRegional,
             aTier,
             1,
-            "UUM = Matter * Fabrication Squared",
+            MachineType.MATTER_FABRICATOR.tooltipDescription(),
             1,
             1,
             "Massfabricator.png",
