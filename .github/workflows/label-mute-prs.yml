@@ -1,0 +1,17 @@
+name: Pull request labeling
+
+on:
+  pull_request_target:
+    types:
+      - opened
+    branches:
+      - 'feature/MuTEMaster'
+
+jobs:
+  label_prs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Label MuTE PRs
+        uses: ffittschen/pr-branch-labeler@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
