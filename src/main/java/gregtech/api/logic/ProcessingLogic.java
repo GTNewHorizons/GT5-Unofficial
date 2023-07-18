@@ -49,6 +49,8 @@ public class ProcessingLogic {
     protected int calculatedParallels = 0;
     protected Supplier<Integer> maxParallelSupplier;
     protected int batchSize = 1;
+    protected float euModifier = 1.0f;
+    protected float speedBoost = 1.0f;
 
     public ProcessingLogic() {}
 
@@ -144,6 +146,16 @@ public class ProcessingLogic {
 
     public ProcessingLogic setRecipeMapSupplier(Supplier<GT_Recipe_Map> supplier) {
         this.recipeMapSupplier = supplier;
+        return this;
+    }
+
+    public ProcessingLogic setEuModifier(float modifier) {
+        this.euModifier = modifier;
+        return this;
+    }
+
+    public ProcessingLogic setSpeedBonus(float speedModifier) {
+        this.speedBoost = speedModifier;
         return this;
     }
 
@@ -338,6 +350,7 @@ public class ProcessingLogic {
             .setMachine(machine, protectItems, protectFluids)
             .setRecipeLocked(recipeLockableMachine, isRecipeLocked)
             .setMaxParallel(maxParallel)
+            .setEUtModifier(euModifier)
             .enableBatchMode(batchSize)
             .enableConsumption()
             .enableOutputCalculation();
@@ -362,6 +375,8 @@ public class ProcessingLogic {
             .setDuration(recipe.mDuration)
             .setAmperage(availableAmperage)
             .setEUt(availableVoltage)
+            .setSpeedBoost(speedBoost)
+            .setEUtDiscount(euModifier)
             .setDurationDecreasePerOC(overClockTimeReduction)
             .setEUtIncreasePerOC(overClockPowerIncrease);
     }
