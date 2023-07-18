@@ -27,6 +27,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
@@ -62,7 +63,7 @@ public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine
             aNameRegional,
             aTier,
             1,
-            "Producing Elemental Matter",
+            MachineType.REPLICATOR.tooltipDescription(),
             1,
             1,
             "Replicator.png",

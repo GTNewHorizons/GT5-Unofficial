@@ -24,6 +24,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -51,7 +52,7 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
             aNameRegional,
             aTier,
             1,
-            "UUM = Matter * Fabrication Squared",
+            MachineType.MATTER_FABRICATOR.tooltipDescription(),
             1,
             1,
             "Massfabricator.png",

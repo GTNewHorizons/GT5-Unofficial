@@ -33,6 +33,7 @@ import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IIndividual;
 import gregtech.GT_Mod;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
@@ -59,7 +60,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
             aNameRegional,
             aTier,
             1,
-            "Scans Crops and other things.",
+            MachineType.SCANNER.tooltipDescription(),
             1,
             1,
             "Scanner.png",

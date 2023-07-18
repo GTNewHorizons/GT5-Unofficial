@@ -21,6 +21,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
@@ -41,7 +42,7 @@ public class GT_MetaTileEntity_RockBreaker extends GT_MetaTileEntity_BasicMachin
             aNameRegional,
             aTier,
             1,
-            "Put Lava and Water adjacent",
+            MachineType.ROCKBREAKER.tooltipDescription(),
             1,
             1,
             "RockBreaker.png",
