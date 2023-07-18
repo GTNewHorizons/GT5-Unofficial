@@ -1296,7 +1296,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sReplicatorFakeRecipes = new ReplicatorFakeMap(
             new HashSet<>(100),
             "gt.recipe.replicator",
-            "Replicator",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Replicator"),
             0,

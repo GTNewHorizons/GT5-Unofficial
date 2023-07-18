@@ -20,6 +20,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_REPLICATOR_GLOW
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
+import gregtech.api.enums.MachineType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -62,7 +63,7 @@ public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine
             aNameRegional,
             aTier,
             1,
-            "Producing Elemental Matter",
+            MachineType.REPLICATOR.tooltipDescription(),
             1,
             1,
             "Replicator.png",
