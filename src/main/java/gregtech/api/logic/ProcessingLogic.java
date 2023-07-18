@@ -401,5 +401,9 @@ public class ProcessingLogic {
         return calculatedEut;
     }
 
+    public int getCurrentParallels() {
+        return calculatedParallels;
+    }
+
     // endregion
 }
