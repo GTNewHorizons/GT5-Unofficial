@@ -464,7 +464,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (mEUt < 0) {
-            if (!drainEnergyInput(((long) -mEUt * 10000) / Math.max(1000, mEfficiency))) {
+            if (!drainEnergyInput(((long) mEUt * 10000) / Math.max(1000, mEfficiency))) {
                 this.mLastRecipe = null;
                 criticalStopMachine();
                 return false;
