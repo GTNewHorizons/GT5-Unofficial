@@ -1757,7 +1757,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sBoxinatorRecipes = new GT_Recipe_Map(
             new HashSet<>(2500),
             "gt.recipe.packager",
-            "Packager",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Packager"),
             2,

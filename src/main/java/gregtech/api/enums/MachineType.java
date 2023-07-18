@@ -39,6 +39,7 @@ public enum MachineType {
     MIXER(FunnyTexts.MIXER, "gt.recipe.mixer"),
     ORE_WASHER(FunnyTexts.ORE_WASHER, "gt.recipe.orewasher"),
     OVEN(FunnyTexts.OVEN, "gt.recipe.oven"),
+    PACKAGER(FunnyTexts.PACKAGER, "gt.recipe.packager"),
     PLASMA_ARC_FURNACE(FunnyTexts.PLASMA_ARC_FURNACE, "gt.recipe.plasmaarcfurnace"),
     POLARIZER(FunnyTexts.POLARIZER, "gt.recipe.polarizer"),
     PRINTER(FunnyTexts.PRINTER, "gt.recipe.printer"),
@@ -85,6 +86,7 @@ public enum MachineType {
         public static final String MIXER = "gt.recipe.mixer.description";
         public static final String ORE_WASHER = "gt.recipe.orewasher.description";
         public static final String OVEN = "gt.recipe.oven.description";
+        public static final String PACKAGER = "gt.recipe.packager.description";
         public static final String PLASMA_ARC_FURNACE = "gt.recipe.plasmaarcfurnace.description";
         public static final String POLARIZER = "gt.recipe.polarizer.description";
         public static final String PRINTER = "gt.recipe.printer.description";

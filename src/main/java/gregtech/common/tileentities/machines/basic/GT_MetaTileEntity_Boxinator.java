@@ -17,6 +17,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_BOXINATOR_ACTIV
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_BOXINATOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_BOXINATOR_GLOW;
 
+import gregtech.api.enums.MachineType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -43,7 +44,7 @@ public class GT_MetaTileEntity_Boxinator extends GT_MetaTileEntity_BasicMachine 
             aNameRegional,
             aTier,
             1,
-            "Puts things into Boxes",
+            MachineType.PACKAGER.tooltipDescription(),
             2,
             1,
             "Packager.png",
