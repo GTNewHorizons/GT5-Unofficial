@@ -320,6 +320,7 @@ public class GT_ParallelHelper {
             }
         }
 
+        int maxParallelBeforeBatchMode = mMaxParallel;
         if (mBatchMode) {
             mMaxParallel *= mBatchModifier;
         }
@@ -353,16 +354,17 @@ public class GT_ParallelHelper {
             mMaxParallel = Math.min(voidProtectionHelper.getMaxParallel(), mMaxParallel);
         }
 
+        maxParallelBeforeBatchMode = Math.min(mMaxParallel, maxParallelBeforeBatchMode);
+
         final int tRecipeEUt = (int) Math.ceil(mRecipe.mEUt * mEUtModifier);
-        final int batchCorrectedMaxParallel = mMaxParallel / mBatchModifier;
         // Consume inputs to determine normal parallel
         if (recipeCheck != null) {
-            int actualMaxParallel = (int) Math.min(batchCorrectedMaxParallel, mAvailableEUt / tRecipeEUt);
+            int actualMaxParallel = (int) Math.min(maxParallelBeforeBatchMode, mAvailableEUt / tRecipeEUt);
             mCurrentParallel = recipeCheck.checkRecipeInputs(true, actualMaxParallel, tItemInputs, tFluidInputs);
         } else {
             long tCurrentUsage = 0;
             boolean builtRecipeCheck = false;
-            for (; mCurrentParallel < batchCorrectedMaxParallel
+            for (; mCurrentParallel < maxParallelBeforeBatchMode
                 && tCurrentUsage < (mAvailableEUt - tRecipeEUt); mCurrentParallel++) {
                 if (!mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs)) {
                     break;
