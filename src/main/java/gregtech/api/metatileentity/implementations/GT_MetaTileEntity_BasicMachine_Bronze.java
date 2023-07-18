@@ -10,13 +10,15 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZE_TOP;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-import com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler;
+import java.util.Arrays;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -40,8 +42,6 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.power.Power;
 import gregtech.common.power.SteamPower;
-
-import java.util.Arrays;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -393,8 +393,10 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     @Override
     public String[] getDescription() {
         String[] description = Arrays.copyOf(mDescriptionArray, mDescriptionArray.length + 1);
-        description[mDescriptionArray.length] = TT_machineType + ": " + AnimatedTooltipHandler.YELLOW +
-            StatCollector.translateToLocal(this.getRecipeList().mUnlocalizedName) + AnimatedTooltipHandler.RESET;
+        description[mDescriptionArray.length] = TT_machineType + ": "
+            + AnimatedTooltipHandler.YELLOW
+            + StatCollector.translateToLocal(this.getRecipeList().mUnlocalizedName)
+            + AnimatedTooltipHandler.RESET;
         return description;
     }
 }

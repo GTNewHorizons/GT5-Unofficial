@@ -23,7 +23,6 @@ import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes;
 
 import java.util.Objects;
 
-import gregtech.api.enums.MachineType;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -34,6 +33,7 @@ import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IIndividual;
 import gregtech.GT_Mod;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;

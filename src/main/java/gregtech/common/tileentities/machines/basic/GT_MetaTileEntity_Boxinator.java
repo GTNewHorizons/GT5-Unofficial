@@ -17,11 +17,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_BOXINATOR_ACTIV
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_BOXINATOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_BOXINATOR_GLOW;
 
-import gregtech.api.enums.MachineType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.MachineType;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
