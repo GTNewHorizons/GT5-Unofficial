@@ -20,11 +20,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_MASSFAB_GLOW;
 
 import java.util.Arrays;
 
-import gregtech.api.enums.MachineType;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

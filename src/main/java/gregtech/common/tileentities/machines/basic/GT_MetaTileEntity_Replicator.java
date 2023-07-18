@@ -20,7 +20,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_REPLICATOR_GLOW
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
-import gregtech.api.enums.MachineType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -28,6 +27,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
