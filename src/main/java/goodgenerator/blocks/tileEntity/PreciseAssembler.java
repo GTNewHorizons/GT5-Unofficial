@@ -437,4 +437,9 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
     public boolean supportsBatchMode() {
         return true;
     }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
 }
