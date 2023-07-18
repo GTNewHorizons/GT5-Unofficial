@@ -1262,7 +1262,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sRockBreakerFakeRecipes = new GT_Recipe_Map(
             new HashSet<>(200),
             "gt.recipe.rockbreaker",
-            "Rock Breaker",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "RockBreaker"),
             2,
