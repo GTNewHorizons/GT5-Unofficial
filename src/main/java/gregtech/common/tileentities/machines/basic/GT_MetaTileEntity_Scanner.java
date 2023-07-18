@@ -23,6 +23,7 @@ import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes;
 
 import java.util.Objects;
 
+import gregtech.api.enums.MachineType;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -59,7 +60,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
             aNameRegional,
             aTier,
             1,
-            "Scans Crops and other things.",
+            MachineType.SCANNER.tooltipDescription(),
             1,
             1,
             "Scanner.png",

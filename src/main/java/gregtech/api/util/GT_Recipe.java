@@ -1244,7 +1244,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sScannerFakeRecipes = new GT_Recipe_Map(
             new HashSet<>(300),
             "gt.recipe.scanner",
-            "Scanner",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Scanner"),
             1,

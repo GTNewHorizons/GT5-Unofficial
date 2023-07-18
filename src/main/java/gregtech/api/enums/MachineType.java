@@ -44,6 +44,7 @@ public enum MachineType {
     POLARIZER(FunnyTexts.POLARIZER, "gt.recipe.polarizer"),
     PRINTER(FunnyTexts.PRINTER, "gt.recipe.printer"),
     RECYCLER(FunnyTexts.RECYCLER, "ic.recipe.recycler"),
+    SCANNER(FunnyTexts.SCANNER, "gt.recipe.scanner"),
     SIFTER(FunnyTexts.SIFTER, "gt.recipe.sifter"),
     SLICER(FunnyTexts.SLICER, "gt.recipe.slicer"),
     THERMAL_CENTRIFUGE(FunnyTexts.THERMAL_CENTRIFUGE, "gt.recipe.thermalcentrifuge"),
@@ -92,6 +93,7 @@ public enum MachineType {
         public static final String PRINTER = "gt.recipe.printer.description";
         public static final String RECYCLER = "ic.recipe.recycler.description";
         public static final String SIFTER = "gt.recipe.sifter.description";
+        public static final String SCANNER = "gt.recipe.scanner.description";
         public static final String SLICER = "gt.recipe.slicer.description";
         public static final String THERMAL_CENTRIFUGE = "gt.recipe.thermalcentrifuge.description";
         public static final String UNPACKAGER = "gt.recipe.unpackager.description";
