@@ -703,12 +703,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                         inputItems.add(stored);
                     }
                 }
+                if (getControllerSlot() != null) {
+                    inputItems.add(getControllerSlot());
+                }
                 processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
                 result = processingLogic.process();
                 if (result.wasSuccessful()) break;
             }
         } else {
-            processingLogic.setInputItems(getStoredInputs());
+            List<ItemStack> inputItems = getStoredInputs();
+            if (getControllerSlot() != null) {
+                inputItems.add(getControllerSlot());
+            }
+            processingLogic.setInputItems(inputItems);
             result = processingLogic.process();
         }
 
