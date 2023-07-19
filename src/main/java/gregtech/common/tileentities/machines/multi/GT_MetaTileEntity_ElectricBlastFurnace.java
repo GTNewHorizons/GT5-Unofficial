@@ -399,4 +399,9 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
     public boolean supportsInputSeparation() {
         return true;
     }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
 }

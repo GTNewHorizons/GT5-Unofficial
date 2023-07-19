@@ -139,4 +139,9 @@ public class GT_MetaTileEntity_VacuumFreezer
     public boolean supportsVoidProtection() {
         return true;
     }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
 }
