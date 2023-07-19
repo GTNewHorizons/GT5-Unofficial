@@ -142,14 +142,8 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
 
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
 
-        processingLogic.clear();
-        processingLogic.setMachine(this);
-        processingLogic.setRecipeMapSupplier(this::getRecipeMap);
-        processingLogic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
-        processingLogic.setBatchSize(isBatchModeEnabled() ? getMaxBatchSize() : 1);
-        processingLogic.setRecipeLocking(this, isRecipeLockingEnabled());
-        processingLogic.setInputFluids(getStoredFluids());
-        setProcessingLogicPower(processingLogic);
+        setupProcessingLogic(processingLogic);
+
         if (isInputSeparationEnabled()) {
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
                 List<ItemStack> inputItems = new ArrayList<>();
