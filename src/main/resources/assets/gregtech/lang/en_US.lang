@@ -321,7 +321,8 @@ GT5U.machines.allow_nbt.tooltip.extended=§7By default, all items with NBT are b
 GT5U.machines.ignore_nbt.tooltip=Ignore item NBT
 GT5U.machines.ignore_nbt.tooltip.extended=§7By default, item NBT must match.
 
-GT5U.recipe_filter.representation_slot.tooltip=Click with a machine to set filter
+GT5U.recipe_filter.empty_representation_slot.tooltip=Click with a machine to set filter
+GT5U.recipe_filter.representation_slot.tooltip=Click to clear
 GT5U.type_filter.representation_slot.tooltip=§7Left click to cycle forward
 GT5U.type_filter.representation_slot.tooltip.1=§7Right click to cycle back
 GT5U.type_filter.representation_slot.tooltip.2=§7Click with an item to set filter

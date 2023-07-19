@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -73,6 +74,10 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
         return null;
     }
 
+    protected Function<List<String>, List<String>> getItemStackReplacementTooltip() {
+        return list -> list;
+    }
+
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
@@ -98,20 +103,28 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
 
                 @Override
                 public void buildTooltip(List<Text> tooltip) {
-                    if (getEmptySlotTooltip() != null) {
-                        tooltip.addAll(getEmptySlotTooltip());
-                    }
                     super.buildTooltip(tooltip);
+                    List<Text> emptySlotTooltip = getEmptySlotTooltip();
+                    if (emptySlotTooltip != null) {
+                        tooltip.addAll(emptySlotTooltip);
+                    }
                 }
 
                 @Override
                 public List<String> getExtraTooltip() {
-                    if (getItemExtraTooltip() != null) {
-                        return getItemExtraTooltip();
+                    List<String> itemExtraTooltip = getItemExtraTooltip();
+                    if (itemExtraTooltip != null) {
+                        return itemExtraTooltip;
                     }
                     return Collections.emptyList();
                 }
+
+                @Override
+                public Function<List<String>, List<String>> getOverwriteItemStackTooltip() {
+                    return getItemStackReplacementTooltip();
+                }
             }.disableShiftInsert()
+                .setHandlePhantomActionClient(true)
                 .setPos(34, 22)
                 .setBackground(GT_UITextures.BUTTON_STANDARD))
             .widget(
