@@ -37,7 +37,7 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
             aTier,
             28,
             new String[] { "Distributes Items between different Machine Sides", "Default Items per Machine Side: 0",
-                "Use Screwdriver to increase/decrease Items per Side", "Does not consume energy to move Item" });
+                "Use Screwdriver to increase/decrease Items per Side" });
     }
 
     public GT_MetaTileEntity_ItemDistributor(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,

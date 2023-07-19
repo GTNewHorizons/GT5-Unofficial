@@ -28,7 +28,7 @@ public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer impl
             aTier,
             28,
             new String[] { "Buffers up to 27 Item Stacks", "Use Screwdriver to regulate output stack size",
-                "Does not consume energy to move Item", getTickRateDesc(aTier) });
+                getTickRateDesc(aTier) });
     }
 
     public GT_MetaTileEntity_ChestBuffer(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,

@@ -34,8 +34,7 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase imple
             aNameRegional,
             aTier,
             19,
-            new String[] { "Filters up to 9 different Items", "Use Screwdriver to regulate output stack size",
-                "Does not consume energy to move Item" });
+            new String[] { "Filters up to 9 different Items", "Use Screwdriver to regulate output stack size" });
     }
 
     public GT_MetaTileEntity_Filter(String aName, int aTier, int aInvSlotCount, String aDescription,

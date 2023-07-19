@@ -245,7 +245,8 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
 
     @Override
     public long maxEUOutput() {
-        return bOutput ? V[mTier] : 0L;
+        // Return full value if we're an item and don't exist in the world for tooltip purposes
+        return getBaseMetaTileEntity().getWorld() == null || bOutput ? V[mTier] : 0L;
     }
 
     @Override

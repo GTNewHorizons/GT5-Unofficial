@@ -40,7 +40,7 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer implem
             aTier,
             20,
             new String[] { "Filters up to 9 different Items", "Allows Item-specific output stack size",
-                "Allows Item-specific output slot", "Does not consume energy to move Item" });
+                "Allows Item-specific output slot" });
     }
 
     public GT_MetaTileEntity_Regulator(String aName, int aTier, int aInvSlotCount, String aDescription,

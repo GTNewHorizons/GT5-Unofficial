@@ -48,8 +48,7 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
             aName,
             aNameRegional,
             aTier,
-            new String[] { "Filters 1 Item Type", "Use Screwdriver to regulate output stack size",
-                "Does not consume energy to move Item" });
+            new String[] { "Filters 1 Item Type", "Use Screwdriver to regulate output stack size" });
     }
 
     public GT_MetaTileEntity_TypeFilter(String aName, int aTier, int aInvSlotCount, String aDescription,
