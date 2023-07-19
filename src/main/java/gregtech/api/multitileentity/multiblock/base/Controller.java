@@ -1745,7 +1745,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                     .setPos(20 * (page - 1), -20))
                 .addPage(
                     new MultiChildWidget().addChild(
-                        input.getGuiPart()
+                        itemInput.getGuiPart()
                             .setSize(18 * 4 + 4, 18 * 5)
                             .setPos(52, 7))
                         .addChild(getGregTechLogo().setPos(147, 86))

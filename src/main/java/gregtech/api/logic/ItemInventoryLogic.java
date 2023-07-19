@@ -26,6 +26,8 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.api.util.GT_Utility;
 
 /**
+ * Generic Item logic for MuTEs.
+ * 
  * @author BlueWeabo
  */
 public class ItemInventoryLogic {
@@ -36,6 +38,9 @@ public class ItemInventoryLogic {
     protected int tier;
     protected boolean isUpgradeInventory;
 
+    public ItemInventoryLogic(int numberOfSlots) {
+        this(numberOfSlots, 0);
+    }
     public ItemInventoryLogic(int numberOfSlots, int tier) {
         this(new ItemStackHandler(numberOfSlots), tier, false);
     }

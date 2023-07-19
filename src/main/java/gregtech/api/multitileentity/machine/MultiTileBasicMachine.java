@@ -31,10 +31,12 @@ import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.logic.PollutionLogic;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.logic.interfaces.FluidInventoryLogicHost;
 import gregtech.api.logic.interfaces.ItemInventoryLogicHost;
 import gregtech.api.logic.interfaces.PollutionLogicHost;
 import gregtech.api.logic.interfaces.PowerLogicHost;
@@ -50,7 +52,7 @@ import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
 
 public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
-    implements IMultiTileMachine, ItemInventoryLogicHost {
+    implements IMultiTileMachine, ItemInventoryLogicHost, FluidInventoryLogicHost {
 
     protected static final int ACTIVE = B[0];
     protected static final int TICKS_BETWEEN_RECIPE_CHECKS = 5 * TickTime.SECOND;
@@ -94,8 +96,10 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     protected boolean canUseLaser = false;
     protected byte soundEvent = 0;
     protected int soundEventValue = 0;
-    protected ItemInventoryLogic input;
-    protected ItemInventoryLogic output;
+    protected ItemInventoryLogic itemInput;
+    protected ItemInventoryLogic itemOutput;
+    protected FluidInventoryLogic fluidInput;
+    protected FluidInventoryLogic fluidOutput;
 
     @SideOnly(Side.CLIENT)
     protected GT_SoundLoop activitySoundLoop;
@@ -141,9 +145,9 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     }
 
     protected void saveItemLogic(NBTTagCompound nbt) {
-        NBTTagList nbtListInput = input.saveToNBT();
+        NBTTagCompound nbtListInput = itemInput.saveToNBT();
         nbt.setTag(NBT.INV_INPUT_LIST, nbtListInput);
-        NBTTagList nbtListOutput = output.saveToNBT();
+        NBTTagCompound nbtListOutput = itemOutput.saveToNBT();
         nbt.setTag(NBT.INV_OUTPUT_LIST, nbtListOutput);
     }
 
@@ -209,8 +213,6 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         /* Inventories */
         inputInventory = new ItemStackHandler(Math.max(nbt.getInteger(NBT.INV_INPUT_SIZE), 0));
         outputInventory = new ItemStackHandler(Math.max(nbt.getInteger(NBT.INV_OUTPUT_SIZE), 0));
-        input = new ItemInventoryLogic(Math.max(nbt.getInteger(NBT.INV_OUTPUT_SIZE), 0));
-        output = new ItemInventoryLogic(Math.max(nbt.getInteger(NBT.INV_OUTPUT_SIZE), 0));
         loadInventory(nbt, inputInventory, NBT.INV_INPUT_LIST);
         loadInventory(nbt, outputInventory, NBT.INV_OUTPUT_LIST);
 
@@ -250,8 +252,10 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     }
 
     protected void loadItemLogic(NBTTagCompound nbt) {
-        input.loadFromNBT(nbt.getTagList(NBT.INV_INPUT_LIST, 10));
-        output.loadFromNBT(nbt.getTagList(NBT.INV_OUTPUT_LIST, 10));
+        itemInput = new ItemInventoryLogic(Math.max(nbt.getInteger(NBT.INV_OUTPUT_SIZE), 0));
+        itemOutput = new ItemInventoryLogic(Math.max(nbt.getInteger(NBT.INV_OUTPUT_SIZE), 0));
+        itemInput.loadFromNBT(nbt.getCompoundTag(NBT.INV_INPUT_LIST));
+        itemOutput.loadFromNBT(nbt.getCompoundTag(NBT.INV_OUTPUT_LIST));
     }
 
     protected void loadFluidLogic(NBTTagCompound nbt) {
@@ -1018,8 +1022,15 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
 
     public ItemInventoryLogic getItemLogic(InventoryType type) {
         return switch (type) {
-            case Input -> input;
-            case Output -> output;
+            case Input -> itemInput;
+            case Output -> itemOutput;
+        };
+    }
+
+    public FluidInventoryLogic getFluidLogic(InventoryType type) {
+        return switch (type) {
+            case Input -> fluidInput;
+            case Output -> fluidOutput;
         };
     }
 
