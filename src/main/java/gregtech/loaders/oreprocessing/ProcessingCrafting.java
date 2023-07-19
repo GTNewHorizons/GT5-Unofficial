@@ -42,16 +42,6 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .eut(20)
                     .addTo(sAssemblerRecipes);
             }
-            case "craftingWireCopper", "craftingWireTin" -> {
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(ItemList.Circuit_Basic.get(1L), GT_Utility.copyAmount(1L, aStack))
-                    .itemOutputs(GT_ModHandler.getIC2Item("frequencyTransmitter", 1L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(2 * SECONDS)
-                    .eut(20)
-                    .addTo(sAssemblerRecipes);
-            }
             case "craftingLensBlue" -> {
 
                 GT_Values.RA.stdBuilder()
