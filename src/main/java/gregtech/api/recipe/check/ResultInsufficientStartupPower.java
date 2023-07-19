@@ -3,7 +3,6 @@ package gregtech.api.recipe.check;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.util.GT_Utility;
 
 public class ResultInsufficientStartupPower implements CheckRecipeResult {
@@ -26,10 +25,8 @@ public class ResultInsufficientStartupPower implements CheckRecipeResult {
 
     @Override
     public String getDisplayString() {
-        return StatCollector.translateToLocalFormatted(
-            "GT5U.gui.text.insufficient_startup_power",
-            GT_Utility.formatNumbers(required),
-            HeatingCoilLevel.getDisplayNameFromHeat(required, true));
+        return StatCollector
+            .translateToLocalFormatted("GT5U.gui.text.insufficient_startup_power", GT_Utility.formatNumbers(required));
     }
 
     @Override

@@ -171,13 +171,11 @@ public abstract class GT_MetaTileEntity_FusionComputer
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        if (mEUt > 0) {
+            mEUt = -mEUt;
+        }
     }
 
     @Override
@@ -410,7 +408,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
                     }
                     if (mMaxProgresstime > 0) {
                         this.getBaseMetaTileEntity()
-                            .decreaseStoredEnergyUnits(mEUt, true);
+                            .decreaseStoredEnergyUnits(-mEUt, true);
                         if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
                             if (mOutputItems != null)
                                 for (ItemStack tStack : mOutputItems) if (tStack != null) addOutput(tStack);
@@ -459,23 +457,6 @@ public abstract class GT_MetaTileEntity_FusionComputer
                 .setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
         }
-    }
-
-    @Override
-    public boolean onRunningTick(ItemStack aStack) {
-        if (mEUt < 0) {
-            if (!drainEnergyInput(((long) mEUt * 10000) / Math.max(1000, mEfficiency))) {
-                this.mLastRecipe = null;
-                criticalStopMachine();
-                return false;
-            }
-        }
-        if (this.mEUStore <= 0) {
-            this.mLastRecipe = null;
-            criticalStopMachine();
-            return false;
-        }
-        return true;
     }
 
     @Override
