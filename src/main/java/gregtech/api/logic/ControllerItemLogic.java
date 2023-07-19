@@ -7,12 +7,12 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
+
+import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Logic of the Item logic for the controller. This is controlling all of the inventories.
@@ -72,7 +72,10 @@ public class ControllerItemLogic {
             NBTTagCompound inventoryNBT = new NBTTagCompound();
             inventoryNBT.setTag("inventory", inventory.saveToNBT());
             inventoryNBT.setString("uuid", uuid.toString());
-            inventoryNBT.setInteger("invSize", inventory.getInventory().getSlots());
+            inventoryNBT.setInteger(
+                "invSize",
+                inventory.getInventory()
+                    .getSlots());
             inventoriesNBT.appendTag(inventoryNBT);
         });
         nbt.setTag("inventories", inventoriesNBT);

@@ -7,12 +7,12 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
+
+import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Controller logic for Fluid inventories
@@ -24,7 +24,7 @@ public class ControllerFluidLogic {
     private final Map<UUID, FluidInventoryLogic> inventories = new HashMap<>();
     private final Set<Pair<UUID, FluidInventoryLogic>> unallocatedInventories = new HashSet<>();
 
-     public UUID addInventory(@NotNull FluidInventoryLogic inventory) {
+    public UUID addInventory(@NotNull FluidInventoryLogic inventory) {
         Pair<UUID, FluidInventoryLogic> found = checkIfInventoryExistsAsUnallocated(inventory);
         if (inventory.isUpgradeInventory() && found != null) {
             unallocatedInventories.remove(found);
@@ -36,7 +36,8 @@ public class ControllerFluidLogic {
         return generatedUUID;
     }
 
-    private Pair<UUID, FluidInventoryLogic> checkIfInventoryExistsAsUnallocated(@NotNull FluidInventoryLogic inventory) {
+    private Pair<UUID, FluidInventoryLogic> checkIfInventoryExistsAsUnallocated(
+        @NotNull FluidInventoryLogic inventory) {
         return unallocatedInventories.stream()
             .filter(
                 unallocated -> unallocated.getRight()
@@ -72,8 +73,14 @@ public class ControllerFluidLogic {
             NBTTagCompound inventoryNBT = new NBTTagCompound();
             inventoryNBT.setTag("inventory", inventory.saveToNBT());
             inventoryNBT.setString("uuid", uuid.toString());
-            inventoryNBT.setInteger("invSize", inventory.getInventory().getTanks());
-            inventoryNBT.setLong("tankCapacity", inventory.getInventory().getTankCapacity(0));
+            inventoryNBT.setInteger(
+                "invSize",
+                inventory.getInventory()
+                    .getTanks());
+            inventoryNBT.setLong(
+                "tankCapacity",
+                inventory.getInventory()
+                    .getTankCapacity(0));
             inventoriesNBT.appendTag(inventoryNBT);
         });
         nbt.setTag("inventories", inventoriesNBT);
@@ -85,7 +92,9 @@ public class ControllerFluidLogic {
         for (int i = 0; i < inventoriesNBT.tagCount(); i++) {
             NBTTagCompound inventoryNBT = inventoriesNBT.getCompoundTagAt(i);
             UUID uuid = UUID.fromString(inventoryNBT.getString("uuid"));
-            FluidInventoryLogic inventory = new FluidInventoryLogic(inventoryNBT.getInteger("invSize"), inventoryNBT.getLong("tankCapacity"));
+            FluidInventoryLogic inventory = new FluidInventoryLogic(
+                inventoryNBT.getInteger("invSize"),
+                inventoryNBT.getLong("tankCapacity"));
             inventory.loadFromNBT(inventoryNBT.getCompoundTag("inventory"));
             if (inventory.isUpgradeInventory()) {
                 unallocatedInventories.add(Pair.of(uuid, inventory));

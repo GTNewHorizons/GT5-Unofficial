@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
@@ -19,8 +18,6 @@ import com.gtnewhorizons.modularui.api.fluids.ListFluidHandler;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
-
-import gregtech.api.util.GT_Utility;
 
 public class FluidInventoryLogic {
 
@@ -103,7 +100,6 @@ public class FluidInventoryLogic {
         tier = nbt.getInteger("Tier");
         displayName = nbt.getString("DisplayName");
         isUpgradeInventory = nbt.getBoolean("IsUpgradeInventory");
-        
     }
 
     public IFluidTanksHandler getInventory() {

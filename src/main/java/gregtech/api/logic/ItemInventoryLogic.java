@@ -41,6 +41,7 @@ public class ItemInventoryLogic {
     public ItemInventoryLogic(int numberOfSlots) {
         this(numberOfSlots, 0);
     }
+
     public ItemInventoryLogic(int numberOfSlots, int tier) {
         this(new ItemStackHandler(numberOfSlots), tier, false);
     }
