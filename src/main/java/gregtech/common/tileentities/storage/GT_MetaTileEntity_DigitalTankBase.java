@@ -5,6 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.api.util.GT_Utility.formatNumbers;
 
 import java.util.List;
 
@@ -65,7 +66,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
             new String[] {
                 StatCollector.translateToLocalFormatted(
                     "GT5U.machines.digitaltank.tooltip",
-                    GT_Utility.formatNumbers(commonSizeCompute(aTier))),
+                    formatNumbers(commonSizeCompute(aTier))),
                 StatCollector.translateToLocal("GT5U.machines.digitaltank.tooltip1"), });
     }
 
@@ -132,7 +133,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                         "TileEntity_TANK_AMOUNT",
                         "Fluid Amount: ",
                         !GregTech_API.sPostloadFinished) + EnumChatFormatting.GREEN
-                        + GT_Utility.formatNumbers(tContents.amount)
+                        + formatNumbers(tContents.amount)
                         + " L"
                         + EnumChatFormatting.GRAY);
             } else if (stack.stackTagCompound.hasKey("lockedFluidName")) {
@@ -514,8 +515,12 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         FluidStack fluid = tag.hasKey("mFluid") ? FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("mFluid")) : null;
         if (fluid != null && fluid.amount > 0) {
             currenttip.remove(0);
-            currenttip
-                .add(0, String.format("%d / %d mB %s", fluid.amount, getRealCapacity(), fluid.getLocalizedName()));
+            currenttip.add(
+                0,
+                formatNumbers(fluid.amount) + " / "
+                    + formatNumbers(getRealCapacity())
+                    + " L "
+                    + fluid.getLocalizedName());
         } else {
             currenttip.add(0, "Tank Empty");
         }
