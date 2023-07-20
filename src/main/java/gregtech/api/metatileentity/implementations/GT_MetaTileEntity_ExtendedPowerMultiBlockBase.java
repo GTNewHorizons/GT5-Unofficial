@@ -153,7 +153,7 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
                         inputItems.add(stored);
                     }
                 }
-                if (getControllerSlot() != null) {
+                if (getControllerSlot() != null && canUseControllerSlotForRecipe()) {
                     inputItems.add(getControllerSlot());
                 }
                 processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
@@ -162,7 +162,7 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
             }
         } else {
             List<ItemStack> inputItems = getStoredInputs();
-            if (getControllerSlot() != null) {
+            if (getControllerSlot() != null && canUseControllerSlotForRecipe()) {
                 inputItems.add(getControllerSlot());
             }
             processingLogic.setInputItems(inputItems);
