@@ -18,10 +18,9 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
-public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_FilterBase implements IAddUIWidgets {
+public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_FilterBase {
 
     private static final String ALLOW_NBT_TOOLTIP = "GT5U.machines.allow_nbt.tooltip";
     private boolean allowNbt = false;
@@ -140,7 +139,6 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
                 () -> allowNbt,
                 val -> allowNbt = val,
                 GT_UITextures.OVERLAY_BUTTON_NBT,
-                () -> mTooltipCache.getData(ALLOW_NBT_TOOLTIP),
-                4));
+                () -> mTooltipCache.getData(ALLOW_NBT_TOOLTIP)));
     }
 }

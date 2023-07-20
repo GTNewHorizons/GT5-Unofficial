@@ -30,6 +30,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
@@ -37,12 +38,13 @@ import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.GT_Utility;
 
-public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredMachineBlock {
+public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredMachineBlock implements IAddUIWidgets {
 
     private static final int OUTPUT_INDEX = 0;
     private static final int ARROW_RIGHT_INDEX = 1;
@@ -55,6 +57,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     private static final String EMIT_REDSTONE_IF_FULL_TOOLTIP = "GT5U.machines.emit_redstone_if_full.tooltip";
     private static final String INVERT_REDSTONE_TOOLTIP = "GT5U.machines.invert_redstone.tooltip";
     private static final String STOCKING_MODE_TOOLTIP = "GT5U.machines.buffer_stocking_mode.tooltip";
+    private static final String SORTING_MODE_TOOLTIP = "GT5U.machines.sorting_mode.tooltip";
     private static final int BUTTON_SIZE = 18;
 
     public int mMaxStackSize = 64;
@@ -62,6 +65,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     public boolean bOutput = false, bRedstoneIfFull = false, bInvert = false, bStockingMode = false,
         bSortStacks = false;
     public int mSuccess = 0, mTargetStackSize = 0;
+    private int uiButtonCount = 0;
 
     public GT_MetaTileEntity_Buffer(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
         String aDescription) {
@@ -291,12 +295,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
         bOutput = aNBT.getBoolean("bOutput");
         bRedstoneIfFull = aNBT.getBoolean("bRedstoneIfFull");
         bSortStacks = aNBT.getBoolean("bSortStacks");
-        if (aNBT.hasKey("bStockingMode")) { // Adding new key to existing NBT, need to protect if it is not there.
-            bStockingMode = aNBT.getBoolean("bStockingMode");
-        }
-        if (aNBT.hasKey("bSortStacks")) {
-            bSortStacks = aNBT.getBoolean("bSortStacks");
-        }
+        bStockingMode = aNBT.getBoolean("bStockingMode");
         mTargetStackSize = aNBT.getInteger("mTargetStackSize");
     }
 
@@ -484,8 +483,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                 () -> bOutput,
                 val -> bOutput = val,
                 GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY,
-                this::getEmitEnergyButtonTooltip,
-                0));
+                this::getEmitEnergyButtonTooltip));
     }
 
     private GT_TooltipDataCache.TooltipData getEmitEnergyButtonTooltip() {
@@ -506,8 +504,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                 () -> bRedstoneIfFull,
                 val -> bRedstoneIfFull = val,
                 GT_UITextures.OVERLAY_BUTTON_EMIT_REDSTONE,
-                this::getEmitRedstoneIfFullButtonTooltip,
-                1).setUpdateTooltipEveryTick(true));
+                this::getEmitRedstoneIfFullButtonTooltip).setUpdateTooltipEveryTick(true));
     }
 
     private GT_TooltipDataCache.TooltipData getEmitRedstoneIfFullButtonTooltip() {
@@ -523,8 +520,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                 () -> bInvert,
                 val -> bInvert = val,
                 GT_UITextures.OVERLAY_BUTTON_INVERT_REDSTONE,
-                () -> mTooltipCache.getData(INVERT_REDSTONE_TOOLTIP),
-                2));
+                () -> mTooltipCache.getData(INVERT_REDSTONE_TOOLTIP)));
     }
 
     protected void addStockingModeButton(ModularWindow.Builder builder) {
@@ -533,17 +529,31 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                 () -> bStockingMode,
                 val -> bStockingMode = val,
                 GT_UITextures.OVERLAY_BUTTON_STOCKING_MODE,
-                () -> mTooltipCache.getData(STOCKING_MODE_TOOLTIP),
-                3));
+                () -> mTooltipCache.getData(STOCKING_MODE_TOOLTIP)));
+    }
+
+    protected void addSortStacksButton(ModularWindow.Builder builder) {
+        builder.widget(
+            createToggleButton(
+                () -> bSortStacks,
+                val -> bSortStacks = val,
+                GT_UITextures.OVERLAY_BUTTON_SORTING_MODE,
+                () -> mTooltipCache.getData(SORTING_MODE_TOOLTIP)));
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        buildContext.addCloseListener(() -> uiButtonCount = 0);
+        addEmitEnergyButton(builder);
     }
 
     protected Widget createToggleButton(Supplier<Boolean> getter, Consumer<Boolean> setter, UITexture picture,
-        Supplier<GT_TooltipDataCache.TooltipData> tooltipDataSupplier, int buttonPosition) {
+        Supplier<GT_TooltipDataCache.TooltipData> tooltipDataSupplier) {
         return new CycleButtonWidget().setToggle(getter, setter)
             .setStaticTexture(picture)
             .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(7 + (buttonPosition * BUTTON_SIZE), 62)
+            .setPos(7 + (uiButtonCount++ * BUTTON_SIZE), 62)
             .setSize(BUTTON_SIZE, BUTTON_SIZE)
             .setGTTooltip(tooltipDataSupplier);
     }

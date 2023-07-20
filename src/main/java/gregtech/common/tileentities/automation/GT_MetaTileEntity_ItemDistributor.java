@@ -17,13 +17,12 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Buffer;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer implements IAddUIWidgets {
+public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer {
 
     private byte[] itemsPerSide = new byte[6];
     private ForgeDirection currentSide = ForgeDirection.DOWN;
@@ -193,7 +192,7 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        addEmitEnergyButton(builder);
+        super.addUIWidgets(builder, buildContext);
         addEmitRedstoneIfFullButton(builder);
         addInvertRedstoneButton(builder);
         builder.widget(

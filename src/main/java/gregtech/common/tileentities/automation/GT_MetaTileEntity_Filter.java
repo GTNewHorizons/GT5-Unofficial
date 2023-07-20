@@ -15,13 +15,12 @@ import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_FilterBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase implements IAddUIWidgets {
+public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase {
 
     private static final int NUM_FILTER_SLOTS = 9;
     private static final String IGNORE_NBT_TOOLTIP = "GT5U.machines.ignore_nbt.tooltip";
@@ -140,7 +139,6 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase imple
                 () -> ignoreNbt,
                 val -> ignoreNbt = val,
                 GT_UITextures.OVERLAY_BUTTON_NBT,
-                () -> mTooltipCache.getData(IGNORE_NBT_TOOLTIP),
-                4));
+                () -> mTooltipCache.getData(IGNORE_NBT_TOOLTIP)));
     }
 }

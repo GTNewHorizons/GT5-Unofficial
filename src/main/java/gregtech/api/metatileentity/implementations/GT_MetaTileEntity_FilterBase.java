@@ -7,10 +7,9 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.util.GT_TooltipDataCache;
 
-public abstract class GT_MetaTileEntity_FilterBase extends GT_MetaTileEntity_Buffer implements IAddUIWidgets {
+public abstract class GT_MetaTileEntity_FilterBase extends GT_MetaTileEntity_Buffer {
 
     private static final String INVERT_FILTER_TOOLTIP = "GT5U.machines.invert_filter.tooltip";
     protected static final int FILTER_SLOT_INDEX = 9;
@@ -75,7 +74,8 @@ public abstract class GT_MetaTileEntity_FilterBase extends GT_MetaTileEntity_Buf
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        addEmitEnergyButton(builder);
+        super.addUIWidgets(builder, buildContext);
+        addSortStacksButton(builder);
         addEmitRedstoneGraduallyButton(builder);
         addInvertRedstoneButton(builder);
         addInvertFilterButton(builder);
@@ -87,8 +87,7 @@ public abstract class GT_MetaTileEntity_FilterBase extends GT_MetaTileEntity_Buf
                 () -> bRedstoneIfFull,
                 val -> bRedstoneIfFull = val,
                 GT_UITextures.OVERLAY_BUTTON_EMIT_REDSTONE,
-                this::getEmitRedstoneGraduallyButtonTooltip,
-                1).setUpdateTooltipEveryTick(true));
+                this::getEmitRedstoneGraduallyButtonTooltip).setUpdateTooltipEveryTick(true));
     }
 
     private GT_TooltipDataCache.TooltipData getEmitRedstoneGraduallyButtonTooltip() {
@@ -102,7 +101,6 @@ public abstract class GT_MetaTileEntity_FilterBase extends GT_MetaTileEntity_Buf
                 () -> invertFilter,
                 val -> invertFilter = val,
                 GT_UITextures.OVERLAY_BUTTON_INVERT_FILTER,
-                () -> mTooltipCache.getData(INVERT_FILTER_TOOLTIP),
-                3));
+                () -> mTooltipCache.getData(INVERT_FILTER_TOOLTIP)));
     }
 }
