@@ -61,7 +61,6 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
     private boolean isLoadedChunk;
     public GT_Recipe mLastRecipe;
     public int para;
-    public int mEUStore;
     protected FusionPower power;
     private static final ClassValue<IStructureDefinition<LargeFusionComputer>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<LargeFusionComputer>>() {
 
@@ -247,7 +246,6 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
             if (aTick % 400 == 0) fixAllIssue();
             if (mEfficiency < 0) mEfficiency = 0;
             if (mRunningOnLoad && checkMachine(aBaseMetaTileEntity, mInventory[1])) {
-                this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
                 checkRecipe();
             }
             if (mUpdated) {
@@ -302,7 +300,7 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                                                 }
                             }
                     }
-                    if (this.mEUStore <= 0 && mMaxProgresstime > 0) {
+                    if (aBaseMetaTileEntity.getStoredEU() <= 0 && mMaxProgresstime > 0) {
                         stopMachine();
                     }
                     if (mMaxProgresstime > 0) {
@@ -319,7 +317,6 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                             mProgresstime = 0;
                             mMaxProgresstime = 0;
                             mEfficiencyIncrease = 0;
-                            this.mEUStore = (int) getBaseMetaTileEntity().getStoredEU();
                             if (aBaseMetaTileEntity.isAllowedToWork()) checkRecipe();
                         }
                     } else {
@@ -327,9 +324,9 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                                 || aBaseMetaTileEntity.hasInventoryBeenModified()) {
                             turnCasingActive(mMaxProgresstime > 0);
                             if (aBaseMetaTileEntity.isAllowedToWork()) {
-                                this.mEUStore = (int) getBaseMetaTileEntity().getStoredEU();
                                 if (checkRecipe()) {
-                                    if (this.mEUStore < this.mLastRecipe.mSpecialValue + this.lEUt) {
+                                    if (aBaseMetaTileEntity.getStoredEU()
+                                            < this.mLastRecipe.mSpecialValue + this.lEUt) {
                                         mMaxProgresstime = 0;
                                         turnCasingActive(false);
                                     }
@@ -562,6 +559,7 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
 
     @Override
     public String[] getInfoData() {
+        IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
         String tier = switch (hatchTier()) {
             case 6 -> EnumChatFormatting.RED + "I" + EnumChatFormatting.RESET;
             case 7 -> EnumChatFormatting.RED + "II" + EnumChatFormatting.RESET;
@@ -591,7 +589,7 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                         + "EU/t",
                 StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                         + EnumChatFormatting.GREEN
-                        + GT_Utility.formatNumbers(mEUStore)
+                        + GT_Utility.formatNumbers(baseMetaTileEntity != null ? baseMetaTileEntity.getStoredEU() : 0)
                         + EnumChatFormatting.RESET
                         + " EU / "
                         + EnumChatFormatting.YELLOW
