@@ -269,6 +269,11 @@ public class GT_MetaTileEntity_ProcessingArray extends
     }
 
     @Override
+    protected boolean canUseControllerSlotForRecipe() {
+        return false;
+    }
+
+    @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         GT_Recipe_Map recipeMap = getRecipeMap();
         logic.setAvailableVoltage(GT_Values.V[tTier] * (recipeMap != null ? recipeMap.mAmperage : 1));
