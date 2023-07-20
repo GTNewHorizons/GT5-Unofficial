@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -51,7 +52,6 @@ public class ProcessingLogic {
     protected int batchSize = 1;
     protected float euModifier = 1.0f;
     protected float speedBoost = 1.0f;
-    protected boolean isRecipeMapDisabled = false;
 
     public ProcessingLogic() {}
 
@@ -185,15 +185,6 @@ public class ProcessingLogic {
     }
 
     /**
-     * This disables the use of a recipe map and therefor limits error codes.
-     * If you activate this you need to override {@link #findRecipe(GT_Recipe_Map)}
-     */
-    public ProcessingLogic disableRecipeMap() {
-        isRecipeMapDisabled = true;
-        return this;
-    }
-
-    /**
      * Sets voltage of the machine. It doesn't need to be actual voltage (excluding amperage) of the machine;
      * For example, most of the multiblock machines set maximum possible input power (including amperage) as voltage
      * and 1 as amperage. That way recipemap search will be executed with overclocked voltage.
@@ -259,10 +250,12 @@ public class ProcessingLogic {
      */
     @Nonnull
     public CheckRecipeResult process() {
-        if (recipeMapSupplier == null) return CheckRecipeResultRegistry.NO_RECIPE;
-
-        GT_Recipe_Map recipeMap = recipeMapSupplier.get();
-        if (recipeMap == null && !isRecipeMapDisabled) return CheckRecipeResultRegistry.NO_RECIPE;
+        GT_Recipe_Map recipeMap;
+        if (recipeMapSupplier == null) {
+            recipeMap = null;
+        } else {
+            recipeMap = recipeMapSupplier.get();
+        }
 
         if (maxParallelSupplier != null) {
             maxParallel = maxParallelSupplier.get();
@@ -345,7 +338,7 @@ public class ProcessingLogic {
      * Override if you don't work with regular gt recipe maps
      */
     @Nonnull
-    protected FindRecipeResult findRecipe(GT_Recipe_Map map) {
+    protected FindRecipeResult findRecipe(@Nullable GT_Recipe_Map map) {
         if (map == null) return FindRecipeResult.NOT_FOUND;
         return map
             .findRecipeWithResult(lastRecipe, false, false, availableVoltage, inputFluids, specialSlotItem, inputItems);
