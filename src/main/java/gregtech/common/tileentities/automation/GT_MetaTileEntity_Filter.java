@@ -140,7 +140,7 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase imple
                 () -> ignoreNbt,
                 val -> ignoreNbt = val,
                 GT_UITextures.OVERLAY_BUTTON_NBT,
-                IGNORE_NBT_TOOLTIP,
+                () -> mTooltipCache.getData(IGNORE_NBT_TOOLTIP),
                 4));
     }
 }

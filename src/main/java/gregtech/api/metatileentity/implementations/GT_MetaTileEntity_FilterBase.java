@@ -1,7 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -9,7 +8,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_TooltipDataCache;
 
 public abstract class GT_MetaTileEntity_FilterBase extends GT_MetaTileEntity_Buffer implements IAddUIWidgets {
 
@@ -57,21 +56,21 @@ public abstract class GT_MetaTileEntity_FilterBase extends GT_MetaTileEntity_Buf
     }
 
     @Override
-    protected void handleRedstoneOutput(IGregTechTileEntity aBaseMetaTileEntity) {
-        if (bRedstoneIfFull) {
-            int emptySlots = 0;
-            for (int i = 0; i < NUM_INVENTORY_SLOTS; i++) {
-                if (mInventory[i] == null) ++emptySlots;
-            }
-            if (!bInvert) emptySlots = NUM_INVENTORY_SLOTS - emptySlots;
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) emptySlots);
-            }
-        } else {
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 0);
-            }
+    protected int getRedstoneOutput() {
+        if (!bRedstoneIfFull) {
+            return 0;
         }
+        int redstoneOutput = getEmptySlots();
+        if (!bInvert) redstoneOutput = NUM_INVENTORY_SLOTS - redstoneOutput;
+        return redstoneOutput;
+    }
+
+    private int getEmptySlots() {
+        int emptySlots = 0;
+        for (int i = 0; i < NUM_INVENTORY_SLOTS; i++) {
+            if (mInventory[i] == null) ++emptySlots;
+        }
+        return emptySlots;
     }
 
     @Override
@@ -88,8 +87,13 @@ public abstract class GT_MetaTileEntity_FilterBase extends GT_MetaTileEntity_Buf
                 () -> bRedstoneIfFull,
                 val -> bRedstoneIfFull = val,
                 GT_UITextures.OVERLAY_BUTTON_EMIT_REDSTONE,
-                EMIT_REDSTONE_GRADUALLY_TOOLTIP,
-                1));
+                this::getEmitRedstoneGraduallyButtonTooltip,
+                1).setUpdateTooltipEveryTick(true));
+    }
+
+    private GT_TooltipDataCache.TooltipData getEmitRedstoneGraduallyButtonTooltip() {
+        return mTooltipCache
+            .getUncachedTooltipData(EMIT_REDSTONE_GRADUALLY_TOOLTIP, getEmptySlots(), getRedstoneOutput());
     }
 
     private void addInvertFilterButton(ModularWindow.Builder builder) {
@@ -98,7 +102,7 @@ public abstract class GT_MetaTileEntity_FilterBase extends GT_MetaTileEntity_Buf
                 () -> invertFilter,
                 val -> invertFilter = val,
                 GT_UITextures.OVERLAY_BUTTON_INVERT_FILTER,
-                INVERT_FILTER_TOOLTIP,
+                () -> mTooltipCache.getData(INVERT_FILTER_TOOLTIP),
                 3));
     }
 }

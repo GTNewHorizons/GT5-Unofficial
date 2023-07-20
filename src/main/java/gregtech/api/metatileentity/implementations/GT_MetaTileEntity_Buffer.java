@@ -24,6 +24,8 @@ import java.util.stream.IntStream;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -37,6 +39,7 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.GT_Utility;
 
 public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredMachineBlock {
@@ -333,17 +336,18 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     protected void handleRedstoneOutput(IGregTechTileEntity aBaseMetaTileEntity) {
-        if (bRedstoneIfFull) {
-            final boolean hasEmptySlots = IntStream.range(0, mInventory.length)
-                .anyMatch(i -> isValidSlot(i) && mInventory[i] == null);
-            Arrays.stream(ForgeDirection.VALID_DIRECTIONS)
-                .forEach(
-                    side -> aBaseMetaTileEntity
-                        .setInternalOutputRedstoneSignal(side, (byte) (bInvert ^ hasEmptySlots ? 0 : 15)));
-        } else {
-            for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
-                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 0);
-        }
+        int redstoneOutput = getRedstoneOutput();
+        Arrays.stream(ForgeDirection.VALID_DIRECTIONS)
+            .forEach(side -> aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) redstoneOutput));
+    }
+
+    protected int getRedstoneOutput() {
+        return (!bRedstoneIfFull || (bInvert ^ hasEmptySlots())) ? 0 : 15;
+    }
+
+    private boolean hasEmptySlots() {
+        return IntStream.range(0, mInventory.length)
+            .anyMatch(i -> isValidSlot(i) && mInventory[i] == null);
     }
 
     @Override
@@ -480,8 +484,20 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                 () -> bOutput,
                 val -> bOutput = val,
                 GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY,
-                EMIT_ENERGY_TOOLTIP,
+                this::getEmitEnergyButtonTooltip,
                 0));
+    }
+
+    private GT_TooltipDataCache.TooltipData getEmitEnergyButtonTooltip() {
+        return mTooltipCache.getData(
+            EMIT_ENERGY_TOOLTIP,
+            EnumChatFormatting.GREEN + GT_Utility.formatNumbers(V[mTier])
+                + " ("
+                + GT_Utility.getColoredTierNameFromTier(mTier)
+                + EnumChatFormatting.GREEN
+                + ")"
+                + EnumChatFormatting.GRAY,
+            maxAmperesOut());
     }
 
     protected void addEmitRedstoneIfFullButton(ModularWindow.Builder builder) {
@@ -490,8 +506,15 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                 () -> bRedstoneIfFull,
                 val -> bRedstoneIfFull = val,
                 GT_UITextures.OVERLAY_BUTTON_EMIT_REDSTONE,
-                EMIT_REDSTONE_IF_FULL_TOOLTIP,
-                1));
+                this::getEmitRedstoneIfFullButtonTooltip,
+                1).setUpdateTooltipEveryTick(true));
+    }
+
+    private GT_TooltipDataCache.TooltipData getEmitRedstoneIfFullButtonTooltip() {
+        return mTooltipCache.getUncachedTooltipData(
+            EMIT_REDSTONE_IF_FULL_TOOLTIP,
+            StatCollector.translateToLocal(hasEmptySlots() ? "gui.yes" : "gui.no"),
+            getRedstoneOutput());
     }
 
     protected void addInvertRedstoneButton(ModularWindow.Builder builder) {
@@ -500,7 +523,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                 () -> bInvert,
                 val -> bInvert = val,
                 GT_UITextures.OVERLAY_BUTTON_INVERT_REDSTONE,
-                INVERT_REDSTONE_TOOLTIP,
+                () -> mTooltipCache.getData(INVERT_REDSTONE_TOOLTIP),
                 2));
     }
 
@@ -510,19 +533,19 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                 () -> bStockingMode,
                 val -> bStockingMode = val,
                 GT_UITextures.OVERLAY_BUTTON_STOCKING_MODE,
-                STOCKING_MODE_TOOLTIP,
+                () -> mTooltipCache.getData(STOCKING_MODE_TOOLTIP),
                 3));
     }
 
     protected Widget createToggleButton(Supplier<Boolean> getter, Consumer<Boolean> setter, UITexture picture,
-        String tooltip, int buttonPosition) {
+        Supplier<GT_TooltipDataCache.TooltipData> tooltipDataSupplier, int buttonPosition) {
         return new CycleButtonWidget().setToggle(getter, setter)
             .setStaticTexture(picture)
             .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-            .setGTTooltip(() -> mTooltipCache.getData(tooltip))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(7 + (buttonPosition * BUTTON_SIZE), 62)
-            .setSize(BUTTON_SIZE, BUTTON_SIZE);
+            .setSize(BUTTON_SIZE, BUTTON_SIZE)
+            .setGTTooltip(tooltipDataSupplier);
     }
 
     protected void addInventorySlots(ModularWindow.Builder builder) {

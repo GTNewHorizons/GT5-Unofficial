@@ -140,7 +140,7 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
                 () -> allowNbt,
                 val -> allowNbt = val,
                 GT_UITextures.OVERLAY_BUTTON_NBT,
-                ALLOW_NBT_TOOLTIP,
+                () -> mTooltipCache.getData(ALLOW_NBT_TOOLTIP),
                 4));
     }
 }
