@@ -142,14 +142,8 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
 
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
 
-        processingLogic.clear();
-        processingLogic.setMachine(this);
-        processingLogic.setRecipeMapSupplier(this::getRecipeMap);
-        processingLogic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
-        processingLogic.setBatchSize(isBatchModeEnabled() ? getMaxBatchSize() : 1);
-        processingLogic.setRecipeLocking(this, isRecipeLockingEnabled());
-        processingLogic.setInputFluids(getStoredFluids());
-        setProcessingLogicPower(processingLogic);
+        setupProcessingLogic(processingLogic);
+
         if (isInputSeparationEnabled()) {
             for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
                 List<ItemStack> inputItems = new ArrayList<>();
@@ -159,12 +153,19 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
                         inputItems.add(stored);
                     }
                 }
+                if (getControllerSlot() != null) {
+                    inputItems.add(getControllerSlot());
+                }
                 processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
                 result = processingLogic.process();
                 if (result.wasSuccessful()) break;
             }
         } else {
-            processingLogic.setInputItems(getStoredInputs());
+            List<ItemStack> inputItems = getStoredInputs();
+            if (getControllerSlot() != null) {
+                inputItems.add(getControllerSlot());
+            }
+            processingLogic.setInputItems(inputItems);
             result = processingLogic.process();
         }
 

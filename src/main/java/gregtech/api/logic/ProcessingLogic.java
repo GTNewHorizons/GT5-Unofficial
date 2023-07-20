@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -49,6 +50,8 @@ public class ProcessingLogic {
     protected int calculatedParallels = 0;
     protected Supplier<Integer> maxParallelSupplier;
     protected int batchSize = 1;
+    protected float euModifier = 1.0f;
+    protected float speedBoost = 1.0f;
 
     public ProcessingLogic() {}
 
@@ -147,6 +150,16 @@ public class ProcessingLogic {
         return this;
     }
 
+    public ProcessingLogic setEuModifier(float modifier) {
+        this.euModifier = modifier;
+        return this;
+    }
+
+    public ProcessingLogic setSpeedBonus(float speedModifier) {
+        this.speedBoost = speedModifier;
+        return this;
+    }
+
     /**
      * Sets machine used for void protection logic.
      */
@@ -237,10 +250,12 @@ public class ProcessingLogic {
      */
     @Nonnull
     public CheckRecipeResult process() {
-        if (recipeMapSupplier == null) return CheckRecipeResultRegistry.NO_RECIPE;
-
-        GT_Recipe_Map recipeMap = recipeMapSupplier.get();
-        if (recipeMap == null) return CheckRecipeResultRegistry.NO_RECIPE;
+        GT_Recipe_Map recipeMap;
+        if (recipeMapSupplier == null) {
+            recipeMap = null;
+        } else {
+            recipeMap = recipeMapSupplier.get();
+        }
 
         if (maxParallelSupplier != null) {
             maxParallel = maxParallelSupplier.get();
@@ -259,14 +274,7 @@ public class ProcessingLogic {
                 recipeLockableMachine.getSingleRecipeCheck()
                     .getRecipe());
         } else {
-            findRecipeResult = recipeMap.findRecipeWithResult(
-                lastRecipe,
-                false,
-                false,
-                availableVoltage,
-                inputFluids,
-                specialSlotItem,
-                inputItems);
+            findRecipeResult = findRecipe(recipeMap);
         }
 
         GT_Recipe recipe;
@@ -327,6 +335,16 @@ public class ProcessingLogic {
     }
 
     /**
+     * Override if you don't work with regular gt recipe maps
+     */
+    @Nonnull
+    protected FindRecipeResult findRecipe(@Nullable GT_Recipe_Map map) {
+        if (map == null) return FindRecipeResult.NOT_FOUND;
+        return map
+            .findRecipeWithResult(lastRecipe, false, false, availableVoltage, inputFluids, specialSlotItem, inputItems);
+    }
+
+    /**
      * Override to tweak parallel logic if needed.
      */
     @Nonnull
@@ -338,6 +356,7 @@ public class ProcessingLogic {
             .setMachine(machine, protectItems, protectFluids)
             .setRecipeLocked(recipeLockableMachine, isRecipeLocked)
             .setMaxParallel(maxParallel)
+            .setEUtModifier(euModifier)
             .enableBatchMode(batchSize)
             .enableConsumption()
             .enableOutputCalculation();
@@ -362,6 +381,8 @@ public class ProcessingLogic {
             .setDuration(recipe.mDuration)
             .setAmperage(availableAmperage)
             .setEUt(availableVoltage)
+            .setSpeedBoost(speedBoost)
+            .setEUtDiscount(euModifier)
             .setDurationDecreasePerOC(overClockTimeReduction)
             .setEUtIncreasePerOC(overClockPowerIncrease);
     }
@@ -384,6 +405,10 @@ public class ProcessingLogic {
 
     public long getCalculatedEut() {
         return calculatedEut;
+    }
+
+    public int getCurrentParallels() {
+        return calculatedParallels;
     }
 
     // endregion
