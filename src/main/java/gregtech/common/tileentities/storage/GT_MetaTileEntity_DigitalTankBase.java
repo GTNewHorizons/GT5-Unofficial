@@ -515,8 +515,12 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         FluidStack fluid = tag.hasKey("mFluid") ? FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("mFluid")) : null;
         if (fluid != null && fluid.amount > 0) {
             currenttip.remove(0);
-            currenttip
-                .add(0, formatNumbers(fluid.amount) + " / " + formatNumbers(getRealCapacity()) + " L " + fluid.getLocalizedName());
+            currenttip.add(
+                0,
+                formatNumbers(fluid.amount) + " / "
+                    + formatNumbers(getRealCapacity())
+                    + " L "
+                    + fluid.getLocalizedName());
         } else {
             currenttip.add(0, "Tank Empty");
         }
