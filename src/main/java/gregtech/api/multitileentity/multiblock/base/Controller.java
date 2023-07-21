@@ -40,8 +40,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
-import com.gtnewhorizons.modularui.api.forge.IItemHandler;
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.*;
 import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
@@ -55,11 +53,9 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.InventoryType;
 import gregtech.api.enums.VoidingMode;
-import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.IGlobalWirelessEnergy;
-import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.modularui.ControllerWithOptionalFeatures;
 import gregtech.api.logic.ControllerFluidLogic;
 import gregtech.api.logic.ControllerItemLogic;
@@ -196,8 +192,6 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         nbt.setBoolean(NBT.RECIPE_LOCK, recipeLock);
         nbt.setBoolean(NBT.BATCH_MODE, batchMode);
     }
-
-    
 
     @Override
     public void readMultiTileNBT(NBTTagCompound nbt) {

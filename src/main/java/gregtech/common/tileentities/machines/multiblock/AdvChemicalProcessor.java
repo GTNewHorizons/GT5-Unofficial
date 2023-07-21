@@ -13,7 +13,6 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHIN
 import static gregtech.api.util.GT_StructureUtilityMuTE.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,8 +22,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;

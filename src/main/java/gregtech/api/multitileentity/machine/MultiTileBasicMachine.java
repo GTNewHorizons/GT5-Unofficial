@@ -1,11 +1,9 @@
 package gregtech.api.multitileentity.machine;
 
-import static com.google.common.primitives.Ints.saturatedCast;
 import static gregtech.api.enums.GT_Values.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,13 +11,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidTank;
 
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
@@ -29,18 +25,15 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.*;
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
-import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.logic.PollutionLogic;
 import gregtech.api.logic.PowerLogic;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.FluidInventoryLogicHost;
 import gregtech.api.logic.interfaces.ItemInventoryLogicHost;
 import gregtech.api.logic.interfaces.PollutionLogicHost;
 import gregtech.api.logic.interfaces.PowerLogicHost;
-import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.base.TickableMultiTileEntity;
@@ -321,7 +314,6 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         return side != facing;
     }
 
-
     /*
      * Inventory
      */
@@ -529,7 +521,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     }
 
     protected void outputFluids() {
-        //TODO make it work with new logic
+        // TODO make it work with new logic
         fluidsToOutput = null;
     }
 

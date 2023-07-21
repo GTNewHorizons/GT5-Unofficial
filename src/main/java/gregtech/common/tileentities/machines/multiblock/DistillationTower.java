@@ -5,9 +5,6 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.*;
 import static gregtech.api.util.GT_StructureUtilityMuTE.MOTOR_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.ofMuTECasings;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
@@ -16,7 +13,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
-import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.StackableController;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
