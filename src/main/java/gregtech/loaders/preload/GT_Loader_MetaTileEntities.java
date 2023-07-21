@@ -3,6 +3,7 @@ package gregtech.loaders.preload;
 import static gregtech.api.enums.MetaTileEntityIDs.*;
 import static gregtech.api.enums.Mods.Forestry;
 
+import gregtech.common.tileentities.machines.*;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.GT_Mod;
@@ -56,13 +57,6 @@ import gregtech.common.tileentities.generators.GT_MetaTileEntity_MagicalEnergyAb
 import gregtech.common.tileentities.generators.GT_MetaTileEntity_NaquadahReactor;
 import gregtech.common.tileentities.generators.GT_MetaTileEntity_PlasmaGenerator;
 import gregtech.common.tileentities.generators.GT_MetaTileEntity_SteamTurbine;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_Bronze;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_BronzeBricks;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_Steel;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_SteelBricks;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_AdvSeismicProspector;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Boxinator;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Charger;
@@ -1894,6 +1888,13 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             ItemList.Hatch_Output_ME.set(
                 new GT_MetaTileEntity_Hatch_Output_ME(OUTPUT_HATCH_ME.ID, "hatch.output.me", "Output Hatch (ME)")
                     .getStackForm(1L));
+            ItemList.Hatch_CraftingInput_Bus_ME.set(
+                new GT_MetaTileEntity_Hatch_CraftingInput_ME(
+                    CRAFTING_INPUT_ME.ID,
+                    "hatch.crafting_input.me",
+                    "Crafting Input Buffer (ME)"
+                ).getStackForm(1L)
+            );
         }
     }
 

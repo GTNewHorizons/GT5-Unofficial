@@ -3,10 +3,12 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.GT_Values.VN;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -148,24 +150,41 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
         processingLogic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
         processingLogic.setBatchSize(isBatchModeEnabled() ? getMaxBatchSize() : 1);
         processingLogic.setRecipeLocking(this, isRecipeLockingEnabled());
-        processingLogic.setInputFluids(getStoredFluids());
         setProcessingLogicPower(processingLogic);
-        if (isInputSeparationEnabled()) {
-            for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
-                List<ItemStack> inputItems = new ArrayList<>();
-                for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
-                    ItemStack stored = bus.getStackInSlot(i);
-                    if (stored != null) {
-                        inputItems.add(stored);
-                    }
-                }
-                processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+
+        // check crafting input hatches first
+        for (GT_MetaTileEntity_Hatch_CraftingInput_ME craftingInput : mCraftingInputs) {
+            for (Iterator<GT_MetaTileEntity_Hatch_CraftingInput_ME.PatternSlot> it = craftingInput.inventories(); it.hasNext(); ) {
+                GT_MetaTileEntity_Hatch_CraftingInput_ME.PatternSlot slot = it.next();
+                processingLogic.setInputItems(slot.getItemInputs());
+                processingLogic.setInputFluids(slot.getFluidInputs());
                 result = processingLogic.process();
                 if (result.wasSuccessful()) break;
             }
-        } else {
-            processingLogic.setInputItems(getStoredInputs());
-            result = processingLogic.process();
+            if (result.wasSuccessful()) break;
+        }
+
+        // if no recipe was found, check input hatches/buses
+        if (result == CheckRecipeResultRegistry.NO_RECIPE) {
+            processingLogic.setInputFluids(getStoredFluids());
+
+            if (isInputSeparationEnabled()) {
+                for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
+                    List<ItemStack> inputItems = new ArrayList<>();
+                    for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                        ItemStack stored = bus.getStackInSlot(i);
+                        if (stored != null) {
+                            inputItems.add(stored);
+                        }
+                    }
+                    processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+                    result = processingLogic.process();
+                    if (result.wasSuccessful()) break;
+                }
+            } else {
+                processingLogic.setInputItems(getStoredInputs());
+                result = processingLogic.process();
+            }
         }
 
         // inputs are consumed by `process()`
@@ -176,12 +195,7 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         mEfficiencyIncrease = 10000;
 
-        lEUt = processingLogic.getCalculatedEut();
         mMaxProgresstime = processingLogic.getDuration();
-
-        if (lEUt > 0) {
-            lEUt = (-lEUt);
-        }
 
         mOutputItems = processingLogic.getOutputItems();
         mOutputFluids = processingLogic.getOutputFluids();

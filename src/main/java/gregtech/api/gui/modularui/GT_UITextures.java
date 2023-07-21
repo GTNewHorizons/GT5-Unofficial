@@ -34,6 +34,8 @@ public class GT_UITextures {
         .of(GregTech.ID, "gui/slot/uplifted", 18, 18, 1);
 
     public static final UITexture OVERLAY_SLOT_ARROW_ME = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/arrow_me");
+    public static final UITexture OVERLAY_SLOT_PATTERN_ME = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/pattern_me");
+
     public static final UITexture OVERLAY_SLOT_BEAKER_1 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/beaker_1");
     public static final UITexture OVERLAY_SLOT_BEAKER_2 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/beaker_2");
     public static final UITexture OVERLAY_SLOT_BEE_DRONE = UITexture

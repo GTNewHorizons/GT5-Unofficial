@@ -6,15 +6,13 @@ import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -122,6 +120,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public ArrayList<GT_MetaTileEntity_Hatch_Output> mOutputHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_InputBus> mInputBusses = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_OutputBus> mOutputBusses = new ArrayList<>();
+    public ArrayList<GT_MetaTileEntity_Hatch_CraftingInput_ME> mCraftingInputs = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Dynamo> mDynamoHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Muffler> mMufflerHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Energy> mEnergyHatches = new ArrayList<>();
@@ -694,22 +693,38 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
         setupProcessingLogic(processingLogic);
 
-        if (isInputSeparationEnabled()) {
-            for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
-                List<ItemStack> inputItems = new ArrayList<>();
-                for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
-                    ItemStack stored = bus.getStackInSlot(i);
-                    if (stored != null) {
-                        inputItems.add(stored);
-                    }
-                }
-                processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+        // check crafting input hatches first
+        for (GT_MetaTileEntity_Hatch_CraftingInput_ME craftingInput : mCraftingInputs) {
+            for (Iterator<GT_MetaTileEntity_Hatch_CraftingInput_ME.PatternSlot> it = craftingInput.inventories(); it.hasNext(); ) {
+                GT_MetaTileEntity_Hatch_CraftingInput_ME.PatternSlot slot = it.next();
+                processingLogic.setInputItems(slot.getItemInputs());
+                processingLogic.setInputFluids(slot.getFluidInputs());
                 result = processingLogic.process();
                 if (result.wasSuccessful()) break;
             }
-        } else {
-            processingLogic.setInputItems(getStoredInputs());
-            result = processingLogic.process();
+        }
+
+        // if no recipe was found, check input hatches/buses
+        if (result == CheckRecipeResultRegistry.NO_RECIPE) {
+            processingLogic.setInputFluids(getStoredFluids());
+
+            if (isInputSeparationEnabled()) {
+                for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
+                    List<ItemStack> inputItems = new ArrayList<>();
+                    for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                        ItemStack stored = bus.getStackInSlot(i);
+                        if (stored != null) {
+                            inputItems.add(stored);
+                        }
+                    }
+                    processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+                    result = processingLogic.process();
+                    if (result.wasSuccessful()) break;
+                }
+            } else {
+                processingLogic.setInputItems(getStoredInputs());
+                result = processingLogic.process();
+            }
         }
 
         // inputs are consumed by `process()`
@@ -743,7 +758,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         logic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
         logic.setBatchSize(isBatchModeEnabled() ? getMaxBatchSize() : 1);
         logic.setRecipeLocking(this, isRecipeLockingEnabled());
-        logic.setInputFluids(getStoredFluids());
         setProcessingLogicPower(logic);
     }
 
@@ -1320,6 +1334,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME hatch) {
+            hatch.mRecipeMap = getRecipeMap();
+            return mCraftingInputs.add(hatch);
+        }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
             ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = getRecipeMap();
             return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
@@ -1420,6 +1438,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME hatch){
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.mRecipeMap = getRecipeMap();
+            return mCraftingInputs.add(hatch);
+        }
+
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
