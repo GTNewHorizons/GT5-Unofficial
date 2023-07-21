@@ -46,7 +46,7 @@ public class AssemblyLine implements Runnable {
                     ItemList.OreDrill4.get(1L),
                     (int) TierEU.RECIPE_LuV,
                     new Object[] { ItemList.OreDrill4.get(1L),
-                            GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Europium, 9L),
+                            GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 9L),
                             Materials.Europium.getPlates(3), ItemList.Electric_Motor_LuV.get(9L),
                             ItemList.Sensor_LuV.get(9L), ItemList.Field_Generator_LuV.get(9L),
                             GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Europium, 36L) },
