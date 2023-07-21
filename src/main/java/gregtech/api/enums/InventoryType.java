@@ -2,5 +2,6 @@ package gregtech.api.enums;
 
 public enum InventoryType {
     Input,
-    Output;
+    Output,
+    Both;
 }

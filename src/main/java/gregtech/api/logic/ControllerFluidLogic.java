@@ -24,6 +24,16 @@ public class ControllerFluidLogic {
     private final Map<UUID, FluidInventoryLogic> inventories = new HashMap<>();
     private final Set<Pair<UUID, FluidInventoryLogic>> unallocatedInventories = new HashSet<>();
 
+    public void addInventory(UUID id, @NotNull FluidInventoryLogic inventory) {
+        Pair<UUID, FluidInventoryLogic> found = checkIfInventoryExistsAsUnallocated(inventory);
+        if (inventory.isUpgradeInventory() && found != null) {
+            unallocatedInventories.remove(found);
+            inventories.put(id, found.getRight());
+            return;
+        }
+        inventories.put(id, inventory);
+    }
+
     public UUID addInventory(@NotNull FluidInventoryLogic inventory) {
         Pair<UUID, FluidInventoryLogic> found = checkIfInventoryExistsAsUnallocated(inventory);
         if (inventory.isUpgradeInventory() && found != null) {
@@ -64,6 +74,21 @@ public class ControllerFluidLogic {
     public FluidInventoryLogic getInventoryLogic(UUID id) {
         if (id == null) return getAllInventoryLogics();
         return inventories.get(id);
+    }
+
+    public String getInventoryDisplayName(UUID id) {
+        if (id == null) return "";
+        FluidInventoryLogic logic = inventories.get(id);
+        if (logic == null) return "";
+        return logic.getDisplayName() == null || logic.getDisplayName()
+            .isEmpty() ? id.toString() : logic.getDisplayName();
+    }
+
+    public void setInventoryDisplayName(UUID id, String displayName) {
+        if (id == null) return;
+        FluidInventoryLogic logic = inventories.get(id);
+        if (logic == null) return;
+        logic.setDisplayName(displayName);
     }
 
     public NBTTagCompound saveToNBT() {

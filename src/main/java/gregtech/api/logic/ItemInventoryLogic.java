@@ -9,6 +9,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -46,7 +49,11 @@ public class ItemInventoryLogic {
         this(new ItemStackHandler(numberOfSlots), tier, false);
     }
 
-    public ItemInventoryLogic(IItemHandlerModifiable inventory, int tier, boolean isUpgradeInventory) {
+    public ItemInventoryLogic(int numberOfSlots, int tier, boolean isUpgradeInventory) {
+        this(new ItemStackHandler(numberOfSlots), tier, isUpgradeInventory);
+    }
+
+    public ItemInventoryLogic(@Nonnull IItemHandlerModifiable inventory, int tier, boolean isUpgradeInventory) {
         this.inventory = inventory;
         this.tier = tier;
         this.isUpgradeInventory = isUpgradeInventory;
@@ -68,7 +75,11 @@ public class ItemInventoryLogic {
         return isUpgradeInventory;
     }
 
-    public ItemInventoryLogic setDisplayName(String displayName) {
+    public int getSlots() {
+        return getInventory().getSlots();
+    }
+
+    public ItemInventoryLogic setDisplayName(@Nullable String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -77,7 +88,7 @@ public class ItemInventoryLogic {
         return connectedFluidInventory;
     }
 
-    public void setConnectedFluidInventoryID(UUID connectedFluidTank) {
+    public void setConnectedFluidInventoryID(@Nullable UUID connectedFluidTank) {
         this.connectedFluidInventory = connectedFluidTank;
     }
 
@@ -97,10 +108,10 @@ public class ItemInventoryLogic {
             tStack.writeToNBT(tag);
             tList.appendTag(tag);
         }
-        nbt.setTag("Inventory", tList);
-        nbt.setInteger("Tier", tier);
-        nbt.setString("DisplayName", displayName);
-        nbt.setBoolean("IsUpgradeInventory", isUpgradeInventory);
+        nbt.setTag("inventory", tList);
+        nbt.setInteger("tier", tier);
+        nbt.setString("displayName", displayName);
+        nbt.setBoolean("isUpgradeInventory", isUpgradeInventory);
         return nbt;
     }
 
@@ -108,15 +119,17 @@ public class ItemInventoryLogic {
      * Loads the Item Inventory Logic from an NBTTagCompound.
      */
     public void loadFromNBT(NBTTagCompound nbt) {
-        NBTTagList nbtList = nbt.getTagList("Inventory", Constants.NBT.TAG_COMPOUND);
+        NBTTagList nbtList = nbt.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < nbtList.tagCount(); i++) {
             final NBTTagCompound tNBT = nbtList.getCompoundTagAt(i);
             final int tSlot = tNBT.getShort("s");
-            if (tSlot >= 0 && tSlot < inventory.getSlots()) inventory.setStackInSlot(tSlot, GT_Utility.loadItem(tNBT));
+            if (tSlot >= 0 && tSlot < inventory.getSlots()) {
+                inventory.setStackInSlot(tSlot, GT_Utility.loadItem(tNBT));
+            }
         }
-        tier = nbt.getInteger("Tier");
-        displayName = nbt.getString("DisplayName");
-        isUpgradeInventory = nbt.getBoolean("IsUpgradeInventory");
+        tier = nbt.getInteger("tier");
+        displayName = nbt.getString("displayName");
+        isUpgradeInventory = nbt.getBoolean("isUpgradeInventory");
     }
 
     public IItemHandlerModifiable getInventory() {
@@ -135,6 +148,7 @@ public class ItemInventoryLogic {
         return true;
     }
 
+    @Nullable
     public ItemStack insertItem(ItemStack item) {
         if (!isStackValid(item)) return item;
         for (int i = 0; i < inventory.getSlots() && item != null && item.stackSize > 0; i++) {
@@ -143,6 +157,7 @@ public class ItemInventoryLogic {
         return item;
     }
 
+    @Nullable
     public ItemStack extractItem(int slot, int amount) {
         return inventory.extractItem(slot, amount, false);
     }

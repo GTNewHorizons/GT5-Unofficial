@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
@@ -35,7 +38,11 @@ public class FluidInventoryLogic {
         this(new FluidTanksHandler(numberOfSlots, capacityOfEachTank), tier, true);
     }
 
-    public FluidInventoryLogic(IFluidTanksHandler inventory, int tier, boolean isUpgradeInventory) {
+    public FluidInventoryLogic(int numberOfSlots, long capacityOfEachTank, int tier, boolean isUpgradeInventory) {
+        this(new FluidTanksHandler(numberOfSlots, capacityOfEachTank), tier, isUpgradeInventory);
+    }
+
+    public FluidInventoryLogic(@Nonnull IFluidTanksHandler inventory, int tier, boolean isUpgradeInventory) {
         this.inventory = inventory;
         fluidToTankMap = new HashMap<>(inventory.getTanks());
         this.tier = tier;
@@ -58,7 +65,7 @@ public class FluidInventoryLogic {
         return isUpgradeInventory;
     }
 
-    public FluidInventoryLogic setDisplayName(String displayName) {
+    public FluidInventoryLogic setDisplayName(@Nullable String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -90,16 +97,16 @@ public class FluidInventoryLogic {
      * Loads the Item Inventory Logic from an NBTTagList.
      */
     public void loadFromNBT(NBTTagCompound nbt) {
-        NBTTagList nbtList = nbt.getTagList("Inventory", Constants.NBT.TAG_COMPOUND);
+        NBTTagList nbtList = nbt.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < nbtList.tagCount(); i++) {
             final NBTTagCompound tankNBT = nbtList.getCompoundTagAt(i);
             final int tank = tankNBT.getShort("s");
             if (tank >= 0 && tank < inventory.getTanks()) inventory.getFluidTank(tank)
                 .loadFromNBT(tankNBT);
         }
-        tier = nbt.getInteger("Tier");
-        displayName = nbt.getString("DisplayName");
-        isUpgradeInventory = nbt.getBoolean("IsUpgradeInventory");
+        tier = nbt.getInteger("tier");
+        displayName = nbt.getString("displayName");
+        isUpgradeInventory = nbt.getBoolean("isUpgradeInventory");
     }
 
     public IFluidTanksHandler getInventory() {
@@ -138,6 +145,7 @@ public class FluidInventoryLogic {
         return tank.fill(fluid, amount, false);
     }
 
+    @Nullable
     public FluidStack drain(Fluid fluid, int amount) {
         if (!isFluidValid(fluid)) return null;
         IFluidTankLong tank = fluidToTankMap.get(fluid);

@@ -7,12 +7,14 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Logic of the Item logic for the controller. This is controlling all of the inventories.
@@ -24,7 +26,18 @@ public class ControllerItemLogic {
     private final Map<UUID, ItemInventoryLogic> inventories = new HashMap<>();
     private final Set<Pair<UUID, ItemInventoryLogic>> unallocatedInventories = new HashSet<>();
 
-    public UUID addInventory(@NotNull ItemInventoryLogic inventory) {
+    public void addInventory(UUID id, ItemInventoryLogic inventory) {
+        Pair<UUID, ItemInventoryLogic> found = checkIfInventoryExistsAsUnallocated(inventory);
+        if (inventory.isUpgradeInventory() && found != null) {
+            unallocatedInventories.remove(found);
+            inventories.put(id, found.getRight());
+            return;
+        }
+        inventories.put(id, inventory);
+    }
+
+    @Nonnull
+    public UUID addInventory(@Nonnull ItemInventoryLogic inventory) {
         Pair<UUID, ItemInventoryLogic> found = checkIfInventoryExistsAsUnallocated(inventory);
         if (inventory.isUpgradeInventory() && found != null) {
             unallocatedInventories.remove(found);
@@ -36,11 +49,14 @@ public class ControllerItemLogic {
         return generatedUUID;
     }
 
-    private Pair<UUID, ItemInventoryLogic> checkIfInventoryExistsAsUnallocated(@NotNull ItemInventoryLogic inventory) {
+    @Nonnull
+    private Pair<UUID, ItemInventoryLogic> checkIfInventoryExistsAsUnallocated(@Nonnull ItemInventoryLogic inventory) {
         return unallocatedInventories.stream()
             .filter(
                 unallocated -> unallocated.getRight()
-                    .getTier() == inventory.getTier())
+                    .getTier() == inventory.getTier()
+                    && unallocated.getRight()
+                        .getSlots() == inventory.getSlots())
             .findFirst()
             .get();
     }
@@ -48,10 +64,12 @@ public class ControllerItemLogic {
     /**
      * Removes the inventory with said id and gives it back to be processed if needed.
      */
-    public ItemInventoryLogic removeInventory(@NotNull UUID id) {
+    @Nonnull
+    public ItemInventoryLogic removeInventory(@Nonnull UUID id) {
         return inventories.remove(id);
     }
 
+    @Nonnull
     public ItemInventoryLogic getAllInventoryLogics() {
         return new ItemInventoryLogic(
             inventories.values()
@@ -60,11 +78,29 @@ public class ControllerItemLogic {
                 .collect(Collectors.toList()));
     }
 
-    public ItemInventoryLogic getInventoryLogic(UUID id) {
+    @Nonnull
+    public ItemInventoryLogic getInventoryLogic(@Nullable UUID id) {
         if (id == null) return getAllInventoryLogics();
         return inventories.get(id);
     }
 
+    @Nullable
+    public String getInventoryDisplayName(@Nullable UUID id) {
+        if (id == null) return "";
+        ItemInventoryLogic logic = inventories.get(id);
+        if (logic == null) return "";
+        return logic.getDisplayName() == null || logic.getDisplayName()
+            .isEmpty() ? id.toString() : logic.getDisplayName();
+    }
+
+    public void setInventoryDisplayName(@Nullable UUID id, @Nullable String displayName) {
+        if (id == null) return;
+        ItemInventoryLogic logic = inventories.get(id);
+        if (logic == null) return;
+        logic.setDisplayName(displayName);
+    }
+
+    @Nonnull
     public NBTTagCompound saveToNBT() {
         NBTTagCompound nbt = new NBTTagCompound();
         NBTTagList inventoriesNBT = new NBTTagList();
@@ -82,7 +118,7 @@ public class ControllerItemLogic {
         return nbt;
     }
 
-    public void loadFromNBT(NBTTagCompound nbt) {
+    public void loadFromNBT(@Nonnull NBTTagCompound nbt) {
         NBTTagList inventoriesNBT = nbt.getTagList("inventories", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < inventoriesNBT.tagCount(); i++) {
             NBTTagCompound inventoryNBT = inventoriesNBT.getCompoundTagAt(i);
