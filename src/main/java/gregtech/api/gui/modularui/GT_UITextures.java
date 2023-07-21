@@ -326,6 +326,8 @@ public class GT_UITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/transpose");
     public static final UITexture OVERLAY_BUTTON_SORTING_MODE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/sorting_mode");
+    public static final UITexture OVERLAY_BUTTON_ONE_STACK_LIMIT = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/one_stack_limit");
     public static final UITexture OVERLAY_BUTTON_BOUNDING_BOX = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/bounding_box");
     public static final UITexture OVERLAY_BUTTON_MINUS_SMALL = UITexture
