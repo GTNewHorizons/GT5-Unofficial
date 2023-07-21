@@ -705,10 +705,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             if (result.wasSuccessful()) break;
         }
 
-        // if no recipe was found, check input hatches/buses
-        if (result == CheckRecipeResultRegistry.NO_RECIPE) {
-            processingLogic.setInputFluids(getStoredFluids());
-
+        if (!result.wasSuccessful()) {
             if (isInputSeparationEnabled()) {
                 for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
                     List<ItemStack> inputItems = new ArrayList<>();
@@ -718,12 +715,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                             inputItems.add(stored);
                         }
                     }
+                    if (getControllerSlot() != null && canUseControllerSlotForRecipe()) {
+                        inputItems.add(getControllerSlot());
+                    }
                     processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
                     result = processingLogic.process();
                     if (result.wasSuccessful()) break;
                 }
             } else {
-                processingLogic.setInputItems(getStoredInputs());
+                List<ItemStack> inputItems = getStoredInputs();
+                if (getControllerSlot() != null && canUseControllerSlotForRecipe()) {
+                    inputItems.add(getControllerSlot());
+                }
+                processingLogic.setInputItems(inputItems);
                 result = processingLogic.process();
             }
         }
@@ -750,6 +754,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mOutputFluids = processingLogic.getOutputFluids();
 
         return result;
+    }
+
+    protected boolean canUseControllerSlotForRecipe() {
+        return true;
     }
 
     protected void setupProcessingLogic(ProcessingLogic logic) {
