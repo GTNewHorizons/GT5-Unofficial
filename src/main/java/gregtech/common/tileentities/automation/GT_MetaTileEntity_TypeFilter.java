@@ -84,36 +84,46 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
     @Override
     public void clickTypeIcon(boolean aRightClick, ItemStack aHandStack) {
         if (getBaseMetaTileEntity().isServerSide()) {
-            ItemData data = GT_OreDictUnificator.getAssociation(aHandStack);
-            if (data != null && data.hasValidPrefixData()) {
-                this.mPrefix = data.mPrefix;
-                this.mRotationIndex = -1;
-                return;
+            if (aHandStack != null) {
+                copyHeldItemPrefix(aHandStack);
+            } else {
+                cyclePrefix(aRightClick);
             }
-            for (int i = 0; i < OrePrefixes.values().length; i++) {
-                if (this.mPrefix == OrePrefixes.values()[i]) {
-                    for (this.mPrefix = null; this.mPrefix == null; this.mPrefix = OrePrefixes.values()[i]) {
-                        if (aRightClick) {
-                            do {
-                                i--;
-                                if (i < 0) {
-                                    i = OrePrefixes.values().length - 1;
-                                }
-                            } while (OrePrefixes.values()[i].mPrefixedItems.isEmpty());
-                        } else {
-                            do {
-                                i++;
-                                if (i >= OrePrefixes.values().length) {
-                                    i = 0;
-                                }
-                            } while (OrePrefixes.values()[i].mPrefixedItems.isEmpty());
-                        }
-                        if (!OrePrefixes.values()[i].mPrefixedItems.isEmpty()
-                            && OrePrefixes.values()[i].mPrefixInto == OrePrefixes.values()[i])
-                            mPrefix = OrePrefixes.values()[i];
+        }
+    }
+
+    private void cyclePrefix(boolean aRightClick) {
+        for (int i = 0; i < OrePrefixes.values().length; i++) {
+            if (this.mPrefix == OrePrefixes.values()[i]) {
+                for (this.mPrefix = null; this.mPrefix == null; this.mPrefix = OrePrefixes.values()[i]) {
+                    if (aRightClick) {
+                        do {
+                            i--;
+                            if (i < 0) {
+                                i = OrePrefixes.values().length - 1;
+                            }
+                        } while (OrePrefixes.values()[i].mPrefixedItems.isEmpty());
+                    } else {
+                        do {
+                            i++;
+                            if (i >= OrePrefixes.values().length) {
+                                i = 0;
+                            }
+                        } while (OrePrefixes.values()[i].mPrefixedItems.isEmpty());
                     }
+                    if (!OrePrefixes.values()[i].mPrefixedItems.isEmpty()
+                        && OrePrefixes.values()[i].mPrefixInto == OrePrefixes.values()[i])
+                        mPrefix = OrePrefixes.values()[i];
                 }
             }
+            this.mRotationIndex = -1;
+        }
+    }
+
+    private void copyHeldItemPrefix(ItemStack aHandStack) {
+        ItemData data = GT_OreDictUnificator.getAssociation(aHandStack);
+        if (data != null && data.hasValidPrefixData()) {
+            this.mPrefix = data.mPrefix;
             this.mRotationIndex = -1;
         }
     }
