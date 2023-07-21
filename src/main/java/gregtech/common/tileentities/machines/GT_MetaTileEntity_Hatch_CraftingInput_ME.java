@@ -67,9 +67,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 /*
-1. persist patterns in the bus
 4. ui button to return all items
-manual slot
 quick recipe trigger
 rename
 blocking mode?
@@ -94,14 +92,14 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
         private ItemStack pattern;
         private ICraftingPatternDetails patternDetails;
-        private List<ItemStack> inventory;
+        private List<ItemStack> itemInventory;
         private List<FluidStack> fluidInventory;
         private SharedItemGetter sharedItemGetter;
 
         public PatternSlot(ItemStack pattern, World world, SharedItemGetter getter) {
             this.pattern = pattern;
             this.patternDetails = ((ICraftingPatternItem) Objects.requireNonNull(pattern.getItem())).getPatternForItem(pattern, world);
-            this.inventory = new ArrayList<>();
+            this.itemInventory = new ArrayList<>();
             this.fluidInventory = new ArrayList<>();
             this.sharedItemGetter = getter;
         }
@@ -109,12 +107,12 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         public PatternSlot(NBTTagCompound nbt, World world, SharedItemGetter getter) {
             this.pattern = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("pattern"));
             this.patternDetails = ((ICraftingPatternItem) Objects.requireNonNull(pattern.getItem())).getPatternForItem(pattern, world);
-            this.inventory = new ArrayList<>();
+            this.itemInventory = new ArrayList<>();
             this.fluidInventory = new ArrayList<>();
             this.sharedItemGetter = getter;
             NBTTagList inv = nbt.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < inv.tagCount(); i++) {
-                inventory.add(ItemStack.loadItemStackFromNBT(inv.getCompoundTagAt(i)));
+                itemInventory.add(ItemStack.loadItemStackFromNBT(inv.getCompoundTagAt(i)));
             }
             NBTTagList fluidInv = nbt.getTagList("fluidInventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < fluidInv.tagCount(); i++) {
@@ -132,7 +130,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
         public ItemStack[] getItemInputs() {
             return ArrayUtils.addAll(
-                inventory.toArray(new ItemStack[0]),
+                itemInventory.toArray(new ItemStack[0]),
                 sharedItemGetter.getSharedItem()
             );
         }
@@ -147,7 +145,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
         public void refund(AENetworkProxy proxy, BaseActionSource src) throws GridAccessException {
             IMEMonitor<IAEItemStack> sg = proxy.getStorage().getItemInventory();
-            for (ItemStack itemStack : inventory) {
+            for (ItemStack itemStack : itemInventory) {
                 if (itemStack == null || itemStack.stackSize == 0) continue;
                 IAEItemStack rest = Platform.poweredInsert(proxy.getEnergy(), sg,
                     AEApi.instance()
@@ -190,7 +188,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                         fluidInventory.add(fluidStack);
                     }
                 } else { // insert item
-                    for (var item : inventory) {
+                    for (var item : itemInventory) {
                         if (itemStack.isItemEqual(item)) {
                             item.stackSize += itemStack.stackSize;
                             inserted = true;
@@ -198,7 +196,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                         }
                     }
                     if (!inserted) {
-                        inventory.add(itemStack);
+                        itemInventory.add(itemStack);
                     }
                 }
             }
@@ -208,7 +206,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             nbt.setTag("pattern", pattern.writeToNBT(new NBTTagCompound()));
 
             NBTTagList itemInventoryNbt = new NBTTagList();
-            for (ItemStack itemStack : this.inventory) {
+            for (ItemStack itemStack : this.itemInventory) {
                 itemInventoryNbt.appendTag(itemStack.writeToNBT(new NBTTagCompound()));
             }
             nbt.setTag("inventory", itemInventoryNbt);
@@ -231,6 +229,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     private Map<ICraftingPatternDetails, PatternSlot> patternDetailsPatternSlotMap = new HashMap<>(MAX_PATTERN_COUNT);
 
     private boolean initialPatternSyncDone = false;
+    private boolean justHadNewItems = false;
 
     public GT_MetaTileEntity_Hatch_CraftingInput_ME(int aID, String aName, String aNameRegional) {
         super(
@@ -268,7 +267,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         super.onPostTick(aBaseMetaTileEntity, aTimer);
 
-        if (!initialPatternSyncDone && aTimer % 10 == 0) {
+        if (!initialPatternSyncDone && aTimer % 10 == 0 && getBaseMetaTileEntity().isServerSide()) {
             try {
                 getProxy().getGrid().postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
             } catch (GridAccessException ignored) {
@@ -417,7 +416,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
                 i += 1;
                 ret.add("Slot " + i + " " + EnumChatFormatting.BLUE + describePattern(slot.patternDetails) + EnumChatFormatting.RESET);
-                for(var item : slot.inventory) {
+                for(var item : slot.itemInventory) {
                     if (item == null || item.stackSize == 0) continue;
                     ret.add(item.getItem().getItemStackDisplayName(item) + ": "
                         + EnumChatFormatting.GOLD
@@ -571,7 +570,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         HashMap<String, Integer> nameToAmount = new HashMap<>();
         for (Iterator<PatternSlot> it = inventories(); it.hasNext(); ) {
             var i = it.next();
-            for (var item : i.inventory) {
+            for (var item : i.itemInventory) {
                 if (item != null && item.stackSize > 0) {
                     var name = item.getDisplayName();
                     var amount = nameToAmount.getOrDefault(name, 0);
@@ -611,6 +610,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     public boolean pushPattern(ICraftingPatternDetails patternDetails, InventoryCrafting table) {
         if (!isActive()) return false;
         patternDetailsPatternSlotMap.get(patternDetails).insertItemsAndFluids(table);
+        justHadNewItems = true;
         return true;
     }
 
@@ -633,5 +633,11 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
 
         super.onBlockDestroyed();
+    }
+
+    public boolean justUpdated() {
+        var ret = justHadNewItems;
+        justHadNewItems = false;
+        return ret;
     }
 }
