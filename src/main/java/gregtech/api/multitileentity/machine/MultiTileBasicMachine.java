@@ -78,13 +78,9 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     protected long progressTime = 0;
     protected long burnTime = 0;
     protected long totalBurnTime = 0;
-    protected FluidTankGT[] inputTanks = GT_Values.emptyFluidTankGT;
-    protected FluidTankGT[] outputTanks = GT_Values.emptyFluidTankGT;
     protected FluidStack[] fluidsToOutput = GT_Values.emptyFluidStack;
     protected ItemStack[] itemsToOutput = GT_Values.emptyItemStackArray;
 
-    protected IItemHandlerModifiable inputInventory = EMPTY_INVENTORY;
-    protected IItemHandlerModifiable outputInventory = EMPTY_INVENTORY;
     protected boolean outputInventoryChanged = false;
     protected boolean powerShutDown = false;
     protected boolean wasEnabled = false;
@@ -120,18 +116,6 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
             nbt.setBoolean(NBT.ACTIVE, active);
         }
 
-        for (int i = 0; i < inputTanks.length; i++) {
-            inputTanks[i].writeToNBT(nbt, NBT.TANK_IN + i);
-        }
-
-        for (int i = 0; i < outputTanks.length; i++) {
-            outputTanks[i].writeToNBT(nbt, NBT.TANK_OUT + i);
-        }
-
-        if (fluidsToOutput != null && fluidsToOutput.length > 0) {
-            writeFluids(nbt, fluidsToOutput, NBT.FLUID_OUT);
-        }
-
         if (itemsToOutput != null) {
             saveItemsToOutput(nbt);
         }
@@ -153,36 +137,6 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
 
     protected void saveFluidLogic(NBTTagCompound nbt) {
 
-    }
-
-    protected void writeFluids(NBTTagCompound nbt, FluidStack[] fluids, String fluidListTag) {
-        if (fluids != null && fluids.length > 0) {
-            final NBTTagList tList = new NBTTagList();
-            for (final FluidStack tFluid : fluids) {
-                if (tFluid != null) {
-                    final NBTTagCompound tag = new NBTTagCompound();
-                    tFluid.writeToNBT(tag);
-                    tList.appendTag(tag);
-                }
-            }
-            nbt.setTag(fluidListTag, tList);
-        }
-    }
-
-    protected void writeInventory(NBTTagCompound nbt, IItemHandlerModifiable inv, String invListTag) {
-        if (inv != null && inv.getSlots() > 0) {
-            final NBTTagList tList = new NBTTagList();
-            for (int slot = 0; slot < inv.getSlots(); slot++) {
-                final ItemStack tStack = inv.getStackInSlot(slot);
-                if (tStack != null) {
-                    final NBTTagCompound tag = new NBTTagCompound();
-                    tag.setByte("s", (byte) slot);
-                    tStack.writeToNBT(tag);
-                    tList.appendTag(tag);
-                }
-            }
-            nbt.setTag(invListTag, tList);
-        }
     }
 
     protected void saveItemsToOutput(NBTTagCompound aNBT) {
@@ -210,32 +164,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
             active = nbt.getBoolean(NBT.ACTIVE);
         }
 
-        /* Inventories */
-        inputInventory = new ItemStackHandler(Math.max(nbt.getInteger(NBT.INV_INPUT_SIZE), 0));
-        outputInventory = new ItemStackHandler(Math.max(nbt.getInteger(NBT.INV_OUTPUT_SIZE), 0));
-        loadInventory(nbt, inputInventory, NBT.INV_INPUT_LIST);
-        loadInventory(nbt, outputInventory, NBT.INV_OUTPUT_LIST);
-
-        /* Tanks */
-        long capacity = 1000;
-        if (nbt.hasKey(NBT.TANK_CAPACITY)) {
-            capacity = saturatedCast(nbt.getLong(NBT.TANK_CAPACITY));
-        }
-
-        inputTanks = new FluidTankGT[getFluidInputCount()];
-        outputTanks = new FluidTankGT[getFluidOutputCount()];
         fluidsToOutput = new FluidStack[getFluidOutputCount()];
-
-        // TODO: See if we need the adjustable map here `.setCapacity(mRecipes, mParallel * 2L)` in place of the
-        // `setCapacityMultiplier`
-        for (int i = 0; i < inputTanks.length; i++) {
-            inputTanks[i] = new FluidTankGT(capacity).setCapacityMultiplier(maxParallel * 2L)
-                .readFromNBT(nbt, NBT.TANK_IN + i);
-        }
-        for (int i = 0; i < outputTanks.length; i++) {
-            outputTanks[i] = new FluidTankGT(capacity).setCapacityMultiplier(maxParallel * 2L)
-                .readFromNBT(nbt, NBT.TANK_OUT + i);
-        }
 
         for (int i = 0; i < fluidsToOutput.length; i++) {
             fluidsToOutput[i] = FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag(NBT.FLUID_OUT + "." + i));
@@ -260,15 +189,6 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
 
     protected void loadFluidLogic(NBTTagCompound nbt) {
 
-    }
-
-    protected void loadInventory(NBTTagCompound nbt, IItemHandlerModifiable inv, String invListTag) {
-        final NBTTagList tList = nbt.getTagList(invListTag, 10);
-        for (int i = 0; i < tList.tagCount(); i++) {
-            final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
-            final int tSlot = tNBT.getShort("s");
-            if (tSlot >= 0 && tSlot < inv.getSlots()) inv.setStackInSlot(tSlot, GT_Utility.loadItem(tNBT));
-        }
     }
 
     protected void loadItemsToOutput(NBTTagCompound aNBT) {
@@ -401,52 +321,6 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         return side != facing;
     }
 
-    @Override
-    protected IFluidTank[] getFluidTanks(ForgeDirection side) {
-        final boolean fluidInput = isLiquidInput(side);
-        final boolean fluidOutput = isLiquidOutput(side);
-
-        if (fluidInput && fluidOutput) {
-            final IFluidTank[] rTanks = new IFluidTank[inputTanks.length + outputTanks.length];
-            System.arraycopy(inputTanks, 0, rTanks, 0, inputTanks.length);
-            System.arraycopy(outputTanks, 0, rTanks, inputTanks.length, outputTanks.length);
-            return rTanks;
-        } else if (fluidInput) {
-            return inputTanks;
-        } else if (fluidOutput) {
-            return outputTanks;
-        }
-        return GT_Values.emptyFluidTank;
-    }
-
-    @Override
-    public IFluidTank getFluidTankFillable(ForgeDirection side, FluidStack aFluidToFill) {
-        return getFluidTankFillable(facing, side, aFluidToFill);
-    }
-
-    public IFluidTank getFluidTankFillable(ForgeDirection sideSource, ForgeDirection sideDestination,
-        FluidStack fluidToFill) {
-        if (sideSource.compareTo(sideDestination) != 0) return null;
-        for (FluidTankGT tankGT : inputTanks) if (tankGT.contains(fluidToFill)) return tankGT;
-        // if (!mRecipes.containsInput(aFluidToFill, this, slot(mRecipes.mInputItemsCount +
-        // mRecipes.mOutputItemsCount))) return null;
-        for (FluidTankGT fluidTankGT : inputTanks) if (fluidTankGT.isEmpty()) return fluidTankGT;
-        return null;
-    }
-
-    @Override
-    protected IFluidTank getFluidTankDrainable(ForgeDirection side, FluidStack aFluidToDrain) {
-        return getFluidTankDrainable(facing, side, aFluidToDrain);
-    }
-
-    protected IFluidTank getFluidTankDrainable(ForgeDirection sideSource, ForgeDirection sideDestination,
-        FluidStack fluidToDrain) {
-        if (sideSource.compareTo(sideDestination) != 0) return null;
-        for (FluidTankGT fluidTankGT : outputTanks)
-            if (fluidToDrain == null ? fluidTankGT.has() : fluidTankGT.contains(fluidToDrain)) return fluidTankGT;
-
-        return null;
-    }
 
     /*
      * Inventory
@@ -558,22 +432,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
      * Runs only on server side
      */
     protected boolean checkRecipe() {
-        if (!(this instanceof ProcessingLogicHost)) {
-            return false;
-        }
-        ProcessingLogic logic = ((ProcessingLogicHost) this).getProcessingLogic();
-        logic.clear();
-        boolean result = logic.setInputItems(getInputItems())
-            .setInputFluids(getInputFluids())
-            .setCurrentOutputItems(
-                outputInventory.getStacks()
-                    .toArray(new ItemStack[0]))
-            .process();
-        setDuration(logic.getDuration());
-        setEut(logic.getEut());
-        setItemOutputs(logic.getOutputItems());
-        setFluidOutputs(logic.getOutputFluids());
-        return result;
+        return false;
     }
 
     /**
@@ -657,61 +516,21 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     }
 
     protected ItemStack[] getInputItems() {
-        return inputInventory.getStacks()
-            .toArray(new ItemStack[0]);
+        return itemInput.getStoredItems();
     }
 
     protected FluidStack[] getInputFluids() {
-        return Arrays.stream(inputTanks)
-            .map(FluidTankGT::get)
-            .toArray(FluidStack[]::new);
+        return fluidInput.getStoredFluids();
     }
 
     protected void outputItems() {
-        outputItems(itemsToOutput);
+        // TODO make it work with new logic
         itemsToOutput = null;
     }
 
-    protected void outputItems(ItemStack... itemsToOutput) {
-        outputItems(outputInventory, itemsToOutput);
-    }
-
-    protected void outputItems(IItemHandlerModifiable inventory, ItemStack... itemsToOutput) {
-        if (itemsToOutput == null || inventory == null) {
-            return;
-        }
-        for (ItemStack item : itemsToOutput) {
-            int index = 0;
-            while (item != null && item.stackSize > 0 && index < inventory.getSlots()) {
-                item = inventory.insertItem(index++, item.copy(), false);
-            }
-        }
-    }
-
     protected void outputFluids() {
-        outputFluids(fluidsToOutput);
+        //TODO make it work with new logic
         fluidsToOutput = null;
-    }
-
-    protected void outputFluids(FluidStack... fluidsToOutput) {
-        outputFluids(outputTanks, fluidsToOutput);
-    }
-
-    protected void outputFluids(FluidTankGT[] tankArray, FluidStack... fluidsToOutput) {
-        if (fluidsToOutput == null) {
-            return;
-        }
-        for (FluidStack fluid : fluidsToOutput) {
-            tryToFillTanks(fluid, tankArray);
-        }
-    }
-
-    protected void tryToFillTanks(FluidStack fluid, FluidTankGT... tanks) {
-        for (FluidTankGT tank : tanks) {
-            if (tank.canFillAll(fluid)) {
-                fluid.amount -= tank.add(fluid.amount, fluid);
-            }
-        }
     }
 
     public long getProgress() {
@@ -801,27 +620,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     }
 
     protected boolean consumeFuel() {
-        if (isActive() && burnTime <= 0) {
-            for (int i = 0; i < inputInventory.getSlots(); i++) {
-                if (inputInventory.getStackInSlot(i) != null) {
-                    int checkBurnTime = TileEntityFurnace.getItemBurnTime(inputInventory.getStackInSlot(i)) / 10;
-                    if (checkBurnTime <= 0) continue;
-                    inputInventory.getStackInSlot(i).stackSize--;
-                    burnTime = checkBurnTime;
-                    totalBurnTime = checkBurnTime;
-                    break;
-                }
-            }
-            updateSlots();
-        }
-
-        if (--burnTime < 0) {
-            burnTime = 0;
-            totalBurnTime = 0;
-            return false;
-        }
-
-        return true;
+        // TODO: rework to use new logic
+        return false;
     }
 
     @Override
@@ -910,31 +710,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     }
 
     protected void updateSlots() {
-        for (int i = 0; i < inputInventory.getSlots(); i++) {
-            ItemStack item = inputInventory.getStackInSlot(i);
-            if (item != null && item.stackSize <= 0) {
-                inputInventory.setStackInSlot(i, null);
-            }
-        }
-
-        for (FluidTankGT inputTank : inputTanks) {
-            if (inputTank == null) {
-                continue;
-            }
-
-            if (inputTank.get() != null && inputTank.get().amount <= 0) {
-                inputTank.setEmpty();
-                continue;
-            }
-
-            FluidStack afterRecipe = inputTank.get();
-            FluidStack beforeRecipe = inputTank.get(Integer.MAX_VALUE);
-            if (afterRecipe == null || beforeRecipe == null) {
-                continue;
-            }
-            int difference = beforeRecipe.amount - afterRecipe.amount;
-            inputTank.remove(difference);
-        }
+        // TODO: make a method in new logic
     }
 
     /**
@@ -1020,17 +796,21 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         }
     }
 
-    public ItemInventoryLogic getItemLogic(InventoryType type) {
+    public ItemInventoryLogic getItemLogic(ForgeDirection side, InventoryType type) {
+        if (side == facing) return null;
         return switch (type) {
             case Input -> itemInput;
             case Output -> itemOutput;
+            default -> null;
         };
     }
 
-    public FluidInventoryLogic getFluidLogic(InventoryType type) {
+    public FluidInventoryLogic getFluidLogic(ForgeDirection side, InventoryType type) {
+        if (side == facing) return null;
         return switch (type) {
             case Input -> fluidInput;
             case Output -> fluidOutput;
+            default -> null;
         };
     }
 

@@ -2,6 +2,7 @@ package gregtech.api.multitileentity.multiblock.base;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
@@ -31,20 +32,14 @@ public class WallShareablePart extends MultiBlockPart {
     }
 
     @Override
-    public String getLockedInventory() {
+    public UUID getLockedInventory() {
         issueClientUpdate();
         if (targetPositions.size() > 1) {
             return null;
         }
 
         IMultiBlockController controller = getTarget(false);
-        if (!getNameOfInventoryFromIndex(controller, mLockedInventoryIndex).equals(mLockedInventory)) {
-            mLockedInventory = getNameOfInventoryFromIndex(controller, mLockedInventoryIndex);
-            if (mLockedInventory.equals("all")) {
-                mLockedInventory = "";
-            }
-        }
-        return mLockedInventory.equals("") ? null : mLockedInventory;
+        return null;
     }
 
     @Override

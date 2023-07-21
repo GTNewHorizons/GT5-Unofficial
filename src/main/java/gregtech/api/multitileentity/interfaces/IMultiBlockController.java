@@ -1,18 +1,23 @@
 package gregtech.api.multitileentity.interfaces;
 
+import java.util.UUID;
+
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
+import gregtech.api.enums.InventoryType;
+import gregtech.api.logic.FluidInventoryLogic;
+import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.logic.PowerLogic;
+import gregtech.api.logic.interfaces.FluidInventoryLogicHost;
+import gregtech.api.logic.interfaces.ItemInventoryLogicHost;
 import gregtech.api.multitileentity.enums.MultiTileCasingPurpose;
 
 public interface IMultiBlockController
-    extends IMultiTileEntity, IMultiBlockFluidHandler, IMultiBlockInventory, UpgradableMuTE {
+    extends IMultiTileEntity, FluidInventoryLogicHost, ItemInventoryLogicHost, UpgradableMuTE {
 
     boolean checkStructure(boolean aForceReset);
 
@@ -22,14 +27,6 @@ public interface IMultiBlockController
     @Override
     ChunkCoordinates getCoords();
 
-    FluidStack getDrainableFluid(ForgeDirection side);
-
-    FluidStack getDrainableFluid(ForgeDirection side, Fluid fluid);
-
-    boolean isLiquidInput(ForgeDirection side);
-
-    boolean isLiquidOutput(ForgeDirection side);
-
     void registerCoveredPartOnSide(final ForgeDirection side, IMultiBlockPart part);
 
     void unregisterCoveredPartOnSide(final ForgeDirection side, IMultiBlockPart part);
@@ -38,13 +35,19 @@ public interface IMultiBlockController
 
     void unregisterCaseWithPurpose(MultiTileCasingPurpose purpose, IMultiBlockPart part);
 
-    void registerInventory(String aName, String aID, int aInventorySize, int aType);
-
-    void unregisterInventory(String aName, String aID, int aType);
-
-    void changeInventoryName(String aName, String aID, int aType);
-
-    PowerLogic getPowerLogic(IMultiBlockPart part, ForgeDirection side);
+    PowerLogic getPowerLogic();
 
     ModularWindow createWindowGUI(UIBuildContext buildContext);
+
+    UUID registerItemInventory(int slots, int tier, InventoryType type, boolean isUpgradeInventory);
+
+    ItemInventoryLogic unregisterItemInventory(UUID id, InventoryType type);
+
+    void changeItemInventoryDisplayName(UUID id, String displayName, InventoryType type);
+
+    UUID registerFluidInventory(int tanks, long capacity, int tier, InventoryType type, boolean isUpgradeInventory);
+
+    FluidInventoryLogic unregisterFluidInventory(UUID id, InventoryType type);
+
+    void changeFluidInventoryDisplayName(UUID id, String displayName, InventoryType type);
 }

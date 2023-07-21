@@ -112,12 +112,7 @@ public class CokeOven extends Controller<CokeOven> implements PollutionLogicHost
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new SlotWidget(inputInventory, 0).setPos(18, 18)
-                .setSize(18, 18));
-        builder.widget(
-            new SlotWidget(outputInventory, 0).setPos(36, 36)
-                .setSize(18, 18));
+        // TODO Fix GUI, fully this time
         builder.widget(createButtons(builder));
     }
 

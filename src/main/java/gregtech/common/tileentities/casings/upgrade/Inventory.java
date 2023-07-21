@@ -12,6 +12,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import gregtech.api.enums.GT_Values.NBT;
+import gregtech.api.enums.InventoryType;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
@@ -19,13 +20,10 @@ import gregtech.api.net.GT_Packet_MultiTileEntity;
 public class Inventory extends UpgradeCasing {
 
     public UUID inventoryID;
-    public static final int INPUT = 0;
-    public static final int OUTPUT = 1;
-    public static final int BOTH = 2;
 
     private String inventoryName = "inventory";
     private int inventorySize;
-    private int type = BOTH;
+    private InventoryType type = InventoryType.Both;
 
     public String getCustomInventoryName() {
         return inventoryName;
@@ -39,17 +37,17 @@ public class Inventory extends UpgradeCasing {
         inventoryName = aInventoryName;
     }
 
-    public int getType() {
+    public InventoryType getType() {
         return type;
     }
 
     @Override
-    protected void customWork(IMultiBlockController aTarget) {
-        int tInvSize = inventorySize;
-        if (type == BOTH) {
-            tInvSize /= 2;
+    protected void customWork(IMultiBlockController target) {
+        int invSize = inventorySize;
+        if (type == InventoryType.Both) {
+            invSize /= 2;
         }
-        aTarget.registerInventory(inventoryName, inventoryID.toString(), tInvSize, type);
+        target.registerItemInventory(invSize, tier, type, true);
         if (isServerSide()) {
             issueClientUpdate();
         }
@@ -63,11 +61,6 @@ public class Inventory extends UpgradeCasing {
     @Override
     public void readMultiTileNBT(NBTTagCompound aNBT) {
         super.readMultiTileNBT(aNBT);
-        if (aNBT.hasKey(NBT.UPGRADE_INVENTORY_UUID)) {
-            inventoryID = UUID.fromString(aNBT.getString(NBT.UPGRADE_INVENTORY_UUID));
-        } else {
-            inventoryID = UUID.randomUUID();
-        }
         if (aNBT.hasKey(NBT.UPGRADE_INVENTORY_NAME)) {
             inventoryName = aNBT.getString(NBT.UPGRADE_INVENTORY_NAME);
         } else {
@@ -87,7 +80,7 @@ public class Inventory extends UpgradeCasing {
     public boolean breakBlock() {
         final IMultiBlockController controller = getTarget(false);
         if (controller != null) {
-            controller.unregisterInventory(inventoryName, inventoryID.toString(), type);
+            controller.unregisterItemInventory(inventoryID, type);
         }
         return super.breakBlock();
     }
@@ -105,7 +98,7 @@ public class Inventory extends UpgradeCasing {
                     inventoryName = val;
                     final IMultiBlockController controller = getTarget(false);
                     if (controller != null) {
-                        controller.changeInventoryName(inventoryName, inventoryID.toString(), type);
+                        controller.changeItemInventoryDisplayName(inventoryID, inventoryName, type);
                     }
                 })
                 .setSize(100, 25)
@@ -130,6 +123,7 @@ public class Inventory extends UpgradeCasing {
         super.addToolTips(list, stack, f3_h);
         list.add("Adds another item inventory");
         list.add("Inventory size: " + inventorySize);
+        list.add("Inventory Type: " + type);
     }
 
     public void setInventoryId(String inventoryID) {

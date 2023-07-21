@@ -135,14 +135,14 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
     protected void outputItems(int index) {
         ComplexParallelProcessingLogic processingLogic = getComplexProcessingLogic();
         if (processingLogic != null && index >= 0 && index < maxComplexParallels) {
-            outputItems(processingLogic.getOutputItems(index));
+            //outputItems(processingLogic.getOutputItems(index));
         }
     }
 
     protected void outputFluids(int index) {
         ComplexParallelProcessingLogic processingLogic = getComplexProcessingLogic();
         if (processingLogic != null && index >= 0 && index < maxComplexParallels) {
-            outputFluids(processingLogic.getOutputFluids(index));
+            //outputFluids(processingLogic.getOutputFluids(index));
         }
     }
 

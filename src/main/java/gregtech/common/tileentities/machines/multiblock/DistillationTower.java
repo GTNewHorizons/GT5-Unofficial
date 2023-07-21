@@ -126,16 +126,7 @@ public class DistillationTower extends StackableController<DistillationTower> {
 
     @Override
     protected void outputFluids() {
-        if (fluidsToOutput != null) {
-            List<FluidTankGT> tanks = Arrays.asList(outputTanks);
-            for (int i = 0; i < fluidsToOutput.length && i < (3 + stackCount); i++) {
-                if (tanks.get(i) != null && fluidsToOutput[i] != null && fluidsToOutput[i].amount > 0) {
-                    int filled = tanks.get(i)
-                        .fill(fluidsToOutput[i], true);
-                    fluidsToOutput[i].amount -= filled;
-                }
-            }
-        }
+        // TODO: Fix for new logic
     }
 
     @Override

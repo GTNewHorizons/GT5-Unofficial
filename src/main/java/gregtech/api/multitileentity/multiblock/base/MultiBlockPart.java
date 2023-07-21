@@ -11,7 +11,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ENERGY_IN_MULTI;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ENERGY_OUT_MULTI;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
-import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 
 import java.math.RoundingMode;
 import java.util.*;
@@ -24,20 +23,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidTank;
 
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.*;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.InventoryType;
 import gregtech.api.fluid.FluidTankGT;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.logic.FluidInventoryLogic;
+import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.multitileentity.base.NonTickableMultiTileEntity;
@@ -70,7 +66,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     protected int allowedModes = NOTHING; // BITMASK - Modes allowed for this part
     protected byte mMode = 0; // Mode selected for this part
 
-    protected String mLockedInventory = GT_Values.E;
+    protected UUID lockedInventory;
     protected int mLockedInventoryIndex = 0;
     protected FluidTankGT configurationTank = new FluidTankGT();
 
@@ -82,27 +78,12 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         return 1;
     }
 
-    public String getLockedInventory() {
+    @Override
+    public UUID getLockedInventory() {
         // TODO: Can this cause side-effects? Removed for now because it causes huge network traffic when using covers
         // issueClientUpdate();
         IMultiBlockController controller = getTarget(false);
-        if (modeSelected(ITEM_IN) || modeSelected(ITEM_OUT)) {
-            mLockedInventoryIndex = validateAndGetIndex(controller, mLockedInventoryIndex);
-            if (!getNameOfInventoryFromIndex(controller, mLockedInventoryIndex).equals(mLockedInventory)) {
-                mLockedInventory = getNameOfInventoryFromIndex(controller, mLockedInventoryIndex);
-                if (mLockedInventory.equals(Controller.ALL_INVENTORIES_NAME)) {
-                    mLockedInventory = "";
-                }
-            }
-        } else {
-            if (!getNameOfTankArrayFromIndex(controller, mLockedInventoryIndex).equals(mLockedInventory)) {
-                mLockedInventory = getNameOfTankArrayFromIndex(controller, mLockedInventoryIndex);
-                if (mLockedInventory.equals(Controller.ALL_INVENTORIES_NAME)) {
-                    mLockedInventory = "";
-                }
-            }
-        }
-        return mLockedInventory.equals("") ? null : mLockedInventory;
+        return null;
     }
 
     public void setTarget(IMultiBlockController newTarget, int aAllowedModes) {
@@ -245,7 +226,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
                 aNBT.getInteger(NBT.TARGET_Z));
         }
         if (aNBT.hasKey(NBT.LOCKED_INVENTORY)) {
-            mLockedInventory = aNBT.getString(NBT.LOCKED_INVENTORY);
+            lockedInventory = UUID.fromString(aNBT.getString(NBT.LOCKED_INVENTORY));
         }
         if (aNBT.hasKey(NBT.LOCKED_INVENTORY_INDEX)) {
             mLockedInventoryIndex = aNBT.getInteger(NBT.LOCKED_INVENTORY_INDEX);
@@ -271,8 +252,8 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
             aNBT.setShort(NBT.TARGET_Y, (short) targetPosition.posY);
             aNBT.setInteger(NBT.TARGET_Z, targetPosition.posZ);
         }
-        if (mLockedInventory != null) {
-            aNBT.setString(NBT.LOCKED_INVENTORY, mLockedInventory);
+        if (lockedInventory != null) {
+            aNBT.setString(NBT.LOCKED_INVENTORY, lockedInventory.toString());
         }
         if (mLockedInventoryIndex != 0) {
             aNBT.setInteger(NBT.LOCKED_INVENTORY_INDEX, mLockedInventoryIndex);
@@ -503,81 +484,11 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
      * Fluid - Depending on the part type - proxy it to the multiblock controller, if we have one
      */
     @Override
-    public int fill(ForgeDirection aDirection, FluidStack aFluidStack, boolean aDoFill) {
-        if (!modeSelected(FLUID_IN)) return 0;
-
-        if (aFluidStack == null || isWrongFluid(aFluidStack.getFluid())) return 0;
-        if (aDirection != ForgeDirection.UNKNOWN
-            && (facing.compareTo(aDirection) != 0 || !coverLetsFluidIn(aDirection, aFluidStack.getFluid()))) return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return controller == null ? 0 : controller.fill(this, aDirection, aFluidStack, aDoFill);
-    }
-
-    @Override
-    public FluidStack drain(ForgeDirection aDirection, FluidStack aFluidStack, boolean aDoDrain) {
-        if (!modeSelected(FLUID_OUT)) return null;
-        if (aFluidStack == null || isWrongFluid(aFluidStack.getFluid())) return null;
-        if (aDirection != ForgeDirection.UNKNOWN
-            && (facing.compareTo(aDirection) != 0 || !coverLetsFluidOut(aDirection, aFluidStack.getFluid())))
-            return null;
-        final IMultiBlockController controller = getTarget(true);
-        return controller == null ? null : controller.drain(this, aDirection, aFluidStack, aDoDrain);
-    }
-
-    @Override
-    public FluidStack drain(ForgeDirection aDirection, int aAmountToDrain, boolean aDoDrain) {
-        if (!modeSelected(FLUID_OUT)) return null;
-        final IMultiBlockController controller = getTarget(true);
+    public FluidInventoryLogic getFluidLogic(ForgeDirection side, InventoryType type) {
+        if (side != facing) return null;
+        IMultiBlockController controller = getTarget(false);
         if (controller == null) return null;
-        FluidStack aFluidStack = null;
-        if (getLockedFluid() != null) {
-            aFluidStack = controller.getDrainableFluid(aDirection, getLockedFluid());
-        } else {
-            aFluidStack = controller.getDrainableFluid(aDirection);
-        }
-        if (aFluidStack == null || isWrongFluid(aFluidStack.getFluid())) return null;
-        if (aDirection != ForgeDirection.UNKNOWN
-            && (facing.compareTo(aDirection) != 0 || !coverLetsFluidOut(aDirection, aFluidStack.getFluid())))
-            return null;
-        return controller.drain(this, aDirection, aFluidStack, aDoDrain);
-    }
-
-    @Override
-    public boolean canFill(ForgeDirection aDirection, Fluid aFluid) {
-        if (!modeSelected(FLUID_IN)) return false;
-
-        if (aDirection != ForgeDirection.UNKNOWN
-            && (facing.compareTo(aDirection) != 0 || !coverLetsFluidIn(aDirection, aFluid))) return false;
-        if (isWrongFluid(aFluid)) return false;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null && controller.canFill(this, aDirection, aFluid);
-    }
-
-    @Override
-    public boolean canDrain(ForgeDirection aDirection, Fluid aFluid) {
-        if (!modeSelected(FLUID_OUT)) return false;
-        if (aDirection != ForgeDirection.UNKNOWN
-            && (facing.compareTo(aDirection) != 0 || !coverLetsFluidOut(aDirection, aFluid))) return false;
-        if (isWrongFluid(aFluid)) return false;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null && controller.canDrain(this, aDirection, aFluid);
-    }
-
-    @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection aDirection) {
-        if (!modeSelected(FLUID_IN, FLUID_OUT)
-            || (aDirection != ForgeDirection.UNKNOWN && facing.compareTo(aDirection) != 0))
-            return GT_Values.emptyFluidTankInfo;
-        final IMultiBlockController controller = getTarget(true);
-        if (controller == null) return GT_Values.emptyFluidTankInfo;
-
-        final CoverInfo coverInfo = getCoverInfoAtSide(aDirection);
-
-        if (coverInfo.letsFluidIn(null, controller)
-            || (controller.isLiquidOutput(aDirection) && coverInfo.letsFluidOut(null, controller)))
-            return controller.getTankInfo(this, ForgeDirection.UNKNOWN);
-
-        return GT_Values.emptyFluidTankInfo;
+        return controller.getFluidLogic(type, lockedInventory);
     }
 
     @Override
@@ -601,7 +512,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         if (controller == null) {
             return null;
         }
-        return controller.getPowerLogic(this, side);
+        return controller.getPowerLogic();
     }
 
     @Override
@@ -616,117 +527,18 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
     // #endregion
 
-    /**
-     * Inventory - Depending on the part type - proxy to the multiblock controller, if we have one
-     */
-    @Override
-    public boolean hasInventoryBeenModified() {
-        final IMultiBlockController controller = getTarget(true);
-        return (controller != null && controller.hasInventoryBeenModified(this));
+    // #region Item - Depending on the part type - proxy to the multiblock controller, if we have one
+
+    public ItemInventoryLogic getItemLogic(ForgeDirection side, InventoryType unused) {
+        if (side != facing) return null;
+
+        final IMultiBlockController controller = getTarget(false);
+        if (controller == null) return null;
+
+        return controller.getItemLogic(unused, lockedInventory);
     }
 
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        final IMultiBlockController controller = getTarget(true);
-        return (controller != null && controller.isValidSlot(this, aIndex));
-    }
-
-    @Override
-    public boolean addStackToSlot(int aIndex, ItemStack aStack) {
-        if (!modeSelected(ITEM_IN, ITEM_OUT)) return false;
-        final IMultiBlockController controller = getTarget(true);
-        return (controller != null && controller.addStackToSlot(this, aIndex, aStack));
-    }
-
-    @Override
-    public boolean addStackToSlot(int aIndex, ItemStack aStack, int aAmount) {
-        if (!modeSelected(ITEM_IN, ITEM_OUT)) return false;
-        final IMultiBlockController controller = getTarget(true);
-        return (controller != null && controller.addStackToSlot(this, aIndex, aStack, aAmount));
-    }
-
-    @Override
-    public int[] getAccessibleSlotsFromSide(int ordinalSide) {
-        final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
-        if (!modeSelected(ITEM_IN, ITEM_OUT) || (facing != ForgeDirection.UNKNOWN && facing.compareTo(side) != 0))
-            return GT_Values.emptyIntArray;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.getAccessibleSlotsFromSide(this, side) : GT_Values.emptyIntArray;
-    }
-
-    @Override
-    public boolean canInsertItem(int aSlot, ItemStack aStack, int ordinalSide) {
-        final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
-        if (!modeSelected(ITEM_IN, ITEM_OUT)
-            || (facing != ForgeDirection.UNKNOWN && (facing.compareTo(side) != 0 || !coverLetsItemsIn(side, aSlot))))
-            return false;
-        final IMultiBlockController controller = getTarget(true);
-        return (controller != null && controller.canInsertItem(this, aSlot, aStack, side));
-    }
-
-    @Override
-    public boolean canExtractItem(int aSlot, ItemStack aStack, int ordinalSide) {
-        final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
-        if (!modeSelected(ITEM_IN, ITEM_OUT)
-            || (facing != ForgeDirection.UNKNOWN && (facing.compareTo(side) != 0 || !coverLetsItemsOut(side, aSlot))))
-            return false;
-        final IMultiBlockController controller = getTarget(true);
-        return (controller != null && controller.canExtractItem(this, aSlot, aStack, side));
-    }
-
-    @Override
-    public int getSizeInventory() {
-        if (!modeSelected(ITEM_IN, ITEM_OUT)) return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.getSizeInventory(this) : 0;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int aSlot) {
-        if (!modeSelected(ITEM_IN, ITEM_OUT)) return null;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.getStackInSlot(this, aSlot) : null;
-    }
-
-    @Override
-    public ItemStack decrStackSize(int aSlot, int aDecrement) {
-        if (!modeSelected(ITEM_IN, ITEM_OUT)) return null;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.decrStackSize(this, aSlot, aDecrement) : null;
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int aSlot) {
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.getStackInSlotOnClosing(this, aSlot) : null;
-    }
-
-    @Override
-    public void setInventorySlotContents(int aSlot, ItemStack aStack) {
-        final IMultiBlockController controller = getTarget(true);
-        if (controller != null) controller.setInventorySlotContents(this, aSlot, aStack);
-    }
-
-    @Override
-    public String getInventoryName() {
-        final IMultiBlockController controller = getTarget(true);
-        if (controller != null) return controller.getInventoryName(this);
-        return firstNonNull(getCustomName(), getTileEntityName());
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.getInventoryStackLimit(this) : 0;
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int aSlot, ItemStack aStack) {
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null && controller.isItemValidForSlot(this, aSlot, aStack);
-    }
-
-    // End Inventory
+    // #endregion
 
     // === Modular UI ===
     @Override
@@ -752,70 +564,6 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         return getTarget(true) != null;
     }
 
-    protected void addItemInventory(Builder builder, UIBuildContext buildContext) {
-        final IMultiBlockController controller = getTarget(false);
-        if (controller == null) {
-            return;
-        }
-        final IItemHandlerModifiable inv = controller.getInventoryForGUI(this);
-        final Scrollable scrollable = new Scrollable().setVerticalScroll();
-        for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
-            int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
-            for (int column = 0; column < columnsToMake; column++) {
-                scrollable.widget(
-                    new SlotWidget(inv, rows * 4 + column).setPos(column * 18, rows * 18)
-                        .setSize(18, 18));
-            }
-        }
-        builder.widget(
-            scrollable.setSize(18 * 4 + 4, 18 * 4)
-                .setPos(52, 18));
-        DropDownWidget dropDown = new DropDownWidget();
-        dropDown.addDropDownItemsSimple(
-            controller.getInventoryNames(this),
-            (buttonWidget, index, label, setSelected) -> buttonWidget.setOnClick((clickData, widget) -> {
-                if (getNameOfInventoryFromIndex(controller, index).equals(Controller.ALL_INVENTORIES_NAME)) {
-                    mLockedInventory = GT_Values.E;
-                    mLockedInventoryIndex = 0;
-                } else {
-                    mLockedInventory = getNameOfInventoryFromIndex(controller, index);
-                    mLockedInventoryIndex = index;
-                }
-                setSelected.run();
-            }),
-            true);
-        builder.widget(
-            dropDown.setSelected(mLockedInventoryIndex)
-                .setExpandedMaxHeight(60)
-                .setDirection(DropDownWidget.Direction.DOWN)
-                .setPos(53, 5)
-                .setSize(70, 11));
-    }
-
-    protected String getNameOfInventoryFromIndex(final IMultiBlockController controller, int index) {
-        final List<String> invNames = controller.getInventoryIDs(this);
-        if (index > invNames.size()) {
-            return invNames.get(0);
-        }
-        return invNames.get(index);
-    }
-
-    protected int validateAndGetIndex(final IMultiBlockController controller, int index) {
-        final List<String> invNames = controller.getInventoryIDs(this);
-        if (index >= invNames.size()) {
-            return 0;
-        }
-        return index;
-    }
-
-    protected String getNameOfTankArrayFromIndex(final IMultiBlockController controller, int index) {
-        final List<String> tankNames = controller.getTankArrayIDs(this);
-        if (index > tankNames.size()) {
-            return tankNames.get(0);
-        }
-        return tankNames.get(index);
-    }
-
     protected boolean isWrongFluid(Fluid fluid) {
         if (fluid == null) {
             return true;
@@ -834,84 +582,6 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
                 .getFluid();
         }
         return null;
-    }
-
-    protected void addFluidInventory(Builder builder, UIBuildContext buildContext) {
-        final IMultiBlockController controller = getTarget(false);
-        if (controller == null) {
-            return;
-        }
-        builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                .setPos(7, 4)
-                .setSize(85, 95));
-        if (modeSelected(FLUID_OUT)) {
-            builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                    .setPos(getGUIWidth() - 77, 4)
-                    .setSize(70, 40))
-                .widget(
-                    new TextWidget("Locked Fluid").setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setPos(getGUIWidth() - 72, 8));
-        }
-        final IFluidTank[] tanks = controller.getFluidTanksForGUI(this);
-        final Scrollable scrollable = new Scrollable().setVerticalScroll();
-        for (int rows = 0; rows * 4 < tanks.length; rows++) {
-            int columnsToMake = Math.min(tanks.length - rows * 4, 4);
-            for (int column = 0; column < columnsToMake; column++) {
-                FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
-                if (modeSelected(FLUID_OUT)) {
-                    fluidSlot.setInteraction(true, false);
-                }
-                scrollable.widget(
-                    fluidSlot.setPos(column * 18, rows * 18)
-                        .setSize(18, 18));
-            }
-        }
-        builder.widget(
-            scrollable.setSize(18 * 4 + 4, 18 * 4)
-                .setPos(12, 21));
-        DropDownWidget dropDown = new DropDownWidget();
-        dropDown.addDropDownItemsSimple(
-            controller.getTankArrayNames(this),
-            (buttonWidget, index, label, setSelected) -> buttonWidget.setOnClick((clickData, widget) -> {
-                if (getNameOfTankArrayFromIndex(controller, index).equals(Controller.ALL_INVENTORIES_NAME)) {
-                    mLockedInventory = GT_Values.E;
-                    mLockedInventoryIndex = 0;
-                } else {
-                    mLockedInventory = getNameOfTankArrayFromIndex(controller, index);
-                    mLockedInventoryIndex = index;
-                }
-                setSelected.run();
-            }),
-            true);
-        builder.widget(
-            dropDown.setSelected(mLockedInventoryIndex)
-                .setExpandedMaxHeight(60)
-                .setDirection(DropDownWidget.Direction.DOWN)
-                .setPos(13, 8)
-                .setSize(70, 11));
-    }
-
-    @Override
-    public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
-        if (modeSelected(ITEM_IN, ITEM_OUT)) {
-            addItemInventory(builder, buildContext);
-            return;
-        }
-        if (modeSelected(FLUID_IN, FLUID_OUT)) {
-            addFluidInventory(builder, buildContext);
-            if (modeSelected(FLUID_OUT)) {
-                builder.widget(
-                    SlotGroup.ofFluidTanks(Collections.singletonList(configurationTank), 1)
-                        .startFromSlot(0)
-                        .endAtSlot(0)
-                        .phantom(true)
-                        .build()
-                        .setPos(getGUIWidth() - 72, 20));
-            }
-            return;
-        }
     }
 
     @Override
@@ -959,5 +629,9 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     @Override
     public void addToolTips(List<String> list, ItemStack stack, boolean f3_h) {
         list.add("A MultiTileEntity Casing");
+    }
+
+    public String getInventoryName() {
+        return null;
     }
 }

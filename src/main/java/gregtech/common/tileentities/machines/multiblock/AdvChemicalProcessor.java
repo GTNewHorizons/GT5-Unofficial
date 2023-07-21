@@ -55,7 +55,6 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_StructureUtilityMuTE;
-import gregtech.common.tileentities.casings.upgrade.Inventory;
 
 public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalProcessor> {
 
@@ -111,14 +110,7 @@ public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalP
             capacity = saturatedCast(nbt.getLong(GT_Values.NBT.TANK_CAPACITY));
         }
         for (int i = 0; i < MAX_PROCESSES; i++) {
-            registerInventory("processInventory" + i, "processInventory" + i, 8, Inventory.INPUT);
-            registerFluidInventory(
-                "processInventory" + i,
-                "processInventory" + i,
-                8,
-                capacity,
-                maxParallel * 2L,
-                Inventory.INPUT);
+
             if (processWhiteLists != null) {
                 final NBTTagCompound itemList = processWhiteLists.getCompoundTag("items" + i);
                 if (itemList != null) {
@@ -383,9 +375,7 @@ public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalP
             return null;
         }
         if (separateInputs) {
-            return ArrayUtils.addAll(
-                getFluidInputsForTankArray("processInventory" + index),
-                FluidTankGT.getFluidsFromTanks(inputTanks));
+            return null;
         } else {
             return super.getInputFluids(index);
         }
@@ -397,10 +387,7 @@ public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalP
             return null;
         }
         if (separateInputs) {
-            return ArrayUtils.addAll(
-                getItemInputsForInventory("processInventory" + index),
-                inputInventory.getStacks()
-                    .toArray(new ItemStack[0]));
+            return null;
         } else {
             return super.getInputItems(index);
         }
@@ -410,25 +397,7 @@ public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalP
     protected void outputItems(int index) {
         ComplexParallelProcessingLogic processingLogic = getComplexProcessingLogic();
         if (processingLogic != null && index >= 0 && index < maxComplexParallels) {
-            for (int i = 0; i < MAX_PROCESSES; i++) {
-                // Regenerate whitelist, if it has been reset
-                if (processWhitelists.get(i) == null) {
-                    generateWhitelist(i);
-                }
-                int outputIndex = i;
-                // Output items that are on the whitelist of this process
-                outputItems(
-                    multiBlockInputInventory.get("processInventory" + i),
-                    Arrays.stream(processingLogic.getOutputItems(index))
-                        .filter(
-                            itemStack -> processWhitelists.get(outputIndex)
-                                .contains(getWhitelistString(itemStack)))
-                        .toArray(ItemStack[]::new));
-            }
-            // Output remaining items
-            if (processingLogic.getOutputItems(index) != null && processingLogic.getOutputItems(index).length > 0) {
-                outputItems(processingLogic.getOutputItems(index));
-            }
+            // TODO: Fix for new Logic
         }
     }
 
@@ -436,25 +405,7 @@ public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalP
     protected void outputFluids(int index) {
         ComplexParallelProcessingLogic processingLogic = getComplexProcessingLogic();
         if (processingLogic != null && index >= 0 && index < maxComplexParallels) {
-            for (int i = 0; i < MAX_PROCESSES; i++) {
-                // Regenerate whitelist, if it has been reset
-                if (processWhitelists.get(i) == null) {
-                    generateWhitelist(i);
-                }
-                int outputIndex = i;
-                // Output fluids that are on the whitelist of this process
-                outputFluids(
-                    multiBlockInputTank.get("processInventory" + i),
-                    Arrays.stream(processingLogic.getOutputFluids(index))
-                        .filter(
-                            fluidStack -> processWhitelists.get(outputIndex)
-                                .contains(getWhitelistString(fluidStack)))
-                        .toArray(FluidStack[]::new));
-            }
-            // Output remaining fluids
-            if (processingLogic.getOutputFluids(index) != null && processingLogic.getOutputFluids(index).length > 0) {
-                outputFluids(processingLogic.getOutputFluids(index));
-            }
+            // TODO: fix for new logic
         }
     }
 
