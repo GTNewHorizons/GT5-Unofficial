@@ -702,6 +702,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 result = processingLogic.process();
                 if (result.wasSuccessful()) break;
             }
+            if (result.wasSuccessful()) break;
         }
 
         // if no recipe was found, check input hatches/buses
