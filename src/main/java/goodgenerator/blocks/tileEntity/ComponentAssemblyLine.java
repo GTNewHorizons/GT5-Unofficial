@@ -147,23 +147,23 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_ExtendedPowerMultiB
                             .casingIndex(183).buildAndChain(GregTech_API.sBlockCasings8, 7))
             .addElement(
                     'N',
-                    GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(InputBus).dot(2)
+                    GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(InputBus).dot(1)
                             .casingIndex(183).buildAndChain(GT_StructureUtility.ofFrame(Materials.TungstenSteel)))
             .addElement(
                     'K',
-                    GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(OutputBus).dot(3)
+                    GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(OutputBus).dot(2)
                             .casingIndex(183).buildAndChain(GregTech_API.sBlockCasings8, 7))
             .addElement(
                     'L',
                     GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(Energy, ExoticEnergy)
-                            .dot(4).casingIndex(183).buildAndChain(GregTech_API.sBlockCasings8, 7))
+                            .dot(3).casingIndex(183).buildAndChain(GregTech_API.sBlockCasings8, 7))
             .addElement(
                     'I',
-                    GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(Maintenance).dot(5)
+                    GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(Maintenance).dot(4)
                             .casingIndex(183).buildAndChain(GregTech_API.sBlockCasings8, 7))
             .addElement(
                     'M',
-                    GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(InputHatch).dot(6)
+                    GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(InputHatch).dot(5)
                             .casingIndex(183).buildAndChain(GregTech_API.sBlockCasings8, 7))
             .addElement('n', GT_StructureUtility.ofFrame(Materials.TungstenSteel)).build();
 
