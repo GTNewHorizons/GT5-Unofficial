@@ -533,32 +533,32 @@ public class LargeEssentiaSmeltery extends GT_MetaTileEntity_TooltipMultiBlockBa
                 actor,
                 false,
                 true);
-        int lenght = stackSize.stackSize + 2;
-        if (lenght > MAX_CONFIGURABLE_LENGTH) lenght = MAX_CONFIGURABLE_LENGTH + 2;
+        int length = stackSize.stackSize + 2;
+        if (length > MAX_CONFIGURABLE_LENGTH) length = MAX_CONFIGURABLE_LENGTH + 2;
         built += survivialBuildPiece(
                 STRUCTURE_PIECE_LAST,
                 stackSize,
                 2,
                 2,
-                lenght + 1,
+                -length - 1,
                 elementBudget - built,
                 source,
                 actor,
                 false,
                 true);
-        while (lenght > 0) {
+        while (length > 0) {
             built += survivialBuildPiece(
                     STRUCTURE_PIECE_LATER,
                     stackSize,
                     2,
                     2,
-                    lenght,
+                    -length,
                     elementBudget - built,
                     source,
                     actor,
                     false,
                     true);
-            lenght--;
+            length--;
         }
         return built;
     }
