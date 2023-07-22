@@ -263,7 +263,7 @@ public class GT_BauxiteRefineChain {
                 Materials.Gold.getDust(1),
                 Materials.Vanadium.getDust(1),
                 Materials.Rutile.getDust(1))
-            .outputChances(5000, 4000, 300, 300, 200, 200)
+            .outputChances(5000, 4000, 300, 300, 200, 600)
             .fluidInputs(Materials.NitricAcid.getFluid(10))
             .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(10))
             .duration(2 * SECONDS + 5 * TICKS)
