@@ -6,9 +6,14 @@ import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_RECIPEFILTER_GLO
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import gregtech.api.interfaces.tileentity.IRecipeLockable;
+import gregtech.api.multitileentity.MultiTileEntityContainer;
+import gregtech.api.multitileentity.MultiTileEntityItemInternal;
+import gregtech.loaders.preload.GT_Loader_MultiTileEntities;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -59,8 +64,8 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     }
 
     @Override
-    public void clickTypeIcon(boolean aRightClick, ItemStack aHandStack) {
-        mRecipeMap = getItemStackMachineRecipeMap(aHandStack);
+    public void clickTypeIcon(boolean rightClick, ItemStack heldStack) {
+        mRecipeMap = getItemStackMachineRecipeMap(heldStack);
         if (mRecipeMap != null) {
             loadFilteredMachines();
         } else {
@@ -72,9 +77,32 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
 
     private static GT_Recipe.GT_Recipe_Map getItemStackMachineRecipeMap(ItemStack stack) {
         GT_Recipe.GT_Recipe_Map recipeMap = null;
-        if (stack != null
-            && GT_Item_Machines.getMetaTileEntity(stack) instanceof GT_MetaTileEntity_BasicMachine machine) {
+        if (stack != null) {
+            IMetaTileEntity metaTileEntity = GT_Item_Machines.getMetaTileEntity(stack);
+            if (metaTileEntity != null) {
+                recipeMap = getMetaTileEntityRecipeMap(metaTileEntity);
+            } else if (stack.getItem() instanceof  MultiTileEntityItemInternal) {
+                recipeMap = getMuTeRecipeMap(stack);
+            }
+        }
+        return recipeMap;
+    }
+
+    private static GT_Recipe.GT_Recipe_Map getMetaTileEntityRecipeMap(IMetaTileEntity metaTileEntity) {
+        GT_Recipe.GT_Recipe_Map recipeMap = null;
+        if (metaTileEntity instanceof GT_MetaTileEntity_BasicMachine machine) {
             recipeMap = machine.getRecipeList();
+        } else if (metaTileEntity instanceof IRecipeLockable recipeLockable) {
+            recipeMap = recipeLockable.getRecipeMap();
+        }
+        return recipeMap;
+    }
+
+    private static GT_Recipe.GT_Recipe_Map getMuTeRecipeMap(ItemStack stack) {
+        GT_Recipe.GT_Recipe_Map recipeMap = null;
+        MultiTileEntityContainer muTeEntityContainer = GT_Loader_MultiTileEntities.MACHINE_REGISTRY.getNewTileEntityContainer(stack);
+        if (muTeEntityContainer != null && muTeEntityContainer.mTileEntity instanceof IRecipeLockable recipeLockable) {
+            recipeMap = recipeLockable.getRecipeMap();
         }
         return recipeMap;
     }
@@ -164,6 +192,9 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
                 + AnimatedTooltipHandler.YELLOW
                 + StatCollector.translateToLocal(recipeMap.mUnlocalizedName)
                 + AnimatedTooltipHandler.RESET);
+        if (recipeMap.mRecipeItemMap.size() > 0) {
+            tooltip.add("Filter size: §e" + recipeMap.mRecipeItemMap.size() + "§r");
+        }
         tooltip.addAll(mTooltipCache.getData(REPRESENTATION_SLOT_TOOLTIP).text);
         return tooltip;
     }
