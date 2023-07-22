@@ -35,7 +35,8 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     private static final String REPRESENTATION_SLOT_TOOLTIP = "GT5U.recipe_filter.representation_slot.tooltip";
     private static final String EMPTY_REPRESENTATION_SLOT_TOOLTIP = "GT5U.recipe_filter.empty_representation_slot.tooltip";
     public GT_Recipe.GT_Recipe_Map mRecipeMap;
-    private List<ItemStack> filteredMachines;
+    private List<ItemStack> filteredMachines = Collections.emptyList();
+    private List<String> representationSlotTooltip = Collections.emptyList();
     public int mRotationIndex = 0;
 
     public GT_MetaTileEntity_RecipeFilter(int aID, String aName, String aNameRegional, int aTier) {
@@ -62,10 +63,10 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
         mRecipeMap = getItemStackMachineRecipeMap(aHandStack);
         if (mRecipeMap != null) {
             loadFilteredMachines();
-            return;
+        } else {
+            filteredMachines = Collections.emptyList();
+            mInventory[FILTER_SLOT_INDEX] = null;
         }
-        filteredMachines = Collections.emptyList();
-        mInventory[FILTER_SLOT_INDEX] = null;
         mRotationIndex = -1;
     }
 
@@ -78,8 +79,9 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
         return recipeMap;
     }
 
+
     private void loadFilteredMachines() {
-        filteredMachines = RecipeCatalysts.getRecipeCatalysts(mRecipeMap.mUnlocalizedName)
+        filteredMachines = RecipeCatalysts.getRecipeCatalysts(mRecipeMap.mNEIName)
             .stream()
             .map(positionedStack -> positionedStack.item)
             .collect(Collectors.toList());
@@ -90,8 +92,12 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if ((!getBaseMetaTileEntity().isServerSide()) || ((aTick % 8L != 0L) && mRotationIndex != -1)) return;
         if (this.filteredMachines.isEmpty()) {
-            this.mInventory[FILTER_SLOT_INDEX] = null;
-            return;
+            if (mRecipeMap != null) {
+                // This should succeed after a few ticks when NEI is fully loaded.
+                loadFilteredMachines();
+            } else {
+                return;
+            }
         }
         this.mInventory[FILTER_SLOT_INDEX] = GT_Utility.copyAmount(
             1L,
@@ -129,9 +135,6 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         this.mRecipeMap = GT_Recipe.GT_Recipe_Map.sIndexedMappings.getOrDefault(aNBT.getString("mRecipeMap"), null);
-        if (mRecipeMap != null) {
-            loadFilteredMachines();
-        }
     }
 
     @Override
@@ -148,10 +151,9 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     public Function<List<String>, List<String>> getItemStackReplacementTooltip() {
         GT_Recipe.GT_Recipe_Map recipeMap = getItemStackMachineRecipeMap(mInventory[FILTER_SLOT_INDEX]);
         if (recipeMap != null) {
-            List<String> tooltip = assembleItemStackReplacementTooltip(recipeMap);
-            return list -> tooltip;
+            representationSlotTooltip = assembleItemStackReplacementTooltip(recipeMap);
         }
-        return super.getItemStackReplacementTooltip();
+        return list -> representationSlotTooltip;
     }
 
     @NotNull
