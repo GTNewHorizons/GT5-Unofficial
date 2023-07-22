@@ -1440,6 +1440,8 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.HG1223);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ALLOY.QUANTUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ELEMENT.STANDALONE.HYPOGEN);
+        MaterialUtils
+                .generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, ELEMENT.STANDALONE.CHRONOMATIC_GLASS);
 
         // Foil
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.BLACK_TITANIUM);

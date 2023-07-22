@@ -436,6 +436,7 @@ public class RECIPES_General {
         generateWireRecipes(ALLOY.LEAGRISIUM);
         generateWireRecipes(ALLOY.TRINIUM_TITANIUM);
         generateWireRecipes(ELEMENT.STANDALONE.HYPOGEN);
+        generateWireRecipes(ELEMENT.STANDALONE.CHRONOMATIC_GLASS);
 
         GT_Materials[] g = new GT_Materials[] { GT_Materials.Staballoy, GT_Materials.Tantalloy60,
                 GT_Materials.Tantalloy61, GT_Materials.Void, GT_Materials.Potin, GT_Materials.MaragingSteel300,
