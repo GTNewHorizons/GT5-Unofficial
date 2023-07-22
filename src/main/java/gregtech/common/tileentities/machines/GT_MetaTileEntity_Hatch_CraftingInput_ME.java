@@ -8,25 +8,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import appeng.api.AEApi;
-import appeng.api.implementations.ICraftingPatternItem;
-import appeng.api.networking.IGridNode;
-import appeng.api.networking.crafting.ICraftingPatternDetails;
-import appeng.api.networking.crafting.ICraftingProvider;
-import appeng.api.networking.crafting.ICraftingProviderHelper;
-import appeng.api.networking.events.MENetworkCraftingPatternChange;
-import appeng.api.storage.data.IAEFluidStack;
-import appeng.api.util.DimensionalCoord;
-import appeng.util.IWideReadableNumberConverter;
-import appeng.util.Platform;
-import appeng.util.ReadableNumberConverter;
-import com.glodblock.github.common.item.ItemFluidPacket;
-import com.google.common.collect.ImmutableList;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import gregtech.api.gui.modularui.GT_UITextures;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -37,26 +18,46 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.jetbrains.annotations.NotNull;
+
+import com.glodblock.github.common.item.ItemFluidPacket;
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import appeng.api.AEApi;
+import appeng.api.implementations.ICraftingPatternItem;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
+import appeng.api.networking.IGridNode;
+import appeng.api.networking.crafting.ICraftingPatternDetails;
+import appeng.api.networking.crafting.ICraftingProvider;
+import appeng.api.networking.crafting.ICraftingProviderHelper;
+import appeng.api.networking.events.MENetworkCraftingPatternChange;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
 import appeng.api.storage.IMEMonitor;
+import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.AECableType;
+import appeng.api.util.DimensionalCoord;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
+import appeng.util.IWideReadableNumberConverter;
+import appeng.util.Platform;
+import appeng.util.ReadableNumberConverter;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
@@ -67,16 +68,16 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.render.TextureFactory;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.ArrayUtils;
-import org.jetbrains.annotations.NotNull;
 
 public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_Hatch_InputBus
-    implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ICraftingProvider, IGridProxyable {
+    implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ICraftingProvider,
+    IGridProxyable {
 
     // Each pattern slot in the crafting input hatch has its own internal inventory
     public static class PatternSlot {
+
         public interface SharedItemGetter {
+
             ItemStack[] getSharedItem();
         }
 
@@ -88,7 +89,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
         public PatternSlot(ItemStack pattern, World world, SharedItemGetter getter) {
             this.pattern = pattern;
-            this.patternDetails = ((ICraftingPatternItem) Objects.requireNonNull(pattern.getItem())).getPatternForItem(pattern, world);
+            this.patternDetails = ((ICraftingPatternItem) Objects.requireNonNull(pattern.getItem()))
+                .getPatternForItem(pattern, world);
             this.itemInventory = new ArrayList<>();
             this.fluidInventory = new ArrayList<>();
             this.sharedItemGetter = getter;
@@ -96,7 +98,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
         public PatternSlot(NBTTagCompound nbt, World world, SharedItemGetter getter) {
             this.pattern = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("pattern"));
-            this.patternDetails = ((ICraftingPatternItem) Objects.requireNonNull(pattern.getItem())).getPatternForItem(pattern, world);
+            this.patternDetails = ((ICraftingPatternItem) Objects.requireNonNull(pattern.getItem()))
+                .getPatternForItem(pattern, world);
             this.itemInventory = new ArrayList<>();
             this.fluidInventory = new ArrayList<>();
             this.sharedItemGetter = getter;
@@ -111,18 +114,14 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
 
         public boolean hasChanged(ItemStack newPattern, World world) {
-            return newPattern == null || (
-                !ItemStack.areItemStacksEqual(pattern, newPattern) &&
-                !this.patternDetails.equals(
-                    ((ICraftingPatternItem) Objects.requireNonNull(pattern.getItem())).getPatternForItem(pattern, world)
-                ));
+            return newPattern == null
+                || (!ItemStack.areItemStacksEqual(pattern, newPattern) && !this.patternDetails.equals(
+                    ((ICraftingPatternItem) Objects.requireNonNull(pattern.getItem()))
+                        .getPatternForItem(pattern, world)));
         }
 
         public ItemStack[] getItemInputs() {
-            return ArrayUtils.addAll(
-                itemInventory.toArray(new ItemStack[0]),
-                sharedItemGetter.getSharedItem()
-            );
+            return ArrayUtils.addAll(itemInventory.toArray(new ItemStack[0]), sharedItemGetter.getSharedItem());
         }
 
         public FluidStack[] getFluidInputs() {
@@ -134,26 +133,30 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
 
         public void refund(AENetworkProxy proxy, BaseActionSource src) throws GridAccessException {
-            IMEMonitor<IAEItemStack> sg = proxy.getStorage().getItemInventory();
+            IMEMonitor<IAEItemStack> sg = proxy.getStorage()
+                .getItemInventory();
             for (ItemStack itemStack : itemInventory) {
                 if (itemStack == null || itemStack.stackSize == 0) continue;
-                IAEItemStack rest = Platform.poweredInsert(proxy.getEnergy(), sg,
+                IAEItemStack rest = Platform.poweredInsert(
+                    proxy.getEnergy(),
+                    sg,
                     AEApi.instance()
                         .storage()
                         .createItemStack(itemStack),
-                    src
-                );
+                    src);
                 itemStack.stackSize = rest != null && rest.getStackSize() > 0 ? (int) rest.getStackSize() : 0;
             }
-            IMEMonitor<IAEFluidStack> fsg = proxy.getStorage().getFluidInventory();
+            IMEMonitor<IAEFluidStack> fsg = proxy.getStorage()
+                .getFluidInventory();
             for (FluidStack fluidStack : fluidInventory) {
                 if (fluidStack == null || fluidStack.amount == 0) continue;
-                IAEFluidStack rest = Platform.poweredInsert(proxy.getEnergy(), fsg,
+                IAEFluidStack rest = Platform.poweredInsert(
+                    proxy.getEnergy(),
+                    fsg,
                     AEApi.instance()
                         .storage()
                         .createFluidStack(fluidStack),
-                    src
-                );
+                    src);
                 fluidStack.amount = rest != null && rest.getStackSize() > 0 ? (int) rest.getStackSize() : 0;
             }
         }
@@ -211,9 +214,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
     }
 
-
     // mInventory is used for storing patterns, circuit and manual slot (typically NC items)
-    private static final int MAX_PATTERN_COUNT = 4*8;
+    private static final int MAX_PATTERN_COUNT = 4 * 8;
     private static final int MAX_INV_COUNT = MAX_PATTERN_COUNT + 2;
     private static final int SLOT_MANUAL = MAX_INV_COUNT - 1;
     private static final int SLOT_CIRCUIT = MAX_INV_COUNT - 2;
@@ -242,7 +244,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     }
 
     public GT_MetaTileEntity_Hatch_CraftingInput_ME(String aName, int aTier, String[] aDescription,
-                                               ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, MAX_INV_COUNT, aDescription, aTextures);
         disableSort = true;
     }
@@ -268,7 +270,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
         if (!initialPatternSyncDone && aTimer % 10 == 0 && getBaseMetaTileEntity().isServerSide()) {
             try {
-                getProxy().getGrid().postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
+                getProxy().getGrid()
+                    .postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
             } catch (GridAccessException ignored) {
                 return;
             }
@@ -298,11 +301,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     @Override
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
-            gridProxy = new AENetworkProxy(
-                this,
-                "proxy",
-                ItemList.Hatch_CraftingInput_Bus_ME.get(1),
-                true);
+            gridProxy = new AENetworkProxy(this, "proxy", ItemList.Hatch_CraftingInput_Bus_ME.get(1), true);
             gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
             if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
                 getBaseMetaTileEntity().getWorld()
@@ -318,15 +317,15 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             getBaseMetaTileEntity().getWorld(),
             getBaseMetaTileEntity().getXCoord(),
             getBaseMetaTileEntity().getYCoord(),
-            getBaseMetaTileEntity().getZCoord()
-        );
+            getBaseMetaTileEntity().getZCoord());
     }
 
     @Override
     public void gridChanged() {
         super.gridChanged();
         if (getProxy().isReady()) {
-            getProxy().getNode().updateState();
+            getProxy().getNode()
+                .updateState();
         }
     }
 
@@ -350,7 +349,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             if (internalInventory[i] != null) {
                 NBTTagCompound internalInventorySlotNBT = new NBTTagCompound();
                 internalInventorySlotNBT.setInteger("patternSlot", i);
-                internalInventorySlotNBT.setTag("patternSlotNBT", internalInventory[i].writeToNBT(new NBTTagCompound()));
+                internalInventorySlotNBT
+                    .setTag("patternSlotNBT", internalInventory[i].writeToNBT(new NBTTagCompound()));
                 internalInventoryNBT.appendTag(internalInventorySlotNBT);
             }
         }
@@ -369,12 +369,10 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         for (int i = 0; i < internalInventoryNBT.tagCount(); i++) {
             NBTTagCompound internalInventorySlotNBT = internalInventoryNBT.getCompoundTagAt(i);
             int patternSlot = internalInventorySlotNBT.getInteger("patternSlot");
-            internalInventory[patternSlot] =
-                new PatternSlot(
-                    internalInventorySlotNBT.getCompoundTag("patternSlotNBT"),
-                    getBaseMetaTileEntity().getWorld(),
-                    this::getSharedItems
-                );
+            internalInventory[patternSlot] = new PatternSlot(
+                internalInventorySlotNBT.getCompoundTag("patternSlotNBT"),
+                getBaseMetaTileEntity().getWorld(),
+                this::getSharedItems);
         }
 
         // reconstruct patternDetailsPatternSlotMap
@@ -397,7 +395,9 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     private String describePattern(ICraftingPatternDetails patternDetails) {
         return Arrays.stream(patternDetails.getCondensedOutputs())
-            .map(aeItemStack -> aeItemStack.getItem().getItemStackDisplayName(aeItemStack.getItemStack()))
+            .map(
+                aeItemStack -> aeItemStack.getItem()
+                    .getItemStackDisplayName(aeItemStack.getItemStack()))
             .collect(Collectors.joining(", "));
     }
 
@@ -405,8 +405,9 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     public String[] getInfoData() {
         if (GregTech_API.mAE2) {
             var ret = new ArrayList<String>();
-            ret.add("The bus is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
-                : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET);
+            ret.add(
+                "The bus is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
+                    : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET);
             ret.add("Internal Inventory: ");
             var i = 0;
             for (var slot : internalInventory) {
@@ -414,37 +415,43 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                 IWideReadableNumberConverter nc = ReadableNumberConverter.INSTANCE;
 
                 i += 1;
-                ret.add("Slot " + i + " " + EnumChatFormatting.BLUE + describePattern(slot.patternDetails) + EnumChatFormatting.RESET);
-                for(var item : slot.itemInventory) {
+                ret.add(
+                    "Slot " + i
+                        + " "
+                        + EnumChatFormatting.BLUE
+                        + describePattern(slot.patternDetails)
+                        + EnumChatFormatting.RESET);
+                for (var item : slot.itemInventory) {
                     if (item == null || item.stackSize == 0) continue;
-                    ret.add(item.getItem().getItemStackDisplayName(item) + ": "
-                        + EnumChatFormatting.GOLD
-                        + nc.toWideReadableForm(item.stackSize)
-                        + EnumChatFormatting.RESET
-                    );
+                    ret.add(
+                        item.getItem()
+                            .getItemStackDisplayName(item) + ": "
+                            + EnumChatFormatting.GOLD
+                            + nc.toWideReadableForm(item.stackSize)
+                            + EnumChatFormatting.RESET);
                 }
-                for(var fluid : slot.fluidInventory) {
+                for (var fluid : slot.fluidInventory) {
                     if (fluid == null || fluid.amount == 0) continue;
-                    ret.add(fluid.getLocalizedName() + ": "
-                        + EnumChatFormatting.AQUA
-                        + nc.toWideReadableForm(fluid.amount)
-                        + EnumChatFormatting.RESET
-                    );
+                    ret.add(
+                        fluid.getLocalizedName() + ": "
+                            + EnumChatFormatting.AQUA
+                            + nc.toWideReadableForm(fluid.amount)
+                            + EnumChatFormatting.RESET);
                 }
             }
             return ret.toArray(new String[0]);
-        } else return new String[]{};
+        } else return new String[] {};
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-                                  ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-                                 ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -470,51 +477,44 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     @Override
     public void addUIWidgets(ModularWindow.@NotNull Builder builder, UIBuildContext buildContext) {
-        builder
-            .widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 8)
-                    .startFromSlot(0)
-                    .endAtSlot(MAX_PATTERN_COUNT - 1)
-                    .phantom(false)
-                    .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_PATTERN_ME)
-                    .widgetCreator(slot -> new SlotWidget(slot)
+        builder.widget(
+            SlotGroup.ofItemHandler(inventoryHandler, 8)
+                .startFromSlot(0)
+                .endAtSlot(MAX_PATTERN_COUNT - 1)
+                .phantom(false)
+                .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_PATTERN_ME)
+                .widgetCreator(
+                    slot -> new SlotWidget(slot)
                         .setFilter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
-                        .setChangeListener(() -> onPatternChange(slot))
-                    )
-                    .build()
-                    .setPos(7, 9)
-            )
+                        .setChangeListener(() -> onPatternChange(slot)))
+                .build()
+                .setPos(7, 9))
             .widget(
-                new SlotWidget(inventoryHandler, SLOT_MANUAL)
-                    .setShiftClickPriority(11)
+                new SlotWidget(inventoryHandler, SLOT_MANUAL).setShiftClickPriority(11)
                     .setBackground(getGUITextureSet().getItemSlot())
-                    .setPos(151, 45)
-            )
-            .widget(
-                new ButtonWidget().setOnClick((clickData, widget) -> {
-                    if (clickData.mouseButton == 0) {
-                        refundAll();
-                    }
-                })
+                    .setPos(151, 45))
+            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                if (clickData.mouseButton == 0) {
+                    refundAll();
+                }
+            })
                 .setPlayClickSound(true)
                 .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EXPORT)
-                .addTooltips(
-                    ImmutableList.of("Return all internally stored items back to AE"))
+                .addTooltips(ImmutableList.of("Return all internally stored items back to AE"))
                 .setSize(16, 16)
-                .setPos(152, 28)
-            );
+                .setPos(152, 28));
     }
 
     @Override
     public void updateSlots() {
-        if (mInventory[SLOT_MANUAL] != null && mInventory[SLOT_MANUAL].stackSize <= 0)
-            mInventory[SLOT_MANUAL] = null;
+        if (mInventory[SLOT_MANUAL] != null && mInventory[SLOT_MANUAL].stackSize <= 0) mInventory[SLOT_MANUAL] = null;
     }
 
     private BaseActionSource getRequest() {
         if (requestSource == null) requestSource = new MachineSource((IActionHost) getBaseMetaTileEntity());
         return requestSource;
     }
+
     private void onPatternChange(BaseSlot slot) {
         if (!getBaseMetaTileEntity().isServerSide()) return;
 
@@ -542,7 +542,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         patternDetailsPatternSlotMap.put(patternSlot.getPatternDetails(), patternSlot);
 
         try {
-            getProxy().getGrid().postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
+            getProxy().getGrid()
+                .postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
         } catch (GridAccessException ignored) {}
     }
 
@@ -552,7 +553,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-                             IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("inventory")) {
             var inventory = tag.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
@@ -560,7 +561,11 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                 var item = inventory.getCompoundTagAt(i);
                 var name = item.getString("name");
                 var amount = item.getInteger("amount");
-                currenttip.add(name + ": " + EnumChatFormatting.GOLD + ReadableNumberConverter.INSTANCE.toWideReadableForm(amount) + EnumChatFormatting.RESET);
+                currenttip.add(
+                    name + ": "
+                        + EnumChatFormatting.GOLD
+                        + ReadableNumberConverter.INSTANCE.toWideReadableForm(amount)
+                        + EnumChatFormatting.RESET);
             }
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);
@@ -568,11 +573,11 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-                                int z) {
+        int z) {
 
         NBTTagList inventory = new NBTTagList();
         HashMap<String, Integer> nameToAmount = new HashMap<>();
-        for (Iterator<PatternSlot> it = inventories(); it.hasNext(); ) {
+        for (Iterator<PatternSlot> it = inventories(); it.hasNext();) {
             var i = it.next();
             for (var item : i.itemInventory) {
                 if (item != null && item.stackSize > 0) {
@@ -613,7 +618,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     @Override
     public boolean pushPattern(ICraftingPatternDetails patternDetails, InventoryCrafting table) {
         if (!isActive()) return false;
-        patternDetailsPatternSlotMap.get(patternDetails).insertItemsAndFluids(table);
+        patternDetailsPatternSlotMap.get(patternDetails)
+            .insertItemsAndFluids(table);
         justHadNewItems = true;
         return true;
     }
@@ -624,7 +630,9 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     }
 
     public Iterator<PatternSlot> inventories() {
-        return Arrays.stream(internalInventory).filter(Objects::nonNull).iterator();
+        return Arrays.stream(internalInventory)
+            .filter(Objects::nonNull)
+            .iterator();
     }
 
     @Override
@@ -634,7 +642,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     }
 
     private void refundAll() {
-        for(var slot : internalInventory) {
+        for (var slot : internalInventory) {
             if (slot == null) continue;
             try {
                 slot.refund(getProxy(), getRequest());

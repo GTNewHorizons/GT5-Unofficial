@@ -3,7 +3,6 @@ package gregtech.loaders.preload;
 import static gregtech.api.enums.MetaTileEntityIDs.*;
 import static gregtech.api.enums.Mods.Forestry;
 
-import gregtech.common.tileentities.machines.*;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.GT_Mod;
@@ -57,6 +56,7 @@ import gregtech.common.tileentities.generators.GT_MetaTileEntity_MagicalEnergyAb
 import gregtech.common.tileentities.generators.GT_MetaTileEntity_NaquadahReactor;
 import gregtech.common.tileentities.generators.GT_MetaTileEntity_PlasmaGenerator;
 import gregtech.common.tileentities.generators.GT_MetaTileEntity_SteamTurbine;
+import gregtech.common.tileentities.machines.*;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_AdvSeismicProspector;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Boxinator;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Charger;
@@ -1892,9 +1892,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 new GT_MetaTileEntity_Hatch_CraftingInput_ME(
                     CRAFTING_INPUT_ME.ID,
                     "hatch.crafting_input.me",
-                    "Crafting Input Buffer (ME)"
-                ).getStackForm(1L)
-            );
+                    "Crafting Input Buffer (ME)").getStackForm(1L));
         }
     }
 

@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -79,6 +78,7 @@ import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
@@ -702,7 +702,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
         // check crafting input hatches first
         for (GT_MetaTileEntity_Hatch_CraftingInput_ME craftingInput : mCraftingInputs) {
-            for (Iterator<GT_MetaTileEntity_Hatch_CraftingInput_ME.PatternSlot> it = craftingInput.inventories(); it.hasNext(); ) {
+            for (Iterator<GT_MetaTileEntity_Hatch_CraftingInput_ME.PatternSlot> it = craftingInput.inventories(); it
+                .hasNext();) {
                 GT_MetaTileEntity_Hatch_CraftingInput_ME.PatternSlot slot = it.next();
                 processingLogic.setInputItems(slot.getItemInputs());
                 processingLogic.setInputFluids(slot.getFluidInputs());
@@ -1454,7 +1455,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME hatch){
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             hatch.mRecipeMap = getRecipeMap();

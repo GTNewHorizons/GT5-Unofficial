@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,6 +22,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
 
 /**
  * Multiblock base class that allows machine to use power over int.
@@ -148,7 +148,8 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
 
         // check crafting input hatches first
         for (GT_MetaTileEntity_Hatch_CraftingInput_ME craftingInput : mCraftingInputs) {
-            for (Iterator<GT_MetaTileEntity_Hatch_CraftingInput_ME.PatternSlot> it = craftingInput.inventories(); it.hasNext(); ) {
+            for (Iterator<GT_MetaTileEntity_Hatch_CraftingInput_ME.PatternSlot> it = craftingInput.inventories(); it
+                .hasNext();) {
                 GT_MetaTileEntity_Hatch_CraftingInput_ME.PatternSlot slot = it.next();
                 processingLogic.setInputItems(slot.getItemInputs());
                 processingLogic.setInputFluids(slot.getFluidInputs());
