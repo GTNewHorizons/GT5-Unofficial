@@ -292,8 +292,8 @@ public class GT_ParallelHelper {
      * Try to consume the inputs of the recipe
      *
      * @param recipe Processed recipe
-     * @param fluids fluid inputs that can be consumed
-     * @param items  item inputs that can be consumed
+     * @param fluids fluid inputs that will be consumed
+     * @param items  item inputs that will be consumed
      * @return True if recipe was satisfied, else false
      */
     protected boolean tryConsumeRecipeInputs(GT_Recipe recipe, FluidStack[] fluids, ItemStack[] items) {
