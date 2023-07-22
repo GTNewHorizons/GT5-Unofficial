@@ -12,6 +12,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
@@ -54,7 +57,7 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
     }
 
     public GT_MetaTileEntity_TypeFilter(String aName, int aTier, int aInvSlotCount, String aDescription,
-                                        ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -95,20 +98,11 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
     }
 
     private void copyHeldItemPrefix(ItemStack handStack) {
-        OrePrefixes prefix = getItemPrefix(handStack);
-        if (prefix != null) {
-            this.mPrefix = prefix;
+        ItemData data = GT_OreDictUnificator.getAssociation(handStack);
+        if (data != null && data.hasValidPrefixData()) {
+            this.mPrefix = data.mPrefix;
             this.mRotationIndex = -1;
         }
-    }
-
-    private static OrePrefixes getItemPrefix(ItemStack itemStack) {
-        OrePrefixes prefix = null;
-        ItemData data = GT_OreDictUnificator.getAssociation(itemStack);
-        if (data != null && data.hasValidPrefixData()) {
-            prefix = data.mPrefix;
-        }
-        return prefix;
     }
 
     private void cyclePrefix(boolean aRightClick) {
@@ -179,13 +173,21 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
     }
 
     @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        super.addUIWidgets(builder, buildContext);
+        builder.widget(
+            new FakeSyncWidget.StringSyncer(
+                () -> this.mPrefix.toString(),
+                (prefix) -> this.mPrefix = OrePrefixes.getPrefix(prefix, this.mPrefix)));
+    }
+
+    @Override
     protected Function<List<String>, List<String>> getItemStackReplacementTooltip() {
         return (itemTooltip) -> {
-            OrePrefixes prefix = getItemPrefix(mInventory[FILTER_SLOT_INDEX]);
             List<String> replacementTooltip = new ArrayList<>();
-            replacementTooltip.add("Filter set to " + prefix.mRegularLocalName);
-            replacementTooltip.add("Ore prefix: §e" + prefix + "§r");
-            replacementTooltip.add("Filter size: §e" + prefix.mPrefixedItems.size() + "§r");
+            replacementTooltip.add("Filter set to " + mPrefix.mRegularLocalName);
+            replacementTooltip.add("Ore prefix: §e" + mPrefix + "§r");
+            replacementTooltip.add("Filter size: §e" + mPrefix.mPrefixedItems.size() + "§r");
             replacementTooltip.addAll(mTooltipCache.getData(REPRESENTATION_SLOT_TOOLTIP).text);
             return replacementTooltip;
         };
