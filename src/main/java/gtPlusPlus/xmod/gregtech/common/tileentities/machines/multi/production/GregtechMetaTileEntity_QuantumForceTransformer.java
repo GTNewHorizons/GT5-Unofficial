@@ -33,6 +33,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -52,16 +53,17 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
@@ -327,7 +329,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
     }
 
     public static List<Pair<Block, Integer>> getAllCraftingTiers() {
-        return new ArrayList<Pair<Block, Integer>>() {
+        return new ArrayList<>() {
 
             {
                 add(Pair.of(ModBlocks.blockCasings5Misc, 7));
@@ -339,7 +341,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
     }
 
     public static List<Pair<Block, Integer>> getAllFocusingTiers() {
-        return new ArrayList<Pair<Block, Integer>>() {
+        return new ArrayList<>() {
 
             {
                 add(Pair.of(ModBlocks.blockCasings5Misc, 11));
@@ -356,14 +358,18 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                 return -1;
             } else if (block == ModBlocks.blockCasings5Misc) { // Resonance Chambers
                 switch (meta) {
-                    case 7:
+                    case 7 -> {
                         return 1;
-                    case 8:
+                    }
+                    case 8 -> {
                         return 2;
-                    case 9:
+                    }
+                    case 9 -> {
                         return 3;
-                    case 10:
+                    }
+                    case 10 -> {
                         return 4;
+                    }
                 }
             }
             return -1;
@@ -376,14 +382,18 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                 return -1;
             } else if (block == ModBlocks.blockCasings5Misc) { // Generation Coils
                 switch (meta) {
-                    case 11:
+                    case 11 -> {
                         return 1;
-                    case 12:
+                    }
+                    case 12 -> {
                         return 2;
-                    case 13:
+                    }
+                    case 13 -> {
                         return 3;
-                    case 14:
+                    }
+                    case 14 -> {
                         return 4;
+                    }
                 }
             }
             return -1;
@@ -428,184 +438,140 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
         return true;
     }
 
-    private int mCurrentParallel = 0;
-
     @Override
-    public boolean checkRecipe(final ItemStack aStack) {
-        mCurrentParallel = 0;
-        this.lEUt = 0;
-        this.mMaxProgresstime = 0;
-        this.mOutputItems = null;
-        this.mOutputFluids = null;
-        doFermium = false;
-        doNeptunium = false;
-        FluidStack[] tFluidList = getStoredFluids().toArray(new FluidStack[0]);
-        if (inputSeparation) {
-            ArrayList<ItemStack> tInputList = new ArrayList<>();
-            for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-                for (int i = tBus.getSizeInventory() - 1; i >= 0; i--) {
-                    if (tBus.getStackInSlot(i) != null) {
-                        tInputList.add(tBus.getStackInSlot(i));
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
+
+            private int[] chances;
+
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+                if (recipe.mSpecialValue > getCraftingTier()) {
+                    return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
+                }
+                ItemStack catalyst = null;
+                for (ItemStack item : recipe.mInputs) {
+                    if (ItemUtils.isCatalyst(item)) {
+                        catalyst = item;
+                        break;
                     }
                 }
 
-                ItemStack[] tInputs = tInputList.toArray(new ItemStack[0]);
-                if (processRecipe(tInputs, tFluidList, getRecipeMap(), tBus.mInventory[tBus.getCircuitSlot()])) {
-                    return true;
-                } else tInputList.clear();
+                if (catalyst == null) {
+                    return SimpleCheckRecipeResult.ofFailure("no_catalyst");
+                }
+
+                int mCurrentMaxParallel = 0;
+                int mMaxParallel = getMaxParallelRecipes();
+                for (ItemStack item : inputItems) {
+                    if (ItemUtils.isCatalyst(item) && item.isItemEqual(catalyst)) {
+                        mCurrentMaxParallel += item.stackSize;
+                    }
+
+                    if (mCurrentMaxParallel >= mMaxParallel) {
+                        mCurrentMaxParallel = mMaxParallel;
+                        break;
+                    }
+                }
+                maxParallel = mCurrentMaxParallel;
+
+                doFermium = false;
+                doNeptunium = false;
+                final ItemStack controllerStack = getControllerSlot();
+
+                if (recipe.mSpecialValue < getFocusingTier()) {
+                    if (mNeptuniumHatch != null && mNeptuniumHatch.getFluid() != null
+                            && mNeptuniumHatch.getFluid().getFluid() != null
+                            && mNeptuniumHatch.getFluid().getFluid().equals(mNeptunium)) {
+                        doNeptunium = true;
+                    }
+                    if (mFermiumHatch != null && mFermiumHatch.getFluid() != null
+                            && mFermiumHatch.getFluid().getFluid() != null
+                            && mFermiumHatch.getFluid().getFluid().equals(mFermium)) {
+                        doFermium = true;
+                    }
+                }
+
+                chances = GetChanceOutputs(
+                        recipe,
+                        doNeptunium && controllerStack != null ? controllerStack.getItemDamage() - 1 : -1);
+
+                return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        } else {
-            ItemStack[] tInputList = getStoredInputs().toArray(new ItemStack[0]);
-            return processRecipe(tInputList, tFluidList, getRecipeMap(), aStack);
-        }
-        this.mEfficiency = 0;
-        this.mEfficiencyIncrease = 0;
-        return false;
+
+            @NotNull
+            @Override
+            public CheckRecipeResult process() {
+                CheckRecipeResult result = super.process();
+                if (result.wasSuccessful()) {
+                    List<ItemStack> generatedItems = new ArrayList<>();
+                    List<FluidStack> generatedFluids = new ArrayList<>();
+                    if (mFluidMode) {
+                        for (int i = 0; i < chances.length; i++) {
+                            if (getBaseMetaTileEntity().getRandomNumber(10000) < chances[i]) {
+                                ItemData data = getAssociation(lastRecipe.getOutput(i));
+                                Materials mat = data == null ? null : data.mMaterial.mMaterial;
+                                if (i < lastRecipe.mOutputs.length) {
+                                    if (mat != null) {
+                                        if (mat.getMolten(0) != null) {
+                                            generatedFluids.add(
+                                                    mat.getMolten(
+                                                            lastRecipe.getOutput(i).stackSize * 144L
+                                                                    * calculatedParallels));
+                                        } else if (mat.getFluid(0) != null) {
+                                            generatedFluids.add(
+                                                    mat.getFluid(
+                                                            lastRecipe.getOutput(i).stackSize * 1000L
+                                                                    * calculatedParallels));
+                                        } else {
+                                            ItemStack aItem = lastRecipe.getOutput(i);
+                                            generatedItems.add(
+                                                    GT_Utility.copyAmountUnsafe(
+                                                            (long) aItem.stackSize * calculatedParallels,
+                                                            aItem));
+                                        }
+                                    } else {
+                                        ItemStack aItem = lastRecipe.getOutput(i);
+                                        generatedItems.add(
+                                                GT_Utility.copyAmountUnsafe(
+                                                        (long) aItem.stackSize * calculatedParallels,
+                                                        aItem));
+                                    }
+                                } else {
+                                    FluidStack aFluid = lastRecipe.getFluidOutput(i - lastRecipe.mOutputs.length);
+                                    generatedFluids.add(new FluidStack(aFluid, aFluid.amount * calculatedParallels));
+                                }
+                            }
+                        }
+                    } else {
+                        for (int i = 0; i < chances.length; i++) {
+                            if (getBaseMetaTileEntity().getRandomNumber(10000) < chances[i]) {
+                                if (i < lastRecipe.mOutputs.length) {
+                                    ItemStack aItem = lastRecipe.getOutput(i).copy();
+                                    aItem.stackSize *= calculatedParallels;
+                                    generatedItems.add(aItem);
+                                } else {
+                                    FluidStack aFluid = lastRecipe.getFluidOutput(i - lastRecipe.mOutputs.length)
+                                            .copy();
+                                    aFluid.amount *= calculatedParallels;
+                                    generatedFluids.add(aFluid);
+                                }
+                            }
+                        }
+                    }
+                    setOutputItems(generatedItems.toArray(new ItemStack[0]));
+                    setOutputFluids(generatedFluids.toArray(new FluidStack[0]));
+                }
+                return result;
+            }
+        };
     }
 
-    private boolean processRecipe(ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
-            GT_Recipe.GT_Recipe_Map aRecipeMap, ItemStack aStack) {
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(getAverageInputVoltage()));
-        GT_Recipe tRecipe = aRecipeMap.findRecipe(
-                getBaseMetaTileEntity(),
-                false,
-                gregtech.api.enums.GT_Values.V[tTier],
-                aFluidInputs,
-                aItemInputs);
-
-        if (tRecipe != null && tRecipe.mSpecialValue <= getCraftingTier()) {
-            ItemStack aRecipeCatalyst = null;
-            for (ItemStack tItem : tRecipe.mInputs) {
-                if (ItemUtils.isCatalyst(tItem)) {
-                    aRecipeCatalyst = tItem;
-                    break;
-                }
-            }
-
-            if (aRecipeCatalyst == null) {
-                return false;
-            }
-
-            int mCurrentMaxParallel = 0;
-            int mMaxParallel = 64;
-            for (ItemStack tItem : aItemInputs) {
-                if (ItemUtils.isCatalyst(tItem) && tItem.isItemEqual(aRecipeCatalyst)) {
-                    mCurrentMaxParallel += tItem.stackSize;
-                }
-
-                if (mCurrentMaxParallel >= mMaxParallel) {
-                    mCurrentMaxParallel = mMaxParallel;
-                    break;
-                }
-            }
-
-            if (mFermiumHatch != null && tRecipe.mSpecialValue <= getFocusingTier()) {
-                doFermium = mFermiumHatch.getFluid() != null
-                        && mFermiumHatch.getFluid().isFluidEqual(new FluidStack(mFermium, 1));
-            } else {
-                doFermium = false;
-            }
-
-            GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
-                    .setFluidInputs(aFluidInputs).setAvailableEUt(getMaxInputAmps() * getAverageInputVoltage())
-                    .setMaxParallel(mCurrentMaxParallel).setController(this).enableConsumption();
-
-            if (batchMode) {
-                helper.enableBatchMode(128);
-            }
-
-            helper.build();
-
-            if (helper.getCurrentParallel() == 0) {
-                return false;
-            }
-
-            GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt)
-                    .setEUt(getAverageInputVoltage()).setAmperage(getMaxInputAmps()).setDuration(tRecipe.mDuration)
-                    .setParallel(Math.min(mMaxParallel, helper.getCurrentParallel())).calculate();
-            lEUt = -calculator.getConsumption();
-            mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
-
-            this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-            this.mEfficiencyIncrease = 10000;
-
-            if (mMaxProgresstime == Integer.MAX_VALUE - 1 || lEUt == Long.MAX_VALUE - 1) return false;
-
-            if (this.lEUt > 0) {
-                this.lEUt = (-this.lEUt);
-            }
-
-            int[] tChances;
-            if (aStack == null || aStack.getItemDamage() == 0
-                    || mNeptuniumHatch.getFluid() == null
-                    || !mNeptuniumHatch.getFluid().isFluidEqual(new FluidStack(mNeptunium, 1))
-                    || tRecipe.mSpecialValue > getFocusingTier()) {
-                doNeptunium = false;
-                tChances = GetChanceOutputs(tRecipe, -1);
-            } else {
-                doNeptunium = true;
-                tChances = GetChanceOutputs(tRecipe, aStack.getItemDamage() - 1);
-            }
-
-            ArrayList<ItemStack> tItemOutputs = new ArrayList<>();
-            ArrayList<FluidStack> tFluidOutputs = new ArrayList<>();
-            mCurrentParallel = helper.getCurrentParallel();
-
-            if (mFluidMode) {
-                for (int i = 0; i < tChances.length; i++) {
-                    if (getBaseMetaTileEntity().getRandomNumber(10000) < tChances[i]) {
-                        ItemData data = getAssociation(tRecipe.getOutput(i));
-                        Materials mat = data == null ? null : data.mMaterial.mMaterial;
-                        if (i < tRecipe.mOutputs.length) {
-                            if (mat != null) {
-                                if (mat.getMolten(0) != null) {
-                                    tFluidOutputs.add(
-                                            mat.getMolten(tRecipe.getOutput(i).stackSize * 144L * mCurrentParallel));
-                                } else if (mat.getFluid(0) != null) {
-                                    tFluidOutputs.add(
-                                            mat.getFluid(tRecipe.getOutput(i).stackSize * 1000L * mCurrentParallel));
-                                } else {
-                                    ItemStack aItem = tRecipe.getOutput(i);
-                                    tItemOutputs.add(
-                                            GT_Utility.copyAmountUnsafe(
-                                                    (long) aItem.stackSize * mCurrentParallel,
-                                                    aItem));
-                                }
-                            } else {
-                                ItemStack aItem = tRecipe.getOutput(i);
-                                tItemOutputs.add(
-                                        GT_Utility.copyAmountUnsafe((long) aItem.stackSize * mCurrentParallel, aItem));
-                            }
-                        } else {
-                            FluidStack aFluid = tRecipe.getFluidOutput(i - tRecipe.mOutputs.length);
-                            tFluidOutputs.add(new FluidStack(aFluid, aFluid.amount * mCurrentParallel));
-                        }
-                    }
-                }
-            } else {
-                for (int i = 0; i < tChances.length; i++) {
-                    if (getBaseMetaTileEntity().getRandomNumber(10000) < tChances[i]) {
-                        if (i < tRecipe.mOutputs.length) {
-                            ItemStack aItem = tRecipe.getOutput(i).copy();
-                            aItem.stackSize *= mCurrentParallel;
-                            tItemOutputs.add(aItem);
-                        } else {
-                            FluidStack aFluid = tRecipe.getFluidOutput(i - tRecipe.mOutputs.length).copy();
-                            aFluid.amount *= mCurrentParallel;
-                            tFluidOutputs.add(aFluid);
-                        }
-                    }
-                }
-            }
-
-            mOutputItems = tItemOutputs.toArray(new ItemStack[0]);
-            mOutputFluids = tFluidOutputs.toArray(new FluidStack[0]);
-            this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-            updateSlots();
-
-            return true;
-        }
-        return false;
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(getAverageInputVoltage());
+        logic.setAvailableAmperage(getMaxInputAmps());
     }
 
     private byte runningTick = 0;
@@ -618,12 +584,10 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
         }
 
         if (runningTick % 20 == 0) {
+            int amount = (int) (getFocusingTier() * 4 * Math.sqrt(processingLogic.getCurrentParallels()));
             if (doFermium) {
-                FluidStack tFluid = new FluidStack(
-                        mFermium,
-                        (int) (getFocusingTier() * 4 * Math.sqrt(mCurrentParallel)));
-                FluidStack tLiquid = mFermiumHatch.drain(tFluid.amount, true);
-                if (tLiquid == null || tLiquid.amount < tFluid.amount) {
+                FluidStack tLiquid = mFermiumHatch.drain(amount, true);
+                if (tLiquid == null || tLiquid.amount < amount) {
                     doFermium = false;
                     criticalStopMachine();
                     return false;
@@ -631,11 +595,8 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
             }
 
             if (doNeptunium) {
-                FluidStack tFluid = new FluidStack(
-                        mNeptunium,
-                        (int) (getFocusingTier() * 4 * Math.sqrt(mCurrentParallel)));
-                FluidStack tLiquid = mNeptuniumHatch.drain(tFluid.amount, true);
-                if (tLiquid == null || tLiquid.amount < tFluid.amount) {
+                FluidStack tLiquid = mNeptuniumHatch.drain(amount, true);
+                if (tLiquid == null || tLiquid.amount < amount) {
                     doNeptunium = false;
                     criticalStopMachine();
                     return false;
@@ -673,10 +634,6 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
         return 0;
     }
 
-    public int getAmountOfOutputs() {
-        return 2;
-    }
-
     @Override
     public boolean explodesOnComponentBreak(final ItemStack aStack) {
         return false;
@@ -690,7 +647,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
         Arrays.fill(tChances, aChancePerOutput);
 
         switch (difference) {
-            case 0:
+            case 0 -> {
                 for (int i = 0; i < tChances.length; i++) {
                     if (doNeptunium) {
                         if (i == aChanceIncreased) {
@@ -704,8 +661,8 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                         tChances[i] += (10000 - tChances[i]) / 4;
                     }
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 for (int i = 0; i < tChances.length; i++) {
                     if (doNeptunium) {
                         if (i == aChanceIncreased) {
@@ -719,9 +676,8 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                         tChances[i] += (10000 - tChances[i]) / 3;
                     }
                 }
-                break;
-            case 2:
-            case 3:
+            }
+            case 2, 3 -> {
                 for (int i = 0; i < tChances.length; i++) {
                     if (doNeptunium) {
                         if (i == aChanceIncreased) {
@@ -735,27 +691,9 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                         tChances[i] += (10000 - tChances[i]) / 2;
                     }
                 }
-                break;
+            }
         }
         return tChances;
-    }
-
-    public boolean onWireCutterRightclick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-            float aX, float aY, float aZ) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-            } else {
-                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
-            }
-            return true;
-        }
-        inputSeparation = !inputSeparation;
-        GT_Utility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
-        return true;
     }
 
     @Override
@@ -844,86 +782,86 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
         // spotless:off
         Tessellator tes = Tessellator.instance;
         switch (side) {
-            case 0:
-                tes.addVertexWithUV(x + 3, y    , z + 7, maxU, maxV);
+            case 0 -> {
+                tes.addVertexWithUV(x + 3, y, z + 7, maxU, maxV);
                 tes.addVertexWithUV(x + 3, y + 4, z + 7, maxU, minV);
                 tes.addVertexWithUV(x - 3, y + 4, z + 7, minU, minV);
-                tes.addVertexWithUV(x - 3, y    , z + 7, minU, maxV);
-                tes.addVertexWithUV(x - 3, y    , z + 7, minU, maxV);
+                tes.addVertexWithUV(x - 3, y, z + 7, minU, maxV);
+                tes.addVertexWithUV(x - 3, y, z + 7, minU, maxV);
                 tes.addVertexWithUV(x - 3, y + 4, z + 7, minU, minV);
                 tes.addVertexWithUV(x + 3, y + 4, z + 7, maxU, minV);
-                tes.addVertexWithUV(x + 3, y    , z + 7, maxU, maxV);
-                break;
-            case 1:
-                tes.addVertexWithUV(x + 7, y    , z + 4, maxU, maxV);
+                tes.addVertexWithUV(x + 3, y, z + 7, maxU, maxV);
+            }
+            case 1 -> {
+                tes.addVertexWithUV(x + 7, y, z + 4, maxU, maxV);
                 tes.addVertexWithUV(x + 7, y + 4, z + 4, maxU, minV);
                 tes.addVertexWithUV(x + 7, y + 4, z - 4, minU, minV);
-                tes.addVertexWithUV(x + 7, y    , z - 4, minU, maxV);
-                tes.addVertexWithUV(x + 7, y    , z - 4, minU, maxV);
+                tes.addVertexWithUV(x + 7, y, z - 4, minU, maxV);
+                tes.addVertexWithUV(x + 7, y, z - 4, minU, maxV);
                 tes.addVertexWithUV(x + 7, y + 4, z - 4, minU, minV);
                 tes.addVertexWithUV(x + 7, y + 4, z + 4, maxU, minV);
-                tes.addVertexWithUV(x + 7, y    , z + 4, maxU, maxV);
-                break;
-            case 2:
-                tes.addVertexWithUV(x + 3, y    , z - 7, maxU, maxV);
+                tes.addVertexWithUV(x + 7, y, z + 4, maxU, maxV);
+            }
+            case 2 -> {
+                tes.addVertexWithUV(x + 3, y, z - 7, maxU, maxV);
                 tes.addVertexWithUV(x + 3, y + 4, z - 7, maxU, minV);
                 tes.addVertexWithUV(x - 3, y + 4, z - 7, minU, minV);
-                tes.addVertexWithUV(x - 3, y    , z - 7, minU, maxV);
-                tes.addVertexWithUV(x - 3, y    , z - 7, minU, maxV);
+                tes.addVertexWithUV(x - 3, y, z - 7, minU, maxV);
+                tes.addVertexWithUV(x - 3, y, z - 7, minU, maxV);
                 tes.addVertexWithUV(x - 3, y + 4, z - 7, minU, minV);
                 tes.addVertexWithUV(x + 3, y + 4, z - 7, maxU, minV);
-                tes.addVertexWithUV(x + 3, y    , z - 7, maxU, maxV);
-                break;
-            case 3:
-                tes.addVertexWithUV(x - 7, y    , z + 4, maxU, maxV);
+                tes.addVertexWithUV(x + 3, y, z - 7, maxU, maxV);
+            }
+            case 3 -> {
+                tes.addVertexWithUV(x - 7, y, z + 4, maxU, maxV);
                 tes.addVertexWithUV(x - 7, y + 4, z + 4, maxU, minV);
                 tes.addVertexWithUV(x - 7, y + 4, z - 4, minU, minV);
-                tes.addVertexWithUV(x - 7, y    , z - 4, minU, maxV);
-                tes.addVertexWithUV(x - 7, y    , z - 4, minU, maxV);
+                tes.addVertexWithUV(x - 7, y, z - 4, minU, maxV);
+                tes.addVertexWithUV(x - 7, y, z - 4, minU, maxV);
                 tes.addVertexWithUV(x - 7, y + 4, z - 4, minU, minV);
                 tes.addVertexWithUV(x - 7, y + 4, z + 4, maxU, minV);
-                tes.addVertexWithUV(x - 7, y    , z + 4, maxU, maxV); 
-                break;
-            case 4:
-                tes.addVertexWithUV(x - 3, y    , z + 7, maxU, maxV);
+                tes.addVertexWithUV(x - 7, y, z + 4, maxU, maxV);
+            }
+            case 4 -> {
+                tes.addVertexWithUV(x - 3, y, z + 7, maxU, maxV);
                 tes.addVertexWithUV(x - 3, y + 4, z + 7, maxU, minV);
                 tes.addVertexWithUV(x - 7, y + 4, z + 4, minU, minV);
-                tes.addVertexWithUV(x - 7, y    , z + 4, minU, maxV);
-                tes.addVertexWithUV(x - 7, y    , z + 4, minU, maxV);
+                tes.addVertexWithUV(x - 7, y, z + 4, minU, maxV);
+                tes.addVertexWithUV(x - 7, y, z + 4, minU, maxV);
                 tes.addVertexWithUV(x - 7, y + 4, z + 4, minU, minV);
                 tes.addVertexWithUV(x - 3, y + 4, z + 7, maxU, minV);
-                tes.addVertexWithUV(x - 3, y    , z + 7, maxU, maxV);
-                break;
-            case 5:
-                tes.addVertexWithUV(x - 3, y    , z - 7, maxU, maxV);
+                tes.addVertexWithUV(x - 3, y, z + 7, maxU, maxV);
+            }
+            case 5 -> {
+                tes.addVertexWithUV(x - 3, y, z - 7, maxU, maxV);
                 tes.addVertexWithUV(x - 3, y + 4, z - 7, maxU, minV);
                 tes.addVertexWithUV(x - 7, y + 4, z - 4, minU, minV);
-                tes.addVertexWithUV(x - 7, y    , z - 4, minU, maxV);
-                tes.addVertexWithUV(x - 7, y    , z - 4, minU, maxV);
+                tes.addVertexWithUV(x - 7, y, z - 4, minU, maxV);
+                tes.addVertexWithUV(x - 7, y, z - 4, minU, maxV);
                 tes.addVertexWithUV(x - 7, y + 4, z - 4, minU, minV);
                 tes.addVertexWithUV(x - 3, y + 4, z - 7, maxU, minV);
-                tes.addVertexWithUV(x - 3, y    , z - 7, maxU, maxV);
-                break;
-            case 6:
-                tes.addVertexWithUV(x + 3, y    , z + 7, maxU, maxV);
+                tes.addVertexWithUV(x - 3, y, z - 7, maxU, maxV);
+            }
+            case 6 -> {
+                tes.addVertexWithUV(x + 3, y, z + 7, maxU, maxV);
                 tes.addVertexWithUV(x + 3, y + 4, z + 7, maxU, minV);
                 tes.addVertexWithUV(x + 7, y + 4, z + 4, minU, minV);
-                tes.addVertexWithUV(x + 7, y    , z + 4, minU, maxV);
-                tes.addVertexWithUV(x + 7, y    , z + 4, minU, maxV);
+                tes.addVertexWithUV(x + 7, y, z + 4, minU, maxV);
+                tes.addVertexWithUV(x + 7, y, z + 4, minU, maxV);
                 tes.addVertexWithUV(x + 7, y + 4, z + 4, minU, minV);
                 tes.addVertexWithUV(x + 3, y + 4, z + 7, maxU, minV);
-                tes.addVertexWithUV(x + 3, y    , z + 7, maxU, maxV);
-                break;
-            case 7:
-                tes.addVertexWithUV(x + 3, y    , z - 7, maxU, maxV);
+                tes.addVertexWithUV(x + 3, y, z + 7, maxU, maxV);
+            }
+            case 7 -> {
+                tes.addVertexWithUV(x + 3, y, z - 7, maxU, maxV);
                 tes.addVertexWithUV(x + 3, y + 4, z - 7, maxU, minV);
                 tes.addVertexWithUV(x + 7, y + 4, z - 4, minU, minV);
-                tes.addVertexWithUV(x + 7, y    , z - 4, minU, maxV);
-                tes.addVertexWithUV(x + 7, y    , z - 4, minU, maxV);
+                tes.addVertexWithUV(x + 7, y, z - 4, minU, maxV);
+                tes.addVertexWithUV(x + 7, y, z - 4, minU, maxV);
                 tes.addVertexWithUV(x + 7, y + 4, z - 4, minU, minV);
                 tes.addVertexWithUV(x + 3, y + 4, z - 7, maxU, minV);
-                tes.addVertexWithUV(x + 3, y    , z - 7, maxU, maxV);
-                break;
+                tes.addVertexWithUV(x + 3, y, z - 7, maxU, maxV);
+            }
         }
     }
 

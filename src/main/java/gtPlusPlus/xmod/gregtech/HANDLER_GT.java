@@ -22,11 +22,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
-import gtPlusPlus.api.helpers.GregtechPlusPlus_API.Multiblock_API;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.minecraft.multi.NoEUBonusMultiBehaviour;
-import gtPlusPlus.api.objects.minecraft.multi.NoOutputBonusMultiBehaviour;
-import gtPlusPlus.api.objects.minecraft.multi.NoSpeedBonusMultiBehaviour;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
@@ -97,11 +93,6 @@ public class HANDLER_GT {
 
         // Register custom singles to the PA
         AddCustomMachineToPA.register();
-
-        // Register the No-Bonus Special Behaviour.
-        Multiblock_API.registerSpecialMultiBehaviour(new NoOutputBonusMultiBehaviour());
-        Multiblock_API.registerSpecialMultiBehaviour(new NoSpeedBonusMultiBehaviour());
-        Multiblock_API.registerSpecialMultiBehaviour(new NoEUBonusMultiBehaviour());
 
         // Register some custom recipe maps for any enabled multiblocks.
         // MultiblockRecipeMapHandler.run();

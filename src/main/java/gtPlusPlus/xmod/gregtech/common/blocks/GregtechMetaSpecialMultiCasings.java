@@ -71,7 +71,6 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
         GregtechItemList.Casing_Turbine_HP.set(new ItemStack(this, 1, 2));
         GregtechItemList.Casing_Turbine_Gas.set(new ItemStack(this, 1, 3));
         GregtechItemList.Casing_Turbine_Plasma.set(new ItemStack(this, 1, 4));
-        GregtechItemList.Casing_TeslaTower.set(new ItemStack(this, 1, 5));
         GregtechItemList.Casing_SolarTower_Structural.set(new ItemStack(this, 1, 6));
         GregtechItemList.Casing_SolarTower_SaltContainment.set(new ItemStack(this, 1, 7));
         GregtechItemList.Casing_SolarTower_HeatContainment.set(new ItemStack(this, 1, 8));

@@ -23,6 +23,7 @@ import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -128,8 +129,9 @@ public class GregtechMetaTileEntity_IndustrialElectrolyzer extends
     }
 
     @Override
-    public boolean checkRecipe(final ItemStack aStack) {
-        return checkRecipeGeneric(2 * GT_Utility.getTier(this.getMaxInputVoltage()), 90, 180);
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().setSpeedBonus(1F / 2.8F).setEuModifier(0.9F)
+                .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
@@ -143,11 +145,6 @@ public class GregtechMetaTileEntity_IndustrialElectrolyzer extends
     }
 
     @Override
-    public int getAmountOfOutputs() {
-        return 1;
-    }
-
-    @Override
     public boolean explodesOnComponentBreak(final ItemStack aStack) {
         return false;
     }
@@ -157,8 +154,4 @@ public class GregtechMetaTileEntity_IndustrialElectrolyzer extends
         return 2 * GT_Utility.getTier(this.getMaxInputVoltage());
     }
 
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 90;
-    }
 }

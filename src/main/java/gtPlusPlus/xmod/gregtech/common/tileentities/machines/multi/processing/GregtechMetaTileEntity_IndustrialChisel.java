@@ -10,26 +10,29 @@ import static gregtech.api.enums.GT_HatchElement.Muffler;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
@@ -253,7 +256,7 @@ public class GregtechMetaTileEntity_IndustrialChisel
                     }
                 }
             } else {
-                target = this.getGUIItemStack(); // Common buses
+                target = this.getControllerSlot(); // Common buses
                 for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
                     ItemStack itemsInSlot = bus.mInventory[i];
                     if (itemsInSlot != null) {
@@ -270,61 +273,24 @@ public class GregtechMetaTileEntity_IndustrialChisel
     }
 
     @Override
-    public boolean checkRecipe(final ItemStack aStack) {
-        GT_Recipe tRecipe = getRecipe();
-        if (tRecipe == null) return false;
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-        ArrayList<ItemStack> aItems = this.getStoredInputs();
+            @NotNull
+            @Override
+            protected FindRecipeResult findRecipe(GT_Recipe.GT_Recipe_Map map) {
+                GT_Recipe recipe = getRecipe();
+                if (recipe == null) {
+                    return FindRecipeResult.NOT_FOUND;
+                }
+                return FindRecipeResult.ofSuccess(recipe);
+            }
+        }.setSpeedBonus(1F / 3F).setEuModifier(0.75F).setMaxParallelSupplier(this::getMaxParallelRecipes);
+    }
 
-        // Based on the Processing Array. A bit overkill, but very flexible.
-        ItemStack[] aItemInputs = aItems.toArray(new ItemStack[aItems.size()]);
-
-        // Reset outputs and progress stats
-        this.lEUt = 0;
-        this.mMaxProgresstime = 0;
-        this.mOutputItems = new ItemStack[] {};
-        this.mOutputFluids = new FluidStack[] {};
-        long tEnergy = getMaxInputEnergy();
-
-        // Remember last recipe - an optimization for findRecipe()
-        this.mLastRecipe = tRecipe;
-
-        int aMaxParallelRecipes = getMaxParallelRecipes();
-        int aEUPercent = getEuDiscountForParallelism();
-        int aSpeedBonusPercent = 200;
-
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
-                .setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes).enableConsumption()
-                .enableOutputCalculation().setEUtModifier(aEUPercent / 100.0f).setController(this);
-
-        if (batchMode) {
-            helper.enableBatchMode(128);
-        }
-
-        helper.build();
-
-        if (helper.getCurrentParallel() == 0) {
-            return false;
-        }
-
-        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tEnergy)
-                .setDuration(tRecipe.mDuration).setEUtDiscount(aEUPercent / 100.0f)
-                .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
-                .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplier()))
-                .calculate();
-        lEUt = -calculator.getConsumption();
-        mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
-
-        mOutputItems = helper.getItemOutputs();
-
-        updateSlots();
-
-        // Play sounds (GT++ addition - GT multiblocks play no sounds)
-        startProcess();
-        return true;
+    @Override
+    protected void sendStartMultiBlockSoundLoop() {
+        sendLoopStart(PROCESS_START_SOUND_INDEX);
     }
 
     @Override
@@ -332,23 +298,23 @@ public class GregtechMetaTileEntity_IndustrialChisel
         return (16 * GT_Utility.getTier(this.getMaxInputVoltage()));
     }
 
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 75;
-    }
+    private static ResourceLocation sChiselSound = null;
 
-    private static String sChiselSound = null;
-
-    private static String getChiselSound() {
+    private static ResourceLocation getChiselSound() {
         if (sChiselSound == null) {
-            sChiselSound = Carving.chisel.getVariationSound(Blocks.stone, 0);
+            sChiselSound = new ResourceLocation(Carving.chisel.getVariationSound(Blocks.stone, 0));
         }
         return sChiselSound;
     }
 
     @Override
-    public String getSound() {
-        return getChiselSound();
+    public void doSound(byte aIndex, double aX, double aY, double aZ) {
+        switch (aIndex) {
+            case PROCESS_START_SOUND_INDEX -> GT_Utility
+                    .doSoundAtClient(getChiselSound(), getTimeBetweenProcessSounds(), 1.0F, 1.0F, aX, aY, aZ);
+            case INTERRUPT_SOUND_INDEX -> GT_Utility
+                    .doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
+        }
     }
 
     @Override

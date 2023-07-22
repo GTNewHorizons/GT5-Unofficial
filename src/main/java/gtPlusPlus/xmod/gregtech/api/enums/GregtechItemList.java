@@ -209,11 +209,6 @@ public enum GregtechItemList implements GregtechItemContainer {
     Distillus_Upgrade_Chip,
     Maceration_Upgrade_Chip,
 
-    // Chips used to nerf my multis via custom behavioural attachments
-    Chip_MultiNerf_NoOutputBonus,
-    Chip_MultiNerf_NoSpeedBonus,
-    Chip_MultiNerf_NoEuBonus,
-
     // Milling Balls
     Milling_Ball_Alumina,
     Milling_Ball_Soapstone,
@@ -237,7 +232,6 @@ public enum GregtechItemList implements GregtechItemContainer {
     GTPP_Casing_MAX,
 
     // IronBlastFurnace Machine_Bronze_BlastFurnace
-    Machine_Iron_BlastFurnace,
     Casing_IronPlatedBricks,
 
     // Large Centrifuge
@@ -363,16 +357,9 @@ public enum GregtechItemList implements GregtechItemContainer {
     Industrial_WashPlant,
     Casing_WashPlant,
 
-    // Generator Array
-    Generator_Array_Controller,
-
     // Cutting Factory Controller
     Industrial_CuttingFactoryController,
     Casing_CuttingFactoryFrame,
-
-    // Tesla Tower
-    TelsaTower,
-    Casing_TeslaTower,
 
     // Large Extruder
     Industrial_Extruder,

@@ -12,14 +12,11 @@ import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
-import java.util.ArrayList;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -32,7 +29,7 @@ import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -138,8 +135,8 @@ public class GregtechMetaTileEntity_IndustrialMixer
     }
 
     @Override
-    public String getSound() {
-        return SoundResource.IC2_MACHINES_COMPRESSOR_OP.toString();
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.IC2_MACHINES_COMPRESSOR_OP;
     }
 
     @Override
@@ -163,57 +160,13 @@ public class GregtechMetaTileEntity_IndustrialMixer
     }
 
     @Override
-    public boolean checkRecipe(final ItemStack aStack) {
-        if (inputSeparation) {
-            for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-                ArrayList<ItemStack> rList = new ArrayList<>();
-                for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                    if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
-                        rList.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
-                }
-
-                if (checkRecipeGeneric(
-                        rList.toArray(new ItemStack[0]),
-                        getStoredFluids().toArray(new FluidStack[0]),
-                        getMaxParallelRecipes(),
-                        getEuDiscountForParallelism(),
-                        250,
-                        10000)) {
-                    return true;
-                }
-            }
-
-            return checkRecipeGeneric(
-                    new ItemStack[0],
-                    getStoredFluids().toArray(new FluidStack[0]),
-                    getMaxParallelRecipes(),
-                    getEuDiscountForParallelism(),
-                    250,
-                    10000);
-        } else {
-            return checkRecipeGeneric(
-                    getStoredInputs().toArray(new ItemStack[0]),
-                    getStoredFluids().toArray(new FluidStack[0]),
-                    getMaxParallelRecipes(),
-                    getEuDiscountForParallelism(),
-                    250,
-                    10000);
-        }
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().setSpeedBonus(1F / 3.5F).setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 100;
-    }
-
-    @Override
-    public void startProcess() {
-        this.sendLoopStart((byte) 1);
     }
 
     @Override
@@ -232,11 +185,6 @@ public class GregtechMetaTileEntity_IndustrialMixer
         GT_Utility.sendChatToPlayer(
                 aPlayer,
                 StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
-    }
-
-    @Override
-    public int getAmountOfOutputs() {
-        return 1;
     }
 
     @Override

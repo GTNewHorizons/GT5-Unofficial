@@ -12,16 +12,12 @@ import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -33,7 +29,7 @@ import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -42,7 +38,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -135,8 +130,8 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter extends
     }
 
     @Override
-    public String getSound() {
-        return SoundResource.IC2_MACHINES_INDUCTION_LOOP.toString();
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.IC2_MACHINES_INDUCTION_LOOP;
     }
 
     @Override
@@ -183,111 +178,8 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter extends
     }
 
     @Override
-    public boolean checkRecipe(final ItemStack aStack) {
-
-        if (this.getBaseMetaTileEntity().isServerSide()) {
-
-            ArrayList<ItemStack> tInputList = null;
-            // Get Controller Circuit
-            this.isUsingControllerCircuit = isCorrectMachinePart(aStack);
-
-            final long tVoltage = this.getMaxInputVoltage();
-            final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-            ItemStack[] tInputs = null;
-            final FluidStack[] tFluids = getCompactedFluids();
-            GT_Recipe tRecipe = null;
-
-            if (inputSeparation) {
-                for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-                    tInputList = new ArrayList<>();
-                    tBus.mRecipeMap = getRecipeMap();
-
-                    if (isValidMetaTileEntity(tBus)) {
-                        for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                            if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null) {
-                                tInputList.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
-                            }
-                        }
-                    }
-                    tInputs = tInputList.toArray(new ItemStack[0]);
-                    tRecipe = GTPP_Recipe.GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.findRecipe(
-                            this.getBaseMetaTileEntity(),
-                            false,
-                            gregtech.api.enums.GT_Values.V[tTier],
-                            tFluids,
-                            tInputs);
-                    if ((tRecipe != null)) {
-                        break;
-                    }
-                }
-            } else {
-                tInputList = this.getStoredInputs();
-                for (int i = 0; i < (tInputList.size() - 1); i++) {
-                    for (int j = i + 1; j < tInputList.size(); j++) {
-                        if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
-                            if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
-                                tInputList.remove(j--);
-                            } else {
-                                tInputList.remove(i--);
-                                break;
-                            }
-                        }
-                    }
-                }
-                tInputs = tInputList.toArray(new ItemStack[0]);
-                tRecipe = GTPP_Recipe.GTPP_Recipe_Map.sAlloyBlastSmelterRecipes.findRecipe(
-                        this.getBaseMetaTileEntity(),
-                        false,
-                        gregtech.api.enums.GT_Values.V[tTier],
-                        tFluids,
-                        tInputs);
-            }
-
-            // Validity check
-            if ((isUsingControllerCircuit && tInputList.size() < 1)
-                    || (!isUsingControllerCircuit && tInputList.size() < 2)) {
-                Logger.WARNING("Not enough inputs.");
-                return false;
-            } else if (isUsingControllerCircuit && tInputList.size() >= 1) {
-                tInputList.add(CI.getNumberedCircuit(this.mMode));
-            }
-
-            if (tInputList.size() > 1) {
-                if ((tRecipe != null) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
-                    Logger.WARNING("Found some Valid Inputs.");
-                    this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
-                    this.mEfficiencyIncrease = 10000;
-                    if (tRecipe.mEUt <= 16) {
-                        this.lEUt = (tRecipe.mEUt * (1L << (tTier - 1)) * (1L << (tTier - 1)));
-                        this.mMaxProgresstime = (tRecipe.mDuration / (1 << (tTier - 1)));
-                    } else {
-                        this.lEUt = tRecipe.mEUt;
-                        this.mMaxProgresstime = tRecipe.mDuration;
-                        while (this.lEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-                            this.lEUt *= 4;
-                            this.mMaxProgresstime /= 2;
-                        }
-                    }
-                    if (this.lEUt > 0) {
-                        this.lEUt = (-this.lEUt);
-                    }
-                    this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-                    this.mOutputFluids = new FluidStack[] { tRecipe.getFluidOutput(0) };
-                    List<ItemStack> tOutPutItems = new ArrayList<ItemStack>();
-                    for (ItemStack tOut : tRecipe.mOutputs) {
-                        if (ItemUtils.checkForInvalidItems(tOut)) {
-                            tOutPutItems.add(tOut);
-                        }
-                    }
-                    if (tOutPutItems.size() > 0)
-                        this.mOutputItems = tOutPutItems.toArray(new ItemStack[tOutPutItems.size()]);
-                    this.updateSlots();
-                    return true;
-                }
-            }
-        }
-        Logger.WARNING("Failed to find some Valid Inputs or Clientside.");
-        return false;
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic();
     }
 
     @Override
@@ -304,11 +196,6 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter extends
     }
 
     @Override
-    public int getEuDiscountForParallelism() {
-        return 0;
-    }
-
-    @Override
     public int getMaxEfficiency(final ItemStack aStack) {
         return 10000;
     }
@@ -321,11 +208,6 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter extends
     @Override
     public int getDamageToComponent(final ItemStack aStack) {
         return 0;
-    }
-
-    @Override
-    public int getAmountOfOutputs() {
-        return 2;
     }
 
     @Override

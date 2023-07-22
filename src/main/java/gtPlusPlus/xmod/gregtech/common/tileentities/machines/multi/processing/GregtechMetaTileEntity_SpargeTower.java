@@ -21,6 +21,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -33,6 +35,8 @@ import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -189,10 +193,7 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
                     0);
             GTPP_Recipe_Map.sSpargeTowerRecipes.add(newRecipe);
         }
-        if (GTPP_Recipe_Map.sSpargeTowerRecipes.mRecipeList.isEmpty()) {
-            return false;
-        }
-        return true;
+        return !GTPP_Recipe_Map.sSpargeTowerRecipes.mRecipeList.isEmpty();
     }
 
     @Override
@@ -201,57 +202,36 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
+    public @NotNull CheckRecipeResult checkProcessing() {
         ArrayList<FluidStack> tFluidList = getStoredFluids();
         long tVoltage = getMaxInputVoltage();
         byte tTier = (byte) Math.max(0, GT_Utility.getTier(tVoltage));
         FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
         if (tFluids.length > 0) {
-            Logger.INFO(
-                    "Found " + tFluids.length
-                            + " input fluids. Searching "
-                            + GTPP_Recipe_Map.sSpargeTowerRecipes.mRecipeList.size()
-                            + " recipes.");
             GT_Recipe tRecipe = getRecipeMap()
                     .findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids);
             if (tRecipe != null) {
-                Logger.INFO("Found recipe!");
                 FluidStack[] possibleOutputs = getPossibleByproductsOfSparge(
                         tRecipe.mFluidInputs[0],
                         tRecipe.mFluidInputs[1]).toArray(new FluidStack[0]);
                 if (canOutputAll(possibleOutputs) && tRecipe.isRecipeInputEqual(true, tFluids)) {
-                    Logger.INFO("Found recipe that matches!");
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
 
-                    // Reset outputs and progress stats
-                    this.lEUt = 0;
-                    this.mProgresstime = 0;
-                    this.mMaxProgresstime = 0;
-                    this.mOutputItems = new ItemStack[] {};
-                    this.mOutputFluids = new FluidStack[] {};
-                    this.mLastRecipe = tRecipe;
-
                     calculateOverclockedNessMulti((long) tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
-                    int aDevProgress = this.mMaxProgresstime / 10;
-                    this.mMaxProgresstime = Math.max(1, aDevProgress);
-                    this.mOutputItems = new ItemStack[] {};
+                    mMaxProgresstime = Math.max(1, mMaxProgresstime / 10);
                     ArrayList<FluidStack> aFluidOutputs = getByproductsOfSparge(
                             tRecipe.mFluidInputs[0],
                             tRecipe.mFluidInputs[1]);
-                    this.mOutputFluids = (FluidStack[]) aFluidOutputs.toArray(new FluidStack[0]);
+                    this.mOutputFluids = aFluidOutputs.toArray(new FluidStack[0]);
                     updateSlots();
-                    Logger.INFO("Done!");
-                    return true;
+                    return CheckRecipeResultRegistry.SUCCESSFUL;
                 }
-            } else {
-                Logger.INFO("Did not find recipe!");
             }
         }
         this.lEUt = 0;
         this.mEfficiency = 0;
-        Logger.INFO("Did not find recipe! (2)");
-        return false;
+        return CheckRecipeResultRegistry.NO_RECIPE;
     }
 
     private static List<FluidStack> getPossibleByproductsOfSparge(final FluidStack aSpargeGas,
@@ -329,14 +309,13 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
 
     protected boolean addLayerOutputHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null || aTileEntity.isDead()
-                || !(aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Output)) {
+                || !(aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Output tHatch)) {
             Logger.INFO("Bad Output Hatch");
             return false;
         }
         while (mOutputHatchesByLayer.size() < mHeight) {
             mOutputHatchesByLayer.add(new ArrayList<>());
         }
-        GT_MetaTileEntity_Hatch_Output tHatch = (GT_MetaTileEntity_Hatch_Output) aTileEntity.getMetaTileEntity();
         tHatch.updateTexture(aBaseCasingIndex);
         boolean addedHatch = mOutputHatchesByLayer.get(mHeight - 1).add(tHatch);
         Logger.INFO("Added Hatch: " + addedHatch);
@@ -477,11 +456,6 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
     @Override
     public int getMaxParallelRecipes() {
         return 1;
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 0;
     }
 
     @Override

@@ -26,6 +26,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -60,6 +62,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynam
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
@@ -563,23 +567,18 @@ public class GregtechMetaTileEntity_PowerSubStationController
     }
 
     @Override
-    public boolean checkRecipe(final ItemStack aStack) {
+    public @NotNull CheckRecipeResult checkProcessing() {
         this.mProgresstime = 0;
         this.mMaxProgresstime = 200;
         this.lEUt = 0;
         this.mEfficiencyIncrease = 10000;
         this.fixAllMaintenanceIssue();
-        return true;
+        return SimpleCheckRecipeResult.ofSuccess("managing_power");
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return 1;
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 0;
     }
 
     private long drawEnergyFromHatch(MetaTileEntity aHatch) {

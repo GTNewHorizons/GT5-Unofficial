@@ -8,11 +8,16 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
@@ -70,13 +75,11 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
     }
 
     @Override
-    public boolean checkRecipeGeneric(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
-            long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
+    public @NotNull CheckRecipeResult checkProcessing() {
 
         try {
             ArrayList<GT_MetaTileEntity_Hatch_Turbine> aEmptyTurbineRotorHatches = getEmptyTurbineAssemblies();
             if (aEmptyTurbineRotorHatches.size() > 0) {
-                log("Found " + aEmptyTurbineRotorHatches.size() + " Assemblies without Turbine.");
                 hatch: for (GT_MetaTileEntity_Hatch_Turbine aHatch : aEmptyTurbineRotorHatches) {
                     ArrayList<ItemStack> aTurbines = getAllBufferedTurbines();
                     for (ItemStack aTurbineItem : aTurbines) {
@@ -85,7 +88,6 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
                         }
                         if (aHatch.insertTurbine(aTurbineItem.copy())) {
                             boolean aDidDeplete = depleteTurbineFromStock(aTurbineItem);
-                            log("Put Turbine into Assembly - " + aDidDeplete);
                             continue hatch;
                         }
                     }
@@ -93,9 +95,8 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
             }
 
             if (getEmptyTurbineAssemblies().size() > 0 || !areAllTurbinesTheSame()) {
-                log("BAD RETURN - 1");
                 stopMachine();
-                return false;
+                return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
             }
 
             ArrayList<FluidStack> tFluids = getStoredFluids();
@@ -103,7 +104,7 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
             if (tFluids.size() > 0) {
                 for (FluidStack fluid : tFluids) {
                     if (fluid != null && BLACKLIST.contains(fluid.getFluid())) {
-                        return false;
+                        return SimpleCheckRecipeResult.ofFailure("fuel_blacklisted");
                     }
                 }
                 if (baseEff == 0 || optFlow == 0
@@ -135,7 +136,6 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
                     aTotalOptimalFlow *= getSpeedMultiplier();
 
                     if (aTotalOptimalFlow < 0) {
-                        log("Int overflow, report to issue tracker");
                         aTotalOptimalFlow = 100;
                     }
 
@@ -147,7 +147,7 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
                     euPerTurbine = MathUtils.roundToClosestInt(aEUPerTurbine);
                     if (optFlow <= 0 || baseEff <= 0) {
                         stopMachine(); // in case the turbine got removed
-                        return false;
+                        return CheckRecipeResultRegistry.NO_FUEL_FOUND;
                     }
                 } else {
                     counter++;
@@ -182,20 +182,19 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
             if (this.lEUt <= 0) {
                 this.lEUt = 0;
                 this.mEfficiency = 0;
-                log("Running checkRecipeGeneric(bad-2)");
-                return false;
+                return CheckRecipeResultRegistry.NO_FUEL_FOUND;
             } else {
                 this.mMaxProgresstime = 20;
                 this.mEfficiencyIncrease = 10;
                 // Overvoltage is handled inside the MultiBlockBase when pushing out to dynamos. no need to do it here.
                 // Play sounds (GT++ addition - GT multiblocks play no sounds)
-                startProcess();
-                return true;
+                enableAllTurbineHatches();
+                return CheckRecipeResultRegistry.GENERATING;
             }
         } catch (Throwable t) {
             t.printStackTrace();
         }
-        return false;
+        return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
     @Override

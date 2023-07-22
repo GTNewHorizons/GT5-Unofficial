@@ -37,6 +37,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -51,6 +53,9 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -173,11 +178,13 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
     }
 
     @Override
-    public boolean checkRecipe(final ItemStack aStack) {
-        if (!isCorrectMachinePart(aStack) && !replaceTool()) return false;
-        if (!checkSapling()) return false;
+    public @NotNull CheckRecipeResult checkProcessing() {
+        final ItemStack controllerStack = getControllerSlot();
+        if (!isCorrectMachinePart(controllerStack) && !replaceTool())
+            return SimpleCheckRecipeResult.ofFailure("no_saw");
+        if (!checkSapling()) return SimpleCheckRecipeResult.ofFailure("no_sapling");
 
-        this.mToolType = TreeFarmHelper.isCorrectMachinePart(aStack);
+        this.mToolType = TreeFarmHelper.isCorrectMachinePart(controllerStack);
 
         long tVoltage = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
@@ -201,7 +208,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
         GT_Recipe tRecipe = new GT_Recipe(null, toOutput, null, null, null, null, 0, 0, 0);
 
         GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setAvailableEUt(tVoltage)
-                .setController(this);
+                .setMachine(this);
 
         if (batchMode) {
             helper.enableBatchMode(128);
@@ -209,7 +216,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 
         helper.build();
         if (helper.getCurrentParallel() == 0) {
-            return false;
+            return CheckRecipeResultRegistry.OUTPUT_FULL;
         }
 
         if (aFert > 0 && aFert >= aOutputAmount) {
@@ -230,7 +237,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
 
         this.tryDamageTool();
         this.updateSlots();
-        return true;
+        return SimpleCheckRecipeResult.ofSuccess("growing_trees");
     }
 
     @Override
@@ -242,11 +249,6 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
     @Override
     public int getMaxParallelRecipes() {
         return 1;
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 0;
     }
 
     @Override

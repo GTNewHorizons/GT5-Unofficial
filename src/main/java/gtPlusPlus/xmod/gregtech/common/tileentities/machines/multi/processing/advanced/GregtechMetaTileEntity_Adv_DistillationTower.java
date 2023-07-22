@@ -38,7 +38,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -364,29 +364,15 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
     }
 
     @Override
-    public boolean checkRecipe(final ItemStack aStack) {
-        // Run standard recipe handling for distillery recipes
-        if (mMode == Mode.Distillery) {
-            return this.checkRecipeGeneric(getMaxParallelRecipes(), getEuDiscountForParallelism(), 100);
-        } else {
-            ItemStack[] inputs = getCompactedInputs();
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().setMaxParallelSupplier(this::getMaxParallelRecipes);
+    }
 
-            for (GT_MetaTileEntity_Hatch_Input hatch : mInputHatches) {
-                FluidStack tFluid = hatch.getFluid();
-                if (tFluid != null) {
-                    if (checkRecipeGeneric(
-                            inputs,
-                            new FluidStack[] { tFluid },
-                            getMaxParallelRecipes(),
-                            100,
-                            250,
-                            10000)) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
+    @Override
+    protected void setupProcessingLogic(ProcessingLogic logic) {
+        super.setupProcessingLogic(logic);
+        logic.setEuModifier(mMode == Mode.Distillery ? 0.15F : 1F);
+        logic.setSpeedBonus(mMode == Mode.Distillery ? 1F / 2F : 1F / 3.5F);
     }
 
     @Override
@@ -399,11 +385,6 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
             default:
                 return 0;
         }
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 15;
     }
 
     private int getTierOfTower() {
@@ -429,7 +410,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aTick % 20 == 0 && !mUpgraded) {
-            ItemStack aGuiStack = this.getGUIItemStack();
+            ItemStack aGuiStack = this.getControllerSlot();
             if (aGuiStack != null) {
                 if (GT_Utility.areStacksEqual(aGuiStack, GregtechItemList.Distillus_Upgrade_Chip.get(1))) {
                     this.mUpgraded = true;

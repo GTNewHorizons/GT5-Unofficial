@@ -23,6 +23,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -33,6 +35,10 @@ import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -164,21 +170,23 @@ public class GregtechMetaTileEntity_IndustrialWashPlant extends
     }
 
     @Override
-    public boolean checkRecipe(final ItemStack aStack) {
-        if (checkForWater()) {
-            return checkRecipeGeneric((4 * GT_Utility.getTier(this.getMaxInputVoltage())), 100, 400);
-        }
-        return false;
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
+
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+                if (checkForWater()) {
+                    return CheckRecipeResultRegistry.SUCCESSFUL;
+                }
+                return SimpleCheckRecipeResult.ofFailure("no_water");
+            }
+        }.setSpeedBonus(1F / 5F).setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return (4 * GT_Utility.getTier(this.getMaxInputVoltage()));
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 100;
     }
 
     @Override
@@ -190,11 +198,6 @@ public class GregtechMetaTileEntity_IndustrialWashPlant extends
     public int getPollutionPerSecond(final ItemStack aStack) {
         if (mMode == 2) return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath;
         return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeWasher;
-    }
-
-    @Override
-    public int getAmountOfOutputs() {
-        return 1;
     }
 
     @Override

@@ -11,11 +11,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
@@ -75,22 +79,14 @@ public class GT_MTE_LargeTurbine_Gas extends GregtechMetaTileEntity_LargerTurbin
     }
 
     @Override
-    public boolean checkRecipeGeneric(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
-            long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
+    public @NotNull CheckRecipeResult checkProcessing() {
         List<FluidStack> fluids = getStoredFluids();
         for (FluidStack fluid : fluids) {
             if (fluid != null && BLACKLIST.contains(fluid.getFluid())) {
-                return false;
+                return SimpleCheckRecipeResult.ofFailure("fuel_blacklisted");
             }
         }
-        return super.checkRecipeGeneric(
-                aItemInputs,
-                aFluidInputs,
-                aMaxParallelRecipes,
-                aEUPercent,
-                aSpeedBonusPercent,
-                aOutputChanceRoll,
-                aRecipe);
+        return super.checkProcessing();
     }
 
     @Override

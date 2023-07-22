@@ -25,6 +25,7 @@ import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -146,8 +147,8 @@ public class GregtechMetaTileEntity_IndustrialCokeOven extends
     }
 
     @Override
-    public String getSound() {
-        return SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP.toString();
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP;
     }
 
     @Override
@@ -171,18 +172,19 @@ public class GregtechMetaTileEntity_IndustrialCokeOven extends
     }
 
     @Override
-    public boolean checkRecipe(final ItemStack aStack) {
-        return checkRecipeGeneric(getMaxParallelRecipes(), getEuDiscountForParallelism(), 0);
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().setMaxParallelSupplier(this::getMaxParallelRecipes);
+    }
+
+    @Override
+    protected void setupProcessingLogic(ProcessingLogic logic) {
+        super.setupProcessingLogic(logic);
+        logic.setEuModifier((100F - (GT_Utility.getTier(getMaxInputVoltage()) * 4)) / 100F);
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return this.mLevel * 12;
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return (100 - (GT_Utility.getTier(this.getMaxInputVoltage()) * 4));
     }
 
     @Override
@@ -193,11 +195,6 @@ public class GregtechMetaTileEntity_IndustrialCokeOven extends
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialCokeOven;
-    }
-
-    @Override
-    public int getAmountOfOutputs() {
-        return 24;
     }
 
     @Override

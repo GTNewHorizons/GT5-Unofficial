@@ -12,13 +12,12 @@ import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
-import java.util.ArrayList;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -27,14 +26,14 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.lib.CORE;
@@ -202,91 +201,45 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GTPP_Recipe.GTPP_Recipe_Map.sCyclotronRecipes;
+    }
 
-        /*
-         * if (CORE.DEVENV) { return this.checkRecipeGeneric(); }
-         */
-        this.fixAllMaintenanceIssue();
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-        // log("Recipe Check.");
-        ArrayList<ItemStack> tItemList = getStoredInputs();
-        ItemStack[] tItemInputs = tItemList.toArray(new ItemStack[tItemList.size()]);
-        ArrayList<FluidStack> tInputList = getStoredFluids();
-        FluidStack[] tFluidInputs = tInputList.toArray(new FluidStack[tInputList.size()]);
-        long tVoltage = getMaxInputVoltage();
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-
-        GT_Recipe tRecipe = GTPP_Recipe.GTPP_Recipe_Map.sCyclotronRecipes.findRecipe(
-                getBaseMetaTileEntity(),
-                false,
-                gregtech.api.enums.GT_Values.V[tTier],
-                tFluidInputs,
-                tItemInputs);
-        if (tRecipe != null) {
-            if (tRecipe.isRecipeInputEqual(true, tFluidInputs, tItemInputs)) {
-
-                this.mEfficiency = (10000 - ((getIdealStatus() - getRepairStatus()) * 1000));
-                this.mEfficiencyIncrease = 10000;
-                this.lEUt = tRecipe.mEUt;
-                this.mMaxProgresstime = tRecipe.mDuration;
-
-                while (this.lEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-                    this.lEUt *= 4;
-                    this.mMaxProgresstime /= 2;
-                }
-
-                if (this.lEUt > 0) {
-                    this.lEUt = (-this.lEUt);
-                }
-
-                this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-
-                final ItemStack[] outputs = new ItemStack[tRecipe.mOutputs.length];
-                for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                    if (this.getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i)) {
-                        Logger.WARNING("Adding a bonus output");
-                        outputs[i] = tRecipe.getOutput(i);
-                    } else {
-                        Logger.WARNING("Adding null output");
-                        outputs[i] = null;
-                    }
-                }
-
-                for (ItemStack s : outputs) {
-                    if (s != null) {
-                        if (s.getItem() instanceof IonParticles) {
-                            long aCharge = IonParticles.getChargeState(s);
-                            if (aCharge == 0) {
-                                IonParticles.setChargeState(
-                                        s,
-                                        MathUtils.getRandomFromArray(
-                                                new int[] { -5, -5, -4, -4, -4, -3, -3, -3, -3, -3, -2, -2, -2, -2, -2,
-                                                        -2, -2, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, 1,
-                                                        1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3,
-                                                        3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6 }));
+            @NotNull
+            @Override
+            public CheckRecipeResult process() {
+                fixAllMaintenanceIssue();
+                CheckRecipeResult result = super.process();
+                if (result.wasSuccessful()) {
+                    for (ItemStack s : outputItems) {
+                        if (s != null) {
+                            if (s.getItem() instanceof IonParticles) {
+                                long aCharge = IonParticles.getChargeState(s);
+                                if (aCharge == 0) {
+                                    IonParticles.setChargeState(
+                                            s,
+                                            MathUtils.getRandomFromArray(
+                                                    new int[] { -5, -5, -4, -4, -4, -3, -3, -3, -3, -3, -2, -2, -2, -2,
+                                                            -2, -2, -2, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1,
+                                                            1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                                                            3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6 }));
+                                }
                             }
                         }
                     }
                 }
-
-                this.mOutputItems = outputs;
-                this.mOutputFluids = new FluidStack[] { tRecipe.getFluidOutput(0) };
-                this.updateSlots();
-                return true;
+                return result;
             }
-        }
-        return false;
+        };
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return 1;
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 0;
     }
 
     @Override
@@ -351,11 +304,6 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 
         return new String[] { "COMET - Compact Cyclotron MK " + tier, "EU Required: " + powerRequired + "EU/t",
                 "Stored EU: " + this.getEUVar() + " / " + maxEUStore() };
-    }
-
-    @Override
-    public int getAmountOfOutputs() {
-        return 1;
     }
 
     @Override

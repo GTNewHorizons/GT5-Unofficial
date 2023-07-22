@@ -2,7 +2,6 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
-import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,18 +13,16 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -75,150 +72,14 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
     }
 
     @Override
-    public int getEuDiscountForParallelism() {
-        return 0;
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
-    public boolean checkRecipe(ItemStack arg0) {
-
-        log("Running checkRecipeGeneric(0)");
-        ArrayList<ItemStack> tItems = getStoredInputs();
-        ArrayList<FluidStack> tFluids = getStoredFluids();
-        GT_Recipe_Map tMap = this.getRecipeMap();
-        if (tMap == null) {
-            return false;
-        }
-        ItemStack[] aItemInputs = tItems.toArray(new ItemStack[0]);
-        FluidStack[] aFluidInputs = tFluids.toArray(new FluidStack[0]);
-        GT_Recipe tRecipe = tMap.findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, V[1], null, null, aItemInputs);
-        if (tRecipe == null) {
-            log("BAD RETURN - 1");
-            return false;
-        }
-
-        int aEUPercent = 100;
-        int aSpeedBonusPercent = 0;
-        int aOutputChanceRoll = 10000;
-
-        // Reset outputs and progress stats
-        this.lEUt = 0;
-        this.mMaxProgresstime = 0;
-        this.mOutputItems = new ItemStack[] {};
-        this.mOutputFluids = new FluidStack[] {};
-
-        log("Running checkRecipeGeneric(1)");
-        // Remember last recipe - an optimization for findRecipe()
-        this.mLastRecipe = tRecipe;
-
-        int aMaxParallelRecipes = canBufferOutputs(
-                tRecipe.mOutputs,
-                tRecipe.mFluidOutputs,
-                this.getMaxParallelRecipes());
-        if (aMaxParallelRecipes == 0) {
-            log("BAD RETURN - 2");
-            return false;
-        }
-
-        // EU discount
-        float tRecipeEUt = (tRecipe.mEUt * aEUPercent) / 100.0f;
-        float tTotalEUt = 0.0f;
-
-        int parallelRecipes = 0;
-
-        log("parallelRecipes: " + parallelRecipes);
-        log("aMaxParallelRecipes: " + aMaxParallelRecipes);
-        log("tTotalEUt: " + tTotalEUt);
-        log("tRecipeEUt: " + tRecipeEUt);
-
-        // Count recipes to do in parallel, consuming input items and fluids and considering input voltage limits
-        for (; parallelRecipes < aMaxParallelRecipes && tTotalEUt < (32 - tRecipeEUt); parallelRecipes++) {
-            if (!tRecipe.isRecipeInputEqual(true, aFluidInputs, aItemInputs)) {
-                log("Broke at " + parallelRecipes + ".");
-                break;
-            }
-            log("Bumped EU from " + tTotalEUt + " to " + (tTotalEUt + tRecipeEUt) + ".");
-            tTotalEUt += tRecipeEUt;
-        }
-
-        if (parallelRecipes == 0) {
-            log("BAD RETURN - 3");
-            return false;
-        }
-
-        // -- Try not to fail after this point - inputs have already been consumed! --
-
-        // Convert speed bonus to duration multiplier
-        // e.g. 100% speed bonus = 200% speed = 100%/200% = 50% recipe duration.
-        aSpeedBonusPercent = Math.max(-99, aSpeedBonusPercent);
-        float tTimeFactor = 100.0f / (100.0f + aSpeedBonusPercent);
-        this.mMaxProgresstime = (int) (tRecipe.mDuration * tTimeFactor * 1.5f);
-
-        this.lEUt = (long) Math.ceil(tTotalEUt * 1.33f);
-
-        // this.mEUt = (3 * tRecipe.mEUt);
-
-        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-
-        if (this.lEUt > 0) {
-            this.lEUt = (-this.lEUt);
-        }
-
-        this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-
-        // Collect fluid outputs
-        FluidStack[] tOutputFluids = getOutputFluids(tRecipe, parallelRecipes);
-
-        // Collect output item types
-        ItemStack[] tOutputItems = getOutputItems(tRecipe);
-
-        // Set output item stack sizes (taking output chance into account)
-        for (int f = 0; f < tOutputItems.length; f++) {
-            if (tRecipe.mOutputs[f] != null && tOutputItems[f] != null) {
-                for (int g = 0; g < parallelRecipes; g++) {
-                    if (getBaseMetaTileEntity().getRandomNumber(aOutputChanceRoll) < tRecipe.getOutputChance(f))
-                        tOutputItems[f].stackSize += tRecipe.mOutputs[f].stackSize;
-                }
-            }
-        }
-
-        tOutputItems = removeNulls(tOutputItems);
-
-        // Sanitize item stack size, splitting any stacks greater than max stack size
-        List<ItemStack> splitStacks = new ArrayList<ItemStack>();
-        for (ItemStack tItem : tOutputItems) {
-            while (tItem.getMaxStackSize() < tItem.stackSize) {
-                ItemStack tmp = tItem.copy();
-                tmp.stackSize = tmp.getMaxStackSize();
-                tItem.stackSize = tItem.stackSize - tItem.getMaxStackSize();
-                splitStacks.add(tmp);
-            }
-        }
-
-        if (splitStacks.size() > 0) {
-            ItemStack[] tmp = new ItemStack[splitStacks.size()];
-            tmp = splitStacks.toArray(tmp);
-            tOutputItems = ArrayUtils.addAll(tOutputItems, tmp);
-        }
-
-        // Strip empty stacks
-        List<ItemStack> tSList = new ArrayList<ItemStack>();
-        for (ItemStack tS : tOutputItems) {
-            if (tS.stackSize > 0) tSList.add(tS);
-        }
-        tOutputItems = tSList.toArray(new ItemStack[0]);
-
-        // Commit outputs
-        this.mOutputItems = tOutputItems;
-        this.mOutputFluids = tOutputFluids;
-        updateSlots();
-
-        // Play sounds (GT++ addition - GT multiblocks play no sounds)
-        startProcess();
-
-        log("GOOD RETURN - 1");
-        return true;
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(V[1]);
+        logic.setAvailableAmperage(1);
     }
 
     public ArrayList<FluidStack> getAllSteamStacks() {

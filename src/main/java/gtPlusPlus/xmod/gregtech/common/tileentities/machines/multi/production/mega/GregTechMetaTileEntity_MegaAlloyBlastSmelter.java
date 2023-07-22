@@ -24,11 +24,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
-import com.github.bartimaeusnek.bartworks.util.Pair;
-import com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -41,13 +40,16 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
+import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
@@ -60,7 +62,6 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
     private static final int MAX_PARALLELS = 256;
     private HeatingCoilLevel coilLevel;
     private byte glassTier = -1;
-    private int currentParallels;
     private boolean hasNormalCoils;
 
     private static final IStructureDefinition<GregTechMetaTileEntity_MegaAlloyBlastSmelter> STRUCTURE_DEFINITION = StructureDefinition
@@ -160,65 +161,32 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        ItemStack[] tInputs;
-        FluidStack[] tFluids = this.getStoredFluids().toArray(new FluidStack[0]);
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-        if (inputSeparation) {
-            ArrayList<ItemStack> tInputList = new ArrayList<>();
-            for (GT_MetaTileEntity_Hatch_InputBus tHatch : mInputBusses) {
-                IGregTechTileEntity tInputBus = tHatch.getBaseMetaTileEntity();
-                for (int i = tInputBus.getSizeInventory() - 1; i >= 0; i--) {
-                    if (tInputBus.getStackInSlot(i) != null) tInputList.add(tInputBus.getStackInSlot(i));
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+                if (glassTier < GT_Utility.getTier(recipe.mEUt)) {
+                    return CheckRecipeResultRegistry.insufficientMachineTier(GT_Utility.getTier(recipe.mEUt));
                 }
-                tInputs = tInputList.toArray(new ItemStack[0]);
-
-                if (processRecipe(tInputs, tFluids)) return true;
-                else tInputList.clear();
+                return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        } else {
-            tInputs = getStoredInputs().toArray(new ItemStack[0]);
-            return processRecipe(tInputs, tFluids);
-        }
-        return false;
+
+            @NotNull
+            @Override
+            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe,
+                    @NotNull GT_ParallelHelper helper) {
+                return super.createOverclockCalculator(recipe, helper)
+                        .setSpeedBoost((float) (1.0 - getCoilDiscount(coilLevel)));
+            }
+        }.setMaxParallel(MAX_PARALLELS);
     }
 
-    protected boolean processRecipe(ItemStack[] tItems, FluidStack[] tFluids) {
-        if (tItems.length <= 0 && tFluids.length <= 0) return false;
-        long tTotalEU = getAverageInputVoltage() * getMaxInputAmps();
-
-        GT_Recipe recipe = getRecipeMap().findRecipe(getBaseMetaTileEntity(), false, tTotalEU, tFluids, tItems);
-        if (recipe == null) return false;
-
-        if (glassTier < GT_Utility.getTier(recipe.mEUt)) return false;
-
-        long parallels = Math.min(MAX_PARALLELS, tTotalEU / recipe.mEUt);
-        currentParallels = RecipeFinderForParallel.handleParallelRecipe(recipe, tFluids, tItems, (int) parallels);
-        if (currentParallels <= 0) return false;
-
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
-                .setParallel(currentParallels).setDuration(recipe.mDuration).setEUt(tTotalEU).calculate();
-
-        lEUt = calculator.getConsumption();
-        mMaxProgresstime = calculator.getDuration();
-
-        Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> outputs = RecipeFinderForParallel
-                .getMultiOutput(recipe, currentParallels);
-
-        mMaxProgresstime -= coilLevel.getTier() < 0 ? 0 : mMaxProgresstime * getCoilDiscount(coilLevel);
-
-        if (lEUt > 0) {
-            lEUt = -lEUt;
-        }
-
-        mMaxProgresstime = Math.max(1, mMaxProgresstime);
-        mEfficiency = getCurrentEfficiency(null);
-
-        mOutputItems = outputs.getValue().toArray(new ItemStack[0]);
-        mOutputFluids = outputs.getKey().toArray(new FluidStack[0]);
-        updateSlots();
-
-        return true;
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(getMaxInputEu());
+        logic.setAvailableAmperage(1);
     }
 
     @Override
@@ -271,6 +239,7 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
     public double getCoilDiscount(HeatingCoilLevel lvl) {
         // Since there are only 14 tiers (starting from 0), this is what the function is.
         double unRounded = (lvl != null ? lvl.getTier() : 0) / 130.0D;
+        if (unRounded < 0) return 1F;
         double rounded = Math.floor(unRounded * 1000) / 1000;
 
         return Math.max(0, rounded);
@@ -343,7 +312,7 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
     public String[] getInfoData() {
         long storedEnergy = 0;
         long maxEnergy = 0;
-        int paras = getBaseMetaTileEntity().isActive() ? currentParallels : 0;
+        int paras = getBaseMetaTileEntity().isActive() ? processingLogic.getCurrentParallels() : 0;
         int discountP = (int) (getCoilDiscount(coilLevel) * 1000) / 10;
 
         for (GT_MetaTileEntity_Hatch tHatch : mExoticEnergyHatches) {

@@ -12,21 +12,18 @@ import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
-import java.util.ArrayList;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Materials;
@@ -34,12 +31,13 @@ import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
@@ -58,12 +56,6 @@ public class GregtechMetaTileEntity_MassFabricator
     public static int sUUASpeedBonus = 4;
     public static int sDurationMultiplier = 3200;
 
-    public int mMatterProduced = 0;
-    public int mScrapProduced = 0;
-    public int mAmplifierProduced = 0;
-    public int mScrapUsed = 0;
-    public int mAmplifierUsed = 0;
-
     public static String mCasingName1 = "Matter Fabricator Casing";
     public static String mCasingName2 = "Containment Casing";
     public static String mCasingName3 = "Matter Generation Coil";
@@ -74,23 +66,11 @@ public class GregtechMetaTileEntity_MassFabricator
     private static final int MODE_UU = 0;
 
     public static boolean sRequiresUUA = false;
-    private static FluidStack[] mUU = new FluidStack[2];
-    private static ItemStack mScrap[] = new ItemStack[2];
+    private static final FluidStack[] mUU = new FluidStack[2];
+    private static final ItemStack[] mScrap = new ItemStack[2];
 
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_MassFabricator> STRUCTURE_DEFINITION = null;
-
-    public int getAmplifierUsed() {
-        return this.mAmplifierUsed;
-    }
-
-    public int getMatterProduced() {
-        return this.mMatterProduced;
-    }
-
-    public int getScrapProduced() {
-        return this.mScrapProduced;
-    }
 
     public GregtechMetaTileEntity_MassFabricator(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -144,16 +124,6 @@ public class GregtechMetaTileEntity_MassFabricator
         sUUASpeedBonus = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_Speed_Bonus", sUUASpeedBonus);
         sRequiresUUA = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_Requirement", sRequiresUUA);
         // Materials.UUAmplifier.mChemicalFormula = ("Mass Fabricator Eff/Speed Bonus: x" + sUUASpeedBonus);
-    }
-
-    @Override
-    public boolean checkRecipe(final ItemStack aStack) {
-        ArrayList<ItemStack> tItems = getStoredInputs();
-        ArrayList<FluidStack> tFluids = getStoredFluids();
-        ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
-        FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);
-        init();
-        return checkRecipeGeneric(tItemInputs, tFluidInputs, 4, 80, 00, 10000);
     }
 
     public static boolean sInit = false;
@@ -227,11 +197,6 @@ public class GregtechMetaTileEntity_MassFabricator
     }
 
     @Override
-    public int getAmountOfOutputs() {
-        return 10;
-    }
-
-    @Override
     public boolean explodesOnComponentBreak(final ItemStack aStack) {
         return false;
     }
@@ -248,190 +213,52 @@ public class GregtechMetaTileEntity_MassFabricator
     public GT_Recipe_Map getRecipeMap() {
         return this.mMode == MODE_SCRAP ? GT_Recipe_Map.sRecyclerRecipes
                 : GTPP_Recipe.GTPP_Recipe_Map.sMatterFab2Recipes;
-        // return Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes;
     }
 
     @Override
-    public boolean checkRecipeGeneric(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
-            long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
-        if (this.mMode == MODE_SCRAP) {
-            return checkRecipeScrap(
-                    aItemInputs,
-                    aFluidInputs,
-                    getMaxParallelRecipes(),
-                    getEuDiscountForParallelism(),
-                    aSpeedBonusPercent,
-                    aOutputChanceRoll);
-        } else {
-            return checkRecipeUU(
-                    aItemInputs,
-                    aFluidInputs,
-                    getMaxParallelRecipes(),
-                    getEuDiscountForParallelism(),
-                    aSpeedBonusPercent,
-                    aOutputChanceRoll);
-        }
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
+
+            @NotNull
+            @Override
+            public CheckRecipeResult process() {
+                init();
+                return super.process();
+            }
+
+            @NotNull
+            @Override
+            protected FindRecipeResult findRecipe(GT_Recipe_Map map) {
+                if (mMode == MODE_SCRAP) {
+                    ItemStack aPotentialOutput = GT_ModHandler
+                            .getRecyclerOutput(GT_Utility.copyAmount(1, inputItems[0]), 0);
+                    GT_Recipe recipe = new GTPP_Recipe(
+                            false,
+                            new ItemStack[] { GT_Utility.copyAmount(1, inputItems[0]) },
+                            aPotentialOutput == null ? null : new ItemStack[] { aPotentialOutput },
+                            null,
+                            new int[] { 2000 },
+                            null,
+                            null,
+                            40,
+                            MaterialUtils.getVoltageForTier(1),
+                            0);
+                    return FindRecipeResult.ofSuccess(recipe);
+                }
+                return super.findRecipe(map);
+            }
+        }.setEuModifier(0.8F).setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
-    public boolean checkRecipeScrap(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
-            int aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
-
-        if (aItemInputs == null || aItemInputs.length <= 0) {
-            return false;
-        }
-
-        long tVoltage = getMaxInputVoltage();
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-        long tEnergy = getMaxInputEnergy();
-        ItemStack aPotentialOutput = GT_ModHandler.getRecyclerOutput(GT_Utility.copyAmount(1, aItemInputs[0]), 0);
-        GT_Recipe tRecipe = new GTPP_Recipe(
-                false,
-                new ItemStack[] { GT_Utility.copyAmount(1, aItemInputs[0]) },
-                aPotentialOutput == null ? null : new ItemStack[] { aPotentialOutput },
-                null,
-                new int[] { 2000 },
-                null,
-                null,
-                40,
-                MaterialUtils.getVoltageForTier(1),
-                0);
-
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
-                .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setEUtModifier(aEUPercent / 100.0f)
-                .setMaxParallel(aMaxParallelRecipes).enableConsumption().enableOutputCalculation().setController(this);
-
-        if (batchMode) {
-            helper.enableBatchMode(128);
-        }
-
-        helper.build();
-
-        if (helper.getCurrentParallel() == 0) {
-            return false;
-        }
-
-        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tEnergy)
-                .setDuration(tRecipe.mDuration).setEUtDiscount(aEUPercent / 100.0f)
-                .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
-                .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplier()))
-                .calculate();
-        lEUt = -calculator.getConsumption();
-        mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
-
-        mOutputItems = helper.getItemOutputs();
-        mOutputFluids = helper.getFluidOutputs();
-        updateSlots();
-        // Play sounds (GT++ addition - GT multiblocks play no sounds)
-        startProcess();
-        return true;
-    }
-
-    public boolean checkRecipeUU(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
-            int aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
-
-        // Based on the Processing Array. A bit overkill, but very flexible.
-
-        // Reset outputs and progress stats
-        this.lEUt = 0;
-        this.mMaxProgresstime = 0;
-        this.mOutputItems = new ItemStack[] {};
-        this.mOutputFluids = new FluidStack[] {};
-
-        long tVoltage = getMaxInputVoltage();
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-        long tEnergy = getMaxInputEnergy();
-
-        GT_Recipe tRecipe = findRecipe(
-                getBaseMetaTileEntity(),
-                mLastRecipe,
-                false,
-                gregtech.api.enums.GT_Values.V[tTier],
-                aFluidInputs,
-                aItemInputs);
-
-        // Remember last recipe - an optimization for findRecipe()
-        this.mLastRecipe = tRecipe;
-
-        if (tRecipe == null) {
-            return false;
-        }
-
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
-                .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes)
-                .enableConsumption().enableOutputCalculation().setEUtModifier(aEUPercent / 100.0f).setController(this);
-
-        if (batchMode) {
-            helper.enableBatchMode(128);
-        }
-
-        helper.build();
-
-        if (helper.getCurrentParallel() == 0) {
-            return false;
-        }
-
-        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tEnergy)
-                .setDuration(tRecipe.mDuration).setEUtDiscount(aEUPercent / 100.0f)
-                .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
-                .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplier()))
-                .enablePerfectOC().calculate();
-        lEUt = -calculator.getConsumption();
-        mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
-
-        mOutputItems = helper.getItemOutputs();
-        mOutputFluids = helper.getFluidOutputs();
-
-        int aMatterProduced = 0;
-        int aAmplifierProduced = 0;
-        int aScrapUsed = 0;
-        int aAmplifierUsed = 0;
-
-        for (int i = 0; i < helper.getCurrentParallel(); i++) {
-            // Logger.INFO("Trying to bump stats "+i);
-            for (ItemStack aInput : tRecipe.mInputs) {
-                if (aInput != null && GT_Utility.areStacksEqual(aInput, mScrap[0], true)) {
-                    aScrapUsed += aInput.stackSize;
-                }
-            }
-            for (FluidStack aInput : tRecipe.mFluidInputs) {
-                if (aInput != null && GT_Utility.areFluidsEqual(aInput, mUU[0], true)) {
-                    aAmplifierUsed += aInput.amount;
-                }
-            }
-            for (FluidStack aOutput : tRecipe.mFluidOutputs) {
-                if (aOutput != null && GT_Utility.areFluidsEqual(aOutput, mUU[0], true)) {
-                    aAmplifierProduced += aOutput.amount;
-                }
-                if (aOutput != null && GT_Utility.areFluidsEqual(aOutput, mUU[1], true)) {
-                    aMatterProduced += aOutput.amount;
-                }
-            }
-        }
-
-        this.mMatterProduced += aMatterProduced;
-        this.mAmplifierProduced += aAmplifierProduced;
-        this.mScrapUsed += aScrapUsed;
-        this.mAmplifierUsed += aAmplifierUsed;
-        updateSlots();
-        // Play sounds (GT++ addition - GT multiblocks play no sounds)
-        startProcess();
-        return true;
+    @Override
+    protected void setupProcessingLogic(ProcessingLogic logic) {
+        super.setupProcessingLogic(logic);
+        logic.setOverclock(mMode == MODE_SCRAP ? 1 : 2, 2);
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return this.mMode == MODE_SCRAP ? 64 : 8 * (Math.max(1, GT_Utility.getTier(getMaxInputVoltage())));
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 80;
     }
 
     @Override
@@ -452,55 +279,13 @@ public class GregtechMetaTileEntity_MassFabricator
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("mScrapProduced", mScrapProduced);
-        aNBT.setInteger("mAmplifierProduced", mAmplifierProduced);
-        aNBT.setInteger("mMatterProduced", mMatterProduced);
-        aNBT.setInteger("mScrapUsed", mScrapUsed);
-        aNBT.setInteger("mAmplifierUsed", mAmplifierUsed);
         aNBT.setInteger("mMode", mMode);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        mScrapProduced = aNBT.getInteger("mScrapProduced");
-        mAmplifierProduced = aNBT.getInteger("mAmplifierProduced");
-        mMatterProduced = aNBT.getInteger("mMatterProduced");
-        mScrapUsed = aNBT.getInteger("mScrapUsed");
-        mAmplifierUsed = aNBT.getInteger("mAmplifierUsed");
         mMode = aNBT.getInteger("mMode");
         super.loadNBTData(aNBT);
-    }
-
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements
-                .widget(
-                        TextWidget.dynamicString(() -> "Scrap Made: " + mScrapProduced)
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(
-                                        widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0
-                                                && getBaseMetaTileEntity().isActive()))
-                .widget(
-                        TextWidget.dynamicString(() -> "Scrap Used: " + mScrapUsed)
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(
-                                        widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0
-                                                && getBaseMetaTileEntity().isActive()))
-                .widget(
-                        TextWidget.dynamicString(() -> "UUA Made: " + mAmplifierProduced)
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(
-                                        widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0
-                                                && getBaseMetaTileEntity().isActive()))
-                .widget(
-                        TextWidget.dynamicString(() -> "UUA Used: " + mAmplifierUsed)
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(
-                                        widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0
-                                                && getBaseMetaTileEntity().isActive()))
-                .widget(
-                        TextWidget.dynamicString(() -> "UUM Made: " + mMatterProduced)
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(
-                                        widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0
-                                                && getBaseMetaTileEntity().isActive()));
     }
 }

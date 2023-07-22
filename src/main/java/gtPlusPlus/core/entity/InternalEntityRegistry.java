@@ -83,8 +83,6 @@ public class InternalEntityRegistry {
                 Utils.rgbtoHexValue(20, 200, 20),
                 Utils.rgbtoHexValue(20, 20, 20));
 
-        // EntityRegistry.registerGlobalEntityID(EntitySickBlaze.class, "sickBlaze",
-        // EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(0, 75, 0), Utils.rgbtoHexValue(75, 175, 75));
         EntityRegistry
                 .registerModEntity(EntitySickBlaze.class, "sickBlaze", mEntityID++, GTplusplus.instance, 64, 20, true);
         ItemCustomSpawnEgg.registerEntityForSpawnEgg(
@@ -92,18 +90,6 @@ public class InternalEntityRegistry {
                 "sickBlaze",
                 Utils.rgbtoHexValue(40, 180, 40),
                 Utils.rgbtoHexValue(75, 75, 75));
-
-        // EntityRegistry.registerGlobalEntityID(EntityTeslaTowerLightning.class, "plasmaBolt",
-        // EntityRegistry.findGlobalUniqueEntityId(), Utils.rgbtoHexValue(255, 0, 0), Utils.rgbtoHexValue(125, 125,
-        // 125));
-        EntityRegistry.registerModEntity(
-                EntityTeslaTowerLightning.class,
-                "plasmaBolt",
-                mEntityID++,
-                GTplusplus.instance,
-                64,
-                5,
-                true);
 
         EntityRegistry.registerModEntity(
                 EntityThrowableBomb.class,

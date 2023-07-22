@@ -12,7 +12,6 @@ import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +21,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomFishable;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -34,6 +35,9 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.FishPondFakeRecipe;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -169,13 +173,12 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
     }
 
     @Override
-    public boolean checkRecipe(final ItemStack aStack) {
-        if (aStack != null) {
-            log("Found " + aStack.getDisplayName());
-            if (aStack.getItem() == circuit) {
+    public @NotNull CheckRecipeResult checkProcessing() {
+        ItemStack controllerStack = getControllerSlot();
+        if (controllerStack != null) {
+            if (controllerStack.getItem() == circuit) {
                 this.isUsingControllerCircuit = true;
-                this.mMode = aStack.getItemDamage();
-                log("Found Circuit!");
+                this.mMode = controllerStack.getItemDamage();
             } else {
                 this.isUsingControllerCircuit = false;
             }
@@ -183,37 +186,72 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
             this.isUsingControllerCircuit = false;
         }
         if (!hasGenerateRecipes) {
-            log("Generating Recipes.");
             generateRecipes();
         }
         if (hasGenerateRecipes) {
             if (!checkForWater()) {
-                return false;
+                return SimpleCheckRecipeResult.ofFailure("no_water");
+            }
+            ItemStack[] tItemInputs = getStoredInputs().toArray(new ItemStack[0]);
+            FluidStack[] tFluidInputs = getStoredFluids().toArray(new FluidStack[0]);
+
+            if (!isUsingControllerCircuit && tItemInputs.length == 0) {
+                return CheckRecipeResultRegistry.NO_RECIPE;
             }
 
-            log("Trying to run recipe.");
-            ArrayList<ItemStack> tItems = getStoredInputs();
-            ArrayList<FluidStack> tFluids = getStoredFluids();
-            ItemStack[] tItemInputs = tItems.toArray(new ItemStack[tItems.size()]);
-            FluidStack[] tFluidInputs = tFluids.toArray(new FluidStack[tFluids.size()]);
+            long tEnergy = getMaxInputEnergy();
 
-            if (!isUsingControllerCircuit && tItems.size() == 0) {
-                return false;
+            getCircuit(tItemInputs);
+
+            ItemStack[] mFishOutput = generateLoot(this.mMode);
+            mFishOutput = removeNulls(mFishOutput);
+            GT_Recipe g = new GTPP_Recipe(
+                    true,
+                    new ItemStack[] {},
+                    mFishOutput,
+                    null,
+                    new int[] {},
+                    tFluidInputs,
+                    mOutputFluids,
+                    200,
+                    16,
+                    0);
+            GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(g).setItemInputs(tItemInputs)
+                    .setFluidInputs(tFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(getMaxParallelRecipes())
+                    .enableConsumption().enableOutputCalculation().setMachine(this);
+
+            if (batchMode) {
+                helper.enableBatchMode(128);
             }
 
-            return checkRecipeGeneric(tItemInputs, tFluidInputs, getMaxParallelRecipes(), 100, 80, 100);
+            helper.build();
+
+            if (helper.getCurrentParallel() == 0) {
+                return CheckRecipeResultRegistry.OUTPUT_FULL;
+            }
+
+            this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+            this.mEfficiencyIncrease = 10000;
+
+            GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(g.mEUt).setEUt(tEnergy)
+                    .setDuration(g.mDuration)
+                    .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplierDouble()))
+                    .calculate();
+            lEUt = -calculator.getConsumption();
+            mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplierDouble());
+
+            mOutputItems = helper.getItemOutputs();
+            mOutputFluids = helper.getFluidOutputs();
+            updateSlots();
+
+            return CheckRecipeResultRegistry.SUCCESSFUL;
         }
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return (2 * (GT_Utility.getTier(this.getMaxInputVoltage()) + 1));
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 100;
     }
 
     @Override
@@ -224,11 +262,6 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialFishingPond;
-    }
-
-    @Override
-    public int getAmountOfOutputs() {
-        return 1;
     }
 
     @Override
@@ -300,19 +333,12 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
                     tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
                     if (tBlock == Blocks.water || tBlock == Blocks.flowing_water) {
                         ++tAmount;
-                        // log("Found Water");
                     }
                 }
             }
         }
 
-        boolean isValidWater = tAmount >= 60;
-        if (isValidWater) {
-            log("Filled structure.");
-        } else {
-            log("Did not fill structure.");
-        }
-        return isValidWater;
+        return tAmount >= 60;
     }
 
     private boolean isNotStaticWater(Block block, byte meta) {
@@ -442,88 +468,5 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
             mFishOutput = null;
         }
         return mFishOutput;
-    }
-
-    @Override
-    public boolean checkRecipeGeneric(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
-            long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
-
-        // Control Core to control the Multiblocks behaviour.
-        int aControlCoreTier = getControlCoreTier();
-
-        // If no core, return false;
-        if (aControlCoreTier == 0 && CORE.ConfigSwitches.requireControlCores) {
-            return false;
-        }
-
-        // Reset outputs and progress stats
-        this.lEUt = 0;
-        this.mMaxProgresstime = 0;
-        this.mOutputItems = new ItemStack[] {};
-        this.mOutputFluids = new FluidStack[] {};
-
-        long tVoltage = getMaxInputVoltage();
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-        long tEnergy = getMaxInputEnergy();
-
-        // Check to see if Voltage Tier > Control Core Tier
-        if (tTier > aControlCoreTier && CORE.ConfigSwitches.requireControlCores) {
-            return false;
-        }
-
-        // Based on the Processing Array. A bit overkill, but very flexible.
-        getCircuit(aItemInputs);
-
-        /*
-         * GT_Recipe tRecipe = this.getRecipeMap().findRecipe( getBaseMetaTileEntity(), mLastRecipe, false,
-         * gregtech.api.enums.GT_Values.V[tTier], aFluidInputs, aItemInputs);
-         */
-
-        ItemStack[] mFishOutput = generateLoot(this.mMode);
-        mFishOutput = removeNulls(mFishOutput);
-        GT_Recipe g = new GTPP_Recipe(
-                true,
-                new ItemStack[] {},
-                mFishOutput,
-                null,
-                new int[] {},
-                aFluidInputs,
-                mOutputFluids,
-                200,
-                16,
-                0);
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(g).setItemInputs(aItemInputs)
-                .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes)
-                .enableConsumption().enableOutputCalculation().setEUtModifier(aEUPercent / 100.0f).setController(this);
-
-        if (batchMode) {
-            helper.enableBatchMode(128);
-        }
-
-        helper.build();
-
-        if (helper.getCurrentParallel() == 0) {
-            return false;
-        }
-
-        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(g.mEUt).setEUt(tEnergy)
-                .setDuration(g.mDuration).setEUtDiscount(aEUPercent / 100.0f)
-                .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
-                .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplier()))
-                .calculate();
-        lEUt = -calculator.getConsumption();
-        mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
-
-        mOutputItems = helper.getItemOutputs();
-        mOutputFluids = helper.getFluidOutputs();
-        updateSlots();
-
-        // Play sounds (GT++ addition - GT multiblocks play no sounds)
-        startProcess();
-
-        return true;
     }
 }

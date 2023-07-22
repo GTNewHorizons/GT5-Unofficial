@@ -35,6 +35,7 @@ import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -246,8 +247,8 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
     }
 
     @Override
-    public String getSound() {
-        return SoundResource.IC2_MACHINES_MACERATOR_OP.toString();
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.IC2_MACHINES_MACERATOR_OP;
     }
 
     @Override
@@ -298,7 +299,7 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aTick % 20 == 0 && controllerTier == 1) {
-            ItemStack aGuiStack = this.getGUIItemStack();
+            ItemStack aGuiStack = this.getControllerSlot();
             if (aGuiStack != null) {
                 if (GT_Utility.areStacksEqual(aGuiStack, GregtechItemList.Maceration_Upgrade_Chip.get(1))) {
                     controllerTier = 2;
@@ -366,13 +367,8 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
     }
 
     @Override
-    public boolean checkRecipe(final ItemStack aStack) {
-        return checkRecipeGeneric(getMaxParallelRecipes(), getEuDiscountForParallelism(), 60, 7500);
-    }
-
-    @Override
-    protected boolean doesMachineBoostOutput() {
-        return true;
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().setSpeedBonus(1F / 1.6F).setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
@@ -383,11 +379,6 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
     }
 
     @Override
-    public int getEuDiscountForParallelism() {
-        return 100;
-    }
-
-    @Override
     public int getMaxEfficiency(final ItemStack aStack) {
         return 10000;
     }
@@ -395,11 +386,6 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMacerator;
-    }
-
-    @Override
-    public int getAmountOfOutputs() {
-        return 16;
     }
 
     @Override

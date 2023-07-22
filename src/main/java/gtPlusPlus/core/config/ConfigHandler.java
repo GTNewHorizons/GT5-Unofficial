@@ -51,7 +51,6 @@ import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_Industria
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialThermalCentrifuge;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialWashPlant;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialWireMill;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IronBlastFurnace;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_LargeAutoCrafter;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_LiquidFluorideThoriumReactor;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_MatterFabricator;
@@ -322,8 +321,6 @@ public class ConfigHandler {
                 GregTech.ID,
                 true,
                 "Produces fine wire and exotic cables.");
-        enableMultiblock_IronBlastFurnace = config
-                .getBoolean("enableMultiblockIronBlastFurnace", GregTech.ID, true, "Skip the Bronze age, very slowly.");
         enableMultiblock_MatterFabricator = config
                 .getBoolean("enableMultiblockMatterFabricator", GregTech.ID, true, "?FAB?RIC?ATE MA?TT?ER.");
         enableMultiblock_MultiTank = config.getBoolean(

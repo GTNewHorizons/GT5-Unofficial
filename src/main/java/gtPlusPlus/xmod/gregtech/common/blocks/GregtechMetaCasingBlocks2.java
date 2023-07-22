@@ -80,7 +80,6 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
         GregtechItemList.Casing_ThermalContainment.set(new ItemStack(this, 1, 11));
         GregtechItemList.Casing_Autocrafter.set(new ItemStack(this, 1, 12));
         GregtechItemList.Casing_CuttingFactoryFrame.set(new ItemStack(this, 1, 13));
-        // GregtechItemList.Casing_TeslaTower.set(new ItemStack(this, 1, 14));
         GregtechItemList.Casing_PLACEHOLDER_TreeFarmer.set(new ItemStack(this, 1, 15)); // Tree Farmer Textures
     }
 

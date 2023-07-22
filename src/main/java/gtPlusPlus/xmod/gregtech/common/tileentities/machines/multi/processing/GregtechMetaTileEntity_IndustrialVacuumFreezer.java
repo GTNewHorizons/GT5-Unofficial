@@ -27,6 +27,7 @@ import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -187,18 +188,13 @@ public class GregtechMetaTileEntity_IndustrialVacuumFreezer extends
     }
 
     @Override
-    public boolean checkRecipe(final ItemStack aStack) {
-        return this.checkRecipeGeneric(4, 100, 100);
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().setSpeedBonus(1F / 2F).setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return 4;
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 100;
     }
 
     @Override

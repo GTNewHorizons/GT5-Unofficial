@@ -25,7 +25,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -97,24 +97,13 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        // this.resetRecipeMapForAllInputHatches();
-        for (GT_MetaTileEntity_Hatch_Input g : this.mInputHatches) {
-            g.mRecipeMap = null;
-        }
-        boolean ab = super.checkRecipeGeneric();
-        // Logger.INFO("Did Recipe? "+ab);
-        return ab;
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic();
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return 1;
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 0;
     }
 
     @Override
@@ -203,11 +192,6 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
     @Override
     public int getDamageToComponent(final ItemStack aStack) {
         return 0;
-    }
-
-    @Override
-    public int getAmountOfOutputs() {
-        return 5;
     }
 
     @Override

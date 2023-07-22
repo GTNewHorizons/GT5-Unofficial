@@ -28,6 +28,7 @@ import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -112,14 +113,11 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace extends
     }
 
     private int getSizeFromHint(ItemStack stackSize) {
-        switch (stackSize.stackSize) {
-            case 1:
-                return 3;
-            case 2:
-                return 5;
-            default:
-                return 7;
-        }
+        return switch (stackSize.stackSize) {
+            case 1 -> 3;
+            case 2 -> 5;
+            default -> 7;
+        };
     }
 
     @Override
@@ -166,8 +164,8 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace extends
     }
 
     @Override
-    public String getSound() {
-        return SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP.toString();
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP;
     }
 
     @Override
@@ -192,23 +190,13 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace extends
     }
 
     @Override
-    public boolean checkRecipe(final ItemStack aStack) {
-        return this.checkRecipeGeneric(getMaxParallelRecipes(), 100, 250);
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().setSpeedBonus(1F / 3.5F).setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return (this.mSize * 8 * GT_Utility.getTier(this.getMaxInputVoltage()));
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 100;
-    }
-
-    @Override
-    public void startProcess() {
-        this.sendLoopStart((byte) 1);
     }
 
     @Override
@@ -222,11 +210,6 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace extends
     }
 
     @Override
-    public int getAmountOfOutputs() {
-        return 1;
-    }
-
-    @Override
     public boolean explodesOnComponentBreak(final ItemStack aStack) {
         return false;
     }
@@ -237,14 +220,6 @@ public class GregtechMetaTileEntity_IndustrialArcFurnace extends
 
     public byte getCasingMeta() {
         return 3;
-    }
-
-    public Block getCasingBlock2() {
-        return ModBlocks.blockCasings3Misc;
-    }
-
-    public byte getCasingMeta2() {
-        return 15;
     }
 
     public byte getCasingTextureIndex() {

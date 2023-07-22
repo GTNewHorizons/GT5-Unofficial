@@ -27,6 +27,7 @@ import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -145,18 +146,14 @@ public class GregtechMetaTileEntity_IndustrialCentrifuge extends
     }
 
     @Override
-    public boolean checkRecipe(final ItemStack aStack) {
-        return checkRecipeGeneric(6 * GT_Utility.getTier(this.getMaxInputVoltage()), 90, 125);
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().setEuModifier(0.9F).setSpeedBonus(1F / 2.25F)
+                .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return (6 * GT_Utility.getTier(this.getMaxInputVoltage()));
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 90;
     }
 
     public Block getCasingBlock() {
@@ -179,11 +176,6 @@ public class GregtechMetaTileEntity_IndustrialCentrifuge extends
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialCentrifuge;
-    }
-
-    @Override
-    public int getAmountOfOutputs() {
-        return 1;
     }
 
     @Override

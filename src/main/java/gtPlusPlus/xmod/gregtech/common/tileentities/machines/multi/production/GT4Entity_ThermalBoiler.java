@@ -18,6 +18,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -30,6 +32,8 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -85,7 +89,8 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
     private static Fluid mSolarSaltHot = null;
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
+    public @NotNull CheckRecipeResult checkProcessing() {
+        ItemStack controllerStack = getControllerSlot();
         this.mSuperEfficencyIncrease = 0;
 
         if (mLavaFilter == null) {
@@ -102,11 +107,11 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
         }
 
         // Try reload new Lava Filter
-        if (aStack == null) {
+        if (controllerStack == null) {
             ItemStack uStack = this.findItemInInventory(mLavaFilter);
             if (uStack != null) {
                 this.setGUIItemStack(uStack);
-                aStack = this.getGUIItemStack();
+                controllerStack = this.getControllerSlot();
             }
         }
 
@@ -121,7 +126,7 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
                         this.mEfficiencyIncrease = (this.mMaxProgresstime * getEfficiencyIncrease());
 
                         int loot_MAXCHANCE = 100000;
-                        if (aStack != null && aStack.getItem() == mLavaFilter) {
+                        if (controllerStack != null && controllerStack.getItem() == mLavaFilter) {
                             if ((tRecipe.getOutput(0) != null)
                                     && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE)
                                             < tRecipe.getOutputChance(0))) {
@@ -166,7 +171,7 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
                                 this.mOutputItems = new ItemStack[] { GT_Utility.copy(tRecipe.getOutput(6)) };
                             }
                         }
-                        return true;
+                        return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
                 } else if (tFluid.getFluid() == mSolarSaltHot) {
                     if (depleteInput(tFluid)) {
@@ -176,24 +181,19 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
                         for (FluidStack aOutput : tRecipe.mFluidOutputs) {
                             this.addOutput(FluidUtils.getFluidStack(aOutput, aOutput.amount));
                         }
-                        return true;
+                        return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
                 }
             }
         }
         this.mMaxProgresstime = 0;
         this.lEUt = 0;
-        return false;
+        return CheckRecipeResultRegistry.NO_RECIPE;
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return 1;
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 0;
     }
 
     @Override
@@ -242,11 +242,6 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return CORE.ConfigSwitches.pollutionPerSecondMultiThermalBoiler;
-    }
-
-    @Override
-    public int getAmountOfOutputs() {
-        return 7;
     }
 
     @Override
@@ -337,7 +332,7 @@ public class GT4Entity_ThermalBoiler extends GregtechMeta_MultiBlockBase<GT4Enti
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             // Reload Lava Filter
-            if (this.getGUIItemStack() == null) {
+            if (this.getControllerSlot() == null) {
                 if (this.mInputBusses.size() > 0) {
                     for (GT_MetaTileEntity_Hatch_InputBus aBus : this.mInputBusses) {
                         for (ItemStack aStack : aBus.mInventory) {

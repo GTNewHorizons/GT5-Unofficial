@@ -72,7 +72,6 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialFishPond
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialFluidHeater;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialForgeHammer;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialFuelRefinery;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialGeneratorArray;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialMacerator;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialMassFabricator;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialMixer;
@@ -84,7 +83,6 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialThermalC
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialTreeFarm;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialWashPlant;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialWiremill;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIronBlastFurnace;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIsaMill;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechLFTR;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechLargeTurbinesAndHeatExchanger;
@@ -103,7 +101,6 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSolarTower;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSteamCondenser;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSteamMultis;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSuperChests;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechTeslaTower;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechThaumcraftDevices;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechThreadedBuffers;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechTieredChunkloaders;
@@ -152,7 +149,6 @@ public class COMPAT_HANDLER {
         GregtechNuclearSaltProcessingPlant.run();
         GregtechSteamCondenser.run();
         GregtechSafeBlock.run();
-        GregtechIronBlastFurnace.run();
         GregtechIndustrialCentrifuge.run();
         GregtechIndustrialCokeOven.run();
         GregtechIndustrialPlatePress.run();
@@ -183,9 +179,7 @@ public class COMPAT_HANDLER {
         GregtechIndustrialWashPlant.run();
         GregtechSemiFluidgenerators.run();
         GregtechWirelessChargers.run();
-        GregtechIndustrialGeneratorArray.run();
         GregtechIndustrialCuttingFactory.run();
-        GregtechTeslaTower.run();
         GregtechSuperChests.run();
         GregtechIndustrialFishPond.run();
         GregtechTieredChunkloaders.run();

@@ -10,16 +10,12 @@ import static gregtech.api.enums.GT_HatchElement.Muffler;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -31,7 +27,7 @@ import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -119,8 +115,8 @@ public class GregtechMetaTileEntity_IndustrialWireMill extends
     }
 
     @Override
-    public String getSound() {
-        return SoundResource.IC2_MACHINES_RECYCLER_OP.toString();
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.IC2_MACHINES_RECYCLER_OP;
     }
 
     @Override
@@ -144,34 +140,9 @@ public class GregtechMetaTileEntity_IndustrialWireMill extends
     }
 
     @Override
-    public boolean checkRecipe(final ItemStack aStack) {
-        return checkRecipeGeneric((4 * GT_Utility.getTier(this.getMaxInputVoltage())), 75, 200);
-    }
-
-    @Override
-    public boolean checkRecipeGeneric(int aMaxParallelRecipes, long aEUPercent, int aSpeedBonusPercent,
-            int aOutputChanceRoll) {
-        if (!inputSeparation)
-            return super.checkRecipeGeneric(aMaxParallelRecipes, aEUPercent, aSpeedBonusPercent, aOutputChanceRoll);
-        List<ItemStack> buffer = new ArrayList<>(16);
-        FluidStack[] tFluidInputs = getStoredFluids().toArray(new FluidStack[0]);
-        for (GT_MetaTileEntity_Hatch_InputBus tHatch : mInputBusses) {
-            IGregTechTileEntity inv = tHatch.getBaseMetaTileEntity();
-            for (int i = inv.getSizeInventory() - 1; i >= 0; i--) {
-                if (inv.getStackInSlot(i) != null) buffer.add(inv.getStackInSlot(i));
-            }
-            ItemStack[] tItemInputs = buffer.toArray(new ItemStack[0]);
-            if (checkRecipeGeneric(
-                    tItemInputs,
-                    tFluidInputs,
-                    aMaxParallelRecipes,
-                    aEUPercent,
-                    aSpeedBonusPercent,
-                    aOutputChanceRoll))
-                return true;
-            buffer.clear();
-        }
-        return false;
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().setSpeedBonus(1F / 3F).setEuModifier(0.75F)
+                .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
@@ -197,11 +168,6 @@ public class GregtechMetaTileEntity_IndustrialWireMill extends
     }
 
     @Override
-    public int getEuDiscountForParallelism() {
-        return 75;
-    }
-
-    @Override
     public int getMaxEfficiency(final ItemStack aStack) {
         return 10000;
     }
@@ -209,11 +175,6 @@ public class GregtechMetaTileEntity_IndustrialWireMill extends
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWireMill;
-    }
-
-    @Override
-    public int getAmountOfOutputs() {
-        return 1;
     }
 
     @Override

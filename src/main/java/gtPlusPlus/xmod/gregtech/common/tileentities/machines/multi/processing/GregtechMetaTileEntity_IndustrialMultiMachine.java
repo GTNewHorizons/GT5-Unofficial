@@ -25,7 +25,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -36,18 +37,15 @@ import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -58,7 +56,6 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
         GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialMultiMachine> implements ISurvivalConstructable {
 
     protected int mInternalMode = 0;
-    protected GT_Recipe[] mLastRecipeExtended = new GT_Recipe[9];
     private static final int MODE_COMPRESSOR = 0;
     private static final int MODE_LATHE = 1;
     private static final int MODE_MAGNETIC = 2;
@@ -187,59 +184,8 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     }
 
     @Override
-    public boolean checkRecipe(final ItemStack aStack) {
-        ArrayList<FluidStack> tFluids = getStoredFluids();
-        // Logger.MACHINE_INFO("1");
-        for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-            ArrayList<ItemStack> tBusItems = new ArrayList<ItemStack>();
-            tBus.mRecipeMap = getRecipeMap();
-            // Logger.MACHINE_INFO("2");
-            if (isValidMetaTileEntity(tBus)) {
-                // Logger.MACHINE_INFO("3");
-                for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                    if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
-                        tBusItems.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
-                }
-            }
-
-            boolean aFoundCircuitInBus = false;
-            for (ItemStack aBusItem : tBusItems) {
-                if (ItemUtils.isControlCircuit(aBusItem)) {
-                    aFoundCircuitInBus = true;
-                }
-            }
-            if (!aFoundCircuitInBus) {
-                continue;
-            }
-
-            Object[] tempArray = tFluids.toArray(new FluidStack[] {});
-            FluidStack[] properArray;
-            properArray = ((tempArray != null && tempArray.length > 0) ? (FluidStack[]) tempArray
-                    : new FluidStack[] {});
-
-            // Logger.MACHINE_INFO("4");
-            if (checkRecipeGeneric(
-                    tBusItems.toArray(new ItemStack[] {}),
-                    properArray,
-                    (2 * GT_Utility.getTier(this.getMaxInputVoltage())),
-                    80,
-                    250,
-                    10000))
-                return true;
-        }
-        return false;
-
-        // return checkRecipeGeneric(2*GT_Utility.getTier(this.getMaxInputVoltage()), 90, 180);
-    }
-
-    @Override
     public int getMaxParallelRecipes() {
         return (2 * GT_Utility.getTier(this.getMaxInputVoltage()));
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 80;
     }
 
     @Override
@@ -260,11 +206,6 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
 
     public int getTextureIndex() {
         return TAE.getIndexFromPage(2, 2);
-    }
-
-    @Override
-    public int getAmountOfOutputs() {
-        return 1;
     }
 
     @Override
@@ -294,11 +235,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
         return null;
     }
 
-    private final GT_Recipe.GT_Recipe_Map getRecipeMap(ItemStack circuit) {
-        return getRecipeMap(getCircuitID(circuit));
-    }
-
-    private static final GT_Recipe.GT_Recipe_Map getRecipeMap(int aMode) {
+    private static GT_Recipe.GT_Recipe_Map getRecipeMap(int aMode) {
         if (aMode == MODE_COMPRESSOR) {
             return GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
         } else if (aMode == MODE_LATHE) {
@@ -323,81 +260,23 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     }
 
     @Override
-    public boolean checkRecipeGeneric(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
-            long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll) {
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-        // Based on the Processing Array. A bit overkill, but very flexible.
-
-        // Get Circuit info for this recipe.
-        ItemStack tCircuit = getCircuit(aItemInputs);
-        if (tCircuit == null) {
-            return false;
-        }
-        int tCircuitID = getCircuitID(tCircuit);
-
-        Logger.MACHINE_INFO("Mode: " + tCircuitID);
-
-        // Reset outputs and progress stats
-        this.lEUt = 0;
-        this.mMaxProgresstime = 0;
-        this.mOutputItems = new ItemStack[] {};
-        this.mOutputFluids = new FluidStack[] {};
-
-        long tVoltage = getMaxInputVoltage();
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-        long tEnergy = getMaxInputEnergy();
-
-        GT_Recipe.GT_Recipe_Map tRecipeMap = this.getRecipeMap(tCircuit);
-        if (tRecipeMap == null) return false;
-        GT_Recipe tRecipe = tRecipeMap.findRecipe(
-                getBaseMetaTileEntity(),
-                this.mLastRecipeExtended[tCircuitID],
-                false,
-                gregtech.api.enums.GT_Values.V[tTier],
-                aFluidInputs,
-                aItemInputs);
-
-        // Remember last recipe - an optimization for findRecipe()
-        // this.mLastRecipe = tRecipe; //Let's not do this, it's bad.
-        // Instead, how about I use a array for types?
-        this.mLastRecipeExtended[tCircuitID] = tRecipe;
-
-        if (tRecipe == null) {
-            return false;
-        }
-
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
-                .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes)
-                .enableConsumption().enableOutputCalculation().setEUtModifier(aEUPercent / 100.0f).setController(this);
-
-        if (batchMode) {
-            helper.enableBatchMode(128);
-        }
-
-        helper.build();
-
-        if (helper.getCurrentParallel() == 0) {
-            return false;
-        }
-
-        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tEnergy)
-                .setDuration(tRecipe.mDuration).setEUtDiscount(aEUPercent / 100.0f)
-                .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
-                .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplier()))
-                .calculate();
-        lEUt = -calculator.getConsumption();
-        mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
-
-        mOutputItems = helper.getItemOutputs();
-        mOutputFluids = helper.getFluidOutputs();
-        updateSlots();
-
-        // Play sounds (GT++ addition - GT multiblocks play no sounds)
-        startProcess();
-        return true;
+            @NotNull
+            @Override
+            protected FindRecipeResult findRecipe(GT_Recipe.GT_Recipe_Map map) {
+                ItemStack circuit = getCircuit(inputItems);
+                if (circuit == null) {
+                    return FindRecipeResult.NOT_FOUND;
+                }
+                GT_Recipe.GT_Recipe_Map foundMap = getRecipeMap(getCircuitID(circuit));
+                if (foundMap == null) {
+                    return FindRecipeResult.NOT_FOUND;
+                }
+                return super.findRecipe(foundMap);
+            }
+        }.setSpeedBonus(1F / 3.5F).setEuModifier(0.8F).setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
@@ -426,7 +305,7 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
             mode = StatCollector.translateToLocal("GTPP.multiblock.multimachine.misc");
         }
         mInfo.add(mode);
-        return mInfo.toArray(new String[mInfo.size()]);
+        return mInfo.toArray(new String[0]);
     }
 
     @Override

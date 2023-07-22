@@ -416,12 +416,6 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
                 .set(this.addItem(151, "Distillus Upgrade Chip", "Used to upgrade Distillus to Tier 2"));
         GregtechItemList.Maceration_Upgrade_Chip
                 .set(this.addItem(152, "Maceration Upgrade Chip", "Used to upgrade Maceration Stack to Tier 2"));
-
-        GregtechItemList.Chip_MultiNerf_NoOutputBonus
-                .set(this.addItem(160, "No-Bonus Chip", "You won't like using this"));
-        GregtechItemList.Chip_MultiNerf_NoSpeedBonus
-                .set(this.addItem(161, "No-Bonus Chip", "You won't like using this"));
-        GregtechItemList.Chip_MultiNerf_NoEuBonus.set(this.addItem(162, "No-Bonus Chip", "You won't like using this"));
     }
 
     private boolean registerComponents_ULV() {

@@ -17,6 +17,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -32,6 +34,9 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynam
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -96,7 +101,7 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator extends
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
+    public @NotNull CheckRecipeResult checkProcessing() {
         ArrayList<FluidStack> tFluids = getStoredFluids();
 
         // Check for lubricant and oxygen first, so we can compute costs ahead of time.
@@ -114,7 +119,7 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator extends
         boostEu = oxygen.amount >= 4L;
         long lubricantCost = boostEu ? 2L : 1L;
         if (lubricant.amount < lubricantCost) {
-            return false;
+            return SimpleCheckRecipeResult.ofFailure("no_lubricant");
         }
 
         for (FluidStack hatchFluid : tFluids) { // Loops through hatches
@@ -132,13 +137,13 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator extends
                 // But check the return values anyway just to be safe.
                 if (boostEu) {
                     if (!depleteInput(Materials.Oxygen.getGas(4L))) {
-                        return false;
+                        return SimpleCheckRecipeResult.ofFailure("no_oxygen");
                     }
                 }
                 // Deplete Lubricant. 2000L should = 1 hour of runtime (if baseEU = 2048)
                 if (mRuntime % 72 == 0 || mRuntime == 0) {
                     if (!depleteInput(Materials.Lubricant.getFluid(lubricantCost))) {
-                        return false;
+                        return SimpleCheckRecipeResult.ofFailure("no_lubricant");
                     }
                 }
 
@@ -148,13 +153,13 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator extends
                 this.mProgresstime = 1;
                 this.mMaxProgresstime = 1;
                 this.mEfficiencyIncrease = 15;
-                return true;
+                return CheckRecipeResultRegistry.GENERATING;
             }
         }
 
         this.lEUt = 0;
         this.mEfficiency = 0;
-        return false;
+        return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
     @Override
@@ -313,8 +318,4 @@ public class GregtechMetaTileEntity_LargeSemifluidGenerator extends
         return 0;
     }
 
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 0;
-    }
 }

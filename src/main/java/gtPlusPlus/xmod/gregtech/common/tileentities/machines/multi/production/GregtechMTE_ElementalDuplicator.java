@@ -21,6 +21,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
@@ -32,12 +35,12 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
@@ -273,106 +276,55 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
     }
 
     @Override
-    public boolean checkRecipe(final ItemStack aStack) {
-        return checkRecipeGeneric(getMaxParallelRecipes(), 100, 100);
-    }
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-    @Override
-    public boolean checkRecipeGeneric(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
-            long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
-        // Based on the Processing Array. A bit overkill, but very flexible.
-
-        // Reset outputs and progress stats
-        this.lEUt = 0;
-        this.mMaxProgresstime = 0;
-        this.mOutputItems = new ItemStack[] {};
-        this.mOutputFluids = new FluidStack[] {};
-
-        long tVoltage = getMaxInputVoltage();
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-        GT_Recipe tRecipe = null;
-
-        try {
-            ItemStack aDataOrbStack = null;
-            recipe: for (GT_Recipe nRecipe : this.getRecipeMap().mRecipeList) {
-                // log("Checking Recipe for: "+(nRecipe.mOutputs.length > 0 && nRecipe.mOutputs[0] != null ?
-                // nRecipe.mOutputs[0].getDisplayName() : nRecipe.mFluidOutputs[0].getLocalizedName()));
-                ItemStack aTempStack = getSpecialSlotStack(nRecipe);
-                if (aTempStack != null) {
-                    for (ItemStack aItem : aItemInputs) {
-                        if (nRecipe.mSpecialItems != null) {
-                            if (GT_Utility.areStacksEqual(aTempStack, aItem, false)) {
-                                aDataOrbStack = aTempStack;
-                                break recipe;
+            @NotNull
+            @Override
+            protected FindRecipeResult findRecipe(@Nullable GT_Recipe_Map map) {
+                if (map == null) {
+                    return FindRecipeResult.NOT_FOUND;
+                }
+                try {
+                    ItemStack aDataOrbStack = null;
+                    recipe: for (GT_Recipe nRecipe : map.mRecipeList) {
+                        ItemStack aTempStack = getSpecialSlotStack(nRecipe);
+                        if (aTempStack != null) {
+                            for (ItemStack aItem : inputItems) {
+                                if (nRecipe.mSpecialItems != null) {
+                                    if (GT_Utility.areStacksEqual(aTempStack, aItem, false)) {
+                                        aDataOrbStack = aTempStack;
+                                        break recipe;
+                                    }
+                                }
                             }
                         }
                     }
+                    if (aDataOrbStack != null) {
+                        GT_Recipe recipe = GregtechMTE_ElementalDuplicator.this.findRecipe(
+                                getBaseMetaTileEntity(),
+                                mLastRecipe,
+                                false,
+                                false,
+                                availableVoltage,
+                                inputFluids,
+                                aDataOrbStack,
+                                inputItems);
+                        if (recipe != null) {
+                            return FindRecipeResult.ofSuccess(recipe);
+                        }
+                    }
+                } catch (Throwable t) {
+                    t.printStackTrace();
                 }
+                return FindRecipeResult.NOT_FOUND;
             }
-            if (aDataOrbStack != null) {
-                tRecipe = findRecipe(
-                        getBaseMetaTileEntity(),
-                        mLastRecipe,
-                        false,
-                        false,
-                        gregtech.api.enums.GT_Values.V[tTier],
-                        aFluidInputs,
-                        aDataOrbStack,
-                        aItemInputs);
-            }
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-
-        // Remember last recipe - an optimization for findRecipe()
-        this.mLastRecipe = tRecipe;
-
-        if (tRecipe == null) {
-            return false;
-        }
-
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
-                .setFluidInputs(aFluidInputs).setAvailableEUt(tVoltage).setMaxParallel(aMaxParallelRecipes)
-                .enableConsumption().enableOutputCalculation().setEUtModifier(aEUPercent / 100.0f).setController(this);
-
-        if (batchMode) {
-            helper.enableBatchMode(128);
-        }
-
-        helper.build();
-
-        if (helper.getCurrentParallel() == 0) {
-            return false;
-        }
-
-        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-
-        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tVoltage)
-                .setDuration(tRecipe.mDuration).setEUtDiscount(aEUPercent / 100.0f)
-                .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
-                .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplier()))
-                .enablePerfectOC().calculate();
-        lEUt = -calculator.getConsumption();
-        mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
-
-        mOutputItems = helper.getItemOutputs();
-        mOutputFluids = helper.getFluidOutputs();
-        updateSlots();
-
-        // Play sounds (GT++ addition - GT multiblocks play no sounds)
-        startProcess();
-        return true;
+        }.setSpeedBonus(1F / 2F).enablePerfectOverclock().setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 100;
     }
 
     @Override

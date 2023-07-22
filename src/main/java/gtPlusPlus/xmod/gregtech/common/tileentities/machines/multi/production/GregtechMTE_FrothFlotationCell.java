@@ -17,7 +17,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -32,10 +33,13 @@ import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
@@ -81,8 +85,8 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
     }
 
     @Override
-    public String getSound() {
-        return SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP.toString();
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP;
     }
 
     @Override
@@ -108,11 +112,6 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
     @Override
     public int getMaxParallelRecipes() {
         return 1;
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 0;
     }
 
     @Override
@@ -169,11 +168,6 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
     }
 
     @Override
-    public int getAmountOfOutputs() {
-        return 1;
-    }
-
-    @Override
     public boolean explodesOnComponentBreak(final ItemStack aStack) {
         return false;
     }
@@ -194,72 +188,40 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
     }
 
     @Override
-    public boolean checkRecipe(ItemStack arg0) {
-        return super.checkRecipeGeneric();
-    }
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-    @Override
-    public boolean checkRecipeGeneric(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
-            long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
-        // Based on the Processing Array. A bit overkill, but very flexible.
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+                /*
+                 * Material checks Makes sure we can only ever use one type of material in this flotation cell. We used
+                 * to depend on Alk's hash, but it's unreliable and user-hostile So we're using unlocalized name of
+                 * material now.
+                 */
+                Material foundMaterial = FlotationRecipeHandler
+                        .getMaterialOfMilledProduct(FlotationRecipeHandler.findMilledStack(recipe));
+                String foundMaterialName = null;
+                if (foundMaterial != null) {
+                    foundMaterialName = foundMaterial.getUnlocalizedName();
+                }
 
-        // Reset outputs and progress stats
-        this.lEUt = 0;
-        this.mMaxProgresstime = 0;
-        this.mOutputItems = new ItemStack[] {};
-        this.mOutputFluids = new FluidStack[] {};
+                if (foundMaterialName == null) {
+                    return CheckRecipeResultRegistry.NO_RECIPE;
+                }
 
-        long tVoltage = getMaxInputVoltage();
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+                // Set material locked for this controller
+                if (lockedMaterialName == null) {
+                    lockedMaterialName = foundMaterialName;
+                }
 
-        GT_Recipe tRecipe = findRecipe(
-                getBaseMetaTileEntity(),
-                mLastRecipe,
-                false,
-                gregtech.api.enums.GT_Values.V[tTier],
-                aFluidInputs,
-                aItemInputs);
-
-        // Remember last recipe - an optimization for findRecipe()
-        this.mLastRecipe = tRecipe;
-
-        if (tRecipe == null) {
-            return false;
-        }
-
-        /*
-         * Material checks Makes sure we can only ever use one type of material in this flotation cell. We used to
-         * depend on Alk's hash, but it's unreliable and user-hostile So we're using unlocalized name of material now.
-         */
-        Material foundMaterial = FlotationRecipeHandler
-                .getMaterialOfMilledProduct(FlotationRecipeHandler.findMilledStack(tRecipe));
-        String foundMaterialName = null;
-        if (foundMaterial != null) {
-            foundMaterialName = foundMaterial.getUnlocalizedName();
-        }
-
-        if (foundMaterialName == null) {
-            return false;
-        }
-
-        // Set material locked for this controller
-        if (lockedMaterialName == null) {
-            lockedMaterialName = foundMaterialName;
-        }
-
-        // Check material match
-        if (!Objects.equals(lockedMaterialName, foundMaterialName)) {
-            return false;
-        }
-
-        return super.checkRecipeGeneric(
-                aItemInputs,
-                aFluidInputs,
-                aMaxParallelRecipes,
-                aEUPercent,
-                aSpeedBonusPercent,
-                aOutputChanceRoll,
-                tRecipe);
+                // Check material match
+                if (!Objects.equals(lockedMaterialName, foundMaterialName)) {
+                    return SimpleCheckRecipeResult.ofFailure("machine_locked_to_different_recipe");
+                }
+                return CheckRecipeResultRegistry.SUCCESSFUL;
+            }
+        };
     }
 
     /*

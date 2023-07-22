@@ -20,6 +20,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -32,6 +34,9 @@ import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -130,8 +135,8 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
     }
 
     @Override
-    public String getSound() {
-        return SoundResource.IC2_MACHINES_INDUCTION_LOOP.toString();
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.IC2_MACHINES_INDUCTION_LOOP;
     }
 
     @Override
@@ -199,7 +204,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
     private static GT_Recipe sRecipe_SmoothStone;
     private static GT_Recipe sRecipe_Redstone;
 
-    private static final void generateRecipes() {
+    private static void generateRecipes() {
         sRecipe_Cobblestone = new GTPP_Recipe(
                 false,
                 new ItemStack[] { CI.getNumberedCircuit(1) },
@@ -237,7 +242,7 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
     }
 
     @Override
-    public boolean checkRecipe(final ItemStack aStack) {
+    public @NotNull CheckRecipeResult checkProcessing() {
         ArrayList<FluidStack> aFluids = this.getStoredFluids();
         if (!aFluids.isEmpty()) {
             boolean aHasWater = false;
@@ -262,12 +267,15 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
                 }
             }
 
-            if (!aHasWater || !aHasLava) {
-                return false;
+            if (!aHasWater) {
+                return SimpleCheckRecipeResult.ofFailure("no_water");
             }
-            ItemStack aGuiCircuit = this.getGUIItemStack();
-            if (aGuiCircuit == null || !ItemUtils.isControlCircuit(aGuiCircuit)) {
-                return false;
+            if (!aHasLava) {
+                return SimpleCheckRecipeResult.ofFailure("no_lava");
+            }
+            ItemStack aGuiCircuit = this.getControllerSlot();
+            if (!ItemUtils.isControlCircuit(aGuiCircuit)) {
+                return CheckRecipeResultRegistry.NO_RECIPE;
             }
 
             if (sRecipe_Cobblestone == null || sRecipe_SmoothStone == null || sRecipe_Redstone == null) {
@@ -278,46 +286,29 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
 
             GT_Recipe tRecipe = null;
             switch (aCircuit) {
-                case 1:
-                    tRecipe = sRecipe_Cobblestone;
-                    break;
-                case 2:
-                    tRecipe = sRecipe_SmoothStone;
-                    break;
-                case 3:
+                case 1 -> tRecipe = sRecipe_Cobblestone;
+                case 2 -> tRecipe = sRecipe_SmoothStone;
+                case 3 -> {
                     if (aHasRedstone) {
                         tRecipe = sRecipe_Redstone;
                     }
-                    break;
+                }
             }
 
             if (tRecipe == null) {
-                return false;
+                return CheckRecipeResultRegistry.NO_RECIPE;
             }
 
-            // Based on the Processing Array. A bit overkill, but very flexible.
-            ItemStack[] aItemInputs = aItems.toArray(new ItemStack[aItems.size()]);
+            ItemStack[] aItemInputs = aItems.toArray(new ItemStack[0]);
             FluidStack[] aFluidInputs = new FluidStack[] {};
 
-            // Reset outputs and progress stats
-            this.lEUt = 0;
-            this.mMaxProgresstime = 0;
-            this.mOutputItems = new ItemStack[] {};
-            this.mOutputFluids = new FluidStack[] {};
-
-            long tVoltage = getMaxInputVoltage();
             long tEnergy = getMaxInputEnergy();
             // Remember last recipe - an optimization for findRecipe()
             this.mLastRecipe = tRecipe;
 
-            int aMaxParallelRecipes = getMaxParallelRecipes();
-            int aEUPercent = getEuDiscountForParallelism();
-            int aSpeedBonusPercent = 200;
-
             GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(aItemInputs)
-                    .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(aMaxParallelRecipes)
-                    .enableConsumption().enableOutputCalculation().setEUtModifier(aEUPercent / 100.0f)
-                    .setController(this);
+                    .setFluidInputs(aFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(getMaxParallelRecipes())
+                    .enableConsumption().enableOutputCalculation().setEUtModifier(0.75F).setMachine(this);
 
             if (batchMode) {
                 helper.enableBatchMode(128);
@@ -326,40 +317,31 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
             helper.build();
 
             if (helper.getCurrentParallel() == 0) {
-                return false;
+                return CheckRecipeResultRegistry.OUTPUT_FULL;
             }
 
             this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
 
             GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt).setEUt(tEnergy)
-                    .setDuration(tRecipe.mDuration).setEUtDiscount(aEUPercent / 100.0f)
-                    .setSpeedBoost(100.0f / (100.0f + aSpeedBonusPercent))
-                    .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplier()))
+                    .setDuration(tRecipe.mDuration).setEUtDiscount(0.75F).setSpeedBoost(1F / 3F)
+                    .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplierDouble()))
                     .calculate();
             lEUt = -calculator.getConsumption();
-            mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
+            mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplierDouble());
 
             mOutputItems = helper.getItemOutputs();
             mOutputFluids = helper.getFluidOutputs();
             updateSlots();
-
-            // Play sounds (GT++ addition - GT multiblocks play no sounds)
-            startProcess();
-            return true;
+            return CheckRecipeResultRegistry.SUCCESSFUL;
         }
 
-        return false;
+        return CheckRecipeResultRegistry.NO_RECIPE;
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 75;
     }
 
     @Override
@@ -378,11 +360,6 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
     }
 
     @Override
-    public int getAmountOfOutputs() {
-        return 2;
-    }
-
-    @Override
     public boolean explodesOnComponentBreak(final ItemStack aStack) {
         return false;
     }
@@ -390,8 +367,8 @@ public class GregtechMetaTileEntity_IndustrialRockBreaker extends
     @Override
     public ArrayList<ItemStack> getStoredInputs() {
         ArrayList<ItemStack> aInputs = super.getStoredInputs();
-        if (this.getGUIItemStack() != null) {
-            aInputs.add(this.getGUIItemStack());
+        if (this.getControllerSlot() != null) {
+            aInputs.add(this.getControllerSlot());
         }
         return aInputs;
     }

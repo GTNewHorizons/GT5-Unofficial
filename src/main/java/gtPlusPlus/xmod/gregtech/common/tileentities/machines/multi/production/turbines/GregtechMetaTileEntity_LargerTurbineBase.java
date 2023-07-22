@@ -22,6 +22,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -37,8 +39,9 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
@@ -426,24 +429,10 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
     }
 
     @Override
-    public boolean checkRecipe(final ItemStack aStack) {
-        return checkRecipeGeneric(
-                new ItemStack[] {},
-                getStoredFluids().toArray(new FluidStack[] {}),
-                1,
-                100,
-                100,
-                10000);
-    }
-
-    @Override
-    public boolean checkRecipeGeneric(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
-            long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
-
+    public @NotNull CheckRecipeResult checkProcessing() {
         try {
             ArrayList<GT_MetaTileEntity_Hatch_Turbine> aEmptyTurbineRotorHatches = getEmptyTurbineAssemblies();
             if (aEmptyTurbineRotorHatches.size() > 0) {
-                log("Found " + aEmptyTurbineRotorHatches.size() + " Assemblies without Turbine.");
                 hatch: for (GT_MetaTileEntity_Hatch_Turbine aHatch : aEmptyTurbineRotorHatches) {
                     ArrayList<ItemStack> aTurbines = getAllBufferedTurbines();
                     for (ItemStack aTurbineItem : aTurbines) {
@@ -452,7 +441,6 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
                         }
                         if (aHatch.insertTurbine(aTurbineItem.copy())) {
                             boolean aDidDeplete = depleteTurbineFromStock(aTurbineItem);
-                            log("Put Turbine into Assembly - " + aDidDeplete);
                             continue hatch;
                         }
                     }
@@ -460,9 +448,8 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
             }
 
             if (getEmptyTurbineAssemblies().size() > 0 || !areAllTurbinesTheSame()) {
-                log("BAD RETURN - 1");
                 stopMachine();
-                return false;
+                return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
             }
 
             ArrayList<FluidStack> tFluids = getStoredFluids();
@@ -488,7 +475,6 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
                                             * 50)
                                     * getSpeedMultiplier());
                     if (aTotalOptimalFlow < 0) {
-                        log("Int overflow, report to issue tracker");
                         aTotalOptimalFlow = 100;
                     }
 
@@ -498,9 +484,8 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
                     baseEff = MathUtils.roundToClosestInt(aTotalBaseEff);
                     optFlow = MathUtils.roundToClosestInt(aTotalOptimalFlow);
                     if (optFlow <= 0 || baseEff <= 0) {
-                        log("Running checkRecipeGeneric(bad-1)");
                         stopMachine(); // in case the turbine got removed
-                        return false;
+                        return CheckRecipeResultRegistry.NO_FUEL_FOUND;
                     }
                 } else {
                     counter++;
@@ -526,19 +511,19 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
             if (this.lEUt <= 0) {
                 this.lEUt = 0;
                 this.mEfficiency = 0;
-                return false;
+                return CheckRecipeResultRegistry.NO_FUEL_FOUND;
             } else {
                 this.mMaxProgresstime = 1;
                 this.mEfficiencyIncrease = 10;
                 // Overvoltage is handled inside the MultiBlockBase when pushing out to dynamos. no need to do it here.
                 // Play sounds (GT++ addition - GT multiblocks play no sounds)
-                startProcess();
-                return true;
+                enableAllTurbineHatches();
+                return CheckRecipeResultRegistry.GENERATING;
             }
         } catch (Throwable t) {
             t.printStackTrace();
         }
-        return false;
+        return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
     @Override
@@ -788,12 +773,6 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
     }
 
     @Override
-    public void startProcess() {
-        super.startProcess();
-        enableAllTurbineHatches();
-    }
-
-    @Override
     public void stopMachine() {
         baseEff = 0;
         optFlow = 0;
@@ -837,11 +816,6 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
 
         mLastHatchUpdate = System.currentTimeMillis() / 1000;
         return aUpdated;
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 0;
     }
 
     @Override
@@ -941,5 +915,10 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
 
     public int getTurbineDamageMultiplier() {
         return mFastMode ? 3 : 1;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return false;
     }
 }

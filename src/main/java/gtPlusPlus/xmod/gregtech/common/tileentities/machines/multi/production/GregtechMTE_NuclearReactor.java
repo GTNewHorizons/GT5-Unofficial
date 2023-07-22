@@ -12,12 +12,12 @@ import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
 
-import java.util.Collection;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -29,6 +29,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
@@ -36,12 +37,16 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maint
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
+import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ELEMENT;
@@ -324,10 +329,6 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
         return true;
     }
 
-    public FluidStack[] getStoredFluidsAsArray() {
-        return getStoredFluids().toArray(new FluidStack[0]);
-    }
-
     public int getStoredFuel(GT_Recipe aRecipe) {
         int aFuelStored = 0;
         FluidStack aFuelFluid = null;
@@ -350,95 +351,51 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
     }
 
     @Override
-    public boolean checkRecipe(final ItemStack aStack) {
-        // Warm up for 4~ minutes
-        Logger.WARNING("Checking LFTR recipes.");
-        if (mEfficiency < this.getMaxEfficiency(null)) {
-            this.mOutputItems = new ItemStack[] {};
-            this.mOutputFluids = new FluidStack[] {};
-            this.mProgresstime = 0;
-            this.mMaxProgresstime = 1;
-            this.mEfficiencyIncrease = 2;
-            Logger.WARNING("Warming Up! " + this.mEfficiency + "/" + this.getMaxEfficiency(null));
-            return true;
-        }
-        Logger.WARNING("Warmed up, checking LFTR recipes.");
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-        final FluidStack[] tFluids = getStoredFluidsAsArray();
-        final Collection<GT_Recipe> tRecipeList = getRecipeMap().mRecipeList;
-        if (tFluids.length > 0 && tRecipeList != null && tRecipeList.size() > 0) { // Does input hatch have a LFTR fuel?
-            Logger.WARNING("Found more than one input fluid and a list of valid recipes.");
-            // Find a valid recipe
-            GT_Recipe aFuelProcessing = this
-                    .findRecipe(getBaseMetaTileEntity(), mLastRecipe, true, 0, tFluids, new ItemStack[] {});
-            if (aFuelProcessing == null) {
-                Logger.WARNING("Did not find valid recipe for given inputs.");
-                return false;
-            } else {
-                Logger.WARNING("Found recipe? " + (aFuelProcessing != null ? "true" : "false"));
-                for (FluidStack aFluidInput : aFuelProcessing.mFluidInputs) {
-                    Logger.WARNING("Using " + aFluidInput.getLocalizedName());
-                }
+            @NotNull
+            @Override
+            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe,
+                    @NotNull GT_ParallelHelper helper) {
+                return GT_OverclockCalculator.ofNoOverclock(recipe.mSpecialValue * 4L, recipe.mDuration);
             }
-            // Reset outputs and progress stats
-            this.lEUt = 0;
-            this.mMaxProgresstime = 0;
-            this.mOutputItems = new ItemStack[] {};
-            this.mOutputFluids = new FluidStack[] {};
-            this.mLastRecipe = aFuelProcessing;
-            mFuelRemaining = getStoredFuel(aFuelProcessing); // Record available fuel
-            // Deplete Inputs
-            if (aFuelProcessing.mFluidInputs.length > 0) {
-                if (this.mFuelRemaining < 100) {
-                    this.mEfficiency = 0;
-                    this.lEUt = 0;
-                    this.mLastRecipe = null;
-                    return false;
+
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+                if (mFuelRemaining < 100) {
+                    return CheckRecipeResultRegistry.NO_FUEL_FOUND;
                 }
-                for (GT_MetaTileEntity_Hatch_Input aInputHatch : this.mInputHatches) {
+                for (GT_MetaTileEntity_Hatch_Input aInputHatch : mInputHatches) {
                     if (aInputHatch.getFluid().getFluid().equals(NUCLIDE.Li2BeF4.getFluid())
                             && aInputHatch.getFluidAmount() < 200) {
-                        this.mEfficiency = 0;
-                        this.lEUt = 0;
-                        this.mLastRecipe = null;
-                        return false;
+                        return SimpleCheckRecipeResult.ofFailure("no_li2bef4");
                     }
                 }
-                for (FluidStack aInputToConsume : aFuelProcessing.mFluidInputs) {
-                    Logger.WARNING(
-                            "Depleting " + aInputToConsume.getLocalizedName() + " - " + aInputToConsume.amount + "L");
-                    this.depleteInput(aInputToConsume);
-                }
+                return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-            // -- Try not to fail after this point - inputs have already been consumed! --
-            this.mMaxProgresstime = (int) (aFuelProcessing.mDuration);
-            this.lEUt = aFuelProcessing.mSpecialValue * 4L;
-            Logger.WARNING("Outputting " + this.lEUt + "eu/t");
-            this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-            this.mEfficiencyIncrease = 10000;
-            this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-            Logger.WARNING("Recipe time: " + this.mMaxProgresstime);
-            mFuelRemaining = getStoredFuel(aFuelProcessing); // Record available fuel
+        };
+    }
 
-            this.mOutputFluids = aFuelProcessing.mFluidOutputs.clone();
-            updateSlots();
-            Logger.WARNING("Recipe Good!");
-            return true;
+    @Override
+    public @NotNull CheckRecipeResult checkProcessing() {
+        // Warm up for 4~ minutes
+        if (mEfficiency < this.getMaxEfficiency(null)) {
+            this.mMaxProgresstime = 1;
+            this.mEfficiencyIncrease = 2;
+            return SimpleCheckRecipeResult.ofSuccess("warm_up");
         }
-        this.lEUt = 0;
-        this.mEfficiency = 0;
-        Logger.WARNING("Recipe Bad!");
-        return false;
+        CheckRecipeResult result = super.checkProcessing();
+        if (result.wasSuccessful()) {
+            mFuelRemaining = getStoredFuel(mLastRecipe);
+        }
+        return result;
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return 1;
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 0;
     }
 
     @Override

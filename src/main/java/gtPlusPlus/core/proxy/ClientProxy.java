@@ -43,14 +43,12 @@ import gtPlusPlus.core.client.renderer.RenderBatKing;
 import gtPlusPlus.core.client.renderer.RenderDecayChest;
 import gtPlusPlus.core.client.renderer.RenderGiantChicken;
 import gtPlusPlus.core.client.renderer.RenderMiningExplosivesPrimed;
-import gtPlusPlus.core.client.renderer.RenderPlasmaBolt;
 import gtPlusPlus.core.client.renderer.RenderSickBlaze;
 import gtPlusPlus.core.client.renderer.RenderStaballoyConstruct;
 import gtPlusPlus.core.client.renderer.RenderToxinball;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.common.compat.COMPAT_PlayerAPI;
 import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
-import gtPlusPlus.core.entity.EntityTeslaTowerLightning;
 import gtPlusPlus.core.entity.monster.EntityBatKing;
 import gtPlusPlus.core.entity.monster.EntityGiantChickenBase;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
@@ -152,7 +150,6 @@ public class ClientProxy extends CommonProxy implements Runnable {
         RenderingRegistry.registerEntityRenderingHandler(
                 EntityHydrofluoricAcidPotion.class,
                 new RenderSnowball(ModItems.itemHydrofluoricPotion));
-        RenderingRegistry.registerEntityRenderingHandler(EntityTeslaTowerLightning.class, new RenderPlasmaBolt());
         RenderingRegistry.registerEntityRenderingHandler(
                 EntityGiantChickenBase.class,
                 new RenderGiantChicken(new ModelGiantChicken(), 1f));

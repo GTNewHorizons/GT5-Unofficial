@@ -499,17 +499,6 @@ public class RECIPES_Machines {
         }
     }
 
-    private static void multiGeneratorArray() {
-
-        GT_ModHandler.addCraftingRecipe(
-                GregtechItemList.Generator_Array_Controller.get(1L),
-                CI.bitsd,
-                new Object[] { "CTC", "FMF", "CBC", 'M', CI.getTieredGTPPMachineCasing(4, 1), 'B',
-                        OrePrefixes.pipeHuge.get(Materials.StainlessSteel), 'C',
-                        OrePrefixes.circuit.get(Materials.Data), 'F', ItemList.Electric_Pump_EV, 'T',
-                        CI.getSensor(4, 1) });
-    }
-
     private static void multiForgeHammer() {
 
         CORE.RA.addSixSlotAssemblingRecipe(
@@ -1226,54 +1215,6 @@ public class RECIPES_Machines {
                 ItemUtils.getSimpleStack(ModBlocks.blockVolumetricFlaskSetter, 1),
                 20 * 60,
                 120);
-
-        if (CORE.ConfigSwitches.enableMultiblock_IronBlastFurnace) {
-
-            RECIPE_IronBlastFurnace = GregtechItemList.Machine_Iron_BlastFurnace.get(1);
-            RECIPE_IronPlatedBricks = GregtechItemList.Casing_IronPlatedBricks.get(1);
-
-            // Iron BF
-            RecipeUtils.addShapedGregtechRecipe(
-                    "plateDoubleAnyIron",
-                    "craftingFurnace",
-                    "plateDoubleAnyIron",
-                    boiler_Coal,
-                    CI.machineCasing_ULV,
-                    boiler_Coal,
-                    "plateDoubleAnyIron",
-                    "bucketLava",
-                    "plateDoubleAnyIron",
-                    RECIPE_IronBlastFurnace);
-            // Iron plated Bricks
-            RecipeUtils.addShapedGregtechRecipe(
-                    "plateAnyIron",
-                    RECIPES_Tools.craftingToolHardHammer,
-                    "plateAnyIron",
-                    "plateAnyIron",
-                    blockBricks,
-                    "plateAnyIron",
-                    "plateAnyIron",
-                    RECIPES_Tools.craftingToolWrench,
-                    "plateAnyIron",
-                    RECIPE_IronPlatedBricks);
-
-            // Add recycle recipes for the Iron Plated Bricks
-            // GT_ModHandler.addPulverisationRecipe(RECIPE_IronPlatedBricks,
-            // ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustIron", 6),
-            // ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustClay", 2), true);
-            CORE.RA.addPulverisationRecipe(
-                    RECIPE_IronPlatedBricks,
-                    ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustIron", 6),
-                    ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustClay", 2),
-                    null);
-            GT_Values.RA.addArcFurnaceRecipe(
-                    RECIPE_IronPlatedBricks,
-                    new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotWroughtIron", 6),
-                            ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustAsh", 2) },
-                    new int[] { 0 },
-                    32 * 20,
-                    32);
-        }
 
         if (CORE.ConfigSwitches.enableMultiblock_IndustrialCentrifuge) {
             // Industrial Centrifuge

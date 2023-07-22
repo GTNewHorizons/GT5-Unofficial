@@ -10,10 +10,7 @@ import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
-import java.util.ArrayList;
-
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -25,8 +22,8 @@ import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -190,52 +187,13 @@ public class GregtechMetaTileEntity_NuclearSaltProcessingPlant
     }
 
     @Override
-    public boolean checkRecipe(final ItemStack itemStack) {
-        if (inputSeparation) {
-            for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-                ArrayList<ItemStack> rList = new ArrayList<>();
-                for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                    if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null)
-                        rList.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
-                }
-
-                if (checkRecipeGeneric(
-                        rList.toArray(new ItemStack[0]),
-                        getStoredFluids().toArray(new FluidStack[0]),
-                        getMaxParallelRecipes(),
-                        getEuDiscountForParallelism(),
-                        150,
-                        10000)) {
-                    return true;
-                }
-            }
-
-            return checkRecipeGeneric(
-                    new ItemStack[0],
-                    getStoredFluids().toArray(new FluidStack[0]),
-                    getMaxParallelRecipes(),
-                    getEuDiscountForParallelism(),
-                    150,
-                    10000);
-        } else {
-            return checkRecipeGeneric(
-                    getStoredInputs().toArray(new ItemStack[0]),
-                    getStoredFluids().toArray(new FluidStack[0]),
-                    getMaxParallelRecipes(),
-                    getEuDiscountForParallelism(),
-                    150,
-                    10000);
-        }
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().setSpeedBonus(1F / 2.5F).setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return 2 * (Math.max(1, GT_Utility.getTier(getMaxInputVoltage())));
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 100;
     }
 
     @Override

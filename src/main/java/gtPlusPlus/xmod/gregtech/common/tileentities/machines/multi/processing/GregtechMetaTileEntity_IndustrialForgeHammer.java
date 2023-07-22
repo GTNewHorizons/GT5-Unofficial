@@ -39,6 +39,7 @@ import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -170,8 +171,8 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends
     }
 
     @Override
-    public String getSound() {
-        return SoundResource.RANDOM_ANVIL_USE.toString();
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.RANDOM_ANVIL_USE;
     }
 
     @Override
@@ -195,33 +196,13 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends
     }
 
     @Override
-    public boolean checkRecipe(final ItemStack aStack) {
-        if (getAnvilTier() > 0) {
-            return checkRecipeGeneric(
-                    getStoredInputs().toArray(new ItemStack[0]),
-                    getCompactedFluids(),
-                    getMaxParallelRecipes(),
-                    100,
-                    100,
-                    10000);
-        }
-
-        return false;
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().setSpeedBonus(1 / 2F).setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return (8 * getAnvilTier() * GT_Utility.getTier(this.getMaxInputVoltage()));
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 100;
-    }
-
-    @Override
-    public void startProcess() {
-        this.sendLoopStart((byte) 1);
     }
 
     @Override
@@ -232,11 +213,6 @@ public class GregtechMetaTileEntity_IndustrialForgeHammer extends
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialForgeHammer;
-    }
-
-    @Override
-    public int getAmountOfOutputs() {
-        return 1;
     }
 
     @Override

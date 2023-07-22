@@ -14,6 +14,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -26,6 +28,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -183,8 +187,8 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        if (mInputHotFluidHatch.getFluid() == null) return true;
+    public @NotNull CheckRecipeResult checkProcessing() {
+        if (mInputHotFluidHatch.getFluid() == null) return CheckRecipeResultRegistry.SUCCESSFUL;
 
         int fluidAmountToConsume = mInputHotFluidHatch.getFluidAmount(); // how much fluid is in hatch
 
@@ -219,7 +223,7 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
         } else {
             // If we're working with neither, fail out
             superheated_threshold = 0;
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         superheated = fluidAmountToConsume >= superheated_threshold; // set the internal superheated flag if we have
@@ -237,7 +241,7 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
             mOutputColdFluidHatch.fill(FluidRegistry.getFluidStack("ic2coolant", fluidAmountToConsume), true);
         }
         this.mEfficiencyIncrease = 80;
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     private int useWater(float input) {
@@ -401,11 +405,6 @@ public class GregtechMetaTileEntity_Adv_HeatExchanger
 
     @Override
     public int getMaxParallelRecipes() {
-        return 0;
-    }
-
-    @Override
-    public int getEuDiscountForParallelism() {
         return 0;
     }
 

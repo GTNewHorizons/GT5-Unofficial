@@ -26,7 +26,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -37,6 +38,10 @@ import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -334,11 +339,6 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
         }
     }
 
-    @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        return checkRecipeGeneric();
-    }
-
     public Block getCasingBlock() {
         return ModBlocks.blockCasings5Misc;
     }
@@ -423,11 +423,6 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
         return 1;
     }
 
-    @Override
-    public int getEuDiscountForParallelism() {
-        return 0;
-    }
-
     /*
      * Milling Ball Handling
      */
@@ -496,55 +491,30 @@ public class GregtechMetaTileEntity_IsaMill extends GregtechMeta_MultiBlockBase<
     }
 
     @Override
-    public boolean checkRecipeGeneric(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int aMaxParallelRecipes,
-            long aEUPercent, int aSpeedBonusPercent, int aOutputChanceRoll, GT_Recipe aRecipe) {
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-        // Based on the Processing Array. A bit overkill, but very flexible.
+            ItemStack millingBall;
 
-        // Reset outputs and progress stats
-        this.lEUt = 0;
-        this.mMaxProgresstime = 0;
-        this.mOutputItems = new ItemStack[] {};
-        this.mOutputFluids = new FluidStack[] {};
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+                millingBall = findMillingBall(inputItems);
+                if (millingBall == null) {
+                    return SimpleCheckRecipeResult.ofFailure("no_milling_ball");
+                }
+                return CheckRecipeResultRegistry.SUCCESSFUL;
+            }
 
-        long tVoltage = getMaxInputVoltage();
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-
-        // checks if it has a milling ball with enough durability
-        ItemStack tMillingBallRecipe = findMillingBall(aItemInputs);
-        if (tMillingBallRecipe == null) {
-            return false;
-        }
-
-        GT_Recipe tRecipe = findRecipe(
-                getBaseMetaTileEntity(),
-                mLastRecipe,
-                false,
-                gregtech.api.enums.GT_Values.V[tTier],
-                aFluidInputs,
-                aItemInputs);
-
-        // Remember last recipe - an optimization for findRecipe()
-        this.mLastRecipe = tRecipe;
-
-        if (tRecipe == null) {
-            return false;
-        }
-
-        boolean tSuccess = super.checkRecipeGeneric(
-                aItemInputs,
-                aFluidInputs,
-                aMaxParallelRecipes,
-                aEUPercent,
-                aSpeedBonusPercent,
-                aOutputChanceRoll,
-                tRecipe);
-
-        // Damage Milling ball once all is said and done.
-        if (tSuccess) {
-            damageMillingBall(tMillingBallRecipe);
-        }
-
-        return tSuccess;
+            @NotNull
+            @Override
+            public CheckRecipeResult process() {
+                CheckRecipeResult result = super.process();
+                if (result.wasSuccessful()) {
+                    damageMillingBall(millingBall);
+                }
+                return result;
+            }
+        };
     }
 }
