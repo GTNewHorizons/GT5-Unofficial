@@ -210,37 +210,6 @@ public class RECIPES_GREGTECH {
                 64,
                 2);
 
-        // Convert GT++ Plutonium239 into normal Plutonium
-        if (Materials.Plutonium.mDefaultLocalName.equals("Plutonium 239")) {
-            CORE.RA.addChemicalPlantRecipe(
-                    new ItemStack[] { CI.getNumberedAdvancedCircuit(16),
-                            ELEMENT.getInstance().PLUTONIUM239.getDust(1) },
-                    new FluidStack[] {},
-                    new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustPlutonium", 1) },
-                    new FluidStack[] {},
-                    5 * 20,
-                    1,
-                    2);
-            CORE.RA.addChemicalPlantRecipe(
-                    new ItemStack[] { CI.getNumberedAdvancedCircuit(16),
-                            ELEMENT.getInstance().PLUTONIUM239.getSmallDust(1) },
-                    new FluidStack[] {},
-                    new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustSmallPlutonium", 1) },
-                    new FluidStack[] {},
-                    5 * 20,
-                    1,
-                    2);
-            CORE.RA.addChemicalPlantRecipe(
-                    new ItemStack[] { CI.getNumberedAdvancedCircuit(16),
-                            ELEMENT.getInstance().PLUTONIUM239.getTinyDust(1) },
-                    new FluidStack[] {},
-                    new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustTinyPlutonium", 1) },
-                    new FluidStack[] {},
-                    5 * 20,
-                    1,
-                    2);
-        }
-
         int aLaureniumTier = ALLOY.LAURENIUM.vTier;
         // Adding Recipes for Casings
         CORE.RA.addChemicalPlantRecipe(
@@ -1652,7 +1621,7 @@ public class RECIPES_GREGTECH {
         // Strontium pu239
         CORE.RA.addCyclotronRecipe(
                 CI.getNumberedCircuit(1),
-                FluidUtils.getFluidStack("molten.plutonium239", 10),
+                FluidUtils.getFluidStack("molten.plutonium", 10),
                 new ItemStack[] { GregtechItemList.Pellet_RTG_SR90.get(1) },
                 null,
                 new int[] { 220 },

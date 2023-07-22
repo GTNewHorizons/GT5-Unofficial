@@ -579,9 +579,6 @@ public final class ModItems {
             // in radioisotope thermoelectric generators (RTGs)
             // and radioisotope heater units - one gram of plutonium-238 generates approximately 0.5 W of thermal power.
             MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().PLUTONIUM238, false);
-            if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustPlutonium239", 1) == null) {
-                MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().PLUTONIUM239, false);
-            }
 
             // RTG Fuel Materials
             MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().STRONTIUM90, false);

@@ -1528,14 +1528,6 @@ item.itemDustTinyUN18Fertiliser.name=Tiny Pile of UN-18 Fertiliser Dust
 item.itemDustUN32Fertiliser.name=UN-32 Fertiliser Dust
 item.itemDustSmallUN32Fertiliser.name=Small Pile of UN-32 Fertiliser Dust
 item.itemDustTinyUN32Fertiliser.name=Tiny Pile of UN-32 Fertiliser Dust
-item.itemNuggetPlutonium239.name=Plutonium 239 Nugget
-item.itemCellPlutonium239.name=Plutonium 239 Cell
-item.itemIngotPlutonium239.name=Plutonium 239 Ingot
-item.itemPlatePlutonium239.name=Plutonium 239 Plate
-item.itemPlateDoublePlutonium239.name=Double Plutonium 239 Plate 
-item.itemDustPlutonium239.name=Plutonium 239 Dust
-item.itemDustSmallPlutonium239.name=Small Plutonium 239 Dust 
-item.itemDustTinyPlutonium239.name=Tiny Plutonium 239 Dust
 item.itemCustomMetaCover.miscutils.GtMachineCasings=%s Machine Plate Cover
 item.itemGregtechPump.tooltip.0=Cannot drain any other standard fluid container block
 item.itemGregtechPump.tooltip.1=Cannot be emptied via RMB, use inside a tank with GUI
@@ -2020,7 +2012,6 @@ tile.blockDarkWorldPortalFrame.name=Containment Frame
 
 
 //Added 1/4/18
-tile.Block of Plutonium-239.name=Block of Plutonium-239
 tile.blockMiningPipeFake.name=Strengthened Mining Pipe
 tile.blockMiningHeadFake.name=Bedrock Drill
 item.itemPlateMeatRaw.name=Fleshy Panel

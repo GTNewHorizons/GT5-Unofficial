@@ -1,6 +1,8 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFusionRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.FUSION_THRESHOLD;
@@ -15,6 +17,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.lib.CORE;
@@ -92,51 +95,47 @@ public class RecipeLoader_Nuclear {
         // Process Used Fuel Rods for Krypton
 
         // Uranium
-        GT_Values.RA.addCentrifugeRecipe(
-                CI.getNumberedCircuit(20),
-                ItemUtils.getItemStackFromFQRN("IC2:reactorUraniumSimpledepleted", 8),
-                GT_Values.NF,
-                ELEMENT.getInstance().KRYPTON.getFluidStack(60),
-                ItemList.IC2_Fuel_Rod_Empty.get(8),
-                ELEMENT.getInstance().URANIUM238.getDust(2),
-                ELEMENT.getInstance().URANIUM232.getSmallDust(1),
-                ELEMENT.getInstance().URANIUM233.getSmallDust(1),
-                ELEMENT.getInstance().URANIUM235.getSmallDust(1),
-                ELEMENT.getInstance().PLUTONIUM239.getTinyDust(1),
-                new int[] { 0, 0, 1000, 1000, 1000, 500 },
-                500 * 20,
-                4000);
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        ItemUtils.getItemStackFromFQRN("IC2:reactorUraniumSimpledepleted", 8),
+                        GT_Utility.getIntegratedCircuit(20))
+                .itemOutputs(
+                        ItemList.IC2_Fuel_Rod_Empty.get(8),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 2L),
+                        ELEMENT.getInstance().URANIUM232.getSmallDust(1),
+                        ELEMENT.getInstance().URANIUM233.getSmallDust(1),
+                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Uranium235, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L))
+                .outputChances(10000, 10000, 1000, 1000, 1000, 500).noFluidInputs()
+                .fluidOutputs(FluidUtils.getFluidStack("krypton", 60)).duration(4 * MINUTES + 10 * SECONDS)
+                .eut(TierEU.RECIPE_IV).addTo(sCentrifugeRecipes);
         // Mox
-        GT_Values.RA.addCentrifugeRecipe(
-                CI.getNumberedCircuit(20),
-                ItemUtils.getItemStackFromFQRN("IC2:reactorMOXSimpledepleted", 8),
-                GT_Values.NF,
-                ELEMENT.getInstance().KRYPTON.getFluidStack(90),
-                ItemList.IC2_Fuel_Rod_Empty.get(8),
-                ELEMENT.getInstance().PLUTONIUM244.getDust(2),
-                ELEMENT.getInstance().PLUTONIUM241.getTinyDust(1),
-                ELEMENT.getInstance().PLUTONIUM239.getTinyDust(1),
-                ELEMENT.getInstance().PLUTONIUM238.getTinyDust(1),
-                ELEMENT.getInstance().PLUTONIUM239.getTinyDust(1),
-                new int[] { 0, 0, 500, 500, 500, 500 },
-                750 * 20,
-                4000);
-
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        ItemUtils.getItemStackFromFQRN("IC2:reactorMOXSimpledepleted", 8),
+                        GT_Utility.getIntegratedCircuit(20))
+                .itemOutputs(
+                        ItemList.IC2_Fuel_Rod_Empty.get(8),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plutonium, 2L),
+                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium241, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L),
+                        ELEMENT.getInstance().PLUTONIUM238.getTinyDust(1),
+                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Plutonium, 1L))
+                .outputChances(10000, 10000, 500, 500, 500, 500).noFluidInputs()
+                .fluidOutputs(FluidUtils.getFluidStack("krypton", 90)).duration(6 * MINUTES + 15 * SECONDS)
+                .eut(TierEU.RECIPE_IV).addTo(sCentrifugeRecipes);
         // Thorium
-        GT_Values.RA.addCentrifugeRecipe(
-                CI.getNumberedCircuit(20),
-                ItemList.Depleted_Thorium_1.get(8),
-                GT_Values.NF,
-                ELEMENT.getInstance().KRYPTON.getFluidStack(30),
-                ItemList.IC2_Fuel_Rod_Empty.get(8),
-                ELEMENT.getInstance().THORIUM.getDust(2),
-                ELEMENT.getInstance().THORIUM232.getDust(1),
-                ELEMENT.getInstance().LUTETIUM.getSmallDust(1),
-                ELEMENT.getInstance().POLONIUM.getSmallDust(1),
-                ELEMENT.getInstance().THALLIUM.getTinyDust(1),
-                new int[] { 0, 0, 5000, 5000, 5000, 2500 },
-                250 * 20,
-                4000);
+        GT_Values.RA.stdBuilder().itemInputs(ItemList.Depleted_Thorium_1.get(8), GT_Utility.getIntegratedCircuit(20))
+                .itemOutputs(
+                        ItemList.IC2_Fuel_Rod_Empty.get(8),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 2L),
+                        ELEMENT.getInstance().THORIUM232.getDust(1),
+                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 1L),
+                        ELEMENT.getInstance().POLONIUM.getSmallDust(1),
+                        ELEMENT.getInstance().THALLIUM.getTinyDust(1))
+                .outputChances(10000, 10000, 5000, 5000, 5000, 2500).noFluidInputs()
+                .fluidOutputs(FluidUtils.getFluidStack("krypton", 30)).duration(2 * MINUTES + 5 * SECONDS)
+                .eut(TierEU.RECIPE_IV).addTo(sCentrifugeRecipes);
     }
 
     private static void chemicalBathRecipes() {

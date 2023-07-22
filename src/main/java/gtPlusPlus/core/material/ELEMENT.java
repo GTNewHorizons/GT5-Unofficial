@@ -374,7 +374,10 @@ public final class ELEMENT {
             false,
             "Np",
             2); // Not a GT Inherited Material
-    public final Material PLUTONIUM244 = MaterialUtils.generateMaterialFromGtENUM(Materials.Plutonium);
+
+    public final Material PLUTONIUM244 = MaterialUtils.generateMaterialFromGtENUM(Materials.Plutonium); // This one
+                                                                                                        // looks
+                                                                                                        // incorrect.
     public final Material PLUTONIUM241 = MaterialUtils.generateMaterialFromGtENUM(Materials.Plutonium241);
     public final Material AMERICIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Americium); // Americium
     public final Material CURIUM = new Material(
@@ -512,20 +515,7 @@ public final class ELEMENT {
             StringUtils.superscript("232Th"),
             1,
             true); // Not a GT Inherited Material
-    public final Material PLUTONIUM239 = new Material(
-            "Plutonium-239",
-            MaterialState.SOLID,
-            TextureSets.NUCLEAR.get(),
-            Materials.Plutonium.mDurability,
-            Materials.Plutonium.mRGBa,
-            Materials.Plutonium.mMeltingPoint,
-            Materials.Plutonium.mBlastFurnaceTemp,
-            94,
-            145,
-            false,
-            StringUtils.superscript("239Pu"),
-            4,
-            true); // Not a GT Inherited Material
+
     // RTG Fuels
     public final Material PLUTONIUM238 = new Material(
             "Plutonium-238",
