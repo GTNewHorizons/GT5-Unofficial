@@ -67,7 +67,6 @@ public class BW_GT_MaterialReference {
     public static Werkstoff Palladium = new Werkstoff(Materials.Palladium, ADD_CASINGS_ONLY, ELEMENT, 31_766 + 52);
     public static Werkstoff Phosphorus = new Werkstoff(Materials.Phosphorus, ADD_CASINGS_ONLY, ELEMENT, 31_766 + 21);
     public static Werkstoff Platinum = new Werkstoff(Materials.Platinum, ADD_CASINGS_ONLY, ELEMENT, 31_766 + 85);
-    public static Werkstoff Plutonium = new Werkstoff(Materials.Plutonium, ADD_CASINGS_ONLY, ELEMENT, 31_766 + 100);
     public static Werkstoff Plutonium241 = new Werkstoff(
             Materials.Plutonium241,
             ADD_CASINGS_ONLY,
