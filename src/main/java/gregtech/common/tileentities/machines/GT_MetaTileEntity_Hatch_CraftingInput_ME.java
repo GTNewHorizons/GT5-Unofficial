@@ -21,7 +21,11 @@ import appeng.util.IWideReadableNumberConverter;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import com.glodblock.github.common.item.ItemFluidPacket;
+import com.google.common.collect.ImmutableList;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import gregtech.api.gui.modularui.GT_UITextures;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.InventoryCrafting;
@@ -66,23 +70,9 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
-/*
-4. ui button to return all items
-quick recipe trigger
-rename
-blocking mode?
- */
+
 public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_Hatch_InputBus
     implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ICraftingProvider, IGridProxyable {
-
-    // mInventory is used for storing patterns, circuit and manual slot (typically NC items)
-    private static final int MAX_PATTERN_COUNT = 4*9-2;
-    private static final int MAX_INV_COUNT = MAX_PATTERN_COUNT + 2;
-    private static final int SLOT_MANUAL = MAX_INV_COUNT - 1;
-    private static final int SLOT_CIRCUIT = MAX_INV_COUNT - 2;
-
-    private BaseActionSource requestSource = null;
-    private @Nullable AENetworkProxy gridProxy = null;
 
     // Each pattern slot in the crafting input hatch has its own internal inventory
     public static class PatternSlot {
@@ -221,6 +211,15 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
     }
 
+
+    // mInventory is used for storing patterns, circuit and manual slot (typically NC items)
+    private static final int MAX_PATTERN_COUNT = 4*8;
+    private static final int MAX_INV_COUNT = MAX_PATTERN_COUNT + 2;
+    private static final int SLOT_MANUAL = MAX_INV_COUNT - 1;
+    private static final int SLOT_CIRCUIT = MAX_INV_COUNT - 2;
+
+    private BaseActionSource requestSource = null;
+    private @Nullable AENetworkProxy gridProxy = null;
 
     // holds all internal inventories
     private PatternSlot[] internalInventory = new PatternSlot[MAX_PATTERN_COUNT];
@@ -473,7 +472,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     public void addUIWidgets(ModularWindow.@NotNull Builder builder, UIBuildContext buildContext) {
         builder
             .widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 9)
+                SlotGroup.ofItemHandler(inventoryHandler, 8)
                     .startFromSlot(0)
                     .endAtSlot(MAX_PATTERN_COUNT - 1)
                     .phantom(false)
@@ -489,7 +488,20 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                 new SlotWidget(inventoryHandler, SLOT_MANUAL)
                     .setShiftClickPriority(11)
                     .setBackground(getGUITextureSet().getItemSlot())
-                    .setPos(133, 63)
+                    .setPos(151, 45)
+            )
+            .widget(
+                new ButtonWidget().setOnClick((clickData, widget) -> {
+                    if (clickData.mouseButton == 0) {
+                        refundAll();
+                    }
+                })
+                .setPlayClickSound(true)
+                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EXPORT)
+                .addTooltips(
+                    ImmutableList.of("Return all internally stored items back to AE"))
+                .setSize(16, 16)
+                .setPos(152, 28)
             );
     }
 
@@ -536,14 +548,6 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     private ItemStack[] getSharedItems() {
         return new ItemStack[] { mInventory[SLOT_CIRCUIT], mInventory[SLOT_MANUAL] };
-    }
-
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                .setSize(17, 17)
-                .setPos(80, 63));
     }
 
     @Override
@@ -625,14 +629,17 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     @Override
     public void onBlockDestroyed() {
+        refundAll();
+        super.onBlockDestroyed();
+    }
+
+    private void refundAll() {
         for(var slot : internalInventory) {
             if (slot == null) continue;
             try {
                 slot.refund(getProxy(), getRequest());
             } catch (GridAccessException ignored) {}
         }
-
-        super.onBlockDestroyed();
     }
 
     public boolean justUpdated() {
