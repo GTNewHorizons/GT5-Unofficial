@@ -349,6 +349,7 @@ public class YottaFluidTank extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     }
 
     private String getPercent() {
+        if (mStorage.signum() == 0) return "0";
         return String.valueOf(mStorageCurrent.multiply(new BigInteger("100")).divide(mStorage));
     }
 
