@@ -123,7 +123,6 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
                     return getItemStackReplacementTooltip();
                 }
             }.disableShiftInsert()
-                .setHandlePhantomActionClient(true)
                 .setPos(34, 22)
                 .setBackground(GT_UITextures.BUTTON_STANDARD))
             .widget(

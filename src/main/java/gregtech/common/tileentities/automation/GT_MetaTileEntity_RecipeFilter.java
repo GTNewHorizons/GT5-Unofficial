@@ -146,20 +146,21 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
 
     @Override
     public Function<List<String>, List<String>> getItemStackReplacementTooltip() {
-        if (mRecipeMap != null) {
-            List<String> tooltip = assembleItemStackReplacementTooltip();
+        GT_Recipe.GT_Recipe_Map recipeMap = getItemStackMachineRecipeMap(mInventory[FILTER_SLOT_INDEX]);
+        if (recipeMap != null) {
+            List<String> tooltip = assembleItemStackReplacementTooltip(recipeMap);
             return list -> tooltip;
         }
         return super.getItemStackReplacementTooltip();
     }
 
     @NotNull
-    private List<String> assembleItemStackReplacementTooltip() {
+    private List<String> assembleItemStackReplacementTooltip(GT_Recipe.GT_Recipe_Map recipeMap) {
         List<String> tooltip = new ArrayList<>();
         tooltip.add(
             TT_machineType + ": "
                 + AnimatedTooltipHandler.YELLOW
-                + StatCollector.translateToLocal(mRecipeMap.mUnlocalizedName)
+                + StatCollector.translateToLocal(recipeMap.mUnlocalizedName)
                 + AnimatedTooltipHandler.RESET);
         tooltip.addAll(mTooltipCache.getData(REPRESENTATION_SLOT_TOOLTIP).text);
         return tooltip;

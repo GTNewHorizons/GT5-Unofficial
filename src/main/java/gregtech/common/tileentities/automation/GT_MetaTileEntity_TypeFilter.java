@@ -4,7 +4,9 @@ import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER_GLOW;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -52,7 +54,7 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
     }
 
     public GT_MetaTileEntity_TypeFilter(String aName, int aTier, int aInvSlotCount, String aDescription,
-        ITexture[][][] aTextures) {
+                                        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -92,6 +94,23 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
         }
     }
 
+    private void copyHeldItemPrefix(ItemStack handStack) {
+        OrePrefixes prefix = getItemPrefix(handStack);
+        if (prefix != null) {
+            this.mPrefix = prefix;
+            this.mRotationIndex = -1;
+        }
+    }
+
+    private static OrePrefixes getItemPrefix(ItemStack itemStack) {
+        OrePrefixes prefix = null;
+        ItemData data = GT_OreDictUnificator.getAssociation(itemStack);
+        if (data != null && data.hasValidPrefixData()) {
+            prefix = data.mPrefix;
+        }
+        return prefix;
+    }
+
     private void cyclePrefix(boolean aRightClick) {
         for (int i = 0; i < OrePrefixes.values().length; i++) {
             if (this.mPrefix == OrePrefixes.values()[i]) {
@@ -120,14 +139,6 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
         }
     }
 
-    private void copyHeldItemPrefix(ItemStack aHandStack) {
-        ItemData data = GT_OreDictUnificator.getAssociation(aHandStack);
-        if (data != null && data.hasValidPrefixData()) {
-            this.mPrefix = data.mPrefix;
-            this.mRotationIndex = -1;
-        }
-    }
-
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
@@ -142,7 +153,6 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
                 .get(this.mRotationIndex = (this.mRotationIndex + 1) % this.mPrefix.mPrefixedItems.size()));
         if (this.mInventory[FILTER_SLOT_INDEX] == null) return;
         if (this.mInventory[FILTER_SLOT_INDEX].getItemDamage() == W) this.mInventory[9].setItemDamage(0);
-        this.mInventory[FILTER_SLOT_INDEX].setStackDisplayName(this.mPrefix.toString());
     }
 
     @Override
@@ -169,7 +179,15 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
     }
 
     @Override
-    protected List<String> getItemExtraTooltip() {
-        return mTooltipCache.getData(REPRESENTATION_SLOT_TOOLTIP).text;
+    protected Function<List<String>, List<String>> getItemStackReplacementTooltip() {
+        return (itemTooltip) -> {
+            OrePrefixes prefix = getItemPrefix(mInventory[FILTER_SLOT_INDEX]);
+            List<String> replacementTooltip = new ArrayList<>();
+            replacementTooltip.add("Filter set to " + prefix.mRegularLocalName);
+            replacementTooltip.add("Ore prefix: §e" + prefix + "§r");
+            replacementTooltip.add("Filter size: §e" + prefix.mPrefixedItems.size() + "§r");
+            replacementTooltip.addAll(mTooltipCache.getData(REPRESENTATION_SLOT_TOOLTIP).text);
+            return replacementTooltip;
+        };
     }
 }
