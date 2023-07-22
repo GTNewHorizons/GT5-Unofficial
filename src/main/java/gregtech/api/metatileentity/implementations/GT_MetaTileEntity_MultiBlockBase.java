@@ -487,6 +487,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     private boolean shouldCheckRecipeThisTick(long aTick) {
+        // do a recipe check if any crafting input hatch just got pushed in items
+        for (GT_MetaTileEntity_Hatch_CraftingInput_ME craftingInputMe : mCraftingInputs) {
+            if (craftingInputMe.justUpdated()) {
+                return true;
+            }
+        }
+
         // Perform more frequent recipe change after the machine just shuts down.
         long timeElapsed = aTick - mLastWorkingTick;
 
