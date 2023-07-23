@@ -2268,7 +2268,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         .duration(20)
                         .eut(30)
                         .validateInputCount(1, 1)
-                        .validateOutputCount(1, 1)
+                        .validateOutputCount(1, 2)
                         .build();
                     if (!t.isPresent()) return Collections.emptyList();
                     ItemStack input = b.getItemInputBasic(0);

@@ -137,6 +137,18 @@ public class GT_RecipeBuilder {
         }
     }
 
+    private static void handleInvalidRecipe() {
+        if (!PANIC_MODE && !DEBUG_MODE) {
+            return;
+        }
+        // place a breakpoint here to catch all these issues
+        GT_Log.err.print("invalid recipe");
+        new IllegalArgumentException().printStackTrace(GT_Log.err);
+        if (PANIC_MODE) {
+            throw new IllegalArgumentException("invalid recipe");
+        }
+    }
+
     public static void handleRecipeCollision(String details) {
         if (!PANIC_MODE && !DEBUG_MODE) {
             return;
@@ -608,7 +620,10 @@ public class GT_RecipeBuilder {
     }
 
     public Optional<GT_Recipe> build() {
-        if (!valid) return Optional.empty();
+        if (!valid) {
+            if (DEBUG_MODE) handleInvalidRecipe();
+            return Optional.empty();
+        }
         preBuildChecks();
         optimize();
         return Optional.of(
@@ -640,7 +655,10 @@ public class GT_RecipeBuilder {
         if (inputsOreDict == null) {
             throw new UnsupportedOperationException();
         }
-        if (!valid) return Optional.empty();
+        if (!valid) {
+            if (DEBUG_MODE) handleInvalidRecipe();
+            return Optional.empty();
+        }
         preBuildChecks();
         // no optimize.
         return Optional.of(
