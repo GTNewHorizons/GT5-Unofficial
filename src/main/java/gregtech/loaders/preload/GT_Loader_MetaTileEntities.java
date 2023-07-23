@@ -1893,6 +1893,11 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                     CRAFTING_INPUT_ME.ID,
                     "hatch.crafting_input.me",
                     "Crafting Input Buffer (ME)").getStackForm(1L));
+            ItemList.Hatch_CraftingInput_Bus_Slave.set(
+                new GT_MetaTileEntity_Hatch_CraftingInput_Slave(
+                    CRAFTING_INPUT_SLAVE.ID,
+                    "hatch.crafting_input.slave",
+                    "Crafting Input Slave").getStackForm(1L));
         }
     }
 
