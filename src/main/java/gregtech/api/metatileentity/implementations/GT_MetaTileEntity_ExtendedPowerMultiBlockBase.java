@@ -158,6 +158,9 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
             }
             if (result.wasSuccessful()) break;
         }
+
+        processingLogic.setInputFluids(getStoredFluids());
+
         if (!result.wasSuccessful()) {
             if (isInputSeparationEnabled()) {
                 for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
@@ -193,7 +196,12 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         mEfficiencyIncrease = 10000;
 
+        lEUt = processingLogic.getCalculatedEut();
         mMaxProgresstime = processingLogic.getDuration();
+
+        if (lEUt > 0) {
+            lEUt = (-lEUt);
+        }
 
         mOutputItems = processingLogic.getOutputItems();
         mOutputFluids = processingLogic.getOutputFluids();

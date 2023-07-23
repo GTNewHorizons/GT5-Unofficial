@@ -713,6 +713,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             if (result.wasSuccessful()) break;
         }
 
+        processingLogic.setInputFluids(getStoredFluids());
+
         if (!result.wasSuccessful()) {
             if (isInputSeparationEnabled()) {
                 for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
