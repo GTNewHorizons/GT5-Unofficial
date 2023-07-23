@@ -1,72 +1,23 @@
 package gregtech.common.tileentities.machines;
 
-import appeng.api.AEApi;
-import appeng.api.implementations.ICraftingPatternItem;
-import appeng.api.implementations.IPowerChannelState;
-import appeng.api.networking.GridFlags;
-import appeng.api.networking.IGridNode;
-import appeng.api.networking.crafting.ICraftingPatternDetails;
-import appeng.api.networking.crafting.ICraftingProvider;
-import appeng.api.networking.crafting.ICraftingProviderHelper;
-import appeng.api.networking.events.MENetworkCraftingPatternChange;
-import appeng.api.networking.security.BaseActionSource;
-import appeng.api.networking.security.IActionHost;
-import appeng.api.networking.security.MachineSource;
-import appeng.api.storage.IMEMonitor;
-import appeng.api.storage.data.IAEFluidStack;
-import appeng.api.storage.data.IAEItemStack;
-import appeng.api.util.AECableType;
-import appeng.api.util.DimensionalCoord;
-import appeng.me.GridAccessException;
-import appeng.me.helpers.AENetworkProxy;
-import appeng.me.helpers.IGridProxyable;
-import appeng.util.IWideReadableNumberConverter;
-import appeng.util.Platform;
-import appeng.util.ReadableNumberConverter;
-import com.glodblock.github.common.item.ItemFluidPacket;
-import com.google.common.collect.ImmutableList;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import gregtech.api.GregTech_API;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
+
+import java.util.*;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Utility;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.ArrayUtils;
-import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
 public class GT_MetaTileEntity_Hatch_CraftingInput_Slave extends GT_MetaTileEntity_Hatch_InputBus
     implements IDualInputHatch {
@@ -82,16 +33,14 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_Slave extends GT_MetaTileEnti
             aNameRegional,
             1,
             0,
-            new String[] {
-                "Slave for Crafting Input Buffer",
+            new String[] { "Slave for Crafting Input Buffer",
                 "Link with Crafting Input Buffer using Data Stick to share inventory",
-                "Left click on the Crafting Input Buffer, then right click on this block to link them",
-            });
+                "Left click on the Crafting Input Buffer, then right click on this block to link them", });
         disableSort = true;
     }
 
     public GT_MetaTileEntity_Hatch_CraftingInput_Slave(String aName, int aTier, String[] aDescription,
-                                                          ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         disableSort = true;
     }
@@ -153,10 +102,15 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_Slave extends GT_MetaTileEnti
     public String[] getInfoData() {
         var ret = new ArrayList<String>();
         if (getMaster() != null) {
-            ret.add("This bus is linked to the Crafting Input Buffer at " + masterX + ", " + masterY + ", " + masterZ + ".");
+            ret.add(
+                "This bus is linked to the Crafting Input Buffer at " + masterX
+                    + ", "
+                    + masterY
+                    + ", "
+                    + masterZ
+                    + ".");
             ret.addAll(Arrays.asList(getMaster().getInfoData()));
-        }
-        else ret.add("This bus is not linked to any Crafting Input Buffer.");
+        } else ret.add("This bus is not linked to any Crafting Input Buffer.");
         return ret.toArray(new String[0]);
     }
 
@@ -189,11 +143,12 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_Slave extends GT_MetaTileEnti
     }
 
     public GT_MetaTileEntity_Hatch_CraftingInput_ME trySetMasterFromCoord(int x, int y, int z) {
-        var tileEntity = getBaseMetaTileEntity().getWorld().getTileEntity(x,y,z);
-        if(tileEntity == null) return null;
-        if(!(tileEntity instanceof IGregTechTileEntity gtTileEntity)) return null;
+        var tileEntity = getBaseMetaTileEntity().getWorld()
+            .getTileEntity(x, y, z);
+        if (tileEntity == null) return null;
+        if (!(tileEntity instanceof IGregTechTileEntity gtTileEntity)) return null;
         var metaTileEntity = gtTileEntity.getMetaTileEntity();
-        if(!(metaTileEntity instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME)) return null;
+        if (!(metaTileEntity instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME)) return null;
         masterX = x;
         masterY = y;
         masterZ = z;
@@ -204,8 +159,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_Slave extends GT_MetaTileEnti
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (!(aPlayer instanceof EntityPlayerMP))
-            return super.onRightclick(aBaseMetaTileEntity, aPlayer);
+        if (!(aPlayer instanceof EntityPlayerMP)) return super.onRightclick(aBaseMetaTileEntity, aPlayer);
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(dataStick, true, true))
             return super.onRightclick(aBaseMetaTileEntity, aPlayer);

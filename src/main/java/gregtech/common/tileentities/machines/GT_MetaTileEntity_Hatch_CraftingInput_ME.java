@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.InventoryCrafting;
@@ -237,18 +236,17 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     private boolean supportFluids;
 
-    public GT_MetaTileEntity_Hatch_CraftingInput_ME(int aID, String aName, String aNameRegional, boolean supportFluids) {
+    public GT_MetaTileEntity_Hatch_CraftingInput_ME(int aID, String aName, String aNameRegional,
+        boolean supportFluids) {
         super(
             aID,
             aName,
             aNameRegional,
             1,
             MAX_INV_COUNT,
-            new String[] {
-                "Advanced item input for Multiblocks",
-                "Processes patterns directly from ME",
-                supportFluids ? "It supports patterns including fluids" : "It does not support patterns including fluids"
-            });
+            new String[] { "Advanced item input for Multiblocks", "Processes patterns directly from ME",
+                supportFluids ? "It supports patterns including fluids"
+                    : "It does not support patterns including fluids" });
         disableSort = true;
         this.supportFluids = supportFluids;
     }
@@ -690,7 +688,9 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         tag.setInteger("z", aBaseMetaTileEntity.getZCoord());
 
         dataStick.stackTagCompound = tag;
-        dataStick.setStackDisplayName("Crafting Input Buffer Link Data Stick ("+ aBaseMetaTileEntity.getXCoord() + ", " + aBaseMetaTileEntity.getYCoord() + ", " + aBaseMetaTileEntity.getZCoord() + ")");
+        dataStick.setStackDisplayName(
+            "Crafting Input Buffer Link Data Stick (" + aBaseMetaTileEntity
+                .getXCoord() + ", " + aBaseMetaTileEntity.getYCoord() + ", " + aBaseMetaTileEntity.getZCoord() + ")");
         aPlayer.addChatMessage(new ChatComponentText("Saved Link Data to Data Stick"));
     }
 
