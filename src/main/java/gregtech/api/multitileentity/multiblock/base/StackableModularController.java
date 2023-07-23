@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jetbrains.annotations.NotNull;
+
 import gregtech.api.multitileentity.interfaces.UpgradableModularMuTE;
 import gregtech.api.util.GT_StructureUtilityMuTE.UpgradeCasings;
 
@@ -12,14 +14,14 @@ public abstract class StackableModularController<T extends StackableModularContr
 
     private Map<UpgradeCasings, Integer[]> mucMap;
 
-    protected Map<UpgradeCasings, Integer[]> getMucMap() {
+    protected @NotNull Map<UpgradeCasings, Integer[]> getMucMap() {
         if (mucMap == null) {
             mucMap = createMucMap();
         }
         return mucMap;
     }
 
-    protected static Map<UpgradeCasings, Integer[]> createMucMap() {
+    protected static @NotNull Map<UpgradeCasings, Integer[]> createMucMap() {
         Map<UpgradeCasings, Integer[]> mucCount = new HashMap<>();
         mucCount.put(UpgradeCasings.Heater, new Integer[] { 0, 0, 0, 0, 0 });
         mucCount.put(UpgradeCasings.Insulator, new Integer[] { 0, 0, 0, 0, 0 });
