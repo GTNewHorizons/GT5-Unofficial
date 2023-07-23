@@ -289,6 +289,18 @@ public class GT_ParallelHelper {
     }
 
     /**
+     * Try to consume the inputs of the recipe
+     *
+     * @param recipe Processed recipe
+     * @param fluids fluid inputs that will be consumed
+     * @param items  item inputs that will be consumed
+     * @return True if recipe was satisfied, else false
+     */
+    protected boolean tryConsumeRecipeInputs(GT_Recipe recipe, FluidStack[] fluids, ItemStack[] items) {
+        return recipe.isRecipeInputEqual(true, false, fluids, items);
+    }
+
+    /**
      * Called by build(). Determines the parallels and everything else that needs to be done at build time
      */
     protected void determineParallel() {
@@ -366,7 +378,7 @@ public class GT_ParallelHelper {
             boolean builtRecipeCheck = false;
             for (; mCurrentParallel < maxParallelBeforeBatchMode
                 && tCurrentUsage < (mAvailableEUt - tRecipeEUt); mCurrentParallel++) {
-                if (!mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs)) {
+                if (!tryConsumeRecipeInputs(mRecipe, tFluidInputs, tItemInputs)) {
                     break;
                 }
                 tCurrentUsage += tRecipeEUt;
@@ -390,7 +402,7 @@ public class GT_ParallelHelper {
                 tExtraParallels = recipeCheck.checkRecipeInputs(true, maxExtraParallels, tItemInputs, tFluidInputs);
             } else {
                 while (tExtraParallels < maxExtraParallels
-                    && mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs)) {
+                    && tryConsumeRecipeInputs(mRecipe, tFluidInputs, tItemInputs)) {
                     tExtraParallels++;
                 }
             }

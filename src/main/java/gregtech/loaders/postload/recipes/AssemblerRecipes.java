@@ -2204,7 +2204,8 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 6),
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1))
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Casing_SolidSteel.get(1))
             .noFluidInputs()
             .noFluidOutputs()

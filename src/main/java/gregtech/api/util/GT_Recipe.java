@@ -3067,7 +3067,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         /**
          * HashMap of Recipes based on their Fluids
          */
-        public final Map<Fluid, Collection<GT_Recipe>> mRecipeFluidMap = new /* Concurrent */ HashMap<>();
+        public final Map<String, Collection<GT_Recipe>> mRecipeFluidMap = new HashMap<>();
 
         public final HashSet<String> mRecipeFluidNameMap = new HashSet<>();
         /**
@@ -3859,8 +3859,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             mRecipeList.add(aRecipe);
             for (FluidStack aFluid : aRecipe.mFluidInputs) {
                 if (aFluid != null) {
-                    Collection<GT_Recipe> tList = mRecipeFluidMap
-                        .computeIfAbsent(aFluid.getFluid(), k -> new HashSet<>(1));
+                    Collection<GT_Recipe> tList = mRecipeFluidMap.computeIfAbsent(
+                        aFluid.getFluid()
+                            .getName(),
+                        k -> new HashSet<>(1));
                     tList.add(aRecipe);
                     mRecipeFluidNameMap.add(
                         aFluid.getFluid()
@@ -4053,7 +4055,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             // If the minimal Amount of Items for the Recipe is 0, then it could be a Fluid-Only Recipe, so check that
             // Map too.
             if (mMinimalInputItems == 0 && aFluids != null) for (FluidStack aFluid : aFluids) if (aFluid != null) {
-                Collection<GT_Recipe> tRecipes = mRecipeFluidMap.get(aFluid.getFluid());
+                Collection<GT_Recipe> tRecipes = mRecipeFluidMap.get(
+                    aFluid.getFluid()
+                        .getName());
                 if (tRecipes != null) for (GT_Recipe tRecipe : tRecipes) if (!tRecipe.mFakeRecipe
                     && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
                         if (!isSpecialSlotSensitive
