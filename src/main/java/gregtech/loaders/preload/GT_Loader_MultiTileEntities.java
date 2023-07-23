@@ -4,6 +4,7 @@ import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.multitileentity.enums.GT_MultiTileCasing.*;
 import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.*;
 import static gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing.*;
+import static gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing.Insulator_OmegaType;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -24,6 +25,8 @@ import gregtech.common.tileentities.casings.functional.RobotArm;
 import gregtech.common.tileentities.casings.functional.Sensor;
 import gregtech.common.tileentities.casings.upgrade.Ampere;
 import gregtech.common.tileentities.casings.upgrade.Cleanroom;
+import gregtech.common.tileentities.casings.upgrade.Heater;
+import gregtech.common.tileentities.casings.upgrade.Insulator;
 import gregtech.common.tileentities.casings.upgrade.Inventory;
 import gregtech.common.tileentities.casings.upgrade.Laser;
 import gregtech.common.tileentities.casings.upgrade.Tank;
@@ -525,6 +528,78 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .setBlock(COMPONENT_CASING_BLOCK)
             .textureFolder("wireless")
             .tier(11)
+            .register();
+
+        UPGRADE_CASING_REGISTRY.create(Heater_Prototype.getId(), Heater.class)
+            .name("Prototype Heater Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("heater")
+            .tier(1)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Heater_IndustrialGrade.getId(), Heater.class)
+            .name("Industrial-Grade Heater Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("heater")
+            .tier(4)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Heater_NextGen.getId(), Heater.class)
+            .name("Next-Gen Heater Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("heater")
+            .tier(7)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Heater_Omnipotent.getId(), Heater.class)
+            .name("Omnipotent Heater Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("heater")
+            .tier(10)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Heater_OmegaType.getId(), Heater.class)
+            .name("OMEGA-Type Heater Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("heater")
+            .tier(12)
+            .register();
+
+        UPGRADE_CASING_REGISTRY.create(Insulator_Prototype.getId(), Insulator.class)
+            .name("Prototype Insulator Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("insulator")
+            .tier(1)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Insulator_IndustrialGrade.getId(), Insulator.class)
+            .name("Industrial-Grade Insulator Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("insulator")
+            .tier(4)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Insulator_NextGen.getId(), Insulator.class)
+            .name("Next-Gen Insulator Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("insulator")
+            .tier(7)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Insulator_Omnipotent.getId(), Insulator.class)
+            .name("Omnipotent Insulator Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("insulator")
+            .tier(10)
+            .register();
+        UPGRADE_CASING_REGISTRY.create(Insulator_OmegaType.getId(), Insulator.class)
+            .name("OMEGA-Type Insulator Upgrade")
+            .category("MultiBlock Upgrade Casing")
+            .setBlock(COMPONENT_CASING_BLOCK)
+            .textureFolder("insulator")
+            .tier(12)
             .register();
     }
 
