@@ -70,6 +70,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     protected long amperage = 2;
     protected long eut = 0;
     protected int tier = 0;
+
     protected long maxProgressTime = 0;
     protected long progressTime = 0;
     protected long burnTime = 0;

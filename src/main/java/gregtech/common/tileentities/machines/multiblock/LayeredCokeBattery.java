@@ -8,6 +8,8 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_OUT;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHING;
+import static gregtech.api.util.GT_StructureUtilityMuTE.HEATER_CASINGS;
+import static gregtech.api.util.GT_StructureUtilityMuTE.INSULATOR_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.MOTOR_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.ofMuTECasings;
 
@@ -27,12 +29,16 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.multitileentity.multiblock.base.StackableController;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.logic.interfaces.ProcessingLogicHost;
+import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
+import gregtech.api.multitileentity.multiblock.base.StackableModularController;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.common.tileentities.machines.multiblock.logic.GenericProcessingLogic;
 
-public class LayeredCokeBattery extends StackableController<LayeredCokeBattery> implements ProcessingLogicHost {
+public class LayeredCokeBattery extends StackableModularController<LayeredCokeBattery> implements ProcessingLogicHost {
+
     private static IStructureDefinition<LayeredCokeBattery> STRUCTURE_DEFINITION_MEGA = null;
     protected static final String STRUCTURE_PIECE_BASE = "T1";
     private static final Vec3Impl STRUCTURE_OFFSET_BASE = new Vec3Impl(2, 2, 0);
@@ -116,20 +122,12 @@ public class LayeredCokeBattery extends StackableController<LayeredCokeBattery> 
                 .addShape(
                     STACKABLE_MIDDLE,
                     transpose(
-                        new String[][]{
-                            {"ADFFFFAFFFFDA","AAAAAAAAAAAAA"},
-                            {" B    A    B ","AAAAAAAAAAAAA"},
-                            {"CB    A    BC","AAAAAAAAAAAAA"},
-                            {" B    A    B ","AAAAAAAAAAAAA"},
-                            {" B    A    B ","AAAAAAAAAAAAA"},
-                            {" B    A    B ","AAAAAAAAAAAAA"},
-                            {" B    A    B ","AAAAAAAAAAAAA"},
-                            {" B    A    B ","AAAAAAAAAAAAA"},
-                            {" B    A    B ","AAAAAAAAAAAAA"},
-                            {"CB    A    BC","AAAAAAAAAAAAA"},
-                            {" B    A    B ","AAAAAAAAAAAAA"},
-                            {"AAAAAAAAAAAAA","AAAAAAAAAAAAA"}
-                        }))
+                        new String[][] { { "ADFFFFHFFFFDA", "AAAAAAAAAAAAA" }, { " B    A    B ", "AAAAAAAAAAAAA" },
+                            { "CB    A    BC", "AAAAAAAAAAAAA" }, { " B    A    B ", "AAAAAAAAAAAAA" },
+                            { " B    A    B ", "AAAAAAAAAAAAA" }, { " B    A    B ", "AAAAAAAAAAAAA" },
+                            { " B    A    B ", "AAAAAAAAAAAAA" }, { " B    A    B ", "AAAAAAAAAAAAA" },
+                            { " B    A    B ", "AAAAAAAAAAAAA" }, { "CB    A    BC", "AAAAAAAAAAAAA" },
+                            { " B    A    B ", "AAAAAAAAAAAAA" }, { "AAAAAAAAAAAAA", "AAAAAAAAAAAAA" } }))
                 .addShape(
                     STACKABLE_START,
                     transpose(
@@ -167,6 +165,7 @@ public class LayeredCokeBattery extends StackableController<LayeredCokeBattery> 
                         ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks", 0, true),
                         ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks2", 0, true),
                         ofBlockUnlocalizedName(Thaumcraft.ID, "blockCosmeticOpaque", 2, false)))
+                .addElement('H', ofMuTECasings(NOTHING, HEATER_CASINGS, INSULATOR_CASINGS))
                 .build();
         }
         return STRUCTURE_DEFINITION_MEGA;
@@ -174,6 +173,7 @@ public class LayeredCokeBattery extends StackableController<LayeredCokeBattery> 
 
     public boolean checkMachine() {
         stackCount = 0;
+        resetMucCount();
 
         buildState.startBuilding(getStartingStructureOffset());
         if (!checkPiece(STRUCTURE_PIECE_BASE, buildState.getCurrentOffset())) return buildState.failBuilding();

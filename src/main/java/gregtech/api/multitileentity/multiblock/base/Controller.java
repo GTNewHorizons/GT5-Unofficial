@@ -1,6 +1,5 @@
 package gregtech.api.multitileentity.multiblock.base;
 
-import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.*;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
 import static mcp.mobius.waila.api.SpecialChars.*;
 
