@@ -1,4 +1,4 @@
-//version: 1689409577
+//version: 1690104383
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -69,7 +69,7 @@ plugins {
     id 'com.diffplug.spotless' version '6.13.0' apply false // 6.13.0 is the last jvm8 supporting version
     id 'com.modrinth.minotaur' version '2.+' apply false
     id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
-    id 'com.gtnewhorizons.retrofuturagradle' version '1.3.19'
+    id 'com.gtnewhorizons.retrofuturagradle' version '1.3.21'
 }
 
 print("You might want to check out './gradlew :faq' if your build fails.\n")
@@ -575,11 +575,26 @@ repositories {
         }
     }
     if (includeWellKnownRepositories.toBoolean()) {
-        maven {
-            name "CurseMaven"
-            url "https://cursemaven.com"
-            content {
+        exclusiveContent {
+            forRepository {
+                maven {
+                    name "CurseMaven"
+                    url "https://cursemaven.com"
+                }
+            }
+            filter {
                 includeGroup "curse.maven"
+            }
+        }
+        exclusiveContent {
+            forRepository {
+                maven {
+                    name = "Modrinth"
+                    url = "https://api.modrinth.com/maven"
+                }
+            }
+            filter {
+                includeGroup "maven.modrinth"
             }
         }
         maven {
@@ -623,7 +638,7 @@ dependencies {
         }
     }
     if (usesMixins.toBoolean()) {
-        implementation(mixinProviderSpec)
+        implementation(modUtils.enableMixins(mixinProviderSpec))
     } else if (forceEnableMixins.toBoolean()) {
         runtimeOnlyNonPublishable(mixinProviderSpec)
     }
@@ -677,9 +692,6 @@ if (file('dependencies.gradle.kts').exists()) {
 }
 
 def mixingConfigRefMap = 'mixins.' + modId + '.refmap.json'
-def mixinTmpDir = buildDir.path + File.separator + 'tmp' + File.separator + 'mixins'
-def refMap = "${mixinTmpDir}" + File.separator + mixingConfigRefMap
-def mixinSrg = "${mixinTmpDir}" + File.separator + "mixins.srg"
 
 tasks.register('generateAssets') {
     group = "GTNH Buildscript"
@@ -711,46 +723,17 @@ tasks.register('generateAssets') {
 }
 
 if (usesMixins.toBoolean()) {
-    tasks.named("reobfJar", ReobfuscatedJar).configure {
-        extraSrgFiles.from(mixinSrg)
-    }
-
     tasks.named("processResources").configure {
         dependsOn("generateAssets")
     }
 
     tasks.named("compileJava", JavaCompile).configure {
-        doFirst {
-            new File(mixinTmpDir).mkdirs()
-        }
         options.compilerArgs += [
-            "-AreobfSrgFile=${tasks.reobfJar.srg.get().asFile}",
-            "-AoutSrgFile=${mixinSrg}",
-            "-AoutRefMapFile=${refMap}",
             // Elan: from what I understand they are just some linter configs so you get some warning on how to properly code
             "-XDenableSunApiLintControl",
             "-XDignore.symbol.file"
         ]
     }
-
-    pluginManager.withPlugin('org.jetbrains.kotlin.kapt') {
-        kapt {
-            correctErrorTypes = true
-            javacOptions {
-                option("-AreobfSrgFile=${tasks.reobfJar.srg.get().asFile}")
-                option("-AoutSrgFile=$mixinSrg")
-                option("-AoutRefMapFile=$refMap")
-            }
-        }
-        tasks.configureEach { task ->
-            if (task.name == "kaptKotlin") {
-                task.doFirst {
-                    new File(mixinTmpDir).mkdirs()
-                }
-            }
-        }
-    }
-
 }
 
 tasks.named("processResources", ProcessResources).configure {
@@ -768,7 +751,6 @@ tasks.named("processResources", ProcessResources).configure {
     }
 
     if (usesMixins.toBoolean()) {
-        from refMap
         dependsOn("compileJava", "compileScala")
     }
 }
@@ -1311,7 +1293,7 @@ def addCurseForgeRelation(String type, String name) {
 
 // Updating
 
-def buildscriptGradleVersion = "8.1.1"
+def buildscriptGradleVersion = "8.2.1"
 
 tasks.named('wrapper', Wrapper).configure {
     gradleVersion = buildscriptGradleVersion
