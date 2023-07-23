@@ -235,26 +235,34 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     private boolean initialPatternSyncDone = false;
     private boolean justHadNewItems = false;
 
-    public GT_MetaTileEntity_Hatch_CraftingInput_ME(int aID, String aName, String aNameRegional) {
+    private boolean supportFluids;
+
+    public GT_MetaTileEntity_Hatch_CraftingInput_ME(int aID, String aName, String aNameRegional, boolean supportFluids) {
         super(
             aID,
             aName,
             aNameRegional,
             1,
             MAX_INV_COUNT,
-            new String[] { "Advanced item input for Multiblocks", "Processes patterns directly from ME" });
+            new String[] {
+                "Advanced item input for Multiblocks",
+                "Processes patterns directly from ME",
+                supportFluids ? "It supports patterns including fluids" : "It does not support patterns including fluids"
+            });
         disableSort = true;
+        this.supportFluids = supportFluids;
     }
 
     public GT_MetaTileEntity_Hatch_CraftingInput_ME(String aName, int aTier, String[] aDescription,
-        ITexture[][][] aTextures) {
+        ITexture[][][] aTextures, boolean supportFluids) {
         super(aName, aTier, MAX_INV_COUNT, aDescription, aTextures);
+        this.supportFluids = supportFluids;
         disableSort = true;
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_CraftingInput_ME(mName, mTier, mDescriptionArray, mTextures);
+        return new GT_MetaTileEntity_Hatch_CraftingInput_ME(mName, mTier, mDescriptionArray, mTextures, supportFluids);
     }
 
     @Override
@@ -621,6 +629,15 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     @Override
     public boolean pushPattern(ICraftingPatternDetails patternDetails, InventoryCrafting table) {
         if (!isActive()) return false;
+
+        if (!supportFluids) {
+            for (int i = 0; i < table.getSizeInventory(); ++i) {
+                ItemStack itemStack = table.getStackInSlot(i);
+                if (itemStack == null) continue;
+                if (itemStack.getItem() instanceof ItemFluidPacket) return false;
+            }
+        }
+
         patternDetailsPatternSlotMap.get(patternDetails)
             .insertItemsAndFluids(table);
         justHadNewItems = true;
