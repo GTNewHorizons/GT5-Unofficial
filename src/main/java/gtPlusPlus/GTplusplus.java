@@ -61,7 +61,6 @@ import gtPlusPlus.plugin.manager.Core_Manager;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.GregtechMTE_ChemicalPlant;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelterGT_GTNH;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_MultisUsingFluidInsteadOfCells;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
@@ -289,7 +288,6 @@ public class GTplusplus implements ActionListener {
         FishPondFakeRecipe.generateFishPondRecipes();
         // GregtechMiniRaFusion.generateSlowFusionrecipes();
         SemiFluidFuelHandler.generateFuels();
-        GregtechMTE_ChemicalPlant.generateRecipes();
 
         mInvalidCount[0] = RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
                 GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes,

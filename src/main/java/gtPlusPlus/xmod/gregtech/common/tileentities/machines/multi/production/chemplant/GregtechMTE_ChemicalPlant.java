@@ -170,41 +170,6 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
         return checkCoil;
     }
 
-    public int coilTier(int meta) {
-        switch (meta) {
-            case 0:
-                return 1;
-            case 1:
-                return 2;
-            case 2:
-                return 3;
-            case 3:
-                return 4;
-            case 4:
-                return 5;
-            case 5:
-                return 7;
-            case 6:
-                return 8;
-            case 7:
-                return 10;
-            case 8:
-                return 11;
-            case 9:
-                return 6;
-            case 10:
-                return 9;
-            case 11:
-                return 12;
-            case 12:
-                return 13;
-            case 13:
-                return 14;
-            default:
-                return 0;
-        }
-    }
-
     @Override
     public IStructureDefinition<GregtechMTE_ChemicalPlant> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
@@ -453,16 +418,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
 
     @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        if (GTPP_Recipe.GTPP_Recipe_Map.sChemicalPlant_GT.mRecipeList.size() == 0) {
-            generateRecipes();
-        }
-        return GTPP_Recipe.GTPP_Recipe_Map.sChemicalPlant_GT;
-    }
-
-    public static void generateRecipes() {
-        for (GT_Recipe i : GTPP_Recipe.GTPP_Recipe_Map.sChemicalPlantRecipes.mRecipeList) {
-            GTPP_Recipe.GTPP_Recipe_Map.sChemicalPlant_GT.add(i);
-        }
+        return GTPP_Recipe.GTPP_Recipe_Map.sChemicalPlantRecipes;
     }
 
     @Override
@@ -680,61 +636,6 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
         for (GT_MetaTileEntity_Hatch_Catalysts h : mCatalystBuses) {
             h.updateSlots();
             h.tryFillUsageSlots();
-        }
-    }
-
-    private static final HashMap<Long, AutoMap<GT_Recipe>> mTieredRecipeMap = new HashMap<Long, AutoMap<GT_Recipe>>();
-    private static final AutoMap<GT_Recipe> aTier0Recipes = new AutoMap<GT_Recipe>();
-    private static final AutoMap<GT_Recipe> aTier1Recipes = new AutoMap<GT_Recipe>();
-    private static final AutoMap<GT_Recipe> aTier2Recipes = new AutoMap<GT_Recipe>();
-    private static final AutoMap<GT_Recipe> aTier3Recipes = new AutoMap<GT_Recipe>();
-    private static final AutoMap<GT_Recipe> aTier4Recipes = new AutoMap<GT_Recipe>();
-    private static final AutoMap<GT_Recipe> aTier5Recipes = new AutoMap<GT_Recipe>();
-    private static final AutoMap<GT_Recipe> aTier6Recipes = new AutoMap<GT_Recipe>();
-    private static final AutoMap<GT_Recipe> aTier7Recipes = new AutoMap<GT_Recipe>();
-    private static boolean mInitRecipeCache = false;
-
-    private static void initRecipeCaches() {
-        if (!mInitRecipeCache) {
-            mTieredRecipeMap.put((long) 0, aTier0Recipes);
-            mTieredRecipeMap.put((long) 1, aTier1Recipes);
-            mTieredRecipeMap.put((long) 2, aTier2Recipes);
-            mTieredRecipeMap.put((long) 3, aTier3Recipes);
-            mTieredRecipeMap.put((long) 4, aTier4Recipes);
-            mTieredRecipeMap.put((long) 5, aTier5Recipes);
-            mTieredRecipeMap.put((long) 6, aTier6Recipes);
-            mTieredRecipeMap.put((long) 7, aTier7Recipes);
-            for (GT_Recipe aRecipe : GTPP_Recipe.GTPP_Recipe_Map.sChemicalPlant_GT.mRecipeList) {
-                if (aRecipe != null) {
-                    switch (aRecipe.mSpecialValue) {
-                        case 0:
-                            aTier0Recipes.add(aRecipe);
-                            continue;
-                        case 1:
-                            aTier1Recipes.add(aRecipe);
-                            continue;
-                        case 2:
-                            aTier2Recipes.add(aRecipe);
-                            continue;
-                        case 3:
-                            aTier3Recipes.add(aRecipe);
-                            continue;
-                        case 4:
-                            aTier4Recipes.add(aRecipe);
-                            continue;
-                        case 5:
-                            aTier5Recipes.add(aRecipe);
-                            continue;
-                        case 6:
-                            aTier6Recipes.add(aRecipe);
-                            continue;
-                        case 7:
-                            aTier7Recipes.add(aRecipe);
-                            continue;
-                    }
-                }
-            }
-            mInitRecipeCache = true;
         }
     }
 

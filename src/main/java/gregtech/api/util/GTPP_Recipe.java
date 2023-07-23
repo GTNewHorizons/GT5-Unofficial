@@ -487,7 +487,7 @@ public class GTPP_Recipe extends GT_Recipe {
                 4,
                 4,
                 0,
-                2,
+                0,
                 1,
                 "Tier: ",
                 1,
@@ -675,23 +675,6 @@ public class GTPP_Recipe extends GT_Recipe {
                 true).setProgressBar(GT_UITextures.PROGRESSBAR_EXTRACT).setUsualFluidInputCount(6)
                         .setUsualFluidOutputCount(6);
 
-        // internal copy of sChemicalPlantRecipes
-        public static final GT_Recipe_Map sChemicalPlant_GT = new GT_Recipe_Map(
-                new HashSet<>(2000),
-                "gtpp.recipe.temp4",
-                "temp4",
-                null,
-                "",
-                1,
-                0,
-                0,
-                0,
-                1,
-                "",
-                0,
-                "",
-                false,
-                false);
         public static final GT_Recipe_Map sMultiblockMixerRecipes_GT = new GT_Recipe_Map_LargeNEI(
                 new HashSet<>(2000),
                 "gtpp.recipe.multimixer",
