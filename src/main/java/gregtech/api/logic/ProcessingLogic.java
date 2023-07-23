@@ -30,6 +30,7 @@ public class ProcessingLogic {
     protected IRecipeLockable recipeLockableMachine;
     protected Supplier<GT_Recipe_Map> recipeMapSupplier;
     protected GT_Recipe lastRecipe;
+    protected GT_Recipe_Map lastRecipeMap;
     protected ItemStack specialSlotItem;
     protected ItemStack[] inputItems;
     protected ItemStack[] outputItems;
@@ -255,6 +256,10 @@ public class ProcessingLogic {
             recipeMap = null;
         } else {
             recipeMap = recipeMapSupplier.get();
+        }
+        if (lastRecipeMap != recipeMap) {
+            lastRecipe = null;
+            lastRecipeMap = recipeMap;
         }
 
         if (maxParallelSupplier != null) {
