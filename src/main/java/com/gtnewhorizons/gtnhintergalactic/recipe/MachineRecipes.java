@@ -364,8 +364,7 @@ public class MachineRecipes implements Runnable {
                 new Object[] { ItemList.OilDrillInfinite.get(16), GT_Utility.copyAmount(16, IGItems.PlanetaryGasSiphon),
                         CustomItemList.enderLinkFluidCover.get(32),
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.BlackDwarfMatter, 4),
-                        new Object[] { OrePrefixes.circuit.get(Materials.Exotic), 16 },
-                        ItemList.Electric_Pump_UMV.get(8),
+                        new Object[] { OrePrefixes.circuit.get(Materials.Piko), 16 }, ItemList.Electric_Pump_UMV.get(8),
                         GT_OreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.BlackDwarfMatter, 4),
                         GT_OreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.WhiteDwarfMatter, 64) },
                 new FluidStack[] { new FluidStack(solderUEV, 9216), MaterialsUEVplus.Eternity.getMolten(2304) },
@@ -378,7 +377,7 @@ public class MachineRecipes implements Runnable {
                 .itemInputs(
                         GT_Utility.copyAmount(4, IGItems.SpaceElevatorModulePumpT2),
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.BlackDwarfMatter, 8),
-                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Exotic, 16),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Piko, 16),
                         ItemList.Electric_Pump_UMV.get(8),
                         GT_OreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.BlackDwarfMatter, 8),
                         GT_OreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.WhiteDwarfMatter, 64),
