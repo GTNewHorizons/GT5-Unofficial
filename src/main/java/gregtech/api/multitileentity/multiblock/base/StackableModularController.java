@@ -1,13 +1,14 @@
 package gregtech.api.multitileentity.multiblock.base;
 
-import gregtech.api.multitileentity.interfaces.UpgradableModularMuTE;
-import gregtech.api.util.GT_StructureUtilityMuTE.UpgradeCasings;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class StackableModularController<T extends StackableModularController<T>> extends StackableController<T> implements UpgradableModularMuTE {
+import gregtech.api.multitileentity.interfaces.UpgradableModularMuTE;
+import gregtech.api.util.GT_StructureUtilityMuTE.UpgradeCasings;
+
+public abstract class StackableModularController<T extends StackableModularController<T>> extends StackableController<T>
+    implements UpgradableModularMuTE {
 
     private Map<UpgradeCasings, Integer[]> mucMap;
 
@@ -20,8 +21,8 @@ public abstract class StackableModularController<T extends StackableModularContr
 
     protected static Map<UpgradeCasings, Integer[]> createMucMap() {
         Map<UpgradeCasings, Integer[]> mucCount = new HashMap<>();
-        mucCount.put(UpgradeCasings.Heater, new Integer[]{0, 0, 0, 0, 0});
-        mucCount.put(UpgradeCasings.Insulator, new Integer[]{0, 0, 0, 0, 0});
+        mucCount.put(UpgradeCasings.Heater, new Integer[] { 0, 0, 0, 0, 0 });
+        mucCount.put(UpgradeCasings.Insulator, new Integer[] { 0, 0, 0, 0, 0 });
         return mucCount;
     }
 
@@ -42,8 +43,6 @@ public abstract class StackableModularController<T extends StackableModularContr
     @Override
     public void resetMucCount() {
         Map<UpgradeCasings, Integer[]> mucCounters = getMucMap();
-        mucCounters.forEach((type, casingCount) -> {
-            Arrays.fill(casingCount, 0);
-        });
+        mucCounters.forEach((type, casingCount) -> { Arrays.fill(casingCount, 0); });
     }
 }

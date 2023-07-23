@@ -2,8 +2,8 @@ package gregtech.common.tileentities.casings.upgrade;
 
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.interfaces.UpgradableModularMuTE;
-import gregtech.api.util.GT_StructureUtilityMuTE.UpgradeCasings;
 import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
+import gregtech.api.util.GT_StructureUtilityMuTE.UpgradeCasings;
 
 public class Heater extends UpgradeCasing {
 
