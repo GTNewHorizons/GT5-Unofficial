@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.common.tileentities.machines.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -78,10 +79,6 @@ import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -120,7 +117,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public ArrayList<GT_MetaTileEntity_Hatch_Output> mOutputHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_InputBus> mInputBusses = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_OutputBus> mOutputBusses = new ArrayList<>();
-    public ArrayList<GT_MetaTileEntity_Hatch_CraftingInput_ME> mCraftingInputs = new ArrayList<>();
+    public ArrayList<IDualInputHatch> mDualInputHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Dynamo> mDynamoHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Muffler> mMufflerHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Energy> mEnergyHatches = new ArrayList<>();
@@ -488,7 +485,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     private boolean shouldCheckRecipeThisTick(long aTick) {
         // do a recipe check if any crafting input hatch just got pushed in items
-        for (GT_MetaTileEntity_Hatch_CraftingInput_ME craftingInputMe : mCraftingInputs) {
+        for (IDualInputHatch craftingInputMe : mDualInputHatches) {
             if (craftingInputMe.justUpdated()) {
                 return true;
             }
@@ -701,10 +698,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         setupProcessingLogic(processingLogic);
 
         // check crafting input hatches first
-        for (GT_MetaTileEntity_Hatch_CraftingInput_ME craftingInput : mCraftingInputs) {
-            for (Iterator<GT_MetaTileEntity_Hatch_CraftingInput_ME.PatternSlot> it = craftingInput.inventories(); it
-                .hasNext();) {
-                GT_MetaTileEntity_Hatch_CraftingInput_ME.PatternSlot slot = it.next();
+        for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+            for (var it = dualInputHatch.inventories(); it.hasNext();) {
+                IDualInputInventory slot = it.next();
                 processingLogic.setInputItems(slot.getItemInputs());
                 processingLogic.setInputFluids(slot.getFluidInputs());
                 result = processingLogic.process();
@@ -1355,7 +1351,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME hatch) {
             hatch.mRecipeMap = getRecipeMap();
-            return mCraftingInputs.add(hatch);
+            return mDualInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
             ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = getRecipeMap();
@@ -1461,7 +1457,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             hatch.mRecipeMap = getRecipeMap();
-            return mCraftingInputs.add(hatch);
+            return mDualInputHatches.add(hatch);
         }
 
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus hatch) {

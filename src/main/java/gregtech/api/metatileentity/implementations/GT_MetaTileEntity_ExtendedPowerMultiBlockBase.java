@@ -3,11 +3,12 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.GT_Values.VN;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.IDualInputInventory;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,7 +23,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
 
 /**
  * Multiblock base class that allows machine to use power over int.
@@ -147,10 +147,9 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
         setupProcessingLogic(processingLogic);
 
         // check crafting input hatches first
-        for (GT_MetaTileEntity_Hatch_CraftingInput_ME craftingInput : mCraftingInputs) {
-            for (Iterator<GT_MetaTileEntity_Hatch_CraftingInput_ME.PatternSlot> it = craftingInput.inventories(); it
-                .hasNext();) {
-                GT_MetaTileEntity_Hatch_CraftingInput_ME.PatternSlot slot = it.next();
+        for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+            for (var it = dualInputHatch.inventories(); it.hasNext();) {
+                IDualInputInventory slot = it.next();
                 processingLogic.setInputItems(slot.getItemInputs());
                 processingLogic.setInputFluids(slot.getFluidInputs());
                 result = processingLogic.process();

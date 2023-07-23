@@ -71,10 +71,10 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_Hatch_InputBus
     implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ICraftingProvider,
-    IGridProxyable {
+    IGridProxyable, IDualInputHatch {
 
     // Each pattern slot in the crafting input hatch has its own internal inventory
-    public static class PatternSlot {
+    public static class PatternSlot implements IDualInputInventory {
 
         public interface SharedItemGetter {
 
