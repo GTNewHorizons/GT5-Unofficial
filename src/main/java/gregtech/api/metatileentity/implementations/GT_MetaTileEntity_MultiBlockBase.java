@@ -1350,6 +1350,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
         if (aMetaTileEntity instanceof IDualInputHatch hatch) {
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return mDualInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {

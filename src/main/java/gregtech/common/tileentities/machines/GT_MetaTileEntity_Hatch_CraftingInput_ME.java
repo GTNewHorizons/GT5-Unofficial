@@ -677,4 +677,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         aPlayer.addChatMessage(new ChatComponentText("Saved Link Data to Data Stick"));
     }
 
+    @Override
+    public ItemStack getCrafterIcon() {
+        return getMachineCraftingIcon();
+    }
 }
