@@ -30,7 +30,7 @@ public class GT_MetaTileEntity_SuperBuffer extends GT_MetaTileEntity_ChestBuffer
             aTier,
             257,
             new String[] { "Buffers up to 256 Item Stacks", "Use Screwdriver to regulate output stack size",
-                "Does not consume energy to move Item", getTickRateDesc(aTier) });
+                getTickRateDesc(aTier) });
     }
 
     public GT_MetaTileEntity_SuperBuffer(String aName, int aTier, int aInvSlotCount, String aDescription,

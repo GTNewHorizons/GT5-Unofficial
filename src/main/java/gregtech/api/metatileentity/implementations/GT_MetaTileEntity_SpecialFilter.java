@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,23 +12,18 @@ import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_Utility;
 
-public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_Buffer implements IAddUIWidgets {
+public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_FilterBase {
 
-    public static final int BUFFER_SLOT_COUNT = 9;
-    public static final int SPECIAL_SLOT_INDEX = 9;
-    public boolean bNBTAllowed = false;
-    public boolean bInvertFilter = false;
+    private static final String ALLOW_NBT_TOOLTIP = "GT5U.machines.allow_nbt.tooltip";
+    private boolean allowNbt = false;
 
     public GT_MetaTileEntity_SpecialFilter(int aID, String aName, String aNameRegional, int aTier,
         String[] aDescription) {
@@ -45,33 +41,26 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return aIndex < 9;
-    }
-
     public abstract void clickTypeIcon(boolean aRightClick, ItemStack aHandStack);
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("bInvertFilter", this.bInvertFilter);
-        aNBT.setBoolean("bNBTAllowed", this.bNBTAllowed);
+        aNBT.setBoolean("bNBTAllowed", this.allowNbt);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.bInvertFilter = aNBT.getBoolean("bInvertFilter");
-        this.bNBTAllowed = aNBT.getBoolean("bNBTAllowed");
+        this.allowNbt = aNBT.getBoolean("bNBTAllowed");
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return (super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack))
-            && ((this.bNBTAllowed) || (!aStack.hasTagCompound()))
-            && (this.isStackAllowed(aStack) != this.bInvertFilter);
+            && ((this.allowNbt) || (!aStack.hasTagCompound()))
+            && (this.isStackAllowed(aStack) != this.invertFilter);
     }
 
     protected abstract boolean isStackAllowed(ItemStack aStack);
@@ -84,49 +73,18 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
         return null;
     }
 
+    protected Function<List<String>, List<String>> getItemStackReplacementTooltip() {
+        return list -> list;
+    }
+
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        addEmitEnergyButton(builder);
-        addEmitRedstoneButton(builder);
-        addInvertRedstoneButton(builder);
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-            bInvertFilter = !bInvertFilter;
-            if (bInvertFilter) {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans("124", "Invert Filter"));
-            } else {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans("125", "Don't invert Filter"));
-            }
-        })
-            .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_INVERT_FILTER)
-            .setPos(61, 62)
-            .setSize(18, 18))
-            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                bNBTAllowed = !bNBTAllowed;
-                if (bNBTAllowed) {
-                    GT_Utility.sendChatToPlayer(
-                        widget.getContext()
-                            .getPlayer(),
-                        GT_Utility.trans("126", "Ignore NBT"));
-                } else {
-                    GT_Utility.sendChatToPlayer(
-                        widget.getContext()
-                            .getPlayer(),
-                        GT_Utility.trans("127", "NBT has to match"));
-                }
-            })
-                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_NBT)
-                .setPos(79, 62)
-                .setSize(18, 18))
-            .widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_WHITE.apply(27, false))
-                    .setPos(6, 19)
-                    .setSize(27, 24))
+        super.addUIWidgets(builder, buildContext);
+        addAllowNbtButton(builder);
+        builder.widget(
+            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_WHITE.apply(27, false))
+                .setPos(6, 19)
+                .setSize(27, 24))
             .widget(
                 new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_BLUE.apply(42, true))
                     .setPos(53, 19)
@@ -144,18 +102,25 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
 
                 @Override
                 public void buildTooltip(List<Text> tooltip) {
-                    if (getEmptySlotTooltip() != null) {
-                        tooltip.addAll(getEmptySlotTooltip());
-                    }
                     super.buildTooltip(tooltip);
+                    List<Text> emptySlotTooltip = getEmptySlotTooltip();
+                    if (emptySlotTooltip != null) {
+                        tooltip.addAll(emptySlotTooltip);
+                    }
                 }
 
                 @Override
                 public List<String> getExtraTooltip() {
-                    if (getItemExtraTooltip() != null) {
-                        return getItemExtraTooltip();
+                    List<String> itemExtraTooltip = getItemExtraTooltip();
+                    if (itemExtraTooltip != null) {
+                        return itemExtraTooltip;
                     }
                     return Collections.emptyList();
+                }
+
+                @Override
+                public Function<List<String>, List<String>> getOverwriteItemStackTooltip() {
+                    return getItemStackReplacementTooltip();
                 }
             }.disableShiftInsert()
                 .setPos(34, 22)
@@ -165,5 +130,14 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
                     .endAtSlot(8)
                     .build()
                     .setPos(97, 4));
+    }
+
+    private void addAllowNbtButton(ModularWindow.Builder builder) {
+        builder.widget(
+            createToggleButton(
+                () -> allowNbt,
+                val -> allowNbt = val,
+                GT_UITextures.OVERLAY_BUTTON_NBT,
+                () -> mTooltipCache.getData(ALLOW_NBT_TOOLTIP)));
     }
 }

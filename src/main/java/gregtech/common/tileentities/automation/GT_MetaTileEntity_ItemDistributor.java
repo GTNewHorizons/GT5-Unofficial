@@ -17,13 +17,12 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Buffer;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer implements IAddUIWidgets {
+public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer {
 
     private byte[] itemsPerSide = new byte[6];
     private ForgeDirection currentSide = ForgeDirection.DOWN;
@@ -37,7 +36,7 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
             aTier,
             28,
             new String[] { "Distributes Items between different Machine Sides", "Default Items per Machine Side: 0",
-                "Use Screwdriver to increase/decrease Items per Side", "Does not consume energy to move Item" });
+                "Use Screwdriver to increase/decrease Items per Side" });
     }
 
     public GT_MetaTileEntity_ItemDistributor(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
@@ -193,8 +192,8 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        addEmitEnergyButton(builder);
-        addEmitRedstoneButton(builder);
+        super.addUIWidgets(builder, buildContext);
+        addEmitRedstoneIfFullButton(builder);
         addInvertRedstoneButton(builder);
         builder.widget(
             new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(87, true))
