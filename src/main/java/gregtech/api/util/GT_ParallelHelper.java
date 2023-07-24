@@ -413,19 +413,7 @@ public class GT_ParallelHelper {
         // If we want to calculate outputs we do it here
         if (mCalculateOutputs && mCurrentParallel > 0) {
             if (mRecipe.mOutputs != null) {
-                mItemOutputs = new ItemStack[mRecipe.mOutputs.length];
-                for (int i = 0; i < mRecipe.mOutputs.length; i++) {
-                    if (mRecipe.getOutputChance(i) >= XSTR.XSTR_INSTANCE.nextInt(10000)) {
-                        if (mRecipe.getOutput(i) == null) {
-                            mItemOutputs[i] = null;
-                        } else {
-                            ItemStack tItem = mRecipe.getOutput(i)
-                                .copy();
-                            tItem.stackSize *= mCurrentParallel;
-                            mItemOutputs[i] = tItem;
-                        }
-                    }
-                }
+                calculateItemOutputs();
             }
             if (mRecipe.mFluidOutputs != null) {
                 mFluidOutputs = new FluidStack[mRecipe.mFluidOutputs.length];
@@ -440,6 +428,34 @@ public class GT_ParallelHelper {
                     }
                 }
             }
+        }
+    }
+
+    protected void calculateItemOutputs() {
+        mItemOutputs = new ItemStack[mRecipe.mOutputs.length];
+        for (int i = 0; i < mRecipe.mOutputs.length; i++) {
+            if (mRecipe.getOutputChance(i) >= 10000) {
+                ItemStack item = mRecipe.getOutput(i)
+                    .copy();
+                item.stackSize *= mCurrentParallel;
+                mItemOutputs[i] = item;
+                continue;
+            }
+            int items = 0;
+            int itemStackSize = mRecipe.getOutput(i).stackSize;
+            for (int roll = 0; roll < mCurrentParallel; roll++) {
+                if (mRecipe.getOutputChance(i) >= XSTR.XSTR_INSTANCE.nextInt(10000)) {
+                    items += itemStackSize;
+                }
+            }
+            ItemStack item = mRecipe.getOutput(i)
+                .copy();
+            if (items == 0) {
+                item = null;
+            } else {
+                item.stackSize = items;
+            }
+            mItemOutputs[i] = item;
         }
     }
 }
