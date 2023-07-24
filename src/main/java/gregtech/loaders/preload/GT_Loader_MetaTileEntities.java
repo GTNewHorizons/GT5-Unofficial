@@ -60,6 +60,8 @@ import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_Bronze;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_BronzeBricks;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_Steel;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_SteelBricks;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_Slave;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
