@@ -1662,7 +1662,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         // Show ns on the tooltip
         if (GT_Mod.gregtechproxy.wailaAverageNS) {
             int tAverageTime = tag.getInteger("averageNS");
-            currentTip.add("Average CPU load of ~" + GT_Utility.formatNumbers(tAverageTime));
+            currentTip.add("Average CPU load of ~" + GT_Utility.formatNumbers(tAverageTime) + "ns");
         }
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }
