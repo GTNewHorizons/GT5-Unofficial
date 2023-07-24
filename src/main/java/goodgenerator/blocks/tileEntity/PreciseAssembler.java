@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
+import gregtech.common.tileentities.machines.IDualInputHatch;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -146,6 +148,9 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
             return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+        }
+        if (aMetaTileEntity instanceof IDualInputHatch) {
+            return mDualInputHatches.add((IDualInputHatch) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
             return mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
