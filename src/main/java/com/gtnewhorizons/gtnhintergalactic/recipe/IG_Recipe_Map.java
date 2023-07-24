@@ -169,7 +169,7 @@ public class IG_Recipe_Map extends GT_Recipe.GT_Recipe_Map {
                     for (var12 = 0; var12 < var19; ++var12) {
                         FluidStack aFluid = var20[var12];
                         if (aFluid != null) {
-                            tRecipes = this.mRecipeFluidMap.get(aFluid.getFluid());
+                            tRecipes = this.mRecipeFluidMap.get(aFluid.getFluid().getName());
                             if (tRecipes != null) {
                                 var15 = tRecipes.iterator();
 
