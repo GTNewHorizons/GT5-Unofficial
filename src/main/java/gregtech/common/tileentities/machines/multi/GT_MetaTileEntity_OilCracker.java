@@ -14,8 +14,6 @@ import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -38,8 +36,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Multi
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 
 public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_OilCracker>
@@ -173,16 +169,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @Nonnull
-            @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe,
-                @Nonnull GT_ParallelHelper helper) {
-                return super.createOverclockCalculator(recipe, helper)
-                    .setEUtDiscount(Math.max((0.1F * (heatLevel.getTier() + 1.0F)), 0.5F));
-            }
-        };
+        return new ProcessingLogic().setEuModifier(1.0F - Math.min(0.1F * (heatLevel.getTier() + 1), 0.5F));
     }
 
     @Override
