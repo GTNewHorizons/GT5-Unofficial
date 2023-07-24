@@ -173,16 +173,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @Nonnull
-            @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe,
-                @Nonnull GT_ParallelHelper helper) {
-                return super.createOverclockCalculator(recipe, helper)
-                    .setEUtDiscount(1.0F - Math.min(0.1F * heatLevel.getTier(), 0.5F));
-            }
-        };
+        return new ProcessingLogic().setEuModifier(1.0F - Math.min(0.1F * (heatLevel.getTier() + 1), 0.5F));
     }
 
     @Override
