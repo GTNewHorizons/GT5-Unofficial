@@ -684,4 +684,9 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
     public boolean supportsVoidProtection() {
         return true;
     }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
 }
