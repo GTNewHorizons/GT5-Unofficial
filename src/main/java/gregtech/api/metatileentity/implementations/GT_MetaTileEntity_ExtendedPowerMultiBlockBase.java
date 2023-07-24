@@ -21,6 +21,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.IDualInputInventory;
 
 /**
  * Multiblock base class that allows machine to use power over int.
@@ -144,29 +146,45 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
 
         setupProcessingLogic(processingLogic);
 
-        if (isInputSeparationEnabled()) {
-            for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
-                List<ItemStack> inputItems = new ArrayList<>();
-                for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
-                    ItemStack stored = bus.getStackInSlot(i);
-                    if (stored != null) {
-                        inputItems.add(stored);
-                    }
-                }
-                if (getControllerSlot() != null && canUseControllerSlotForRecipe()) {
-                    inputItems.add(getControllerSlot());
-                }
-                processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+        // check crafting input hatches first
+        for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+            for (var it = dualInputHatch.inventories(); it.hasNext();) {
+                IDualInputInventory slot = it.next();
+                processingLogic.setInputItems(slot.getItemInputs());
+                processingLogic.setInputFluids(slot.getFluidInputs());
                 result = processingLogic.process();
                 if (result.wasSuccessful()) break;
             }
-        } else {
-            List<ItemStack> inputItems = getStoredInputs();
-            if (getControllerSlot() != null && canUseControllerSlotForRecipe()) {
-                inputItems.add(getControllerSlot());
+            if (result.wasSuccessful()) break;
+        }
+
+        processingLogic.setInputFluids(getStoredFluids());
+
+        if (!result.wasSuccessful()) {
+            if (isInputSeparationEnabled()) {
+                for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
+                    List<ItemStack> inputItems = new ArrayList<>();
+                    for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                        ItemStack stored = bus.getStackInSlot(i);
+                        if (stored != null) {
+                            inputItems.add(stored);
+                        }
+                    }
+                    if (getControllerSlot() != null && canUseControllerSlotForRecipe()) {
+                        inputItems.add(getControllerSlot());
+                    }
+                    processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+                    result = processingLogic.process();
+                    if (result.wasSuccessful()) break;
+                }
+            } else {
+                List<ItemStack> inputItems = getStoredInputs();
+                if (getControllerSlot() != null && canUseControllerSlotForRecipe()) {
+                    inputItems.add(getControllerSlot());
+                }
+                processingLogic.setInputItems(inputItems);
+                result = processingLogic.process();
             }
-            processingLogic.setInputItems(inputItems);
-            result = processingLogic.process();
         }
 
         // inputs are consumed by `process()`

@@ -2001,6 +2001,8 @@ public enum ItemList implements IItemContainer {
 
     Hatch_Input_Bus_ME,
     Hatch_CraftingInput_Bus_ME,
+    Hatch_CraftingInput_Bus_ME_ItemOnly,
+    Hatch_CraftingInput_Bus_Slave,
     AdvDebugStructureWriter,
 
     Superconducting_Magnet_Solenoid_MV,

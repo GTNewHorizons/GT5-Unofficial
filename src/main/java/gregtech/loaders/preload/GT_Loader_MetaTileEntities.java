@@ -60,6 +60,8 @@ import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_Bronze;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_BronzeBricks;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_Steel;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_SteelBricks;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_Slave;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
@@ -1894,6 +1896,23 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             ItemList.Hatch_Output_ME.set(
                 new GT_MetaTileEntity_Hatch_Output_ME(OUTPUT_HATCH_ME.ID, "hatch.output.me", "Output Hatch (ME)")
                     .getStackForm(1L));
+            ItemList.Hatch_CraftingInput_Bus_ME.set(
+                new GT_MetaTileEntity_Hatch_CraftingInput_ME(
+                    CRAFTING_INPUT_ME.ID,
+                    "hatch.crafting_input.me",
+                    "Crafting Input Buffer (ME)",
+                    true).getStackForm(1L));
+            ItemList.Hatch_CraftingInput_Bus_ME_ItemOnly.set(
+                new GT_MetaTileEntity_Hatch_CraftingInput_ME(
+                    CRAFTING_INPUT_ME_BUS.ID,
+                    "hatch.crafting_input.me.item_only",
+                    "Crafting Input Bus (ME)",
+                    false).getStackForm(1L));
+            ItemList.Hatch_CraftingInput_Bus_Slave.set(
+                new GT_MetaTileEntity_Hatch_CraftingInput_Slave(
+                    CRAFTING_INPUT_SLAVE.ID,
+                    "hatch.crafting_input.slave",
+                    "Crafting Input Slave").getStackForm(1L));
         }
     }
 
