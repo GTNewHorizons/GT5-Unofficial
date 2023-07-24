@@ -331,7 +331,7 @@ public class ProcessingLogic {
      */
     protected double calculateDuration(@Nonnull GT_Recipe recipe, @Nonnull GT_ParallelHelper helper,
         @Nonnull GT_OverclockCalculator calculator) {
-        return calculator.getDuration() * helper.getDurationMultiplierDouble();
+        return calculator.getDuration();
     }
 
     /**
@@ -378,7 +378,7 @@ public class ProcessingLogic {
         @Nonnull GT_ParallelHelper helper) {
         return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
             .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplierDouble()))
-            .setDuration(recipe.mDuration)
+            .setDuration((int) Math.floor(recipe.mDuration * helper.getDurationMultiplierDouble()))
             .setAmperage(availableAmperage)
             .setEUt(availableVoltage)
             .setSpeedBoost(speedBoost)
