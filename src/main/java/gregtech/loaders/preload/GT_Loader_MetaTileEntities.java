@@ -57,11 +57,11 @@ import gregtech.common.tileentities.generators.GT_MetaTileEntity_NaquadahReactor
 import gregtech.common.tileentities.generators.GT_MetaTileEntity_PlasmaGenerator;
 import gregtech.common.tileentities.generators.GT_MetaTileEntity_SteamTurbine;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_Bronze;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_BronzeBricks;	
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_Steel;	
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_SteelBricks;	
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;	
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;	
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_BronzeBricks;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_Steel;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_SteelBricks;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_AdvSeismicProspector;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Boxinator;
