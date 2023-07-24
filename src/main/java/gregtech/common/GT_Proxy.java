@@ -1095,6 +1095,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
         MinecraftForge.EVENT_BUS.register(new SpaceProjectWorldSavedData());
         MinecraftForge.EVENT_BUS.register(new GT_Worldgenerator.OregenPatternSavedData(""));
+        FMLCommonHandler.instance()
+            .bus()
+            .register(new GT_Worldgenerator.OregenPatternSavedData(""));
 
         // IC2 Hazmat
         addFullHazmatToIC2Item("hazmatHelmet");
