@@ -330,7 +330,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 final IAlleleBeeSpecies secondary = genome.getSecondary();
 
                 final float speed = genome.getSpeed();
-                final float prodMod = getProductionModifier(null, 1f) * beemodifier.getProductionModifier(null, 1.f);
+                final float prodMod = getProductionModifier(null, 0f) + beemodifier.getProductionModifier(null, 0f);
 
                 final HashMap<GT_Utility.ItemId, Float> drops = new HashMap<>();
                 final HashMap<GT_Utility.ItemId, ItemStack> dropstacks = new HashMap<>();
@@ -1223,7 +1223,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                                     Temp,
                                     Hum,
                                     genome.getSpeed(),
-                                    getProductionModifier(null, 1f) * mod.getProductionModifier(null, 1f),
+                                    getProductionModifier(null, 0f) + mod.getProductionModifier(null, 0f),
                                     Math.round(
                                         getFloweringModifier(null, 1f) * genome.getFlowering()
                                             * mod.getFloweringModifier(null, 1f)),
