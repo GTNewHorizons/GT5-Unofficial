@@ -30,6 +30,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.GT_HatchElement;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -284,14 +285,10 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                     if (this.eEnergyMulti != null) {
                         for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti)
                             if (isValidMetaTileEntity(tHatch)) {
-                                if (aBaseMetaTileEntity.getStoredEU()
-                                        + (2048L * tierOverclock() * getMaxPara() * extraPara(100)) < maxEUStore()
-                                        && tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(
-                                                2048L * tierOverclock() * getMaxPara() * extraPara(100),
-                                                false)) {
-                                    aBaseMetaTileEntity.increaseStoredEnergyUnits(
-                                            2048L * tierOverclock() * getMaxPara() * extraPara(100),
-                                            true);
+                                if (aBaseMetaTileEntity.getStoredEU() + getSingleHatchPower() < maxEUStore()
+                                        && tHatch.getBaseMetaTileEntity()
+                                                .decreaseStoredEnergyUnits(getSingleHatchPower(), false)) {
+                                    aBaseMetaTileEntity.increaseStoredEnergyUnits(getSingleHatchPower(), true);
                                 } else if (aBaseMetaTileEntity.getStoredEU() + (2048L * tierOverclock()) < maxEUStore()
                                         && tHatch.getBaseMetaTileEntity()
                                                 .decreaseStoredEnergyUnits(2048L * tierOverclock(), false)) {
@@ -350,6 +347,13 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
         } else {
             soundMagic(getActivitySound());
         }
+    }
+
+    /**
+     * @return The power one hatch can deliver to the reactor
+     */
+    protected long getSingleHatchPower() {
+        return 2048L * tierOverclock() * getMaxPara() * extraPara(100);
     }
 
     public boolean turnCasingActive(boolean status) {
@@ -471,6 +475,13 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                 return result;
             }
         }.setOverclock(1, 1);
+    }
+
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(GT_Values.V[hatchTier()]);
+        logic.setAvailableAmperage(
+                getSingleHatchPower() * (mEnergyHatches.size() + eEnergyMulti.size()) / GT_Values.V[hatchTier()]);
     }
 
     @Override
