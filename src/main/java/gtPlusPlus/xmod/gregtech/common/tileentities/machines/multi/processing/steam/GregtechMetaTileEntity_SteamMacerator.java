@@ -123,21 +123,4 @@ public class GregtechMetaTileEntity_SteamMacerator
         return GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
     }
 
-    @Override
-    public ItemStack[] getOutputItems(GT_Recipe aRecipe) {
-        // Collect output item types
-        ItemStack[] tOutputItems = new ItemStack[1];
-        for (int h = 0; h < 1; h++) {
-            if (aRecipe.getOutput(h) != null) {
-                tOutputItems[h] = aRecipe.getOutput(h).copy();
-                tOutputItems[h].stackSize = 0;
-            }
-        }
-        return tOutputItems;
-    }
-
-    @Override
-    public int getOutputCount(ItemStack[] aOutputs) {
-        return 1;
-    }
 }
