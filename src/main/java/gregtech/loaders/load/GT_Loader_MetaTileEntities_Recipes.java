@@ -5913,6 +5913,63 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             new Object[] { aTextPlate, "PhP", "BBB", 'P', OrePrefixes.plate.get(Materials.WroughtIron), 'B',
                 new ItemStack(Blocks.brick_block, 1) });
 
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hull_ULV.get(1L),
+            GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { aTextCableHull, 'M', ItemList.Casing_ULV, 'C', OrePrefixes.cableGt01.get(Materials.Lead),
+                'H', OrePrefixes.plate.get(Materials.WroughtIron), 'P', OrePrefixes.plate.get(Materials.Wood) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hull_LV.get(1L),
+            GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { aTextCableHull, 'M', ItemList.Casing_LV, 'C', OrePrefixes.cableGt01.get(Materials.Tin), 'H',
+                OrePrefixes.plate.get(Materials.Steel), 'P', OrePrefixes.plate.get(Materials.WroughtIron) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hull_MV.get(1L),
+            GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { aTextCableHull, 'M', ItemList.Casing_MV, 'C', OrePrefixes.cableGt01.get(Materials.AnyCopper),
+                'H', OrePrefixes.plate.get(Materials.Aluminium), 'P', OrePrefixes.plate.get(Materials.WroughtIron) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hull_HV.get(1L),
+            GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { aTextCableHull, 'M', ItemList.Casing_HV, 'C', OrePrefixes.cableGt01.get(Materials.Gold), 'H',
+                OrePrefixes.plate.get(Materials.StainlessSteel), 'P', OrePrefixes.plate.get(Materials.Plastic) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hull_EV.get(1L),
+            GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { aTextCableHull, 'M', ItemList.Casing_EV, 'C', OrePrefixes.cableGt01.get(Materials.Aluminium),
+                'H', OrePrefixes.plate.get(Materials.Titanium), 'P', OrePrefixes.plate.get(Materials.Plastic) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hull_IV.get(1L),
+            GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { aTextCableHull, 'M', ItemList.Casing_IV, 'C', OrePrefixes.cableGt01.get(Materials.Tungsten),
+                'H', OrePrefixes.plate.get(Materials.TungstenSteel), 'P',
+                OrePrefixes.plate.get(Materials.Polytetrafluoroethylene) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hull_LuV.get(1L),
+            GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { aTextCableHull, 'M', ItemList.Casing_LuV, 'C',
+                OrePrefixes.cableGt01.get(Materials.VanadiumGallium), 'H',
+                OrePrefixes.plate.get(ExternalMaterials.getRhodiumPlatedPalladium()), 'P',
+                OrePrefixes.plate.get(Materials.Polytetrafluoroethylene) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hull_ZPM.get(1L),
+            GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { aTextCableHull, 'M', ItemList.Casing_ZPM, 'C', OrePrefixes.cableGt02.get(Materials.Naquadah),
+                'H', OrePrefixes.plate.get(Materials.Iridium), 'P',
+                OrePrefixes.plate.get(Materials.Polybenzimidazole) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hull_UV.get(1L),
+            GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { aTextCableHull, 'M', ItemList.Casing_UV, 'C',
+                OrePrefixes.cableGt04.get(Materials.NaquadahAlloy), 'H', OrePrefixes.plate.get(Materials.Osmium), 'P',
+                OrePrefixes.plate.get(Materials.Polybenzimidazole) });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hull_MAX.get(1L),
+            GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { aTextCableHull, 'M', ItemList.Casing_MAX, 'C',
+                OrePrefixes.wireGt04.get(Materials.SuperconductorUV), 'H', OrePrefixes.plate.get(Materials.Neutronium),
+                'P', OrePrefixes.plate.get(Materials.Polybenzimidazole) });
+
         if (GT_Mod.gregtechproxy.mHardMachineCasings) {
             GT_ModHandler.addCraftingRecipe(
                 ItemList.Hull_ULV.get(1L),
@@ -7924,9 +7981,9 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
 
     @Override
     public void run() {
-        removeRecipes();
         registerShapelessCraftingRecipes();
         registerShapedCraftingRecipes();
+        removeRecipes();
         GT_Log.out.println("GT_Mod: Recipes for MetaTileEntities.");
         registerMachineTypes();
         GT_PCBFactoryMaterialLoader.load();
