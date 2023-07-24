@@ -435,7 +435,11 @@ public class GT_ParallelHelper {
             }
             ItemStack item = mRecipe.getOutput(i)
                 .copy();
-            item.stackSize = items;
+            if (items == 0) {
+                item = null;
+            } else {
+                item.stackSize = items;
+            }
             mItemOutputs[i] = item;
         }
     }
