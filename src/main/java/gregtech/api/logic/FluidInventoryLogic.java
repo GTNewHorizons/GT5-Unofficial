@@ -130,11 +130,11 @@ public class FluidInventoryLogic {
      * @param amount amount of fluid we are trying to put
      * @return amount of fluid filled into the tank
      */
-    public long fill(Fluid fluid, long amount) {
+    public long fill(Fluid fluid, long amount, boolean simulate) {
         if (!isFluidValid(fluid)) return 0;
         IFluidTankLong tank = fluidToTankMap.get(fluid);
         if (tank != null) {
-            return tank.fill(fluid, amount, true);
+            return tank.fill(fluid, amount, !simulate);
         }
         int tankNumber = 0;
         tank = inventory.getFluidTank(tankNumber++);
@@ -142,15 +142,32 @@ public class FluidInventoryLogic {
             tank = inventory.getFluidTank(tankNumber++);
         }
         fluidToTankMap.put(fluid, tank);
-        return tank.fill(fluid, amount, false);
+        return tank.fill(fluid, amount, !simulate);
+    }
+
+    /**
+     * Try and drain the first fluid found for that amount. Used by GT_Cover_Pump
+     * 
+     * @param amount
+     * @return
+     */
+    @Nullable
+    public FluidStack drain(int amount, boolean simulate) {
+        for (int i = 0; i < inventory.getTanks(); i++) {
+            Fluid fluid = inventory.getFluidInTank(i);
+            FluidStack drained = drain(fluid, amount, simulate);
+            if (drained != null) return drained;
+        }
+
+        return null;
     }
 
     @Nullable
-    public FluidStack drain(Fluid fluid, int amount) {
+    public FluidStack drain(Fluid fluid, int amount, boolean simulate) {
         if (!isFluidValid(fluid)) return null;
         IFluidTankLong tank = fluidToTankMap.get(fluid);
         if (tank != null) {
-            return tank.drain(amount, true);
+            return tank.drain(amount, !simulate);
         }
         int tankNumber = 0;
         tank = inventory.getFluidTank(tankNumber++);
@@ -158,7 +175,7 @@ public class FluidInventoryLogic {
             tank = inventory.getFluidTank(tankNumber++);
         }
         fluidToTankMap.put(fluid, tank);
-        return tank.drain(amount, true);
+        return tank.drain(amount, !simulate);
     }
 
     public Widget getGuiPart() {

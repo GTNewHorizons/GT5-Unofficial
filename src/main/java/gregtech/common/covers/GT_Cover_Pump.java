@@ -1,6 +1,9 @@
 package gregtech.common.covers;
 
+import static com.google.common.primitives.Ints.saturatedCast;
+
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -9,11 +12,14 @@ import net.minecraftforge.fluids.IFluidHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.enums.InventoryType;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
+import gregtech.api.logic.FluidInventoryLogic;
+import gregtech.api.logic.interfaces.FluidInventoryLogicHost;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
@@ -51,33 +57,127 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
                 return aCoverVariable;
             }
         }
-        if ((aTileEntity instanceof IFluidHandler)) {
-            final IFluidHandler tTank2 = aTileEntity.getITankContainerAtSide(side);
-            if (tTank2 != null) {
-                // aTileEntity.decreaseStoredEnergyUnits(GT_Utility.getTier(this.mTransferRate), true);
-                final IFluidHandler tTank1 = (IFluidHandler) aTileEntity;
-                if (aCoverVariable % 2 == 0) {
-                    FluidStack tLiquid = tTank1.drain(side, this.mTransferRate, false);
-                    if (tLiquid != null) {
-                        tLiquid = tLiquid.copy();
-                        tLiquid.amount = tTank2.fill(side.getOpposite(), tLiquid, false);
-                        if (tLiquid.amount > 0 && canTransferFluid(tLiquid)) {
-                            tTank2.fill(side.getOpposite(), tTank1.drain(side, tLiquid.amount, true), true);
-                        }
+
+        if (aTileEntity instanceof FluidInventoryLogicHost current) {
+            final TileEntity toAccess = aTileEntity.getTileEntityAtSide(side);
+            transferFluid(current, toAccess, side, aCoverVariable % 2);
+            return aCoverVariable;
+        }
+        if (aTileEntity instanceof IFluidHandler current) {
+            final TileEntity toAccess = aTileEntity.getTileEntityAtSide(side);
+            transferFluid(current, toAccess, side, aCoverVariable % 2);
+        }
+        return aCoverVariable;
+    }
+
+    protected void transferFluid(FluidInventoryLogicHost current, TileEntity toAccess, ForgeDirection side,
+        int exportOrImport) {
+        if (toAccess instanceof FluidInventoryLogicHost toAccessFluidHost) {
+            if (exportOrImport == 0) {
+                FluidInventoryLogic currentLogic = current.getFluidLogic(ForgeDirection.UNKNOWN, InventoryType.Output);
+                FluidStack liquid = currentLogic.drain(this.mTransferRate, true);
+                if (liquid != null) {
+                    FluidInventoryLogic toAccessLogic = toAccessFluidHost
+                        .getFluidLogic(ForgeDirection.UNKNOWN, InventoryType.Input);
+                    liquid = liquid.copy();
+                    liquid.amount = saturatedCast(toAccessLogic.fill(liquid.getFluid(), liquid.amount, true));
+                    if (liquid.amount > 0 && canTransferFluid(liquid)) {
+                        FluidStack liquidDrained = currentLogic.drain(liquid.getFluid(), liquid.amount, false);
+                        toAccessLogic.fill(liquidDrained.getFluid(), liquidDrained.amount, false);
                     }
-                } else {
-                    FluidStack tLiquid = tTank2.drain(side.getOpposite(), this.mTransferRate, false);
-                    if (tLiquid != null) {
-                        tLiquid = tLiquid.copy();
-                        tLiquid.amount = tTank1.fill(side, tLiquid, false);
-                        if (tLiquid.amount > 0 && canTransferFluid(tLiquid)) {
-                            tTank1.fill(side, tTank2.drain(side.getOpposite(), tLiquid.amount, true), true);
-                        }
+                }
+                return;
+            }
+            FluidInventoryLogic toAccessLogic = toAccessFluidHost
+                .getFluidLogic(ForgeDirection.UNKNOWN, InventoryType.Output);
+            FluidStack liquid = toAccessLogic.drain(this.mTransferRate, true);
+            if (liquid != null) {
+                FluidInventoryLogic currentLogic = current.getFluidLogic(ForgeDirection.UNKNOWN, InventoryType.Input);
+                liquid = liquid.copy();
+                liquid.amount = saturatedCast(currentLogic.fill(liquid.getFluid(), liquid.amount, true));
+                if (liquid.amount > 0 && canTransferFluid(liquid)) {
+                    FluidStack liquidDrained = toAccessLogic.drain(liquid.getFluid(), liquid.amount, false);
+                    currentLogic.fill(liquidDrained.getFluid(), liquidDrained.amount, false);
+                }
+            }
+
+        }
+        if (toAccess instanceof IFluidHandler toAccessFluidHandler) {
+            if (exportOrImport == 0) {
+                FluidInventoryLogic logic = current.getFluidLogic(ForgeDirection.UNKNOWN, InventoryType.Output);
+                FluidStack liquid = logic.drain(this.mTransferRate, true);
+                if (liquid != null) {
+                    liquid = liquid.copy();
+                    liquid.amount = toAccessFluidHandler.fill(side.getOpposite(), liquid, false);
+                    if (liquid.amount > 0 && canTransferFluid(liquid)) {
+                        toAccessFluidHandler
+                            .fill(side.getOpposite(), logic.drain(liquid.getFluid(), liquid.amount, false), true);
                     }
+                }
+                return;
+            }
+            FluidStack liquid = toAccessFluidHandler.drain(side.getOpposite(), this.mTransferRate, false);
+            if (liquid != null) {
+                FluidInventoryLogic logic = current.getFluidLogic(ForgeDirection.UNKNOWN, InventoryType.Input);
+                liquid = liquid.copy();
+                liquid.amount = saturatedCast(logic.fill(liquid.getFluid(), liquid.amount, true));
+                if (liquid.amount > 0 && canTransferFluid(liquid)) {
+                    FluidStack liquidDrained = toAccessFluidHandler.drain(side.getOpposite(), liquid.amount, true);
+                    logic.fill(liquidDrained.getFluid(), liquidDrained.amount, false);
+                }
+            }
+
+        }
+    }
+
+    protected void transferFluid(IFluidHandler current, TileEntity toAccess, ForgeDirection side, int exportOrImport) {
+        if (toAccess instanceof FluidInventoryLogicHost toAccessFluidHost) {
+            if (exportOrImport == 0) {
+                FluidStack liquid = current.drain(side, this.mTransferRate, false);
+                if (liquid != null) {
+                    FluidInventoryLogic logic = toAccessFluidHost
+                        .getFluidLogic(ForgeDirection.UNKNOWN, InventoryType.Input);
+                    liquid = liquid.copy();
+                    liquid.amount = saturatedCast(logic.fill(liquid.getFluid(), liquid.amount, true));
+                    if (liquid.amount > 0 && canTransferFluid(liquid)) {
+                        FluidStack liquidDrained = current.drain(side.getOpposite(), liquid.amount, true);
+                        logic.fill(liquidDrained.getFluid(), liquidDrained.amount, false);
+                    }
+                }
+                return;
+            }
+            FluidInventoryLogic logic = toAccessFluidHost.getFluidLogic(ForgeDirection.UNKNOWN, InventoryType.Output);
+            FluidStack liquid = logic.drain(this.mTransferRate, true);
+            if (liquid != null) {
+                liquid = liquid.copy();
+                liquid.amount = current.fill(side, liquid, false);
+                if (liquid.amount > 0 && canTransferFluid(liquid)) {
+                    current.fill(side, logic.drain(liquid.getFluid(), liquid.amount, false), true);
+                }
+            }
+
+        }
+        if (toAccess instanceof IFluidHandler toAccessFluidHandler) {
+            if (exportOrImport == 0) {
+                FluidStack liquid = current.drain(side, this.mTransferRate, false);
+                if (liquid != null) {
+                    liquid = liquid.copy();
+                    liquid.amount = toAccessFluidHandler.fill(side.getOpposite(), liquid, false);
+                    if (liquid.amount > 0 && canTransferFluid(liquid)) {
+                        toAccessFluidHandler.fill(side.getOpposite(), current.drain(side, liquid.amount, true), true);
+                    }
+                }
+                return;
+            }
+            FluidStack liquid = toAccessFluidHandler.drain(side.getOpposite(), this.mTransferRate, false);
+            if (liquid != null) {
+                liquid = liquid.copy();
+                liquid.amount = current.fill(side, liquid, false);
+                if (liquid.amount > 0 && canTransferFluid(liquid)) {
+                    current.fill(side, toAccessFluidHandler.drain(side.getOpposite(), liquid.amount, true), true);
                 }
             }
         }
-        return aCoverVariable;
     }
 
     protected boolean canTransferFluid(FluidStack fluid) {
