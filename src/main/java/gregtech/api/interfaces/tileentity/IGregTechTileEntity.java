@@ -189,4 +189,11 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
             getMetaTileEntity().onRandomDisplayTick(this);
         }
     }
+
+    /**
+     * gets the time statistics used for CPU timing
+     */
+    default int[] getTimeStatistics() {
+        return null;
+    }
 }

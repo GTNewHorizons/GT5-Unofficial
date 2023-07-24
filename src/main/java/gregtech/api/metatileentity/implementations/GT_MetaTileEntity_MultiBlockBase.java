@@ -1691,7 +1691,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
         currentTip.add(
             GT_Waila.getMachineProgressString(isActive, tag.getInteger("maxProgress"), tag.getInteger("progress")));
-
+        // Show ns on the tooltip
+        if (GT_Mod.gregtechproxy.wailaAverageNS) {
+            int tAverageTime = tag.getInteger("averageNS");
+            currentTip.add("Average CPU load of ~" + GT_Utility.formatNumbers(tAverageTime) + " ns");
+        }
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }
 
@@ -1715,6 +1719,17 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 tag.setLong("energyTier", getInputVoltageTier());
             }
         }
+
+        int tAverageTime = 0;
+        for (int tTime : this.getBaseMetaTileEntity()
+            .getTimeStatistics()) {
+            tAverageTime += tTime;
+        }
+
+        tag.setInteger(
+            "averageNS",
+            tAverageTime / this.getBaseMetaTileEntity()
+                .getTimeStatistics().length);
     }
 
     @Override
