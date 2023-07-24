@@ -5913,6 +5913,7 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             new Object[] { aTextPlate, "PhP", "BBB", 'P', OrePrefixes.plate.get(Materials.WroughtIron), 'B',
                 new ItemStack(Blocks.brick_block, 1) });
 
+        // These hull recipes are only to register recycling, hence their immediate removal afterwards.
         GT_ModHandler.addCraftingRecipe(
             ItemList.Hull_ULV.get(1L),
             GT_ModHandler.RecipeBits.REVERSIBLE,
@@ -5969,7 +5970,19 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             new Object[] { aTextCableHull, 'M', ItemList.Casing_MAX, 'C',
                 OrePrefixes.wireGt04.get(Materials.SuperconductorUV), 'H', OrePrefixes.plate.get(Materials.Neutronium),
                 'P', OrePrefixes.plate.get(Materials.Polybenzimidazole) });
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_ULV.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_LV.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_MV.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_HV.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_EV.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_IV.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_LuV.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_ZPM.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_UV.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_MAX.get(1L));
 
+        // These are the actual hull crafting recipes. (They can't be used for recycling as that would create an exploit
+        // loop with the assembler recipes.)
         if (GT_Mod.gregtechproxy.mHardMachineCasings) {
             GT_ModHandler.addCraftingRecipe(
                 ItemList.Hull_ULV.get(1L),
@@ -7456,19 +7469,6 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             new Object[] { ItemList.Seismic_Prospector_HV });
     }
 
-    private static void removeRecipes() {
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_ULV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_LV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_MV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_HV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_EV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_IV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_LuV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_ZPM.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_UV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_MAX.get(1L));
-    }
-
     private static void run4() {
         long bits = GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
             | GT_ModHandler.RecipeBits.REVERSIBLE
@@ -7983,7 +7983,6 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
     public void run() {
         registerShapelessCraftingRecipes();
         registerShapedCraftingRecipes();
-        removeRecipes();
         GT_Log.out.println("GT_Mod: Recipes for MetaTileEntities.");
         registerMachineTypes();
         GT_PCBFactoryMaterialLoader.load();
