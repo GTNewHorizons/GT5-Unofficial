@@ -7981,9 +7981,9 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
 
     @Override
     public void run() {
-        removeRecipes();
         registerShapelessCraftingRecipes();
         registerShapedCraftingRecipes();
+        removeRecipes();
         GT_Log.out.println("GT_Mod: Recipes for MetaTileEntities.");
         registerMachineTypes();
         GT_PCBFactoryMaterialLoader.load();
