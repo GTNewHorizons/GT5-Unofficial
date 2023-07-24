@@ -278,9 +278,8 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe,
                     @Nonnull GT_ParallelHelper helper) {
-                return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt).setDuration(recipe.mDuration)
-                        .setEUt(availableVoltage).setRecipeHeat(recipe.mSpecialValue).setMultiHeat(mHeatingCapacity)
-                        .enableHeatOC().enableHeatDiscount().calculate();
+                return super.createOverclockCalculator(recipe, helper).setRecipeHeat(recipe.mSpecialValue)
+                        .setMultiHeat(mHeatingCapacity).enableHeatOC().enableHeatDiscount();
             }
 
             @Override

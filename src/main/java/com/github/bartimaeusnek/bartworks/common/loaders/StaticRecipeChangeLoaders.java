@@ -132,9 +132,9 @@ public class StaticRecipeChangeLoaders {
             FluidStack wrongNamedFluid) {
         for (int i = 0; i < recipe.mFluidInputs.length; i++) {
             if (GT_Utility.areFluidsEqual(recipe.mFluidInputs[i], wrongNamedFluid)) {
-                Collection<GT_Recipe> col = map.mRecipeFluidMap.get(wrongNamedFluid.getFluid());
-                map.mRecipeFluidMap.remove(wrongNamedFluid.getFluid());
-                map.mRecipeFluidMap.put(werkstoff.getFluidOrGas(1).getFluid(), col);
+                Collection<GT_Recipe> col = map.mRecipeFluidMap.get(wrongNamedFluid.getFluid().getName());
+                map.mRecipeFluidMap.remove(wrongNamedFluid.getFluid().getName());
+                map.mRecipeFluidMap.put(werkstoff.getFluidOrGas(1).getFluid().getName(), col);
                 recipe.mFluidInputs[i] = werkstoff.getFluidOrGas(recipe.mFluidInputs[i].amount);
                 map.mRecipeFluidNameMap.add(werkstoff.getFluidOrGas(1).getFluid().getName());
             }
