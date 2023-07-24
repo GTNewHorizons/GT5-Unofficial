@@ -180,7 +180,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
             protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe,
                 @Nonnull GT_ParallelHelper helper) {
                 return super.createOverclockCalculator(recipe, helper)
-                    .setEUtDiscount(Math.max((0.1F * (heatLevel.getTier() + 1.0F)), 0.5F));
+                    .setEUtDiscount(1.0F - Math.min(0.1F * heatLevel.getTier(), 0.5F));
             }
         };
     }
