@@ -44,7 +44,6 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -55,7 +54,6 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -69,9 +67,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maint
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
-import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
@@ -1186,198 +1182,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         if (aNBT.hasKey("mUseMultiparallelMode")) {
             // backward compatibility
             batchMode = aNBT.getBoolean("mUseMultiparallelMode");
-        }
-    }
-
-    /**
-     * Custom Find Recipe with Debugging
-     */
-    public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final boolean aNotUnificated,
-            final boolean aDontCheckStackSizes, final long aVoltage, final FluidStack[] aFluids,
-            final ItemStack... aInputs) {
-        return this.findRecipe(
-                aTileEntity,
-                null,
-                aNotUnificated,
-                aDontCheckStackSizes,
-                aVoltage,
-                aFluids,
-                (ItemStack) null,
-                aInputs);
-    }
-
-    public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final boolean aNotUnificated,
-            final long aVoltage, final FluidStack[] aFluids, final ItemStack... aInputs) {
-        return this.findRecipe(aTileEntity, null, aNotUnificated, aVoltage, aFluids, (ItemStack) null, aInputs);
-    }
-
-    public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GT_Recipe aRecipe,
-            final boolean aNotUnificated, final boolean aDontCheckStackSizes, final long aVoltage,
-            final FluidStack[] aFluids, final ItemStack... aInputs) {
-        return this.findRecipe(
-                aTileEntity,
-                aRecipe,
-                aNotUnificated,
-                aDontCheckStackSizes,
-                aVoltage,
-                aFluids,
-                (ItemStack) null,
-                aInputs);
-    }
-
-    public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GT_Recipe aRecipe,
-            final boolean aNotUnificated, final long aVoltage, final FluidStack[] aFluids, final ItemStack... aInputs) {
-        return this.findRecipe(aTileEntity, aRecipe, aNotUnificated, aVoltage, aFluids, (ItemStack) null, aInputs);
-    }
-
-    public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GT_Recipe aRecipe,
-            final boolean aNotUnificated, final long aVoltage, final FluidStack[] aFluids, final ItemStack aSpecialSlot,
-            final ItemStack... aInputs) {
-        return this.findRecipe(aTileEntity, aRecipe, aNotUnificated, true, aVoltage, aFluids, aSpecialSlot, aInputs);
-    }
-
-    public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GT_Recipe aRecipe,
-            final boolean aNotUnificated, final boolean aDontCheckStackSizes, final long aVoltage,
-            final FluidStack[] aFluids, final ItemStack aSpecialSlot, ItemStack... aInputs) {
-        if (this.getRecipeMap().mRecipeList.isEmpty()) {
-            log("No Recipes in Map to search through.");
-            return null;
-        }
-        GT_Recipe mRecipeResult = null;
-        try {
-            if (GregTech_API.sPostloadFinished) {
-                if (this.getRecipeMap().mMinimalInputFluids > 0) {
-                    if (aFluids == null) {
-                        log("aFluids == null && minFluids > 0");
-                        return null;
-                    }
-                    int tAmount = 0;
-                    for (final FluidStack aFluid : aFluids) {
-                        if (aFluid != null) {
-                            ++tAmount;
-                        }
-                    }
-                    if (tAmount < this.getRecipeMap().mMinimalInputFluids) {
-                        log("Not enough fluids?");
-                        return null;
-                    }
-                }
-                if (this.getRecipeMap().mMinimalInputItems > 0) {
-                    if (aInputs == null) {
-                        log("No inputs and minItems > 0");
-                        return null;
-                    }
-                    int tAmount = 0;
-                    for (final ItemStack aInput : aInputs) {
-                        if (aInput != null) {
-                            ++tAmount;
-                        }
-                    }
-                    if (tAmount < this.getRecipeMap().mMinimalInputItems) {
-                        log("Not enough items?");
-                        return null;
-                    }
-                }
-            } else {
-                log("Game Not Loaded properly for recipe lookup.");
-            }
-            if (aNotUnificated) {
-                aInputs = GT_OreDictUnificator.getStackArray(true, (Object[]) aInputs);
-            }
-            if (aRecipe != null && !aRecipe.mFakeRecipe
-                    && aRecipe.mCanBeBuffered
-                    && aRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
-                mRecipeResult = (aRecipe.mEnabled /* && aVoltage * this.getRecipeMap().mAmperage >= aRecipe.mEUt */)
-                        ? aRecipe
-                        : null;
-                log("x) Found Recipe? " + (mRecipeResult != null ? "true" : "false"));
-                if (mRecipeResult != null) {
-                    return mRecipeResult;
-                }
-            }
-            if (mRecipeResult == null && this.getRecipeMap().mUsualInputCount >= 0
-                    && aInputs != null
-                    && aInputs.length > 0) {
-                for (final ItemStack tStack : aInputs) {
-                    if (tStack != null) {
-                        Collection<GT_Recipe> tRecipes = this.getRecipeMap().mRecipeItemMap
-                                .get(new GT_ItemStack(tStack));
-                        if (tRecipes != null) {
-                            for (final GT_Recipe tRecipe : tRecipes) {
-                                if (!tRecipe.mFakeRecipe
-                                        && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
-                                    mRecipeResult = (tRecipe.mEnabled /*
-                                                                       * && aVoltage * this.getRecipeMap().mAmperage >=
-                                                                       * tRecipe.mEUt
-                                                                       */) ? tRecipe : null;
-                                    log("1) Found Recipe? " + (mRecipeResult != null ? "true" : "false"));
-                                    // return mRecipeResult;
-                                }
-                            }
-                        }
-
-                        // TODO - Investigate if this requires to be in it's own block
-                        tRecipes = this.getRecipeMap().mRecipeItemMap
-                                .get(new GT_ItemStack(GT_Utility.copyMetaData(32767L, new Object[] { tStack })));
-                        if (tRecipes != null) {
-                            for (final GT_Recipe tRecipe : tRecipes) {
-                                if (!tRecipe.mFakeRecipe
-                                        && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
-                                    mRecipeResult = (tRecipe.mEnabled /*
-                                                                       * && aVoltage * this.getRecipeMap().mAmperage >=
-                                                                       * tRecipe.mEUt
-                                                                       */) ? tRecipe : null;
-                                    log("2) Found Recipe? " + (mRecipeResult != null ? "true" : "false"));
-                                    // return mRecipeResult;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            if (mRecipeResult == null && this.getRecipeMap().mMinimalInputItems == 0
-                    && aFluids != null
-                    && aFluids.length > 0) {
-                for (final FluidStack aFluid2 : aFluids) {
-                    if (aFluid2 != null) {
-                        final Collection<GT_Recipe> tRecipes = this.getRecipeMap().mRecipeFluidMap
-                                .get(aFluid2.getFluid());
-                        if (tRecipes != null) {
-                            for (final GT_Recipe tRecipe : tRecipes) {
-                                if (!tRecipe.mFakeRecipe
-                                        && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
-                                    mRecipeResult = (tRecipe.mEnabled /*
-                                                                       * && aVoltage * this.getRecipeMap().mAmperage >=
-                                                                       * tRecipe.mEUt
-                                                                       */) ? tRecipe : null;
-                                    log("3) Found Recipe? " + (mRecipeResult != null ? "true" : "false"));
-                                    // return mRecipeResult;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Throwable t) {
-            log("Invalid recipe lookup.");
-        }
-
-        if (mRecipeResult == null) {
-            log(
-                    "Invalid recipe, Fallback lookup. " + this.getRecipeMap().mRecipeList.size()
-                            + " | "
-                            + this.getRecipeMap().mNEIName);
-            return getRecipeMap().findRecipe(
-                    aTileEntity,
-                    aRecipe,
-                    aNotUnificated,
-                    aDontCheckStackSizes,
-                    aVoltage,
-                    aFluids,
-                    aSpecialSlot,
-                    aInputs);
-        } else {
-            return mRecipeResult;
         }
     }
 
