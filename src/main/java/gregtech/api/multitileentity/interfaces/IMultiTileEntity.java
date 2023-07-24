@@ -283,12 +283,12 @@ public interface IMultiTileEntity
 
     interface IMTE_HasModes extends IMultiTileEntity {
 
-        byte getMode();
+        int getMode();
 
-        void setMode(byte aMode);
+        void setMode(int mode);
 
         int getAllowedModes();
 
-        void setAllowedModes(int aAllowedModes);
+        void setAllowedModes(int allowedModes);
     }
 }

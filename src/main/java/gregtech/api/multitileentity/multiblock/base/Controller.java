@@ -23,14 +23,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
 
 import org.lwjgl.input.Keyboard;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
@@ -56,6 +54,7 @@ import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.IGlobalWirelessEnergy;
+import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.modularui.ControllerWithOptionalFeatures;
 import gregtech.api.logic.ControllerFluidLogic;
 import gregtech.api.logic.ControllerItemLogic;
@@ -82,8 +81,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * Multi Tile Entities - or MuTEs - don't have dedicated hatches, but their casings can become hatches.
  */
 public abstract class Controller<T extends Controller<T>> extends MultiTileBasicMachine
-    implements IAlignment, IConstructable, IMultiBlockController, IDescribable, IMTE_AddToolTips,
-    ISurvivalConstructable, ControllerWithOptionalFeatures, IGlobalWirelessEnergy {
+    implements IAlignment, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable,
+    ControllerWithOptionalFeatures, IGlobalWirelessEnergy {
 
     public static final String ALL_INVENTORIES_NAME = "all";
     protected static final int AUTO_OUTPUT_FREQUENCY_TICK = 20;
@@ -546,7 +545,6 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             if (!part.shouldTick(mTickTimer)) {
                 fluidOutputIterator.remove();
             } else {
-                IFluidHandler targetTank = part.getITankContainerAtSide(part.getFrontFacing());
 
             }
         }
@@ -881,7 +879,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     }
 
-    protected void setFluidOutputs(String tank, FluidStack... fluidOuputs) {
+    protected void setFluidOutputs(String tank, FluidStack... fluidOutputs) {
 
     }
 
@@ -1241,5 +1239,17 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         if (!structureOkay) {
             checkStructure(true);
         }
+    }
+
+    @Override
+    public List<ItemStack> getItemOutputSlots(ItemStack[] toOutput) {
+        // TODO Remake methods
+        throw new UnsupportedOperationException("Unimplemented method 'getItemOutputSlots'");
+    }
+
+    @Override
+    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
+        // TODO Remake methods
+        throw new UnsupportedOperationException("Unimplemented method 'getFluidOutputSlots'");
     }
 }

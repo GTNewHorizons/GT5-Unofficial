@@ -38,8 +38,8 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
     private int soundEventValue;
 
     // MultiBlockPart
-    private byte mMode;
-    private int mAllowedModes;
+    private int mode;
+    private int allowedModes;
 
     public GT_Packet_MultiTileEntity() {
         super(true);
@@ -77,10 +77,10 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         mRedstone = aRedstoneData;
     }
 
-    public void setModes(byte aMode, int aAllowedModes) {
+    public void setModes(int mode, int allowedModes) {
         features |= MODES;
-        mMode = aMode;
-        mAllowedModes = aAllowedModes;
+        this.mode = mode;
+        this.allowedModes = allowedModes;
     }
 
     public void setTargetPos(int aX, short aY, int aZ) {
@@ -141,8 +141,8 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
             aOut.writeByte(mRedstone);
         }
         if ((features & MODES) == MODES) {
-            aOut.writeByte(mMode);
-            aOut.writeInt(mAllowedModes);
+            aOut.writeInt(mode);
+            aOut.writeInt(allowedModes);
         }
         if ((features & CONTROLLER) == CONTROLLER) {
             aOut.writeInt(mTargetPos.posX);
@@ -208,7 +208,7 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
             packet.setRedstoneData(aData.readByte());
         }
         if ((packetFeatures & MODES) == MODES) {
-            packet.setModes(aData.readByte(), aData.readInt());
+            packet.setModes(aData.readInt(), aData.readInt());
         }
         if ((packetFeatures & CONTROLLER) == CONTROLLER) {
             packet.setTargetPos(aData.readInt(), aData.readShort(), aData.readInt());
@@ -273,8 +273,8 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
                 }
 
                 if ((features & MODES) == MODES && mte instanceof IMultiTileEntity.IMTE_HasModes mteModes) {
-                    mteModes.setMode(mMode);
-                    mteModes.setAllowedModes(mAllowedModes);
+                    mteModes.setMode(mode);
+                    mteModes.setAllowedModes(allowedModes);
                 }
 
                 if ((features & INVENTORY_NAME_ID) == INVENTORY_NAME_ID && mte instanceof Inventory invUpg) {
