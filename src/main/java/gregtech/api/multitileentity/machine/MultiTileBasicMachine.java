@@ -113,6 +113,9 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
             saveItemsToOutput(nbt);
         }
 
+        saveItemLogic(nbt);
+        saveFluidLogic(nbt);
+
         nbt.setInteger(NBT.TIER, tier);
         nbt.setLong(NBT.EUT_CONSUMPTION, eut);
         nbt.setLong(NBT.BURN_TIME_LEFT, burnTime);
@@ -164,6 +167,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         }
 
         loadItemsToOutput(nbt);
+        loadItemLogic(nbt);
+        loadFluidLogic(nbt);
 
         tier = nbt.getInteger(NBT.TIER);
         eut = nbt.getLong(NBT.EUT_CONSUMPTION);
@@ -174,14 +179,17 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     }
 
     protected void loadItemLogic(NBTTagCompound nbt) {
-        itemInput = new ItemInventoryLogic(Math.max(nbt.getInteger(NBT.INV_OUTPUT_SIZE), 0));
-        itemOutput = new ItemInventoryLogic(Math.max(nbt.getInteger(NBT.INV_OUTPUT_SIZE), 0));
+        itemInput = new ItemInventoryLogic(Math.max(nbt.getInteger(NBT.INV_OUTPUT_SIZE), tier));
+        itemOutput = new ItemInventoryLogic(Math.max(nbt.getInteger(NBT.INV_OUTPUT_SIZE), tier));
         itemInput.loadFromNBT(nbt.getCompoundTag(NBT.INV_INPUT_LIST));
         itemOutput.loadFromNBT(nbt.getCompoundTag(NBT.INV_OUTPUT_LIST));
     }
 
     protected void loadFluidLogic(NBTTagCompound nbt) {
-
+        fluidInput = new FluidInventoryLogic(16, 10000, tier);
+        fluidOutput = new FluidInventoryLogic(16, 10000, tier);
+        fluidInput.loadFromNBT(nbt.getCompoundTag(NBT.TANK_IN));
+        fluidOutput.loadFromNBT(nbt.getCompoundTag(NBT.TANK_OUT));
     }
 
     protected void loadItemsToOutput(NBTTagCompound aNBT) {

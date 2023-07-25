@@ -35,7 +35,7 @@ import gregtech.api.util.GT_Utility;
  */
 public class ItemInventoryLogic {
 
-    protected String displayName;
+    protected String displayName = "";
     protected final IItemHandlerModifiable inventory;
     protected UUID connectedFluidInventory;
     protected int tier;

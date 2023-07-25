@@ -103,10 +103,10 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     protected boolean isSimpleMachine = true;
 
     protected boolean isCleanroom = false;
-    protected ControllerItemLogic controllerItemInput;
-    protected ControllerItemLogic controllerItemOutput;
-    protected ControllerFluidLogic controllerFluidInput;
-    protected ControllerFluidLogic controllerFluidOutput;
+    protected ControllerItemLogic controllerItemInput = new ControllerItemLogic();
+    protected ControllerItemLogic controllerItemOutput = new ControllerItemLogic();
+    protected ControllerFluidLogic controllerFluidInput = new ControllerFluidLogic();
+    protected ControllerFluidLogic controllerFluidOutput = new ControllerFluidLogic();
 
     // A list of sides
     // Each side has a list of parts that have a cover that need to be ticked
@@ -125,6 +125,10 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         for (int i = 0; i < MultiTileCasingPurpose.values().length; i++) {
             registeredTickableParts.add(new LinkedList<>());
         }
+        controllerItemInput.addInventory(new ItemInventoryLogic(16));
+        controllerItemOutput.addInventory(new ItemInventoryLogic(16));
+        controllerFluidInput.addInventory(new FluidInventoryLogic(16, 32000));
+        controllerFluidOutput.addInventory(new FluidInventoryLogic(16, 32000));
     }
 
     /** Registry ID of the required casing */
@@ -193,6 +197,22 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     @Override
+    protected void saveItemLogic(NBTTagCompound nbt) {
+        NBTTagCompound itemInputNBT = controllerItemInput.saveToNBT();
+        nbt.setTag(NBT.INV_INPUT_LIST, itemInputNBT);
+        NBTTagCompound itemOutputNBT = controllerItemOutput.saveToNBT();
+        nbt.setTag(NBT.INV_OUTPUT_LIST, itemOutputNBT);
+    }
+
+    @Override
+    protected void saveFluidLogic(NBTTagCompound nbt) {
+        NBTTagCompound fluidInputNBT = controllerFluidInput.saveToNBT();
+        nbt.setTag(NBT.TANK_IN, fluidInputNBT);
+        NBTTagCompound fluidOutputNBT = controllerFluidOutput.saveToNBT();
+        nbt.setTag(NBT.TANK_OUT, fluidOutputNBT);
+    }
+
+    @Override
     public void readMultiTileNBT(NBTTagCompound nbt) {
         super.readMultiTileNBT(nbt);
 
@@ -207,6 +227,18 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         separateInputs = nbt.getBoolean(NBT.SEPARATE_INPUTS);
         recipeLock = nbt.getBoolean(NBT.RECIPE_LOCK);
         batchMode = nbt.getBoolean(NBT.BATCH_MODE);
+    }
+
+    @Override
+    protected void loadItemLogic(NBTTagCompound nbt) {
+        controllerItemInput.loadFromNBT(nbt.getCompoundTag(NBT.INV_INPUT_LIST));
+        controllerItemOutput.loadFromNBT(nbt.getCompoundTag(NBT.INV_OUTPUT_LIST));
+    }
+
+    @Override
+    protected void loadFluidLogic(NBTTagCompound nbt) {
+        controllerFluidInput.loadFromNBT(nbt.getCompoundTag(NBT.TANK_IN));
+        controllerFluidOutput.loadFromNBT(nbt.getCompoundTag(NBT.TANK_OUT));
     }
 
     @Override

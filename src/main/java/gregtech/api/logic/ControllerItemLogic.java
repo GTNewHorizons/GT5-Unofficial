@@ -49,8 +49,11 @@ public class ControllerItemLogic {
         return generatedUUID;
     }
 
-    @Nonnull
+    @Nullable
     private Pair<UUID, ItemInventoryLogic> checkIfInventoryExistsAsUnallocated(@Nonnull ItemInventoryLogic inventory) {
+        if (unallocatedInventories.size() == 0) {
+            return null;
+        }
         return unallocatedInventories.stream()
             .filter(
                 unallocated -> unallocated.getRight()

@@ -29,6 +29,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.*;
 
+import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.InventoryType;
 import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.interfaces.ITexture;
@@ -482,9 +483,12 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     @Override
     public FluidInventoryLogic getFluidLogic(ForgeDirection side, InventoryType type) {
         if (side != facing && side != ForgeDirection.UNKNOWN) return null;
+
+        if (!modeSelected(FLUID_IN, FLUID_OUT)) return null;
+
         IMultiBlockController controller = getTarget(false);
         if (controller == null) return null;
-        return controller.getFluidLogic(type, lockedInventory);
+        return controller.getFluidLogic(modeSelected(FLUID_IN) ? InventoryType.Input : InventoryType.Output, lockedInventory);
     }
 
     @Override
@@ -526,12 +530,14 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     // #region Item - Depending on the part type - proxy to the multiblock controller, if we have one
 
     public ItemInventoryLogic getItemLogic(ForgeDirection side, InventoryType unused) {
-        if (side != facing) return null;
+        if (side != facing && side != ForgeDirection.UNKNOWN) return null;
+
+        if (!modeSelected(ITEM_IN, ITEM_OUT)) return null;
 
         final IMultiBlockController controller = getTarget(false);
         if (controller == null) return null;
 
-        return controller.getItemLogic(unused, lockedInventory);
+        return controller.getItemLogic(modeSelected(ITEM_IN) ? InventoryType.Input : InventoryType.Output, lockedInventory);
     }
 
     // #endregion
@@ -594,6 +600,32 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
             return controller.createWindowGUI(buildContext);
         }
         return super.createWindow(buildContext);
+    }
+
+    @Override
+    public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
+        super.addUIWidgets(builder, buildContext);
+        IMultiBlockController controller = getTarget(false);
+        if (controller == null) {
+            return;
+        }
+        if ((modeSelected(ITEM_IN, ITEM_OUT))) {
+            builder.widget(
+                controller
+                    .getItemLogic(modeSelected(ITEM_IN) ? InventoryType.Input : InventoryType.Output, lockedInventory)
+                    .getGuiPart()
+                    .setSize(18 * 4 + 4, 18 * 5)
+                    .setPos(52, 7));
+        }
+
+        if ((modeSelected(FLUID_IN, FLUID_OUT))) {
+            builder.widget(
+                controller
+                    .getFluidLogic(modeSelected(FLUID_IN) ? InventoryType.Input : InventoryType.Output, lockedInventory)
+                    .getGuiPart()
+                    .setSize(18 * 4 + 4, 18 * 5)
+                    .setPos(52, 7));
+        }
     }
 
     protected boolean canOpenControllerGui() {

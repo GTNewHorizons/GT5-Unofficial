@@ -24,18 +24,18 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 
 public class FluidInventoryLogic {
 
-    protected String displayName;
+    protected String displayName = "";
     protected final IFluidTanksHandler inventory;
     protected final Map<Fluid, IFluidTankLong> fluidToTankMap;
     protected int tier = 0;
     protected boolean isUpgradeInventory = false;
 
     public FluidInventoryLogic(int numberOfSlots, long capacityOfEachTank) {
-        this(new FluidTanksHandler(numberOfSlots, capacityOfEachTank), 0, true);
+        this(new FluidTanksHandler(numberOfSlots, capacityOfEachTank), 0, false);
     }
 
     public FluidInventoryLogic(int numberOfSlots, long capacityOfEachTank, int tier) {
-        this(new FluidTanksHandler(numberOfSlots, capacityOfEachTank), tier, true);
+        this(new FluidTanksHandler(numberOfSlots, capacityOfEachTank), tier, false);
     }
 
     public FluidInventoryLogic(int numberOfSlots, long capacityOfEachTank, int tier, boolean isUpgradeInventory) {
@@ -138,7 +138,7 @@ public class FluidInventoryLogic {
         }
         int tankNumber = 0;
         tank = inventory.getFluidTank(tankNumber++);
-        while (tank.getStoredFluid() != fluid) {
+        while (tank.getStoredFluid() != fluid && tank.getStoredFluid() != null) {
             tank = inventory.getFluidTank(tankNumber++);
         }
         fluidToTankMap.put(fluid, tank);

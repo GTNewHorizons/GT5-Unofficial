@@ -7,6 +7,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
@@ -46,8 +48,12 @@ public class ControllerFluidLogic {
         return generatedUUID;
     }
 
+    @Nullable
     private Pair<UUID, FluidInventoryLogic> checkIfInventoryExistsAsUnallocated(
         @NotNull FluidInventoryLogic inventory) {
+        if (unallocatedInventories.size() == 0) {
+            return null;
+        }
         return unallocatedInventories.stream()
             .filter(
                 unallocated -> unallocated.getRight()
