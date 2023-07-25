@@ -14,6 +14,8 @@ import static gregtech.api.util.GT_StructureUtility.ofCoil;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -34,6 +36,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMul
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -169,7 +172,14 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setEuModifier(1.0F - Math.min(0.1F * (heatLevel.getTier() + 1), 0.5F));
+        return new ProcessingLogic() {
+
+            @Nonnull
+            public CheckRecipeResult process() {
+                setEuModifier(1.0F - Math.min(0.1F * (heatLevel.getTier() + 1), 0.5F));
+                return super.process();
+            }
+        };
     }
 
     @Override
