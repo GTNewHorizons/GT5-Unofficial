@@ -21,8 +21,11 @@ import static java.lang.Math.log;
 import static java.lang.Math.pow;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.IDualInputInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -685,6 +688,19 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         // Look up recipe. If not found it will return null.
         GT_Recipe tRecipe_0 = GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes
             .findRecipe(getBaseMetaTileEntity(), false, tTotalEU, tFluids, tItems);
+
+        // Try crafting input buffers
+        if (tRecipe_0 == null) {
+            for (IDualInputHatch hatch : mDualInputHatches) {
+                for (Iterator<? extends IDualInputInventory> it = hatch.inventories(); it.hasNext(); ) {
+                    IDualInputInventory inventory = it.next();
+                    tRecipe_0 = GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes
+                        .findRecipe(getBaseMetaTileEntity(), false, tTotalEU, inventory.getFluidInputs(), inventory.getItemInputs());
+                    if (tRecipe_0 != null) break;
+                }
+                if (tRecipe_0 != null) break;
+            }
+        }
 
         // Check if recipe found.
         if (tRecipe_0 == null) return CheckRecipeResultRegistry.NO_RECIPE;

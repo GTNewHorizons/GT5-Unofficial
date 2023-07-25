@@ -230,7 +230,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     // a hash map for faster lookup of pattern slots, not necessarily all valid.
     private Map<ICraftingPatternDetails, PatternSlot> patternDetailsPatternSlotMap = new HashMap<>(MAX_PATTERN_COUNT);
 
-    private boolean initialPatternSyncDone = false;
+    private boolean needPatternSync = true;
     private boolean justHadNewItems = false;
 
     private boolean supportFluids;
@@ -263,6 +263,11 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     }
 
     @Override
+    public ITexture[] getTexturesActive(ITexture aBaseTexture) {
+        return getTexturesInactive(aBaseTexture);
+    }
+
+    @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, TextureFactory.of(
             supportFluids ? OVERLAY_ME_CRAFTING_INPUT_BUFFER : OVERLAY_ME_CRAFTING_INPUT_BUS
@@ -273,14 +278,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         super.onPostTick(aBaseMetaTileEntity, aTimer);
 
-        if (!initialPatternSyncDone && aTimer % 10 == 0 && getBaseMetaTileEntity().isServerSide()) {
-            try {
-                getProxy().getGrid()
-                    .postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
-            } catch (GridAccessException ignored) {
-                return;
-            }
-            initialPatternSyncDone = true;
+        if (needPatternSync && aTimer % 10 == 0 && getBaseMetaTileEntity().isServerSide()) {
+            needPatternSync = !postMEPatternChange();
         }
     }
 
@@ -332,6 +331,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             getProxy().getNode()
                 .updateState();
         }
+        needPatternSync = true;
     }
 
     @Override
@@ -694,4 +694,15 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     public ItemStack getCrafterIcon() {
         return getMachineCraftingIcon();
     }
+
+    private boolean postMEPatternChange() {
+        try {
+            getProxy().getGrid()
+                .postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
+        } catch (GridAccessException ignored) {
+            return false;
+        }
+        return true;
+    }
+
 }
