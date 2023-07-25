@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.ObjectStreamClass;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
@@ -15,6 +16,11 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -41,7 +47,7 @@ public class RendererMessage implements IMessage {
             byte[] boop = pBuffer.array();
             boop = Arrays.copyOfRange(boop, 1, boop.length);
             InputStream is = new ByteArrayInputStream(boop);
-            ObjectInputStream ois = new ObjectInputStream(is);
+            ObjectInputStream ois = new ValidatingObjectInputStream(is);
             Object data = ois.readObject();
             sparkList = (HashSet<ThaumSpark>) data;
         } catch (IOException | ClassNotFoundException ignored) {}
@@ -115,6 +121,27 @@ public class RendererMessage implements IMessage {
                 bolt.setWidth(0.125F);
                 bolt.finalizeBolt();
             }
+        }
+    }
+
+    private static class ValidatingObjectInputStream extends ObjectInputStream {
+
+        private static final Logger logger = LogManager.getLogger();
+        private static final Marker securityMarker = MarkerManager.getMarker("SuspiciousPackets");
+
+        private ValidatingObjectInputStream(InputStream in) throws IOException {
+            super(in);
+        }
+
+        @Override
+        protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
+            String name = desc.getName();
+            if (!name.equals("java.util.HashSet")
+                    && !name.equals("com.github.technus.tectech.mechanics.spark.ThaumSpark")) {
+                logger.warn(securityMarker, "Received packet containing disallowed class: " + name);
+                throw new RuntimeException();
+            }
+            return super.resolveClass(desc);
         }
     }
 }
