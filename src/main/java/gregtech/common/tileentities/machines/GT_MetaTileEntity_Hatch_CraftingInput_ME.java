@@ -533,6 +533,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                     originalPattern.refund(getProxy(), getRequest());
                 } catch (GridAccessException ignored) {}
                 internalInventory[slot.getSlotIndex()] = null;
+                needPatternSync = true;
             } else {
                 return; // nothing has changed
             }
@@ -546,7 +547,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         internalInventory[slot.getSlotIndex()] = patternSlot;
         patternDetailsPatternSlotMap.put(patternSlot.getPatternDetails(), patternSlot);
 
-        needPatternSync = !postMEPatternChange();
+        needPatternSync = true;
     }
 
     private ItemStack[] getSharedItems() {
