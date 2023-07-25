@@ -546,7 +546,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         internalInventory[slot.getSlotIndex()] = patternSlot;
         patternDetailsPatternSlotMap.put(patternSlot.getPatternDetails(), patternSlot);
 
-        needPatternSync = true;
+        needPatternSync = !postMEPatternChange();
     }
 
     private ItemStack[] getSharedItems() {

@@ -671,11 +671,22 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     @NotNull
     public CheckRecipeResult checkProcessing() {
         CheckRecipeResult recipe_process = processRecipe(getCompactedInputs(), getCompactedFluids());
+        if (recipe_process.wasSuccessful())
+            return recipe_process;
+
+        // If not successful, then try crafting input buffers
+        for (IDualInputHatch hatch : mDualInputHatches) {
+            for (Iterator<? extends IDualInputInventory> it = hatch.inventories(); it.hasNext(); ) {
+                IDualInputInventory inventory = it.next();
+                recipe_process = processRecipe(inventory.getItemInputs(), inventory.getFluidInputs());
+                if (recipe_process.wasSuccessful()) {
+                    return recipe_process;
+                }
+            }
+        }
 
         // If recipe cannot be found then continuity is broken and reset running time to 0.
-        if (!recipe_process.wasSuccessful()) {
-            resetDiscount();
-        }
+        resetDiscount();
 
         return recipe_process;
     }
@@ -688,19 +699,6 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         // Look up recipe. If not found it will return null.
         GT_Recipe tRecipe_0 = GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes
             .findRecipe(getBaseMetaTileEntity(), false, tTotalEU, tFluids, tItems);
-
-        // Try crafting input buffers
-        if (tRecipe_0 == null) {
-            for (IDualInputHatch hatch : mDualInputHatches) {
-                for (Iterator<? extends IDualInputInventory> it = hatch.inventories(); it.hasNext(); ) {
-                    IDualInputInventory inventory = it.next();
-                    tRecipe_0 = GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes
-                        .findRecipe(getBaseMetaTileEntity(), false, tTotalEU, inventory.getFluidInputs(), inventory.getItemInputs());
-                    if (tRecipe_0 != null) break;
-                }
-                if (tRecipe_0 != null) break;
-            }
-        }
 
         // Check if recipe found.
         if (tRecipe_0 == null) return CheckRecipeResultRegistry.NO_RECIPE;
