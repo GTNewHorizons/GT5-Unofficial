@@ -33,7 +33,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.FindRecipeResult;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_ModHandler;
@@ -228,22 +230,39 @@ public class GregtechMetaTileEntity_MassFabricator
 
             @NotNull
             @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+                if (mMode == MODE_SCRAP) {
+                    if (recipe.mOutputs == null) {
+                        return SimpleCheckRecipeResult.ofSuccess("no_scrap");
+                    }
+                }
+                return CheckRecipeResultRegistry.SUCCESSFUL;
+            }
+
+            @NotNull
+            @Override
             protected FindRecipeResult findRecipe(GT_Recipe_Map map) {
                 if (mMode == MODE_SCRAP) {
-                    ItemStack aPotentialOutput = GT_ModHandler
-                            .getRecyclerOutput(GT_Utility.copyAmount(1, inputItems[0]), 0);
-                    GT_Recipe recipe = new GTPP_Recipe(
-                            false,
-                            new ItemStack[] { GT_Utility.copyAmount(1, inputItems[0]) },
-                            aPotentialOutput == null ? null : new ItemStack[] { aPotentialOutput },
-                            null,
-                            new int[] { 2000 },
-                            null,
-                            null,
-                            40,
-                            MaterialUtils.getVoltageForTier(1),
-                            0);
-                    return FindRecipeResult.ofSuccess(recipe);
+                    if (inputItems != null) {
+                        for (ItemStack item : inputItems) {
+                            if (item == null || item.stackSize == 0) continue;
+                            ItemStack aPotentialOutput = GT_ModHandler
+                                    .getRecyclerOutput(GT_Utility.copyAmount(1, item), 0);
+                            GT_Recipe recipe = new GTPP_Recipe(
+                                    false,
+                                    new ItemStack[] { GT_Utility.copyAmount(1, item) },
+                                    aPotentialOutput == null ? null : new ItemStack[] { aPotentialOutput },
+                                    null,
+                                    new int[] { 2000 },
+                                    null,
+                                    null,
+                                    40,
+                                    MaterialUtils.getVoltageForTier(1),
+                                    0);
+                            return FindRecipeResult.ofSuccess(recipe);
+                        }
+                    }
+                    return FindRecipeResult.NOT_FOUND;
                 }
                 return super.findRecipe(map);
             }

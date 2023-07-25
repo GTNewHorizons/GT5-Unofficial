@@ -14,6 +14,7 @@ GT5U.gui.text.no_catalyst=§7No valid catalyst found
 GT5U.gui.text.no_milling_ball=§7No milling ball found
 GT5U.gui.text.growing_trees=§aGrowing trees
 GT5U.gui.text.managing_power=§aManaging power
+GT5U.gui.text.no_scrap=§aInput too low quality
 GT5U.gui.text.warm_up=§aWarming up
 GT5U.gui.text.machine_locked_to_different_recipe=§7Machine is already locked to a different recipe
 
