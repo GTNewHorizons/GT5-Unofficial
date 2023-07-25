@@ -58,124 +58,31 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
             }
         }
 
-        if (aTileEntity instanceof FluidInventoryLogicHost current) {
-            final TileEntity toAccess = aTileEntity.getTileEntityAtSide(side);
-            transferFluid(current, toAccess, side, aCoverVariable % 2);
-            return aCoverVariable;
-        }
         if (aTileEntity instanceof IFluidHandler current) {
-            final TileEntity toAccess = aTileEntity.getTileEntityAtSide(side);
+            final IFluidHandler toAccess = aTileEntity.getITankContainerAtSide(side);
             transferFluid(current, toAccess, side, aCoverVariable % 2);
         }
         return aCoverVariable;
     }
 
-    protected void transferFluid(FluidInventoryLogicHost current, TileEntity toAccess, ForgeDirection side,
-        int exportOrImport) {
-        if (toAccess instanceof FluidInventoryLogicHost toAccessFluidHost) {
-            if (exportOrImport == 0) {
-                FluidInventoryLogic currentLogic = current.getFluidLogic(ForgeDirection.UNKNOWN, InventoryType.Output);
-                FluidStack liquid = currentLogic.drain(this.mTransferRate, true);
-                if (liquid != null) {
-                    FluidInventoryLogic toAccessLogic = toAccessFluidHost
-                        .getFluidLogic(ForgeDirection.UNKNOWN, InventoryType.Input);
-                    liquid = liquid.copy();
-                    liquid.amount = saturatedCast(toAccessLogic.fill(liquid.getFluid(), liquid.amount, true));
-                    if (liquid.amount > 0 && canTransferFluid(liquid)) {
-                        FluidStack liquidDrained = currentLogic.drain(liquid.getFluid(), liquid.amount, false);
-                        toAccessLogic.fill(liquidDrained.getFluid(), liquidDrained.amount, false);
-                    }
-                }
-                return;
-            }
-            FluidInventoryLogic toAccessLogic = toAccessFluidHost
-                .getFluidLogic(ForgeDirection.UNKNOWN, InventoryType.Output);
-            FluidStack liquid = toAccessLogic.drain(this.mTransferRate, true);
+    protected void transferFluid(IFluidHandler current, IFluidHandler toAccess, ForgeDirection side, int exportOrImport) {
+        if (exportOrImport == 0) {
+            FluidStack liquid = current.drain(side, this.mTransferRate, false);
             if (liquid != null) {
-                FluidInventoryLogic currentLogic = current.getFluidLogic(ForgeDirection.UNKNOWN, InventoryType.Input);
                 liquid = liquid.copy();
-                liquid.amount = saturatedCast(currentLogic.fill(liquid.getFluid(), liquid.amount, true));
+                liquid.amount = toAccess.fill(side.getOpposite(), liquid, false);
                 if (liquid.amount > 0 && canTransferFluid(liquid)) {
-                    FluidStack liquidDrained = toAccessLogic.drain(liquid.getFluid(), liquid.amount, false);
-                    currentLogic.fill(liquidDrained.getFluid(), liquidDrained.amount, false);
+                    toAccess.fill(side.getOpposite(), current.drain(side, liquid.amount, true), true);
                 }
             }
-
+            return;
         }
-        if (toAccess instanceof IFluidHandler toAccessFluidHandler) {
-            if (exportOrImport == 0) {
-                FluidInventoryLogic logic = current.getFluidLogic(ForgeDirection.UNKNOWN, InventoryType.Output);
-                FluidStack liquid = logic.drain(this.mTransferRate, true);
-                if (liquid != null) {
-                    liquid = liquid.copy();
-                    liquid.amount = toAccessFluidHandler.fill(side.getOpposite(), liquid, false);
-                    if (liquid.amount > 0 && canTransferFluid(liquid)) {
-                        toAccessFluidHandler
-                            .fill(side.getOpposite(), logic.drain(liquid.getFluid(), liquid.amount, false), true);
-                    }
-                }
-                return;
-            }
-            FluidStack liquid = toAccessFluidHandler.drain(side.getOpposite(), this.mTransferRate, false);
-            if (liquid != null) {
-                FluidInventoryLogic logic = current.getFluidLogic(ForgeDirection.UNKNOWN, InventoryType.Input);
-                liquid = liquid.copy();
-                liquid.amount = saturatedCast(logic.fill(liquid.getFluid(), liquid.amount, true));
-                if (liquid.amount > 0 && canTransferFluid(liquid)) {
-                    FluidStack liquidDrained = toAccessFluidHandler.drain(side.getOpposite(), liquid.amount, true);
-                    logic.fill(liquidDrained.getFluid(), liquidDrained.amount, false);
-                }
-            }
-
-        }
-    }
-
-    protected void transferFluid(IFluidHandler current, TileEntity toAccess, ForgeDirection side, int exportOrImport) {
-        if (toAccess instanceof FluidInventoryLogicHost toAccessFluidHost) {
-            if (exportOrImport == 0) {
-                FluidStack liquid = current.drain(side, this.mTransferRate, false);
-                if (liquid != null) {
-                    FluidInventoryLogic logic = toAccessFluidHost
-                        .getFluidLogic(ForgeDirection.UNKNOWN, InventoryType.Input);
-                    liquid = liquid.copy();
-                    liquid.amount = saturatedCast(logic.fill(liquid.getFluid(), liquid.amount, true));
-                    if (liquid.amount > 0 && canTransferFluid(liquid)) {
-                        FluidStack liquidDrained = current.drain(side.getOpposite(), liquid.amount, true);
-                        logic.fill(liquidDrained.getFluid(), liquidDrained.amount, false);
-                    }
-                }
-                return;
-            }
-            FluidInventoryLogic logic = toAccessFluidHost.getFluidLogic(ForgeDirection.UNKNOWN, InventoryType.Output);
-            FluidStack liquid = logic.drain(this.mTransferRate, true);
-            if (liquid != null) {
-                liquid = liquid.copy();
-                liquid.amount = current.fill(side, liquid, false);
-                if (liquid.amount > 0 && canTransferFluid(liquid)) {
-                    current.fill(side, logic.drain(liquid.getFluid(), liquid.amount, false), true);
-                }
-            }
-
-        }
-        if (toAccess instanceof IFluidHandler toAccessFluidHandler) {
-            if (exportOrImport == 0) {
-                FluidStack liquid = current.drain(side, this.mTransferRate, false);
-                if (liquid != null) {
-                    liquid = liquid.copy();
-                    liquid.amount = toAccessFluidHandler.fill(side.getOpposite(), liquid, false);
-                    if (liquid.amount > 0 && canTransferFluid(liquid)) {
-                        toAccessFluidHandler.fill(side.getOpposite(), current.drain(side, liquid.amount, true), true);
-                    }
-                }
-                return;
-            }
-            FluidStack liquid = toAccessFluidHandler.drain(side.getOpposite(), this.mTransferRate, false);
-            if (liquid != null) {
-                liquid = liquid.copy();
-                liquid.amount = current.fill(side, liquid, false);
-                if (liquid.amount > 0 && canTransferFluid(liquid)) {
-                    current.fill(side, toAccessFluidHandler.drain(side.getOpposite(), liquid.amount, true), true);
-                }
+        FluidStack liquid = toAccess.drain(side.getOpposite(), this.mTransferRate, false);
+        if (liquid != null) {
+            liquid = liquid.copy();
+            liquid.amount = current.fill(side, liquid, false);
+            if (liquid.amount > 0 && canTransferFluid(liquid)) {
+                current.fill(side, toAccess.drain(side.getOpposite(), liquid.amount, true), true);
             }
         }
     }
