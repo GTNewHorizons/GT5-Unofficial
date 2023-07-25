@@ -20,6 +20,16 @@
 
 package kubatech.loaders;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBenderRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCutterRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
+import static gregtech.api.util.GT_RecipeConstants.RESEARCH_ITEM;
+import static gregtech.api.util.GT_RecipeConstants.RESEARCH_TIME;
+import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static kubatech.api.enums.ItemList.BlackTea;
 import static kubatech.api.enums.ItemList.BlackTeaLeaf;
 import static kubatech.api.enums.ItemList.BruisedTeaLeaf;
@@ -56,7 +66,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -108,22 +117,26 @@ public class RecipeLoader {
             "multimachine.extremeapiary",
             "Industrial Apicultural Acclimatiser and Drone Domestication Station",
             LoaderReference.Forestry)) {
-            GT_Values.RA.addAssemblylineRecipe(
-                gregtech.api.enums.ItemList.Machine_IndustrialApiary.get(1),
-                10000,
-                new Object[] { gregtech.api.enums.ItemList.Machine_IndustrialApiary.get(64L),
+            GT_Values.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, gregtech.api.enums.ItemList.Machine_IndustrialApiary.get(1))
+                .metadata(RESEARCH_TIME, 8 * MINUTES + 20 * SECONDS)
+                .itemInputs(
+                    gregtech.api.enums.ItemList.Machine_IndustrialApiary.get(64L),
                     gregtech.api.enums.ItemList.IndustrialApiary_Upgrade_Acceleration_8_Upgraded.get(64L),
                     gregtech.api.enums.ItemList.IndustrialApiary_Upgrade_STABILIZER.get(64L),
                     gregtech.api.enums.ItemList.Robot_Arm_UV.get(16L),
                     new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
                     new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
                     new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L }, },
-                new FluidStack[] { FluidRegistry.getFluidStack("molten.indalloy140", 28800),
-                    FluidRegistry.getFluidStack("for.honey", 20000) },
-                ExtremeIndustrialApiary.get(1),
-                6000,
-                2_048_000);
+                    new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L })
+                .fluidInputs(
+                    FluidRegistry.getFluidStack("molten.indalloy140", 28800),
+                    FluidRegistry.getFluidStack("for.honey", 20000))
+                .noFluidOutputs()
+                .itemOutputs(ExtremeIndustrialApiary.get(1))
+                .eut(2_048_000)
+                .duration(5 * MINUTES)
+                .addTo(AssemblyLine);
         }
         if (registerMTEUsingID(
             12_792,
@@ -216,13 +229,14 @@ public class RecipeLoader {
                 null,
                 100,
                 32);
-            GT_Values.RA.addMixerRecipe(
-                new ItemStack[] { TeaLeafDehydrated.get(1) },
-                new FluidStack[] { FluidRegistry.getFluidStack("water", 50) },
-                new ItemStack[] { SteamedTeaLeaf.get(1) },
-                null,
-                100,
-                32);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(TeaLeafDehydrated.get(1))
+                .itemOutputs(SteamedTeaLeaf.get(1))
+                .fluidInputs(FluidRegistry.getFluidStack("water", 50))
+                .noFluidOutputs()
+                .eut(32)
+                .duration(5 * SECONDS)
+                .addTo(sMixerRecipes);
             CORE.RA.addDehydratorRecipe(
                 new ItemStack[] { SteamedTeaLeaf.get(1) },
                 null,
@@ -231,7 +245,14 @@ public class RecipeLoader {
                 null,
                 100,
                 32);
-            GT_Values.RA.addBenderRecipe(TeaLeafDehydrated.get(1), RolledTeaLeaf.get(1), 100, 32);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(TeaLeafDehydrated.get(1))
+                .itemOutputs(RolledTeaLeaf.get(1))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .eut(32)
+                .duration(5 * SECONDS)
+                .addTo(sBenderRecipes);
             CORE.RA.addDehydratorRecipe(
                 new ItemStack[] { RolledTeaLeaf.get(1) },
                 null,
@@ -240,12 +261,14 @@ public class RecipeLoader {
                 null,
                 100,
                 32);
-            GT_Values.RA.addChemicalRecipe(
-                RolledTeaLeaf.get(1),
-                GT_Utility.getIntegratedCircuit(1),
-                OxidizedTeaLeaf.get(1),
-                100,
-                32);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(RolledTeaLeaf.get(1), GT_Utility.getIntegratedCircuit(1))
+                .itemOutputs(OxidizedTeaLeaf.get(1))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .eut(32)
+                .duration(5 * SECONDS)
+                .addTo(UniversalChemical);
             CORE.RA.addDehydratorRecipe(
                 new ItemStack[] { OxidizedTeaLeaf.get(1) },
                 null,
@@ -254,12 +277,14 @@ public class RecipeLoader {
                 null,
                 100,
                 32);
-            GT_Values.RA.addChemicalRecipe(
-                RolledTeaLeaf.get(1),
-                GT_Utility.getIntegratedCircuit(2),
-                FermentedTeaLeaf.get(1),
-                200,
-                32);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(RolledTeaLeaf.get(1), GT_Utility.getIntegratedCircuit(2))
+                .itemOutputs(FermentedTeaLeaf.get(1))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .eut(32)
+                .duration(10 * SECONDS)
+                .addTo(UniversalChemical);
             CORE.RA.addDehydratorRecipe(
                 new ItemStack[] { FermentedTeaLeaf.get(1) },
                 null,
@@ -268,18 +293,22 @@ public class RecipeLoader {
                 null,
                 100,
                 32);
-            GT_Values.RA.addCutterRecipe(
-                new ItemStack[] { TeaLeafDehydrated.get(1) },
-                new ItemStack[] { BruisedTeaLeaf.get(1) },
-                100,
-                32,
-                false);
-            GT_Values.RA.addChemicalRecipe(
-                BruisedTeaLeaf.get(1),
-                GT_Utility.getIntegratedCircuit(1),
-                PartiallyOxidizedTeaLeaf.get(1),
-                50,
-                32);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(TeaLeafDehydrated.get(1))
+                .itemOutputs(BruisedTeaLeaf.get(1))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .eut(32)
+                .duration(5 * SECONDS)
+                .addTo(sCutterRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(BruisedTeaLeaf.get(1), GT_Utility.getIntegratedCircuit(1))
+                .itemOutputs(PartiallyOxidizedTeaLeaf.get(1))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .eut(32)
+                .duration(2 * SECONDS + 10 * TICKS)
+                .addTo(UniversalChemical);
             CORE.RA.addDehydratorRecipe(
                 new ItemStack[] { PartiallyOxidizedTeaLeaf.get(1) },
                 null,
@@ -291,55 +320,63 @@ public class RecipeLoader {
 
             // Tea Assembly
             GameRegistry.addSmelting(BlackTeaLeaf.get(1), BlackTea.get(1), 10);
-            GT_Values.RA.addMixerRecipe(
-                new ItemStack[] { BlackTea.get(1), GameRegistry.findItemStack("harvestcraft", "limejuiceItem", 1) },
-                null,
-                new ItemStack[] { EarlGrayTea.get(1) },
-                null,
-                100,
-                32);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(BlackTea.get(1), GameRegistry.findItemStack("harvestcraft", "limejuiceItem", 1))
+                .itemOutputs(EarlGrayTea.get(1))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .eut(32)
+                .duration(5 * SECONDS)
+                .addTo(sMixerRecipes);
             GameRegistry.addSmelting(GreenTeaLeaf.get(1), GreenTea.get(1), 10);
-            GT_Values.RA.addMixerRecipe(
-                new ItemStack[] { BlackTea.get(1) },
-                new FluidStack[] { FluidRegistry.getFluidStack("potion.lemonjuice", 1000) },
-                new ItemStack[] { LemonTea.get(1) },
-                null,
-                100,
-                32);
-            GT_Values.RA.addMixerRecipe(
-                new ItemStack[] { BlackTea.get(1) },
-                new FluidStack[] { FluidRegistry.getFluidStack("milk", 1000) },
-                new ItemStack[] { MilkTea.get(1) },
-                null,
-                100,
-                32);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(BlackTea.get(1))
+                .itemOutputs(LemonTea.get(1))
+                .fluidInputs(FluidRegistry.getFluidStack("potion.lemonjuice", 1000))
+                .noFluidOutputs()
+                .eut(32)
+                .duration(5 * SECONDS)
+                .addTo(sMixerRecipes);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(BlackTea.get(1))
+                .itemOutputs(MilkTea.get(1))
+                .fluidInputs(FluidRegistry.getFluidStack("milk", 1000))
+                .noFluidOutputs()
+                .eut(32)
+                .duration(5 * SECONDS)
+                .addTo(sMixerRecipes);
             GameRegistry.addSmelting(OolongTeaLeaf.get(1), OolongTea.get(1), 10);
-            GT_Values.RA.addMixerRecipe(
-                new ItemStack[] { GameRegistry.findItemStack("harvestcraft", "peppermintItem", 1) },
-                new FluidStack[] { FluidRegistry.getFluidStack("water", 1000) },
-                new ItemStack[] { PeppermintTea.get(1) },
-                null,
-                100,
-                32);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GameRegistry.findItemStack("harvestcraft", "peppermintItem", 1))
+                .itemOutputs(PeppermintTea.get(1))
+                .fluidInputs(FluidRegistry.getFluidStack("water", 1000))
+                .noFluidOutputs()
+                .eut(32)
+                .duration(5 * SECONDS)
+                .addTo(sMixerRecipes);
             GameRegistry.addSmelting(PuerhTeaLeaf.get(1), PuerhTea.get(1), 10);
             GameRegistry.addSmelting(WhiteTeaLeaf.get(1), WhiteTea.get(1), 10);
             GameRegistry.addSmelting(YellowTeaLeaf.get(1), YellowTea.get(1), 10);
         }
         if (LoaderReference.Avaritia && LoaderReference.GTNHCoreMod) {
-            GT_Values.RA.addAssemblylineRecipe(
-                TeaAcceptorResearchNote.get(1),
-                10000,
-                new Object[] { LegendaryUltimateTea.get(0),
+            GT_Values.RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, TeaAcceptorResearchNote.get(1))
+                .metadata(RESEARCH_TIME, 8 * MINUTES + 20 * SECONDS)
+                .itemInputs(
+                    LegendaryUltimateTea.get(0),
                     GameRegistry.findItemStack("Avaritia", "Neutronium_Compressor", 1),
-                    gregtech.api.enums.ItemList.Quantum_Tank_EV.get(1), CustomItemList.FluidExtractorUHV.get(10),
+                    gregtech.api.enums.ItemList.Quantum_Tank_EV.get(1),
+                    CustomItemList.FluidExtractorUHV.get(10),
                     new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
                     new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
                     new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
-                    new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L }, },
-                new FluidStack[] { FluidRegistry.getFluidStack("molten.indalloy140", 28800) },
-                TeaAcceptor.get(1),
-                6000,
-                2_048_000);
+                    new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L })
+                .fluidInputs(FluidRegistry.getFluidStack("molten.indalloy140", 28800))
+                .noFluidOutputs()
+                .itemOutputs(TeaAcceptor.get(1))
+                .eut(2_048_000)
+                .duration(5 * MINUTES)
+                .addTo(AssemblyLine);
         }
     }
 }

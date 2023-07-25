@@ -72,6 +72,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.google.common.collect.Multimap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -117,6 +119,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
@@ -481,35 +485,38 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     private final WeaponCache weaponCache = new WeaponCache();
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        if (getBaseMetaTileEntity().isClientSide()) return false;
-        if (aStack == null) return false;
+    @NotNull
+    public CheckRecipeResult checkProcessing() {
+        if (getBaseMetaTileEntity().isClientSide()) return CheckRecipeResultRegistry.NO_RECIPE;
+        ItemStack aStack = mInventory[1];
+        if (aStack == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        if (aStack.getItem() != poweredSpawnerItem) return false;
+        if (aStack.getItem() != poweredSpawnerItem) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        if (aStack.getTagCompound() == null) return false;
+        if (aStack.getTagCompound() == null) return CheckRecipeResultRegistry.NO_RECIPE;
         String mobType = aStack.getTagCompound()
             .getString("mobType");
-        if (mobType.isEmpty()) return false;
+        if (mobType.isEmpty()) return CheckRecipeResultRegistry.NO_RECIPE;
 
         if (mobType.equals("Skeleton") && getBaseMetaTileEntity().getWorld().provider instanceof WorldProviderHell
             && rand.nextInt(5) > 0) mobType = "witherSkeleton";
 
         MobHandlerLoader.MobEECRecipe recipe = MobHandlerLoader.recipeMap.get(mobType);
 
-        if (recipe == null) return false;
+        if (recipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
         if (!recipe.recipe.isPeacefulAllowed && this.getBaseMetaTileEntity()
-            .getWorld().difficultySetting == EnumDifficulty.PEACEFUL) return false;
+            .getWorld().difficultySetting == EnumDifficulty.PEACEFUL) return CheckRecipeResultRegistry.NO_RECIPE;
 
         if (isInRitualMode && isRitualValid()) {
-            if (getMaxInputEu() < recipe.mEUt / 4) return false;
+            if (getMaxInputEu() < recipe.mEUt / 4) return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt / 4);
             this.mOutputFluids = new FluidStack[] { FluidRegistry.getFluidStack("xpjuice", 5000) };
             this.mOutputItems = recipe.generateOutputs(rand, this, 3, 0, mIsProducingInfernalDrops);
             this.lEUt /= 4L;
             this.mMaxProgresstime = 400;
         } else {
-            if (getMaxInputEu() < recipe.mEUt) return false;
-            if (recipe.recipe.alwaysinfernal && getMaxInputEu() < recipe.mEUt * 8) return false;
+            if (getMaxInputEu() < recipe.mEUt) return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+            if (recipe.recipe.alwaysinfernal && getMaxInputEu() < recipe.mEUt * 8)
+                return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt * 8);
 
             double attackDamage = DIAMOND_SPIKES_DAMAGE; // damage from spikes
             GT_MetaTileEntity_Hatch_InputBus inputbus = this.mInputBusses.size() == 0 ? null : this.mInputBusses.get(0);
@@ -578,7 +585,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         mobPacket.sendToAllAround(16);
 
         this.updateSlots();
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     private boolean isRitualValid() {

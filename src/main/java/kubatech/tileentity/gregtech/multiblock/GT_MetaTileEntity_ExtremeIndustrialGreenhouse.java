@@ -75,6 +75,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -121,6 +123,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
@@ -404,7 +408,8 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
     }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
+    @NotNull
+    public CheckRecipeResult checkProcessing() {
         int tier = getVoltageTier();
         updateMaxSlots();
 
@@ -415,7 +420,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
 
         if (setupphase > 0) {
             if ((mStorage.size() >= mMaxSlots && setupphase == 1) || (mStorage.size() == 0 && setupphase == 2))
-                return false;
+                return CheckRecipeResultRegistry.NO_RECIPE;
 
             if (setupphase == 1) {
                 List<ItemStack> inputs = getStoredInputs();
@@ -437,10 +442,10 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
             this.lEUt = 0;
             this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
-            return true;
+            return CheckRecipeResultRegistry.SUCCESSFUL;
         }
-        if (mStorage.size() > mMaxSlots) return false;
-        if (mStorage.isEmpty()) return false;
+        if (mStorage.size() > mMaxSlots) return CheckRecipeResultRegistry.NO_RECIPE;
+        if (mStorage.isEmpty()) return CheckRecipeResultRegistry.NO_RECIPE;
 
         waterusage = 0;
         weedexusage = 0;
@@ -468,7 +473,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
             fluidsToUse.add(i);
             if (watercheck <= 0) break;
         }
-        if (watercheck > 0 && !debug) return false;
+        if (watercheck > 0 && !debug) return CheckRecipeResultRegistry.NO_RECIPE;
         watercheck = waterusage;
         for (GT_MetaTileEntity_Hatch_Input i : fluidsToUse) {
             int used = i.drain(watercheck, true).amount;
@@ -509,7 +514,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
         double multiplier = 1.d + (((double) boost / (double) maxboost) * 4d);
 
         if (isIC2Mode) {
-            if (glasTier < 6) return false;
+            if (glasTier < 6) return CheckRecipeResultRegistry.NO_RECIPE;
             this.mMaxProgresstime = 100;
             List<ItemStack> outputs = new ArrayList<>();
             for (int i = 0; i < Math.min(mMaxSlots, mStorage.size()); i++) outputs.addAll(
@@ -533,7 +538,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
         this.updateSlots();
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     @Override

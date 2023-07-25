@@ -65,6 +65,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -120,6 +122,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
@@ -449,7 +453,8 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
+    @NotNull
+    public CheckRecipeResult checkProcessing() {
         updateMaxSlots();
         if (mPrimaryMode < 2) {
             if (mPrimaryMode == 0 && mStorage.size() < mMaxSlots) {
@@ -470,12 +475,12 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
             } else if (mPrimaryMode == 1 && mStorage.size() > 0) {
                 if (tryOutputAll(mStorage, s -> Collections.singletonList(((BeeSimulator) s).queenStack)))
                     isCacheDirty = true;
-            } else return false;
+            } else return CheckRecipeResultRegistry.NO_RECIPE;
             mMaxProgresstime = 10;
             mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
             mEfficiencyIncrease = 10000;
             lEUt = 0;
-            return true;
+            return CheckRecipeResultRegistry.SUCCESSFUL;
         } else if (mPrimaryMode == 2) {
             if (mMaxSlots > 0 && !mStorage.isEmpty()) {
                 if (mSecondaryMode == 0) {
@@ -486,14 +491,15 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                         mStorage.forEach(s -> s.generate(w, t));
                     }
 
-                    if (mStorage.size() > mMaxSlots) return false;
+                    if (mStorage.size() > mMaxSlots) return CheckRecipeResultRegistry.NO_RECIPE;
 
-                    if (flowersError) return false;
+                    if (flowersError) return CheckRecipeResultRegistry.NO_RECIPE;
 
                     if (needsTVarUpdate) {
                         float t = (float) getVoltageTierExact();
                         needsTVarUpdate = false;
-                        mStorage.forEach(s -> s.updateTVar(t));
+                        World w = getBaseMetaTileEntity().getWorld();
+                        mStorage.forEach(s -> s.updateTVar(w, t));
                     }
 
                     int maxConsume = Math.min(mStorage.size(), mMaxSlots) * 40;
@@ -528,7 +534,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                     if (!depleteInput(PluginApiculture.items.royalJelly.getItemStack(64))
                         || !depleteInput(PluginApiculture.items.royalJelly.getItemStack(36))) {
                         this.updateSlots();
-                        return false;
+                        return CheckRecipeResultRegistry.NO_RECIPE;
                     }
                     calculateOverclock(GT_Values.V[5] - 2L, 1200);
                     if (this.lEUt > 0) this.lEUt = -this.lEUt;
@@ -538,11 +544,11 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                         .createIgnobleCopy() };
                     this.updateSlots();
                 }
-                return true;
+                return CheckRecipeResultRegistry.SUCCESSFUL;
             }
         }
 
-        return false;
+        return CheckRecipeResultRegistry.NO_RECIPE;
     }
 
     @Override
@@ -1095,6 +1101,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         float maxBeeCycles;
         String flowerType;
         String flowerTypeDescription;
+        private static IBeekeepingMode mode;
 
         public BeeSimulator(ItemStack queenStack, World world, float t) {
             isValid = false;
@@ -1105,11 +1112,11 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         }
 
         public void generate(World world, float t) {
+            if (mode == null) mode = beeRoot.getBeekeepingMode(world);
             drops.clear();
             specialDrops.clear();
             if (beeRoot.getType(this.queenStack) != EnumBeeType.QUEEN) return;
             IBee queen = beeRoot.getMember(this.queenStack);
-            IBeekeepingMode mode = beeRoot.getBeekeepingMode(world);
             IBeeModifier beeModifier = mode.getBeeModifier();
             float mod = beeModifier.getLifespanModifier(null, null, 1.f);
             int h = queen.getMaxHealth();
@@ -1120,7 +1127,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
             this.flowerTypeDescription = genome.getFlowerProvider()
                 .getDescription();
             IAlleleBeeSpecies primary = genome.getPrimary();
-            beeSpeed = genome.getSpeed() * beeModifier.getProductionModifier(null, 1.f);
+            beeSpeed = genome.getSpeed();
             genome.getPrimary()
                 .getProductChances()
                 .forEach((key, value) -> drops.add(new BeeDrop(key, value, beeSpeed, t)));
@@ -1203,7 +1210,8 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
             return beeRoot.getMemberStack(princess, EnumBeeType.PRINCESS.ordinal());
         }
 
-        public void updateTVar(float t) {
+        public void updateTVar(World world, float t) {
+            if (mode == null) mode = beeRoot.getBeekeepingMode(world);
             drops.forEach(d -> d.updateTVar(t));
             specialDrops.forEach(d -> d.updateTVar(t));
         }
@@ -1236,7 +1244,12 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
             }
 
             public void evaluate() {
-                this.amount = Bee.getFinalChance(chance, beeSpeed, MAX_PRODUCTION_MODIFIER_FROM_UPGRADES, t);
+                this.amount = Bee.getFinalChance(
+                    chance,
+                    beeSpeed,
+                    MAX_PRODUCTION_MODIFIER_FROM_UPGRADES + mode.getBeeModifier()
+                        .getProductionModifier(null, MAX_PRODUCTION_MODIFIER_FROM_UPGRADES),
+                    t);
             }
 
             public double getAmount(double speedModifier) {
