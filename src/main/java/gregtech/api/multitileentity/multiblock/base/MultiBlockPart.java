@@ -488,7 +488,8 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
         IMultiBlockController controller = getTarget(false);
         if (controller == null) return null;
-        return controller.getFluidLogic(modeSelected(FLUID_IN) ? InventoryType.Input : InventoryType.Output, lockedInventory);
+        return controller
+            .getFluidLogic(modeSelected(FLUID_IN) ? InventoryType.Input : InventoryType.Output, lockedInventory);
     }
 
     @Override
@@ -537,7 +538,8 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         final IMultiBlockController controller = getTarget(false);
         if (controller == null) return null;
 
-        return controller.getItemLogic(modeSelected(ITEM_IN) ? InventoryType.Input : InventoryType.Output, lockedInventory);
+        return controller
+            .getItemLogic(modeSelected(ITEM_IN) ? InventoryType.Input : InventoryType.Output, lockedInventory);
     }
 
     // #endregion
