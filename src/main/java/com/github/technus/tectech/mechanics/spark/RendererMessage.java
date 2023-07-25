@@ -16,6 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
@@ -34,6 +35,7 @@ public class RendererMessage implements IMessage {
     @SuppressWarnings("unchecked")
     @Override
     public void fromBytes(ByteBuf pBuffer) {
+        if (FMLCommonHandler.instance().getSide().isServer()) return;
         try {
             // I'd love to know why I need to offset by one byte for this to work
             byte[] boop = pBuffer.array();
