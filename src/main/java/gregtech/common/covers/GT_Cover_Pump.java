@@ -1,9 +1,6 @@
 package gregtech.common.covers;
 
-import static com.google.common.primitives.Ints.saturatedCast;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -12,14 +9,11 @@ import net.minecraftforge.fluids.IFluidHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.enums.InventoryType;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.logic.FluidInventoryLogic;
-import gregtech.api.logic.interfaces.FluidInventoryLogicHost;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
@@ -65,7 +59,8 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
         return aCoverVariable;
     }
 
-    protected void transferFluid(IFluidHandler current, IFluidHandler toAccess, ForgeDirection side, int exportOrImport) {
+    protected void transferFluid(IFluidHandler current, IFluidHandler toAccess, ForgeDirection side,
+        int exportOrImport) {
         if (exportOrImport == 0) {
             FluidStack liquid = current.drain(side, this.mTransferRate, false);
             if (liquid != null) {
