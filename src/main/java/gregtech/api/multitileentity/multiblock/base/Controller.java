@@ -125,10 +125,6 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         for (int i = 0; i < MultiTileCasingPurpose.values().length; i++) {
             registeredTickableParts.add(new LinkedList<>());
         }
-        controllerItemInput.addInventory(new ItemInventoryLogic(16));
-        controllerItemOutput.addInventory(new ItemInventoryLogic(16));
-        controllerFluidInput.addInventory(new FluidInventoryLogic(16, 32000));
-        controllerFluidOutput.addInventory(new FluidInventoryLogic(16, 32000));
     }
 
     /** Registry ID of the required casing */
@@ -231,12 +227,22 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     @Override
     protected void loadItemLogic(NBTTagCompound nbt) {
+        if (!nbt.hasKey(NBT.INV_INPUT_LIST) && !nbt.hasKey(NBT.INV_OUTPUT_LIST)) {
+            controllerItemInput.addInventory(new ItemInventoryLogic(16));
+            controllerItemOutput.addInventory(new ItemInventoryLogic(16));
+            return;
+        }
         controllerItemInput.loadFromNBT(nbt.getCompoundTag(NBT.INV_INPUT_LIST));
         controllerItemOutput.loadFromNBT(nbt.getCompoundTag(NBT.INV_OUTPUT_LIST));
     }
 
     @Override
     protected void loadFluidLogic(NBTTagCompound nbt) {
+        if (!nbt.hasKey(NBT.TANK_IN) && !nbt.hasKey(NBT.TANK_OUT)) {
+            controllerFluidInput.addInventory(new FluidInventoryLogic(16, 32000));
+            controllerFluidOutput.addInventory(new FluidInventoryLogic(16, 32000));
+            return;
+        }
         controllerFluidInput.loadFromNBT(nbt.getCompoundTag(NBT.TANK_IN));
         controllerFluidOutput.loadFromNBT(nbt.getCompoundTag(NBT.TANK_OUT));
     }

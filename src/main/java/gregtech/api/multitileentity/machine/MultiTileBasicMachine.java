@@ -297,22 +297,6 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     public void setLightValue(byte aLightValue) {}
 
     @Override
-    public String getInventoryName() {
-        final String name = getCustomName();
-        if (name != null) return name;
-        final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry.getRegistry(getMultiTileEntityRegistryID());
-        return tRegistry == null ? getClass().getName() : tRegistry.getLocal(getMultiTileEntityID());
-    }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer aPlayer) {
-        return playerOwnsThis(aPlayer, false) && mTickTimer > 40
-            && getTileEntityOffset(0, 0, 0) == this
-            && aPlayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64
-            && allowInteraction(aPlayer);
-    }
-
-    @Override
     public boolean isLiquidInput(ForgeDirection side) {
         return side != facing;
     }
@@ -343,16 +327,6 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
 
     public void markInputInventoryBeenModified() {
         hasInventoryChanged = true;
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int aSlot, ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 64;
     }
 
     // #region Machine

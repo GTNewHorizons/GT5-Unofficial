@@ -1095,11 +1095,6 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
-        return false;
-    }
-
-    @Override
     public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aLogLevel) {
         final ArrayList<String> tList = new ArrayList<>();
         if (aLogLevel > 2) {
@@ -1289,17 +1284,6 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     /**
      * Inventory - Do nothing by default
      */
-    @Override
-    public void openInventory() {
-        System.out.println("Open Inventory");
-        /* Do nothing */
-    }
-
-    @Override
-    public void closeInventory() {
-        System.out.println("Close Inventory");
-        /* Do nothing */
-    }
 
     @Override
     public boolean hasInventoryBeenModified() {
@@ -1318,56 +1302,6 @@ public abstract class MultiTileEntity extends CoverableTileEntity
 
     @Override
     public boolean addStackToSlot(int aIndex, ItemStack aStack, int aAmount) {
-        return false;
-    }
-
-    @Override
-    public int[] getAccessibleSlotsFromSide(int ordinalSide) {
-        return GT_Values.emptyIntArray;
-    }
-
-    @Override
-    public boolean canInsertItem(int aSlot, ItemStack aStack, int ordinalSide) {
-        return false;
-    }
-
-    @Override
-    public boolean canExtractItem(int aSlot, ItemStack aStack, int ordinalSide) {
-        return false;
-    }
-
-    @Override
-    public int getSizeInventory() {
-        return 0;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int aSlot) {
-        return null;
-    }
-
-    @Override
-    public ItemStack decrStackSize(int aSlot, int aDecrement) {
-        return null;
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int aSlot) {
-        return null;
-    }
-
-    @Override
-    public void setInventorySlotContents(int aSlot, ItemStack aStack) {
-        /* Do nothing */
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 0;
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int aSlot, ItemStack aStack) {
         return false;
     }
 

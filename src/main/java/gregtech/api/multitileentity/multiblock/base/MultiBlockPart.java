@@ -409,11 +409,6 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         return TextureFactory.of(texture, getCoverTexture(side));
     }
 
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer entityPlayer) {
-        return false;
-    }
-
     protected String getModeName(int aMode) {
         if (aMode == NOTHING) return "Nothing";
         if (aMode == getModeOrdinal(ITEM_IN)) return "Item Input";
@@ -540,6 +535,12 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
         return controller
             .getItemLogic(modeSelected(ITEM_IN) ? InventoryType.Input : InventoryType.Output, lockedInventory);
+    }
+
+    @Override
+    public InventoryType getItemInventoryType() {
+        if (!modeSelected(ITEM_IN, ITEM_OUT)) return InventoryType.Both;
+        return modeSelected(ITEM_IN) ? InventoryType.Input : InventoryType.Output;
     }
 
     // #endregion
