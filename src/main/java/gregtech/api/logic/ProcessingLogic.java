@@ -283,9 +283,10 @@ public class ProcessingLogic {
         }
 
         GT_Recipe recipe;
+        CheckRecipeResult result;
         if (findRecipeResult.isSuccessful()) {
             recipe = findRecipeResult.getRecipeNonNull();
-            CheckRecipeResult result = validateRecipe(recipe);
+            result = validateRecipe(recipe);
             if (!result.wasSuccessful()) {
                 return result;
             } else {
@@ -328,7 +329,7 @@ public class ProcessingLogic {
         outputItems = helper.getItemOutputs();
         outputFluids = helper.getFluidOutputs();
 
-        return CheckRecipeResultRegistry.SUCCESSFUL;
+        return result;
     }
 
     /**
