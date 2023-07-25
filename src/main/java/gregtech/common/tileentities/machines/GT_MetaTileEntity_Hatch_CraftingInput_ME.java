@@ -546,10 +546,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         internalInventory[slot.getSlotIndex()] = patternSlot;
         patternDetailsPatternSlotMap.put(patternSlot.getPatternDetails(), patternSlot);
 
-        try {
-            getProxy().getGrid()
-                .postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
-        } catch (GridAccessException ignored) {}
+        needPatternSync = true;
     }
 
     private ItemStack[] getSharedItems() {
@@ -696,6 +693,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     }
 
     private boolean postMEPatternChange() {
+        // don't post until it's active
+        if (!getProxy().isActive()) return false;
         try {
             getProxy().getGrid()
                 .postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
