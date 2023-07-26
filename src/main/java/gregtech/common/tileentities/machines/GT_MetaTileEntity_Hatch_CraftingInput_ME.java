@@ -23,16 +23,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.jetbrains.annotations.NotNull;
 
 import com.glodblock.github.common.item.ItemFluidPacket;
-import com.google.common.collect.ImmutableList;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import appeng.api.AEApi;
 import appeng.api.implementations.ICraftingPatternItem;
@@ -59,11 +51,8 @@ import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
@@ -72,8 +61,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_Hatch_InputBus
-    implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ICraftingProvider,
-    IGridProxyable, IDualInputHatch {
+    implements IConfigurationCircuitSupport, IPowerChannelState, ICraftingProvider, IGridProxyable, IDualInputHatch {
 
     // Each pattern slot in the crafting input hatch has its own internal inventory
     public static class PatternSlot implements IDualInputInventory {
@@ -484,35 +472,35 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         return true;
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.@NotNull Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            SlotGroup.ofItemHandler(inventoryHandler, 8)
-                .startFromSlot(0)
-                .endAtSlot(MAX_PATTERN_COUNT - 1)
-                .phantom(false)
-                .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_PATTERN_ME)
-                .widgetCreator(
-                    slot -> new SlotWidget(slot)
-                        .setFilter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
-                        .setChangeListener(() -> onPatternChange(slot)))
-                .build()
-                .setPos(7, 9))
-            .widget(
-                new SlotWidget(inventoryHandler, SLOT_MANUAL).setShiftClickPriority(11)
-                    .setBackground(getGUITextureSet().getItemSlot())
-                    .setPos(151, 45))
-            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (clickData.mouseButton == 0) {
-                    refundAll();
-                }
-            })
-                .setPlayClickSound(true)
-                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EXPORT)
-                .addTooltips(ImmutableList.of("Return all internally stored items back to AE"))
-                .setSize(16, 16)
-                .setPos(152, 28));
-    }
+    // @Override
+    // public void addUIWidgets(ModularWindow.@NotNull Builder builder, UIBuildContext buildContext) {
+    // builder.widget(
+    // SlotGroup.ofItemHandler(inventoryHandler, 8)
+    // .startFromSlot(0)
+    // .endAtSlot(MAX_PATTERN_COUNT - 1)
+    // .phantom(false)
+    // .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_PATTERN_ME)
+    // .widgetCreator(
+    // slot -> new SlotWidget(slot)
+    // .setFilter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
+    // .setChangeListener(() -> onPatternChange(slot)))
+    // .build()
+    // .setPos(7, 9))
+    // .widget(
+    // new SlotWidget(inventoryHandler, SLOT_MANUAL).setShiftClickPriority(11)
+    // .setBackground(getGUITextureSet().getItemSlot())
+    // .setPos(151, 45))
+    // .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+    // if (clickData.mouseButton == 0) {
+    // refundAll();
+    // }
+    // })
+    // .setPlayClickSound(true)
+    // .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EXPORT)
+    // .addTooltips(ImmutableList.of("Return all internally stored items back to AE"))
+    // .setSize(16, 16)
+    // .setPos(152, 28));
+    // }
 
     @Override
     public void updateSlots() {
@@ -524,37 +512,37 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         return requestSource;
     }
 
-    private void onPatternChange(BaseSlot slot) {
-        if (!getBaseMetaTileEntity().isServerSide()) return;
-
-        var world = getBaseMetaTileEntity().getWorld();
-
-        // remove old if applicable
-        var originalPattern = internalInventory[slot.getSlotIndex()];
-        if (originalPattern != null) {
-            if (originalPattern.hasChanged(slot.getStack(), world)) {
-                try {
-                    originalPattern.refund(getProxy(), getRequest());
-                } catch (GridAccessException ignored) {}
-                internalInventory[slot.getSlotIndex()] = null;
-            } else {
-                return; // nothing has changed
-            }
-        }
-
-        // original does not exist or has changed
-        var pattern = slot.getStack();
-        if (pattern == null || !(pattern.getItem() instanceof ICraftingPatternItem)) return;
-
-        var patternSlot = new PatternSlot(pattern, world, this::getSharedItems);
-        internalInventory[slot.getSlotIndex()] = patternSlot;
-        patternDetailsPatternSlotMap.put(patternSlot.getPatternDetails(), patternSlot);
-
-        try {
-            getProxy().getGrid()
-                .postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
-        } catch (GridAccessException ignored) {}
-    }
+    // private void onPatternChange(BaseSlot slot) {
+    // if (!getBaseMetaTileEntity().isServerSide()) return;
+    //
+    // var world = getBaseMetaTileEntity().getWorld();
+    //
+    // // remove old if applicable
+    // var originalPattern = internalInventory[slot.getSlotIndex()];
+    // if (originalPattern != null) {
+    // if (originalPattern.hasChanged(slot.getStack(), world)) {
+    // try {
+    // originalPattern.refund(getProxy(), getRequest());
+    // } catch (GridAccessException ignored) {}
+    // internalInventory[slot.getSlotIndex()] = null;
+    // } else {
+    // return; // nothing has changed
+    // }
+    // }
+    //
+    // // original does not exist or has changed
+    // var pattern = slot.getStack();
+    // if (pattern == null || !(pattern.getItem() instanceof ICraftingPatternItem)) return;
+    //
+    // var patternSlot = new PatternSlot(pattern, world, this::getSharedItems);
+    // internalInventory[slot.getSlotIndex()] = patternSlot;
+    // patternDetailsPatternSlotMap.put(patternSlot.getPatternDetails(), patternSlot);
+    //
+    // try {
+    // getProxy().getGrid()
+    // .postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
+    // } catch (GridAccessException ignored) {}
+    // }
 
     private ItemStack[] getSharedItems() {
         return new ItemStack[] { mInventory[SLOT_CIRCUIT], mInventory[SLOT_MANUAL] };
