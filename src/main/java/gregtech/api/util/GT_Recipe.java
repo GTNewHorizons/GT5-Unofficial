@@ -1249,23 +1249,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             true).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_DUST)
                 .setSlotOverlay(false, true, GT_UITextures.OVERLAY_SLOT_CRUSHED_ORE)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_MACERATE, ProgressWidget.Direction.RIGHT);
-        @Deprecated
-        public static final GT_Recipe_Map sByProductList = new GT_Recipe_Map(
-            new HashSet<>(1000),
-            "gt.recipe.byproductlist",
-            "Ore Byproduct List",
-            null,
-            GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Default"),
-            1,
-            6,
-            1,
-            0,
-            1,
-            E,
-            1,
-            E,
-            true,
-            false);
         public static final GT_Recipe_Map sReplicatorFakeRecipes = new ReplicatorFakeMap(
             new HashSet<>(100),
             "gt.recipe.replicator",
@@ -2330,11 +2313,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         new GT_Recipe_Map_OilCracker().setRecipeConfigFile("cracking", FIRST_FLUIDSTACK_INPUT)
             .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE, ProgressWidget.Direction.RIGHT)
             .setUsualFluidInputCount(2);
-        /**
-         * @deprecated Use sCrackingRecipes instead
-         */
-        @Deprecated
-        public static final GT_Recipe_Map sCrakingRecipes = sCrackingRecipes;
 
         public static final GT_Recipe_Map sPyrolyseRecipes = new GT_Recipe_Map(
             new HashSet<>(150),
@@ -2481,23 +2459,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 .setRecipeConfigFile("canning", FIRST_ITEM_INPUT)
                 .setSlotOverlay(false, false, false, GT_UITextures.OVERLAY_SLOT_CANISTER)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_CANNER, ProgressWidget.Direction.RIGHT);
-        @Deprecated
-        public static final GT_Recipe_Map sCNCRecipes = new GT_Recipe_Map(
-            new HashSet<>(100),
-            "gt.recipe.cncmachine",
-            "CNC Machine",
-            null,
-            GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Default"),
-            2,
-            1,
-            2,
-            1,
-            1,
-            E,
-            1,
-            E,
-            true,
-            true);
         public static final GT_Recipe_Map sLatheRecipes = new GT_Recipe_Map(
             new HashSet<>(1150),
             "gt.recipe.lathe",
@@ -3224,31 +3185,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             colorOverride = GT_GUIColorOverride.get(GuiTextures.BACKGROUND.location);
             if (sIndexedMappings.put(mUniqueIdentifier, this) != null)
                 throw new IllegalArgumentException("Duplicate recipe map registered: " + mUniqueIdentifier);
-        }
-
-        @Deprecated
-        public GT_Recipe_Map(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName,
-            String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems,
-            int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier,
-            String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed,
-            boolean aNEIUnificateOutput) {
-            this(
-                aRecipeList,
-                aUnlocalizedName,
-                aLocalName,
-                aNEIName,
-                aNEIGUIPath,
-                aUsualInputCount,
-                aUsualOutputCount,
-                aMinimalInputItems,
-                aMinimalInputFluids,
-                aAmperage,
-                aNEISpecialValuePre,
-                aNEISpecialValueMultiplier,
-                aNEISpecialValuePost,
-                aShowVoltageAmperageInNEI,
-                aNEIAllowed);
-            setNEIUnificateOutput(aNEIUnificateOutput);
         }
 
         public GT_Recipe_Map setDisableOptimize(boolean disableOptimize) {
