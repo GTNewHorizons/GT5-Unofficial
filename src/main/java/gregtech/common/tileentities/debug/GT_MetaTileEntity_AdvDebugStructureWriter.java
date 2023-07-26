@@ -320,10 +320,10 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     // .setPos(113, 96));
     // }
 
-    @Override
-    public boolean doesBindPlayerInventory() {
-        return false;
-    }
+    // @Override
+    // public boolean doesBindPlayerInventory() {
+    // return false;
+    // }
 
     public static class ForgeEventHandler {
 

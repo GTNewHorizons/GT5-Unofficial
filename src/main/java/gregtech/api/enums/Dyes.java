@@ -8,6 +8,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.objects.GT_ArrayList;
+import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 
 public enum Dyes implements IColorModulationContainer {
@@ -118,6 +119,10 @@ public enum Dyes implements IColorModulationContainer {
     @Override
     public short[] getRGBA() {
         return mRGBa;
+    }
+
+    public int getRGBInt() {
+        return GT_Util.getRGBInt(mRGBa);
     }
 
     public static Dyes getDyeFromIndex(short index) {

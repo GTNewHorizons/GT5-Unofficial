@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -663,6 +665,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
     // === Modular UI ===
 
+    @Nonnull
     @Override
     public String getLocalName() {
         if (modeSelected(ITEM_IN)) return "Input Inventory";
@@ -851,10 +854,10 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     // return super.createWindow(buildContext);
     // }
 
-    @Override
-    protected int getGUIHeight() {
-        return super.getGUIHeight() + 20;
-    }
+    // @Override
+    // protected int getGUIHeight() {
+    // return super.getGUIHeight() + 20;
+    // }
 
     // @Override
     // public void addGregTechLogo(Builder builder) {

@@ -2,6 +2,8 @@ package gregtech.api.metatileentity;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -20,6 +22,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.modularui.uifactory.MachineUIFactory;
 
 public abstract class CommonMetaTileEntity extends CoverableTileEntity
     implements IGregTechTileEntity, ICraftingIconProvider {
@@ -222,33 +225,6 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity
         return null;
     }
 
-    @Override
-    public String getLocalName() {
-        if (hasValidMetaTileEntity()) return getMetaTileEntity().getLocalName();
-        return super.getLocalName();
-    }
-
-    @Override
-    protected int getGUIWidth() {
-        if (hasValidMetaTileEntity()) return getMetaTileEntity().getGUIWidth();
-
-        return super.getGUIWidth();
-    }
-
-    @Override
-    protected int getGUIHeight() {
-        if (hasValidMetaTileEntity()) return getMetaTileEntity().getGUIHeight();
-
-        return super.getGUIHeight();
-    }
-
-    @Override
-    protected boolean doesBindPlayerInventory() {
-        if (hasValidMetaTileEntity()) return getMetaTileEntity().doesBindPlayerInventory();
-
-        return super.doesBindPlayerInventory();
-    }
-
     // @Override
     // public void addGregTechLogo(ModularWindow.Builder builder) {
     // if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IAddGregtechLogo) {
@@ -275,14 +251,6 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity
     // }
 
     @Override
-    public int getGUIColorization() {
-        if (hasValidMetaTileEntity()) {
-            return getMetaTileEntity().getGUIColorization();
-        }
-        return super.getGUIColorization();
-    }
-
-    @Override
     protected int getTextColorOrDefault(String textType, int defaultColor) {
         if (hasValidMetaTileEntity()) {
             return getMetaTileEntity().getTextColorOrDefault(textType, defaultColor);
@@ -301,5 +269,14 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity
     @Override
     public ItemStack getMachineCraftingIcon() {
         return getMetaTileEntity() != null ? getMetaTileEntity().getMachineCraftingIcon() : null;
+    }
+
+    @Nullable
+    @Override
+    protected MachineUIFactory<?> createMachineUIFactory() {
+        if (hasValidMetaTileEntity()) {
+            return getMetaTileEntity().createMachineUIFactory();
+        }
+        return null;
     }
 }

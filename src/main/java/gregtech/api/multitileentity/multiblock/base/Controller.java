@@ -1732,10 +1732,10 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     // // leave empty
     // }
 
-    @Override
-    public int getGUIHeight() {
-        return 192;
-    }
+    // @Override
+    // public int getGUIHeight() {
+    // return 192;
+    // }
 
     // protected Widget getGregTechLogo() {
     // return new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())

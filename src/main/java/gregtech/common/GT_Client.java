@@ -58,6 +58,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
+import gregtech.api.gui.modularui.GTThemes;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
@@ -535,6 +536,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
         Minecraft.getMinecraft()
             .getResourcePackRepository().rprMetadataSerializer
                 .registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
+        MinecraftForge.EVENT_BUS.register(new GTThemes());
 
         new GT_MetaTileEntity_AdvDebugStructureWriter.ForgeEventHandler();
 

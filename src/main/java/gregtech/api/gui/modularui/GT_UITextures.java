@@ -197,11 +197,13 @@ public class GT_UITextures {
         .location(GUI_PATH.apply("tab/title"))
         .imageSize(28, 28)
         .adaptable(4)
+        .canApplyTheme()
         .build();
     public static final UITexture TAB_TITLE_DARK = UITexture.builder()
         .location(GUI_PATH.apply("tab/title_dark"))
         .imageSize(28, 28)
         .adaptable(4)
+        .canApplyTheme()
         .build();
     public static final SteamTexture TAB_TITLE_STEAM = SteamTexture.adaptableTexture("tab/title_%s", 28, 28, 4);
     public static final SteamTexture TAB_TITLE_DARK_STEAM = SteamTexture
@@ -210,6 +212,7 @@ public class GT_UITextures {
         .location(GUI_PATH.apply("tab/title_angular"))
         .imageSize(28, 28)
         .adaptable(4)
+        .canApplyTheme()
         .build();
     public static final SteamTexture TAB_TITLE_ANGULAR_STEAM = SteamTexture
         .adaptableTexture("tab/title_angular_%s", 28, 28, 4);

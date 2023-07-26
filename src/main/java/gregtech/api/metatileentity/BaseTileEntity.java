@@ -4,13 +4,18 @@ import static gregtech.api.enums.GT_Values.COMPASS_DIRECTIONS;
 import static gregtech.api.enums.GT_Values.NW;
 import static gregtech.api.enums.GT_Values.SIDE_DOWN;
 import static gregtech.api.enums.GT_Values.SIDE_UP;
+import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -25,10 +30,13 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.future.ItemStackHandler;
+import com.cleanroommc.modularui.screen.ModularScreen;
+import com.cleanroommc.modularui.sync.GuiSyncHandler;
 
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.gui.modularui.IHasCommonGUI;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGTEnet;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -37,8 +45,8 @@ import gregtech.api.interfaces.tileentity.IIC2Enet;
 import gregtech.api.net.GT_Packet_Block_Event;
 import gregtech.api.net.GT_Packet_SetConfigurationCircuit;
 import gregtech.api.util.GT_TooltipDataCache;
-import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.modularui.uifactory.MachineUIFactory;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 
@@ -47,9 +55,8 @@ import ic2.api.energy.event.EnergyTileUnloadEvent;
  * <p/>
  * Basically everything a TileEntity should have.
  */
-public abstract class BaseTileEntity extends TileEntity implements IHasWorldObjectAndCoords, IIC2Enet, IGTEnet
-// , ITileWithModularUI
-{
+public abstract class BaseTileEntity extends TileEntity
+    implements IHasWorldObjectAndCoords, IIC2Enet, IGTEnet, IGuiHolder, IHasCommonGUI {
 
     protected boolean mInventoryChanged = false;
 
@@ -546,31 +553,6 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         return GT_Utility.trans(aKey, aEnglish);
     }
 
-    protected Supplier<Boolean> getValidator() {
-        return () -> !this.isDead();
-    }
-
-    // @Override
-    // public ModularWindow createWindow(UIBuildContext buildContext) {
-    // buildContext.setValidator(getValidator());
-    // final ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
-    // builder.setBackground(getGUITextureSet().getMainBackground());
-    // builder.setGuiTint(getGUIColorization());
-    // if (doesBindPlayerInventory()) {
-    // bindPlayerInventoryUI(builder, buildContext);
-    // }
-    // addUIWidgets(builder, buildContext);
-    // addTitleToUI(builder);
-    // addCoverTabs(builder, buildContext);
-    // final IConfigurationCircuitSupport csc = getConfigurationCircuitSupport();
-    // if (csc != null && csc.allowSelectCircuit()) {
-    // addConfigurationCircuitSlot(builder);
-    // } else {
-    // addGregTechLogo(builder);
-    // }
-    // return builder.build();
-    // }
-
     /*
      * IC2 Energy Compat
      */
@@ -631,104 +613,40 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     public static final int TOOLTIP_DELAY = 5;
 
     /**
-     * Override this to add {@link com.gtnewhorizons.modularui.api.widget.Widget}s for your UI.
+     * {@inheritDoc}
+     * <p>
+     * Use {@link #createMachineUIFactory()} if you don't need really special GUI handling.
      */
-    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {}
-
-    // public void bindPlayerInventoryUI(ModularWindow.Builder builder, UIBuildContext buildContext) {
-    // builder.bindPlayerInventory(buildContext.getPlayer(), 7, getGUITextureSet().getItemSlot());
-    // }
-
-    public String getLocalName() {
-        return "Unknown";
+    @Override
+    public void buildSyncHandler(GuiSyncHandler guiSyncHandler, EntityPlayer player) {
+        MachineUIFactory<?> machineUIFactory = createMachineUIFactory();
+        if (machineUIFactory == null) return;
+        machineUIFactory.buildSyncHandler(guiSyncHandler, player);
     }
 
-    // protected void addTitleToUI(ModularWindow.Builder builder) {
-    // addTitleToUI(builder, getLocalName());
-    // }
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Use {@link #createMachineUIFactory()} if you don't need really special GUI handling.
+     */
+    @Override
+    public ModularScreen createClientGui(EntityPlayer player) {
+        MachineUIFactory<?> machineUIFactory = createMachineUIFactory();
+        if (machineUIFactory == null) {
+            throw new IllegalStateException(
+                "Server requested client to open GUI, but machineUIFactory is null on client side!");
+        }
+        return ModularScreen.simple(GregTech.ID, "hoge", context -> machineUIFactory.createUIPanel(context, player));
+    }
 
-    // protected void addTitleToUI(ModularWindow.Builder builder, String title) {
-    // if (GT_Mod.gregtechproxy.mTitleTabStyle == 2) {
-    // addTitleItemIconStyle(builder, title);
-    // } else {
-    // addTitleTextStyle(builder, title);
-    // }
-    // }
-
-    // protected void addTitleTextStyle(ModularWindow.Builder builder, String title) {
-    // final int TAB_PADDING = 3;
-    // final int TITLE_PADDING = 2;
-    // int titleWidth = 0, titleHeight = 0;
-    // if (NetworkUtils.isClient()) {
-    // final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-    // final List<String> titleLines = fontRenderer
-    // .listFormattedStringToWidth(title, getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2);
-    // titleWidth = titleLines.size() > 1 ? getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2
-    // : fontRenderer.getStringWidth(title);
-    // // noinspection PointlessArithmeticExpression
-    // titleHeight = titleLines.size() * fontRenderer.FONT_HEIGHT + (titleLines.size() - 1) * 1;
-    // }
-    //
-    // final DrawableWidget tab = new DrawableWidget();
-    // final TextWidget text = new TextWidget(title).setDefaultColor(getTitleColor())
-    // .setTextAlignment(Alignment.CenterLeft)
-    // .setMaxWidth(titleWidth);
-    // if (GT_Mod.gregtechproxy.mTitleTabStyle == 1) {
-    // tab.setDrawable(getGUITextureSet().getTitleTabAngular())
-    // .setPos(0, -(titleHeight + TAB_PADDING) + 1)
-    // .setSize(getGUIWidth(), titleHeight + TAB_PADDING * 2);
-    // text.setPos(TAB_PADDING + TITLE_PADDING, -titleHeight + TAB_PADDING);
-    // } else {
-    // tab.setDrawable(getGUITextureSet().getTitleTabDark())
-    // .setPos(0, -(titleHeight + TAB_PADDING * 2) + 1)
-    // .setSize(titleWidth + (TAB_PADDING + TITLE_PADDING) * 2, titleHeight + TAB_PADDING * 2 - 1);
-    // text.setPos(TAB_PADDING + TITLE_PADDING, -titleHeight);
-    // }
-    // builder.widget(tab)
-    // .widget(text);
-    // }
-
-    // protected void addTitleItemIconStyle(ModularWindow.Builder builder, String title) {
-    // builder.widget(
-    // new MultiChildWidget().addChild(
-    // new DrawableWidget().setDrawable(getGUITextureSet().getTitleTabNormal())
-    // .setPos(0, 0)
-    // .setSize(24, 24))
-    // .addChild(
-    // new ItemDrawable(getStackForm(1)).asWidget()
-    // .setPos(4, 4))
-    // .addTooltip(title)
-    // .setTooltipShowUpDelay(TOOLTIP_DELAY)
-    // .setPos(0, -24 + 3));
-    // }
-
-    // @Override
-    // public GUITextureSet getGUITextureSet() {
-    // return GUITextureSet.DEFAULT;
-    // }
+    /**
+     * Creates GUI from template.
+     */
+    @Nullable
+    protected abstract MachineUIFactory<?> createMachineUIFactory();
 
     protected int getTitleColor() {
         return COLOR_TITLE.get();
-    }
-
-    // @Override
-    // public void addGregTechLogo(ModularWindow.Builder builder) {
-    // builder.widget(
-    // new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-    // .setSize(17, 17)
-    // .setPos(152, 63));
-    // }
-
-    protected int getGUIWidth() {
-        return 176;
-    }
-
-    protected int getGUIHeight() {
-        return 166;
-    }
-
-    protected boolean doesBindPlayerInventory() {
-        return true;
     }
 
     // @Override
@@ -797,10 +715,6 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     // .background(background)
     // .build()
     // .setPos(52, 7));
-    // }
-
-    // public void addCoverTabs(ModularWindow.Builder builder, UIBuildContext buildContext) {
-    // /* Do nothing */
     // }
 
     public IConfigurationCircuitSupport getConfigurationCircuitSupport() {
@@ -924,10 +838,13 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     protected Supplier<Integer> COLOR_TEXT_GRAY = () -> getTextColorOrDefault("text_gray", 0x404040);
     protected Supplier<Integer> COLOR_TEXT_RED = () -> getTextColorOrDefault("text_red", 0xff0000);
 
-    public int getGUIColorization() {
-        return GT_Util.getRGBaInt(Dyes.dyeWhite.getRGBA());
+    @Nonnull
+    @Override
+    public String getLocalName() {
+        return "Unknown";
     }
 
+    @Override
     public ItemStack getStackForm(long aAmount) {
         return null;
     }

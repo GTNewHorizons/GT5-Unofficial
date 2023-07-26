@@ -31,7 +31,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -45,12 +44,12 @@ import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.GT_Client;
 import gregtech.common.covers.CoverInfo;
+import gregtech.common.modularui.uifactory.MachineUIFactory;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -980,15 +979,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     public void reloadLocks() {}
 
     @Override
-    public int getGUIColorization() {
-        Dyes dye = Dyes.dyeWhite;
-        if (GregTech_API.sColoredGUI) {
-            if (GregTech_API.sMachineMetalGUI) {
-                dye = Dyes.MACHINE_METAL;
-            } else if (getBaseMetaTileEntity() != null) {
-                dye = Dyes.getDyeFromIndex(getBaseMetaTileEntity().getColorization());
-            }
-        }
-        return GT_Util.getRGBInt(dye.getRGBA());
+    public MachineUIFactory<?> createMachineUIFactory() {
+        return null;
     }
 }

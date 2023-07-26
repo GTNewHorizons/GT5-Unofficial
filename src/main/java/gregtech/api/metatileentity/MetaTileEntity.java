@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.Supplier;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -39,11 +41,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.GT_GUIColorOverride;
+import gregtech.api.gui.modularui.IHasCommonGUI;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
@@ -56,10 +58,10 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_TooltipDataCache;
-import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
 import gregtech.common.covers.CoverInfo;
+import gregtech.common.modularui.uifactory.MachineUIFactory;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -73,7 +75,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * GT_MetaTileEntity_E_Furnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
  */
 @SuppressWarnings("unused")
-public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomReceiver {
+public abstract class MetaTileEntity implements IMetaTileEntity, IHasCommonGUI, ICleanroomReceiver {
 
     /**
      * Only assigned for the MetaTileEntity in the List! Also only used to get the localized Name for the ItemStack and
@@ -192,6 +194,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
         return new ItemStack(GregTech_API.sBlockMachines, (int) aAmount, getBaseMetaTileEntity().getMetaTileID());
     }
 
+    @Nonnull
     @Override
     public String getLocalName() {
         return GT_LanguageManager.getTranslation("gt.blockmachines." + mName + ".name");
@@ -1237,28 +1240,52 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
         return "";
     }
 
+    @Override
+    public byte getColorization() {
+        if (isValid()) {
+            return getBaseMetaTileEntity().getColorization();
+        }
+        return -1;
+    }
+
+    @Override
+    public final MachineUIFactory<?> createMachineUIFactory() {
+        return createMachineUIFactoryImpl();
+    }
+
+    protected MachineUIFactory<?> createMachineUIFactoryImpl() {
+        return new MetaTileEntityUIFactory();
+    }
+
+    protected class MetaTileEntityUIFactory extends MachineUIFactory<MetaTileEntity> {
+
+        public MetaTileEntityUIFactory() {
+            super(MetaTileEntity.this);
+        }
+    }
+
     // @Override
     // public GUITextureSet getGUITextureSet() {
     // return GUITextureSet.DEFAULT;
     // }
 
-    @Override
-    public int getGUIColorization() {
-        Dyes dye = Dyes.dyeWhite;
-        if (this.colorOverride.sLoaded()) {
-            if (this.colorOverride.sGuiTintingEnabled() && getBaseMetaTileEntity() != null) {
-                dye = Dyes.getDyeFromIndex(getBaseMetaTileEntity().getColorization());
-                return this.colorOverride.getGuiTintOrDefault(dye.mName, GT_Util.getRGBInt(dye.getRGBA()));
-            }
-        } else if (GregTech_API.sColoredGUI) {
-            if (GregTech_API.sMachineMetalGUI) {
-                dye = Dyes.MACHINE_METAL;
-            } else if (getBaseMetaTileEntity() != null) {
-                dye = Dyes.getDyeFromIndex(getBaseMetaTileEntity().getColorization());
-            }
-        }
-        return GT_Util.getRGBInt(dye.getRGBA());
-    }
+    // @Override
+    // public int getGUIColorization() {
+    // Dyes dye = Dyes.dyeWhite;
+    // if (this.colorOverride.sLoaded()) {
+    // if (this.colorOverride.sGuiTintingEnabled() && getBaseMetaTileEntity() != null) {
+    // dye = Dyes.getDyeFromIndex(getBaseMetaTileEntity().getColorization());
+    // return this.colorOverride.getGuiTintOrDefault(dye.mName, GT_Util.getRGBInt(dye.getRGBA()));
+    // }
+    // } else if (GregTech_API.sColoredGUI) {
+    // if (GregTech_API.sMachineMetalGUI) {
+    // dye = Dyes.MACHINE_METAL;
+    // } else if (getBaseMetaTileEntity() != null) {
+    // dye = Dyes.getDyeFromIndex(getBaseMetaTileEntity().getColorization());
+    // }
+    // }
+    // return GT_Util.getRGBInt(dye.getRGBA());
+    // }
 
     @Override
     public int getTextColorOrDefault(String textType, int defaultColor) {

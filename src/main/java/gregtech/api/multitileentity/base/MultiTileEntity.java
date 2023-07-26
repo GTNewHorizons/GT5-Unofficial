@@ -1,13 +1,14 @@
 package gregtech.api.multitileentity.base;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_Values.NBT;
 import static gregtech.api.enums.GT_Values.VALID_SIDES;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -55,6 +56,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.modularui.uifactory.MachineUIFactory;
 import gregtech.common.render.MultiTileBasicRender;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -844,6 +846,19 @@ public abstract class MultiTileEntity extends CoverableTileEntity
         GT_UIInfos.openGTTileEntityUI(this, aPlayer);
         System.out.println("Trying to open a UI");
         return true;
+    }
+
+    @Nullable
+    @Override
+    protected MachineUIFactory<?> createMachineUIFactory() {
+        return new MultiTileEntityUIFactory();
+    }
+
+    protected class MultiTileEntityUIFactory extends MachineUIFactory<MultiTileEntity> {
+
+        public MultiTileEntityUIFactory() {
+            super(MultiTileEntity.this);
+        }
     }
 
     public boolean onWrenchRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide, float aX,

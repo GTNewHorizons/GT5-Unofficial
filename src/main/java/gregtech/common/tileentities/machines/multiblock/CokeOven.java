@@ -3,6 +3,8 @@ package gregtech.common.tileentities.machines.multiblock;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_OUT;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
@@ -141,6 +143,7 @@ public class CokeOven extends Controller<CokeOven> implements PollutionLogicHost
     // .widget(text);
     // }
 
+    @Nonnull
     @Override
     public String getLocalName() {
         return StatCollector.translateToLocal("gt.multiBlock.controller.cokeOven");

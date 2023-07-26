@@ -1938,15 +1938,15 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     // return new Pos2d(62, 91);
     // }
 
-    @Override
-    public int getGUIWidth() {
-        return 198;
-    }
+    // @Override
+    // public int getGUIWidth() {
+    // return 198;
+    // }
 
-    @Override
-    public int getGUIHeight() {
-        return 192;
-    }
+    // @Override
+    // public int getGUIHeight() {
+    // return 192;
+    // }
 
     // @Override
     // public void bindPlayerInventoryUI(ModularWindow.Builder builder, UIBuildContext buildContext) {

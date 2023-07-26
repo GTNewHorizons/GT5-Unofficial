@@ -24,7 +24,6 @@ import com.cleanroommc.modularui.api.future.ItemStackHandler;
 import appeng.api.crafting.ICraftingIconProvider;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGearEnergyTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -32,7 +31,7 @@ import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Config;
-import gregtech.api.util.GT_Util;
+import gregtech.common.modularui.uifactory.MachineUIFactory;
 import gregtech.common.power.Power;
 
 /**
@@ -392,17 +391,6 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
 
     void onColorChangeClient(byte aColor);
 
-    /**
-     * @return Actual color shown on GUI
-     */
-    default int getGUIColorization() {
-        if (getBaseMetaTileEntity() != null) {
-            return getBaseMetaTileEntity().getGUIColorization();
-        } else {
-            return GT_Util.getRGBInt(Dyes.MACHINE_METAL.getRGBA());
-        }
-    }
-
     int getLightOpacity();
 
     boolean allowGeneralRedstoneOutput();
@@ -453,27 +441,14 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         /* do nothing */
     }
 
-    default int getGUIWidth() {
-        return 176;
-    }
-
-    default int getGUIHeight() {
-        return 166;
-    }
-
     /*
      * ModularUI Support
      */
+
+    MachineUIFactory<?> createMachineUIFactory();
+
     default ItemStackHandler getInventoryHandler() {
         return null;
-    }
-
-    default String getLocalName() {
-        return "Unknown";
-    }
-
-    default boolean doesBindPlayerInventory() {
-        return true;
     }
 
     default int getTextColorOrDefault(String textType, int defaultColor) {

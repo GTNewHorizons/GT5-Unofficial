@@ -13,6 +13,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.cleanroommc.modularui.api.IGuiHolder;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.IDescribable;
@@ -28,7 +30,7 @@ import gregtech.common.blocks.GT_Block_Machines;
  */
 public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTileEntity, ICoverable, IFluidHandler,
     ITurnable, IGregTechDeviceInformation, IUpgradableMachine, IDigitalChest, IDescribable, IMachineBlockUpdateable,
-    IGregtechWailaProvider {
+    IGregtechWailaProvider, IGuiHolder {
 
     /**
      * gets the Error displayed on the GUI

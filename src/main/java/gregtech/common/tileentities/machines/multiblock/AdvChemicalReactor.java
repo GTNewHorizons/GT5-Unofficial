@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -373,6 +375,7 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
         return "gt.multitileentity.multiblock.advchemicalreactor";
     }
 
+    @Nonnull
     @Override
     public String getLocalName() {
         return "Advanced Chemical Reactor";

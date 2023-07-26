@@ -531,10 +531,10 @@ public abstract class GT_MetaTileEntity_FusionComputer extends
         return SoundResource.GT_MACHINES_FUSION_LOOP;
     }
 
-    @Override
-    public boolean doesBindPlayerInventory() {
-        return false;
-    }
+    // @Override
+    // public boolean doesBindPlayerInventory() {
+    // return false;
+    // }
 
     // @Override
     // public void addGregTechLogo(ModularWindow.Builder builder) {
@@ -549,15 +549,15 @@ public abstract class GT_MetaTileEntity_FusionComputer extends
     // return new GUITextureSet().setMainBackground(GT_UITextures.BACKGROUND_FUSION_COMPUTER);
     // }
 
-    @Override
-    public int getGUIWidth() {
-        return 176;
-    }
+    // @Override
+    // public int getGUIWidth() {
+    // return 176;
+    // }
 
-    @Override
-    public int getGUIHeight() {
-        return 166;
-    }
+    // @Override
+    // public int getGUIHeight() {
+    // return 166;
+    // }
 
     // @Override
     // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
