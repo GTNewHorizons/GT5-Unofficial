@@ -261,7 +261,7 @@ public class VacuumFreezerRecipes implements Runnable {
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LiquidOxygen, 1L))
                 .noFluidInputs()
                 .noFluidOutputs()
-                .duration(60 * SECONDS)
+                .duration(1 * MINUTES)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(sVacuumRecipes);
 
@@ -270,7 +270,7 @@ public class VacuumFreezerRecipes implements Runnable {
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.LiquidNitrogen, 1L))
                 .noFluidInputs()
                 .noFluidOutputs()
-                .duration(60 * SECONDS)
+                .duration(1 * MINUTES)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(sVacuumRecipes);
 
@@ -446,7 +446,7 @@ public class VacuumFreezerRecipes implements Runnable {
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cellMolten, Materials.Americium, 1L))
                 .noFluidInputs()
                 .noFluidOutputs()
-                .duration(20 * TICKS)
+                .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(sVacuumRecipes);
 
@@ -490,11 +490,10 @@ public class VacuumFreezerRecipes implements Runnable {
                 .noItemInputs()
                 .noItemOutputs()
                 .fluidInputs(Materials.Boron.getPlasma(144L))
-                .fluidOutputs(Materials.Boron.getPlasma(144L))
-                .duration(20 * TICKS)
+                .fluidOutputs(Materials.Boron.getMolten(144L))
+                .duration(1 * SECONDS)
                 .eut(12)
                 .addTo(sVacuumRecipes);
-
         }
 
         if (GTPlusPlus.isModLoaded()) {
@@ -506,7 +505,7 @@ public class VacuumFreezerRecipes implements Runnable {
                     new FluidStack(FluidRegistry.getFluid("molten.titansteel"), 144),
                     Materials.SuperCoolant.getFluid(1000))
                 .noFluidOutputs()
-                .duration(20 * TICKS)
+                .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_UIV)
                 .addTo(sVacuumRecipes);
         }

@@ -144,7 +144,9 @@ public class GT_OreDictUnificator {
 
     public static ItemStack[] getStackArray(boolean aUseBlackList, Object... aStacks) {
         ItemStack[] rStacks = new ItemStack[aStacks.length];
-        for (int i = 0; i < aStacks.length; i++) rStacks[i] = get(aUseBlackList, GT_Utility.copy(aStacks[i]));
+        for (int i = 0; i < aStacks.length; i++) {
+            rStacks[i] = get(aUseBlackList, GT_Utility.copy(aStacks[i]), true);
+        }
         return rStacks;
     }
 
@@ -169,6 +171,9 @@ public class GT_OreDictUnificator {
         return get(aUseBlackList, aStack, false);
     }
 
+    /**
+     * @param unsafe If true, it does not limit stack size by 64.
+     */
     public static ItemStack get(boolean aUseBlackList, ItemStack aStack, boolean unsafe) {
         if (GT_Utility.isStackInvalid(aStack)) return null;
         ItemData tPrefixMaterial = getAssociation(aStack);

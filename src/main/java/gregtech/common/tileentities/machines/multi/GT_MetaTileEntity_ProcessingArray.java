@@ -24,10 +24,13 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -68,6 +71,8 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Item_Machines;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_ProcessingArray extends
     GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_ProcessingArray> implements ISurvivalConstructable {
@@ -254,6 +259,11 @@ public class GT_MetaTileEntity_ProcessingArray extends
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
         }.setMaxParallelSupplier(this::getMaxParallel);
+    }
+
+    @Override
+    protected boolean canUseControllerSlotForRecipe() {
+        return false;
     }
 
     @Override
@@ -488,6 +498,11 @@ public class GT_MetaTileEntity_ProcessingArray extends
         return true;
     }
 
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
     // @Override
     // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
     // super.addUIWidgets(builder, buildContext);
@@ -512,4 +527,25 @@ public class GT_MetaTileEntity_ProcessingArray extends
     // .setTooltipShowUpDelay(TOOLTIP_DELAY))
     // .widget(new FakeSyncWidget.BooleanSyncer(() -> downtierUEV, val -> downtierUEV = val));
     // }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        if (getControllerSlot() != null) {
+            tag.setString("type", getControllerSlot().getDisplayName());
+        }
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        if (tag.hasKey("type")) {
+            currentTip.add("Machine: " + EnumChatFormatting.YELLOW + tag.getString("type"));
+        } else {
+            currentTip.add("Machine: " + EnumChatFormatting.YELLOW + "None");
+        }
+    }
 }

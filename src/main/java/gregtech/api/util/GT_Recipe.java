@@ -1088,7 +1088,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sOreWasherRecipes = new GT_Recipe_Map(
             new HashSet<>(500),
             "gt.recipe.orewasher",
-            "Ore Washing Plant",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "OreWasher"),
             1,
@@ -1107,7 +1107,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sThermalCentrifugeRecipes = new GT_Recipe_Map(
             new HashSet<>(1000),
             "gt.recipe.thermalcentrifuge",
-            "Thermal Centrifuge",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "ThermalCentrifuge"),
             1,
@@ -1125,7 +1125,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sCompressorRecipes = new GT_Recipe_Map(
             new HashSet<>(750),
             "gt.recipe.compressor",
-            "Compressor",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Compressor"),
             1,
@@ -1145,7 +1145,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sExtractorRecipes = new GT_Recipe_Map(
             new HashSet<>(250),
             "gt.recipe.extractor",
-            "Extractor",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Extractor"),
             1,
@@ -1165,7 +1165,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sRecyclerRecipes = new GT_Recipe_Map_Recycler(
             new HashSet<>(0),
             "ic.recipe.recycler",
-            "Recycler",
+            null,
             "ic2.recycler",
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Recycler"),
             1,
@@ -1200,7 +1200,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sMicrowaveRecipes = new GT_Recipe_Map_Microwave(
             new HashSet<>(0),
             "gt.recipe.microwave",
-            "Microwave",
+            null,
             "smelting",
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "E_Furnace"),
             1,
@@ -1217,7 +1217,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sScannerFakeRecipes = new GT_Recipe_Map(
             new HashSet<>(300),
             "gt.recipe.scanner",
-            "Scanner",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Scanner"),
             1,
@@ -1234,7 +1234,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sRockBreakerFakeRecipes = new GT_Recipe_Map(
             new HashSet<>(200),
             "gt.recipe.rockbreaker",
-            "Rock Breaker",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "RockBreaker"),
             2,
@@ -1268,7 +1268,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sReplicatorFakeRecipes = new ReplicatorFakeMap(
             new HashSet<>(100),
             "gt.recipe.replicator",
-            "Replicator",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Replicator"),
             0,
@@ -1307,7 +1307,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sPlasmaArcFurnaceRecipes = new GT_Recipe_Map(
             new HashSet<>(20000),
             "gt.recipe.plasmaarcfurnace",
-            "Plasma Arc Furnace",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "PlasmaArcFurnace"),
             1,
@@ -1326,7 +1326,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sArcFurnaceRecipes = new GT_Recipe_Map(
             new HashSet<>(20000),
             "gt.recipe.arcfurnace",
-            "Arc Furnace",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "ArcFurnace"),
             1,
@@ -1342,7 +1342,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sPrinterRecipes = new GT_Recipe_Map_Printer(
             new HashSet<>(5),
             "gt.recipe.printer",
-            "Printer",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Printer"),
             1,
@@ -1361,7 +1361,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sSifterRecipes = new GT_Recipe_Map(
             new HashSet<>(105),
             "gt.recipe.sifter",
-            "Sifter",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Sifter"),
             1,
@@ -1378,7 +1378,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sPressRecipes = new GT_Recipe_Map_FormingPress(
             new HashSet<>(300),
             "gt.recipe.press",
-            "Forming Press",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Press3"),
             6,
@@ -1398,7 +1398,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sLaserEngraverRecipes = new GT_Recipe_Map(
             new HashSet<>(810),
             "gt.recipe.laserengraver",
-            "Precision Laser Engraver",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "LaserEngraver2"),
             4,
@@ -1417,7 +1417,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sMixerRecipes = new GT_Recipe_Map(
             new HashSet<>(900),
             "gt.recipe.mixer",
-            "Mixer",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Mixer6"),
             9,
@@ -1436,7 +1436,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sAutoclaveRecipes = new GT_Recipe_Map(
             new HashSet<>(300),
             "gt.recipe.autoclave",
-            "Autoclave",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Autoclave4"),
             2,
@@ -1455,7 +1455,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sElectroMagneticSeparatorRecipes = new GT_Recipe_Map(
             new HashSet<>(50),
             "gt.recipe.electromagneticseparator",
-            "Electromagnetic Separator",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "ElectromagneticSeparator"),
             1,
@@ -1474,7 +1474,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sPolarizerRecipes = new GT_Recipe_Map(
             new HashSet<>(300),
             "gt.recipe.polarizer",
-            "Electromagnetic Polarizer",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Polarizer"),
             1,
@@ -1491,7 +1491,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sMaceratorRecipes = new GT_Recipe_Map_Macerator(
             new HashSet<>(16600),
             "gt.recipe.macerator",
-            "Pulverization",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Macerator4"),
             1,
@@ -1513,7 +1513,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sChemicalBathRecipes = new GT_Recipe_Map(
             new HashSet<>(2550),
             "gt.recipe.chemicalbath",
-            "Chemical Bath",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "ChemicalBath"),
             1,
@@ -1530,7 +1530,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sFluidCannerRecipes = new GT_Recipe_Map_FluidCanner(
             new HashSet<>(2100),
             "gt.recipe.fluidcanner",
-            "Fluid Canning Machine",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "FluidCanner"),
             1,
@@ -1567,7 +1567,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sFluidHeaterRecipes = new GT_Recipe_Map(
             new HashSet<>(10),
             "gt.recipe.fluidheater",
-            "Fluid Heater",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "FluidHeater"),
             1,
@@ -1586,7 +1586,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sDistilleryRecipes = new GT_Recipe_Map(
             new HashSet<>(400),
             "gt.recipe.distillery",
-            "Distillery",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Distillery"),
             1,
@@ -1646,7 +1646,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sFermentingRecipes = new GT_Recipe_Map(
             new HashSet<>(50),
             "gt.recipe.fermenter",
-            "Fermenter",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Fermenter"),
             0,
@@ -1663,7 +1663,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sFluidSolidficationRecipes = new GT_Recipe_Map(
             new HashSet<>(35000),
             "gt.recipe.fluidsolidifier",
-            "Fluid Solidifier",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "FluidSolidifier"),
             1,
@@ -1692,7 +1692,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sFluidExtractionRecipes = new GT_Recipe_Map(
             new HashSet<>(15000),
             "gt.recipe.fluidextractor",
-            "Fluid Extractor",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "FluidExtractor"),
             1,
@@ -1722,7 +1722,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sBoxinatorRecipes = new GT_Recipe_Map(
             new HashSet<>(2500),
             "gt.recipe.packager",
-            "Packager",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Packager"),
             2,
@@ -1740,7 +1740,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sUnboxinatorRecipes = new GT_Recipe_Map_Unboxinator(
             new HashSet<>(2500),
             "gt.recipe.unpackager",
-            "Unpackager",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Unpackager"),
             1,
@@ -1804,7 +1804,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sCentrifugeRecipes = new GT_Recipe_Map(
             new HashSet<>(1200),
             "gt.recipe.centrifuge",
-            "Centrifuge",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Centrifuge"),
             2,
@@ -1824,7 +1824,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sElectrolyzerRecipes = new GT_Recipe_Map(
             new HashSet<>(300),
             "gt.recipe.electrolyzer",
-            "Electrolyzer",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Electrolyzer"),
             2,
@@ -2222,7 +2222,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         .duration(20)
                         .eut(30)
                         .validateInputCount(1, 1)
-                        .validateOutputCount(1, 1)
+                        .validateOutputCount(1, 2)
                         .build();
                     if (!t.isPresent()) return Collections.emptyList();
                     ItemStack input = b.getItemInputBasic(0);
@@ -2289,7 +2289,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sChemicalRecipes = new GT_Recipe_Map(
             new HashSet<>(1170),
             "gt.recipe.chemicalreactor",
-            "Chemical Reactor",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "ChemicalReactor"),
             2,
@@ -2355,7 +2355,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sWiremillRecipes = new GT_Recipe_Map(
             new HashSet<>(450),
             "gt.recipe.wiremill",
-            "Wiremill",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Wiremill"),
             2,
@@ -2373,7 +2373,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sBenderRecipes = new GT_Recipe_Map(
             new HashSet<>(5000),
             "gt.recipe.metalbender",
-            "Bending Machine",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Bender"),
             2,
@@ -2391,7 +2391,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sAlloySmelterRecipes = new GT_Recipe_Map(
             new HashSet<>(12000),
             "gt.recipe.alloysmelter",
-            "Alloy Smelter",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "AlloySmelter"),
             2,
@@ -2426,7 +2426,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sAssemblerRecipes = new GT_Recipe_Map_Assembler(
             new HashSet<>(8200),
             "gt.recipe.assembler",
-            "Assembler",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Assembler2"),
             9,
@@ -2445,7 +2445,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sCircuitAssemblerRecipes = new GT_Recipe_Map_Assembler(
             new HashSet<>(605),
             "gt.recipe.circuitassembler",
-            "Circuit Assembler",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "CircuitAssembler"),
             6,
@@ -2464,7 +2464,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sCannerRecipes = new GT_Recipe_Map(
             new HashSet<>(900),
             "gt.recipe.canner",
-            "Canning Machine",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Canner"),
             2,
@@ -2500,7 +2500,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sLatheRecipes = new GT_Recipe_Map(
             new HashSet<>(1150),
             "gt.recipe.lathe",
-            "Lathe",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Lathe"),
             1,
@@ -2521,7 +2521,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sCutterRecipes = new GT_Recipe_Map(
             new HashSet<>(5125),
             "gt.recipe.cuttingsaw",
-            "Cutting Machine",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Cutter4"),
             2,
@@ -2565,7 +2565,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sSlicerRecipes = new GT_Recipe_Map(
             new HashSet<>(20),
             "gt.recipe.slicer",
-            "Slicing Machine",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Slicer"),
             2,
@@ -2585,7 +2585,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sExtruderRecipes = new GT_Recipe_Map(
             new HashSet<>(13000),
             "gt.recipe.extruder",
-            "Extruder",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Extruder"),
             2,
@@ -2604,7 +2604,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sHammerRecipes = new GT_Recipe_Map(
             new HashSet<>(3800),
             "gt.recipe.hammer",
-            "Forge Hammer",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Hammer"),
             2,
@@ -2628,7 +2628,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sAmplifiers = new GT_Recipe_Map(
             new HashSet<>(2),
             "gt.recipe.uuamplifier",
-            "Amplifabricator",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Amplifabricator"),
             1,
@@ -2647,7 +2647,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sMassFabFakeRecipes = new GT_Recipe_Map(
             new HashSet<>(2),
             "gt.recipe.massfab",
-            "Mass Fabrication",
+            null,
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Massfabricator"),
             1,
@@ -3014,7 +3014,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         /**
          * HashMap of Recipes based on their Fluids
          */
-        public final Map<Fluid, Collection<GT_Recipe>> mRecipeFluidMap = new /* Concurrent */ HashMap<>();
+        public final Map<String, Collection<GT_Recipe>> mRecipeFluidMap = new HashMap<>();
 
         public final HashSet<String> mRecipeFluidNameMap = new HashSet<>();
         /**
@@ -3174,7 +3174,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          * @param aRecipeList                a List you specify as Recipe List. Usually just an ArrayList with a
          *                                   pre-initialised Size.
          * @param aUnlocalizedName           the unlocalised Name of this Recipe Handler, used mainly for NEI.
-         * @param aLocalName                 the displayed Name inside the NEI Recipe GUI.
+         * @param aLocalName                 @deprecated the displayed Name inside the NEI Recipe GUI for optionally
+         *                                   registering aUnlocalizedName
+         *                                   with the language manager
          * @param aNEIGUIPath                the displayed GUI Texture, usually just a Machine GUI. Auto-Attaches ".png"
          *                                   if forgotten.
          * @param aUsualInputCount           the usual amount of Input Slots this Recipe Class has.
@@ -3203,7 +3205,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             mMinimalInputItems = aMinimalInputItems;
             mMinimalInputFluids = aMinimalInputFluids;
             GregTech_API.sItemStackMappings.add(mRecipeItemMap);
-            GT_LanguageManager.addStringLocalization(mUnlocalizedName = aUnlocalizedName, aLocalName);
+            mUnlocalizedName = aUnlocalizedName;
+            if (aLocalName != null) {
+                GT_LanguageManager.addStringLocalization(mUnlocalizedName, aLocalName);
+            }
             mUniqueIdentifier = String.format(
                 "%s_%d_%d_%d_%d_%d",
                 aUnlocalizedName,
@@ -3776,8 +3781,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             mRecipeList.add(aRecipe);
             for (FluidStack aFluid : aRecipe.mFluidInputs) {
                 if (aFluid != null) {
-                    Collection<GT_Recipe> tList = mRecipeFluidMap
-                        .computeIfAbsent(aFluid.getFluid(), k -> new HashSet<>(1));
+                    Collection<GT_Recipe> tList = mRecipeFluidMap.computeIfAbsent(
+                        aFluid.getFluid()
+                            .getName(),
+                        k -> new HashSet<>(1));
                     tList.add(aRecipe);
                     mRecipeFluidNameMap.add(
                         aFluid.getFluid()
@@ -3970,7 +3977,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             // If the minimal Amount of Items for the Recipe is 0, then it could be a Fluid-Only Recipe, so check that
             // Map too.
             if (mMinimalInputItems == 0 && aFluids != null) for (FluidStack aFluid : aFluids) if (aFluid != null) {
-                Collection<GT_Recipe> tRecipes = mRecipeFluidMap.get(aFluid.getFluid());
+                Collection<GT_Recipe> tRecipes = mRecipeFluidMap.get(
+                    aFluid.getFluid()
+                        .getName());
                 if (tRecipes != null) for (GT_Recipe tRecipe : tRecipes) if (!tRecipe.mFakeRecipe
                     && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
                         if (!isSpecialSlotSensitive

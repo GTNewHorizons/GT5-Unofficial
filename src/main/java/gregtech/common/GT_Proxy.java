@@ -715,6 +715,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
      */
     public Map<String, Integer> mCircuitsOrder = new HashMap<>();
 
+    public boolean wailaAverageNS = false;
+
     public static final int GUI_ID_COVER_SIDE_BASE = 10; // Takes GUI ID 10 - 15
 
     public static Map<String, Integer> oreDictBurnTimes = new HashMap<>();
@@ -1089,6 +1091,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
         MinecraftForge.EVENT_BUS.register(new SpaceProjectWorldSavedData());
         MinecraftForge.EVENT_BUS.register(new GT_Worldgenerator.OregenPatternSavedData(""));
+        FMLCommonHandler.instance()
+            .bus()
+            .register(new GT_Worldgenerator.OregenPatternSavedData(""));
 
         // IC2 Hazmat
         addFullHazmatToIC2Item("hazmatHelmet");

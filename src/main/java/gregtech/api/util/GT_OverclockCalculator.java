@@ -40,16 +40,30 @@ public class GT_OverclockCalculator {
      */
     private boolean mHeatOC, mOneTickDiscount, calculated, mHeatDiscount;
 
+    /** If the OC calculator should only do a given amount of overclocks. Mainly used in fusion reactors */
+    private boolean limitOverclocks;
+    /** Maximum amount of overclocks to perform, when limitOverclocks = true */
+    private int maxOverclocks;
+    /** How many overclocks have been performed */
+    private int overclockCount;
+
     private static final int HEAT_DISCOUNT_THRESHOLD = 900;
     private static final int HEAT_PERFECT_OVERCLOCK_THRESHOLD = 1800;
 
     /**
-     * Creates calculator that doesn't do OC at all.
+     * Creates calculator that doesn't do OC at all. Will use recipe duration.
      */
     public static GT_OverclockCalculator ofNoOverclock(@Nonnull GT_Recipe recipe) {
-        return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
-            .setDuration(recipe.mDuration)
-            .setEUt(recipe.mEUt);
+        return ofNoOverclock(recipe.mEUt, recipe.mDuration);
+    }
+
+    /**
+     * Creates calculator that doesn't do OC at all, with set duration.
+     */
+    public static GT_OverclockCalculator ofNoOverclock(long eut, int duration) {
+        return new GT_OverclockCalculator().setRecipeEUt(eut)
+            .setDuration(duration)
+            .setEUt(eut);
     }
 
     /**
@@ -206,6 +220,16 @@ public class GT_OverclockCalculator {
     }
 
     /**
+     * Limit the amount of overclocks that can be performed, regardless of how much power is available. Mainly used for
+     * fusion reactors.
+     */
+    public GT_OverclockCalculator limitOverclockCount(int maxOverclocks) {
+        this.limitOverclocks = true;
+        this.maxOverclocks = maxOverclocks;
+        return this;
+    }
+
+    /**
      * Call this when all values have been put it.
      */
     public GT_OverclockCalculator calculate() {
@@ -243,7 +267,8 @@ public class GT_OverclockCalculator {
             long tNextConsumption = ((long) Math
                 .ceil(mRecipeEUt * mParallel * mRecipeAmps * mEUtDiscount * heatDiscountMultiplier))
                 << mEUtIncreasePerOC;
-            while (tTierDifference > 0 && tNextConsumption < mEUt * mAmps) {
+            while (tTierDifference > 0 && tNextConsumption < mEUt * mAmps
+                && (!limitOverclocks || overclockCount++ < maxOverclocks)) {
                 if (mDuration <= 1) {
                     break;
                 }
@@ -256,7 +281,7 @@ public class GT_OverclockCalculator {
             long tNextConsumption = ((long) Math
                 .ceil(mRecipeEUt * mParallel * mRecipeAmps * mEUtDiscount * heatDiscountMultiplier))
                 << mEUtIncreasePerOC;
-            while (tNextConsumption < mEUt * mAmps) {
+            while (tNextConsumption < mEUt * mAmps && (!limitOverclocks || overclockCount++ < maxOverclocks)) {
                 if (mDuration <= 1) {
                     break;
                 }
@@ -299,5 +324,15 @@ public class GT_OverclockCalculator {
             calculate();
         }
         return mDuration;
+    }
+
+    /**
+     * @return Number of performed overclocks
+     */
+    public int getPerformedOverclocks() {
+        if (!calculated) {
+            calculate();
+        }
+        return overclockCount;
     }
 }

@@ -197,14 +197,10 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe,
                 @Nonnull GT_ParallelHelper helper) {
-                return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
-                    .setDuration(recipe.mDuration)
-                    .setEUt(availableVoltage)
-                    .setRecipeHeat(recipe.mSpecialValue)
+                return super.createOverclockCalculator(recipe, helper).setRecipeHeat(recipe.mSpecialValue)
                     .setMultiHeat(mHeatingCapacity)
                     .enableHeatOC()
-                    .enableHeatDiscount()
-                    .calculate();
+                    .enableHeatDiscount();
             }
 
             @Override
@@ -397,6 +393,11 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
 
     @Override
     public boolean supportsInputSeparation() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
         return true;
     }
 }

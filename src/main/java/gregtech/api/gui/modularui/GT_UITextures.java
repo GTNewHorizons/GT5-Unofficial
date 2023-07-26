@@ -68,6 +68,7 @@ public class GT_UITextures {
         .build();
 
     public static final UITexture OVERLAY_SLOT_ARROW_ME = simpleColorable("overlay_slot/arrow_me");
+    public static final UITexture OVERLAY_SLOT_PATTERN_ME = simpleColorable("gui/overlay_slot/pattern_me");
     public static final UITexture OVERLAY_SLOT_BEAKER_1 = simpleColorable("overlay_slot/beaker_1");
     public static final UITexture OVERLAY_SLOT_BEAKER_2 = simpleColorable("overlay_slot/beaker_2");
     public static final UITexture OVERLAY_SLOT_BEE_DRONE = simpleColorable("overlay_slot/bee_drone");

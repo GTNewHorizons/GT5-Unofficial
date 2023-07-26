@@ -856,6 +856,7 @@ public class GT_PreLoad {
 
         GT_Mod.gregtechproxy.mWailaTransformerVoltageTier = GregTech_API.sClientDataFile
             .get("waila", "WailaTransformerVoltageTier", true);
+        GT_Mod.gregtechproxy.wailaAverageNS = GregTech_API.sClientDataFile.get("waila", "WailaAverageNS", false);
 
         final String[] Circuits = GregTech_API.sClientDataFile.get("interface", "CircuitsOrder");
         GT_Mod.gregtechproxy.mCircuitsOrder.clear();

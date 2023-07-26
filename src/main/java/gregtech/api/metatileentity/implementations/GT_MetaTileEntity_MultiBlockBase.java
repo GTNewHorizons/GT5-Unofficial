@@ -6,10 +6,7 @@ import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -70,6 +67,8 @@ import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
+import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.IDualInputInventory;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -107,6 +106,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public ArrayList<GT_MetaTileEntity_Hatch_Output> mOutputHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_InputBus> mInputBusses = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_OutputBus> mOutputBusses = new ArrayList<>();
+    public ArrayList<IDualInputHatch> mDualInputHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Dynamo> mDynamoHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Muffler> mMufflerHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Energy> mEnergyHatches = new ArrayList<>();
@@ -473,6 +473,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     private boolean shouldCheckRecipeThisTick(long aTick) {
+        // do a recipe check if any crafting input hatch just got pushed in items
+        for (IDualInputHatch craftingInputMe : mDualInputHatches) {
+            if (craftingInputMe.justUpdated()) {
+                return true;
+            }
+        }
+
         // Perform more frequent recipe change after the machine just shuts down.
         long timeElapsed = aTick - mLastWorkingTick;
 
@@ -677,30 +684,47 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
 
-        processingLogic.clear();
-        processingLogic.setMachine(this);
-        processingLogic.setRecipeMapSupplier(this::getRecipeMap);
-        processingLogic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
-        processingLogic.setBatchSize(isBatchModeEnabled() ? getMaxBatchSize() : 1);
-        processingLogic.setRecipeLocking(this, isRecipeLockingEnabled());
-        processingLogic.setInputFluids(getStoredFluids());
-        setProcessingLogicPower(processingLogic);
-        if (isInputSeparationEnabled()) {
-            for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
-                List<ItemStack> inputItems = new ArrayList<>();
-                for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
-                    ItemStack stored = bus.getStackInSlot(i);
-                    if (stored != null) {
-                        inputItems.add(stored);
-                    }
-                }
-                processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+        setupProcessingLogic(processingLogic);
+
+        // check crafting input hatches first
+        for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+            for (var it = dualInputHatch.inventories(); it.hasNext();) {
+                IDualInputInventory slot = it.next();
+                processingLogic.setInputItems(slot.getItemInputs());
+                processingLogic.setInputFluids(slot.getFluidInputs());
                 result = processingLogic.process();
                 if (result.wasSuccessful()) break;
             }
-        } else {
-            processingLogic.setInputItems(getStoredInputs());
-            result = processingLogic.process();
+            if (result.wasSuccessful()) break;
+        }
+
+        processingLogic.setInputFluids(getStoredFluids());
+
+        if (!result.wasSuccessful()) {
+            if (isInputSeparationEnabled()) {
+                for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
+                    List<ItemStack> inputItems = new ArrayList<>();
+                    for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                        ItemStack stored = bus.getStackInSlot(i);
+                        if (stored != null) {
+                            inputItems.add(stored);
+                        }
+                    }
+                    if (getControllerSlot() != null && canUseControllerSlotForRecipe()) {
+                        inputItems.add(getControllerSlot());
+                    }
+                    processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+                    result = processingLogic.process();
+                    if (result.wasSuccessful()) break;
+                }
+            } else {
+                List<ItemStack> inputItems = getStoredInputs();
+                if (getControllerSlot() != null && canUseControllerSlotForRecipe()) {
+                    inputItems.add(getControllerSlot());
+                }
+                processingLogic.setInputItems(inputItems);
+                result = processingLogic.process();
+            }
         }
 
         // inputs are consumed by `process()`
@@ -725,6 +749,20 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mOutputFluids = processingLogic.getOutputFluids();
 
         return result;
+    }
+
+    protected boolean canUseControllerSlotForRecipe() {
+        return true;
+    }
+
+    protected void setupProcessingLogic(ProcessingLogic logic) {
+        logic.clear();
+        logic.setMachine(this);
+        logic.setRecipeMapSupplier(this::getRecipeMap);
+        logic.setVoidProtection(protectsExcessItem(), protectsExcessFluid());
+        logic.setBatchSize(isBatchModeEnabled() ? getMaxBatchSize() : 1);
+        logic.setRecipeLocking(this, isRecipeLockingEnabled());
+        setProcessingLogicPower(logic);
     }
 
     protected void setProcessingLogicPower(ProcessingLogic logic) {
@@ -1300,6 +1338,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
+        if (aMetaTileEntity instanceof IDualInputHatch hatch) {
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mDualInputHatches.add(hatch);
+        }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
             ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = getRecipeMap();
             return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
@@ -1400,6 +1442,12 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof IDualInputHatch hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mDualInputHatches.add(hatch);
+        }
+
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
@@ -1628,7 +1676,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
         currentTip.add(
             GT_Waila.getMachineProgressString(isActive, tag.getInteger("maxProgress"), tag.getInteger("progress")));
-
+        // Show ns on the tooltip
+        if (GT_Mod.gregtechproxy.wailaAverageNS) {
+            int tAverageTime = tag.getInteger("averageNS");
+            currentTip.add("Average CPU load of ~" + GT_Utility.formatNumbers(tAverageTime) + " ns");
+        }
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }
 
@@ -1652,6 +1704,17 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 tag.setLong("energyTier", getInputVoltageTier());
             }
         }
+
+        int tAverageTime = 0;
+        for (int tTime : this.getBaseMetaTileEntity()
+            .getTimeStatistics()) {
+            tAverageTime += tTime;
+        }
+
+        tag.setInteger(
+            "averageNS",
+            tAverageTime / this.getBaseMetaTileEntity()
+                .getTimeStatistics().length);
     }
 
     @Override
@@ -1978,6 +2041,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     // @Override
     // public void addGregTechLogo(ModularWindow.Builder builder) {}
 
+    protected boolean shouldDisplayCheckRecipeResult() {
+        return true;
+    }
+
     // protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
     // screenElements.setSynced(false)
     // .setSpace(0)
@@ -2054,7 +2121,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     // TextWidget.dynamicString(() -> checkRecipeResult.getDisplayString())
     // .setSynced(false)
     // .setTextAlignment(Alignment.CenterLeft)
-    // .setEnabled(widget -> GT_Utility.isStringValid(checkRecipeResult.getDisplayString())))
+    // .setEnabled(
+    // widget -> GT_Utility.isStringValid(checkRecipeResult.getDisplayString())
+    // && shouldDisplayCheckRecipeResult()))
     // .widget(new CheckRecipeResultSyncer(() -> checkRecipeResult, (result) -> checkRecipeResult = result));
     //
     // screenElements.widget(

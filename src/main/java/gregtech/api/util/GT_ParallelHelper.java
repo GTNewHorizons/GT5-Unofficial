@@ -289,6 +289,18 @@ public class GT_ParallelHelper {
     }
 
     /**
+     * Try to consume the inputs of the recipe
+     *
+     * @param recipe Processed recipe
+     * @param fluids fluid inputs that will be consumed
+     * @param items  item inputs that will be consumed
+     * @return True if recipe was satisfied, else false
+     */
+    protected boolean tryConsumeRecipeInputs(GT_Recipe recipe, FluidStack[] fluids, ItemStack[] items) {
+        return recipe.isRecipeInputEqual(true, false, fluids, items);
+    }
+
+    /**
      * Called by build(). Determines the parallels and everything else that needs to be done at build time
      */
     protected void determineParallel() {
@@ -320,6 +332,7 @@ public class GT_ParallelHelper {
             }
         }
 
+        int maxParallelBeforeBatchMode = mMaxParallel;
         if (mBatchMode) {
             mMaxParallel *= mBatchModifier;
         }
@@ -353,18 +366,19 @@ public class GT_ParallelHelper {
             mMaxParallel = Math.min(voidProtectionHelper.getMaxParallel(), mMaxParallel);
         }
 
+        maxParallelBeforeBatchMode = Math.min(mMaxParallel, maxParallelBeforeBatchMode);
+
         final int tRecipeEUt = (int) Math.ceil(mRecipe.mEUt * mEUtModifier);
-        final int batchCorrectedMaxParallel = mMaxParallel / mBatchModifier;
         // Consume inputs to determine normal parallel
         if (recipeCheck != null) {
-            int actualMaxParallel = (int) Math.min(batchCorrectedMaxParallel, mAvailableEUt / tRecipeEUt);
+            int actualMaxParallel = (int) Math.min(maxParallelBeforeBatchMode, mAvailableEUt / tRecipeEUt);
             mCurrentParallel = recipeCheck.checkRecipeInputs(true, actualMaxParallel, tItemInputs, tFluidInputs);
         } else {
             long tCurrentUsage = 0;
             boolean builtRecipeCheck = false;
-            for (; mCurrentParallel < batchCorrectedMaxParallel
+            for (; mCurrentParallel < maxParallelBeforeBatchMode
                 && tCurrentUsage < (mAvailableEUt - tRecipeEUt); mCurrentParallel++) {
-                if (!mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs)) {
+                if (!tryConsumeRecipeInputs(mRecipe, tFluidInputs, tItemInputs)) {
                     break;
                 }
                 tCurrentUsage += tRecipeEUt;
@@ -382,12 +396,13 @@ public class GT_ParallelHelper {
         // If Batch Mode is enabled determine how many extra parallels we can get
         if (mBatchMode && mCurrentParallel > 0) {
             int tExtraParallels = 0;
-            final int maxExtraParallels = mCurrentParallel * (mBatchModifier - 1);
+            final int maxExtraParallels = Math
+                .min(mCurrentParallel * (mBatchModifier - 1), mMaxParallel - mCurrentParallel);
             if (recipeCheck != null) {
                 tExtraParallels = recipeCheck.checkRecipeInputs(true, maxExtraParallels, tItemInputs, tFluidInputs);
             } else {
                 while (tExtraParallels < maxExtraParallels
-                    && mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs)) {
+                    && tryConsumeRecipeInputs(mRecipe, tFluidInputs, tItemInputs)) {
                     tExtraParallels++;
                 }
             }
@@ -398,19 +413,7 @@ public class GT_ParallelHelper {
         // If we want to calculate outputs we do it here
         if (mCalculateOutputs && mCurrentParallel > 0) {
             if (mRecipe.mOutputs != null) {
-                mItemOutputs = new ItemStack[mRecipe.mOutputs.length];
-                for (int i = 0; i < mRecipe.mOutputs.length; i++) {
-                    if (mRecipe.getOutputChance(i) >= XSTR.XSTR_INSTANCE.nextInt(10000)) {
-                        if (mRecipe.getOutput(i) == null) {
-                            mItemOutputs[i] = null;
-                        } else {
-                            ItemStack tItem = mRecipe.getOutput(i)
-                                .copy();
-                            tItem.stackSize *= mCurrentParallel;
-                            mItemOutputs[i] = tItem;
-                        }
-                    }
-                }
+                calculateItemOutputs();
             }
             if (mRecipe.mFluidOutputs != null) {
                 mFluidOutputs = new FluidStack[mRecipe.mFluidOutputs.length];
@@ -425,6 +428,34 @@ public class GT_ParallelHelper {
                     }
                 }
             }
+        }
+    }
+
+    protected void calculateItemOutputs() {
+        mItemOutputs = new ItemStack[mRecipe.mOutputs.length];
+        for (int i = 0; i < mRecipe.mOutputs.length; i++) {
+            if (mRecipe.getOutputChance(i) >= 10000) {
+                ItemStack item = mRecipe.getOutput(i)
+                    .copy();
+                item.stackSize *= mCurrentParallel;
+                mItemOutputs[i] = item;
+                continue;
+            }
+            int items = 0;
+            int itemStackSize = mRecipe.getOutput(i).stackSize;
+            for (int roll = 0; roll < mCurrentParallel; roll++) {
+                if (mRecipe.getOutputChance(i) >= XSTR.XSTR_INSTANCE.nextInt(10000)) {
+                    items += itemStackSize;
+                }
+            }
+            ItemStack item = mRecipe.getOutput(i)
+                .copy();
+            if (items == 0) {
+                item = null;
+            } else {
+                item.stackSize = items;
+            }
+            mItemOutputs[i] = item;
         }
     }
 }

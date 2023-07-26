@@ -2441,4 +2441,9 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     public IConstructable getConstructable() {
         return getMetaTileEntity() instanceof IConstructable ? (IConstructable) getMetaTileEntity() : null;
     }
+
+    @Override
+    public int[] getTimeStatistics() {
+        return mTimeStatistics;
+    }
 }
