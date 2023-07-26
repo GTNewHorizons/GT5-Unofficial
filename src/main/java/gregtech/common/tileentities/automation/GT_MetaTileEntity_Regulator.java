@@ -21,13 +21,12 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Buffer;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer implements IAddUIWidgets {
+public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer {
 
     public int[] mTargetSlots = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     private boolean charge = false, decharge = false;
@@ -40,7 +39,7 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer implem
             aTier,
             20,
             new String[] { "Filters up to 9 different Items", "Allows Item-specific output stack size",
-                "Allows Item-specific output slot", "Does not consume energy to move Item" });
+                "Allows Item-specific output slot" });
     }
 
     public GT_MetaTileEntity_Regulator(String aName, int aTier, int aInvSlotCount, String aDescription,
@@ -173,7 +172,7 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer implem
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        addEmitEnergyButton(builder);
+        super.addUIWidgets(builder, buildContext);
         builder.widget(createChargerSlot(43, 62));
         builder.widget(
             new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(84, true))

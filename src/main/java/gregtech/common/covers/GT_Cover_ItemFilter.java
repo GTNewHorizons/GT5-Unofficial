@@ -227,10 +227,10 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
                         },
                         widget -> widget
                             .setToggleTexture(
-                                GT_UITextures.OVERLAY_BUTTON_WHITELIST,
-                                GT_UITextures.OVERLAY_BUTTON_BLACKLIST)
-                            .addTooltip(0, GT_Utility.trans("124.1", "Blacklist Mode"))
-                            .addTooltip(1, GT_Utility.trans("125.1", "Whitelist Mode"))
+                                GT_UITextures.OVERLAY_BUTTON_BLACKLIST,
+                                GT_UITextures.OVERLAY_BUTTON_WHITELIST)
+                            .addTooltip(0, GT_Utility.trans("125.1", "Whitelist Mode"))
+                            .addTooltip(1, GT_Utility.trans("124.1", "Blacklist Mode"))
                             .setPos(spaceX * 0, spaceY * 0))
                     .addFollower(
                         new CoverDataFollower_SlotWidget<>(filterInvHandler, 0, true),
