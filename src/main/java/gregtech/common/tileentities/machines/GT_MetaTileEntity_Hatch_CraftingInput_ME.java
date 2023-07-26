@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -26,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.glodblock.github.common.item.ItemFluidPacket;
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizons.modularui.api.forge.SlotItemHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
@@ -50,6 +52,7 @@ import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.AECableType;
 import appeng.api.util.DimensionalCoord;
+import appeng.items.misc.ItemEncodedPattern;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
@@ -230,6 +233,24 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             nbt.setTag("fluidInventory", fluidInventoryNbt);
 
             return nbt;
+        }
+    }
+
+    // A hack to display the output item of the pattern rather than the pattern itself
+    private static class PatternSlotDisplay extends SlotItemHandler {
+
+        public PatternSlotDisplay(SlotItemHandler slot) {
+            super(slot.getItemHandler(), slot.getSlotIndex(), slot.xDisplayPosition, slot.yDisplayPosition);
+        }
+
+        @Override
+        public ItemStack getStack() {
+            var stack = super.getStack();
+            if (stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem)) {
+                return stack;
+            }
+            var output = patternItem.getOutput(stack);
+            return output != null ? output : stack;
         }
     }
 
@@ -505,10 +526,15 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                 .endAtSlot(MAX_PATTERN_COUNT - 1)
                 .phantom(false)
                 .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_PATTERN_ME)
-                .widgetCreator(
-                    slot -> new SlotWidget(slot)
-                        .setFilter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
-                        .setChangeListener(() -> onPatternChange(slot)))
+                .widgetCreator(slot -> new SlotWidget(slot) {
+
+                    @Override
+                    protected void drawSlot(Slot slotIn) {
+                        // hack to display the output of the pattern
+                        super.drawSlot(new PatternSlotDisplay((BaseSlot) slotIn));
+                    }
+                }.setFilter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
+                    .setChangeListener(() -> onPatternChange(slot)))
                 .build()
                 .setPos(7, 9))
             .widget(
