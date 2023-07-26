@@ -23,28 +23,6 @@ public class GT_OverclockCalculator {
      */
     private long recipeAmperage = 1;
     /**
-     * Discount for EUt at the beginning of calculating overclocks, like GT++ machines
-     */
-    private double eutDiscount = 1;
-    /**
-     * Speeding/Slowing up/down the duration of a recipe at the beginning of calculating overclocks, like
-     * GT++ machines
-     */
-    private double speedBoost = 1;
-    /**
-     * The value used for discount final eut per 900 heat
-     */
-    private double heatDiscountExponent = 0.95;
-    /**
-     * How much the bits should be moved to the left when it is overclocking (Going up, 2 meaning it is multiplied with
-     * 4x)-
-     */
-    private int eutIncreasePerOC = 2;
-    /**
-     * How much the bits should be moved to the right when its overclocking (Going down, 1 meaning it is halved)
-     */
-    private int durationDecreasePerOC = 1;
-    /**
      * Duration of the recipe
      */
     private int duration = 0;
@@ -52,6 +30,7 @@ public class GT_OverclockCalculator {
      * The parallel the multi has when trying to overclock
      */
     private int parallel = 1;
+
     /**
      * The min heat required for the recipe
      */
@@ -69,38 +48,66 @@ public class GT_OverclockCalculator {
      */
     private boolean heatOC;
     /**
-     * Whether to give EUt Discount when the duration goes below one tick
-     */
-    private boolean oneTickDiscount;
-    /**
-     * variable to check whether the overclocks have been calculated
-     */
-    private boolean calculated;
-    /**
      * Whether to enable heat discounts every 900 heat difference
      */
     private boolean heatDiscount;
     /**
-     * Whether the multi should use amperage to overclock with an exponent
+     * The value used for discount final eut per 900 heat
+     */
+    private double heatDiscountExponent = 0.95;
+
+    /**
+     * Discount for EUt at the beginning of calculating overclocks, like GT++ machines
+     */
+    private double eutDiscount = 1;
+    /**
+     * Speeding/Slowing up/down the duration of a recipe at the beginning of calculating overclocks, like
+     * GT++ machines
+     */
+    private double speedBoost = 1;
+
+    /**
+     * How much the bits should be moved to the left when it is overclocking (Going up, 2 meaning it is multiplied with
+     * 4x)-
+     */
+    private int eutIncreasePerOC = 2;
+    /**
+     * How much the bits should be moved to the right when its overclocking (Going down, 1 meaning it is halved)
+     */
+    private int durationDecreasePerOC = 1;
+    /**
+     * Whether to give EUt Discount when the duration goes below one tick
+     */
+    private boolean oneTickDiscount;
+    /**
+     * Whether the multi should use amperage to overclock with an exponent. Incompatible with amperageOC
      */
     private boolean laserOC;
     /**
-     * Whether the multi should use amperage to overclock normally
+     * Whether the multi should use amperage to overclock normally. Incompatible with laserOC
      */
     private boolean amperageOC;
-
-    /** If the OC calculator should only do a given amount of overclocks. Mainly used in fusion reactors */
+    /**
+     * If the OC calculator should only do a given amount of overclocks. Mainly used in fusion reactors
+     */
     private boolean limitOverclocks;
     /**
      * Maximum amount of overclocks to perform, when limitOverclocks = true
      */
     private int maxOverclocks;
-    /** How many overclocks have been performed */
+    /**
+     * How many overclocks have been performed
+     */
     private int overclockCount;
     /**
      * Laser OC's penalty for using high amp lasers for overclocking. Like what the Adv. Assline is doing
      */
     private double laserOCPenalty = 0.3;
+
+    /**
+     * variable to check whether the overclocks have been calculated
+     */
+    private boolean calculated;
 
     private static final int HEAT_DISCOUNT_THRESHOLD = 900;
     private static final int HEAT_PERFECT_OVERCLOCK_THRESHOLD = 1800;
@@ -310,7 +317,6 @@ public class GT_OverclockCalculator {
 
     public GT_OverclockCalculator setLaserOC(boolean laserOC) {
         this.laserOC = laserOC;
-        setAmperageOC(!laserOC);
         return this;
     }
 
@@ -337,6 +343,9 @@ public class GT_OverclockCalculator {
     }
 
     private void calculateOverclock() {
+        if (laserOC && amperageOC) {
+            throw new IllegalStateException("Tried to calculate overclock with both laser and amperage overclocking");
+        }
         int heatDiscounts = heatDiscount ? (multiHeat - recipeHeat) / HEAT_DISCOUNT_THRESHOLD : 0;
         double heatDiscountMultiplier = Math.pow(heatDiscountExponent, heatDiscounts);
         duration = (int) Math.ceil(duration * speedBoost);
