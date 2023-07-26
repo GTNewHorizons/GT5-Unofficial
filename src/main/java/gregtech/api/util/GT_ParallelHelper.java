@@ -103,11 +103,16 @@ public class GT_ParallelHelper {
      */
     private float eutModifier = 1;
 
-    CheckRecipeResult result = CheckRecipeResultRegistry.NONE;
+    /**
+     * Calculator to use for overclocking
+     */
+    private GT_OverclockCalculator calculator;
 
-    Function<Integer, ItemStack[]> customItemOutputCalculation;
+    private CheckRecipeResult result = CheckRecipeResultRegistry.NONE;
 
-    Function<Integer, FluidStack[]> customFluidOutputCalculation;
+    private Function<Integer, ItemStack[]> customItemOutputCalculation;
+
+    private Function<Integer, FluidStack[]> customFluidOutputCalculation;
 
     public GT_ParallelHelper() {}
 
@@ -192,6 +197,11 @@ public class GT_ParallelHelper {
      */
     public GT_ParallelHelper setEUtModifier(float aEUtModifier) {
         this.eutModifier = aEUtModifier;
+        return this;
+    }
+
+    public GT_ParallelHelper setCalculator(GT_OverclockCalculator calculator) {
+        this.calculator = calculator;
         return this;
     }
 
@@ -371,6 +381,15 @@ public class GT_ParallelHelper {
             copyInputs();
         }
 
+        GT_OverclockCalculator calculatorExtra = new GT_OverclockCalculator(calculator).setDuration(Integer.MAX_VALUE)
+            .calculate();
+        int amountOfOverclocks = calculatorExtra.getPerformedOverclocks();
+        double tickTimeAfterOC = recipe.mDuration
+            / (amountOfOverclocks * Math.pow(2, calculatorExtra.getDurationDecreasePerOC()));
+        if (tickTimeAfterOC < 1) {
+            maxParallel = (int) Math.floor(maxParallel / tickTimeAfterOC);
+        }
+
         int maxParallelBeforeBatchMode = maxParallel;
         if (batchMode) {
             maxParallel *= batchModifier;
@@ -441,16 +460,12 @@ public class GT_ParallelHelper {
             return;
         }
 
-        GT_OverclockCalculator calc = new GT_OverclockCalculator().setEUt(availableEUt)
-            .setParallel(currentParallel)
-            .setRecipeEUt(tRecipeEUt)
-            .setDuration(recipe.mDuration)
-            .setEUtDiscount(eutModifier)
+        calculator.setParallel(currentParallel)
             .calculate();
         // If Batch Mode is enabled determine how many extra parallels we can get
-        if (batchMode && currentParallel > 0 && calc.getDuration() < MAX_BATCH_MODE_TICK_TIME) {
+        if (batchMode && currentParallel > 0 && calculator.getDuration() < MAX_BATCH_MODE_TICK_TIME) {
             int tExtraParallels = 0;
-            double batchMultiplierMax = MAX_BATCH_MODE_TICK_TIME / calc.getDuration();
+            double batchMultiplierMax = MAX_BATCH_MODE_TICK_TIME / calculator.getDuration();
             final int maxExtraParallels = (int) Math.floor(
                 Math.min(
                     currentParallel * Math.min(batchMultiplierMax, batchModifier - 1),

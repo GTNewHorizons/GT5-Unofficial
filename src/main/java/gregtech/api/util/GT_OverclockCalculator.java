@@ -134,6 +134,35 @@ public class GT_OverclockCalculator {
     public GT_OverclockCalculator() {}
 
     /**
+     * Constructor for creating a new calculator with the save values
+     * 
+     * @param calculator Calculator to copy over
+     */
+    public GT_OverclockCalculator(@Nonnull GT_OverclockCalculator calculator) {
+        this();
+        setRecipeEUt(calculator.recipeVoltage);
+        setRecipeAmperage(calculator.recipeAmperage);
+        setEUt(calculator.multiVoltage);
+        setAmperage(calculator.multiAmperage);
+        setDuration(calculator.duration);
+        setParallel(calculator.parallel);
+        setDurationDecreasePerOC(calculator.durationDecreasePerOC);
+        setEUtIncreasePerOC(calculator.eutIncreasePerOC);
+        setEUtDiscount(calculator.eutDiscount);
+        setSpeedBoost(calculator.speedBoost);
+        setHeatPerfectOC(calculator.heatOCDuration);
+        setHeatOC(calculator.heatOC);
+        setRecipeHeat(calculator.recipeHeat);
+        setMultiHeat(calculator.multiHeat);
+        setHeatDiscount(calculator.heatDiscount);
+        setAmperageOC(calculator.amperageOC);
+        setLaserOC(calculator.laserOC);
+        setLaserOCPenalty(calculator.laserOCPenalty);
+        limitOverclockCount(calculator.maxOverclocks);
+        setOneTickDiscount(calculator.oneTickDiscount);
+    }
+
+    /**
      * @param recipeEUt Sets the Recipe's starting voltage
      */
     public GT_OverclockCalculator setRecipeEUt(long recipeEUt) {
@@ -232,7 +261,7 @@ public class GT_OverclockCalculator {
     /**
      * Sets an EUtDiscount. 0.9 is 10% less energy. 1.1 is 10% more energy
      */
-    public GT_OverclockCalculator setEUtDiscount(float aEUtDiscount) {
+    public GT_OverclockCalculator setEUtDiscount(double aEUtDiscount) {
         this.eutDiscount = aEUtDiscount;
         return this;
     }
@@ -240,7 +269,7 @@ public class GT_OverclockCalculator {
     /**
      * Sets a Speed Boost for the multiblock. 0.9 is 10% faster. 1.1 is 10% slower
      */
-    public GT_OverclockCalculator setSpeedBoost(float aSpeedBoost) {
+    public GT_OverclockCalculator setSpeedBoost(double aSpeedBoost) {
         this.speedBoost = aSpeedBoost;
         return this;
     }
@@ -356,9 +385,9 @@ public class GT_OverclockCalculator {
 
         double recipeTier = calculateRecipeTier(heatDiscountMultiplier);
         double multiTier = calculateMultiTier();
-        // Need to multiple durationDecreasePerOC by 2 because we are using bit shifting
+        // Need to power 2 by durationDecreasePerOC because we are using bit shifting
         overclockCount = (int) Math
-            .min(multiTier - recipeTier, Math.log(duration) / Math.log(durationDecreasePerOC * 2));
+            .min(multiTier - recipeTier, Math.log(duration) / Math.log(Math.pow(2, durationDecreasePerOC)));
         if (overclockCount < 0) {
             recipeVoltage = Long.MAX_VALUE;
             duration = Integer.MAX_VALUE;
@@ -439,5 +468,9 @@ public class GT_OverclockCalculator {
             calculate();
         }
         return overclockCount;
+    }
+
+    public int getDurationDecreasePerOC() {
+        return durationDecreasePerOC;
     }
 }
