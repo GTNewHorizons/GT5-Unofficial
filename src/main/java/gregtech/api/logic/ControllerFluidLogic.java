@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,7 +15,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Controller logic for Fluid inventories
@@ -26,7 +26,7 @@ public class ControllerFluidLogic {
     private final Map<UUID, FluidInventoryLogic> inventories = new HashMap<>();
     private final Set<Pair<UUID, FluidInventoryLogic>> unallocatedInventories = new HashSet<>();
 
-    public void addInventory(UUID id, @NotNull FluidInventoryLogic inventory) {
+    public void addInventory(@Nonnull UUID id, @Nonnull FluidInventoryLogic inventory) {
         Pair<UUID, FluidInventoryLogic> found = checkIfInventoryExistsAsUnallocated(inventory);
         if (inventory.isUpgradeInventory() && found != null) {
             unallocatedInventories.remove(found);
@@ -36,7 +36,8 @@ public class ControllerFluidLogic {
         inventories.put(id, inventory);
     }
 
-    public UUID addInventory(@NotNull FluidInventoryLogic inventory) {
+    @Nonnull
+    public UUID addInventory(@Nonnull FluidInventoryLogic inventory) {
         Pair<UUID, FluidInventoryLogic> found = checkIfInventoryExistsAsUnallocated(inventory);
         if (inventory.isUpgradeInventory() && found != null) {
             unallocatedInventories.remove(found);
@@ -50,7 +51,7 @@ public class ControllerFluidLogic {
 
     @Nullable
     private Pair<UUID, FluidInventoryLogic> checkIfInventoryExistsAsUnallocated(
-        @NotNull FluidInventoryLogic inventory) {
+        @Nonnull FluidInventoryLogic inventory) {
         if (unallocatedInventories.size() == 0) {
             return null;
         }
@@ -65,10 +66,12 @@ public class ControllerFluidLogic {
     /**
      * Removes the inventory with said id and gives it back to be processed if needed.
      */
-    public FluidInventoryLogic removeInventory(@NotNull UUID id) {
+    @Nonnull
+    public FluidInventoryLogic removeInventory(@Nonnull UUID id) {
         return inventories.remove(id);
     }
 
+    @Nonnull
     public FluidInventoryLogic getAllInventoryLogics() {
         return new FluidInventoryLogic(
             inventories.values()
@@ -77,12 +80,14 @@ public class ControllerFluidLogic {
                 .collect(Collectors.toList()));
     }
 
-    public FluidInventoryLogic getInventoryLogic(UUID id) {
+    @Nonnull
+    public FluidInventoryLogic getInventoryLogic(@Nullable UUID id) {
         if (id == null) return getAllInventoryLogics();
         return inventories.get(id);
     }
 
-    public String getInventoryDisplayName(UUID id) {
+    @Nonnull
+    public String getInventoryDisplayName(@Nullable UUID id) {
         if (id == null) return "";
         FluidInventoryLogic logic = inventories.get(id);
         if (logic == null) return "";
@@ -90,13 +95,14 @@ public class ControllerFluidLogic {
             .isEmpty() ? id.toString() : logic.getDisplayName();
     }
 
-    public void setInventoryDisplayName(UUID id, String displayName) {
+    public void setInventoryDisplayName(@Nullable UUID id, @Nullable String displayName) {
         if (id == null) return;
         FluidInventoryLogic logic = inventories.get(id);
         if (logic == null) return;
         logic.setDisplayName(displayName);
     }
 
+    @Nonnull
     public NBTTagCompound saveToNBT() {
         NBTTagCompound nbt = new NBTTagCompound();
         NBTTagList inventoriesNBT = new NBTTagList();
@@ -118,8 +124,9 @@ public class ControllerFluidLogic {
         return nbt;
     }
 
-    public void loadFromNBT(NBTTagCompound nbt) {
+    public void loadFromNBT(@Nonnull NBTTagCompound nbt) {
         NBTTagList inventoriesNBT = nbt.getTagList("inventories", Constants.NBT.TAG_COMPOUND);
+        if (inventoriesNBT == null) return;
         for (int i = 0; i < inventoriesNBT.tagCount(); i++) {
             NBTTagCompound inventoryNBT = inventoriesNBT.getCompoundTagAt(i);
             UUID uuid = UUID.fromString(inventoryNBT.getString("uuid"));

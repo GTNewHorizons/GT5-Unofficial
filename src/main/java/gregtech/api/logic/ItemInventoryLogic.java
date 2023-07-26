@@ -22,6 +22,7 @@ import net.minecraftforge.common.util.Constants;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.forge.ListItemHandler;
+import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -35,7 +36,11 @@ import gregtech.api.util.GT_Utility;
  */
 public class ItemInventoryLogic {
 
-    protected String displayName = "";
+    private static final int DEFAULT_COLUMNS_PER_ROW = 4;
+    private static final int POSITION_INTERVAL = 18;
+    private static final Size SIZE = new Size(18, 18);
+
+    protected String displayName;
     protected final IItemHandlerModifiable inventory;
     protected UUID connectedFluidInventory;
     protected int tier;
@@ -63,6 +68,7 @@ public class ItemInventoryLogic {
         this(new ListItemHandler(inventories), -1, false);
     }
 
+    @Nullable
     public String getDisplayName() {
         return displayName;
     }
@@ -79,11 +85,12 @@ public class ItemInventoryLogic {
         return getInventory().getSlots();
     }
 
-    public ItemInventoryLogic setDisplayName(@Nullable String displayName) {
+    @Nonnull
+    public void setDisplayName(@Nullable String displayName) {
         this.displayName = displayName;
-        return this;
     }
 
+    @Nullable
     public UUID getConnectedFluidInventoryID() {
         return connectedFluidInventory;
     }
@@ -96,6 +103,7 @@ public class ItemInventoryLogic {
      * 
      * @return The Item Inventory Logic as an NBTTagCompound to be saved in another nbt as how one wants.
      */
+    @Nonnull
     public NBTTagCompound saveToNBT() {
         final NBTTagCompound nbt = new NBTTagCompound();
         final NBTTagList tList = new NBTTagList();
@@ -110,16 +118,33 @@ public class ItemInventoryLogic {
         }
         nbt.setTag("inventory", tList);
         nbt.setInteger("tier", tier);
-        nbt.setString("displayName", displayName);
+        if (displayName != null) {
+            nbt.setString("displayName", displayName);
+        }
         nbt.setBoolean("isUpgradeInventory", isUpgradeInventory);
+        if (connectedFluidInventory != null) {
+            nbt.setString("connectedFluidInventory", connectedFluidInventory.toString());
+        }
         return nbt;
     }
 
     /**
      * Loads the Item Inventory Logic from an NBTTagCompound.
      */
-    public void loadFromNBT(NBTTagCompound nbt) {
+    public void loadFromNBT(@Nonnull NBTTagCompound nbt) {
+        tier = nbt.getInteger("tier");
+        if (nbt.hasKey("displayName")) {
+            displayName = nbt.getString("displayName");
+        }
+
+        isUpgradeInventory = nbt.getBoolean("isUpgradeInventory");
+        if (nbt.hasKey("connectedFluidInventory")) {
+            connectedFluidInventory = UUID.fromString(nbt.getString("connectedFluidInventory"));
+        }
+
         NBTTagList nbtList = nbt.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
+        if (nbtList == null) return;
+
         for (int i = 0; i < nbtList.tagCount(); i++) {
             final NBTTagCompound tNBT = nbtList.getCompoundTagAt(i);
             final int tSlot = tNBT.getShort("s");
@@ -127,15 +152,14 @@ public class ItemInventoryLogic {
                 inventory.setStackInSlot(tSlot, GT_Utility.loadItem(tNBT));
             }
         }
-        tier = nbt.getInteger("tier");
-        displayName = nbt.getString("displayName");
-        isUpgradeInventory = nbt.getBoolean("isUpgradeInventory");
     }
 
+    @Nonnull
     public IItemHandlerModifiable getInventory() {
         return inventory;
     }
 
+    @Nonnull
     public ItemStack[] getStoredItems() {
         return inventory.getStacks()
             .stream()
@@ -192,10 +216,12 @@ public class ItemInventoryLogic {
         }
     }
 
+    @Nonnull
     public Widget getGuiPart() {
-        return getGUIPart(4);
+        return getGUIPart(DEFAULT_COLUMNS_PER_ROW);
     }
 
+    @Nonnull
     public Widget getGUIPart(int columnsPerRow) {
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
         for (int rows = 0; rows * columnsPerRow < Math.min(inventory.getSlots(), 128); rows++) {
@@ -203,8 +229,9 @@ public class ItemInventoryLogic {
                 .min(Math.min(inventory.getSlots(), 128) - rows * columnsPerRow, columnsPerRow);
             for (int column = 0; column < columnsToMake; column++) {
                 scrollable.widget(
-                    new SlotWidget(inventory, rows * columnsPerRow + column).setPos(column * 18, rows * 18)
-                        .setSize(18, 18));
+                    new SlotWidget(inventory, rows * columnsPerRow + column)
+                        .setPos(column * POSITION_INTERVAL, rows * POSITION_INTERVAL)
+                        .setSize(SIZE));
             }
         }
         return scrollable;

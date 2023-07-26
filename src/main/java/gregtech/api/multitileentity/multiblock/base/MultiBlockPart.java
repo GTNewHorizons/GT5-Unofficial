@@ -2,7 +2,6 @@ package gregtech.api.multitileentity.multiblock.base;
 
 import static com.google.common.math.LongMath.log2;
 import static gregtech.api.enums.GT_Values.B;
-import static gregtech.api.enums.GT_Values.NBT;
 import static gregtech.api.enums.Textures.BlockIcons.FLUID_IN_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.FLUID_OUT_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.ITEM_IN_SIGN;
@@ -14,6 +13,9 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
 import java.math.RoundingMode;
 import java.util.*;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -467,16 +469,20 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         return "gt.multitileentity.multiblock.part";
     }
 
+    @Override
+    public boolean shouldTick(long tickTimer) {
+        return modeSelected(ITEM_OUT, FLUID_OUT);
+    }
+
     /**
      * TODO: Make sure the energy/item/fluid hatch is facing that way! or has that mode enabled on that side Check
      * SIDE_UNKNOWN for or coverbehavior
      */
 
-    /**
-     * Fluid - Depending on the part type - proxy it to the multiblock controller, if we have one
-     */
+    // #region Fluid - Depending on the part type - proxy it to the multiblock controller, if we have one
     @Override
-    public FluidInventoryLogic getFluidLogic(ForgeDirection side, InventoryType type) {
+    @Nullable
+    public FluidInventoryLogic getFluidLogic(@Nonnull ForgeDirection side, @Nonnull InventoryType type) {
         if (side != facing && side != ForgeDirection.UNKNOWN) return null;
 
         if (!modeSelected(FLUID_IN, FLUID_OUT)) return null;
@@ -487,10 +493,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
             .getFluidLogic(modeSelected(FLUID_IN) ? InventoryType.Input : InventoryType.Output, lockedInventory);
     }
 
-    @Override
-    public boolean shouldTick(long tickTimer) {
-        return modeSelected(ITEM_OUT, FLUID_OUT);
-    }
+    // #endregion Fluid
 
     // #region Energy - Depending on the part type - proxy to the multiblock controller, if we have one
 
@@ -521,11 +524,13 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         return modeSelected(ENERGY_OUT);
     }
 
-    // #endregion
+    // #endregion Energy
 
     // #region Item - Depending on the part type - proxy to the multiblock controller, if we have one
 
-    public ItemInventoryLogic getItemLogic(ForgeDirection side, InventoryType unused) {
+    @Override
+    @Nullable
+    public ItemInventoryLogic getItemLogic(@Nonnull ForgeDirection side, @Nonnull InventoryType unused) {
         if (side != facing && side != ForgeDirection.UNKNOWN) return null;
 
         if (!modeSelected(ITEM_IN, ITEM_OUT)) return null;
@@ -538,12 +543,13 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     @Override
+    @Nullable
     public InventoryType getItemInventoryType() {
         if (!modeSelected(ITEM_IN, ITEM_OUT)) return InventoryType.Both;
         return modeSelected(ITEM_IN) ? InventoryType.Input : InventoryType.Output;
     }
 
-    // #endregion
+    // #endregion Item
 
     // === Modular UI ===
     @Override

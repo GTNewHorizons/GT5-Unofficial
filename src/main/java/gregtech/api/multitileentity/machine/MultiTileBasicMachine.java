@@ -132,7 +132,10 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     }
 
     protected void saveFluidLogic(NBTTagCompound nbt) {
-
+        NBTTagCompound fluidInputNBT = fluidInput.saveToNBT();
+        nbt.setTag(NBT.TANK_IN, fluidInputNBT);
+        NBTTagCompound fluidOutputNBT = fluidOutput.saveToNBT();
+        nbt.setTag(NBT.TANK_OUT, fluidOutputNBT);
     }
 
     protected void saveItemsToOutput(NBTTagCompound aNBT) {
@@ -295,16 +298,6 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
 
     @Override
     public void setLightValue(byte aLightValue) {}
-
-    @Override
-    public boolean isLiquidInput(ForgeDirection side) {
-        return side != facing;
-    }
-
-    @Override
-    public boolean isLiquidOutput(ForgeDirection side) {
-        return side != facing;
-    }
 
     /*
      * Inventory

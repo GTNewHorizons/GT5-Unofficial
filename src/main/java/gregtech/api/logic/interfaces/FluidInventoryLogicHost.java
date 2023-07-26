@@ -41,40 +41,43 @@ public interface FluidInventoryLogicHost extends IFluidHandler {
     }
 
     @Override
-    default boolean canDrain(ForgeDirection from, Fluid fluid) {
+    default boolean canDrain(@Nonnull ForgeDirection from, Fluid fluid) {
         FluidInventoryLogic logic = getFluidLogic(from, InventoryType.Output);
         return logic != null;
     }
 
     @Override
-    default boolean canFill(ForgeDirection from, Fluid fluid) {
+    default boolean canFill(@Nonnull ForgeDirection from, Fluid fluid) {
         FluidInventoryLogic logic = getFluidLogic(from, InventoryType.Input);
         return logic != null;
     }
 
     @Override
-    default FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+    @Nullable
+    default FluidStack drain(@Nonnull ForgeDirection from, @Nonnull FluidStack resource, boolean doDrain) {
         FluidInventoryLogic logic = getFluidLogic(from, InventoryType.Output);
         if (logic == null) return null;
         return logic.drain(resource.getFluid(), resource.amount, !doDrain);
     }
 
     @Override
-    default FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+    @Nullable
+    default FluidStack drain(@Nonnull ForgeDirection from, int maxDrain, boolean doDrain) {
         FluidInventoryLogic logic = getFluidLogic(from, InventoryType.Output);
         if (logic == null) return null;
         return logic.drain(maxDrain, !doDrain);
     }
 
     @Override
-    default int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+    default int fill(@Nonnull ForgeDirection from, @Nonnull FluidStack resource, boolean doFill) {
         FluidInventoryLogic logic = getFluidLogic(from, InventoryType.Input);
         if (logic == null) return 0;
         return saturatedCast(logic.fill(resource.getFluid(), resource.amount, !doFill));
     }
 
     @Override
-    default FluidTankInfo[] getTankInfo(ForgeDirection from) {
+    @Nullable
+    default FluidTankInfo[] getTankInfo(@Nonnull ForgeDirection from) {
         return null;
     }
 }

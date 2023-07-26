@@ -14,6 +14,9 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -749,7 +752,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     // #region Fluid - MultiBlock related Fluid Tank behaviour.
 
     @Override
-    public FluidInventoryLogic getFluidLogic(ForgeDirection side, InventoryType type) {
+    @Nullable
+    public FluidInventoryLogic getFluidLogic(@Nonnull ForgeDirection side, @Nonnull InventoryType type) {
         if (side == facing) return null;
         return switch (type) {
             case Input -> controllerFluidInput.getAllInventoryLogics();
@@ -758,7 +762,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         };
     }
 
-    public FluidInventoryLogic getFluidLogic(InventoryType type, UUID id) {
+    @Nullable
+    public FluidInventoryLogic getFluidLogic(@Nonnull InventoryType type, @Nullable UUID id) {
         return switch (type) {
             case Input -> controllerFluidInput.getInventoryLogic(id);
             case Output -> controllerFluidOutput.getInventoryLogic(id);
@@ -767,7 +772,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     @Override
-    public UUID registerFluidInventory(int tanks, long capacity, int tier, InventoryType type,
+    @Nonnull
+    public UUID registerFluidInventory(int tanks, long capacity, int tier, @Nonnull InventoryType type,
         boolean isUpgradeInventory) {
         return switch (type) {
             case Input -> controllerFluidInput
@@ -785,7 +791,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     @Override
-    public FluidInventoryLogic unregisterFluidInventory(UUID id, InventoryType type) {
+    @Nonnull
+    public FluidInventoryLogic unregisterFluidInventory(@Nonnull UUID id, @Nonnull InventoryType type) {
         return switch (type) {
             case Input -> controllerFluidInput.removeInventory(id);
             case Output -> controllerFluidOutput.removeInventory(id);
@@ -802,7 +809,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     @Override
-    public void changeFluidInventoryDisplayName(UUID id, String displayName, InventoryType type) {
+    public void changeFluidInventoryDisplayName(@Nullable UUID id, @Nullable String displayName,
+        @Nonnull InventoryType type) {
         switch (type) {
             case Input:
                 controllerFluidInput.setInventoryDisplayName(id, displayName);
@@ -821,7 +829,9 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     // #region Item - MultiBlock related Item behaviour.
 
-    public ItemInventoryLogic getItemLogic(ForgeDirection side, InventoryType type) {
+    @Override
+    @Nullable
+    public ItemInventoryLogic getItemLogic(@Nonnull ForgeDirection side, @Nonnull InventoryType type) {
         if (side == facing) return null;
         return switch (type) {
             case Input -> controllerItemInput.getAllInventoryLogics();
@@ -830,7 +840,9 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         };
     }
 
-    public ItemInventoryLogic getItemLogic(InventoryType type, UUID id) {
+    @Override
+    @Nullable
+    public ItemInventoryLogic getItemLogic(@Nonnull InventoryType type, @Nullable UUID id) {
         return switch (type) {
             case Input -> controllerItemInput.getInventoryLogic(id);
             case Output -> controllerItemOutput.getInventoryLogic(id);
@@ -839,7 +851,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     @Override
-    public UUID registerItemInventory(int slots, int tier, InventoryType type, boolean isUpgradeInventory) {
+    @Nonnull
+    public UUID registerItemInventory(int slots, int tier, @Nonnull InventoryType type, boolean isUpgradeInventory) {
         return switch (type) {
             case Input -> controllerItemInput.addInventory(new ItemInventoryLogic(slots, tier, isUpgradeInventory));
             case Output -> controllerItemOutput.addInventory(new ItemInventoryLogic(slots, tier, isUpgradeInventory));
@@ -851,7 +864,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         };
     }
 
-    public ItemInventoryLogic unregisterItemInventory(UUID id, InventoryType type) {
+    @Override
+    public ItemInventoryLogic unregisterItemInventory(@Nonnull UUID id, @Nonnull InventoryType type) {
         return switch (type) {
             case Input -> controllerItemInput.removeInventory(id);
             case Output -> controllerItemOutput.removeInventory(id);
@@ -868,7 +882,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     @Override
-    public void changeItemInventoryDisplayName(UUID id, String displayName, InventoryType type) {
+    public void changeItemInventoryDisplayName(@Nullable UUID id, @Nullable String displayName,
+        @Nonnull InventoryType type) {
         switch (type) {
             case Input:
                 controllerItemInput.setInventoryDisplayName(id, displayName);

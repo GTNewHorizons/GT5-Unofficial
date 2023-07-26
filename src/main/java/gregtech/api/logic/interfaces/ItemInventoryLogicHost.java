@@ -48,6 +48,7 @@ public interface ItemInventoryLogicHost extends ISidedInventory {
     }
 
     @Override
+    @Nullable
     default ItemStack decrStackSize(int slot, int count) {
         if (getItemInventoryType() == InventoryType.Both) return null;
         ItemInventoryLogic logic = getItemLogic(
@@ -68,6 +69,7 @@ public interface ItemInventoryLogicHost extends ISidedInventory {
     }
 
     @Override
+    @Nullable
     default ItemStack getStackInSlot(int slot) {
         if (getItemInventoryType() == InventoryType.Both) return null;
         ItemInventoryLogic logic = getItemLogic(
@@ -79,7 +81,7 @@ public interface ItemInventoryLogicHost extends ISidedInventory {
     }
 
     @Override
-    default boolean isItemValidForSlot(int slot, ItemStack stack) {
+    default boolean isItemValidForSlot(int slot, @Nullable ItemStack stack) {
         if (getItemInventoryType() == InventoryType.Both) return false;
         ItemInventoryLogic logic = getItemLogic(
             ForgeDirection.UNKNOWN,
@@ -90,7 +92,7 @@ public interface ItemInventoryLogicHost extends ISidedInventory {
     }
 
     @Override
-    default void setInventorySlotContents(int slot, ItemStack stack) {
+    default void setInventorySlotContents(int slot, @Nullable ItemStack stack) {
         if (getItemInventoryType() == InventoryType.Both) return;
         ItemInventoryLogic logic = getItemLogic(
             ForgeDirection.UNKNOWN,
@@ -101,13 +103,14 @@ public interface ItemInventoryLogicHost extends ISidedInventory {
     }
 
     @Override
-    default boolean canExtractItem(int ignoredSlot, ItemStack ignoredItem, int ignoredSide) {
-        return true;
+    default boolean canExtractItem(int ignoredSlot, ItemStack ignoredItem, int side) {
+        return getItemLogic(ForgeDirection.getOrientation(side), getItemInventoryType()) != null;
     }
 
     @Override
-    default boolean canInsertItem(int ignoredSlot, ItemStack ignoredItem, int ignoredSide) {
-        return getItemInventoryType() != InventoryType.Output;
+    default boolean canInsertItem(int ignoredSlot, ItemStack ignoredItem, int side) {
+        return getItemInventoryType() != InventoryType.Output
+            && getItemLogic(ForgeDirection.getOrientation(side), getItemInventoryType()) != null;
     }
 
     @Override
@@ -143,7 +146,7 @@ public interface ItemInventoryLogicHost extends ISidedInventory {
     }
 
     @Override
-    default boolean isUseableByPlayer(EntityPlayer player) {
+    default boolean isUseableByPlayer(@Nonnull EntityPlayer player) {
         return false;
     }
 

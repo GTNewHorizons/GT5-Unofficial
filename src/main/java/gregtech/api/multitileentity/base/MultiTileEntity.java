@@ -30,9 +30,6 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidTank;
 
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
@@ -198,12 +195,6 @@ public abstract class MultiTileEntity extends CoverableTileEntity
         } else {
             return TextureFactory.of(baseTexture, leftOverlayTexture);
         }
-    }
-
-    @Override
-    public ITexture[] getTexture(Block ignoredBlock, ForgeDirection ignoredSide) {
-        // We are not going to be using this
-        return null;
     }
 
     @Override
@@ -1115,82 +1106,6 @@ public abstract class MultiTileEntity extends CoverableTileEntity
 
     protected void addDebugInfo(EntityPlayer aPlayer, int aLogLevel, ArrayList<String> tList) {
         /* Do nothing */
-    }
-
-    /**
-     * Fluid - A Default implementation of the Fluid Tank behaviour, so that every TileEntity can use this to simplify
-     * its Code.
-     */
-    protected IFluidTank getFluidTankFillable(ForgeDirection side, FluidStack aFluidToFill) {
-        return null;
-    }
-
-    protected IFluidTank getFluidTankDrainable(ForgeDirection side, FluidStack aFluidToDrain) {
-        return null;
-    }
-
-    protected IFluidTank[] getFluidTanks(ForgeDirection side) {
-        return GT_Values.emptyFluidTank;
-    }
-
-    public boolean isLiquidInput(ForgeDirection side) {
-        return true;
-    }
-
-    public boolean isLiquidOutput(ForgeDirection side) {
-        return true;
-    }
-
-    @Override
-    public int fill(ForgeDirection aDirection, FluidStack aFluid, boolean aDoFill) {
-        if (aFluid == null || aFluid.amount <= 0) return 0;
-        final IFluidTank tTank = getFluidTankFillable(aDirection, aFluid);
-        return (tTank == null) ? 0 : tTank.fill(aFluid, aDoFill);
-    }
-
-    @Override
-    public FluidStack drain(ForgeDirection aDirection, FluidStack aFluid, boolean aDoDrain) {
-        if (aFluid == null || aFluid.amount <= 0) return null;
-        final IFluidTank tTank = getFluidTankDrainable(aDirection, aFluid);
-        if (tTank == null || tTank.getFluid() == null
-            || tTank.getFluidAmount() == 0
-            || !tTank.getFluid()
-                .isFluidEqual(aFluid))
-            return null;
-        return tTank.drain(aFluid.amount, aDoDrain);
-    }
-
-    @Override
-    public FluidStack drain(ForgeDirection aDirection, int aAmountToDrain, boolean aDoDrain) {
-        if (aAmountToDrain <= 0) return null;
-        final IFluidTank tTank = getFluidTankDrainable(aDirection, null);
-        if (tTank == null || tTank.getFluid() == null || tTank.getFluidAmount() == 0) return null;
-        return tTank.drain(aAmountToDrain, aDoDrain);
-    }
-
-    @Override
-    public boolean canFill(ForgeDirection aDirection, Fluid aFluid) {
-        if (aFluid == null) return false;
-        final IFluidTank tTank = getFluidTankFillable(aDirection, new FluidStack(aFluid, 0));
-        return tTank != null && (tTank.getFluid() == null || tTank.getFluid()
-            .getFluid() == aFluid);
-    }
-
-    @Override
-    public boolean canDrain(ForgeDirection aDirection, Fluid aFluid) {
-        if (aFluid == null) return false;
-        final IFluidTank tTank = getFluidTankDrainable(aDirection, new FluidStack(aFluid, 0));
-        return tTank != null && (tTank.getFluid() != null && tTank.getFluid()
-            .getFluid() == aFluid);
-    }
-
-    @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection aDirection) {
-        final IFluidTank[] tTanks = getFluidTanks(aDirection);
-        if (tTanks == null || tTanks.length <= 0) return GT_Values.emptyFluidTankInfo;
-        final FluidTankInfo[] rInfo = new FluidTankInfo[tTanks.length];
-        for (int i = 0; i < tTanks.length; i++) rInfo[i] = new FluidTankInfo(tTanks[i]);
-        return rInfo;
     }
 
     /**

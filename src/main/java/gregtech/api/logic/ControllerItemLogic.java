@@ -26,7 +26,7 @@ public class ControllerItemLogic {
     private final Map<UUID, ItemInventoryLogic> inventories = new HashMap<>();
     private final Set<Pair<UUID, ItemInventoryLogic>> unallocatedInventories = new HashSet<>();
 
-    public void addInventory(UUID id, ItemInventoryLogic inventory) {
+    public void addInventory(@Nonnull UUID id, @Nonnull ItemInventoryLogic inventory) {
         Pair<UUID, ItemInventoryLogic> found = checkIfInventoryExistsAsUnallocated(inventory);
         if (inventory.isUpgradeInventory() && found != null) {
             unallocatedInventories.remove(found);
@@ -123,6 +123,7 @@ public class ControllerItemLogic {
 
     public void loadFromNBT(@Nonnull NBTTagCompound nbt) {
         NBTTagList inventoriesNBT = nbt.getTagList("inventories", Constants.NBT.TAG_COMPOUND);
+        if (inventoriesNBT == null) return;
         for (int i = 0; i < inventoriesNBT.tagCount(); i++) {
             NBTTagCompound inventoryNBT = inventoriesNBT.getCompoundTagAt(i);
             UUID uuid = UUID.fromString(inventoryNBT.getString("uuid"));

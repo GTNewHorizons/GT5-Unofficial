@@ -18,11 +18,21 @@ import com.gtnewhorizons.modularui.api.fluids.FluidTanksHandler;
 import com.gtnewhorizons.modularui.api.fluids.IFluidTankLong;
 import com.gtnewhorizons.modularui.api.fluids.IFluidTanksHandler;
 import com.gtnewhorizons.modularui.api.fluids.ListFluidHandler;
+import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 
+/**
+ * Generic Fluid logic for MuTEs.
+ * 
+ * @author BlueWeabo
+ */
 public class FluidInventoryLogic {
+
+    private static final int DEFAULT_COLUMNS_PER_ROW = 4;
+    private static final int POSITION_INTERVAL = 18;
+    private static final Size SIZE = new Size(18, 18);
 
     protected String displayName = "";
     protected final IFluidTanksHandler inventory;
@@ -53,6 +63,7 @@ public class FluidInventoryLogic {
         this(new ListFluidHandler(inventories), 0, false);
     }
 
+    @Nullable
     public String getDisplayName() {
         return displayName;
     }
@@ -65,15 +76,15 @@ public class FluidInventoryLogic {
         return isUpgradeInventory;
     }
 
-    public FluidInventoryLogic setDisplayName(@Nullable String displayName) {
+    public void setDisplayName(@Nullable String displayName) {
         this.displayName = displayName;
-        return this;
     }
 
     /**
      * 
      * @return The Fluid Inventory Logic as an NBTTagList to be saved in another nbt as how one wants.
      */
+    @Nonnull
     public NBTTagCompound saveToNBT() {
         final NBTTagCompound nbt = new NBTTagCompound();
         final NBTTagList tList = new NBTTagList();
@@ -88,7 +99,9 @@ public class FluidInventoryLogic {
         }
         nbt.setTag("inventory", tList);
         nbt.setInteger("tier", tier);
-        nbt.setString("displayName", displayName);
+        if (displayName != null) {
+            nbt.setString("displayName", displayName);
+        }
         nbt.setBoolean("isUpgradeInventory", isUpgradeInventory);
         return nbt;
     }
@@ -96,7 +109,7 @@ public class FluidInventoryLogic {
     /**
      * Loads the Item Inventory Logic from an NBTTagList.
      */
-    public void loadFromNBT(NBTTagCompound nbt) {
+    public void loadFromNBT(@Nonnull NBTTagCompound nbt) {
         NBTTagList nbtList = nbt.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < nbtList.tagCount(); i++) {
             final NBTTagCompound tankNBT = nbtList.getCompoundTagAt(i);
@@ -105,14 +118,18 @@ public class FluidInventoryLogic {
                 .loadFromNBT(tankNBT);
         }
         tier = nbt.getInteger("tier");
-        displayName = nbt.getString("displayName");
+        if (nbt.hasKey("displayName")) {
+            displayName = nbt.getString("displayName");
+        }
         isUpgradeInventory = nbt.getBoolean("isUpgradeInventory");
     }
 
+    @Nonnull
     public IFluidTanksHandler getInventory() {
         return inventory;
     }
 
+    @Nonnull
     public FluidStack[] getStoredFluids() {
         return inventory.getFluids()
             .stream()
@@ -121,7 +138,7 @@ public class FluidInventoryLogic {
             .toArray(new FluidStack[0]);
     }
 
-    public boolean isFluidValid(Fluid fluid) {
+    public boolean isFluidValid(@Nullable Fluid fluid) {
         return fluid != null;
     }
 
@@ -130,7 +147,7 @@ public class FluidInventoryLogic {
      * @param amount amount of fluid we are trying to put
      * @return amount of fluid filled into the tank
      */
-    public long fill(Fluid fluid, long amount, boolean simulate) {
+    public long fill(@Nullable Fluid fluid, long amount, boolean simulate) {
         if (!isFluidValid(fluid)) return 0;
         IFluidTankLong tank = fluidToTankMap.get(fluid);
         if (tank != null) {
@@ -148,8 +165,8 @@ public class FluidInventoryLogic {
     /**
      * Try and drain the first fluid found for that amount. Used by GT_Cover_Pump
      * 
-     * @param amount
-     * @return
+     * @param amount Fluid to drain from the tank
+     * @return A fluidstack with the possible amount drained
      */
     @Nullable
     public FluidStack drain(int amount, boolean simulate) {
@@ -179,7 +196,7 @@ public class FluidInventoryLogic {
     }
 
     public Widget getGuiPart() {
-        return getGUIPart(4);
+        return getGUIPart(DEFAULT_COLUMNS_PER_ROW);
     }
 
     public Widget getGUIPart(int columnsPerRow) {
@@ -189,8 +206,8 @@ public class FluidInventoryLogic {
             for (int column = 0; column < columnsToMake; column++) {
                 final FluidSlotWidget fluidSlot = new FluidSlotWidget(inventory, rows * 4 + column);
                 scrollable.widget(
-                    fluidSlot.setPos(column * 18, rows * 18)
-                        .setSize(18, 18));
+                    fluidSlot.setPos(column * POSITION_INTERVAL, rows * POSITION_INTERVAL)
+                        .setSize(SIZE));
             }
         }
         return scrollable;
