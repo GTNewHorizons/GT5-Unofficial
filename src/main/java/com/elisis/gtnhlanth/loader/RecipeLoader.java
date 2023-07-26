@@ -1619,39 +1619,6 @@ public class RecipeLoader {
 
         GT_Log.out.print("Chemical Bath done!\n");
 
-        // For ByProduct List
-        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sByProductList.mRecipeList) {
-            ItemStack input = recipe.mInputs[0];
-            if (GT_Utility.isStackValid(input)) {
-                int[] oreDict = OreDictionary.getOreIDs(input);
-                for (int oreDictID : oreDict) {
-                    if (OreDictionary.getOreName(oreDictID).startsWith("ore")
-                            && OreDictionary.getOreName(oreDictID).contains("Cerium")) {
-                        GT_Recipe tRecipe = recipe.copy();
-                        for (int i = 0; i < tRecipe.mOutputs.length; i++) {
-                            if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
-                            if (tRecipe.mOutputs[i].isItemEqual(Materials.Cerium.getDust(1))) {
-                                remove.add(tRecipe);
-                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1))) {
-                                remove.add(tRecipe);
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-        GT_Recipe.GT_Recipe_Map.sByProductList.mRecipeList.removeAll(remove);
-        GT_Recipe.GT_Recipe_Map.sByProductList.mRecipeList.addAll(reAdd);
-        GT_Recipe.GT_Recipe_Map.sByProductList.reInit();
-
-        GT_Log.out.print(Tags.MODID + ": Replace " + remove.size() + "! ");
-
-        remove.clear();
-        reAdd.clear();
-
-        GT_Log.out.print("ByProduct List done!\n");
-
         // For Cauldron Wash
         registerCauldronCleaningFor(Materials.Cerium, WerkstoffMaterialPool.CeriumRichMixture.getBridgeMaterial());
         registerCauldronCleaningFor(

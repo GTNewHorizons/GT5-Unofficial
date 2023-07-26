@@ -1,38 +1,7 @@
 // Add your dependencies here
 
 dependencies {
-    compile('com.github.GTNewHorizons:GT5-Unofficial:5.09.43.73:dev')
-    compile('com.github.GTNewHorizons:NewHorizonsCoreMod:2.1.45:dev')
-    compile('com.github.GTNewHorizons:StructureLib:1.2.7:dev')
-    compile('com.github.GTNewHorizons:GTplusplus:1.9.33:dev')
-    compile('com.github.GTNewHorizons:GoodGenerator:0.6.9:dev')
-    compile('com.github.GTNewHorizons:TecTech:5.2.21:dev')
-    compile('com.github.GTNewHorizons:ForestryMC:4.6.7:dev')
-    compile('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-217-GTNH:dev')
-    compile('com.github.GTNewHorizons:bartworks:0.7.16:dev')
-    compile('com.github.GTNewHorizons:BuildCraft:7.1.33:dev')
-    compile('com.github.GTNewHorizons:NotEnoughItems:2.3.54-GTNH:dev')
-
-    compile('net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev')
-
-    compileOnly('com.github.GTNewHorizons:EnderCore:0.2.14:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:AppleCore:3.2.10:dev') {transitive = false}
-    compileOnly('com.github.GTNewHorizons:Railcraft:9.14.3:dev') {transitive = false}
-    compileOnly('com.github.GTNewHorizons:EnderIO:2.4.18:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:ExtraCells2:2.5.34:dev') {transitive=false}
-
-    compileOnly('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev') {transitive=false}
-
-    //compile('com.github.GTNewHorizons:GalacticGregGT5:1.0.9:dev')
-    //compile('com.github.GTNewHorizons:TecTech:5.2.21:dev')
-    //compile('com.github.GTNewHorizons:Galacticraft:3.0.68-GTNH:dev')
-
-    //compileOnly('com.github.GTNewHorizons:Avaritia:1.42
-
-    //compile files('ThaumicTinkerer-1.7.10-2.7-0-dev.jar')
-
-    //runtimeOnly('com.github.GTNewHorizons:Baubles:1.0.1.16:dev')
-    //runtimeOnly('com.github.GTNewHorizons:Yamcl:0.5.86:dev')
-    runtimeOnly('curse.maven:cofh-core-69162:2388751') //for GT++
-    runtimeOnly('curse.maven:advsolar-362768:2885953') //for GT++
+    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.43.151:dev')
+    implementation('com.github.GTNewHorizons:GTplusplus:1.9.67:dev')
+    implementation('com.github.GTNewHorizons:GoodGenerator:0.6.27:dev')
 }
