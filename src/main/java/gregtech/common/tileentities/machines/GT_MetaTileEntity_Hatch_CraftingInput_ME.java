@@ -121,11 +121,17 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                         .getPatternForItem(pattern, world)));
         }
 
+        private boolean isEmpty() {
+            return itemInventory.isEmpty() && fluidInventory.isEmpty();
+        }
+
         public ItemStack[] getItemInputs() {
+            if (isEmpty()) return new ItemStack[0];
             return ArrayUtils.addAll(itemInventory.toArray(new ItemStack[0]), sharedItemGetter.getSharedItem());
         }
 
         public FluidStack[] getFluidInputs() {
+            if (isEmpty()) return new FluidStack[0];
             return fluidInventory.toArray(new FluidStack[0]);
         }
 
