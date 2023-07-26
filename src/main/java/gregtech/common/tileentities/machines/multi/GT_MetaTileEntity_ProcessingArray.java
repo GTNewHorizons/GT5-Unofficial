@@ -247,13 +247,8 @@ public class GT_MetaTileEntity_ProcessingArray extends
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe,
                 @Nonnull GT_ParallelHelper helper) {
-                return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
-                    .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplierDouble()))
-                    .setDuration((int) Math.ceil(recipe.mDuration * helper.getDurationMultiplierDouble()))
-                    .setAmperage(availableAmperage)
-                    .setEUt(availableVoltage)
-                    .setDurationDecreasePerOC(overClockTimeReduction)
-                    .setEUtIncreasePerOC(overClockPowerIncrease);
+                return super.createOverclockCalculator(recipe, helper)
+                    .setDuration((int) Math.ceil(recipe.mDuration * helper.getDurationMultiplierDouble()));
             }
 
             @Nonnull
