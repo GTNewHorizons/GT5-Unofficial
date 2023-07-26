@@ -1,10 +1,10 @@
 // Add your dependencies here
 
 dependencies {
-    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.43.146:dev')
-    api('com.github.GTNewHorizons:bartworks:0.7.33:dev')
+    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.43.153:dev')
+    api('com.github.GTNewHorizons:bartworks:0.7.35:dev')
     implementation('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev')
-    implementation('com.github.GTNewHorizons:GTplusplus:1.9.65:dev')
+    implementation('com.github.GTNewHorizons:GTplusplus:1.9.67:dev')
 
     compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.4.10-GTNH:dev') {transitive =  false}
 
