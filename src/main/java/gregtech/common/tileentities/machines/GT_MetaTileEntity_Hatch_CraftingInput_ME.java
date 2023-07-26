@@ -106,11 +106,13 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             this.sharedItemGetter = getter;
             NBTTagList inv = nbt.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < inv.tagCount(); i++) {
-                itemInventory.add(ItemStack.loadItemStackFromNBT(inv.getCompoundTagAt(i)));
+                var item = ItemStack.loadItemStackFromNBT(inv.getCompoundTagAt(i));
+                if (item != null && item.stackSize > 0) itemInventory.add(item);
             }
             NBTTagList fluidInv = nbt.getTagList("fluidInventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < fluidInv.tagCount(); i++) {
-                fluidInventory.add(FluidStack.loadFluidStackFromNBT(fluidInv.getCompoundTagAt(i)));
+                var fluid = FluidStack.loadFluidStackFromNBT(fluidInv.getCompoundTagAt(i));
+                if (fluid != null && fluid.amount > 0) fluidInventory.add(fluid);
             }
         }
 
@@ -122,7 +124,17 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
 
         private boolean isEmpty() {
-            return itemInventory.isEmpty() && fluidInventory.isEmpty();
+            if (itemInventory.isEmpty() && fluidInventory.isEmpty()) return true;
+
+            for (ItemStack itemStack : itemInventory) {
+                if (itemStack != null && itemStack.stackSize > 0) return false;
+            }
+
+            for (FluidStack fluidStack : fluidInventory) {
+                if (fluidStack != null && fluidStack.amount > 0) return false;
+            }
+
+            return true;
         }
 
         public ItemStack[] getItemInputs() {
