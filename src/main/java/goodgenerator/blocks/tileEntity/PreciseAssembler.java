@@ -364,6 +364,9 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
     }
 
     public void reUpdate(int texture) {
+        for (IDualInputHatch hatch : mDualInputHatches) {
+            hatch.updateTexture(texture);
+        }
         for (GT_MetaTileEntity_Hatch hatch : mInputHatches) {
             hatch.updateTexture(texture);
         }
