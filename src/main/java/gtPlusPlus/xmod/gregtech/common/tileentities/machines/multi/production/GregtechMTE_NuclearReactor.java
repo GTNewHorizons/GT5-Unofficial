@@ -364,6 +364,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+                mFuelRemaining = getStoredFuel(recipe);
                 if (mFuelRemaining < 100) {
                     return CheckRecipeResultRegistry.NO_FUEL_FOUND;
                 }
@@ -388,7 +389,10 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
         }
         CheckRecipeResult result = super.checkProcessing();
         if (result.wasSuccessful()) {
-            mFuelRemaining = getStoredFuel(mLastRecipe);
+            // We produce EU, so we negate the value, if negative
+            if (lEUt < 0) {
+                lEUt = -lEUt;
+            }
         }
         return result;
     }
