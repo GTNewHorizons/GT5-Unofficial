@@ -541,38 +541,6 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             aRecipe);
     }
 
-    /**
-     * @inheritDoc
-     * @deprecated Use {@link #GT_MetaTileEntity_BasicMachine_GT_Recipe( int aID, String, String, int, String,
-     *             GT_Recipe.GT_Recipe_Map, int, int, int, int, int, String, ResourceLocation, boolean, boolean,
-     *             SpecialEffects, String , Object[])}
-     */
-    @Deprecated
-    public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
-        String aDescription, GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
-        int aGUIParameterA, int aGUIParameterB, String aGUIName, String aSound, boolean aSharedTank,
-        boolean aRequiresFluidForFiltering, int aSpecialEffect, String aOverlays, Object[] aRecipe) {
-        this(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            aDescription,
-            aRecipes,
-            aInputSlots,
-            aOutputSlots,
-            aTankCapacity,
-            aGUIParameterA,
-            aGUIParameterB,
-            aGUIName,
-            new ResourceLocation(aSound),
-            aSharedTank,
-            aRequiresFluidForFiltering,
-            SpecialEffects.fromId(aSpecialEffect),
-            aOverlays,
-            aRecipe);
-    }
-
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(String aName, int aTier, String[] aDescription,
         GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, int aAmperage,
         int aGUIParameterA, int aGUIParameterB, ITexture[][][] aTextures, String aGUIName, String aNEIName,
