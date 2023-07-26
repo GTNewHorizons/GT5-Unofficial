@@ -313,7 +313,10 @@ public class ProcessingLogic {
 
         helper.build();
 
-        if (helper.getCurrentParallel() <= 0) return CheckRecipeResultRegistry.OUTPUT_FULL;
+        if (!helper.getResult()
+            .wasSuccessful()) {
+            return helper.getResult();
+        }
 
         calculatedParallels = helper.getCurrentParallel();
 

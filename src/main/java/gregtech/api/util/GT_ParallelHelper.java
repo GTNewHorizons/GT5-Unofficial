@@ -4,7 +4,6 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -104,7 +103,7 @@ public class GT_ParallelHelper {
      */
     private float eutModifier = 1;
 
-    CheckRecipeResult result;
+    CheckRecipeResult result = CheckRecipeResultRegistry.NONE;
 
     Function<Integer, ItemStack[]> customItemOutputCalculation;
 
@@ -333,7 +332,7 @@ public class GT_ParallelHelper {
     /**
      * @return The result of why a recipe could've failed or succeeded
      */
-    @Nullable
+    @Nonnull
     public CheckRecipeResult getResult() {
         if (!built) {
             throw new IllegalStateException("Tried to get recipe result before building");
@@ -404,6 +403,10 @@ public class GT_ParallelHelper {
                 .setMaxParallel(maxParallel)
                 .build();
             maxParallel = Math.min(voidProtectionHelper.getMaxParallel(), maxParallel);
+            if (maxParallel <= 0) {
+                result = CheckRecipeResultRegistry.OUTPUT_FULL;
+                return;
+            }
         }
 
         maxParallelBeforeBatchMode = Math.min(maxParallel, maxParallelBeforeBatchMode);
@@ -431,6 +434,11 @@ public class GT_ParallelHelper {
                     builtRecipeCheck = true;
                 }
             }
+        }
+
+        if (currentParallel <= 0) {
+            result = CheckRecipeResultRegistry.INTERNAL_ERROR;
+            return;
         }
 
         GT_OverclockCalculator calc = new GT_OverclockCalculator().setEUt(availableEUt)
@@ -467,6 +475,7 @@ public class GT_ParallelHelper {
                 calculateFluidOutputs();
             }
         }
+        result = CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     protected void copyInputs() {
