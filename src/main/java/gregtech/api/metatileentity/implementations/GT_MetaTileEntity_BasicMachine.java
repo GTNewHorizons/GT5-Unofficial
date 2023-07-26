@@ -139,17 +139,6 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mPower = buildPower();
     }
 
-    public GT_MetaTileEntity_BasicMachine(String aName, int aTier, int aAmperage, String aDescription,
-        ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName) {
-        super(aName, aTier, OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1, aDescription, aTextures);
-        mInputSlotCount = Math.max(0, aInputSlotCount);
-        mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
-        mAmperage = aAmperage;
-        mGUIName = aGUIName;
-        mNEIName = aNEIName;
-        mPower = buildPower();
-    }
-
     public GT_MetaTileEntity_BasicMachine(String aName, int aTier, int aAmperage, String[] aDescription,
         ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName) {
         super(aName, aTier, OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1, aDescription, aTextures);

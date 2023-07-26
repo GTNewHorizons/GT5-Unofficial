@@ -174,11 +174,6 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     .build()));
     }
 
-    public GT_MetaTileEntity_IndustrialApiary(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
-        String aGUIName, String aNEIName) {
-        super(aName, aTier, 4, aDescription, aTextures, 6, 9, aGUIName, aNEIName);
-    }
-
     public GT_MetaTileEntity_IndustrialApiary(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
         String aGUIName, String aNEIName) {
         super(aName, aTier, 4, aDescription, aTextures, 6, 9, aGUIName, aNEIName);

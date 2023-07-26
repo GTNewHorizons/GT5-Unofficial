@@ -115,13 +115,6 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine impl
         radiusConfig = RADIUS[mTier];
     }
 
-    public GT_MetaTileEntity_Miner(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
-        String aGUIName, String aNEIName) {
-        super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
-        mSpeed = SPEED[aTier];
-        radiusConfig = RADIUS[mTier];
-    }
-
     public GT_MetaTileEntity_Miner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
         String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 2, 2, aGUIName, aNEIName);
