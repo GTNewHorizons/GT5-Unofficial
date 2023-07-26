@@ -34,7 +34,7 @@ public class GT_OverclockCalculator {
     /**
      * The value used for discount final eut per 900 heat
      */
-    private double heatDiscount = 0.95;
+    private double heatDiscountExponent = 0.95;
     /**
      * How much the bits should be moved to the left when it is overclocking (Going up, 2 meaning it is multiplied with
      * 4x)-
@@ -79,7 +79,7 @@ public class GT_OverclockCalculator {
     /**
      * Whether to enable heat discounts every 900 heat difference
      */
-    private boolean mHeatDiscount;
+    private boolean heatDiscount;
     /**
      * Whether the multi should use amperage to overclock with an exponent
      */
@@ -91,8 +91,8 @@ public class GT_OverclockCalculator {
 
     /** If the OC calculator should only do a given amount of overclocks. Mainly used in fusion reactors */
     private boolean limitOverclocks;
-    /** 
-     * Maximum amount of overclocks to perform, when limitOverclocks = true 
+    /**
+     * Maximum amount of overclocks to perform, when limitOverclocks = true
      */
     private int maxOverclocks;
     /** How many overclocks have been performed */
@@ -191,10 +191,18 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Enables adding a heat discount at the end of calculating an overclock, just like the EBF
+     * Use {@link #setHeatDiscount(boolean)}
      */
+    @Deprecated
     public GT_OverclockCalculator enableHeatDiscount() {
-        this.mHeatDiscount = true;
+        return setHeatDiscount(true);
+    }
+
+    /**
+     * Sets if we should add a heat discount at the end of calculating an overclock, just like the EBF
+     */
+    public GT_OverclockCalculator setHeatDiscount(boolean heatDiscount) {
+        this.heatDiscount = heatDiscount;
         return this;
     }
 
@@ -242,8 +250,8 @@ public class GT_OverclockCalculator {
      * Sets the heat discount during OC calculation if HeatOC is used. Default: 0.95 = 5% discount Used like a EU/t
      * Discount
      */
-    public GT_OverclockCalculator setHeatDiscount(float heatDiscount) {
-        this.heatDiscount = heatDiscount;
+    public GT_OverclockCalculator setHeatDiscountMultiplier(float heatDiscountExponent) {
+        this.heatDiscountExponent = heatDiscountExponent;
         return this;
     }
 
@@ -302,6 +310,7 @@ public class GT_OverclockCalculator {
 
     public GT_OverclockCalculator setLaserOC(boolean laserOC) {
         this.laserOC = laserOC;
+        setAmperageOC(!laserOC);
         return this;
     }
 
@@ -328,8 +337,8 @@ public class GT_OverclockCalculator {
     }
 
     private void calculateOverclock() {
-        int heatDiscounts = mHeatDiscount ? (multiHeat - recipeHeat) / HEAT_DISCOUNT_THRESHOLD : 0;
-        double heatDiscountMultiplier = Math.pow(heatDiscount, heatDiscounts);
+        int heatDiscounts = heatDiscount ? (multiHeat - recipeHeat) / HEAT_DISCOUNT_THRESHOLD : 0;
+        double heatDiscountMultiplier = Math.pow(heatDiscountExponent, heatDiscounts);
         duration = (int) Math.ceil(duration * speedBoost);
         int heatOCs = 0;
         if (heatOC) {

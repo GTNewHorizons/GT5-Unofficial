@@ -309,7 +309,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
                         .setRecipeLocked(recipeLockableMachine, isRecipeLocked)
                         .setMaxParallel(maxParallel)
                         .enableBatchMode(batchSize)
-                        .enableOutputCalculation();
+                        .setOutputCalculation(true);
                 }
                 return super.createParallelHelper(recipe);
             }

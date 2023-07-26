@@ -575,10 +575,8 @@ public class GT_MetaTileEntity_PCBFactory extends
                 }
                 GT_OverclockCalculator calculator = super.createOverclockCalculator(recipe, helper)
                     .setEUtDiscount((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
-                    .setSpeedBoost(getDurationMultiplierFromRoughness());
-                if (mOCTier2) {
-                    calculator.enablePerfectOC();
-                }
+                    .setSpeedBoost(getDurationMultiplierFromRoughness())
+                    .setDurationDecreasePerOC(mOCTier2 ? 2 : 1);
                 return calculator;
             }
 
@@ -586,42 +584,26 @@ public class GT_MetaTileEntity_PCBFactory extends
             @Override
             protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
                 return super.createParallelHelper(recipe)
-                    .setEUtModifier((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled));
-            }
+                    .setEUtModifier((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
+                    .setCustomItemOutputCalculation(currentParallel -> {
+                        ArrayList<ItemStack> chancedOutputs = new ArrayList<>();
+                        ItemStack controllerStack = getControllerSlot();
 
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                CheckRecipeResult result = super.process();
-
-                if (!result.wasSuccessful()) {
-                    return result;
-                }
-
-                mCurrentParallel = calculatedParallels;
-
-                ItemStack controllerStack = getControllerSlot();
-
-                if (mCurrentParallel > 0) {
-                    ArrayList<ItemStack> chancedOutputs = new ArrayList<>();
-                    int remainingEfficiency = getMaxEfficiency(controllerStack);
-                    for (int j = 0; j < (int) Math.ceil(getMaxEfficiency(controllerStack) / 10000.0f); j++) {
-                        int chanced = getBaseMetaTileEntity().getRandomNumber(10000);
-                        if (chanced >= remainingEfficiency) {
-                            continue;
-                        }
-                        for (ItemStack tOutput : outputItems) {
-                            if (tOutput == null) {
-                                break;
+                        for (int i = 0; i < currentParallel; i++) {
+                            for (ItemStack item : recipe.mOutputs) {
+                                int remainingEfficiency = getMaxEfficiency(controllerStack);
+                                while (remainingEfficiency > 0) {
+                                    if (getBaseMetaTileEntity().getRandomNumber(10000) >= remainingEfficiency) {
+                                        remainingEfficiency -= 10000;
+                                        continue;
+                                    }
+                                    chancedOutputs.add(item);
+                                    remainingEfficiency -= 10000;
+                                }
                             }
-                            chancedOutputs.add(tOutput);
                         }
-                        remainingEfficiency -= 10000;
-                    }
-                    setOutputItems(chancedOutputs.toArray(new ItemStack[0]));
-                }
-
-                return result;
+                        return chancedOutputs.toArray(new ItemStack[0]);
+                    });
             }
         };
     }

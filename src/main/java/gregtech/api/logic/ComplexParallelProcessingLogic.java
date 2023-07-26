@@ -126,8 +126,8 @@ public class ComplexParallelProcessingLogic {
             .setFluidInputs(inputFluids[index])
             .setAvailableEUt(availableEut[index])
             .setMachine(tileEntity, isItemVoidProtected[index], isFluidVoidProtected[index])
-            .enableConsumption()
-            .enableOutputCalculation();
+            .setConsumption(true)
+            .setOutputCalculation(true);
 
         helper.build();
 

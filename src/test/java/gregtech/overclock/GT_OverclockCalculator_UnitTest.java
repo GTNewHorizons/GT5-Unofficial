@@ -21,7 +21,7 @@ class GT_OverclockCalculator_UnitTest {
             .setEUt(V[5])
             .setDuration(1024)
             .setHeatOC(true)
-            .enableHeatDiscount()
+            .setHeatDiscount(true)
             .setRecipeHeat(1800)
             .setMultiHeat(1800 * 5)
             .calculate();
@@ -37,7 +37,7 @@ class GT_OverclockCalculator_UnitTest {
             .setEUt(V[5])
             .setDuration(1024)
             .setHeatOC(true)
-            .enableHeatDiscount()
+            .setHeatDiscount(true)
             .setRecipeHeat(1800)
             .setMultiHeat(2700)
             .calculate();
@@ -51,7 +51,7 @@ class GT_OverclockCalculator_UnitTest {
             .setEUt(V[5])
             .setDuration(1024)
             .setHeatOC(true)
-            .enableHeatDiscount()
+            .setHeatDiscount(true)
             .setRecipeHeat(1800)
             .setMultiHeat(1800)
             .calculate();
@@ -67,7 +67,7 @@ class GT_OverclockCalculator_UnitTest {
             .setEUt(V[5])
             .setDuration(1024)
             .setHeatOC(true)
-            .enableHeatDiscount()
+            .setHeatDiscount(true)
             .setRecipeHeat(1800)
             .setMultiHeat(3600)
             .calculate();
@@ -104,7 +104,7 @@ class GT_OverclockCalculator_UnitTest {
             .setEUt(V[6])
             .setDuration(2048)
             .setHeatOC(true)
-            .enableHeatDiscount()
+            .setHeatDiscount(true)
             .setRecipeHeat(486)
             .setMultiHeat(3900)
             .calculate();
