@@ -58,6 +58,7 @@ public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_Basic
             "(DEPRECATED, DO NOT USE! SWAP TO ADVANCED VERSION USING SHAPELESS RECIPE!)",
             1,
             1,
+            "",
             TextureFactory.of(
                 TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE),
                 TextureFactory.builder()
@@ -108,14 +109,19 @@ public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_Basic
                     .build()));
     }
 
-    public GT_MetaTileEntity_SeismicProspector(String aName, int aTier, String[] aDescription,
-        ITexture[][][] aTextures) {
-        super(aName, aTier, 1, aDescription, aTextures, 1, 1);
+    public GT_MetaTileEntity_SeismicProspector(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
+        String aNEIName) {
+        super(aName, aTier, 1, aDescription, aTextures, 1, 1, aNEIName);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_SeismicProspector(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        return new GT_MetaTileEntity_SeismicProspector(
+            this.mName,
+            this.mTier,
+            this.mDescriptionArray,
+            this.mTextures,
+            this.mNEIName);
     }
 
     @Override

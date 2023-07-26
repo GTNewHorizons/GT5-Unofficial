@@ -62,6 +62,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
             "Scans Crops and other things.",
             1,
             1,
+            "",
             TextureFactory.of(
                 TextureFactory.of(OVERLAY_SIDE_SCANNER_ACTIVE),
                 TextureFactory.builder()
@@ -112,13 +113,19 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                     .build()));
     }
 
-    public GT_MetaTileEntity_Scanner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 1, aDescription, aTextures, 1, 1);
+    public GT_MetaTileEntity_Scanner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
+        String aNEIName) {
+        super(aName, aTier, 1, aDescription, aTextures, 1, 1, aNEIName);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Scanner(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        return new GT_MetaTileEntity_Scanner(
+            this.mName,
+            this.mTier,
+            this.mDescriptionArray,
+            this.mTextures,
+            this.mNEIName);
     }
 
     @Override

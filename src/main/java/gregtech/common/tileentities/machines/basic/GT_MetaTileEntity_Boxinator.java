@@ -46,6 +46,7 @@ public class GT_MetaTileEntity_Boxinator extends GT_MetaTileEntity_BasicMachine 
             "Puts things into Boxes",
             2,
             1,
+            "",
             TextureFactory.of(
                 TextureFactory.of(OVERLAY_SIDE_BOXINATOR_ACTIVE),
                 TextureFactory.builder()
@@ -96,13 +97,19 @@ public class GT_MetaTileEntity_Boxinator extends GT_MetaTileEntity_BasicMachine 
                     .build()));
     }
 
-    public GT_MetaTileEntity_Boxinator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 1, aDescription, aTextures, 2, 1);
+    public GT_MetaTileEntity_Boxinator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
+        String aNEIName) {
+        super(aName, aTier, 1, aDescription, aTextures, 2, 1, aNEIName);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Boxinator(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        return new GT_MetaTileEntity_Boxinator(
+            this.mName,
+            this.mTier,
+            this.mDescriptionArray,
+            this.mTextures,
+            this.mNEIName);
     }
 
     @Override

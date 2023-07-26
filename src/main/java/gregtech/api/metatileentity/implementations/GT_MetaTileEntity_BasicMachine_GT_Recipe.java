@@ -67,6 +67,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             aDescription,
             aInputSlots,
             aOutputSlots,
+            aRecipes.mNEIName,
             TextureFactory.of(
                 TextureFactory.of(
                     new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_ACTIVE")),
@@ -453,9 +454,9 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
 
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(String aName, int aTier, String[] aDescription,
         GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, int aAmperage,
-        ITexture[][][] aTextures, ResourceLocation aSound, boolean aSharedTank, boolean aRequiresFluidForFiltering,
-        SpecialEffects aSpecialEffect) {
-        super(aName, aTier, aAmperage, aDescription, aTextures, aInputSlots, aOutputSlots);
+        ITexture[][][] aTextures, String aNEIName, ResourceLocation aSound, boolean aSharedTank,
+        boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect) {
+        super(aName, aTier, aAmperage, aDescription, aTextures, aInputSlots, aOutputSlots, aNEIName);
         this.mSharedTank = aSharedTank;
         this.mTankCapacity = aTankCapacity;
         this.mSpecialEffect = aSpecialEffect;
@@ -476,6 +477,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             this.mTankCapacity,
             this.mAmperage,
             this.mTextures,
+            this.mNEIName,
             this.mSoundResourceLocation,
             this.mSharedTank,
             this.mRequiresFluidForFiltering,
