@@ -53,6 +53,7 @@ public class ProcessingLogic {
     protected int batchSize = 1;
     protected float euModifier = 1.0f;
     protected float speedBoost = 1.0f;
+    protected boolean amperageOC = true;
 
     public ProcessingLogic() {}
 
@@ -228,6 +229,14 @@ public class ProcessingLogic {
     }
 
     /**
+     * Sets wether the multi should use amperage to OC or not
+     */
+    public ProcessingLogic setAmperageOC(boolean amperageOC) {
+        this.amperageOC = amperageOC;
+        return this;
+    }
+
+    /**
      * Clears calculated results and provided machine inputs to prepare for the next machine operation.
      */
     public ProcessingLogic clear() {
@@ -304,7 +313,10 @@ public class ProcessingLogic {
 
         helper.build();
 
-        if (helper.getCurrentParallel() <= 0) return CheckRecipeResultRegistry.OUTPUT_FULL;
+        if (!helper.getResult()
+            .wasSuccessful()) {
+            return helper.getResult();
+        }
 
         calculatedParallels = helper.getCurrentParallel();
 
@@ -364,8 +376,8 @@ public class ProcessingLogic {
             .setMaxParallel(maxParallel)
             .setEUtModifier(euModifier)
             .enableBatchMode(batchSize)
-            .enableConsumption()
-            .enableOutputCalculation();
+            .setConsumption(true)
+            .setOutputCalculation(true);
     }
 
     /**
@@ -386,6 +398,7 @@ public class ProcessingLogic {
             .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplierDouble()))
             .setDuration(recipe.mDuration)
             .setAmperage(availableAmperage)
+            .setAmperageOC(amperageOC)
             .setEUt(availableVoltage)
             .setSpeedBoost(speedBoost)
             .setEUtDiscount(euModifier)

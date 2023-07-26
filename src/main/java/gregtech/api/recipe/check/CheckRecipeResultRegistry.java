@@ -80,6 +80,10 @@ public final class CheckRecipeResultRegistry {
      * Progress time overflowed.
      */
     public static final CheckRecipeResult DURATION_OVERFLOW = SimpleCheckRecipeResult.ofFailure("duration_overflow");
+    /**
+     * Machine had an internal error
+     */
+    public static final CheckRecipeResult INTERNAL_ERROR = SimpleCheckRecipeResult.ofFailure("internal_error");
 
     /**
      * Cannot process recipe because the machine cannot handle required EUt.

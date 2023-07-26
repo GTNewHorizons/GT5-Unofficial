@@ -375,6 +375,7 @@ GT5U.gui.text.insufficient_power=§7Recipe needs more power to start. Required: 
 GT5U.gui.text.insufficient_heat=§7Recipe needs more heat to start. Required: %s K (%s§7)
 GT5U.gui.text.insufficient_machine_tier=§7Recipe needs higher structure tier. Required: %s
 GT5U.gui.text.insufficient_startup_power=§7Recipe needs higher startup power. Required: %s
+GT5U.gui.text.internal_error=§4Recipe was found, but had internal error
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 

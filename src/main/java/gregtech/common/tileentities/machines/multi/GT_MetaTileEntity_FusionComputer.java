@@ -300,18 +300,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
             @Override
             protected GT_ParallelHelper createParallelHelper(@NotNull GT_Recipe recipe) {
                 // When the fusion first loads and is still processing, it does the recipe check without consuming.
-                if (mRunningOnLoad) {
-                    return new GT_ParallelHelper().setRecipe(recipe)
-                        .setItemInputs(inputItems)
-                        .setFluidInputs(inputFluids)
-                        .setAvailableEUt(availableVoltage * availableAmperage)
-                        .setMachine(machine, protectItems, protectFluids)
-                        .setRecipeLocked(recipeLockableMachine, isRecipeLocked)
-                        .setMaxParallel(maxParallel)
-                        .enableBatchMode(batchSize)
-                        .enableOutputCalculation();
-                }
-                return super.createParallelHelper(recipe);
+                return super.createParallelHelper(recipe).setConsumption(!mRunningOnLoad);
             }
 
             @NotNull
