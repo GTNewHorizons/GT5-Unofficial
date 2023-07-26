@@ -305,10 +305,8 @@ public abstract class GT_MetaTileEntity_FusionComputer
 
             @NotNull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe,
-                @NotNull GT_ParallelHelper helper) {
-                return super.createOverclockCalculator(recipe, helper)
-                    .limitOverclockCount(overclock(recipe.mSpecialValue));
+            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
+                return super.createOverclockCalculator(recipe).limitOverclockCount(overclock(recipe.mSpecialValue));
             }
 
             @NotNull
