@@ -517,17 +517,31 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     stopMachine();
                 }
                 if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
-                    if (mOutputItems != null) for (ItemStack tStack : mOutputItems) if (tStack != null) {
-                        try {
-                            GT_Mod.achievements.issueAchivementHatch(
-                                aBaseMetaTileEntity.getWorld()
-                                    .getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()),
-                                tStack);
-                        } catch (Exception ignored) {}
-                        addOutput(tStack);
+                    if (mOutputItems != null) {
+                        for (ItemStack tStack : mOutputItems) {
+                            if (tStack != null) {
+                                try {
+                                    GT_Mod.achievements.issueAchivementHatch(
+                                        aBaseMetaTileEntity.getWorld()
+                                            .getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()),
+                                        tStack);
+                                } catch (Exception ignored) {}
+                                addOutput(tStack);
+                            }
+                        }
+                        mOutputItems = null;
                     }
                     if (mOutputFluids != null) {
                         addFluidOutputs(mOutputFluids);
+                        if (mOutputFluids.length > 1) {
+                            try {
+                                GT_Mod.achievements.issueAchievement(
+                                    aBaseMetaTileEntity.getWorld()
+                                        .getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()),
+                                    "oilplant");
+                            } catch (Exception ignored) {}
+                        }
+                        mOutputFluids = null;
                     }
                     mEfficiency = Math.max(
                         0,
@@ -541,16 +555,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     mLastWorkingTick = aTick;
                     if (aBaseMetaTileEntity.isAllowedToWork()) {
                         checkRecipe();
-                    }
-                    if (mOutputFluids != null && mOutputFluids.length > 0) {
-                        if (mOutputFluids.length > 1) {
-                            try {
-                                GT_Mod.achievements.issueAchievement(
-                                    aBaseMetaTileEntity.getWorld()
-                                        .getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()),
-                                    "oilplant");
-                            } catch (Exception ignored) {}
-                        }
                     }
                 }
             }
