@@ -20,6 +20,7 @@ import gregtech.api.recipe.check.SingleRecipeCheck;
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class GT_ParallelHelper {
 
+    private static final double MAX_BATCH_MODE_TICK_TIME = 128;
     /**
      * Machine used for calculation
      */
@@ -438,12 +439,14 @@ public class GT_ParallelHelper {
             .setDuration(recipe.mDuration)
             .setEUtDiscount(eutModifier)
             .calculate();
-
         // If Batch Mode is enabled determine how many extra parallels we can get
-        if (batchMode && currentParallel > 0 && calc.getDuration() < 200) {
+        if (batchMode && currentParallel > 0 && calc.getDuration() < MAX_BATCH_MODE_TICK_TIME) {
             int tExtraParallels = 0;
-            final int maxExtraParallels = Math
-                .min(currentParallel * (batchModifier - 1), maxParallel - currentParallel);
+            double batchMultiplierMax = MAX_BATCH_MODE_TICK_TIME / calc.getDuration();
+            final int maxExtraParallels = (int) Math.floor(
+                Math.min(
+                    currentParallel * Math.min(batchMultiplierMax, batchModifier - 1),
+                    maxParallel - currentParallel));
             if (recipeCheck != null) {
                 tExtraParallels = recipeCheck.checkRecipeInputs(true, maxExtraParallels, itemInputs, fluidInputs);
             } else {
