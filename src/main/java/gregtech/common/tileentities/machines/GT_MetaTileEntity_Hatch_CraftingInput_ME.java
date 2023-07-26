@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -95,11 +94,13 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             this.sharedItemGetter = getter;
             NBTTagList inv = nbt.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < inv.tagCount(); i++) {
-                itemInventory.add(ItemStack.loadItemStackFromNBT(inv.getCompoundTagAt(i)));
+                var item = ItemStack.loadItemStackFromNBT(inv.getCompoundTagAt(i));
+                if (item != null && item.stackSize > 0) itemInventory.add(item);
             }
             NBTTagList fluidInv = nbt.getTagList("fluidInventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < fluidInv.tagCount(); i++) {
-                fluidInventory.add(FluidStack.loadFluidStackFromNBT(fluidInv.getCompoundTagAt(i)));
+                var fluid = FluidStack.loadFluidStackFromNBT(fluidInv.getCompoundTagAt(i));
+                if (fluid != null && fluid.amount > 0) fluidInventory.add(fluid);
             }
         }
 
@@ -110,11 +111,27 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                         .getPatternForItem(pattern, world)));
         }
 
+        private boolean isEmpty() {
+            if (itemInventory.isEmpty() && fluidInventory.isEmpty()) return true;
+
+            for (ItemStack itemStack : itemInventory) {
+                if (itemStack != null && itemStack.stackSize > 0) return false;
+            }
+
+            for (FluidStack fluidStack : fluidInventory) {
+                if (fluidStack != null && fluidStack.amount > 0) return false;
+            }
+
+            return true;
+        }
+
         public ItemStack[] getItemInputs() {
+            if (isEmpty()) return new ItemStack[0];
             return ArrayUtils.addAll(itemInventory.toArray(new ItemStack[0]), sharedItemGetter.getSharedItem());
         }
 
         public FluidStack[] getFluidInputs() {
+            if (isEmpty()) return new FluidStack[0];
             return fluidInventory.toArray(new FluidStack[0]);
         }
 
@@ -219,7 +236,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     // a hash map for faster lookup of pattern slots, not necessarily all valid.
     private Map<ICraftingPatternDetails, PatternSlot> patternDetailsPatternSlotMap = new HashMap<>(MAX_PATTERN_COUNT);
 
-    private boolean initialPatternSyncDone = false;
+    private boolean needPatternSync = true;
     private boolean justHadNewItems = false;
 
     private boolean supportFluids;
@@ -230,7 +247,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             aID,
             aName,
             aNameRegional,
-            1,
+            6,
             MAX_INV_COUNT,
             new String[] { "Advanced item input for Multiblocks", "Processes patterns directly from ME",
                 supportFluids ? "It supports patterns including fluids"
@@ -253,26 +270,21 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_INPUT_HATCH_ACTIVE) };
+        return getTexturesInactive(aBaseTexture);
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_INPUT_HATCH) };
+        return new ITexture[] { aBaseTexture,
+            TextureFactory.of(supportFluids ? OVERLAY_ME_CRAFTING_INPUT_BUFFER : OVERLAY_ME_CRAFTING_INPUT_BUS) };
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         super.onPostTick(aBaseMetaTileEntity, aTimer);
 
-        if (!initialPatternSyncDone && aTimer % 10 == 0 && getBaseMetaTileEntity().isServerSide()) {
-            try {
-                getProxy().getGrid()
-                    .postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
-            } catch (GridAccessException ignored) {
-                return;
-            }
-            initialPatternSyncDone = true;
+        if (needPatternSync && aTimer % 10 == 0 && getBaseMetaTileEntity().isServerSide()) {
+            needPatternSync = !postMEPatternChange();
         }
     }
 
@@ -324,6 +336,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             getProxy().getNode()
                 .updateState();
         }
+        needPatternSync = true;
     }
 
     @Override
@@ -525,6 +538,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     // originalPattern.refund(getProxy(), getRequest());
     // } catch (GridAccessException ignored) {}
     // internalInventory[slot.getSlotIndex()] = null;
+    // needPatternSync = true;
     // } else {
     // return; // nothing has changed
     // }
@@ -538,10 +552,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     // internalInventory[slot.getSlotIndex()] = patternSlot;
     // patternDetailsPatternSlotMap.put(patternSlot.getPatternDetails(), patternSlot);
     //
-    // try {
-    // getProxy().getGrid()
-    // .postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
-    // } catch (GridAccessException ignored) {}
+    // needPatternSync = true;
     // }
 
     private ItemStack[] getSharedItems() {
@@ -686,4 +697,17 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     public ItemStack getCrafterIcon() {
         return getMachineCraftingIcon();
     }
+
+    private boolean postMEPatternChange() {
+        // don't post until it's active
+        if (!getProxy().isActive()) return false;
+        try {
+            getProxy().getGrid()
+                .postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
+        } catch (GridAccessException ignored) {
+            return false;
+        }
+        return true;
+    }
+
 }
