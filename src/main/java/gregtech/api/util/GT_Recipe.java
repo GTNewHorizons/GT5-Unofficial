@@ -1277,6 +1277,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             true).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_DUST)
                 .setSlotOverlay(false, true, GT_UITextures.OVERLAY_SLOT_CRUSHED_ORE)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_MACERATE, ProgressBar.Direction.RIGHT);
+        @Deprecated
         public static final GT_Recipe_Map sByProductList = new GT_Recipe_Map(
             new HashSet<>(1000),
             "gt.recipe.byproductlist",
@@ -1292,7 +1293,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1,
             E,
             true,
-            true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+            false).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sReplicatorFakeRecipes = new ReplicatorFakeMap(
             new HashSet<>(100),
             "gt.recipe.replicator",
