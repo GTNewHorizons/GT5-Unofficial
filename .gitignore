@@ -34,3 +34,4 @@ src/main/resources/mixins.*.json
 .DS_Store
 classes
 .factorypath
+/.vs
