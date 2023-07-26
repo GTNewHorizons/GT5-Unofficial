@@ -30,7 +30,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_Slave extends GT_MetaTileEnti
             aID,
             aName,
             aNameRegional,
-            1,
+            6,
             0,
             new String[] { "Slave for Crafting Input Buffer",
                 "Link with Crafting Input Buffer using Data Stick to share inventory",

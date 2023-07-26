@@ -259,7 +259,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             aID,
             aName,
             aNameRegional,
-            1,
+            6,
             MAX_INV_COUNT,
             new String[] { "Advanced item input for Multiblocks", "Processes patterns directly from ME",
                 supportFluids ? "It supports patterns including fluids"
