@@ -245,14 +245,6 @@ public class GT_MetaTileEntity_ProcessingArray extends
 
             @Nonnull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe,
-                @Nonnull GT_ParallelHelper helper) {
-                return super.createOverclockCalculator(recipe, helper)
-                    .setDuration((int) Math.ceil(recipe.mDuration * helper.getDurationMultiplierDouble()));
-            }
-
-            @Nonnull
-            @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
                 if (GT_Mod.gregtechproxy.mLowGravProcessing && recipe.mSpecialValue == -100
                     && !isValidForLowGravity(recipe, getBaseMetaTileEntity().getWorld().provider.dimensionId)) {

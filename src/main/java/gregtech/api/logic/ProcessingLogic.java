@@ -310,7 +310,8 @@ public class ProcessingLogic {
         }
 
         GT_ParallelHelper helper = createParallelHelper(recipe);
-
+        GT_OverclockCalculator calculator = createOverclockCalculator(recipe);
+        helper.setCalculator(calculator);
         helper.build();
 
         if (!helper.getResult()
@@ -320,9 +321,6 @@ public class ProcessingLogic {
 
         calculatedParallels = helper.getCurrentParallel();
 
-        GT_OverclockCalculator calculator = createOverclockCalculator(recipe, helper);
-
-        calculator.calculate();
         if (calculator.getConsumption() == Long.MAX_VALUE) {
             return CheckRecipeResultRegistry.POWER_OVERFLOW;
         }
@@ -389,16 +387,22 @@ public class ProcessingLogic {
     }
 
     /**
-     * Override to tweak overclock logic if needed.
+     * Use {@link #createOverclockCalculator(GT_Recipe)}
      */
     @Nonnull
+    @Deprecated
     protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe,
-        @Nonnull GT_ParallelHelper helper) {
+        @Nullable GT_ParallelHelper helper) {
+        return createOverclockCalculator(recipe);
+    }
+
+    /**
+     * Override to tweak overclock logic if needed.
+     */
+    protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
         return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
-            .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplierDouble()))
-            .setDuration(recipe.mDuration)
+            .setRecipeAmperage(Math.max(recipeMapSupplier.get().mAmperage, 1))
             .setAmperage(availableAmperage)
-            .setAmperageOC(amperageOC)
             .setEUt(availableVoltage)
             .setSpeedBoost(speedBoost)
             .setEUtDiscount(euModifier)

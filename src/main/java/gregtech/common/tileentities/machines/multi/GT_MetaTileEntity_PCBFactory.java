@@ -557,23 +557,15 @@ public class GT_MetaTileEntity_PCBFactory extends
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
-            @Override
-            protected double calculateDuration(@Nonnull GT_Recipe recipe, @Nonnull GT_ParallelHelper helper,
-                @Nonnull GT_OverclockCalculator calculator) {
-                if (isNoOC()) {
-                    return super.calculateDuration(recipe, helper, calculator) * getDurationMultiplierFromRoughness();
-                }
-                return super.calculateDuration(recipe, helper, calculator);
-            }
-
             @Nonnull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe,
-                @Nonnull GT_ParallelHelper helper) {
+            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
                 if (isNoOC()) {
-                    return GT_OverclockCalculator.ofNoOverclock(recipe);
+                    return GT_OverclockCalculator.ofNoOverclock(recipe)
+                        .setEUtDiscount((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
+                        .setSpeedBoost(getDurationMultiplierFromRoughness());
                 }
-                GT_OverclockCalculator calculator = super.createOverclockCalculator(recipe, helper)
+                GT_OverclockCalculator calculator = super.createOverclockCalculator(recipe)
                     .setEUtDiscount((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
                     .setSpeedBoost(getDurationMultiplierFromRoughness())
                     .setDurationDecreasePerOC(mOCTier2 ? 2 : 1);
@@ -587,11 +579,9 @@ public class GT_MetaTileEntity_PCBFactory extends
                     .setEUtModifier((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
                     .setCustomItemOutputCalculation(currentParallel -> {
                         ArrayList<ItemStack> chancedOutputs = new ArrayList<>();
-                        ItemStack controllerStack = getControllerSlot();
-
                         for (int i = 0; i < currentParallel; i++) {
                             for (ItemStack item : recipe.mOutputs) {
-                                int remainingEfficiency = getMaxEfficiency(controllerStack);
+                                int remainingEfficiency = getMaxEfficiency(getControllerSlot());
                                 while (remainingEfficiency > 0) {
                                     if (getBaseMetaTileEntity().getRandomNumber(10000) >= remainingEfficiency) {
                                         remainingEfficiency -= 10000;
