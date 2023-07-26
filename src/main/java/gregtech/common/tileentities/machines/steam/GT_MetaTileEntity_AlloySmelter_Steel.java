@@ -32,6 +32,10 @@ public class GT_MetaTileEntity_AlloySmelter_Steel extends GT_MetaTileEntity_Basi
         super(aID, aName, aNameRegional, "Combination Smelter", 2, 1, true);
     }
 
+    public GT_MetaTileEntity_AlloySmelter_Steel(String aName, String aDescription, ITexture[][][] aTextures) {
+        super(aName, aDescription, aTextures, 2, 1, true);
+    }
+
     public GT_MetaTileEntity_AlloySmelter_Steel(String aName, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aDescription, aTextures, 2, 1, true);
     }

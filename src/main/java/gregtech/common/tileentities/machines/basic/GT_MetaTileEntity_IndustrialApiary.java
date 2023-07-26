@@ -122,6 +122,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
             new String[] { "BEES GOES BRRRR", EnumChatFormatting.GRAY + AuthorKuba },
             6,
             9,
+            "IndustrialApiary.png",
             "",
             TextureFactory.of(
                 TextureFactory.of(OVERLAY_SIDE_INDUSTRIAL_APIARY_ACTIVE),
@@ -173,9 +174,14 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     .build()));
     }
 
+    public GT_MetaTileEntity_IndustrialApiary(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
+        String aGUIName, String aNEIName) {
+        super(aName, aTier, 4, aDescription, aTextures, 6, 9, aGUIName, aNEIName);
+    }
+
     public GT_MetaTileEntity_IndustrialApiary(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-        String aNEIName) {
-        super(aName, aTier, 4, aDescription, aTextures, 6, 9, aNEIName);
+        String aGUIName, String aNEIName) {
+        super(aName, aTier, 4, aDescription, aTextures, 6, 9, aGUIName, aNEIName);
     }
 
     @Override
@@ -185,6 +191,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
             this.mTier,
             this.mDescriptionArray,
             this.mTextures,
+            this.mGUIName,
             this.mNEIName);
     }
 

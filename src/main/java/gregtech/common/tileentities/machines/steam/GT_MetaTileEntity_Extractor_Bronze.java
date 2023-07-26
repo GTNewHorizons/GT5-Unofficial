@@ -32,6 +32,10 @@ public class GT_MetaTileEntity_Extractor_Bronze extends GT_MetaTileEntity_BasicM
         super(aID, aName, aNameRegional, "Extracting your first Rubber", 1, 1, false);
     }
 
+    public GT_MetaTileEntity_Extractor_Bronze(String aName, String aDescription, ITexture[][][] aTextures) {
+        super(aName, aDescription, aTextures, 1, 1, false);
+    }
+
     public GT_MetaTileEntity_Extractor_Bronze(String aName, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aDescription, aTextures, 1, 1, false);
     }

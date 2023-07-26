@@ -46,6 +46,7 @@ public class GT_MetaTileEntity_PotionBrewer extends GT_MetaTileEntity_BasicMachi
             "Brewing your Drinks",
             1,
             0,
+            "PotionBrewer.png",
             "",
             TextureFactory.of(
                 TextureFactory.of(OVERLAY_SIDE_POTIONBREWER_ACTIVE),
@@ -97,9 +98,14 @@ public class GT_MetaTileEntity_PotionBrewer extends GT_MetaTileEntity_BasicMachi
                     .build()));
     }
 
+    public GT_MetaTileEntity_PotionBrewer(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
+        String aGUIName, String aNEIName) {
+        super(aName, aTier, 1, aDescription, aTextures, 1, 0, aGUIName, aNEIName);
+    }
+
     public GT_MetaTileEntity_PotionBrewer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-        String aNEIName) {
-        super(aName, aTier, 1, aDescription, aTextures, 1, 0, aNEIName);
+        String aGUIName, String aNEIName) {
+        super(aName, aTier, 1, aDescription, aTextures, 1, 0, aGUIName, aNEIName);
     }
 
     @Override
@@ -109,6 +115,7 @@ public class GT_MetaTileEntity_PotionBrewer extends GT_MetaTileEntity_BasicMachi
             this.mTier,
             this.mDescriptionArray,
             this.mTextures,
+            this.mGUIName,
             this.mNEIName);
     }
 

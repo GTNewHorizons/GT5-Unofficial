@@ -40,16 +40,32 @@ import gregtech.common.power.SteamPower;
  */
 public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileEntity_BasicMachine {
 
+    private static final int NEEDS_STEAM_VENTING = 64;
     public boolean mNeedsSteamVenting = false;
 
     public GT_MetaTileEntity_BasicMachine_Bronze(int aID, String aName, String aNameRegional, String aDescription,
         int aInputSlotCount, int aOutputSlotCount, boolean aHighPressure) {
-        super(aID, aName, aNameRegional, aHighPressure ? 2 : 1, 0, aDescription, aInputSlotCount, aOutputSlotCount, "");
+        super(
+            aID,
+            aName,
+            aNameRegional,
+            aHighPressure ? 2 : 1,
+            0,
+            aDescription,
+            aInputSlotCount,
+            aOutputSlotCount,
+            "",
+            "");
+    }
+
+    public GT_MetaTileEntity_BasicMachine_Bronze(String aName, String aDescription, ITexture[][][] aTextures,
+        int aInputSlotCount, int aOutputSlotCount, boolean aHighPressure) {
+        super(aName, aHighPressure ? 2 : 1, 0, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, "", "");
     }
 
     public GT_MetaTileEntity_BasicMachine_Bronze(String aName, String[] aDescription, ITexture[][][] aTextures,
         int aInputSlotCount, int aOutputSlotCount, boolean aHighPressure) {
-        super(aName, aHighPressure ? 2 : 1, 0, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, "");
+        super(aName, aHighPressure ? 2 : 1, 0, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, "", "");
     }
 
     protected boolean isBricked() {

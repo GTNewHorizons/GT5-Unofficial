@@ -35,6 +35,10 @@ public class GT_MetaTileEntity_Furnace_Steel extends GT_MetaTileEntity_BasicMach
         super(aID, aName, aNameRegional, "Smelting things with compressed Steam", 1, 1, true);
     }
 
+    public GT_MetaTileEntity_Furnace_Steel(String aName, String aDescription, ITexture[][][] aTextures) {
+        super(aName, aDescription, aTextures, 1, 1, true);
+    }
+
     public GT_MetaTileEntity_Furnace_Steel(String aName, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aDescription, aTextures, 1, 1, true);
     }

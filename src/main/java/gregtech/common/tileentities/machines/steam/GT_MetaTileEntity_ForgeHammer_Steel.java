@@ -40,6 +40,10 @@ public class GT_MetaTileEntity_ForgeHammer_Steel extends GT_MetaTileEntity_Basic
         super(aID, aName, aNameRegional, "Forge Hammer", 1, 1, true);
     }
 
+    public GT_MetaTileEntity_ForgeHammer_Steel(String aName, String aDescription, ITexture[][][] aTextures) {
+        super(aName, aDescription, aTextures, 1, 1, true);
+    }
+
     public GT_MetaTileEntity_ForgeHammer_Steel(String aName, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aDescription, aTextures, 1, 1, true);
     }

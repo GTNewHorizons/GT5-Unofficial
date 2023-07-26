@@ -41,6 +41,10 @@ public class GT_MetaTileEntity_Macerator_Steel extends GT_MetaTileEntity_BasicMa
         super(aID, aName, aNameRegional, "Macerating your Ores", 1, 1, true);
     }
 
+    public GT_MetaTileEntity_Macerator_Steel(String aName, String aDescription, ITexture[][][] aTextures) {
+        super(aName, aDescription, aTextures, 1, 1, true);
+    }
+
     public GT_MetaTileEntity_Macerator_Steel(String aName, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aDescription, aTextures, 1, 1, true);
     }
