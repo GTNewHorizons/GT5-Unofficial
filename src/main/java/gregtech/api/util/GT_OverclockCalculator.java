@@ -450,6 +450,9 @@ public class GT_OverclockCalculator {
                 calculateRecipePowerTier(calculateHeatDiscountMultiplier())));
     }
 
+    /**
+     * Calculate maximum possible overclocks ignoring if we are going to go under 1 tick
+     */
     private int calculateAmountOfOverclocks(double machinePowerTier, double recipePowerTier) {
         return (int) (machinePowerTier - recipePowerTier);
     }
@@ -516,7 +519,8 @@ public class GT_OverclockCalculator {
         int normalOverclocks = calculateAmountOfOverclocks(
             calculateMachinePowerTier(),
             calculateRecipePowerTier(calculateHeatDiscountMultiplier()));
-        int heatOverclocks = calculateAmountOfHeatOverclocks();
+        normalOverclocks = limitOverclocks ? Math.min(normalOverclocks, maxOverclocks) : normalOverclocks;
+        int heatOverclocks = Math.min(calculateAmountOfHeatOverclocks(), normalOverclocks);
         return (duration * speedBoost)
             / (Math.max((normalOverclocks - heatOverclocks) * (1 << durationDecreasePerOC), 1)
                 * Math.max((heatOverclocks * (1 << durationDecreasePerHeatOC)), 1));
