@@ -537,7 +537,7 @@ public class GT_OverclockCalculator {
         normalOverclocks = limitOverclocks ? Math.min(normalOverclocks, maxOverclocks) : normalOverclocks;
         int heatOverclocks = Math.min(calculateAmountOfHeatOverclocks(), normalOverclocks);
         return (duration * speedBoost)
-            / (Math.max((normalOverclocks - heatOverclocks) * (1 << durationDecreasePerOC), 1)
-                * Math.max((heatOverclocks * (1 << durationDecreasePerHeatOC)), 1));
+            / ((1 << durationDecreasePerOC * (normalOverclocks - heatOverclocks))
+                * (1 << durationDecreasePerHeatOC * heatOverclocks));
     }
 }
