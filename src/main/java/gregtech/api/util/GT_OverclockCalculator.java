@@ -103,6 +103,10 @@ public class GT_OverclockCalculator {
      * How many overclocks have been performed
      */
     private int overclockCount;
+    /**
+     * How many overclocks were performed with heat out of the overclocks we had
+     */
+    private int heatOverclockCount;
 
     /**
      * variable to check whether the overclocks have been calculated
@@ -126,6 +130,16 @@ public class GT_OverclockCalculator {
         return new GT_OverclockCalculator().setRecipeEUt(eut)
             .setDuration(duration)
             .setEUt(eut);
+    }
+
+    public static int getAmountOfOverclocks(@Nonnull GT_OverclockCalculator calculator) {
+        return calculator.calculateAmountOfOverclocks(
+            calculator.calculateMachinePowerTier(),
+            calculator.calculateRecipePowerTier(calculator.calculateHeatDiscountMultiplier()));
+    }
+
+    public static int getAmountOfHeatOverclocks(@Nonnull GT_OverclockCalculator calculator) {
+        return calculator.calculateAmountOfHeatOverclocks();
     }
 
     /**
@@ -385,19 +399,16 @@ public class GT_OverclockCalculator {
         if (laserOC && amperageOC) {
             throw new IllegalStateException("Tried to calculate overclock with both laser and amperage overclocking");
         }
-        int heatDiscounts = heatDiscount ? (machineHeat - recipeHeat) / HEAT_DISCOUNT_THRESHOLD : 0;
-        double heatDiscountMultiplier = Math.pow(heatDiscountExponent, heatDiscounts);
+        double heatDiscountMultiplier = calculateHeatDiscountMultiplier();
         duration = (int) Math.ceil(duration * speedBoost);
-        int heatOCs = 0;
         if (heatOC) {
-            heatOCs = (machineHeat - recipeHeat) / HEAT_PERFECT_OVERCLOCK_THRESHOLD;
+            heatOverclockCount = calculateAmountOfHeatOverclocks();
         }
 
         double recipePowerTier = calculateRecipePowerTier(heatDiscountMultiplier);
         double machinePowerTier = calculateMachinePowerTier();
         // Math.log(a) / Math.log(b) equals to log_b (a)
-        overclockCount = (int) Math
-            .min(machinePowerTier - recipePowerTier, Math.log(duration) / Math.log(1 << durationDecreasePerOC));
+        overclockCount = calculateAmountOfOverclocks(machinePowerTier, recipePowerTier);
         if (overclockCount < 0) {
             recipeVoltage = Long.MAX_VALUE;
             duration = Integer.MAX_VALUE;
@@ -405,10 +416,10 @@ public class GT_OverclockCalculator {
         }
 
         overclockCount = limitOverclocks ? Math.min(maxOverclocks, overclockCount) : overclockCount;
-        heatOCs = Math.min(heatOCs, overclockCount);
+        heatOverclockCount = Math.min(heatOverclockCount, overclockCount);
         recipeVoltage <<= eutIncreasePerOC * overclockCount;
-        duration >>= durationDecreasePerOC * (overclockCount - heatOCs);
-        duration >>= durationDecreasePerHeatOC * heatOCs;
+        duration >>= durationDecreasePerOC * (overclockCount - heatOverclockCount);
+        duration >>= durationDecreasePerHeatOC * heatOverclockCount;
         if (oneTickDiscount) {
             recipeVoltage >>= durationDecreasePerOC * ((int) (machinePowerTier - recipePowerTier - overclockCount));
             if (recipeVoltage < 1) {
@@ -439,6 +450,20 @@ public class GT_OverclockCalculator {
 
     private long calculateFinalRecipeEUt(double heatDiscountMultiplier) {
         return (long) Math.ceil(recipeVoltage * eutDiscount * heatDiscountMultiplier * parallel * recipeAmperage);
+    }
+
+    private int calculateAmountOfHeatOverclocks() {
+        return (machineHeat - recipeHeat) / HEAT_PERFECT_OVERCLOCK_THRESHOLD;
+    }
+
+    private int calculateAmountOfOverclocks(double machinePowerTier, double recipePowerTier) {
+        return (int) Math
+            .min(machinePowerTier - recipePowerTier, Math.log(duration) / Math.log(1 << durationDecreasePerOC));
+    }
+
+    private double calculateHeatDiscountMultiplier() {
+        int heatDiscounts = heatDiscount ? (machineHeat - recipeHeat) / HEAT_DISCOUNT_THRESHOLD : 0;
+        return Math.pow(heatDiscountExponent, heatDiscounts);
     }
 
     private void calculateLaserOC() {
@@ -481,7 +506,18 @@ public class GT_OverclockCalculator {
         return overclockCount;
     }
 
+    public int getPerformedHeatOverclocks() {
+        if (!calculated) {
+            calculate();
+        }
+        return heatOverclockCount;
+    }
+
     public int getDurationDecreasePerOC() {
         return durationDecreasePerOC;
+    }
+
+    public int getDurationDecreasePerHeatOC() {
+        return durationDecreasePerHeatOC;
     }
 }

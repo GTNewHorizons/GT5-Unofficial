@@ -396,11 +396,11 @@ public class GT_ParallelHelper {
                 .setEUtDiscount(eutModifier);
         }
 
-        GT_OverclockCalculator calculatorExtra = new GT_OverclockCalculator(calculator).setDuration(Integer.MAX_VALUE)
-            .calculate();
-        int amountOfOverclocks = calculatorExtra.getPerformedOverclocks();
-        double tickTimeAfterOC = recipe.mDuration
-            / (amountOfOverclocks * Math.pow(2, calculatorExtra.getDurationDecreasePerOC()));
+        int normalOverclocks = GT_OverclockCalculator.getAmountOfOverclocks(calculator);
+        int heatOverclocks = GT_OverclockCalculator.getAmountOfHeatOverclocks(calculator);
+        double tickTimeAfterOC = (double) recipe.mDuration
+            / ((normalOverclocks - heatOverclocks) * (1 << calculator.getDurationDecreasePerOC())
+                + heatOverclocks * (1 << calculator.getDurationDecreasePerHeatOC()));
         if (tickTimeAfterOC < 1) {
             maxParallel = (int) Math.floor(maxParallel / tickTimeAfterOC);
         }
