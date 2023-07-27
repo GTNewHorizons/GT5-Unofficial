@@ -38,7 +38,7 @@ import gregtech.loaders.preload.GT_Loader_MultiTileEntities;
 
 public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFilter {
 
-    private static final String TT_machineType = StatCollector.translateToLocal("GT5U.MBTT.MachineType");
+    private static final String TT_machineType = "GT5U.MBTT.MachineType";
     private static final String REPRESENTATION_SLOT_TOOLTIP = "GT5U.recipe_filter.representation_slot.tooltip";
     private static final String EMPTY_REPRESENTATION_SLOT_TOOLTIP = "GT5U.recipe_filter.empty_representation_slot.tooltip";
     public GT_Recipe.GT_Recipe_Map mRecipeMap;
@@ -198,7 +198,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     private List<String> assembleItemStackReplacementTooltip(GT_Recipe.GT_Recipe_Map recipeMap) {
         List<String> tooltip = new ArrayList<>();
         tooltip.add(
-            TT_machineType + ": "
+            StatCollector.translateToLocal(TT_machineType) + ": "
                 + EnumChatFormatting.YELLOW
                 + StatCollector.translateToLocal(recipeMap.mUnlocalizedName)
                 + EnumChatFormatting.RESET);

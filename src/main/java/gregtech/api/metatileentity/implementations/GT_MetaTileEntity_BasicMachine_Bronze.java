@@ -51,7 +51,7 @@ import gregtech.common.power.SteamPower;
  */
 public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileEntity_BasicMachine {
 
-    private static final String TT_machineType = StatCollector.translateToLocal("GT5U.MBTT.MachineType");
+    private static final String TT_machineType = "GT5U.MBTT.MachineType";
     private static final int NEEDS_STEAM_VENTING = 64;
     public boolean mNeedsSteamVenting = false;
 
@@ -393,7 +393,7 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     @Override
     public String[] getDescription() {
         String[] description = Arrays.copyOf(mDescriptionArray, mDescriptionArray.length + 1);
-        description[mDescriptionArray.length] = TT_machineType + ": "
+        description[mDescriptionArray.length] = StatCollector.translateToLocal(TT_machineType) + ": "
             + EnumChatFormatting.YELLOW
             + StatCollector.translateToLocal(this.getRecipeList().mUnlocalizedName)
             + EnumChatFormatting.RESET;
