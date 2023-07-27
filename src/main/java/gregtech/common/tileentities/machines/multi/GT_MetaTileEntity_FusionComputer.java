@@ -225,7 +225,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (!(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input tHatch)) return false;
-        if (tHatch.mTier < tier()) return false;
+        if (tHatch.getTierForStructure() < tier()) return false;
         tHatch.updateTexture(aBaseCasingIndex);
         tHatch.mRecipeMap = getRecipeMap();
         return mInputHatches.add(tHatch);
@@ -236,7 +236,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (!(aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output tHatch)) return false;
-        if (tHatch.mTier < tier()) return false;
+        if (tHatch.getTierForStructure() < tier()) return false;
         tHatch.updateTexture(aBaseCasingIndex);
         return mOutputHatches.add(tHatch);
     }
