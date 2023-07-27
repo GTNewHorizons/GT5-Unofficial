@@ -309,7 +309,7 @@ public class GT_ParallelHelper {
         if (!built) {
             throw new IllegalStateException("Tried to get duration multiplier before building");
         }
-        if (batchMode) {
+        if (batchMode && durationMultiplier > 0) {
             return durationMultiplier;
         }
         return 1;

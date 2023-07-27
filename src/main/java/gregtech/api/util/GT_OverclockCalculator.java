@@ -1,5 +1,7 @@
 package gregtech.api.util;
 
+import java.util.function.Supplier;
+
 import javax.annotation.Nonnull;
 
 public class GT_OverclockCalculator {
@@ -107,6 +109,10 @@ public class GT_OverclockCalculator {
      * How many overclocks were performed with heat out of the overclocks we had
      */
     private int heatOverclockCount;
+    /**
+     * A supplier, which is used for machines which have a custom way of calculating duration, like Neutron Activator
+     */
+    private Supplier<Double> durationUnderOneTickSupplier;
 
     /**
      * variable to check whether the overclocks have been calculated
@@ -374,6 +380,14 @@ public class GT_OverclockCalculator {
     }
 
     /**
+     * Set a supplier for calculating custom duration for when its needed under one tick
+     */
+    public GT_OverclockCalculator setDurationUnderOneTickSupplier(Supplier<Double> supplier) {
+        this.durationUnderOneTickSupplier = supplier;
+        return this;
+    }
+
+    /**
      * Call this when all values have been put it.
      */
     public GT_OverclockCalculator calculate() {
@@ -516,6 +530,7 @@ public class GT_OverclockCalculator {
      * This doesn't count as calculating
      */
     public double calculateDurationUnderOneTick() {
+        if (durationUnderOneTickSupplier != null) return durationUnderOneTickSupplier.get();
         int normalOverclocks = calculateAmountOfOverclocks(
             calculateMachinePowerTier(),
             calculateRecipePowerTier(calculateHeatDiscountMultiplier()));
