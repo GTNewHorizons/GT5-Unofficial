@@ -381,6 +381,13 @@ public class GT_ParallelHelper {
             copyInputs();
         }
 
+        if (calculator == null) {
+            calculator = new GT_OverclockCalculator().setEUt(availableEUt)
+                .setRecipeEUt(recipe.mEUt)
+                .setDuration(recipe.mDuration)
+                .setEUtDiscount(eutModifier);
+        }
+
         GT_OverclockCalculator calculatorExtra = new GT_OverclockCalculator(calculator).setDuration(Integer.MAX_VALUE)
             .calculate();
         int amountOfOverclocks = calculatorExtra.getPerformedOverclocks();
