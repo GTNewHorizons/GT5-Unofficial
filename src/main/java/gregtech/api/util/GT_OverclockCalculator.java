@@ -36,7 +36,7 @@ public class GT_OverclockCalculator {
      */
     private int recipeHeat = 0;
     /**
-     * The heat the multi has when starting the recipe
+     * The heat the machine has when starting the recipe
      */
     private int machineHeat = 0;
     /**
@@ -173,10 +173,10 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * @param multiVoltage Sets the EUt that the multiblock can use. This is the voltage of the multi
+     * @param machineVoltage Sets the EUt that the machine can use. This is the voltage of the machine
      */
-    public GT_OverclockCalculator setEUt(long multiVoltage) {
-        this.machineVoltage = multiVoltage;
+    public GT_OverclockCalculator setEUt(long machineVoltage) {
+        this.machineVoltage = machineVoltage;
         return this;
     }
 
@@ -189,10 +189,10 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * @param multiAmperage Sets the Amperage that the multi can support
+     * @param machineAmperage Sets the Amperage that the machine can support
      */
-    public GT_OverclockCalculator setAmperage(long multiAmperage) {
-        this.machineAmperage = multiAmperage;
+    public GT_OverclockCalculator setAmperage(long machineAmperage) {
+        this.machineAmperage = machineAmperage;
         return this;
     }
 
@@ -393,11 +393,11 @@ public class GT_OverclockCalculator {
             heatOCs = (machineHeat - recipeHeat) / HEAT_PERFECT_OVERCLOCK_THRESHOLD;
         }
 
-        double recipeTier = calculateRecipePowerTier(heatDiscountMultiplier);
-        double multiTier = calculateMachinePowerTier();
-        // Math.log(n) / Math.log(e) is log_e n
+        double recipePowerTier = calculateRecipePowerTier(heatDiscountMultiplier);
+        double machinePowerTier = calculateMachinePowerTier();
+        // Math.log(a) / Math.log(b) equals to log_b (a)
         overclockCount = (int) Math
-            .min(multiTier - recipeTier, Math.log(duration) / Math.log(1 << durationDecreasePerOC));
+            .min(machinePowerTier - recipePowerTier, Math.log(duration) / Math.log(1 << durationDecreasePerOC));
         if (overclockCount < 0) {
             recipeVoltage = Long.MAX_VALUE;
             duration = Integer.MAX_VALUE;
@@ -405,11 +405,12 @@ public class GT_OverclockCalculator {
         }
 
         overclockCount = limitOverclocks ? Math.min(maxOverclocks, overclockCount) : overclockCount;
+        heatOCs = Math.min(heatOCs, overclockCount);
         recipeVoltage <<= eutIncreasePerOC * overclockCount;
         duration >>= durationDecreasePerOC * (overclockCount - heatOCs);
         duration >>= durationDecreasePerHeatOC * heatOCs;
         if (oneTickDiscount) {
-            recipeVoltage >>= durationDecreasePerOC * ((int) (multiTier - recipeTier - overclockCount));
+            recipeVoltage >>= durationDecreasePerOC * ((int) (machinePowerTier - recipePowerTier - overclockCount));
             if (recipeVoltage < 1) {
                 recipeVoltage = 1;
             }
