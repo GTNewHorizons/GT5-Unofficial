@@ -69,10 +69,6 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
         return null;
     }
 
-    protected List<String> getItemExtraTooltip() {
-        return null;
-    }
-
     protected Function<List<String>, List<String>> getItemStackReplacementTooltip() {
         return list -> list;
     }
@@ -107,15 +103,6 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
                     if (emptySlotTooltip != null) {
                         tooltip.addAll(emptySlotTooltip);
                     }
-                }
-
-                @Override
-                public List<String> getExtraTooltip() {
-                    List<String> itemExtraTooltip = getItemExtraTooltip();
-                    if (itemExtraTooltip != null) {
-                        return itemExtraTooltip;
-                    }
-                    return Collections.emptyList();
                 }
 
                 @Override
