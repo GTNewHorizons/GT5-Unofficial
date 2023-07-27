@@ -396,11 +396,7 @@ public class GT_ParallelHelper {
                 .setEUtDiscount(eutModifier);
         }
 
-        int normalOverclocks = GT_OverclockCalculator.getAmountOfOverclocks(calculator);
-        int heatOverclocks = GT_OverclockCalculator.getAmountOfHeatOverclocks(calculator);
-        double tickTimeAfterOC = (double) recipe.mDuration
-            / ((normalOverclocks - heatOverclocks) * (1 << calculator.getDurationDecreasePerOC())
-                + heatOverclocks * (1 << calculator.getDurationDecreasePerHeatOC()));
+        double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
         if (tickTimeAfterOC < 1) {
             maxParallel = (int) Math.floor(maxParallel / tickTimeAfterOC);
         }
@@ -483,7 +479,7 @@ public class GT_ParallelHelper {
             double batchMultiplierMax = MAX_BATCH_MODE_TICK_TIME / calculator.getDuration();
             final int maxExtraParallels = (int) Math.floor(
                 Math.min(
-                    currentParallel * Math.min(batchMultiplierMax, batchModifier - 1),
+                    currentParallel * Math.min(batchMultiplierMax - 1, batchModifier - 1),
                     maxParallel - currentParallel));
             if (recipeCheck != null) {
                 tExtraParallels = recipeCheck.checkRecipeInputs(true, maxExtraParallels, itemInputs, fluidInputs);

@@ -132,16 +132,6 @@ public class GT_OverclockCalculator {
             .setEUt(eut);
     }
 
-    public static int getAmountOfOverclocks(@Nonnull GT_OverclockCalculator calculator) {
-        return calculator.calculateAmountOfOverclocks(
-            calculator.calculateMachinePowerTier(),
-            calculator.calculateRecipePowerTier(calculator.calculateHeatDiscountMultiplier()));
-    }
-
-    public static int getAmountOfHeatOverclocks(@Nonnull GT_OverclockCalculator calculator) {
-        return calculator.calculateAmountOfHeatOverclocks();
-    }
-
     /**
      * An Overclock helper for calculating overclocks in many different situations
      */
@@ -408,7 +398,7 @@ public class GT_OverclockCalculator {
         double recipePowerTier = calculateRecipePowerTier(heatDiscountMultiplier);
         double machinePowerTier = calculateMachinePowerTier();
         // Math.log(a) / Math.log(b) equals to log_b (a)
-        overclockCount = calculateAmountOfOverclocks(machinePowerTier, recipePowerTier);
+        overclockCount = calculateAmountOfNeededOverclocks(machinePowerTier, recipePowerTier);
         if (overclockCount < 0) {
             recipeVoltage = Long.MAX_VALUE;
             duration = Integer.MAX_VALUE;
@@ -453,12 +443,24 @@ public class GT_OverclockCalculator {
     }
 
     private int calculateAmountOfHeatOverclocks() {
-        return (machineHeat - recipeHeat) / HEAT_PERFECT_OVERCLOCK_THRESHOLD;
+        return Math.min(
+            (machineHeat - recipeHeat) / HEAT_PERFECT_OVERCLOCK_THRESHOLD,
+            calculateAmountOfOverclocks(
+                calculateMachinePowerTier(),
+                calculateRecipePowerTier(calculateHeatDiscountMultiplier())));
     }
 
     private int calculateAmountOfOverclocks(double machinePowerTier, double recipePowerTier) {
-        return (int) Math
-            .min(machinePowerTier - recipePowerTier, Math.log(duration) / Math.log(1 << durationDecreasePerOC));
+        return (int) (machinePowerTier - recipePowerTier);
+    }
+
+    /**
+     * Calculates the amount of overclocks needed to reach 1 ticking
+     */
+    private int calculateAmountOfNeededOverclocks(double machinePowerTier, double recipePowerTier) {
+        return (int) Math.min(
+            calculateAmountOfOverclocks(machinePowerTier, recipePowerTier),
+            Math.log(duration) / Math.log(1 << durationDecreasePerOC));
     }
 
     private double calculateHeatDiscountMultiplier() {
@@ -481,7 +483,7 @@ public class GT_OverclockCalculator {
      */
     public long getConsumption() {
         if (!calculated) {
-            calculate();
+            throw new IllegalStateException("Tried to get consumption before calculating");
         }
         return recipeVoltage;
     }
@@ -491,7 +493,7 @@ public class GT_OverclockCalculator {
      */
     public int getDuration() {
         if (!calculated) {
-            calculate();
+            throw new IllegalStateException("Tried to get duration before calculating");
         }
         return duration;
     }
@@ -501,23 +503,22 @@ public class GT_OverclockCalculator {
      */
     public int getPerformedOverclocks() {
         if (!calculated) {
-            calculate();
+            throw new IllegalStateException("Tried to get performed overclocks before calculating");
         }
         return overclockCount;
     }
 
-    public int getPerformedHeatOverclocks() {
-        if (!calculated) {
-            calculate();
-        }
-        return heatOverclockCount;
-    }
-
-    public int getDurationDecreasePerOC() {
-        return durationDecreasePerOC;
-    }
-
-    public int getDurationDecreasePerHeatOC() {
-        return durationDecreasePerHeatOC;
+    /**
+     * Returns duration as a double to show how much it is overclocking too much to determine extra parallel.
+     * This doesn't count as calculating
+     */
+    public double calculateDurationUnderOneTick() {
+        int normalOverclocks = calculateAmountOfOverclocks(
+            calculateMachinePowerTier(),
+            calculateRecipePowerTier(calculateHeatDiscountMultiplier()));
+        int heatOverclocks = calculateAmountOfHeatOverclocks();
+        return (duration * speedBoost)
+            / (Math.max((normalOverclocks - heatOverclocks) * (1 << durationDecreasePerOC), 1)
+                * Math.max((heatOverclocks * (1 << durationDecreasePerHeatOC)), 1));
     }
 }

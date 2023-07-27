@@ -189,6 +189,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
         // The voltage is only used for recipe finding
         logic.setAvailableVoltage(Long.MAX_VALUE);
         logic.setAvailableAmperage(1);
+        logic.setAmperageOC(false);
     }
 
     @Override

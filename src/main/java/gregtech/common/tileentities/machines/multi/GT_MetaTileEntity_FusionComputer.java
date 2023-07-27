@@ -338,6 +338,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(GT_Values.V[tier()]);
         logic.setAvailableAmperage(1);
+        logic.setAmperageOC(false);
     }
 
     public abstract int tierOverclock();
