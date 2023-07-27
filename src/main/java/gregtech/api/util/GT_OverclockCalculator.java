@@ -536,8 +536,7 @@ public class GT_OverclockCalculator {
             calculateRecipePowerTier(calculateHeatDiscountMultiplier()));
         normalOverclocks = limitOverclocks ? Math.min(normalOverclocks, maxOverclocks) : normalOverclocks;
         int heatOverclocks = Math.min(calculateAmountOfHeatOverclocks(), normalOverclocks);
-        return (duration * speedBoost)
-            / ((1 << durationDecreasePerOC * (normalOverclocks - heatOverclocks))
-                * (1 << durationDecreasePerHeatOC * heatOverclocks));
+        return (duration * speedBoost) / ((1 << durationDecreasePerOC * (normalOverclocks - heatOverclocks))
+            * (1 << durationDecreasePerHeatOC * heatOverclocks));
     }
 }
