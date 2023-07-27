@@ -11,11 +11,11 @@ import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -199,9 +199,9 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
         List<String> tooltip = new ArrayList<>();
         tooltip.add(
             TT_machineType + ": "
-                + AnimatedTooltipHandler.YELLOW
+                + EnumChatFormatting.YELLOW
                 + StatCollector.translateToLocal(recipeMap.mUnlocalizedName)
-                + AnimatedTooltipHandler.RESET);
+                + EnumChatFormatting.RESET);
         if (recipeMap.mRecipeItemMap.size() > 0) {
             tooltip.add("Filter size: §e" + recipeMap.mRecipeItemMap.size() + "§r");
         }

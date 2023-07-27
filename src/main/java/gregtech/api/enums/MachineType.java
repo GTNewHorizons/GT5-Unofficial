@@ -1,8 +1,7 @@
 package gregtech.api.enums;
 
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-
-import com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler;
 
 public enum MachineType {
 
@@ -127,6 +126,6 @@ public enum MachineType {
 
     public String[] tooltipDescription() {
         return new String[] { this.description,
-            TT_machineType + ": " + AnimatedTooltipHandler.YELLOW + this.name + AnimatedTooltipHandler.RESET };
+            TT_machineType + ": " + EnumChatFormatting.YELLOW + this.name + EnumChatFormatting.RESET };
     }
 }
