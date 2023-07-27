@@ -23,7 +23,7 @@ class GT_OverclockCalculator_UnitTest {
             .setHeatOC(true)
             .setHeatDiscount(true)
             .setRecipeHeat(1800)
-            .setMultiHeat(1800 * 5)
+            .setMachineHeat(1800 * 5)
             .calculate();
         assertEquals(1024 >> 8, calculator.getDuration(), messageDuration);
         assertEquals(correctConsumption, calculator.getConsumption(), messageEUt);
@@ -39,7 +39,7 @@ class GT_OverclockCalculator_UnitTest {
             .setHeatOC(true)
             .setHeatDiscount(true)
             .setRecipeHeat(1800)
-            .setMultiHeat(2700)
+            .setMachineHeat(2700)
             .calculate();
         assertEquals(1024 >> 4, calculator.getDuration(), messageDuration);
         assertEquals(correctConsumption, calculator.getConsumption(), messageEUt);
@@ -53,7 +53,7 @@ class GT_OverclockCalculator_UnitTest {
             .setHeatOC(true)
             .setHeatDiscount(true)
             .setRecipeHeat(1800)
-            .setMultiHeat(1800)
+            .setMachineHeat(1800)
             .calculate();
         assertEquals(1024 >> 4, calculator.getDuration(), messageDuration);
         assertEquals(VP[5], calculator.getConsumption(), messageEUt);
@@ -69,7 +69,7 @@ class GT_OverclockCalculator_UnitTest {
             .setHeatOC(true)
             .setHeatDiscount(true)
             .setRecipeHeat(1800)
-            .setMultiHeat(3600)
+            .setMachineHeat(3600)
             .calculate();
         assertEquals(1024 >> 5, calculator.getDuration(), messageDuration);
         assertEquals(correctConsumption, calculator.getConsumption(), messageEUt);
@@ -106,7 +106,7 @@ class GT_OverclockCalculator_UnitTest {
             .setHeatOC(true)
             .setHeatDiscount(true)
             .setRecipeHeat(486)
-            .setMultiHeat(3900)
+            .setMachineHeat(3900)
             .calculate();
         assertEquals(2048 >> 6, calculator.getDuration(), messageDuration);
         assertEquals(correctConsumption, calculator.getConsumption(), messageEUt);
@@ -349,5 +349,18 @@ class GT_OverclockCalculator_UnitTest {
             .calculate();
         assertEquals(1, calculator.getDuration(), messageDuration);
         assertEquals(VP[0], calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void testNotPowerOverflowing_Test() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(16)
+            .setParallel(64)
+            .setAmperage(64)
+            .setAmperageOC(true)
+            .setEUt(V[5])
+            .setDuration(30)
+            .calculate();
+        assertEquals(1, calculator.getDuration(), messageDuration);
+        assertEquals(16 << 14, calculator.getConsumption(), messageEUt);
     }
 }

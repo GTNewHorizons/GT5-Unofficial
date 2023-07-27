@@ -259,11 +259,19 @@ public class GT_ParallelHelper {
         return this;
     }
 
+    /**
+     * Set a custom way to calculate item outputs. You are given the amount of parallels and must return an ItemStack
+     * array
+     */
     public GT_ParallelHelper setCustomItemOutputCalculation(Function<Integer, ItemStack[]> custom) {
         customItemOutputCalculation = custom;
         return this;
     }
 
+    /**
+     * Set a custom way to calculate item outputs. You are given the amount of parallels and must return a FluidStack
+     * array
+     */
     public GT_ParallelHelper setCustomFluidOutputCalculation(Function<Integer, FluidStack[]> custom) {
         customFluidOutputCalculation = custom;
         return this;

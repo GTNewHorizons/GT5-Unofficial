@@ -7,14 +7,6 @@ public class GT_OverclockCalculator {
     private static final double LOG4 = Math.log(4);
 
     /**
-     * Amperage of the multiblock
-     */
-    private long multiAmperage = 1;
-    /**
-     * Voltage of the multiblock
-     */
-    private long multiVoltage = 0;
-    /**
      * Voltage the recipe will run at
      */
     private long recipeVoltage = 0;
@@ -23,11 +15,19 @@ public class GT_OverclockCalculator {
      */
     private long recipeAmperage = 1;
     /**
+     * Voltage of the machine
+     */
+    private long machineVoltage = 0;
+    /**
+     * Amperage of the machine
+     */
+    private long machineAmperage = 1;
+    /**
      * Duration of the recipe
      */
     private int duration = 0;
     /**
-     * The parallel the multi has when trying to overclock
+     * The parallel the machine has when trying to overclock
      */
     private int parallel = 1;
 
@@ -38,11 +38,11 @@ public class GT_OverclockCalculator {
     /**
      * The heat the multi has when starting the recipe
      */
-    private int multiHeat = 0;
+    private int machineHeat = 0;
     /**
      * How much the bits should be moved to the right for each 1800 above recipe heat (Used for duration)
      */
-    private int heatOCDuration = 2;
+    private int durationDecreasePerHeatOC = 2;
     /**
      * Whether to enable overclocking with heat like the EBF every 1800 heat difference
      */
@@ -84,6 +84,10 @@ public class GT_OverclockCalculator {
      */
     private boolean laserOC;
     /**
+     * Laser OC's penalty for using high amp lasers for overclocking. Like what the Adv. Assline is doing
+     */
+    private double laserOCPenalty = 0.3;
+    /**
      * Whether the multi should use amperage to overclock normally. Incompatible with laserOC
      */
     private boolean amperageOC;
@@ -99,10 +103,6 @@ public class GT_OverclockCalculator {
      * How many overclocks have been performed
      */
     private int overclockCount;
-    /**
-     * Laser OC's penalty for using high amp lasers for overclocking. Like what the Adv. Assline is doing
-     */
-    private double laserOCPenalty = 0.3;
 
     /**
      * variable to check whether the overclocks have been calculated
@@ -142,24 +142,26 @@ public class GT_OverclockCalculator {
         this();
         setRecipeEUt(calculator.recipeVoltage);
         setRecipeAmperage(calculator.recipeAmperage);
-        setEUt(calculator.multiVoltage);
-        setAmperage(calculator.multiAmperage);
+        setEUt(calculator.machineVoltage);
+        setAmperage(calculator.machineAmperage);
         setDuration(calculator.duration);
         setParallel(calculator.parallel);
-        setDurationDecreasePerOC(calculator.durationDecreasePerOC);
-        setEUtIncreasePerOC(calculator.eutIncreasePerOC);
-        setEUtDiscount(calculator.eutDiscount);
-        setSpeedBoost(calculator.speedBoost);
-        setHeatPerfectOC(calculator.heatOCDuration);
-        setHeatOC(calculator.heatOC);
         setRecipeHeat(calculator.recipeHeat);
-        setMultiHeat(calculator.multiHeat);
+        setMachineHeat(calculator.machineHeat);
+        setHeatPerfectOC(calculator.durationDecreasePerHeatOC);
+        setHeatOC(calculator.heatOC);
         setHeatDiscount(calculator.heatDiscount);
-        setAmperageOC(calculator.amperageOC);
+        setHeatDiscountMultiplier((float) calculator.heatDiscountExponent);
+        setEUtDiscount((float) calculator.eutDiscount);
+        setSpeedBoost((float) calculator.speedBoost);
+        setEUtIncreasePerOC(calculator.eutIncreasePerOC);
+        setDurationDecreasePerOC(calculator.durationDecreasePerOC);
+        setOneTickDiscount(calculator.oneTickDiscount);
         setLaserOC(calculator.laserOC);
         setLaserOCPenalty(calculator.laserOCPenalty);
-        limitOverclockCount(calculator.maxOverclocks);
-        setOneTickDiscount(calculator.oneTickDiscount);
+        setAmperageOC(calculator.amperageOC);
+        maxOverclocks = calculator.maxOverclocks;
+        limitOverclocks = calculator.limitOverclocks;
     }
 
     /**
@@ -174,7 +176,7 @@ public class GT_OverclockCalculator {
      * @param multiVoltage Sets the EUt that the multiblock can use. This is the voltage of the multi
      */
     public GT_OverclockCalculator setEUt(long multiVoltage) {
-        this.multiVoltage = multiVoltage;
+        this.machineVoltage = multiVoltage;
         return this;
     }
 
@@ -190,7 +192,7 @@ public class GT_OverclockCalculator {
      * @param multiAmperage Sets the Amperage that the multi can support
      */
     public GT_OverclockCalculator setAmperage(long multiAmperage) {
-        this.multiAmperage = multiAmperage;
+        this.machineAmperage = multiAmperage;
         return this;
     }
 
@@ -251,17 +253,25 @@ public class GT_OverclockCalculator {
     }
 
     /**
-     * Sets the heat of the coils on the multi
+     * Use {@link #setMachineHeat(int)}
      */
-    public GT_OverclockCalculator setMultiHeat(int multiHeat) {
-        this.multiHeat = multiHeat;
+    @Deprecated
+    public GT_OverclockCalculator setMultiHeat(int machineHeat) {
+        return setMachineHeat(machineHeat);
+    }
+
+    /**
+     * Sets the heat of the coils on the machine
+     */
+    public GT_OverclockCalculator setMachineHeat(int machineHeat) {
+        this.machineHeat = machineHeat;
         return this;
     }
 
     /**
      * Sets an EUtDiscount. 0.9 is 10% less energy. 1.1 is 10% more energy
      */
-    public GT_OverclockCalculator setEUtDiscount(double aEUtDiscount) {
+    public GT_OverclockCalculator setEUtDiscount(float aEUtDiscount) {
         this.eutDiscount = aEUtDiscount;
         return this;
     }
@@ -269,7 +279,7 @@ public class GT_OverclockCalculator {
     /**
      * Sets a Speed Boost for the multiblock. 0.9 is 10% faster. 1.1 is 10% slower
      */
-    public GT_OverclockCalculator setSpeedBoost(double aSpeedBoost) {
+    public GT_OverclockCalculator setSpeedBoost(float aSpeedBoost) {
         this.speedBoost = aSpeedBoost;
         return this;
     }
@@ -296,7 +306,7 @@ public class GT_OverclockCalculator {
      * decrease
      */
     public GT_OverclockCalculator setHeatPerfectOC(int heatPerfectOC) {
-        this.heatOCDuration = heatPerfectOC;
+        this.durationDecreasePerHeatOC = heatPerfectOC;
         return this;
     }
 
@@ -375,19 +385,19 @@ public class GT_OverclockCalculator {
         if (laserOC && amperageOC) {
             throw new IllegalStateException("Tried to calculate overclock with both laser and amperage overclocking");
         }
-        int heatDiscounts = heatDiscount ? (multiHeat - recipeHeat) / HEAT_DISCOUNT_THRESHOLD : 0;
+        int heatDiscounts = heatDiscount ? (machineHeat - recipeHeat) / HEAT_DISCOUNT_THRESHOLD : 0;
         double heatDiscountMultiplier = Math.pow(heatDiscountExponent, heatDiscounts);
         duration = (int) Math.ceil(duration * speedBoost);
         int heatOCs = 0;
         if (heatOC) {
-            heatOCs = (multiHeat - recipeHeat) / HEAT_PERFECT_OVERCLOCK_THRESHOLD;
+            heatOCs = (machineHeat - recipeHeat) / HEAT_PERFECT_OVERCLOCK_THRESHOLD;
         }
 
-        double recipeTier = calculateRecipeTier(heatDiscountMultiplier);
-        double multiTier = calculateMultiTier();
-        // Need to power 2 by durationDecreasePerOC because we are using bit shifting
+        double recipeTier = calculateRecipePowerTier(heatDiscountMultiplier);
+        double multiTier = calculateMachinePowerTier();
+        // Math.log(n) / Math.log(e) is log_e n
         overclockCount = (int) Math
-            .min(multiTier - recipeTier, Math.log(duration) / Math.log(Math.pow(2, durationDecreasePerOC)));
+            .min(multiTier - recipeTier, Math.log(duration) / Math.log(1 << durationDecreasePerOC));
         if (overclockCount < 0) {
             recipeVoltage = Long.MAX_VALUE;
             duration = Integer.MAX_VALUE;
@@ -397,9 +407,9 @@ public class GT_OverclockCalculator {
         overclockCount = limitOverclocks ? Math.min(maxOverclocks, overclockCount) : overclockCount;
         recipeVoltage <<= eutIncreasePerOC * overclockCount;
         duration >>= durationDecreasePerOC * (overclockCount - heatOCs);
-        duration >>= heatOCDuration * heatOCs;
+        duration >>= durationDecreasePerHeatOC * heatOCs;
         if (oneTickDiscount) {
-            recipeVoltage >>= durationDecreasePerOC * ((int) multiTier - (int) recipeTier - overclockCount);
+            recipeVoltage >>= durationDecreasePerOC * ((int) (multiTier - recipeTier - overclockCount));
             if (recipeVoltage < 1) {
                 recipeVoltage = 1;
             }
@@ -416,14 +426,14 @@ public class GT_OverclockCalculator {
         recipeVoltage = calculateFinalRecipeEUt(heatDiscountMultiplier);
     }
 
-    private double calculateRecipeTier(double heatDiscountMultiplier) {
+    private double calculateRecipePowerTier(double heatDiscountMultiplier) {
         return Math.max(
             1,
             Math.log(recipeVoltage * parallel * eutDiscount * heatDiscountMultiplier * recipeAmperage) / LOG4 - 1);
     }
 
-    private double calculateMultiTier() {
-        return Math.max(1, Math.log(multiVoltage * (amperageOC ? multiAmperage : 1)) / LOG4 - 1);
+    private double calculateMachinePowerTier() {
+        return Math.max(1, Math.log(machineVoltage * (amperageOC ? machineAmperage : 1)) / LOG4 - 1);
     }
 
     private long calculateFinalRecipeEUt(double heatDiscountMultiplier) {
@@ -431,8 +441,8 @@ public class GT_OverclockCalculator {
     }
 
     private void calculateLaserOC() {
-        long inputEut = multiVoltage * multiAmperage;
-        double currentPenalty = eutIncreasePerOC * 2 + laserOCPenalty;
+        long inputEut = machineVoltage * machineAmperage;
+        double currentPenalty = (1 << eutIncreasePerOC) + laserOCPenalty;
         while (inputEut > recipeVoltage * currentPenalty && recipeVoltage * currentPenalty > 0 && duration > 1) {
             duration >>= durationDecreasePerOC;
             recipeVoltage *= currentPenalty;

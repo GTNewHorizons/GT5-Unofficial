@@ -399,6 +399,7 @@ public class ProcessingLogic {
     /**
      * Override to tweak overclock logic if needed.
      */
+    @Nonnull
     protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
         return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
             .setRecipeAmperage(
@@ -407,8 +408,10 @@ public class ProcessingLogic {
                     : 1)
             .setAmperage(availableAmperage)
             .setEUt(availableVoltage)
+            .setDuration(recipe.mDuration)
             .setSpeedBoost(speedBoost)
             .setEUtDiscount(euModifier)
+            .setAmperageOC(amperageOC)
             .setDurationDecreasePerOC(overClockTimeReduction)
             .setEUtIncreasePerOC(overClockPowerIncrease);
     }

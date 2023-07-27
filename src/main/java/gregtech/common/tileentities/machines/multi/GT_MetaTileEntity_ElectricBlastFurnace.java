@@ -196,7 +196,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
                 return super.createOverclockCalculator(recipe).setRecipeHeat(recipe.mSpecialValue)
-                    .setMultiHeat(mHeatingCapacity)
+                    .setMachineHeat(mHeatingCapacity)
                     .setHeatOC(true)
                     .setHeatDiscount(true);
             }
