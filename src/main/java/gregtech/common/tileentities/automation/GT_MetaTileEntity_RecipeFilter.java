@@ -11,11 +11,11 @@ import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -68,7 +68,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     public void clickTypeIcon(boolean rightClick, ItemStack heldStack) {
         mRecipeMap = getItemStackMachineRecipeMap(heldStack);
         if (mRecipeMap != null) {
-            loadFilteredMachines();
+            filteredMachines = getFilteredMachines(mRecipeMap);
         } else {
             filteredMachines = Collections.emptyList();
             mInventory[FILTER_SLOT_INDEX] = null;
@@ -109,8 +109,8 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
         return recipeMap;
     }
 
-    private void loadFilteredMachines() {
-        filteredMachines = RecipeCatalysts.getRecipeCatalysts(mRecipeMap.mNEIName)
+    private static  List<ItemStack> getFilteredMachines(GT_Recipe.GT_Recipe_Map recipeMap) {
+        return RecipeCatalysts.getRecipeCatalysts(recipeMap.mNEIName)
             .stream()
             .map(positionedStack -> positionedStack.item)
             .collect(Collectors.toList());
@@ -123,7 +123,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
         if (this.filteredMachines.isEmpty()) {
             if (mRecipeMap != null) {
                 // This should succeed after a few ticks when NEI is fully loaded.
-                loadFilteredMachines();
+                filteredMachines = getFilteredMachines(mRecipeMap);
             } else {
                 return;
             }
@@ -199,9 +199,9 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
         List<String> tooltip = new ArrayList<>();
         tooltip.add(
             TT_machineType + ": "
-                + AnimatedTooltipHandler.YELLOW
+                + EnumChatFormatting .YELLOW
                 + StatCollector.translateToLocal(recipeMap.mUnlocalizedName)
-                + AnimatedTooltipHandler.RESET);
+                + EnumChatFormatting.RESET);
         if (recipeMap.mRecipeItemMap.size() > 0) {
             tooltip.add("Filter size: §e" + recipeMap.mRecipeItemMap.size() + "§r");
         }
