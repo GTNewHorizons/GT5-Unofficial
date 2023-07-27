@@ -109,7 +109,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
         return recipeMap;
     }
 
-    private static  List<ItemStack> getFilteredMachines(GT_Recipe.GT_Recipe_Map recipeMap) {
+    private static List<ItemStack> getFilteredMachines(GT_Recipe.GT_Recipe_Map recipeMap) {
         return RecipeCatalysts.getRecipeCatalysts(recipeMap.mNEIName)
             .stream()
             .map(positionedStack -> positionedStack.item)
@@ -199,7 +199,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
         List<String> tooltip = new ArrayList<>();
         tooltip.add(
             TT_machineType + ": "
-                + EnumChatFormatting .YELLOW
+                + EnumChatFormatting.YELLOW
                 + StatCollector.translateToLocal(recipeMap.mUnlocalizedName)
                 + EnumChatFormatting.RESET);
         if (recipeMap.mRecipeItemMap.size() > 0) {

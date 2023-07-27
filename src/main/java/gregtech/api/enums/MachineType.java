@@ -3,7 +3,6 @@ package gregtech.api.enums;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
-
 public enum MachineType {
 
     ALLOY_SMELTER(FunnyTexts.ALLOY_SMELTER, "gt.recipe.alloysmelter"),
