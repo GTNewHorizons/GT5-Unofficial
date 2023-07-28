@@ -356,8 +356,14 @@ public class ProcessingLogic {
     @Nonnull
     protected FindRecipeResult findRecipe(@Nullable GT_Recipe_Map map) {
         if (map == null) return FindRecipeResult.NOT_FOUND;
-        return map
-            .findRecipeWithResult(lastRecipe, false, false, availableVoltage, inputFluids, specialSlotItem, inputItems);
+        return map.findRecipeWithResult(
+            lastRecipe,
+            false,
+            false,
+            amperageOC ? availableVoltage * availableAmperage : availableVoltage,
+            inputFluids,
+            specialSlotItem,
+            inputItems);
     }
 
     /**

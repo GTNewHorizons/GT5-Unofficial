@@ -546,16 +546,14 @@ public class GT_OverclockCalculator {
      * Returns the EUt consumption one would get from overclocking under 1 tick
      * This Doesn't count as calculating
      * 
-     * @param trueParallel Parallels which are of the actual machine before the overclocking extra ones
+     * @param originalMaxParallel Parallels which are of the actual machine before the overclocking extra ones
      */
-    public long calculateEUtConsumptionUnderOneTick(int trueParallel) {
-        int normalOverclocks = calculateAmountOfOverclocks(
-            calculateMachinePowerTier(),
-            calculateRecipePowerTier(calculateHeatDiscountMultiplier()));
-        normalOverclocks = limitOverclocks ? Math.min(normalOverclocks, maxOverclocks) : normalOverclocks;
+    public long calculateEUtConsumptionUnderOneTick(int originalMaxParallel, int currentParallel) {
+        double parallelOverclocks = Math.log((double) currentParallel / originalMaxParallel)
+            / Math.log(1 << durationDecreasePerOC);
         return (long) Math.floor(
-            recipeVoltage * Math.pow(1 << eutIncreasePerOC, normalOverclocks)
-                * trueParallel
+            recipeVoltage * Math.pow(1 << eutIncreasePerOC, parallelOverclocks)
+                * originalMaxParallel
                 * eutDiscount
                 * recipeAmperage
                 * calculateHeatDiscountMultiplier());

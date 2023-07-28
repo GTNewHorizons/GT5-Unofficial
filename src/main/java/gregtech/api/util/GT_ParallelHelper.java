@@ -359,15 +359,11 @@ public class GT_ParallelHelper {
     }
 
     /**
-     * Try to consume the inputs of the recipe
-     *
-     * @param recipe Processed recipe
-     * @param fluids fluid inputs that will be consumed
-     * @param items  item inputs that will be consumed
-     * @return True if recipe was satisfied, else false
+     * Use {@link #tryConsumeRecipeInputs(GT_Recipe, FluidStack[], ItemStack[], int)}
      */
+    @Deprecated
     protected boolean tryConsumeRecipeInputs(GT_Recipe recipe, FluidStack[] fluids, ItemStack[] items) {
-        return recipe.isRecipeInputEqual(true, false, fluids, items);
+        return tryConsumeRecipeInputs(recipe, fluids, items, 1);
     }
 
     /**
@@ -381,7 +377,7 @@ public class GT_ParallelHelper {
      */
     protected boolean tryConsumeRecipeInputs(GT_Recipe recipe, FluidStack[] fluids, ItemStack[] items,
         int minParallel) {
-        return recipe.isRecipeInputEqual(true, false, fluids, items);
+        return recipe.isRecipeInputEqual(true, false, minParallel, fluids, items);
     }
 
     /**
@@ -406,7 +402,8 @@ public class GT_ParallelHelper {
                 .setEUtDiscount(eutModifier);
         }
 
-        int trueMaxParallel = maxParallel;
+        // Save the original max parallel before calculating our overclocking under 1 tick
+        int originalMaxParallel = maxParallel;
         double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
         if (tickTimeAfterOC < 1) {
             maxParallel = (int) Math.floor(maxParallel / tickTimeAfterOC);
@@ -482,10 +479,10 @@ public class GT_ParallelHelper {
             return;
         }
 
-        long eutUseAfterOC = calculator.calculateEUtConsumptionUnderOneTick(trueMaxParallel);
-        calculator.setParallel(Math.min(currentParallel, trueMaxParallel))
+        long eutUseAfterOC = calculator.calculateEUtConsumptionUnderOneTick(originalMaxParallel, currentParallel);
+        calculator.setParallel(Math.min(currentParallel, originalMaxParallel))
             .calculate();
-        if (currentParallel > trueMaxParallel) {
+        if (currentParallel > originalMaxParallel) {
             calculator.setRecipeEUt(eutUseAfterOC);
         }
         // If Batch Mode is enabled determine how many extra parallels we can get
