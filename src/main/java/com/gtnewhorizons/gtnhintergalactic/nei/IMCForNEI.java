@@ -21,6 +21,9 @@ public class IMCForNEI {
         sendCatalyst(
                 "com.gtnewhorizons.gtnhintergalactic.nei.SpacePumpModuleRecipeHandler",
                 "gregtech:gt.blockmachines:14011");
+        sendCatalyst(
+                "com.gtnewhorizons.gtnhintergalactic.nei.SpacePumpModuleRecipeHandler",
+                "gregtech:gt.blockmachines:14014");
 
         sendHandler(
                 "com.gtnewhorizons.gtnhintergalactic.nei.GasSiphonRecipeHandler",
