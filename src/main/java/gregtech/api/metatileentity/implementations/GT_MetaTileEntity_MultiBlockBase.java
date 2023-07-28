@@ -786,8 +786,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GT_Utility.roundDownVoltage(getMaxInputVoltage()));
-        logic.setAvailableAmperage(1);
+        logic.setAvailableVoltage(getAverageInputVoltage());
+        logic.setAvailableAmperage(getMaxInputAmps());
+        logic.setAmperageOC(mEnergyHatches.size() != 1);
     }
 
     protected int getMaxBatchSize() {
@@ -1008,6 +1009,18 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             if (isValidMetaTileEntity(tHatch)) rVoltage += tHatch.getBaseMetaTileEntity()
                 .getInputVoltage();
         return rVoltage;
+    }
+
+    public long getAverageInputVoltage() {
+        return GT_ExoticEnergyInputHelper.getAverageInputVoltageMulti(mEnergyHatches);
+    }
+
+    public long getMaxInputAmps() {
+        return GT_ExoticEnergyInputHelper.getMaxWorkingInputAmpsMulti(mEnergyHatches);
+    }
+
+    public long getMaxInputEu() {
+        return GT_ExoticEnergyInputHelper.getTotalEuMulti(mEnergyHatches);
     }
 
     /**

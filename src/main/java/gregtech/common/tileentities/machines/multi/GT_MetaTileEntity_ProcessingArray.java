@@ -70,8 +70,6 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_ProcessingArray_Manager;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
@@ -237,25 +235,6 @@ public class GT_MetaTileEntity_ProcessingArray extends
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
-            @Override
-            protected double calculateDuration(@Nonnull GT_Recipe recipe, @Nonnull GT_ParallelHelper helper,
-                @Nonnull GT_OverclockCalculator calculator) {
-                return calculator.getDuration();
-            }
-
-            @Nonnull
-            @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe,
-                @Nonnull GT_ParallelHelper helper) {
-                return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
-                    .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplierDouble()))
-                    .setDuration((int) Math.ceil(recipe.mDuration * helper.getDurationMultiplierDouble()))
-                    .setAmperage(availableAmperage)
-                    .setEUt(availableVoltage)
-                    .setDurationDecreasePerOC(overClockTimeReduction)
-                    .setEUtIncreasePerOC(overClockPowerIncrease);
-            }
-
             @Nonnull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
@@ -278,6 +257,7 @@ public class GT_MetaTileEntity_ProcessingArray extends
         GT_Recipe_Map recipeMap = getRecipeMap();
         logic.setAvailableVoltage(GT_Values.V[tTier] * (recipeMap != null ? recipeMap.mAmperage : 1));
         logic.setAvailableAmperage(getMaxParallel());
+        logic.setAmperageOC(true);
     }
 
     private void setTierAndMult() {

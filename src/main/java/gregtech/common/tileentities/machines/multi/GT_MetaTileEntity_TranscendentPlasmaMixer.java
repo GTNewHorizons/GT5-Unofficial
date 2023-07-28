@@ -43,7 +43,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
 
@@ -164,8 +163,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
 
             @Nonnull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe,
-                @Nonnull GT_ParallelHelper helper) {
+            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
                 return GT_OverclockCalculator.ofNoOverclock(recipe);
             }
 
@@ -191,6 +189,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
         // The voltage is only used for recipe finding
         logic.setAvailableVoltage(Long.MAX_VALUE);
         logic.setAvailableAmperage(1);
+        logic.setAmperageOC(false);
     }
 
     @Override

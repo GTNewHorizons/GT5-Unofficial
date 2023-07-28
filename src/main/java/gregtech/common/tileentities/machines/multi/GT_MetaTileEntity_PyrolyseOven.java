@@ -164,12 +164,8 @@ public class GT_MetaTileEntity_PyrolyseOven
             @NotNull
             @Override
             public CheckRecipeResult process() {
-                CheckRecipeResult result = super.process();
-                if (!result.wasSuccessful()) {
-                    return result;
-                }
-                duration = Math.max(duration * 2 / (1 + coilHeat.getTier()), 1);
-                return result;
+                setSpeedBonus(2f / (1 + coilHeat.getTier()));
+                return super.process();
             }
         };
     }
