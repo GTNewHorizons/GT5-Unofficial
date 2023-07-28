@@ -449,7 +449,9 @@ public class GT_OverclockCalculator {
     }
 
     private double calculateMachinePowerTier() {
-        return Math.max(1, Math.log(machineVoltage * (amperageOC ? machineAmperage : 1)) / LOG4 - 1);
+        return Math.max(
+            1,
+            Math.log(machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel))) / LOG4 - 1);
     }
 
     private long calculateFinalRecipeEUt(double heatDiscountMultiplier) {
@@ -536,7 +538,26 @@ public class GT_OverclockCalculator {
             calculateRecipePowerTier(calculateHeatDiscountMultiplier()));
         normalOverclocks = limitOverclocks ? Math.min(normalOverclocks, maxOverclocks) : normalOverclocks;
         int heatOverclocks = Math.min(calculateAmountOfHeatOverclocks(), normalOverclocks);
-        return (duration * speedBoost) / ((1 << durationDecreasePerOC * (normalOverclocks - heatOverclocks))
-            * (1 << durationDecreasePerHeatOC * heatOverclocks));
+        return (duration * speedBoost) / (Math.pow(1 << durationDecreasePerOC, normalOverclocks - heatOverclocks)
+            * Math.pow(1 << durationDecreasePerHeatOC, heatOverclocks));
+    }
+
+    /**
+     * Returns the EUt consumption one would get from overclocking under 1 tick
+     * This Doesn't count as calculating
+     * 
+     * @param trueParallel Parallels which are of the actual machine before the overclocking extra ones
+     */
+    public long calculateEUtConsumptionUnderOneTick(int trueParallel) {
+        int normalOverclocks = calculateAmountOfOverclocks(
+            calculateMachinePowerTier(),
+            calculateRecipePowerTier(calculateHeatDiscountMultiplier()));
+        normalOverclocks = limitOverclocks ? Math.min(normalOverclocks, maxOverclocks) : normalOverclocks;
+        return (long) Math.floor(
+            recipeVoltage * Math.pow(1 << eutIncreasePerOC, normalOverclocks)
+                * trueParallel
+                * eutDiscount
+                * recipeAmperage
+                * calculateHeatDiscountMultiplier());
     }
 }
