@@ -269,20 +269,20 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_113", "Outputs only Items");
         addStringLocalization("Interaction_DESCRIPTION_Index_114", "Outputs only misc. Fluids");
         addStringLocalization("Interaction_DESCRIPTION_Index_115", "Outputs nothing");
-        addStringLocalization("Interaction_DESCRIPTION_Index_116", "Emit Energy to Outputside");
-        addStringLocalization("Interaction_DESCRIPTION_Index_117", "Don't emit Energy");
-        addStringLocalization("Interaction_DESCRIPTION_Index_118", "Emit Redstone if no Slot is free");
-        addStringLocalization("Interaction_DESCRIPTION_Index_119", "Don't emit Redstone");
-        addStringLocalization("Interaction_DESCRIPTION_Index_120", "Invert Redstone");
-        addStringLocalization("Interaction_DESCRIPTION_Index_121", "Don't invert Redstone");
+        // 116 moved to lang files
+        // 117 obsolete
+        // 118 moved to lang files
+        // 119 obsolete
+        // 120 moved to lang files
+        // 121 obsolete
         addStringLocalization("Interaction_DESCRIPTION_Index_122", "Emit Redstone if slots contain something");
         addStringLocalization("Interaction_DESCRIPTION_Index_123", "Don't emit Redstone");
-        addStringLocalization("Interaction_DESCRIPTION_Index_124", "Invert Filter");
+        // 124 moved to lang files
         addStringLocalization("Interaction_DESCRIPTION_Index_124.1", "Blacklist Mode");
-        addStringLocalization("Interaction_DESCRIPTION_Index_125", "Don't invert Filter");
+        // 125 obsolete
         addStringLocalization("Interaction_DESCRIPTION_Index_125.1", "Whitelist Mode");
-        addStringLocalization("Interaction_DESCRIPTION_Index_126", "Ignore NBT");
-        addStringLocalization("Interaction_DESCRIPTION_Index_127", "NBT has to match");
+        // 126 moved to lang files
+        // 127 obsolete
         addStringLocalization("Interaction_DESCRIPTION_Index_128", "Redstone");
         addStringLocalization("Interaction_DESCRIPTION_Index_128.1", "Redstone ");
         addStringLocalization("Interaction_DESCRIPTION_Index_129", "Energy");

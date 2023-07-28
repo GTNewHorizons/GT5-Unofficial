@@ -2,10 +2,13 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.Textures.BlockIcons.ITEM_IN_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -13,11 +16,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 
 import gregtech.GT_Mod;
 import gregtech.api.gui.modularui.GT_UIInfos;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -27,16 +34,22 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ClientPreference;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.extensions.ArrayExt;
 
 public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
     implements IConfigurationCircuitSupport, IAddUIWidgets {
 
+    private static final String SORTING_MODE_TOOLTIP = "GT5U.machines.sorting_mode.tooltip";
+    private static final String ONE_STACK_LIMIT_TOOLTIP = "GT5U.machines.one_stack_limit.tooltip";
+    private static final int BUTTON_SIZE = 18;
+
     public GT_Recipe_Map mRecipeMap = null;
     public boolean disableSort;
     public boolean disableFilter = true;
     public boolean disableLimited = true;
+    private int uiButtonCount = 0;
 
     public GT_MetaTileEntity_Hatch_InputBus(int id, String name, String nameRegional, int tier) {
         this(id, name, nameRegional, tier, getSlots(tier) + 1);
@@ -268,13 +281,43 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
         return true;
     }
 
+    private void addSortStacksButton(ModularWindow.Builder builder) {
+        builder.widget(
+            createToggleButton(
+                () -> !disableSort,
+                val -> disableSort = !val,
+                GT_UITextures.OVERLAY_BUTTON_SORTING_MODE,
+                () -> mTooltipCache.getData(SORTING_MODE_TOOLTIP)));
+    }
+
+    private void addOneStackLimitButton(ModularWindow.Builder builder) {
+        builder.widget(createToggleButton(() -> !disableLimited, val -> {
+            disableLimited = !val;
+            updateSlots();
+        }, GT_UITextures.OVERLAY_BUTTON_ONE_STACK_LIMIT, () -> mTooltipCache.getData(ONE_STACK_LIMIT_TOOLTIP)));
+    }
+
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        buildContext.addCloseListener(() -> uiButtonCount = 0);
+        addSortStacksButton(builder);
+        addOneStackLimitButton(builder);
         switch (mTier) {
             case 0 -> getBaseMetaTileEntity().add1by1Slot(builder);
             case 1 -> getBaseMetaTileEntity().add2by2Slots(builder);
             case 2 -> getBaseMetaTileEntity().add3by3Slots(builder);
             default -> getBaseMetaTileEntity().add4by4Slots(builder);
         }
+    }
+
+    private Widget createToggleButton(Supplier<Boolean> getter, Consumer<Boolean> setter, UITexture picture,
+        Supplier<GT_TooltipDataCache.TooltipData> tooltipDataSupplier) {
+        return new CycleButtonWidget().setToggle(getter, setter)
+            .setStaticTexture(picture)
+            .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(7 + (uiButtonCount++ * BUTTON_SIZE), 62)
+            .setSize(BUTTON_SIZE, BUTTON_SIZE)
+            .setGTTooltip(tooltipDataSupplier);
     }
 }

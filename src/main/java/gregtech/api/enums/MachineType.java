@@ -1,8 +1,7 @@
 package gregtech.api.enums;
 
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-
-import com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler;
 
 public enum MachineType {
 
@@ -107,26 +106,29 @@ public enum MachineType {
         static final String WIREMILL = "gt.recipe.wiremill.description";
     }
 
-    private static final String TT_machineType = StatCollector.translateToLocal("GT5U.MBTT.MachineType");
+    private static final String TT_machineType = "GT5U.MBTT.MachineType";
 
     private final String name;
     private final String description;
 
     MachineType(String machineDescription, String machineType) {
-        this.description = StatCollector.translateToLocal(machineDescription);
-        this.name = StatCollector.translateToLocal(machineType);
+        this.description = machineDescription;
+        this.name = machineType;
     }
 
     public String type() {
-        return this.name;
+        return StatCollector.translateToLocal(this.name);
     }
 
     public String description() {
-        return this.name;
+        return StatCollector.translateToLocal(this.description);
     }
 
     public String[] tooltipDescription() {
-        return new String[] { this.description,
-            TT_machineType + ": " + AnimatedTooltipHandler.YELLOW + this.name + AnimatedTooltipHandler.RESET };
+        return new String[] { description(),
+            StatCollector.translateToLocal(TT_machineType) + ": "
+                + EnumChatFormatting.YELLOW
+                + type()
+                + EnumChatFormatting.RESET };
     }
 }

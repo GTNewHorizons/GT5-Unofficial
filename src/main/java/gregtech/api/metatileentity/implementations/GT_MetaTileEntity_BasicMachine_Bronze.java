@@ -15,10 +15,10 @@ import java.util.Arrays;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -51,7 +51,7 @@ import gregtech.common.power.SteamPower;
  */
 public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileEntity_BasicMachine {
 
-    private static final String TT_machineType = StatCollector.translateToLocal("GT5U.MBTT.MachineType");
+    private static final String TT_machineType = "GT5U.MBTT.MachineType";
     private static final int NEEDS_STEAM_VENTING = 64;
     public boolean mNeedsSteamVenting = false;
 
@@ -393,10 +393,10 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     @Override
     public String[] getDescription() {
         String[] description = Arrays.copyOf(mDescriptionArray, mDescriptionArray.length + 1);
-        description[mDescriptionArray.length] = TT_machineType + ": "
-            + AnimatedTooltipHandler.YELLOW
+        description[mDescriptionArray.length] = StatCollector.translateToLocal(TT_machineType) + ": "
+            + EnumChatFormatting.YELLOW
             + StatCollector.translateToLocal(this.getRecipeList().mUnlocalizedName)
-            + AnimatedTooltipHandler.RESET;
+            + EnumChatFormatting.RESET;
         return description;
     }
 }

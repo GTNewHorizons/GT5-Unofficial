@@ -9,23 +9,22 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Buffer;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_FilterBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer implements IAddUIWidgets {
+public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_FilterBase {
 
-    public boolean bIgnoreNBT = false;
-    public boolean bInvertFilter = false;
+    private static final int NUM_FILTER_SLOTS = 9;
+    private static final String IGNORE_NBT_TOOLTIP = "GT5U.machines.ignore_nbt.tooltip";
+    private boolean ignoreNbt = false;
 
     public GT_MetaTileEntity_Filter(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -34,8 +33,7 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer implement
             aNameRegional,
             aTier,
             19,
-            new String[] { "Filters up to 9 different Items", "Use Screwdriver to regulate output stack size",
-                "Does not consume energy to move Item" });
+            new String[] { "Filters up to 9 different Items", "Use Screwdriver to regulate output stack size" });
     }
 
     public GT_MetaTileEntity_Filter(String aName, int aTier, int aInvSlotCount, String aDescription,
@@ -69,22 +67,15 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer implement
     }
 
     @Override
-    public boolean isValidSlot(int aIndex) {
-        return aIndex < 9;
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("bInvertFilter", this.bInvertFilter);
-        aNBT.setBoolean("bIgnoreNBT", this.bIgnoreNBT);
+        aNBT.setBoolean("bIgnoreNBT", this.ignoreNbt);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.bInvertFilter = aNBT.getBoolean("bInvertFilter");
-        this.bIgnoreNBT = aNBT.getBoolean("bIgnoreNBT");
+        this.ignoreNbt = aNBT.getBoolean("bIgnoreNBT");
     }
 
     @Override
@@ -93,78 +84,25 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer implement
         if (!super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack)) {
             return false;
         }
-        if (this.bInvertFilter) {
-            for (byte i = 9; i < 18; i = (byte) (i + 1)) {
-                if (GT_Utility.areStacksEqual(this.mInventory[i], aStack, this.bIgnoreNBT)) {
+        if (this.invertFilter) {
+            for (int i = 0; i < NUM_FILTER_SLOTS; i++) {
+                if (GT_Utility.areStacksEqual(this.mInventory[FILTER_SLOT_INDEX + i], aStack, this.ignoreNbt)) {
                     return false;
                 }
             }
             return true;
         }
-        return GT_Utility.areStacksEqual(this.mInventory[(aIndex + 9)], aStack, this.bIgnoreNBT);
-    }
-
-    @Override
-    protected void handleRedstoneOutput(IGregTechTileEntity aBaseMetaTileEntity) {
-        if (bRedstoneIfFull) {
-            int emptySlots = 0;
-            for (int i = 0; i < 9; i++) {
-                if (mInventory[i] == null) ++emptySlots;
-            }
-            if (!bInvert) emptySlots = 9 - emptySlots;
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) emptySlots);
-            }
-        } else {
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 0);
-            }
-        }
+        return GT_Utility.areStacksEqual(this.mInventory[(FILTER_SLOT_INDEX + aIndex)], aStack, this.ignoreNbt);
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        addEmitEnergyButton(builder);
-        addEmitRedstoneButton(builder);
-        addInvertRedstoneButton(builder);
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-            bInvertFilter = !bInvertFilter;
-            if (bInvertFilter) {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans("124", "Invert Filter"));
-            } else {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans("125", "Don't invert Filter"));
-            }
-        })
-            .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_INVERT_FILTER)
-            .setPos(61, 62)
-            .setSize(18, 18))
-            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                bIgnoreNBT = !bIgnoreNBT;
-                if (bIgnoreNBT) {
-                    GT_Utility.sendChatToPlayer(
-                        widget.getContext()
-                            .getPlayer(),
-                        GT_Utility.trans("126", "Ignore NBT"));
-                } else {
-                    GT_Utility.sendChatToPlayer(
-                        widget.getContext()
-                            .getPlayer(),
-                        GT_Utility.trans("127", "NBT has to match"));
-                }
-            })
-                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_NBT)
-                .setPos(79, 62)
-                .setSize(18, 18))
-            .widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_WHITE.apply(9, false))
-                    .setPos(6, 19)
-                    .setSize(9, 24))
+        super.addUIWidgets(builder, buildContext);
+        addAllowNbtButton(builder);
+        builder.widget(
+            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_WHITE.apply(9, false))
+                .setPos(6, 19)
+                .setSize(9, 24))
             .widget(
                 new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_BLUE.apply(24, true))
                     .setPos(71, 19)
@@ -179,8 +117,8 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer implement
                     .setSize(54, 54))
             .widget(
                 SlotGroup.ofItemHandler(inventoryHandler, 3)
-                    .startFromSlot(9)
-                    .endAtSlot(17)
+                    .startFromSlot(FILTER_SLOT_INDEX)
+                    .endAtSlot(FILTER_SLOT_INDEX + NUM_FILTER_SLOTS - 1)
                     .phantom(true)
                     .applyForWidget(
                         widget -> widget.disableShiftInsert()
@@ -190,8 +128,17 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer implement
             .widget(
                 SlotGroup.ofItemHandler(inventoryHandler, 3)
                     .startFromSlot(0)
-                    .endAtSlot(8)
+                    .endAtSlot(NUM_INVENTORY_SLOTS - 1)
                     .build()
                     .setPos(97, 4));
+    }
+
+    private void addAllowNbtButton(ModularWindow.Builder builder) {
+        builder.widget(
+            createToggleButton(
+                () -> ignoreNbt,
+                val -> ignoreNbt = val,
+                GT_UITextures.OVERLAY_BUTTON_NBT,
+                () -> mTooltipCache.getData(IGNORE_NBT_TOOLTIP)));
     }
 }
