@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -50,6 +51,7 @@ import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.AECableType;
 import appeng.api.util.DimensionalCoord;
+import appeng.items.misc.ItemEncodedPattern;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
@@ -505,10 +507,19 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                 .endAtSlot(MAX_PATTERN_COUNT - 1)
                 .phantom(false)
                 .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_PATTERN_ME)
-                .widgetCreator(
-                    slot -> new SlotWidget(slot)
-                        .setFilter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
-                        .setChangeListener(() -> onPatternChange(slot)))
+                .widgetCreator(slot -> new SlotWidget(slot) {
+
+                    @Override
+                    protected ItemStack getItemStackForRendering(Slot slotIn) {
+                        var stack = slot.getStack();
+                        if (stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem)) {
+                            return stack;
+                        }
+                        var output = patternItem.getOutput(stack);
+                        return output != null ? output : stack;
+                    }
+                }.setFilter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
+                    .setChangeListener(() -> onPatternChange(slot)))
                 .build()
                 .setPos(7, 9))
             .widget(
