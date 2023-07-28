@@ -27,7 +27,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.glodblock.github.common.item.ItemFluidPacket;
 import com.google.common.collect.ImmutableList;
-import com.gtnewhorizons.modularui.api.forge.SlotItemHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
@@ -233,24 +232,6 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             nbt.setTag("fluidInventory", fluidInventoryNbt);
 
             return nbt;
-        }
-    }
-
-    // A hack to display the output item of the pattern rather than the pattern itself
-    private static class PatternSlotDisplay extends SlotItemHandler {
-
-        public PatternSlotDisplay(SlotItemHandler slot) {
-            super(slot.getItemHandler(), slot.getSlotIndex(), slot.xDisplayPosition, slot.yDisplayPosition);
-        }
-
-        @Override
-        public ItemStack getStack() {
-            var stack = super.getStack();
-            if (stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem)) {
-                return stack;
-            }
-            var output = patternItem.getOutput(stack);
-            return output != null ? output : stack;
         }
     }
 
@@ -529,9 +510,13 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                 .widgetCreator(slot -> new SlotWidget(slot) {
 
                     @Override
-                    protected void drawSlot(Slot slotIn) {
-                        // hack to display the output of the pattern
-                        super.drawSlot(new PatternSlotDisplay((BaseSlot) slotIn));
+                    protected ItemStack getItemStackForRendering(Slot slotIn) {
+                        var stack = slot.getStack();
+                        if (stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem)) {
+                            return stack;
+                        }
+                        var output = patternItem.getOutput(stack);
+                        return output != null ? output : stack;
                     }
                 }.setFilter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
                     .setChangeListener(() -> onPatternChange(slot)))
