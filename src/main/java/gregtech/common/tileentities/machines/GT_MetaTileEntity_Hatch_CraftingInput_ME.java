@@ -182,7 +182,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             }
         }
 
-        public void insertItemsAndFluids(InventoryCrafting inventoryCrafting) {
+        public boolean insertItemsAndFluids(InventoryCrafting inventoryCrafting) {
+            int errorIndex = -1; // overflow may occur at this index
             for (int i = 0; i < inventoryCrafting.getSizeInventory(); ++i) {
                 ItemStack itemStack = inventoryCrafting.getStackInSlot(i);
                 if (itemStack == null) continue;
@@ -192,28 +193,63 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                     var fluidStack = ItemFluidPacket.getFluidStack(itemStack);
                     if (fluidStack == null) continue;
                     for (var fluid : fluidInventory) {
-                        if (fluid.isFluidEqual(fluidStack)) {
-                            fluid.amount += fluidStack.amount;
-                            inserted = true;
+                        if (!fluid.isFluidEqual(fluidStack)) continue;
+                        if (Integer.MAX_VALUE - fluidStack.amount < fluid.amount) {
+                            // Overflow detected
+                            errorIndex = i;
                             break;
                         }
+                        fluid.amount += fluidStack.amount;
+                        inserted = true;
+                        break;
                     }
+                    if (errorIndex != -1) break;
                     if (!inserted) {
                         fluidInventory.add(fluidStack);
                     }
                 } else { // insert item
                     for (var item : itemInventory) {
-                        if (itemStack.isItemEqual(item)) {
-                            item.stackSize += itemStack.stackSize;
-                            inserted = true;
+                        if (!itemStack.isItemEqual(item)) continue;
+                        if (Integer.MAX_VALUE - itemStack.stackSize < item.stackSize) {
+                            // Overflow detected
+                            errorIndex = i;
                             break;
                         }
+                        item.stackSize += itemStack.stackSize;
+                        inserted = true;
+                        break;
                     }
+                    if (errorIndex != -1) break;
                     if (!inserted) {
                         itemInventory.add(itemStack);
                     }
                 }
             }
+            if (errorIndex != -1) { // need to rollback
+                // Clean up the inserted items/liquids
+                for (int i = 0; i < errorIndex; ++i) {
+                    var itemStack = inventoryCrafting.getStackInSlot(i);
+                    if (itemStack.getItem() instanceof ItemFluidPacket) { // remove fluid
+                        var fluidStack = ItemFluidPacket.getFluidStack(itemStack);
+                        if (fluidStack == null) continue;
+                        for (var fluid : fluidInventory) {
+                            if (fluid.isFluidEqual(fluidStack)) {
+                                fluid.amount -= fluidStack.amount;
+                                break;
+                            }
+                        }
+                    } else { // remove item
+                        for (var item : itemInventory) {
+                            if (item.isItemEqual(itemStack)) {
+                                item.stackSize -= itemStack.stackSize;
+                                break;
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
+            return true;
         }
 
         public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
@@ -657,9 +693,10 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                 if (itemStack.getItem() instanceof ItemFluidPacket) return false;
             }
         }
-
-        patternDetailsPatternSlotMap.get(patternDetails)
-            .insertItemsAndFluids(table);
+        if (!patternDetailsPatternSlotMap.get(patternDetails)
+            .insertItemsAndFluids(table)) {
+            return false;
+        }
         justHadNewItems = true;
         return true;
     }
