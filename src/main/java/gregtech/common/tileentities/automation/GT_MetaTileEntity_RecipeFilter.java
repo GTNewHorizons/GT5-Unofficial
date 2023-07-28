@@ -77,36 +77,33 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     }
 
     private static GT_Recipe.GT_Recipe_Map getItemStackMachineRecipeMap(ItemStack stack) {
-        GT_Recipe.GT_Recipe_Map recipeMap = null;
         if (stack != null) {
             IMetaTileEntity metaTileEntity = GT_Item_Machines.getMetaTileEntity(stack);
             if (metaTileEntity != null) {
-                recipeMap = getMetaTileEntityRecipeMap(metaTileEntity);
+                return getMetaTileEntityRecipeMap(metaTileEntity);
             } else if (stack.getItem() instanceof MultiTileEntityItemInternal) {
-                recipeMap = getMuTeRecipeMap(stack);
+                return getMuTeRecipeMap(stack);
             }
         }
-        return recipeMap;
+        return null;
     }
 
     private static GT_Recipe.GT_Recipe_Map getMetaTileEntityRecipeMap(IMetaTileEntity metaTileEntity) {
-        GT_Recipe.GT_Recipe_Map recipeMap = null;
         if (metaTileEntity instanceof GT_MetaTileEntity_BasicMachine machine) {
-            recipeMap = machine.getRecipeList();
+            return machine.getRecipeList();
         } else if (metaTileEntity instanceof IRecipeLockable recipeLockable) {
-            recipeMap = recipeLockable.getRecipeMap();
+            return recipeLockable.getRecipeMap();
         }
-        return recipeMap;
+        return null;
     }
 
-    private static GT_Recipe.GT_Recipe_Map getMuTeRecipeMap(ItemStack stack) {
-        GT_Recipe.GT_Recipe_Map recipeMap = null;
+    private static GT_Recipe.GT_Recipe_Map getMuTeRecipeMap(@NotNull ItemStack stack) {
         MultiTileEntityContainer muTeEntityContainer = GT_Loader_MultiTileEntities.MACHINE_REGISTRY
             .getNewTileEntityContainer(stack);
         if (muTeEntityContainer != null && muTeEntityContainer.mTileEntity instanceof IRecipeLockable recipeLockable) {
-            recipeMap = recipeLockable.getRecipeMap();
+            return recipeLockable.getRecipeMap();
         }
-        return recipeMap;
+        return null;
     }
 
     private static List<ItemStack> getFilteredMachines(GT_Recipe.GT_Recipe_Map recipeMap) {
