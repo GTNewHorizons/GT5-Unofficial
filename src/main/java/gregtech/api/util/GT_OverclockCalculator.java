@@ -70,7 +70,7 @@ public class GT_OverclockCalculator {
 
     /**
      * How much the bits should be moved to the left when it is overclocking (Going up, 2 meaning it is multiplied with
-     * 4x)-
+     * 4x)
      */
     private int eutIncreasePerOC = 2;
     /**
@@ -549,13 +549,39 @@ public class GT_OverclockCalculator {
      * @param originalMaxParallel Parallels which are of the actual machine before the overclocking extra ones
      */
     public long calculateEUtConsumptionUnderOneTick(int originalMaxParallel, int currentParallel) {
-        double parallelOverclocks = Math.log((double) currentParallel / originalMaxParallel)
-            / Math.log(1 << durationDecreasePerOC);
-        return (long) Math.floor(
-            recipeVoltage * Math.pow(1 << eutIncreasePerOC, parallelOverclocks)
+        // So what we need to do here is as follows:
+        // - First we need to figure out what out parallel multiplier for getting to that OC was
+        // - Second we need to find how many of those were from heat overclocks
+        // - Third we need to find how many were from normal overclocking.
+        // = For that we need to find how much better heat overclocks are compared to normal ones
+        // = Then remove that many from our normal overclocks
+        // - Fourth we find how many total overclocks we have
+        // - Fifth we find how many of those are needed to one tick
+        // - Finally we calculate the formula
+        // = The energy increase from our overclocks for parallel
+        // = The energy increase from our overclock to reach maximum under one tick potential
+        // =- NOTE: This will always cause machine to use full power no matter what. Otherwise it creates many
+        // anomalies.
+        // = Everything else for recipe voltage is also calculated here.
+        double heatDiscountMultiplier = calculateHeatDiscountMultiplier();
+        double parallelMultiplierFromOverclocks = (double) currentParallel / originalMaxParallel;
+        double amountOfParallelHeatOverclocks = Math.min(
+            Math.log(parallelMultiplierFromOverclocks) / Math.log(1 << durationDecreasePerHeatOC),
+            calculateAmountOfHeatOverclocks());
+        double amountOfParallelOverclocks = Math.log(parallelMultiplierFromOverclocks)
+            / Math.log(1 << durationDecreasePerOC)
+            - amountOfParallelHeatOverclocks * ((1 << durationDecreasePerHeatOC) / (1 << durationDecreasePerOC));
+        double machineTier = calculateMachinePowerTier();
+        double recipeTier = calculateRecipePowerTier(heatDiscountMultiplier);
+        double amountOfTotalOverclocks = calculateAmountOfOverclocks(machineTier, recipeTier);
+        return (long) Math.ceil(
+            recipeVoltage * Math.pow(1 << eutIncreasePerOC, amountOfParallelOverclocks + amountOfParallelHeatOverclocks)
+                * Math.pow(
+                    1 << eutIncreasePerOC,
+                    amountOfTotalOverclocks - (amountOfParallelOverclocks + amountOfParallelHeatOverclocks))
                 * originalMaxParallel
                 * eutDiscount
                 * recipeAmperage
-                * calculateHeatDiscountMultiplier());
+                * heatDiscountMultiplier);
     }
 }
