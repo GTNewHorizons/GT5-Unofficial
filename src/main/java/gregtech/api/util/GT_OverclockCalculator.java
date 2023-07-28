@@ -533,6 +533,7 @@ public class GT_OverclockCalculator {
      */
     public double calculateDurationUnderOneTick() {
         if (durationUnderOneTickSupplier != null) return durationUnderOneTickSupplier.get();
+        if (machineVoltage == recipeVoltage) return duration;
         int normalOverclocks = calculateAmountOfOverclocks(
             calculateMachinePowerTier(),
             calculateRecipePowerTier(calculateHeatDiscountMultiplier()));

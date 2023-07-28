@@ -394,4 +394,10 @@ class GT_OverclockCalculator_UnitTest {
             calculator
                 .calculateEUtConsumptionUnderOneTick(256, (int) (256 / calculator.calculateDurationUnderOneTick())));
     }
+
+    @Test
+    void testNoOverclockCorrectWithUnderOneTickLogic_Test() {
+        GT_OverclockCalculator calculator = GT_OverclockCalculator.ofNoOverclock(2_693_264_510L, 100).setParallel(24 * 64);
+        assertEquals(100, calculator.calculateDurationUnderOneTick());
+    }
 }
