@@ -148,37 +148,6 @@ public class GT_OverclockCalculator {
     public GT_OverclockCalculator() {}
 
     /**
-     * Constructor for creating a new calculator with the save values
-     * 
-     * @param calculator Calculator to copy over
-     */
-    public GT_OverclockCalculator(@Nonnull GT_OverclockCalculator calculator) {
-        this();
-        setRecipeEUt(calculator.recipeVoltage);
-        setRecipeAmperage(calculator.recipeAmperage);
-        setEUt(calculator.machineVoltage);
-        setAmperage(calculator.machineAmperage);
-        setDuration(calculator.duration);
-        setParallel(calculator.parallel);
-        setRecipeHeat(calculator.recipeHeat);
-        setMachineHeat(calculator.machineHeat);
-        setHeatPerfectOC(calculator.durationDecreasePerHeatOC);
-        setHeatOC(calculator.heatOC);
-        setHeatDiscount(calculator.heatDiscount);
-        setHeatDiscountMultiplier((float) calculator.heatDiscountExponent);
-        setEUtDiscount((float) calculator.eutDiscount);
-        setSpeedBoost((float) calculator.speedBoost);
-        setEUtIncreasePerOC(calculator.eutIncreasePerOC);
-        setDurationDecreasePerOC(calculator.durationDecreasePerOC);
-        setOneTickDiscount(calculator.oneTickDiscount);
-        setLaserOC(calculator.laserOC);
-        setLaserOCPenalty(calculator.laserOCPenalty);
-        setAmperageOC(calculator.amperageOC);
-        maxOverclocks = calculator.maxOverclocks;
-        limitOverclocks = calculator.limitOverclocks;
-    }
-
-    /**
      * @param recipeEUt Sets the Recipe's starting voltage
      */
     public GT_OverclockCalculator setRecipeEUt(long recipeEUt) {
@@ -566,9 +535,8 @@ public class GT_OverclockCalculator {
      * @param originalMaxParallel Parallels which are of the actual machine before the overclocking extra ones
      */
     public long calculateEUtConsumptionUnderOneTick(int originalMaxParallel, int currentParallel) {
-        double heatDiscountMultiplier = calculateHeatDiscountMultiplier();
-        calculateFinalRecipeEUt(heatDiscountMultiplier);
         if (noOverclock) return recipeVoltage;
+        double heatDiscountMultiplier = calculateHeatDiscountMultiplier();
         // So what we need to do here is as follows:
         // - First we need to figure out what out parallel multiplier for getting to that OC was
         // - Second we need to find how many of those were from heat overclocks
@@ -590,7 +558,7 @@ public class GT_OverclockCalculator {
             calculateAmountOfHeatOverclocks());
         double amountOfParallelOverclocks = Math.log(parallelMultiplierFromOverclocks)
             / Math.log(1 << durationDecreasePerOC)
-            - amountOfParallelHeatOverclocks * ((1 << durationDecreasePerHeatOC) / (1 << durationDecreasePerOC));
+            - amountOfParallelHeatOverclocks * (1 << durationDecreasePerHeatOC - durationDecreasePerOC);
         double machineTier = calculateMachinePowerTier();
         double recipeTier = calculateRecipePowerTier(heatDiscountMultiplier);
         double amountOfTotalOverclocks = calculateAmountOfOverclocks(machineTier, recipeTier);
