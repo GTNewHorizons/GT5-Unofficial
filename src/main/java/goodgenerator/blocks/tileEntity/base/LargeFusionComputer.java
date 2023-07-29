@@ -53,7 +53,6 @@ import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.power.FusionPower;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 
 public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         implements IConstructable, ISurvivalConstructable {
@@ -509,20 +508,19 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
     private boolean addFluidIO(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
-            GT_MetaTileEntity_Hatch tHatch = (GT_MetaTileEntity_Hatch) aMetaTileEntity;
-            if (tHatch.mTier < hatchTier() && !(tHatch instanceof GT_MetaTileEntity_Hatch_Output_ME)) return false;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch tHatch) {
+            if (tHatch.getTierForStructure() < hatchTier()) {
+                return false;
+            }
         } else {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            GT_MetaTileEntity_Hatch_Input tInput = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input tInput) {
             tInput.updateTexture(aBaseCasingIndex);
             tInput.mRecipeMap = getRecipeMap();
             return mInputHatches.add(tInput);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-            GT_MetaTileEntity_Hatch_Output tOutput = (GT_MetaTileEntity_Hatch_Output) aMetaTileEntity;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output tOutput) {
             tOutput.updateTexture(aBaseCasingIndex);
             return mOutputHatches.add(tOutput);
         }
