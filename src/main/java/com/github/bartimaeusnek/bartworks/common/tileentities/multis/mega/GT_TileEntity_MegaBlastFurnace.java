@@ -63,7 +63,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
@@ -276,10 +275,9 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
 
             @Nonnull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe,
-                    @Nonnull GT_ParallelHelper helper) {
-                return super.createOverclockCalculator(recipe, helper).setRecipeHeat(recipe.mSpecialValue)
-                        .setMultiHeat(mHeatingCapacity).enableHeatOC().enableHeatDiscount();
+            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+                return super.createOverclockCalculator(recipe).setRecipeHeat(recipe.mSpecialValue)
+                        .setMultiHeat(mHeatingCapacity).setHeatOC(true).setHeatDiscount(true);
             }
 
             @Override

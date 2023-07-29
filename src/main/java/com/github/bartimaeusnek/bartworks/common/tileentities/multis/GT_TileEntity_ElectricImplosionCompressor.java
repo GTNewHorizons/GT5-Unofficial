@@ -67,7 +67,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
@@ -265,10 +264,9 @@ public class GT_TileEntity_ElectricImplosionCompressor
 
             @NotNull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe,
-                    @NotNull GT_ParallelHelper helper) {
+            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
                 // For overclocking we'll allow all power to be used
-                return super.createOverclockCalculator(recipe, helper).setEUt(getMaxInputEu()).setAmperage(1);
+                return super.createOverclockCalculator(recipe).setEUt(getMaxInputEu()).setAmperage(1);
             }
         }.setMaxParallelSupplier(() -> (int) Math.pow(4, Math.max(mBlockTier - 1, 0)));
     }
