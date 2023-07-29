@@ -29,8 +29,6 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.power.BasicMachineEUPower;
 import gregtech.common.power.Power;
@@ -128,13 +126,6 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
 
             @NotNull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe,
-                    @NotNull GT_ParallelHelper helper) {
-                return super.createOverclockCalculator(recipe, helper).setAmperage(helper.getCurrentParallel());
-            }
-
-            @NotNull
-            @Override
             protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
                 if (lastRecipe != recipe && recipe instanceof IG_Recipe igRecipe) {
                     String neededProject = igRecipe.getNeededSpaceProject();
@@ -148,7 +139,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        }.setMaxParallelSupplier(() -> Math.min(getMaxParallels(), (int) parallelSetting.get()));
+        }.setAmperageOC(false).setMaxParallelSupplier(() -> Math.min(getMaxParallels(), (int) parallelSetting.get()));
     }
 
     /**
