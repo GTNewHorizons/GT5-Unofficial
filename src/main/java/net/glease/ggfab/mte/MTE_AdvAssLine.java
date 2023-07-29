@@ -600,7 +600,8 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                 // calculateOverclockedNessMulti from super class has a mysterious 5% cable loss thing at the moment
                 // of writing
                 GT_OverclockCalculator ocCalc = new GT_OverclockCalculator().setRecipeEUt(currentRecipe.mEUt)
-                        .setDuration(Math.max(recipe.mDuration / recipe.mInputs.length, 1)).setEUt(inputVoltage);
+                        .setDuration(Math.max(recipe.mDuration / recipe.mInputs.length, 1)).setEUt(inputVoltage)
+                        .calculate();
                 // since we already checked mEUt <= inputVoltage, no need to check if recipe is too OP
                 lEUt = ocCalc.getConsumption();
                 mMaxProgresstime = ocCalc.getDuration();
