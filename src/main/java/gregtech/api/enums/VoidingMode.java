@@ -1,5 +1,9 @@
 package gregtech.api.enums;
 
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.Set;
+
 import javax.annotation.Nonnull;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -27,6 +31,18 @@ public enum VoidingMode {
      */
     VOID_ALL(false, false, GT_UITextures.BUTTON_STANDARD_PRESSED, GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_ALL, "all");
 
+    /**
+     * Default set of voiding mode you will probably support.
+     */
+    public static final Set<VoidingMode> ALL_OPTIONS = EnumSet.allOf(VoidingMode.class);
+    /**
+     * Set of voiding mode you will probably support if your machine has no item output
+     */
+    public static final Set<VoidingMode> NO_ITEM_OUTPUT = EnumSet.of(VOID_FLUID, VOID_NONE);
+    /**
+     * Set of voiding mode you will probably support if your machine has no fluid output
+     */
+    public static final Set<VoidingMode> NO_FLUID_OUTPUT = EnumSet.of(VOID_ITEM, VOID_NONE);
     public final boolean protectItem;
     public final boolean protectFluid;
     public final UITexture buttonTexture;
@@ -52,6 +68,24 @@ public enum VoidingMode {
 
     public VoidingMode previous() {
         return values()[(ordinal() + values().length - 1) % values().length];
+    }
+
+    public VoidingMode nextInCollection(Collection<VoidingMode> allowed) {
+        if (allowed.isEmpty()) throw new IllegalArgumentException("nothing allowed");
+        VoidingMode ret;
+        do {
+            ret = next();
+        } while (!allowed.contains(ret));
+        return ret;
+    }
+
+    public VoidingMode previousInCollection(Collection<VoidingMode> allowed) {
+        if (allowed.isEmpty()) throw new IllegalArgumentException("nothing allowed");
+        VoidingMode ret;
+        do {
+            ret = previous();
+        } while (!allowed.contains(ret));
+        return ret;
     }
 
     /**
