@@ -7,6 +7,10 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.GregTech_API.sBlockCasings1;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -18,8 +22,10 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_SteamMultiBase;
@@ -123,4 +129,24 @@ public class GregtechMetaTileEntity_SteamMacerator
         return GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
     }
 
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
+
+            @Override
+            @Nonnull
+            public GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
+                return super.createParallelHelper(recipe).setCustomItemOutputCalculation(parallel -> {
+                    ArrayList<ItemStack> items = new ArrayList<>();
+                    ItemStack output = recipe.getOutput(0);
+                    if (output != null) {
+                        output = output.copy();
+                        output.stackSize *= parallel;
+                        items.add(output);
+                    }
+                    return items.toArray(new ItemStack[0]);
+                });
+            }
+        };
+    }
 }

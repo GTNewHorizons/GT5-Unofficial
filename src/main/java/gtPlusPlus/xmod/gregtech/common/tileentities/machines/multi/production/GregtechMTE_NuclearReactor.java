@@ -44,7 +44,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.core.block.ModBlocks;
@@ -356,8 +355,7 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
 
             @NotNull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe,
-                    @NotNull GT_ParallelHelper helper) {
+            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
                 return GT_OverclockCalculator.ofNoOverclock(recipe.mSpecialValue * 4L, recipe.mDuration);
             }
 

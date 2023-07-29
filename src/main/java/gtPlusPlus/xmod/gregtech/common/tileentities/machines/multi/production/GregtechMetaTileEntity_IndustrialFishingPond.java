@@ -216,13 +216,12 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
                     200,
                     16,
                     0);
+            GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(g.mEUt).setEUt(tEnergy)
+                    .setDuration(g.mDuration);
             GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(g).setItemInputs(tItemInputs)
                     .setFluidInputs(tFluidInputs).setAvailableEUt(tEnergy).setMaxParallel(getMaxParallelRecipes())
-                    .enableConsumption().enableOutputCalculation().setMachine(this);
-
-            if (batchMode) {
-                helper.enableBatchMode(128);
-            }
+                    .setConsumption(true).setOutputCalculation(true).setMachine(this)
+                    .enableBatchMode(batchMode ? 128 : 1).setCalculator(calculator);
 
             helper.build();
 
@@ -233,10 +232,6 @@ public class GregtechMetaTileEntity_IndustrialFishingPond extends
             this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
 
-            GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(g.mEUt).setEUt(tEnergy)
-                    .setDuration(g.mDuration)
-                    .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplierDouble()))
-                    .calculate();
             lEUt = -calculator.getConsumption();
             mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplierDouble());
 

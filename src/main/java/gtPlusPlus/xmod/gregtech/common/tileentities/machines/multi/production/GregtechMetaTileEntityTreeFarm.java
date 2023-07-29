@@ -59,9 +59,8 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTPP_Recipe.GTPP_Recipe_Map;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_ParallelHelper;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.VoidProtectionHelper;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
@@ -205,17 +204,10 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
             toOutput = new ItemStack[] { ItemUtils.getSimpleStack(mWood, amplifiedOutputAmount) };
         }
 
-        GT_Recipe tRecipe = new GT_Recipe(null, toOutput, null, null, null, null, 0, 0, 0);
+        VoidProtectionHelper voidProtection = new VoidProtectionHelper().setMachine(this).setItemOutputs(toOutput)
+                .build();
 
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setAvailableEUt(tVoltage)
-                .setMachine(this);
-
-        if (batchMode) {
-            helper.enableBatchMode(128);
-        }
-
-        helper.build();
-        if (helper.getCurrentParallel() == 0) {
+        if (voidProtection.getMaxParallel() == 0) {
             return CheckRecipeResultRegistry.OUTPUT_FULL;
         }
 

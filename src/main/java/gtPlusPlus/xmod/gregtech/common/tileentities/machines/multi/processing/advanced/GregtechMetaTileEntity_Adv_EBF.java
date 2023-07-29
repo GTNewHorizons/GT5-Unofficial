@@ -42,7 +42,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
@@ -240,9 +239,8 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
 
             @NotNull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe,
-                    @NotNull GT_ParallelHelper helper) {
-                return super.createOverclockCalculator(recipe, helper).enableHeatOC().enableHeatDiscount()
+            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
+                return super.createOverclockCalculator(recipe).setHeatOC(true).setHeatDiscount(true)
                         .setRecipeHeat(recipe.mSpecialValue).setMultiHeat((int) getCoilLevel().getHeat());
             }
         }.setSpeedBonus(1F / 2.2F).setEuModifier(0.9F).setMaxParallelSupplier(this::getMaxParallelRecipes);

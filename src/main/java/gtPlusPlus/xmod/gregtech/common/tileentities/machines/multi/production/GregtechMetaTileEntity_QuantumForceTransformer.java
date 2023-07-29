@@ -12,11 +12,15 @@ import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_OreDictUnificator.getAssociation;
+import static gregtech.api.util.GT_RecipeBuilder.BUCKETS;
+import static gregtech.api.util.GT_RecipeBuilder.INGOTS;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -64,6 +68,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
@@ -502,68 +507,108 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
 
             @NotNull
             @Override
-            public CheckRecipeResult process() {
-                CheckRecipeResult result = super.process();
-                if (result.wasSuccessful()) {
-                    List<ItemStack> generatedItems = new ArrayList<>();
-                    List<FluidStack> generatedFluids = new ArrayList<>();
+            public GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
+                return super.createParallelHelper(recipe).setCustomItemOutputCalculation(parallel -> {
+                    ArrayList<ItemStack> items = new ArrayList<>();
                     if (mFluidMode) {
-                        for (int i = 0; i < chances.length; i++) {
-                            if (getBaseMetaTileEntity().getRandomNumber(10000) < chances[i]) {
-                                ItemData data = getAssociation(lastRecipe.getOutput(i));
-                                Materials mat = data == null ? null : data.mMaterial.mMaterial;
-                                if (i < lastRecipe.mOutputs.length) {
-                                    if (mat != null) {
-                                        if (mat.getMolten(0) != null) {
-                                            generatedFluids.add(
-                                                    mat.getMolten(
-                                                            lastRecipe.getOutput(i).stackSize * 144L
-                                                                    * calculatedParallels));
-                                        } else if (mat.getFluid(0) != null) {
-                                            generatedFluids.add(
-                                                    mat.getFluid(
-                                                            lastRecipe.getOutput(i).stackSize * 1000L
-                                                                    * calculatedParallels));
-                                        } else {
-                                            ItemStack aItem = lastRecipe.getOutput(i);
-                                            generatedItems.add(
-                                                    GT_Utility.copyAmountUnsafe(
-                                                            (long) aItem.stackSize * calculatedParallels,
-                                                            aItem));
-                                        }
-                                    } else {
-                                        ItemStack aItem = lastRecipe.getOutput(i);
-                                        generatedItems.add(
-                                                GT_Utility.copyAmountUnsafe(
-                                                        (long) aItem.stackSize * calculatedParallels,
-                                                        aItem));
-                                    }
-                                } else {
-                                    FluidStack aFluid = lastRecipe.getFluidOutput(i - lastRecipe.mOutputs.length);
-                                    generatedFluids.add(new FluidStack(aFluid, aFluid.amount * calculatedParallels));
+                        for (int i = 0; i < recipe.mOutputs.length; i++) {
+                            ItemStack item = recipe.getOutput(i);
+                            if (item == null) continue;
+                            ItemData data = getAssociation(item);
+                            Materials mat = data == null ? null : data.mMaterial.mMaterial;
+                            if (mat != null) {
+                                if (mat.getMolten(0) != null) {
+                                    continue;
+                                } else if (mat.getFluid(0) != null) {
+                                    continue;
                                 }
                             }
+                            ItemStack itemToAdd = item.copy();
+                            itemToAdd.stackSize = 0;
+                            for (int j = 0; j < parallel; j++) {
+                                if (getBaseMetaTileEntity().getRandomNumber(10000) < chances[i]) {
+                                    itemToAdd.stackSize += item.stackSize;
+                                }
+                            }
+                            if (itemToAdd.stackSize == 0) {
+                                continue;
+                            }
+                            items.add(itemToAdd);
                         }
                     } else {
-                        for (int i = 0; i < chances.length; i++) {
-                            if (getBaseMetaTileEntity().getRandomNumber(10000) < chances[i]) {
-                                if (i < lastRecipe.mOutputs.length) {
-                                    ItemStack aItem = lastRecipe.getOutput(i).copy();
-                                    aItem.stackSize *= calculatedParallels;
-                                    generatedItems.add(aItem);
-                                } else {
-                                    FluidStack aFluid = lastRecipe.getFluidOutput(i - lastRecipe.mOutputs.length)
-                                            .copy();
-                                    aFluid.amount *= calculatedParallels;
-                                    generatedFluids.add(aFluid);
+                        for (int i = 0; i < recipe.mOutputs.length; i++) {
+                            ItemStack item = recipe.getOutput(i);
+                            if (item == null) continue;
+                            ItemStack itemToAdd = item.copy();
+                            itemToAdd.stackSize = 0;
+                            for (int j = 0; j < parallel; j++) {
+                                if (getBaseMetaTileEntity().getRandomNumber(10000) < chances[i]) {
+                                    itemToAdd.stackSize += item.stackSize;
                                 }
+                            }
+                            if (itemToAdd.stackSize == 0) {
+                                continue;
+                            }
+                            items.add(itemToAdd);
+                        }
+                    }
+
+                    return items.toArray(new ItemStack[0]);
+                }).setCustomFluidOutputCalculation(parallel -> {
+                    ArrayList<FluidStack> fluids = new ArrayList<>();
+                    if (mFluidMode) {
+                        for (int i = 0; i < recipe.mOutputs.length; i++) {
+                            ItemStack item = recipe.getOutput(i);
+                            if (item == null) continue;
+                            ItemData data = getAssociation(item);
+                            Materials mat = data == null ? null : data.mMaterial.mMaterial;
+                            if (mat == null) {
+                                continue;
+                            }
+                            if (mat.getMolten(0) != null) {
+                                FluidStack fluid = mat.getMolten(0);
+                                for (int j = 0; j < parallel; j++) {
+                                    if (getBaseMetaTileEntity().getRandomNumber(10000) < chances[i]) {
+                                        fluid.amount += item.stackSize * INGOTS;
+                                    }
+                                }
+                                if (fluid.amount == 0) {
+                                    continue;
+                                }
+                                fluids.add(fluid);
+                            } else if (mat.getFluid(0) != null) {
+                                FluidStack fluid = mat.getFluid(0);
+                                for (int j = 0; j < parallel; j++) {
+                                    if (getBaseMetaTileEntity().getRandomNumber(10000) < chances[i]) {
+                                        fluid.amount += item.stackSize * BUCKETS;
+                                    }
+                                }
+                                if (fluid.amount == 0) {
+                                    continue;
+                                }
+                                fluids.add(fluid);
                             }
                         }
                     }
-                    setOutputItems(generatedItems.toArray(new ItemStack[0]));
-                    setOutputFluids(generatedFluids.toArray(new FluidStack[0]));
-                }
-                return result;
+
+                    for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
+                        FluidStack fluid = recipe.getFluidOutput(i);
+                        if (fluid == null) continue;
+                        FluidStack fluidToAdd = fluid.copy();
+                        fluidToAdd.amount = 0;
+                        for (int j = 0; j < parallel; j++) {
+                            if (getBaseMetaTileEntity().getRandomNumber(10000) < chances[i + recipe.mOutputs.length]) {
+                                fluidToAdd.amount += fluid.amount;
+                            }
+                        }
+                        if (fluidToAdd.amount == 0) {
+                            continue;
+                        }
+                        fluids.add(fluidToAdd);
+                    }
+
+                    return fluids.toArray(new FluidStack[0]);
+                });
             }
         };
     }
