@@ -90,10 +90,10 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
 
             @NotNull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe,
-                    @NotNull GT_ParallelHelper helper) {
+            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
                 return GT_OverclockCalculator.ofNoOverclock(recipe)
-                        .setDuration((int) (recipe.mDuration * Math.pow(0.9f, height - 4)));
+                        .setDuration((int) (recipe.mDuration * Math.pow(0.9f, height - 4)))
+                        .setDurationUnderOneTickSupplier(() -> recipe.mDuration * Math.pow(0.9f, height - 4));
             }
 
             @NotNull

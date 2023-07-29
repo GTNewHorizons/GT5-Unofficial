@@ -433,22 +433,13 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
             @Override
             protected GT_ParallelHelper createParallelHelper(@NotNull GT_Recipe recipe) {
                 // When the fusion first loads and is still processing, it does the recipe check without consuming.
-                if (mRunningOnLoad) {
-                    return new GT_ParallelHelper().setRecipe(recipe).setItemInputs(inputItems)
-                            .setFluidInputs(inputFluids).setAvailableEUt(availableVoltage * availableAmperage)
-                            .setMachine(machine, protectItems, protectFluids)
-                            .setRecipeLocked(recipeLockableMachine, isRecipeLocked).setMaxParallel(maxParallel)
-                            .enableBatchMode(batchSize).enableOutputCalculation();
-                }
-                return super.createParallelHelper(recipe);
+                return super.createParallelHelper(recipe).setConsumption(!mRunningOnLoad);
             }
 
             @NotNull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe,
-                    @NotNull GT_ParallelHelper helper) {
-                return super.createOverclockCalculator(recipe, helper)
-                        .limitOverclockCount(overclock(recipe.mSpecialValue));
+            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
+                return super.createOverclockCalculator(recipe).limitOverclockCount(overclock(recipe.mSpecialValue));
             }
 
             @NotNull

@@ -53,7 +53,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.machines.IDualInputHatch;
@@ -222,9 +221,8 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
 
             @NotNull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe,
-                    @NotNull GT_ParallelHelper helper) {
-                return super.createOverclockCalculator(recipe, helper).setSpeedBoost(0.5F);
+            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
+                return super.createOverclockCalculator(recipe).setSpeedBoost(mode == 0 ? 1 : 0.5F);
             }
         }.setMaxParallelSupplier(() -> (int) Math.pow(2, 4 + (casingTier + 1)));
     }

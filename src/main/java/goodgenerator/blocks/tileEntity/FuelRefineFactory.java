@@ -40,7 +40,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 
 public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
@@ -215,8 +214,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
 
             @NotNull
             @Override
-            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe,
-                    @NotNull GT_ParallelHelper helper) {
+            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
                 long ocFactor = 1L << (Tier - recipe.mSpecialValue);
                 return GT_OverclockCalculator
                         .ofNoOverclock(((long) recipe.mEUt) * ocFactor, (int) Math.max(recipe.mDuration / ocFactor, 1));

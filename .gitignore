@@ -9,3 +9,8 @@ bin/
 build/
 *.bat
 layout.json
+.settings/
+.vscode/
+.classpath
+.project
+.factorypath
