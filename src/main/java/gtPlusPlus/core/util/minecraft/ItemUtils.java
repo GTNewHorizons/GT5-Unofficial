@@ -1418,6 +1418,13 @@ public class ItemUtils {
         if (GT_Utility.areStacksEqual(aStack, GenericChem.mFlawlessWaterCatalyst, true)) {
             return true;
         }
+        if (GT_Utility.areStacksEqual(aStack, GenericChem.mParticleAccelerationCatalyst, true)) {
+            return true;
+        }
+        if (GT_Utility.areStacksEqual(aStack, GenericChem.mSynchrotronCapableCatalyst, true)) {
+            return true;
+        }
+
         return false;
     }
 

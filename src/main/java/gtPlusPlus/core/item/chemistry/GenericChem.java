@@ -130,10 +130,12 @@ public class GenericChem extends ItemPackage {
     public static ItemStack mSimpleNaquadahCatalyst;
     public static ItemStack mAdvancedNaquadahCatalyst;
     public static ItemStack mRawIntelligenceCatalyst;
+    public static ItemStack mParticleAccelerationCatalyst;
     public static ItemStack mUltimatePlasticCatalyst;
     public static ItemStack mBiologicalIntelligenceCatalyst;
     public static ItemStack mFlawlessWaterCatalyst;
     public static ItemStack TemporalHarmonyCatalyst;
+    public static ItemStack mSynchrotronCapableCatalyst;
 
     public static ItemStack mMillingBallAlumina;
     public static ItemStack mMillingBallSoapstone;
@@ -202,6 +204,8 @@ public class GenericChem extends ItemPackage {
         TemporalHarmonyCatalyst = ItemUtils.simpleMetaStack(mGenericChemItem1, 28, 1);
         mLimpidWaterCatalyst = ItemUtils.simpleMetaStack(mGenericChemItem1, 29, 1);
         mFlawlessWaterCatalyst = ItemUtils.simpleMetaStack(mGenericChemItem1, 30, 1);
+        mParticleAccelerationCatalyst = ItemUtils.simpleMetaStack(mGenericChemItem1, 31, 1);
+        mSynchrotronCapableCatalyst = ItemUtils.simpleMetaStack(mGenericChemItem1, 32, 1);
     }
 
     public void registerOreDict() {
@@ -237,6 +241,8 @@ public class GenericChem extends ItemPackage {
         ItemUtils.addItemToOreDictionary(TemporalHarmonyCatalyst, "catalystTemporalHarmony");
         ItemUtils.addItemToOreDictionary(mLimpidWaterCatalyst, "catalystLimpidWater");
         ItemUtils.addItemToOreDictionary(mFlawlessWaterCatalyst, "catalystFlawlessWater");
+        ItemUtils.addItemToOreDictionary(mParticleAccelerationCatalyst, "catalystParticleAcceleration");
+        ItemUtils.addItemToOreDictionary(mSynchrotronCapableCatalyst, "catalystSynchrotronCapable");
     }
 
     @Override

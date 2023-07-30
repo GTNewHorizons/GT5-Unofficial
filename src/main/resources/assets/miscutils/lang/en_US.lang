@@ -3458,3 +3458,7 @@ item.itemSimpleFiremaker.message.3=Your attemp does nothing.
 //Added 17/07/23
 item.BasicGenericChemItem.29.name=Limpid Water Catalyst
 item.BasicGenericChemItem.30.name=Flawless Water Catalyst
+
+//Added 18/07/23
+item.BasicGenericChemItem.31.name=Particle Acceleration Catalyst
+item.BasicGenericChemItem.32.name=Synchrotron-Capable Catalyst

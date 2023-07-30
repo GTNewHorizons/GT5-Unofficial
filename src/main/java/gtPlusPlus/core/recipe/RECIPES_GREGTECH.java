@@ -1698,26 +1698,41 @@ public class RECIPES_GREGTECH {
         // Mixed Smash 1
         CORE.RA.addCyclotronRecipe(
                 CI.getNumberedCircuit(12),
-                FluidUtils.getFluidStack("plasma.beryllium", 2500),
+                Materials.Americium.getPlasma(2500),
                 new ItemStack[] { Particle.getBaseParticle(Particle.GRAVITON),
                         Particle.getBaseParticle(Particle.ETA_MESON), Particle.getBaseParticle(Particle.PION),
                         Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.NEUTRON),
                         Particle.getBaseParticle(Particle.LAMBDA), Particle.getBaseParticle(Particle.OMEGA),
                         Particle.getBaseParticle(Particle.HIGGS_BOSON), },
                 null,
-                new int[] { 10, 20, 20, 10, 10, 5, 5, 2 },
-                17 * 247 * 32,
+                new int[] { 50, 50, 50, 40, 30, 20, 20, 10 },
+                1000 * 20,
+                (int) MaterialUtils.getVoltageForTier(8),
+                750 * 20);
+
+        // Mixed Smash 1
+        CORE.RA.addCyclotronRecipe(
+                CI.getNumberedCircuit(12),
+                new FluidStack(ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 2500),
+                new ItemStack[] { Particle.getBaseParticle(Particle.GRAVITON),
+                        Particle.getBaseParticle(Particle.ETA_MESON), Particle.getBaseParticle(Particle.PION),
+                        Particle.getBaseParticle(Particle.PROTON), Particle.getBaseParticle(Particle.NEUTRON),
+                        Particle.getBaseParticle(Particle.LAMBDA), Particle.getBaseParticle(Particle.OMEGA),
+                        Particle.getBaseParticle(Particle.HIGGS_BOSON), },
+                null,
+                new int[] { 5000, 200, 200, 100, 80, 60, 40, 30 },
+                100 * 20,
                 (int) MaterialUtils.getVoltageForTier(8),
                 750 * 20);
 
         // Graviton Smash
         CORE.RA.addCyclotronRecipe(
                 CI.getNumberedCircuit(15),
-                FluidUtils.getFluidStack("plasma.hydrogen", 50),
+                FluidUtils.getFluidStack("plasma.hydrogen", 100),
                 new ItemStack[] { Particle.getBaseParticle(Particle.GRAVITON),
                         Particle.getBaseParticle(Particle.UNKNOWN) },
                 null,
-                new int[] { 15, 100 },
+                new int[] { 1000, 100 },
                 20 * (90),
                 (int) MaterialUtils.getVoltageForTier(6),
                 1000 * 20);

@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
 import static gregtech.api.enums.Mods.BartWorks;
+import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.GoodGenerator;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GT_ModHandler.getModItem;
@@ -13,6 +14,7 @@ import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 
 import gregtech.api.enums.*;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.CombType;
@@ -22,6 +24,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.MISC_MATERIALS;
+import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -177,7 +180,7 @@ public class RecipeLoader_ChemicalSkips {
                         Materials.Grade2PurifiedWater.getFluid(10000L), Materials.Grade3PurifiedWater.getFluid(5000L),
                         Materials.Grade4PurifiedWater.getFluid(1000L) },
                 new ItemStack[] {},
-                new int[] { 2000, 2000, 2000, 2000, 2000 },
+                new int[] { 2500, 2500, 2500, 2500 },
                 20 * 20,
                 (int) TierEU.RECIPE_UHV,
                 2);
@@ -193,6 +196,19 @@ public class RecipeLoader_ChemicalSkips {
                 new ItemStack[] { stemcells },
                 new int[] { 3333, 3333, 3333 },
                 20 * 20,
+                (int) TierEU.RECIPE_UEV,
+                3);
+
+        // Unknown Particles
+        CORE.RA.addQuantumTransformerRecipe(
+                new ItemStack[] { ItemUtils.getSimpleStack(GenericChem.mParticleAccelerationCatalyst, 0) },
+                new FluidStack[] { Materials.Hydrogen.getGas(10000L), Materials.Deuterium.getGas(1000L) },
+                new FluidStack[] { FluidUtils.getFluidStack("plasma.hydrogen", 1000) },
+                new ItemStack[] { Particle.getBaseParticle(Particle.UNKNOWN),
+                        Particle.getBaseParticle(Particle.GRAVITON), Particle.getBaseParticle(Particle.PROTON),
+                        Particle.getBaseParticle(Particle.ELECTRON) },
+                new int[] { 2000, 2000, 2000, 2000, 2000 },
+                5 * 20,
                 (int) TierEU.RECIPE_UEV,
                 3);
 
@@ -260,8 +276,24 @@ public class RecipeLoader_ChemicalSkips {
                         Materials.Grade6PurifiedWater.getFluid(10000L), Materials.Grade7PurifiedWater.getFluid(5000L),
                         Materials.Grade8PurifiedWater.getFluid(1000L) },
                 new ItemStack[] {},
-                new int[] { 2000, 2000, 2000, 2000, 2000 },
+                new int[] { 2500, 2500, 2500, 2500 },
                 20 * 20,
+                (int) TierEU.RECIPE_UIV,
+                4);
+
+        // Rare Particles
+        CORE.RA.addQuantumTransformerRecipe(
+                new ItemStack[] { ItemUtils.getSimpleStack(GenericChem.mSynchrotronCapableCatalyst, 0),
+                        GregtechItemList.Laser_Lens_Special.get(1) },
+                new FluidStack[] { FluidUtils.getFluidStack("plasma.hydrogen", 30000),
+                        Materials.Helium.getPlasma(30000L), Materials.Americium.getPlasma(30000L),
+                        new FluidStack(ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 30000) },
+                new FluidStack[] {},
+                new ItemStack[] { Particle.getBaseParticle(Particle.Z_BOSON),
+                        Particle.getBaseParticle(Particle.W_BOSON), Particle.getBaseParticle(Particle.LAMBDA),
+                        Particle.getBaseParticle(Particle.OMEGA), Particle.getBaseParticle(Particle.HIGGS_BOSON) },
+                new int[] { 2000, 2000, 2000, 2000, 2000 },
+                200 * 20,
                 (int) TierEU.RECIPE_UIV,
                 4);
     }
@@ -378,6 +410,15 @@ public class RecipeLoader_ChemicalSkips {
                 (int) TierEU.RECIPE_UIV);
 
         CORE.RA.addSixSlotAssemblingRecipe(
+                new ItemStack[] { CI.getNumberedCircuit(10), CI.getEmptyCatalyst(1),
+                        GregtechItemList.Laser_Lens_Special.get(64),
+                        GT_ModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 10) },
+                MaterialsUEVplus.SpaceTime.getMolten(9216L),
+                ItemUtils.getSimpleStack(GenericChem.mParticleAccelerationCatalyst, 1),
+                60 * 20,
+                (int) TierEU.RECIPE_UIV);
+
+        CORE.RA.addSixSlotAssemblingRecipe(
                 new ItemStack[] { CI.getNumberedCircuit(10), CI.getEmptyCatalyst(1), MaterialsKevlar.Kevlar.getDust(64),
                         MaterialsUEVplus.TranscendentMetal.getNanite(1) },
                 FluidUtils.getFluidStack("molten.shirabon", 92160),
@@ -400,6 +441,15 @@ public class RecipeLoader_ChemicalSkips {
                         ItemList.Circuit_Silicon_Wafer6.get(64) },
                 FluidUtils.getFluidStack("molten.shirabon", 92160),
                 ItemUtils.getSimpleStack(GenericChem.mFlawlessWaterCatalyst, 1),
+                60 * 20,
+                (int) TierEU.RECIPE_UMV);
+
+        CORE.RA.addSixSlotAssemblingRecipe(
+                new ItemStack[] { CI.getNumberedCircuit(10), CI.getEmptyCatalyst(1),
+                        Particle.getBaseParticle(Particle.HIGGS_BOSON), Particle.getIon("Helium", 0),
+                        Particle.getIon("Hydrogen", 0), MaterialsUEVplus.Eternity.getNanite(16) },
+                FluidUtils.getFluidStack("molten.shirabon", 92160),
+                ItemUtils.getSimpleStack(GenericChem.mSynchrotronCapableCatalyst, 1),
                 60 * 20,
                 (int) TierEU.RECIPE_UMV);
 
