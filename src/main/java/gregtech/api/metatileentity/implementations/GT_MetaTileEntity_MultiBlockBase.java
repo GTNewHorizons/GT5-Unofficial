@@ -501,14 +501,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         long timeElapsed = aTick - mLastWorkingTick;
 
         if (timeElapsed >= 100) return aTick % 100 == 0;
-
-        return timeElapsed == 5 || timeElapsed == 12
-            || timeElapsed == 20
-            || timeElapsed == 30
-            || timeElapsed == 40
-            || timeElapsed == 55
-            || timeElapsed == 70
-            || timeElapsed == 85;
+        if (!isBatchModeEnabled()) {
+            return timeElapsed == 5 || timeElapsed == 12
+                || timeElapsed == 20
+                || timeElapsed == 30
+                || timeElapsed == 40
+                || timeElapsed == 55
+                || timeElapsed == 70
+                || timeElapsed == 85;
+        } else {
+            // Batch mode should be a lot less aggressive at recipe checking (Implement a GUI-configurable time here)
+            if (timeElapsed >= 100) return aTick % 100 == 0;
+        }
+        return false;
     }
 
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
