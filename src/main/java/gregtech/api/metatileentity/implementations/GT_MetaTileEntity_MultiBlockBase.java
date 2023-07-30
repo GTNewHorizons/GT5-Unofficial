@@ -501,6 +501,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         long timeElapsed = aTick - mLastWorkingTick;
 
         if (timeElapsed >= 100) return aTick % 100 == 0;
+        // Batch mode should be a lot less aggressive at recipe checking
         if (!isBatchModeEnabled()) {
             return timeElapsed == 5 || timeElapsed == 12
                 || timeElapsed == 20
@@ -509,9 +510,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 || timeElapsed == 55
                 || timeElapsed == 70
                 || timeElapsed == 85;
-        } else {
-            // Batch mode should be a lot less aggressive at recipe checking (Implement a GUI-configurable time here)
-            if (timeElapsed >= 100) return aTick % 100 == 0;
         }
         return false;
     }
