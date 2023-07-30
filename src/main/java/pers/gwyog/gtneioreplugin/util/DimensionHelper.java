@@ -30,12 +30,18 @@ public class DimensionHelper {
             "GalaxySpace_Haumea", "GalaxySpace_Kuiperbelt", "GalaxySpace_MakeMake", "GalaxySpace_Pluto",
             // T8
             "GalaxySpace_BarnardC", "GalaxySpace_BarnardE", "GalaxySpace_BarnardF", "GalaxySpace_CentauriA",
-            "GalaxySpace_TcetiE", "Underdark", "GalaxySpace_VegaB", };
+            "GalaxySpace_TcetiE", "GalaxySpace_VegaB",
+            // T9
+            "GalacticraftAmunRa_Anubis", "GalacticraftAmunRa_Horus", "GalacticraftAmunRa_Maahes",
+            "GalacticraftAmunRa_Mehen Belt", "GalacticraftAmunRa_Neper", "GalacticraftAmunRa_Seth",
+            // T10
+            "Underdark", };
 
     public static final String[] DimNameTrimmed = Arrays.stream(DimName)
             .map(
                     n -> n.replaceAll("GalacticraftCore_", "").replaceAll("GalacticraftMars_", "")
-                            .replaceAll("GalaxySpace_", "").replaceAll("Vanilla_", "Vanilla "))
+                            .replaceAll("GalaxySpace_", "").replaceAll("GalacticraftAmunRa_", "")
+                            .replaceAll("Vanilla_", "Vanilla "))
             .toArray(String[]::new);
 
     public static final String[] DimNameDisplayed = { // first 2 letters if one word else 1 letter of every word, except
@@ -83,10 +89,18 @@ public class DimensionHelper {
             "BC", // GalaxySpace_BarnardC
             "BE", // GalaxySpace_BarnardE
             "BF", // GalaxySpace_BarnardF
-            "CB", // GalaxySpace_CentauriA is actually αCentauri Bb
+            "CB", // GalaxySpace_CentauriA is actually α Centauri Bb
             "TE", // GalaxySpace_TcetiE
-            "DD", // Underdark
             "VB", // GalaxySpace_VegaB
+            // T9
+            "An", // GalacticraftAmunRa_Anubis
+            "Ho", // GalacticraftAmunRa_Horus
+            "Mh", // GalacticraftAmunRa_Maahes
+            "MB", // GalacticraftAmunRa_Mehen Belt
+            "Np", // GalacticraftAmunRa_Neper
+            "Se", // GalacticraftAmunRa_Seth
+            // T10
+            "DD", // Underdark
     };
 
     private static final HashMap<String, List<String>> tooltipBuffer = new HashMap<>();
@@ -108,7 +122,8 @@ public class DimensionHelper {
                         case "Proteus", "Triton" -> "T6: " + s;
                         case "Haumea", "Kuiperbelt", "MakeMake", "Pluto" -> "T7: " + s;
                         case "BarnardC", "BarnardE", "BarnardF", "CentauriA", "TcetiE", "VegaB" -> "T8: " + s;
-                        case "Underdark" -> "T9: " + s;
+                        case "Anubis", "Horus", "Maahes", "Mehen Belt", "Neper", "Seth" -> "T9: " + s;
+                        case "Underdark" -> "T10: " + s;
                         default -> s;
                     };
 

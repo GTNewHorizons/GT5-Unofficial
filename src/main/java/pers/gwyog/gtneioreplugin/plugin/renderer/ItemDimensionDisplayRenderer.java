@@ -70,7 +70,8 @@ public class ItemDimensionDisplayRenderer implements IItemRenderer {
             case "Pr", "Tr" -> 6L;
             case "Ha", "KB", "MM", "Pl" -> 7L;
             case "BC", "BE", "BF", "CB", "TE", "VB" -> 8L;
-            case "DD" -> 9L;
+            case "An", "Ho", "Np", "Mh", "MB", "Se" -> 9L;
+            case "DD" -> 10L;
             default -> -1L;
         };
     }

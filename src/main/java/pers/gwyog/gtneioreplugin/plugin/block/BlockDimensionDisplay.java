@@ -1,12 +1,12 @@
 package pers.gwyog.gtneioreplugin.plugin.block;
 
-import static pers.gwyog.gtneioreplugin.plugin.renderer.ItemDimensionDisplayRenderer.getPrefix;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
+
+import pers.gwyog.gtneioreplugin.plugin.renderer.ItemDimensionDisplayRenderer;
 
 public class BlockDimensionDisplay extends Block {
 
@@ -14,38 +14,34 @@ public class BlockDimensionDisplay extends Block {
 
     @SuppressWarnings("unused")
     public long getDimensionRocketTier() {
-        return dimensionRocketTier;
+        return this.dimensionRocketTier;
     }
 
     private final long dimensionRocketTier;
-    private IIcon iconTop;
-    private IIcon iconRight;
-    private IIcon iconLeft;
+    private final IIcon[] icons = new IIcon[6];
 
     public BlockDimensionDisplay(String dimension) {
         super(Material.rock);
         this.dimension = dimension;
-        this.dimensionRocketTier = getPrefix(dimension);
+        this.dimensionRocketTier = ItemDimensionDisplayRenderer.getPrefix(dimension);
     }
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        EnumFacing direction = EnumFacing.getFront(side);
-        return switch (direction) {
-            case NORTH, SOUTH -> iconRight;
-            case WEST, EAST -> iconLeft;
-            default -> iconTop;
-        };
+        return this.icons[MathHelper.clamp_int(side, 0, 5)];
     }
 
     @Override
     public void registerBlockIcons(IIconRegister iconRegister) {
-        this.iconTop = iconRegister.registerIcon("gtneioreplugin:" + dimension + "_top");
-        this.iconRight = iconRegister.registerIcon("gtneioreplugin:" + dimension + "_right");
-        this.iconLeft = iconRegister.registerIcon("gtneioreplugin:" + dimension + "_left");
+        this.icons[0] = iconRegister.registerIcon("gtneioreplugin:" + dimension + "_bottom");
+        this.icons[1] = iconRegister.registerIcon("gtneioreplugin:" + dimension + "_top");
+        this.icons[2] = iconRegister.registerIcon("gtneioreplugin:" + dimension + "_back");
+        this.icons[3] = iconRegister.registerIcon("gtneioreplugin:" + dimension + "_front");
+        this.icons[4] = iconRegister.registerIcon("gtneioreplugin:" + dimension + "_left");
+        this.icons[5] = iconRegister.registerIcon("gtneioreplugin:" + dimension + "_right");
     }
 
     public String getDimension() {
-        return dimension;
+        return this.dimension;
     }
 }

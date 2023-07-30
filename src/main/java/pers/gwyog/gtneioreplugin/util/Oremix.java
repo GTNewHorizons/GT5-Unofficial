@@ -99,6 +99,24 @@ public class Oremix {
     @CsvCustomBindByName(column = "T Ceti E", converter = XtoBool.class)
     public boolean tcetie;
 
+    @CsvCustomBindByName(column = "Anubis", required = false, converter = XtoBool.class)
+    public boolean an;
+
+    @CsvCustomBindByName(column = "Horus", required = false, converter = XtoBool.class)
+    public boolean ho;
+
+    @CsvCustomBindByName(column = "Neper", required = false, converter = XtoBool.class)
+    public boolean np;
+
+    @CsvCustomBindByName(column = "Maahes", required = false, converter = XtoBool.class)
+    public boolean mh;
+
+    @CsvCustomBindByName(column = "Mehen Belt", required = false, converter = XtoBool.class)
+    public boolean mb;
+
+    @CsvCustomBindByName(column = "Seth", required = false, converter = XtoBool.class)
+    public boolean se;
+
     @CsvCustomBindByName(column = "Ore Name", required = true, converter = Veinrenamer.class)
     private String oreName;
 
@@ -391,6 +409,54 @@ public class Oremix {
 
     public void setTcetie(boolean tcetie) {
         this.tcetie = tcetie;
+    }
+
+    public boolean isAn() {
+        return an;
+    }
+
+    public void setAn(boolean an) {
+        this.an = an;
+    }
+
+    public boolean isHo() {
+        return ho;
+    }
+
+    public void setHo(boolean ho) {
+        this.ho = ho;
+    }
+
+    public boolean isNp() {
+        return np;
+    }
+
+    public void setNp(boolean np) {
+        this.np = np;
+    }
+
+    public boolean isMh() {
+        return mh;
+    }
+
+    public void setMh(boolean mh) {
+        this.mh = mh;
+    }
+
+    public boolean isMb() {
+        return mb;
+    }
+
+    public void setMb(boolean mb) {
+        this.mb = mb;
+    }
+
+    public boolean isSe() {
+        return se;
+    }
+
+    public void setSe(boolean se) {
+        this.se = se;
     }
 
     public String getOreName() {
