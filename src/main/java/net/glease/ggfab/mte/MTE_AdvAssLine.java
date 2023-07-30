@@ -735,7 +735,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
 
     private void drainAllFluids(GT_Recipe.GT_Recipe_AssemblyLine recipe) {
         for (int i = 0; i < recipe.mFluidInputs.length; i++) {
-            depleteInput(recipe.mFluidInputs[i]);
+            mInputHatches.get(i).drain(ForgeDirection.UNKNOWN, recipe.mFluidInputs[i], true);
         }
     }
 
