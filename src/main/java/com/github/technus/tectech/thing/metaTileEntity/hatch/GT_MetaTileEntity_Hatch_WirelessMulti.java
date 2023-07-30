@@ -9,6 +9,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
 import static gregtech.api.enums.GT_Values.AuthorColen;
 import static gregtech.api.enums.GT_Values.V;
+import static java.lang.Long.min;
 
 import java.math.BigInteger;
 
@@ -181,8 +182,7 @@ public class GT_MetaTileEntity_Hatch_WirelessMulti extends GT_MetaTileEntity_Hat
 
             strongCheckOrAddUser(owner_uuid, owner_name);
 
-            if (addEUToGlobalEnergyMap(owner_uuid, eu_transferred_per_operation.negate()))
-                setEUVar(eu_transferred_per_operation_long);
+            tryFetchingEnergy();
         }
     }
 
@@ -199,18 +199,17 @@ public class GT_MetaTileEntity_Hatch_WirelessMulti extends GT_MetaTileEntity_Hat
 
             // Every ticks_between_energy_addition add eu_transferred_per_operation to internal EU storage from network.
             if (aTick % ticks_between_energy_addition == 0L) {
-                long total_eu = getBaseMetaTileEntity().getStoredEU();
-
-                // Can the machine store the EU being added?
-                long new_eu_storage = total_eu + eu_transferred_per_operation_long;
-                if (new_eu_storage <= maxEUStore()) {
-
-                    // Attempt to remove energy from the network and add it to the internal buffer of the machine.
-                    if (addEUToGlobalEnergyMap(owner_uuid, eu_transferred_per_operation.negate())) {
-                        setEUVar(new_eu_storage);
-                    }
-                }
+                tryFetchingEnergy();
             }
         }
+    }
+
+    private void tryFetchingEnergy() {
+        long currentEU = getBaseMetaTileEntity().getStoredEU();
+        long maxEU = maxEUStore();
+        long euToTransfer = min(maxEU - currentEU, eu_transferred_per_operation_long);
+        if (euToTransfer <= 0) return; // nothing to transfer
+        if (!addEUToGlobalEnergyMap(owner_uuid, -euToTransfer)) return;
+        setEUVar(currentEU + euToTransfer);
     }
 }
