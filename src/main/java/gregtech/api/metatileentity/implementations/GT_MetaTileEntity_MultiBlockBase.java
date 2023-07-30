@@ -298,6 +298,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             // backward compatibility
             voidingMode = aNBT.getBoolean(VOID_EXCESS_NBT_KEY) ? VoidingMode.VOID_ALL : VoidingMode.VOID_NONE;
         }
+        if (!getAllowedVoidingModes().contains(voidingMode)) voidingMode = getDefaultVoidingMode();
 
         int aOutputItemsLength = aNBT.getInteger("mOutputItemsLength");
         if (aOutputItemsLength > 0) {
