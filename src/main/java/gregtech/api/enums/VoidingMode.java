@@ -38,11 +38,11 @@ public enum VoidingMode {
     /**
      * Set of voiding mode you will probably support if your machine has no item output
      */
-    public static final Set<VoidingMode> NO_ITEM_OUTPUT = EnumSet.of(VOID_FLUID, VOID_NONE);
+    public static final Set<VoidingMode> FLUID_ONLY_MODES = EnumSet.of(VOID_FLUID, VOID_NONE);
     /**
      * Set of voiding mode you will probably support if your machine has no fluid output
      */
-    public static final Set<VoidingMode> NO_FLUID_OUTPUT = EnumSet.of(VOID_ITEM, VOID_NONE);
+    public static final Set<VoidingMode> ITEM_ONLY_MODES = EnumSet.of(VOID_ITEM, VOID_NONE);
     public final boolean protectItem;
     public final boolean protectFluid;
     public final UITexture buttonTexture;

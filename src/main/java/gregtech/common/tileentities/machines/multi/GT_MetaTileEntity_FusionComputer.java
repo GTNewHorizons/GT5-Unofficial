@@ -638,6 +638,6 @@ public abstract class GT_MetaTileEntity_FusionComputer
 
     @Override
     public Set<VoidingMode> getAllowedVoidingModes() {
-        return VoidingMode.NO_ITEM_OUTPUT;
+        return VoidingMode.FLUID_ONLY_MODES;
     }
 }

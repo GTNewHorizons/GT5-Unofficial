@@ -483,7 +483,7 @@ public class GT_MetaTileEntity_AssemblyLine
 
     @Override
     public Set<VoidingMode> getAllowedVoidingModes() {
-        return VoidingMode.NO_FLUID_OUTPUT;
+        return VoidingMode.ITEM_ONLY_MODES;
     }
 
     private enum DataHatchElement implements IHatchElement<GT_MetaTileEntity_AssemblyLine> {
