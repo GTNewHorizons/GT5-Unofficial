@@ -550,7 +550,7 @@ public class GT_ParallelHelper {
             int items = 0;
             int itemStackSize = recipe.getOutput(i).stackSize;
             for (int roll = 0; roll < currentParallel; roll++) {
-                if (recipe.getOutputChance(i) >= XSTR.XSTR_INSTANCE.nextInt(10000)) {
+                if (recipe.getOutputChance(i) > XSTR.XSTR_INSTANCE.nextInt(10000)) {
                     items += itemStackSize;
                 }
             }
