@@ -363,4 +363,42 @@ class GT_OverclockCalculator_UnitTest {
         assertEquals(1, calculator.getDuration(), messageDuration);
         assertEquals(16 << 14, calculator.getConsumption(), messageEUt);
     }
+
+    @Test
+    void testCorrectEUtWhenOverclockingUnderOneTick_Test() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(24)
+            .setParallel(56)
+            .setAmperage(1)
+            .setAmperageOC(true)
+            .setSpeedBoost(1f / 6f)
+            .setEUt(V[14])
+            .setDuration(56);
+        assertEquals((24 * 56) << 20, calculator.calculateEUtConsumptionUnderOneTick(56, 6144));
+    }
+
+    @Test
+    void testCorrectEUtWhenOverclockingUnderOneTickWithHeat_Test() {
+        double heatDiscount = Math.pow(0.95, (15500 - 2000) / 900);
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(1920)
+            .setParallel(256)
+            .setAmperage(1)
+            .setAmperageOC(true)
+            .setHeatDiscount(true)
+            .setHeatOC(true)
+            .setRecipeHeat(2000)
+            .setMachineHeat(15500)
+            .setEUt(V[12] * 1_048_576)
+            .setDuration(250);
+        assertEquals(
+            Math.ceil((((long) 1920 * 256) << 28) * heatDiscount),
+            calculator
+                .calculateEUtConsumptionUnderOneTick(256, (int) (256 / calculator.calculateDurationUnderOneTick())));
+    }
+
+    @Test
+    void testNoOverclockCorrectWithUnderOneTickLogic_Test() {
+        GT_OverclockCalculator calculator = GT_OverclockCalculator.ofNoOverclock(2_693_264_510L, 100)
+            .setParallel(24 * 64);
+        assertEquals(100, calculator.calculateDurationUnderOneTick());
+    }
 }
