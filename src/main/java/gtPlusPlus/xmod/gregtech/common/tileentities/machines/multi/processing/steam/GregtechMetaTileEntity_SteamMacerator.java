@@ -24,6 +24,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
@@ -138,11 +139,10 @@ public class GregtechMetaTileEntity_SteamMacerator
             public GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
                 return super.createParallelHelper(recipe).setCustomItemOutputCalculation(parallel -> {
                     ArrayList<ItemStack> items = new ArrayList<>();
-                    ItemStack output = recipe.getOutput(0);
-                    if (output != null) {
-                        output = output.copy();
-                        output.stackSize *= parallel;
-                        items.add(output);
+                    for (int i = 0; i < parallel; i++) {
+                        if (recipe.getOutputChance(0) > XSTR.XSTR_INSTANCE.nextInt(10000)) {
+                            items.add(recipe.getOutput(0));
+                        }
                     }
                     return items.toArray(new ItemStack[0]);
                 });
