@@ -408,10 +408,6 @@ public class ProcessingLogic {
     @Nonnull
     protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
         return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
-            .setRecipeAmperage(
-                recipeMapSupplier != null && recipeMapSupplier.get() != null
-                    ? Math.max(recipeMapSupplier.get().mAmperage, 1)
-                    : 1)
             .setAmperage(availableAmperage)
             .setEUt(availableVoltage)
             .setDuration(recipe.mDuration)
