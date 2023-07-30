@@ -72,18 +72,18 @@ public enum VoidingMode {
 
     public VoidingMode nextInCollection(Collection<VoidingMode> allowed) {
         if (allowed.isEmpty()) throw new IllegalArgumentException("nothing allowed");
-        VoidingMode ret;
+        VoidingMode ret = this;
         do {
-            ret = next();
+            ret = ret.next();
         } while (!allowed.contains(ret));
         return ret;
     }
 
     public VoidingMode previousInCollection(Collection<VoidingMode> allowed) {
         if (allowed.isEmpty()) throw new IllegalArgumentException("nothing allowed");
-        VoidingMode ret;
+        VoidingMode ret = this;
         do {
-            ret = previous();
+            ret = ret.previous();
         } while (!allowed.contains(ret));
         return ret;
     }

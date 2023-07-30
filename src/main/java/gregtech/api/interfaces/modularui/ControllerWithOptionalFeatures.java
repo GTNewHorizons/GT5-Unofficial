@@ -83,9 +83,7 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
             if (supportsVoidProtection()) {
                 Set<VoidingMode> allowed = getAllowedVoidingModes();
                 switch (clickData.mouseButton) {
-                    case 0 -> {
-                        setVoidingMode(getVoidingMode().nextInCollection(allowed));
-                    }
+                    case 0 -> setVoidingMode(getVoidingMode().nextInCollection(allowed));
                     case 1 -> setVoidingMode(getVoidingMode().previousInCollection(allowed));
                 }
                 widget.notifyTooltipChange();
