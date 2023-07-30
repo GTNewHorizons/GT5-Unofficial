@@ -10,6 +10,7 @@ public enum MachineType {
     ASSEMBLER(FunnyTexts.ASSEMBLER, "gt.recipe.assembler"),
     AUTOCLAVE(FunnyTexts.AUTOCLAVE, "gt.recipe.autoclave"),
     BENDING_MACHINE(FunnyTexts.BENDING_MACHINE, "gt.recipe.metalbender"),
+    BREWERY(FunnyTexts.BREWERY, "gt.recipe.brewery"),
     CANNER(FunnyTexts.CANNER, "gt.recipe.canner"),
     CENTRIFUGE(FunnyTexts.CENTRIFUGE, "gt.recipe.centrifuge"),
     CHEMICAL_BATH(FunnyTexts.CHEMICAL_BATH, "gt.recipe.chemicalbath"),
@@ -61,6 +62,7 @@ public enum MachineType {
         static final String ASSEMBLER = "gt.recipe.assembler.description";
         static final String AUTOCLAVE = "gt.recipe.autoclave.description";
         static final String BENDING_MACHINE = "gt.recipe.metalbender.description";
+        static final String BREWERY = "gt.recipe.brewery.description";
         static final String CANNER = "gt.recipe.canner.description";
         static final String CENTRIFUGE = "gt.recipe.centrifuge.description";
         static final String CHEMICAL_BATH = "gt.recipe.chemicalbath.description";

@@ -17,6 +17,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_POTIONBREWER_AC
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_POTIONBREWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_POTIONBREWER_GLOW;
 
+import gregtech.api.enums.MachineType;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -43,7 +44,7 @@ public class GT_MetaTileEntity_PotionBrewer extends GT_MetaTileEntity_BasicMachi
             aNameRegional,
             aTier,
             1,
-            "Brewing your Drinks",
+            MachineType.BREWERY.tooltipDescription(),
             1,
             0,
             "PotionBrewer.png",
