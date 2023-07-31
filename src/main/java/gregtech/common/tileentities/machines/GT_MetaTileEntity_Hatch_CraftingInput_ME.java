@@ -7,6 +7,12 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import appeng.block.networking.BlockCableBus;
+import appeng.core.AppEng;
+import appeng.core.sync.GuiBridge;
+import appeng.helpers.ICustomNameObject;
+import appeng.items.tools.quartz.ToolQuartzCuttingKnife;
+import appeng.tile.AEBaseTile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.InventoryCrafting;
@@ -20,6 +26,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -76,7 +83,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_Hatch_InputBus
     implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ICraftingProvider,
-    IGridProxyable, IDualInputHatch {
+    IGridProxyable, IDualInputHatch, ICustomNameObject {
 
     // Each pattern slot in the crafting input hatch has its own internal inventory
     public static class PatternSlot implements IDualInputInventory {
@@ -308,6 +315,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     private boolean needPatternSync = true;
     private boolean justHadNewItems = false;
 
+    private String customName = null;
     private boolean supportFluids;
 
     public GT_MetaTileEntity_Hatch_CraftingInput_ME(int aID, String aName, String aNameRegional,
@@ -429,7 +437,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             }
         }
         aNBT.setTag("internalInventory", internalInventoryNBT);
-
+        if (customName != null) aNBT.setString("customName", customName);
         if (GregTech_API.mAE2) {
             getProxy().writeToNBT(aNBT);
         }
@@ -465,6 +473,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                 patternDetailsPatternSlotMap.put(patternSlot.getPatternDetails(), patternSlot);
             }
         }
+
+        if(aNBT.hasKey("customName")) customName = aNBT.getString("customName");
 
         if (GregTech_API.mAE2) {
             getProxy().readFromNBT(aNBT);
@@ -577,8 +587,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                         var output = patternItem.getOutput(stack);
                         return output != null ? output : stack;
                     }
-                }.setFilter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
-                    .setChangeListener(() -> onPatternChange(slot)))
+                }.setFilter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem))
                 .build()
                 .setPos(7, 9))
             .widget(
@@ -607,19 +616,19 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         return requestSource;
     }
 
-    private void onPatternChange(BaseSlot slot) {
+    private void onPatternChange(int index, ItemStack newItem) {
         if (!getBaseMetaTileEntity().isServerSide()) return;
 
         var world = getBaseMetaTileEntity().getWorld();
 
         // remove old if applicable
-        var originalPattern = internalInventory[slot.getSlotIndex()];
+        var originalPattern = internalInventory[index];
         if (originalPattern != null) {
-            if (originalPattern.hasChanged(slot.getStack(), world)) {
+            if (originalPattern.hasChanged(newItem, world)) {
                 try {
                     originalPattern.refund(getProxy(), getRequest());
                 } catch (GridAccessException ignored) {}
-                internalInventory[slot.getSlotIndex()] = null;
+                internalInventory[index] = null;
                 needPatternSync = true;
             } else {
                 return; // nothing has changed
@@ -627,11 +636,10 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
 
         // original does not exist or has changed
-        var pattern = slot.getStack();
-        if (pattern == null || !(pattern.getItem() instanceof ICraftingPatternItem)) return;
+        if (newItem == null || !(newItem.getItem() instanceof ICraftingPatternItem)) return;
 
-        var patternSlot = new PatternSlot(pattern, world, this::getSharedItems);
-        internalInventory[slot.getSlotIndex()] = patternSlot;
+        var patternSlot = new PatternSlot(newItem, world, this::getSharedItems);
+        internalInventory[index] = patternSlot;
         patternDetailsPatternSlotMap.put(patternSlot.getPatternDetails(), patternSlot);
 
         needPatternSync = true;
@@ -787,6 +795,22 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     }
 
     @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
+        final ItemStack is = aPlayer.inventory.getCurrentItem();
+        if (is.getItem() instanceof ToolQuartzCuttingKnife) {
+            if (ForgeEventFactory.onItemUseStart(aPlayer, is, 1) <= 0) return false;
+            var te = getBaseMetaTileEntity();
+            aPlayer.openGui(
+                AppEng.instance(),
+                GuiBridge.GUI_RENAMER.ordinal() << 5 | (side.ordinal()),
+                te.getWorld(), te.getXCoord(), te.getYCoord(), te.getZCoord()
+            );
+            return true;
+        }
+        return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
+    }
+
+    @Override
     public ItemStack getCrafterIcon() {
         return getMachineCraftingIcon();
     }
@@ -806,6 +830,22 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     @Override
     public void setInventorySlotContents(int aIndex, ItemStack aStack) {
         super.setInventorySlotContents(aIndex, aStack);
+        onPatternChange(aIndex, aStack);
         needPatternSync = true;
+    }
+
+    @Override
+    public String getCustomName() {
+        return customName != null ? customName : getCrafterIcon() != null ? getCrafterIcon().getDisplayName() : null;
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return customName != null || getCrafterIcon() != null;
+    }
+
+    @Override
+    public void setCustomName(String name) {
+        customName = name;
     }
 }
