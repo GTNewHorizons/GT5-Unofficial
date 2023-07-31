@@ -7,12 +7,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import appeng.block.networking.BlockCableBus;
-import appeng.core.AppEng;
-import appeng.core.sync.GuiBridge;
-import appeng.helpers.ICustomNameObject;
-import appeng.items.tools.quartz.ToolQuartzCuttingKnife;
-import appeng.tile.AEBaseTile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.InventoryCrafting;
@@ -36,7 +30,6 @@ import com.glodblock.github.common.item.ItemFluidPacket;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -58,7 +51,11 @@ import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.AECableType;
 import appeng.api.util.DimensionalCoord;
+import appeng.core.AppEng;
+import appeng.core.sync.GuiBridge;
+import appeng.helpers.ICustomNameObject;
 import appeng.items.misc.ItemEncodedPattern;
+import appeng.items.tools.quartz.ToolQuartzCuttingKnife;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
@@ -451,7 +448,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             }
         }
 
-        if(aNBT.hasKey("customName")) customName = aNBT.getString("customName");
+        if (aNBT.hasKey("customName")) customName = aNBT.getString("customName");
 
         if (GregTech_API.mAE2) {
             getProxy().readFromNBT(aNBT);
@@ -763,7 +760,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
+        float aX, float aY, float aZ) {
         final ItemStack is = aPlayer.inventory.getCurrentItem();
         if (is != null && is.getItem() instanceof ToolQuartzCuttingKnife) {
             if (ForgeEventFactory.onItemUseStart(aPlayer, is, 1) <= 0) return false;
@@ -771,8 +769,10 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             aPlayer.openGui(
                 AppEng.instance(),
                 GuiBridge.GUI_RENAMER.ordinal() << 5 | (side.ordinal()),
-                te.getWorld(), te.getXCoord(), te.getYCoord(), te.getZCoord()
-            );
+                te.getWorld(),
+                te.getXCoord(),
+                te.getYCoord(),
+                te.getZCoord());
             return true;
         }
         return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
