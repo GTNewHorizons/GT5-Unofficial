@@ -770,4 +770,9 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         return true;
     }
 
+    @Override
+    public void setInventorySlotContents(int aIndex, ItemStack aStack) {
+        super.setInventorySlotContents(aIndex, aStack);
+        needPatternSync = true;
+    }
 }
