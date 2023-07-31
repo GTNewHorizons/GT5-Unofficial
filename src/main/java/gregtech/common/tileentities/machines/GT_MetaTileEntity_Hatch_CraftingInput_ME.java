@@ -587,7 +587,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                         var output = patternItem.getOutput(stack);
                         return output != null ? output : stack;
                     }
-                }.setFilter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem))
+                }.setFilter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
+                    .setChangeListener(() -> onPatternChange(slot.getSlotIndex(), slot.getStack())))
                 .build()
                 .setPos(7, 9))
             .widget(
@@ -797,7 +798,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
         final ItemStack is = aPlayer.inventory.getCurrentItem();
-        if (is.getItem() instanceof ToolQuartzCuttingKnife) {
+        if (is != null && is.getItem() instanceof ToolQuartzCuttingKnife) {
             if (ForgeEventFactory.onItemUseStart(aPlayer, is, 1) <= 0) return false;
             var te = getBaseMetaTileEntity();
             aPlayer.openGui(
