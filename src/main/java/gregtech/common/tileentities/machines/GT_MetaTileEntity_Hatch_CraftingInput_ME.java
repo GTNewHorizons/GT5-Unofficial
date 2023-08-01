@@ -229,6 +229,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                 // Clean up the inserted items/liquids
                 for (int i = 0; i < errorIndex; ++i) {
                     var itemStack = inventoryCrafting.getStackInSlot(i);
+                    if (itemStack == null) continue;
                     if (itemStack.getItem() instanceof ItemFluidPacket) { // remove fluid
                         var fluidStack = ItemFluidPacket.getFluidStack(itemStack);
                         if (fluidStack == null) continue;
