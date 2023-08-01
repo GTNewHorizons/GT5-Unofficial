@@ -160,8 +160,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_Slave extends GT_MetaTileEnti
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (!(aPlayer instanceof EntityPlayerMP)) return false;
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, true, true))
-            return false;
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, true, true)) return false;
         if (!dataStick.hasTagCompound() || !"CraftingInputBuffer".equals(dataStick.stackTagCompound.getString("type")))
             return false;
 
