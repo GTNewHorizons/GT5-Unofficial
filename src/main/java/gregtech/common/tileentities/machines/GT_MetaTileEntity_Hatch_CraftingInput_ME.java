@@ -7,8 +7,10 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import appeng.helpers.IInterfaceTerminalSupport;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -78,7 +80,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_Hatch_InputBus
     implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ICraftingProvider,
-    IGridProxyable, IDualInputHatch, ICustomNameObject {
+    IGridProxyable, IDualInputHatch, ICustomNameObject, IInterfaceTerminalSupport {
 
     // Each pattern slot in the crafting input hatch has its own internal inventory
     public static class PatternSlot implements IDualInputInventory {
@@ -383,6 +385,31 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             getBaseMetaTileEntity().getXCoord(),
             getBaseMetaTileEntity().getYCoord(),
             getBaseMetaTileEntity().getZCoord());
+    }
+
+    @Override
+    public PatternsConfiguration[] getPatternsConfigurations() {
+        return new PatternsConfiguration[] {
+            new PatternsConfiguration(0, 8),
+            new PatternsConfiguration(8, 8),
+            new PatternsConfiguration(16, 8),
+            new PatternsConfiguration(24, 8),
+        };
+    }
+
+    @Override
+    public IInventory getPatterns(int i) {
+        return this;
+    }
+
+    @Override
+    public String getName() {
+        return hasCustomName() ? getCustomName() : getInventoryName();
+    }
+
+    @Override
+    public TileEntity getTileEntity() {
+        return (TileEntity) getBaseMetaTileEntity();
     }
 
     @Override
