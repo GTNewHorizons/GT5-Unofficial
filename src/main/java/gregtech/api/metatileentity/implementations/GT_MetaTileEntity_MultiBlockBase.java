@@ -706,68 +706,18 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 : CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
-
         setupProcessingLogic(processingLogic);
 
-        // check crafting input hatches first
-        for (IDualInputHatch dualInputHatch : mDualInputHatches) {
-            for (var it = dualInputHatch.inventories(); it.hasNext();) {
-                IDualInputInventory slot = it.next();
-                processingLogic.setInputItems(slot.getItemInputs());
-                processingLogic.setInputFluids(slot.getFluidInputs());
-                result = processingLogic.process();
-                if (result.wasSuccessful()) break;
-            }
-            if (result.wasSuccessful()) break;
-        }
-
-        processingLogic.setInputFluids(getStoredFluids());
-
-        if (!result.wasSuccessful()) {
-            if (isInputSeparationEnabled()) {
-                for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
-                    List<ItemStack> inputItems = new ArrayList<>();
-                    for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
-                        ItemStack stored = bus.getStackInSlot(i);
-                        if (stored != null) {
-                            inputItems.add(stored);
-                        }
-                    }
-                    if (getControllerSlot() != null && canUseControllerSlotForRecipe()) {
-                        inputItems.add(getControllerSlot());
-                    }
-                    processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
-                    result = processingLogic.process();
-                    if (result.wasSuccessful()) break;
-                }
-            } else {
-                List<ItemStack> inputItems = getStoredInputs();
-                if (getControllerSlot() != null && canUseControllerSlotForRecipe()) {
-                    inputItems.add(getControllerSlot());
-                }
-                processingLogic.setInputItems(inputItems);
-                result = processingLogic.process();
-            }
-        }
-
-        // inputs are consumed by `process()`
+        CheckRecipeResult result = doCheckRecipe();
+        result = postCheckRecipe(result, processingLogic);
+        // inputs are consumed at this point
         updateSlots();
-
         if (!result.wasSuccessful()) return result;
 
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         mEfficiencyIncrease = 10000;
-
-        if (processingLogic.getCalculatedEut() > Integer.MAX_VALUE) {
-            return CheckRecipeResultRegistry.POWER_OVERFLOW;
-        }
-        mEUt = (int) processingLogic.getCalculatedEut();
         mMaxProgresstime = processingLogic.getDuration();
-
-        if (mEUt > 0) {
-            mEUt = (-mEUt);
-        }
+        setEnergyUsage(processingLogic);
 
         mOutputItems = processingLogic.getOutputItems();
         mOutputFluids = processingLogic.getOutputFluids();
@@ -775,10 +725,17 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return result;
     }
 
+    /**
+     * @return If controller slot should be considered as inputs for {@link #doCheckRecipe}
+     */
     protected boolean canUseControllerSlotForRecipe() {
         return true;
     }
 
+    /**
+     * Initializes processing logic for use. Unlike {@link #createProcessingLogic}, this method is called
+     * every time checking for recipes.
+     */
     protected void setupProcessingLogic(ProcessingLogic logic) {
         logic.clear();
         logic.setMachine(this);
@@ -789,10 +746,98 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         setProcessingLogicPower(logic);
     }
 
+    /**
+     * Initializes processing logic for use, specifically for power-related parameters.
+     * Unlike {@link #createProcessingLogic}, this method is called every time checking for recipes.
+     */
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(getAverageInputVoltage());
         logic.setAvailableAmperage(getMaxInputAmps());
         logic.setAmperageOC(mEnergyHatches.size() != 1);
+    }
+
+    /**
+     * Iterates over hatches and tries to find recipe. Assume {@link #processingLogic} is already set up for use.
+     * If return value is successful, inputs are consumed.
+     */
+    @Nonnull
+    protected CheckRecipeResult doCheckRecipe() {
+        CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
+        // check crafting input hatches first
+        for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+            for (var it = dualInputHatch.inventories(); it.hasNext();) {
+                IDualInputInventory slot = it.next();
+                processingLogic.setInputItems(slot.getItemInputs());
+                processingLogic.setInputFluids(slot.getFluidInputs());
+                result = processingLogic.process();
+                if (result.wasSuccessful()) {
+                    return result;
+                }
+            }
+            if (result.wasSuccessful()) {
+                return result;
+            }
+        }
+
+        processingLogic.setInputFluids(getStoredFluids());
+
+        if (isInputSeparationEnabled()) {
+            for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
+                List<ItemStack> inputItems = new ArrayList<>();
+                for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                    ItemStack stored = bus.getStackInSlot(i);
+                    if (stored != null) {
+                        inputItems.add(stored);
+                    }
+                }
+                if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                    inputItems.add(getControllerSlot());
+                }
+                processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+                result = processingLogic.process();
+                if (result.wasSuccessful()) {
+                    return result;
+                }
+            }
+        } else {
+            List<ItemStack> inputItems = getStoredInputs();
+            if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                inputItems.add(getControllerSlot());
+            }
+            processingLogic.setInputItems(inputItems);
+            result = processingLogic.process();
+        }
+        return result;
+    }
+
+    /**
+     * Performs additional check for {@link #processingLogic} after all the calculations are done.
+     * As many as checks should be done inside of custom {@link ProcessingLogic}, which you can specify with
+     * {@link #createProcessingLogic()}, because when this method is called, inputs might have been already consumed.
+     * However, certain checks cannot be done like that; Checking energy overflow should be suppressed for
+     * long-power machines for example.
+     *
+     * @return Modified (or not modified) result
+     */
+    @Nonnull
+    protected CheckRecipeResult postCheckRecipe(@Nonnull CheckRecipeResult result,
+        @Nonnull ProcessingLogic processingLogic) {
+        if (result.wasSuccessful() && processingLogic.getCalculatedEut() > Integer.MAX_VALUE) {
+            return CheckRecipeResultRegistry.POWER_OVERFLOW;
+        }
+        return result;
+    }
+
+    /**
+     * Called after {@link #doCheckRecipe} and {@link #postCheckRecipe} being successful.
+     * Override to set energy usage for this machine.
+     */
+    protected void setEnergyUsage(ProcessingLogic processingLogic) {
+        // getCalculatedEut() is guaranteed to not exceed int by postCheckRecipe()
+        mEUt = (int) processingLogic.getCalculatedEut();
+        if (mEUt > 0) {
+            mEUt = (-mEUt);
+        }
     }
 
     protected int getMaxBatchSize() {
