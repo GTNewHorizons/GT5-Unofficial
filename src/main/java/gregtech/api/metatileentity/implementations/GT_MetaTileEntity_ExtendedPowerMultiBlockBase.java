@@ -18,11 +18,8 @@ import net.minecraft.world.World;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.tileentities.machines.IDualInputHatch;
-import gregtech.common.tileentities.machines.IDualInputInventory;
 
 /**
  * Multiblock base class that allows machine to use power over int.
@@ -134,85 +131,25 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
     }
 
     @Override
-    public @Nonnull CheckRecipeResult checkProcessing() {
-        // If no logic is found, try legacy checkRecipe
-        if (processingLogic == null) {
-            // noinspection deprecation
-            return checkRecipe(mInventory[1]) ? CheckRecipeResultRegistry.SUCCESSFUL
-                : CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
-        CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
-
-        setupProcessingLogic(processingLogic);
-
-        // check crafting input hatches first
-        for (IDualInputHatch dualInputHatch : mDualInputHatches) {
-            for (var it = dualInputHatch.inventories(); it.hasNext();) {
-                IDualInputInventory slot = it.next();
-                processingLogic.setInputItems(slot.getItemInputs());
-                processingLogic.setInputFluids(slot.getFluidInputs());
-                result = processingLogic.process();
-                if (result.wasSuccessful()) break;
-            }
-            if (result.wasSuccessful()) break;
-        }
-
-        processingLogic.setInputFluids(getStoredFluids());
-
-        if (!result.wasSuccessful()) {
-            if (isInputSeparationEnabled()) {
-                for (GT_MetaTileEntity_Hatch_InputBus bus : mInputBusses) {
-                    List<ItemStack> inputItems = new ArrayList<>();
-                    for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
-                        ItemStack stored = bus.getStackInSlot(i);
-                        if (stored != null) {
-                            inputItems.add(stored);
-                        }
-                    }
-                    if (getControllerSlot() != null && canUseControllerSlotForRecipe()) {
-                        inputItems.add(getControllerSlot());
-                    }
-                    processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
-                    result = processingLogic.process();
-                    if (result.wasSuccessful()) break;
-                }
-            } else {
-                List<ItemStack> inputItems = getStoredInputs();
-                if (getControllerSlot() != null && canUseControllerSlotForRecipe()) {
-                    inputItems.add(getControllerSlot());
-                }
-                processingLogic.setInputItems(inputItems);
-                result = processingLogic.process();
-            }
-        }
-
-        // inputs are consumed by `process()`
-        updateSlots();
-
-        if (!result.wasSuccessful()) return result;
-
-        mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        mEfficiencyIncrease = 10000;
-
-        lEUt = processingLogic.getCalculatedEut();
-        mMaxProgresstime = processingLogic.getDuration();
-
-        if (lEUt > 0) {
-            lEUt = (-lEUt);
-        }
-
-        mOutputItems = processingLogic.getOutputItems();
-        mOutputFluids = processingLogic.getOutputFluids();
-
-        return result;
-    }
-
-    @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(getAverageInputVoltage());
         logic.setAvailableAmperage(getMaxInputAmps());
         logic.setAmperageOC(true);
+    }
+
+    @Nonnull
+    @Override
+    protected CheckRecipeResult postCheckRecipe(@Nonnull CheckRecipeResult result,
+        @Nonnull ProcessingLogic processingLogic) {
+        return result;
+    }
+
+    @Override
+    protected void setEnergyUsage(ProcessingLogic processingLogic) {
+        lEUt = processingLogic.getCalculatedEut();
+        if (lEUt > 0) {
+            lEUt = (-lEUt);
+        }
     }
 
     @Override

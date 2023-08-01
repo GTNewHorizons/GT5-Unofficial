@@ -6,6 +6,7 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.util.StatCollector;
 
@@ -80,9 +81,10 @@ public interface ControllerWithOptionalFeatures extends IVoidable, IRecipeLockab
     default ButtonWidget createVoidExcessButton(IWidgetBuilder<?> builder) {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             if (supportsVoidProtection()) {
+                Set<VoidingMode> allowed = getAllowedVoidingModes();
                 switch (clickData.mouseButton) {
-                    case 0 -> setVoidingMode(getVoidingMode().next());
-                    case 1 -> setVoidingMode(getVoidingMode().previous());
+                    case 0 -> setVoidingMode(getVoidingMode().nextInCollection(allowed));
+                    case 1 -> setVoidingMode(getVoidingMode().previousInCollection(allowed));
                 }
                 widget.notifyTooltipChange();
             }

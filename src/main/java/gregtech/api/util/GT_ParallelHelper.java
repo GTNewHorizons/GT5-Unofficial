@@ -404,9 +404,10 @@ public class GT_ParallelHelper {
 
         // Save the original max parallel before calculating our overclocking under 1 tick
         int originalMaxParallel = maxParallel;
-        double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
+        double tickTimeAfterOC = calculator.setParallel(originalMaxParallel)
+            .calculateDurationUnderOneTick();
         if (tickTimeAfterOC < 1) {
-            maxParallel = (int) Math.floor(maxParallel / tickTimeAfterOC);
+            maxParallel = (int) (maxParallel / tickTimeAfterOC);
         }
 
         int maxParallelBeforeBatchMode = maxParallel;
@@ -549,7 +550,7 @@ public class GT_ParallelHelper {
             int items = 0;
             int itemStackSize = recipe.getOutput(i).stackSize;
             for (int roll = 0; roll < currentParallel; roll++) {
-                if (recipe.getOutputChance(i) >= XSTR.XSTR_INSTANCE.nextInt(10000)) {
+                if (recipe.getOutputChance(i) > XSTR.XSTR_INSTANCE.nextInt(10000)) {
                     items += itemStackSize;
                 }
             }

@@ -1,6 +1,7 @@
 package gregtech.api.interfaces.tileentity;
 
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -17,6 +18,10 @@ public interface IVoidable {
      * @return if this machine can prevent excess item and fluid from voiding.
      */
     boolean supportsVoidProtection();
+
+    default Set<VoidingMode> getAllowedVoidingModes() {
+        return VoidingMode.ALL_OPTIONS;
+    }
 
     /**
      * @return if this machine is configured to not void excess item.
