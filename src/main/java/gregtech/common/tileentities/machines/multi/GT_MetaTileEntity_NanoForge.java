@@ -49,6 +49,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Casings8;
@@ -240,6 +241,13 @@ public class GT_MetaTileEntity_NanoForge extends
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
                 return recipe.mSpecialValue <= mSpecialTier ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.NO_RECIPE;
+            }
+
+            @Nonnull
+            @Override
+            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+                return super.createOverclockCalculator(recipe)
+                    .setDurationDecreasePerOC(mSpecialTier > recipe.mSpecialValue ? 2 : 1);
             }
         };
     }
