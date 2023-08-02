@@ -1,4 +1,4 @@
-//version: 1690104383
+//version: 1690818808
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -401,9 +401,13 @@ if (identifiedVersion == versionOverride) {
 
 group = "com.github.GTNewHorizons"
 if (project.hasProperty("customArchiveBaseName") && customArchiveBaseName) {
-    archivesBaseName = customArchiveBaseName
+    base {
+        archivesName = customArchiveBaseName
+    }
 } else {
-    archivesBaseName = modId
+    base {
+        archivesName = modId
+    }
 }
 
 
@@ -627,6 +631,8 @@ def mixinProviderSpecNoClassifer = "${mixinProviderGroup}:${mixinProviderModule}
 def mixinProviderSpec = "${mixinProviderSpecNoClassifer}:dev"
 ext.mixinProviderSpec = mixinProviderSpec
 
+def mixingConfigRefMap = 'mixins.' + modId + '.refmap.json'
+
 dependencies {
     if (usesMixins.toBoolean()) {
         annotationProcessor('org.ow2.asm:asm-debug-all:5.0.3')
@@ -638,7 +644,7 @@ dependencies {
         }
     }
     if (usesMixins.toBoolean()) {
-        implementation(modUtils.enableMixins(mixinProviderSpec))
+        implementation(modUtils.enableMixins(mixinProviderSpec, mixingConfigRefMap))
     } else if (forceEnableMixins.toBoolean()) {
         runtimeOnlyNonPublishable(mixinProviderSpec)
     }
@@ -690,8 +696,6 @@ if (file('dependencies.gradle.kts').exists()) {
     logger.error("Neither dependencies.gradle.kts nor dependencies.gradle was found, make sure you extracted the full ExampleMod template.")
     throw new RuntimeException("Missing dependencies.gradle[.kts]")
 }
-
-def mixingConfigRefMap = 'mixins.' + modId + '.refmap.json'
 
 tasks.register('generateAssets') {
     group = "GTNH Buildscript"
@@ -775,10 +779,10 @@ dependencies {
         java17Dependencies("com.github.GTNewHorizons:lwjgl3ify:${lwjgl3ifyVersion}")
     }
     if (modId != 'hodgepodge') {
-        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.2.19')
+        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.2.26')
     }
 
-    java17PatchDependencies('net.minecraft:launchwrapper:1.15') {transitive = false}
+    java17PatchDependencies('net.minecraft:launchwrapper:1.17.2') {transitive = false}
     java17PatchDependencies("org.ow2.asm:asm:${asmVersion}")
     java17PatchDependencies("org.ow2.asm:asm-commons:${asmVersion}")
     java17PatchDependencies("org.ow2.asm:asm-tree:${asmVersion}")

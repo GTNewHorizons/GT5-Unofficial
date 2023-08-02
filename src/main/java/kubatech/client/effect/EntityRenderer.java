@@ -105,7 +105,12 @@ public class EntityRenderer extends EntityFX {
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
 
         entityToRender.worldObj = this.worldObj;
-        entityToRender.setPosition(this.posX, this.posY, this.posZ);
+
+        // quiver still bugged a bit, but it is on the skeleton now
+        entityToRender.setPosition(this.posX, this.posY + 1d /* for some reason quiver renders too low? */, this.posZ);
+        entityToRender.lastTickPosX = entityToRender.posX;
+        entityToRender.lastTickPosY = entityToRender.posY;
+        entityToRender.lastTickPosZ = entityToRender.posZ;
 
         Minecraft mc = Minecraft.getMinecraft();
 
@@ -164,6 +169,8 @@ public class EntityRenderer extends EntityFX {
             (float) (this.posY - renderPosY),
             (float) (this.posZ - renderPosZ));
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+
+        // TODO: Use new scale calculator
         float desiredScale = MobUtils.getDesiredScale(entityToRender, 2f);
         if (desiredScale < 1f) GL11.glScalef(desiredScale, desiredScale, desiredScale);
 

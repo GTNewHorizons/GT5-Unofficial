@@ -375,7 +375,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
             MobHandlerLoader.MobEECRecipe r = MobHandlerLoader.recipeMap.get(mobType);
             if (r != null) {
                 if (entityRenderer == null) setupEntityRenderer(getBaseMetaTileEntity(), 40);
-                entityRenderer.setEntity(r.recipe.entity);
+                entityRenderer.setEntity(r.entityCopy);
             } else entityRenderer.setEntity(null);
         } else {
             renderEntity = false;

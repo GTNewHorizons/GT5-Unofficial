@@ -23,6 +23,7 @@ package kubatech.loaders;
 import static kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber.DIAMOND_SPIKES_DAMAGE;
 import static kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber.MOB_SPAWN_INTERVAL;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -37,6 +38,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
@@ -83,10 +85,19 @@ public class MobHandlerLoader {
 
         public final int mEUt = 2000;
         public final int mDuration;
+        public final EntityLiving entityCopy;
 
         public MobEECRecipe(List<MobDrop> transformedDrops, MobRecipe recipe) {
             this.mOutputs = transformedDrops;
             this.recipe = recipe;
+            try {
+                this.entityCopy = this.recipe.entity.getClass()
+                    .getConstructor(World.class)
+                    .newInstance(this.recipe.entity.worldObj);
+            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException
+                | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
             mDuration = Math.max(MOB_SPAWN_INTERVAL, (int) ((recipe.maxEntityHealth / DIAMOND_SPIKES_DAMAGE) * 10d));
         }
 
