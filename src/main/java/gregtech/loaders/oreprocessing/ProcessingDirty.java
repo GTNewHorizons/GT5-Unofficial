@@ -2,6 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
@@ -36,19 +37,25 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
             .eut(16)
             .addTo(sHammerRecipes);
 
-        GT_ModHandler.addPulverisationRecipe(
-            GT_Utility.copyAmount(1L, aStack),
-            GT_OreDictUnificator.get(
-                OrePrefixes.dustImpure,
-                aMaterial.mMacerateInto,
-                GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
-                1L),
-            GT_OreDictUnificator.get(
-                OrePrefixes.dust,
-                GT_Utility.selectItemInList(0, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
-                1L),
-            10,
-            false);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+            .itemOutputs(
+                GT_OreDictUnificator.get(
+                    OrePrefixes.dustImpure,
+                    aMaterial.mMacerateInto,
+                    GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
+                    1L),
+                GT_OreDictUnificator.get(
+                    OrePrefixes.dust,
+                    GT_Utility.selectItemInList(0, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
+                    1L))
+            .outputChances(10000, 1000)
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(sMaceratorRecipes);
+
         GT_ModHandler.addOreWasherRecipe(
             GT_Utility.copyAmount(1L, aStack),
             new int[] { 10000, 1111, 10000 },

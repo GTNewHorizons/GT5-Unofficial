@@ -11,9 +11,11 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
 
 import java.util.Locale;
 
@@ -2078,30 +2080,43 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 }
             }
         }
-        GT_ModHandler.addPulverisationRecipe(
-            new ItemStack(Blocks.cobblestone, 1, 32767),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
-            null,
-            0,
-            false);
-        GT_ModHandler.addPulverisationRecipe(
-            new ItemStack(Blocks.gravel, 1, 32767),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L),
-            new ItemStack(Items.flint, 1),
-            10,
-            false);
-        GT_ModHandler.addPulverisationRecipe(
-            new ItemStack(Blocks.furnace, 1, 32767),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 8L),
-            null,
-            0,
-            false);
-        GT_ModHandler.addPulverisationRecipe(
-            new ItemStack(Blocks.lit_furnace, 1, 32767),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 8L),
-            null,
-            0,
-            false);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.cobblestone, 1, WILDCARD))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(sMaceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.gravel, 1, WILDCARD))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L), new ItemStack(Items.flint, 1))
+            .outputChances(10000, 1000)
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(sMaceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.furnace, 1, WILDCARD))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 8L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(sMaceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.lit_furnace, 1, WILDCARD))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 8L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(sMaceratorRecipes);
 
         GT_OreDictUnificator.set(
             OrePrefixes.ingot,

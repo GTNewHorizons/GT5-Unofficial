@@ -1,6 +1,7 @@
 package gregtech.loaders.load;
 
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCannerRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
@@ -36,79 +37,91 @@ public class GT_ItemIterator implements Runnable {
     @Override
     public void run() {
         GT_Log.out.println("GT_Mod: Scanning for certain kinds of compatible Machineblocks.");
-        ItemStack tStack2;
-        ItemStack tStack;
-        if (null != (tStack = GT_ModHandler.getRecipeOutput(
-            tStack2 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 1L),
-            tStack2,
-            tStack2,
-            tStack2,
-            null,
-            tStack2,
-            tStack2,
-            tStack2,
-            tStack2))) {
-            GT_ModHandler.addPulverisationRecipe(
-                tStack,
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 8L),
-                null,
-                0,
-                false);
+        ItemStack tStack2 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 1L);
+        ItemStack tStack = GT_ModHandler
+            .getRecipeOutput(tStack2, tStack2, tStack2, tStack2, null, tStack2, tStack2, tStack2, tStack2);
+
+        if (null != tStack) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(tStack)
+                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 8L))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(20 * SECONDS)
+                .eut(2)
+                .addTo(sMaceratorRecipes);
+
             GT_ModHandler.addSmeltingRecipe(tStack, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 8L));
         }
-        if (null != (tStack = GT_ModHandler.getRecipeOutput(
-            tStack2 = GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1L),
-            tStack2,
-            tStack2,
-            tStack2,
-            null,
-            tStack2,
-            tStack2,
-            tStack2,
-            tStack2))) {
+        tStack2 = GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1L);
+        tStack = GT_ModHandler
+            .getRecipeOutput(tStack2, tStack2, tStack2, tStack2, null, tStack2, tStack2, tStack2, tStack2);
+
+        if (null != tStack) {
             GT_OreDictUnificator.registerOre(OreDictNames.craftingRawMachineTier00, tStack);
-            GT_ModHandler.addPulverisationRecipe(
-                tStack,
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 8L),
-                null,
-                0,
-                false);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(tStack)
+                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 8L))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(20 * SECONDS)
+                .eut(2)
+                .addTo(sMaceratorRecipes);
             GT_ModHandler.addSmeltingRecipe(tStack, GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 8L));
         }
-        ItemStack tStack3;
-        if (null != (tStack = GT_ModHandler.getRecipeOutput(
-            tStack2 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L),
-            tStack3 = new ItemStack(Blocks.glass, 1, 0),
+
+        ItemStack tStack3 = new ItemStack(Blocks.glass, 1, 0);
+        tStack2 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L);
+        tStack = GT_ModHandler.getRecipeOutput(
+            tStack2,
+            tStack3,
             tStack2,
             tStack3,
             GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L),
             tStack3,
             tStack2,
             tStack3,
-            tStack2))) {
-            GT_ModHandler.addPulverisationRecipe(
-                tStack,
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L),
-                0,
-                false);
+            tStack2);
+
+        if (null != (tStack)) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(tStack)
+                .itemOutputs(
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 4L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L))
+                .outputChances(10000, 1000)
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(20 * SECONDS)
+                .eut(2)
+                .addTo(sMaceratorRecipes);
         }
-        if (null != (tStack = GT_ModHandler.getRecipeOutput(
-            tStack2 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L),
-            tStack3 = new ItemStack(Blocks.glass, 1, 0),
+
+        tStack2 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L);
+        tStack3 = new ItemStack(Blocks.glass, 1, 0);
+        tStack = GT_ModHandler.getRecipeOutput(
+            tStack2,
+            tStack3,
             tStack2,
             tStack3,
             GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L),
             tStack3,
             tStack2,
             tStack3,
-            tStack2))) {
-            GT_ModHandler.addPulverisationRecipe(
-                tStack,
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L),
-                0,
-                false);
+            tStack2);
+        if (null != tStack) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(tStack)
+                .itemOutputs(
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 4L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L))
+                .outputChances(10000, 1000)
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(20 * SECONDS)
+                .eut(2)
+                .addTo(sMaceratorRecipes);
         }
         GT_Log.out.println("GT_Mod: Registering various Tools to be usable on GregTech Machines");
         GregTech_API.registerScrewdriver(
@@ -265,15 +278,21 @@ public class GT_ItemIterator implements Runnable {
                                 .addTo(GT_RecipeConstants.Fuel);
                         }
                         if (tName.equals("tile.TFRoots")) {
-                            GT_ModHandler.addPulverisationRecipe(
-                                new ItemStack(tItem, 1, 0),
-                                new ItemStack(Items.stick, 2),
-                                new ItemStack(Items.stick, 1),
-                                30);
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(new ItemStack(tItem, 1, 0))
+                                .itemOutputs(new ItemStack(Items.stick, 2), new ItemStack(Items.stick, 1))
+                                .outputChances(10000, 3000)
+                                .noFluidInputs()
+                                .noFluidOutputs()
+                                .duration(20 * SECONDS)
+                                .eut(2)
+                                .addTo(sMaceratorRecipes);
+
                             GT_ModHandler.addSawmillRecipe(
                                 new ItemStack(tItem, 1, 0),
                                 new ItemStack(Items.stick, 4),
                                 new ItemStack(Items.stick, 2));
+
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(new ItemStack(tItem, 1, 1))
                                 .itemOutputs(new ItemStack(Items.stick, 4))
