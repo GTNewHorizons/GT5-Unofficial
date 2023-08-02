@@ -467,19 +467,12 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                     return SimpleCheckRecipeResult.ofFailure("no_catalyst");
                 }
 
-                int mCurrentMaxParallel = 0;
-                int mMaxParallel = getMaxParallelRecipes();
+                maxParallel = 0;
                 for (ItemStack item : inputItems) {
                     if (ItemUtils.isCatalyst(item) && item.isItemEqual(catalyst)) {
-                        mCurrentMaxParallel += item.stackSize;
-                    }
-
-                    if (mCurrentMaxParallel >= mMaxParallel) {
-                        mCurrentMaxParallel = mMaxParallel;
-                        break;
+                        maxParallel += item.stackSize;
                     }
                 }
-                maxParallel = mCurrentMaxParallel;
 
                 doFermium = false;
                 doNeptunium = false;
@@ -654,10 +647,6 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
         }
 
         return true;
-    }
-
-    public int getMaxParallelRecipes() {
-        return 64;
     }
 
     @Override
