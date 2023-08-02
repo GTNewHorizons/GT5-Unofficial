@@ -1989,56 +1989,28 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         return true;
     } // Use in EM check recipe return statement if you want overclocking
 
-    @Override // same as gt sum of all hatches
-    public long getMaxInputVoltage() {
-        return getMaxInputVoltageSum();
-    }
-
-    // same as gt sum of all hatches
+    /**
+     * Use {@link #getMaxInputVoltage()}
+     */
+    @Deprecated
     public final long getMaxInputVoltageSum() {
-        long rVoltage = 0;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                rVoltage += tHatch.maxEUInput();
-            }
-        }
-        for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                rVoltage += tHatch.maxEUInput();
-            }
-        }
-        return rVoltage;
+        return getMaxInputVoltage();
     }
 
-    // new Method
+    /**
+     * Use {@link #getMaxInputEu()}
+     */
+    @Deprecated
     public final long getMaxInputEnergy() {
-        long energy = 0;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                energy += tHatch.maxEUInput() * tHatch.maxAmperesIn();
-            }
-        }
-        for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                energy += tHatch.maxEUInput() * tHatch.maxAmperesIn();
-            }
-        }
-        return energy;
+        return getMaxInputEu();
     }
 
+    /**
+     * Use {@link #getMaxInputEu()}
+     */
+    @Deprecated
     public final long getMaxInputEnergy_EM() {
-        long energy = 0;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                energy += tHatch.maxEUInput();
-            }
-        }
-        for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti) {
-            if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tHatch)) {
-                energy += tHatch.maxEUInput() * tHatch.Amperes;
-            }
-        }
-        return energy;
+        return getMaxInputEu();
     }
 
     // new Method
@@ -2053,6 +2025,21 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
 
     public final long getMaxAmpereFlowAtMinTierOfEnergyHatches() {
         return eAmpereFlow;
+    }
+
+    @Override
+    public List<GT_MetaTileEntity_Hatch> getExoticAndNormalEnergyHatchList() {
+        List<GT_MetaTileEntity_Hatch> list = new ArrayList<>();
+        list.addAll(mEnergyHatches);
+        list.addAll(eEnergyMulti);
+        return list;
+    }
+
+    @Override
+    public List<GT_MetaTileEntity_Hatch> getExoticEnergyHatches() {
+        List<GT_MetaTileEntity_Hatch> list = new ArrayList<>();
+        list.addAll(eEnergyMulti);
+        return list;
     }
 
     // endregion
