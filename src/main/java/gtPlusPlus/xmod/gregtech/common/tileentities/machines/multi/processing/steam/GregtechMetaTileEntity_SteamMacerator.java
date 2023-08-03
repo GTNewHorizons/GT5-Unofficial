@@ -147,6 +147,6 @@ public class GregtechMetaTileEntity_SteamMacerator
                     return items.toArray(new ItemStack[0]);
                 });
             }
-        };
+        }.setMaxParallel(getMaxParallelRecipes());
     }
 }

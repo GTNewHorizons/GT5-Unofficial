@@ -17,6 +17,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
@@ -117,6 +118,11 @@ public class GregtechMetaTileEntity_SteamCompressor
     @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
+    }
+
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return super.createProcessingLogic().setMaxParallel(getMaxParallelRecipes());
     }
 
 }
