@@ -137,14 +137,7 @@ public class LargeFusionComputer5 extends LargeFusionComputerPP {
 
     @Override
     public int tierOverclock() {
-        return 256;
-    }
-
-    @Override
-    public int overclock(int mStartEnergy) {
-        return (mStartEnergy < 160000000) ? 256
-                : ((mStartEnergy < 320000000) ? 64
-                        : ((mStartEnergy < 640000000) ? 16 : ((mStartEnergy < 1200000000) ? 4 : 1)));
+        return 16;
     }
 
     @Override

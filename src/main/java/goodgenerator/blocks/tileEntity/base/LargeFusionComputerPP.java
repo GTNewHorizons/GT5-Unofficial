@@ -1,8 +1,5 @@
 package goodgenerator.blocks.tileEntity.base;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.Textures.BlockIcons.*;
-
 import gregtech.api.logic.ProcessingLogic;
 
 public abstract class LargeFusionComputerPP extends LargeFusionComputer {
@@ -19,4 +16,11 @@ public abstract class LargeFusionComputerPP extends LargeFusionComputer {
     protected ProcessingLogic createProcessingLogic() {
         return super.createProcessingLogic().setOverclock(2, 2);
     }
+
+    @Override
+    protected long getSingleHatchPower() {
+        // Multiply by 8 so that we can have the original input power per hatch
+        return super.getSingleHatchPower() * 8;
+    }
+
 }
