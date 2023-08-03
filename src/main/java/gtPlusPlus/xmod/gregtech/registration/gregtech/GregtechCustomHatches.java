@@ -91,7 +91,7 @@ public class GregtechCustomHatches {
 
         // Multiblock Reservoir Hatch
         GregtechItemList.Hatch_Reservoir.set(
-                new GT_MetaTileEntity_Hatch_Reservoir(31071, "hatch.water.intake.tier.00", "Reservoir Hatch", 6)
+                new GT_MetaTileEntity_Hatch_Reservoir(31071, "hatch.water.intake.tier.00", "Reservoir Hatch", 4)
                         .getStackForm(1L));
 
         // Steam Hatch
