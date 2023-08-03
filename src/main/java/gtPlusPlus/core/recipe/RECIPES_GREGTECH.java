@@ -2,7 +2,7 @@ package gtPlusPlus.core.recipe;
 
 import static gregtech.api.enums.Mods.Backpack;
 import static gregtech.api.enums.Mods.Baubles;
-import static gregtech.api.enums.Mods.PamsHarvestCraft;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -916,20 +916,28 @@ public class RECIPES_GREGTECH {
                 30);
 
         /*
-         * Try Add custom Recipe for drying leather
+         * Add custom recipes for drying leather
          */
-        if (PamsHarvestCraft.isModLoaded() && Backpack.isModLoaded()) {
-            ItemStack aLeather1, aLeather2;
-            aLeather1 = ItemUtils.getCorrectStacktype("harvestcraft:hardenedleatherItem", 1);
-            aLeather2 = ItemUtils.getCorrectStacktype("Backpack:tannedLeather", 1);
+        if (Backpack.isModLoaded()) {
             CORE.RA.addDehydratorRecipe(
-                    new ItemStack[] { CI.getNumberedAdvancedCircuit(18), aLeather1 },
+                    new ItemStack[] { CI.getNumberedAdvancedCircuit(18), new ItemStack(Items.leather, 2) },
                     FluidUtils.getFluidStack("fluid.ethylbenzene", 1000),
                     null,
-                    new ItemStack[] { aLeather2 },
+                    new ItemStack[] { ItemUtils.getCorrectStacktype("Backpack:tannedLeather", 1) },
                     new int[] { 10000 },
                     5 * 20,
                     180);
+            if (NewHorizonsCoreMod.isModLoaded()) {
+                CORE.RA.addDehydratorRecipe(
+                        new ItemStack[] { CI.getNumberedAdvancedCircuit(18),
+                                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ArtificialLeather", 2L, 0) },
+                        FluidUtils.getFluidStack("fluid.ethylbenzene", 1000),
+                        null,
+                        new ItemStack[] { ItemUtils.getCorrectStacktype("Backpack:tannedLeather", 1) },
+                        new int[] { 10000 },
+                        5 * 20,
+                        180);
+            }
         }
         // Alternative ACETIC ANHYDRIDE recipe for Kevlar Line
         // 2C2H4O2 = C4H6O3 + H2O
