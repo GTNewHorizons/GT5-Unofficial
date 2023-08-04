@@ -4,6 +4,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.logic.interfaces.ProcessingLogicHost;
+import net.minecraft.item.ItemStack;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.multitileentity.interfaces.UpgradableModularMuTE;
@@ -11,27 +16,29 @@ import gregtech.api.util.GT_StructureUtilityMuTE.UpgradeCasings;
 
 public abstract class StackableModularController<T extends StackableModularController<T>> extends StackableController<T>
     implements UpgradableModularMuTE {
+    protected long durationMultiplier = 1;
+    protected long euTickMultiplier = 1;
 
-    private Map<UpgradeCasings, Integer[]> mucMap;
+    private Map<UpgradeCasings, int[]> mucMap;
 
-    protected @NotNull Map<UpgradeCasings, Integer[]> getMucMap() {
+    protected @NotNull Map<UpgradeCasings, int[]> getMucMap() {
         if (mucMap == null) {
             mucMap = createMucMap();
         }
         return mucMap;
     }
 
-    protected static @NotNull Map<UpgradeCasings, Integer[]> createMucMap() {
-        Map<UpgradeCasings, Integer[]> mucCount = new HashMap<>();
-        mucCount.put(UpgradeCasings.Heater, new Integer[] { 0, 0, 0, 0, 0 });
-        mucCount.put(UpgradeCasings.Insulator, new Integer[] { 0, 0, 0, 0, 0 });
+    protected static @NotNull Map<UpgradeCasings, int[]> createMucMap() {
+        Map<UpgradeCasings, int[]> mucCount = new HashMap<>();
+        mucCount.put(UpgradeCasings.Heater, new int[] { 0, 0, 0, 0, 0 });
+        mucCount.put(UpgradeCasings.Insulator, new int[] { 0, 0, 0, 0, 0 });
         return mucCount;
     }
 
     @Override
     public void increaseMucCount(UpgradeCasings casingType, int tier) {
-        Map<UpgradeCasings, Integer[]> mucCounters = getMucMap();
-        Integer[] casingCount = mucCounters.get(casingType);
+        Map<UpgradeCasings, int[]> mucCounters = getMucMap();
+        int[] casingCount = mucCounters.get(casingType);
 
         switch (tier) {
             case 0, 1, 2 -> casingCount[0] += 1;
@@ -44,7 +51,49 @@ public abstract class StackableModularController<T extends StackableModularContr
 
     @Override
     public void resetMucCount() {
-        Map<UpgradeCasings, Integer[]> mucCounters = getMucMap();
+        Map<UpgradeCasings, int[]> mucCounters = getMucMap();
         mucCounters.forEach((type, casingCount) -> { Arrays.fill(casingCount, 0); });
+    }
+
+    protected abstract void calculateMucMultipliers();
+
+    @Override
+    protected boolean checkRecipe() {
+        if (!(this instanceof ProcessingLogicHost)) {
+            return false;
+        }
+        ProcessingLogic logic = ((ProcessingLogicHost) this).getProcessingLogic();
+        logic.clear();
+        boolean result = false;
+        if (isSeparateInputs()) {
+            // TODO: Add separation with fluids
+            for (Pair<ItemStack[], String> inventory : getItemInputsForEachInventory()) {
+                IItemHandlerModifiable outputInventory = multiBlockOutputInventory
+                    .getOrDefault(inventory.getLeft(), null);
+                result = logic.setInputItems(inventory.getLeft())
+                    .setCurrentOutputItems(getOutputItems())
+                    .process();
+                if (result) {
+                    inventoryName = inventory.getRight();
+                    break;
+                }
+                logic.clear();
+            }
+        } else {
+            result = logic.setInputItems(getInputItems())
+                .setCurrentOutputItems(getOutputItems())
+                .setInputFluids(getInputFluids())
+                .setCurrentOutputFluids(getOutputFluids())
+                .setVoltage(power.getVoltage())
+                .setAmperage(amperage)
+                .setPerfectOverclock(hasPerfectOverclock())
+                .setIsCleanroom(isCleanroom)
+                .process();
+        }
+        setDuration(logic.getDuration() * durationMultiplier);
+        setEut(logic.getEut() * euTickMultiplier);
+        setItemOutputs(logic.getOutputItems());
+        setFluidOutputs(logic.getOutputFluids());
+        return result;
     }
 }
