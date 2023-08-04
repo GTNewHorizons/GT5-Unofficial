@@ -43,7 +43,7 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_START = new Vec3Impl(0, 0, -3);
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_STACK = new Vec3Impl(0, 0, -2);
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_STOP = new Vec3Impl(0, 0, -1);
-    private final ProcessingLogic foundryProcessingLogic = new GenericProcessingLogic(GT_Recipe_Map.sPyrolyseRecipes);
+    private final ProcessingLogic cokeBatteryProcessingLogic = new GenericProcessingLogic(GT_Recipe_Map.sPyrolyseRecipes);
 
     @Override
     public String getTileEntityName() {
@@ -200,7 +200,7 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Coke Oven")
-            .addInfo("Controller for the Layered Coke Foundry")
+            .addInfo("Controller for the Layered Coke Battery")
             .addSeparator()
             .beginVariableStructureBlock(7, 9, 2 + getMinStacks(), 2 + getMaxStacks(), 7, 9, true)
             .addController("Bottom Front Center")
@@ -253,6 +253,6 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
 
     @Override
     public ProcessingLogic getProcessingLogic() {
-        return foundryProcessingLogic;
+        return cokeBatteryProcessingLogic;
     }
 }
