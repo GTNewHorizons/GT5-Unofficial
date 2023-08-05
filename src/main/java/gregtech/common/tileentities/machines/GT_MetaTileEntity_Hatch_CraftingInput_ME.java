@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import appeng.helpers.IInterfaceTerminalSupport;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -56,6 +55,7 @@ import appeng.api.util.DimensionalCoord;
 import appeng.core.AppEng;
 import appeng.core.sync.GuiBridge;
 import appeng.helpers.ICustomNameObject;
+import appeng.helpers.IInterfaceTerminalSupport;
 import appeng.items.misc.ItemEncodedPattern;
 import appeng.items.tools.quartz.ToolQuartzCuttingKnife;
 import appeng.me.GridAccessException;
@@ -407,12 +407,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     @Override
     public PatternsConfiguration[] getPatternsConfigurations() {
-        return new PatternsConfiguration[] {
-            new PatternsConfiguration(0, 8),
-            new PatternsConfiguration(8, 8),
-            new PatternsConfiguration(16, 8),
-            new PatternsConfiguration(24, 8),
-        };
+        return new PatternsConfiguration[] { new PatternsConfiguration(0, 8), new PatternsConfiguration(8, 8),
+            new PatternsConfiguration(16, 8), new PatternsConfiguration(24, 8), };
     }
 
     @Override
