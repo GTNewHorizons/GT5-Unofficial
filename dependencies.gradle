@@ -33,9 +33,6 @@
  *
  * For more details, see https://docs.gradle.org/8.0.1/userguide/java_library_plugin.html#sec:java_library_configurations_graph
  */
-repositories {
-    mavenLocal()
-}
 dependencies {
     api("com.github.GTNewHorizons:StructureLib:1.2.7:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
@@ -43,7 +40,7 @@ dependencies {
     api("com.github.GTNewHorizons:GTNHLib:0.0.13:dev")
     api("com.github.GTNewHorizons:ModularUI:1.1.16:dev")
     api("com.github.GTNewHorizons:waila:1.6.0:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-243-GTNH-4-g7e29860.dirty:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-247-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.1.29-gtnh-pre:dev")
     implementation("com.github.GTNewHorizons:Eternal-Singularity:1.1.0:dev")
 
