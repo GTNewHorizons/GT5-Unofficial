@@ -13,6 +13,8 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -26,6 +28,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.lib.CORE;
@@ -147,6 +150,13 @@ public class GregtechMetaTileEntity_SteamMacerator
                     return items.toArray(new ItemStack[0]);
                 });
             }
+
+            @Override
+            @Nonnull
+            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
+                return GT_OverclockCalculator.ofNoOverclock(recipe);
+            }
+
         }.setMaxParallel(getMaxParallelRecipes());
     }
 }

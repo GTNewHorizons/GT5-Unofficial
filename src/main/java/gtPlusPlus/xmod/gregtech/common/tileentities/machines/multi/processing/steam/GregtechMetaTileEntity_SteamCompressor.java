@@ -7,7 +7,11 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.GregTech_API.sBlockCasings1;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -20,6 +24,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_SteamMultiBase;
@@ -122,7 +127,14 @@ public class GregtechMetaTileEntity_SteamCompressor
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return super.createProcessingLogic().setMaxParallel(getMaxParallelRecipes());
+        return new ProcessingLogic() {
+
+            @Override
+            @Nonnull
+            protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
+                return GT_OverclockCalculator.ofNoOverclock(recipe);
+            }
+        }.setMaxParallel(getMaxParallelRecipes());
     }
 
 }
