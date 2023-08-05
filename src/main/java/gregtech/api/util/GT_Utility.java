@@ -884,7 +884,8 @@ public class GT_Utility {
                 if (s == null) {
                     tPutFreeSlots.add(slot);
                 } else if ((s.stackSize < s.getMaxStackSize() && s.stackSize < toInventory.getInventoryStackLimit())
-                    && aMinMoveAtOnce <= s.getMaxStackSize() - s.stackSize) {
+                    && aMinMoveAtOnce <= s.getMaxStackSize() - s.stackSize
+                    && isAllowedToPutIntoSlot(toInventory, slot, putSide, s, (byte) 64)) {
                         ItemId sID = ItemId.createNoCopy(s);
                         tPutItems.merge(
                             sID,
