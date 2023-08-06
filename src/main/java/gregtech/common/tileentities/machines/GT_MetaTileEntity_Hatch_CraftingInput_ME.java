@@ -23,6 +23,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import com.glodblock.github.common.item.ItemFluidPacket;
@@ -272,6 +274,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
     }
 
+    private static final Logger logger = LogManager.getLogger();
     // mInventory is used for storing patterns, circuit and manual slot (typically NC items)
     private static final int MAX_PATTERN_COUNT = 4 * 8;
     private static final int MAX_INV_COUNT = MAX_PATTERN_COUNT + 2;
@@ -679,7 +682,15 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
         for (PatternSlot slot : internalInventory) {
             if (slot == null) continue;
-            craftingTracker.addCraftingOption(this, slot.getPatternDetails());
+            ICraftingPatternDetails details = slot.getPatternDetails();
+            if (details == null) {
+                logger.warn(
+                    "Found an invalid pattern at " + getBaseMetaTileEntity().getCoords()
+                        + " in dim "
+                        + getBaseMetaTileEntity().getWorld().provider.dimensionId);
+                continue;
+            }
+            craftingTracker.addCraftingOption(this, details);
         }
     }
 
