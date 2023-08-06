@@ -592,26 +592,26 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     @Override
     public void addUIWidgets(ModularWindow.@NotNull Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 9)
-                    .startFromSlot(0)
-                    .endAtSlot(MAX_PATTERN_COUNT - 1)
-                    .phantom(false)
-                    .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_PATTERN_ME)
-                    .widgetCreator(slot -> new SlotWidget(slot) {
+            SlotGroup.ofItemHandler(inventoryHandler, 9)
+                .startFromSlot(0)
+                .endAtSlot(MAX_PATTERN_COUNT - 1)
+                .phantom(false)
+                .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_PATTERN_ME)
+                .widgetCreator(slot -> new SlotWidget(slot) {
 
-                        @Override
-                        protected ItemStack getItemStackForRendering(Slot slotIn) {
-                            var stack = slot.getStack();
-                            if (stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem)) {
-                                return stack;
-                            }
-                            var output = patternItem.getOutput(stack);
-                            return output != null ? output : stack;
+                    @Override
+                    protected ItemStack getItemStackForRendering(Slot slotIn) {
+                        var stack = slot.getStack();
+                        if (stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem)) {
+                            return stack;
                         }
-                    }.setFilter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
-                        .setChangeListener(() -> onPatternChange(slot.getSlotIndex(), slot.getStack())))
-                    .build()
-                    .setPos(7, 9))
+                        var output = patternItem.getOutput(stack);
+                        return output != null ? output : stack;
+                    }
+                }.setFilter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
+                    .setChangeListener(() -> onPatternChange(slot.getSlotIndex(), slot.getStack())))
+                .build()
+                .setPos(7, 9))
             .widget(
                 new SlotWidget(inventoryHandler, SLOT_MANUAL).setShiftClickPriority(11)
                     .setBackground(getGUITextureSet().getItemSlot())
