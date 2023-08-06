@@ -13,6 +13,7 @@ import static gregtech.api.util.GT_StructureUtilityMuTE.INSULATOR_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.MOTOR_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.ofMuTECasings;
 
+import gregtech.api.util.GT_StructureUtilityMuTE;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -33,6 +34,10 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.common.tileentities.machines.multiblock.logic.GenericProcessingLogic;
+
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.IntStream;
 
 public class LayeredCokeBattery extends StackableModularController<LayeredCokeBattery> implements ProcessingLogicHost {
 
@@ -182,8 +187,27 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
         }
 
         calculateTier();
+        if (!calculateMucMultipliers()) {
+            return false;
+        }
         updatePowerLogic();
         return tier > 0;
+    }
+
+    protected boolean calculateMucMultipliers() {
+        Map<GT_StructureUtilityMuTE.UpgradeCasings, int[]>  mucMap = getMucMap();
+        int[] heaterList = mucMap.get(GT_StructureUtilityMuTE.UpgradeCasings.Heater);
+        int[] insulatorList = mucMap.get(GT_StructureUtilityMuTE.UpgradeCasings.Insulator);
+        int totalHeaterCount = Arrays.stream(heaterList).sum();
+        int totalInsulatorCount = Arrays.stream(insulatorList).sum();
+        if (totalHeaterCount + totalInsulatorCount < stackCount || totalInsulatorCount > totalHeaterCount) {
+            return false;
+        }
+        if (totalHeaterCount > 0 && totalInsulatorCount > 0) {
+            durationMultiplier = 1.0 / totalHeaterCount;
+            euTickMultiplier = 1.0 / totalInsulatorCount;
+        }
+        return true;
     }
 
     @Override

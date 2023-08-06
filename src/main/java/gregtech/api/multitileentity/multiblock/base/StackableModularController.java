@@ -16,8 +16,8 @@ import gregtech.api.util.GT_StructureUtilityMuTE.UpgradeCasings;
 
 public abstract class StackableModularController<T extends StackableModularController<T>> extends StackableController<T>
     implements UpgradableModularMuTE {
-    protected long durationMultiplier = 1;
-    protected long euTickMultiplier = 1;
+    protected double durationMultiplier = 1;
+    protected double euTickMultiplier = 1;
 
     private Map<UpgradeCasings, int[]> mucMap;
 
@@ -55,7 +55,8 @@ public abstract class StackableModularController<T extends StackableModularContr
         mucCounters.forEach((type, casingCount) -> { Arrays.fill(casingCount, 0); });
     }
 
-    protected abstract void calculateMucMultipliers();
+
+    protected abstract boolean calculateMucMultipliers();
 
     @Override
     protected boolean checkRecipe() {
@@ -90,8 +91,8 @@ public abstract class StackableModularController<T extends StackableModularContr
                 .setIsCleanroom(isCleanroom)
                 .process();
         }
-        setDuration(logic.getDuration() * durationMultiplier);
-        setEut(logic.getEut() * euTickMultiplier);
+        setDuration((long) (logic.getDuration() * durationMultiplier));
+        setEut((long) (logic.getEut() * euTickMultiplier));
         setItemOutputs(logic.getOutputItems());
         setFluidOutputs(logic.getOutputFluids());
         return result;
