@@ -400,7 +400,25 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     @Override
     public String getName() {
-        return hasCustomName() ? getCustomName() : getInventoryName();
+        if (hasCustomName()) {
+            return getCustomName();
+        }
+        StringBuilder name = new StringBuilder();
+        if (getCrafterIcon() != null) {
+            name.append(getCrafterIcon().getDisplayName());
+        } else {
+            name.append(getInventoryName());
+        }
+
+        if (mInventory[SLOT_CIRCUIT] != null) {
+            name.append(" - ");
+            name.append(mInventory[SLOT_CIRCUIT].getItemDamage());
+        }
+        if (mInventory[SLOT_MANUAL] != null) {
+            name.append(" - ");
+            name.append(mInventory[SLOT_MANUAL].getDisplayName());
+        }
+        return name.toString();
     }
 
     @Override
@@ -829,12 +847,12 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     @Override
     public String getCustomName() {
-        return customName != null ? customName : getCrafterIcon() != null ? getCrafterIcon().getDisplayName() : null;
+        return customName != null ? customName : null;
     }
 
     @Override
     public boolean hasCustomName() {
-        return customName != null || getCrafterIcon() != null;
+        return customName != null;
     }
 
     @Override
