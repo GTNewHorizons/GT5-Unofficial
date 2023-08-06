@@ -483,7 +483,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
 
         // Migrate from 4x8 to 4x9 pattern inventory
-        int oldPatternCount = 4*8;
+        int oldPatternCount = 4 * 8;
         int oldSlotManual = oldPatternCount - 1;
         int oldSlotCircuit = oldPatternCount - 2;
 
