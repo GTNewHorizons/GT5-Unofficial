@@ -7,6 +7,7 @@ import java.util.Map;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.ProcessingLogicHost;
+import gregtech.api.util.GT_StructureUtilityMuTE;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -55,6 +56,20 @@ public abstract class StackableModularController<T extends StackableModularContr
         mucCounters.forEach((type, casingCount) -> { Arrays.fill(casingCount, 0); });
     }
 
+    protected abstract UpgradeCasings getBaseMucType();
+
+    protected abstract int getParallelFactor();
+
+    protected void calculateParallels() {
+        int parallelCount = 0;
+        int parallelFactor = getParallelFactor();
+        int[] parallelCasingList = mucMap.get(getBaseMucType());
+
+        for (int i = 0; i < 5; i++) {
+            parallelCount += parallelCasingList[i] * (i+1) * parallelFactor;
+        }
+        maxParallel = parallelCount;
+    }
 
     protected abstract boolean calculateMucMultipliers();
 

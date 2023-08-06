@@ -33,6 +33,7 @@ import gregtech.api.multitileentity.multiblock.base.StackableModularController;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.GT_StructureUtilityMuTE.UpgradeCasings;
 import gregtech.common.tileentities.machines.multiblock.logic.GenericProcessingLogic;
 
 import java.util.Arrays;
@@ -63,6 +64,14 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
     @Override
     public Vec3Impl getStartingStructureOffset() {
         return STRUCTURE_OFFSET_BASE;
+    }
+
+    public UpgradeCasings getBaseMucType() {
+        return UpgradeCasings.Heater;
+    }
+
+    public int getParallelFactor() {
+        return 2;
     }
 
     @Override
@@ -190,14 +199,15 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
         if (!calculateMucMultipliers()) {
             return false;
         }
+        calculateParallels();
         updatePowerLogic();
         return tier > 0;
     }
 
     protected boolean calculateMucMultipliers() {
-        Map<GT_StructureUtilityMuTE.UpgradeCasings, int[]>  mucMap = getMucMap();
-        int[] heaterList = mucMap.get(GT_StructureUtilityMuTE.UpgradeCasings.Heater);
-        int[] insulatorList = mucMap.get(GT_StructureUtilityMuTE.UpgradeCasings.Insulator);
+        Map<UpgradeCasings, int[]>  mucMap = getMucMap();
+        int[] heaterList = mucMap.get(UpgradeCasings.Heater);
+        int[] insulatorList = mucMap.get(UpgradeCasings.Insulator);
         int totalHeaterCount = Arrays.stream(heaterList).sum();
         int totalInsulatorCount = Arrays.stream(insulatorList).sum();
         if (totalHeaterCount + totalInsulatorCount < stackCount || totalInsulatorCount > totalHeaterCount) {
