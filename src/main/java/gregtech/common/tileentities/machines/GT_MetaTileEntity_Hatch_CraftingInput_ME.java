@@ -297,7 +297,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     }
 
     // mInventory is used for storing patterns, circuit and manual slot (typically NC items)
-    private static final int MAX_PATTERN_COUNT = 4 * 8;
+    private static final int MAX_PATTERN_COUNT = 4 * 9;
     private static final int MAX_INV_COUNT = MAX_PATTERN_COUNT + 2;
     private static final int SLOT_MANUAL = MAX_INV_COUNT - 1;
     private static final int SLOT_CIRCUIT = MAX_INV_COUNT - 2;
@@ -407,8 +407,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     @Override
     public PatternsConfiguration[] getPatternsConfigurations() {
-        return new PatternsConfiguration[] { new PatternsConfiguration(0, 8), new PatternsConfiguration(8, 8),
-            new PatternsConfiguration(16, 8), new PatternsConfiguration(24, 8), };
+        return new PatternsConfiguration[] { new PatternsConfiguration(0, 9), new PatternsConfiguration(9, 9),
+            new PatternsConfiguration(18, 9), new PatternsConfiguration(27, 9), };
     }
 
     @Override
@@ -418,7 +418,25 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     @Override
     public String getName() {
-        return hasCustomName() ? getCustomName() : getInventoryName();
+        if (hasCustomName()) {
+            return getCustomName();
+        }
+        StringBuilder name = new StringBuilder();
+        if (getCrafterIcon() != null) {
+            name.append(getCrafterIcon().getDisplayName());
+        } else {
+            name.append(getInventoryName());
+        }
+
+        if (mInventory[SLOT_CIRCUIT] != null) {
+            name.append(" - ");
+            name.append(mInventory[SLOT_CIRCUIT].getItemDamage());
+        }
+        if (mInventory[SLOT_MANUAL] != null) {
+            name.append(" - ");
+            name.append(mInventory[SLOT_MANUAL].getDisplayName());
+        }
+        return name.toString();
     }
 
     @Override
@@ -484,6 +502,20 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                     "An error occurred while loading contents of ME Crafting Input Bus. This pattern has been voided: "
                         + patternSlotNBT);
             }
+        }
+
+        // Migrate from 4x8 to 4x9 pattern inventory
+        int oldPatternCount = 4*8;
+        int oldSlotManual = oldPatternCount - 1;
+        int oldSlotCircuit = oldPatternCount - 2;
+
+        if (internalInventory[oldSlotManual] == null && mInventory[oldSlotManual] != null) {
+            mInventory[SLOT_MANUAL] = mInventory[oldSlotManual];
+            mInventory[oldSlotManual] = null;
+        }
+        if (internalInventory[oldSlotCircuit] == null && mInventory[oldSlotCircuit] != null) {
+            mInventory[SLOT_CIRCUIT] = mInventory[oldSlotCircuit];
+            mInventory[oldSlotCircuit] = null;
         }
 
         // reconstruct patternDetailsPatternSlotMap
@@ -575,7 +607,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     @Override
     public int getCircuitSlotX() {
-        return 152;
+        return 170;
     }
 
     @Override
@@ -589,9 +621,14 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     }
 
     @Override
+    public int getGUIWidth() {
+        return super.getGUIWidth() + 16;
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.@NotNull Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            SlotGroup.ofItemHandler(inventoryHandler, 8)
+            SlotGroup.ofItemHandler(inventoryHandler, 9)
                 .startFromSlot(0)
                 .endAtSlot(MAX_PATTERN_COUNT - 1)
                 .phantom(false)
@@ -614,7 +651,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             .widget(
                 new SlotWidget(inventoryHandler, SLOT_MANUAL).setShiftClickPriority(11)
                     .setBackground(getGUITextureSet().getItemSlot())
-                    .setPos(151, 45))
+                    .setPos(169, 45))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (clickData.mouseButton == 0) {
                     refundAll();
@@ -624,7 +661,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                 .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EXPORT)
                 .addTooltips(ImmutableList.of("Return all internally stored items back to AE"))
                 .setSize(16, 16)
-                .setPos(152, 28));
+                .setPos(170, 28));
     }
 
     @Override
@@ -861,12 +898,12 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     @Override
     public String getCustomName() {
-        return customName != null ? customName : getCrafterIcon() != null ? getCrafterIcon().getDisplayName() : null;
+        return customName != null ? customName : null;
     }
 
     @Override
     public boolean hasCustomName() {
-        return customName != null || getCrafterIcon() != null;
+        return customName != null;
     }
 
     @Override
