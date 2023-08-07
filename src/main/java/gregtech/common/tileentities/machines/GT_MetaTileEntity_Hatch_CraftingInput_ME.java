@@ -58,6 +58,7 @@ import appeng.me.helpers.IGridProxyable;
 import appeng.util.IWideReadableNumberConverter;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -679,7 +680,15 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
         for (PatternSlot slot : internalInventory) {
             if (slot == null) continue;
-            craftingTracker.addCraftingOption(this, slot.getPatternDetails());
+            ICraftingPatternDetails details = slot.getPatternDetails();
+            if (details == null) {
+                GT_Mod.GT_FML_LOGGER.warn(
+                    "Found an invalid pattern at " + getBaseMetaTileEntity().getCoords()
+                        + " in dim "
+                        + getBaseMetaTileEntity().getWorld().provider.dimensionId);
+                continue;
+            }
+            craftingTracker.addCraftingOption(this, details);
         }
     }
 
