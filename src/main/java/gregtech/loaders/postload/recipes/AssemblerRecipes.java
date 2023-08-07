@@ -682,7 +682,7 @@ public class AssemblerRecipes implements Runnable {
             .fluidInputs(Materials.Glass.getMolten(2304L))
             .noFluidOutputs()
             .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
+            .eut(TierEU.RECIPE_EV)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -694,7 +694,7 @@ public class AssemblerRecipes implements Runnable {
             .fluidInputs(Materials.Glass.getMolten(2304L))
             .noFluidOutputs()
             .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
+            .eut(TierEU.RECIPE_IV)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -706,7 +706,7 @@ public class AssemblerRecipes implements Runnable {
             .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(2304L))
             .noFluidOutputs()
             .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
+            .eut(TierEU.RECIPE_LuV)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -718,7 +718,7 @@ public class AssemblerRecipes implements Runnable {
             .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(2304L))
             .noFluidOutputs()
             .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
+            .eut(TierEU.RECIPE_ZPM)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -730,7 +730,7 @@ public class AssemblerRecipes implements Runnable {
             .fluidInputs(Materials.Polybenzimidazole.getMolten(2304L))
             .noFluidOutputs()
             .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
+            .eut(TierEU.RECIPE_UV)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -742,7 +742,7 @@ public class AssemblerRecipes implements Runnable {
             .fluidInputs(Materials.Polybenzimidazole.getMolten(2304L))
             .noFluidOutputs()
             .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
+            .eut(TierEU.RECIPE_UHV)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()

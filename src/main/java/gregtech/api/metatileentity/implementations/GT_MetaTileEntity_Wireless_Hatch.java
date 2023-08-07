@@ -129,6 +129,8 @@ public class GT_MetaTileEntity_Wireless_Hatch extends GT_MetaTileEntity_Hatch_En
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
 
+        if (!aBaseMetaTileEntity.isServerSide()) return;
+
         // UUID and username of the owner.
         owner_uuid = aBaseMetaTileEntity.getOwnerUuid()
             .toString();
