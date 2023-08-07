@@ -294,6 +294,10 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     // a hash map for faster lookup of pattern slots, not necessarily all valid.
     private Map<ICraftingPatternDetails, PatternSlot> patternDetailsPatternSlotMap = new HashMap<>(MAX_PATTERN_COUNT);
 
+    static private PatternsConfiguration[] patternConfigurations = new PatternsConfiguration[] {
+        new PatternsConfiguration(0, 9), new PatternsConfiguration(9, 9), new PatternsConfiguration(18, 9),
+        new PatternsConfiguration(27, 9) };
+
     private boolean needPatternSync = true;
     private boolean justHadNewItems = false;
 
@@ -390,8 +394,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     @Override
     public PatternsConfiguration[] getPatternsConfigurations() {
-        return new PatternsConfiguration[] { new PatternsConfiguration(0, 9), new PatternsConfiguration(9, 9),
-            new PatternsConfiguration(18, 9), new PatternsConfiguration(27, 9), };
+        return patternConfigurations;
     }
 
     @Override
