@@ -56,8 +56,10 @@ public abstract class StackableModularController<T extends StackableModularContr
         mucCounters.forEach((type, casingCount) -> { Arrays.fill(casingCount, 0); });
     }
 
+    // Returns the cheapest MUC that is possible for the multi, which gets the minimum bonuses.
     protected abstract UpgradeCasings getBaseMucType();
 
+    // Minimum parallel bonus per MUC. Higher tier MUCs multiply with this value for even more parallels.
     protected abstract int getParallelFactor();
 
     protected void calculateParallels() {
@@ -66,9 +68,13 @@ public abstract class StackableModularController<T extends StackableModularContr
         int[] parallelCasingList = mucMap.get(getBaseMucType());
 
         for (int i = 0; i < 5; i++) {
-            parallelCount += parallelCasingList[i] * (i+1) * parallelFactor;
+            // (i * 3 + 1) -> Convert MUC tier into minimum GT tier, in groups of 3 (LV, EV, LuV, UHV, UMV)
+            // If higher than multi tier, upgrade casing has no effect
+            if (i * 3 + 1 <= tier) {
+                parallelCount += parallelCasingList[i] * (i + 1) * parallelFactor;
+            }
         }
-        maxParallel = parallelCount;
+        maxParallel = parallelCount == 0 ? 1 : parallelCount;
     }
 
     protected abstract boolean calculateMucMultipliers();
@@ -102,6 +108,7 @@ public abstract class StackableModularController<T extends StackableModularContr
                 .setCurrentOutputFluids(getOutputFluids())
                 .setVoltage(power.getVoltage())
                 .setAmperage(amperage)
+                .setMaxParallel(maxParallel)
                 .setPerfectOverclock(hasPerfectOverclock())
                 .setIsCleanroom(isCleanroom)
                 .process();
