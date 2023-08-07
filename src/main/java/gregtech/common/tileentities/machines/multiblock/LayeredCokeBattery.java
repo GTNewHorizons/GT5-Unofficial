@@ -113,34 +113,34 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
                 .addShape(
                     STACKABLE_STOP,
                     transpose(
-                        new String[][] { { "AAAAAAAAAAAAA", "AAAAAAAAAAAAA" }, { " B B B B B B ", "AFAFAFAFAFAFA" },
-                            { "CB B B B B BC", "AFAFAFAFAFAFA" }, { " B B B B B B ", "AFAFAFAFAFAFA" },
+                        new String[][] { { "AHFFFFAFFFFHA", "AAAAAAAAAAAAA" }, { " B B B B B B ", "AFAFAFAFAFAFA" },
+                            { "HB B B B B BH", "AFAFAFAFAFAFA" }, { " B B B B B B ", "AFAFAFAFAFAFA" },
                             { " B B B B B B ", "AFAFAFAFAFAFA" }, { " B B B B B B ", "AFAFAFAFAFAFA" },
                             { " B B B B B B ", "AFAFAFAFAFAFA" }, { " B B B B B B ", "AFAFAFAFAFAFA" },
-                            { " B B B B B B ", "AFAFAFAFAFAFA" }, { "CB B B B B BC", "AFAFAFAFAFAFA" },
+                            { " B B B B B B ", "AFAFAFAFAFAFA" }, { "HB B B B B BH", "AFAFAFAFAFAFA" },
                             { " B B B B B B ", "AFAFAFAFAFAFA" }, { "AAAAAAAAAAAAA", "AAAAAAAAAAAAA" } }))
                 .addShape(
                     STACKABLE_MIDDLE,
                     transpose(
-                        new String[][] { { "ADFFFFHFFFFDA", "AAAAAAAAAAAAA" }, { " B    A    B ", "AAAAAAAAAAAAA" },
-                            { "CB    A    BC", "AAAAAAAAAAAAA" }, { " B    A    B ", "AAAAAAAAAAAAA" },
+                        new String[][] { { "AHFFFFAFFFFHA", "AAAAAAAAAAAAA" }, { " B    A    B ", "AAAAAAAAAAAAA" },
+                            { "HB    A    BH", "AAAAAAAAAAAAA" }, { " B    A    B ", "AAAAAAAAAAAAA" },
                             { " B    A    B ", "AAAAAAAAAAAAA" }, { " B    A    B ", "AAAAAAAAAAAAA" },
                             { " B    A    B ", "AAAAAAAAAAAAA" }, { " B    A    B ", "AAAAAAAAAAAAA" },
-                            { " B    A    B ", "AAAAAAAAAAAAA" }, { "CB    A    BC", "AAAAAAAAAAAAA" },
+                            { " B    A    B ", "AAAAAAAAAAAAA" }, { "HB    A    BH", "AAAAAAAAAAAAA" },
                             { " B    A    B ", "AAAAAAAAAAAAA" }, { "AAAAAAAAAAAAA", "AAAAAAAAAAAAA" } }))
                 .addShape(
                     STACKABLE_START,
                     transpose(
-                        new String[][] { { "AAAAAAAAAAAAA", "AAAAAAAAAAAAA", "AAAAAAAAAAAAA" },
+                        new String[][] { { "AAAAAAAAAAAAA", "AHFFFFAFFFFHA", "AAAAAAAAAAAAA" },
                             { "AFAFAFAFAFAFA", " B B B B B B ", "AAAAAAAAAAAAA" },
-                            { "AFAFAFAFAFAFA", "CB B B B B BC", "AAAAAAAAAAAAA" },
-                            { "AFAFAFAFAFAFA", " B B B B B B ", "AAAAAAAAAAAAA" },
-                            { "AFAFAFAFAFAFA", " B B B B B B ", "AAAAAAAAAAAAA" },
+                            { "AFAFAFAFAFAFA", "HB B B B B BH", "AAAAAAAAAAAAA" },
                             { "AFAFAFAFAFAFA", " B B B B B B ", "AAAAAAAAAAAAA" },
                             { "AFAFAFAFAFAFA", " B B B B B B ", "AAAAAAAAAAAAA" },
                             { "AFAFAFAFAFAFA", " B B B B B B ", "AAAAAAAAAAAAA" },
                             { "AFAFAFAFAFAFA", " B B B B B B ", "AAAAAAAAAAAAA" },
-                            { "AFAFAFAFAFAFA", "CB B B B B BC", "AAAAAAAAAAAAA" },
+                            { "AFAFAFAFAFAFA", " B B B B B B ", "AAAAAAAAAAAAA" },
+                            { "AFAFAFAFAFAFA", " B B B B B B ", "AAAAAAAAAAAAA" },
+                            { "AFAFAFAFAFAFA", "HB B B B B BH", "AAAAAAAAAAAAA" },
                             { "AFAFAFAFAFAFA", " B B B B B B ", "AAAAAAAAAAAAA" },
                             { "AAAAAAAAAAAAA", "AAAAAAAAAAAAA", "AAAAAAAAAAAAA" } }))
                 .addElement(
