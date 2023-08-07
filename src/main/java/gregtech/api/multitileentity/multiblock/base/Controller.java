@@ -102,6 +102,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     protected VoidingMode voidingMode = getDefaultVoidingMode();
     protected boolean batchMode = getDefaultBatchMode();
     protected boolean recipeLock = getDefaultRecipeLockingMode();
+    protected boolean shouldSort = false;
     /** If this is set to true, the machine will get default WAILA behavior */
     protected boolean isSimpleMachine = true;
 
@@ -928,13 +929,15 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     @Override
-    protected void outputItems() {
-
+    protected void outputItems(@Nullable UUID inventoryID) {
+        ItemInventoryLogic inventory = controllerItemOutput.getInventoryLogic(inventoryID);
+        for (int i = 0; i < itemsToOutput.length; i++) {
+            inventory.insertItem(itemsToOutput[i]);
+        }
+        fluidsToOutput = null;
     }
 
-    protected void setFluidOutputs(String tank, FluidStack... fluidOutputs) {
-
-    }
+    protected void setFluidOutputs(String tank, FluidStack... fluidOutputs) {}
 
     @Override
     protected void setFluidOutputs(FluidStack... outputs) {
@@ -942,13 +945,24 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     @Override
-    protected void outputFluids() {
-
+    protected void outputFluids(@Nullable UUID inventoryID) {
+        FluidInventoryLogic inventory = controllerFluidOutput.getInventoryLogic(inventoryID);
+        for (int i = 0; i < fluidsToOutput.length; i++) {
+            inventory.fill(fluidsToOutput[i]);
+        }
+        fluidsToOutput = null;
     }
 
     @Override
     protected void updateSlots() {
-
+        controllerItemInput.getAllInventoryLogics()
+            .update(shouldSort);
+        controllerItemOutput.getAllInventoryLogics()
+            .update(shouldSort);
+        controllerFluidInput.getAllInventoryLogics()
+            .update();
+        controllerFluidOutput.getAllInventoryLogics()
+            .update();
     }
 
     @Override

@@ -669,6 +669,21 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     public String getInventoryName() {
-        return null;
+        IMultiBlockController controller = getTarget(false);
+        if (controller == null) return "";
+        if (!modeSelected(ITEM_IN, ITEM_OUT, FLUID_IN, FLUID_OUT)) return "";
+        if (modeSelected(ITEM_IN, ITEM_OUT)) {
+            InventoryType type = modeSelected(ITEM_IN) ? InventoryType.Input : InventoryType.Output;
+            ItemInventoryLogic itemLogic = controller.getItemLogic(type, lockedInventory);
+            if (itemLogic == null) return "";
+            return itemLogic.getDisplayName();
+        }
+        if (modeSelected(FLUID_IN, FLUID_OUT)) {
+            InventoryType type = modeSelected(FLUID_IN) ? InventoryType.Input : InventoryType.Output;
+            FluidInventoryLogic fluidLogic = controller.getFluidLogic(type, lockedInventory);
+            if (fluidLogic == null) return "";
+            return fluidLogic.getDisplayName();
+        }
+        return "";
     }
 }

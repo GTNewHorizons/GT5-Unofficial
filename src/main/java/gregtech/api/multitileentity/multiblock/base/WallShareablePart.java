@@ -33,13 +33,10 @@ public class WallShareablePart extends MultiBlockPart {
 
     @Override
     public UUID getLockedInventory() {
-        issueClientUpdate();
         if (targetPositions.size() > 1) {
             return null;
         }
-
-        IMultiBlockController controller = getTarget(false);
-        return null;
+        return super.getLockedInventory();
     }
 
     @Override

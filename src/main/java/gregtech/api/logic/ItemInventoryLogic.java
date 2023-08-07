@@ -41,6 +41,7 @@ public class ItemInventoryLogic {
     private static final Size SIZE = new Size(18, 18);
 
     protected String displayName;
+    @Nonnull
     protected final IItemHandlerModifiable inventory;
     protected UUID connectedFluidInventory;
     protected int tier;
@@ -85,7 +86,6 @@ public class ItemInventoryLogic {
         return getInventory().getSlots();
     }
 
-    @Nonnull
     public void setDisplayName(@Nullable String displayName) {
         this.displayName = displayName;
     }
@@ -186,6 +186,11 @@ public class ItemInventoryLogic {
         return inventory.extractItem(slot, amount, false);
     }
 
+    @Nullable
+    public ItemStack getItemInSlot(int slot) {
+        return inventory.getStackInSlot(slot);
+    }
+
     public void sort() {
         Map<ItemHolder, Integer> itemsToSort = new HashMap<>();
         List<ItemHolder> items = new ArrayList<>();
@@ -216,6 +221,19 @@ public class ItemInventoryLogic {
         }
     }
 
+    public void update(boolean shouldSort) {
+        if (shouldSort) {
+            sort();
+        }
+
+        for (int i = 0; i < inventory.getSlots(); i++) {
+            ItemStack item = inventory.getStackInSlot(i);
+            if (item == null) continue;
+            if (item.stackSize > 0) continue;
+            inventory.setStackInSlot(i, null);
+        }
+    }
+
     @Nonnull
     public Widget getGuiPart() {
         return getGUIPart(DEFAULT_COLUMNS_PER_ROW);
@@ -223,7 +241,8 @@ public class ItemInventoryLogic {
 
     @Nonnull
     public Widget getGUIPart(int columnsPerRow) {
-        final Scrollable scrollable = new Scrollable().setVerticalScroll();
+        final Scrollable scrollable = new Scrollable();
+        scrollable.setVerticalScroll();
         for (int rows = 0; rows * columnsPerRow < Math.min(inventory.getSlots(), 128); rows++) {
             final int columnsToMake = Math
                 .min(Math.min(inventory.getSlots(), 128) - rows * columnsPerRow, columnsPerRow);

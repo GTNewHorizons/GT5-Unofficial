@@ -92,8 +92,10 @@ public class ControllerItemLogic {
         if (id == null) return "";
         ItemInventoryLogic logic = inventories.get(id);
         if (logic == null) return "";
-        return logic.getDisplayName() == null || logic.getDisplayName()
-            .isEmpty() ? id.toString() : logic.getDisplayName();
+        if (logic.getDisplayName() == null) return id.toString();
+        if (logic.getDisplayName()
+            .isEmpty()) return id.toString();
+        return logic.getDisplayName();
     }
 
     public void setInventoryDisplayName(@Nullable UUID id, @Nullable String displayName) {
@@ -128,7 +130,8 @@ public class ControllerItemLogic {
             NBTTagCompound inventoryNBT = inventoriesNBT.getCompoundTagAt(i);
             UUID uuid = UUID.fromString(inventoryNBT.getString("uuid"));
             ItemInventoryLogic inventory = new ItemInventoryLogic(inventoryNBT.getInteger("invSize"));
-            inventory.loadFromNBT(inventoryNBT.getCompoundTag("inventory"));
+            NBTTagCompound internalInventoryNBT = inventoryNBT.getCompoundTag("inventory");
+            if (internalInventoryNBT != null) inventory.loadFromNBT(internalInventoryNBT);
             if (inventory.isUpgradeInventory()) {
                 unallocatedInventories.add(Pair.of(uuid, inventory));
             } else {

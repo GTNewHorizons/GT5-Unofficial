@@ -35,6 +35,7 @@ public class FluidInventoryLogic {
     private static final Size SIZE = new Size(18, 18);
 
     protected String displayName = "";
+    @Nonnull
     protected final IFluidTanksHandler inventory;
     protected final Map<Fluid, IFluidTankLong> fluidToTankMap;
     protected int tier = 0;
@@ -162,6 +163,15 @@ public class FluidInventoryLogic {
         return tank.fill(fluid, amount, !simulate);
     }
 
+    @Nullable
+    public FluidStack fill(@Nullable FluidStack fluid) {
+        if (fluid == null) return null;
+        for (int i = 0; i < inventory.getTanks(); i++) {
+            fill(fluid.getFluid(), fluid.amount, false);
+        }
+        return fluid;
+    }
+
     /**
      * Try and drain the first fluid found for that amount. Used by GT_Cover_Pump
      * 
@@ -193,6 +203,14 @@ public class FluidInventoryLogic {
         }
         fluidToTankMap.put(fluid, tank);
         return tank.drain(amount, !simulate);
+    }
+
+    public void update() {
+        for (int i = 0; i < inventory.getTanks(); i++) {
+            IFluidTankLong tank = inventory.getFluidTank(i);
+            if (tank.getFluidAmountLong() > 0) continue;
+            tank.setFluid(null, 0);
+        }
     }
 
     public Widget getGuiPart() {

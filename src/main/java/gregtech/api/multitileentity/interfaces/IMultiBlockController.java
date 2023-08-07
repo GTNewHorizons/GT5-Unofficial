@@ -2,6 +2,9 @@ package gregtech.api.multitileentity.interfaces;
 
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -39,15 +42,16 @@ public interface IMultiBlockController
 
     ModularWindow createWindowGUI(UIBuildContext buildContext);
 
-    UUID registerItemInventory(int slots, int tier, InventoryType type, boolean isUpgradeInventory);
+    UUID registerItemInventory(int slots, int tier, @Nonnull InventoryType type, boolean isUpgradeInventory);
 
-    ItemInventoryLogic unregisterItemInventory(UUID id, InventoryType type);
+    ItemInventoryLogic unregisterItemInventory(@Nonnull UUID id, @Nonnull InventoryType type);
 
-    void changeItemInventoryDisplayName(UUID id, String displayName, InventoryType type);
+    void changeItemInventoryDisplayName(@Nonnull UUID id, @Nullable String displayName, @Nonnull InventoryType type);
 
-    UUID registerFluidInventory(int tanks, long capacity, int tier, InventoryType type, boolean isUpgradeInventory);
+    UUID registerFluidInventory(int tanks, long capacity, int tier, @Nonnull InventoryType type,
+        boolean isUpgradeInventory);
 
-    FluidInventoryLogic unregisterFluidInventory(UUID id, InventoryType type);
+    FluidInventoryLogic unregisterFluidInventory(@Nonnull UUID id, @Nonnull InventoryType type);
 
-    void changeFluidInventoryDisplayName(UUID id, String displayName, InventoryType type);
+    void changeFluidInventoryDisplayName(@Nonnull UUID id, @Nullable String displayName, @Nonnull InventoryType type);
 }

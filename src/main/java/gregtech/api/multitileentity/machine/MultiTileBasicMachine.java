@@ -4,6 +4,10 @@ import static gregtech.api.enums.GT_Values.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -378,8 +383,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         if (maxProgressTime > 0 && ++progressTime >= maxProgressTime) {
             progressTime = 0;
             maxProgressTime = 0;
-            outputItems();
-            outputFluids();
+            outputItems(null);
+            outputFluids(null);
             if (isAllowedToWork()) {
                 if (!checkRecipe()) {
                     setActive(false);
@@ -490,13 +495,17 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         return fluidInput.getStoredFluids();
     }
 
-    protected void outputItems() {
-        // TODO make it work with new logic
+    protected void outputItems(@Nullable UUID inventoryID) {
+        for (int i = 0; i < itemsToOutput.length; i++) {
+            itemOutput.insertItem(itemsToOutput[i]);
+        }
         itemsToOutput = null;
     }
 
-    protected void outputFluids() {
-        // TODO make it work with new logic
+    protected void outputFluids(@Nullable UUID inventoryID) {
+        for (int i = 0; i < fluidsToOutput.length; i++) {
+            fluidOutput.fill(fluidsToOutput[i]);
+        }
         fluidsToOutput = null;
     }
 
@@ -587,7 +596,26 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     }
 
     protected boolean consumeFuel() {
-        // TODO: rework to use new logic
+        if (isElectric() || isSteam()) return false;
+        if (isActive() && burnTime <= 0) {
+            for (int i = 0; i < itemInput.getSlots(); i++) {
+                ItemStack item = itemInput.getItemInSlot(i);
+                if (item == null) continue;
+                int checkBurnTime = TileEntityFurnace.getItemBurnTime(item) / 10;
+                if (checkBurnTime <= 0) continue;
+                item.stackSize--;
+                burnTime = checkBurnTime;
+                totalBurnTime = checkBurnTime;
+                break;
+            }
+            updateSlots();
+        }
+
+        if (--burnTime < 0) {
+            burnTime = 0;
+            totalBurnTime = 0;
+            return false;
+        }
         return false;
     }
 
@@ -677,7 +705,10 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     }
 
     protected void updateSlots() {
-        // TODO: make a method in new logic
+        itemInput.update(false);
+        itemOutput.update(false);
+        fluidInput.update();
+        fluidOutput.update();
     }
 
     /**
@@ -763,7 +794,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         }
     }
 
-    public ItemInventoryLogic getItemLogic(ForgeDirection side, InventoryType type) {
+    @Nullable
+    public ItemInventoryLogic getItemLogic(@Nonnull ForgeDirection side, @Nonnull InventoryType type) {
         if (side == facing) return null;
         return switch (type) {
             case Input -> itemInput;
@@ -772,7 +804,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         };
     }
 
-    public FluidInventoryLogic getFluidLogic(ForgeDirection side, InventoryType type) {
+    @Nullable
+    public FluidInventoryLogic getFluidLogic(@Nonnull ForgeDirection side, @Nonnull InventoryType type) {
         if (side == facing) return null;
         return switch (type) {
             case Input -> fluidInput;
