@@ -78,45 +78,4 @@ public abstract class StackableModularController<T extends StackableModularContr
     }
 
     protected abstract boolean calculateMucMultipliers();
-
-    @Override
-    protected boolean checkRecipe() {
-        if (!(this instanceof ProcessingLogicHost)) {
-            return false;
-        }
-        ProcessingLogic logic = ((ProcessingLogicHost) this).getProcessingLogic();
-        logic.clear();
-        boolean result = false;
-        if (isSeparateInputs()) {
-            // TODO: Add separation with fluids
-            for (Pair<ItemStack[], String> inventory : getItemInputsForEachInventory()) {
-                IItemHandlerModifiable outputInventory = multiBlockOutputInventory
-                    .getOrDefault(inventory.getLeft(), null);
-                result = logic.setInputItems(inventory.getLeft())
-                    .setCurrentOutputItems(getOutputItems())
-                    .process();
-                if (result) {
-                    inventoryName = inventory.getRight();
-                    break;
-                }
-                logic.clear();
-            }
-        } else {
-            result = logic.setInputItems(getInputItems())
-                .setCurrentOutputItems(getOutputItems())
-                .setInputFluids(getInputFluids())
-                .setCurrentOutputFluids(getOutputFluids())
-                .setVoltage(power.getVoltage())
-                .setAmperage(amperage)
-                .setMaxParallel(maxParallel)
-                .setPerfectOverclock(hasPerfectOverclock())
-                .setIsCleanroom(isCleanroom)
-                .process();
-        }
-        setDuration((long) (logic.getDuration() * durationMultiplier));
-        setEut((long) (logic.getEut() * euTickMultiplier));
-        setItemOutputs(logic.getOutputItems());
-        setFluidOutputs(logic.getOutputFluids());
-        return result;
-    }
 }
