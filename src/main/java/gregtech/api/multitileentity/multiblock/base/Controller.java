@@ -1310,13 +1310,11 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     @Override
     public List<ItemStack> getItemOutputSlots(ItemStack[] toOutput) {
-        // TODO Remake methods
-        throw new UnsupportedOperationException("Unimplemented method 'getItemOutputSlots'");
+        return new ArrayList<>(0);
     }
 
     @Override
     public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
-        // TODO Remake methods
-        throw new UnsupportedOperationException("Unimplemented method 'getFluidOutputSlots'");
+        return new ArrayList<>(0);
     }
 }
