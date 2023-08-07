@@ -8,6 +8,7 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_OUT;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHING;
+import static gregtech.api.util.GT_StructureUtilityMuTE.AMPERAGE_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.HEATER_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.INSULATOR_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.MOTOR_CASINGS;
@@ -106,7 +107,7 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
                 .addShape(
                     STRUCTURE_PIECE_BASE,
                     transpose(
-                        new String[][] { { " AAA ", "AAAAA", "AEEEA", "AAAAA" }, { " AAA ", "A   A", "A   A", "AAAAA" },
+                        new String[][] { { " AAA ", "AAAAA", "AEEEP", "AAAAA" }, { " AAA ", "A   A", "A   A", "AAAAA" },
                             { " A~A ", "A   A", "A   A", "AAAAA" }, { " AAA ", "A   A", "A   A", "AAAAA" },
                             { " AAA ", "AAAAA", "AAAAA", "AAAAA" } }))
                 .addShape(
@@ -163,6 +164,7 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
                         ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks2", 0, true),
                         ofBlockUnlocalizedName(Thaumcraft.ID, "blockCosmeticOpaque", 2, false)))
                 .addElement('H', ofMuTECasings(NOTHING, HEATER_CASINGS, INSULATOR_CASINGS))
+                .addElement('P', ofMuTECasings(NOTHING, AMPERAGE_CASINGS))
                 .build();
         }
         return STRUCTURE_DEFINITION_MEGA;
@@ -213,8 +215,8 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
         if (totalHeaterCount + totalInsulatorCount < stackCount || totalInsulatorCount > totalHeaterCount) {
             return false;
         }
-        if (totalHeaterCount > 0 && totalInsulatorCount > 0) {
-            durationMultiplier = 1.0 / totalHeaterCount;
+        if (totalInsulatorCount > 0) {
+            // durationMultiplier = 1.0 / totalHeaterCount;
             euTickMultiplier = 1.0 / totalInsulatorCount;
         }
         return true;
