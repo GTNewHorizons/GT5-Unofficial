@@ -391,22 +391,6 @@ public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalP
     }
 
     @Override
-    protected void outputItems(int index) {
-        ComplexParallelProcessingLogic processingLogic = getComplexProcessingLogic();
-        if (processingLogic != null && index >= 0 && index < maxComplexParallels) {
-            // TODO: Fix for new Logic
-        }
-    }
-
-    @Override
-    protected void outputFluids(int index) {
-        ComplexParallelProcessingLogic processingLogic = getComplexProcessingLogic();
-        if (processingLogic != null && index >= 0 && index < maxComplexParallels) {
-            // TODO: fix for new logic
-        }
-    }
-
-    @Override
     protected MultiChildWidget createMainPage(IWidgetBuilder<?> builder) {
         MultiChildWidget child = super.createMainPage(builder);
         for (int i = 0; i < MAX_PROCESSES; i++) {
