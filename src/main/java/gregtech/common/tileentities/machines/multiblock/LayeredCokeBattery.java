@@ -216,6 +216,7 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
             return false;
         }
         if (totalInsulatorCount > 0) {
+            // To be improved later, when more MUCs are added
             // durationMultiplier = 1.0 / totalHeaterCount;
             euTickMultiplier = 1.0 / totalInsulatorCount;
         }
