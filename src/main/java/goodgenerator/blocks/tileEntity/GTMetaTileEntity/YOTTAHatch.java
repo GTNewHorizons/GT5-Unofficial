@@ -181,7 +181,7 @@ public class YOTTAHatch extends GT_MetaTileEntity_Hatch implements IGridProxyabl
     public IAEFluidStack extractItems(IAEFluidStack request, Actionable mode, BaseActionSource src) {
         IAEFluidStack ready = drain(null, request, false);
         if (ready != null) {
-            if (mode.equals(Actionable.MODULATE)) drain(null, request.getFluidStack(), true);
+            if (mode.equals(Actionable.MODULATE)) drain(null, ready, true);
             return ready;
         } else return null;
     }
