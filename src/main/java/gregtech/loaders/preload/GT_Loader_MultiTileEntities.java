@@ -34,8 +34,8 @@ import gregtech.common.tileentities.casings.upgrade.Wireless;
 import gregtech.common.tileentities.machines.multiblock.AdvChemicalProcessor;
 import gregtech.common.tileentities.machines.multiblock.CokeOven;
 import gregtech.common.tileentities.machines.multiblock.DistillationTower;
-import gregtech.common.tileentities.machines.multiblock.Macerator;
 import gregtech.common.tileentities.machines.multiblock.LayeredCokeBattery;
+import gregtech.common.tileentities.machines.multiblock.Macerator;
 
 public class GT_Loader_MultiTileEntities implements Runnable {
 

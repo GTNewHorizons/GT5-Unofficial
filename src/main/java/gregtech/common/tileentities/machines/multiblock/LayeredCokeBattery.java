@@ -14,7 +14,9 @@ import static gregtech.api.util.GT_StructureUtilityMuTE.INSULATOR_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.MOTOR_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.ofMuTECasings;
 
-import gregtech.api.util.GT_StructureUtilityMuTE;
+import java.util.Arrays;
+import java.util.Map;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -24,20 +26,16 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.StackableModularController;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_StructureUtilityMuTE.UpgradeCasings;
-import gregtech.common.tileentities.machines.multiblock.logic.GenericProcessingLogic;
-
-import java.util.Arrays;
-import java.util.Map;
-import java.util.stream.IntStream;
 
 public class LayeredCokeBattery extends StackableModularController<LayeredCokeBattery> implements ProcessingLogicHost {
 
@@ -48,7 +46,7 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_START = new Vec3Impl(0, 0, -3);
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_STACK = new Vec3Impl(0, 0, -2);
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_STOP = new Vec3Impl(0, 0, -1);
-    private final ProcessingLogic cokeBatteryProcessingLogic = new GenericProcessingLogic(GT_Recipe_Map.sPyrolyseRecipes);
+    private final ProcessingLogic cokeBatteryProcessingLogic = new ProcessingLogic();
 
     @Override
     public String getTileEntityName() {
@@ -176,7 +174,7 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
         if (!checkPiece(STRUCTURE_PIECE_BASE, buildState.getCurrentOffset())) return buildState.failBuilding();
 
         buildState.addOffset(getMegaPositionOffset());
-        if (checkPiece(STACKABLE_START, buildState.getCurrentOffset())){
+        if (checkPiece(STACKABLE_START, buildState.getCurrentOffset())) {
             buildState.addOffset(getStartingStackOffset());
             for (int i = 0; i < getMaxStacks(); i++) {
                 if (checkPiece(getStackableMiddle(i), buildState.getCurrentOffset())) {
@@ -205,11 +203,13 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
     }
 
     protected boolean calculateMucMultipliers() {
-        Map<UpgradeCasings, int[]>  mucMap = getMucMap();
+        Map<UpgradeCasings, int[]> mucMap = getMucMap();
         int[] heaterList = mucMap.get(UpgradeCasings.Heater);
         int[] insulatorList = mucMap.get(UpgradeCasings.Insulator);
-        int totalHeaterCount = Arrays.stream(heaterList).sum();
-        int totalInsulatorCount = Arrays.stream(insulatorList).sum();
+        int totalHeaterCount = Arrays.stream(heaterList)
+            .sum();
+        int totalInsulatorCount = Arrays.stream(insulatorList)
+            .sum();
         if (totalHeaterCount + totalInsulatorCount < stackCount || totalInsulatorCount > totalHeaterCount) {
             return false;
         }
@@ -279,7 +279,6 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
     public Vec3Impl getAfterLastStackOffset() {
         return STRUCTURE_OFFSET_MEGA_STOP;
     }
-
 
     @SideOnly(Side.CLIENT)
     @Override
