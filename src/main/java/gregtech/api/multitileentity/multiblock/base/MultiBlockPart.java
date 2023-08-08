@@ -671,7 +671,6 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     public String getInventoryName() {
         IMultiBlockController controller = getTarget(false);
         if (controller == null) return "";
-        if (!modeSelected(ITEM_IN, ITEM_OUT, FLUID_IN, FLUID_OUT)) return "";
         if (modeSelected(ITEM_IN, ITEM_OUT)) {
             InventoryType type = modeSelected(ITEM_IN) ? InventoryType.Input : InventoryType.Output;
             ItemInventoryLogic itemLogic = controller.getItemLogic(type, lockedInventory);
