@@ -83,7 +83,7 @@ public class ControllerFluidLogic {
     @Nonnull
     public FluidInventoryLogic getInventoryLogic(@Nullable UUID id) {
         if (id == null) return getAllInventoryLogics();
-        return inventories.get(id);
+        return inventories.getOrDefault(id, getAllInventoryLogics());
     }
 
     @Nonnull

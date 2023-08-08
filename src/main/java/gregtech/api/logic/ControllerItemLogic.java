@@ -84,7 +84,7 @@ public class ControllerItemLogic {
     @Nonnull
     public ItemInventoryLogic getInventoryLogic(@Nullable UUID id) {
         if (id == null) return getAllInventoryLogics();
-        return inventories.get(id);
+        return inventories.getOrDefault(id, getAllInventoryLogics());
     }
 
     @Nullable
