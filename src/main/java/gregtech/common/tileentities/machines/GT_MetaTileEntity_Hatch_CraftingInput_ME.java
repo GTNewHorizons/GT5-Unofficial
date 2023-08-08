@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Size;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -298,9 +300,14 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     // mInventory is used for storing patterns, circuit and manual slot (typically NC items)
     private static final int MAX_PATTERN_COUNT = 4 * 9;
-    private static final int MAX_INV_COUNT = MAX_PATTERN_COUNT + 2;
-    private static final int SLOT_MANUAL = MAX_INV_COUNT - 1;
-    private static final int SLOT_CIRCUIT = MAX_INV_COUNT - 2;
+    private static final int SLOT_MANUAL_SIZE = 9;
+    private static final int MAX_INV_COUNT = MAX_PATTERN_COUNT + SLOT_MANUAL_SIZE + 1;
+    private static final int SLOT_CIRCUIT = MAX_PATTERN_COUNT;
+    private static final int SLOT_MANUAL_START = SLOT_CIRCUIT + 1;
+    private static final int MANUAL_SLOT_WINDOW = 10;
+    private static final PatternsConfiguration[] patternConfigurations = new PatternsConfiguration[] {
+        new PatternsConfiguration(0, 9), new PatternsConfiguration(9, 9), new PatternsConfiguration(18, 9),
+        new PatternsConfiguration(27, 9) };
 
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
@@ -310,10 +317,6 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     // a hash map for faster lookup of pattern slots, not necessarily all valid.
     private Map<ICraftingPatternDetails, PatternSlot> patternDetailsPatternSlotMap = new HashMap<>(MAX_PATTERN_COUNT);
-
-    static private PatternsConfiguration[] patternConfigurations = new PatternsConfiguration[] {
-        new PatternsConfiguration(0, 9), new PatternsConfiguration(9, 9), new PatternsConfiguration(18, 9),
-        new PatternsConfiguration(27, 9) };
 
     private boolean needPatternSync = true;
     private boolean justHadNewItems = false;
@@ -435,9 +438,9 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             name.append(" - ");
             name.append(mInventory[SLOT_CIRCUIT].getItemDamage());
         }
-        if (mInventory[SLOT_MANUAL] != null) {
+        if (mInventory[SLOT_MANUAL_START] != null) {
             name.append(" - ");
-            name.append(mInventory[SLOT_MANUAL].getDisplayName());
+            name.append(mInventory[SLOT_MANUAL_START].getDisplayName());
         }
         return name.toString();
     }
@@ -509,11 +512,11 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
         // Migrate from 4x8 to 4x9 pattern inventory
         int oldPatternCount = 4 * 8;
-        int oldSlotManual = oldPatternCount - 1;
-        int oldSlotCircuit = oldPatternCount - 2;
+        int oldSlotManual = oldPatternCount + 1;
+        int oldSlotCircuit = oldPatternCount;
 
         if (internalInventory[oldSlotManual] == null && mInventory[oldSlotManual] != null) {
-            mInventory[SLOT_MANUAL] = mInventory[oldSlotManual];
+            mInventory[SLOT_MANUAL_START] = mInventory[oldSlotManual];
             mInventory[oldSlotManual] = null;
         }
         if (internalInventory[oldSlotCircuit] == null && mInventory[oldSlotCircuit] != null) {
@@ -630,36 +633,44 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     @Override
     public void addUIWidgets(ModularWindow.@NotNull Builder builder, UIBuildContext buildContext) {
+        buildContext.addSyncedWindow(MANUAL_SLOT_WINDOW, this::createSlotManualWindow);
         builder.widget(
-            SlotGroup.ofItemHandler(inventoryHandler, 9)
-                .startFromSlot(0)
-                .endAtSlot(MAX_PATTERN_COUNT - 1)
-                .phantom(false)
-                .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_PATTERN_ME)
-                .widgetCreator(slot -> new SlotWidget(slot) {
+                SlotGroup.ofItemHandler(inventoryHandler, 9)
+                    .startFromSlot(0)
+                    .endAtSlot(MAX_PATTERN_COUNT - 1)
+                    .phantom(false)
+                    .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_PATTERN_ME)
+                    .widgetCreator(slot -> new SlotWidget(slot) {
 
-                    @Override
-                    protected ItemStack getItemStackForRendering(Slot slotIn) {
-                        var stack = slot.getStack();
-                        if (stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem)) {
-                            return stack;
+                        @Override
+                        protected ItemStack getItemStackForRendering(Slot slotIn) {
+                            var stack = slot.getStack();
+                            if (stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem)) {
+                                return stack;
+                            }
+                            var output = patternItem.getOutput(stack);
+                            return output != null ? output : stack;
                         }
-                        var output = patternItem.getOutput(stack);
-                        return output != null ? output : stack;
-                    }
-                }.setFilter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
-                    .setChangeListener(() -> onPatternChange(slot.getSlotIndex(), slot.getStack())))
-                .build()
-                .setPos(7, 9))
+                    }.setFilter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
+                        .setChangeListener(() -> onPatternChange(slot.getSlotIndex(), slot.getStack())))
+                    .build()
+                    .setPos(7, 9))
             .widget(
-                new SlotWidget(inventoryHandler, SLOT_MANUAL).setShiftClickPriority(11)
-                    .setBackground(getGUITextureSet().getItemSlot())
-                    .setPos(169, 45))
+                new ButtonWidget().setOnClick((clickData, widget) -> {
+                        if (clickData.mouseButton == 0) {
+                            widget.getContext().openSyncedWindow(MANUAL_SLOT_WINDOW);
+                        }
+                    })
+                    .setPlayClickSound(true)
+                    .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE)
+                    .addTooltips(ImmutableList.of("Place manual items"))
+                    .setSize(16, 16)
+                    .setPos(170, 45))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (clickData.mouseButton == 0) {
-                    refundAll();
-                }
-            })
+                    if (clickData.mouseButton == 0) {
+                        refundAll();
+                    }
+                })
                 .setPlayClickSound(true)
                 .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EXPORT)
                 .addTooltips(ImmutableList.of("Return all internally stored items back to AE"))
@@ -669,7 +680,10 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     @Override
     public void updateSlots() {
-        if (mInventory[SLOT_MANUAL] != null && mInventory[SLOT_MANUAL].stackSize <= 0) mInventory[SLOT_MANUAL] = null;
+        for (int slotId = SLOT_MANUAL_START; slotId < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; ++slotId) {
+            if (mInventory[slotId] != null && mInventory[slotId].stackSize <= 0)
+                mInventory[slotId] = null;
+        }
     }
 
     private BaseActionSource getRequest() {
@@ -707,7 +721,10 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     }
 
     private ItemStack[] getSharedItems() {
-        return new ItemStack[] { mInventory[SLOT_CIRCUIT], mInventory[SLOT_MANUAL] };
+        ItemStack[] sharedItems = new ItemStack[SLOT_MANUAL_SIZE + 1];
+        sharedItems[0] = mInventory[SLOT_CIRCUIT];
+        System.arraycopy(mInventory, SLOT_MANUAL_START, sharedItems, 0, SLOT_MANUAL_SIZE);
+        return sharedItems;
     }
 
     @Override
@@ -890,6 +907,37 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
         return true;
     }
+
+
+    protected ModularWindow createSlotManualWindow(final EntityPlayer player) {
+        final int WIDTH = 68;
+        final int HEIGHT = 68;
+        final int PARENT_WIDTH = getGUIWidth();
+        final int PARENT_HEIGHT = getGUIHeight();
+        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
+        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
+        builder.setDraggable(true);
+        // make sure the manual window is within the parent window
+        // otherwise picking up manual items would toss them
+        // See GuiContainer.java flag1
+        builder.setPos(
+            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
+                .add(
+                    Alignment.TopRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))));
+        builder
+            .widget(
+                SlotGroup.ofItemHandler(inventoryHandler, 3)
+                .startFromSlot(SLOT_MANUAL_START)
+                .endAtSlot(SLOT_MANUAL_START + SLOT_MANUAL_SIZE - 1)
+                .phantom(false)
+                .background(getGUITextureSet().getItemSlot())
+                .build()
+                .setPos(7, 7)
+            );
+        return builder.build();
+    }
+
 
     @Override
     public void setInventorySlotContents(int aIndex, ItemStack aStack) {
