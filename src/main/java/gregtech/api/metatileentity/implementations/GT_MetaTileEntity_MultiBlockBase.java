@@ -779,9 +779,6 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                         return result;
                     }
                 }
-                if (result.wasSuccessful()) {
-                    return result;
-                }
             }
         }
 
@@ -1531,6 +1528,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof IDualInputHatch hatch) {
+            if (!supportsCraftingMEBuffer()) return false;
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return mDualInputHatches.add(hatch);
