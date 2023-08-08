@@ -450,4 +450,9 @@ public class GT_TileEntity_CircuitAssemblyLine extends
         String imprintedWith = getTypeForDisplay();
         if (!imprintedWith.isEmpty()) tag.setString("ImprintedWith", imprintedWith);
     }
+
+    @Override
+    protected boolean supportsCraftingMEBuffer() {
+        return false;
+    }
 }
