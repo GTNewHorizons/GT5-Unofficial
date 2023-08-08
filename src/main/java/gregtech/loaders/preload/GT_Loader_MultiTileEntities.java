@@ -118,7 +118,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .tankCapacity(128000L)
             .register();
         MACHINE_REGISTRY.create(3, LayeredCokeBattery.class)
-            .name("Layered Coke Foundry")
+            .name("Layered Coke Battery")
             .category("Multiblock Controller")
             .setBlock(MACHINE_BLOCK)
             .material(Materials.Iron)

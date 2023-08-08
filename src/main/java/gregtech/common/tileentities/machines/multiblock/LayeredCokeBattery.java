@@ -8,17 +8,13 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_OUT;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHING;
+import static gregtech.api.util.GT_StructureUtilityMuTE.AMPERAGE_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.HEATER_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.INSULATOR_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.MOTOR_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.ofMuTECasings;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.Materials;
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.logic.interfaces.ProcessingLogicHost;
-import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
-import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.GT_StructureUtilityMuTE;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -35,7 +31,13 @@ import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.StackableModularController;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.GT_StructureUtility;
+import gregtech.api.util.GT_StructureUtilityMuTE.UpgradeCasings;
 import gregtech.common.tileentities.machines.multiblock.logic.GenericProcessingLogic;
+
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.IntStream;
 
 public class LayeredCokeBattery extends StackableModularController<LayeredCokeBattery> implements ProcessingLogicHost {
 
@@ -46,7 +48,7 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_START = new Vec3Impl(0, 0, -3);
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_STACK = new Vec3Impl(0, 0, -2);
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_STOP = new Vec3Impl(0, 0, -1);
-    private final ProcessingLogic foundryProcessingLogic = new GenericProcessingLogic(GT_Recipe_Map.sPyrolyseRecipes);
+    private final ProcessingLogic cokeBatteryProcessingLogic = new GenericProcessingLogic(GT_Recipe_Map.sPyrolyseRecipes);
 
     @Override
     public String getTileEntityName() {
@@ -61,6 +63,14 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
     @Override
     public Vec3Impl getStartingStructureOffset() {
         return STRUCTURE_OFFSET_BASE;
+    }
+
+    public UpgradeCasings getBaseMucType() {
+        return UpgradeCasings.Heater;
+    }
+
+    public int getParallelFactor() {
+        return 2;
     }
 
     @Override
@@ -95,56 +105,42 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
                 .addShape(
                     STRUCTURE_PIECE_BASE,
                     transpose(
-                        new String[][]{
-                            {" AAA ","AAAAA","AEEEA","AAAAA"},
-                            {" AAA ","A   A","A   A","AAAAA"},
-                            {" A~A ","A   A","A   A","AAAAA"},
-                            {" AAA ","A   A","A   A","AAAAA"},
-                            {" AAA ","AAAAA","AAAAA","AAAAA"}
-                        }))
+                        new String[][] { { " AAA ", "AAAAA", "AEEEP", "AAAAA" }, { " AAA ", "A   A", "A   A", "AAAAA" },
+                            { " A~A ", "A   A", "A   A", "AAAAA" }, { " AAA ", "A   A", "A   A", "AAAAA" },
+                            { " AAA ", "AAAAA", "AAAAA", "AAAAA" } }))
                 .addShape(
                     STACKABLE_STOP,
                     transpose(
-                        new String[][]{
-                            {"AAAAAAAAAAAAA","AAAAAAAAAAAAA"},
-                            {" B B B B B B ","AFAFAFAFAFAFA"},
-                            {"CB B B B B BC","AFAFAFAFAFAFA"},
-                            {" B B B B B B ","AFAFAFAFAFAFA"},
-                            {" B B B B B B ","AFAFAFAFAFAFA"},
-                            {" B B B B B B ","AFAFAFAFAFAFA"},
-                            {" B B B B B B ","AFAFAFAFAFAFA"},
-                            {" B B B B B B ","AFAFAFAFAFAFA"},
-                            {" B B B B B B ","AFAFAFAFAFAFA"},
-                            {"CB B B B B BC","AFAFAFAFAFAFA"},
-                            {" B B B B B B ","AFAFAFAFAFAFA"},
-                            {"AAAAAAAAAAAAA","AAAAAAAAAAAAA"}
-                        }))
+                        new String[][] { { "AHFFFFAFFFFHA", "AAAAAAAAAAAAA" }, { " B B B B B B ", "AFAFAFAFAFAFA" },
+                            { "HB B B B B BH", "AFAFAFAFAFAFA" }, { " B B B B B B ", "AFAFAFAFAFAFA" },
+                            { " B B B B B B ", "AFAFAFAFAFAFA" }, { " B B B B B B ", "AFAFAFAFAFAFA" },
+                            { " B B B B B B ", "AFAFAFAFAFAFA" }, { " B B B B B B ", "AFAFAFAFAFAFA" },
+                            { " B B B B B B ", "AFAFAFAFAFAFA" }, { "HB B B B B BH", "AFAFAFAFAFAFA" },
+                            { " B B B B B B ", "AFAFAFAFAFAFA" }, { "AAAAAAAAAAAAA", "AAAAAAAAAAAAA" } }))
                 .addShape(
                     STACKABLE_MIDDLE,
                     transpose(
-                        new String[][] { { "ADFFFFHFFFFDA", "AAAAAAAAAAAAA" }, { " B    A    B ", "AAAAAAAAAAAAA" },
-                            { "CB    A    BC", "AAAAAAAAAAAAA" }, { " B    A    B ", "AAAAAAAAAAAAA" },
+                        new String[][] { { "AHFFFFAFFFFHA", "AAAAAAAAAAAAA" }, { " B    A    B ", "AAAAAAAAAAAAA" },
+                            { "HB    A    BH", "AAAAAAAAAAAAA" }, { " B    A    B ", "AAAAAAAAAAAAA" },
                             { " B    A    B ", "AAAAAAAAAAAAA" }, { " B    A    B ", "AAAAAAAAAAAAA" },
                             { " B    A    B ", "AAAAAAAAAAAAA" }, { " B    A    B ", "AAAAAAAAAAAAA" },
-                            { " B    A    B ", "AAAAAAAAAAAAA" }, { "CB    A    BC", "AAAAAAAAAAAAA" },
+                            { " B    A    B ", "AAAAAAAAAAAAA" }, { "HB    A    BH", "AAAAAAAAAAAAA" },
                             { " B    A    B ", "AAAAAAAAAAAAA" }, { "AAAAAAAAAAAAA", "AAAAAAAAAAAAA" } }))
                 .addShape(
                     STACKABLE_START,
                     transpose(
-                        new String[][]{
-                            {"AAAAAAAAAAAAA","AAAAAAAAAAAAA","AAAAAAAAAAAAA"},
-                            {"AFAFAFAFAFAFA"," B B B B B B ","AAAAAAAAAAAAA"},
-                            {"AFAFAFAFAFAFA","CB B B B B BC","AAAAAAAAAAAAA"},
-                            {"AFAFAFAFAFAFA"," B B B B B B ","AAAAAAAAAAAAA"},
-                            {"AFAFAFAFAFAFA"," B B B B B B ","AAAAAAAAAAAAA"},
-                            {"AFAFAFAFAFAFA"," B B B B B B ","AAAAAAAAAAAAA"},
-                            {"AFAFAFAFAFAFA"," B B B B B B ","AAAAAAAAAAAAA"},
-                            {"AFAFAFAFAFAFA"," B B B B B B ","AAAAAAAAAAAAA"},
-                            {"AFAFAFAFAFAFA"," B B B B B B ","AAAAAAAAAAAAA"},
-                            {"AFAFAFAFAFAFA","CB B B B B BC","AAAAAAAAAAAAA"},
-                            {"AFAFAFAFAFAFA"," B B B B B B ","AAAAAAAAAAAAA"},
-                            {"AAAAAAAAAAAAA","AAAAAAAAAAAAA","AAAAAAAAAAAAA"}
-                        }))
+                        new String[][] { { "AAAAAAAAAAAAA", "AHFFFFAFFFFHA", "AAAAAAAAAAAAA" },
+                            { "AFAFAFAFAFAFA", " B B B B B B ", "AAAAAAAAAAAAA" },
+                            { "AFAFAFAFAFAFA", "HB B B B B BH", "AAAAAAAAAAAAA" },
+                            { "AFAFAFAFAFAFA", " B B B B B B ", "AAAAAAAAAAAAA" },
+                            { "AFAFAFAFAFAFA", " B B B B B B ", "AAAAAAAAAAAAA" },
+                            { "AFAFAFAFAFAFA", " B B B B B B ", "AAAAAAAAAAAAA" },
+                            { "AFAFAFAFAFAFA", " B B B B B B ", "AAAAAAAAAAAAA" },
+                            { "AFAFAFAFAFAFA", " B B B B B B ", "AAAAAAAAAAAAA" },
+                            { "AFAFAFAFAFAFA", " B B B B B B ", "AAAAAAAAAAAAA" },
+                            { "AFAFAFAFAFAFA", "HB B B B B BH", "AAAAAAAAAAAAA" },
+                            { "AFAFAFAFAFAFA", " B B B B B B ", "AAAAAAAAAAAAA" },
+                            { "AAAAAAAAAAAAA", "AAAAAAAAAAAAA", "AAAAAAAAAAAAA" } }))
                 .addElement(
                     'A',
                     ofMuTECasings(
@@ -166,6 +162,7 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
                         ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks2", 0, true),
                         ofBlockUnlocalizedName(Thaumcraft.ID, "blockCosmeticOpaque", 2, false)))
                 .addElement('H', ofMuTECasings(NOTHING, HEATER_CASINGS, INSULATOR_CASINGS))
+                .addElement('P', ofMuTECasings(NOTHING, AMPERAGE_CASINGS))
                 .build();
         }
         return STRUCTURE_DEFINITION_MEGA;
@@ -199,8 +196,29 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
         }
 
         calculateTier();
+        if (!calculateMucMultipliers()) {
+            return false;
+        }
+        calculateParallels();
         updatePowerLogic();
         return tier > 0;
+    }
+
+    protected boolean calculateMucMultipliers() {
+        Map<UpgradeCasings, int[]>  mucMap = getMucMap();
+        int[] heaterList = mucMap.get(UpgradeCasings.Heater);
+        int[] insulatorList = mucMap.get(UpgradeCasings.Insulator);
+        int totalHeaterCount = Arrays.stream(heaterList).sum();
+        int totalInsulatorCount = Arrays.stream(insulatorList).sum();
+        if (totalHeaterCount + totalInsulatorCount < stackCount || totalInsulatorCount > totalHeaterCount) {
+            return false;
+        }
+        if (totalInsulatorCount > 0) {
+            // To be improved later, when more MUCs are added
+            // durationMultiplier = 1.0 / totalHeaterCount;
+            euTickMultiplier = 1.0 / totalInsulatorCount;
+        }
+        return true;
     }
 
     @Override
@@ -217,7 +235,7 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Coke Oven")
-            .addInfo("Controller for the Layered Coke Foundry")
+            .addInfo("Controller for the Layered Coke Battery")
             .addSeparator()
             .beginVariableStructureBlock(7, 9, 2 + getMinStacks(), 2 + getMaxStacks(), 7, 9, true)
             .addController("Bottom Front Center")
@@ -271,6 +289,6 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
 
     @Override
     public ProcessingLogic getProcessingLogic() {
-        return foundryProcessingLogic;
+        return cokeBatteryProcessingLogic;
     }
 }
