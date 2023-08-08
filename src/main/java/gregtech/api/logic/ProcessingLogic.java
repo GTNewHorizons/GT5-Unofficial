@@ -132,31 +132,6 @@ public class ProcessingLogic {
         return this;
     }
 
-    public ProcessingLogic setAmperage(long ampere) {
-        this.ampere = ampere;
-        return this;
-    }
-
-    public ProcessingLogic setVoltage(long voltage) {
-        this.voltage = voltage;
-        return this;
-    }
-
-    public ProcessingLogic setController(Controller<?> controller) {
-        this.controller = controller;
-        return this;
-    }
-
-    public ProcessingLogic setVoidProtection(boolean voidProtection) {
-        this.voidProtection = voidProtection;
-        return this;
-    }
-
-    public ProcessingLogic setPerfectOverclock(boolean perfectOverclock) {
-        this.perfectOverclock = perfectOverclock;
-        return this;
-    }
-
     /**
      * Sets method to get max amount of parallel.
      */
