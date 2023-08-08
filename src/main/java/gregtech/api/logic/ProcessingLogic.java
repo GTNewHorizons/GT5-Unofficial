@@ -119,6 +119,7 @@ public class ProcessingLogic {
     public ProcessingLogic setRecipeLocking(IRecipeLockable recipeLockableMachine, boolean isRecipeLocked) {
         this.recipeLockableMachine = recipeLockableMachine;
         this.isRecipeLocked = isRecipeLocked;
+        return this;
     }
 
     public ProcessingLogic setIsCleanroom(boolean isCleanroom) {
