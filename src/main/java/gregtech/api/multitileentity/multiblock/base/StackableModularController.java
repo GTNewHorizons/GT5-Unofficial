@@ -4,6 +4,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.logic.interfaces.ProcessingLogicHost;
+import gregtech.api.util.GT_StructureUtilityMuTE;
+import net.minecraft.item.ItemStack;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.multitileentity.interfaces.UpgradableModularMuTE;
@@ -11,27 +17,29 @@ import gregtech.api.util.GT_StructureUtilityMuTE.UpgradeCasings;
 
 public abstract class StackableModularController<T extends StackableModularController<T>> extends StackableController<T>
     implements UpgradableModularMuTE {
+    protected double durationMultiplier = 1;
+    protected double euTickMultiplier = 1;
 
-    private Map<UpgradeCasings, Integer[]> mucMap;
+    private Map<UpgradeCasings, int[]> mucMap;
 
-    protected @NotNull Map<UpgradeCasings, Integer[]> getMucMap() {
+    protected @NotNull Map<UpgradeCasings, int[]> getMucMap() {
         if (mucMap == null) {
             mucMap = createMucMap();
         }
         return mucMap;
     }
 
-    protected static @NotNull Map<UpgradeCasings, Integer[]> createMucMap() {
-        Map<UpgradeCasings, Integer[]> mucCount = new HashMap<>();
-        mucCount.put(UpgradeCasings.Heater, new Integer[] { 0, 0, 0, 0, 0 });
-        mucCount.put(UpgradeCasings.Insulator, new Integer[] { 0, 0, 0, 0, 0 });
+    protected static @NotNull Map<UpgradeCasings, int[]> createMucMap() {
+        Map<UpgradeCasings, int[]> mucCount = new HashMap<>();
+        mucCount.put(UpgradeCasings.Heater, new int[] { 0, 0, 0, 0, 0 });
+        mucCount.put(UpgradeCasings.Insulator, new int[] { 0, 0, 0, 0, 0 });
         return mucCount;
     }
 
     @Override
     public void increaseMucCount(UpgradeCasings casingType, int tier) {
-        Map<UpgradeCasings, Integer[]> mucCounters = getMucMap();
-        Integer[] casingCount = mucCounters.get(casingType);
+        Map<UpgradeCasings, int[]> mucCounters = getMucMap();
+        int[] casingCount = mucCounters.get(casingType);
 
         switch (tier) {
             case 0, 1, 2 -> casingCount[0] += 1;
@@ -44,7 +52,30 @@ public abstract class StackableModularController<T extends StackableModularContr
 
     @Override
     public void resetMucCount() {
-        Map<UpgradeCasings, Integer[]> mucCounters = getMucMap();
+        Map<UpgradeCasings, int[]> mucCounters = getMucMap();
         mucCounters.forEach((type, casingCount) -> { Arrays.fill(casingCount, 0); });
     }
+
+    // Returns the cheapest MUC that is possible for the multi, which gets the minimum bonuses.
+    protected abstract UpgradeCasings getBaseMucType();
+
+    // Minimum parallel bonus per MUC. Higher tier MUCs multiply with this value for even more parallels.
+    protected abstract int getParallelFactor();
+
+    protected void calculateParallels() {
+        int parallelCount = 0;
+        int parallelFactor = getParallelFactor();
+        int[] parallelCasingList = mucMap.get(getBaseMucType());
+
+        for (int i = 0; i < 5; i++) {
+            // (i * 3 + 1) -> Convert MUC tier into minimum GT tier, in groups of 3 (LV, EV, LuV, UHV, UMV)
+            // If higher than multi tier, upgrade casing has no effect
+            if (i * 3 + 1 <= tier) {
+                parallelCount += parallelCasingList[i] * (i + 1) * parallelFactor;
+            }
+        }
+        maxParallel = parallelCount == 0 ? 1 : parallelCount;
+    }
+
+    protected abstract boolean calculateMucMultipliers();
 }
