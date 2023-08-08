@@ -4,9 +4,6 @@ import static gregtech.api.enums.TickTime.MINUTE;
 
 import java.util.List;
 
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,7 +18,6 @@ import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.util.GT_Utility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import org.apache.commons.lang3.tuple.Pair;
 
 public abstract class PowerController<T extends PowerController<T>> extends Controller<T> implements PowerLogicHost {
 

@@ -9,6 +9,8 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_OUT;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHING;
+import static gregtech.api.util.GT_StructureUtilityMuTE.MOTOR_CASINGS;
+import static gregtech.api.util.GT_StructureUtilityMuTE.ofMuTECasings;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -346,7 +348,7 @@ public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalP
                 .addElement('T', ofMuTECasings(NOTHING, MOTOR_CASINGS))
                 .addElement(
                     'W',
-                    GT_StructureUtility.ofCoil(AdvChemicalReactor::setCoilTier, AdvChemicalReactor::getCoilTier))
+                    GT_StructureUtility.ofCoil(AdvChemicalProcessor::setCoilTier, AdvChemicalProcessor::getCoilTier))
                 .addElement('G', Glasses.chainAllGlasses())
                 .addElement('B', ofBlock(GregTech_API.sBlockCasings4, 1))
                 .addElement('F', GT_StructureUtility.ofFrame(Materials.Steel))

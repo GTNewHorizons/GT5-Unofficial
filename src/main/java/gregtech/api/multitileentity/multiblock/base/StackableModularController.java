@@ -4,12 +4,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.logic.interfaces.ProcessingLogicHost;
-import gregtech.api.util.GT_StructureUtilityMuTE;
-import net.minecraft.item.ItemStack;
-import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.multitileentity.interfaces.UpgradableModularMuTE;
@@ -17,6 +11,7 @@ import gregtech.api.util.GT_StructureUtilityMuTE.UpgradeCasings;
 
 public abstract class StackableModularController<T extends StackableModularController<T>> extends StackableController<T>
     implements UpgradableModularMuTE {
+
     protected double durationMultiplier = 1;
     protected double euTickMultiplier = 1;
 
