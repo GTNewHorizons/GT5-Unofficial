@@ -17,7 +17,6 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.IFluidHandler;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.Mods;
@@ -29,9 +28,7 @@ import gregtech.api.multitileentity.MultiTileEntityRegistry;
 /*
  * Heavily inspired by GT6
  */
-public interface IMultiTileEntity
-    extends IHasWorldObjectAndCoords, ICoverable, ITurnable, IHasInventory, IEnergyConnected, IBasicEnergyContainer,
-    IFluidHandler, ITexturedTileEntity, IDebugableTileEntity, IColoredTileEntity {
+public interface IMultiTileEntity extends ICoverable, ITurnable, IDebugableTileEntity {
 
     /**
      * Those two IDs HAVE to be saved inside the NBT of the TileEntity itself. They get set by the Registry itself, when
@@ -283,12 +280,12 @@ public interface IMultiTileEntity
 
     interface IMTE_HasModes extends IMultiTileEntity {
 
-        byte getMode();
+        int getMode();
 
-        void setMode(byte aMode);
+        void setMode(int mode);
 
         int getAllowedModes();
 
-        void setAllowedModes(int aAllowedModes);
+        void setAllowedModes(int allowedModes);
     }
 }

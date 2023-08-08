@@ -9,10 +9,7 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_O
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHING;
 import static gregtech.api.util.GT_StructureUtilityMuTE.*;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
-import org.apache.commons.lang3.tuple.Pair;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -21,12 +18,9 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.TierEU;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.StackableController;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
 public class Macerator extends StackableController<Macerator> {
 
@@ -130,40 +124,6 @@ public class Macerator extends StackableController<Macerator> {
     @Override
     public Vec3Impl getAfterLastStackOffset() {
         return new Vec3Impl(-1, 0, 0);
-    }
-
-    @Override
-    protected boolean checkRecipe() {
-        if (isSeparateInputs()) {
-            for (Pair<ItemStack[], String> tItemInputs : getItemInputsForEachInventory()) {
-                if (processRecipe(tItemInputs.getLeft(), tItemInputs.getRight())) {
-                    return true;
-                }
-            }
-            return false;
-        } else {
-            ItemStack[] tItemInputs = getInventoriesForInput().getStacks()
-                .toArray(new ItemStack[0]);
-            return processRecipe(tItemInputs, null);
-        }
-    }
-
-    private boolean processRecipe(ItemStack[] aItemInputs, String aInventory) {
-        GT_Recipe_Map tRecipeMap = GT_Recipe_Map.sMaceratorRecipes;
-        GT_Recipe tRecipe = tRecipeMap.findRecipe(this, false, TierEU.IV, null, aItemInputs);
-        if (tRecipe == null) {
-            return false;
-        }
-
-        if (!tRecipe.isRecipeInputEqual(true, false, 1, null, aItemInputs)) {
-            return false;
-        }
-
-        setDuration(tRecipe.mDuration);
-        setEut(tRecipe.mEUt);
-
-        setItemOutputs(aInventory, tRecipe.mOutputs);
-        return true;
     }
 
     @SideOnly(Side.CLIENT)

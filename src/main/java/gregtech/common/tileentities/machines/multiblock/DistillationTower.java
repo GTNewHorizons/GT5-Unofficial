@@ -5,18 +5,23 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.*;
 import static gregtech.api.util.GT_StructureUtilityMuTE.MOTOR_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.ofMuTECasings;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
+import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
+import com.gtnewhorizons.modularui.api.fluids.IFluidTanksHandler;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.enums.InventoryType;
 import gregtech.api.enums.Materials;
-import gregtech.api.fluid.FluidTankGT;
+import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.StackableController;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -125,17 +130,17 @@ public class DistillationTower extends StackableController<DistillationTower> {
     }
 
     @Override
-    protected void outputFluids() {
-        if (fluidsToOutput != null) {
-            List<FluidTankGT> tanks = Arrays.asList(outputTanks);
-            for (int i = 0; i < fluidsToOutput.length && i < (3 + stackCount); i++) {
-                if (tanks.get(i) != null && fluidsToOutput[i] != null && fluidsToOutput[i].amount > 0) {
-                    int filled = tanks.get(i)
-                        .fill(fluidsToOutput[i], true);
-                    fluidsToOutput[i].amount -= filled;
-                }
-            }
+    protected void outputFluids(@Nullable UUID inventoryID) {
+        if (fluidsToOutput == null) return;
+        FluidInventoryLogic logic = getFluidLogic(InventoryType.Output, inventoryID);
+        if (logic == null) return;
+        for (int i = 0; i < fluidsToOutput.length; i++) {
+            FluidStack fluid = fluidsToOutput[i];
+            if (fluid == null) continue;
+            IFluidTanksHandler internalHandler = logic.getInventory();
+            internalHandler.fill(i, fluid.getFluid(), fluid.amount, true);
         }
+        fluidsToOutput = null;
     }
 
     @Override
