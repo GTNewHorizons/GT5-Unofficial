@@ -506,6 +506,10 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         return new FluidTankInfo[] { getInfo() };
     }
 
+    public FluidTankInfo[] getRealTankInfo(ForgeDirection side) {
+        return new FluidTankInfo[] { new FluidTankInfo(getFluid(), getRealCapacity()) };
+    }
+
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {

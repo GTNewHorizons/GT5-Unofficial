@@ -43,10 +43,12 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.ITextureBuilder;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalTankBase;
 import io.netty.buffer.ByteBuf;
 
 /**
@@ -79,7 +81,7 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
     @Override
     protected FluidStorageData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
         FluidStorageData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        final FluidTankInfo[] tanks = getValidFluidTankInfos(aTileEntity, aCoverVariable.side);
+        final FluidTankInfo[] tanks = getValidFluidTankInfosForDisplay(aTileEntity, aCoverVariable.side);
         if (tanks == null) {
             return aCoverVariable.disable()
                 .issueCoverUpdateIfNeeded(aTileEntity, side);
@@ -318,11 +320,20 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
         @Nonnull ForgeDirection side) {
         if (tileEntity instanceof IFluidHandler) {
             final FluidTankInfo[] tanks = ((IFluidHandler) tileEntity).getTankInfo(side);
-            if (tanks != null && 0 < tanks.length) {
+            if (tanks != null && tanks.length > 0) {
                 return tanks;
             }
         }
         return null;
+    }
+
+    protected static FluidTankInfo[] getValidFluidTankInfosForDisplay(@Nullable ICoverable tileEntity,
+        @Nonnull ForgeDirection side) {
+        if (tileEntity instanceof IGregTechTileEntity baseMetaTileEntity
+            && baseMetaTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_DigitalTankBase digitalTank) {
+            return digitalTank.getRealTankInfo(side);
+        }
+        return getValidFluidTankInfos(tileEntity, side);
     }
 
     protected static int getTankScale(@Nonnull FluidTankInfo tank) {
