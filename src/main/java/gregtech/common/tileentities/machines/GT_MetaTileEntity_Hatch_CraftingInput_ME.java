@@ -7,8 +7,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Size;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -31,6 +29,8 @@ import org.jetbrains.annotations.NotNull;
 
 import com.glodblock.github.common.item.ItemFluidPacket;
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
@@ -635,42 +635,42 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     public void addUIWidgets(ModularWindow.@NotNull Builder builder, UIBuildContext buildContext) {
         buildContext.addSyncedWindow(MANUAL_SLOT_WINDOW, this::createSlotManualWindow);
         builder.widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 9)
-                    .startFromSlot(0)
-                    .endAtSlot(MAX_PATTERN_COUNT - 1)
-                    .phantom(false)
-                    .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_PATTERN_ME)
-                    .widgetCreator(slot -> new SlotWidget(slot) {
+            SlotGroup.ofItemHandler(inventoryHandler, 9)
+                .startFromSlot(0)
+                .endAtSlot(MAX_PATTERN_COUNT - 1)
+                .phantom(false)
+                .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_PATTERN_ME)
+                .widgetCreator(slot -> new SlotWidget(slot) {
 
-                        @Override
-                        protected ItemStack getItemStackForRendering(Slot slotIn) {
-                            var stack = slot.getStack();
-                            if (stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem)) {
-                                return stack;
-                            }
-                            var output = patternItem.getOutput(stack);
-                            return output != null ? output : stack;
+                    @Override
+                    protected ItemStack getItemStackForRendering(Slot slotIn) {
+                        var stack = slot.getStack();
+                        if (stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem)) {
+                            return stack;
                         }
-                    }.setFilter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
-                        .setChangeListener(() -> onPatternChange(slot.getSlotIndex(), slot.getStack())))
-                    .build()
-                    .setPos(7, 9))
-            .widget(
-                new ButtonWidget().setOnClick((clickData, widget) -> {
-                        if (clickData.mouseButton == 0) {
-                            widget.getContext().openSyncedWindow(MANUAL_SLOT_WINDOW);
-                        }
-                    })
-                    .setPlayClickSound(true)
-                    .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE)
-                    .addTooltips(ImmutableList.of("Place manual items"))
-                    .setSize(16, 16)
-                    .setPos(170, 45))
-            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                    if (clickData.mouseButton == 0) {
-                        refundAll();
+                        var output = patternItem.getOutput(stack);
+                        return output != null ? output : stack;
                     }
-                })
+                }.setFilter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
+                    .setChangeListener(() -> onPatternChange(slot.getSlotIndex(), slot.getStack())))
+                .build()
+                .setPos(7, 9))
+            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                if (clickData.mouseButton == 0) {
+                    widget.getContext()
+                        .openSyncedWindow(MANUAL_SLOT_WINDOW);
+                }
+            })
+                .setPlayClickSound(true)
+                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE)
+                .addTooltips(ImmutableList.of("Place manual items"))
+                .setSize(16, 16)
+                .setPos(170, 45))
+            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                if (clickData.mouseButton == 0) {
+                    refundAll();
+                }
+            })
                 .setPlayClickSound(true)
                 .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EXPORT)
                 .addTooltips(ImmutableList.of("Return all internally stored items back to AE"))
@@ -681,8 +681,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     @Override
     public void updateSlots() {
         for (int slotId = SLOT_MANUAL_START; slotId < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; ++slotId) {
-            if (mInventory[slotId] != null && mInventory[slotId].stackSize <= 0)
-                mInventory[slotId] = null;
+            if (mInventory[slotId] != null && mInventory[slotId].stackSize <= 0) mInventory[slotId] = null;
         }
     }
 
@@ -908,7 +907,6 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         return true;
     }
 
-
     protected ModularWindow createSlotManualWindow(final EntityPlayer player) {
         final int WIDTH = 68;
         final int HEIGHT = 68;
@@ -923,21 +921,17 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         // See GuiContainer.java flag1
         builder.setPos(
             (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
-                .add(
-                    Alignment.TopRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))));
-        builder
-            .widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 3)
+                .add(Alignment.TopRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))));
+        builder.widget(
+            SlotGroup.ofItemHandler(inventoryHandler, 3)
                 .startFromSlot(SLOT_MANUAL_START)
                 .endAtSlot(SLOT_MANUAL_START + SLOT_MANUAL_SIZE - 1)
                 .phantom(false)
                 .background(getGUITextureSet().getItemSlot())
                 .build()
-                .setPos(7, 7)
-            );
+                .setPos(7, 7));
         return builder.build();
     }
-
 
     @Override
     public void setInventorySlotContents(int aIndex, ItemStack aStack) {
