@@ -7,37 +7,31 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.fluids.IFluidTank;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Keyboard;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
@@ -47,39 +41,30 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
-import com.gtnewhorizons.modularui.api.forge.IItemHandler;
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
-import com.gtnewhorizons.modularui.api.forge.ListItemHandler;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
-import com.gtnewhorizons.modularui.common.widget.Scrollable;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TabButton;
 import com.gtnewhorizons.modularui.common.widget.TabContainer;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
-import gnu.trove.list.TIntList;
-import gnu.trove.list.array.TIntArrayList;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
+import gregtech.api.enums.InventoryType;
 import gregtech.api.enums.VoidingMode;
-import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.modularui.ControllerWithOptionalFeatures;
-import gregtech.api.interfaces.IGlobalWirelessEnergy;
+import gregtech.api.logic.ControllerFluidLogic;
+import gregtech.api.logic.ControllerItemLogic;
+import gregtech.api.logic.FluidInventoryLogic;
+import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.logic.PowerLogic;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
-import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.multitileentity.enums.MultiTileCasingPurpose;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
@@ -103,8 +88,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * Multi Tile Entities - or MuTEs - don't have dedicated hatches, but their casings can become hatches.
  */
 public abstract class Controller<T extends Controller<T>> extends MultiTileBasicMachine
-    implements IAlignment, IConstructable, IMultiBlockController, IDescribable, IMTE_AddToolTips,
-    ISurvivalConstructable, ControllerWithOptionalFeatures, IGlobalWirelessEnergy {
+    implements IAlignment, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable,
+    ControllerWithOptionalFeatures, IGlobalWirelessEnergy {
 
     public static final String ALL_INVENTORIES_NAME = "all";
     protected static final int AUTO_OUTPUT_FREQUENCY_TICK = 20;
@@ -114,34 +99,22 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     private final List<FunctionalCasing> functionalCasings = new ArrayList<>();
     protected BuildState buildState = new BuildState();
 
-    protected Map<String, String> multiBlockInputInventoryNames = new LinkedHashMap<>();
-    protected Map<String, String> multiBlockOutputInventoryNames = new LinkedHashMap<>();
-    protected Map<String, String> multiBlockInputInventoryToTankLink = new LinkedHashMap<>();
-    protected Map<String, IItemHandlerModifiable> multiBlockInputInventory = new LinkedHashMap<>();
-    protected Map<String, IItemHandlerModifiable> multiBlockOutputInventory = new LinkedHashMap<>();
-
-    protected Map<String, String> multiBlockInputTankNames = new LinkedHashMap<>();
-    protected Map<String, String> multiBlockOutputTankNames = new LinkedHashMap<>();
-    protected Map<String, FluidTankGT[]> multiBlockInputTank = new LinkedHashMap<>();
-    protected Map<String, FluidTankGT[]> multiBlockOutputTank = new LinkedHashMap<>();
-
     private boolean structureOkay = false, structureChanged = false;
     private ExtendedFacing extendedFacing = ExtendedFacing.DEFAULT;
     private IAlignmentLimits limits = getInitialAlignmentLimits();
-    protected String inventoryName;
-    private String tankName;
     protected boolean separateInputs = getDefaultInputSeparationMode();
     protected VoidingMode voidingMode = getDefaultVoidingMode();
     protected boolean batchMode = getDefaultBatchMode();
     protected boolean recipeLock = getDefaultRecipeLockingMode();
+    protected boolean shouldSort = false;
     /** If this is set to true, the machine will get default WAILA behavior */
     protected boolean isSimpleMachine = true;
 
     protected boolean isCleanroom = false;
-
-    private String inventoryIDToUnregister;
-    private String inventoryNameToUnregister;
-    private int type;
+    protected ControllerItemLogic controllerItemInput = new ControllerItemLogic();
+    protected ControllerItemLogic controllerItemOutput = new ControllerItemLogic();
+    protected ControllerFluidLogic controllerFluidInput = new ControllerFluidLogic();
+    protected ControllerFluidLogic controllerFluidOutput = new ControllerFluidLogic();
 
     // A list of sides
     // Each side has a list of parts that have a cover that need to be ticked
@@ -221,77 +194,26 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             (byte) extendedFacing.getFlip()
                 .getIndex());
 
-        saveUpgradeInventoriesToNBT(nbt);
-        saveUpgradeTanksToNBT(nbt);
-
         nbt.setString(NBT.VOIDING_MODE, voidingMode.name);
         nbt.setBoolean(NBT.SEPARATE_INPUTS, separateInputs);
         nbt.setBoolean(NBT.RECIPE_LOCK, recipeLock);
         nbt.setBoolean(NBT.BATCH_MODE, batchMode);
     }
 
-    private void saveUpgradeInventoriesToNBT(NBTTagCompound nbt) {
-        final NBTTagList inputInvList = new NBTTagList();
-        multiBlockInputInventory.forEach((id, inv) -> {
-            if (!id.equals("controller")) {
-                final NBTTagCompound tTag = new NBTTagCompound();
-                tTag.setString(NBT.UPGRADE_INVENTORY_UUID, id);
-                tTag.setString(NBT.UPGRADE_INVENTORY_NAME, multiBlockInputInventoryNames.get(id));
-                tTag.setInteger(NBT.UPGRADE_INVENTORY_SIZE, inv.getSlots());
-                writeInventory(tTag, inv, NBT.INV_INPUT_LIST);
-                inputInvList.appendTag(tTag);
-            }
-        });
-        final NBTTagList outputInvList = new NBTTagList();
-        multiBlockOutputInventory.forEach((id, inv) -> {
-            if (!id.equals("controller")) {
-                final NBTTagCompound tTag = new NBTTagCompound();
-                tTag.setString(NBT.UPGRADE_INVENTORY_UUID, id);
-                tTag.setString(NBT.UPGRADE_INVENTORY_NAME, multiBlockOutputInventoryNames.get(id));
-                tTag.setInteger(NBT.UPGRADE_INVENTORY_SIZE, inv.getSlots());
-                writeInventory(tTag, inv, NBT.INV_OUTPUT_LIST);
-                outputInvList.appendTag(tTag);
-            }
-        });
-        nbt.setTag(NBT.UPGRADE_INVENTORIES_INPUT, inputInvList);
-        nbt.setTag(NBT.UPGRADE_INVENTORIES_OUTPUT, outputInvList);
+    @Override
+    protected void saveItemLogic(NBTTagCompound nbt) {
+        NBTTagCompound itemInputNBT = controllerItemInput.saveToNBT();
+        nbt.setTag(NBT.INV_INPUT_LIST, itemInputNBT);
+        NBTTagCompound itemOutputNBT = controllerItemOutput.saveToNBT();
+        nbt.setTag(NBT.INV_OUTPUT_LIST, itemOutputNBT);
     }
 
-    private void saveUpgradeTanksToNBT(NBTTagCompound nbt) {
-        final NBTTagList inputTankList = new NBTTagList();
-        multiBlockInputTank.forEach((id, tanks) -> {
-            if (!id.equals("controller") && tanks != null && tanks.length > 0) {
-                final NBTTagCompound tTag = new NBTTagCompound();
-                tTag.setString(NBT.UPGRADE_TANK_UUID, id);
-                tTag.setString(NBT.UPGRADE_TANK_NAME, multiBlockInputTankNames.get(id));
-                // We assume all tanks in the tank-array are equally sized
-                tTag.setLong(NBT.UPGRADE_TANK_CAPACITY, tanks[0].capacity());
-                tTag.setLong(NBT.UPGRADE_TANK_CAPACITY_MULTIPLIER, tanks[0].getCapacityMultiplier());
-                tTag.setInteger(NBT.UPGRADE_TANK_COUNT, tanks.length);
-                for (int i = 0; i < tanks.length; i++) {
-                    tanks[i].writeToNBT(tTag, NBT.UPGRADE_TANKS_PREFIX + i);
-                }
-                inputTankList.appendTag(tTag);
-            }
-        });
-        final NBTTagList outputTankList = new NBTTagList();
-        multiBlockOutputTank.forEach((id, tanks) -> {
-            if (!id.equals("controller") && tanks != null && tanks.length > 0) {
-                final NBTTagCompound tTag = new NBTTagCompound();
-                tTag.setString(NBT.UPGRADE_TANK_UUID, id);
-                tTag.setString(NBT.UPGRADE_TANK_NAME, multiBlockInputTankNames.get(id));
-                // We assume all tanks in the tank-array are equally sized
-                tTag.setLong(NBT.UPGRADE_TANK_CAPACITY, tanks[0].capacity());
-                tTag.setLong(NBT.UPGRADE_TANK_CAPACITY_MULTIPLIER, tanks[0].getCapacityMultiplier());
-                tTag.setInteger(NBT.UPGRADE_TANK_COUNT, tanks.length);
-                for (int i = 0; i < tanks.length; i++) {
-                    tanks[i].writeToNBT(tTag, NBT.UPGRADE_TANKS_PREFIX + i);
-                }
-                outputTankList.appendTag(tTag);
-            }
-        });
-        nbt.setTag(NBT.UPGRADE_TANKS_INPUT, inputTankList);
-        nbt.setTag(NBT.UPGRADE_TANKS_OUTPUT, outputTankList);
+    @Override
+    protected void saveFluidLogic(NBTTagCompound nbt) {
+        NBTTagCompound fluidInputNBT = controllerFluidInput.saveToNBT();
+        nbt.setTag(NBT.TANK_IN, fluidInputNBT);
+        NBTTagCompound fluidOutputNBT = controllerFluidOutput.saveToNBT();
+        nbt.setTag(NBT.TANK_OUT, fluidOutputNBT);
     }
 
     @Override
@@ -300,18 +222,10 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
         // Multiblock inventories are a collection of inventories. The first inventory is the default internal
         // inventory, and the others are added by inventory extending blocks.
-        if (inputInventory != null) registerInventory("controller", "controller", inputInventory, Inventory.INPUT);
-        if (outputInventory != null) registerInventory("controller", "controller", outputInventory, Inventory.OUTPUT);
-
-        if (inputTanks != null) registerFluidInventory("controller", "controller", inputTanks, Inventory.INPUT);
-        if (outputTanks != null) registerFluidInventory("controller", "controller", outputTanks, Inventory.OUTPUT);
 
         structureOkay = nbt.getBoolean(NBT.STRUCTURE_OK);
         extendedFacing = ExtendedFacing
             .of(getFrontFacing(), Rotation.byIndex(nbt.getByte(NBT.ROTATION)), Flip.byIndex(nbt.getByte(NBT.FLIP)));
-
-        loadUpgradeInventoriesFromNBT(nbt);
-        loadUpgradeTanksFromNBT(nbt);
 
         voidingMode = VoidingMode.fromName(nbt.getString(NBT.VOIDING_MODE));
         separateInputs = nbt.getBoolean(NBT.SEPARATE_INPUTS);
@@ -319,64 +233,26 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         batchMode = nbt.getBoolean(NBT.BATCH_MODE);
     }
 
-    private void loadUpgradeInventoriesFromNBT(NBTTagCompound nbt) {
-        final NBTTagList listInputInventories = nbt
-            .getTagList(NBT.UPGRADE_INVENTORIES_INPUT, Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < listInputInventories.tagCount(); i++) {
-            final NBTTagCompound nbtInv = listInputInventories.getCompoundTagAt(i);
-            final String invUUID = nbtInv.getString(NBT.UPGRADE_INVENTORY_UUID);
-            final String invName = nbtInv.getString(NBT.UPGRADE_INVENTORY_NAME);
-            final int invSize = nbtInv.getInteger(NBT.UPGRADE_INVENTORY_SIZE);
-            final IItemHandlerModifiable inv = new ItemStackHandler(invSize);
-            loadInventory(nbtInv, inv, NBT.INV_INPUT_LIST);
-            registerInventory(invName, invUUID, invSize, Inventory.INPUT);
+    @Override
+    protected void loadItemLogic(NBTTagCompound nbt) {
+        if (!nbt.hasKey(NBT.INV_INPUT_LIST) && !nbt.hasKey(NBT.INV_OUTPUT_LIST)) {
+            controllerItemInput.addInventory(new ItemInventoryLogic(16));
+            controllerItemOutput.addInventory(new ItemInventoryLogic(16));
+            return;
         }
-
-        final NBTTagList listOutputInventories = nbt
-            .getTagList(NBT.UPGRADE_INVENTORIES_OUTPUT, Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < listOutputInventories.tagCount(); i++) {
-            final NBTTagCompound nbtInv = listOutputInventories.getCompoundTagAt(i);
-            final String invUUID = nbtInv.getString(NBT.UPGRADE_INVENTORY_UUID);
-            final String invName = nbtInv.getString(NBT.UPGRADE_INVENTORY_NAME);
-            final int invSize = nbtInv.getInteger(NBT.UPGRADE_INVENTORY_SIZE);
-            IItemHandlerModifiable inv = new ItemStackHandler(invSize);
-            loadInventory(nbtInv, inv, NBT.INV_OUTPUT_LIST);
-            registerInventory(invName, invUUID, invSize, Inventory.OUTPUT);
-        }
+        controllerItemInput.loadFromNBT(nbt.getCompoundTag(NBT.INV_INPUT_LIST));
+        controllerItemOutput.loadFromNBT(nbt.getCompoundTag(NBT.INV_OUTPUT_LIST));
     }
 
-    private void loadUpgradeTanksFromNBT(NBTTagCompound nbt) {
-        final NBTTagList listInputTanks = nbt.getTagList(NBT.UPGRADE_TANKS_INPUT, Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < listInputTanks.tagCount(); i++) {
-            final NBTTagCompound nbtTank = listInputTanks.getCompoundTagAt(i);
-            String tankUUID = nbtTank.getString(NBT.UPGRADE_TANK_UUID);
-            String tankName = nbtTank.getString(NBT.UPGRADE_TANK_NAME);
-            long capacity = nbtTank.getLong(NBT.UPGRADE_TANK_CAPACITY);
-            long capacityMultiplier = nbtTank.getLong(NBT.UPGRADE_TANK_CAPACITY_MULTIPLIER);
-            int count = nbtTank.getInteger(NBT.UPGRADE_TANK_COUNT);
-            FluidTankGT[] tanks = new FluidTankGT[count];
-            for (int j = 0; j < count; j++) {
-                tanks[j] = new FluidTankGT(capacity).setCapacityMultiplier(capacityMultiplier)
-                    .readFromNBT(nbtTank, NBT.UPGRADE_TANKS_PREFIX + j);
-            }
-            registerFluidInventory(tankName, tankUUID, count, capacity, capacityMultiplier, Inventory.INPUT);
+    @Override
+    protected void loadFluidLogic(NBTTagCompound nbt) {
+        if (!nbt.hasKey(NBT.TANK_IN) && !nbt.hasKey(NBT.TANK_OUT)) {
+            controllerFluidInput.addInventory(new FluidInventoryLogic(16, 32000));
+            controllerFluidOutput.addInventory(new FluidInventoryLogic(16, 32000));
+            return;
         }
-
-        final NBTTagList listOutputTanks = nbt.getTagList(NBT.UPGRADE_TANKS_OUTPUT, Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < listOutputTanks.tagCount(); i++) {
-            final NBTTagCompound nbtTank = listOutputTanks.getCompoundTagAt(i);
-            String tankUUID = nbtTank.getString(NBT.UPGRADE_TANK_UUID);
-            String tankName = nbtTank.getString(NBT.UPGRADE_TANK_NAME);
-            long capacity = nbtTank.getLong(NBT.UPGRADE_TANK_CAPACITY);
-            long capacityMultiplier = nbtTank.getLong(NBT.UPGRADE_TANK_CAPACITY_MULTIPLIER);
-            int count = nbtTank.getInteger(NBT.UPGRADE_TANK_COUNT);
-            FluidTankGT[] tanks = new FluidTankGT[count];
-            for (int j = 0; j < count; j++) {
-                tanks[j] = new FluidTankGT(capacity).setCapacityMultiplier(capacityMultiplier)
-                    .readFromNBT(nbtTank, NBT.UPGRADE_TANKS_PREFIX + j);
-            }
-            registerFluidInventory(tankName, tankUUID, count, capacity, capacityMultiplier, Inventory.OUTPUT);
-        }
+        controllerFluidInput.loadFromNBT(nbt.getCompoundTag(NBT.TANK_IN));
+        controllerFluidOutput.loadFromNBT(nbt.getCompoundTag(NBT.TANK_OUT));
     }
 
     @Override
@@ -715,24 +591,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             if (!part.shouldTick(mTickTimer)) {
                 fluidOutputIterator.remove();
             } else {
-                IFluidHandler targetTank = part.getITankContainerAtSide(part.getFrontFacing());
-                FluidTankGT[] controllerTanks = multiBlockOutputTank
-                    .getOrDefault(part.getLockedInventory(), getOutputTanks());
-                if (targetTank != null && controllerTanks != null) {
-                    for (FluidTankGT tank : controllerTanks) {
-                        if (tank.get() == null) continue;
-                        FluidStack tDrained = part.drain(part.getFrontFacing(), Math.max(1, tank.get().amount), false);
-                        if (tDrained != null) {
-                            int tFilledAmount = targetTank.fill(part.getBackFacing(), tDrained, false);
-                            if (tFilledAmount > 0) {
-                                targetTank.fill(
-                                    part.getBackFacing(),
-                                    part.drain(part.getFrontFacing(), tFilledAmount, true),
-                                    true);
-                            }
-                        }
-                    }
-                }
+
             }
         }
     }
@@ -809,19 +668,6 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     @Override
     public boolean increaseProgress(int aProgressAmountInTicks) {
         return increaseProgressGetOverflow(aProgressAmountInTicks) != aProgressAmountInTicks;
-    }
-
-    @Override
-    public FluidStack getDrainableFluid(ForgeDirection side) {
-        return getDrainableFluid(side, null);
-    }
-
-    @Override
-    public FluidStack getDrainableFluid(ForgeDirection side, Fluid fluidToDrain) {
-        final IFluidTank tank = getFluidTankDrainable(
-            side,
-            fluidToDrain == null ? null : new FluidStack(fluidToDrain, 0));
-        return tank == null ? null : tank.getFluid();
     }
 
     /**
@@ -908,740 +754,226 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         }
     }
 
-    /**
-     * Fluid - MultiBlock related Fluid Tank behaviour.
-     */
-    public void registerFluidInventory(String name, String id, int numberOfSlots, long capacity,
-        long capacityMultiplier, int type) {
-        if (name == null || name.equals("")
-            || id == null
-            || id.equals("")
-            || numberOfSlots < 0
-            || capacity < 0
-            || capacityMultiplier < 0) {
-            return;
-        }
-        FluidTankGT[] tanks = new FluidTankGT[numberOfSlots];
-        for (int i = 0; i < numberOfSlots; i++) {
-            tanks[i] = new FluidTankGT(capacity).setCapacityMultiplier(capacityMultiplier);
-        }
-        registerFluidInventory(name, id, tanks, type);
+    // #region Fluid - MultiBlock related Fluid Tank behaviour.
+
+    @Override
+    @Nullable
+    public FluidInventoryLogic getFluidLogic(@Nonnull ForgeDirection side, @Nonnull InventoryType type) {
+        if (side == facing) return null;
+        return switch (type) {
+            case Input -> controllerFluidInput.getAllInventoryLogics();
+            case Output -> controllerFluidOutput.getAllInventoryLogics();
+            default -> null;
+        };
     }
 
-    public void registerFluidInventory(String name, String id, FluidTankGT[] fluidInventory, int type) {
-        if (name == null || name.equals("")
-            || id == null
-            || id.equals("")
-            || fluidInventory == null
-            || fluidInventory.length == 0) {
-            return;
-        }
-        if (type == Inventory.INPUT || type == Inventory.BOTH) {
-            if (multiBlockInputTank.containsKey(id)) return;
-            multiBlockInputTank.put(id, fluidInventory);
-            multiBlockInputTankNames.put(id, name);
-        }
-        if (type == Inventory.OUTPUT || type == Inventory.BOTH) {
-            if (multiBlockOutputTank.containsKey(id)) return;
-            multiBlockOutputTank.put(id, fluidInventory);
-            multiBlockOutputTankNames.put(id, name);
-        }
-    }
-
-    public void unregisterFluidInventory(String aName, String aID, int aType) {
-        if ((aType == Inventory.INPUT || aType == Inventory.BOTH) && multiBlockInputTank.containsKey(aID)) {
-            multiBlockInputTank.remove(aID, multiBlockInputTank.get(aID));
-            multiBlockInputTankNames.remove(aID, aName);
-        }
-        if ((aType == Inventory.OUTPUT || aType == Inventory.BOTH) && multiBlockOutputTank.containsKey(aID)) {
-            multiBlockOutputTank.remove(aID, multiBlockOutputTank.get(aID));
-            multiBlockOutputTankNames.remove(aID, aName);
-        }
-    }
-
-    protected FluidTankGT[] getTanksForInput() {
-        List<FluidTankGT> tanks = new ArrayList<>();
-        for (FluidTankGT[] inputTanks : multiBlockInputTank.values()) {
-            tanks.addAll(Arrays.asList(inputTanks));
-        }
-        return tanks.toArray(new FluidTankGT[0]);
-    }
-
-    protected FluidTankGT[] getTanksForOutput() {
-        List<FluidTankGT> tanks = new ArrayList<>();
-        for (FluidTankGT[] outputTanks : multiBlockOutputTank.values()) {
-            tanks.addAll(Arrays.asList(outputTanks));
-        }
-        return tanks.toArray(new FluidTankGT[0]);
-    }
-
-    protected IFluidTank getFluidTankFillable(MultiBlockPart aPart, ForgeDirection side, FluidStack aFluidToFill) {
-        return getFluidTankFillable(aPart.getFrontFacing(), side, aFluidToFill);
-    }
-
-    protected IFluidTank getFluidTankDrainable(MultiBlockPart aPart, ForgeDirection side, FluidStack aFluidToDrain) {
-        return getFluidTankDrainable(aPart.getFrontFacing(), side, aFluidToDrain);
-    }
-
-    protected IFluidTank[] getFluidTanks(MultiBlockPart aPart, ForgeDirection side) {
-        return getFluidTanks(side);
+    @Nullable
+    public FluidInventoryLogic getFluidLogic(@Nonnull InventoryType type, @Nullable UUID id) {
+        return switch (type) {
+            case Input -> controllerFluidInput.getInventoryLogic(id);
+            case Output -> controllerFluidOutput.getInventoryLogic(id);
+            default -> null;
+        };
     }
 
     @Override
-    public int fill(MultiBlockPart aPart, ForgeDirection aDirection, FluidStack aFluid, boolean aDoFill) {
-        if (aFluid == null || aFluid.amount <= 0) return 0;
-        final IFluidTank tTank = getFluidTankFillable(aPart, aDirection, aFluid);
-        if (tTank == null) return 0;
-        final int rFilledAmount = tTank.fill(aFluid, aDoFill);
-        if (rFilledAmount > 0 && aDoFill) hasInventoryChanged = true;
-        return rFilledAmount;
+    @Nonnull
+    public UUID registerFluidInventory(int tanks, long capacity, int tier, @Nonnull InventoryType type,
+        boolean isUpgradeInventory) {
+        return switch (type) {
+            case Input -> controllerFluidInput
+                .addInventory(new FluidInventoryLogic(tanks, capacity, tier, isUpgradeInventory));
+            case Output -> controllerFluidOutput
+                .addInventory(new FluidInventoryLogic(tanks, capacity, tier, isUpgradeInventory));
+            case Both -> {
+                UUID id = controllerFluidInput
+                    .addInventory(new FluidInventoryLogic(tanks, capacity, tier, isUpgradeInventory));
+                controllerFluidOutput
+                    .addInventory(id, new FluidInventoryLogic(tanks, capacity, tier, isUpgradeInventory));
+                yield id;
+            }
+        };
     }
 
     @Override
-    public FluidStack drain(MultiBlockPart aPart, ForgeDirection aDirection, FluidStack aFluid, boolean aDoDrain) {
-        if (aFluid == null || aFluid.amount <= 0) return null;
-        final IFluidTank tTank = getFluidTankDrainable(aPart, aDirection, aFluid);
-        if (tTank == null || tTank.getFluid() == null
-            || tTank.getFluidAmount() == 0
-            || !tTank.getFluid()
-                .isFluidEqual(aFluid))
-            return null;
-        final FluidStack rDrained = tTank.drain(aFluid.amount, aDoDrain);
-        if (rDrained != null && aDoDrain) markInventoryBeenModified();
-        return rDrained;
+    @Nonnull
+    public FluidInventoryLogic unregisterFluidInventory(@Nonnull UUID id, @Nonnull InventoryType type) {
+        return switch (type) {
+            case Input -> controllerFluidInput.removeInventory(id);
+            case Output -> controllerFluidOutput.removeInventory(id);
+            case Both -> {
+                FluidInventoryLogic input = controllerFluidInput.removeInventory(id);
+                FluidInventoryLogic output = controllerFluidOutput.removeInventory(id);
+                yield new FluidInventoryLogic(
+                    Arrays.asList(input, output)
+                        .stream()
+                        .map(inv -> inv.getInventory())
+                        .collect(Collectors.toList()));
+            }
+        };
     }
 
     @Override
-    public FluidStack drain(MultiBlockPart aPart, ForgeDirection aDirection, int aAmountToDrain, boolean aDoDrain) {
-        if (aAmountToDrain <= 0) return null;
-        final IFluidTank tTank = getFluidTankDrainable(aPart, aDirection, null);
-        if (tTank == null || tTank.getFluid() == null || tTank.getFluidAmount() == 0) return null;
-        final FluidStack rDrained = tTank.drain(aAmountToDrain, aDoDrain);
-        if (rDrained != null && aDoDrain) markInventoryBeenModified();
-        return rDrained;
-    }
-
-    @Override
-    public boolean canFill(MultiBlockPart aPart, ForgeDirection aDirection, Fluid aFluid) {
-        if (aFluid == null) return false;
-        final IFluidTank tTank = getFluidTankFillable(aPart, aDirection, new FluidStack(aFluid, 0));
-        return tTank != null && (tTank.getFluid() == null || tTank.getFluid()
-            .getFluid() == aFluid);
-    }
-
-    @Override
-    public boolean canDrain(MultiBlockPart aPart, ForgeDirection aDirection, Fluid aFluid) {
-        if (aFluid == null) return false;
-        final IFluidTank tTank = getFluidTankDrainable(aPart, aDirection, new FluidStack(aFluid, 0));
-        return tTank != null && (tTank.getFluid() != null && tTank.getFluid()
-            .getFluid() == aFluid);
-    }
-
-    @Override
-    public FluidTankInfo[] getTankInfo(MultiBlockPart aPart, ForgeDirection aDirection) {
-        final IFluidTank[] tTanks = getFluidTanks(aPart, aDirection);
-        if (tTanks == null || tTanks.length <= 0) return GT_Values.emptyFluidTankInfo;
-        final FluidTankInfo[] rInfo = new FluidTankInfo[tTanks.length];
-        for (int i = 0; i < tTanks.length; i++) rInfo[i] = new FluidTankInfo(tTanks[i]);
-        return rInfo;
-    }
-
-    @Override
-    public IFluidTank[] getFluidTanksForGUI(MultiBlockPart aPart) {
-        final String lockedInventory = aPart.getLockedInventory();
-        if (lockedInventory == null) {
-            if (aPart.modeSelected(MultiBlockPart.FLUID_IN)) return getTanksForInput();
-            else if (aPart.modeSelected(MultiBlockPart.FLUID_OUT)) return getTanksForOutput();
-        } else {
-            final Map<String, FluidTankGT[]> tankMap = getMultiBlockTankArray(aPart);
-            if (tankMap == null) return GT_Values.emptyFluidTank;
-            final FluidTankGT[] tanks = tankMap.get(lockedInventory);
-            return tanks != null ? tanks : GT_Values.emptyFluidTank;
+    public void changeFluidInventoryDisplayName(@Nullable UUID id, @Nullable String displayName,
+        @Nonnull InventoryType type) {
+        switch (type) {
+            case Input:
+                controllerFluidInput.setInventoryDisplayName(id, displayName);
+                break;
+            case Output:
+                controllerFluidOutput.setInventoryDisplayName(id, displayName);
+                break;
+            case Both:
+                controllerFluidInput.setInventoryDisplayName(id, displayName);
+                controllerFluidOutput.setInventoryDisplayName(id, displayName);
+                break;
         }
-        return GT_Values.emptyFluidTank;
     }
+
+    // #endregion Fluid
+
+    // #region Item - MultiBlock related Item behaviour.
+
+    @Override
+    @Nullable
+    public ItemInventoryLogic getItemLogic(@Nonnull ForgeDirection side, @Nonnull InventoryType type) {
+        if (side == facing) return null;
+        return switch (type) {
+            case Input -> controllerItemInput.getAllInventoryLogics();
+            case Output -> controllerItemOutput.getAllInventoryLogics();
+            default -> null;
+        };
+    }
+
+    @Override
+    @Nullable
+    public ItemInventoryLogic getItemLogic(@Nonnull InventoryType type, @Nullable UUID id) {
+        return switch (type) {
+            case Input -> controllerItemInput.getInventoryLogic(id);
+            case Output -> controllerItemOutput.getInventoryLogic(id);
+            default -> null;
+        };
+    }
+
+    @Override
+    @Nonnull
+    public UUID registerItemInventory(int slots, int tier, @Nonnull InventoryType type, boolean isUpgradeInventory) {
+        return switch (type) {
+            case Input -> controllerItemInput.addInventory(new ItemInventoryLogic(slots, tier, isUpgradeInventory));
+            case Output -> controllerItemOutput.addInventory(new ItemInventoryLogic(slots, tier, isUpgradeInventory));
+            case Both -> {
+                UUID id = controllerItemInput.addInventory(new ItemInventoryLogic(slots, tier, isUpgradeInventory));
+                controllerItemOutput.addInventory(id, new ItemInventoryLogic(slots, tier, isUpgradeInventory));
+                yield id;
+            }
+        };
+    }
+
+    @Override
+    public ItemInventoryLogic unregisterItemInventory(@Nonnull UUID id, @Nonnull InventoryType type) {
+        return switch (type) {
+            case Input -> controllerItemInput.removeInventory(id);
+            case Output -> controllerItemOutput.removeInventory(id);
+            case Both -> {
+                ItemInventoryLogic input = controllerItemInput.removeInventory(id);
+                ItemInventoryLogic output = controllerItemOutput.removeInventory(id);
+                yield new ItemInventoryLogic(
+                    Arrays.asList(input, output)
+                        .stream()
+                        .map(inv -> inv.getInventory())
+                        .collect(Collectors.toList()));
+            }
+        };
+    }
+
+    @Override
+    public void changeItemInventoryDisplayName(@Nullable UUID id, @Nullable String displayName,
+        @Nonnull InventoryType type) {
+        switch (type) {
+            case Input:
+                controllerItemInput.setInventoryDisplayName(id, displayName);
+                break;
+            case Output:
+                controllerItemOutput.setInventoryDisplayName(id, displayName);
+                break;
+            case Both:
+                controllerItemInput.setInventoryDisplayName(id, displayName);
+                controllerItemOutput.setInventoryDisplayName(id, displayName);
+                break;
+        }
+    }
+
+    // #endregion Item
 
     // #region Energy
+
     @Override
-    public PowerLogic getPowerLogic(IMultiBlockPart part, ForgeDirection side) {
+    public PowerLogic getPowerLogic() {
         if (!(this instanceof PowerLogicHost powerLogicHost)) {
             return null;
         }
 
-        if (part.getFrontFacing() != side) {
-            return null;
-        }
-
-        return powerLogicHost.getPowerLogic(side);
+        return powerLogicHost.getPowerLogic();
     }
+
     // #endregion Energy
-
-    /**
-     * Item - MultiBlock related Item behaviour.
-     */
-    @Override
-    public void registerInventory(String aName, String aID, int aInventorySize, int aType) {
-        registerInventory(aName, aID, new ItemStackHandler(aInventorySize), aType);
-    }
-
-    public void registerInventory(String name, String id, IItemHandlerModifiable inventory, int type) {
-        if (name == null || name.equals("") || id == null || id.equals("") || inventory == null) {
-            return;
-        }
-        if (type == Inventory.INPUT || type == Inventory.BOTH) {
-            if (multiBlockInputInventory.containsKey(id)) return;
-            multiBlockInputInventory.put(id, inventory);
-            multiBlockInputInventoryNames.put(id, name);
-        }
-        if (type == Inventory.OUTPUT || type == Inventory.BOTH) {
-            if (multiBlockOutputInventory.containsKey(id)) return;
-            multiBlockOutputInventory.put(id, inventory);
-            multiBlockOutputInventoryNames.put(id, name);
-        }
-        if (isServerSide()) {
-            issueClientUpdate();
-        }
-    }
-
-    @Override
-    public void unregisterInventory(String aName, String aID, int aType) {
-        if ((aType == Inventory.INPUT || aType == Inventory.BOTH) && multiBlockInputInventory.containsKey(aID)) {
-            multiBlockInputInventory.remove(aID, multiBlockInputInventory.get(aID));
-            multiBlockInputInventoryNames.remove(aID, aName);
-            inventoryIDToUnregister = aID;
-            inventoryNameToUnregister = aName;
-            type = aType;
-        }
-        if ((aType == Inventory.OUTPUT || aType == Inventory.BOTH) && multiBlockOutputInventory.containsKey(aID)) {
-            multiBlockOutputInventory.remove(aID, multiBlockOutputInventory.get(aID));
-            multiBlockOutputInventoryNames.remove(aID, aName);
-            inventoryIDToUnregister = aID;
-            inventoryNameToUnregister = aName;
-            type = aType;
-        }
-        if (isServerSide()) {
-            issueClientUpdate();
-        }
-    }
-
-    @Override
-    public void changeInventoryName(String aName, String aID, int aType) {
-        if ((aType == Inventory.INPUT || aType == Inventory.BOTH) && multiBlockInputInventoryNames.containsKey(aID)) {
-            multiBlockInputInventoryNames.put(aID, aName);
-        }
-        if ((aType == Inventory.OUTPUT || aType == Inventory.BOTH) && multiBlockOutputInventoryNames.containsKey(aID)) {
-            multiBlockOutputInventoryNames.put(aID, aName);
-        }
-    }
-
-    @Override
-    public boolean hasInventoryBeenModified(MultiBlockPart aPart) {
-        if (aPart.modeSelected(MultiBlockPart.ITEM_IN)) return hasInventoryBeenModified();
-        else if (aPart.modeSelected(MultiBlockPart.ITEM_OUT)) return hasOutputInventoryBeenModified();
-
-        return false;
-    }
-
-    @Override
-    public boolean isValidSlot(MultiBlockPart aPart, int aIndex) {
-        return false;
-    }
-
-    @Override
-    public void enableWorking() {
-        super.enableWorking();
-        if (!structureOkay) {
-            checkStructure(true);
-        }
-    }
-
-    @Override
-    public IItemHandlerModifiable getInventoryForGUI(MultiBlockPart aPart) {
-        if (isServerSide()) {
-            for (UpgradeCasing tPart : upgradeCasings) {
-                if (!(tPart instanceof Inventory)) continue;
-                tPart.issueClientUpdate();
-            }
-        }
-        final Map<String, IItemHandlerModifiable> multiBlockInventory = getMultiBlockInventory(aPart);
-        if (multiBlockInventory == null) return null;
-
-        final String lockedInventory = aPart.getLockedInventory();
-        if (lockedInventory == null) {
-            return new ListItemHandler(multiBlockInventory.values());
-        } else {
-            final IItemHandlerModifiable inv = multiBlockInventory.get(lockedInventory);
-            return inv;
-        }
-    }
-
-    @Override
-    public boolean addStackToSlot(MultiBlockPart aPart, int aIndex, ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean addStackToSlot(MultiBlockPart aPart, int aIndex, ItemStack aStack, int aAmount) {
-        return false;
-    }
-
-    protected Map<String, FluidTankGT[]> getMultiBlockTankArray(MultiBlockPart aPart) {
-        if (aPart.modeSelected(MultiBlockPart.FLUID_IN)) return multiBlockInputTank;
-        else if (aPart.modeSelected(MultiBlockPart.FLUID_OUT)) return multiBlockOutputTank;
-        return null;
-    }
-
-    protected Map<String, String> getMultiBlockTankArrayNames(MultiBlockPart aPart) {
-        if (aPart.modeSelected(MultiBlockPart.FLUID_IN)) return multiBlockInputTankNames;
-        else if (aPart.modeSelected(MultiBlockPart.FLUID_OUT)) return multiBlockOutputTankNames;
-        return null;
-    }
-
-    protected Map<String, IItemHandlerModifiable> getMultiBlockInventory(MultiBlockPart aPart) {
-        if (aPart.modeSelected(MultiBlockPart.ITEM_IN)) return multiBlockInputInventory;
-        else if (aPart.modeSelected(MultiBlockPart.ITEM_OUT)) return multiBlockOutputInventory;
-        return null;
-    }
-
-    protected Map<String, String> getMultiBlockInventoryNames(MultiBlockPart aPart) {
-        if (aPart.modeSelected(MultiBlockPart.ITEM_IN)) return multiBlockInputInventoryNames;
-        else if (aPart.modeSelected(MultiBlockPart.ITEM_OUT)) return multiBlockOutputInventoryNames;
-        return null;
-    }
-
-    protected Pair<IItemHandlerModifiable, Integer> getInventory(MultiBlockPart aPart, int aSlot) {
-        final Map<String, IItemHandlerModifiable> multiBlockInventory = getMultiBlockInventory(aPart);
-        if (multiBlockInventory == null) return null;
-
-        final String invName = aPart.getLockedInventory();
-        if (invName != null && !invName.isEmpty()) return new ImmutablePair<>(multiBlockInventory.get(invName), aSlot);
-
-        int start = 0;
-        for (IItemHandlerModifiable inv : multiBlockInventory.values()) {
-            if (aSlot >= start && aSlot < start + inv.getSlots()) {
-                return new ImmutablePair<>(inv, aSlot - start);
-            }
-            start += inv.getSlots();
-        }
-        return null;
-    }
-
-    @Override
-    public int[] getAccessibleSlotsFromSide(MultiBlockPart aPart, ForgeDirection side) {
-        final TIntList tList = new TIntArrayList();
-        final Map<String, IItemHandlerModifiable> multiBlockInventory = getMultiBlockInventory(aPart);
-        if (multiBlockInventory == null) return tList.toArray();
-
-        final String lockedInventory = aPart.getLockedInventory();
-        // Item in --> input inv
-        // Item out --> output inv
-
-        int start = 0;
-        if (lockedInventory == null) {
-            for (IItemHandlerModifiable inv : multiBlockInventory.values()) {
-                for (int i = start; i < inv.getSlots() + start; i++) tList.add(i);
-                start += inv.getSlots();
-            }
-        } else {
-            final IItemHandlerModifiable inv = multiBlockInventory.get(lockedInventory);
-            final int len = inv != null ? inv.getSlots() : 0;
-            for (int i = 0; i < len; i++) tList.add(i);
-        }
-        return tList.toArray();
-    }
-
-    @Override
-    public boolean canInsertItem(MultiBlockPart aPart, int aSlot, ItemStack aStack, ForgeDirection side) {
-        final Pair<IItemHandlerModifiable, Integer> tInv = getInventory(aPart, aSlot);
-        if (tInv == null) return false;
-
-        final int tSlot = tInv.getRight();
-        final IItemHandlerModifiable inv = tInv.getLeft();
-
-        return inv.getStackInSlot(tSlot) == null || GT_Utility.areStacksEqual(aStack, inv.getStackInSlot(tSlot)); // &&
-                                                                                                                  // allowPutStack(getBaseMetaTileEntity(),
-                                                                                                                  // aIndex,
-                                                                                                                  // (byte)
-                                                                                                                  // aSide,
-                                                                                                                  // aStack)
-    }
-
-    @Override
-    public boolean canExtractItem(MultiBlockPart aPart, int aSlot, ItemStack aStack, ForgeDirection side) {
-        final Pair<IItemHandlerModifiable, Integer> tInv = getInventory(aPart, aSlot);
-        if (tInv == null) return false;
-
-        final int tSlot = tInv.getRight();
-        final IItemHandlerModifiable inv = tInv.getLeft();
-
-        return inv.getStackInSlot(tSlot) != null; // && allowPullStack(getBaseMetaTileEntity(), aIndex, (byte) aSide,
-                                                  // aStack);
-    }
-
-    @Override
-    public int getSizeInventory(MultiBlockPart aPart) {
-        final Map<String, IItemHandlerModifiable> multiBlockInventory = getMultiBlockInventory(aPart);
-        if (multiBlockInventory == null) return 0;
-
-        final String lockedInventory = aPart.getLockedInventory();
-        if (lockedInventory == null) {
-            int len = 0;
-            for (IItemHandlerModifiable inv : multiBlockInventory.values()) len += inv.getSlots();
-            return len;
-        } else {
-            final IItemHandlerModifiable inv = multiBlockInventory.get(lockedInventory);
-            return inv != null ? inv.getSlots() : 0;
-        }
-    }
-
-    @Override
-    public ItemStack getStackInSlot(MultiBlockPart aPart, int aSlot) {
-        final Pair<IItemHandlerModifiable, Integer> tInv = getInventory(aPart, aSlot);
-        if (tInv == null) return null;
-
-        final int tSlot = tInv.getRight();
-        final IItemHandlerModifiable inv = tInv.getLeft();
-        if (inv == null) return null;
-
-        return inv.getStackInSlot(tSlot);
-    }
-
-    @Override
-    public ItemStack decrStackSize(MultiBlockPart aPart, int aSlot, int aDecrement) {
-        final ItemStack tStack = getStackInSlot(aPart, aSlot);
-        ItemStack rStack = GT_Utility.copyOrNull(tStack);
-        if (tStack != null) {
-            if (tStack.stackSize <= aDecrement) {
-                setInventorySlotContents(aPart, aSlot, null);
-            } else {
-                rStack = tStack.splitStack(aDecrement);
-                if (tStack.stackSize == 0) setInventorySlotContents(aPart, aSlot, null);
-            }
-        }
-        return rStack;
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(MultiBlockPart aPart, int aSlot) {
-        final Pair<IItemHandlerModifiable, Integer> tInv = getInventory(aPart, aSlot);
-        if (tInv == null) return null;
-
-        final IItemHandlerModifiable inv = tInv.getLeft();
-        final int tSlot = tInv.getRight();
-
-        final ItemStack rStack = inv.getStackInSlot(tSlot);
-        inv.setStackInSlot(tSlot, null);
-        return rStack;
-    }
-
-    @Override
-    public void setInventorySlotContents(MultiBlockPart aPart, int aSlot, ItemStack aStack) {
-        final Pair<IItemHandlerModifiable, Integer> tInv = getInventory(aPart, aSlot);
-        if (tInv == null) return;
-
-        final IItemHandlerModifiable inv = tInv.getLeft();
-        final int tSlot = tInv.getRight();
-        inv.setStackInSlot(tSlot, aStack);
-    }
-
-    @Override
-    public List<String> getInventoryNames(MultiBlockPart aPart) {
-        final List<String> inventoryNames = new ArrayList<>();
-        inventoryNames.add(ALL_INVENTORIES_NAME);
-        inventoryNames.addAll(getMultiBlockInventoryNames(aPart).values());
-        return inventoryNames;
-    }
-
-    @Override
-    public List<String> getInventoryIDs(MultiBlockPart aPart) {
-        final List<String> tInventoryIDs = new ArrayList<>();
-        tInventoryIDs.add(ALL_INVENTORIES_NAME);
-        tInventoryIDs.addAll(getMultiBlockInventory(aPart).keySet());
-        return tInventoryIDs;
-    }
-
-    @Override
-    public String getInventoryName(MultiBlockPart aPart) {
-        final StringBuilder str = new StringBuilder();
-        str.append(getInventoryName());
-        if (aPart.modeSelected(MultiBlockPart.ITEM_IN)) {
-            str.append(" Input");
-        } else if (aPart.modeSelected(MultiBlockPart.ITEM_OUT)) {
-            str.append(" Output");
-            String a;
-        } else {
-            str.append(" Unknown");
-        }
-        final String lockedInventory = aPart.getLockedInventory();
-        if (lockedInventory != null && !lockedInventory.equals("")) {
-            str.append(" [Locked: ")
-                .append(lockedInventory)
-                .append("]");
-        }
-
-        return str.toString();
-    }
-
-    @Override
-    public List<String> getTankArrayNames(MultiBlockPart aPart) {
-        final List<String> inventoryNames = new ArrayList<>();
-        inventoryNames.add(ALL_INVENTORIES_NAME);
-        inventoryNames.addAll(getMultiBlockTankArrayNames(aPart).values());
-        return inventoryNames;
-    }
-
-    @Override
-    public List<String> getTankArrayIDs(MultiBlockPart aPart) {
-        final List<String> inventoryIDs = new ArrayList<>();
-        inventoryIDs.add(ALL_INVENTORIES_NAME);
-        inventoryIDs.addAll(getMultiBlockTankArray(aPart).keySet());
-        return inventoryIDs;
-    }
-
-    @Override
-    public boolean hasCustomInventoryName(MultiBlockPart aPart) {
-        return hasCustomInventoryName();
-    }
-
-    @Override
-    public int getInventoryStackLimit(MultiBlockPart aPart) {
-        return getInventoryStackLimit();
-    }
-
-    @Override
-    public void markDirty(MultiBlockPart aPart) {
-        markDirty();
-        if (aPart.modeSelected(MultiBlockPart.ITEM_OUT)) markOutputInventoryBeenModified();
-        else markInventoryBeenModified();
-    }
-
-    @Override
-    public boolean isUseableByPlayer(MultiBlockPart aPart, EntityPlayer aPlayer) {
-        return isUseableByPlayer(aPlayer);
-    }
-
-    @Override
-    public void openInventory(MultiBlockPart aPart) {
-        // TODO: MultiInventory - consider the part's inventory
-        openInventory();
-    }
-
-    @Override
-    public void closeInventory(MultiBlockPart aPart) {
-        // TODO: MultiInventory - consider the part's inventory
-        closeInventory();
-    }
-
-    @Override
-    public boolean isItemValidForSlot(MultiBlockPart aPart, int aSlot, ItemStack aStack) {
-        return isItemValidForSlot(aSlot, aStack);
-    }
 
     /*
      * Helper Methods For Recipe checking
      */
 
-    @Override
-    protected ItemStack[] getInputItems() {
-        return getInventoriesForInput().getStacks()
-            .toArray(new ItemStack[0]);
-    }
-
-    protected ItemStack[] getOutputItems() {
-        return getInventoriesForOutput().getStacks()
-            .toArray(new ItemStack[0]);
-    }
-
-    protected Iterable<Pair<ItemStack[], String>> getItemInputsForEachInventory() {
-        return multiBlockInputInventory.entrySet()
-            .stream()
-            .map(
-                (entry) -> Pair.of(
-                    entry.getValue()
-                        .getStacks()
-                        .toArray(new ItemStack[0]),
-                    entry.getKey()))
-            .collect(Collectors.toList());
-    }
-
-    protected ItemStack[] getItemInputsForInventory(String id) {
-        IItemHandlerModifiable inventory = multiBlockInputInventory.get(id);
-        if (inventory != null) {
-            return inventory.getStacks()
-                .toArray(new ItemStack[0]);
-        }
-        return null;
-    }
-
-    @Override
-    protected FluidStack[] getInputFluids() {
-        List<FluidStack> fluidStacks = new ArrayList<>();
-        for (FluidTankGT[] inputTanks : multiBlockInputTank.values()) {
-            for (FluidTankGT inputTank : inputTanks) {
-                FluidStack fluidStack = inputTank.get();
-                if (fluidStack != null) {
-                    fluidStacks.add(fluidStack);
-                }
-            }
-        }
-        return fluidStacks.toArray(new FluidStack[0]);
-    }
-
-    protected FluidStack[] getOutputFluids() {
-        List<FluidStack> fluidStacks = new ArrayList<>();
-        for (FluidTankGT[] outputTanks : multiBlockOutputTank.values()) {
-            for (FluidTankGT outputTank : outputTanks) {
-                FluidStack fluidStack = outputTank.getFluid();
-                if (fluidStack != null) {
-                    fluidStacks.add(fluidStack);
-                }
-            }
-        }
-        return fluidStacks.toArray(new FluidStack[0]);
-    }
-
-    protected Iterable<Pair<FluidStack[], String>> getFluidInputsForEachTankArray() {
-        return multiBlockInputTank.entrySet()
-            .stream()
-            .map((entry) -> Pair.of(FluidTankGT.getFluidsFromTanks(entry.getValue()), entry.getKey()))
-            .collect(Collectors.toList());
-    }
-
-    protected FluidStack[] getFluidInputsForTankArray(String id) {
-        return FluidTankGT.getFluidsFromTanks(multiBlockInputTank.get(id));
-    }
-
     protected void setItemOutputs(String inventory, ItemStack... itemOutputs) {
-        itemsToOutput = itemOutputs;
-        inventoryName = inventory;
+
     }
 
     @Override
     protected void setItemOutputs(ItemStack... outputs) {
         super.setItemOutputs(outputs);
-        inventoryName = null;
+
     }
 
     @Override
-    protected void outputItems() {
-        if (itemsToOutput == null) {
-            return;
-        }
-
-        IItemHandlerModifiable inv;
-        if (inventoryName != null) {
-            inv = multiBlockOutputInventory.getOrDefault(inventoryName, getInventoriesForOutput());
-        } else {
-            inv = getInventoriesForOutput();
-        }
-        for (ItemStack item : itemsToOutput) {
-            int index = 0;
-            while (item != null && item.stackSize > 0 && index < inv.getSlots()) {
-                item = inv.insertItem(index++, item.copy(), false);
-            }
+    protected void outputItems(@Nullable UUID inventoryID) {
+        if (itemsToOutput == null) return;
+        ItemInventoryLogic inventory = controllerItemOutput.getInventoryLogic(inventoryID);
+        for (int i = 0; i < itemsToOutput.length; i++) {
+            inventory.insertItem(itemsToOutput[i]);
         }
         itemsToOutput = null;
     }
 
-    protected void setFluidOutputs(String tank, FluidStack... fluidOuputs) {
-        fluidsToOutput = fluidOuputs;
-        tankName = tank;
-    }
+    protected void setFluidOutputs(String tank, FluidStack... fluidOutputs) {}
 
     @Override
     protected void setFluidOutputs(FluidStack... outputs) {
         super.setFluidOutputs(outputs);
-        tankName = null;
     }
 
     @Override
-    protected void outputFluids() {
-        if (fluidsToOutput == null) {
-            return;
+    protected void outputFluids(@Nullable UUID inventoryID) {
+        if (fluidsToOutput == null) return;
+        FluidInventoryLogic inventory = controllerFluidOutput.getInventoryLogic(inventoryID);
+        for (int i = 0; i < fluidsToOutput.length; i++) {
+            inventory.fill(fluidsToOutput[i]);
         }
-
-        List<FluidTankGT> tanks = Arrays.asList(outputTanks);
-        for (FluidStack fluid : fluidsToOutput) {
-            int index = 0;
-            while (fluid != null && fluid.amount > 0 && index < tanks.size()) {
-                int filled = tanks.get(index++)
-                    .fill(fluid, true);
-                fluid.amount -= filled;
-            }
-        }
+        fluidsToOutput = null;
     }
 
     @Override
     protected void updateSlots() {
-        IItemHandlerModifiable inv = getInventoriesForInput();
-        for (int i = 0; i < inv.getSlots(); i++) {
-            if (inv.getStackInSlot(i) != null && inv.getStackInSlot(i).stackSize <= 0) {
-                inv.setStackInSlot(i, null);
-            }
-        }
-
-        for (FluidTankGT inputTank : getTanksForInput()) {
-            if (inputTank == null) {
-                continue;
-            }
-
-            if (inputTank.get() != null && inputTank.get().amount <= 0) {
-                inputTank.setEmpty();
-                continue;
-            }
-
-            FluidStack afterRecipe = inputTank.get();
-            FluidStack beforeRecipe = inputTank.get(Integer.MAX_VALUE);
-            if (afterRecipe == null || beforeRecipe == null) {
-                continue;
-            }
-            int difference = beforeRecipe.amount - afterRecipe.amount;
-            inputTank.remove(difference);
-        }
+        controllerItemInput.getAllInventoryLogics()
+            .update(shouldSort);
+        controllerItemOutput.getAllInventoryLogics()
+            .update(shouldSort);
+        controllerFluidInput.getAllInventoryLogics()
+            .update();
+        controllerFluidOutput.getAllInventoryLogics()
+            .update();
     }
 
     @Override
     protected boolean checkRecipe() {
-        if (!(this instanceof ProcessingLogicHost)) {
-            return false;
-        }
-        ProcessingLogic logic = ((ProcessingLogicHost) this).getProcessingLogic();
-        logic.clear();
-        CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
-        if (isSeparateInputs()) {
-            // TODO: Add separation with fluids
-            for (Pair<ItemStack[], String> inventory : getItemInputsForEachInventory()) {
-                IItemHandlerModifiable outputInventory = multiBlockOutputInventory
-                    .getOrDefault(inventory.getLeft(), null);
-                result = logic.setInputItems(inventory.getLeft())
-                    .setCurrentOutputItems(getOutputItems())
-                    .process();
-                if (result.wasSuccessful()) {
-                    inventoryName = inventory.getRight();
-                    break;
-                }
-                logic.clear();
-            }
-        } else {
-            result = logic.setInputItems(getInputItems())
-                .setCurrentOutputItems(getOutputItems())
-                .setInputFluids(getInputFluids())
-                .setCurrentOutputFluids(getOutputFluids())
-                .process();
-        }
-        setDuration(logic.getDuration());
-        setEut(logic.getCalculatedEut());
-        setItemOutputs(logic.getOutputItems());
-        setFluidOutputs(logic.getOutputFluids());
-        return result.wasSuccessful();
-    }
-
-    public IItemHandlerModifiable getOutputInventory() {
-        return outputInventory;
-    }
-
-    public FluidTankGT[] getOutputTanks() {
-        return outputTanks;
+        return false;
     }
 
     /*
@@ -1731,7 +1063,11 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                     .addTooltip("Item Input Inventory")
                     .setPos(20 * (page - 1), -20))
                 .addPage(
-                    new MultiChildWidget().addChild(getItemInventoryInputGUI())
+                    new MultiChildWidget().addChild(
+                        controllerItemInput.getAllInventoryLogics()
+                            .getGuiPart()
+                            .setSize(18 * 4 + 4, 18 * 5)
+                            .setPos(52, 7))
                         .addChild(getGregTechLogo().setPos(147, 86))
                         .setSize(getGUIWidth(), getGUIHeight()));
         }
@@ -1752,7 +1088,11 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                     .addTooltip("Item Output Inventory")
                     .setPos(20 * (page - 1), -20))
                 .addPage(
-                    new MultiChildWidget().addChild(getItemInventoryOutputGUI())
+                    new MultiChildWidget().addChild(
+                        controllerItemOutput.getAllInventoryLogics()
+                            .getGuiPart()
+                            .setSize(18 * 4 + 4, 18 * 5)
+                            .setPos(52, 7))
                         .addChild(getGregTechLogo().setPos(147, 86))
                         .setSize(getGUIWidth(), getGUIHeight()));
         }
@@ -1773,7 +1113,11 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                     .addTooltip("Fluid Input Tanks")
                     .setPos(20 * (page - 1), -20))
                 .addPage(
-                    new MultiChildWidget().addChild(getFluidInventoryInputGUI())
+                    new MultiChildWidget().addChild(
+                        controllerFluidInput.getAllInventoryLogics()
+                            .getGuiPart()
+                            .setSize(18 * 4 + 4, 18 * 5)
+                            .setPos(52, 7))
                         .addChild(getGregTechLogo().setPos(147, 86))
                         .setSize(getGUIWidth(), getGUIHeight()));
         }
@@ -1794,7 +1138,11 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                     .addTooltip("Fluid Output Tanks")
                     .setPos(20 * (page - 1), -20))
                 .addPage(
-                    new MultiChildWidget().addChild(getFluidInventoryOutputGUI())
+                    new MultiChildWidget().addChild(
+                        controllerFluidOutput.getAllInventoryLogics()
+                            .getGuiPart()
+                            .setSize(18 * 4 + 4, 18 * 5)
+                            .setPos(52, 7))
                         .addChild(getGregTechLogo().setPos(147, 86))
                         .setSize(getGUIWidth(), getGUIHeight()));
         }
@@ -1824,77 +1172,6 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         return buttons;
     }
 
-    protected Widget getItemInventoryInputGUI() {
-        final IItemHandlerModifiable inv = getInventoriesForInput();
-        final Scrollable scrollable = new Scrollable().setVerticalScroll();
-        for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
-            final int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
-            for (int column = 0; column < columnsToMake; column++) {
-                scrollable.widget(
-                    new SlotWidget(inv, rows * 4 + column).setPos(column * 18, rows * 18)
-                        .setSize(18, 18));
-            }
-        }
-        return scrollable.setSize(18 * 4 + 4, 18 * 5)
-            .setPos(52, 7);
-    }
-
-    protected Widget getItemInventoryOutputGUI() {
-        final IItemHandlerModifiable inv = getInventoriesForOutput();
-        final Scrollable scrollable = new Scrollable().setVerticalScroll();
-        for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
-            final int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
-            for (int column = 0; column < columnsToMake; column++) {
-                scrollable.widget(
-                    new SlotWidget(inv, rows * 4 + column).setPos(column * 18, rows * 18)
-                        .setSize(18, 18));
-            }
-        }
-        return scrollable.setSize(18 * 4 + 4, 18 * 5)
-            .setPos(52, 7);
-    }
-
-    protected IItemHandlerModifiable getInventoriesForInput() {
-        return new ListItemHandler(multiBlockInputInventory.values());
-    }
-
-    protected IItemHandlerModifiable getInventoriesForOutput() {
-        return new ListItemHandler(multiBlockOutputInventory.values());
-    }
-
-    protected Widget getFluidInventoryInputGUI() {
-        final IFluidTank[] tanks = getTanksForInput();
-        final Scrollable scrollable = new Scrollable().setVerticalScroll();
-        for (int rows = 0; rows * 4 < tanks.length; rows++) {
-            final int columnsToMake = Math.min(tanks.length - rows * 4, 4);
-            for (int column = 0; column < columnsToMake; column++) {
-                final FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
-                scrollable.widget(
-                    fluidSlot.setPos(column * 18, rows * 18)
-                        .setSize(18, 18));
-            }
-        }
-        return scrollable.setSize(18 * 4 + 4, 18 * 5)
-            .setPos(52, 7);
-    }
-
-    protected Widget getFluidInventoryOutputGUI() {
-        final IFluidTank[] tanks = getTanksForOutput();
-        final Scrollable scrollable = new Scrollable().setVerticalScroll();
-        for (int rows = 0; rows * 4 < tanks.length; rows++) {
-            final int columnsToMake = Math.min(tanks.length - rows * 4, 4);
-            for (int column = 0; column < columnsToMake; column++) {
-                final FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
-                fluidSlot.setInteraction(true, false);
-                scrollable.widget(
-                    fluidSlot.setPos(column * 18, rows * 18)
-                        .setSize(18, 18));
-            }
-        }
-        return scrollable.setSize(18 * 4 + 4, 18 * 5)
-            .setPos(52, 7);
-    }
-
     @Override
     public Pos2d getPowerSwitchButtonPos() {
         return new Pos2d(144, 0);
@@ -1913,23 +1190,6 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     @Override
     public void setVoidingMode(VoidingMode mode) {
         this.voidingMode = mode;
-    }
-
-    @Override
-    public List<ItemStack> getItemOutputSlots(ItemStack[] toOutput) {
-        List<ItemStack> ret = new ArrayList<>();
-        IItemHandler inv = getOutputInventory();
-        if (inv != null && inv.getSlots() > 0) {
-            for (int i = 0; i < inv.getSlots(); i++) {
-                ret.add(inv.getStackInSlot(i));
-            }
-        }
-        return ret;
-    }
-
-    @Override
-    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
-        return Arrays.asList(getOutputTanks());
     }
 
     @Override
@@ -2046,12 +1306,26 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     @Override
     public GT_Packet_MultiTileEntity getClientDataPacket() {
         final GT_Packet_MultiTileEntity packet = super.getClientDataPacket();
-        if (inventoryNameToUnregister != null && inventoryIDToUnregister != null && type != 0) {
-            packet.setToUnregisterInventories(inventoryNameToUnregister + ":" + inventoryIDToUnregister + ":" + type);
-            inventoryNameToUnregister = null;
-            inventoryIDToUnregister = null;
-            type = 0;
-        }
+
         return packet;
+
+    }
+
+    @Override
+    public void enableWorking() {
+        super.enableWorking();
+        if (!structureOkay) {
+            checkStructure(true);
+        }
+    }
+
+    @Override
+    public List<ItemStack> getItemOutputSlots(ItemStack[] toOutput) {
+        return new ArrayList<>(0);
+    }
+
+    @Override
+    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
+        return new ArrayList<>(0);
     }
 }

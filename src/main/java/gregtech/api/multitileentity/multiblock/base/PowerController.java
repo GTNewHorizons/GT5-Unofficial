@@ -35,7 +35,7 @@ public abstract class PowerController<T extends PowerController<T>> extends Cont
     @Override
     public void writeMultiTileNBT(NBTTagCompound nbt) {
         super.writeMultiTileNBT(nbt);
-        power.writeToNBT(nbt);
+        power.saveToNBT(nbt);
     }
 
     @Override
@@ -58,42 +58,7 @@ public abstract class PowerController<T extends PowerController<T>> extends Cont
 
     @Override
     protected boolean checkRecipe() {
-        if (!(this instanceof ProcessingLogicHost)) {
-            return false;
-        }
-        ProcessingLogic logic = ((ProcessingLogicHost) this).getProcessingLogic();
-        logic.clear();
-        boolean result = false;
-        if (isSeparateInputs()) {
-            // TODO: Add separation with fluids
-            for (Pair<ItemStack[], String> inventory : getItemInputsForEachInventory()) {
-                IItemHandlerModifiable outputInventory = multiBlockOutputInventory
-                    .getOrDefault(inventory.getLeft(), null);
-                result = logic.setInputItems(inventory.getLeft())
-                    .setCurrentOutputItems(getOutputItems())
-                    .process();
-                if (result) {
-                    inventoryName = inventory.getRight();
-                    break;
-                }
-                logic.clear();
-            }
-        } else {
-            result = logic.setInputItems(getInputItems())
-                .setCurrentOutputItems(getOutputItems())
-                .setInputFluids(getInputFluids())
-                .setCurrentOutputFluids(getOutputFluids())
-                .setVoltage(power.getVoltage())
-                .setAmperage(amperage)
-                .setPerfectOverclock(hasPerfectOverclock())
-                .setIsCleanroom(isCleanroom)
-                .process();
-        }
-        setDuration(logic.getDuration());
-        setEut(logic.getEut());
-        setItemOutputs(logic.getOutputItems());
-        setFluidOutputs(logic.getOutputFluids());
-        return result;
+        return false;
     }
 
     protected boolean hasPerfectOverclock() {

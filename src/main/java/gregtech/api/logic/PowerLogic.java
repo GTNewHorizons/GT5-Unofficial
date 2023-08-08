@@ -135,7 +135,7 @@ public class PowerLogic implements IGlobalWirelessEnergy {
         return (type & EMITTER) > 0;
     }
 
-    public void writeToNBT(NBTTagCompound nbt) {
+    public void saveToNBT(NBTTagCompound nbt) {
         NBTTagCompound powerLogic = new NBTTagCompound();
         powerLogic.setLong(NBT.POWER_LOGIC_ENERGY_CAPACITY, energyCapacity);
         powerLogic.setLong(NBT.POWER_LOGIC_STORED_ENERGY, storedEnergy);

@@ -17,10 +17,8 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.GT_Mod;
@@ -108,17 +106,6 @@ public class CokeOven extends Controller<CokeOven> implements PollutionLogicHost
     @Override
     protected boolean hasFluidInput() {
         return false;
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new SlotWidget(inputInventory, 0).setPos(18, 18)
-                .setSize(18, 18));
-        builder.widget(
-            new SlotWidget(outputInventory, 0).setPos(36, 36)
-                .setSize(18, 18));
-        builder.widget(createButtons(builder));
     }
 
     @Override

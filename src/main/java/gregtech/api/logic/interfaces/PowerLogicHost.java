@@ -8,6 +8,10 @@ public interface PowerLogicHost {
 
     PowerLogic getPowerLogic(ForgeDirection side);
 
+    default PowerLogic getPowerLogic() {
+        return getPowerLogic(ForgeDirection.UNKNOWN);
+    }
+
     default boolean isEnergyReceiver() {
         return false;
     }
