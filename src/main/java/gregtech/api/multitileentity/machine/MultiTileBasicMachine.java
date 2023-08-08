@@ -496,6 +496,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     }
 
     protected void outputItems(@Nullable UUID inventoryID) {
+        if (itemsToOutput == null) return;
         for (int i = 0; i < itemsToOutput.length; i++) {
             itemOutput.insertItem(itemsToOutput[i]);
         }
@@ -503,6 +504,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     }
 
     protected void outputFluids(@Nullable UUID inventoryID) {
+        if (fluidsToOutput == null) return;
         for (int i = 0; i < fluidsToOutput.length; i++) {
             fluidOutput.fill(fluidsToOutput[i]);
         }

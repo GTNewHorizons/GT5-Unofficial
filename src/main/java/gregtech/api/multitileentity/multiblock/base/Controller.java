@@ -930,11 +930,12 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     @Override
     protected void outputItems(@Nullable UUID inventoryID) {
+        if (itemsToOutput == null) return;
         ItemInventoryLogic inventory = controllerItemOutput.getInventoryLogic(inventoryID);
         for (int i = 0; i < itemsToOutput.length; i++) {
             inventory.insertItem(itemsToOutput[i]);
         }
-        fluidsToOutput = null;
+        itemsToOutput = null;
     }
 
     protected void setFluidOutputs(String tank, FluidStack... fluidOutputs) {}
@@ -946,6 +947,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     @Override
     protected void outputFluids(@Nullable UUID inventoryID) {
+        if (fluidsToOutput == null) return;
         FluidInventoryLogic inventory = controllerFluidOutput.getInventoryLogic(inventoryID);
         for (int i = 0; i < fluidsToOutput.length; i++) {
             inventory.fill(fluidsToOutput[i]);
