@@ -2,6 +2,8 @@ package gregtech.api.net;
 
 import static gregtech.api.enums.GT_Values.B;
 
+import java.nio.charset.Charset;
+
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
@@ -12,6 +14,7 @@ import com.google.common.io.ByteArrayDataInput;
 import gregtech.GT_Mod;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.multitileentity.MultiTileEntityBlock;
+import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileMachine;
@@ -36,6 +39,7 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
     private int booleans;
     private byte soundEvent;
     private int soundEventValue;
+    private String toUnregisterInventories;
 
     // MultiBlockPart
     private int mode;
@@ -115,6 +119,11 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         this.soundEventValue = soundEventValue;
     }
 
+    public void setToUnregisterInventories(String inventoriesToUnregister) {
+        features |= INVENTORY_UNREGISTER;
+        toUnregisterInventories = inventoriesToUnregister;
+    }
+
     @Override
     public void encode(ByteBuf aOut) {
         // Features
@@ -176,6 +185,12 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         if ((features & SOUND) == SOUND) {
             aOut.writeByte(soundEvent);
             aOut.writeInt(soundEventValue);
+        }
+
+        if ((features & INVENTORY_UNREGISTER) == INVENTORY_UNREGISTER) {
+            byte[] bytes = toUnregisterInventories.getBytes(Charset.defaultCharset());
+            aOut.writeInt(bytes.length);
+            aOut.writeBytes(bytes);
         }
     }
 
@@ -250,6 +265,15 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
             packet.setSoundEvent(aData.readByte(), aData.readInt());
         }
 
+        if ((packetFeatures & INVENTORY_UNREGISTER) == INVENTORY_UNREGISTER) {
+            int numberOfBytes = aData.readInt();
+            byte[] bytes = new byte[numberOfBytes];
+            for (int i = 0; i < numberOfBytes; i++) {
+                bytes[i] = aData.readByte();
+            }
+            packet.setToUnregisterInventories(new String(bytes, Charset.defaultCharset()));
+        }
+
         return packet;
     }
 
@@ -282,6 +306,11 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
                     invUpg.setInventoryId(inventoryID);
                 }
 
+                if ((features & INVENTORY_NAME_ID) == INVENTORY_NAME_ID && mte instanceof Inventory invUpg) {
+                    invUpg.setInventoryName(mInventoryName);
+                    invUpg.setInventoryId(inventoryID);
+                }
+
                 if ((features & CONTROLLER) == CONTROLLER && mte instanceof IMultiBlockPart) {
                     final IMultiBlockPart mtePart = (IMultiBlockPart) mte;
                     mtePart.setTargetPos(mTargetPos);
@@ -300,6 +329,15 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
                 if ((features & SOUND) == SOUND && mte instanceof IMultiTileMachine) {
                     final IMultiTileMachine machine = (IMultiTileMachine) mte;
                     machine.setSound(soundEvent, soundEventValue);
+                }
+
+                if ((features & INVENTORY_UNREGISTER) == INVENTORY_UNREGISTER
+                    && mte instanceof IMultiBlockController controller) {
+                    String[] inventoryNameIdType = toUnregisterInventories.split(":");
+                    controller.unregisterInventory(
+                        inventoryNameIdType[0],
+                        inventoryNameIdType[1],
+                        Integer.parseInt(inventoryNameIdType[2]));
                 }
 
             }

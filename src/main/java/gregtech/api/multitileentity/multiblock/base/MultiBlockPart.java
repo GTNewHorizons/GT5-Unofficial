@@ -616,6 +616,10 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         return super.createWindow(buildContext);
     }
 
+    protected boolean canOpenControllerGui() {
+        return true;
+    }
+
     @Override
     public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
