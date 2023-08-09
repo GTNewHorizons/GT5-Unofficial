@@ -313,6 +313,7 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                             mProgresstime = 0;
                             mMaxProgresstime = 0;
                             mEfficiencyIncrease = 0;
+                            para = 0;
                             if (aBaseMetaTileEntity.isAllowedToWork()) checkRecipe();
                         }
                     } else {
@@ -462,6 +463,7 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
                 } else {
                     mLastRecipe = null;
                 }
+                para = getCurrentParallels();
                 return result;
             }
         }.setOverclock(1, 1);
