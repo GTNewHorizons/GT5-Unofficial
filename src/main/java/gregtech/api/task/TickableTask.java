@@ -7,13 +7,15 @@ import net.minecraft.nbt.NBTTagCompound;
 /**
  * This class aims at separating logic run on {@link TaskHost}, rather than using interface layers.
  * It has two main functionalities: Run tick and Save/Load.
+ * 
+ * @param <T> Type of the host
  */
-public abstract class TickableTask {
+public abstract class TickableTask<T extends TaskHost> {
 
     @Nonnull
-    protected final TaskHost taskHost;
+    protected final T taskHost;
 
-    public TickableTask(@Nonnull TaskHost taskHost) {
+    public TickableTask(@Nonnull T taskHost) {
         this.taskHost = taskHost;
         taskHost.registerTask(this);
     }
@@ -32,12 +34,12 @@ public abstract class TickableTask {
     /**
      * Save info to NBT.
      */
-    public abstract void writeToNBT(@Nonnull NBTTagCompound nbt);
+    public void writeToNBT(@Nonnull NBTTagCompound nbt) {}
 
     /**
      * Read info from NBT.
      */
-    public abstract void readFromNBT(@Nonnull NBTTagCompound nbt);
+    public void readFromNBT(@Nonnull NBTTagCompound nbt) {}
 
     @Override
     public String toString() {

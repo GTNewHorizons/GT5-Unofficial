@@ -23,7 +23,7 @@ public class ComplexParallelProcessingLogic {
     protected final FluidStack[][] outputFluids;
     protected final long[] availableEut;
     protected final long[] eut;
-    protected final long[] durations;
+    protected final int[] durations;
     protected final boolean[] isItemVoidProtected;
     protected final boolean[] isFluidVoidProtected;
     protected boolean isCleanroom;
@@ -41,7 +41,7 @@ public class ComplexParallelProcessingLogic {
         outputFluids = new FluidStack[maxComplexParallels][];
         eut = new long[maxComplexParallels];
         availableEut = new long[maxComplexParallels];
-        durations = new long[maxComplexParallels];
+        durations = new int[maxComplexParallels];
         isItemVoidProtected = new boolean[maxComplexParallels];
         isFluidVoidProtected = new boolean[maxComplexParallels];
     }
@@ -166,7 +166,7 @@ public class ComplexParallelProcessingLogic {
         return true;
     }
 
-    public long getDuration(int index) {
+    public int getDuration(int index) {
         if (index >= 0 && index < maxComplexParallels) {
             return durations[index];
         }

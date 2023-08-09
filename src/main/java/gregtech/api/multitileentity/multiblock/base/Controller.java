@@ -655,34 +655,6 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         this.limits = mLimits;
     }
 
-    // IMachineProgress
-    @Override
-    public long getProgress() {
-        return progressTime;
-    }
-
-    @Override
-    public long getMaxProgress() {
-        return maxProgressTime;
-    }
-
-    @Override
-    public boolean increaseProgress(int aProgressAmountInTicks) {
-        return increaseProgressGetOverflow(aProgressAmountInTicks) != aProgressAmountInTicks;
-    }
-
-    /**
-     * Increases the Progress, returns the overflown Progress.
-     */
-    public int increaseProgressGetOverflow(int aProgress) {
-        return 0;
-    }
-
-    @Override
-    public boolean hasThingsToDo() {
-        return getMaxProgress() > 0;
-    }
-
     public boolean isSeparateInputs() {
         return separateInputs;
     }
@@ -690,8 +662,6 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     public void setSeparateInputs(boolean aSeparateInputs) {
         separateInputs = aSeparateInputs;
     }
-
-    // End IMachineProgress
 
     protected IAlignmentLimits getInitialAlignmentLimits() {
         return (d, r, f) -> !f.isVerticallyFliped();
@@ -1282,8 +1252,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setLong("progress", progressTime);
-        tag.setLong("maxProgress", maxProgressTime);
+        tag.setInteger("progress", progressTime);
+        tag.setInteger("maxProgress", maxProgressTime);
         tag.setBoolean("structureOkay", structureOkay);
     }
 
@@ -1299,8 +1269,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         }
         if (isSimpleMachine) {
             boolean isActive = tag.getBoolean("isActive");
-            currentTip
-                .add(GT_Waila.getMachineProgressString(isActive, tag.getLong("maxProgress"), tag.getLong("progress")));
+            currentTip.add(
+                GT_Waila.getMachineProgressString(isActive, tag.getInteger("maxProgress"), tag.getInteger("progress")));
         }
     }
 

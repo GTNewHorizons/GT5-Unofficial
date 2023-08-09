@@ -31,13 +31,12 @@ import gregtech.api.enums.*;
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
-import gregtech.api.logic.PollutionLogic;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.FluidInventoryLogicHost;
 import gregtech.api.logic.interfaces.ItemInventoryLogicHost;
-import gregtech.api.logic.interfaces.PollutionLogicHost;
 import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
@@ -47,10 +46,9 @@ import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.client.GT_SoundLoop;
-import gregtech.common.GT_Pollution;
 
 public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
-    implements IMultiTileMachine, ItemInventoryLogicHost, FluidInventoryLogicHost {
+    implements IMultiTileMachine, ItemInventoryLogicHost, FluidInventoryLogicHost, IMachineProgress {
 
     protected static final int ACTIVE = B[0];
     protected static final int TICKS_BETWEEN_RECIPE_CHECKS = 5 * TickTime.SECOND;
@@ -73,8 +71,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     protected long eut = 0;
     protected int tier = 0;
 
-    protected long maxProgressTime = 0;
-    protected long progressTime = 0;
+    protected int maxProgressTime = 0;
+    protected int progressTime = 0;
     protected long burnTime = 0;
     protected long totalBurnTime = 0;
     protected FluidStack[] fluidsToOutput = GT_Values.emptyFluidStack;
@@ -89,6 +87,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     protected boolean acceptsFuel = false;
     protected boolean canUseWireless = false;
     protected boolean canUseLaser = false;
+
     protected byte soundEvent = 0;
     protected int soundEventValue = 0;
     protected ItemInventoryLogic itemInput;
@@ -395,9 +394,6 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
             updateSlots();
         }
 
-        if (this instanceof PollutionLogicHost && tick % POLLUTION_TICK == 0) {
-            doPollution();
-        }
         emitEnergy();
     }
 
@@ -406,19 +402,6 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
      */
     protected boolean checkRecipe() {
         return false;
-    }
-
-    /**
-     * Runs only on server side
-     */
-    protected void doPollution() {
-        PollutionLogic logic = ((PollutionLogicHost) this).getPollutionLogic();
-
-        if (logic == null) {
-            return;
-        }
-
-        GT_Pollution.addPollution(getWorld(), getXCoord() >> 4, getZCoord() >> 4, logic.getPollutionAmount());
     }
 
     /**
@@ -512,48 +495,58 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         fluidsToOutput = null;
     }
 
-    public long getProgress() {
+    public int getProgress() {
         return progressTime;
     }
 
-    public long getMaxProgress() {
+    @Override
+    public int getMaxProgress() {
         return maxProgressTime;
     }
 
+    @Override
     public boolean increaseProgress(int aProgressAmountInTicks) {
-        progressTime += aProgressAmountInTicks;
-        return true;
+        // we probably don't need vent cover compat
+        return false;
     }
 
+    @Override
     public boolean hasThingsToDo() {
         return getMaxProgress() > 0;
     }
 
+    @Override
     public boolean hasWorkJustBeenEnabled() {
         return wasEnabled;
     }
 
+    @Override
     public void enableWorking() {
         wasEnabled = true;
         canWork = true;
     }
 
+    @Override
     public void disableWorking() {
         canWork = false;
     }
 
+    @Override
     public boolean wasShutdown() {
         return powerShutDown;
     }
 
+    @Override
     public boolean isAllowedToWork() {
         return canWork;
     }
 
+    @Override
     public boolean isActive() {
         return active;
     }
 
+    @Override
     public void setActive(boolean active) {
         this.active = active;
     }
@@ -725,7 +718,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         this.eut = eut;
     }
 
-    protected void setDuration(long duration) {
+    protected void setDuration(int duration) {
         if (duration < 0) {
             duration = -duration;
         }
