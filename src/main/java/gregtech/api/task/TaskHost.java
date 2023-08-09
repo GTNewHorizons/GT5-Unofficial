@@ -14,5 +14,5 @@ public interface TaskHost {
      * This method should be called ONLY by {@link TickableTask} constructor.
      */
     @ApiStatus.Internal
-    void registerTask(@Nonnull TickableTask task);
+    void registerTask(@Nonnull TickableTask<?> task);
 }

@@ -1,6 +1,6 @@
 package gregtech.api.task.tasks;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
@@ -13,7 +13,7 @@ public class PollutionTask<T extends TaskHost & IMachineProgress> extends Tickab
     private int pollutionPerSecond;
     private static final int POLLUTION_TICK = TickTime.SECOND;
 
-    public PollutionTask(@NotNull T taskHost) {
+    public PollutionTask(@Nonnull T taskHost) {
         super(taskHost);
     }
 
@@ -26,7 +26,7 @@ public class PollutionTask<T extends TaskHost & IMachineProgress> extends Tickab
         return pollutionPerSecond;
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public String getName() {
         return "pollution";

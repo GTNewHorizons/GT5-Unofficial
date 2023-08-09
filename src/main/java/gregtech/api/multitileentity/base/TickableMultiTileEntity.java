@@ -32,14 +32,14 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
     /** Variable for updating Data to the Client */
     private boolean sendClientData = false;
 
-    private final Map<String, TickableTask> tasks = new HashMap<>();
+    private final Map<String, TickableTask<?>> tasks = new HashMap<>();
 
     public TickableMultiTileEntity() {
         super(true);
     }
 
     @Override
-    public final void registerTask(@Nonnull TickableTask task) {
+    public final void registerTask(@Nonnull TickableTask<?> task) {
         if (tasks.containsKey(task.getName())) {
             throw new IllegalStateException(String.format("Task with name %s is already registered", task.getName()));
         }
@@ -47,7 +47,7 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
     }
 
     @Nullable
-    public TickableTask getTask(@Nonnull String name) {
+    public TickableTask<?> getTask(@Nonnull String name) {
         return tasks.get(name);
     }
 
@@ -71,7 +71,7 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
                 needsUpdate = false;
             }
             onTick(timer, isServerSide);
-            for (TickableTask task : tasks.values()) {
+            for (TickableTask<?> task : tasks.values()) {
                 task.update(timer, isServerSide);
             }
             if (isServerSide && timer > 2 && sendClientData) {
@@ -136,7 +136,7 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
     protected final void readTasksNBT(NBTTagCompound nbt) {
         if (nbt.hasKey(GT_Values.NBT.TASKS)) {
             NBTTagCompound tasksTag = nbt.getCompoundTag(GT_Values.NBT.TASKS);
-            for (TickableTask task : tasks.values()) {
+            for (TickableTask<?> task : tasks.values()) {
                 if (tasksTag.hasKey(task.getName())) {
                     task.readFromNBT(tasksTag.getCompoundTag(task.getName()));
                 }
@@ -147,7 +147,7 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
     @Override
     protected final void writeTasksNBT(NBTTagCompound aNBT) {
         NBTTagCompound tasksTag = new NBTTagCompound();
-        for (TickableTask task : tasks.values()) {
+        for (TickableTask<?> task : tasks.values()) {
             NBTTagCompound tag = new NBTTagCompound();
             task.writeToNBT(tag);
             tasksTag.setTag(task.getName(), tag);
