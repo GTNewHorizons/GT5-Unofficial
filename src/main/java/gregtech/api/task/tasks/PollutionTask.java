@@ -2,6 +2,8 @@ package gregtech.api.task.tasks;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.tileentity.TileEntity;
+
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.task.TaskHost;
@@ -35,7 +37,9 @@ public class PollutionTask<T extends TaskHost & IMachineProgress> extends Tickab
     @Override
     public void update(long tick, boolean isServerSide) {
         if (isServerSide && tick % POLLUTION_TICK == 0 && taskHost.hasThingsToDo()) {
-            GT_Pollution.addPollution(taskHost, getPollutionPerSecond());
+            if (taskHost instanceof TileEntity) {
+                GT_Pollution.addPollution((TileEntity) taskHost, getPollutionPerSecond());
+            }
         }
     }
 }
