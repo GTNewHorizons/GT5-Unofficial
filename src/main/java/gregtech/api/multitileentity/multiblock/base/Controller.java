@@ -113,10 +113,6 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     protected ControllerFluidLogic controllerFluidInput = new ControllerFluidLogic();
     protected ControllerFluidLogic controllerFluidOutput = new ControllerFluidLogic();
 
-    private String inventoryIDToUnregister;
-    private String inventoryNameToUnregister;
-    private int type;
-
     // A list of sides
     // Each side has a list of parts that have a cover that need to be ticked
     protected List<LinkedList<WeakReference<IMultiBlockPart>>> registeredCoveredParts = Arrays.asList(

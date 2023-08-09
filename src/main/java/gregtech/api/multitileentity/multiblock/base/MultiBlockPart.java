@@ -495,11 +495,6 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
     // #endregion Fluid
 
-    @Override
-    public boolean shouldTick(long tickTimer) {
-        return modeSelected(ITEM_OUT, FLUID_OUT);
-    }
-
     // #region Energy - Depending on the part type - proxy to the multiblock controller, if we have one
 
     @Override
@@ -614,36 +609,6 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
             return controller.createWindowGUI(buildContext);
         }
         return super.createWindow(buildContext);
-    }
-
-    @Override
-    public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        IMultiBlockController controller = getTarget(false);
-        if (controller == null) {
-            return;
-        }
-        if ((modeSelected(ITEM_IN, ITEM_OUT))) {
-            builder.widget(
-                controller
-                    .getItemLogic(modeSelected(ITEM_IN) ? InventoryType.Input : InventoryType.Output, lockedInventory)
-                    .getGuiPart()
-                    .setSize(18 * 4 + 4, 18 * 5)
-                    .setPos(52, 7));
-        }
-
-        if ((modeSelected(FLUID_IN, FLUID_OUT))) {
-            builder.widget(
-                controller
-                    .getFluidLogic(modeSelected(FLUID_IN) ? InventoryType.Input : InventoryType.Output, lockedInventory)
-                    .getGuiPart()
-                    .setSize(18 * 4 + 4, 18 * 5)
-                    .setPos(52, 7));
-        }
-    }
-
-    protected boolean canOpenControllerGui() {
-        return true;
     }
 
     @Override

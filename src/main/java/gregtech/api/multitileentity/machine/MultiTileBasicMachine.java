@@ -495,6 +495,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         fluidsToOutput = null;
     }
 
+    @Override
     public int getProgress() {
         return progressTime;
     }
@@ -506,8 +507,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
 
     @Override
     public boolean increaseProgress(int aProgressAmountInTicks) {
-        // we probably don't need vent cover compat
-        return false;
+        progressTime += aProgressAmountInTicks;
+        return true;
     }
 
     @Override

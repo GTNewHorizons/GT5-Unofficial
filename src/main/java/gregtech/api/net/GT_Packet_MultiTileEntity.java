@@ -282,11 +282,6 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
                     invUpg.setInventoryId(inventoryID);
                 }
 
-                if ((features & INVENTORY_NAME_ID) == INVENTORY_NAME_ID && mte instanceof Inventory invUpg) {
-                    invUpg.setInventoryName(mInventoryName);
-                    invUpg.setInventoryId(inventoryID);
-                }
-
                 if ((features & CONTROLLER) == CONTROLLER && mte instanceof IMultiBlockPart) {
                     final IMultiBlockPart mtePart = (IMultiBlockPart) mte;
                     mtePart.setTargetPos(mTargetPos);
