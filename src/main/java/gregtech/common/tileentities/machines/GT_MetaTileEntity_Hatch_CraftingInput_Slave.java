@@ -161,13 +161,16 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_Slave extends GT_MetaTileEnti
         return master;
     }
 
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (!(aPlayer instanceof EntityPlayerMP)) return false;
+    private boolean tryLinkDataStick(EntityPlayer aPlayer) {
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, true, true)) return false;
-        if (!dataStick.hasTagCompound() || !"CraftingInputBuffer".equals(dataStick.stackTagCompound.getString("type")))
+
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, true, true)) {
             return false;
+        }
+        if (!dataStick.hasTagCompound() || !dataStick.stackTagCompound.getString("type")
+            .equals("CraftingInputBuffer")) {
+            return false;
+        }
 
         NBTTagCompound nbt = dataStick.stackTagCompound;
         int x = nbt.getInteger("x");
@@ -178,6 +181,21 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_Slave extends GT_MetaTileEnti
             return true;
         }
         aPlayer.addChatMessage(new ChatComponentText("Link failed"));
+        return true;
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!(aPlayer instanceof EntityPlayerMP)) {
+            return false;
+        }
+        if (tryLinkDataStick(aPlayer)) {
+            return true;
+        }
+        var master = getMaster();
+        if (master != null) {
+            return master.onRightclick(master.getBaseMetaTileEntity(), aPlayer);
+        }
         return false;
     }
 
