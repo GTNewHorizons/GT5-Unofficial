@@ -27,7 +27,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.Controller;
-import gregtech.api.task.PollutionTask;
+import gregtech.api.task.tasks.PollutionTask;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.multiblock.logic.CokeOvenProcessingLogic;
 
