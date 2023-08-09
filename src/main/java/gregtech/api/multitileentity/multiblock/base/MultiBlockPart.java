@@ -495,6 +495,11 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
     // #endregion Fluid
 
+    @Override
+    public boolean shouldTick(long tickTimer) {
+        return modeSelected(ITEM_OUT, FLUID_OUT);
+    }
+
     // #region Energy - Depending on the part type - proxy to the multiblock controller, if we have one
 
     @Override
