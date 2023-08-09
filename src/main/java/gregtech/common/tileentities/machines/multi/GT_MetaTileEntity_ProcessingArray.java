@@ -257,7 +257,7 @@ public class GT_MetaTileEntity_ProcessingArray extends
         GT_Recipe_Map recipeMap = getRecipeMap();
         logic.setAvailableVoltage(GT_Values.V[tTier] * (recipeMap != null ? recipeMap.mAmperage : 1));
         logic.setAvailableAmperage(getMaxParallel());
-        logic.setAmperageOC(true);
+        logic.setAmperageOC(false);
     }
 
     private void setTierAndMult() {
