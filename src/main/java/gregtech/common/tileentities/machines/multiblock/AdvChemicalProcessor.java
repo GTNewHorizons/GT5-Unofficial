@@ -46,7 +46,6 @@ import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.logic.ComplexParallelProcessingLogic;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
-import gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing;
 import gregtech.api.multitileentity.multiblock.base.ComplexParallelController;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
