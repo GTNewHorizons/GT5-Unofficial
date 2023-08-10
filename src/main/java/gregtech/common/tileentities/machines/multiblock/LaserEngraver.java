@@ -85,8 +85,7 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver> {
             if (!checkPiece(STRUCTURE_PIECE_T6, buildState.getCurrentOffset())) return buildState.failBuilding();
         }
         buildState.stopBuilding();
-        boolean result = super.checkMachine();
-        return result;
+        return super.checkMachine();
     }
 
     @Override
