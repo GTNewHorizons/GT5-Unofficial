@@ -2059,24 +2059,23 @@ public class GT_ModHandler {
         recyclerWhitelist = new HashSet<>();
         for (IRecipeInput input : ic2.api.recipe.Recipes.recyclerWhitelist) {
             for (ItemStack stack : input.getInputs()) {
-                recyclerWhitelist.add(GT_Utility.ItemId.create(stack));
+                recyclerWhitelist.add(GT_Utility.ItemId.create(stack.getItem(), stack.getItemDamage(), null));
             }
         }
         recyclerBlacklist = new HashSet<>();
         for (IRecipeInput input : ic2.api.recipe.Recipes.recyclerBlacklist) {
             for (ItemStack stack : input.getInputs()) {
-                recyclerBlacklist.add(GT_Utility.ItemId.create(stack));
+                recyclerBlacklist.add(GT_Utility.ItemId.create(stack.getItem(), stack.getItemDamage(), null));
             }
         }
     }
 
     private static boolean searchRecyclerCache(ItemStack stack, Set<GT_Utility.ItemId> set) {
-        if (set.contains(GT_Utility.ItemId.createNoCopy(stack))) {
+        if (set.contains(GT_Utility.ItemId.createNoCopy(stack.getItem(), stack.getItemDamage(), null))) {
             return true;
         }
         // ic2.api.recipe.RecipeInputItemStack#matches expects item with wildcard meta to accept arbitrary meta
-        return set.contains(
-            GT_Utility.ItemId.createNoCopy(stack.getItem(), OreDictionary.WILDCARD_VALUE, stack.getTagCompound()));
+        return set.contains(GT_Utility.ItemId.createNoCopy(stack.getItem(), OreDictionary.WILDCARD_VALUE, null));
     }
 
     /**
