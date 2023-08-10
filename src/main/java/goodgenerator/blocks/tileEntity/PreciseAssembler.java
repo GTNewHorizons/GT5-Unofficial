@@ -229,8 +229,9 @@ public class PreciseAssembler extends GT_MetaTileEntity_ExtendedPowerMultiBlockB
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
+        boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.size() == 0;
         logic.setAvailableVoltage(getMachineVoltageLimit());
-        logic.setAvailableAmperage(getMaxInputAmps());
+        logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
     }
 
     @Override
