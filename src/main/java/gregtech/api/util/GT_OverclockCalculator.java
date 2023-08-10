@@ -4,6 +4,8 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.GT_Values;
+
 public class GT_OverclockCalculator {
 
     private static final double LOG4 = Math.log(4);
@@ -382,11 +384,24 @@ public class GT_OverclockCalculator {
 
     private void calculateOverclock() {
         if (noOverclock) {
-            calculateFinalRecipeEUt(calculateHeatDiscountMultiplier());
+            recipeVoltage = calculateFinalRecipeEUt(calculateHeatDiscountMultiplier());
             return;
         }
         if (laserOC && amperageOC) {
             throw new IllegalStateException("Tried to calculate overclock with both laser and amperage overclocking");
+        }
+        // ULV recipes are annoying in that those under 8 eut will overclock extra if there is too much amperage for
+        // them
+        // And those at 2 eut or 1 eut would overclock one extra more.
+        if (!amperageOC) {
+            if (recipeVoltage <= GT_Values.V[0]) {
+                // What we check here is to be able to remove extra amperage on the machine and also make sure one
+                // doesn't get more amperage from it
+                long oldMachineAmperage = machineAmperage;
+                machineAmperage = recipeVoltage <= 2 ? Math.max(parallel / machineAmperage, 1)
+                    : Math.max(parallel * 4 / machineAmperage, 1);
+                machineAmperage = Math.min(machineAmperage, oldMachineAmperage);
+            }
         }
         double heatDiscountMultiplier = calculateHeatDiscountMultiplier();
         duration = (int) Math.ceil(duration * speedBoost);

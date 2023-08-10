@@ -401,4 +401,63 @@ class GT_OverclockCalculator_UnitTest {
             .setParallel(24 * 64);
         assertEquals(100, calculator.calculateDurationUnderOneTick());
     }
+
+    @Test
+    void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOC() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(2)
+            .setEUt(V[3])
+            .setParallel(16)
+            .setDuration(20)
+            .setAmperageOC(false)
+            .setAmperage(16)
+            .calculate();
+        assertEquals(32 * 16, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOCVersion2() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(2)
+            .setEUt(V[3])
+            .setParallel(64)
+            .setDuration(20)
+            .setAmperageOC(false)
+            .setAmperage(16)
+            .calculate();
+        assertEquals(32 * 64, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOCVersion3() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(2)
+            .setEUt(V[3])
+            .setParallel(16)
+            .setDuration(20)
+            .setAmperageOC(false)
+            .setAmperage(64)
+            .calculate();
+        assertEquals(32 * 16, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOCVersion4() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(8)
+            .setEUt(V[3])
+            .setParallel(16)
+            .setDuration(20)
+            .setAmperageOC(false)
+            .setAmperage(16)
+            .calculate();
+        assertEquals((8 << 4) * 16, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOCVersion5() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(8)
+            .setEUt(V[3])
+            .setParallel(16)
+            .setDuration(20)
+            .setAmperageOC(false)
+            .calculate();
+        assertEquals((8 << 2) * 16, calculator.getConsumption(), messageEUt);
+    }
 }
