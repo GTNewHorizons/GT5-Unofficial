@@ -8,10 +8,6 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ENERGY
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_OUT;
 import static gregtech.api.util.GT_StructureUtilityMuTE.*;
 
-import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import gregtech.api.multitileentity.multiblock.base.Controller;
-import gregtech.api.util.*;
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -19,6 +15,8 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
@@ -28,6 +26,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.ComplexParallelController;
+import gregtech.api.multitileentity.multiblock.base.Controller;
+import gregtech.api.util.*;
 
 public class LaserEngraver extends ComplexParallelController<LaserEngraver> {
 
@@ -191,27 +191,16 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver> {
                     'A',
                     ofChain(
                         ofMuTECasings(
-                                FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
-                                GT_MultiTileCasing.LaserEngraver.getCasing())))
-                .addElement(
-                    'B',
-                        ofMuTECasings(
-                            GT_MultiTileCasing.BlackLaserEngraverCasing.getId()))
-                .addElement(
-                    'C',
-                    ofChain(
-                        ofMuTECasings(NOTHING,CLEANROOM_CASINGS)))
-                .addElement(
-                    'D',
-                    ofChain(
-                        ofMuTECasings(GT_MultiTileCasing.LaserEngraver.getId(), WIRELESS_CASINGS)))
+                            FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
+                            GT_MultiTileCasing.LaserEngraver.getCasing())))
+                .addElement('B', ofMuTECasings(GT_MultiTileCasing.BlackLaserEngraverCasing.getId()))
+                .addElement('C', ofChain(ofMuTECasings(NOTHING, CLEANROOM_CASINGS)))
+                .addElement('D', ofChain(ofMuTECasings(GT_MultiTileCasing.LaserEngraver.getId(), WIRELESS_CASINGS)))
                 .addElement('E', ofMuTECasings(NOTHING, MOTOR_CASINGS))
                 .addElement('F', GT_StructureUtility.ofFrame(Materials.Naquadah)
 
                 )
-                .addElement(
-                    'H',
-                    ofMuTECasings(GT_MultiTileCasing.Mirror.getId()))
+                .addElement('H', ofMuTECasings(GT_MultiTileCasing.Mirror.getId()))
 
                 .addElement(
                     'G',
@@ -224,44 +213,13 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver> {
                 .addElement('K', ofBlock(GregTech_API.sBlockCasings3, 11))
                 .addElement('L', ofMuTECasings(NOTHING, ROBOT_ARM_CASINGS))
                 .addElement('M', ofMuTECasings(GT_MultiTileCasing.LaserEngraverUpgrade1.getId()))
-                .addElement('N', ofMuTECasings( GT_MultiTileCasing.LaserEngraverUpgrade2.getId()))
-                .addElement('O', ofMuTECasings( GT_MultiTileCasing.LaserEngraverUpgrade3.getId()))
-                .addElement('P', ofMuTECasings( GT_MultiTileCasing.LaserEngraverUpgrade4.getId()))
+                .addElement('N', ofMuTECasings(GT_MultiTileCasing.LaserEngraverUpgrade2.getId()))
+                .addElement('O', ofMuTECasings(GT_MultiTileCasing.LaserEngraverUpgrade3.getId()))
+                .addElement('P', ofMuTECasings(GT_MultiTileCasing.LaserEngraverUpgrade4.getId()))
                 .build();
             buildState.stopBuilding();
         }
         return STRUCTURE_DEFINITION;
-    }
-    @Override
-    protected boolean checkRecipe() {
-
-        GT_Recipe recipe = GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes
-            .findRecipe(this, false, gregtech.api.enums.GT_Values.V[tier], getInputFluids(), getInputItems());
-
-        if (recipe == null) return false;
-
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(recipe)
-            .setFluidInputs(getInputFluids())
-            .setItemInputs(getInputItems())
-            .setAvailableEUt(gregtech.api.enums.GT_Values.V[tier])
-            .setMaxParallel((int) (tier * 5 * (Math.pow(2,tier))))
-            .enableOutputCalculation()
-            .enableConsumption()
-            .build();
-
-        if (helper.getCurrentParallel() == 0) return false;
-
-        setItemOutputs(helper.getItemOutputs());
-        setFluidOutputs(helper.getFluidOutputs());
-
-        eut = recipe.mEUt;
-        maxProgressTime = recipe.mDuration;
-
-        return true;
-    }
-    @Override
-    protected void calculateTier() {
-        super.calculateTier();
     }
 
     @Override
@@ -293,6 +251,7 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver> {
                 .setPos(130, 85));
         return child;
     }
+
     @Override
     public short getCasingRegistryID() {
         return 0;

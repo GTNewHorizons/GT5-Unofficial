@@ -6,9 +6,6 @@ import static gregtech.loaders.preload.GT_Loader_MultiTileEntities.CASING_REGIST
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_StructureUtilityMuTE;
 
-import static gregtech.api.util.GT_StructureUtilityMuTE.createMuTEStructureCasing;
-import static gregtech.loaders.preload.GT_Loader_MultiTileEntities.CASING_REGISTRY_NAME;
-
 public enum GT_MultiTileCasing {
 
     CokeOven(0),
