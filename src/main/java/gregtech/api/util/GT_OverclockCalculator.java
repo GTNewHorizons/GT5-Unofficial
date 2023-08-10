@@ -384,7 +384,7 @@ public class GT_OverclockCalculator {
 
     private void calculateOverclock() {
         if (noOverclock) {
-            calculateFinalRecipeEUt(calculateHeatDiscountMultiplier());
+            recipeVoltage = calculateFinalRecipeEUt(calculateHeatDiscountMultiplier());
             return;
         }
         if (laserOC && amperageOC) {
