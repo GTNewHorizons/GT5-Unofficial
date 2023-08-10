@@ -316,6 +316,7 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
         return 10;
     }
 
+    @Nullable
     protected static FluidTankInfo[] getValidFluidTankInfos(@Nullable ICoverable tileEntity,
         @Nonnull ForgeDirection side) {
         if (tileEntity instanceof IFluidHandler) {
@@ -327,6 +328,7 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
         return null;
     }
 
+    @Nullable
     protected static FluidTankInfo[] getValidFluidTankInfosForDisplay(@Nullable ICoverable tileEntity,
         @Nonnull ForgeDirection side) {
         if (tileEntity instanceof IGregTechTileEntity baseMetaTileEntity

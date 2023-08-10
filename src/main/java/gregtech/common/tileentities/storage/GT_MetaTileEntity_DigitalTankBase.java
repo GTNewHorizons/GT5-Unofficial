@@ -9,6 +9,8 @@ import static gregtech.api.util.GT_Utility.formatNumbers;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -506,6 +508,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         return new FluidTankInfo[] { getInfo() };
     }
 
+    @Nonnull
     public FluidTankInfo[] getRealTankInfo(ForgeDirection side) {
         return new FluidTankInfo[] { new FluidTankInfo(getFluid(), getRealCapacity()) };
     }
