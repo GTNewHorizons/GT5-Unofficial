@@ -14,7 +14,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
-import team.chisel.init.ChiselBlocks;
 
 public class GT_RecyclerBlacklistLoader implements Runnable {
 
@@ -98,10 +97,10 @@ public class GT_RecyclerBlacklistLoader implements Runnable {
                 GT_ModHandler.getRecipeOutput(new ItemStack(Blocks.glass, 1, 0), new ItemStack(Blocks.glass, 1, 0)));
             if (Mods.Chisel.isModLoaded()) {
                 for (int i = 1; i <= 15; i++) {
-                    addToRecyclerBlackList(new ItemStack(ChiselBlocks.cobblestone, 1, i));
+                    addToRecyclerBlackList(GT_ModHandler.getModItem("chisel", "cobblestone", 1, i));
                 }
                 for (int i = 0; i <= 15; i++) {
-                    addToRecyclerBlackList(new ItemStack(ChiselBlocks.stonebricksmooth, 1, i));
+                    addToRecyclerBlackList(GT_ModHandler.getModItem("chisel", "stonebricksmooth", 1, i));
                 }
             }
         }
