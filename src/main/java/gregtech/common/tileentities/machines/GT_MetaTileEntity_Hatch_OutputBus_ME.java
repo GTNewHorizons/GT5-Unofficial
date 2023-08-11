@@ -257,7 +257,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                         itemCache.add(s);
                     } else {
                         GT_Mod.GT_FML_LOGGER.warn(
-                            "An error occurred while loading contents of ME Output Bus, some items have been voided");
+                            "An error occurred while loading contents of ME Output Bus. This item has been voided: "
+                                + tagItemStack);
                     }
                 }
             }

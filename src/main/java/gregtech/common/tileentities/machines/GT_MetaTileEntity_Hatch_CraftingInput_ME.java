@@ -85,11 +85,11 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             ItemStack[] getSharedItem();
         }
 
-        private ItemStack pattern;
-        private ICraftingPatternDetails patternDetails;
-        private List<ItemStack> itemInventory;
-        private List<FluidStack> fluidInventory;
-        private SharedItemGetter sharedItemGetter;
+        private final ItemStack pattern;
+        private final ICraftingPatternDetails patternDetails;
+        private final List<ItemStack> itemInventory;
+        private final List<FluidStack> fluidInventory;
+        private final SharedItemGetter sharedItemGetter;
 
         public PatternSlot(ItemStack pattern, World world, SharedItemGetter getter) {
             this.pattern = pattern;
@@ -100,8 +100,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             this.sharedItemGetter = getter;
         }
 
-        public PatternSlot(NBTTagCompound nbt, World world, SharedItemGetter getter) {
-            this.pattern = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("pattern"));
+        public PatternSlot(ItemStack pattern, NBTTagCompound nbt, World world, SharedItemGetter getter) {
+            this.pattern = pattern;
             this.patternDetails = ((ICraftingPatternItem) Objects.requireNonNull(pattern.getItem()))
                 .getPatternForItem(pattern, world);
             this.itemInventory = new ArrayList<>();
@@ -109,13 +109,31 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             this.sharedItemGetter = getter;
             NBTTagList inv = nbt.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < inv.tagCount(); i++) {
-                var item = ItemStack.loadItemStackFromNBT(inv.getCompoundTagAt(i));
-                if (item != null && item.stackSize > 0) itemInventory.add(item);
+                NBTTagCompound tagItemStack = inv.getCompoundTagAt(i);
+                var item = ItemStack.loadItemStackFromNBT(tagItemStack);
+                if (item != null) {
+                    if (item.stackSize > 0) {
+                        itemInventory.add(item);
+                    }
+                } else {
+                    GT_Mod.GT_FML_LOGGER.warn(
+                        "An error occurred while loading contents of ME Crafting Input Bus. This item has been voided: "
+                            + tagItemStack);
+                }
             }
             NBTTagList fluidInv = nbt.getTagList("fluidInventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < fluidInv.tagCount(); i++) {
-                var fluid = FluidStack.loadFluidStackFromNBT(fluidInv.getCompoundTagAt(i));
-                if (fluid != null && fluid.amount > 0) fluidInventory.add(fluid);
+                NBTTagCompound tagFluidStack = fluidInv.getCompoundTagAt(i);
+                var fluid = FluidStack.loadFluidStackFromNBT(tagFluidStack);
+                if (fluid != null) {
+                    if (fluid.amount > 0) {
+                        fluidInventory.add(fluid);
+                    }
+                } else {
+                    GT_Mod.GT_FML_LOGGER.warn(
+                        "An error occurred while loading contents of ME Crafting Input Bus. This fluid has been voided: "
+                            + tagFluidStack);
+                }
             }
         }
 
@@ -140,11 +158,13 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             return true;
         }
 
+        @Override
         public ItemStack[] getItemInputs() {
             if (isEmpty()) return new ItemStack[0];
             return ArrayUtils.addAll(itemInventory.toArray(new ItemStack[0]), sharedItemGetter.getSharedItem());
         }
 
+        @Override
         public FluidStack[] getFluidInputs() {
             if (isEmpty()) return new FluidStack[0];
             return fluidInventory.toArray(new FluidStack[0]);
@@ -431,10 +451,19 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         for (int i = 0; i < internalInventoryNBT.tagCount(); i++) {
             NBTTagCompound internalInventorySlotNBT = internalInventoryNBT.getCompoundTagAt(i);
             int patternSlot = internalInventorySlotNBT.getInteger("patternSlot");
-            internalInventory[patternSlot] = new PatternSlot(
-                internalInventorySlotNBT.getCompoundTag("patternSlotNBT"),
-                getBaseMetaTileEntity().getWorld(),
-                this::getSharedItems);
+            NBTTagCompound patternSlotNBT = internalInventorySlotNBT.getCompoundTag("patternSlotNBT");
+            ItemStack pattern = ItemStack.loadItemStackFromNBT(patternSlotNBT.getCompoundTag("pattern"));
+            if (pattern != null) {
+                internalInventory[patternSlot] = new PatternSlot(
+                    pattern,
+                    patternSlotNBT,
+                    getBaseMetaTileEntity().getWorld(),
+                    this::getSharedItems);
+            } else {
+                GT_Mod.GT_FML_LOGGER.warn(
+                    "An error occurred while loading contents of ME Crafting Input Bus. This pattern has been voided: "
+                        + patternSlotNBT);
+            }
         }
 
         // reconstruct patternDetailsPatternSlotMap
@@ -716,6 +745,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         return false;
     }
 
+    @Override
     public Iterator<PatternSlot> inventories() {
         return Arrays.stream(internalInventory)
             .filter(Objects::nonNull)
@@ -737,6 +767,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
     }
 
+    @Override
     public boolean justUpdated() {
         var ret = justHadNewItems;
         justHadNewItems = false;
