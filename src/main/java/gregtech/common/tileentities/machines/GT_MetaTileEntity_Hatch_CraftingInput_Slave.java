@@ -133,10 +133,12 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_Slave extends GT_MetaTileEnti
         return false;
     }
 
+    @Override
     public Iterator<GT_MetaTileEntity_Hatch_CraftingInput_ME.PatternSlot> inventories() {
         return getMaster() != null ? getMaster().inventories() : Collections.emptyIterator();
     }
 
+    @Override
     public boolean justUpdated() {
         return getMaster() != null && getMaster().justUpdated();
     }
