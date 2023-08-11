@@ -27,6 +27,7 @@ import cpw.mods.fml.common.eventhandler.EventBus;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
+import gregtech.common.GT_Worldgenerator;
 
 public class GT_Worldgenerator_Space implements IWorldGenerator {
 
@@ -372,7 +373,7 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
 
     /**
      * Generate Special Blocks in asteroids if enabled
-     * 
+     *
      * @param pDimensionDef
      * @param pRandom
      * @param pWorld
@@ -424,7 +425,7 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
 
     /**
      * Pick a random small-ore block from the list of enabled small ores for this dim
-     * 
+     *
      * @param pDimDef
      * @param pRandom
      * @return
@@ -491,7 +492,7 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
 
     /**
      * Untested! But should work... Comments are todo
-     * 
+     *
      * @param pDimensionDef
      * @param pRandom
      * @param pWorld
@@ -505,7 +506,7 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
             String pBiome, IChunkProvider pChunkGenerator, IChunkProvider pChunkProvider) {
         GalacticGreg.Logger.trace("Running orevein-gen in Dim %s", pDimensionDef.getDimIdentifier());
 
-        if ((Math.abs(pX / 16) % 3 == 1) && (Math.abs(pZ / 16) % 3 == 1)) {
+        if (GT_Worldgenerator.isOreChunk(pX / 16, pZ / 16)) {
             if ((GT_Worldgen_GT_Ore_Layer_Space.sWeight > 0) && (GalacticGreg.oreVeinWorldgenList.size() > 0)) {
 
                 boolean temp = true;

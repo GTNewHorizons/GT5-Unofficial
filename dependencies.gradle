@@ -1,8 +1,8 @@
 // Add your dependencies here
 
 dependencies {
-    api("com.github.GTNewHorizons:Galacticraft:3.0.68-GTNH:dev")
-    api("com.github.GTNewHorizons:bartworks:0.7.5:dev") {
+    api("com.github.GTNewHorizons:Galacticraft:3.0.73-GTNH:dev")
+    api("com.github.GTNewHorizons:bartworks:0.7.38:dev") {
         exclude group:"com.github.GTNewHorizons", module:"GalacticGregGT5"
     }
 }
