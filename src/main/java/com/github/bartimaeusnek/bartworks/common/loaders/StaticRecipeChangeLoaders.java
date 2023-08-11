@@ -13,7 +13,6 @@
 
 package com.github.bartimaeusnek.bartworks.common.loaders;
 
-import static com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ElectricImplosionCompressor.eicMap;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.ANAEROBE_GAS;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.NOBLE_GAS;
 import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Oganesson;
@@ -51,7 +50,6 @@ import com.github.bartimaeusnek.bartworks.util.StreamUtils;
 import com.github.bartimaeusnek.bartworks.util.log.DebugLog;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import com.google.common.collect.ArrayListMultimap;
-import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gnu.trove.map.hash.TObjectDoubleHashMap;
@@ -60,7 +58,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -618,43 +615,22 @@ public class StaticRecipeChangeLoaders {
         toAdd.forEach(GT_Recipe.GT_Recipe_Map.sBlastRecipes::add);
     }
 
-    @SuppressWarnings("ALL")
     public static void addElectricImplosionCompressorRecipes() {
-        if (eicMap == null) {
-            eicMap = new GT_Recipe.GT_Recipe_Map(
-                    new HashSet<>(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()),
-                    "gt.recipe.electricimplosioncompressor",
-                    "Electric Implosion Compressor",
-                    (String) null,
-                    "gregtech:textures/gui/basicmachines/Default",
-                    6,
-                    2,
-                    0,
-                    0,
-                    1,
-                    "",
-                    1,
-                    "",
-                    true,
-                    true).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_IMPLOSION)
-                            .setProgressBar(GT_UITextures.PROGRESSBAR_COMPRESS, ProgressBar.Direction.RIGHT);
-            GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.stream().filter(e -> e.mInputs != null).forEach(
-                    recipe -> eicMap.addRecipe(
-                            true,
-                            Arrays.stream(recipe.mInputs).filter(e -> !StaticRecipeChangeLoaders.checkForExplosives(e))
-                                    .distinct().toArray(ItemStack[]::new),
-                            recipe.mOutputs,
-                            null,
-                            null,
-                            null,
-                            1,
-                            BW_Util.getMachineVoltageFromTier(10),
-                            0));
+        GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.stream().filter(e -> e.mInputs != null).forEach(
+                recipe -> BWRecipes.instance.eicMap.addRecipe(
+                        true,
+                        Arrays.stream(recipe.mInputs).filter(e -> !StaticRecipeChangeLoaders.checkForExplosives(e))
+                                .distinct().toArray(ItemStack[]::new),
+                        recipe.mOutputs,
+                        null,
+                        null,
+                        null,
+                        1,
+                        BW_Util.getMachineVoltageFromTier(10),
+                        0));
 
-            // Custom EIC recipes.
-            new ElectricImplosionCompressorRecipes().run();
-        }
-
+        // Custom EIC recipes.
+        new ElectricImplosionCompressorRecipes().run();
     }
 
     private static boolean checkForExplosives(ItemStack input) {

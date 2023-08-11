@@ -44,6 +44,7 @@ import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -207,6 +208,23 @@ public class BWRecipes {
                         StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", amount),
                         StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.2", time * amount / 20.0));
             });
+    public final GT_Recipe.GT_Recipe_Map eicMap = new GT_Recipe.GT_Recipe_Map(
+            new HashSet<>(GT_Recipe.GT_Recipe_Map.sImplosionRecipes.mRecipeList.size()),
+            "gt.recipe.electricimplosioncompressor",
+            "Electric Implosion Compressor",
+            null,
+            "gregtech:textures/gui/basicmachines/Default",
+            6,
+            2,
+            0,
+            0,
+            1,
+            "",
+            1,
+            "",
+            true,
+            true).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_IMPLOSION)
+                    .setProgressBar(GT_UITextures.PROGRESSBAR_COMPRESS, ProgressBar.Direction.RIGHT);
 
     /**
      * @param machine 0 = biolab; 1 = BacterialVat; 2 = sAcidGenFuels; 3 = circuitAssemblyLine

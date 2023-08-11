@@ -39,6 +39,7 @@ import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.client.renderer.BW_EICPistonVisualizer;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.common.net.EICPacket;
+import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.Coords;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -74,7 +75,6 @@ public class GT_TileEntity_ElectricImplosionCompressor
         extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_TileEntity_ElectricImplosionCompressor>
         implements ISurvivalConstructable {
 
-    public static GT_Recipe.GT_Recipe_Map eicMap;
     private static final boolean pistonEnabled = !ConfigHandler.disablePistonInEIC;
     private Boolean piston = true;
     private static final SoundResource sound = SoundResource.RANDOM_EXPLODE;
@@ -255,7 +255,7 @@ public class GT_TileEntity_ElectricImplosionCompressor
 
     @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return eicMap;
+        return BWRecipes.instance.eicMap;
     }
 
     @Override
