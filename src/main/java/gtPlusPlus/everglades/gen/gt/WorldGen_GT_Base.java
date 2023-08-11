@@ -14,6 +14,7 @@ import net.minecraft.world.gen.feature.WorldGenMinable;
 
 import cpw.mods.fml.common.IWorldGenerator;
 import gregtech.api.util.GT_Log;
+import gregtech.common.GT_Worldgenerator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.random.XSTR;
 import gtPlusPlus.core.material.ELEMENT;
@@ -521,7 +522,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
             for (int x = wXbox; x < eXbox; x++) {
                 for (int z = nZbox; z < sZbox; z++) {
                     // Determine if this X/Z is an orevein seed
-                    if (((Math.abs(x) % 3) == 1) && ((Math.abs(z) % 3) == 1)) {
+                    if (GT_Worldgenerator.isOreChunk(x, z)) {
                         if (debugWorldGen) GT_Log.out.println("Adding seed x=" + x + " z=" + z);
                         seedList.add(new NearbySeeds(x, z));
                     }
