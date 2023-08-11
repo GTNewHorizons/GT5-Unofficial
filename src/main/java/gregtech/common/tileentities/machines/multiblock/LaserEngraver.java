@@ -8,6 +8,9 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ENERGY
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_OUT;
 import static gregtech.api.util.GT_StructureUtilityMuTE.*;
 
+import gregtech.api.logic.PowerLogic;
+import gregtech.api.logic.interfaces.PowerLogicHost;
+import gregtech.common.tileentities.casings.upgrade.Laser;
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -28,6 +31,9 @@ import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.ComplexParallelController;
 import gregtech.api.multitileentity.multiblock.base.Controller;
 import gregtech.api.util.*;
+import net.minecraft.nbt.NBTTagCompound;
+
+import java.util.UUID;
 
 public class LaserEngraver extends ComplexParallelController<LaserEngraver> {
 
@@ -49,6 +55,7 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver> {
     protected static final int MAX_PROCESSES = 6;
     protected GT_Recipe.GT_Recipe_Map recipeMap;
     protected Controller<?> controller;
+    private UUID LaserEngraver;
 
     @Override
     public String getTileEntityName() {
@@ -257,6 +264,18 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver> {
     }
 
     @Override
+    public void readMultiTileNBT(NBTTagCompound nbt) {
+        super.readMultiTileNBT(nbt);
+        setMaxComplexParallels(nbt.getInteger("processors"), false);
+    }
+
+    @Override
+    public void writeMultiTileNBT(NBTTagCompound nbt) {
+        super.writeMultiTileNBT(nbt);
+        nbt.setInteger("processors", maxComplexParallels);
+   }
+
+    @Override
     public int getCasingMeta() {
         return GT_MultiTileCasing.LaserEngraver.getId();
     }
@@ -269,7 +288,6 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver> {
             .addSeparator()
             .beginStructureBlock(3, 3, 5, true)
             .addController("Front right center")
-            .addCasingInfoExactly("Laser Engraver Casing", 25, false)
             .toolTipFinisher(GT_Values.AuthorTheEpicGamer274);
         return tt;
     }
