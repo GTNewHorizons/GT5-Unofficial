@@ -8,7 +8,7 @@ import gregtech.api.enums.GT_Values;
 
 public class GT_OverclockCalculator {
 
-    private static final double LOG4 = Math.log(4);
+    private static final double LOG2 = Math.log(2);
 
     /**
      * Voltage the recipe will run at
@@ -390,19 +390,6 @@ public class GT_OverclockCalculator {
         if (laserOC && amperageOC) {
             throw new IllegalStateException("Tried to calculate overclock with both laser and amperage overclocking");
         }
-        // ULV recipes are annoying in that those under 8 eut will overclock extra if there is too much amperage for
-        // them
-        // And those at 2 eut or 1 eut would overclock one extra more.
-        if (!amperageOC) {
-            if (recipeVoltage <= GT_Values.V[0]) {
-                // What we check here is to be able to remove extra amperage on the machine and also make sure one
-                // doesn't get more amperage from it
-                long oldMachineAmperage = machineAmperage;
-                machineAmperage = recipeVoltage <= 2 ? Math.max(parallel / machineAmperage, 1)
-                    : Math.max(parallel * 4 / machineAmperage, 1);
-                machineAmperage = Math.min(machineAmperage, oldMachineAmperage);
-            }
-        }
         double heatDiscountMultiplier = calculateHeatDiscountMultiplier();
         duration = (int) Math.ceil(duration * speedBoost);
         if (heatOC) {
@@ -413,6 +400,9 @@ public class GT_OverclockCalculator {
         double machinePowerTier = calculateMachinePowerTier();
         // Math.log(a) / Math.log(b) equals to log_b (a)
         overclockCount = calculateAmountOfNeededOverclocks(machinePowerTier, recipePowerTier);
+        if (recipeVoltage <= GT_Values.V[0]) {
+            overclockCount = Math.min(overclockCount, calculateRecipeToMachineVoltageDifference());
+        }
         if (overclockCount < 0) {
             recipeVoltage = Long.MAX_VALUE;
             duration = Integer.MAX_VALUE;
@@ -443,15 +433,23 @@ public class GT_OverclockCalculator {
     }
 
     private double calculateRecipePowerTier(double heatDiscountMultiplier) {
-        return Math.max(
-            1,
-            Math.log(recipeVoltage * parallel * eutDiscount * heatDiscountMultiplier * recipeAmperage) / LOG4 - 1);
+        return 1 + Math.max(
+            0,
+            (Math.log(recipeVoltage * parallel * eutDiscount * heatDiscountMultiplier * recipeAmperage) / LOG2) - 5)
+            / 2;
     }
 
     private double calculateMachinePowerTier() {
-        return Math.max(
-            1,
-            Math.log(machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel))) / LOG4 - 1);
+        return 1 + Math.max(
+            0,
+            (Math.log(machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel))) / LOG2)
+                - 5)
+            / 2;
+    }
+
+    private int calculateRecipeToMachineVoltageDifference() {
+        return (int) (Math.ceil(1 + Math.max(0, (Math.log(machineVoltage) / LOG2) - 5) / 2)
+            - Math.ceil(1 + Math.max(0, (Math.log(recipeVoltage) / LOG2) - 5) / 2));
     }
 
     private long calculateFinalRecipeEUt(double heatDiscountMultiplier) {

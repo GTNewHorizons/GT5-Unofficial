@@ -423,7 +423,7 @@ class GT_OverclockCalculator_UnitTest {
             .setAmperageOC(false)
             .setAmperage(16)
             .calculate();
-        assertEquals(32 * 64, calculator.getConsumption(), messageEUt);
+        assertEquals((32 * 64), calculator.getConsumption(), messageEUt);
     }
 
     @Test
@@ -459,5 +459,41 @@ class GT_OverclockCalculator_UnitTest {
             .setAmperageOC(false)
             .calculate();
         assertEquals((8 << 2) * 16, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOCVersion6() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(7)
+            .setEUt(V[3])
+            .setParallel(64)
+            .setDuration(160)
+            .setAmperage(64)
+            .setAmperageOC(false)
+            .calculate();
+        assertEquals((7 << 4) * 64, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOCVersion7() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(7)
+            .setEUt(V[3])
+            .setParallel(19)
+            .setDuration(160)
+            .setAmperage(19)
+            .setAmperageOC(false)
+            .calculate();
+        assertEquals((7 << 4) * 19, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOCVersion8() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(7)
+            .setEUt(V[3])
+            .setParallel(29)
+            .setDuration(160)
+            .setAmperage(25)
+            .setAmperageOC(false)
+            .calculate();
+        assertEquals((7 << 4) * 29, calculator.getConsumption(), messageEUt);
     }
 }
