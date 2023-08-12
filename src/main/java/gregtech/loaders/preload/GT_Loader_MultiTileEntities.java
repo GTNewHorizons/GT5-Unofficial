@@ -6,7 +6,6 @@ import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.*;
 import static gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing.*;
 import static gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing.Insulator_OmegaType;
 
-import gregtech.common.tileentities.machines.multiblock.LaserEngraver;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
@@ -35,6 +34,7 @@ import gregtech.common.tileentities.casings.upgrade.Wireless;
 import gregtech.common.tileentities.machines.multiblock.AdvChemicalProcessor;
 import gregtech.common.tileentities.machines.multiblock.CokeOven;
 import gregtech.common.tileentities.machines.multiblock.DistillationTower;
+import gregtech.common.tileentities.machines.multiblock.LaserEngraver;
 import gregtech.common.tileentities.machines.multiblock.LayeredCokeBattery;
 import gregtech.common.tileentities.machines.multiblock.Macerator;
 

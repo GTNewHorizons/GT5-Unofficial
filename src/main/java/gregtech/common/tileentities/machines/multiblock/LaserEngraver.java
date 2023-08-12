@@ -8,10 +8,10 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ENERGY
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_OUT;
 import static gregtech.api.util.GT_StructureUtilityMuTE.*;
 
-import gregtech.api.logic.PowerLogic;
-import gregtech.api.logic.interfaces.PowerLogicHost;
-import gregtech.common.tileentities.casings.upgrade.Laser;
+import java.util.UUID;
+
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -31,9 +31,6 @@ import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.ComplexParallelController;
 import gregtech.api.multitileentity.multiblock.base.Controller;
 import gregtech.api.util.*;
-import net.minecraft.nbt.NBTTagCompound;
-
-import java.util.UUID;
 
 public class LaserEngraver extends ComplexParallelController<LaserEngraver> {
 
@@ -273,7 +270,7 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver> {
     public void writeMultiTileNBT(NBTTagCompound nbt) {
         super.writeMultiTileNBT(nbt);
         nbt.setInteger("processors", maxComplexParallels);
-   }
+    }
 
     @Override
     public int getCasingMeta() {
