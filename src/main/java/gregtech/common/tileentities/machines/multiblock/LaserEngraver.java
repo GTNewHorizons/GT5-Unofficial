@@ -192,18 +192,21 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver> {
                 // spotless:on
                 .addElement(
                     'A',
-                    ofChain(
-                        ofMuTECasings(
-                            FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
-                            GT_MultiTileCasing.LaserEngraver.getCasing())))
-                .addElement('B', ofMuTECasings(GT_MultiTileCasing.BlackLaserEngraverCasing.getId()))
-                .addElement('C', ofChain(ofMuTECasings(NOTHING, CLEANROOM_CASINGS)))
-                .addElement('D', ofChain(ofMuTECasings(GT_MultiTileCasing.LaserEngraver.getId(), WIRELESS_CASINGS)))
+                    ofMuTECasings(
+                        FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
+                        GT_MultiTileCasing.LaserEngraver.getCasing()))
+                .addElement(
+                    'B',
+                    ofMuTECasings(
+                        FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
+                        GT_MultiTileCasing.BlackLaserEngraverCasing.getCasing()))
+                .addElement('C', ofMuTECasings(NOTHING, CLEANROOM_CASINGS))
+                .addElement('D', ofMuTECasings(NOTHING, WIRELESS_CASINGS))
                 .addElement('E', ofMuTECasings(NOTHING, MOTOR_CASINGS))
                 .addElement('F', GT_StructureUtility.ofFrame(Materials.Naquadah)
 
                 )
-                .addElement('H', ofMuTECasings(GT_MultiTileCasing.Mirror.getId()))
+                .addElement('H', ofMuTECasings(NOTHING, GT_MultiTileCasing.Mirror.getCasing()))
 
                 .addElement(
                     'G',
@@ -215,10 +218,10 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver> {
                 .addElement('I', ofMuTECasings(NOTHING, EMITTER_CASINGS))
                 .addElement('K', ofBlock(GregTech_API.sBlockCasings3, 11))
                 .addElement('L', ofMuTECasings(NOTHING, ROBOT_ARM_CASINGS))
-                .addElement('M', ofMuTECasings(GT_MultiTileCasing.LaserEngraverUpgrade1.getId()))
-                .addElement('N', ofMuTECasings(GT_MultiTileCasing.LaserEngraverUpgrade2.getId()))
-                .addElement('O', ofMuTECasings(GT_MultiTileCasing.LaserEngraverUpgrade3.getId()))
-                .addElement('P', ofMuTECasings(GT_MultiTileCasing.LaserEngraverUpgrade4.getId()))
+                .addElement('M', ofMuTECasings(NOTHING, GT_MultiTileCasing.LaserEngraverUpgrade1.getCasing()))
+                .addElement('N', ofMuTECasings(NOTHING, GT_MultiTileCasing.LaserEngraverUpgrade2.getCasing()))
+                .addElement('O', ofMuTECasings(NOTHING, GT_MultiTileCasing.LaserEngraverUpgrade3.getCasing()))
+                .addElement('P', ofMuTECasings(NOTHING, GT_MultiTileCasing.LaserEngraverUpgrade4.getCasing()))
                 .build();
             buildState.stopBuilding();
         }
