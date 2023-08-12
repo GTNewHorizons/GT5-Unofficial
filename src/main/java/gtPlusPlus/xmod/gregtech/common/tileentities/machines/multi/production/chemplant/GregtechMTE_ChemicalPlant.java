@@ -589,6 +589,8 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
                     if (catalystRecipe == null || mCatalystBuses.size() != 1) {
                         return SimpleCheckRecipeResult.ofFailure("no_catalyst");
                     }
+                } else {
+                    catalystRecipe = null;
                 }
 
                 // checks if it has enough catalyst durability
