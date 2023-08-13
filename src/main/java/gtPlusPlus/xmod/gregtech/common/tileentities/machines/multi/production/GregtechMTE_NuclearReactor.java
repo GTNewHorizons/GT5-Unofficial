@@ -361,6 +361,16 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
 
             @NotNull
             @Override
+            public CheckRecipeResult process() {
+                CheckRecipeResult result = super.process();
+                if (!result.wasSuccessful()) {
+                    resetMultiProcessing();
+                }
+                return result;
+            }
+
+            @NotNull
+            @Override
             protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
                 mFuelRemaining = getStoredFuel(recipe);
                 if (mFuelRemaining < 100) {
@@ -375,6 +385,12 @@ public class GregtechMTE_NuclearReactor extends GregtechMeta_MultiBlockBase<Greg
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
         };
+    }
+
+    protected void resetMultiProcessing() {
+        this.mEfficiency = 0;
+        this.mLastRecipe = null;
+        stopMachine();
     }
 
     @Override

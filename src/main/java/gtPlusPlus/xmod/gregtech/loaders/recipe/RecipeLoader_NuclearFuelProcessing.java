@@ -232,8 +232,8 @@ public class RecipeLoader_NuclearFuelProcessing {
          */
 
         CORE.RA.addFissionFuel(
-                FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getFluidStack(1000),
-                NUCLIDE.LiFBeF2UF4.getFluidStack(9000),
+                FLUORIDES.ZIRCONIUM_TETRAFLUORIDE.getFluidStack(100),
+                NUCLIDE.LiFBeF2UF4.getFluidStack(900),
                 null,
                 null,
                 null,
@@ -241,9 +241,9 @@ public class RecipeLoader_NuclearFuelProcessing {
                 null,
                 null,
                 null,
-                NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(10000),
+                NUCLIDE.LiFBeF2ZrF4UF4.getFluidStack(1000),
                 null,
-                20 * 60 * 120, // Duration
+                20 * 60 * 12, // Duration
                 MaterialUtils.getVoltageForTier(5));
 
         // LiFBeF2ThF4UF4
@@ -258,8 +258,8 @@ public class RecipeLoader_NuclearFuelProcessing {
          */
 
         CORE.RA.addFissionFuel(
-                FLUORIDES.THORIUM_TETRAFLUORIDE.getFluidStack(1000),
-                NUCLIDE.LiFBeF2UF4.getFluidStack(9000),
+                FLUORIDES.THORIUM_TETRAFLUORIDE.getFluidStack(100),
+                NUCLIDE.LiFBeF2UF4.getFluidStack(900),
                 null,
                 null,
                 null,
@@ -267,9 +267,9 @@ public class RecipeLoader_NuclearFuelProcessing {
                 null,
                 null,
                 null,
-                NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(10000),
+                NUCLIDE.LiFBeF2ThF4UF4.getFluidStack(1000),
                 null,
-                20 * 60 * 150, // Duration
+                20 * 60 * 15, // Duration
                 MaterialUtils.getVoltageForTier(5));
     }
 }

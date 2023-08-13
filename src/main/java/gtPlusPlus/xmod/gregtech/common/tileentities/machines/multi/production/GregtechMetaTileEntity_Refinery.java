@@ -67,10 +67,10 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
                 .addCasingInfoMin("Incoloy-DS Fluid Containment Block", 5, false)
                 .addCasingInfoMin("Zeron-100 Reactor Shielding", 4, false)
                 .addCasingInfoMin("Hastelloy-N Sealant Blocks", 17, false).addInputHatch("Base platform", 1)
-                .addOutputHatch("Base platform", 1).addOutputBus("Base platform", 1).addMufflerHatch("Base platform", 1)
+                .addOutputHatch("Base platform", 1).addMufflerHatch("Base platform", 1)
                 .addMaintenanceHatch("Base platform", 1).addEnergyHatch("Base platform", 1)
                 .addStructureInfo("Muffler's Tier must be IV+")
-                .addStructureInfo("4x Input Hatches, 2x Output Hatches, 1x Output Bus")
+                .addStructureInfo("2-4x Input Hatches, 1-2x Output Hatches")
                 .addStructureInfo("1x Muffler, 1x Maintenance Hatch, 1x Energy Hatch")
                 .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
@@ -162,8 +162,9 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
         if (checkPiece(mName, 1, 7, 0) && mCasing >= 7) {
-            if (this.mInputHatches.size() == 4 && this.mOutputHatches.size() == 2
-                    && this.mOutputBusses.size() == 1
+            if (this.mInputHatches.size() >= 2 && this.mInputHatches.size() <= 4
+                    && this.mOutputHatches.size() >= 1
+                    && this.mOutputHatches.size() <= 2
                     && this.mMufflerHatches.size() == 1
                     && this.mMaintenanceHatches.size() == 1
                     && this.mEnergyHatches.size() == 1) {

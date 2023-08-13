@@ -18,6 +18,7 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -142,7 +143,6 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Gas Sparge Tower").addInfo("Controller block for the Sparging Tower")
                 .addInfo("Runs gases through depleted molten salts to extract precious fluids")
-                .addInfo("Has a speed bonus of 10x - recipe times are 1/10 of what is shown on NEI")
                 .addInfo("Works the same way as the Distillation Tower, but with a fixed height of 8")
                 .addInfo("Fluids are only put out at the correct height")
                 .addInfo("The correct height equals the slot number in the NEI recipe").addSeparator()
@@ -204,7 +204,7 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         ArrayList<FluidStack> tFluidList = getStoredFluids();
-        long tVoltage = getMaxInputVoltage();
+        long tVoltage = GT_Utility.roundUpVoltage(this.getMaxInputVoltage());
         byte tTier = (byte) Math.max(0, GT_Utility.getTier(tVoltage));
         FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
         if (tFluids.length > 0) {
@@ -219,12 +219,17 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
                     this.mEfficiencyIncrease = 10000;
 
                     calculateOverclockedNessMulti((long) tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
-                    mMaxProgresstime = Math.max(1, mMaxProgresstime / 10);
+                    mMaxProgresstime = Math.max(1, mMaxProgresstime);
                     ArrayList<FluidStack> aFluidOutputs = getByproductsOfSparge(
                             tRecipe.mFluidInputs[0],
                             tRecipe.mFluidInputs[1]);
                     this.mOutputFluids = aFluidOutputs.toArray(new FluidStack[0]);
                     updateSlots();
+
+                    if (lEUt > 0) {
+                        lEUt = (-lEUt);
+                    }
+
                     return CheckRecipeResultRegistry.SUCCESSFUL;
                 }
             }
@@ -485,5 +490,14 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
             aLayerIndex++;
         }
         return aLayerIndex > 0;
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        // Ensure that lEUt is negative from loaded NBT data, since this multi consumes EU
+        if (lEUt > 0) {
+            lEUt = (-lEUt);
+        }
     }
 }

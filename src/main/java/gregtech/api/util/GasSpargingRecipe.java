@@ -28,7 +28,7 @@ public class GasSpargingRecipe implements Comparable<GasSpargingRecipe> {
         aOutputs = ArrayUtils.insertElementAtIndex(aOutputs, 1, aSpargedFuel);
         mFluidOutputs = aOutputs;
         mMaxOutputQuantity = aMaxOutputQuantity;
-        mDuration = 500 * 10; // Actual recipe time is 10x less than this number, not sure why
+        mDuration = 500;
         mEUt = MaterialUtils.getVoltageForTier(5);
     }
 
