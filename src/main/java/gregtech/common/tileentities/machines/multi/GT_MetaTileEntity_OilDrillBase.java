@@ -157,7 +157,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
 
     @Override
     protected boolean checkHatches() {
-        return !mMaintenanceHatches.isEmpty() && !mOutputHatches.isEmpty() && mEnergyHatches.size()==1;
+        return !mMaintenanceHatches.isEmpty() && !mOutputHatches.isEmpty() && mEnergyHatches.size() == 1;
     }
 
     @Override
