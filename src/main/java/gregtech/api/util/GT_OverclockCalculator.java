@@ -433,23 +433,20 @@ public class GT_OverclockCalculator {
     }
 
     private double calculateRecipePowerTier(double heatDiscountMultiplier) {
-        return 1 + Math.max(
-            0,
-            (Math.log(recipeVoltage * parallel * eutDiscount * heatDiscountMultiplier * recipeAmperage) / LOG2) - 5)
-            / 2;
+        return calculatePowerTier(recipeVoltage * parallel * eutDiscount * heatDiscountMultiplier * recipeAmperage);
     }
 
     private double calculateMachinePowerTier() {
-        return 1 + Math.max(
-            0,
-            (Math.log(machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel))) / LOG2)
-                - 5)
-            / 2;
+        return calculatePowerTier(
+            machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel)));
     }
 
     private int calculateRecipeToMachineVoltageDifference() {
-        return (int) (Math.ceil(1 + Math.max(0, (Math.log(machineVoltage) / LOG2) - 5) / 2)
-            - Math.ceil(1 + Math.max(0, (Math.log(recipeVoltage) / LOG2) - 5) / 2));
+        return (int) (Math.ceil(calculatePowerTier(machineVoltage)) - Math.ceil(calculatePowerTier(recipeVoltage)));
+    }
+
+    private double calculatePowerTier(double voltage) {
+        return 1 + Math.max(0, (Math.log(voltage) / LOG2) - 5) / 2;
     }
 
     private long calculateFinalRecipeEUt(double heatDiscountMultiplier) {
