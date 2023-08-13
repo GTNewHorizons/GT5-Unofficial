@@ -303,7 +303,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     protected boolean checkHatches() {
         return !mMaintenanceHatches.isEmpty() && !mInputHatches.isEmpty()
             && !mOutputBusses.isEmpty()
-            && !mEnergyHatches.isEmpty();
+            && mEnergyHatches.size()==1;
     }
 
     @Override
@@ -439,7 +439,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
             .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
             .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
-            .addEnergyHatch(VN[getMinTier()] + "+, Any base casing", 1)
+            .addEnergyHatch("1x " + VN[getMinTier()] + "+, Any base casing", 1)
             .addMaintenanceHatch("Any base casing", 1)
             .addInputBus("Mining Pipes, optional, any base casing", 1)
             .addInputHatch("Drilling Fluid, any base casing", 1)
