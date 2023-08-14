@@ -103,12 +103,16 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
                 .addInfo("Right-click with screwdriver to enable Fast Mode, to run it even faster")
                 .addInfo("Optimal flow will increase or decrease accordingly on mode switch")
                 .addInfo("Fast Mode increases speed to 48x instead of 16x, with some penalties")
-                .addInfo("Maintenance problems and turbine damage happen 12x as often in Fast Mode")
-                .addInfo("XL Steam Turbines can use Loose Mode with either Slow or Fast Mode")
-                .addInfo("Plasma fuel efficiency is lower for high tier turbines when using low-grade plasmas")
-                .addInfo("Efficiency = ((FuelValue / 100000)^2) / (EU per Turbine)")
-                .addPollutionAmount(getPollutionPerSecond(null)).addInfo("Pollution is 3x higher in Fast Mode")
-                .addSeparator().beginStructureBlock(7, 9, 7, false).addController("Top Middle")
+                .addInfo("Maintenance problems and turbine damage happen 12x as often in Fast Mode");
+        if (getTurbineType().contains("Steam")) {
+            tt.addInfo("XL Steam Turbines can use Loose Mode with either Slow or Fast Mode");
+        }
+        if (getTurbineType().equals("Plasma")) {
+            tt.addInfo("Plasma fuel efficiency is lower for high tier turbines when using low-grade plasmas")
+                    .addInfo("Efficiency = ((FuelValue / 200000)^2) / (EU per Turbine)");
+        }
+        tt.addPollutionAmount(getPollutionPerSecond(null)).addInfo("Pollution is 3x higher in Fast Mode").addSeparator()
+                .beginStructureBlock(7, 9, 7, false).addController("Top Middle")
                 .addCasingInfoMin(getCasingName(), 360, false).addCasingInfoMin("Rotor Shaft", 30, false)
                 .addOtherStructurePart("Rotor Assembly", "Any 1 dot hint", 1).addInputBus("Any 4 dot hint (min 1)", 4)
                 .addInputHatch("Any 4 dot hint(min 1)", 4);
