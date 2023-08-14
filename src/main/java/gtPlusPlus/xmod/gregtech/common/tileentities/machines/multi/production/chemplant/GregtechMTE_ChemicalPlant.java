@@ -626,7 +626,7 @@ public class GregtechMTE_ChemicalPlant extends GregtechMeta_MultiBlockBase<Gregt
                         .setEUtModifier(euModifier).enableBatchMode(batchSize).setConsumption(true)
                         .setOutputCalculation(true);
             }
-        };
+        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
