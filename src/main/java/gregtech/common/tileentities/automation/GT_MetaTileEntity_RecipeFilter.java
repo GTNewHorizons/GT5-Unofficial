@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,11 +20,12 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
-import codechicken.nei.recipe.RecipeCatalysts;
+import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_SpecialFilter;
 import gregtech.api.multitileentity.MultiTileEntityContainer;
@@ -93,6 +93,8 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
             return machine.getRecipeList();
         } else if (metaTileEntity instanceof IRecipeLockable recipeLockable) {
             return recipeLockable.getRecipeMap();
+        } else if (metaTileEntity instanceof GT_MetaTileEntity_BasicGenerator generator) {
+            return generator.getRecipes();
         }
         return null;
     }
@@ -107,10 +109,13 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     }
 
     private static List<ItemStack> getFilteredMachines(GT_Recipe.GT_Recipe_Map recipeMap) {
-        return RecipeCatalysts.getRecipeCatalysts(recipeMap.mNEIName)
-            .stream()
-            .map(positionedStack -> positionedStack.item)
-            .collect(Collectors.toList());
+        List<ItemStack> result = new ArrayList<>();
+        for (IMetaTileEntity mte : GregTech_API.METATILEENTITIES) {
+            if (getMetaTileEntityRecipeMap(mte) == recipeMap) {
+                result.add(mte.getStackForm(1));
+            }
+        }
+        return result;
     }
 
     @Override
