@@ -363,6 +363,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         setMufflers(false);
         mMufflerHatches.clear();
         mMaintenanceHatches.clear();
+        mDualInputHatches.clear();
     }
 
     public boolean checkStructure(boolean aForceReset) {
