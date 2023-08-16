@@ -215,11 +215,10 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
             @NotNull
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
-                long ocFactor = 1L << (Tier - recipe.mSpecialValue);
-                return GT_OverclockCalculator
-                        .ofNoOverclock(((long) recipe.mEUt) * ocFactor, (int) Math.max(recipe.mDuration / ocFactor, 1));
+                int overclockAmount = Tier - recipe.mSpecialValue;
+                return super.createOverclockCalculator(recipe).limitOverclockCount(overclockAmount);
             }
-        };
+        }.setOverclock(1, 1); // Set Overclock to be 2/2
     }
 
     @Override
