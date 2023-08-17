@@ -175,6 +175,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
         return new ProcessingLogic() {
 
             @Nonnull
+            @Override
             public CheckRecipeResult process() {
                 setEuModifier(1.0F - Math.min(0.1F * (heatLevel.getTier() + 1), 0.5F));
                 return super.process();
