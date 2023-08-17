@@ -1,4 +1,4 @@
-//version: 1690818808
+//version: 1691351470
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -69,7 +69,7 @@ plugins {
     id 'com.diffplug.spotless' version '6.13.0' apply false // 6.13.0 is the last jvm8 supporting version
     id 'com.modrinth.minotaur' version '2.+' apply false
     id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
-    id 'com.gtnewhorizons.retrofuturagradle' version '1.3.21'
+    id 'com.gtnewhorizons.retrofuturagradle' version '1.3.24'
 }
 
 print("You might want to check out './gradlew :faq' if your build fails.\n")
@@ -1152,7 +1152,10 @@ tasks.named("processIdeaSettings").configure {
 
 tasks.named("ideVirtualMainClasses").configure {
     // Make IntelliJ "Build project" build the mod jars
-    dependsOn("jar", "reobfJar", "spotlessCheck")
+    dependsOn("jar", "reobfJar")
+    if (!disableSpotless) {
+        dependsOn("spotlessCheck")
+    }
 }
 
 // workaround variable hiding in pom processing

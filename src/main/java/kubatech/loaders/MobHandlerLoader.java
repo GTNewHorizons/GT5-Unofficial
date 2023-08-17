@@ -46,6 +46,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.dreammaster.main.MainRegistry;
 import com.dreammaster.modcustomdrops.CustomDrops;
+import com.kuba6000.mobsinfo.api.IChanceModifier;
 import com.kuba6000.mobsinfo.api.MobDrop;
 import com.kuba6000.mobsinfo.api.MobOverride;
 import com.kuba6000.mobsinfo.api.MobRecipe;
@@ -106,8 +107,30 @@ public class MobHandlerLoader {
             MTE.lEUt = mEUt;
             MTE.mMaxProgresstime = Math.max(MOB_SPAWN_INTERVAL, (int) ((recipe.maxEntityHealth / attackDamage) * 10d));
             ArrayList<ItemStack> stacks = new ArrayList<>(this.mOutputs.size());
+            this.entityCopy.setPosition(
+                MTE.getBaseMetaTileEntity()
+                    .getXCoord(),
+                MTE.getBaseMetaTileEntity()
+                    .getYCoord(),
+                MTE.getBaseMetaTileEntity()
+                    .getZCoord());
             for (MobDrop o : this.mOutputs) {
                 int chance = o.chance;
+
+                double dChance = (double) chance / 100d;
+                for (IChanceModifier chanceModifier : o.chanceModifiers) {
+                    dChance = chanceModifier.apply(
+                        dChance,
+                        MTE.getBaseMetaTileEntity()
+                            .getWorld(),
+                        stacks,
+                        MTE.EECPlayer,
+                        this.entityCopy);
+                }
+
+                chance = (int) (dChance * 100d);
+                if (chance == 0) continue;
+
                 if (o.playerOnly) {
                     chance = (int) ((double) chance * Config.MobHandler.playerOnlyDropsModifier);
                     if (chance < 1) chance = 1;
@@ -199,13 +222,15 @@ public class MobHandlerLoader {
     public void onPostMobRegistration(PostMobRegistrationEvent event) {
         if (!event.drops.isEmpty() && event.recipe.isUsableInVial) {
             ArrayList<MobDrop> drops = (ArrayList<MobDrop>) event.drops.clone();
-            drops.removeIf(d -> d.chance == 0);
+            // drops.removeIf(d -> d.chance == 0);
             if (!drops.isEmpty()) {
                 recipeMap.put(event.currentMob, new MobEECRecipe(drops, event.recipe));
-                event.drops.stream()
-                    .filter(d -> d.chance == 0)
-                    .forEach(
-                        d -> d.additionalInfo.add(StatCollector.translateToLocal("kubatech.mobhandler.eec_disabled")));
+                /*
+                 * event.drops.stream()
+                 * .filter(d -> d.chance == 0)
+                 * .forEach(
+                 * d -> d.additionalInfo.add(StatCollector.translateToLocal("kubatech.mobhandler.eec_disabled")));
+                 */
             }
         }
     }

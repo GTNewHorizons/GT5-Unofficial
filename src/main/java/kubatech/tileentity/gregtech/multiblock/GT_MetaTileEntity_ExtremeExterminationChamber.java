@@ -209,7 +209,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
 
     private EntityRenderer entityRenderer = null;
     private boolean renderEntity = false;
-    private EECFakePlayer EECPlayer = null;
+    public EECFakePlayer EECPlayer = null;
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -549,24 +549,27 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
             }
             if (weaponCache.isValid) attackDamage += weaponCache.attackDamage;
 
+            if (EECPlayer == null) EECPlayer = new EECFakePlayer(this);
+            EECPlayer.currentWeapon = lootingHolder;
+
             this.mOutputItems = recipe.generateOutputs(
                 rand,
                 this,
                 attackDamage,
                 weaponCache.isValid ? weaponCache.looting : 0,
                 mIsProducingInfernalDrops);
+
+            EECPlayer.currentWeapon = null;
+
             this.mOutputFluids = new FluidStack[] { FluidRegistry.getFluidStack("xpjuice", 120) };
             int times = this.calculatePerfectOverclock(this.lEUt, this.mMaxProgresstime);
-            // noinspection ConstantConditions
             if (weaponCache.isValid && lootingHolder.isItemStackDamageable()) {
-                if (EECPlayer == null) EECPlayer = new EECFakePlayer(this);
                 EECPlayer.currentWeapon = lootingHolder;
                 Item lootingHolderItem = lootingHolder.getItem();
                 for (int i = 0; i < times + 1; i++) {
                     // noinspection ConstantConditions
                     if (!lootingHolderItem.hitEntity(lootingHolder, recipe.recipe.entity, EECPlayer)) break;
                     if (lootingHolder.stackSize == 0) {
-                        // noinspection ConstantConditions
                         inputbus.setInventorySlotContents(0, null);
                         break;
                     }
@@ -878,6 +881,11 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
 
         @Override
         public ItemStack getCurrentEquippedItem() {
+            return currentWeapon;
+        }
+
+        @Override
+        public ItemStack getHeldItem() {
             return currentWeapon;
         }
     }
