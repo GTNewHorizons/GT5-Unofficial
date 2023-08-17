@@ -14,6 +14,8 @@ import common.tileentities.GTMTE_TFFT;
 
 public class IB_TFFTStorageField extends ItemBlock {
 
+    private static final int UNIQUE_FLUIDS_PER_CELL = 25;
+
     public IB_TFFTStorageField(Block block) {
         super(block);
     }
@@ -47,7 +49,7 @@ public class IB_TFFTStorageField extends ItemBlock {
             lines.add(
                     "Per Fluid Capacity: " + EnumChatFormatting.BLUE
                             + NumberFormat.getNumberInstance()
-                                    .format(GTMTE_TFFT.Field.VALUES[meta - 1].getCapacity() / 25)
+                                    .format(GTMTE_TFFT.Field.VALUES[meta - 1].getCapacity() / UNIQUE_FLUIDS_PER_CELL)
                             + EnumChatFormatting.GRAY
                             + " L");
             lines.add(
