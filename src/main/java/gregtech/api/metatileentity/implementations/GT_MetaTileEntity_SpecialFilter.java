@@ -40,8 +40,6 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public abstract void clickTypeIcon(boolean aRightClick, ItemStack aHandStack);
-
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
@@ -88,29 +86,10 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
                 new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_RED.apply(19, true))
                     .setPos(152, 19)
                     .setSize(19, 24))
-            .widget(new SlotWidget(BaseSlot.phantom(inventoryHandler, 9)) {
-
-                @Override
-                protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
-                    clickTypeIcon(clickData.mouseButton != 0, cursorStack);
-                }
-
-                @Override
-                public void buildTooltip(List<Text> tooltip) {
-                    super.buildTooltip(tooltip);
-                    List<Text> emptySlotTooltip = getEmptySlotTooltip();
-                    if (emptySlotTooltip != null) {
-                        tooltip.addAll(emptySlotTooltip);
-                    }
-                }
-
-                @Override
-                public Function<List<String>, List<String>> getOverwriteItemStackTooltip() {
-                    return getItemStackReplacementTooltip();
-                }
-            }.disableShiftInsert()
-                .setPos(34, 22)
-                .setBackground(GT_UITextures.BUTTON_STANDARD))
+            .widget(
+                createFilterIconSlot(BaseSlot.phantom(inventoryHandler, 9)).disableShiftInsert()
+                    .setPos(34, 22)
+                    .setBackground(GT_UITextures.BUTTON_STANDARD))
             .widget(
                 SlotGroup.ofItemHandler(inventoryHandler, 3)
                     .endAtSlot(8)
@@ -125,5 +104,31 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
                 val -> allowNbt = val,
                 GT_UITextures.OVERLAY_BUTTON_NBT,
                 () -> mTooltipCache.getData(ALLOW_NBT_TOOLTIP)));
+    }
+
+    protected abstract SlotWidget createFilterIconSlot(BaseSlot slot);
+
+    protected abstract class FilterIconSlotWidget extends SlotWidget {
+
+        public FilterIconSlotWidget(BaseSlot slot) {
+            super(slot);
+        }
+
+        @Override
+        protected abstract void phantomClick(ClickData clickData, ItemStack cursorStack);
+
+        @Override
+        public void buildTooltip(List<Text> tooltip) {
+            super.buildTooltip(tooltip);
+            List<Text> emptySlotTooltip = getEmptySlotTooltip();
+            if (emptySlotTooltip != null) {
+                tooltip.addAll(emptySlotTooltip);
+            }
+        }
+
+        @Override
+        public Function<List<String>, List<String>> getOverwriteItemStackTooltip() {
+            return getItemStackReplacementTooltip();
+        }
     }
 }
