@@ -319,7 +319,7 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
                 .addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output.")
                 .addInfo("The index of a stored fluid can be obtained through the Tricorder.").addSeparator()
                 .beginVariableStructureBlock(5, 5, 5, 15, 5, 5, false).addController("Top Center")
-                .addCasingInfo("T.F.F.T Casing", MIN_CASING_AMOUNT)
+                .addCasingInfoMin("T.F.F.T Casing", MIN_CASING_AMOUNT, false)
                 .addOtherStructurePart("Storage Field Blocks (Tier I-X)", "Inner 3xhx3 solid pillar")
                 .addStructureInfo("Energy hatch is not required when running cost is 0")
                 .addOtherStructurePart("EV+ Tier Glass/Warded Glass/Reinforced Glass", "Outer 5xhx5 glass shell")
@@ -400,7 +400,11 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
 
             if (tfftHatch != null) tfftHatch.bind(this);
 
-            return !mEnergyHatches.isEmpty() ^ this.runningCost == 0;
+            if (this.runningCost == 0) {
+                return true;
+            }
+
+            return !mEnergyHatches.isEmpty();
         }
         return false;
     }
