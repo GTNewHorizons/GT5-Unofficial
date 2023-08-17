@@ -45,6 +45,12 @@ public class IB_TFFTStorageField extends ItemBlock {
                             + EnumChatFormatting.GRAY
                             + " L");
             lines.add(
+                    "Per Fluid Capacity: " + EnumChatFormatting.BLUE
+                            + NumberFormat.getNumberInstance()
+                                    .format(GTMTE_TFFT.Field.VALUES[meta - 1].getCapacity() / 25)
+                            + EnumChatFormatting.GRAY
+                            + " L");
+            lines.add(
                     "Power Draw: " + EnumChatFormatting.BLUE
                             + GTMTE_TFFT.Field.VALUES[meta - 1].getCost()
                             + EnumChatFormatting.GRAY
