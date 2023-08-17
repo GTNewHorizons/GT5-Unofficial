@@ -403,11 +403,6 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     @Override
     public void gridChanged() {
-        super.gridChanged();
-        if (getProxy().isReady()) {
-            getProxy().getNode()
-                .updateState();
-        }
         needPatternSync = true;
     }
 
