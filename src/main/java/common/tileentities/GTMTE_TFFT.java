@@ -400,7 +400,11 @@ public class GTMTE_TFFT extends GT_MetaTileEntity_EnhancedMultiBlockBase<GTMTE_T
 
             if (tfftHatch != null) tfftHatch.bind(this);
 
-            return !mEnergyHatches.isEmpty() ^ this.runningCost == 0;
+            if (this.runningCost == 0) {
+                return true;
+            }
+
+            return !mEnergyHatches.isEmpty();
         }
         return false;
     }
