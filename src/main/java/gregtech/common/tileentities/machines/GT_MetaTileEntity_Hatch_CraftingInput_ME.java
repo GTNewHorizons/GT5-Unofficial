@@ -158,9 +158,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             // or at least won't require a recipe check, as long as the pattern is sane
             if (!itemInventory.isEmpty()) return itemInventory.get(0) == null || itemInventory.get(0).stackSize <= 0;
 
-            if (!fluidInventory.isEmpty()) return fluidInventory.get(0) == null || fluidInventory.get(0).amount <= 0;
-
-            return true;
+            return fluidInventory.get(0) == null || fluidInventory.get(0).amount <= 0;
         }
 
         @Override
