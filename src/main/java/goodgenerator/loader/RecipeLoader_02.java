@@ -1,5 +1,7 @@
 package goodgenerator.loader;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -16,7 +18,6 @@ import goodgenerator.util.ItemRefer;
 import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.enums.*;
 import gregtech.api.util.*;
-import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
@@ -664,13 +665,12 @@ public class RecipeLoader_02 {
                 100,
                 480);
 
-        GT_Values.RA.addAutoclaveRecipe(
-                WerkstoffLoader.Tiberium.get(OrePrefixes.dust, 1),
-                MyMaterial.naquadahGas.getFluidOrGas(250),
-                WerkstoffLoader.Tiberium.get(OrePrefixes.gem, 1),
-                10000,
-                400,
-                480);
+        GT_Values.RA.stdBuilder().itemInputs(WerkstoffLoader.Tiberium.get(OrePrefixes.dust, 1))
+                .itemOutputs(
+                        WerkstoffLoader.Tiberium.get(OrePrefixes.gem, 1),
+                        WerkstoffLoader.Tiberium.get(OrePrefixes.gem, 1))
+                .outputChances(10000, 2000).fluidInputs(MyMaterial.naquadahGas.getFluidOrGas(250)).noFluidOutputs()
+                .duration(400).eut(TierEU.RECIPE_HV).addTo(sAutoclaveRecipes);
 
         GT_Values.RA.addChemicalBathRecipe(
                 Materials.Firestone.getGems(1),
