@@ -301,6 +301,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
             checkedForChicken = true;
         }
 
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glPushMatrix();
         GL11.glTranslated(
             -(aEvent.player.lastTickPosX
@@ -420,6 +421,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
             }
         }
         GL11.glPopMatrix(); // get back to player center
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
     }
 
     private static void drawExtendedRotationMarker(Transformation transform, boolean sneaking, boolean small) {
