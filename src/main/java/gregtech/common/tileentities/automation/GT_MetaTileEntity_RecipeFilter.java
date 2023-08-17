@@ -260,7 +260,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
             }
             mRotationIndex = -1;
             syncToServer(SYNC_RECIPEMAP_C2S, buffer -> {
-                NetworkUtils.writeStringSafe(buffer, recipeMap != null ? recipeMap.mUnlocalizedName : null);
+                NetworkUtils.writeStringSafe(buffer, recipeMap != null ? recipeMap.mUniqueIdentifier : null);
                 buffer.writeVarIntToBuffer(filteredMachines.size());
                 for (ItemStack filteredMachine : filteredMachines) {
                     try {
@@ -280,7 +280,9 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
             }
 
             String recipeMapName = NetworkUtils.readStringSafe(buf);
-            mRecipeMap = GT_Recipe.GT_Recipe_Map.findRecipeMap(recipeMapName);
+            mRecipeMap = recipeMapName != null
+                ? GT_Recipe.GT_Recipe_Map.sIndexedMappings.getOrDefault(recipeMapName, null)
+                : null;
             if (mRecipeMap != null) {
                 updateAndSendRecipeMapToServer(mRecipeMap);
             }
@@ -298,14 +300,16 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
             }
 
             String recipeMapName = NetworkUtils.readStringSafe(buf);
-            mRecipeMap = recipeMapName != null ? GT_Recipe.GT_Recipe_Map.findRecipeMap(recipeMapName) : null;
+            mRecipeMap = recipeMapName != null
+                ? GT_Recipe.GT_Recipe_Map.sIndexedMappings.getOrDefault(recipeMapName, null)
+                : null;
             mRotationIndex = -1;
             mInventory[FILTER_SLOT_INDEX] = null;
             filteredMachines.clear();
 
             if (mRecipeMap != null) {
                 int filteredMachineSize = buf.readVarIntFromBuffer();
-                filteredMachineSize = Math.min(filteredMachineSize, 256); // Prevent too many items stored
+                filteredMachineSize = Math.min(filteredMachineSize, 256); // Prevent storing too many items
                 for (int i = 0; i < filteredMachineSize; i++) {
                     ItemStack stack = buf.readItemStackFromBuffer();
                     if (stack != null) {
@@ -322,7 +326,7 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
                 // backward compatibility: This machine used to store only mRecipeMap, not filteredMachines
                 syncToClient(
                     REQUEST_FILTERED_MACHINES_S2C,
-                    buffer -> NetworkUtils.writeStringSafe(buffer, mRecipeMap.mUnlocalizedName));
+                    buffer -> NetworkUtils.writeStringSafe(buffer, mRecipeMap.mUniqueIdentifier));
             }
         }
 
