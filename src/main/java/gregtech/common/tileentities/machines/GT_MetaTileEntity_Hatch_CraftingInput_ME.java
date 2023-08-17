@@ -70,6 +70,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Utility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -110,7 +111,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             NBTTagList inv = nbt.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < inv.tagCount(); i++) {
                 NBTTagCompound tagItemStack = inv.getCompoundTagAt(i);
-                var item = ItemStack.loadItemStackFromNBT(tagItemStack);
+                var item = GT_Utility.loadItem(tagItemStack);
                 if (item != null) {
                     if (item.stackSize > 0) {
                         itemInventory.add(item);
@@ -279,7 +280,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
             NBTTagList itemInventoryNbt = new NBTTagList();
             for (ItemStack itemStack : this.itemInventory) {
-                itemInventoryNbt.appendTag(itemStack.writeToNBT(new NBTTagCompound()));
+                itemInventoryNbt.appendTag(GT_Utility.saveItem(itemStack));
             }
             nbt.setTag("inventory", itemInventoryNbt);
 

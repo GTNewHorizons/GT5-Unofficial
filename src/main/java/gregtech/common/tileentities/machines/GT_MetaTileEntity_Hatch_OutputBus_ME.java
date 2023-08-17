@@ -215,10 +215,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
             for (IAEItemStack s : itemCache) {
                 if (s.getStackSize() == 0) continue;
                 NBTTagCompound tag = new NBTTagCompound();
-                NBTTagCompound tagItemStack = new NBTTagCompound();
-                s.getItemStack()
-                    .writeToNBT(tagItemStack);
-                tag.setTag("itemStack", tagItemStack);
+                tag.setTag("itemStack", GT_Utility.saveItem(s.getItemStack()));
                 tag.setLong("size", s.getStackSize());
                 items.appendTag(tag);
             }
