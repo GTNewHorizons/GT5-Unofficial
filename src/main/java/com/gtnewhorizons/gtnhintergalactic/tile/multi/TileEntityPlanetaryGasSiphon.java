@@ -355,7 +355,9 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
         return checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0) && mMaintenanceHatches.size() == 1
                 && mInputBusses.size() == 1
                 && mOutputHatches.size() == 1
-                && mEnergyHatches.size() == 1;
+                && mEnergyHatches.size() == 1
+                && mInputHatches.isEmpty()
+                && mOutputBusses.isEmpty();
     }
 
     /**
