@@ -391,6 +391,7 @@ public class GT_LanguageManager {
             "Interaction_DESCRIPTION_Index_223",
             "Single recipe locking enabled. Will lock to next recipe.");
         addStringLocalization("Interaction_DESCRIPTION_Index_224", "Always On");
+        addStringLocalization("Interaction_DESCRIPTION_Index_224.1", "Always Off");
         addStringLocalization("Interaction_DESCRIPTION_Index_225", "Active with Redstone Signal");
         addStringLocalization("Interaction_DESCRIPTION_Index_226", "Inactive with Redstone Signal");
         addStringLocalization("Interaction_DESCRIPTION_Index_227", "Allow Input");
@@ -495,6 +496,8 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_341.1", "Tier 1 cooling disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_342", "Tier 2 cooling enabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_342.1", "Tier 2 cooling disabled");
+        addStringLocalization("Interaction_DESCRIPTION_Index_343", "Use Machine Procecssing State");
+        addStringLocalization("Interaction_DESCRIPTION_Index_343.1", "Use Inverted Macine Processing State");
         addStringLocalization("Interaction_DESCRIPTION_Index_500", "Fitting: Loose - More Flow");
         addStringLocalization("Interaction_DESCRIPTION_Index_501", "Fitting: Tight - More Efficiency");
         addStringLocalization("Interaction_DESCRIPTION_Index_502", "Mining chunk loading enabled");
@@ -505,6 +508,7 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_602", "Use Private Frequency");
         addStringLocalization("Interaction_DESCRIPTION_Index_756", "Connectable: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_ALL", "All");
+        addStringLocalization("Interaction_DESCRIPTION_Index_ANY", "Any");
         addStringLocalization("Interaction_DESCRIPTION_Index_ANY", "Any");
         addStringLocalization("Interaction_DESCRIPTION_Index_INVERTED", "Inverted");
         addStringLocalization("Interaction_DESCRIPTION_Index_NORMAL", "Normal");

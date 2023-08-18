@@ -358,6 +358,10 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_BUTTON_TANK_VOID_ALL = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/tank_void_all");
     public static final UITexture OVERLAY_BUTTON_NEI = UITexture.fullImage(GregTech.ID, "gui/overlay_button/nei");
+    public static final UITexture OVERLAY_BUTTON_USE_PROCESSING_STATE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/use_processing_state.png");
+    public static final UITexture OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/use_inverted_processing_state.png");
 
     /**
      * Can adjust size as needed.

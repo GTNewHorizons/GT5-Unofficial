@@ -220,20 +220,20 @@ public class GT_Cover_Conveyor extends GT_CoverBehavior {
                                 .addToggleButton(
                                     2,
                                     CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK)
-                                        .addTooltip(GT_Utility.trans("224", "Always On"))
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_USE_PROCESSING_STATE)
+                                        .addTooltip(GT_Utility.trans("343", "Use Machine Procecssing State"))
                                         .setPos(spaceX * 0, spaceY * 1))
                                 .addToggleButton(
                                     3,
                                     CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON)
-                                        .addTooltip(GT_Utility.trans("225", "Active with Redstone Signal"))
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_USE_PROCESSING_STATE)
+                                        .addTooltip(GT_Utility.trans("343", "Use Machine Procecssing State"))
                                         .setPos(spaceX * 1, spaceY * 1))
                                 .addToggleButton(
                                     4,
                                     CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                                        .addTooltip(GT_Utility.trans("226", "Inactive with Redstone Signal"))
+                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CROSS)
+                                        .addTooltip(GT_Utility.trans("224.1", "Always Off"))
                                         .setPos(spaceX * 2, spaceY * 1))
                                 .addToggleButton(
                                     5,
