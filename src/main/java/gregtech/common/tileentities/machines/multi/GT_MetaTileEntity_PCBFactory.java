@@ -883,7 +883,19 @@ public class GT_MetaTileEntity_PCBFactory extends
             .beginStructureBlock(30, 38, 13, false)
             .addSeparator()
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
-            .addEnergyHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+            .addEnergyHatch(
+                EnumChatFormatting.GOLD + "1"
+                    + EnumChatFormatting.GRAY
+                    + "-"
+                    + EnumChatFormatting.GOLD
+                    + "2"
+                    + EnumChatFormatting.GRAY
+                    + " or "
+                    + EnumChatFormatting.GOLD
+                    + "1"
+                    + EnumChatFormatting.GRAY
+                    + " TT energy hatch.",
+                1)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
