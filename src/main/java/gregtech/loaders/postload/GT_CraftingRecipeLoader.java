@@ -1433,14 +1433,6 @@ public class GT_CraftingRecipeLoader implements Runnable {
                 OrePrefixes.dustSmall.get(Materials.Manganese), OrePrefixes.dustSmall.get(Materials.Chrome),
                 OrePrefixes.dustSmall.get(Materials.Chrome), OrePrefixes.dustTiny.get(Materials.Coal),
                 OrePrefixes.dustTiny.get(Materials.Silicon), OrePrefixes.dustTiny.get(Materials.Vanadium) });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HSLA, 2L),
-            bits_no_remove_buffered,
-            new Object[] { OrePrefixes.dust.get(Materials.Steel), OrePrefixes.dustSmall.get(Materials.Niobium),
-                OrePrefixes.dustSmall.get(Materials.AnnealedCopper), OrePrefixes.dustSmall.get(Materials.Nickel),
-                OrePrefixes.dustSmall.get(Materials.Vanadium), OrePrefixes.dustSmall.get(Materials.Chrome),
-                OrePrefixes.dustTiny.get(Materials.Molybdenum), OrePrefixes.dustSmall.get(Materials.Titanium),
-                OrePrefixes.dustTiny.get(Materials.Carbon) });
 
         GT_ModHandler.addShapelessCraftingRecipe(
             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RedstoneAlloy, 2L),
