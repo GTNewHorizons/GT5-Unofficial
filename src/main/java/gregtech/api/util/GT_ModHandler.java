@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -63,6 +64,7 @@ import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.internal.IGT_CraftingRecipe;
+import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.objects.GT_HashSet;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
@@ -2325,6 +2327,38 @@ public class GT_ModHandler {
             /* Do nothing */
         }
         return false;
+    }
+
+    /**
+     * Returns the current charge and maximum charge of an ItemStack.
+     *
+     * @param aStack Any ItemStack.
+     * @return Optional.empty() if the stack is null or not an electric item, or an Optional containing a payload of an
+     *         array containing [ current_charge, maximum_charge ] on success.
+     */
+    public static Optional<Long[]> getElectricItemCharge(ItemStack aStack) {
+        if (aStack == null || !isElectricItem(aStack)) {
+            return Optional.empty();
+        }
+
+        final Item item = aStack.getItem();
+        if (item == null) {
+            return Optional.empty();
+        }
+
+        if (item instanceof GT_MetaBase_Item) {
+            final Long[] stats = ((GT_MetaBase_Item) item).getElectricStats(aStack);
+            if (stats != null && stats.length > 0) {
+                return Optional.of(new Long[] { ((GT_MetaBase_Item) item).getRealCharge(aStack), stats[0] });
+            }
+
+        } else if (item instanceof IElectricItem) {
+            return Optional.of(
+                new Long[] { (long) ic2.api.item.ElectricItem.manager.getCharge(aStack),
+                    (long) ((IElectricItem) aStack.getItem()).getMaxCharge(aStack) });
+        }
+
+        return Optional.empty();
     }
 
     /**
