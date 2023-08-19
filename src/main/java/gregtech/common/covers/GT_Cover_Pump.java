@@ -242,7 +242,8 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
                                 .addToggleButton(
                                     4,
                                     CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
+                                    widget -> widget
+                                        .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
                                         .addTooltip(GT_Utility.trans("343.1", "Use Inverted Macine Processing State"))
                                         .setPos(spaceX * 2, spaceY * 1))
                                 .addToggleButton(
