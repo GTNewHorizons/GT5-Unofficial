@@ -119,7 +119,6 @@ import gregtech.nei.NEIRecipeInfo;
 import ic2.core.Ic2Items;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -4084,8 +4083,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          */
         @Nonnull
         public Stream<FindRecipeResult> findRecipesWithResult(GT_Recipe aRecipe, boolean aNotUnificated,
-                                                             boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot,
-                                                             ItemStack... aInputs) {
+            boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot,
+            ItemStack... aInputs) {
             // No Recipes? Well, nothing to be found then.
             if (mRecipeList.isEmpty()) return Stream.of(NOT_FOUND);
 
@@ -4112,59 +4111,62 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             if (aNotUnificated) aInputs = GT_OreDictUnificator.getStackArray(true, (Object[]) aInputs);
 
             ItemStack[] finalAInputs = aInputs;
-            return Stream.<Supplier<Stream<GT_Recipe>>>of(
-                    () -> {
-                        // Check the Recipe which has been used last time in order to not have to search for it again, if possible.
-                        if (aRecipe != null) if (!aRecipe.mFakeRecipe && aRecipe.mCanBeBuffered
-                            && aRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, finalAInputs)) {
-                            if (!isSpecialSlotSensitive
-                                || GT_Utility.areStacksEqualOrNull((ItemStack) aRecipe.mSpecialItems, aSpecialSlot)) {
-                                return Stream.of(aRecipe);
-                            }
+            return Stream.<Supplier<Stream<GT_Recipe>>>of(() -> {
+                // Check the Recipe which has been used last time in order to not have to search for it again, if
+                // possible.
+                if (aRecipe != null) if (!aRecipe.mFakeRecipe && aRecipe.mCanBeBuffered
+                    && aRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, finalAInputs)) {
+                        if (!isSpecialSlotSensitive
+                            || GT_Utility.areStacksEqualOrNull((ItemStack) aRecipe.mSpecialItems, aSpecialSlot)) {
+                            return Stream.of(aRecipe);
                         }
-                        return Stream.empty();
-                    },
-                    () -> {
-                        // Now look for the Recipes inside the Item HashMaps, but only when the Recipes usually have Items.
-                        if (mUsualInputCount <= 0 || finalAInputs == null) {
-                            return Stream.empty();
-                        }
+                    }
+                return Stream.empty();
+            }, () -> {
+                // Now look for the Recipes inside the Item HashMaps, but only when the Recipes usually have Items.
+                if (mUsualInputCount <= 0 || finalAInputs == null) {
+                    return Stream.empty();
+                }
 
-                        return Stream.of(finalAInputs)
-                            .filter(Objects::nonNull)
-                            .flatMap(tStack -> Stream
-                                .of(new GT_ItemStack(tStack), new GT_ItemStack(tStack, true))
-                                .map(mRecipeItemMap::get)
-                                .filter(Objects::nonNull)
-                                .flatMap(Collection::stream)
-                                .filter(tRecipe -> !tRecipe.mFakeRecipe
-                                    && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, finalAInputs))
-                                .filter(tRecipe -> !isSpecialSlotSensitive
-                                    || GT_Utility.areStacksEqualOrNull((ItemStack) tRecipe.mSpecialItems, aSpecialSlot)));
-                    },
-                    () -> {
-                        // If the minimal Amount of Items for the Recipe is 0, then it could be a Fluid-Only Recipe, so
-                        // check that map too.
-                        if (mMinimalInputItems != 0 || aFluids == null) {
-                            return Stream.empty();
-                        }
-
-                        return Stream.of(aFluids)
-                            .filter(Objects::nonNull)
-                            .map(fluidStack -> fluidStack.getFluid().getName())
-                            .map(mRecipeFluidMap::get)
+                return Stream.of(finalAInputs)
+                    .filter(Objects::nonNull)
+                    .flatMap(
+                        tStack -> Stream.of(new GT_ItemStack(tStack), new GT_ItemStack(tStack, true))
+                            .map(mRecipeItemMap::get)
                             .filter(Objects::nonNull)
                             .flatMap(Collection::stream)
-                            .filter(tRecipe -> !tRecipe.mFakeRecipe
-                                && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, finalAInputs))
-                            .filter(tRecipe -> !isSpecialSlotSensitive
-                                || GT_Utility.areStacksEqualOrNull((ItemStack) tRecipe.mSpecialItems, aSpecialSlot));
-                    }
-                )
+                            .filter(
+                                tRecipe -> !tRecipe.mFakeRecipe
+                                    && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, finalAInputs))
+                            .filter(
+                                tRecipe -> !isSpecialSlotSensitive || GT_Utility
+                                    .areStacksEqualOrNull((ItemStack) tRecipe.mSpecialItems, aSpecialSlot)));
+            }, () -> {
+                // If the minimal Amount of Items for the Recipe is 0, then it could be a Fluid-Only Recipe, so
+                // check that map too.
+                if (mMinimalInputItems != 0 || aFluids == null) {
+                    return Stream.empty();
+                }
+
+                return Stream.of(aFluids)
+                    .filter(Objects::nonNull)
+                    .map(
+                        fluidStack -> fluidStack.getFluid()
+                            .getName())
+                    .map(mRecipeFluidMap::get)
+                    .filter(Objects::nonNull)
+                    .flatMap(Collection::stream)
+                    .filter(
+                        tRecipe -> !tRecipe.mFakeRecipe
+                            && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, finalAInputs))
+                    .filter(
+                        tRecipe -> !isSpecialSlotSensitive
+                            || GT_Utility.areStacksEqualOrNull((ItemStack) tRecipe.mSpecialItems, aSpecialSlot));
+            })
                 .flatMap(Supplier::get)
-                .map(gtRecipe -> gtRecipe.mEnabled && aVoltage * mAmperage >= gtRecipe.mEUt
-                    ? ofSuccess(gtRecipe)
-                    : ofInsufficientVoltage(gtRecipe));
+                .map(
+                    gtRecipe -> gtRecipe.mEnabled && aVoltage * mAmperage >= gtRecipe.mEUt ? ofSuccess(gtRecipe)
+                        : ofInsufficientVoltage(gtRecipe));
         }
 
         protected GT_Recipe addToItemMap(GT_Recipe aRecipe) {

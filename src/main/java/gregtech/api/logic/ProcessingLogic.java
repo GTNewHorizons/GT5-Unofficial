@@ -1,6 +1,5 @@
 package gregtech.api.logic;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -8,12 +7,12 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import gregtech.api.recipe.check.*;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.api.recipe.check.*;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
@@ -283,7 +282,9 @@ public class ProcessingLogic {
                 return CheckRecipeResultRegistry.NO_RECIPE;
             }
 
-            return processRecipe(recipeLockableMachine.getSingleRecipeCheck().getRecipe());
+            return processRecipe(
+                recipeLockableMachine.getSingleRecipeCheck()
+                    .getRecipe());
         }
 
         Iterable<FindRecipeResult> findRecipeResultIterable = findRecipes(recipeMap)::iterator;
@@ -307,13 +308,14 @@ public class ProcessingLogic {
             return checkRecipeResult;
         }
 
-        return isRecipeWithOutputFullFound ? CheckRecipeResultRegistry.OUTPUT_FULL : CheckRecipeResultRegistry.NO_RECIPE;
+        return isRecipeWithOutputFullFound ? CheckRecipeResultRegistry.OUTPUT_FULL
+            : CheckRecipeResultRegistry.NO_RECIPE;
     }
 
     /**
      * Executes the single FindRecipeResult check, calculate parallel, overclock and outputs.
      */
-    private CheckRecipeResult processFindRecipeResult(FindRecipeResult findRecipeResult){
+    private CheckRecipeResult processFindRecipeResult(FindRecipeResult findRecipeResult) {
         if (!findRecipeResult.isSuccessful()) {
             if (findRecipeResult.getState() == FindRecipeResult.State.INSUFFICIENT_VOLTAGE) {
                 return CheckRecipeResultRegistry.insufficientPower(findRecipeResult.getRecipeNonNull().mEUt);
