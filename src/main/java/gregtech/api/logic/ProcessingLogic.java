@@ -274,7 +274,6 @@ public class ProcessingLogic {
             maxParallel = maxParallelSupplier.get();
         }
 
-        Stream<FindRecipeResult> findRecipeResultStream;
         if (isRecipeLocked && recipeLockableMachine != null && recipeLockableMachine.getSingleRecipeCheck() != null) {
             // Recipe checker is already built, we'll use it
             SingleRecipeCheck singleRecipeCheck = recipeLockableMachine.getSingleRecipeCheck();
@@ -283,76 +282,92 @@ public class ProcessingLogic {
             if (singleRecipeCheck.checkRecipeInputs(false, 1, inputItems, inputFluids) == 0) {
                 return CheckRecipeResultRegistry.NO_RECIPE;
             }
-            FindRecipeResult findRecipeResult = FindRecipeResult.ofSuccess(
-                recipeLockableMachine.getSingleRecipeCheck()
-                    .getRecipe());
-            findRecipeResultStream = Stream.of(findRecipeResult);
-        } else {
-            findRecipeResultStream = findRecipes(recipeMap);
+
+            return processRecipe(recipeLockableMachine.getSingleRecipeCheck().getRecipe());
         }
 
-        Iterator<FindRecipeResult> iterator = findRecipeResultStream.iterator();
-        CheckRecipeResult outputFillRecipeResult = null;
-        while (iterator.hasNext()){
-            FindRecipeResult findRecipeResult = iterator.next();
-            GT_Recipe recipe;
-            CheckRecipeResult result;
-            if (findRecipeResult.isSuccessful()) {
-                recipe = findRecipeResult.getRecipeNonNull();
-                result = validateRecipe(recipe);
-                if (!result.wasSuccessful()) {
-                    // If any returned is failed already - failfast
-                    return outputFillRecipeResult != null ? outputFillRecipeResult : result;
-                }
+        Iterator<FindRecipeResult> findRecipeResultIterator = findRecipes(recipeMap).iterator();
+        boolean isRecipeWithOutputFullFound = false;
+        while (findRecipeResultIterator.hasNext()){
+            CheckRecipeResult checkRecipeResult = processFindRecipeResult(findRecipeResultIterator.next());
+            if (checkRecipeResult == CheckRecipeResultRegistry.OUTPUT_FULL){
+                // If output full - lets try to find another matching recipe
+                isRecipeWithOutputFullFound = true;
+                continue;
+            }
+
+            if (!checkRecipeResult.wasSuccessful() && isRecipeWithOutputFullFound){
+                // If result unsuccessful, and we previously find any "output full" result
+                // Then seems like there is no another matching recipes
+                // (as stated in original algorithm - since in it, we find only one recipe from recipe map)
+                // That's why we just return output full result
+                return CheckRecipeResultRegistry.OUTPUT_FULL;
+            }
+
+            return checkRecipeResult;
+        }
+
+        return isRecipeWithOutputFullFound ? CheckRecipeResultRegistry.OUTPUT_FULL : CheckRecipeResultRegistry.NO_RECIPE;
+    }
+
+    /**
+     * Executes the single FindRecipeResult check, calculate parallel, overclock and outputs.
+     */
+    private CheckRecipeResult processFindRecipeResult(FindRecipeResult findRecipeResult){
+        if (!findRecipeResult.isSuccessful()) {
+            if (findRecipeResult.getState() == FindRecipeResult.State.INSUFFICIENT_VOLTAGE) {
+                return CheckRecipeResultRegistry.insufficientPower(findRecipeResult.getRecipeNonNull().mEUt);
             } else {
-                if (findRecipeResult.getState() == FindRecipeResult.State.INSUFFICIENT_VOLTAGE) {
-                    return CheckRecipeResultRegistry.insufficientPower(findRecipeResult.getRecipeNonNull().mEUt);
-                } else {
-                    return outputFillRecipeResult != null ? outputFillRecipeResult : CheckRecipeResultRegistry.NO_RECIPE;
-                }
+                return CheckRecipeResultRegistry.NO_RECIPE;
             }
+        }
 
-            GT_ParallelHelper helper = createParallelHelper(recipe);
-            GT_OverclockCalculator calculator = createOverclockCalculator(recipe);
-            helper.setCalculator(calculator);
-            helper.build();
+        return processRecipe(findRecipeResult.getRecipe());
+    }
 
-            CheckRecipeResult helperResult = helper.getResult();
-            if (!helperResult.wasSuccessful()) {
-                if (helperResult == CheckRecipeResultRegistry.OUTPUT_FULL) {
-                    // If output full - lets try to find another recipe matching inputs
-                    outputFillRecipeResult = helperResult;
-                    continue;
-                }
-                return outputFillRecipeResult != null ? outputFillRecipeResult : helperResult;
-            }
-
-            lastRecipe = recipe;
-            calculatedParallels = helper.getCurrentParallel();
-
-            if (calculator.getConsumption() == Long.MAX_VALUE) {
-                return outputFillRecipeResult != null ? outputFillRecipeResult : CheckRecipeResultRegistry.POWER_OVERFLOW;
-            }
-            if (calculator.getDuration() == Integer.MAX_VALUE) {
-                return outputFillRecipeResult != null ? outputFillRecipeResult : CheckRecipeResultRegistry.DURATION_OVERFLOW;
-            }
-
-            calculatedEut = calculator.getConsumption();
-
-            double finalDuration = calculateDuration(recipe, helper, calculator);
-            if (finalDuration >= Integer.MAX_VALUE) {
-                return outputFillRecipeResult != null ? outputFillRecipeResult : CheckRecipeResultRegistry.DURATION_OVERFLOW;
-            }
-            duration = (int) finalDuration;
-
-            outputItems = helper.getItemOutputs();
-            outputFluids = helper.getFluidOutputs();
-
+    /**
+     * Executes the single recipe check, calculate parallel, overclock and outputs
+     */
+    @Nonnull
+    private CheckRecipeResult processRecipe(GT_Recipe recipe) {
+        CheckRecipeResult result;
+        result = validateRecipe(recipe);
+        if (!result.wasSuccessful()) {
             return result;
         }
 
-        assert outputFillRecipeResult != null;
-        return outputFillRecipeResult;
+        GT_ParallelHelper helper = createParallelHelper(recipe);
+        GT_OverclockCalculator calculator = createOverclockCalculator(recipe);
+        helper.setCalculator(calculator);
+        helper.build();
+
+        if (!helper.getResult()
+            .wasSuccessful()) {
+            return helper.getResult();
+        }
+
+        lastRecipe = recipe;
+        calculatedParallels = helper.getCurrentParallel();
+
+        if (calculator.getConsumption() == Long.MAX_VALUE) {
+            return CheckRecipeResultRegistry.POWER_OVERFLOW;
+        }
+        if (calculator.getDuration() == Integer.MAX_VALUE) {
+            return CheckRecipeResultRegistry.DURATION_OVERFLOW;
+        }
+
+        calculatedEut = calculator.getConsumption();
+
+        double finalDuration = calculateDuration(recipe, helper, calculator);
+        if (finalDuration >= Integer.MAX_VALUE) {
+            return CheckRecipeResultRegistry.DURATION_OVERFLOW;
+        }
+        duration = (int) finalDuration;
+
+        outputItems = helper.getItemOutputs();
+        outputFluids = helper.getFluidOutputs();
+
+        return result;
     }
 
     /**
