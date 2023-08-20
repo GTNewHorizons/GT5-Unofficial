@@ -10,9 +10,14 @@ import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.api.recipe.check.*;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.FindRecipeResult;
+import gregtech.api.recipe.check.SingleRecipeCheck;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
@@ -314,8 +319,10 @@ public class ProcessingLogic {
 
     /**
      * Executes the single FindRecipeResult check, calculate parallel, overclock and outputs.
+     *
+     * @param findRecipeResult The find recipe result which will be checked and processed
      */
-    private CheckRecipeResult processFindRecipeResult(FindRecipeResult findRecipeResult) {
+    protected CheckRecipeResult processFindRecipeResult(@NotNull FindRecipeResult findRecipeResult) {
         if (!findRecipeResult.isSuccessful()) {
             if (findRecipeResult.getState() == FindRecipeResult.State.INSUFFICIENT_VOLTAGE) {
                 return CheckRecipeResultRegistry.insufficientPower(findRecipeResult.getRecipeNonNull().mEUt);
@@ -329,11 +336,12 @@ public class ProcessingLogic {
 
     /**
      * Executes the single recipe check, calculate parallel, overclock and outputs
+     *
+     * @param recipe The recipe which will be checked and processed
      */
     @Nonnull
-    private CheckRecipeResult processRecipe(GT_Recipe recipe) {
-        CheckRecipeResult result;
-        result = validateRecipe(recipe);
+    protected CheckRecipeResult processRecipe(GT_Recipe recipe) {
+        CheckRecipeResult result = validateRecipe(recipe);
         if (!result.wasSuccessful()) {
             return result;
         }
@@ -386,14 +394,8 @@ public class ProcessingLogic {
     @Nonnull
     protected FindRecipeResult findRecipe(@Nullable GT_Recipe_Map map) {
         if (map == null) return FindRecipeResult.NOT_FOUND;
-        return map.findRecipeWithResult(
-            lastRecipe,
-            false,
-            false,
-            amperageOC ? availableVoltage * availableAmperage : availableVoltage,
-            inputFluids,
-            specialSlotItem,
-            inputItems);
+        return findRecipes(map).findFirst()
+            .orElse(FindRecipeResult.NOT_FOUND);
     }
 
     /**
