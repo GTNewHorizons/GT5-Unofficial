@@ -496,7 +496,7 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_342", "Tier 2 cooling enabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_342.1", "Tier 2 cooling disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_343", "Use Machine Procecssing State");
-        addStringLocalization("Interaction_DESCRIPTION_Index_343.1", "Use Inverted Macine Processing State");
+        addStringLocalization("Interaction_DESCRIPTION_Index_343.1", "Use Inverted Machine Processing State");
         addStringLocalization("Interaction_DESCRIPTION_Index_344", "Input Blocking");
         addStringLocalization("Interaction_DESCRIPTION_Index_344.1", "Output Blocking");
         addStringLocalization("Interaction_DESCRIPTION_Index_500", "Fitting: Loose - More Flow");
