@@ -263,12 +263,18 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
+            private ItemStack lastCircuit = null;
+
             @NotNull
             @Override
             protected FindRecipeResult findRecipe(GT_Recipe.GT_Recipe_Map map) {
                 ItemStack circuit = getCircuit(inputItems);
                 if (circuit == null) {
                     return FindRecipeResult.NOT_FOUND;
+                }
+                if (!GT_Utility.areStacksEqual(circuit, lastCircuit)) {
+                    lastRecipe = null;
+                    lastCircuit = circuit;
                 }
                 GT_Recipe.GT_Recipe_Map foundMap = getRecipeMap(getCircuitID(circuit));
                 if (foundMap == null) {
