@@ -156,9 +156,14 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         private boolean isEmpty() {
             // if one item / fluid is empty then it should be safe to assume all other is empty,
             // or at least won't require a recipe check, as long as the pattern is sane
-            if (!itemInventory.isEmpty()) return itemInventory.get(0) == null || itemInventory.get(0).stackSize <= 0;
+            if (!itemInventory.isEmpty()) {
+                return itemInventory.get(0) == null || itemInventory.get(0).stackSize <= 0;
+            }
 
-            return fluidInventory.get(0) == null || fluidInventory.get(0).amount <= 0;
+            if (!fluidInventory.isEmpty()) {
+                return fluidInventory.get(0) == null || fluidInventory.get(0).amount <= 0;
+            }
+            return true;
         }
 
         @Override
