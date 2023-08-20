@@ -313,6 +313,11 @@ public abstract class GregtechMeta_SteamMultiBase<T extends GregtechMeta_SteamMu
             if (isValidMetaTileEntity(tHatch)) tHatch.updateSlots();
     }
 
+    @Override
+    public boolean supportsBatchMode() {
+        return false;
+    }
+
     protected static <T extends GregtechMeta_SteamMultiBase<T>> GT_HatchElementBuilder<T> buildSteamInput(
             Class<T> typeToken) {
         return buildHatchAdder(typeToken).adder(GregtechMeta_SteamMultiBase::addToMachineList).hatchIds(31040)
