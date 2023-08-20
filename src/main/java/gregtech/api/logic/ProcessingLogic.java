@@ -286,17 +286,17 @@ public class ProcessingLogic {
             return processRecipe(recipeLockableMachine.getSingleRecipeCheck().getRecipe());
         }
 
-        Iterator<FindRecipeResult> findRecipeResultIterator = findRecipes(recipeMap).iterator();
+        Iterable<FindRecipeResult> findRecipeResultIterable = findRecipes(recipeMap)::iterator;
         boolean isRecipeWithOutputFullFound = false;
-        while (findRecipeResultIterator.hasNext()){
-            CheckRecipeResult checkRecipeResult = processFindRecipeResult(findRecipeResultIterator.next());
-            if (checkRecipeResult == CheckRecipeResultRegistry.OUTPUT_FULL){
+        for (FindRecipeResult findRecipeResult : findRecipeResultIterable) {
+            CheckRecipeResult checkRecipeResult = processFindRecipeResult(findRecipeResult);
+            if (checkRecipeResult == CheckRecipeResultRegistry.OUTPUT_FULL) {
                 // If output full - lets try to find another matching recipe
                 isRecipeWithOutputFullFound = true;
                 continue;
             }
 
-            if (!checkRecipeResult.wasSuccessful() && isRecipeWithOutputFullFound){
+            if (!checkRecipeResult.wasSuccessful() && isRecipeWithOutputFullFound) {
                 // If result unsuccessful, and we previously find any "output full" result
                 // Then seems like there is no another matching recipes
                 // (as stated in original algorithm - since in it, we find only one recipe from recipe map)

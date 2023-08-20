@@ -4112,7 +4112,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             if (aNotUnificated) aInputs = GT_OreDictUnificator.getStackArray(true, (Object[]) aInputs);
 
             ItemStack[] finalAInputs = aInputs;
-            Stream<FindRecipeResult> findRecipeResultStream = Stream.<Supplier<Stream<GT_Recipe>>>of(
+            return Stream.<Supplier<Stream<GT_Recipe>>>of(
                     () -> {
                         // Check the Recipe which has been used last time in order to not have to search for it again, if possible.
                         if (aRecipe != null) if (!aRecipe.mFakeRecipe && aRecipe.mCanBeBuffered
@@ -4165,8 +4165,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 .map(gtRecipe -> gtRecipe.mEnabled && aVoltage * mAmperage >= gtRecipe.mEUt
                     ? ofSuccess(gtRecipe)
                     : ofInsufficientVoltage(gtRecipe));
-
-            return Stream.concat(findRecipeResultStream, Stream.of(NOT_FOUND));
         }
 
         protected GT_Recipe addToItemMap(GT_Recipe aRecipe) {
