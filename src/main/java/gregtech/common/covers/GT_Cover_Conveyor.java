@@ -9,7 +9,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
-import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -278,18 +277,18 @@ public class GT_Cover_Conveyor extends GT_CoverBehavior {
                             .setPos(startX, startY))
                 .widget(
                     new TextWidget(GT_Utility.trans("229", "Import/Export")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 3, 3 + startY + spaceY * 0))
+                        .setPos(3 + startX + spaceX * 3, 4 + startY + spaceY * 0))
                 .widget(
                     new TextWidget(GT_Utility.trans("230", "Conditional")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 3, 3 + startY + spaceY * 1))
-                .widget(TextWidget.dynamicText(() -> {
+                        .setPos(3 + startX + spaceX * 3, 4 + startY + spaceY * 1))
+                .widget(TextWidget.dynamicString(() -> {
                     ISerializableObject.LegacyCoverData coverData = getCoverData();
-                    return new Text(
-                        coverData == null || coverData.get() % 2 == 0 ? GT_Utility.trans("344", "Input Blocking")
-                            : GT_Utility.trans("344.1", "Output Blocking"));
+                    return coverData == null || coverData.get() % 2 == 0 ? GT_Utility.trans("344", "Input Blocking")
+                        : GT_Utility.trans("344.1", "Output Blocking");
                 })
+                    .setSynced(false)
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(startX + spaceX * 3, 3 + startY + spaceY * 2));
+                    .setPos(3 + startX + spaceX * 3, 4 + startY + spaceY * 2));
         }
 
         private int getNewCoverVariable(int id, int coverVariable) {

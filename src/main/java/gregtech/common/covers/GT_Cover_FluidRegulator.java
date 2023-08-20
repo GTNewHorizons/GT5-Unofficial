@@ -382,10 +382,10 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
                     .setPos(startX, startY))
                 .widget(
                     new TextWidget(GT_Utility.trans("229", "Import/Export")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0))
+                        .setPos(3 + startX + spaceX * 4, 4 + startY + spaceY * 0))
                 .widget(
                     new TextWidget(GT_Utility.trans("230", "Conditional")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 4, 4 + startY + spaceY * 1))
+                        .setPos(3 + startX + spaceX * 4, 4 + startY + spaceY * 1))
                 .widget(
                     new TextWidget(GT_Utility.trans("208", " L")).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 4, 4 + startY + spaceY * 2))
