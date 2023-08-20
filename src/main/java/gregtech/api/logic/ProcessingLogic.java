@@ -1,20 +1,19 @@
 package gregtech.api.logic;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.api.recipe.check.*;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.FindRecipeResult;
-import gregtech.api.recipe.check.SingleRecipeCheck;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
@@ -275,7 +274,7 @@ public class ProcessingLogic {
             maxParallel = maxParallelSupplier.get();
         }
 
-        FindRecipeResult findRecipeResult;
+        Stream<FindRecipeResult> findRecipeResultStream;
         if (isRecipeLocked && recipeLockableMachine != null && recipeLockableMachine.getSingleRecipeCheck() != null) {
             // Recipe checker is already built, we'll use it
             SingleRecipeCheck singleRecipeCheck = recipeLockableMachine.getSingleRecipeCheck();
@@ -284,62 +283,76 @@ public class ProcessingLogic {
             if (singleRecipeCheck.checkRecipeInputs(false, 1, inputItems, inputFluids) == 0) {
                 return CheckRecipeResultRegistry.NO_RECIPE;
             }
-            findRecipeResult = FindRecipeResult.ofSuccess(
+            FindRecipeResult findRecipeResult = FindRecipeResult.ofSuccess(
                 recipeLockableMachine.getSingleRecipeCheck()
                     .getRecipe());
+            findRecipeResultStream = Stream.of(findRecipeResult);
         } else {
-            findRecipeResult = findRecipe(recipeMap);
+            findRecipeResultStream = findRecipes(recipeMap);
         }
 
-        GT_Recipe recipe;
-        CheckRecipeResult result;
-        if (findRecipeResult.isSuccessful()) {
-            recipe = findRecipeResult.getRecipeNonNull();
-            result = validateRecipe(recipe);
-            if (!result.wasSuccessful()) {
-                return result;
+        Iterator<FindRecipeResult> iterator = findRecipeResultStream.iterator();
+        CheckRecipeResult lastCheckRecipeResult = null;
+        while (iterator.hasNext()){
+            FindRecipeResult findRecipeResult = iterator.next();
+            GT_Recipe recipe;
+            CheckRecipeResult result;
+            if (findRecipeResult.isSuccessful()) {
+                recipe = findRecipeResult.getRecipeNonNull();
+                result = validateRecipe(recipe);
+                if (!result.wasSuccessful()) {
+                    lastCheckRecipeResult = result;
+                    continue;
+                }
             } else {
-                lastRecipe = recipe;
+                if (findRecipeResult.getState() == FindRecipeResult.State.INSUFFICIENT_VOLTAGE) {
+                    lastCheckRecipeResult = CheckRecipeResultRegistry.insufficientPower(findRecipeResult.getRecipeNonNull().mEUt);
+                    continue;
+                } else {
+                    lastCheckRecipeResult = CheckRecipeResultRegistry.NO_RECIPE;
+                    continue;
+                }
             }
-        } else {
-            if (findRecipeResult.getState() == FindRecipeResult.State.INSUFFICIENT_VOLTAGE) {
-                return CheckRecipeResultRegistry.insufficientPower(findRecipeResult.getRecipeNonNull().mEUt);
-            } else {
-                return CheckRecipeResultRegistry.NO_RECIPE;
+
+            GT_ParallelHelper helper = createParallelHelper(recipe);
+            GT_OverclockCalculator calculator = createOverclockCalculator(recipe);
+            helper.setCalculator(calculator);
+            helper.build();
+
+            if (!helper.getResult()
+                .wasSuccessful()) {
+                lastCheckRecipeResult = helper.getResult();
+                continue;
             }
+
+            lastRecipe = recipe;
+            calculatedParallels = helper.getCurrentParallel();
+
+            if (calculator.getConsumption() == Long.MAX_VALUE) {
+                lastCheckRecipeResult = CheckRecipeResultRegistry.POWER_OVERFLOW;
+                continue;
+            }
+            if (calculator.getDuration() == Integer.MAX_VALUE) {
+                lastCheckRecipeResult = CheckRecipeResultRegistry.DURATION_OVERFLOW;
+                continue;
+            }
+
+            calculatedEut = calculator.getConsumption();
+
+            double finalDuration = calculateDuration(recipe, helper, calculator);
+            if (finalDuration >= Integer.MAX_VALUE) {
+                lastCheckRecipeResult = CheckRecipeResultRegistry.DURATION_OVERFLOW;
+                continue;
+            }
+            duration = (int) finalDuration;
+
+            outputItems = helper.getItemOutputs();
+            outputFluids = helper.getFluidOutputs();
+
+            return result;
         }
 
-        GT_ParallelHelper helper = createParallelHelper(recipe);
-        GT_OverclockCalculator calculator = createOverclockCalculator(recipe);
-        helper.setCalculator(calculator);
-        helper.build();
-
-        if (!helper.getResult()
-            .wasSuccessful()) {
-            return helper.getResult();
-        }
-
-        calculatedParallels = helper.getCurrentParallel();
-
-        if (calculator.getConsumption() == Long.MAX_VALUE) {
-            return CheckRecipeResultRegistry.POWER_OVERFLOW;
-        }
-        if (calculator.getDuration() == Integer.MAX_VALUE) {
-            return CheckRecipeResultRegistry.DURATION_OVERFLOW;
-        }
-
-        calculatedEut = calculator.getConsumption();
-
-        double finalDuration = calculateDuration(recipe, helper, calculator);
-        if (finalDuration >= Integer.MAX_VALUE) {
-            return CheckRecipeResultRegistry.DURATION_OVERFLOW;
-        }
-        duration = (int) finalDuration;
-
-        outputItems = helper.getItemOutputs();
-        outputFluids = helper.getFluidOutputs();
-
-        return result;
+        return lastCheckRecipeResult;
     }
 
     /**
@@ -357,6 +370,22 @@ public class ProcessingLogic {
     protected FindRecipeResult findRecipe(@Nullable GT_Recipe_Map map) {
         if (map == null) return FindRecipeResult.NOT_FOUND;
         return map.findRecipeWithResult(
+            lastRecipe,
+            false,
+            false,
+            amperageOC ? availableVoltage * availableAmperage : availableVoltage,
+            inputFluids,
+            specialSlotItem,
+            inputItems);
+    }
+
+    /**
+     * Override if you don't work with regular gt recipe maps
+     */
+    @Nonnull
+    protected Stream<FindRecipeResult> findRecipes(@Nullable GT_Recipe_Map map) {
+        if (map == null) return Stream.of(FindRecipeResult.NOT_FOUND);
+        return map.findRecipesWithResult(
             lastRecipe,
             false,
             false,
