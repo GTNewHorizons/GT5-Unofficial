@@ -314,7 +314,8 @@ public class ProcessingLogic {
      *
      * @param findRecipeResult The find recipe result which will be checked and processed
      */
-    protected CheckRecipeResult processFindRecipeResult(@NotNull FindRecipeResult findRecipeResult) {
+    @Nonnull
+    protected CheckRecipeResult processFindRecipeResult(@Nonnull FindRecipeResult findRecipeResult) {
         if (!findRecipeResult.isSuccessful()) {
             if (findRecipeResult.getState() == FindRecipeResult.State.INSUFFICIENT_VOLTAGE) {
                 return CheckRecipeResultRegistry.insufficientPower(findRecipeResult.getRecipeNonNull().mEUt);
@@ -332,7 +333,7 @@ public class ProcessingLogic {
      * @param recipe The recipe which will be checked and processed
      */
     @Nonnull
-    protected CheckRecipeResult processRecipe(GT_Recipe recipe) {
+    protected CheckRecipeResult processRecipe(@Nonnull GT_Recipe recipe) {
         CheckRecipeResult result = validateRecipe(recipe);
         if (!result.wasSuccessful()) {
             return result;
