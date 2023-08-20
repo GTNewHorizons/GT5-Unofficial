@@ -292,7 +292,7 @@ public class ProcessingLogic {
         }
 
         Iterator<FindRecipeResult> iterator = findRecipeResultStream.iterator();
-        CheckRecipeResult lastCheckRecipeResult = null;
+        CheckRecipeResult outputFillRecipeResult = null;
         while (iterator.hasNext()){
             FindRecipeResult findRecipeResult = iterator.next();
             GT_Recipe recipe;
@@ -301,16 +301,14 @@ public class ProcessingLogic {
                 recipe = findRecipeResult.getRecipeNonNull();
                 result = validateRecipe(recipe);
                 if (!result.wasSuccessful()) {
-                    lastCheckRecipeResult = result;
-                    continue;
+                    // If any returned is failed already - failfast
+                    return outputFillRecipeResult != null ? outputFillRecipeResult : result;
                 }
             } else {
                 if (findRecipeResult.getState() == FindRecipeResult.State.INSUFFICIENT_VOLTAGE) {
-                    lastCheckRecipeResult = CheckRecipeResultRegistry.insufficientPower(findRecipeResult.getRecipeNonNull().mEUt);
-                    continue;
+                    return CheckRecipeResultRegistry.insufficientPower(findRecipeResult.getRecipeNonNull().mEUt);
                 } else {
-                    lastCheckRecipeResult = CheckRecipeResultRegistry.NO_RECIPE;
-                    continue;
+                    return outputFillRecipeResult != null ? outputFillRecipeResult : CheckRecipeResultRegistry.NO_RECIPE;
                 }
             }
 
@@ -319,30 +317,31 @@ public class ProcessingLogic {
             helper.setCalculator(calculator);
             helper.build();
 
-            if (!helper.getResult()
-                .wasSuccessful()) {
-                lastCheckRecipeResult = helper.getResult();
-                continue;
+            CheckRecipeResult helperResult = helper.getResult();
+            if (!helperResult.wasSuccessful()) {
+                if (helperResult == CheckRecipeResultRegistry.OUTPUT_FULL) {
+                    // If output full - lets try to find another recipe matching inputs
+                    outputFillRecipeResult = helperResult;
+                    continue;
+                }
+                return outputFillRecipeResult != null ? outputFillRecipeResult : helperResult;
             }
 
             lastRecipe = recipe;
             calculatedParallels = helper.getCurrentParallel();
 
             if (calculator.getConsumption() == Long.MAX_VALUE) {
-                lastCheckRecipeResult = CheckRecipeResultRegistry.POWER_OVERFLOW;
-                continue;
+                return outputFillRecipeResult != null ? outputFillRecipeResult : CheckRecipeResultRegistry.POWER_OVERFLOW;
             }
             if (calculator.getDuration() == Integer.MAX_VALUE) {
-                lastCheckRecipeResult = CheckRecipeResultRegistry.DURATION_OVERFLOW;
-                continue;
+                return outputFillRecipeResult != null ? outputFillRecipeResult : CheckRecipeResultRegistry.DURATION_OVERFLOW;
             }
 
             calculatedEut = calculator.getConsumption();
 
             double finalDuration = calculateDuration(recipe, helper, calculator);
             if (finalDuration >= Integer.MAX_VALUE) {
-                lastCheckRecipeResult = CheckRecipeResultRegistry.DURATION_OVERFLOW;
-                continue;
+                return outputFillRecipeResult != null ? outputFillRecipeResult : CheckRecipeResultRegistry.DURATION_OVERFLOW;
             }
             duration = (int) finalDuration;
 
@@ -352,7 +351,8 @@ public class ProcessingLogic {
             return result;
         }
 
-        return lastCheckRecipeResult;
+        assert outputFillRecipeResult != null;
+        return outputFillRecipeResult;
     }
 
     /**
