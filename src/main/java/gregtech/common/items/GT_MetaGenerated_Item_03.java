@@ -908,7 +908,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
             addItem(
                 230,
                 "Nuclear Star",
-                "BY THE POWERS OF NAUGHTINESS, I COMMAND THIS PARTICULAR STAR, TO BE REALLY, REALLY HOT",
+                "By the powers of Greg, I command this star to be really hot.",
                 SubTag.NO_UNIFICATION));
 
         ItemList.Optical_Cpu_Containment_Housing.set(addItem(727, "Optical CPU Containment Housing", "CPU Housing", o));
