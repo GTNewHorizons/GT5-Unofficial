@@ -911,7 +911,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             return null;
         }
 
-        return powerLogicHost.getPowerLogic();
+        return powerLogicHost.getPowerLogic(ForgeDirection.UNKNOWN);
     }
 
     // #endregion Energy
