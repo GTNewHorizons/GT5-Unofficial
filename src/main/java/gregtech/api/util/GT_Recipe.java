@@ -30,20 +30,12 @@ import static net.minecraft.util.EnumChatFormatting.GRAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -127,6 +119,7 @@ import gregtech.nei.NEIRecipeInfo;
 import ic2.core.Ic2Items;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -4072,6 +4065,108 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
             // And nothing has been found.
             return NOT_FOUND;
+        }
+
+        /**
+         * finds a Recipe matching the aFluid and ItemStack Inputs.
+         *
+         * @param aRecipe              in case this is != null it will try to use this Recipe first when looking things
+         *                             up.
+         * @param aNotUnificated       if this is T the Recipe searcher will unificate the ItemStack Inputs
+         * @param aDontCheckStackSizes if set to false will only return recipes that can be executed at least once with
+         *                             the provided input
+         * @param aVoltage             Voltage of the Machine or Long.MAX_VALUE if it has no Voltage
+         * @param aFluids              the Fluid Inputs
+         * @param aSpecialSlot         the content of the Special Slot, the regular Manager doesn't do anything with
+         *                             this, but some custom ones do.
+         * @param aInputs              the Item Inputs
+         * @return Result of the recipe search
+         */
+        @Nonnull
+        public Stream<FindRecipeResult> findRecipesWithResult(GT_Recipe aRecipe, boolean aNotUnificated,
+                                                             boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot,
+                                                             ItemStack... aInputs) {
+            // No Recipes? Well, nothing to be found then.
+            if (mRecipeList.isEmpty()) return Stream.of(NOT_FOUND);
+
+            // Some Recipe Classes require a certain amount of Inputs of certain kinds. Like "at least 1 Fluid + 1
+            // Stack" or "at least 2 Stacks" before they start searching for Recipes.
+            // This improves Performance massively, especially if people leave things like Circuits, Molds or Shapes in
+            // their Machines to select Sub Recipes.
+            if (GregTech_API.sPostloadFinished) {
+                if (mMinimalInputFluids > 0) {
+                    if (aFluids == null) return Stream.of(NOT_FOUND);
+                    int tAmount = 0;
+                    for (FluidStack aFluid : aFluids) if (aFluid != null) tAmount++;
+                    if (tAmount < mMinimalInputFluids) return Stream.of(NOT_FOUND);
+                }
+                if (mMinimalInputItems > 0) {
+                    if (aInputs == null) return Stream.of(NOT_FOUND);
+                    int tAmount = 0;
+                    for (ItemStack aInput : aInputs) if (aInput != null) tAmount++;
+                    if (tAmount < mMinimalInputItems) return Stream.of(NOT_FOUND);
+                }
+            }
+
+            // Unification happens here in case the Input isn't already unificated.
+            if (aNotUnificated) aInputs = GT_OreDictUnificator.getStackArray(true, (Object[]) aInputs);
+
+            ItemStack[] finalAInputs = aInputs;
+            Stream<FindRecipeResult> findRecipeResultStream = Stream.<Supplier<Stream<GT_Recipe>>>of(
+                    () -> {
+                        // Check the Recipe which has been used last time in order to not have to search for it again, if possible.
+                        if (aRecipe != null) if (!aRecipe.mFakeRecipe && aRecipe.mCanBeBuffered
+                            && aRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, finalAInputs)) {
+                            if (!isSpecialSlotSensitive
+                                || GT_Utility.areStacksEqualOrNull((ItemStack) aRecipe.mSpecialItems, aSpecialSlot)) {
+                                return Stream.of(aRecipe);
+                            }
+                        }
+                        return Stream.empty();
+                    },
+                    () -> {
+                        // Now look for the Recipes inside the Item HashMaps, but only when the Recipes usually have Items.
+                        if (mUsualInputCount <= 0 || finalAInputs == null) {
+                            return Stream.empty();
+                        }
+
+                        return Stream.of(finalAInputs)
+                            .filter(Objects::nonNull)
+                            .flatMap(tStack -> Stream
+                                .of(new GT_ItemStack(tStack), new GT_ItemStack(tStack, true))
+                                .map(mRecipeItemMap::get)
+                                .filter(Objects::nonNull)
+                                .flatMap(Collection::stream)
+                                .filter(tRecipe -> !tRecipe.mFakeRecipe
+                                    && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, finalAInputs))
+                                .filter(tRecipe -> !isSpecialSlotSensitive
+                                    || GT_Utility.areStacksEqualOrNull((ItemStack) tRecipe.mSpecialItems, aSpecialSlot)));
+                    },
+                    () -> {
+                        // If the minimal Amount of Items for the Recipe is 0, then it could be a Fluid-Only Recipe, so
+                        // check that map too.
+                        if (mMinimalInputItems != 0 || aFluids == null) {
+                            return Stream.empty();
+                        }
+
+                        return Stream.of(aFluids)
+                            .filter(Objects::nonNull)
+                            .map(fluidStack -> fluidStack.getFluid().getName())
+                            .map(mRecipeFluidMap::get)
+                            .filter(Objects::nonNull)
+                            .flatMap(Collection::stream)
+                            .filter(tRecipe -> !tRecipe.mFakeRecipe
+                                && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, finalAInputs))
+                            .filter(tRecipe -> !isSpecialSlotSensitive
+                                || GT_Utility.areStacksEqualOrNull((ItemStack) tRecipe.mSpecialItems, aSpecialSlot));
+                    }
+                )
+                .flatMap(Supplier::get)
+                .map(gtRecipe -> gtRecipe.mEnabled && aVoltage * mAmperage >= gtRecipe.mEUt
+                    ? ofSuccess(gtRecipe)
+                    : ofInsufficientVoltage(gtRecipe));
+
+            return Stream.concat(findRecipeResultStream, Stream.of(NOT_FOUND));
         }
 
         protected GT_Recipe addToItemMap(GT_Recipe aRecipe) {
