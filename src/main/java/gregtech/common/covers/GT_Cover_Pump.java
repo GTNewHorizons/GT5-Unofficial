@@ -1,11 +1,14 @@
 package gregtech.common.covers;
 
+import java.util.Arrays;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -199,6 +202,9 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
+        private CoverDataFollower_ToggleButtonWidget<ISerializableObject.LegacyCoverData> mBlockWidget = null;
+        private CoverDataFollower_ToggleButtonWidget<ISerializableObject.LegacyCoverData> mAllowWidget = null;
+
         public PumpUIFactory(GT_CoverUIBuildContext buildContext) {
             super(buildContext);
         }
@@ -206,76 +212,114 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
-            builder
-                .widget(
-                    new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        this::getCoverData,
-                        this::setCoverData,
-                        GT_Cover_Pump.this,
-                        (id, coverData) -> !getClickable(id, convert(coverData)),
-                        (id, coverData) -> new ISerializableObject.LegacyCoverData(
-                            getNewCoverVariable(id, convert(coverData))))
-                                .addToggleButton(
-                                    0,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EXPORT)
-                                        .addTooltip(GT_Utility.trans("006", "Export"))
-                                        .setPos(spaceX * 0, spaceY * 0))
-                                .addToggleButton(
-                                    1,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_IMPORT)
-                                        .addTooltip(GT_Utility.trans("007", "Import"))
-                                        .setPos(spaceX * 1, spaceY * 0))
-                                .addToggleButton(
-                                    2,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK)
-                                        .addTooltip(GT_Utility.trans("224", "Always On"))
-                                        .setPos(spaceX * 0, spaceY * 1))
-                                .addToggleButton(
-                                    3,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_USE_PROCESSING_STATE)
-                                        .addTooltip(GT_Utility.trans("343", "Use Machine Procecssing State"))
-                                        .setPos(spaceX * 1, spaceY * 1))
-                                .addToggleButton(
-                                    4,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget
-                                        .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
-                                        .addTooltip(GT_Utility.trans("343.1", "Use Inverted Macine Processing State"))
-                                        .setPos(spaceX * 2, spaceY * 1))
-                                .addToggleButton(
-                                    5,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_ALLOW_INPUT)
-                                        .addTooltip(GT_Utility.trans("227", "Allow Input"))
-                                        .setPos(spaceX * 0, spaceY * 2))
-                                .addToggleButton(
-                                    6,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_BLOCK_INPUT)
-                                        .addTooltip(GT_Utility.trans("228", "Block Input"))
-                                        .setPos(spaceX * 1, spaceY * 2))
-                                .setPos(startX, startY))
+            builder.widget(
+                new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
+                    this::getCoverData,
+                    this::setCoverData,
+                    GT_Cover_Pump.this,
+                    (id, coverData) -> !getClickable(id, convert(coverData)),
+                    (id, coverData) -> new ISerializableObject.LegacyCoverData(
+                        getNewCoverVariable(id, convert(coverData))))
+                            .addToggleButton(
+                                0,
+                                CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EXPORT)
+                                    .addTooltip(GT_Utility.trans("006", "Export"))
+                                    .setPos(spaceX * 0, spaceY * 0))
+                            .addToggleButton(
+                                1,
+                                CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_IMPORT)
+                                    .addTooltip(GT_Utility.trans("007", "Import"))
+                                    .setPos(spaceX * 1, spaceY * 0))
+                            .addToggleButton(
+                                2,
+                                CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK)
+                                    .addTooltip(GT_Utility.trans("224", "Always On"))
+                                    .setPos(spaceX * 0, spaceY * 1))
+                            .addToggleButton(
+                                3,
+                                CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_USE_PROCESSING_STATE)
+                                    .addTooltip(GT_Utility.trans("343", "Use Machine Procecssing State"))
+                                    .setPos(spaceX * 1, spaceY * 1))
+                            .addToggleButton(
+                                4,
+                                CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                widget -> widget
+                                    .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
+                                    .addTooltip(GT_Utility.trans("343.1", "Use Inverted Machine Processing State"))
+                                    .setPos(spaceX * 2, spaceY * 1))
+                            .addToggleButton(5, CoverDataFollower_ToggleButtonWidget.ofDisableable(), widget -> {
+                                mAllowWidget = widget;
+                                widget.setTextureGetter(i -> {
+                                    ISerializableObject.LegacyCoverData coverData = getCoverData();
+                                    return coverData == null || coverData.get() % 2 == 0
+                                        ? GT_UITextures.OVERLAY_BUTTON_ALLOW_INPUT
+                                        : GT_UITextures.OVERLAY_BUTTON_ALLOW_OUTPUT;
+                                })
+                                    .dynamicTooltip(() -> {
+                                        ISerializableObject.LegacyCoverData coverData = getCoverData();
+                                        return Arrays.asList(
+                                            coverData == null || coverData.get() % 2 == 0
+                                                ? GT_Utility.trans("314", "Allow Input")
+                                                : GT_Utility.trans("312", "Allow Output"));
+                                    })
+                                    .setPos(spaceX * 0, spaceY * 2);
+                            })
+                            .addToggleButton(6, CoverDataFollower_ToggleButtonWidget.ofDisableable(), widget -> {
+                                mBlockWidget = widget;
+                                widget.setTextureGetter(i -> {
+                                    ISerializableObject.LegacyCoverData coverData = getCoverData();
+                                    return coverData == null || coverData.get() % 2 == 0
+                                        ? GT_UITextures.OVERLAY_BUTTON_BLOCK_INPUT
+                                        : GT_UITextures.OVERLAY_BUTTON_BLOCK_OUTPUT;
+                                })
+                                    .dynamicTooltip(() -> {
+                                        ISerializableObject.LegacyCoverData coverData = getCoverData();
+                                        return Arrays.asList(
+                                            coverData == null || coverData.get() % 2 == 0
+                                                ? GT_Utility.trans("313", "Block Input")
+                                                : GT_Utility.trans("311", "Block Output"));
+                                    })
+                                    .setPos(spaceX * 1, spaceY * 2);
+                            })
+                            .setPos(startX, startY))
                 .widget(
                     new TextWidget(GT_Utility.trans("229", "Import/Export")).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 3, 3 + startY + spaceY * 0))
                 .widget(
                     new TextWidget(GT_Utility.trans("230", "Conditional")).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 3, 3 + startY + spaceY * 1))
-                .widget(
-                    new TextWidget(GT_Utility.trans("231", "Enable Input")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 3, 3 + startY + spaceY * 2));
+                .widget(TextWidget.dynamicText(() -> {
+                    ISerializableObject.LegacyCoverData coverData = getCoverData();
+                    return new Text(
+                        coverData == null || coverData.get() % 2 == 0 ? GT_Utility.trans("344", "Input Blocking")
+                            : GT_Utility.trans("344.1", "Output Blocking"));
+                })
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(startX + spaceX * 3, 3 + startY + spaceY * 2));
         }
 
         private int getNewCoverVariable(int id, int coverVariable) {
             switch (id) {
                 case 0 -> {
+                    if (mBlockWidget != null) {
+                        mBlockWidget.notifyTooltipChange();
+                    }
+                    if (mAllowWidget != null) {
+                        mAllowWidget.notifyTooltipChange();
+                    }
                     return coverVariable & ~0x1;
                 }
                 case 1 -> {
+                    if (mBlockWidget != null) {
+                        mBlockWidget.notifyTooltipChange();
+                    }
+                    if (mAllowWidget != null) {
+                        mAllowWidget.notifyTooltipChange();
+                    }
                     return coverVariable | 0x1;
                 }
                 case 2 -> {

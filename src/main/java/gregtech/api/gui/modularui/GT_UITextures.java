@@ -302,12 +302,16 @@ public class GT_UITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/autooutput_fluid");
     public static final UITexture OVERLAY_BUTTON_ALLOW_INPUT = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/allow_input");
+    public static final UITexture OVERLAY_BUTTON_ALLOW_OUTPUT = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/allow_output");
     public static final UITexture OVERLAY_BUTTON_AUTOPULL_ME = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/auto_pull_me");
     public static final UITexture OVERLAY_BUTTON_AUTOPULL_ME_DISABLED = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/auto_pull_me_disabled");
     public static final UITexture OVERLAY_BUTTON_BLOCK_INPUT = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/block_input");
+    public static final UITexture OVERLAY_BUTTON_BLOCK_OUTPUT = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/block_output");
     public static final UITexture OVERLAY_BUTTON_ARROW_GREEN_UP = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/arrow_green_up");
     public static final UITexture OVERLAY_BUTTON_ARROW_GREEN_DOWN = UITexture

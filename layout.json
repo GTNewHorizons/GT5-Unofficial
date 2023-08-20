@@ -1,0 +1,13 @@
+{
+  "ideaDirPath": "C:/Users/C0bra5/Desktop/gtnh flow charts/gtnh-repo-test/GT5-Unofficial",
+  "modulesMap": {
+    "GT5-Unofficial": "C:/Users/C0bra5/Desktop/gtnh flow charts/gtnh-repo-test/GT5-Unofficial/GT5-Unofficial.iml",
+    "GT5-Unofficial:mcLauncher": "C:/Users/C0bra5/Desktop/gtnh flow charts/gtnh-repo-test/GT5-Unofficial/GT5-Unofficial.mcLauncher.iml",
+    "GT5-Unofficial:patchedMc": "C:/Users/C0bra5/Desktop/gtnh flow charts/gtnh-repo-test/GT5-Unofficial/GT5-Unofficial.patchedMc.iml",
+    "GT5-Unofficial:test": "C:/Users/C0bra5/Desktop/gtnh flow charts/gtnh-repo-test/GT5-Unofficial/GT5-Unofficial.test.iml",
+    "GT5-Unofficial:injectedTags": "C:/Users/C0bra5/Desktop/gtnh flow charts/gtnh-repo-test/GT5-Unofficial/GT5-Unofficial.injectedTags.iml",
+    "GT5-Unofficial:main": "C:/Users/C0bra5/Desktop/gtnh flow charts/gtnh-repo-test/GT5-Unofficial/GT5-Unofficial.main.iml",
+    "GT5-Unofficial:api": "C:/Users/C0bra5/Desktop/gtnh flow charts/gtnh-repo-test/GT5-Unofficial/GT5-Unofficial.api.iml",
+    "GT5-Unofficial:ideVirtualMain": "C:/Users/C0bra5/Desktop/gtnh flow charts/gtnh-repo-test/GT5-Unofficial/GT5-Unofficial.ideVirtualMain.iml"
+  }
+}
