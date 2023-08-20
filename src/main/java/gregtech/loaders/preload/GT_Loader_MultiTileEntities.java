@@ -34,6 +34,7 @@ import gregtech.common.tileentities.casings.upgrade.Wireless;
 import gregtech.common.tileentities.machines.multiblock.AdvChemicalProcessor;
 import gregtech.common.tileentities.machines.multiblock.CokeOven;
 import gregtech.common.tileentities.machines.multiblock.DistillationTower;
+import gregtech.common.tileentities.machines.multiblock.LaserEngraver;
 import gregtech.common.tileentities.machines.multiblock.LayeredCokeBattery;
 import gregtech.common.tileentities.machines.multiblock.Macerator;
 
@@ -127,6 +128,15 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .inputInventorySize(16)
             .outputInventorySize(16)
             .register();
+        MACHINE_REGISTRY.create(4, LaserEngraver.class)
+            .name("Big Laser Engraver")
+            .category("Multiblock Controller")
+            .setBlock(MACHINE_BLOCK)
+            .textureFolder("BigLaserEngraver")
+            .inputInventorySize(16)
+            .outputInventorySize(16)
+            .tankCapacity(128000L)
+            .register();
     }
 
     private static void registerCasings() {
@@ -155,6 +165,48 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .setBlock(CASING_BLOCK)
             .material(Materials.Cobalt)
             .textureFolder("macerator")
+            .register();
+        CASING_REGISTRY.create(LaserEngraver.getId(), BasicCasing.class)
+            .name("Laser Engraver Casing")
+            .category("MultiBlock Casing")
+            .setBlock(CASING_BLOCK)
+            .textureFolder("BigLaserEngraver")
+            .register();
+        CASING_REGISTRY.create(Mirror.getId(), BasicCasing.class)
+            .name("Mirror")
+            .category("MultiBlock Casing")
+            .setBlock(CASING_BLOCK)
+            .textureFolder("Laserblock")
+            .register();
+        CASING_REGISTRY.create(BlackLaserEngraverCasing.getId(), BasicCasing.class)
+            .name("Black Laser Engraver Casing")
+            .category("MultiBlock Casing")
+            .setBlock(CASING_BLOCK)
+            .textureFolder("BlackLaserEngraver")
+            .register();
+        CASING_REGISTRY.create(LaserEngraverUpgrade1.getId(), BasicCasing.class)
+            .name("Crude Laser Engraving Casing")
+            .category("MultiBlock Casing")
+            .setBlock(CASING_BLOCK)
+            .textureFolder("laserengraverupgrade1")
+            .register();
+        CASING_REGISTRY.create(LaserEngraverUpgrade2.getId(), BasicCasing.class)
+            .name("Advanced Laser Engraving Casing")
+            .category("MultiBlock Casing")
+            .setBlock(CASING_BLOCK)
+            .textureFolder("laserengraverupgrade2")
+            .register();
+        CASING_REGISTRY.create(LaserEngraverUpgrade3.getId(), BasicCasing.class)
+            .name("Ultimate Laser Engraving Casing")
+            .category("MultiBlock Casing")
+            .setBlock(CASING_BLOCK)
+            .textureFolder("laserengraverupgrade3")
+            .register();
+        CASING_REGISTRY.create(LaserEngraverUpgrade4.getId(), BasicCasing.class)
+            .name("Superb Laser Engraving Casing")
+            .category("MultiBlock Casing")
+            .setBlock(CASING_BLOCK)
+            .textureFolder("laserengraverupgrade4")
             .register();
 
     }
