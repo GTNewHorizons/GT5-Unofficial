@@ -296,18 +296,10 @@ public class ProcessingLogic {
         boolean isRecipeWithOutputFullFound = false;
         for (FindRecipeResult findRecipeResult : findRecipeResultIterable) {
             CheckRecipeResult checkRecipeResult = processFindRecipeResult(findRecipeResult);
-            if (checkRecipeResult == CheckRecipeResultRegistry.OUTPUT_FULL) {
+            isRecipeWithOutputFullFound = checkRecipeResult == CheckRecipeResultRegistry.OUTPUT_FULL;
+            if (isRecipeWithOutputFullFound) {
                 // If output full - lets try to find another matching recipe
-                isRecipeWithOutputFullFound = true;
                 continue;
-            }
-
-            if (!checkRecipeResult.wasSuccessful() && isRecipeWithOutputFullFound) {
-                // If result unsuccessful, and we previously find any "output full" result
-                // Then seems like there is no another matching recipes
-                // (as stated in original algorithm - since in it, we find only one recipe from recipe map)
-                // That's why we just return output full result
-                return CheckRecipeResultRegistry.OUTPUT_FULL;
             }
 
             return checkRecipeResult;
