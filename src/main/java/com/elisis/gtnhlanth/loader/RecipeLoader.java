@@ -1511,8 +1511,8 @@ public class RecipeLoader {
         // Electrolyzer
         for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.mRecipeList) {
             for (ItemStack input : recipe.mInputs) {
-                GT_Log.out.print(input.getDisplayName() + "\n");
                 if (GT_Utility.isStackValid(input)) {
+                    GT_Log.out.print(input.getDisplayName() + "\n");
                     int[] oreDict = OreDictionary.getOreIDs(input);
                     for (int oreDictID : oreDict) {
                         String oreName = OreDictionary.getOreName(oreDictID);
@@ -1563,8 +1563,8 @@ public class RecipeLoader {
         // Electrolyzer (PA)
         for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sMultiblockElectrolyzerRecipes.mRecipeList) {
             for (ItemStack input : recipe.mInputs) {
-                GT_Log.out.print(input.getDisplayName() + "\n");
                 if (GT_Utility.isStackValid(input)) {
+                    GT_Log.out.print(input.getDisplayName() + "\n");
                     int[] oreDict = OreDictionary.getOreIDs(input);
                     for (int oreDictID : oreDict) {
                         String oreName = OreDictionary.getOreName(oreDictID);
