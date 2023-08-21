@@ -1392,6 +1392,73 @@ public class RecipeLoader {
 
         GT_Log.out.print("Centrifuge done!\n");
 
+        // For Centrifuge (PA)
+        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sMultiblockCentrifugeRecipes.mRecipeList) {
+            ItemStack input = null;
+            FluidStack fluidInput = null;
+            if (recipe.mInputs.length > 0) input = recipe.mInputs[0];
+            if (recipe.mFluidInputs.length > 0) fluidInput = recipe.mFluidInputs[0];
+            if (GT_Utility.isStackValid(input)) {
+                int[] oreDict = OreDictionary.getOreIDs(input);
+                for (int oreDictID : oreDict) {
+                    if (OreDictionary.getOreName(oreDictID).startsWith("dust")
+                            && (!OreDictionary.getOreName(oreDictID).contains("Dephosphated"))) {
+                        GT_Recipe tRecipe = recipe.copy();
+                        boolean modified = false;
+                        for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                            if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
+                            if (tRecipe.mOutputs[i].isItemEqual(Materials.Cerium.getDustTiny(1))) {
+                                tRecipe.mOutputs[i] = GT_Utility.copyAmount(
+                                        tRecipe.mOutputs[i].stackSize * 2,
+                                        WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dustTiny, 1));
+                                modified = true;
+                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Cerium.getDust(1))) {
+                                tRecipe.mOutputs[i] = GT_Utility.copyAmount(
+                                        tRecipe.mOutputs[i].stackSize * 2,
+                                        WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 1));
+                                modified = true;
+                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Cerium.getDustSmall(1))) {
+                                tRecipe.mOutputs[i] = GT_Utility.copyAmount(
+                                        tRecipe.mOutputs[i].stackSize * 2,
+                                        WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dustSmall, 1));
+                                modified = true;
+                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDustTiny(1))) {
+                                tRecipe.mOutputs[i] = GT_Utility.copyAmount(
+                                        tRecipe.mOutputs[i].stackSize * 2,
+                                        WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dustTiny, 1));
+                                modified = true;
+                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1))) {
+                                tRecipe.mOutputs[i] = GT_Utility.copyAmount(
+                                        tRecipe.mOutputs[i].stackSize * 2,
+                                        WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
+                                modified = true;
+                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDustSmall(1))) {
+                                tRecipe.mOutputs[i] = GT_Utility.copyAmount(
+                                        tRecipe.mOutputs[i].stackSize * 2,
+                                        WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dustSmall, 1));
+                                modified = true;
+                            }
+                        }
+                        if (modified) {
+                            reAdd.add(tRecipe);
+                            remove.add(recipe);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+        GT_Recipe.GT_Recipe_Map.sMultiblockCentrifugeRecipes.mRecipeList.removeAll(remove);
+        GT_Recipe.GT_Recipe_Map.sMultiblockCentrifugeRecipes.mRecipeList.addAll(reAdd);
+        GT_Recipe.GT_Recipe_Map.sMultiblockCentrifugeRecipes.reInit();
+
+        GT_Log.out.print(Tags.MODID + ": Replace " + remove.size() + "! ");
+
+        remove.clear();
+        reAdd.clear();
+
+        GT_Log.out.print("Centrifuge (PA) done!\n");
+
         // For Hammer
         for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sHammerRecipes.mRecipeList) {
             ItemStack input = recipe.mInputs[0];
