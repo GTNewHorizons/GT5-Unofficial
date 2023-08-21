@@ -1555,6 +1555,58 @@ public class RecipeLoader {
 
         GT_Log.out.print("Electrolyzer done!\n");
 
+        // Electrolyzer (PA)
+        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sMultiblockElectrolyzerRecipes.mRecipeList) {
+            for (ItemStack input : recipe.mInputs) {
+                GT_Log.out.print(input.getDisplayName() + "\n");
+                if (GT_Utility.isStackValid(input)) {
+                    int[] oreDict = OreDictionary.getOreIDs(input);
+                    for (int oreDictID : oreDict) {
+                        String oreName = OreDictionary.getOreName(oreDictID);
+                        if (oreName.equals("dustHibonite") || oreName.equals("dustLanthaniteCe")
+                                || oreName.equals("dustZirconolite")
+                                || oreName.equals("dustYttrocerite")
+                                || oreName.equals("dustXenotime")
+                                || oreName.equals("dustBastnasite")
+                                || oreName.equals("dustFlorencite")) {
+                            GT_Recipe tRecipe = recipe.copy();
+                            boolean modified = false;
+                            for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                                if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
+                                if (tRecipe.mOutputs[i].isItemEqual(Materials.Cerium.getDust(1))) {
+                                    tRecipe.mOutputs[i] = GT_Utility.copyAmount(
+                                            tRecipe.mOutputs[i].stackSize,
+                                            WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 1));
+                                    modified = true;
+                                } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1))) {
+                                    tRecipe.mOutputs[i] = GT_Utility.copyAmount(
+                                            tRecipe.mOutputs[i].stackSize,
+                                            WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
+                                    modified = true;
+                                }
+                            }
+                            if (modified) {
+                                reAdd.add(tRecipe);
+                                remove.add(recipe);
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        GT_Recipe.GT_Recipe_Map.sMultiblockElectrolyzerRecipes.mRecipeList.removeAll(remove);
+        GT_Recipe.GT_Recipe_Map.sMultiblockElectrolyzerRecipes.mRecipeList.addAll(reAdd);
+        GT_Recipe.GT_Recipe_Map.sMultiblockElectrolyzerRecipes.reInit();
+
+        GT_Log.out.print(Tags.MODID + ": Replace " + remove.size() + "! ");
+
+        remove.clear();
+        reAdd.clear();
+
+        GT_Log.out.print("Electrolyzer (PA) done!\n");
+
         if (Loader.isModLoaded("miscutils")) {
             // For Simple Washer
             for (GT_Recipe recipe : GTPP_Recipe.GTPP_Recipe_Map.sSimpleWasherRecipes.mRecipeList) {
