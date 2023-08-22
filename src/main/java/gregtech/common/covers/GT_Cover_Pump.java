@@ -241,7 +241,7 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
                                 3,
                                 CoverDataFollower_ToggleButtonWidget.ofDisableable(),
                                 widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_USE_PROCESSING_STATE)
-                                    .addTooltip(GT_Utility.trans("343", "Use Machine Procecssing State"))
+                                    .addTooltip(GT_Utility.trans("343", "Use Machine Processing State"))
                                     .setPos(spaceX * 1, spaceY * 1))
                             .addToggleButton(
                                 4,

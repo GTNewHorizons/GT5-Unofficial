@@ -315,7 +315,7 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
                             return coverData;
                         },
                         widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_USE_PROCESSING_STATE)
-                            .addTooltip(GT_Utility.trans("343", "Use Machine Procecssing State"))
+                            .addTooltip(GT_Utility.trans("343", "Use Machine Processing State"))
                             .setPos(spaceX * 1, spaceY * 1))
                     .addFollower(
                         CoverDataFollower_ToggleButtonWidget.ofDisableable(),
@@ -325,7 +325,7 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
                             return coverData;
                         },
                         widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
-                            .addTooltip(GT_Utility.trans("343.1", "Use Inverted Macine Processing State"))
+                            .addTooltip(GT_Utility.trans("343.1", "Use Inverted Machine Processing State"))
                             .setPos(spaceX * 2, spaceY * 1))
                     .addFollower(
                         new CoverDataFollower_TextFieldWidget<>(),

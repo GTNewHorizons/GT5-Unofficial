@@ -495,7 +495,7 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_341.1", "Tier 1 cooling disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_342", "Tier 2 cooling enabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_342.1", "Tier 2 cooling disabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_343", "Use Machine Procecssing State");
+        addStringLocalization("Interaction_DESCRIPTION_Index_343", "Use Machine Processing State");
         addStringLocalization("Interaction_DESCRIPTION_Index_343.1", "Use Inverted Machine Processing State");
         addStringLocalization("Interaction_DESCRIPTION_Index_344", "Input Blocking");
         addStringLocalization("Interaction_DESCRIPTION_Index_344.1", "Output Blocking");
@@ -509,7 +509,6 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_602", "Use Private Frequency");
         addStringLocalization("Interaction_DESCRIPTION_Index_756", "Connectable: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_ALL", "All");
-        addStringLocalization("Interaction_DESCRIPTION_Index_ANY", "Any");
         addStringLocalization("Interaction_DESCRIPTION_Index_ANY", "Any");
         addStringLocalization("Interaction_DESCRIPTION_Index_INVERTED", "Inverted");
         addStringLocalization("Interaction_DESCRIPTION_Index_NORMAL", "Normal");
