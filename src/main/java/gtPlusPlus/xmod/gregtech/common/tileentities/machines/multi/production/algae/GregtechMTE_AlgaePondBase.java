@@ -334,7 +334,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
         ItemStack aCompost = ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 1);
         for (ItemStack i : aItemInputs) {
             if (GT_Utility.areStacksEqual(aCompost, i)) {
-                if (i.stackSize >= 8) {
+                if (i.stackSize >= RecipeLoader_AlgaeFarm.compostForTier(mLevel)) {
                     return true;
                 }
             }
