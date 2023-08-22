@@ -1,10 +1,46 @@
 package goodgenerator.loader;
 
-import static goodgenerator.items.MyMaterial.*;
+import static goodgenerator.items.MyMaterial.P507;
+import static goodgenerator.items.MyMaterial.adamantine;
+import static goodgenerator.items.MyMaterial.concentratedEnrichedNaquadahSludge;
+import static goodgenerator.items.MyMaterial.enrichedNaquadahEarth;
+import static goodgenerator.items.MyMaterial.enrichedNaquadahGoo;
+import static goodgenerator.items.MyMaterial.enrichedNaquadahRichSolution;
+import static goodgenerator.items.MyMaterial.enrichedNaquadahSulphate;
+import static goodgenerator.items.MyMaterial.fluorineRichWasteLiquid;
+import static goodgenerator.items.MyMaterial.fluoroantimonicAcid;
+import static goodgenerator.items.MyMaterial.galliumHydroxide;
+import static goodgenerator.items.MyMaterial.indiumPhosphate;
+import static goodgenerator.items.MyMaterial.inertEnrichedNaquadah;
+import static goodgenerator.items.MyMaterial.inertNaquadah;
+import static goodgenerator.items.MyMaterial.inertNaquadria;
+import static goodgenerator.items.MyMaterial.lowQualityNaquadahEmulsion;
+import static goodgenerator.items.MyMaterial.lowQualityNaquadahSolution;
+import static goodgenerator.items.MyMaterial.lowQualityNaquadriaPhosphate;
+import static goodgenerator.items.MyMaterial.lowQualityNaquadriaSolution;
+import static goodgenerator.items.MyMaterial.lowQualityNaquadriaSulphate;
+import static goodgenerator.items.MyMaterial.magnesiumSulphate;
+import static goodgenerator.items.MyMaterial.naquadahAdamantiumSolution;
+import static goodgenerator.items.MyMaterial.naquadahEarth;
+import static goodgenerator.items.MyMaterial.naquadahGoo;
+import static goodgenerator.items.MyMaterial.naquadahRichSolution;
+import static goodgenerator.items.MyMaterial.naquadahine;
+import static goodgenerator.items.MyMaterial.naquadriaEarth;
+import static goodgenerator.items.MyMaterial.naquadriaGoo;
+import static goodgenerator.items.MyMaterial.naquadriaRichSolution;
+import static goodgenerator.items.MyMaterial.naquadriaSulphate;
+import static goodgenerator.items.MyMaterial.titaniumTrifluoride;
+import static goodgenerator.items.MyMaterial.towEthyl1Hexanol;
+import static goodgenerator.items.MyMaterial.triniumSulphate;
+import static goodgenerator.items.MyMaterial.wasteLiquid;
 import static goodgenerator.main.GG_Config_Loader.EnableNaquadahRework;
 import static gregtech.common.items.GT_MetaGenerated_Item_01.registerCauldronCleaningFor;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.HashSet;
 
 import net.minecraft.item.ItemStack;
@@ -31,13 +67,16 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.*;
+import gregtech.api.util.GTPP_Recipe;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GT_Bees;
 import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.lib.CORE;
 
-@SuppressWarnings("deprecation")
 public class NaquadahReworkRecipeLoader {
 
     public static void RecipeLoad() {
@@ -834,6 +873,104 @@ public class NaquadahReworkRecipeLoader {
 
         GT_Log.out.print("Centrifuge done!\n");
 
+        // For Centrifuge (PA)
+        for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sMultiblockCentrifugeRecipes.mRecipeList) {
+            ItemStack input = null;
+            if (recipe.mInputs.length > 0) input = recipe.mInputs[0];
+            if (GT_Utility.isStackValid(input)) {
+                int[] oreDict = OreDictionary.getOreIDs(input);
+                if (input.isItemEqual(GT_Bees.combs.getStackForType(CombType.DOB))) {
+                    GT_Recipe tRecipe = recipe.copy();
+                    boolean modified = false;
+                    for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                        if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
+                        if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDustTiny(1))) {
+                            tRecipe.mOutputs[i] = GT_Utility.copyAmount(
+                                    tRecipe.mOutputs[i].stackSize * 2L,
+                                    naquadahEarth.get(OrePrefixes.dustTiny, 1));
+                            modified = true;
+                        }
+                    }
+                    if (modified) {
+                        reAdd.add(tRecipe);
+                        remove.add(recipe);
+                    }
+                } else for (int oreDictID : oreDict) {
+                    if (OreDictionary.getOreName(oreDictID).startsWith("dustPureNaq")
+                            || OreDictionary.getOreName(oreDictID).startsWith("dustImpureNaq")
+                            || OreDictionary.getOreName(oreDictID).startsWith("dustSpace")
+                            || OreDictionary.getOreName(oreDictID).startsWith("dustNaq")) {
+                        GT_Recipe tRecipe = recipe.copy();
+                        boolean modified = false;
+                        for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                            if (!GT_Utility.isStackValid(tRecipe.mOutputs[i])) continue;
+                            if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDustTiny(1))) {
+                                tRecipe.mOutputs[i] = GT_Utility.copyAmount(
+                                        tRecipe.mOutputs[i].stackSize * 2,
+                                        naquadahEarth.get(OrePrefixes.dustTiny, 1));
+                                modified = true;
+                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDustTiny(1))) {
+                                tRecipe.mOutputs[i] = GT_Utility.copyAmount(
+                                        tRecipe.mOutputs[i].stackSize * 2,
+                                        enrichedNaquadahEarth.get(OrePrefixes.dustTiny, 1));
+                                modified = true;
+                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDustTiny(1))) {
+                                tRecipe.mOutputs[i] = GT_Utility.copyAmount(
+                                        tRecipe.mOutputs[i].stackSize * 2,
+                                        naquadriaEarth.get(OrePrefixes.dustTiny, 1));
+                                modified = true;
+                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
+                                tRecipe.mOutputs[i] = GT_Utility.copyAmount(
+                                        tRecipe.mOutputs[i].stackSize * 2,
+                                        naquadahEarth.get(OrePrefixes.dust, 1));
+                                modified = true;
+                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
+                                tRecipe.mOutputs[i] = GT_Utility.copyAmount(
+                                        tRecipe.mOutputs[i].stackSize * 2,
+                                        enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
+                                modified = true;
+                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
+                                tRecipe.mOutputs[i] = GT_Utility.copyAmount(
+                                        tRecipe.mOutputs[i].stackSize * 2,
+                                        naquadriaEarth.get(OrePrefixes.dust, 1));
+                                modified = true;
+                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDustSmall(1))) {
+                                tRecipe.mOutputs[i] = GT_Utility.copyAmount(
+                                        tRecipe.mOutputs[i].stackSize * 2,
+                                        naquadahEarth.get(OrePrefixes.dustSmall, 1));
+                                modified = true;
+                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDustSmall(1))) {
+                                tRecipe.mOutputs[i] = GT_Utility.copyAmount(
+                                        tRecipe.mOutputs[i].stackSize * 2,
+                                        enrichedNaquadahEarth.get(OrePrefixes.dustSmall, 1));
+                                modified = true;
+                            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDustSmall(1))) {
+                                tRecipe.mOutputs[i] = GT_Utility.copyAmount(
+                                        tRecipe.mOutputs[i].stackSize * 2,
+                                        naquadriaEarth.get(OrePrefixes.dustSmall, 1));
+                                modified = true;
+                            }
+                        }
+                        if (modified) {
+                            reAdd.add(tRecipe);
+                            remove.add(recipe);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+        GT_Recipe.GT_Recipe_Map.sMultiblockCentrifugeRecipes.mRecipeList.removeAll(remove);
+        GT_Recipe.GT_Recipe_Map.sMultiblockCentrifugeRecipes.mRecipeList.addAll(reAdd);
+        GT_Recipe.GT_Recipe_Map.sMultiblockCentrifugeRecipes.reInit();
+
+        GT_Log.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
+
+        remove.clear();
+        reAdd.clear();
+
+        GT_Log.out.print("Centrifuge (PA) done!\n");
+
         // For Hammer
         for (GT_Recipe recipe : GT_Recipe.GT_Recipe_Map.sHammerRecipes.mRecipeList) {
             ItemStack input = recipe.mInputs[0];
@@ -974,8 +1111,8 @@ public class NaquadahReworkRecipeLoader {
         GT_Log.out.print("Multi Chemical Reactor done!\n");
 
         if (LoadedList.GTPP) {
-            // For Multi Centrifuge
-            // Blame alk. She made some shit in it, NEI will break down if anyone modify the hash list directly.
+            // For Gt++ Multi Centrifuge
+            // Apparently NEI will break down if one modifies the hash list directly.
             // GTPP_Recipe.GTPP_Recipe_Map.sMultiblockCentrifugeRecipes_GT.mRecipeList.clear();
             // RecipeGen_MultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
             // GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes,
