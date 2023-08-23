@@ -47,8 +47,9 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
 
     private IStructureDefinition<FuelRefineFactory> multiDefinition = null;
     private int Tier = -1;
-    private int[] cnt = new int[] { 0, 0, 0 };
-    private static final Block[] coils = new Block[] { Loaders.FRF_Coil_1, Loaders.FRF_Coil_2, Loaders.FRF_Coil_3 };
+    private int[] cnt = new int[] { 0, 0, 0, 0 };
+    private static final Block[] coils = new Block[] { Loaders.FRF_Coil_1, Loaders.FRF_Coil_2, Loaders.FRF_Coil_3,
+            Loaders.FRF_Coil_4 };
 
     public FuelRefineFactory(String name) {
         super(name);
@@ -109,7 +110,8 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
                             ofChain(
                                     onElementPass(x -> ++x.cnt[0], ofFieldCoil(0)),
                                     onElementPass(x -> ++x.cnt[1], ofFieldCoil(1)),
-                                    onElementPass(x -> ++x.cnt[2], ofFieldCoil(2))))
+                                    onElementPass(x -> ++x.cnt[2], ofFieldCoil(2)),
+                                    onElementPass(x -> ++x.cnt[3], ofFieldCoil(3))))
                     .build();
         }
         return multiDefinition;
@@ -132,7 +134,7 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
 
             private int getIndex(ItemStack trigger) {
                 int s = trigger.stackSize;
-                if (s > 3 || s <= 0) s = 3;
+                if (s > 4 || s <= 0) s = 4;
                 return s - 1;
             }
 
@@ -147,9 +149,9 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Naquadah Fuel Refinery").addInfo("Controller block for the Naquadah Fuel Refinery")
-                .addInfo("But at what cost?").addInfo("Produce the endgame naquadah fuel.")
-                .addInfo("Need field restriction coil to control the fatal radiation.")
-                .addInfo("Use higher tier coil to unlock more fuel and reduce the process time.")
+                .addInfo("But at what cost?").addInfo("Produces naquadah fuels.")
+                .addInfo("Needs field restriction coils to control the fatal radiation.")
+                .addInfo("Use higher tier coils to unlock more fuel types and reduce the processing times.")
                 .addInfo("The structure is too complex!").addInfo(BLUE_PRINT_INFO).addSeparator()
                 .beginStructureBlock(3, 15, 15, false).addInputHatch("The casings adjoin the field restriction glass.")
                 .addInputBus("The casings adjoin the field restriction glass.")
@@ -180,11 +182,12 @@ public class FuelRefineFactory extends GT_MetaTileEntity_TooltipMultiBlockBase_E
         cnt[0] = 0;
         cnt[1] = 0;
         cnt[2] = 0;
+        cnt[3] = 0;
         return structureCheck_EM(mName, 7, 12, 1) && getTier() != -1;
     }
 
     public int getTier() {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             if (cnt[i] == 32) {
                 Tier = i + 1;
                 return i;

@@ -151,6 +151,9 @@ public class Loaders {
     public static final Block FRF_Coil_3 = new Casing(
             "FRF_Coil_3",
             new String[] { GoodGenerator.MOD_ID + ":FRF_Coils/3" });
+    public static final Block FRF_Coil_4 = new Casing(
+            "FRF_Coil_4",
+            new String[] { GoodGenerator.MOD_ID + ":FRF_Coils/4" });
     public static final Block radiationProtectionSteelFrame = new Frame(
             "radiationProtectionSteelFrame",
             new String[] { GoodGenerator.MOD_ID + ":radiationProtectionSteelFrame" });
@@ -325,6 +328,7 @@ public class Loaders {
         GameRegistry.registerBlock(FRF_Coil_1, MyItemBlocks.class, "FRF_Coil_1");
         GameRegistry.registerBlock(FRF_Coil_2, MyItemBlocks.class, "FRF_Coil_2");
         GameRegistry.registerBlock(FRF_Coil_3, MyItemBlocks.class, "FRF_Coil_3");
+        GameRegistry.registerBlock(FRF_Coil_4, MyItemBlocks.class, "FRF_Coil_4");
         GameRegistry.registerBlock(rawCylinder, MyItemBlocks.class, "rawCylinder");
         GameRegistry.registerBlock(titaniumPlatedCylinder, MyItemBlocks.class, "titaniumPlatedCylinder");
         GameRegistry.registerBlock(speedingPipe, MyItemBlocks.class, "speedingPipe");

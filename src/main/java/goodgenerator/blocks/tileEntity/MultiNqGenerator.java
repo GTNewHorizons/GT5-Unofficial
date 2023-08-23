@@ -36,6 +36,7 @@ import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -66,14 +67,16 @@ public class MultiNqGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
 
     static {
         excitedLiquid = Arrays.asList(
-                new Pair<>(MyMaterial.atomicSeparationCatalyst.getMolten(20), ExcitedLiquidCoe[0]),
-                new Pair<>(Materials.Naquadah.getMolten(20L), ExcitedLiquidCoe[1]),
-                new Pair<>(Materials.Uranium235.getMolten(180L), ExcitedLiquidCoe[2]),
-                new Pair<>(Materials.Caesium.getMolten(180L), ExcitedLiquidCoe[3]));
+                new Pair<>(MaterialsUEVplus.Space.getMolten(20L), ExcitedLiquidCoe[0]),
+                new Pair<>(MyMaterial.atomicSeparationCatalyst.getMolten(20), ExcitedLiquidCoe[1]),
+                new Pair<>(Materials.Naquadah.getMolten(20L), ExcitedLiquidCoe[2]),
+                new Pair<>(Materials.Uranium235.getMolten(180L), ExcitedLiquidCoe[3]),
+                new Pair<>(Materials.Caesium.getMolten(180L), ExcitedLiquidCoe[4]));
         coolant = Arrays.asList(
-                new Pair<>(FluidRegistry.getFluidStack("cryotheum", 1000), CoolantEfficiency[0]),
-                new Pair<>(Materials.SuperCoolant.getFluid(1000L), CoolantEfficiency[1]),
-                new Pair<>(FluidRegistry.getFluidStack("ic2coolant", 1000), CoolantEfficiency[2]));
+                new Pair<>(MaterialsUEVplus.Time.getMolten(20L), CoolantEfficiency[0]),
+                new Pair<>(FluidRegistry.getFluidStack("cryotheum", 1000), CoolantEfficiency[1]),
+                new Pair<>(Materials.SuperCoolant.getFluid(1000L), CoolantEfficiency[2]),
+                new Pair<>(FluidRegistry.getFluidStack("ic2coolant", 1000), CoolantEfficiency[3]));
     }
 
     @Override
@@ -368,32 +371,34 @@ public class MultiNqGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Naquadah Reactor").addInfo("Controller block for the Naquadah Reactor")
-                .addInfo("Environmental Friendly!").addInfo("Generate power with the High-energy liquid.")
+                .addInfo("Environmentally Friendly!").addInfo("Generate power from high-energy liquids.")
                 .addInfo(
                         String.format(
-                                "Consume liquid air %d L/s to keep running, otherwise" + EnumChatFormatting.YELLOW
+                                "Consumes &d L/s Liquid Air to keep running, otherwise" + EnumChatFormatting.YELLOW
                                         + " it will void your fuel"
                                         + EnumChatFormatting.GRAY
                                         + ".",
                                 LiquidAirConsumptionPerSecond))
                 .addInfo("Input liquid nuclear fuel or liquid naquadah fuel.")
                 .addInfo(
-                        "The reactor will explode when there are more than" + EnumChatFormatting.RED
+                        "The reactor will explode when there is more than" + EnumChatFormatting.RED
                                 + " ONE"
                                 + EnumChatFormatting.GRAY
-                                + " types of fuel in the hatch!")
-                .addInfo("Consume coolant 1000 L/s to increase the efficiency:")
+                                + " type of fuel in hatches!")
+                .addInfo("Can consume 1000L/s of coolant to increase efficiency:")
                 .addInfo(
                         String.format(
-                                "IC2 Coolant %d%%, Super Coolant %d%%, Cryotheum %d%%",
+                                "IC2 Coolant %d%%, Super Coolant %d%%, Cryotheum %d%%, Tachyon Rich Temporal Fluid %d%%",
+                                CoolantEfficiency[3],
                                 CoolantEfficiency[2],
                                 CoolantEfficiency[1],
                                 CoolantEfficiency[0]))
-                .addInfo("Consume excited liquid to increase the output power:")
-                .addInfo(String.format("molten caesium | %dx power | 180 L/s ", ExcitedLiquidCoe[3]))
-                .addInfo(String.format("molten uranium-235 | %dx power | 180 L/s", ExcitedLiquidCoe[2]))
-                .addInfo(String.format("molten naquadah | %dx power | 20 L/s", ExcitedLiquidCoe[1]))
-                .addInfo(String.format("molten Atomic Separation Catalyst | %dx power | 20 L/s", ExcitedLiquidCoe[0]))
+                .addInfo("Can consume excited liquid to increase the output power and fuel usage:")
+                .addInfo(String.format("Molten Caesium | %dx power | 180 L/s ", ExcitedLiquidCoe[4]))
+                .addInfo(String.format("Molten Uranium-235 | %dx power | 180 L/s", ExcitedLiquidCoe[3]))
+                .addInfo(String.format("Molten Naquadah | %dx power | 20 L/s", ExcitedLiquidCoe[2]))
+                .addInfo(String.format("Molten Atomic Separation Catalyst | %dx power | 20 L/s", ExcitedLiquidCoe[1]))
+                .addInfo(String.format("Spatially Enlarged Fluid | %dx power | 20 L/s", ExcitedLiquidCoe[0]))
                 .addInfo("The structure is too complex!").addInfo(BLUE_PRINT_INFO).addSeparator()
                 .beginStructureBlock(7, 8, 7, true).addController("Front bottom")
                 .addDynamoHatch("Any bottom layer casing, only accept ONE!").addInputHatch("Any bottom layer casing")

@@ -647,6 +647,22 @@ public class RecipeLoader {
                     ItemRefer.Field_Restriction_Coil_T3.get(1),
                     72000,
                     114514);
+            GT_Values.RA.addAssemblylineRecipe(
+                    ItemRefer.Field_Restriction_Coil_T3.get(1),
+                    500000,
+                    new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 1),
+                            ItemList.Field_Generator_UIV.get(2), ItemList.Electric_Pump_UIV.get(8),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 64),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 64),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 8),
+                            GT_OreDictUnificator.get(OrePrefixes.pipeMedium, MaterialsUEVplus.SpaceTime, 16),
+                            ItemList.Circuit_Wafer_PPIC.get(64),
+                            new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1L }, },
+                    new FluidStack[] { MyMaterial.metastableOganesson.getMolten(1000),
+                            MaterialsUEVplus.TranscendentMetal.getMolten(9216), Materials.Lubricant.getFluid(128000), },
+                    ItemRefer.Field_Restriction_Coil_T4.get(1),
+                    144000,
+                    114514);
         } else {
             GT_Values.RA.addAssemblylineRecipe(
                     MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.ingot),

@@ -99,6 +99,7 @@ public final class ItemRefer {
     public static ItemRefer Field_Restriction_Coil_T1 = getItemStack(FRF_Coil_1);
     public static ItemRefer Field_Restriction_Coil_T2 = getItemStack(FRF_Coil_2);
     public static ItemRefer Field_Restriction_Coil_T3 = getItemStack(FRF_Coil_3);
+    public static ItemRefer Field_Restriction_Coil_T4 = getItemStack(FRF_Coil_4);
     public static ItemRefer Radiation_Proof_Steel_Frame_Box = getItemStack(radiationProtectionSteelFrame);
     public static ItemRefer Field_Restriction_Glass = getItemStack(fieldRestrictingGlass);
     public static ItemRefer Raw_Cylinder = getItemStack(rawCylinder);

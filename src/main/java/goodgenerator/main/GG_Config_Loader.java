@@ -15,8 +15,8 @@ public class GG_Config_Loader {
     public static int[] NaquadahFuelVoltage = new int[] { 12960, 2200, 32400, 975000, 2300000, 9511000, 88540000,
             399576000 };
     public static int[] NaquadahFuelTime = new int[] { 100, 500, 150, 20, 20, 80, 100, 160 };
-    public static int[] CoolantEfficiency = new int[] { 275, 150, 105 };
-    public static int[] ExcitedLiquidCoe = new int[] { 16, 4, 3, 2 };
+    public static int[] CoolantEfficiency = new int[] { 500, 275, 150, 105 };
+    public static int[] ExcitedLiquidCoe = new int[] { 64, 16, 4, 3, 2 };
     public static boolean EnableNaquadahRework = true;
 
     public static void run() {
@@ -63,19 +63,23 @@ public class GG_Config_Loader {
                 .get("LargeNaquadahReactor", "Naquadah Fuel MkV Basic Output Voltage", NaquadahFuelVoltage[7]).getInt();
         NaquadahFuelTime[7] = GG_Config
                 .get("LargeNaquadahReactor", "Naquadah Fuel MkV Burning Time", NaquadahFuelTime[7]).getInt();
-        CoolantEfficiency[0] = GG_Config.get("LargeNaquadahReactor", "Cryotheum Efficiency", CoolantEfficiency[0])
+        CoolantEfficiency[0] = GG_Config.get("LargeNaquadahReactor", "Tachyon Fluid Efficiency", CoolantEfficiency[0])
                 .getInt();
-        CoolantEfficiency[1] = GG_Config.get("LargeNaquadahReactor", "Super Coolant Efficiency", CoolantEfficiency[1])
+        CoolantEfficiency[1] = GG_Config.get("LargeNaquadahReactor", "Cryotheum Efficiency", CoolantEfficiency[1])
                 .getInt();
-        CoolantEfficiency[2] = GG_Config.get("LargeNaquadahReactor", "IC2 Coolant Efficiency", CoolantEfficiency[2])
+        CoolantEfficiency[2] = GG_Config.get("LargeNaquadahReactor", "Super Coolant Efficiency", CoolantEfficiency[2])
+                .getInt();
+        CoolantEfficiency[3] = GG_Config.get("LargeNaquadahReactor", "IC2 Coolant Efficiency", CoolantEfficiency[3])
                 .getInt();
         ExcitedLiquidCoe[0] = GG_Config
-                .get("LargeNaquadahReactor", "Atomic Separation Catalyst Magnification", ExcitedLiquidCoe[0]).getInt();
-        ExcitedLiquidCoe[1] = GG_Config.get("LargeNaquadahReactor", "Naquadah Magnification", ExcitedLiquidCoe[1])
+                .get("LargeNaquadahReactor", "Spatially Enlarged Fluid Magnification", ExcitedLiquidCoe[0]).getInt();
+        ExcitedLiquidCoe[1] = GG_Config
+                .get("LargeNaquadahReactor", "Atomic Separation Catalyst Magnification", ExcitedLiquidCoe[1]).getInt();
+        ExcitedLiquidCoe[2] = GG_Config.get("LargeNaquadahReactor", "Naquadah Magnification", ExcitedLiquidCoe[2])
                 .getInt();
-        ExcitedLiquidCoe[2] = GG_Config.get("LargeNaquadahReactor", "Uranium-235 Magnification", ExcitedLiquidCoe[2])
+        ExcitedLiquidCoe[3] = GG_Config.get("LargeNaquadahReactor", "Uranium-235 Magnification", ExcitedLiquidCoe[3])
                 .getInt();
-        ExcitedLiquidCoe[3] = GG_Config.get("LargeNaquadahReactor", "Caesium Magnification", ExcitedLiquidCoe[3])
+        ExcitedLiquidCoe[4] = GG_Config.get("LargeNaquadahReactor", "Caesium Magnification", ExcitedLiquidCoe[4])
                 .getInt();
         LiquidAirConsumptionPerSecond = Math.max(
                 GG_Config

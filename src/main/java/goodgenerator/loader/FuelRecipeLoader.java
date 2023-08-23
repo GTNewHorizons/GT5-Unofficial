@@ -15,6 +15,7 @@ import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
 public class FuelRecipeLoader {
@@ -71,6 +72,18 @@ public class FuelRecipeLoader {
                         ItemRefer.High_Density_Plutonium.get(1), },
                 MyMaterial.naquadahBasedFuelMkIII.getFluidOrGas(100),
                 1100000,
+                100,
+                1);
+
+        // Alternative higher tier recipe
+        MyRecipeAdder.instance.addNaquadahFuelRefineRecipe(
+                new FluidStack[] { MyMaterial.heavyNaquadahFuel.getFluidOrGas(800),
+                        MyMaterial.lightNaquadahFuel.getFluidOrGas(1000), },
+                new ItemStack[] { MyMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust, 8),
+                        GT_ModHandler.getModItem("miscutils", "itemDustChromaticGlass", 9),
+                        ItemRefer.High_Density_Uranium.get(2), ItemRefer.High_Density_Plutonium.get(1), },
+                MyMaterial.naquadahBasedFuelMkIII.getFluidOrGas(200),
+                2100000,
                 100,
                 1);
 
