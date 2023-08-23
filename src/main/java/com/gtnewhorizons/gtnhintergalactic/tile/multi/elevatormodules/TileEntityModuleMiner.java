@@ -73,6 +73,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
     /** Minimal factor used to calculate the recipe time */
     protected static final double MIN_RECIPE_TIME_MODIFIER = 0.5D;
 
+    /** Max distance a mining drone can travel */
+    protected static final double MAX_DISTANCE = 300D;
+
     // Tiered plasmas, the mining operation uses one of them. Using higher tier plasmas boosts the mining operation
     /** Usage of helium plasma per mining operation */
     protected static int PLASMA_HELIUM_USAGE = 1000;
@@ -108,7 +111,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
             .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.0"); // Distance
     /** Status of the distance setting */
     private static final IStatusFunction<TileEntityModuleMiner> DISTANCE_STATUS = (base, p) -> LedStatus
-            .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 200, 300);
+            .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 200, MAX_DISTANCE);
     /** Name of the parallel setting */
     private static final INameFunction<TileEntityModuleMiner> PARALLEL_SETTING_NAME = (base, p) -> GCCoreUtil
             .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.1"); // Max parallels
@@ -514,13 +517,16 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
      */
     protected void cycleDistance() {
         if (((int) modeSetting.get()) != 0) {
-            if (distanceDisplay.get() + stepSetting.get() < distanceSetting.get() + rangeSetting.get()) {
+            // cycle distanceDisplay from (distance - range)
+            // to (distance + range) in increments of step.
+            if (distanceDisplay.get() + stepSetting.get()
+                    <= Math.min(MAX_DISTANCE, distanceSetting.get() + rangeSetting.get())) {
                 distanceDisplay.set(distanceDisplay.get() + stepSetting.get());
             } else {
-                distanceDisplay.set(distanceSetting.get() - rangeSetting.get());
+                distanceDisplay.set(Math.max(0, distanceSetting.get() - rangeSetting.get()));
             }
         } else {
-            distanceDisplay.set(distanceSetting.get());
+            distanceDisplay.set(Math.min(MAX_DISTANCE, Math.max(0, distanceSetting.get())));
         }
     }
 
