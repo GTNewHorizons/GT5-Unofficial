@@ -191,7 +191,7 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends
                         // Need to multiply by 2 because heat OC is done only once every 1800 and this one does it once
                         // every
                         // 900
-                        .setMultiHeat((int) (getCoilLevel().getHeat() * 2));
+                        .setMachineHeat((int) (getCoilLevel().getHeat() * 2));
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }

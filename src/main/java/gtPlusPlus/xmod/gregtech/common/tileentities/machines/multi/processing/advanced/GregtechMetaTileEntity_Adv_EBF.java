@@ -61,7 +61,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
     private int mCasing;
     private final ArrayList<GT_MetaTileEntity_Hatch_CustomFluidBase> mPyrotheumHatches = new ArrayList<>();
 
-    private HeatingCoilLevel mHeatingCapacity;
+    private HeatingCoilLevel mHeatingCapacity = HeatingCoilLevel.None;
 
     public GregtechMetaTileEntity_Adv_EBF(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -241,7 +241,7 @@ public class GregtechMetaTileEntity_Adv_EBF extends GregtechMeta_MultiBlockBase<
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
                 return super.createOverclockCalculator(recipe).setHeatOC(true).setHeatDiscount(true)
-                        .setRecipeHeat(recipe.mSpecialValue).setMultiHeat((int) getCoilLevel().getHeat());
+                        .setRecipeHeat(recipe.mSpecialValue).setMachineHeat((int) getCoilLevel().getHeat());
             }
         }.setSpeedBonus(1F / 2.2F).setEuModifier(0.9F).setMaxParallelSupplier(this::getMaxParallelRecipes);
     }

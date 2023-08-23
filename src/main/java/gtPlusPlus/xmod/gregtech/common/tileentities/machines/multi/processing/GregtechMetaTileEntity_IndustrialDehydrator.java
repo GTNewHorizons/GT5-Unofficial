@@ -190,7 +190,7 @@ public class GregtechMetaTileEntity_IndustrialDehydrator extends
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@NotNull GT_Recipe recipe) {
                 return super.createOverclockCalculator(recipe).setHeatOC(true).setHeatDiscount(true)
-                        .setRecipeHeat(recipe.mSpecialValue).setMultiHeat((int) getCoilLevel().getHeat());
+                        .setRecipeHeat(recipe.mSpecialValue).setMachineHeat((int) getCoilLevel().getHeat());
             }
         }.setSpeedBonus(1F / 2.2F).setEuModifier(0.5F).setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
