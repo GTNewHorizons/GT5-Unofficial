@@ -13,8 +13,8 @@ public class GG_Config_Loader {
 
     public static int LiquidAirConsumptionPerSecond = 2400;
     public static int[] NaquadahFuelVoltage = new int[] { 12960, 2200, 32400, 975000, 2300000, 9511000, 88540000,
-            399576000 };
-    public static int[] NaquadahFuelTime = new int[] { 100, 500, 150, 20, 20, 80, 100, 160 };
+            399576000, 2077795200 };
+    public static int[] NaquadahFuelTime = new int[] { 100, 500, 150, 20, 20, 80, 100, 160, 240 };
     public static int[] CoolantEfficiency = new int[] { 500, 275, 150, 105 };
     public static int[] ExcitedLiquidCoe = new int[] { 64, 16, 4, 3, 2 };
     public static boolean EnableNaquadahRework = true;
@@ -63,6 +63,11 @@ public class GG_Config_Loader {
                 .get("LargeNaquadahReactor", "Naquadah Fuel MkV Basic Output Voltage", NaquadahFuelVoltage[7]).getInt();
         NaquadahFuelTime[7] = GG_Config
                 .get("LargeNaquadahReactor", "Naquadah Fuel MkV Burning Time", NaquadahFuelTime[7]).getInt();
+        NaquadahFuelVoltage[8] = GG_Config
+                .get("LargeNaquadahReactor", "Naquadah Fuel MkVI Basic Output Voltage", NaquadahFuelVoltage[8])
+                .getInt();
+        NaquadahFuelTime[8] = GG_Config
+                .get("LargeNaquadahReactor", "Naquadah Fuel MkVI Burning Time", NaquadahFuelTime[8]).getInt();
         CoolantEfficiency[0] = GG_Config.get("LargeNaquadahReactor", "Tachyon Fluid Efficiency", CoolantEfficiency[0])
                 .getInt();
         CoolantEfficiency[1] = GG_Config.get("LargeNaquadahReactor", "Cryotheum Efficiency", CoolantEfficiency[1])

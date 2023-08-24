@@ -522,6 +522,26 @@ public class MyMaterial implements Runnable {
             OffsetID + 50,
             TextureSet.SET_FLUID);
 
+    public static final Werkstoff naquadahBasedFuelMkVI = new Werkstoff(
+            new short[] { 0x30, 0x00, 0x00 },
+            "Naquadah Based Liquid Fuel MkVI",
+            "THE FUTURE",
+            new Werkstoff.Stats().setRadioactive(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 115,
+            TextureSet.SET_FLUID);
+
+    public static final Werkstoff naquadahBasedFuelMkVIDepleted = new Werkstoff(
+            new short[] { 0x99, 0x33, 0x33 },
+            "Naquadah Based Liquid Fuel MkVI (Depleted)",
+            "THE FUTURE (achieved)",
+            new Werkstoff.Stats().setToxic(true),
+            Werkstoff.Types.MIXTURE,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            OffsetID + 116,
+            TextureSet.SET_FLUID);
+
     public static final Werkstoff zincChloride = new Werkstoff(
             new short[] { 0x73, 0xa5, 0xfc },
             "Zinc Chloride",

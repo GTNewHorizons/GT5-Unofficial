@@ -1192,8 +1192,23 @@ public class RecipeLoader {
         GT_Values.RA.addCentrifugeRecipe(
                 GT_Utility.getIntegratedCircuit(1),
                 null,
+                MyMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(1000),
+                MyMaterial.metastableOganesson.getMolten(122),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1),
+                new int[] { 1000, 500, 400, 50, 20, 5 },
+                250,
+                30000);
+
+        GT_Values.RA.addCentrifugeRecipe(
+                GT_Utility.getIntegratedCircuit(1),
+                null,
                 MyMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(1000),
-                WerkstoffLoader.Oganesson.getFluidOrGas(1),
+                WerkstoffLoader.Oganesson.getFluidOrGas(182),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1),
@@ -1201,8 +1216,8 @@ public class RecipeLoader {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1),
                 new int[] { 1000, 500, 400, 50, 20, 5 },
-                100,
-                30);
+                250,
+                30000);
 
         GT_Values.RA.addCentrifugeRecipe(
                 GT_Utility.getIntegratedCircuit(1),

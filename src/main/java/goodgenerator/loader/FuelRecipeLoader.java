@@ -17,6 +17,7 @@ import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.core.material.ELEMENT;
 
 public class FuelRecipeLoader {
 
@@ -63,7 +64,12 @@ public class FuelRecipeLoader {
                 MyMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(1),
                 NaquadahFuelVoltage[7],
                 NaquadahFuelTime[7]);
-
+        MyRecipeAdder.instance.addLiquidMentalFuel(
+                MyMaterial.naquadahBasedFuelMkVI.getFluidOrGas(1),
+                MyMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(1),
+                NaquadahFuelVoltage[8],
+                NaquadahFuelTime[8]);
+        // MK III Naquadah Fuel
         MyRecipeAdder.instance.addNaquadahFuelRefineRecipe(
                 new FluidStack[] { MyMaterial.heavyNaquadahFuel.getFluidOrGas(800),
                         MyMaterial.lightNaquadahFuel.getFluidOrGas(1000), },
@@ -86,7 +92,7 @@ public class FuelRecipeLoader {
                 2100000,
                 100,
                 1);
-
+        // MK IV Naquadah Fuel
         MyRecipeAdder.instance.addNaquadahFuelRefineRecipe(
                 new FluidStack[] { MyMaterial.naquadahBasedFuelMkIII.getFluidOrGas(2000),
                         Materials.Praseodymium.getMolten(9216L) },
@@ -112,6 +118,7 @@ public class FuelRecipeLoader {
                 160,
                 2);
 
+        // MK V Naquadah Fuel
         MyRecipeAdder.instance.addNaquadahFuelRefineRecipe(
                 new FluidStack[] { MyMaterial.naquadahBasedFuelMkIV.getFluidOrGas(2000),
                         FluidRegistry.getFluidStack("heavyradox", 1000), },
@@ -133,5 +140,29 @@ public class FuelRecipeLoader {
                 300000000,
                 200,
                 3);
+
+        // MK VI Naquadah Fuel
+        MyRecipeAdder.instance.addNaquadahFuelRefineRecipe(
+                new FluidStack[] { MyMaterial.naquadahBasedFuelMkV.getFluidOrGas(2000),
+                        FluidRegistry.getFluidStack("molten.shirabon", 1440), },
+                new ItemStack[] { ELEMENT.STANDALONE.ASTRAL_TITANIUM.getDust(64),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tritanium, 32), },
+                MyMaterial.naquadahBasedFuelMkVI.getFluidOrGas(500),
+                320000000,
+                240,
+                3);
+
+        // Alternate higher tier recipe
+        MyRecipeAdder.instance.addNaquadahFuelRefineRecipe(
+                new FluidStack[] { MyMaterial.naquadahBasedFuelMkV.getFluidOrGas(2000),
+                        FluidRegistry.getFluidStack("molten.shirabon", 1440), },
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.WhiteDwarfMatter, 8),
+                        ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getDust(64),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tritanium, 48), },
+                MyMaterial.naquadahBasedFuelMkVI.getFluidOrGas(750),
+                530000000,
+                240,
+                4);
+
     }
 }
