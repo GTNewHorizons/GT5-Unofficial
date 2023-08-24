@@ -13,7 +13,9 @@ ggfab.waila.advassline.slice.idle=Slice #%s: Idle
 ggfab.waila.advassline.slice.stuck=Slice #%s: §4STUCK
 
 ggfab.info.linked_input_bus.not_owned=§6The settings were copied from a different owner!
+ggfab.info.linked_input_bus.no_data=§6Configuration data not found!
 ggfab.info.linked_input_bus.invalid_data=§6Configuration data was found but it is invalid!
+ggfab.info.linked_input_bus.invalid_circuit=§6Configuration data was found but it contains a circuit not valid on this bus!
 ggfab.info.linked_input_bus.data_pasted=§2Pasted channel ("%s§2") and configuration circuit setting!
 ggfab.info.linked_input_bus.data_copied=§2Copied channel ("%s§2") and configuration circuit setting!
 ggfab.info.linked_input_bus.no_channel=§6No channel specified yet!

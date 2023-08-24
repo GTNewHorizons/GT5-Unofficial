@@ -356,8 +356,8 @@ public class MTE_LinkedInputBus extends GT_MetaTileEntity_Hatch_InputBus {
         if ("".equals(channel)) {
             aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.no_data"));
             return true;
-        } else if (circuit != null && !getConfigurationCircuits().contains(circuit)) {
-            aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.no_data"));
+        } else if (circuit != null && getConfigurationCircuits().stream().noneMatch(circuit::isItemEqual)) {
+            aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.invalid_circuit"));
             return true;
         }
         UUID owner = stick.stackTagCompound.hasKey("owner1")
