@@ -14,7 +14,7 @@ public class GG_Config_Loader {
     public static int LiquidAirConsumptionPerSecond = 2400;
     public static int[] NaquadahFuelVoltage = new int[] { 12960, 2200, 32400, 975000, 2300000, 9511000, 88540000,
             399576000, 2077795200 };
-    public static int[] NaquadahFuelTime = new int[] { 100, 500, 150, 20, 20, 80, 100, 160, 240 };
+    public static int[] NaquadahFuelTime = new int[] { 100, 500, 150, 60, 70, 80, 100, 160, 240 };
     public static int[] CoolantEfficiency = new int[] { 500, 275, 150, 105 };
     public static int[] ExcitedLiquidCoe = new int[] { 64, 16, 4, 3, 2 };
     public static boolean EnableNaquadahRework = true;
