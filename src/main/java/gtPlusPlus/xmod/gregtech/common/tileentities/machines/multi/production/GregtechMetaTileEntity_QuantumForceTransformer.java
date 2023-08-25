@@ -769,6 +769,11 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
     }
 
     @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setBoolean("mFluidMode", mFluidMode);
         aNBT.setBoolean("doFermium", doFermium);
