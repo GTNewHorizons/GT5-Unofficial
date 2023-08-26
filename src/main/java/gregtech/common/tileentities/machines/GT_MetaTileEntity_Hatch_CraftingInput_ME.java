@@ -434,7 +434,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         if (getCrafterIcon() != null) {
             name.append(getCrafterIcon().getDisplayName());
         } else {
-            name.append(getInventoryName());
+            name.append(super.getInventoryName());
         }
 
         if (mInventory[SLOT_CIRCUIT] != null) {
@@ -733,12 +733,13 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
+        currenttip.add(EnumChatFormatting.AQUA + tag.getString("name") + EnumChatFormatting.RESET);
         if (tag.hasKey("inventory")) {
             var inventory = tag.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < inventory.tagCount(); ++i) {
                 var item = inventory.getCompoundTagAt(i);
                 var name = item.getString("name");
-                var amount = item.getInteger("amount");
+                var amount = item.getLong("amount");
                 currenttip.add(
                     name + ": "
                         + EnumChatFormatting.GOLD
@@ -754,20 +755,20 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         int z) {
 
         NBTTagList inventory = new NBTTagList();
-        HashMap<String, Integer> nameToAmount = new HashMap<>();
+        HashMap<String, Long> nameToAmount = new HashMap<>();
         for (Iterator<PatternSlot> it = inventories(); it.hasNext();) {
             var i = it.next();
             for (var item : i.itemInventory) {
                 if (item != null && item.stackSize > 0) {
                     var name = item.getDisplayName();
-                    var amount = nameToAmount.getOrDefault(name, 0);
+                    var amount = nameToAmount.getOrDefault(name, 0L);
                     nameToAmount.put(name, amount + item.stackSize);
                 }
             }
             for (var fluid : i.fluidInventory) {
                 if (fluid != null && fluid.amount > 0) {
                     var name = fluid.getLocalizedName();
-                    var amount = nameToAmount.getOrDefault(name, 0);
+                    var amount = nameToAmount.getOrDefault(name, 0L);
                     nameToAmount.put(name, amount + fluid.amount);
                 }
             }
@@ -775,11 +776,12 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         for (var entry : nameToAmount.entrySet()) {
             var item = new NBTTagCompound();
             item.setString("name", entry.getKey());
-            item.setInteger("amount", entry.getValue());
+            item.setLong("amount", entry.getValue());
             inventory.appendTag(item);
         }
 
         tag.setTag("inventory", inventory);
+        tag.setString("name", getName());
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
@@ -946,7 +948,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     @Override
     public String getCustomName() {
-        return customName != null ? customName : null;
+        return customName;
     }
 
     @Override
