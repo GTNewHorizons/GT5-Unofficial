@@ -2141,9 +2141,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     protected String generateCurrentRecipeInfoString() {
         StringBuilder ret = new StringBuilder(EnumChatFormatting.WHITE + "In progress ")
-            .append((double) mProgresstime / 20)
+            .append(String.format("%.2f", (double) mProgresstime / 20))
             .append("s / ")
-            .append((double) mMaxProgresstime / 20)
+            .append(String.format("%.2f", (double) mMaxProgresstime / 20))
             .append("s (")
             .append(Math.round((double) mProgresstime / mMaxProgresstime * 1000) / 10)
             .append("%)\n");
