@@ -144,7 +144,13 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
             aNameRegional,
             aTier,
             4,
-            new String[] { "BEES GOES BRRRR", EnumChatFormatting.GRAY + AuthorKuba },
+            new String[] { "BEES GOES BRRRR", EnumChatFormatting.GRAY + AuthorKuba,
+                "Effective production chance as a percent is", "2.8 * b^0.52 * (p + t)^0.52 * s^0.37",
+                "where b is the base production chance as a percent,",
+                "p is the production modifier (2 w/o upgrades, or 4 * 1.2^n with n production upgrades),",
+                "t is 8 for the industrial apiary, and", "s is the speed value for the bee",
+                "Outputs are generated at the end of every bee tick (...)",
+                "Primary outputs are rolled once with base chance, once with half base" },
             6,
             9,
             "IndustrialApiary.png",
@@ -1457,6 +1463,11 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
             currenttip.add(
                 "Current Queen: " + EnumChatFormatting.GREEN + StatCollector.translateToLocal(tag.getString("queen")));
         }
+        if (tag.hasKey("dummyProduction")) {
+            currenttip.add(
+                "Effective Production: " + EnumChatFormatting.AQUA
+                    + String.format("b^0.52 * %.2f", tag.getFloat("dummyProduction")));
+        }
         if (tag.hasKey("errors")) {
             NBTTagCompound errorNbt = tag.getCompoundTag("errors");
             for (int i = 0; i < errorNbt.getInteger("size"); i++) {
@@ -1472,12 +1483,18 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         if (usedQueen != null) {
+            IBeeGenome genome = beeRoot.getMember(usedQueen)
+                .getGenome();
             tag.setString(
                 "queen",
-                beeRoot.getMember(usedQueen)
-                    .getGenome()
-                    .getPrimary()
+                genome.getPrimary()
                     .getUnlocalizedName());
+            float prodModifier = getProductionModifier(genome, 0f);
+            prodModifier += beeRoot.getBeekeepingMode(world)
+                .getBeeModifier()
+                .getProductionModifier(genome, prodModifier);
+            float dummyProduction = 100f * Bee.getFinalChance(0.01f, genome.getSpeed(), prodModifier, 8f);
+            tag.setFloat("dummyProduction", dummyProduction);
         }
         if (hasErrors()) {
             NBTTagCompound errorNbt = new NBTTagCompound();
