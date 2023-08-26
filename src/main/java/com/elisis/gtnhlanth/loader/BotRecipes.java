@@ -266,16 +266,6 @@ public class BotRecipes {
                 100,
                 480);
 
-        // 2NaNO3 + H2SO4 = 2HNO3 + Na2SO4
-        GT_Values.RA.addChemicalRecipe(
-                WerkstoffLoader.SodiumNitrate.get(dust, 10),
-                C2,
-                Materials.SulfuricAcid.getFluid(1000),
-                Materials.NitricAcid.getFluid(2000),
-                WerkstoffLoader.Sodiumsulfate.get(dust, 7),
-                200,
-                120);
-
         // N2H4O3 + NaOH + H =H2SO4= NH3 + HNO3 + Na + H2O
         GT_Values.RA.addMultiblockChemicalRecipe(
                 new ItemStack[] { C24, AmmoniumNitrate.get(dust, 9), Materials.SodiumHydroxide.getDust(3) },
