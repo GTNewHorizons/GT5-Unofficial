@@ -434,7 +434,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         if (getCrafterIcon() != null) {
             name.append(getCrafterIcon().getDisplayName());
         } else {
-            name.append(super.getInventoryName());
+            name.append(getInventoryName());
         }
 
         if (mInventory[SLOT_CIRCUIT] != null) {
