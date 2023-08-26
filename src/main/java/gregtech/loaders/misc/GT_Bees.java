@@ -1,22 +1,39 @@
 package gregtech.loaders.misc;
 
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.GalaxySpace;
+import static gregtech.api.enums.Mods.TwilightForest;
 
+import java.util.Arrays;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 
+import forestry.Forestry;
+import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.EnumBeeChromosome;
+import forestry.api.apiculture.IAlleleBeeEffect;
+import forestry.api.apiculture.IBeeGenome;
+import forestry.api.apiculture.IBeeHousing;
+import forestry.api.apiculture.IBeeModifier;
 import forestry.api.core.IClimateProvider;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IAllele;
 import forestry.api.genetics.IAlleleArea;
 import forestry.api.genetics.IAlleleFloat;
 import forestry.api.genetics.IAlleleInteger;
+import forestry.api.genetics.IEffectData;
 import forestry.api.genetics.IGenome;
 import forestry.api.genetics.IMutationCondition;
+import forestry.apiculture.genetics.alleles.AlleleEffect;
 import forestry.core.genetics.alleles.Allele;
+import forestry.core.genetics.alleles.AlleleArea;
 import forestry.core.utils.StringUtil;
 import gregtech.GT_Mod;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.common.bees.GT_AlleleHelper;
 import gregtech.common.items.ItemComb;
 import gregtech.common.items.ItemDrop;
@@ -40,6 +57,8 @@ public class GT_Bees {
 
     public static IAlleleInteger blinkLife;
     public static IAlleleInteger superLife;
+
+    public static IAlleleBeeEffect treetwisterEffect;
 
     public static ItemPropolis propolis;
     public static ItemPollen pollen;
@@ -84,6 +103,72 @@ public class GT_Bees {
 
         blinkLife = new AlleleInteger("lifeBlink", 2, false, EnumBeeChromosome.LIFESPAN);
         superLife = new AlleleInteger("lifeEon", 600, false, EnumBeeChromosome.LIFESPAN);
+
+        if (GalaxySpace.isModLoaded() && TwilightForest.isModLoaded()) {
+            GT_Mod.GT_FML_LOGGER.info("treetwisterEffect: GalaxySpace and TwilightForest loaded, using default impl");
+            // Create a custom bee effect using an anonymous subclass of AlleleEffect
+            // This and the helper class AlleleEffect are based on MagicBees' TransformationEffect
+            treetwisterEffect = new AlleleEffect("effectTreetwister", false) {
+
+                private static Integer[] allowedDims = { 2, // spectre
+                    112, // last millenium
+                    60, // bedrock
+                    69, // pocket plane
+                };
+
+                public IEffectData validateStorage(IEffectData storedData) {
+                    return storedData; // unused for this effect
+                }
+
+                public IEffectData doEffect(IBeeGenome genome, IEffectData storedData, IBeeHousing housing) {
+                    World world = housing.getWorld();
+                    if (!Arrays.asList(allowedDims)
+                        .contains(world.provider.dimensionId)) {
+                        return storedData;
+                    }
+                    ChunkCoordinates coords = housing.getCoordinates();
+                    IBeeModifier beeModifier = BeeManager.beeRoot.createBeeHousingModifier(housing);
+
+                    // Get random coords within territory
+                    int xRange = (int) (beeModifier.getTerritoryModifier(genome, 1f) * genome.getTerritory()[0]);
+                    int yRange = (int) (beeModifier.getTerritoryModifier(genome, 1f) * genome.getTerritory()[1]);
+                    int zRange = (int) (beeModifier.getTerritoryModifier(genome, 1f) * genome.getTerritory()[2]);
+
+                    int xCoord = coords.posX + world.rand.nextInt(xRange) - xRange / 2;
+                    int yCoord = coords.posY + world.rand.nextInt(yRange) - yRange / 2;
+                    int zCoord = coords.posZ + world.rand.nextInt(zRange) - zRange / 2;
+
+                    ItemStack sourceBlock = new ItemStack(
+                        world.getBlock(xCoord, yCoord, zCoord),
+                        1,
+                        world.getBlockMetadata(xCoord, yCoord, zCoord));
+                    ItemStack tfTransSapling = GT_ModHandler.getModItem(TwilightForest.ID, "tile.TFSapling", 1, 6);
+                    ItemStack barnSapling = GT_ModHandler.getModItem(GalaxySpace.ID, "barnardaCsapling", 1, 0);
+                    if (tfTransSapling == null) {
+                        GT_Mod.GT_FML_LOGGER.info(
+                            "treetwisterEffect.doEffect: Could not get ItemStack for Tree of Transformation sapling");
+                    }
+                    if (barnSapling == null) {
+                        GT_Mod.GT_FML_LOGGER
+                            .info("treetwisterEffect.doEffect: Could not get ItemStack for BarnardaC sapling");
+                    }
+                    if (tfTransSapling != null && barnSapling != null && tfTransSapling.isItemEqual(sourceBlock)) {
+                        world.setBlock(
+                            xCoord,
+                            yCoord,
+                            zCoord,
+                            Block.getBlockFromItem(barnSapling.getItem()),
+                            barnSapling.getItemDamage(),
+                            2);
+                    }
+                    return storedData;
+                }
+            };
+        } else {
+            GT_Mod.GT_FML_LOGGER
+                .info("treetwisterEffect: GalaxySpace or TwilightForest was not loaded, using fallback impl");
+            treetwisterEffect = AlleleEffect.forestryBaseEffect;
+        }
     }
 
     private static class AlleleFloat extends Allele implements IAlleleFloat {
@@ -131,6 +216,43 @@ public class GT_Bees {
         @Override
         public int[] getValue() {
             return this.value;
+        }
+    }
+
+    // helper class for implementing custom bee effects, based on MagicBees' implementation
+    private abstract static class AlleleEffect extends Allele implements IAlleleBeeEffect {
+
+        public static IAlleleBeeEffect forestryBaseEffect = (IAlleleBeeEffect) AlleleManager.alleleRegistry
+            .getAllele("forestry.effectNone");
+        protected boolean combinable;
+
+        public AlleleEffect(String id, boolean isDominant) {
+            super("gregtech." + id, "gregtech." + id, isDominant);
+            AlleleManager.alleleRegistry.registerAllele(this, EnumBeeChromosome.EFFECT);
+            combinable = false;
+        }
+
+        @Override
+        public boolean isCombinable() {
+            return combinable;
+        }
+
+        // Not used by treetwisterEffect, but may be used by other custom effects in the future
+        @SuppressWarnings("unused")
+        public AlleleEffect setIsCombinable(boolean canCombine) {
+            combinable = canCombine;
+            return this;
+        }
+
+        @Override
+        public abstract IEffectData validateStorage(IEffectData storedData);
+
+        @Override
+        public abstract IEffectData doEffect(IBeeGenome genome, IEffectData storedData, IBeeHousing housing);
+
+        @Override
+        public IEffectData doFX(IBeeGenome genome, IEffectData storedData, IBeeHousing housing) {
+            return forestryBaseEffect.doFX(genome, storedData, housing);
         }
     }
 
