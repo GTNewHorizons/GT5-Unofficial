@@ -301,7 +301,6 @@ public class GT_Client extends GT_Proxy implements Runnable {
             checkedForChicken = true;
         }
 
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glPushMatrix();
         GL11.glTranslated(
             -(aEvent.player.lastTickPosX
@@ -317,8 +316,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
         final int tSideHit = aEvent.target.sideHit;
         Rotation.sideRotations[tSideHit].glApply();
         // draw grid
-        GL11.glTranslated(0.0D, -0.501D, 0.0D);
-        GL11.glLineWidth(2.0F);
+        GL11.glTranslated(0.0D, -0.502D, 0.0D);
+        GL11.glLineWidth(2.5F);
         GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.5F);
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex3d(+.50D, .0D, -.25D);
@@ -421,7 +420,6 @@ public class GT_Client extends GT_Proxy implements Runnable {
             }
         }
         GL11.glPopMatrix(); // get back to player center
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
     }
 
     private static void drawExtendedRotationMarker(Transformation transform, boolean sneaking, boolean small) {
