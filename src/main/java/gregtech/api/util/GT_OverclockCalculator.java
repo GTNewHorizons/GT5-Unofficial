@@ -572,6 +572,9 @@ public class GT_OverclockCalculator {
         double machineTier = calculateMachinePowerTier();
         double recipeTier = calculateRecipePowerTier(heatDiscountMultiplier);
         double amountOfTotalOverclocks = calculateAmountOfOverclocks(machineTier, recipeTier);
+        if (recipeVoltage <= GT_Values.V[0]) {
+            amountOfTotalOverclocks = Math.min(amountOfTotalOverclocks, calculateRecipeToMachineVoltageDifference());
+        }
         return (long) Math.ceil(
             recipeVoltage * Math.pow(1 << eutIncreasePerOC, amountOfParallelOverclocks + amountOfParallelHeatOverclocks)
                 * Math.pow(
