@@ -2,7 +2,6 @@ package gregtech.api.logic;
 
 import java.util.List;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -290,21 +289,7 @@ public class ProcessingLogic {
                     .getRecipe());
         }
 
-        Iterable<FindRecipeResult> findRecipeResultIterable = findRecipes(recipeMap)::iterator;
-        boolean isRecipeWithOutputFullFound = false;
-        for (FindRecipeResult findRecipeResult : findRecipeResultIterable) {
-            CheckRecipeResult checkRecipeResult = processFindRecipeResult(findRecipeResult);
-            isRecipeWithOutputFullFound = checkRecipeResult == CheckRecipeResultRegistry.OUTPUT_FULL;
-            if (isRecipeWithOutputFullFound) {
-                // If output full - lets try to find another matching recipe
-                continue;
-            }
-
-            return checkRecipeResult;
-        }
-
-        return isRecipeWithOutputFullFound ? CheckRecipeResultRegistry.OUTPUT_FULL
-            : CheckRecipeResultRegistry.NO_RECIPE;
+        return processFindRecipeResult(findRecipe(recipeMap));
     }
 
     /**
@@ -385,17 +370,34 @@ public class ProcessingLogic {
     @Nonnull
     protected FindRecipeResult findRecipe(@Nullable GT_Recipe_Map map) {
         if (map == null) return FindRecipeResult.NOT_FOUND;
-        return findRecipes(map).findFirst()
-            .orElse(FindRecipeResult.NOT_FOUND);
-    }
 
-    /**
-     * Override if you don't work with regular gt recipe maps
-     */
-    @Nonnull
-    protected Stream<FindRecipeResult> findRecipes(@Nullable GT_Recipe_Map map) {
-        if (map == null) return Stream.of(FindRecipeResult.NOT_FOUND);
-        return map.findRecipesWithResult(
+        if (map instanceof GT_Recipe.GT_Predicated_Recipe_Map) {
+            FindRecipeResult predicatedResult = ((GT_Recipe.GT_Predicated_Recipe_Map) map)
+                .findRecipeWithResult(lastRecipe, (GT_Recipe recipe) -> {
+                    GT_ParallelHelper helper = createParallelHelper(recipe);
+                    GT_OverclockCalculator calculator = createOverclockCalculator(recipe);
+                    helper.setCalculator(calculator);
+                    helper.build();
+
+                    return helper.getResult()
+                        .wasSuccessful();
+                },
+                    false,
+                    false,
+                    amperageOC ? availableVoltage * availableAmperage : availableVoltage,
+                    inputFluids,
+                    specialSlotItem,
+                    inputItems);
+
+            if (predicatedResult != FindRecipeResult.NOT_FOUND) {
+                return predicatedResult;
+            }
+
+            // if we don't find recipe then maybe we already found one, but we excluded it via predicate
+            // So, then we need to retry the search via old algorithm to provide a proper error to player
+        }
+
+        return map.findRecipeWithResult(
             lastRecipe,
             false,
             false,
