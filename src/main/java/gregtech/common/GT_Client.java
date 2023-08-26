@@ -30,6 +30,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
@@ -302,18 +303,14 @@ public class GT_Client extends GT_Proxy implements Runnable {
         }
 
         GL11.glPushMatrix();
-        GL11.glTranslated(
-            -(aEvent.player.lastTickPosX
-                + (aEvent.player.posX - aEvent.player.lastTickPosX) * (double) aEvent.partialTicks),
-            -(aEvent.player.lastTickPosY
-                + (aEvent.player.posY - aEvent.player.lastTickPosY) * (double) aEvent.partialTicks),
-            -(aEvent.player.lastTickPosZ
-                + (aEvent.player.posZ - aEvent.player.lastTickPosZ) * (double) aEvent.partialTicks));
-        GL11.glTranslated(
-            (float) aEvent.target.blockX + 0.5F,
-            (float) aEvent.target.blockY + 0.5F,
-            (float) aEvent.target.blockZ + 0.5F);
-        final int tSideHit = aEvent.target.sideHit;
+        MovingObjectPosition target = aEvent.target;
+        EntityPlayer player = aEvent.player;
+        double camX = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double) aEvent.partialTicks;
+        double camY = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double) aEvent.partialTicks;
+        double camZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double) aEvent.partialTicks;
+        GL11.glTranslated(target.blockX - (int) camX, target.blockY - (int) camY, target.blockZ - (int) camZ);
+        GL11.glTranslated(0.5D - (camX - (int) camX), 0.5D - (camY - (int) camY), 0.5D - (camZ - (int) camZ));
+        final int tSideHit = target.sideHit;
         Rotation.sideRotations[tSideHit].glApply();
         // draw grid
         GL11.glTranslated(0.0D, -0.502D, 0.0D);
@@ -328,8 +325,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
         GL11.glVertex3d(+.25D, .0D, +.50D);
         GL11.glVertex3d(-.25D, .0D, -.50D);
         GL11.glVertex3d(-.25D, .0D, +.50D);
-        final TileEntity tTile = aEvent.player.worldObj
-            .getTileEntity(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
+        final TileEntity tTile = player.worldObj.getTileEntity(target.blockX, target.blockY, target.blockZ);
 
         // draw connection indicators
         int tConnections = 0;
@@ -344,7 +340,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
         if (tConnections != 0) {
             for (ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
                 if ((tConnections & tSide.flag) != 0) {
-                    switch (GRID_SWITCH_TABLE[aEvent.target.sideHit][tSide.ordinal()]) {
+                    switch (GRID_SWITCH_TABLE[target.sideHit][tSide.ordinal()]) {
                         case 0 -> {
                             GL11.glVertex3d(+.25D, .0D, +.25D);
                             GL11.glVertex3d(-.25D, .0D, -.25D);
