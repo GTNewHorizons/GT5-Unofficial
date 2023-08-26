@@ -36,6 +36,7 @@ import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
@@ -78,6 +79,7 @@ import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.net.Utils;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
@@ -2137,6 +2139,46 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return true;
     }
 
+    protected String generateCurrentRecipeInfoString() {
+        StringBuilder ret = new StringBuilder(EnumChatFormatting.WHITE + "In progress ")
+            .append((double) mProgresstime / 20)
+            .append("s / ")
+            .append((double) mMaxProgresstime / 20)
+            .append("s (")
+            .append(Math.round((double) mProgresstime / mMaxProgresstime * 1000) / 10)
+            .append("%)\n");
+        if (mOutputFluids != null) {
+            for (var fluid : mOutputFluids) {
+                ret.append(EnumChatFormatting.AQUA)
+                    .append(fluid.getLocalizedName())
+                    .append(EnumChatFormatting.WHITE)
+                    .append(" x ")
+                    .append(EnumChatFormatting.GOLD)
+                    .append(fluid.amount)
+                    .append("L")
+                    .append(EnumChatFormatting.WHITE)
+                    .append(" (")
+                    .append(Math.round((double) fluid.amount / mMaxProgresstime * 20 * 10) / 10)
+                    .append("/s)\n");
+            }
+        }
+        if (mOutputItems != null) {
+            for (var item : mOutputItems) {
+                ret.append(EnumChatFormatting.AQUA)
+                    .append(item.getDisplayName())
+                    .append(EnumChatFormatting.WHITE)
+                    .append(" x ")
+                    .append(EnumChatFormatting.GOLD)
+                    .append(item.stackSize)
+                    .append(EnumChatFormatting.WHITE)
+                    .append(" (")
+                    .append(Math.round((double) item.stackSize / mMaxProgresstime * 20 * 10) / 10)
+                    .append("/s)\n");
+            }
+        }
+        return ret.toString();
+    }
+
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         screenElements.setSynced(false)
             .setSpace(0)
@@ -2217,6 +2259,29 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     widget -> GT_Utility.isStringValid(checkRecipeResult.getDisplayString())
                         && shouldDisplayCheckRecipeResult()))
             .widget(new CheckRecipeResultSyncer(() -> checkRecipeResult, (result) -> checkRecipeResult = result));
+
+        // Display current recipe
+        screenElements.widget(
+            TextWidget.dynamicString(this::generateCurrentRecipeInfoString)
+                .setSynced(false)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setEnabled(
+                    widget -> (mOutputFluids != null && mOutputFluids.length > 0)
+                        || (mOutputItems != null && mOutputItems.length > 0)))
+            .widget(
+                new FakeSyncWidget.ListSyncer<>(
+                    () -> mOutputFluids != null ? Arrays.asList(mOutputFluids) : Collections.emptyList(),
+                    val -> mOutputFluids = val.toArray(new FluidStack[0]),
+                    NetworkUtils::writeFluidStack,
+                    Utils::readFluidStack))
+            .widget(
+                new FakeSyncWidget.ListSyncer<>(
+                    () -> mOutputItems != null ? Arrays.asList(mOutputItems) : Collections.emptyList(),
+                    val -> mOutputItems = val.toArray(new ItemStack[0]),
+                    Utils::writeItemStack,
+                    Utils::readItemStack))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> mProgresstime, val -> mProgresstime = val))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> mMaxProgresstime, val -> mMaxProgresstime = val));
 
         screenElements.widget(
             new TextWidget(GT_Utility.trans("144", "Missing Turbine Rotor")).setDefaultColor(COLOR_TEXT_WHITE.get())
