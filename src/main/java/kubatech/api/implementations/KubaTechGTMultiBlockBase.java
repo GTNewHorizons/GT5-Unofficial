@@ -23,8 +23,6 @@ package kubatech.api.implementations;
 import static kubatech.api.Variables.ln2;
 import static kubatech.api.Variables.ln4;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
@@ -165,14 +163,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_Exten
         if (dMulti > 0) {
             dMulti = 1 << (isPerfect ? (dMulti << 1) : dMulti);
             // TODO: Use more inputs???
-            final ArrayList<ItemStack> stacks = new ArrayList<>(Arrays.asList(this.mOutputItems));
-            for (ItemStack mOutputItem : this.mOutputItems) {
-                mOutputItem.stackSize *= dMulti;
-                int maxSize = mOutputItem.getMaxStackSize();
-                while (mOutputItem.stackSize > maxSize)
-                    stacks.add(mOutputItem.splitStack(Math.min(mOutputItem.stackSize - maxSize, maxSize)));
-            }
-            if (stacks.size() != this.mOutputItems.length) this.mOutputItems = stacks.toArray(new ItemStack[0]);
+            for (ItemStack mOutputItem : this.mOutputItems) mOutputItem.stackSize *= dMulti;
             for (FluidStack mOutputFluid : this.mOutputFluids) mOutputFluid.amount *= dMulti;
         }
         if (aDuration < minDuration) aDuration = minDuration;
