@@ -8,7 +8,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.ItemList;
@@ -17,6 +20,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_Hatch_CraftingInput_Slave extends GT_MetaTileEntity_Hatch_InputBus
     implements IDualInputHatch {
@@ -158,13 +163,16 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_Slave extends GT_MetaTileEnti
         return master;
     }
 
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (!(aPlayer instanceof EntityPlayerMP)) return false;
+    private boolean tryLinkDataStick(EntityPlayer aPlayer) {
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, true, true)) return false;
-        if (!dataStick.hasTagCompound() || !"CraftingInputBuffer".equals(dataStick.stackTagCompound.getString("type")))
+
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, true, true)) {
             return false;
+        }
+        if (!dataStick.hasTagCompound() || !dataStick.stackTagCompound.getString("type")
+            .equals("CraftingInputBuffer")) {
+            return false;
+        }
 
         NBTTagCompound nbt = dataStick.stackTagCompound;
         int x = nbt.getInteger("x");
@@ -175,6 +183,55 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_Slave extends GT_MetaTileEnti
             return true;
         }
         aPlayer.addChatMessage(new ChatComponentText("Link failed"));
+        return true;
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!(aPlayer instanceof EntityPlayerMP)) {
+            return false;
+        }
+        if (tryLinkDataStick(aPlayer)) {
+            return true;
+        }
+        var master = getMaster();
+        if (master != null) {
+            return master.onRightclick(master.getBaseMetaTileEntity(), aPlayer);
+        }
         return false;
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        NBTTagCompound tag = accessor.getNBTData();
+        currenttip.add((tag.getBoolean("linked") ? "Linked" : "Not linked"));
+
+        if (tag.hasKey("masterX")) {
+            currenttip.add(
+                "Bound to " + tag
+                    .getInteger("masterX") + ", " + tag.getInteger("masterY") + ", " + tag.getInteger("masterZ"));
+        }
+
+        if (tag.hasKey("masterName")) {
+            currenttip.add(EnumChatFormatting.GOLD + tag.getString("masterName") + EnumChatFormatting.RESET);
+        }
+
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+
+        tag.setBoolean("linked", getMaster() != null);
+        if (masterSet) {
+            tag.setInteger("masterX", masterX);
+            tag.setInteger("masterY", masterY);
+            tag.setInteger("masterZ", masterZ);
+        }
+        if (getMaster() != null) tag.setString("masterName", getMaster().getName());
+
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 }
