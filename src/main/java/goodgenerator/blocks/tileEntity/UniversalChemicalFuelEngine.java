@@ -52,17 +52,18 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
     protected final double ROCKET_EFFICIENCY_COEFFICIENT = 0.005D;
     protected final double EFFICIENCY_CEILING = 1.5D;
 
-    private long lEUt;
     private long tEff;
 
     private IStructureDefinition<UniversalChemicalFuelEngine> multiDefinition = null;
 
     public UniversalChemicalFuelEngine(String name) {
         super(name);
+        super.useLongPower = true;
     }
 
     public UniversalChemicalFuelEngine(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
+        super.useLongPower = true;
     }
 
     public final boolean addMaintenance(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -181,7 +182,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
 
     @Override
     public int getPollutionPerTick(ItemStack aStack) {
-        return (int) Math.sqrt(this.mEUt) / 20;
+        return (int) Math.sqrt(this.getPowerFlow()) / 20;
     }
 
     @Override
@@ -228,8 +229,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
             consumeAllLiquid(tFuel);
             consumeAllLiquid(getPromoter());
 
-            this.mEUt = (int) (FuelAmount * recipe.mSpecialValue / 20.0D);
-            this.lEUt = (long) ((long) FuelAmount * recipe.mSpecialValue / 20.0D);
+            this.setPowerFlow((long) ((long) FuelAmount * recipe.mSpecialValue / 20.0D));
             this.mMaxProgresstime = 20;
             this.updateSlots();
             return CheckRecipeResultRegistry.GENERATING;
@@ -245,8 +245,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
             consumeAllLiquid(tFuel);
             consumeAllLiquid(getPromoter());
 
-            this.mEUt = (int) (FuelAmount * recipe.mSpecialValue / 20.0D);
-            this.lEUt = (long) ((long) FuelAmount * recipe.mSpecialValue / 20.0D);
+            this.setPowerFlow((long) ((long) FuelAmount * recipe.mSpecialValue / 20.0D));
             this.mMaxProgresstime = 20;
             this.updateSlots();
             return CheckRecipeResultRegistry.GENERATING;
@@ -264,8 +263,7 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
                 consumeAllLiquid(tFuel);
                 consumeAllLiquid(getPromoter());
 
-                this.mEUt = (int) (FuelAmount * recipe.mSpecialValue * 3 / 20.0D);
-                this.lEUt = (long) ((long) FuelAmount * recipe.mSpecialValue * 3 / 20.0D);
+                this.setPowerFlow((long) ((long) FuelAmount * recipe.mSpecialValue * 3 / 20.0D));
                 this.mMaxProgresstime = 20;
                 this.updateSlots();
                 return CheckRecipeResultRegistry.GENERATING;
@@ -287,20 +285,23 @@ public class UniversalChemicalFuelEngine extends GT_MetaTileEntity_TooltipMultiB
     @Override
     public String[] getInfoData() {
         String[] info = super.getInfoData();
-        info[4] = "Probably makes: " + EnumChatFormatting.RED + this.lEUt + EnumChatFormatting.RESET + " EU/t";
+        info[4] = "Probably makes: " + EnumChatFormatting.RED
+                + GT_Utility.formatNumbers(this.getPowerFlow())
+                + EnumChatFormatting.RESET
+                + " EU/t";
         info[6] = "Problems: " + EnumChatFormatting.RED
-                + (this.getIdealStatus() - this.getRepairStatus())
+                + GT_Utility.formatNumbers(this.getIdealStatus() - this.getRepairStatus())
                 + EnumChatFormatting.RESET
                 + " Efficiency: "
                 + EnumChatFormatting.YELLOW
-                + tEff / 100D
+                + GT_Utility.formatNumbers(tEff / 100D)
                 + EnumChatFormatting.RESET
                 + " %";
         return info;
     }
 
     void addAutoEnergy() {
-        long exEU = lEUt * tEff / 10000;
+        long exEU = this.getPowerFlow() * tEff / 10000;
         if (!mDynamoHatches.isEmpty()) {
             GT_MetaTileEntity_Hatch_Dynamo tHatch = mDynamoHatches.get(0);
             if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= exEU) {
