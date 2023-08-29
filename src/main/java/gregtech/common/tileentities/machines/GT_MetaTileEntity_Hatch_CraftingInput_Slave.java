@@ -166,7 +166,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_Slave extends GT_MetaTileEnti
     private boolean tryLinkDataStick(EntityPlayer aPlayer) {
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
 
-        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, true, true)) {
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
             return false;
         }
         if (!dataStick.hasTagCompound() || !dataStick.stackTagCompound.getString("type")
