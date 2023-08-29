@@ -1193,7 +1193,7 @@ gregtech.speedUnproductive=Unproductive
 gregtech.speedAccelerated=Accelerated
 gregtech.lifeBlink=Blink
 gregtech.lifeEon=Eon
-gregtech.effectTreetwister=Hacatu's Tree Twister
+gregtech.effectTreetwister=Treetwister
 
 entity.gregtech.GT_Entity_Arrow.name= a GregTech arrow
 
