@@ -861,7 +861,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         if (!(aPlayer instanceof EntityPlayerMP)) return;
 
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, true, true)) return;
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) return;
 
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("type", "CraftingInputBuffer");
