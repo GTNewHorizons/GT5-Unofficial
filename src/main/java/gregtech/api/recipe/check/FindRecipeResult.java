@@ -18,7 +18,7 @@ public class FindRecipeResult {
     @Nullable
     private final GT_Recipe recipe;
 
-    private FindRecipeResult(@Nonnull State state, @Nullable GT_Recipe recipe) {
+    protected FindRecipeResult(@Nonnull State state, @Nullable GT_Recipe recipe) {
         this.state = state;
         this.recipe = recipe;
     }

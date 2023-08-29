@@ -9,12 +9,11 @@ import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.FindRecipeResult;
-import gregtech.api.recipe.check.SingleRecipeCheck;
+import gregtech.api.recipe.check.*;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
@@ -289,16 +288,35 @@ public class ProcessingLogic {
                     .getRecipe());
         }
 
-        return processFindRecipeResult(findRecipe(recipeMap));
-    }
+        FindRecipeResult findRecipeResult = findRecipe(recipeMap);
+        // If processRecipe is not overridden, advanced recipe validation logic is used, and we can reuse calculations.
+        if (findRecipeResult instanceof FindRecipeWithAdvancedValidatorResult findRecipeWithAdvancedValidatorResult) {
+            AdvancedRecipeValidatorPredicate recipeValidator = findRecipeWithAdvancedValidatorResult
+                .getRecipeValidatorPredicate();
 
-    /**
-     * Executes the single FindRecipeResult check, calculate parallel, overclock and outputs.
-     *
-     * @param findRecipeResult The find recipe result which will be checked and processed
-     */
-    @Nonnull
-    protected CheckRecipeResult processFindRecipeResult(@Nonnull FindRecipeResult findRecipeResult) {
+            // There is two cases:
+            // 1 - there is actually no matching recipes
+            // 2 - there is matching recipes, but we rejected it due to our advanced validation (e.g. OUTPUT_FULL)
+            if (findRecipeWithAdvancedValidatorResult.getState() == FindRecipeResult.State.NOT_FOUND
+                && recipeValidator.firstCheckResult != null) {
+                // Here we're handling 2 case
+                // If there are matching recipes but our validation rejected them,
+                // we should return a first one to display a proper error in the machine GUI
+
+                return recipeValidator.firstCheckResult;
+            }
+
+            // If everything is ok, reuse our calculations
+            if (recipeValidator.wasExecutedAtLeastOnce && findRecipeWithAdvancedValidatorResult.isSuccessful()) {
+                assert findRecipeWithAdvancedValidatorResult.getRecipe() != null;
+                return processRecipe(
+                    findRecipeWithAdvancedValidatorResult.getRecipe(),
+                    recipeValidator.lastParallelHelper,
+                    recipeValidator.lastOverclockCalculator,
+                    recipeValidator.lastCheckResult);
+            }
+        }
+
         if (!findRecipeResult.isSuccessful()) {
             if (findRecipeResult.getState() == FindRecipeResult.State.INSUFFICIENT_VOLTAGE) {
                 return CheckRecipeResultRegistry.insufficientPower(findRecipeResult.getRecipeNonNull().mEUt);
@@ -307,6 +325,7 @@ public class ProcessingLogic {
             }
         }
 
+        assert findRecipeResult.getRecipe() != null;
         return processRecipe(findRecipeResult.getRecipe());
     }
 
@@ -327,6 +346,11 @@ public class ProcessingLogic {
         helper.setCalculator(calculator);
         helper.build();
 
+        return processRecipe(recipe, helper, calculator, result);
+    }
+
+    private CheckRecipeResult processRecipe(@NotNull GT_Recipe recipe, GT_ParallelHelper helper,
+        GT_OverclockCalculator calculator, CheckRecipeResult result) {
         if (!helper.getResult()
             .wasSuccessful()) {
             return helper.getResult();
@@ -371,40 +395,22 @@ public class ProcessingLogic {
     protected FindRecipeResult findRecipe(@Nullable GT_Recipe_Map map) {
         if (map == null) return FindRecipeResult.NOT_FOUND;
 
-        if (map instanceof GT_Recipe.GT_Predicated_Recipe_Map) {
-            FindRecipeResult predicatedResult = ((GT_Recipe.GT_Predicated_Recipe_Map) map)
-                .findRecipeWithResult(lastRecipe, (GT_Recipe recipe) -> {
-                    GT_ParallelHelper helper = createParallelHelper(recipe);
-                    GT_OverclockCalculator calculator = createOverclockCalculator(recipe);
-                    helper.setCalculator(calculator);
-                    helper.build();
+        AdvancedRecipeValidatorPredicate recipeValidator = new AdvancedRecipeValidatorPredicate(
+            this::validateRecipe,
+            this::createParallelHelper,
+            this::createOverclockCalculator);
 
-                    return helper.getResult()
-                        .wasSuccessful();
-                },
-                    false,
-                    false,
-                    amperageOC ? availableVoltage * availableAmperage : availableVoltage,
-                    inputFluids,
-                    specialSlotItem,
-                    inputItems);
-
-            if (predicatedResult != FindRecipeResult.NOT_FOUND) {
-                return predicatedResult;
-            }
-
-            // if we don't find recipe then maybe we already found one, but we excluded it via predicate
-            // So, then we need to retry the search via old algorithm to provide a proper error to player
-        }
-
-        return map.findRecipeWithResult(
+        FindRecipeResult findRecipeResult = map.findRecipeWithResult(
             lastRecipe,
+            recipeValidator,
             false,
             false,
             amperageOC ? availableVoltage * availableAmperage : availableVoltage,
             inputFluids,
             specialSlotItem,
             inputItems);
+
+        return FindRecipeWithAdvancedValidatorResult.create(recipeValidator, findRecipeResult);
     }
 
     /**
