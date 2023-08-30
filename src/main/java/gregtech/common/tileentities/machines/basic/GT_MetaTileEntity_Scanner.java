@@ -115,11 +115,6 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                     .build()));
     }
 
-    public GT_MetaTileEntity_Scanner(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
-        String aGUIName, String aNEIName) {
-        super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
-    }
-
     public GT_MetaTileEntity_Scanner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
         String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);

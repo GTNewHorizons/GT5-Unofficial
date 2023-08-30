@@ -99,11 +99,6 @@ public class GT_MetaTileEntity_PotionBrewer extends GT_MetaTileEntity_BasicMachi
                     .build()));
     }
 
-    public GT_MetaTileEntity_PotionBrewer(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
-        String aGUIName, String aNEIName) {
-        super(aName, aTier, 1, aDescription, aTextures, 1, 0, aGUIName, aNEIName);
-    }
-
     public GT_MetaTileEntity_PotionBrewer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
         String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 0, aGUIName, aNEIName);

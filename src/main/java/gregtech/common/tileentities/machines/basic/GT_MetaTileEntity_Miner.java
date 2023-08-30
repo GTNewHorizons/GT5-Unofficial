@@ -41,7 +41,6 @@ import gregtech.common.blocks.GT_TileEntity_Ores;
 import gregtech.common.misc.GT_DrillingLogicDelegate;
 import gregtech.common.misc.GT_IDrillingLogicDelegateOwner;
 
-@SuppressWarnings("ObjectEquality")
 public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
     implements GT_IDrillingLogicDelegateOwner, IAddUIWidgets {
 
@@ -123,13 +122,6 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
                     .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM_GLOW"))
                     .glow()
                     .build()));
-        mSpeed = SPEED[aTier];
-        radiusConfig = RADIUS[mTier];
-    }
-
-    public GT_MetaTileEntity_Miner(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
-        String aGUIName, String aNEIName) {
-        super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
         mSpeed = SPEED[aTier];
         radiusConfig = RADIUS[mTier];
     }

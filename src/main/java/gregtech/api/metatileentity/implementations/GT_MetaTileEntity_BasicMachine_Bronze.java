@@ -70,11 +70,6 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
             "");
     }
 
-    public GT_MetaTileEntity_BasicMachine_Bronze(String aName, String aDescription, ITexture[][][] aTextures,
-        int aInputSlotCount, int aOutputSlotCount, boolean aHighPressure) {
-        super(aName, aHighPressure ? 2 : 1, 0, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, "", "");
-    }
-
     public GT_MetaTileEntity_BasicMachine_Bronze(String aName, String[] aDescription, ITexture[][][] aTextures,
         int aInputSlotCount, int aOutputSlotCount, boolean aHighPressure) {
         super(aName, aHighPressure ? 2 : 1, 0, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, "", "");

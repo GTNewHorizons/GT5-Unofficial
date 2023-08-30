@@ -597,21 +597,6 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             aRecipe);
     }
 
-    public GT_MetaTileEntity_BasicMachine_GT_Recipe(String aName, int aTier, String aDescription,
-        GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, int aAmperage,
-        int aGUIParameterA, int aGUIParameterB, ITexture[][][] aTextures, String aGUIName, String aNEIName,
-        String aSound, boolean aSharedTank, boolean aRequiresFluidForFiltering, int aSpecialEffect) {
-        super(aName, aTier, aAmperage, aDescription, aTextures, aInputSlots, aOutputSlots, aGUIName, aNEIName);
-        this.mSharedTank = aSharedTank;
-        this.mTankCapacity = aTankCapacity;
-        this.mSpecialEffect = SpecialEffects.fromId(aSpecialEffect);
-        this.mRequiresFluidForFiltering = aRequiresFluidForFiltering;
-        this.mRecipes = aRecipes;
-        this.mSoundResourceLocation = new ResourceLocation(aSound);
-        this.mGUIParameterA = (byte) aGUIParameterA;
-        this.mGUIParameterB = (byte) aGUIParameterB;
-    }
-
     /**
      * For {@link #newMetaEntity}.
      */
