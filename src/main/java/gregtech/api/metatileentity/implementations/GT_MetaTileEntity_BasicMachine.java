@@ -127,6 +127,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         this::getCapacity);
 
     /**
+     * Registers machine with single-line description.
+     *
      * @param aOverlays 0 = SideFacingActive 1 = SideFacingInactive 2 = FrontFacingActive 3 = FrontFacingInactive 4 =
      *                  TopFacingActive 5 = TopFacingInactive 6 = BottomFacingActive 7 = BottomFacingInactive ----- Not
      *                  all Array Elements have to be initialised, you can also just use 8 Parameters for the Default
@@ -153,6 +155,9 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mPower = buildPower();
     }
 
+    /**
+     * Registers machine with multi-line descriptions.
+     */
     public GT_MetaTileEntity_BasicMachine(int aID, String aName, String aNameRegional, int aTier, int aAmperage,
         String[] aDescription, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName,
         ITexture... aOverlays) {
@@ -172,6 +177,11 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mPower = buildPower();
     }
 
+    /**
+     * @deprecated Use {@link #GT_MetaTileEntity_BasicMachine(String, int, int, String[], ITexture[][][], int, int,
+     *             String, String)}
+     */
+    @Deprecated
     public GT_MetaTileEntity_BasicMachine(String aName, int aTier, int aAmperage, String aDescription,
         ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName) {
         super(aName, aTier, OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1, aDescription, aTextures);
@@ -183,6 +193,9 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mPower = buildPower();
     }
 
+    /**
+     * For {@link #newMetaEntity}.
+     */
     public GT_MetaTileEntity_BasicMachine(String aName, int aTier, int aAmperage, String[] aDescription,
         ITexture[][][] aTextures, int aInputSlotCount, int aOutputSlotCount, String aGUIName, String aNEIName) {
         super(aName, aTier, OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1, aDescription, aTextures);
