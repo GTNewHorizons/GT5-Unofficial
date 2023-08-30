@@ -48,6 +48,7 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
     public GlobalMetricsCoverDatabase() {
         super(DATA_NAME);
     }
+
     public GlobalMetricsCoverDatabase(String name) {
         super(name);
     }

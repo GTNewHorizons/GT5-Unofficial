@@ -23,13 +23,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 
 import com.google.common.collect.ImmutableList;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.items.GT_Generic_Item;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.GlobalMetricsCoverDatabase.State;
 import shedar.mods.ic2.nuclearcontrol.api.CardState;
@@ -38,7 +37,7 @@ import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 
-public class GT_AdvancedSensorCard_Item extends GT_Generic_Item implements IPanelDataSource {
+public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource {
 
     public static final UUID CARD_TYPE_ID = UUID.fromString("ff952e84-7608-4c4a-85af-dd6e1aa27fc7");
     public static final ImmutableList<PanelSetting> COMMON_PANEL_SETTINGS = ImmutableList
@@ -59,23 +58,28 @@ public class GT_AdvancedSensorCard_Item extends GT_Generic_Item implements IPane
     @SideOnly(Side.CLIENT)
     private IIcon selfDestructedIcon;
 
-    public GT_AdvancedSensorCard_Item(String aUnlocalized, String aEnglish) {
-        super(aUnlocalized, aEnglish, "Insert into a NuclearControl Display Panel");
+    @SuppressWarnings("unused")
+    public GT_AdvancedSensorCard_Item() {
+        super();
+
+        // noinspection SpellCheckingInspection
+        GameRegistry.registerItem(this, "gt.advancedsensorcard", GregTech.ID);
+        setUnlocalizedName("gt.advancedsensorcard");
         setMaxStackSize(1);
-        MinecraftForge.EVENT_BUS.register(this);
+        setNoRepair();
     }
 
     @Override
-    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-        super.addAdditionalToolTips(aList, aStack, aPlayer);
-        aList.add("Created by attaching a Metrics Transmitter cover, no standard recipe");
-
-        getCardState(aStack).ifPresent(state -> {
+    public void addInformation(final ItemStack itemStack, final EntityPlayer player, final List<String> tooltip,
+        final boolean p_77624_4_) {
+        super.addInformation(itemStack, player, tooltip, p_77624_4_);
+        tooltip.add("Created by attaching a Metrics Transmitter cover, no standard recipe");
+        getCardState(itemStack).ifPresent(state -> {
             if (state == State.SELF_DESTRUCTED) {
-                aList.add(
+                tooltip.add(
                     EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.LIGHT_PURPLE
                         + "This thing looks completely fried...");
-                aList.add(EnumChatFormatting.RED + "Destroyed due to metrics transmitter being removed from machine");
+                tooltip.add(EnumChatFormatting.RED + "Destroyed due to metrics transmitter being removed from machine");
             }
         });
     }
@@ -88,24 +92,24 @@ public class GT_AdvancedSensorCard_Item extends GT_Generic_Item implements IPane
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister aIconRegister) {
         super.registerIcons(aIconRegister);
-        normalIcon = aIconRegister.registerIcon(GregTech.getResourcePath("items", "gt.advancedsensorcard"));
+        itemIcon = aIconRegister.registerIcon(GregTech.ID + ":gt.advancedsensorcard");
+        normalIcon = itemIcon;
         selfDestructedIcon = aIconRegister
-            .registerIcon(GregTech.getResourcePath("items", "gt.advancedsensorcardburned"));
+            .registerIcon(GregTech.ID + ":gt.advancedsensorcardburned");
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(final ItemStack stack, final int renderPass, final EntityPlayer player, final ItemStack usingItem, final int useRemaining) {
-        final Optional<State> state = getCardState(stack);
+    public IIcon getIcon(final ItemStack stack, final int renderPass) {
+        return getIconIndex(stack);
+    }
+
+    @Override
+    public IIcon getIconIndex(final ItemStack itemStack) {
+        final Optional<State> state = getCardState(itemStack);
         if (state.isPresent() && state.get() == State.SELF_DESTRUCTED) {
             return selfDestructedIcon;
         }
-        return normalIcon;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(final int aMetaData) {
         return normalIcon;
     }
 
@@ -117,7 +121,8 @@ public class GT_AdvancedSensorCard_Item extends GT_Generic_Item implements IPane
     @Override
     public CardState update(World world, ICardWrapper card, int maxRange) {
         getDataFromDatabase(card).ifPresent(data -> {
-            updateCardItemStack(card.getItemStack(), data.getState());
+            reconcileSelfDestructedCard(card.getItemStack(), data.getState());
+            card.setString(CARD_STATE_KEY, data.getState().name());
             payloadSize = switch (data.getState()) {
                 case SELF_DESTRUCTED -> SELF_DESTRUCTED_OUTPUT.size();
                 case DECONSTRUCTED -> DECONSTRUCTED_OUTPUT.size();
@@ -158,22 +163,25 @@ public class GT_AdvancedSensorCard_Item extends GT_Generic_Item implements IPane
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int slot, boolean isHeld) {
         super.onUpdate(stack, worldIn, entityIn, slot, isHeld);
         if ((worldIn.getWorldTime() % 20) == 0) {
-            getDataFromDatabase(stack).ifPresent(data -> updateCardItemStack(stack, data.getState()));
+            getDataFromDatabase(stack).ifPresent(data -> {
+                reconcileSelfDestructedCard(stack, data.getState());
+                if (!stack.hasTagCompound()) {
+                    stack.setTagCompound(new NBTTagCompound());
+                }
+
+                stack.getTagCompound().setString(CARD_STATE_KEY, data.getState().name());
+            });
         }
     }
 
-    private void updateCardItemStack(ItemStack stack, State newState) {
+    private void reconcileSelfDestructedCard(ItemStack stack, State newState) {
         getUUID(stack).ifPresent(uuid -> getCardState(stack).ifPresent(oldState -> {
             if (newState == State.SELF_DESTRUCTED && oldState != State.SELF_DESTRUCTED) {
                 GlobalMetricsCoverDatabase.clearSelfDestructedFrequency(uuid);
             }
         }));
 
-        if (!stack.hasTagCompound()) {
-            stack.setTagCompound(new NBTTagCompound());
-        }
 
-        stack.getTagCompound().setString(CARD_STATE_KEY, newState.name());
     }
 
     private Optional<State> getCardState(ICardWrapper card) {
@@ -181,8 +189,10 @@ public class GT_AdvancedSensorCard_Item extends GT_Generic_Item implements IPane
     }
 
     private Optional<State> getCardState(ItemStack itemStack) {
-        if (itemStack.hasTagCompound() && itemStack.getTagCompound().hasKey(CARD_STATE_KEY)) {
-            final String stateString = itemStack.getTagCompound().getString(CARD_STATE_KEY);
+        if (itemStack.hasTagCompound() && itemStack.getTagCompound()
+            .hasKey(CARD_STATE_KEY)) {
+            final String stateString = itemStack.getTagCompound()
+                .getString(CARD_STATE_KEY);
             try {
                 return Optional.of(State.valueOf(stateString));
             } catch (IllegalArgumentException ignored) {}
