@@ -7,29 +7,7 @@ import static gregtech.api.enums.FluidState.MOLTEN;
 import static gregtech.api.enums.FluidState.PLASMA;
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.GT_Values.debugEntityCramming;
-import static gregtech.api.enums.Mods.AdvancedSolarPanel;
-import static gregtech.api.enums.Mods.AppliedEnergistics2;
-import static gregtech.api.enums.Mods.Avaritia;
-import static gregtech.api.enums.Mods.BetterLoadingScreen;
-import static gregtech.api.enums.Mods.DraconicEvolution;
-import static gregtech.api.enums.Mods.ElectroMagicTools;
-import static gregtech.api.enums.Mods.EnderIO;
-import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.enums.Mods.GalacticraftCore;
-import static gregtech.api.enums.Mods.GalaxySpace;
-import static gregtech.api.enums.Mods.GanysSurface;
-import static gregtech.api.enums.Mods.GraviSuite;
-import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.enums.Mods.IguanaTweaksTinkerConstruct;
-import static gregtech.api.enums.Mods.MagicalCrops;
-import static gregtech.api.enums.Mods.Names;
-import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.enums.Mods.TaintedMagic;
-import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.enums.Mods.ThaumicTinkerer;
-import static gregtech.api.enums.Mods.TwilightForest;
-import static gregtech.api.enums.Mods.WitchingGadgets;
+import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sWiremillRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
@@ -1132,6 +1110,17 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         addFullHazmatToGeneralItem(ElectroMagicTools.ID, "SolarHelmetRevealing", 1L);
         addFullHazmatToGeneralItem(ElectroMagicTools.ID, "NanosuitWing", 1L);
         addFullHazmatToGeneralItem(ElectroMagicTools.ID, "QuantumWing", 1L);
+
+        // Thaumic Boots Hazmat
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemQuantumVoid", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemQuantumMeteor", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemQuantumComet", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemNanoVoid", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemNanoMeteor", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemNanoComet", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemElectricVoid", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemVoidMeteor", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemVoidComet", 1L);
 
         // DraconicEvolution Hazmat
         addFullHazmatToGeneralItem(DraconicEvolution.ID, "draconicBoots", 1L, 0);
