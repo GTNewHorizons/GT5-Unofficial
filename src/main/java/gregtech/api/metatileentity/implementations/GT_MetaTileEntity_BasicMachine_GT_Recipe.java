@@ -12,7 +12,6 @@ import static net.minecraftforge.common.util.ForgeDirection.UP;
 import java.util.Locale;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -35,8 +34,6 @@ import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.enums.Tier;
-import gregtech.api.gui.GT_Container_BasicMachine;
-import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -650,24 +647,6 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
 
     public GT_MetaTileEntity_BasicMachine_GT_Recipe setProgressBarTextureName(String name) {
         return setProgressBarTextureName(name, GT_UITextures.PROGRESSBAR_ARROW);
-    }
-
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_BasicMachine(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_BasicMachine(
-            aPlayerInventory,
-            aBaseMetaTileEntity,
-            this.getLocalName(),
-            this.mGUIName,
-            GT_Utility.isStringValid(this.mNEIName) ? this.mNEIName
-                : this.getRecipeList() != null ? this.getRecipeList().mUnlocalizedName : "",
-            this.mGUIParameterA,
-            this.mGUIParameterB);
     }
 
     @Override
