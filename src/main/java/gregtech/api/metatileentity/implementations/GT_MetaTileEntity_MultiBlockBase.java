@@ -7,6 +7,7 @@ import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -2140,15 +2141,58 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     protected String generateCurrentRecipeInfoString() {
-        StringBuilder ret = new StringBuilder(EnumChatFormatting.WHITE + "In progress ")
+        StringBuilder ret = new StringBuilder(EnumChatFormatting.WHITE + "In progress: ")
             .append(String.format("%.2f", (double) mProgresstime / 20))
             .append("s / ")
             .append(String.format("%.2f", (double) mMaxProgresstime / 20))
             .append("s (")
-            .append(Math.round((double) mProgresstime / mMaxProgresstime * 1000) / 10)
+            .append(Math.round((double) mProgresstime / mMaxProgresstime * 1000) / 10.0)
             .append("%)\n");
+
+        Function<Integer, Void> appendRate = (Integer amount) -> {
+            double processPerTick = (double) amount / mMaxProgresstime * 20;
+            if (processPerTick > 1) {
+                ret.append(" (")
+                    .append(Math.round(processPerTick * 10) / 10.0)
+                    .append("/s)");
+            } else {
+                ret.append(" (")
+                    .append(Math.round(1 / processPerTick * 10) / 10.0)
+                    .append("s/ea)");
+            }
+            return null;
+        };
+
+        int lines = 0;
+        int MAX_LINES = 5;
+
+        if (mOutputItems != null) {
+            for (var item : mOutputItems) {
+                if (item == null) continue;
+                if (lines >= MAX_LINES) {
+                    ret.append("...");
+                    return ret.toString();
+                }
+                lines++;
+                ret.append(EnumChatFormatting.AQUA)
+                    .append(item.getDisplayName())
+                    .append(EnumChatFormatting.WHITE)
+                    .append(" x ")
+                    .append(EnumChatFormatting.GOLD)
+                    .append(item.stackSize)
+                    .append(EnumChatFormatting.WHITE);
+                appendRate.apply(item.stackSize);
+                ret.append('\n');
+            }
+        }
         if (mOutputFluids != null) {
             for (var fluid : mOutputFluids) {
+                if (fluid == null) continue;
+                if (lines >= MAX_LINES) {
+                    ret.append("...");
+                    return ret.toString();
+                }
+                lines++;
                 ret.append(EnumChatFormatting.AQUA)
                     .append(fluid.getLocalizedName())
                     .append(EnumChatFormatting.WHITE)
@@ -2156,24 +2200,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     .append(EnumChatFormatting.GOLD)
                     .append(fluid.amount)
                     .append("L")
-                    .append(EnumChatFormatting.WHITE)
-                    .append(" (")
-                    .append(Math.round((double) fluid.amount / mMaxProgresstime * 20 * 10) / 10)
-                    .append("/s)\n");
-            }
-        }
-        if (mOutputItems != null) {
-            for (var item : mOutputItems) {
-                ret.append(EnumChatFormatting.AQUA)
-                    .append(item.getDisplayName())
-                    .append(EnumChatFormatting.WHITE)
-                    .append(" x ")
-                    .append(EnumChatFormatting.GOLD)
-                    .append(item.stackSize)
-                    .append(EnumChatFormatting.WHITE)
-                    .append(" (")
-                    .append(Math.round((double) item.stackSize / mMaxProgresstime * 20 * 10) / 10)
-                    .append("/s)\n");
+                    .append(EnumChatFormatting.WHITE);
+                appendRate.apply(fluid.amount);
+                ret.append('\n');
             }
         }
         return ret.toString();
