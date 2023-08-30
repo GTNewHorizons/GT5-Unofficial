@@ -12,21 +12,18 @@ import gregtech.api.util.GT_Recipe;
  * Predicate for simple recipe validation.
  * Also store some validation results for reusing it
  */
-public class AdvancedRecipeValidatorPredicate implements Predicate<GT_Recipe> {
+public class RecipeValidator implements Predicate<GT_Recipe> {
 
-    /**
-     * Used to store first check result in case if nothing matching recipe found.
-     */
-    public CheckRecipeResult firstCheckResult;
-    public CheckRecipeResult lastCheckResult;
-    public GT_ParallelHelper lastParallelHelper;
-    public GT_OverclockCalculator lastOverclockCalculator;
-    public Boolean wasExecutedAtLeastOnce = false;
+    private CheckRecipeResult firstCheckResult;
+    private CheckRecipeResult lastCheckResult;
+    private GT_ParallelHelper lastParallelHelper;
+    private GT_OverclockCalculator lastOverclockCalculator;
+    private boolean wasExecutedAtLeastOnce = false;
     private final Function<GT_Recipe, CheckRecipeResult> recipeValidator;
     private final Function<GT_Recipe, GT_ParallelHelper> parallelHelperFactory;
     private final Function<GT_Recipe, GT_OverclockCalculator> overclockCalculatorFactory;
 
-    public AdvancedRecipeValidatorPredicate(Function<GT_Recipe, CheckRecipeResult> recipeValidator,
+    public RecipeValidator(Function<GT_Recipe, CheckRecipeResult> recipeValidator,
         Function<GT_Recipe, GT_ParallelHelper> parallelHelperFactory,
         Function<GT_Recipe, GT_OverclockCalculator> overclockCalculatorFactory) {
         this.recipeValidator = recipeValidator;
@@ -57,5 +54,28 @@ public class AdvancedRecipeValidatorPredicate implements Predicate<GT_Recipe> {
         lastParallelHelper.build();
 
         return lastParallelHelper.getResult();
+    }
+
+    public Boolean isExecutedAtLeastOnce() {
+        return wasExecutedAtLeastOnce;
+    }
+
+    /**
+     * Gets first check result in case if nothing matching recipe found.
+     */
+    public CheckRecipeResult getFirstCheckResult() {
+        return firstCheckResult;
+    }
+
+    public CheckRecipeResult getLastCheckResult() {
+        return lastCheckResult;
+    }
+
+    public GT_ParallelHelper getLastParallelHelper() {
+        return lastParallelHelper;
+    }
+
+    public GT_OverclockCalculator getLastOverclockCalculator() {
+        return lastOverclockCalculator;
     }
 }

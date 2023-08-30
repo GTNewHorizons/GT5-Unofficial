@@ -290,30 +290,28 @@ public class ProcessingLogic {
 
         FindRecipeResult findRecipeResult = findRecipe(recipeMap);
         // If processRecipe is not overridden, advanced recipe validation logic is used, and we can reuse calculations.
-        if (findRecipeResult instanceof FindRecipeWithAdvancedValidatorResult findRecipeWithAdvancedValidatorResult) {
-            AdvancedRecipeValidatorPredicate recipeValidator = findRecipeWithAdvancedValidatorResult
-                .getRecipeValidatorPredicate();
+        if (findRecipeResult.hasRecipeValidator()) {
+            RecipeValidator recipeValidator = findRecipeResult.getRecipeValidator();
 
-            // There is two cases:
-            // 1 - there is actually no matching recipes
+            // There are two cases:
+            // 1 - there are actually no matching recipes
             // 2 - there is matching recipes, but we rejected it due to our advanced validation (e.g. OUTPUT_FULL)
-            if (findRecipeWithAdvancedValidatorResult.getState() == FindRecipeResult.State.NOT_FOUND
-                && recipeValidator.firstCheckResult != null) {
+            if (findRecipeResult.getState() == FindRecipeResult.State.NOT_FOUND
+                && recipeValidator.getFirstCheckResult() != null) {
                 // Here we're handling 2 case
                 // If there are matching recipes but our validation rejected them,
                 // we should return a first one to display a proper error in the machine GUI
 
-                return recipeValidator.firstCheckResult;
+                return recipeValidator.getFirstCheckResult();
             }
 
             // If everything is ok, reuse our calculations
-            if (recipeValidator.wasExecutedAtLeastOnce && findRecipeWithAdvancedValidatorResult.isSuccessful()) {
-                assert findRecipeWithAdvancedValidatorResult.getRecipe() != null;
+            if (recipeValidator.isExecutedAtLeastOnce() && findRecipeResult.isSuccessful()) {
                 return processRecipe(
-                    findRecipeWithAdvancedValidatorResult.getRecipe(),
-                    recipeValidator.lastParallelHelper,
-                    recipeValidator.lastOverclockCalculator,
-                    recipeValidator.lastCheckResult);
+                    findRecipeResult.getRecipeNonNull(),
+                    recipeValidator.getLastParallelHelper(),
+                    recipeValidator.getLastOverclockCalculator(),
+                    recipeValidator.getLastCheckResult());
             }
         }
 
@@ -325,12 +323,12 @@ public class ProcessingLogic {
             }
         }
 
-        assert findRecipeResult.getRecipe() != null;
-        return processRecipe(findRecipeResult.getRecipe());
+        return processRecipe(findRecipeResult.getRecipeNonNull());
     }
 
     /**
-     * Executes the single recipe check, calculate parallel, overclock and outputs
+     * Checks if supplied recipe is valid for process.
+     * If so, additionally performs input consumption, output calculation with parallel, and overclock calculation.
      *
      * @param recipe The recipe which will be checked and processed
      */
@@ -395,7 +393,7 @@ public class ProcessingLogic {
     protected FindRecipeResult findRecipe(@Nullable GT_Recipe_Map map) {
         if (map == null) return FindRecipeResult.NOT_FOUND;
 
-        AdvancedRecipeValidatorPredicate recipeValidator = new AdvancedRecipeValidatorPredicate(
+        RecipeValidator recipeValidator = new RecipeValidator(
             this::validateRecipe,
             this::createParallelHelper,
             this::createOverclockCalculator);
@@ -410,7 +408,9 @@ public class ProcessingLogic {
             specialSlotItem,
             inputItems);
 
-        return FindRecipeWithAdvancedValidatorResult.create(recipeValidator, findRecipeResult);
+        findRecipeResult.setRecipeValidator(recipeValidator);
+
+        return findRecipeResult;
     }
 
     /**

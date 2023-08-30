@@ -5,6 +5,9 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
+import gregtech.api.logic.RecipeValidator;
 import gregtech.api.util.GT_Recipe;
 
 /**
@@ -17,6 +20,8 @@ public class FindRecipeResult {
     private final State state;
     @Nullable
     private final GT_Recipe recipe;
+    @Nullable
+    private RecipeValidator recipeValidatorPredicate;
 
     protected FindRecipeResult(@Nonnull State state, @Nullable GT_Recipe recipe) {
         this.state = state;
@@ -46,6 +51,31 @@ public class FindRecipeResult {
     @Nonnull
     public GT_Recipe getRecipeNonNull() {
         return Objects.requireNonNull(recipe);
+    }
+
+    /**
+     * Gets recipeValidator if it is not null.
+     * Be sure to call hasRecipeValidator before to determine if recipeValidator exists
+     * 
+     * @return not null recipe validator
+     */
+    @NotNull
+    public RecipeValidator getRecipeValidator() {
+        return Objects.requireNonNull(recipeValidatorPredicate);
+    }
+
+    /**
+     * Sets recipeValidator which used to get this result
+     */
+    public void setRecipeValidator(@Nullable RecipeValidator recipeValidatorPredicate) {
+        this.recipeValidatorPredicate = recipeValidatorPredicate;
+    }
+
+    /**
+     * Gets if this result has recipeValidator
+     */
+    public boolean hasRecipeValidator() {
+        return recipeValidatorPredicate != null;
     }
 
     /**

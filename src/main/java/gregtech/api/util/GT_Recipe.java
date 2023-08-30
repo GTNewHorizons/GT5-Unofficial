@@ -3972,7 +3972,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          *
          * @param aRecipe              in case this is != null it will try to use this Recipe first when looking things
          *                             up.
-         * @param aIsValidRecipe       predicate to help identify, is the recipe matches our multiblock
+         * @param aIsValidRecipe       predicate to help identify, if the recipe matches our machine
          * @param aNotUnificated       if this is T the Recipe searcher will unificate the ItemStack Inputs
          * @param aDontCheckStackSizes if set to false will only return recipes that can be executed at least once with
          *                             the provided input
@@ -5121,7 +5121,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             if (aInputs == null || aInputs.length == 0 || !ItemList.IC2_Scrapbox.isStackEqual(aInputs[0], false, true))
                 return super.findRecipeWithResult(
                     aRecipe,
-                    recipe -> true,
+                    aIsValidRecipe,
                     aNotUnificated,
                     aDontCheckStackSizes,
                     aVoltage,
@@ -5131,7 +5131,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             ItemStack tOutput = GT_ModHandler.getRandomScrapboxDrop();
             if (tOutput == null) return super.findRecipeWithResult(
                 aRecipe,
-                recipe -> true,
+                aIsValidRecipe,
                 aNotUnificated,
                 aDontCheckStackSizes,
                 aVoltage,
