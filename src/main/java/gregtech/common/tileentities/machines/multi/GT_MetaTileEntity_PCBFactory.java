@@ -560,8 +560,7 @@ public class GT_MetaTileEntity_PCBFactory extends
             @Nonnull
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
-                return super.createOverclockCalculator(recipe)
-                    .setNoOverclock(isNoOC())
+                return super.createOverclockCalculator(recipe).setNoOverclock(isNoOC())
                     .setEUtDiscount((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
                     .setSpeedBoost(getDurationMultiplierFromRoughness())
                     .setDurationDecreasePerOC(mOCTier2 ? 2 : 1);
