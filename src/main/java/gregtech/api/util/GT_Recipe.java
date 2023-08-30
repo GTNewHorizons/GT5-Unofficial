@@ -4017,10 +4017,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 && aRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
                     if (!isSpecialSlotSensitive
                         || GT_Utility.areStacksEqualOrNull((ItemStack) aRecipe.mSpecialItems, aSpecialSlot)) {
-                        if (!aRecipe.mEnabled || aVoltage * mAmperage < aRecipe.mEUt) {
-                            return ofInsufficientVoltage(aRecipe);
-                        }
-                        if (aIsValidRecipe.test(aRecipe)) {
+                        if (aRecipe.mEnabled && aIsValidRecipe.test(aRecipe)) {
                             return ofSuccess(aRecipe);
                         }
                     }
@@ -4033,10 +4030,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
                         if (!isSpecialSlotSensitive
                             || GT_Utility.areStacksEqualOrNull((ItemStack) tRecipe.mSpecialItems, aSpecialSlot)) {
-                            if (!tRecipe.mEnabled || aVoltage * mAmperage < tRecipe.mEUt) {
-                                return ofInsufficientVoltage(tRecipe);
-                            }
-                            if (aIsValidRecipe.test(tRecipe)) {
+                            if (tRecipe.mEnabled && aIsValidRecipe.test(tRecipe)) {
                                 return ofSuccess(tRecipe);
                             }
                         }
@@ -4046,10 +4040,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
                         if (!isSpecialSlotSensitive
                             || GT_Utility.areStacksEqualOrNull((ItemStack) tRecipe.mSpecialItems, aSpecialSlot)) {
-                            if (!tRecipe.mEnabled || aVoltage * mAmperage < tRecipe.mEUt) {
-                                return ofInsufficientVoltage(tRecipe);
-                            }
-                            if (aIsValidRecipe.test(tRecipe)) {
+                            if (tRecipe.mEnabled && aIsValidRecipe.test(tRecipe)) {
                                 return ofSuccess(tRecipe);
                             }
                         }
@@ -4066,10 +4057,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     && tRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
                         if (!isSpecialSlotSensitive
                             || GT_Utility.areStacksEqualOrNull((ItemStack) tRecipe.mSpecialItems, aSpecialSlot)) {
-                            if (!tRecipe.mEnabled || aVoltage * mAmperage < tRecipe.mEUt) {
-                                return ofInsufficientVoltage(tRecipe);
-                            }
-                            if (aIsValidRecipe.test(tRecipe)) {
+                            if (tRecipe.mEnabled && aIsValidRecipe.test(tRecipe)) {
                                 return ofSuccess(tRecipe);
                             }
                         }

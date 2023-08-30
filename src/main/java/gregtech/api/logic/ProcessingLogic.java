@@ -316,11 +316,7 @@ public class ProcessingLogic {
         }
 
         if (!findRecipeResult.isSuccessful()) {
-            if (findRecipeResult.getState() == FindRecipeResult.State.INSUFFICIENT_VOLTAGE) {
-                return CheckRecipeResultRegistry.insufficientPower(findRecipeResult.getRecipeNonNull().mEUt);
-            } else {
-                return CheckRecipeResultRegistry.NO_RECIPE;
-            }
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         return processRecipe(findRecipeResult.getRecipeNonNull());
