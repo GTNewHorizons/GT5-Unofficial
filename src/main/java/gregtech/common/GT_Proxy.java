@@ -27,6 +27,7 @@ import static gregtech.api.enums.Mods.Names;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.TaintedMagic;
 import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.Mods.ThaumicBoots;
 import static gregtech.api.enums.Mods.ThaumicTinkerer;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.enums.Mods.WitchingGadgets;
@@ -1132,6 +1133,17 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         addFullHazmatToGeneralItem(ElectroMagicTools.ID, "SolarHelmetRevealing", 1L);
         addFullHazmatToGeneralItem(ElectroMagicTools.ID, "NanosuitWing", 1L);
         addFullHazmatToGeneralItem(ElectroMagicTools.ID, "QuantumWing", 1L);
+
+        // Thaumic Boots Hazmat
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemQuantumVoid", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemQuantumMeteor", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemQuantumComet", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemNanoVoid", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemNanoMeteor", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemNanoComet", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemElectricVoid", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemVoidMeteor", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemVoidComet", 1L);
 
         // DraconicEvolution Hazmat
         addFullHazmatToGeneralItem(DraconicEvolution.ID, "draconicBoots", 1L, 0);
