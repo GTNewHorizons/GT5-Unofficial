@@ -61,6 +61,7 @@ import gregtech.api.graphs.Node;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.covers.IPlayerAttachHandler;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
@@ -70,6 +71,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -1642,10 +1644,16 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
 
                     if (getCoverIDAtSide(coverSide) == 0) {
                         if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCovers.keySet())) {
-                            if (GregTech_API.getCoverBehaviorNew(tCurrentItem)
-                                .isCoverPlaceable(coverSide, tCurrentItem, this)
+                            final GT_CoverBehaviorBase<?> coverBehavior = GregTech_API
+                                .getCoverBehaviorNew(tCurrentItem);
+                            if (coverBehavior.isCoverPlaceable(coverSide, tCurrentItem, this)
                                 && mMetaTileEntity.allowCoverOnSide(coverSide, new GT_ItemStack(tCurrentItem))) {
+
                                 setCoverItemAtSide(coverSide, tCurrentItem);
+                                if (coverBehavior instanceof final IPlayerAttachHandler handler) {
+                                    handler.onPlayerAttach(aPlayer, tCurrentItem, this, coverSide);
+                                }
+
                                 if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
                                 GT_Utility.sendSoundToPlayers(
                                     worldObj,

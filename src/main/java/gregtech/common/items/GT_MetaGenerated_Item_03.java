@@ -1,5 +1,7 @@
 package gregtech.common.items;
 
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_METRICS_TRANSMITTER_COVER;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UEV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UHV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UIV;
@@ -29,6 +31,7 @@ import gregtech.api.enums.TC_Aspects;
 import gregtech.api.items.GT_MetaGenerated_Item_X32;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.common.covers.GT_Cover_Metrics_Transmitter;
 import gregtech.common.covers.GT_Cover_SolarPanel;
 
 public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
@@ -910,6 +913,20 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "Nuclear Star",
                 "By the powers of Greg, I command this star to be really hot.",
                 SubTag.NO_UNIFICATION));
+
+        ItemList.Cover_Metrics_Transmitter.set(
+            addItem(
+                232,
+                "Metrics Transmitter Cover",
+                String.join(
+                    "/n ",
+                    "Creates a GregTech Advanced Sensor Card when attached",
+                    "Works across dimensions or if machine is dismantled",
+                    "Removing this cover will destroy the linked card")));
+        GregTech_API.registerCover(
+            ItemList.Cover_Metrics_Transmitter.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_METRICS_TRANSMITTER_COVER)),
+            new GT_Cover_Metrics_Transmitter(TextureFactory.of(OVERLAY_METRICS_TRANSMITTER_COVER)));
 
         ItemList.Optical_Cpu_Containment_Housing.set(addItem(727, "Optical CPU Containment Housing", "CPU Housing", o));
         ItemList.Optically_Perfected_CPU.set(addItem(726, "Optically Perfected CPU", "Perfected CPU!", o));

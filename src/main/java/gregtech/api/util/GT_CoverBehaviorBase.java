@@ -385,6 +385,10 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         ICoverable aTileEntity) {
         return getDropImpl(side, aCoverID, forceCast(aCoverVariable), aTileEntity);
     }
+
+    public boolean allowsCopyPasteTool() {
+        return true;
+    }
     // endregion
 
     // region UI stuff

@@ -401,9 +401,9 @@ GT5U.gui.text.insufficient_heat=§7Recipe needs more heat to start. Required: %s
 GT5U.gui.text.insufficient_machine_tier=§7Recipe needs higher structure tier. Required: %s
 GT5U.gui.text.insufficient_startup_power=§7Recipe needs higher startup power. Required: %s
 GT5U.gui.text.internal_error=§4Recipe was found, but had internal error
-GT5U.gui.text.drill_ores_left_chunk=§7Ores left in current chunk: §a%d
-GT5U.gui.text.drill_ores_left_layer=§7Ores left at y-level %d: §a%d
-GT5U.gui.text.drill_chunks_left=§7Drilling chunk: §a%d / %d
+GT5U.gui.text.drill_ores_left_chunk=Ores left in current chunk: §a%d
+GT5U.gui.text.drill_ores_left_layer=Ores left at y-level %d: §a%d
+GT5U.gui.text.drill_chunks_left=Drilling chunk: §a%d / %d
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
@@ -1350,3 +1350,6 @@ gt.solar.system.phobos=Phobos
 gt.specialvalue.stages=Stages:
 
 gt.multiBlock.controller.cokeOven=Coke Oven
+
+gt.event.metrics_cover.dimension=Dimension: §a%s
+gt.event.metrics_cover.coords=Coordinates: §a%d§r, §a%d§r, §a%d§r

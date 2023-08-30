@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -580,7 +579,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> StatCollector
+                        () -> EnumChatFormatting.GRAY + StatCollector
                             .translateToLocalFormatted("GT5U.gui.text.drill_ores_left_chunk", clientOreListSize))
                     .setSynced(false)
                     .setTextAlignment(Alignment.CenterLeft)
@@ -590,7 +589,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> StatCollector.translateToLocalFormatted(
+                        () -> EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.drill_ores_left_layer",
                             clientYHead,
                             clientOreListSize))
@@ -601,7 +600,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> StatCollector.translateToLocalFormatted(
+                        () -> EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.drill_chunks_left",
                             clientCurrentChunk,
                             clientTotalChunks))
@@ -668,7 +667,8 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     @Override
     public String[] getInfoData() {
         final int diameter = chunkRadiusConfig * 2;
-        return new String[] {
+        ImmutableList.Builder<String> builder = ImmutableList.builder();
+        builder.add(
             EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.minermulti")
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
@@ -678,7 +678,20 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                 + diameter
                 + EnumChatFormatting.RESET
                 + " "
-                + StatCollector.translateToLocal("GT5U.machines.chunks") };
+                + StatCollector.translateToLocal("GT5U.machines.chunks"));
+
+        if (getBaseMetaTileEntity().isActive()) {
+            builder.add(
+                StatCollector
+                    .translateToLocalFormatted("GT5U.gui.text.drill_ores_left_chunk", oreBlockPositions.size()),
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.gui.text.drill_chunks_left",
+                    getChunkNumber(),
+                    getTotalChunkCount()));
+        }
+
+        return builder.build()
+            .toArray(new String[0]);
     }
 
     @Override
