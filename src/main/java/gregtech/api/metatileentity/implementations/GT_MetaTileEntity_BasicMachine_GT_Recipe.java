@@ -603,14 +603,15 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(String aName, int aTier, String[] aDescription,
         GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, int aAmperage,
         int aGUIParameterA, int aGUIParameterB, ITexture[][][] aTextures, String aGUIName, String aNEIName,
-        String aSound, boolean aSharedTank, boolean aRequiresFluidForFiltering, int aSpecialEffect) {
+        ResourceLocation aSound, boolean aSharedTank, boolean aRequiresFluidForFiltering,
+        SpecialEffects aSpecialEffect) {
         super(aName, aTier, aAmperage, aDescription, aTextures, aInputSlots, aOutputSlots, aGUIName, aNEIName);
         this.mSharedTank = aSharedTank;
         this.mTankCapacity = aTankCapacity;
-        this.mSpecialEffect = SpecialEffects.fromId(aSpecialEffect);
+        this.mSpecialEffect = aSpecialEffect;
         this.mRequiresFluidForFiltering = aRequiresFluidForFiltering;
         this.mRecipes = aRecipes;
-        this.mSoundResourceLocation = new ResourceLocation(aSound);
+        this.mSoundResourceLocation = aSound;
         this.mGUIParameterA = (byte) aGUIParameterA;
         this.mGUIParameterB = (byte) aGUIParameterB;
     }
@@ -631,10 +632,10 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             this.mTextures,
             this.mGUIName,
             this.mNEIName,
-            this.mSoundResourceLocation.toString(),
+            this.mSoundResourceLocation,
             this.mSharedTank,
             this.mRequiresFluidForFiltering,
-            this.mSpecialEffect.ordinal()).setProgressBarTexture(this.progressBarTexture);
+            this.mSpecialEffect).setProgressBarTexture(this.progressBarTexture);
     }
 
     public GT_MetaTileEntity_BasicMachine_GT_Recipe setProgressBarTexture(FallbackableUITexture progressBarTexture) {
