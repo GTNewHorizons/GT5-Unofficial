@@ -594,6 +594,17 @@ public class GT_Values {
         + EnumChatFormatting.BOLD
         + "0";
 
+    public static final String AuthorPureBluez = "Author: " + EnumChatFormatting.WHITE
+        + "Pure"
+        + EnumChatFormatting.AQUA
+        + "B"
+        + EnumChatFormatting.DARK_AQUA
+        + "l"
+        + EnumChatFormatting.BLUE
+        + "u"
+        + EnumChatFormatting.DARK_BLUE
+        + "ez";
+
     public static final String AuthorBlueWeabo = "Author: " + EnumChatFormatting.BLUE
         + EnumChatFormatting.BOLD
         + "Blue"
