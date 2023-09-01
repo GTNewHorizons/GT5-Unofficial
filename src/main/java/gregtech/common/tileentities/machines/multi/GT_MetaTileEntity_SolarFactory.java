@@ -149,11 +149,6 @@ public class GT_MetaTileEntity_SolarFactory
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes;
-    }
-
-    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().enablePerfectOverclock();
     }
@@ -178,6 +173,11 @@ public class GT_MetaTileEntity_SolarFactory
     @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return 10000;
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sSolarFactoryRecipes;
     }
 
     @Override
