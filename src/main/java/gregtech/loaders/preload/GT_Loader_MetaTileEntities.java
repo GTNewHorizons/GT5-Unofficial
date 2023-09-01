@@ -125,6 +125,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PCBFactory;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PlasmaForge;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ProcessingArray;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_PyrolyseOven;
+import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_SolarFactory;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_TranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_VacuumFreezer;
 import gregtech.common.tileentities.machines.steam.GT_MetaTileEntity_AlloySmelter_Bronze;
@@ -362,6 +363,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 BRICKED_BLAST_FURNACE_CONTROLLER.ID,
                 "multimachine.brickedblastfurnace",
                 "Bricked Blast Furnace").getStackForm(1L));
+
+        ItemList.Machine_SolarFactory.set(
+            new GT_MetaTileEntity_SolarFactory(
+                SOLAR_FACTORY_CONTROLLER.ID,
+                "multimachine.solarfactory",
+                "Solar Factory").getStackForm(1L));
 
         // deprecated since ages, maybe time to remove it from the game?
         ItemList.Machine_Bronze_BlastFurnace.set(
