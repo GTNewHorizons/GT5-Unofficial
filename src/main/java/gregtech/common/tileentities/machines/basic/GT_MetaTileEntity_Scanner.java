@@ -63,8 +63,6 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
             MachineType.SCANNER.tooltipDescription(),
             1,
             1,
-            "Scanner.png",
-            "",
             TextureFactory.of(
                 TextureFactory.of(OVERLAY_SIDE_SCANNER_ACTIVE),
                 TextureFactory.builder()
@@ -115,20 +113,22 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                     .build()));
     }
 
+    public GT_MetaTileEntity_Scanner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, 1, aDescription, aTextures, 1, 1);
+    }
+
+    /**
+     * @deprecated Use {@link #GT_MetaTileEntity_Scanner(String, int, String[], ITexture[][][])}
+     */
+    @Deprecated
     public GT_MetaTileEntity_Scanner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
         String aGUIName, String aNEIName) {
-        super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
+        super(aName, aTier, 1, aDescription, aTextures, 1, 1);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Scanner(
-            this.mName,
-            this.mTier,
-            this.mDescriptionArray,
-            this.mTextures,
-            this.mGUIName,
-            this.mNEIName);
+        return new GT_MetaTileEntity_Scanner(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override

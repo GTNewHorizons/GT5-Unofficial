@@ -45,8 +45,6 @@ public class GT_MetaTileEntity_RockBreaker extends GT_MetaTileEntity_BasicMachin
             MachineType.ROCKBREAKER.tooltipDescription(),
             1,
             1,
-            "RockBreaker.png",
-            "",
             TextureFactory.of(
                 TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE),
                 TextureFactory.builder()
@@ -97,20 +95,13 @@ public class GT_MetaTileEntity_RockBreaker extends GT_MetaTileEntity_BasicMachin
                     .build()));
     }
 
-    public GT_MetaTileEntity_RockBreaker(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-        String aGUIName, String aNEIName) {
-        super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
+    public GT_MetaTileEntity_RockBreaker(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, 1, aDescription, aTextures, 1, 1);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_RockBreaker(
-            this.mName,
-            this.mTier,
-            this.mDescriptionArray,
-            this.mTextures,
-            this.mGUIName,
-            this.mNEIName);
+        return new GT_MetaTileEntity_RockBreaker(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
