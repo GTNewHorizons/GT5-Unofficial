@@ -3992,10 +3992,17 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          */
         @Nonnull
         public final FindRecipeResult findRecipeWithResult(GT_Recipe aRecipe, boolean aNotUnificated,
-                                                     boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids,
-                                                     ItemStack aSpecialSlot, ItemStack... aInputs) {
-            return findRecipeWithResult(aRecipe, recipe -> aVoltage * mAmperage >= recipe.mEUt, aNotUnificated,
-                aDontCheckStackSizes, aVoltage, aFluids, aSpecialSlot, aInputs);
+            boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot,
+            ItemStack... aInputs) {
+            return findRecipeWithResult(
+                aRecipe,
+                recipe -> aVoltage * mAmperage >= recipe.mEUt,
+                aNotUnificated,
+                aDontCheckStackSizes,
+                aVoltage,
+                aFluids,
+                aSpecialSlot,
+                aInputs);
         }
 
         /**

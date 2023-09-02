@@ -347,7 +347,7 @@ public class ProcessingLogic {
      * Applies the recipe and calculated parameters
      */
     private CheckRecipeResult applyRecipe(@NotNull GT_Recipe recipe, GT_ParallelHelper helper,
-                                          GT_OverclockCalculator calculator, CheckRecipeResult result) {
+        GT_OverclockCalculator calculator, CheckRecipeResult result) {
         if (!helper.getResult()
             .wasSuccessful()) {
             return helper.getResult();
