@@ -1135,15 +1135,15 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         addFullHazmatToGeneralItem(ElectroMagicTools.ID, "QuantumWing", 1L);
 
         // Thaumic Boots Hazmat
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemQuantumVoid", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemQuantumMeteor", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemQuantumComet", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemNanoVoid", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemNanoMeteor", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemNanoComet", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemElectricVoid", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemVoidMeteor", 1L);
-        addFullHazmatToGeneralItem(ThaumicBoots.ID, "ItemVoidComet", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemQuantumVoid", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemQuantumMeteor", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemQuantumComet", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemNanoVoid", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemNanoMeteor", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemNanoComet", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemElectricVoid", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemVoidMeteor", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemVoidComet", 1L);
 
         // DraconicEvolution Hazmat
         addFullHazmatToGeneralItem(DraconicEvolution.ID, "draconicBoots", 1L, 0);
