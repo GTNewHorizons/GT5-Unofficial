@@ -180,6 +180,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
      */
     public boolean mNeedsEmptyOutput = false;
     /**
+     * If this is set to true, NBT equality is required for recipe check.
+     */
+    public boolean isNBTSensitive = false;
+    /**
      * Used for describing recipes that do not fit the default recipe pattern (for example Large Boiler Fuels)
      */
     private String[] neiDesc = null;
@@ -712,28 +716,33 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
                     for (int i = 0; i < aInputs.length; i++) {
                         ItemStack providedItem = aInputs[i];
-                        if (GT_OreDictUnificator.isInputStackEqual(providedItem, unifiedItemCost)) {
-                            if (GTppRecipeHelper) { // Please see JavaDoc on GTppRecipeHelper for why this is here.
-                                if (GT_Utility.areStacksEqual(providedItem, Ic2Items.FluidCell.copy(), true)
-                                    || GT_Utility.areStacksEqual(providedItem, ItemList.Tool_DataStick.get(1L), true)
-                                    || GT_Utility.areStacksEqual(providedItem, ItemList.Tool_DataOrb.get(1L), true)) {
-                                    if (!GT_Utility.areStacksEqual(providedItem, recipeItemCost, false)) continue;
-                                }
+                        if (isNBTSensitive && !GT_Utility.areStacksEqual(providedItem, unifiedItemCost, false)) {
+                            continue;
+                        } else if (!isNBTSensitive
+                            && !GT_OreDictUnificator.isInputStackEqual(providedItem, unifiedItemCost)) {
+                                continue;
                             }
 
-                            inputFound = true;
-                            if (newItemAmounts[i] == null) {
-                                newItemAmounts[i] = providedItem.stackSize;
+                        if (GTppRecipeHelper) { // Please see JavaDoc on GTppRecipeHelper for why this is here.
+                            if (GT_Utility.areStacksEqual(providedItem, Ic2Items.FluidCell.copy(), true)
+                                || GT_Utility.areStacksEqual(providedItem, ItemList.Tool_DataStick.get(1L), true)
+                                || GT_Utility.areStacksEqual(providedItem, ItemList.Tool_DataOrb.get(1L), true)) {
+                                if (!GT_Utility.areStacksEqual(providedItem, recipeItemCost, false)) continue;
                             }
+                        }
 
-                            if (aDontCheckStackSizes || newItemAmounts[i] >= remainingCost) {
-                                newItemAmounts[i] -= remainingCost;
-                                remainingCost = 0;
-                                break;
-                            } else {
-                                remainingCost -= newItemAmounts[i];
-                                newItemAmounts[i] = 0;
-                            }
+                        inputFound = true;
+                        if (newItemAmounts[i] == null) {
+                            newItemAmounts[i] = providedItem.stackSize;
+                        }
+
+                        if (aDontCheckStackSizes || newItemAmounts[i] >= remainingCost) {
+                            newItemAmounts[i] -= remainingCost;
+                            remainingCost = 0;
+                            break;
+                        } else {
+                            remainingCost -= newItemAmounts[i];
+                            newItemAmounts[i] = 0;
                         }
                     }
 
@@ -5607,7 +5616,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             output.setStackDisplayName(mold.getDisplayName());
             GT_Recipe recipe = new GT_Recipe(
                 false,
-                new ItemStack[] { ItemList.Shape_Mold_Name.get(0), GT_Utility.copyAmount(1, input) },
+                new ItemStack[] { GT_Utility.copyAmount(0, mold), GT_Utility.copyAmount(1, input) },
                 new ItemStack[] { output },
                 null,
                 null,
@@ -5617,6 +5626,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 8,
                 0);
             recipe.mCanBeBuffered = false;
+            recipe.isNBTSensitive = true;
             return FindRecipeResult.ofSuccess(recipe);
         }
     }

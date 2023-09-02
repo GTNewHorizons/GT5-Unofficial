@@ -353,7 +353,11 @@ public class ProcessingLogic {
             return helper.getResult();
         }
 
-        lastRecipe = recipe;
+        if (recipe.mCanBeBuffered) {
+            lastRecipe = recipe;
+        } else {
+            lastRecipe = null;
+        }
         calculatedParallels = helper.getCurrentParallel();
 
         if (calculator.getConsumption() == Long.MAX_VALUE) {
