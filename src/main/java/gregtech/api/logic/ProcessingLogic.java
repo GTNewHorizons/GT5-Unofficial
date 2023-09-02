@@ -307,7 +307,7 @@ public class ProcessingLogic {
 
             // If everything is ok, reuse our calculations
             if (recipeValidator.isExecutedAtLeastOnce() && findRecipeResult.isSuccessful()) {
-                return processRecipe(
+                return applyRecipe(
                     findRecipeResult.getRecipeNonNull(),
                     recipeValidator.getLastParallelHelper(),
                     recipeValidator.getLastOverclockCalculator(),
@@ -340,11 +340,14 @@ public class ProcessingLogic {
         helper.setCalculator(calculator);
         helper.build();
 
-        return processRecipe(recipe, helper, calculator, result);
+        return applyRecipe(recipe, helper, calculator, result);
     }
 
-    private CheckRecipeResult processRecipe(@NotNull GT_Recipe recipe, GT_ParallelHelper helper,
-        GT_OverclockCalculator calculator, CheckRecipeResult result) {
+    /**
+     * Applies the recipe and calculated parameters
+     */
+    private CheckRecipeResult applyRecipe(@NotNull GT_Recipe recipe, GT_ParallelHelper helper,
+                                          GT_OverclockCalculator calculator, CheckRecipeResult result) {
         if (!helper.getResult()
             .wasSuccessful()) {
             return helper.getResult();
