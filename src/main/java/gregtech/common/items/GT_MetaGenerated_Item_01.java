@@ -4249,14 +4249,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 64L)));
-        ItemList.Solar_Cell.set(
-            addItem(
-                tLastID = 766,
-                "Solar Cell",
-                "Basic Solar Cell",
-                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 64L)));
 
         GregTech_API.registerCover(
             ItemList.Cover_SolarPanel.get(1L),

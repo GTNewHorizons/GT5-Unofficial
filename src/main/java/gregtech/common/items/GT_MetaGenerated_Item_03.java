@@ -916,6 +916,14 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         ItemList.Optically_Compatible_Memory.set(addItem(725, "Optically Compatible Memory", "Its in the name!", o));
 
         ItemList.Timepiece.set(addItem(757, "Timepiece", "Beware of the kid with the hat", o));
+        ItemList.Solar_Cell.set(
+            addItem(
+                232,
+                "Solar Cell",
+                "Basic Solar Cell",
+                new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L),
+                new TC_Aspects.TC_AspectStack(TC_Aspects.TENEBRAE, 64L)));
 
         int whiteDwarfIDs = 729;
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
