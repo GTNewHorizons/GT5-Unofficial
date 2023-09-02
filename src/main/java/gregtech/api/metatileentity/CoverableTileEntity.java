@@ -32,6 +32,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.io.ByteStreams;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
@@ -63,6 +64,8 @@ import gregtech.api.util.ISerializableObject;
 import gregtech.common.GT_Client;
 import gregtech.common.covers.CoverInfo;
 import gregtech.common.covers.GT_Cover_Fluidfilter;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -99,6 +102,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     protected short mID = 0;
     public long mTickTimer = 0;
     private Map<ForgeDirection, String> clientCoverTooltips = new HashMap<>();
+    private Map<ForgeDirection, ISerializableObject> clientCoverData = new HashMap<>();
 
     protected void writeCoverNBT(NBTTagCompound aNBT, boolean isDrop) {
         final NBTTagList tList = new NBTTagList();
@@ -690,10 +694,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                     return backgrounds.toArray(new IDrawable[] {});
                 }
             }.setOnClick((clickData, widget) -> onTabClicked(clickData, widget, direction))
-                .dynamicTooltip(
-                    () -> ImmutableList.copyOf(
-                        clientCoverTooltips.get(direction)
-                            .split("\\\\\\\\")))
+                .dynamicTooltip(() -> getCoverTabTooltip(direction, clientCoverData.get(direction)))
                 .setSize(COVER_TAB_WIDTH, COVER_TAB_HEIGHT))
                 .addChild(
                     new ItemDrawable(() -> getCoverItemAtSide(direction)).asWidget()
@@ -705,10 +706,10 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
         builder.widget(
             new FakeSyncWidget<>(
-                this::generateClientTooltips,
-                data -> clientCoverTooltips = data,
-                this::writeClientTooltips,
-                this::readClientTooltips));
+                this::collectCoverData,
+                data -> clientCoverData = data,
+                this::writeClientCoverData,
+                this::readClientCoverData));
     }
 
     @SideOnly(Side.CLIENT)
@@ -757,40 +758,45 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         }
     }
 
-    private Map<ForgeDirection, String> generateClientTooltips() {
-        final ImmutableMap.Builder<ForgeDirection, String> builder = ImmutableMap.builder();
+    private Map<ForgeDirection, ISerializableObject> collectCoverData() {
+        final ImmutableMap.Builder<ForgeDirection, ISerializableObject> builder = ImmutableMap.builder();
         for (final ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-            if (getCoverInfoAtSide(direction).isValid()) {
-                builder.put(
-                    direction,
-                    String.join("\\\\", getCoverTabTooltip(direction, getComplexCoverDataAtSide(direction))));
+            final CoverInfo coverInfo = getCoverInfoAtSide(direction);
+            if (coverInfo.isValid()) {
+                builder.put(direction, coverInfo.getCoverData());
             }
         }
+
         return builder.build();
     }
 
-    private void writeClientTooltips(PacketBuffer buffer, Map<ForgeDirection, String> tooltipMap) {
-        buffer.writeInt(tooltipMap.size());
-        tooltipMap.forEach((direction, tooltip) -> {
-            buffer.writeByte(direction.ordinal());
+    private void writeClientCoverData(PacketBuffer buffer, Map<ForgeDirection, ISerializableObject> dataMap) {
+        buffer.writeInt(dataMap.size());
+        dataMap.forEach((direction, serializableObject) -> {
+            final ByteBuf individualBuffer = Unpooled.buffer();
+            serializableObject.writeToByteBuf(individualBuffer);
 
-            final byte[] stringBytes = tooltip.getBytes();
-            buffer.writeInt(stringBytes.length);
-            buffer.writeBytes(stringBytes);
+            buffer.writeByte(direction.ordinal());
+            buffer.writeInt(individualBuffer.array().length);
+            buffer.writeBytes(individualBuffer.array());
         });
     }
 
-    private Map<ForgeDirection, String> readClientTooltips(PacketBuffer buffer) {
-        ImmutableMap.Builder<ForgeDirection, String> builder = ImmutableMap.builder();
+    private Map<ForgeDirection, ISerializableObject> readClientCoverData(PacketBuffer buffer) {
+        ImmutableMap.Builder<ForgeDirection, ISerializableObject> builder = ImmutableMap.builder();
         final int size = buffer.readInt();
         for (int i = 0; i < size; i++) {
             final ForgeDirection direction = ForgeDirection.getOrientation(buffer.readByte());
             final int length = buffer.readInt();
+            final byte[] object = buffer.readBytes(length)
+                .array();
+
+            // noinspection UnstableApiUsage
             builder.put(
                 direction,
-                new String(
-                    buffer.readBytes(length)
-                        .array()));
+                getCoverInfoAtSide(direction).getCoverBehavior()
+                    .createDataObject()
+                    .readFromPacket(ByteStreams.newDataInput(object), null));
         }
 
         return builder.build();
