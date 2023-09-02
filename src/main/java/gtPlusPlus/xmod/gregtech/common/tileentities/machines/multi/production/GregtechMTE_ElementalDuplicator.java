@@ -24,7 +24,9 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
@@ -51,7 +53,8 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEn
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase<GregtechMTE_ElementalDuplicator> {
+public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase<GregtechMTE_ElementalDuplicator>
+        implements ISurvivalConstructable {
 
     private final ArrayList<GT_MetaTileEntity_Hatch_ElementalDataOrbHolder> mReplicatorDataOrbHatches = new ArrayList<GT_MetaTileEntity_Hatch_ElementalDataOrbHolder>();
     private static final int CASING_TEXTURE_ID = TAE.getIndexFromPage(0, 3);
@@ -154,6 +157,7 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
                                                     Energy).casingIndex(getCasingTextureIndex()).dot(1).build(),
                                             buildHatchAdder(GregtechMTE_ElementalDuplicator.class)
                                                     .hatchClass(GT_MetaTileEntity_Hatch_ElementalDataOrbHolder.class)
+                                                    .shouldReject(x -> x.mReplicatorDataOrbHatches.size() >= 1)
                                                     .adder(GregtechMTE_ElementalDuplicator::addDataOrbHatch)
                                                     .casingIndex(getCasingTextureIndex()).dot(1).build(),
                                             onElementPass(
@@ -180,6 +184,12 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
         }
         log("Casings: " + mCasing);
         return aDidBuild && mCasing >= 138 && checkHatch();
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack itemStack, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, itemStack, 4, 4, 0, elementBudget, env, false, true);
     }
 
     protected static int getCasingTextureIndex() {
