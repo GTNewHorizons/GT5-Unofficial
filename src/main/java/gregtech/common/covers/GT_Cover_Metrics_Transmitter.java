@@ -1,5 +1,6 @@
 package gregtech.common.covers;
 
+import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.entity.item.EntityItem;
@@ -8,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -28,6 +30,7 @@ import gregtech.api.util.ISerializableObject;
 import gregtech.common.events.MetricsCoverDataEvent;
 import gregtech.common.events.MetricsCoverHostDeconstructedEvent;
 import gregtech.common.events.MetricsCoverSelfDestructEvent;
+import gregtech.common.misc.GlobalMetricsCoverDatabase.State;
 import io.netty.buffer.ByteBuf;
 
 /**
@@ -39,7 +42,9 @@ public class GT_Cover_Metrics_Transmitter
 
     public static final String FREQUENCY_MSB_KEY = "frequency_msb";
     public static final String FREQUENCY_LSB_KEY = "frequency_lsb";
+    public static final String CARD_STATE_KEY = "card_state";
 
+    @SuppressWarnings("unused")
     public GT_Cover_Metrics_Transmitter() {
         this(null);
     }
@@ -111,12 +116,13 @@ public class GT_Cover_Metrics_Transmitter
         final ItemStack cardStack = ItemList.NC_AdvancedSensorCard.get(1);
 
         if (!cardStack.hasTagCompound()) {
-            cardStack.stackTagCompound = new NBTTagCompound();
+            cardStack.setTagCompound(new NBTTagCompound());
         }
-        cardStack.getTagCompound()
-            .setLong(FREQUENCY_MSB_KEY, newFrequency.getMostSignificantBits());
-        cardStack.getTagCompound()
-            .setLong(FREQUENCY_LSB_KEY, newFrequency.getLeastSignificantBits());
+
+        final NBTTagCompound tagCompound = cardStack.getTagCompound();
+        tagCompound.setLong(FREQUENCY_MSB_KEY, newFrequency.getMostSignificantBits());
+        tagCompound.setLong(FREQUENCY_LSB_KEY, newFrequency.getLeastSignificantBits());
+        tagCompound.setInteger(CARD_STATE_KEY, State.OPERATIONAL.getType());
 
         aTileEntity.getCoverInfoAtSide(side)
             .setCoverData(new MetricsTransmitterData(newFrequency));
@@ -129,6 +135,12 @@ public class GT_Cover_Metrics_Transmitter
     @Override
     public boolean allowsCopyPasteTool() {
         return false;
+    }
+
+    @Override
+    public List<String> getAdditionalTooltipImpl(MetricsTransmitterData data) {
+        return ImmutableList
+            .of("Frequency: " + EnumChatFormatting.UNDERLINE + EnumChatFormatting.YELLOW + data.frequency.toString());
     }
 
     public static class MetricsTransmitterData implements ISerializableObject {

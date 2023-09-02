@@ -605,6 +605,8 @@ public class GT_Values {
         + EnumChatFormatting.LIGHT_PURPLE
         + "minecraft7771";
 
+    public static final String AuthorQuerns = "Author: " + EnumChatFormatting.RED + "Querns";
+
     // 7.5F comes from GT_Tool_Turbine_Large#getBaseDamage() given huge turbines are the most efficient now.
     public static double getMaxPlasmaTurbineEfficiencyFromMaterial(Materials material) {
         return (5F + (7.5F + material.mToolQuality)) / 10.0;

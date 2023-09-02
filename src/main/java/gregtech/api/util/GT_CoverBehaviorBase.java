@@ -2,6 +2,7 @@ package gregtech.api.util;
 
 import static gregtech.api.enums.GT_Values.E;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
@@ -16,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -386,9 +388,6 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         return getDropImpl(side, aCoverID, forceCast(aCoverVariable), aTileEntity);
     }
 
-    public boolean allowsCopyPasteTool() {
-        return true;
-    }
     // endregion
 
     // region UI stuff
@@ -818,6 +817,24 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
     @Deprecated
     public String trans(String aNr, String aEnglish) {
         return GT_Utility.trans(aNr, aEnglish);
+    }
+
+    public boolean allowsCopyPasteTool() {
+        return true;
+    }
+
+    public final List<String> getAdditionalTooltip(ISerializableObject coverData) {
+        return getAdditionalTooltipImpl(forceCast(coverData));
+    }
+
+    /**
+     * Override to add to the tooltip generated when a user hovers over the cover on the left side of a machine's UI.
+     *
+     * @param coverData The cover data associated with the cover on a particular side.
+     * @return A list of new tooltip entries. Entries are inserted at the top, just after the name and direction line.
+     */
+    protected List<String> getAdditionalTooltipImpl(T coverData) {
+        return ImmutableList.of();
     }
     // endregion
 }

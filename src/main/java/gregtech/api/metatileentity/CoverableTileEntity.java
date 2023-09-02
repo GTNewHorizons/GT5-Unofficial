@@ -9,8 +9,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.IntStream;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
@@ -19,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -26,6 +30,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
@@ -34,6 +40,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.Column;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 
 import cpw.mods.fml.relauncher.Side;
@@ -91,6 +98,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     protected short mID = 0;
     public long mTickTimer = 0;
+    private Map<ForgeDirection, String> clientCoverTooltips = new HashMap<>();
 
     protected void writeCoverNBT(NBTTagCompound aNBT, boolean isDrop) {
         final NBTTagList tList = new NBTTagList();
@@ -682,7 +690,10 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                     return backgrounds.toArray(new IDrawable[] {});
                 }
             }.setOnClick((clickData, widget) -> onTabClicked(clickData, widget, direction))
-                .dynamicTooltip(() -> getCoverTabTooltip(direction))
+                .dynamicTooltip(
+                    () -> ImmutableList.copyOf(
+                        clientCoverTooltips.get(direction)
+                            .split("\\\\\\\\")))
                 .setSize(COVER_TAB_WIDTH, COVER_TAB_HEIGHT))
                 .addChild(
                     new ItemDrawable(() -> getCoverItemAtSide(direction)).asWidget()
@@ -691,10 +702,17 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                             (COVER_TAB_HEIGHT - ICON_SIZE) / 2))
                 .setEnabled(widget -> getCoverItemAtSide(direction) != null));
         }
+
+        builder.widget(
+            new FakeSyncWidget<>(
+                this::generateClientTooltips,
+                data -> clientCoverTooltips = data,
+                this::writeClientTooltips,
+                this::readClientTooltips));
     }
 
     @SideOnly(Side.CLIENT)
-    protected List<String> getCoverTabTooltip(ForgeDirection side) {
+    protected List<String> getCoverTabTooltip(ForgeDirection side, ISerializableObject coverData) {
         final String[] SIDE_TOOLTIPS = new String[] { "GT5U.interface.coverTabs.down", "GT5U.interface.coverTabs.up",
             "GT5U.interface.coverTabs.north", "GT5U.interface.coverTabs.south", "GT5U.interface.coverTabs.west",
             "GT5U.interface.coverTabs.east" };
@@ -704,19 +722,18 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final boolean coverHasGUI = coverInfo.hasCoverGUI();
 
         final List<String> tooltip = coverItem.getTooltip(Minecraft.getMinecraft().thePlayer, true);
-        for (int i = 0; i < tooltip.size(); i++) {
-            if (i == 0) {
-                tooltip.set(
-                    0,
-                    (coverHasGUI ? EnumChatFormatting.UNDERLINE : EnumChatFormatting.DARK_GRAY)
-                        + StatCollector.translateToLocal(SIDE_TOOLTIPS[side.ordinal()])
-                        + (coverHasGUI ? EnumChatFormatting.RESET + ": " : ": " + EnumChatFormatting.RESET)
-                        + tooltip.get(0));
-            } else {
-                tooltip.set(i, EnumChatFormatting.GRAY + tooltip.get(i));
-            }
-        }
-        return tooltip;
+        final ImmutableList.Builder<String> builder = ImmutableList.builder();
+        builder.add(
+            (coverHasGUI ? EnumChatFormatting.UNDERLINE : EnumChatFormatting.DARK_GRAY)
+                + StatCollector.translateToLocal(SIDE_TOOLTIPS[side.ordinal()])
+                + (coverHasGUI ? EnumChatFormatting.RESET + ": " : ": " + EnumChatFormatting.RESET)
+                + tooltip.get(0));
+        builder.addAll(coverInfo.getAdditionalTooltip(coverData));
+        builder.addAll(
+            IntStream.range(1, tooltip.size())
+                .mapToObj(index -> EnumChatFormatting.GRAY + tooltip.get(index))
+                .iterator());
+        return builder.build();
     }
 
     protected void onTabClicked(Widget.ClickData ignoredClickData, Widget widget, ForgeDirection side) {
@@ -738,5 +755,44 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                 (EntityPlayerMP) widget.getContext()
                     .getPlayer());
         }
+    }
+
+    private Map<ForgeDirection, String> generateClientTooltips() {
+        final ImmutableMap.Builder<ForgeDirection, String> builder = ImmutableMap.builder();
+        for (final ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+            if (getCoverInfoAtSide(direction).isValid()) {
+                builder.put(
+                    direction,
+                    String.join("\\\\", getCoverTabTooltip(direction, getComplexCoverDataAtSide(direction))));
+            }
+        }
+        return builder.build();
+    }
+
+    private void writeClientTooltips(PacketBuffer buffer, Map<ForgeDirection, String> tooltipMap) {
+        buffer.writeInt(tooltipMap.size());
+        tooltipMap.forEach((direction, tooltip) -> {
+            buffer.writeByte(direction.ordinal());
+
+            final byte[] stringBytes = tooltip.getBytes();
+            buffer.writeInt(stringBytes.length);
+            buffer.writeBytes(stringBytes);
+        });
+    }
+
+    private Map<ForgeDirection, String> readClientTooltips(PacketBuffer buffer) {
+        ImmutableMap.Builder<ForgeDirection, String> builder = ImmutableMap.builder();
+        final int size = buffer.readInt();
+        for (int i = 0; i < size; i++) {
+            final ForgeDirection direction = ForgeDirection.getOrientation(buffer.readByte());
+            final int length = buffer.readInt();
+            builder.put(
+                direction,
+                new String(
+                    buffer.readBytes(length)
+                        .array()));
+        }
+
+        return builder.build();
     }
 }

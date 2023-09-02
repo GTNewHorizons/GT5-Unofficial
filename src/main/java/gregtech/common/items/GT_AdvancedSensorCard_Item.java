@@ -1,14 +1,15 @@
 package gregtech.common.items;
 
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.common.covers.GT_Cover_Metrics_Transmitter.CARD_STATE_KEY;
 import static gregtech.common.covers.GT_Cover_Metrics_Transmitter.FREQUENCY_LSB_KEY;
 import static gregtech.common.covers.GT_Cover_Metrics_Transmitter.FREQUENCY_MSB_KEY;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -37,11 +38,10 @@ import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 
+@SuppressWarnings("unused")
 public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource {
 
     public static final UUID CARD_TYPE_ID = UUID.fromString("ff952e84-7608-4c4a-85af-dd6e1aa27fc7");
-    public static final ImmutableList<PanelSetting> COMMON_PANEL_SETTINGS = ImmutableList
-        .of(new PanelSetting("Dimension", 0, CARD_TYPE_ID), new PanelSetting("Coordinates", 1, CARD_TYPE_ID));
     private static final ImmutableList<PanelString> SELF_DESTRUCTED_OUTPUT = ImmutableList
         .of(prebakePanelString(EnumChatFormatting.OBFUSCATED + "critical error" + EnumChatFormatting.RESET, true));
     private static final ImmutableList<PanelString> DECONSTRUCTED_OUTPUT = ImmutableList.of(
@@ -49,7 +49,6 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
         prebakePanelString("Place machine again to re-enable", true));
     private static final ImmutableList<PanelString> NO_DATA_FOUND = ImmutableList
         .of(prebakePanelString("No data found", true));
-    private static final String CARD_STATE_KEY = "card_state";
 
     private int payloadSize = 0;
 
@@ -62,7 +61,6 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
     public GT_AdvancedSensorCard_Item() {
         super();
 
-        // noinspection SpellCheckingInspection
         GameRegistry.registerItem(this, "gt.advancedsensorcard", GregTech.ID);
         setUnlocalizedName("gt.advancedsensorcard");
         setMaxStackSize(1);
@@ -74,6 +72,7 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
         final boolean p_77624_4_) {
         super.addInformation(itemStack, player, tooltip, p_77624_4_);
         tooltip.add("Created by attaching a Metrics Transmitter cover, no standard recipe");
+        getUUID(itemStack).ifPresent(uuid -> tooltip.add("Frequency: " + EnumChatFormatting.YELLOW + uuid));
         getCardState(itemStack).ifPresent(state -> {
             if (state == State.SELF_DESTRUCTED) {
                 tooltip.add(
@@ -94,8 +93,7 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
         super.registerIcons(aIconRegister);
         itemIcon = aIconRegister.registerIcon(GregTech.ID + ":gt.advancedsensorcard");
         normalIcon = itemIcon;
-        selfDestructedIcon = aIconRegister
-            .registerIcon(GregTech.ID + ":gt.advancedsensorcardburned");
+        selfDestructedIcon = aIconRegister.registerIcon(GregTech.ID + ":gt.advancedsensorcardburned");
     }
 
     @Override
@@ -106,23 +104,24 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
 
     @Override
     public IIcon getIconIndex(final ItemStack itemStack) {
-        final Optional<State> state = getCardState(itemStack);
-        if (state.isPresent() && state.get() == State.SELF_DESTRUCTED) {
-            return selfDestructedIcon;
-        }
-        return normalIcon;
+        return getCardState(itemStack).filter(Predicate.isEqual(State.SELF_DESTRUCTED))
+            .map(ignored -> selfDestructedIcon)
+            .orElse(normalIcon);
     }
 
     @Override
-    public CardState update(TileEntity panel, ICardWrapper card, int maxRange) {
-        return update(panel.getWorldObj(), card, maxRange);
+    public CardState update(TileEntity tileEntity, ICardWrapper card, int maxRange) {
+        return update(tileEntity.getWorldObj(), card, maxRange);
     }
 
     @Override
     public CardState update(World world, ICardWrapper card, int maxRange) {
         getDataFromDatabase(card).ifPresent(data -> {
             reconcileSelfDestructedCard(card.getItemStack(), data.getState());
-            card.setString(CARD_STATE_KEY, data.getState().name());
+            card.setInt(
+                CARD_STATE_KEY,
+                data.getState()
+                    .getType());
             payloadSize = switch (data.getState()) {
                 case SELF_DESTRUCTED -> SELF_DESTRUCTED_OUTPUT.size();
                 case DECONSTRUCTED -> DECONSTRUCTED_OUTPUT.size();
@@ -135,23 +134,33 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
     }
 
     @Override
-    public List<PanelString> getStringData(int displaySettings, ICardWrapper card, boolean showLabels) {
+    public List<PanelString> getStringData(final int displaySettings, final ICardWrapper card,
+        final boolean showLabels) {
+        // This method needs to return a mutable list, since the calling routine in NuclearCraft appends an item to the
+        // head of the list. Hence, all the array copying.
+
         return getCardState(card).map(state -> switch (state) {
             case SELF_DESTRUCTED -> new ArrayList<>(SELF_DESTRUCTED_OUTPUT);
             case DECONSTRUCTED -> new ArrayList<>(DECONSTRUCTED_OUTPUT);
-            case OPERATIONAL -> getDataFromDatabase(card).map(GT_AdvancedSensorCard_Item::createPanelStrings)
-                .orElse(new ArrayList<>(NO_DATA_FOUND));
+            case OPERATIONAL -> getDataFromDatabase(card).flatMap(GlobalMetricsCoverDatabase.Data::getPayload)
+                .filter(payload -> !payload.isEmpty())
+                .map(
+                    payload -> IntStream.range(0, payload.size())
+                        .filter(i -> (displaySettings & (1 << i)) != 0)
+                        .mapToObj(i -> prebakePanelString(payload.get(i)))
+                        .collect(Collectors.toCollection(ArrayList::new)))
+                .orElse(null);
         })
             .orElse(new ArrayList<>(NO_DATA_FOUND));
     }
 
     @Override
     public List<PanelSetting> getSettingsList() {
-        final ImmutableList.Builder<PanelSetting> builder = ImmutableList.builder();
-        builder.addAll(COMMON_PANEL_SETTINGS);
-        builder.addAll(createEmptyPanelSettings(payloadSize, COMMON_PANEL_SETTINGS.size()));
-
-        return builder.build();
+        return payloadSize == 0 ? ImmutableList.of()
+            : ImmutableList.copyOf(
+                IntStream.range(0, Math.min(payloadSize, 31))
+                    .mapToObj(i -> new PanelSetting(String.valueOf(i + 1), 1 << i, getCardType()))
+                    .iterator());
     }
 
     @Override
@@ -169,7 +178,11 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
                     stack.setTagCompound(new NBTTagCompound());
                 }
 
-                stack.getTagCompound().setString(CARD_STATE_KEY, data.getState().name());
+                stack.getTagCompound()
+                    .setInteger(
+                        CARD_STATE_KEY,
+                        data.getState()
+                            .getType());
             });
         }
     }
@@ -181,7 +194,6 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
             }
         }));
 
-
     }
 
     private Optional<State> getCardState(ICardWrapper card) {
@@ -191,11 +203,9 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
     private Optional<State> getCardState(ItemStack itemStack) {
         if (itemStack.hasTagCompound() && itemStack.getTagCompound()
             .hasKey(CARD_STATE_KEY)) {
-            final String stateString = itemStack.getTagCompound()
-                .getString(CARD_STATE_KEY);
-            try {
-                return Optional.of(State.valueOf(stateString));
-            } catch (IllegalArgumentException ignored) {}
+            return State.find(
+                itemStack.getTagCompound()
+                    .getInteger(CARD_STATE_KEY));
         }
 
         return Optional.empty();
@@ -218,18 +228,6 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
 
     private Optional<GlobalMetricsCoverDatabase.Data> getDataFromDatabase(ItemStack stack) {
         return getUUID(stack).flatMap(GlobalMetricsCoverDatabase::getData);
-    }
-
-    private static List<PanelString> createPanelStrings(GlobalMetricsCoverDatabase.Data data) {
-        return data.getPayloadStream()
-            .map(GT_AdvancedSensorCard_Item::prebakePanelString)
-            .collect(Collectors.toCollection(ArrayList::new));
-    }
-
-    private static Iterator<PanelSetting> createEmptyPanelSettings(int length, int bitOffset) {
-        return IntStream.rangeClosed(0, length)
-            .mapToObj(i -> new PanelSetting(String.valueOf(bitOffset + i), bitOffset + i, CARD_TYPE_ID))
-            .iterator();
     }
 
     private static PanelString prebakePanelString(String info) {

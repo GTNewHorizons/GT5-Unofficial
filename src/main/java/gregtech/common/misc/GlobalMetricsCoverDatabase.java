@@ -3,13 +3,15 @@ package gregtech.common.misc;
 import static net.minecraftforge.common.util.Constants.NBT.TAG_BYTE_ARRAY;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Stream;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,11 +44,11 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
 
     private static final Map<UUID, Data> DATABASE = new ConcurrentHashMap<>();
     private static final String DATA_NAME = "GregTech_MetricsCoverDatabase";
-    public static final String DECONSTRUCTED_KEY = "GregTech_MetricsCoverDatabase_Deconstructed";
-    public static final String SELF_DESTRUCTED_KEY = "GregTech_MetricsCoverDatabase_SelfDestructed";
+    private static final String DECONSTRUCTED_KEY = "GregTech_MetricsCoverDatabase_Deconstructed";
+    private static final String SELF_DESTRUCTED_KEY = "GregTech_MetricsCoverDatabase_SelfDestructed";
 
     public GlobalMetricsCoverDatabase() {
-        super(DATA_NAME);
+        this(DATA_NAME);
     }
 
     public GlobalMetricsCoverDatabase(String name) {
@@ -184,6 +186,10 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
     }
 
     private static UUID reconstituteUUID(byte[] bytes) {
+        if (bytes.length != 16) {
+            throw new IllegalArgumentException("Byte array passed must be exactly 16 bytes");
+        }
+
         ByteBuffer buffer = ByteBuffer.wrap(bytes);
         return new UUID(buffer.getLong(), buffer.getLong());
     }
@@ -207,20 +213,6 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
          */
         public Optional<List<String>> getPayload() {
             return Optional.ofNullable(payload);
-        }
-
-        /**
-         * Provides the payload as a stream.
-         *
-         * @return A stream of the payload, or an empty stream if the payload is missing (e.g., when frequency is not in
-         *         an operational state.)
-         */
-        public Stream<String> getPayloadStream() {
-            if (payload == null) {
-                return Stream.empty();
-            }
-
-            return payload.stream();
         }
 
         /**
@@ -248,17 +240,39 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
     }
 
     public enum State {
+        // NOTE: type cannot be 0, as NuclearControl returns a 0 when querying for an integer from an item stack's NBT
+        // data when it really means null.
+
         /** The machine is online and broadcasting metrics. */
-        OPERATIONAL,
+        OPERATIONAL(1),
         /**
          * The machine was picked up, but the cover is still attached. Will transition to operational state if the
          * machine is placed back down and started up again.
          */
-        DECONSTRUCTED,
+        DECONSTRUCTED(2),
         /**
          * Cover was removed from its host machine. Any frequency in this state will no longer get updates nor leave
          * this state.
          */
-        SELF_DESTRUCTED
+        SELF_DESTRUCTED(3);
+
+        private static final Map<Integer, State> VALID_TYPE_INTEGERS = Arrays.stream(State.values())
+            .collect(Collectors.toMap(State::getType, Function.identity()));
+        private final int type;
+
+        State(final int type) {
+            if (type <= 0) {
+                throw new IllegalArgumentException("A state must have a positive, nonzero typeInt.");
+            }
+            this.type = type;
+        }
+
+        public static Optional<State> find(int candidate) {
+            return Optional.ofNullable(VALID_TYPE_INTEGERS.get(candidate));
+        }
+
+        public int getType() {
+            return type;
+        }
     }
 }

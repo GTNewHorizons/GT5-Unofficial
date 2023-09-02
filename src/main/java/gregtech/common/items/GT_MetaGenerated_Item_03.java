@@ -1,7 +1,7 @@
 package gregtech.common.items;
 
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_METRICS_TRANSMITTER_COVER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_METRICS_TRANSMITTER;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UEV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UHV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UIV;
@@ -23,6 +23,7 @@ import static gregtech.client.GT_TooltipHandler.Tier.ZPM;
 import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -920,13 +921,15 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 "Metrics Transmitter Cover",
                 String.join(
                     "/n ",
+                    "Taking Information Panels to the next level!",
                     "Creates a GregTech Advanced Sensor Card when attached",
                     "Works across dimensions or if machine is dismantled",
-                    "Removing this cover will destroy the linked card")));
+                    "Removing this cover will destroy the linked card",
+                    GT_Values.AuthorQuerns)));
         GregTech_API.registerCover(
             ItemList.Cover_Metrics_Transmitter.get(1L),
-            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_METRICS_TRANSMITTER_COVER)),
-            new GT_Cover_Metrics_Transmitter(TextureFactory.of(OVERLAY_METRICS_TRANSMITTER_COVER)));
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_METRICS_TRANSMITTER)),
+            new GT_Cover_Metrics_Transmitter(TextureFactory.of(OVERLAY_METRICS_TRANSMITTER)));
 
         ItemList.Optical_Cpu_Containment_Housing.set(addItem(727, "Optical CPU Containment Housing", "CPU Housing", o));
         ItemList.Optically_Perfected_CPU.set(addItem(726, "Optically Perfected CPU", "Perfected CPU!", o));

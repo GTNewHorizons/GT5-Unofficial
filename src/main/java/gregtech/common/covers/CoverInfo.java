@@ -1,6 +1,7 @@
 package gregtech.common.covers;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -237,5 +238,9 @@ public final class CoverInfo {
 
     public int getFacadeMeta() {
         return getCoverBehavior().getFacadeMeta(coverSide, coverID, coverData, coveredTile.get());
+    }
+
+    public List<String> getAdditionalTooltip(ISerializableObject data) {
+        return getCoverBehavior().getAdditionalTooltip(data);
     }
 }
