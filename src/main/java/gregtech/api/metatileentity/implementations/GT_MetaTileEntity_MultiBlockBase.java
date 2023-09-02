@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.common.tileentities.machines.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -78,11 +79,6 @@ import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
-import gregtech.common.tileentities.machines.IDualInputHatch;
-import gregtech.common.tileentities.machines.IDualInputInventory;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -1338,6 +1334,16 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                         }
                     }
                 }
+            } else if (tHatch instanceof GT_MetaTileEntity_Hatch_Input_ME) {
+                if (isValidMetaTileEntity(tHatch)) {
+                    for (FluidStack fluidStack : ((GT_MetaTileEntity_Hatch_Input_ME) tHatch).getUseStoredFluid()) {
+                        if (fluidStack == null) {
+                            continue;
+                        }
+                        rList.add(fluidStack);
+                    }
+
+                }
             } else {
                 if (isValidMetaTileEntity(tHatch) && tHatch.getFillableStack() != null) {
                     // GT_Log.out.print("sf: " + tHatch.getFillableStack() + "\n");
@@ -1399,11 +1405,17 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     protected void startRecipeProcessing() {
         for (GT_MetaTileEntity_Hatch_InputBus tHatch : mInputBusses)
             if (isValidMetaTileEntity(tHatch)) tHatch.startRecipeProcessing();
+        for (GT_MetaTileEntity_Hatch_Input mInputHatch : mInputHatches) {
+            if (isValidMetaTileEntity(mInputHatch)) mInputHatch.startRecipeProcessing();
+        }
     }
 
     protected void endRecipeProcessing() {
         for (GT_MetaTileEntity_Hatch_InputBus tHatch : mInputBusses)
             if (isValidMetaTileEntity(tHatch)) tHatch.endRecipeProcessing();
+        for (GT_MetaTileEntity_Hatch_Input mInputHatch : mInputHatches) {
+            if (isValidMetaTileEntity(mInputHatch)) mInputHatch.endRecipeProcessing();
+        }
     }
 
     protected static <T extends GT_MetaTileEntity_Hatch> T identifyHatch(IGregTechTileEntity aTileEntity,

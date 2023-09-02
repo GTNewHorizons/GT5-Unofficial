@@ -3,6 +3,7 @@ package gregtech.loaders.preload;
 import static gregtech.api.enums.MetaTileEntityIDs.*;
 import static gregtech.api.enums.Mods.Forestry;
 
+import gregtech.common.tileentities.machines.*;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.GT_Mod;
@@ -56,15 +57,6 @@ import gregtech.common.tileentities.generators.GT_MetaTileEntity_MagicalEnergyAb
 import gregtech.common.tileentities.generators.GT_MetaTileEntity_NaquadahReactor;
 import gregtech.common.tileentities.generators.GT_MetaTileEntity_PlasmaGenerator;
 import gregtech.common.tileentities.generators.GT_MetaTileEntity_SteamTurbine;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_Bronze;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_BronzeBricks;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_Steel;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_BasicHull_SteelBricks;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_Slave;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_AdvSeismicProspector;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Boxinator;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Charger;
@@ -331,30 +323,30 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     private static final String aTextWire2 = " Wire";
     private static final String aTextCable2 = " Cable";
     public static final String imagination = EnumChatFormatting.RESET + "You just need "
-        + EnumChatFormatting.DARK_PURPLE
-        + "I"
-        + EnumChatFormatting.LIGHT_PURPLE
-        + "m"
-        + EnumChatFormatting.DARK_RED
-        + "a"
-        + EnumChatFormatting.RED
-        + "g"
-        + EnumChatFormatting.YELLOW
-        + "i"
-        + EnumChatFormatting.GREEN
-        + "n"
-        + EnumChatFormatting.AQUA
-        + "a"
-        + EnumChatFormatting.DARK_AQUA
-        + "t"
-        + EnumChatFormatting.BLUE
-        + "i"
-        + EnumChatFormatting.DARK_BLUE
-        + "o"
-        + EnumChatFormatting.DARK_PURPLE
-        + "n"
-        + EnumChatFormatting.RESET
-        + " to use this.";
+                                             + EnumChatFormatting.DARK_PURPLE
+                                             + "I"
+                                             + EnumChatFormatting.LIGHT_PURPLE
+                                             + "m"
+                                             + EnumChatFormatting.DARK_RED
+                                             + "a"
+                                             + EnumChatFormatting.RED
+                                             + "g"
+                                             + EnumChatFormatting.YELLOW
+                                             + "i"
+                                             + EnumChatFormatting.GREEN
+                                             + "n"
+                                             + EnumChatFormatting.AQUA
+                                             + "a"
+                                             + EnumChatFormatting.DARK_AQUA
+                                             + "t"
+                                             + EnumChatFormatting.BLUE
+                                             + "i"
+                                             + EnumChatFormatting.DARK_BLUE
+                                             + "o"
+                                             + EnumChatFormatting.DARK_PURPLE
+                                             + "n"
+                                             + EnumChatFormatting.RESET
+                                             + " to use this.";
 
     private static void registerMultiblockControllers() {
         ItemList.Machine_Bricked_BlastFurnace.set(
@@ -1893,6 +1885,11 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                     INPUT_BUS_ME.ID,
                     "hatch.input_bus.me",
                     "Stocking Input Bus (ME)").getStackForm(1L));
+            ItemList.Hatch_Input_ME.set(
+                new GT_MetaTileEntity_Hatch_Input_ME(
+                    INPUT_ME.ID,
+                    "hatch.input.me",
+                    "Stocking Input (ME)").getStackForm(1L));
             ItemList.Hatch_Output_ME.set(
                 new GT_MetaTileEntity_Hatch_Output_ME(OUTPUT_HATCH_ME.ID, "hatch.output.me", "Output Hatch (ME)")
                     .getStackForm(1L));
@@ -2741,35 +2738,35 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             new GT_MetaTileEntity_NaquadahReactor(
                 NAQUADAH_REACTOR_EV.ID,
                 "basicgenerator.naquadah.tier.04",
-                new String[] { "Requires Enriched Naquadah Bolts" },
+                new String[]{"Requires Enriched Naquadah Bolts"},
                 "Naquadah Reactor Mark I",
                 4).getStackForm(1L));
         ItemList.Generator_Naquadah_Mark_II.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 NAQUADAH_REACTOR_IV.ID,
                 "basicgenerator.naquadah.tier.05",
-                new String[] { "Requires Enriched Naquadah Rods" },
+                new String[]{"Requires Enriched Naquadah Rods"},
                 "Naquadah Reactor Mark II",
                 5).getStackForm(1L));
         ItemList.Generator_Naquadah_Mark_III.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 NAQUADAH_REACTOR_LuV.ID,
                 "basicgenerator.naquadah.tier.06",
-                new String[] { "Requires Enriched Naquadah Long Rods" },
+                new String[]{"Requires Enriched Naquadah Long Rods"},
                 "Naquadah Reactor Mark III",
                 6).getStackForm(1L));
         ItemList.Generator_Naquadah_Mark_IV.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 NAQUADAH_REACTOR_ZPM.ID,
                 "basicgenerator.naquadah.tier.07",
-                new String[] { "Requires Naquadria Bolts" },
+                new String[]{"Requires Naquadria Bolts"},
                 "Naquadah Reactor Mark IV",
                 7).getStackForm(1L));
         ItemList.Generator_Naquadah_Mark_V.set(
             new GT_MetaTileEntity_NaquadahReactor(
                 NAQUADAH_REACTOR_UV.ID,
                 "basicgenerator.naquadah.tier.08",
-                new String[] { "Requires Naquadria Rods" },
+                new String[]{"Requires Naquadria Rods"},
                 "Naquadah Reactor Mark V",
                 8).getStackForm(1L));
     }
@@ -2846,16 +2843,16 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     private static void generateWiresAndPipes() {
         for (int i = 0; i < GregTech_API.sGeneratedMaterials.length; i++) {
             if (((GregTech_API.sGeneratedMaterials[i] != null)
-                && ((GregTech_API.sGeneratedMaterials[i].mTypes & 0x2) != 0))
+                 && ((GregTech_API.sGeneratedMaterials[i].mTypes & 0x2) != 0))
                 || (GregTech_API.sGeneratedMaterials[i] == Materials.Wood)) {
                 new GT_MetaPipeEntity_Frame(
                     4096 + i,
                     "GT_Frame_" + GregTech_API.sGeneratedMaterials[i],
                     (GT_LanguageManager.i18nPlaceholder ? "%material"
                         : GregTech_API.sGeneratedMaterials[i] != null
-                            ? GregTech_API.sGeneratedMaterials[i].mDefaultLocalName
-                            : "")
-                        + " Frame Box",
+                        ? GregTech_API.sGeneratedMaterials[i].mDefaultLocalName
+                        : "")
+                    + " Frame Box",
                     GregTech_API.sGeneratedMaterials[i]);
             }
         }
@@ -3369,7 +3366,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     @SuppressWarnings("PointlessArithmeticExpression")
     private static void makeWires(Materials aMaterial, int aStartID, long aLossInsulated, long aLoss, long aAmperage,
-        long aVoltage, boolean aInsulatable, boolean aAutoInsulated) {
+                                  long aVoltage, boolean aInsulatable, boolean aAutoInsulated) {
         String name = GT_LanguageManager.i18nPlaceholder ? "%material" : aMaterial.mDefaultLocalName;
         GT_OreDictUnificator.registerOre(
             OrePrefixes.wireGt01,
@@ -3648,7 +3645,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private static void generateItemPipes(Materials aMaterial, String name, String displayName, int startID,
-        int baseInvSlots) {
+                                          int baseInvSlots) {
         GT_OreDictUnificator.registerOre(
             OrePrefixes.pipeMedium.get(aMaterial),
             new GT_MetaPipeEntity_Item(
@@ -3719,7 +3716,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     @SuppressWarnings("SameParameterValue")
     private static void generateFluidPipes(Materials aMaterial, String name, int startID, int baseCapacity,
-        int heatCapacity, boolean gasProof) {
+                                           int heatCapacity, boolean gasProof) {
         generateFluidPipes(
             aMaterial,
             name,
@@ -3731,7 +3728,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private static void generateFluidPipes(Materials aMaterial, String name, String displayName, int startID,
-        int baseCapacity, int heatCapacity, boolean gasProof) {
+                                           int baseCapacity, int heatCapacity, boolean gasProof) {
         GT_OreDictUnificator.registerOre(
             OrePrefixes.pipeTiny.get(aMaterial),
             new GT_MetaPipeEntity_Fluid(
@@ -3791,12 +3788,12 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
 
     @SuppressWarnings("SameParameterValue")
     private static void generateFluidMultiPipes(Materials aMaterial, String name, int startID, int baseCapacity,
-        int heatCapacity, boolean gasProof) {
+                                                int heatCapacity, boolean gasProof) {
         generateFluidMultiPipes(aMaterial, name, "%material", startID, baseCapacity, heatCapacity, gasProof);
     }
 
     private static void generateFluidMultiPipes(Materials aMaterial, String name, String displayName, int startID,
-        int baseCapacity, int heatCapacity, boolean gasProof) {
+                                                int baseCapacity, int heatCapacity, boolean gasProof) {
         GT_OreDictUnificator.registerOre(
             OrePrefixes.pipeQuadruple.get(aMaterial),
             new GT_MetaPipeEntity_Fluid(
