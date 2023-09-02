@@ -3109,7 +3109,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         /**
          * Whether this recipemap checks for equality of special slot when searching recipe.
          */
-        protected boolean isSpecialSlotSensitive = false;
+        private boolean isSpecialSlotSensitive = false;
 
         /**
          * How many fluid inputs does this recipemap has at most. Currently used only for NEI slot placements and does
@@ -3957,7 +3957,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             ItemStack... aInputs) {
             FindRecipeResult result = findRecipeWithResult(
                 aRecipe,
-                recipe -> true,
                 aNotUnificated,
                 aDontCheckStackSizes,
                 aVoltage,

@@ -21,7 +21,7 @@ public class FindRecipeResult {
     @Nullable
     private final GT_Recipe recipe;
     @Nullable
-    private RecipeValidator recipeValidatorPredicate;
+    private RecipeValidator recipeValidator;
 
     protected FindRecipeResult(@Nonnull State state, @Nullable GT_Recipe recipe) {
         this.state = state;
@@ -61,21 +61,21 @@ public class FindRecipeResult {
      */
     @NotNull
     public RecipeValidator getRecipeValidator() {
-        return Objects.requireNonNull(recipeValidatorPredicate);
+        return Objects.requireNonNull(recipeValidator);
     }
 
     /**
      * Sets recipeValidator which used to get this result
      */
-    public void setRecipeValidator(@Nullable RecipeValidator recipeValidatorPredicate) {
-        this.recipeValidatorPredicate = recipeValidatorPredicate;
+    public void setRecipeValidator(@Nullable RecipeValidator recipeValidator) {
+        this.recipeValidator = recipeValidator;
     }
 
     /**
      * Gets if this result has recipeValidator
      */
     public boolean hasRecipeValidator() {
-        return recipeValidatorPredicate != null;
+        return recipeValidator != null;
     }
 
     /**

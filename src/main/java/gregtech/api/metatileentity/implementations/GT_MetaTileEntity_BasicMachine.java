@@ -1088,7 +1088,6 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         if (tMap == null) return DID_NOT_FIND_RECIPE;
         FindRecipeResult result = tMap.findRecipeWithResult(
             mLastRecipe,
-            recipe -> true,
             false,
             false,
             V[mTier],
