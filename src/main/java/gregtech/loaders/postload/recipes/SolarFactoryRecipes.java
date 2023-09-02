@@ -13,13 +13,12 @@ public class SolarFactoryRecipes implements Runnable {
     public void run() {
         // just a test
         GT_Values.RA.stdBuilder()
-            .itemInputs(ItemList.Cover_SolarPanel_LV.get(256))
-            .itemOutputs(ItemList.Cover_SolarPanel_UIV.get(1))
+            .itemInputs(ItemList.Cover_SolarPanel_LV.get(64))
+            .itemOutputs(ItemList.Solar_Cell.get(1))
             .noFluidInputs()
             .noFluidOutputs()
             .duration(10 * SECONDS) // 31,540,000
             .eut(TierEU.RECIPE_IV)
             .addTo(sSolarFactoryRecipes);
-
     }
 }
