@@ -2146,18 +2146,18 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             .append("s / ")
             .append(String.format("%.2f", (double) mMaxProgresstime / 20))
             .append("s (")
-            .append(Math.round((double) mProgresstime / mMaxProgresstime * 1000) / 10.0)
+            .append(GT_Utility.formatNumbers((Math.round((double) mProgresstime / mMaxProgresstime * 1000) / 10.0)))
             .append("%)\n");
 
         Function<Integer, Void> appendRate = (Integer amount) -> {
             double processPerTick = (double) amount / mMaxProgresstime * 20;
             if (processPerTick > 1) {
                 ret.append(" (")
-                    .append(Math.round(processPerTick * 10) / 10.0)
+                    .append(GT_Utility.formatNumbers(Math.round(processPerTick * 10) / 10.0))
                     .append("/s)");
             } else {
                 ret.append(" (")
-                    .append(Math.round(1 / processPerTick * 10) / 10.0)
+                    .append(GT_Utility.formatNumbers(Math.round(1 / processPerTick * 10) / 10.0))
                     .append("s/ea)");
             }
             return null;
@@ -2179,7 +2179,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     .append(EnumChatFormatting.WHITE)
                     .append(" x ")
                     .append(EnumChatFormatting.GOLD)
-                    .append(item.stackSize)
+                    .append(GT_Utility.formatNumbers(item.stackSize))
                     .append(EnumChatFormatting.WHITE);
                 appendRate.apply(item.stackSize);
                 ret.append('\n');
@@ -2198,7 +2198,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     .append(EnumChatFormatting.WHITE)
                     .append(" x ")
                     .append(EnumChatFormatting.GOLD)
-                    .append(fluid.amount)
+                    .append(GT_Utility.formatNumbers(fluid.amount))
                     .append("L")
                     .append(EnumChatFormatting.WHITE);
                 appendRate.apply(fluid.amount);
