@@ -3972,6 +3972,29 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
          *
          * @param aRecipe              in case this is != null it will try to use this Recipe first when looking things
          *                             up.
+         * @param aNotUnificated       if this is T the Recipe searcher will unificate the ItemStack Inputs
+         * @param aDontCheckStackSizes if set to false will only return recipes that can be executed at least once with
+         *                             the provided input
+         * @param aVoltage             Voltage of the Machine or Long.MAX_VALUE if it has no Voltage
+         * @param aFluids              the Fluid Inputs
+         * @param aSpecialSlot         the content of the Special Slot, the regular Manager doesn't do anything with
+         *                             this, but some custom ones do.
+         * @param aInputs              the Item Inputs
+         * @return Result of the recipe search
+         */
+        @Nonnull
+        public final FindRecipeResult findRecipeWithResult(GT_Recipe aRecipe, boolean aNotUnificated,
+                                                     boolean aDontCheckStackSizes, long aVoltage, FluidStack[] aFluids,
+                                                     ItemStack aSpecialSlot, ItemStack... aInputs) {
+            return findRecipeWithResult(aRecipe, recipe -> aVoltage * mAmperage >= recipe.mEUt, aNotUnificated,
+                aDontCheckStackSizes, aVoltage, aFluids, aSpecialSlot, aInputs);
+        }
+
+        /**
+         * finds a Recipe matching the aFluid and ItemStack Inputs.
+         *
+         * @param aRecipe              in case this is != null it will try to use this Recipe first when looking things
+         *                             up.
          * @param aIsValidRecipe       predicate to help identify, if the recipe matches our machine
          * @param aNotUnificated       if this is T the Recipe searcher will unificate the ItemStack Inputs
          * @param aDontCheckStackSizes if set to false will only return recipes that can be executed at least once with
