@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OverclockCalculator;
 
 class GT_OverclockCalculator_UnitTest {
@@ -495,5 +496,16 @@ class GT_OverclockCalculator_UnitTest {
             .setAmperageOC(false)
             .calculate();
         assertEquals((7 << 4) * 29, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void ulvRecipeWorkCorrectlyWithCalculatingEutUnderOneTick() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(2)
+            .setEUt(TierEU.UV)
+            .setParallel(64)
+            .setDuration(300)
+            .setAmperage(64)
+            .setAmperageOC(false);
+        assertEquals(TierEU.LuV * 64, calculator.calculateEUtConsumptionUnderOneTick(64, 64), messageEUt);
     }
 }
