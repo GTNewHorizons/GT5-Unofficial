@@ -70,10 +70,10 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         }
     };
 
-    public int mMaxProgresstime = 0;
+    public int mMaxProgressTime = 0;
     private volatile boolean mUpdated;
     public int mUpdate = 5;
-    public int mProgresstime = 0;
+    public int mProgressTime = 0;
     public boolean mMachine = false;
 
     public ItemStack[] mOutputItems = new ItemStack[OUTPUT_SLOTS];
@@ -92,40 +92,6 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         super(aName, INPUT_SLOTS + OUTPUT_SLOTS);
     }
 
-    @Override
-    public boolean isSteampowered() {
-        return false;
-    }
-
-    @Override
-    public boolean isElectric() {
-        return false;
-    }
-
-    @Override
-    public boolean isPneumatic() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnetInput() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnetOutput() {
-        return false;
-    }
-
-    @Override
-    public boolean isInputFacing(ForgeDirection side) {
-        return false;
-    }
-
-    @Override
-    public boolean isOutputFacing(ForgeDirection side) {
-        return false;
-    }
 
     @Override
     public boolean isTeleporterCompatible() {
@@ -144,18 +110,18 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
     @Override
     public int getProgresstime() {
-        return this.mProgresstime;
+        return this.mProgressTime;
     }
 
     @Override
     public int maxProgresstime() {
-        return this.mMaxProgresstime;
+        return this.mMaxProgressTime;
     }
 
     @Override
     public int increaseProgress(int aProgress) {
-        this.mProgresstime += aProgress;
-        return this.mMaxProgresstime - this.mProgresstime;
+        this.mProgressTime += aProgress;
+        return this.mMaxProgressTime - this.mProgressTime;
     }
 
     @Override
@@ -169,8 +135,8 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("mProgresstime", this.mProgresstime);
-        aNBT.setInteger("mMaxProgresstime", this.mMaxProgresstime);
+        aNBT.setInteger("mProgresstime", this.mProgressTime);
+        aNBT.setInteger("mMaxProgresstime", this.mMaxProgressTime);
         if (this.mOutputItems != null) {
             for (int i = 0; i < mOutputItems.length; i++) {
                 if (this.mOutputItems[i] != null) {
@@ -185,8 +151,8 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         this.mUpdate = 5;
-        this.mProgresstime = aNBT.getInteger("mProgresstime");
-        this.mMaxProgresstime = aNBT.getInteger("mMaxProgresstime");
+        this.mProgressTime = aNBT.getInteger("mProgresstime");
+        this.mMaxProgressTime = aNBT.getInteger("mMaxProgresstime");
         this.mOutputItems = new ItemStack[OUTPUT_SLOTS];
         for (int i = 0; i < OUTPUT_SLOTS; i++) {
             this.mOutputItems[i] = GT_Utility.loadItem(aNBT, "mOutputItem" + i);
@@ -265,12 +231,12 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                 this.mMachine = checkMachine();
             }
             if (this.mMachine) {
-                if (this.mMaxProgresstime > 0) {
-                    if (++this.mProgresstime >= this.mMaxProgresstime) {
+                if (this.mMaxProgressTime > 0) {
+                    if (++this.mProgressTime >= this.mMaxProgressTime) {
                         addOutputProducts();
                         this.mOutputItems = null;
-                        this.mProgresstime = 0;
-                        this.mMaxProgresstime = 0;
+                        this.mProgressTime = 0;
+                        this.mMaxProgressTime = 0;
                         GT_Mod.achievements.issueAchievement(
                             aBaseMetaTileEntity.getWorld()
                                 .getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()),
@@ -280,13 +246,13 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                     checkRecipe();
                 }
             }
-            if (this.mMaxProgresstime > 0 && (aTimer % 20L == 0L)) {
+            if (this.mMaxProgressTime > 0 && (aTimer % 20L == 0L)) {
                 GT_Pollution.addPollution(
                     this.getBaseMetaTileEntity(),
                     GT_Mod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond);
             }
 
-            aBaseMetaTileEntity.setActive((this.mMaxProgresstime > 0) && (this.mMachine));
+            aBaseMetaTileEntity.setActive((this.mMaxProgressTime > 0) && (this.mMachine));
             final short lavaY = aBaseMetaTileEntity.getYCoord();
             if (aBaseMetaTileEntity.isActive()) {
                 if (aBaseMetaTileEntity.getAir(lavaX, lavaY, lavaZ)) {
@@ -429,15 +395,11 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
             }
         }
 
-        this.mMaxProgresstime = recipe.mDuration;
+        this.mMaxProgressTime = recipe.mDuration;
         this.mOutputItems = recipe.mOutputs;
         return true;
     }
 
-    @Override
-    public boolean isGivingInformation() {
-        return false;
-    }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
@@ -548,7 +510,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                     .setPos(121, 24))
             .widget(
                 new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ARROW_2_STEAM.get(getSteamVariant()), 20)
-                    .setProgress(() -> (float) mProgresstime / mMaxProgresstime)
+                    .setProgress(() -> (float) mProgressTime / mMaxProgressTime)
                     .setNEITransferRect(getRecipeMap().mNEIName)
                     .setPos(58, 24)
                     .setSize(20, 18));
