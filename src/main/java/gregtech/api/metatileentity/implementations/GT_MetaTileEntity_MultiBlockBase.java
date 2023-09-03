@@ -78,11 +78,7 @@ import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
-import gregtech.common.tileentities.machines.IDualInputHatch;
-import gregtech.common.tileentities.machines.IDualInputInventory;
+import gregtech.common.tileentities.machines.*;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -1351,6 +1347,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public ArrayList<ItemStack> getStoredInputs() {
         ArrayList<ItemStack> rList = new ArrayList<>();
         HashMap<String, ItemStack> rInputBusMeList = new HashMap<>();
+        HashMap<String, ItemStack> rCraftingInputBusList = new HashMap<>();
+
         for (GT_MetaTileEntity_Hatch_InputBus tHatch : mInputBusses) {
             tHatch.mRecipeMap = getRecipeMap();
             if (isValidMetaTileEntity(tHatch)) {
@@ -1368,9 +1366,20 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 }
             }
         }
+
+        for (IDualInputHatch tHatch : mDualInputHatches) {
+            if (supportsCraftingMEBuffer() && tHatch instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
+                for (ItemStack itemStack : ((GT_MetaTileEntity_Hatch_CraftingInput_ME) tHatch)
+                    .getCombinedItemInputs()) {
+                    if (itemStack != null) rCraftingInputBusList.put(itemStack.toString(), itemStack);
+                }
+            }
+        }
+
         if (getStackInSlot(1) != null && getStackInSlot(1).getUnlocalizedName()
             .startsWith("gt.integrated_circuit")) rList.add(getStackInSlot(1));
         if (!rInputBusMeList.isEmpty()) rList.addAll(rInputBusMeList.values());
+        if (!rCraftingInputBusList.isEmpty()) rList.addAll(rCraftingInputBusList.values());
         return rList;
     }
 

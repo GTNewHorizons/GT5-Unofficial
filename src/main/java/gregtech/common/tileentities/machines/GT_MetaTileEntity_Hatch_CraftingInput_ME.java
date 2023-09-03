@@ -960,4 +960,22 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     public void setCustomName(String name) {
         customName = name;
     }
+
+    public ArrayList<ItemStack> getCombinedItemInputs() {
+        ArrayList<ItemStack> items = new ArrayList<>();
+
+        for (ItemStack itemStack : getSharedItems()) {
+            if (itemStack != null && itemStack.stackSize >= 0) {
+                items.add(itemStack);
+            }
+        }
+
+        for (var slot : internalInventory) {
+            if (slot != null && !slot.isEmpty()) {
+                items.addAll(slot.itemInventory);
+            }
+        }
+
+        return items;
+    }
 }
