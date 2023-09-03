@@ -816,6 +816,15 @@ public enum ItemList implements IItemContainer {
     Machine_HP_AlloySmelter,
 
     Solar_Cell,
+    Solar_Cell_8V,
+    Solar_Cell_LV,
+    Solar_Cell_MV,
+    Solar_Cell_HV,
+    Solar_Cell_EV,
+    Solar_Cell_IV,
+    Solar_Cell_LuV,
+    Solar_Cell_ZPM,
+    Solar_Cell_UV,
 
     Hull_Bronze,
     Hull_HP,
