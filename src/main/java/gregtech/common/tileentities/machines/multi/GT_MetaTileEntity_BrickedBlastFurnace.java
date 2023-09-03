@@ -1,7 +1,9 @@
 package gregtech.common.tileentities.machines.multi;
 
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
+import static gregtech.api.util.GT_Waila.getMachineProgressString;
+
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -23,10 +25,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-
-import java.util.List;
-
-import static gregtech.api.util.GT_Waila.getMachineProgressString;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_PrimitiveBlastFurnace
     implements ISecondaryDescribable {
@@ -123,27 +123,30 @@ public class GT_MetaTileEntity_BrickedBlastFurnace extends GT_MetaTileEntity_Pri
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-                             IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
-        if (!this.getBaseMetaTileEntity().isInvalidTileEntity()) {
+        if (!this.getBaseMetaTileEntity()
+            .isInvalidTileEntity()) {
             NBTTagCompound nbt = accessor.getNBTData();
-            currenttip.add(getMachineProgressString(this.getBaseMetaTileEntity().isActive(),
-                nbt.getInteger("mMaxProgressTime"),
-                nbt.getInteger("mProgressTime")));
+            currenttip.add(
+                getMachineProgressString(
+                    this.getBaseMetaTileEntity()
+                        .isActive(),
+                    nbt.getInteger("mMaxProgressTime"),
+                    nbt.getInteger("mProgressTime")));
         }
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-                                int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        if (!this.getBaseMetaTileEntity().isInvalidTileEntity()) {
+        if (!this.getBaseMetaTileEntity()
+            .isInvalidTileEntity()) {
             tag.setInteger("mProgressTime", this.getProgresstime());
             tag.setInteger("mMaxProgressTime", this.maxProgresstime());
         }
     }
-
-
 
     @Override
     public String[] getStructureDescription(ItemStack stackSize) {

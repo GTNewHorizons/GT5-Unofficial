@@ -70,10 +70,10 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         }
     };
 
-    public int mMaxProgressTime = 0;
+    public int mMaxProgresstime = 0;
     private volatile boolean mUpdated;
     public int mUpdate = 5;
-    public int mProgressTime = 0;
+    public int mProgresstime = 0;
     public boolean mMachine = false;
 
     public ItemStack[] mOutputItems = new ItemStack[OUTPUT_SLOTS];
@@ -92,7 +92,6 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         super(aName, INPUT_SLOTS + OUTPUT_SLOTS);
     }
 
-
     @Override
     public boolean isTeleporterCompatible() {
         return false;
@@ -110,18 +109,18 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
     @Override
     public int getProgresstime() {
-        return this.mProgressTime;
+        return this.mProgresstime;
     }
 
     @Override
     public int maxProgresstime() {
-        return this.mMaxProgressTime;
+        return this.mMaxProgresstime;
     }
 
     @Override
     public int increaseProgress(int aProgress) {
-        this.mProgressTime += aProgress;
-        return this.mMaxProgressTime - this.mProgressTime;
+        this.mProgresstime += aProgress;
+        return this.mMaxProgresstime - this.mProgresstime;
     }
 
     @Override
@@ -135,8 +134,8 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("mProgresstime", this.mProgressTime);
-        aNBT.setInteger("mMaxProgresstime", this.mMaxProgressTime);
+        aNBT.setInteger("mProgresstime", this.mProgresstime);
+        aNBT.setInteger("mMaxProgresstime", this.mMaxProgresstime);
         if (this.mOutputItems != null) {
             for (int i = 0; i < mOutputItems.length; i++) {
                 if (this.mOutputItems[i] != null) {
@@ -151,8 +150,8 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         this.mUpdate = 5;
-        this.mProgressTime = aNBT.getInteger("mProgresstime");
-        this.mMaxProgressTime = aNBT.getInteger("mMaxProgresstime");
+        this.mProgresstime = aNBT.getInteger("mProgresstime");
+        this.mMaxProgresstime = aNBT.getInteger("mMaxProgresstime");
         this.mOutputItems = new ItemStack[OUTPUT_SLOTS];
         for (int i = 0; i < OUTPUT_SLOTS; i++) {
             this.mOutputItems[i] = GT_Utility.loadItem(aNBT, "mOutputItem" + i);
@@ -231,12 +230,12 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                 this.mMachine = checkMachine();
             }
             if (this.mMachine) {
-                if (this.mMaxProgressTime > 0) {
-                    if (++this.mProgressTime >= this.mMaxProgressTime) {
+                if (this.mMaxProgresstime > 0) {
+                    if (++this.mProgresstime >= this.mMaxProgresstime) {
                         addOutputProducts();
                         this.mOutputItems = null;
-                        this.mProgressTime = 0;
-                        this.mMaxProgressTime = 0;
+                        this.mProgresstime = 0;
+                        this.mMaxProgresstime = 0;
                         GT_Mod.achievements.issueAchievement(
                             aBaseMetaTileEntity.getWorld()
                                 .getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()),
@@ -246,13 +245,13 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                     checkRecipe();
                 }
             }
-            if (this.mMaxProgressTime > 0 && (aTimer % 20L == 0L)) {
+            if (this.mMaxProgresstime > 0 && (aTimer % 20L == 0L)) {
                 GT_Pollution.addPollution(
                     this.getBaseMetaTileEntity(),
                     GT_Mod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond);
             }
 
-            aBaseMetaTileEntity.setActive((this.mMaxProgressTime > 0) && (this.mMachine));
+            aBaseMetaTileEntity.setActive((this.mMaxProgresstime > 0) && (this.mMachine));
             final short lavaY = aBaseMetaTileEntity.getYCoord();
             if (aBaseMetaTileEntity.isActive()) {
                 if (aBaseMetaTileEntity.getAir(lavaX, lavaY, lavaZ)) {
@@ -395,11 +394,10 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
             }
         }
 
-        this.mMaxProgressTime = recipe.mDuration;
+        this.mMaxProgresstime = recipe.mDuration;
         this.mOutputItems = recipe.mOutputs;
         return true;
     }
-
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
@@ -510,7 +508,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                     .setPos(121, 24))
             .widget(
                 new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ARROW_2_STEAM.get(getSteamVariant()), 20)
-                    .setProgress(() -> (float) mProgressTime / mMaxProgressTime)
+                    .setProgress(() -> (float) mProgresstime / mMaxProgresstime)
                     .setNEITransferRect(getRecipeMap().mNEIName)
                     .setPos(58, 24)
                     .setSize(20, 18));
