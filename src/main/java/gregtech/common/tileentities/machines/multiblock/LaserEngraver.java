@@ -29,11 +29,8 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.logic.ComplexParallelProcessingLogic;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.ComplexParallelController;
-import gregtech.api.multitileentity.multiblock.base.Controller;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
@@ -206,7 +203,9 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver, Lase
                     ofMuTECasings(
                         FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
                         GT_MultiTileCasing.BlackLaserEngraverCasing.getCasing()))
-                .addElement('C', ofMuTECasings(NOTHING, CLEANROOM_CASINGS, GT_MultiTileCasing.LaserEngraver.getCasing()))
+                .addElement(
+                    'C',
+                    ofMuTECasings(NOTHING, CLEANROOM_CASINGS, GT_MultiTileCasing.LaserEngraver.getCasing()))
                 .addElement('D', ofMuTECasings(NOTHING, WIRELESS_CASINGS, GT_MultiTileCasing.LaserEngraver.getCasing()))
                 .addElement('E', ofMuTECasings(NOTHING, MOTOR_CASINGS))
                 .addElement('F', GT_StructureUtility.ofFrame(Materials.Naquadah)

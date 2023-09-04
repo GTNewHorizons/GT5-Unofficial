@@ -5,6 +5,7 @@ import static net.minecraftforge.oredict.OreDictionary.getOreID;
 import static net.minecraftforge.oredict.OreDictionary.getOreIDs;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -46,7 +47,8 @@ public class CokeOvenProcessingLogic extends ProcessingLogic<CokeOvenProcessingL
             : CheckRecipeResultRegistry.NO_RECIPE;
     }
 
-    protected ItemStack findRecipe(ItemStack input) {
+    @Nullable
+    protected ItemStack findRecipe(@Nonnull ItemStack input) {
         for (int oreId : getOreIDs(input)) {
             if (oreId == COAL_ORE_ID) {
                 return GT_OreDictUnificator.get("fuelCoke", null, 1);

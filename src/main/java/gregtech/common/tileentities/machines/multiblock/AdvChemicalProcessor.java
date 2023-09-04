@@ -46,7 +46,6 @@ import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.logic.ComplexParallelProcessingLogic;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.ComplexParallelController;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
@@ -56,7 +55,8 @@ import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_StructureUtilityMuTE;
 import gregtech.common.tileentities.machines.multiblock.logic.AdvChemicalProcessorProcessingLogic;
 
-public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalProcessor, AdvChemicalProcessorProcessingLogic> {
+public class AdvChemicalProcessor
+    extends ComplexParallelController<AdvChemicalProcessor, AdvChemicalProcessorProcessingLogic> {
 
     private static IStructureDefinition<AdvChemicalProcessor> STRUCTURE_DEFINITION = null;
     protected static final String STRUCTURE_PIECE_T1 = "T1";

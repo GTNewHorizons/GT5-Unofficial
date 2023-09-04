@@ -25,8 +25,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.Controller;
 import gregtech.api.task.tasks.PollutionTask;

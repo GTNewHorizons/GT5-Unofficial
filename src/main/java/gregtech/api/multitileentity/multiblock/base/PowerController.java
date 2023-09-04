@@ -20,7 +20,8 @@ import gregtech.api.util.GT_Utility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public abstract class PowerController<T extends PowerController<T, P>, P extends ProcessingLogic<P>> extends Controller<T, P> implements PowerLogicHost {
+public abstract class PowerController<T extends PowerController<T, P>, P extends ProcessingLogic<P>>
+    extends Controller<T, P> implements PowerLogicHost {
 
     public PowerController() {
         super();

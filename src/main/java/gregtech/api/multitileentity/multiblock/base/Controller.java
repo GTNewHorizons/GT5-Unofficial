@@ -85,9 +85,9 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 /**
  * Multi Tile Entities - or MuTEs - don't have dedicated hatches, but their casings can become hatches.
  */
-public abstract class Controller<T extends Controller<T, P>, P extends ProcessingLogic<P>> extends MultiTileBasicMachine<P>
-    implements IAlignment, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable,
-    ControllerWithOptionalFeatures, IGlobalWirelessEnergy {
+public abstract class Controller<T extends Controller<T, P>, P extends ProcessingLogic<P>>
+    extends MultiTileBasicMachine<P> implements IAlignment, IMultiBlockController, IDescribable, IMTE_AddToolTips,
+    ISurvivalConstructable, ControllerWithOptionalFeatures, IGlobalWirelessEnergy {
 
     public static final String ALL_INVENTORIES_NAME = "all";
     protected static final int AUTO_OUTPUT_FREQUENCY_TICK = 20;
