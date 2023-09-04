@@ -101,7 +101,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     protected short mID = 0;
     public long mTickTimer = 0;
-    private Map<ForgeDirection, String> clientCoverTooltips = new HashMap<>();
     private Map<ForgeDirection, ISerializableObject> clientCoverData = new HashMap<>();
 
     protected void writeCoverNBT(NBTTagCompound aNBT, boolean isDrop) {
