@@ -1162,7 +1162,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             1,
             E,
             false,
-            true).setDisableOptimize(true);
+            true).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_SQUARE)
+                .setSlotOverlay(false, true, GT_UITextures.OVERLAY_SLOT_SQUARE)
+                .setRecipeConfigFile("solarfactory", FIRST_ITEM_INPUT)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sCompressorRecipes = new GT_Recipe_Map(
             new HashSet<>(750),
             "gt.recipe.compressor",

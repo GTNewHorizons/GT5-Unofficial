@@ -119,12 +119,12 @@ public class GT_MachineRecipeLoader implements Runnable {
         new SifterRecipes().run();
         new SlicerRecipes().run();
         new SmelterRecipes().run();
+        new SolarFactoryRecipes().run();
         new ThaumcraftRecipes().run();
         new ThermalCentrifugeRecipes().run();
         new VacuumFreezerRecipes().run();
         new WiremillRecipes().run();
         new TranscendentPlasmaMixerRecipes().run();
-        new SolarFactoryRecipes().run();
 
         GT_BauxiteRefineChain.run();
         GT_NaniteChain.run();
