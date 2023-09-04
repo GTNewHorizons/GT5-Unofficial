@@ -14,7 +14,7 @@ import java.util.Locale;
 import java.util.function.Consumer;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.BiomeDictionary.Type;
+import net.minecraftforge.common.BiomeDictionary;
 
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -85,7 +85,7 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
             }, dis -> {
                 IBeeMutationCustom tMutation = dis.registerMutation("STEEL", "GOLD", 10);
                 tMutation.restrictHumidity(ARID);
-                tMutation.restrictBiomeType(Type.HOT);
+                tMutation.restrictBiomeType(BiomeDictionary.Type.HOT);
             }),;
 
     private final GTPP_BranchDefinition branch;

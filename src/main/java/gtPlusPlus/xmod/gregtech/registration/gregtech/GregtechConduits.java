@@ -192,17 +192,11 @@ public class GregtechConduits {
 
     private static void run1() {
 
-        if (EnderIO.isModLoaded()) {
-            wireFactory("RedstoneAlloy", 32, BaseWireID + 45, 0, 2, 1, new short[] { 178, 34, 34, 0 });
-        }
+        wireFactory("RedstoneAlloy", 32, BaseWireID + 45, 0, 2, 1, new short[] { 178, 34, 34, 0 });
 
         // need to go back id because fluid pipes already occupy
         makeCustomWires(ELEMENT.STANDALONE.HYPOGEN, BaseWireID - 15, 0, 0, 8, GT_Values.V[11], false, true);
 
-        // superConductorFactory(GT_Materials.Superconductor, 524288, 30660, 0, 0, 8);
-        if (Thaumcraft.isModLoaded()) {
-            // superConductorFactory(GT_Materials.Void, 512, 30661, 0, 0, 8);
-        }
     }
 
     private static void run2() {

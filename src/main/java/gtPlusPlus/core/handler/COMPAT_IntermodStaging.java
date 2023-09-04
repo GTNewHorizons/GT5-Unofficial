@@ -12,8 +12,6 @@ import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 import gtPlusPlus.xmod.ic2.HANDLER_IC2;
 import gtPlusPlus.xmod.ob.HANDLER_OpenBlocks;
 import gtPlusPlus.xmod.railcraft.HANDLER_Railcraft;
-import gtPlusPlus.xmod.sc2.HANDLER_SC2;
-import gtPlusPlus.xmod.sol.HANDLER_SpiceOfLife;
 import gtPlusPlus.xmod.thaumcraft.HANDLER_Thaumcraft;
 import gtPlusPlus.xmod.thermalfoundation.HANDLER_TF;
 import gtPlusPlus.xmod.tinkers.HANDLER_Tinkers;
@@ -26,10 +24,8 @@ public class COMPAT_IntermodStaging {
         HANDLER_FR.preInit();
         HANDLER_IC2.preInit();
         HANDLER_BiomesOPlenty.preInit();
-        HANDLER_SC2.preInit();
         HANDLER_CropsPlusPlus.preInit(preinit);
         HANDLER_Railcraft.preInit();
-        HANDLER_SpiceOfLife.preInit();
     }
 
     public static void init(FMLInitializationEvent init) {

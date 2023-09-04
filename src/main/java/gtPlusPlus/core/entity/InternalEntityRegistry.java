@@ -3,8 +3,6 @@ package gtPlusPlus.core.entity;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.entity.monster.EntityBatKing;
-import gtPlusPlus.core.entity.monster.EntityGiantChickenBase;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.entity.projectile.EntityHydrofluoricAcidPotion;
@@ -109,28 +107,5 @@ public class InternalEntityRegistry {
                 20,
                 true);
 
-        /**
-         * Globals, which generate spawn eggs. (Currently required for Giant chicken spawning)
-         */
-        EntityRegistry.registerModEntity(
-                EntityGiantChickenBase.class,
-                "bigChickenFriendly",
-                mEntityID++,
-                GTplusplus.instance,
-                64,
-                20,
-                true);
-        ItemCustomSpawnEgg.registerEntityForSpawnEgg(
-                2,
-                "bigChickenFriendly",
-                Utils.rgbtoHexValue(255, 0, 0),
-                Utils.rgbtoHexValue(175, 175, 175));
-        EntityRegistry
-                .registerModEntity(EntityBatKing.class, "batKing", mEntityID++, GTplusplus.instance, 64, 20, true);
-        ItemCustomSpawnEgg.registerEntityForSpawnEgg(
-                3,
-                "batKing",
-                Utils.rgbtoHexValue(175, 175, 0),
-                Utils.rgbtoHexValue(0, 175, 175));
     }
 }

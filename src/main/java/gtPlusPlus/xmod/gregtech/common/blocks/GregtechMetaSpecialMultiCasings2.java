@@ -3,7 +3,9 @@ package gtPlusPlus.xmod.gregtech.common.blocks;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -17,6 +19,13 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAbstract {
+
+    @Override
+    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+        for (int i = 0; i < 8; i++) {
+            aList.add(new ItemStack(aItem, 1, i));
+        }
+    }
 
     public static class SpecialCasingItemBlock extends GregtechMetaCasingItems {
 
@@ -51,14 +60,6 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Modulator II");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Modulator III");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Modulator IV");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", ""); // Unused
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", ""); // Unused
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", ""); // Unused
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", ""); // Unused
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", ""); // Unused
 
         GregtechItemList.ResonanceChamber_I.set(new ItemStack(this, 1, 0));
         GregtechItemList.ResonanceChamber_II.set(new ItemStack(this, 1, 1));

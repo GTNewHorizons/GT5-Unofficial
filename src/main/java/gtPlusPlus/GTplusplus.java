@@ -46,11 +46,8 @@ import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.MobMentality;
 import gtPlusPlus.core.handler.PacketHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
-import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.handler.events.LoginEventHandler;
 import gtPlusPlus.core.handler.events.MissingMappingsEvent;
-import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.item.general.ItemGiantEgg;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
@@ -138,7 +135,6 @@ public class GTplusplus implements ActionListener {
     public static void loadTextures() {
         Logger.INFO("Loading some textures on the client.");
         // Tools
-        Logger.WARNING("Processing texture: " + TexturesGtTools.SKOOKUM_CHOOCHER.getTextureFile().getResourcePath());
         Logger.WARNING("Processing texture: " + TexturesGtTools.ANGLE_GRINDER.getTextureFile().getResourcePath());
         Logger.WARNING("Processing texture: " + TexturesGtTools.ELECTRIC_SNIPS.getTextureFile().getResourcePath());
         Logger.WARNING("Processing texture: " + TexturesGtTools.ELECTRIC_LIGHTER.getTextureFile().getResourcePath());
@@ -213,9 +209,6 @@ public class GTplusplus implements ActionListener {
         BookHandler.runLater();
         Meta_GT_Proxy.postInit();
         Core_Manager.postInit();
-
-        ItemGiantEgg.postInit(ModItems.itemBigEgg);
-        BlockEventHandler.init();
 
         Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         Logger.INFO(

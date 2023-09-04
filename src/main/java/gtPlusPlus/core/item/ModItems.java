@@ -1,22 +1,15 @@
 package gtPlusPlus.core.item;
 
-import static gregtech.api.enums.Mods.Baubles;
-import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.Thaumcraft;
-import static gtPlusPlus.core.creative.AddToCreativeTab.tabMachines;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
-import static gtPlusPlus.core.lib.CORE.LOAD_ALL_CONTENT;
 
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
-import net.minecraft.item.Item.ToolMaterial;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -31,55 +24,37 @@ import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.common.compat.COMPAT_Baubles;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.item.base.BaseEuItem;
-import gtPlusPlus.core.item.base.BaseItemBackpack;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.BaseItemDamageable;
 import gtPlusPlus.core.item.base.BaseItemTCShard;
 import gtPlusPlus.core.item.base.CoreItem;
 import gtPlusPlus.core.item.base.dusts.BaseItemDust;
 import gtPlusPlus.core.item.base.foil.BaseItemFoil;
-import gtPlusPlus.core.item.base.foods.BaseItemFood;
-import gtPlusPlus.core.item.base.foods.BaseItemHotFood;
 import gtPlusPlus.core.item.base.gears.BaseItemSmallGear;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot_OLD;
-import gtPlusPlus.core.item.base.misc.BaseItemMisc;
-import gtPlusPlus.core.item.base.misc.BaseItemMisc.MiscTypes;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.bauble.BatteryPackBaseBauble;
-import gtPlusPlus.core.item.bauble.HealthBoostBauble;
-import gtPlusPlus.core.item.bauble.ModularBauble;
-import gtPlusPlus.core.item.bauble.MonsterKillerBaseBauble;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.CoalTar;
 import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.item.chemistry.MilledOreProcessing;
-import gtPlusPlus.core.item.chemistry.NuclearChem;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.item.chemistry.StandardBaseParticles;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.item.food.BaseItemMetaFood;
-import gtPlusPlus.core.item.general.BaseItemGrindle;
 import gtPlusPlus.core.item.general.BufferCore;
 import gtPlusPlus.core.item.general.ItemAirFilter;
-import gtPlusPlus.core.item.general.ItemAreaClear;
-import gtPlusPlus.core.item.general.ItemBasicFirestarter;
 import gtPlusPlus.core.item.general.ItemBasicScrubberTurbine;
 import gtPlusPlus.core.item.general.ItemBlueprint;
-import gtPlusPlus.core.item.general.ItemControlCore;
 import gtPlusPlus.core.item.general.ItemEmpty;
-import gtPlusPlus.core.item.general.ItemGemShards;
 import gtPlusPlus.core.item.general.ItemGenericToken;
-import gtPlusPlus.core.item.general.ItemGiantEgg;
 import gtPlusPlus.core.item.general.ItemHalfCompleteCasings;
 import gtPlusPlus.core.item.general.ItemLavaFilter;
 import gtPlusPlus.core.item.general.ItemMagicFeather;
-import gtPlusPlus.core.item.general.ItemSunnariumBit;
 import gtPlusPlus.core.item.general.books.ItemBaseBook;
-import gtPlusPlus.core.item.general.capture.ItemEntityCatcher;
 import gtPlusPlus.core.item.general.chassis.ItemBoilerChassis;
 import gtPlusPlus.core.item.general.chassis.ItemDehydratorCoil;
 import gtPlusPlus.core.item.general.chassis.ItemDehydratorCoilWire;
@@ -91,14 +66,6 @@ import gtPlusPlus.core.item.init.ItemsFoods;
 import gtPlusPlus.core.item.materials.DustDecayable;
 import gtPlusPlus.core.item.tool.misc.DebugScanner;
 import gtPlusPlus.core.item.tool.misc.GregtechPump;
-import gtPlusPlus.core.item.tool.misc.SandstoneHammer;
-import gtPlusPlus.core.item.tool.misc.box.AutoLunchBox;
-import gtPlusPlus.core.item.tool.misc.box.MagicToolBag;
-import gtPlusPlus.core.item.tool.misc.box.UniversalToolBox;
-import gtPlusPlus.core.item.tool.staballoy.MultiPickaxeBase;
-import gtPlusPlus.core.item.tool.staballoy.MultiSpadeBase;
-import gtPlusPlus.core.item.tool.staballoy.StaballoyAxe;
-import gtPlusPlus.core.item.tool.staballoy.StaballoyPickaxe;
 import gtPlusPlus.core.item.wearable.WearableLoader;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
@@ -118,112 +85,34 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.GTplusplus_Everglades;
-import gtPlusPlus.xmod.cofh.HANDLER_COFH;
-import gtPlusPlus.xmod.eio.material.MaterialEIO;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 
 public final class ModItems {
 
-    public static ToolMaterial STABALLOY = EnumHelper.addToolMaterial("Staballoy", 3, 2500, 7, 1.0F, 18);
-
     public static Item ZZZ_Empty;
     public static Item AAA_Broken;
 
     public static Item itemAlkalusDisk;
-    public static Item itemDebugShapeSpawner;
     public static ItemCustomSpawnEgg itemCustomSpawnEgg;
 
-    // EnderIO
-    public static Item itemPlateSoularium;
-    public static Item itemPlateRedstoneAlloy;
-    public static Item itemPlateElectricalSteel;
-    public static Item itemPlatePulsatingIron;
-    public static Item itemPlateEnergeticAlloy;
-    public static Item itemPlateVibrantAlloy;
-    public static Item itemPlateConductiveIron;
-    public static Item itemPlateDarkSteel;
-    public static Item itemDustSoularium;
-    public static Item itemDustRedstoneAlloy;
-    public static Item itemDustElectricalSteel;
-    public static Item itemDustPulsatingIron;
-    public static Item itemDustEnergeticAlloy;
-    public static Item itemDustVibrantAlloy;
-    public static Item itemDustConductiveIron;
-
-    // Staballoy
-    public static Item itemStaballoyPickaxe;
-    public static Item itemStaballoyAxe;
-    // Tools
-    public static Item itemSandstoneHammer;
-    // Machine Related
-    public static Item itemBufferCore0;
-    // Material related
-    public static Item itemStickyRubber;
     public static Item itemIngotBatteryAlloy;
     public static Item itemPlateBatteryAlloy;
-    public static Item itemHeliumBlob;
     public static Item itemHydrogenBlob;
-    public static Item itemPLACEHOLDER_Circuit;
-
-    public static Item FuelRod_Empty;
-    public static Item FuelRod_Thorium;
-    public static Item FuelRod_Uranium;
-    public static Item FuelRod_Plutonium;
 
     public static Item itemBedLocator_Base;
     public static Item itemBaseItemWithCharge;
 
-    public static Item itemIngotRaisinBread;
-    public static Item itemHotIngotRaisinBread;
-
-    public static ItemFood itemFoodRaisinToast;
-    public static BaseItemHotFood itemHotFoodRaisinToast;
-    public static BaseItemFood itemFoodCurriedSausages;
-    public static BaseItemHotFood itemHotFoodCurriedSausages;
-
-    public static Item RfEuBattery;
     public static Item itemPersonalCloakingDevice;
-    public static Item itemPersonalCloakingDeviceCharged;
     public static Item itemPersonalHealingDevice;
-    public static Item itemPersonalFireProofDevice;
     public static Item itemSlowBuildingRing;
-
-    public static MultiPickaxeBase MP_GTMATERIAL;
-    public static MultiSpadeBase MS_GTMATERIAL;
-
-    public static ItemStack FluidCell;
-
-    public static BaseItemBackpack backpack_Red;
-    public static BaseItemBackpack backpack_Green;
-    public static BaseItemBackpack backpack_Blue;
-    public static BaseItemBackpack backpack_Yellow;
-    public static BaseItemBackpack backpack_Purple;
-    public static BaseItemBackpack backpack_Cyan;
-    public static BaseItemBackpack backpack_Maroon;
-    public static BaseItemBackpack backpack_Olive;
-    public static BaseItemBackpack backpack_DarkGreen;
-    public static BaseItemBackpack backpack_DarkPurple;
-    public static BaseItemBackpack backpack_Teal;
-    public static BaseItemBackpack backpack_Navy;
-    public static BaseItemBackpack backpack_Silver;
-    public static BaseItemBackpack backpack_Gray;
-    public static BaseItemBackpack backpack_Black;
-    public static BaseItemBackpack backpack_White;
 
     public static ItemBlueprint itemBlueprintBase;
 
     public static Item dustLithiumCarbonate;
     public static Item dustLithiumHydroxide;
     public static Item dustLithiumPeroxide;
-    public static Item dustLithiumFluoride;
-
-    public static Item dustUranium232;
-    public static Item dustUraniumTetraFluoride;
-    public static Item dustUraniumHexaFluoride;
-
-    public static Item dustBerylliumFluoride;
 
     public static Item dustQuicklime;
     public static Item dustCalciumHydroxide;
@@ -240,45 +129,20 @@ public final class ModItems {
 
     public static Item cellHydrogenChlorideMix;
 
-    public static BaseEuItem metaItem2;
-
     public static Item shardAer;
     public static Item shardIgnis;
     public static Item shardTerra;
     public static Item shardAqua;
 
-    // Tc Compat for energy crystal recipes
-    public static Item shardDull;
-
-    // Lighter
-    public static Item itemBasicFireMaker;
-
     // Zirconium
     public static Item itemZirconiumChlorideCinterPellet;
     public static Item dustZrCl4;
     public static Item dustCookedZrCl4;
-    public static Item dustZrF4;
-
-    public static Item dustNaBF4NaF;
-    public static Item dustLiFBeF2ZrF4UF4;
-    public static Item dustLiFBeF2ZrF4U235;
-    public static Item dustLiFBeF2ThF4UF4;
 
     public static Item dustCalciumSulfate;
 
     public static Item dustFertUN18;
     public static Item dustFertUN32;
-
-    // public static Fluid fluidFLiBeSalt;
-    // public static Fluid fluidFLiBeSaltBurnt;
-
-    public static Fluid fluidLftrCore1;
-    public static Fluid fluidLftrCore2;
-    public static Fluid fluidLftrCore3;
-    public static Fluid fluidLftrCore4;
-    public static Fluid fluidLftrBlanket1;
-    public static Fluid fluidLftrBlanket2;
-    public static Fluid fluidLftrBlanket3;
     public static Fluid fluidNuclearWaste;
 
     // Possibly missing base items that GT may be missing.
@@ -311,21 +175,12 @@ public final class ModItems {
     public static Item itemCircuitLFTR;
     public static Item itemBasicTurbine;
 
-    public static Item itemDebugAreaClear;
-
-    public static Item itemGemShards;
     public static Item itemHalfCompleteCasings;
 
     public static Item itemSulfuricPotion;
     public static Item itemHydrofluoricPotion;
 
-    public static Item itemModularBauble;
     public static Item itemCustomBook;
-
-    public static Item itemGrindleTablet;
-    public static Item itemRope;
-    public static Item itemFiber;
-    public static Item itemDragonJar;
 
     // Unstable Elements & Related Content
     public static Item dustNeptunium238;
@@ -333,15 +188,9 @@ public final class ModItems {
     public static Item dustRadium226;
     public static Item dustProtactinium233;
 
-    public static ItemGiantEgg itemBigEgg;
-
     public static GregtechPump toolGregtechPump;
 
     public static ItemGenericToken itemGenericToken;
-
-    public static Item itemControlCore;
-
-    public static Item itemSunnariumBit;
 
     public static ItemStack itemHotTitaniumIngot;
 
@@ -349,10 +198,6 @@ public final class ModItems {
     public static Fluid fluidFertBasic;
     public static Fluid fluidFertUN32;
     public static Fluid fluidFertUN18;
-
-    public static Item boxTools;
-    public static Item boxFood;
-    public static Item boxMagic;
 
     public static DustDecayable dustMolybdenum99;
     public static DustDecayable dustTechnetium99;
@@ -380,17 +225,6 @@ public final class ModItems {
     public static CoreItem itemDetCable;
     public static ItemThrowableBomb itemBomb;
 
-    public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Zombie;
-    public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Skeleton;
-    public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Spider;
-    public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Creeper;
-    public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Enderman;
-
-    public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Nether;
-    public static MonsterKillerBaseBauble itemAmuletMonsterKiller_Infernal;
-
-    public static CoreItem itemExquisiteIndustrialDiamond;
-
     public static BaseItemMetaFood itemMetaFood;
 
     public static ItemMagicFeather itemMagicFeather;
@@ -407,7 +241,7 @@ public final class ModItems {
         ZZZ_Empty = new ItemEmpty();
     }
 
-    public static final void init() {
+    public static void init() {
 
         itemDebugScanner = new DebugScanner();
         itemMagicFeather = new ItemMagicFeather();
@@ -422,80 +256,24 @@ public final class ModItems {
                 EnumChatFormatting.AQUA,
                 false,
                 null);
-        itemBigEgg = new ItemGiantEgg();
+
         itemGenericToken = new ItemGenericToken();
         itemDummyResearch = new ItemDummyResearch();
         itemCustomSpawnEgg = new ItemCustomSpawnEgg();
 
-        itemDebugAreaClear = new ItemAreaClear();
-
         // Register meta item, because we need them for everything.
         MetaGeneratedGregtechItems.INSTANCE.generateMetaItems();
-
-        // Some Simple forms of materials
-        itemStickyRubber = new Item().setUnlocalizedName("itemStickyRubber").setCreativeTab(tabMachines)
-                .setTextureName(GTPlusPlus.ID + ":itemStickyRubber");
-        GameRegistry.registerItem(itemStickyRubber, "itemStickyRubber");
-        GT_OreDictUnificator
-                .registerOre("ingotRubber", ItemUtils.getItemStackFromFQRN(GTPlusPlus.ID + ":itemStickyRubber", 1));
 
         // Register Hydrogen Blobs first, so we can replace old helium blobs.
         itemHydrogenBlob = new CoreItem("itemHydrogenBlob", "Mysterious Hydrogen Blob", tabMisc)
                 .setTextureName(GTPlusPlus.ID + ":itemHeliumBlob");
         // Register Old Helium Blob, this will be replaced when held by a player.
-        itemHeliumBlob = new CoreItem("itemHeliumBlob", tabMisc, ItemUtils.getSimpleStack(itemHydrogenBlob))
-                .setTextureName(GTPlusPlus.ID + ":itemHydrogenBlob");
-
-        // Register this neato device, for making some fires.
-        itemBasicFireMaker = new ItemBasicFirestarter();
-
-        // Register Rope
-        itemFiber = new CoreItem("itemFiber", "Plant Fiber", tabMisc);
-        itemRope = new CoreItem("itemRope", "Rope", tabMisc);
 
         // Load Wearable Items
         WearableLoader.run();
 
-        // Make some backpacks
-        // Primary colours
-        backpack_Red = new BaseItemBackpack("backpackRed", Utils.rgbtoHexValue(200, 0, 0));
-        backpack_Green = new BaseItemBackpack("backpackGreen", Utils.rgbtoHexValue(0, 200, 0));
-        backpack_Blue = new BaseItemBackpack("backpackBlue", Utils.rgbtoHexValue(0, 0, 200));
-        // Secondary Colours
-        backpack_Yellow = new BaseItemBackpack("backpackYellow", Utils.rgbtoHexValue(200, 200, 0));
-        backpack_Purple = new BaseItemBackpack("backpackPurple", Utils.rgbtoHexValue(200, 0, 200));
-        backpack_Cyan = new BaseItemBackpack("backpackCyan", Utils.rgbtoHexValue(0, 200, 200));
-        // Tertiary Colours
-        backpack_Maroon = new BaseItemBackpack("backpackMaroon", Utils.rgbtoHexValue(128, 0, 0));
-        backpack_Olive = new BaseItemBackpack("backpackOlive", Utils.rgbtoHexValue(128, 128, 0));
-        backpack_DarkGreen = new BaseItemBackpack("backpackDarkGreen", Utils.rgbtoHexValue(0, 128, 0));
-        backpack_DarkPurple = new BaseItemBackpack("backpackDarkPurple", Utils.rgbtoHexValue(128, 0, 128));
-        backpack_Teal = new BaseItemBackpack("backpackTeal", Utils.rgbtoHexValue(0, 128, 128));
-        backpack_Navy = new BaseItemBackpack("backpackNavy", Utils.rgbtoHexValue(0, 0, 128));
-        // Shades
-        backpack_Silver = new BaseItemBackpack("backpackSilver", Utils.rgbtoHexValue(192, 192, 192));
-        backpack_Gray = new BaseItemBackpack("backpackGray", Utils.rgbtoHexValue(128, 128, 128));
-        backpack_Black = new BaseItemBackpack("backpackBlack", Utils.rgbtoHexValue(20, 20, 20));
-        backpack_White = new BaseItemBackpack("backpackWhite", Utils.rgbtoHexValue(240, 240, 240));
-
-        // Load Custom Box/bags
-        boxTools = new UniversalToolBox("Tool Box");
-        boxFood = new AutoLunchBox("Eatotron-9000");
-        boxMagic = new MagicToolBag("Mystic Bag");
-
         itemBlueprintBase = new ItemBlueprint("itemBlueprint");
 
-        itemGemShards = new ItemGemShards(
-                "itemGemShards",
-                "Gem Shards",
-                AddToCreativeTab.tabMisc,
-                32,
-                0,
-                "They glitter in the light",
-                EnumRarity.rare,
-                EnumChatFormatting.GRAY,
-                false,
-                Utils.rgbtoHexValue(182, 114, 18)).setTextureName(GTPlusPlus.ID + ":itemHeliumBlob");
         itemHalfCompleteCasings = new ItemHalfCompleteCasings(
                 "itemHalfCompleteCasings",
                 AddToCreativeTab.tabMisc,
@@ -540,20 +318,13 @@ public final class ModItems {
             MaterialGenerator.generate(ELEMENT.getInstance().THALLIUM);
 
             // RADIOACTIVE ELEMENTS
-            MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().TECHNETIUM, false); // LFTR byproduct
             MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().POLONIUM, false);
-            MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().ASTATINE, false);
             // MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().RADON, false);
-            MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().FRANCIUM, false);
             MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().RADIUM, false);
             MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().PROMETHIUM, false);
-            MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().ACTINIUM, false);
             MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().PROTACTINIUM, false);
-            MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().NEPTUNIUM, false); // LFTR byproduct
             MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().CURIUM, false);
-            MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().BERKELIUM, false);
             MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().CALIFORNIUM, false);
-            MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().EINSTEINIUM, false);
             MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().FERMIUM, false);
 
             // Nuclear Isotopes
@@ -580,18 +351,12 @@ public final class ModItems {
             // and radioisotope heater units - one gram of plutonium-238 generates approximately 0.5 W of thermal power.
             MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().PLUTONIUM238, false);
 
-            // RTG Fuel Materials
-            MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().STRONTIUM90, false);
-            MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().POLONIUM210, false);
-            MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().AMERICIUM241, false);
-
             // Custom Materials that will have standalone refinery processes
             MaterialGenerator.generate(ELEMENT.STANDALONE.ADVANCED_NITINOL, false);
             MaterialGenerator.generate(ELEMENT.STANDALONE.ASTRAL_TITANIUM);
             MaterialGenerator.generate(ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN);
             MaterialGenerator.generate(ELEMENT.STANDALONE.HYPOGEN);
             MaterialGenerator.generate(ELEMENT.STANDALONE.CHRONOMATIC_GLASS);
-            MaterialGenerator.generate(ELEMENT.STANDALONE.FORCE);
 
             // Custom Materials that are from Runescape
             MaterialGenerator.generate(ELEMENT.STANDALONE.BLACK_METAL);
@@ -739,20 +504,8 @@ public final class ModItems {
 
         } catch (final Throwable r) {
             Logger.INFO("Failed to Generated a Material. " + r.getMessage());
-            // Utils.LOG_INFO("Failed to Generated a Material. "+r.getCause().getMessage());
-            // Utils.LOG_INFO("Failed to Generated a Material. "+r.getStackTrace()[0].getMethodName());
-            // Utils.LOG_INFO("Failed to Generated a Material. "+r.getStackTrace()[1].getMethodName());
             r.printStackTrace();
-            // System.exit(1);
         }
-
-        // TC Style Shards, for use in making energy crystal mix.
-        // A dull shard, able to be infused with an element.
-        shardDull = new BaseItemTCShard(
-                "Drained",
-                Utils.rgbtoHexValue(75, 75, 75),
-                new String[] { "Can be infused to create a magical shard.",
-                        "Obtained from Mining Stone/SandStone, Chopping Logs or Shovelling Dirt." });
 
         // Generates four elemental shards when TC is not installed.
         if (!Thaumcraft.isModLoaded()) {
@@ -985,30 +738,6 @@ public final class ModItems {
                 true);
 
         // Test items
-        metaItem2 = new BaseEuItem();
-        metaItem2.registerItem(0, EnumChatFormatting.BLACK + "Test Item 0", 0, 0, "I am 0.");
-        metaItem2.registerItem(1, EnumChatFormatting.GREEN + "Test Item 1", 1006346000, 1, "I Hold EU 1.", 500);
-        metaItem2.registerItem(2, EnumChatFormatting.GOLD + "Test Item 2", 1004630000, 2, "I Hold EU 2.", 8000);
-        metaItem2.registerItem(3, "Test Item 3", 1000765000, 4, "I Hold EU 3.", 32000);
-        metaItem2.registerItem(
-                4,
-                "Whirlygig",
-                1043644000,
-                (short) 5,
-                "Spin me right round.",
-                EnumRarity.rare,
-                EnumChatFormatting.DARK_GREEN,
-                true);
-        metaItem2.registerItem(
-                5,
-                "Whirlygig 2",
-                2124867000,
-                (short) 7,
-                "Spin me right round.",
-                EnumRarity.uncommon,
-                EnumChatFormatting.RED,
-                true);
-
         toolGregtechPump = new GregtechPump();
         toolGregtechPump.registerPumpType(0, "Simple Hand Pump", 0, 0);
         toolGregtechPump.registerPumpType(1, "Advanced Hand Pump", 32000, 1);
@@ -1022,21 +751,6 @@ public final class ModItems {
         if (!FluidRegistry.isFluidRegistered("xpjuice")) {
             FluidUtils.generateFluidNoPrefix("xpjuice", "xpjuice", 0, new short[] { 50, 150, 50, 100 });
         }
-
-        // Industrial Diamonds
-        itemExquisiteIndustrialDiamond = new CoreItem(
-                "IndustrialDiamondExquisite",
-                "High Quality Industrial Diamond",
-                tabMisc);
-        ItemStack tempStack = itemExquisiteIndustrialDiamond.getStack();
-        ItemUtils.addItemToOreDictionary(tempStack, "gemDiamond");
-        ItemUtils.addItemToOreDictionary(tempStack, "craftingIndustrialDiamond");
-        ItemUtils.addItemToOreDictionary(tempStack, "gemExquisiteDiamond");
-        ItemUtils.addItemToOreDictionary(tempStack, "craftingExquisiteIndustrialDiamond");
-
-        /*
-         * Decayable Materials
-         */
 
         dustNeptunium238 = new DustDecayable(
                 "dustNeptunium238",
@@ -1067,22 +781,6 @@ public final class ModItems {
                         "Result: Uranium 233(" + StringUtils.superscript("233U") + ")" },
                 ELEMENT.getInstance().URANIUM233.getDust(1).getItem(),
                 6);
-        dustTechnetium99 = new DustDecayable(
-                "dustTechnetium99",
-                ELEMENT.getInstance().TECHNETIUM.getRgbAsHex(),
-                164500,
-                new String[] { "" + StringUtils.superscript("99Tc"),
-                        "Result: Ruthenium 99(" + StringUtils.superscript("99Ru") + ")" },
-                ELEMENT.getInstance().RUTHENIUM.getDust(1).getItem(),
-                4);
-        dustTechnetium99M = new DustDecayable(
-                "dustTechnetium99M",
-                ELEMENT.getInstance().TECHNETIUM.getRgbAsHex(),
-                8570,
-                new String[] { "" + StringUtils.superscript("99ᵐTc"),
-                        "Result: Technicium 99 (" + StringUtils.superscript("99Tc") + ")" },
-                dustTechnetium99,
-                4);
         dustMolybdenum99 = new DustDecayable(
                 "dustMolybdenum99",
                 ELEMENT.getInstance().MOLYBDENUM.getRgbAsHex(),
@@ -1108,19 +806,9 @@ public final class ModItems {
         itemAirFilter = new ItemAirFilter();
         itemLavaFilter = new ItemLavaFilter();
 
-        itemGrindleTablet = new BaseItemGrindle();
-        itemDragonJar = new ItemEntityCatcher();
-
-        itemControlCore = new ItemControlCore();
-
-        itemSunnariumBit = new ItemSunnariumBit();
-
         // Chemistry
         new CoalTar();
         new RocketFuels();
-
-        // Nuclear Processing
-        new NuclearChem();
 
         // Farm Animal Fun
         new AgriculturalChem();
@@ -1140,135 +828,6 @@ public final class ModItems {
         itemDetCable.setTextureName("string");
         itemBomb = new ItemThrowableBomb();
 
-        // Misc Items
-        @SuppressWarnings("unused")
-        Item tI;
-        tI = new BaseItemMisc("Chilly", new short[] { 0, 64, 196 }, 32, MiscTypes.POTION, new String[] { "It's Blue" });
-        tI = new BaseItemMisc(
-                "4000DC's",
-                new short[] { 180, 100, 30 },
-                1,
-                MiscTypes.BIGKEY,
-                new String[] { "It opens things." });
-        tI = new BaseItemMisc("Dull", new short[] { 64, 64, 64 }, 64, MiscTypes.GEM, null);
-        tI = new BaseItemMisc(
-                "Forest",
-                new short[] { 130, 164, 96 },
-                64,
-                MiscTypes.MUSHROOM,
-                new String[] { "You Found this on the ground.", "Definitely not sure if it's worth eating." });
-
-        // Baubles
-        if (Baubles.isModLoaded()) {
-            tI = new HealthBoostBauble();
-            itemModularBauble = new ModularBauble();
-        }
-
-        // EnderIO Resources
-        if ((EnderIO.isModLoaded() || LOAD_ALL_CONTENT)) {
-            Logger.INFO("EnderIO Found - Loading Resources.");
-            // Enderio Dusts
-            itemDustSoularium = ItemUtils.generateSpecialUseDusts(
-                    "Soularium",
-                    "Soularium",
-                    MaterialEIO.SOULARIUM.vChemicalFormula,
-                    MaterialEIO.SOULARIUM.getRgbAsHex())[0];
-            itemDustRedstoneAlloy = ItemUtils.generateSpecialUseDusts(
-                    "RedstoneAlloy",
-                    "Redstone Alloy",
-                    MaterialEIO.REDSTONE_ALLOY.vChemicalFormula,
-                    MaterialEIO.REDSTONE_ALLOY.getRgbAsHex())[0];
-            itemDustElectricalSteel = ItemUtils.generateSpecialUseDusts(
-                    "ElectricalSteel",
-                    "Electrical Steel",
-                    MaterialEIO.ELECTRICAL_STEEL.vChemicalFormula,
-                    MaterialEIO.ELECTRICAL_STEEL.getRgbAsHex())[0];
-            itemDustPulsatingIron = ItemUtils.generateSpecialUseDusts(
-                    "PulsatingIron",
-                    "Pulsating Iron",
-                    MaterialEIO.PULSATING_IRON.vChemicalFormula,
-                    MaterialEIO.PULSATING_IRON.getRgbAsHex())[0];
-            itemDustEnergeticAlloy = ItemUtils.generateSpecialUseDusts(
-                    "EnergeticAlloy",
-                    "Energetic Alloy",
-                    MaterialEIO.ENERGETIC_ALLOY.vChemicalFormula,
-                    MaterialEIO.ENERGETIC_ALLOY.getRgbAsHex())[0];
-            itemDustVibrantAlloy = ItemUtils.generateSpecialUseDusts(
-                    "VibrantAlloy",
-                    "Vibrant Alloy",
-                    MaterialEIO.VIBRANT_ALLOY.vChemicalFormula,
-                    MaterialEIO.VIBRANT_ALLOY.getRgbAsHex())[0];
-            itemDustConductiveIron = ItemUtils.generateSpecialUseDusts(
-                    "ConductiveIron",
-                    "Conductive Iron",
-                    MaterialEIO.CONDUCTIVE_IRON.vChemicalFormula,
-                    MaterialEIO.CONDUCTIVE_IRON.getRgbAsHex())[0];
-
-            // EnderIO Plates
-            itemPlateSoularium = ItemUtils.generateSpecialUsePlate(
-                    "Soularium",
-                    "Soularium",
-                    MaterialEIO.SOULARIUM.vChemicalFormula,
-                    MaterialEIO.SOULARIUM.getRgbAsHex(),
-                    0);
-            itemPlateRedstoneAlloy = ItemUtils.generateSpecialUsePlate(
-                    "RedstoneAlloy",
-                    "Redstone Alloy",
-                    MaterialEIO.REDSTONE_ALLOY.vChemicalFormula,
-                    MaterialEIO.REDSTONE_ALLOY.getRgbAsHex(),
-                    0);
-            itemPlateElectricalSteel = ItemUtils.generateSpecialUsePlate(
-                    "ElectricalSteel",
-                    "Electrical Steel",
-                    MaterialEIO.ELECTRICAL_STEEL.vChemicalFormula,
-                    MaterialEIO.ELECTRICAL_STEEL.getRgbAsHex(),
-                    0);
-            itemPlatePulsatingIron = ItemUtils.generateSpecialUsePlate(
-                    "PhasedIron",
-                    "Phased Iron",
-                    MaterialEIO.PULSATING_IRON.vChemicalFormula,
-                    MaterialEIO.PULSATING_IRON.getRgbAsHex(),
-                    0);
-            itemPlateEnergeticAlloy = ItemUtils.generateSpecialUsePlate(
-                    "EnergeticAlloy",
-                    "Energetic Alloy",
-                    MaterialEIO.ENERGETIC_ALLOY.vChemicalFormula,
-                    MaterialEIO.ENERGETIC_ALLOY.getRgbAsHex(),
-                    0);
-            itemPlateVibrantAlloy = ItemUtils.generateSpecialUsePlate(
-                    "VibrantAlloy",
-                    "Vibrant Alloy",
-                    MaterialEIO.VIBRANT_ALLOY.vChemicalFormula,
-                    MaterialEIO.VIBRANT_ALLOY.getRgbAsHex(),
-                    0);
-            itemPlateConductiveIron = ItemUtils.generateSpecialUsePlate(
-                    "ConductiveIron",
-                    "Conductive Iron",
-                    MaterialEIO.CONDUCTIVE_IRON.vChemicalFormula,
-                    MaterialEIO.CONDUCTIVE_IRON.getRgbAsHex(),
-                    0);
-
-            // Register odd naming conventions.
-            GT_OreDictUnificator.registerOre("dustPhasedGold", ItemUtils.getSimpleStack(itemDustVibrantAlloy));
-            GT_OreDictUnificator.registerOre("platePhasedGold", ItemUtils.getSimpleStack(itemPlateVibrantAlloy));
-            GT_OreDictUnificator.registerOre("dustPhasedIron", ItemUtils.getSimpleStack(itemDustPulsatingIron));
-            GT_OreDictUnificator.registerOre("platePhasedIron", ItemUtils.getSimpleStack(itemPlatePulsatingIron));
-            GT_OreDictUnificator
-                    .registerOre("blockVibrantAlloy", ItemUtils.getItemStackOfAmountFromOreDict("blockPhasedGold", 1));
-
-        } else {
-            /*
-             * Logger.WARNING("EnderIO not Found - Generating our own Resources.");
-             * MaterialGenerator.generate(MaterialEIO.CONDUCTIVE_IRON);
-             * MaterialGenerator.generate(MaterialEIO.PULSATING_IRON);
-             * MaterialGenerator.generate(MaterialEIO.REDSTONE_ALLOY);
-             * MaterialGenerator.generate(MaterialEIO.SOULARIUM);
-             * MaterialGenerator.generate(MaterialEIO.ELECTRICAL_STEEL);
-             * MaterialGenerator.generate(MaterialEIO.ENERGETIC_ALLOY);
-             * MaterialGenerator.generate(MaterialEIO.VIBRANT_ALLOY);
-             */
-        }
-
         // IC2 Exp
         Logger.INFO("IndustrialCraft2 Found - Loading Resources.");
 
@@ -1286,47 +845,16 @@ public final class ModItems {
 
         // Special Item Handling Case
         if (ConfigSwitches.enableAlternativeBatteryAlloy) {
-            // ModItems.itemIngotBatteryAlloy = new BaseItemIngot("itemIngotBatteryAlloy", "Battery Alloy", new
-            // short[]{35, 228, 141}, 0); TODO
             ModItems.itemPlateBatteryAlloy = ItemUtils
                     .generateSpecialUsePlate("BatteryAlloy", "Battery Alloy", new short[] { 35, 228, 141 }, 0);
         }
 
-        // UtilsItems.generateSpawnEgg("ic2", "boatcarbon", Utils.generateSingularRandomHexValue(),
-        // Utils.generateSingularRandomHexValue());
-
-        HANDLER_COFH.initItems();
-
-        /*
-         * Misc Items
-         */
-
-        // Staballoy Equipment
-        itemStaballoyPickaxe = new StaballoyPickaxe("itemStaballoyPickaxe", STABALLOY)
-                .setCreativeTab(AddToCreativeTab.tabTools);
-        GameRegistry.registerItem(itemStaballoyPickaxe, itemStaballoyPickaxe.getUnlocalizedName());
-        itemStaballoyAxe = new StaballoyAxe("itemStaballoyAxe", STABALLOY).setCreativeTab(AddToCreativeTab.tabTools);
-        GameRegistry.registerItem(itemStaballoyAxe, itemStaballoyAxe.getUnlocalizedName());
-
-        // Sandstone Hammer
-        itemSandstoneHammer = new SandstoneHammer("itemSandstoneHammer").setCreativeTab(AddToCreativeTab.tabTools);
-        GameRegistry.registerItem(itemSandstoneHammer, itemSandstoneHammer.getUnlocalizedName());
-
         // Buffer Cores!
         Item itemBufferCore;
         for (int i = 1; i <= 10; i++) {
-            // Utils.LOG_INFO(""+i);
             itemBufferCore = new BufferCore("itemBufferCore", i).setCreativeTab(AddToCreativeTab.tabMachines);
             GameRegistry.registerItem(itemBufferCore, itemBufferCore.getUnlocalizedName());
-            // System.out.println("Buffer Core registration count is: "+i);
         }
-
-        itemPLACEHOLDER_Circuit = new Item().setUnlocalizedName("itemPLACEHOLDER_Circuit")
-                .setTextureName(GTPlusPlus.ID + ":itemPLACEHOLDER_Circuit");
-        GameRegistry.registerItem(itemPLACEHOLDER_Circuit, "itemPLACEHOLDER_Circuit");
-
-        // ItemBlockGtFrameBox = new ItemBlockGtFrameBox(ModBlocks.blockGtFrameSet1);
-        // GameRegistry.registerItem(ItemBlockGtFrameBox, "itemGtFrameBoxSet1");
 
         itemCustomBook = new ItemBaseBook();
         registerCustomTokens();
@@ -1461,30 +989,6 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.LAFIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ALLOY.TRINIUM_REINFORCED_STEEL);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FOIL, ELEMENT.STANDALONE.CHRONOMATIC_GLASS);
-
-        // Dense Plates
-        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.POTIN);
-        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.AQUATIC_STEEL);
-        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.BRONZE);
-        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.OSMIRIDIUM);
-        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.QUANTUM);
-        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.STEEL_BLACK);
-        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.STAINLESS_STEEL);
-        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.EGLIN_STEEL);
-        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.MARAGING300);
-        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ALLOY.TALONITE);
-        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.HYPOGEN);
-        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.RHUGNOR);
-        MaterialUtils
-                .generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.ADVANCED_NITINOL);
-        MaterialUtils
-                .generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.ASTRAL_TITANIUM);
-        MaterialUtils.generateComponentAndAssignToAMaterial(
-                ComponentTypes.PLATEHEAVY,
-                ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN);
-        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.WHITE_METAL);
-        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.BLACK_METAL);
-        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.PLATEHEAVY, ELEMENT.STANDALONE.GRANITE);
 
         // Special Sillyness
         if (true) {

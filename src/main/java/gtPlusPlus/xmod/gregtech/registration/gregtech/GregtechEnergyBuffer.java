@@ -11,7 +11,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOreDictNames;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GT_MetaTileEntity_RfConvertor;
-import gtPlusPlus.xmod.gregtech.common.tileentities.generators.creative.GregtechMetaCreativeEnergyBuffer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GregtechMetaEnergyBuffer;
 
 public class GregtechEnergyBuffer {
@@ -66,15 +65,6 @@ public class GregtechEnergyBuffer {
         GregtechItemList.Energy_Buffer_1by1_MAX.set(
                 new GregtechMetaEnergyBuffer(779, "energybuffer.tier.09", "MAX Voltage Energy Buffer", 9, "", 1)
                         .getStackForm(1L));
-        // Creative Buffer Has Special ID
-        GregtechItemList.Energy_Buffer_CREATIVE.set(
-                new GregtechMetaCreativeEnergyBuffer(
-                        750,
-                        "energybuffer.tier.xx",
-                        "512V Creative Energy Buffer",
-                        3,
-                        "",
-                        0).getStackForm(1L));
 
         if (COFHCore.isModLoaded() && CORE.ConfigSwitches.enableMachine_RF_Convetor) {
             // RF Convertor Buffer Has Special ID

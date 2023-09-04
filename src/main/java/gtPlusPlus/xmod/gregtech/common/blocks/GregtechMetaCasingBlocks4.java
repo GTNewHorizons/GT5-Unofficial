@@ -1,5 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.blocks;
 
+import java.util.List;
+
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
@@ -21,23 +25,15 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
             }
             TAE.registerTexture(3, i, new GTPP_CopiedBlockTexture(this, 6, i));
         }
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Naquadah Reactor Base"); // 48
+        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Naquadah Reactor Base");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Reactor Piping");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Naquadah Containment Chamber");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Tempered Arc Furnace Casing");
         GT_LanguageManager
-                .addStringLocalization(this.getUnlocalizedName() + ".4.name", "Quantum Force Transformer Coil Casings"); // Unused
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", ""); // Unused
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", ""); // Unused
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", ""); // Unused
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", ""); // Unused
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", ""); // Unused
+                .addStringLocalization(this.getUnlocalizedName() + ".4.name", "Quantum Force Transformer Coil Casings");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Vacuum Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Turbodyne Casing");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", ""); // Unused
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", ""); // Unused
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", ""); // Unused
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", ""); // Unused
+
         GregtechItemList.Casing_Naq_Reactor_A.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Naq_Reactor_B.set(new ItemStack(this, 1, 1));
         GregtechItemList.Casing_Naq_Reactor_C.set(new ItemStack(this, 1, 2));
@@ -56,46 +52,75 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
         // Texture ID's. case 0 == ID[57]
         if ((aMeta >= 0) && (aMeta < 16)) {
             switch (aMeta) {
-                case 0:
+                case 0 -> {
                     return TexturesGtBlock.Casing_Trinium_Titanium.getIcon();
-                case 1:
+                }
+                case 1 -> {
                     return TexturesGtBlock.TEXTURE_TECH_C.getIcon();
-                case 2:
+                }
+                case 2 -> {
                     return TexturesGtBlock.TEXTURE_ORGANIC_PANEL_A_GLOWING.getIcon();
-                case 3:
+                }
+                case 3 -> {
                     return TexturesGtBlock.TEXTURE_METAL_PANEL_A.getIcon();
-                case 4:
+                }
+                case 4 -> {
                     return TexturesGtBlock.Casing_Coil_QFT.getIcon();
-                case 5:
+                }
+                case 5 -> {
                     return Textures.BlockIcons.RENDERING_ERROR.getIcon();
-                case 6:
+                }
+                case 6 -> {
                     return Textures.BlockIcons.RENDERING_ERROR.getIcon();
-                case 7:
+                }
+                case 7 -> {
                     return Textures.BlockIcons.RENDERING_ERROR.getIcon();
-                case 8:
+                }
+                case 8 -> {
                     return Textures.BlockIcons.RENDERING_ERROR.getIcon();
-                case 9:
+                }
+                case 9 -> {
                     return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
-                case 10:
+                }
+                case 10 -> {
                     if (aSide < 2) {
                         return TexturesGtBlock.TEXTURE_STONE_RED_B.getIcon();
                     } else {
                         return TexturesGtBlock.TEXTURE_STONE_RED_A.getIcon();
                     }
-                case 11:
+                }
+                case 11 -> {
                     return TexturesGtBlock.TEXTURE_CASING_ROCKETDYNE.getIcon();
-                case 12:
+                }
+                case 12 -> {
                     return Textures.BlockIcons.RENDERING_ERROR.getIcon();
-                case 13:
+                }
+                case 13 -> {
                     return Textures.BlockIcons.RENDERING_ERROR.getIcon();
-                case 14:
+                }
+                case 14 -> {
                     return Textures.BlockIcons.RENDERING_ERROR.getIcon();
-                case 15:
+                }
+                case 15 -> {
                     return Textures.BlockIcons.RENDERING_ERROR.getIcon();
-                default:
+                }
+                default -> {
                     return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
+                }
             }
         }
         return TexturesGtBlock._PlaceHolder.getIcon();
+    }
+
+    @Override
+    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+        aList.add(new ItemStack(aItem, 1, 0));
+        aList.add(new ItemStack(aItem, 1, 1));
+        aList.add(new ItemStack(aItem, 1, 2));
+        aList.add(new ItemStack(aItem, 1, 3));
+        aList.add(new ItemStack(aItem, 1, 4));
+
+        aList.add(new ItemStack(aItem, 1, 10));
+        aList.add(new ItemStack(aItem, 1, 11));
     }
 }

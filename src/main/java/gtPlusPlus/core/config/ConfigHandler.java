@@ -1,120 +1,8 @@
 package gtPlusPlus.core.config;
 
 import static gregtech.api.enums.Mods.GregTech;
-import static gtPlusPlus.core.item.general.RF2EU_Battery.rfPerEU;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.MACHINE_INFO;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.baseMaxPollutionPerSecondRocketFuelGenerator;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.baseMinPollutionPerSecondRocketFuelGenerator;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.basePollutionPerSecondBoiler;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.basePollutionPerSecondGeothermalGenerator;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.basePollutionPerSecondSemiFluidGenerator;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.boilerSteamPerSecond;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.chanceToDropDrainedShard;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.chanceToDropFluoriteOre;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.disableEnderIOIngotTooltips;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.disableEnderIOIntegration;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.disableIC2Recipes;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.disableZombieReinforcement;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.dumpItemAndBlockData;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableAlternativeBatteryAlloy;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableAlternativeDivisionSigilRecipe;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableAnimatedTextures;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustomCapes;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustomCircuits;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustom_Cables;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustom_Pipes;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_Dehydrators;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_FluidTanks;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_GeothermalEngines;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_Pollution;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_RF_Convetor;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_RocketEngines;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_Safes;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_SimpleWasher;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_SolarGenerators;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_SteamConverter;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_Tesseracts;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_WorldAccelerators;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiSizeTools;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_AlloyBlastSmelter;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_Cyclotron;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialCentrifuge;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialCokeOven;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialCuttingMachine;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialElectrolyzer;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialExtrudingMachine;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialFishingPort;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialMacerationStack;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialMultiMachine;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialPlatePress;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialSifter;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialThermalCentrifuge;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialWashPlant;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialWireMill;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_LargeAutoCrafter;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_LiquidFluorideThoriumReactor;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_MatterFabricator;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_MultiTank;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_NuclearFuelRefinery;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_NuclearSaltProcessingPlant;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_PowerSubstation;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_ThermalBoiler;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableOldGTcircuits;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableSkookumChoochers;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableSulfuricAcidFix;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableThaumcraftShardUnification;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableWatchdogBGM;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.hideUniversalCells;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiABS;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiAdvDistillationTower_ModeDT;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiAdvDistillationTower_ModeDistillery;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiAdvEBF;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiAdvImplosion;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiAlgaePond;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiAutoCrafter;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiCyclotron;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiFrothFlotationCell;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialAlloySmelter;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialArcFurnace;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialCentrifuge;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialChisel;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialCokeOven;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialCuttingMachine;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialDehydrator;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialElectrolyzer;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialExtruder;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialFishingPond;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialForgeHammer;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMacerator;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMixer;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeBending;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeForming;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialRockBreaker;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialSifter;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialThermalCentrifuge;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialVacuumFreezer;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeWasher;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWireMill;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIsaMill;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiLargeSemiFluidGenerator;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiMassFabricator;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiMolecularTransformer;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiPackager;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiRefinery;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiThermalBoiler;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiTreeFarm;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionReleasedByTierBoiler;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionReleasedByTierGeothermalGenerator;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionReleasedByTierRocketFuelGenerator;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionReleasedByTierSemiFluidGenerator;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.showHiddenNEIItems;
-import static gtPlusPlus.core.lib.CORE.EVERGLADESBIOME_ID;
-import static gtPlusPlus.core.lib.CORE.EVERGLADES_ID;
-import static gtPlusPlus.core.lib.CORE.turbineCutoffBase;
+import static gtPlusPlus.core.lib.CORE.*;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.*;
 
 import java.io.File;
 
@@ -196,11 +84,6 @@ public class ConfigHandler {
                 "Restores circuits and their recipes from Pre-5.09.28 times.");
 
         // Tools
-        enableSkookumChoochers = config.getBoolean(
-                "enableSkookumChoochers",
-                GregTech.ID,
-                true,
-                "Adds Custom GT Tools, called Skookum Choochers, functioning as a hard hammer and a wrench.");
         enableMultiSizeTools = config.getBoolean(
                 "enableMultiSizeTools",
                 GregTech.ID,
@@ -247,8 +130,7 @@ public class ConfigHandler {
                 GregTech.ID,
                 false,
                 "These may be overpowered, Consult a local electrician.");
-        enableMachine_Safes = config
-                .getBoolean("enableMachineSafes", GregTech.ID, true, "These protect your goodies/rare stuff.");
+
         enableMachine_Dehydrators = config
                 .getBoolean("enableMachineDehydrators", GregTech.ID, true, "These dehydrate stuff.");
         enableMachine_SteamConverter = config
@@ -390,22 +272,9 @@ public class ConfigHandler {
         enableMultiblock_Cyclotron = config
                 .getBoolean("enableMultiblock_Cyclotron", GregTech.ID, true, "COMET - Scientific Cyclotron.");
 
-        // Options
-        rfPerEU = config.getInt(
-                "rfUsedPerEUForUniversalBatteries",
-                "configurables",
-                4,
-                1,
-                1000,
-                "How much RF is a single unit of EU worth? (Most mods use 4:1 ratio)");
-
         // Features
         enableCustomCapes = config.getBoolean("enableSupporterCape", "features", true, "Enables Custom GT++ Cape.");
-        disableZombieReinforcement = config.getBoolean(
-                "disableZombieReinforcement",
-                "features",
-                false,
-                "Disables Zombie Reinforcement on hard difficutly.");
+
         enableWatchdogBGM = config.getInt(
                 "enableWatchdogBGM",
                 "features",

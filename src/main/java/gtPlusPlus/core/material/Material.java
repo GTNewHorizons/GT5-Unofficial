@@ -784,8 +784,6 @@ public class Material {
                 aShiny++;
             } else if (m.getStackMaterial() == ELEMENT.getInstance().PLATINUM) {
                 aShiny++;
-            } else if (m.getStackMaterial() == ELEMENT.getInstance().AMERICIUM) {
-                aShiny++;
             } else if (m.getStackMaterial() == ELEMENT.getInstance().TITANIUM) {
                 aShiny++;
             } else if (m.getStackMaterial() == ELEMENT.getInstance().GERMANIUM) {

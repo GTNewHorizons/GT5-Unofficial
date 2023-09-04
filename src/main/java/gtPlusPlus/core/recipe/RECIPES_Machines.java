@@ -1,18 +1,9 @@
 package gtPlusPlus.core.recipe;
 
-import static gregtech.api.enums.Mods.BartWorks;
-import static gregtech.api.enums.Mods.COFHCore;
-import static gregtech.api.enums.Mods.EternalSingularity;
-import static gregtech.api.enums.Mods.GoodGenerator;
-import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.enums.Mods.RemoteIO;
-import static gregtech.api.enums.Mods.ZTones;
+import static gregtech.api.enums.Mods.*;
 
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -39,19 +30,15 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.MISC_MATERIALS;
-import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.dimension.Dimension_Everglades;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
-import gtPlusPlus.xmod.gregtech.common.items.MetaCustomCoverItem;
 
 public class RECIPES_Machines {
 
@@ -241,13 +228,11 @@ public class RECIPES_Machines {
 
         initModItems();
         tieredMachineHulls();
-        controlCores();
         energyCores();
         wirelessChargers();
         largeArcFurnace();
         industrialVacuumFurnace();
         fakeMachineCasingCovers();
-        ztonesCoverRecipes();
         overflowValveCovers();
         superBuses();
         roundRobinators();
@@ -1194,16 +1179,6 @@ public class RECIPES_Machines {
                     CI.getPlate(4, 1),
                     GregtechItemList.Energy_Buffer_RF_Convertor.get(1));
         }
-
-        // Egg Box
-        CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { CI.getNumberedAdvancedCircuit(8), CI.getTieredMachineHull(3),
-                        ItemUtils.getSimpleStack(Items.egg, 64), ItemUtils.getSimpleStack(ModItems.itemRope, 32),
-                        CI.getPlate(4, 8) },
-                FluidUtils.getFluidStack("mobessence", 4096),
-                ItemUtils.getSimpleStack(ModBlocks.blockEggBox, 1),
-                20 * 60,
-                480);
 
         // Flask Configurator
         CORE.RA.addSixSlotAssemblingRecipe(
@@ -2400,35 +2375,6 @@ public class RECIPES_Machines {
                     RECIPE_SaltPlantController);
         }
 
-        // Shelves
-        RecipeUtils.addShapedGregtechRecipe(
-                "screwWood",
-                "plateWood",
-                "screwWood",
-                CI.craftingToolHammer_Hard,
-                "frameGtWood",
-                CI.craftingToolHammer_Soft,
-                "plateWood",
-                "plateWood",
-                "plateWood",
-                GregtechItemList.GT4_Shelf.get(2));
-
-        RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] { GregtechItemList.GT4_Shelf.get(1) },
-                GregtechItemList.GT4_Shelf_Compartment.get(1));
-        RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] { GregtechItemList.GT4_Shelf_Compartment.get(1) },
-                GregtechItemList.GT4_Shelf_Desk.get(1));
-        RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] { GregtechItemList.GT4_Shelf_Desk.get(1) },
-                GregtechItemList.GT4_Shelf_Iron.get(1));
-        RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] { GregtechItemList.GT4_Shelf_Iron.get(1) },
-                GregtechItemList.GT4_Shelf_FileCabinet.get(1));
-        RecipeUtils.addShapelessGregtechRecipe(
-                new ItemStack[] { GregtechItemList.GT4_Shelf_FileCabinet.get(1) },
-                GregtechItemList.GT4_Shelf.get(1));
-
         // Cyclotron
         if (CORE.ConfigSwitches.enableMultiblock_Cyclotron) {
             RECIPE_CyclotronController = GregtechItemList.COMET_Cyclotron.get(1);
@@ -2975,76 +2921,6 @@ public class RECIPES_Machines {
         Logger.INFO("Done loading recipes for the Various machine blocks.");
     }
 
-    private static void controlCores() {
-
-        Material[] aMat_A = new Material[] { ALLOY.POTIN, ALLOY.ZIRCONIUM_CARBIDE, ALLOY.TANTALLOY_61,
-                ALLOY.INCONEL_792, ALLOY.STABALLOY, ALLOY.TALONITE, ALLOY.HASTELLOY_N, ALLOY.HG1223, ALLOY.LAFIUM,
-                ALLOY.PIKYONIUM };
-        Material[] aMat_B = new Material[] { ALLOY.TUMBAGA, ALLOY.SILICON_CARBIDE, ALLOY.EGLIN_STEEL, ALLOY.NICHROME,
-                ALLOY.TUNGSTEN_CARBIDE, ALLOY.STELLITE, ALLOY.HASTELLOY_C276, ALLOY.NITINOL_60, ALLOY.ZERON_100,
-                ALLOY.CINOBITE };
-
-        Item aBaseCore = ModItems.itemControlCore;
-        ItemStack[] aInputPrevTier = new ItemStack[] {
-                ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore2", 1),
-                ItemUtils.simpleMetaStack(aBaseCore, 0, 1), ItemUtils.simpleMetaStack(aBaseCore, 1, 1),
-                ItemUtils.simpleMetaStack(aBaseCore, 2, 1), ItemUtils.simpleMetaStack(aBaseCore, 3, 1),
-                ItemUtils.simpleMetaStack(aBaseCore, 4, 1), ItemUtils.simpleMetaStack(aBaseCore, 5, 1),
-                ItemUtils.simpleMetaStack(aBaseCore, 6, 1), ItemUtils.simpleMetaStack(aBaseCore, 7, 1),
-                ItemUtils.simpleMetaStack(aBaseCore, 8, 1), };
-        ItemStack[] aOutput = new ItemStack[] { ItemUtils.simpleMetaStack(aBaseCore, 0, 1),
-                ItemUtils.simpleMetaStack(aBaseCore, 1, 1), ItemUtils.simpleMetaStack(aBaseCore, 2, 1),
-                ItemUtils.simpleMetaStack(aBaseCore, 3, 1), ItemUtils.simpleMetaStack(aBaseCore, 4, 1),
-                ItemUtils.simpleMetaStack(aBaseCore, 5, 1), ItemUtils.simpleMetaStack(aBaseCore, 6, 1),
-                ItemUtils.simpleMetaStack(aBaseCore, 7, 1), ItemUtils.simpleMetaStack(aBaseCore, 8, 1),
-                ItemUtils.simpleMetaStack(aBaseCore, 9, 1), };
-
-        CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { CI.machineHull_HV, aOutput[1], aMat_A[1].getGear(2), aMat_B[2].getPlateDouble(8),
-                        ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore" + ("1"), 2),
-                        ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(2), 5) },
-                aMat_B[3].getFluidStack(144 * 8), // Input Fluid
-                GregtechItemList.Hatch_Control_Core.get(1),
-                60 * 20 * 5,
-                MaterialUtils.getVoltageForTier(3));
-
-        for (int i = 0; i < 10; i++) {
-            ItemStack aPlateStack = aMat_A[i].getPlateDouble(8);
-            ItemStack aGearStack = aMat_B[i].getGear(2);
-            ItemStack aRodStack = aMat_A[i].getLongRod(8);
-            ItemStack aScrewStack = aMat_B[i].getScrew(32);
-
-            if (!ItemUtils.checkForInvalidItems(aPlateStack)) {
-                aPlateStack = aMat_A[i].getPlate(16);
-                if (!ItemUtils.checkForInvalidItems(aPlateStack)) {
-                    aPlateStack = aMat_B[i].getPlateDouble(8);
-                    if (!ItemUtils.checkForInvalidItems(aPlateStack)) {
-                        aPlateStack = aMat_B[i].getPlate(16);
-                    }
-                }
-            }
-            if (!ItemUtils.checkForInvalidItems(aGearStack)) {
-                aGearStack = aMat_A[i].getGear(4);
-            }
-            if (!ItemUtils.checkForInvalidItems(aRodStack)) {
-                aRodStack = aMat_B[i].getLongRod(16);
-            }
-            if (!ItemUtils.checkForInvalidItems(aScrewStack)) {
-                aScrewStack = aMat_A[i].getScrew(32);
-            }
-
-            CORE.RA.addSixSlotAssemblingRecipe(
-                    new ItemStack[] { CI.getEnergyCore(i, 4), aPlateStack, aGearStack, aRodStack, aScrewStack,
-                            ItemUtils.getItemStackOfAmountFromOreDict(
-                                    CI.getTieredCircuitOreDictName((int) (4 + Math.ceil((double) i / (double) 2))),
-                                    i * 2) },
-                    CI.getTieredFluid(i, 144 * 4 * (i + 1)), // Input Fluid
-                    aOutput[i],
-                    60 * 20 * 1 * (i + 1),
-                    MaterialUtils.getVoltageForTier(i));
-        }
-    }
-
     private static void energyCores() {
 
         ItemStack[] aBufferOutput = new ItemStack[] { RECIPE_Buffer_ULV, RECIPE_Buffer_LV, RECIPE_Buffer_MV,
@@ -3366,34 +3242,6 @@ public class RECIPES_Machines {
         for (int i = 0; i < aMaxTier; i++) {
             GT_Values.RA
                     .addCutterRecipe(CI.getTieredMachineCasing(i), aTier[i], null, 20 * 5 * i, (int) GT_Values.V[i]);
-        }
-    }
-
-    private static void ztonesCoverRecipes() {
-        if (!ZTones.isModLoaded()) {
-            return;
-        }
-        Class ModBlocksClass = ReflectionUtils.getClass("com.riciJak.Ztones.init.ModBlocks");
-        Block agon = ReflectionUtils.getFieldValue(ReflectionUtils.getField(ModBlocksClass, "agonBlock"));
-        Block korp = ReflectionUtils.getFieldValue(ReflectionUtils.getField(ModBlocksClass, "korpBlock"));
-        Block jelt = ReflectionUtils.getFieldValue(ReflectionUtils.getField(ModBlocksClass, "jeltBlock"));
-        Block bitt = ReflectionUtils.getFieldValue(ReflectionUtils.getField(ModBlocksClass, "bittBlock"));
-        Block iszm = ReflectionUtils.getFieldValue(ReflectionUtils.getField(ModBlocksClass, "iszmBlock"));
-
-        // "agon", "iszm", "korp", "jelt", "bitt"
-
-        ItemStack[] aBlocks = new ItemStack[] { ItemUtils.getSimpleStack(agon), ItemUtils.getSimpleStack(iszm),
-                ItemUtils.getSimpleStack(korp), ItemUtils.getSimpleStack(jelt), ItemUtils.getSimpleStack(bitt) };
-        MetaCustomCoverItem[] aCovers = new MetaCustomCoverItem[] { CoverManager.Cover_Agon, CoverManager.Cover_Iszm,
-                CoverManager.Cover_Korp, CoverManager.Cover_Jelt, CoverManager.Cover_Bitt };
-
-        ItemStack aInputs[][] = new ItemStack[5][16];
-        ItemStack aOutputs[][] = new ItemStack[5][16];
-        for (int a = 0; a < 5; a++) {
-            for (int i = 0; i < 16; i++) {
-                aInputs[a][i] = ItemUtils.simpleMetaStack(aBlocks[a].getItem(), i, 1);
-                aOutputs[a][i] = ItemUtils.simpleMetaStack(aCovers[a], i, 9);
-            }
         }
     }
 

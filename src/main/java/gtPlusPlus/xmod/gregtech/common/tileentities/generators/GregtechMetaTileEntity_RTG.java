@@ -28,7 +28,6 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator {
 
     public int mEfficiency;
-    private int mDays;
     private long mTicksToBurnFor;
     private int mVoltage = 0;
     private GT_Recipe mCurrentRecipe;
@@ -79,7 +78,6 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        // this.mMachineBlock = aNBT.getByte("mMachineBlock");
         this.mTicksToBurnFor = aNBT.getLong("mTicksToBurnFor");
         this.mVoltage = aNBT.getInteger("mVoltage");
         this.mDaysRemaining = aNBT.getInteger("mDaysRemaining");

@@ -2,7 +2,6 @@ package gtPlusPlus.plugin.agrichem;
 
 import gtPlusPlus.api.interfaces.IPlugin;
 import gtPlusPlus.plugin.agrichem.block.AgrichemFluids;
-import gtPlusPlus.plugin.agrichem.fluids.FluidLoader;
 import gtPlusPlus.plugin.manager.Core_Manager;
 
 // Called by Core_Manager#veryEarlyInit
@@ -19,10 +18,7 @@ public class Core_Agrichem implements IPlugin {
 
     @Override
     public boolean preInit() {
-        mInstance.log("Generating Fluids");
-        FluidLoader.generate();
         AgrichemFluids.init();
-        mInstance.log("Generating Items");
         return true;
     }
 

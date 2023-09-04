@@ -28,9 +28,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy_RTG;
 import gtPlusPlus.xmod.gregtech.common.helpers.FlotationRecipeHandler;
-import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntity_RTG;
 
 public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
@@ -1109,9 +1107,6 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
                 0,
                 aVoltage,
                 aFuelDays);
-        long eu = GregtechMetaTileEntity_RTG
-                .getTotalEUGenerated(GregtechMetaTileEntity_RTG.convertDaysToTicks(aFuelDays), aVoltage);
-        GT_MetaTileEntity_Hatch_Energy_RTG.registerPelletForHatch(aFuelPellet, eu);
         return true;
     }
 

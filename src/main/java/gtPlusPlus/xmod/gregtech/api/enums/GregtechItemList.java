@@ -31,35 +31,27 @@ public enum GregtechItemList implements GregtechItemContainer {
     Electric_Motor_LuV,
     Electric_Motor_ZPM,
     Electric_Motor_UV,
-    Electric_Motor_MAX,
     Electric_Pump_LuV,
     Electric_Pump_ZPM,
     Electric_Pump_UV,
-    Electric_Pump_MAX,
     Conveyor_Module_LuV,
     Conveyor_Module_ZPM,
     Conveyor_Module_UV,
-    Conveyor_Module_MAX,
     Electric_Piston_LuV,
     Electric_Piston_ZPM,
     Electric_Piston_UV,
-    Electric_Piston_MAX,
     Robot_Arm_LuV,
     Robot_Arm_ZPM,
     Robot_Arm_UV,
-    Robot_Arm_MAX,
     Field_Generator_LuV,
     Field_Generator_ZPM,
     Field_Generator_UV,
-    Field_Generator_MAX,
     Emitter_LuV,
     Emitter_ZPM,
     Emitter_UV,
-    Emitter_MAX,
     Sensor_LuV,
     Sensor_ZPM,
     Sensor_UV,
-    Sensor_MAX,
 
     // ULV Components
     Electric_Motor_ULV,
@@ -179,10 +171,6 @@ public enum GregtechItemList implements GregtechItemContainer {
     Compressed_Fusion_Reactor,
 
     // Carbon Materials
-    NanoTube_Base_Substrate,
-    NanoTube_Finished,
-    Carbyne_Tube_Finished,
-    Carbyne_Sheet_Finished,
 
     // End Game Laser Engraver Lens
     Laser_Lens_WoodsGlass,
@@ -197,13 +185,6 @@ public enum GregtechItemList implements GregtechItemContainer {
 
     // Pellet Mold
     Pellet_Mold,
-
-    // Charged Items for Tree Farms
-    Farm_Processor_EV,
-    Farm_Processor_IV,
-    Farm_Processor_LuV,
-    Farm_Processor_ZPM,
-    Farm_Processor_UV,
 
     // Upgrade chip for Distillus
     Distillus_Upgrade_Chip,
@@ -532,9 +513,6 @@ public enum GregtechItemList implements GregtechItemContainer {
     // Standard Turbine Rotor Hatch
     Hatch_Input_TurbineHousing,
 
-    // Control Core
-    Hatch_Control_Core,
-
     // Milling Ball Bus
     Bus_Milling_Balls,
 
@@ -555,9 +533,6 @@ public enum GregtechItemList implements GregtechItemContainer {
     Hatch_Input_Elemental_Duplicator,
 
     // RTG Hatch
-    Hatch_RTG_LV,
-    Hatch_RTG_MV,
-    Hatch_RTG_HV,
 
     // Battery hatches for PSS
     Hatch_Input_Battery_MV,
@@ -709,7 +684,6 @@ public enum GregtechItemList implements GregtechItemContainer {
 
     // Debug machine
     Pollution_Creator,
-    Garbage_Collector_Debug_Machine,
 
     // Basically is an automatic Cauldron
     SimpleDustWasher_ULV,
@@ -764,8 +738,6 @@ public enum GregtechItemList implements GregtechItemContainer {
     GT_Solar_UV,
     GT_Solar_MAX,
 
-    // 512v Creative Buffer
-    Energy_Buffer_CREATIVE,
     // Variable voltage RF convertor
     Energy_Buffer_RF_Convertor,
     // Energy Buffers
@@ -795,30 +767,10 @@ public enum GregtechItemList implements GregtechItemContainer {
     // The max Steam condenser
     Condensor_MAX,
 
-    // Player owned Safes
-    GT_Safe_ULV,
-    GT_Safe_LV,
-    GT_Safe_MV,
-    GT_Safe_HV,
-    GT_Safe_EV,
-    GT_Safe_IV,
-    GT_Safe_LuV,
-    GT_Safe_ZPM,
-    GT_Safe_UV,
-    GT_Safe_MAX,
-
     // Rocket Engines
     Rocket_Engine_EV,
     Rocket_Engine_IV,
     Rocket_Engine_LuV,
-
-    // GT4 Shelves
-    GT4_Shelf,
-    GT4_Shelf_Iron,
-    GT4_Shelf_FileCabinet,
-    GT4_Shelf_Desk,
-    GT4_Shelf_Compartment,
-    GT4_Shelf_Large,
 
     // Hi Amp Transformers
     Transformer_HA_LV_ULV,

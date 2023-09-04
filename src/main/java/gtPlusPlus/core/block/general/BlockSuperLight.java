@@ -179,7 +179,6 @@ public class BlockSuperLight extends BlockContainer {
                                 else if (enable && aLight == 0) {
                                     aBlocksToUpdate.put(new BlockPos(xOff, yOff, zOff, this.worldObj));
                                     if (aBlockGet instanceof BlockAir) {
-                                        Logger.INFO("Lit air.");
                                         this.worldObj.setBlock(
                                                 xOff,
                                                 yOff,
@@ -188,7 +187,6 @@ public class BlockSuperLight extends BlockContainer {
                                                 0,
                                                 3);
                                     }
-                                    // aBlockGet.setLightLevel(15);
                                     aLitCounter++;
                                 }
                                 // Turning Lights off

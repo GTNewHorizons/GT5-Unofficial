@@ -3,7 +3,9 @@ package gtPlusPlus.xmod.gregtech.common.blocks;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
@@ -18,7 +20,26 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.Gregt
 
 public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract {
 
-    CasingTextureHandler2 TextureHandler = new CasingTextureHandler2();
+    @Override
+    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+        aList.add(new ItemStack(aItem, 1, 0));
+        aList.add(new ItemStack(aItem, 1, 1));
+        aList.add(new ItemStack(aItem, 1, 2));
+        aList.add(new ItemStack(aItem, 1, 3));
+        aList.add(new ItemStack(aItem, 1, 4));
+        aList.add(new ItemStack(aItem, 1, 5));
+        aList.add(new ItemStack(aItem, 1, 6));
+        aList.add(new ItemStack(aItem, 1, 7));
+        aList.add(new ItemStack(aItem, 1, 8));
+        aList.add(new ItemStack(aItem, 1, 9));
+        aList.add(new ItemStack(aItem, 1, 10));
+        aList.add(new ItemStack(aItem, 1, 11));
+        aList.add(new ItemStack(aItem, 1, 12));
+        aList.add(new ItemStack(aItem, 1, 13));
+
+        aList.add(new ItemStack(aItem, 1, 15));
+
+    }
 
     public static class GregtechMetaCasingItemBlocks2 extends GregtechMetaCasingItems {
 
@@ -62,10 +83,9 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Thermal Containment Casing");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Bulk Production Frame");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Cutting Factory Frame");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", ""); // Unused
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Sterile Farm Casing"); // Tree
-                                                                                                                 // Farmer
-                                                                                                                 // Textures
+
+        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Sterile Farm Casing");
+
         GregtechItemList.Casing_ThermalCentrifuge.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Refinery_External.set(new ItemStack(this, 1, 1));
         GregtechItemList.Casing_Refinery_Structural.set(new ItemStack(this, 1, 2));
@@ -80,6 +100,7 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
         GregtechItemList.Casing_ThermalContainment.set(new ItemStack(this, 1, 11));
         GregtechItemList.Casing_Autocrafter.set(new ItemStack(this, 1, 12));
         GregtechItemList.Casing_CuttingFactoryFrame.set(new ItemStack(this, 1, 13));
+
         GregtechItemList.Casing_PLACEHOLDER_TreeFarmer.set(new ItemStack(this, 1, 15)); // Tree Farmer Textures
     }
 

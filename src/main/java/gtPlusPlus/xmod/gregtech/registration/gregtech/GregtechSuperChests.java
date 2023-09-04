@@ -2,7 +2,6 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_ConnectableCrate;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_TieredChest;
 
 public class GregtechSuperChests {
@@ -35,12 +34,5 @@ public class GregtechSuperChests {
         ItemUtils.hideItemFromNEI(GregtechItemList.Super_Chest_EV.get(1L));
         ItemUtils.hideItemFromNEI(GregtechItemList.Super_Chest_IV.get(1L));
 
-        // Test Thing
-        GregtechItemList.CrateStorage.set(
-                (new GT_MetaTileEntity_ConnectableCrate(
-                        GT_MetaTileEntity_ConnectableCrate.mCrateID,
-                        "crate.tier.01",
-                        "Interconnecting Storage Crate",
-                        0)).getStackForm(1L));
     }
 }

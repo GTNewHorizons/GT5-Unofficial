@@ -28,7 +28,6 @@ import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 
 public class AchievementHandler {
@@ -60,17 +59,6 @@ public class AchievementHandler {
                 "",
                 true);
 
-        // Useful Info
-        boolean cores = CORE.ConfigSwitches.requireControlCores;
-        if (cores || GregtechMeta_MultiBlockBase.DEBUG_DISABLE_CORES_TEMPORARILY) {
-            this.registerAchievement(
-                    "hatch.control",
-                    -2,
-                    -2,
-                    GregtechItemList.Hatch_Control_Core.get(1),
-                    aBaseAchievementName,
-                    false);
-        }
         this.registerAchievement(
                 "hatch.dynamo.buffered",
                 2,
@@ -84,7 +72,7 @@ public class AchievementHandler {
                 -4,
                 -2,
                 GregtechItemList.Industrial_AlloyBlastSmelter.get(1),
-                cores ? "hatch.control" : aBaseAchievementName,
+                aBaseAchievementName,
                 true);
 
         // Material Advancement

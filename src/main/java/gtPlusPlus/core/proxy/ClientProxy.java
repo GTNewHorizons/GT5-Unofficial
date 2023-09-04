@@ -36,12 +36,9 @@ import gregtech.api.enums.Mods;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.core.client.model.ModelGiantChicken;
 import gtPlusPlus.core.client.renderer.CustomItemBlockRenderer;
 import gtPlusPlus.core.client.renderer.CustomOreBlockRenderer;
-import gtPlusPlus.core.client.renderer.RenderBatKing;
 import gtPlusPlus.core.client.renderer.RenderDecayChest;
-import gtPlusPlus.core.client.renderer.RenderGiantChicken;
 import gtPlusPlus.core.client.renderer.RenderMiningExplosivesPrimed;
 import gtPlusPlus.core.client.renderer.RenderSickBlaze;
 import gtPlusPlus.core.client.renderer.RenderStaballoyConstruct;
@@ -49,8 +46,6 @@ import gtPlusPlus.core.client.renderer.RenderToxinball;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.common.compat.COMPAT_PlayerAPI;
 import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
-import gtPlusPlus.core.entity.monster.EntityBatKing;
-import gtPlusPlus.core.entity.monster.EntityGiantChickenBase;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.entity.projectile.EntityHydrofluoricAcidPotion;
@@ -58,12 +53,10 @@ import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
 import gtPlusPlus.core.entity.projectile.EntitySulfuricAcidPotion;
 import gtPlusPlus.core.entity.projectile.EntityThrowableBomb;
 import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
-import gtPlusPlus.core.handler.render.FirepitRender;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
-import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
 import gtPlusPlus.core.util.minecraft.particles.EntityParticleFXMysterious;
 import gtPlusPlus.xmod.gregtech.common.render.GTPP_CapeRenderer;
 import gtPlusPlus.xmod.gregtech.common.render.GTPP_FlaskRenderer;
@@ -150,10 +143,6 @@ public class ClientProxy extends CommonProxy implements Runnable {
         RenderingRegistry.registerEntityRenderingHandler(
                 EntityHydrofluoricAcidPotion.class,
                 new RenderSnowball(ModItems.itemHydrofluoricPotion));
-        RenderingRegistry.registerEntityRenderingHandler(
-                EntityGiantChickenBase.class,
-                new RenderGiantChicken(new ModelGiantChicken(), 1f));
-        RenderingRegistry.registerEntityRenderingHandler(EntityBatKing.class, new RenderBatKing());
         RenderingRegistry
                 .registerEntityRenderingHandler(EntityThrowableBomb.class, new RenderSnowball(ModItems.itemBomb, 1));
         RenderingRegistry.registerEntityRenderingHandler(EntityLightningAttack.class, new RenderFireball(1F));
@@ -161,8 +150,6 @@ public class ClientProxy extends CommonProxy implements Runnable {
         /**
          * Tiles
          */
-        Logger.INFO("Registering Custom Renderer for the Fire Pit.");
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFirepit.class, new FirepitRender());
         Logger.INFO("Registering Custom Renderer for the Lead Lined Chest.");
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDecayablesChest.class, new RenderDecayChest());
         Logger.INFO("Registering Custom Renderer for the Egg Box.");

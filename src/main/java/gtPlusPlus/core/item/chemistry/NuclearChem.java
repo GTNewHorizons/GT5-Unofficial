@@ -1,12 +1,9 @@
 package gtPlusPlus.core.item.chemistry;
 
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
-import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.item.chemistry.general.ItemNuclearChemBase;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -23,36 +20,8 @@ public class NuclearChem extends ItemPackage {
     public static Fluid GeneticMutagen;
     private static boolean generateMutagenRecipe = false;
 
-    public static ItemNuclearChemBase mNuclearChemItem1;
-
-    public static ItemStack mResidueUranium;
-    public static ItemStack mResiduePlutonium;
-    public static ItemStack mResidueFluorides;
-    public static ItemStack mResidueNobles;
-
     @Override
-    public void items() {
-
-        mNuclearChemItem1 = new ItemNuclearChemBase();
-        registerItemStacks();
-        registerOreDict();
-    }
-
-    public void registerItemStacks() {
-
-        mResidueUranium = ItemUtils.simpleMetaStack(mNuclearChemItem1, 0, 1);
-        mResidueUranium = ItemUtils.simpleMetaStack(mNuclearChemItem1, 1, 1);
-        mResidueUranium = ItemUtils.simpleMetaStack(mNuclearChemItem1, 2, 1);
-        mResidueUranium = ItemUtils.simpleMetaStack(mNuclearChemItem1, 3, 1);
-    }
-
-    public void registerOreDict() {
-
-        ItemUtils.addItemToOreDictionary(mResidueUranium, "dustResidueUranium");
-        ItemUtils.addItemToOreDictionary(mResiduePlutonium, "dustResiduePlutonium");
-        ItemUtils.addItemToOreDictionary(mResidueFluorides, "dustResidueFluoride");
-        ItemUtils.addItemToOreDictionary(mResidueNobles, "dustResidueNoble");
-    }
+    public void items() {}
 
     @Override
     public void blocks() {}
@@ -112,7 +81,6 @@ public class NuclearChem extends ItemPackage {
         if (generateMutagenRecipe) {
             chemReator_CreateMutagen();
         }
-        chemReactor_MutagenWithEggs();
         return true;
     }
 
@@ -127,14 +95,4 @@ public class NuclearChem extends ItemPackage {
                 500);
     }
 
-    private static void chemReactor_MutagenWithEggs() {
-        CORE.RA.addChemicalRecipe(
-                CI.getNumberedCircuit(20),
-                ItemUtils.getSimpleStack(Items.egg, 2),
-                FluidUtils.getFluidStack(GeneticMutagen, 500),
-                null,
-                ItemUtils.getSimpleStack(ModItems.itemBigEgg, 2),
-                300 * 20,
-                500);
-    }
 }

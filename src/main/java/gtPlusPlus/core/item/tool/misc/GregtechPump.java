@@ -2,6 +2,7 @@ package gtPlusPlus.core.item.tool.misc;
 
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.util.GT_Utility.formatNumbers;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -202,7 +203,7 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
                     EnumChatFormatting.BLUE + (f != null ? "" + f.amount : "" + 0)
                             + "L"
                             + " / "
-                            + getCapacity(aStack)
+                            + formatNumbers(getCapacity(aStack))
                             + "L");
         }
 
@@ -212,7 +213,7 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
                 aList.add(
                         EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
                                 "item.itemBaseEuItem.tooltip.1",
-                                GT_Utility.formatNumbers(tStats[3]),
+                                formatNumbers(tStats[3]),
                                 (tStats[2] >= 0 ? tStats[2] : 0)) + EnumChatFormatting.GRAY);
             } else {
                 final long tCharge = this.getRealCharge(aStack);
@@ -224,8 +225,8 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
                     aList.add(
                             EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
                                     "item.itemBaseEuItem.tooltip.3",
-                                    GT_Utility.formatNumbers(tCharge),
-                                    GT_Utility.formatNumbers(Math.abs(tStats[0])) + " EU - Voltage: ",
+                                    formatNumbers(tCharge),
+                                    formatNumbers(Math.abs(tStats[0])) + " EU - Voltage: ",
                                     V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)])
                                     + EnumChatFormatting.GRAY);
                 }

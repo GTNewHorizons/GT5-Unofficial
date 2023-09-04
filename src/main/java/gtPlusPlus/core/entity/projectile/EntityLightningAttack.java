@@ -14,11 +14,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityLightningAttack extends EntityWitherSkull {
 
-    public EntityLightningAttack(World p_i1793_1_) {
-        super(p_i1793_1_);
-        this.setSize(0.3125F, 0.3125F);
-    }
-
     public EntityLightningAttack(World p_i1794_1_, EntityLivingBase p_i1794_2_, double p_i1794_3_, double p_i1794_5_,
             double p_i1794_7_) {
         super(p_i1794_1_, p_i1794_2_, p_i1794_3_, p_i1794_5_, p_i1794_7_);

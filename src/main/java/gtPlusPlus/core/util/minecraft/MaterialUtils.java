@@ -22,7 +22,6 @@ import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.foil.BaseItemFoil;
-import gtPlusPlus.core.item.base.plates.BaseItemPlateHeavy;
 import gtPlusPlus.core.item.base.wire.BaseItemFineWire;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
@@ -382,9 +381,7 @@ public class MaterialUtils {
     public static void generateComponentAndAssignToAMaterial(ComponentTypes aType, Material aMaterial,
             boolean generateRecipes) {
         Item aGC;
-        if (aType == ComponentTypes.PLATEHEAVY) {
-            aGC = new BaseItemPlateHeavy(aMaterial);
-        } else if (aType == ComponentTypes.FINEWIRE) {
+        if (aType == ComponentTypes.FINEWIRE) {
             aGC = new BaseItemFineWire(aMaterial);
         } else if (aType == ComponentTypes.FOIL) {
             aGC = new BaseItemFoil(aMaterial);

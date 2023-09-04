@@ -1,9 +1,6 @@
 package gtPlusPlus.core.util.minecraft;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.enums.Mods.Minecraft;
+import static gregtech.api.enums.Mods.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +13,6 @@ import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
-import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -42,13 +38,9 @@ import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.BasicSpawnEgg;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
-import gtPlusPlus.core.item.base.dusts.decimal.BaseItemCentidust;
-import gtPlusPlus.core.item.base.dusts.decimal.BaseItemDecidust;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate_OLD;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.GenericChem;
-import gtPlusPlus.core.item.tool.staballoy.MultiPickaxeBase;
-import gtPlusPlus.core.item.tool.staballoy.MultiSpadeBase;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.common.CI;
@@ -103,31 +95,12 @@ public class ItemUtils {
 
     public static final int WILDCARD_VALUE = Short.MAX_VALUE;
 
-    public static ItemStack getWildcardStack(final Item x) {
-        final ItemStack y = new ItemStack(x, 1, WILDCARD_VALUE);
-        return y;
-    }
-
     public static ItemStack getWildcardStack(final ItemStack x) {
-        final ItemStack y = ItemUtils.simpleMetaStack(x, WILDCARD_VALUE, 1);
-        return y;
-    }
-
-    public static ItemStack getIC2Cell(final String S) {
-        final ItemStack moreTemp = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell" + S, 1);
-
-        if (moreTemp == null) {
-            final int cellID = 0;
-            final ItemStack temp = GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemCellEmpty", 1L, cellID);
-            return temp != null ? temp : null;
-        }
-
-        return moreTemp;
+        return ItemUtils.simpleMetaStack(x, WILDCARD_VALUE, 1);
     }
 
     public static ItemStack getIC2Cell(final int meta) {
-        final ItemStack temp = GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemCellEmpty", 1L, meta);
-        return temp != null ? temp : null;
+        return GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemCellEmpty", 1L, meta);
     }
 
     public static ItemStack getEmptyCell() {
@@ -241,14 +214,7 @@ public class ItemUtils {
         if (size < 0 || size > 64) {
             size = 1;
         }
-        // Logger.INFO("Found Metastack: " + item.getUnlocalizedName() + ":" + meta);
-        // Logger.INFO(""+ReflectionUtils.getMethodName(0));
-        // Logger.INFO(""+ReflectionUtils.getMethodName(1));
-        // Logger.INFO(""+ReflectionUtils.getMethodName(2));
-        // Logger.INFO(""+ReflectionUtils.getMethodName(3));
-        // Logger.INFO(""+ReflectionUtils.getMethodName(4));
-        final ItemStack metaStack = new ItemStack(item, size, meta);
-        return metaStack;
+        return new ItemStack(item, size, meta);
     }
 
     public static ItemStack simpleMetaStack(final Block block, final int meta, final int size) {
@@ -578,164 +544,6 @@ public class ItemUtils {
         new RecipeGen_DustGeneration(material, disableExtraRecipes);
 
         return output;
-    }
-
-    public static MultiPickaxeBase generateMultiPick(final boolean GT_Durability, final Materials material) {
-        final ToolMaterial customMaterial = Utils.generateToolMaterialFromGT(material);
-        final int enchantLevel = material.mEnchantmentToolsLevel;
-        final Object enchant = new Pair(material.mEnchantmentTools, enchantLevel);
-        return generateMultiPick(
-                GT_Durability,
-                customMaterial,
-                material.mDefaultLocalName,
-                material.mDurability,
-                material.mRGBa,
-                enchant);
-    }
-
-    public static MultiPickaxeBase generateMultiPick(final Material material) {
-        final ToolMaterial customMaterial = Utils.generateToolMaterial(material);
-        return generateMultiPick(
-                true,
-                customMaterial,
-                material.getLocalizedName(),
-                (int) material.vDurability,
-                material.getRGBA(),
-                null);
-    }
-
-    public static MultiPickaxeBase generateMultiPick(final boolean GT_Durability, final ToolMaterial customMaterial,
-            final String name, final int durability, final short[] rgba, final Object enchantment) {
-        Logger.WARNING("Generating a Multi-Pick out of " + name);
-        final short[] rgb = rgba;
-        int dur = customMaterial.getMaxUses();
-        Logger.WARNING("Determined durability for " + name + " is " + dur);
-        if (GT_Durability) {
-            dur = durability * 100;
-            Logger.WARNING("Using gregtech durability value, " + name + " is now " + dur + ".");
-        } else if (dur <= 0) {
-            dur = durability;
-            Logger.WARNING(
-                    "Determined durability too low, " + name
-                            + " is now "
-                            + dur
-                            + " based on the GT material durability.");
-        }
-        if (dur <= 0) {
-            Logger.WARNING("Still too low, " + name + " will now go unused.");
-            return null;
-        }
-
-        Object enchant;
-        if (enchantment != null) {
-            if (enchantment instanceof Pair) {
-                enchant = enchantment;
-            }
-        } else {
-            enchant = null;
-        }
-
-        final MultiPickaxeBase MP_Redstone = new MultiPickaxeBase(
-                name + " Multipick",
-                (customMaterial),
-                dur,
-                Utils.rgbtoHexValue(rgb[0], rgb[1], rgb[2]),
-                enchantment);
-
-        if (MP_Redstone.isValid) {
-            return MP_Redstone;
-        }
-        Logger.WARNING("Pickaxe was not valid.");
-        return null;
-    }
-
-    public static MultiSpadeBase generateMultiShovel(final boolean GT_Durability, final Materials material) {
-        final ToolMaterial customMaterial = Utils.generateToolMaterialFromGT(material);
-        return generateMultiShovel(
-                GT_Durability,
-                customMaterial,
-                material.mDefaultLocalName,
-                material.mDurability,
-                material.mRGBa);
-    }
-
-    public static MultiSpadeBase generateMultiShovel(final Material material) {
-        final ToolMaterial customMaterial = Utils.generateToolMaterial(material);
-        return generateMultiShovel(
-                true,
-                customMaterial,
-                material.getLocalizedName(),
-                (int) material.vDurability,
-                material.getRGBA());
-    }
-
-    public static MultiSpadeBase generateMultiShovel(final boolean GT_Durability, final ToolMaterial customMaterial,
-            final String name, final int durability, final short[] rgba) {
-        Logger.WARNING("Generating a Multi-Spade out of " + name);
-        final short[] rgb = rgba;
-        int dur = customMaterial.getMaxUses();
-        Logger.WARNING("Determined durability for " + name + " is " + dur);
-        if (GT_Durability) {
-            dur = durability * 100;
-            Logger.WARNING("Using gregtech durability value, " + name + " is now " + dur + ".");
-        } else if (dur <= 0) {
-            dur = durability;
-            Logger.WARNING(
-                    "Determined durability too low, " + name
-                            + " is now "
-                            + dur
-                            + " based on the GT material durability.");
-        }
-        if (dur <= 0) {
-            Logger.WARNING("Still too low, " + name + " will now go unused.");
-            return null;
-        }
-        final MultiSpadeBase MP_Redstone = new MultiSpadeBase(
-                name + " Multispade",
-                (customMaterial),
-                dur,
-                Utils.rgbtoHexValue(rgb[0], rgb[1], rgb[2]));
-
-        if (MP_Redstone.isValid) {
-            return MP_Redstone;
-        }
-        return null;
-    }
-
-    public static BaseItemDecidust generateDecidust(final Materials material) {
-        if (GT_OreDictUnificator.get(OrePrefixes.dust, material, 1L) != null) {
-            final Material placeholder = MaterialUtils.generateMaterialFromGtENUM(material);
-            if (placeholder != null) {
-                generateDecidust(placeholder);
-            }
-        }
-        return null;
-    }
-
-    public static BaseItemDecidust generateDecidust(final Material material) {
-        if ((material.getDust(1) != null) && MaterialUtils.hasValidRGBA(material.getRGBA())) {
-            final BaseItemDecidust Decidust = new BaseItemDecidust(material);
-            return Decidust;
-        }
-        return null;
-    }
-
-    public static BaseItemCentidust generateCentidust(final Materials material) {
-        if (GT_OreDictUnificator.get(OrePrefixes.dust, material, 1L) != null) {
-            final Material placeholder = MaterialUtils.generateMaterialFromGtENUM(material);
-            if (placeholder != null) {
-                generateCentidust(placeholder);
-            }
-        }
-        return null;
-    }
-
-    public static BaseItemCentidust generateCentidust(final Material material) {
-        if ((material.getDust(1) != null) && MaterialUtils.hasValidRGBA(material.getRGBA())) {
-            final BaseItemCentidust Centidust = new BaseItemCentidust(material);
-            return Centidust;
-        }
-        return null;
     }
 
     public static boolean isRadioactive(final String materialName) {

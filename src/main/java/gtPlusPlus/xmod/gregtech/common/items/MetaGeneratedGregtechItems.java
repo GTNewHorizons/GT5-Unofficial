@@ -5,8 +5,6 @@ import static gregtech.client.GT_TooltipHandler.Tier.*;
 import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
 import static gtPlusPlus.core.util.Utils.getTcAspectStack;
 
-import net.minecraft.item.EnumAction;
-
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -18,7 +16,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GT_MultiTexture;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_FoodStat;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.common.covers.GT_Cover_Arm;
 import gregtech.common.covers.GT_Cover_Conveyor;
@@ -57,7 +54,6 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 
         // Simplify life.
         registerComponents_ULV();
-        registerComponents_MAX();
 
         // Extruder Shape
         GregtechItemList.Shape_Extruder_WindmillShaft
@@ -192,21 +188,11 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
                                 getTcAspectStack(TC_Aspects.POTENTIA, 8L) }));
         this.setElectricStats(32000 + tLastID, GT_Values.V[6] * 10 * 60 * 20, GT_Values.V[5], 5L, -3L, true);
 
-        // FOOOOOOOOOOOOOOD
-        GregtechItemList.Food_Baked_Raisin_Bread.set(
-                this.addItem(
-                        tLastID = 60,
-                        "Raisin Bread",
-                        "Extra Raisins, Just for ImQ009",
-                        new Object[] { new GT_FoodStat(5, 0.5F, EnumAction.eat, null, false, true, false, new int[0]),
-                                getTcAspectStack(TC_Aspects.CORPUS, 1L), getTcAspectStack(TC_Aspects.FAMES, 1L),
-                                getTcAspectStack(TC_Aspects.IGNIS, 1L) }));
-
         GregtechItemList.Cover_Overflow_ULV.set(
                 this.addItem(
                         71,
                         "Overflow Valve (ULV)",
-                        "Maximum void amount: 8000",
+                        "Maximum void amount: 8,000",
                         new Object[] { getTcAspectStack(TC_Aspects.ELECTRUM, 1L),
                                 getTcAspectStack(TC_Aspects.MACHINA, 1L), getTcAspectStack(TC_Aspects.ITER, 1L),
                                 getTcAspectStack(TC_Aspects.AQUA, 1L) }));
@@ -214,7 +200,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
                 this.addItem(
                         72,
                         "Overflow Valve (LV)",
-                        "Maximum void amount: 64000",
+                        "Maximum void amount: 64,000",
                         new Object[] { getTcAspectStack(TC_Aspects.ELECTRUM, 1L),
                                 getTcAspectStack(TC_Aspects.MACHINA, 1L), getTcAspectStack(TC_Aspects.ITER, 1L),
                                 getTcAspectStack(TC_Aspects.AQUA, 1L) }));
@@ -222,7 +208,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
                 this.addItem(
                         73,
                         "Overflow Valve (MV)",
-                        "Maximum void amount: 512000",
+                        "Maximum void amount: 512,000",
                         new Object[] { getTcAspectStack(TC_Aspects.ELECTRUM, 1L),
                                 getTcAspectStack(TC_Aspects.MACHINA, 1L), getTcAspectStack(TC_Aspects.ITER, 1L),
                                 getTcAspectStack(TC_Aspects.AQUA, 1L) }));
@@ -230,7 +216,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
                 this.addItem(
                         74,
                         "Overflow Valve (HV)",
-                        "Maximum void amount: 4096000",
+                        "Maximum void amount: 4,096,000",
                         new Object[] { getTcAspectStack(TC_Aspects.ELECTRUM, 1L),
                                 getTcAspectStack(TC_Aspects.MACHINA, 1L), getTcAspectStack(TC_Aspects.ITER, 1L),
                                 getTcAspectStack(TC_Aspects.AQUA, 1L) }));
@@ -238,7 +224,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
                 this.addItem(
                         75,
                         "Overflow Valve (EV)",
-                        "Maximum void amount: 32768000",
+                        "Maximum void amount: 32,768,000",
                         new Object[] { getTcAspectStack(TC_Aspects.ELECTRUM, 1L),
                                 getTcAspectStack(TC_Aspects.MACHINA, 1L), getTcAspectStack(TC_Aspects.ITER, 1L),
                                 getTcAspectStack(TC_Aspects.AQUA, 1L) }));
@@ -246,7 +232,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
                 this.addItem(
                         76,
                         "Overflow Valve (IV)",
-                        "Maximum void amount: 262144000",
+                        "Maximum void amount: 262,144,000",
                         new Object[] { getTcAspectStack(TC_Aspects.ELECTRUM, 1L),
                                 getTcAspectStack(TC_Aspects.MACHINA, 1L), getTcAspectStack(TC_Aspects.ITER, 1L),
                                 getTcAspectStack(TC_Aspects.AQUA, 1L) }));
@@ -295,21 +281,6 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
                         "Hypervisor Matrix (Fusion)",
                         "A memory unit containing an RI (Restricted Intelligence)"));
 
-        // NanoTubes
-        GregtechItemList.NanoTube_Base_Substrate
-                .set(this.addItem(101, "Silicon Base Substrate", "Used in the production of Carbon Nanotubes"));
-        GregtechItemList.NanoTube_Finished.set(
-                this.addItem(102, "Carbon Nanotubes", "Multi-walled Zigzag nanotubes, possibly Carbon's final form"));
-        GregtechItemList.Carbyne_Tube_Finished.set(
-                this.addItem(
-                        103,
-                        "Linear Acetylenic Carbon (LAC/Carbyne)",
-                        "LAC chains grown inside Multi-walled Carbon Nanotubes, highly stable"));
-        GregtechItemList.Carbyne_Sheet_Finished.set(
-                this.addItem(
-                        104,
-                        "Carbyne Composite Panel",
-                        "Nanotubes which contain LAC, arranged side by side and compressed further"));
         GregtechItemList.Laser_Lens_Special
                 .set(this.addItem(105, "Quantum Anomaly", "Probably should shoot it with lasers"));
 
@@ -341,51 +312,6 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         /*
          * High Tier 'Saws' for the tree Farm
          */
-        GregtechItemList.Farm_Processor_EV.set(
-                this.addItem(
-                        tLastID = 120,
-                        "Farm Processor [EV]",
-                        "Reusable",
-                        new Object[] { getTcAspectStack(TC_Aspects.ELECTRUM, 8L),
-                                getTcAspectStack(TC_Aspects.METALLUM, 8L),
-                                getTcAspectStack(TC_Aspects.POTENTIA, 8L) }));
-        this.setElectricStats(32000 + tLastID, GT_Values.V[5] * 10 * 60 * 20, GT_Values.V[4], 4L, -3L, false);
-        GregtechItemList.Farm_Processor_IV.set(
-                this.addItem(
-                        tLastID = 122,
-                        "Farm Processor [IV]",
-                        "Reusable",
-                        new Object[] { getTcAspectStack(TC_Aspects.ELECTRUM, 8L),
-                                getTcAspectStack(TC_Aspects.METALLUM, 8L),
-                                getTcAspectStack(TC_Aspects.POTENTIA, 8L) }));
-        this.setElectricStats(32000 + tLastID, GT_Values.V[6] * 10 * 60 * 20, GT_Values.V[5], 5L, -3L, false);
-        GregtechItemList.Farm_Processor_LuV.set(
-                this.addItem(
-                        tLastID = 124,
-                        "Farm Processor [LuV]",
-                        "Reusable",
-                        new Object[] { getTcAspectStack(TC_Aspects.ELECTRUM, 8L),
-                                getTcAspectStack(TC_Aspects.METALLUM, 8L),
-                                getTcAspectStack(TC_Aspects.POTENTIA, 8L) }));
-        this.setElectricStats(32000 + tLastID, GT_Values.V[7] * 10 * 60 * 20, GT_Values.V[6], 6L, -3L, false);
-        GregtechItemList.Farm_Processor_ZPM.set(
-                this.addItem(
-                        tLastID = 126,
-                        "Farm Processor [ZPM]",
-                        "Reusable",
-                        new Object[] { getTcAspectStack(TC_Aspects.ELECTRUM, 8L),
-                                getTcAspectStack(TC_Aspects.METALLUM, 8L),
-                                getTcAspectStack(TC_Aspects.POTENTIA, 8L) }));
-        this.setElectricStats(32000 + tLastID, GT_Values.V[8] * 10 * 60 * 20, GT_Values.V[7], 7L, -3L, false);
-        GregtechItemList.Farm_Processor_UV.set(
-                this.addItem(
-                        tLastID = 128,
-                        "Farm Processor [UV]",
-                        "Reusable",
-                        new Object[] { getTcAspectStack(TC_Aspects.ELECTRUM, 8L),
-                                getTcAspectStack(TC_Aspects.METALLUM, 8L),
-                                getTcAspectStack(TC_Aspects.POTENTIA, 8L) }));
-        this.setElectricStats(32000 + tLastID, GT_Values.V[9] * 10 * 60 * 20, GT_Values.V[8], 8L, -3L, false);
 
         GregtechItemList.Laser_Lens_WoodsGlass.set(
                 this.addItem(
@@ -496,88 +422,6 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
                         new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[1][0],
                                 new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ARM) }),
                 new GT_Cover_Arm(1600, TextureFactory.of(OVERLAY_ARM)));
-
-        return true;
-    }
-
-    private boolean registerComponents_MAX() {
-        GregtechItemList.Electric_Pump_MAX.set(
-                this.addItem(
-                        3,
-                        "Electric Pump (MAX)",
-                        "",
-                        new Object[] { getTcAspectStack(TC_Aspects.ELECTRUM, 8L),
-                                getTcAspectStack(TC_Aspects.MACHINA, 8L), getTcAspectStack(TC_Aspects.ITER, 8L),
-                                getTcAspectStack(TC_Aspects.AQUA, 8L) }));
-        GregtechItemList.Electric_Motor_MAX.set(
-                this.addItem(
-                        7,
-                        "Electric Motor (MAX)",
-                        "",
-                        new Object[] { getTcAspectStack(TC_Aspects.ELECTRUM, 8L),
-                                getTcAspectStack(TC_Aspects.MACHINA, 8L), getTcAspectStack(TC_Aspects.MOTUS, 8L) }));
-        GregtechItemList.Conveyor_Module_MAX.set(
-                this.addItem(
-                        11,
-                        "Conveyor Module (MAX)",
-                        "",
-                        new Object[] { getTcAspectStack(TC_Aspects.ELECTRUM, 8L),
-                                getTcAspectStack(TC_Aspects.MACHINA, 8L), getTcAspectStack(TC_Aspects.ITER, 8L) }));
-        GregtechItemList.Electric_Piston_MAX.set(
-                this.addItem(
-                        15,
-                        "Electric Piston (MAX)",
-                        "",
-                        new Object[] { getTcAspectStack(TC_Aspects.ELECTRUM, 8L),
-                                getTcAspectStack(TC_Aspects.MACHINA, 16L), getTcAspectStack(TC_Aspects.MOTUS, 8L) }));
-        GregtechItemList.Robot_Arm_MAX.set(
-                this.addItem(
-                        19,
-                        "Robot Arm (MAX)",
-                        "",
-                        new Object[] { getTcAspectStack(TC_Aspects.ELECTRUM, 8L),
-                                getTcAspectStack(TC_Aspects.MACHINA, 16L), getTcAspectStack(TC_Aspects.MOTUS, 8L),
-                                getTcAspectStack("COGNITIO", 8L) }));
-        GregtechItemList.Field_Generator_MAX.set(
-                this.addItem(
-                        23,
-                        "Field Generator (MAX)",
-                        "",
-                        new Object[] { getTcAspectStack(TC_Aspects.ELECTRUM, 16L),
-                                getTcAspectStack(TC_Aspects.MACHINA, 8L), getTcAspectStack(TC_Aspects.TUTAMEN, 8L) }));
-        GregtechItemList.Emitter_MAX.set(
-                this.addItem(
-                        27,
-                        "Emitter (MAX)",
-                        "",
-                        new Object[] { getTcAspectStack(TC_Aspects.ELECTRUM, 8L),
-                                getTcAspectStack(TC_Aspects.MACHINA, 8L), getTcAspectStack(TC_Aspects.LUX, 8L) }));
-        GregtechItemList.Sensor_MAX.set(
-                this.addItem(
-                        31,
-                        "Sensor (MAX)",
-                        "",
-                        new Object[] { getTcAspectStack(TC_Aspects.ELECTRUM, 8L),
-                                getTcAspectStack(TC_Aspects.MACHINA, 8L), getTcAspectStack(TC_Aspects.SENSUS, 8L) }));
-
-        GregTech_API.registerCover(
-                GregtechItemList.Electric_Pump_MAX.get(1L),
-                new GT_MultiTexture(
-                        new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[8][0],
-                                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PUMP) }),
-                new GT_Cover_Pump(524288, TextureFactory.of(OVERLAY_PUMP)));
-        GregTech_API.registerCover(
-                GregtechItemList.Conveyor_Module_MAX.get(1L),
-                new GT_MultiTexture(
-                        new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[4][0],
-                                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_CONVEYOR) }),
-                new GT_Cover_Conveyor(4, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
-        GregTech_API.registerCover(
-                GregtechItemList.Robot_Arm_MAX.get(1L),
-                new GT_MultiTexture(
-                        new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[4][0],
-                                new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_ARM) }),
-                new GT_Cover_Arm(4, TextureFactory.of(OVERLAY_ARM)));
 
         return true;
     }

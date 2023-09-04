@@ -1,37 +1,24 @@
 package gtPlusPlus.core.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.Fluid;
 
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.general.BlockCompressedObsidian;
-import gtPlusPlus.core.block.general.BlockNet;
-import gtPlusPlus.core.block.general.BlockTankXpConverter;
-import gtPlusPlus.core.block.general.FirePit;
 import gtPlusPlus.core.block.general.FluidTankInfinite;
 import gtPlusPlus.core.block.general.HellFire;
 import gtPlusPlus.core.block.general.LightGlass;
 import gtPlusPlus.core.block.general.MiningExplosives;
-import gtPlusPlus.core.block.general.PlayerDoors;
 import gtPlusPlus.core.block.general.antigrief.BlockWitherProof;
-import gtPlusPlus.core.block.general.redstone.BlockGenericRedstoneDetector;
-import gtPlusPlus.core.block.general.redstone.BlockGenericRedstoneTest;
 import gtPlusPlus.core.block.machine.CircuitProgrammer;
 import gtPlusPlus.core.block.machine.DecayablesChest;
-import gtPlusPlus.core.block.machine.EggBox;
 import gtPlusPlus.core.block.machine.FishTrap;
-import gtPlusPlus.core.block.machine.HeliumGenerator;
-import gtPlusPlus.core.block.machine.Machine_ModularityTable;
 import gtPlusPlus.core.block.machine.Machine_PestKiller;
 import gtPlusPlus.core.block.machine.Machine_PooCollector;
 import gtPlusPlus.core.block.machine.Machine_ProjectTable;
 import gtPlusPlus.core.block.machine.Machine_RoundRobinator;
 import gtPlusPlus.core.block.machine.Machine_SuperJukebox;
-import gtPlusPlus.core.block.machine.Machine_TradeTable;
 import gtPlusPlus.core.block.machine.VolumetricFlaskSetter;
-import gtPlusPlus.core.block.machine.bedrock.Mining_Head_Fake;
-import gtPlusPlus.core.block.machine.bedrock.Mining_Pipe_Fake;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
 
 public final class ModBlocks {
@@ -39,18 +26,9 @@ public final class ModBlocks {
     public static Block blockRoundRobinator;
     public static Block blockCircuitProgrammer;
     public static Block blockVolumetricFlaskSetter;
-    public static Block blockFakeMiningPipe;
-    public static Block blockFakeMiningHead;
 
     public static Block blockFishTrap;
     public static Block blockDecayablesChest;
-    public static Block blockEggBox;
-
-    // Blocks
-    // public static Block blockBloodSteel;
-    // public static Block blockStaballoy;
-    // WIP TODO public static Block blockToolBuilder;
-    public static Block blockGriefSaver;
 
     public static Block blockCasingsMisc;
     public static Block blockCasings2Misc;
@@ -64,32 +42,18 @@ public final class ModBlocks {
     public static Block blockCustomMachineCasings;
     public static Block blockCustomPipeGearCasings;
 
-    public static Block blockMetaTileEntity;
-    public static Block blockHeliumGenerator;
-    public static Block blockNHG;
-    public static Block blockCharger;
-
     public static Block MatterFabricatorEffectBlock;
 
     public static Fluid fluidSludge = new Fluid("fluid.sludge");
     public static Block blockFluidSludge;
-
-    public static Block blockFirePit;
-
-    public static Block blockOreFluorite;
 
     public static Block blockMiningExplosive;
 
     public static Block blockHellfire;
     public static Block blockInfiniteFLuidTank;
     public static Block blockProjectTable;
-    public static Block blockTradeTable;
-    public static Block blockModularTable;
-
     public static Block blockWitherGuard;
-    public static Block blockXpConverter;
     public static Block blockCompressedObsidian;
-    public static Block blockNet;
 
     public static Block blockPlayerDoorWooden;
     public static Block blockPlayerDoorIron;
@@ -97,8 +61,6 @@ public final class ModBlocks {
     public static Block blockPlayerDoorCustom_Ice;
     public static Block blockPlayerDoorCustom_Cactus;
 
-    public static Block blockCustomMobSpawner;
-    public static Block blockCustomSuperLight;
     public static Block blockCustomJukebox;
 
     public static Block blockPooCollector;
@@ -120,41 +82,18 @@ public final class ModBlocks {
         FluidRegistryHandler.registerFluids();
 
         // Workbench
-        blockHeliumGenerator = new HeliumGenerator();
-        blockFirePit = new FirePit();
         blockFishTrap = new FishTrap();
         blockInfiniteFLuidTank = new FluidTankInfinite();
         blockMiningExplosive = new MiningExplosives();
         blockHellfire = new HellFire();
         blockProjectTable = new Machine_ProjectTable();
-        blockTradeTable = new Machine_TradeTable();
-        blockModularTable = new Machine_ModularityTable();
         blockWitherGuard = new BlockWitherProof();
-        blockXpConverter = new BlockTankXpConverter();
         blockCompressedObsidian = new BlockCompressedObsidian();
-        blockNet = new BlockNet();
-
-        blockFakeMiningPipe = new Mining_Pipe_Fake();
-        blockFakeMiningHead = new Mining_Head_Fake();
 
         blockCircuitProgrammer = new CircuitProgrammer();
 
         blockDecayablesChest = new DecayablesChest();
-        blockEggBox = new EggBox();
 
-        blockPlayerDoorWooden = new PlayerDoors(Material.wood, "door_wood", true);
-        blockPlayerDoorIron = new PlayerDoors(Material.iron, "door_iron", true);
-        blockPlayerDoorCustom_Glass = new PlayerDoors(Material.glass, "door_glass", false);
-        blockPlayerDoorCustom_Ice = new PlayerDoors(Material.ice, "door_ice", false);
-        blockPlayerDoorCustom_Cactus = new PlayerDoors(
-                Material.cactus,
-                "door_cactus",
-                false,
-                0.6f,
-                Block.soundTypeGrass,
-                "Cactus");
-
-        // blockCustomSuperLight = new BlockSuperLight();
         blockCustomJukebox = new Machine_SuperJukebox();
 
         blockPooCollector = new Machine_PooCollector();
@@ -165,7 +104,5 @@ public final class ModBlocks {
 
         blockVolumetricFlaskSetter = new VolumetricFlaskSetter();
 
-        new BlockGenericRedstoneDetector();
-        new BlockGenericRedstoneTest();
     }
 }

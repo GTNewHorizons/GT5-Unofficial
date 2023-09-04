@@ -3,7 +3,9 @@ package gtPlusPlus.xmod.gregtech.common.blocks;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
@@ -16,6 +18,13 @@ import gtPlusPlus.xmod.gregtech.api.objects.GTPP_CopiedBlockTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaSpecialMachineCasings extends GregtechMetaCasingBlocksAbstract {
+
+    @Override
+    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+        for (int i = 0; i < 4; i++) {
+            aList.add(new ItemStack(aItem, 1, i));
+        }
+    }
 
     public static class SpecialCasingItemBlock extends GregtechMetaCasingItems {
 
@@ -47,18 +56,6 @@ public class GregtechMetaSpecialMachineCasings extends GregtechMetaCasingBlocksA
         TAE.registerTexture(84, new GTPP_CopiedBlockTexture(this, 6, 2));
         GT_LanguageManager
                 .addStringLocalization(this.getUnlocalizedName() + ".3.name", "Rugged Botmium Machine Casing");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", ""); // Unused
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", ""); // Unused
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", ""); // Unused
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", ""); // Unused
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", ""); // Unused
 
         GregtechItemList.Casing_Machine_Custom_1.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Machine_Custom_2.set(new ItemStack(this, 1, 1));

@@ -12,7 +12,6 @@ import gtPlusPlus.api.objects.Logger;
 
 public final class TexturesGtTools {
 
-    public static final CustomIcon SKOOKUM_CHOOCHER = new CustomIcon("iconsets/SKOOKUMCHOOCHER");
     public static final CustomIcon ANGLE_GRINDER = new CustomIcon("iconsets/ANGLE_GRINDER");
     public static final CustomIcon ELECTRIC_SNIPS = new CustomIcon("iconsets/ELECTRIC_SNIPS");
     public static final CustomIcon ELECTRIC_LIGHTER = new CustomIcon("iconsets/ELECTRIC_LIGHTER");

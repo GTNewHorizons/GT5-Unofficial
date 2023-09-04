@@ -3,7 +3,9 @@ package gtPlusPlus.xmod.gregtech.common.blocks;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -20,6 +22,13 @@ public class GregtechMetaCasingBlocks6 extends GregtechMetaCasingBlocksAbstract 
 
     public static boolean mConnectedMachineTextures = false;
     CasingTextureHandler6 TextureHandler = new CasingTextureHandler6();
+
+    @Override
+    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+        for (int i = 0; i < 3; i++) {
+            aList.add(new ItemStack(aItem, 1, i));
+        }
+    }
 
     public static class GregtechMetaCasingItemBlocks3 extends GregtechMetaCasingItems {
 

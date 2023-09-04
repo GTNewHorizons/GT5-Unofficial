@@ -83,7 +83,6 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_AirIntake;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_ControlCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Steam_BusInput;
@@ -102,7 +101,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
     public GT_Recipe mLastRecipe;
     protected long mTotalRunTime = 0;
 
-    public ArrayList<GT_MetaTileEntity_Hatch_ControlCore> mControlCoreBus = new ArrayList<>();
     /**
      * Don't use this for recipe input check, otherwise you'll get duplicated fluids
      */
@@ -168,7 +166,8 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         long seconds = (this.mTotalRunTime / 20);
         int weeks = (int) (TimeUnit.SECONDS.toDays(seconds) / 7);
         int days = (int) (TimeUnit.SECONDS.toDays(seconds) - 7 * weeks);
-        long hours = TimeUnit.SECONDS.toHours(seconds) - TimeUnit.DAYS.toHours(days) - TimeUnit.DAYS.toHours(7 * weeks);
+        long hours = TimeUnit.SECONDS.toHours(seconds) - TimeUnit.DAYS.toHours(days)
+                - TimeUnit.DAYS.toHours(7L * weeks);
         long minutes = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds) * 60);
         long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) * 60);
 
@@ -179,11 +178,11 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         mInfo.add(
                 StatCollector.translateToLocal("GTPP.multiblock.progress") + ": "
                         + EnumChatFormatting.GREEN
-                        + Integer.toString(mProgresstime / 20)
+                        + mProgresstime / 20
                         + EnumChatFormatting.RESET
                         + " s / "
                         + EnumChatFormatting.YELLOW
-                        + Integer.toString(mMaxProgresstime / 20)
+                        + mMaxProgresstime / 20
                         + EnumChatFormatting.RESET
                         + " s");
 
@@ -270,15 +269,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
                             + mPollutionReduction
                             + EnumChatFormatting.RESET
                             + " %");
-        }
-
-        if (this.mControlCoreBus.size() > 0) {
-            int tTier = this.getControlCoreTier();
-            mInfo.add(
-                    StatCollector.translateToLocal("GTPP.CC.machinetier") + ": "
-                            + EnumChatFormatting.GREEN
-                            + tTier
-                            + EnumChatFormatting.RESET);
         }
 
         mInfo.add(
@@ -448,7 +438,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
             if (this.mUpdate == 1 || this.mStartUpCheck == 1) {
                 this.mChargeHatches.clear();
                 this.mDischargeHatches.clear();
-                this.mControlCoreBus.clear();
                 this.mAirIntakes.clear();
                 this.mTecTechEnergyHatches.clear();
                 this.mTecTechDynamoHatches.clear();
@@ -561,15 +550,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
             }
         }
         super.updateSlots();
-    }
-
-    public boolean isToolCreative(ItemStack mStack) {
-        Materials t1 = GT_MetaGenerated_Tool.getPrimaryMaterial(mStack);
-        Materials t2 = GT_MetaGenerated_Tool.getSecondaryMaterial(mStack);
-        if (t1 == Materials._NULL && t2 == Materials._NULL) {
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -705,59 +685,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         return false;
     }
 
-    public int getControlCoreTier() {
-
-        // Always return best tier if config is off.
-        /*
-         * boolean aCoresConfig = gtPlusPlus.core.lib.CORE.ConfigSwitches.requireControlCores; if (!aCoresConfig) {
-         * return 10; }
-         */
-
-        if (mControlCoreBus.isEmpty()) {
-            log("No Control Core Modules Found.");
-            return 0;
-        }
-        GT_MetaTileEntity_Hatch_ControlCore i = getControlCoreBus();
-        if (i != null) {
-            ItemStack x = i.mInventory[0];
-            if (x != null) {
-                return x.getItemDamage();
-            }
-        }
-        log("Control Core Module was null.");
-        return 0;
-    }
-
-    public GT_MetaTileEntity_Hatch_ControlCore getControlCoreBus() {
-        if (this.mControlCoreBus == null || this.mControlCoreBus.isEmpty()) {
-            return null;
-        }
-        GT_MetaTileEntity_Hatch_ControlCore x = this.mControlCoreBus.get(0);
-        if (x != null) {
-            log("getControlCore(ok)");
-            return x;
-        }
-        log("getControlCore(bad)");
-        return null;
-    }
-
-    // mControlCoreBus
-    public boolean addControlCoreToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex) {
-        if (!mControlCoreBus.isEmpty()) {
-            log("Tried to add a secondary control core module.");
-            return false;
-        }
-        GT_MetaTileEntity_Hatch_ControlCore Module = (GT_MetaTileEntity_Hatch_ControlCore) getMetaTileEntity(
-                aTileEntity);
-        if (Module != null) {
-            if (Module.setOwner(aTileEntity)) {
-                log("Adding control core module.");
-                return addToMachineListInternal(mControlCoreBus, Module, aBaseCasingIndex);
-            }
-        }
-        return false;
-    }
-
     private IMetaTileEntity getMetaTileEntity(final IGregTechTileEntity aTileEntity) {
         if (aTileEntity == null) {
             return null;
@@ -780,14 +707,7 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
         boolean aDidAdd = false;
 
         // Handle Custom Hatches
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_ControlCore) {
-            log("Found GT_MetaTileEntity_Hatch_ControlCore");
-            if (!mControlCoreBus.isEmpty()) {
-                log("Tried to add a secondary control core module.");
-                return false;
-            }
-            aDidAdd = addToMachineListInternal(this.mControlCoreBus, aMetaTileEntity, aBaseCasingIndex);
-        } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBattery) {
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBattery) {
             log("Found GT_MetaTileEntity_Hatch_InputBattery");
             aDidAdd = addToMachineListInternal(mChargeHatches, aMetaTileEntity, aBaseCasingIndex);
         } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBattery) {
@@ -1780,14 +1700,6 @@ public abstract class GregtechMeta_MultiBlockBase<T extends GT_MetaTileEntity_Ex
             @Override
             public long count(GregtechMeta_MultiBlockBase<?> t) {
                 return t.mAirIntakes.size();
-            }
-        },
-        ControlCore(GregtechMeta_MultiBlockBase::addControlCoreToMachineList,
-                GT_MetaTileEntity_Hatch_ControlCore.class) {
-
-            @Override
-            public long count(GregtechMeta_MultiBlockBase<?> t) {
-                return t.mControlCoreBus.size();
             }
         },
         TTDynamo(GregtechMeta_MultiBlockBase::addMultiAmpDynamoToMachineList,

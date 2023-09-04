@@ -7,9 +7,11 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import codechicken.nei.api.API;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -28,7 +30,6 @@ public class LightGlass extends BlockAir {
     private int hex;
 
     public LightGlass(final boolean bool) {
-        // super("blockMFEffect", Material.air, bool);
         super();
         this.setCreativeTab(AddToCreativeTab.tabBlock);
         this.setBlockName("blockMFEffect");
@@ -38,9 +39,7 @@ public class LightGlass extends BlockAir {
         setStepSound(Block.soundTypeGlass);
         GameRegistry.registerBlock(this, "blockMFEffect");
 
-        /*
-         * this.setLightOpacity(0); this.setTickRandomly(true); this.setResistance(1);
-         */
+        API.hideItem(new ItemStack(this));
     }
 
     /**

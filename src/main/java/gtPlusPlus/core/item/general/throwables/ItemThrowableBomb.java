@@ -20,7 +20,6 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.entity.projectile.EntityThrowableBomb;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.CoreItem;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
@@ -54,7 +53,6 @@ public class ItemThrowableBomb extends CoreItem {
             mLighters.put(ItemList.Tool_Lighter_Invar_Used.get(1));
             mLighters.put(ItemList.Tool_Lighter_Platinum_Full.get(1));
             mLighters.put(ItemList.Tool_Lighter_Platinum_Used.get(1));
-            mLighters.put(ItemUtils.getSimpleStack(ModItems.itemBasicFireMaker));
         }
 
         // Unlit

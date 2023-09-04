@@ -24,25 +24,18 @@ import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.entity.InternalEntityRegistry;
-import gtPlusPlus.core.entity.monster.EntityGiantChickenBase;
-import gtPlusPlus.core.entity.monster.EntitySickBlaze;
-import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
-import gtPlusPlus.core.fluids.FluidFactory;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.BurnableFuelHandler;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.COMPAT_IntermodStaging;
 import gtPlusPlus.core.handler.GuiHandler;
-import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.handler.events.EnderDragonDeathHandler;
 import gtPlusPlus.core.handler.events.EntityDeathHandler;
 import gtPlusPlus.core.handler.events.GeneralTooltipEventHandler;
 import gtPlusPlus.core.handler.events.PickaxeBlockBreakEventHandler;
 import gtPlusPlus.core.handler.events.PlayerSleepEventHandler;
-import gtPlusPlus.core.handler.events.ZombieBackupSpawnEventHandler;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.tileentities.ModTileEntities;
@@ -51,9 +44,7 @@ import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.player.PlayerCache;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.plugin.villagers.block.BlockGenericSpawner;
 import gtPlusPlus.preloader.CORE_Preloader;
-import gtPlusPlus.xmod.eio.handler.HandlerTooltip_EIO;
 import gtPlusPlus.xmod.gregtech.api.util.SpecialBehaviourTooltipHandler;
 import gtPlusPlus.xmod.gregtech.recipes.GregtechRecipeAdder;
 import gtPlusPlus.xmod.ic2.CustomInternalName;
@@ -88,7 +79,6 @@ public class CommonProxy {
         ModItems.init();
         ModBlocks.init();
         CI.preInit();
-        FluidFactory.preInit();
         COMPAT_IntermodStaging.preInit(e);
         BookHandler.run();
         // Registration of entities and renderers
@@ -102,10 +92,7 @@ public class CommonProxy {
     }
 
     public void init(final FMLInitializationEvent e) {
-        registerCustomItemsForMaterials();
-        ModBlocks.blockCustomMobSpawner = new BlockGenericSpawner();
         CI.init();
-        FluidFactory.init();
 
         /**
          * Register the Event Handlers.
@@ -114,12 +101,9 @@ public class CommonProxy {
         // Prevents my Safes being destroyed.
         Utils.registerEvent(new PickaxeBlockBreakEventHandler());
         // Block Handler for all events.
-        Utils.registerEvent(new BlockEventHandler());
         Utils.registerEvent(new GeneralTooltipEventHandler());
         // Handles Tooltips for items giving custom multiblock behaviour
         Utils.registerEvent(new SpecialBehaviourTooltipHandler());
-        // Handles Custom tooltips for EIO.
-        Utils.registerEvent(new HandlerTooltip_EIO());
         // Handles Sleep Benefits
         PlayerSleepEventHandler.init();
         // Handles Magic Feather
@@ -127,11 +111,6 @@ public class CommonProxy {
 
         Utils.registerEvent(new EnderDragonDeathHandler());
         Utils.registerEvent(new EntityDeathHandler());
-
-        if (ConfigSwitches.disableZombieReinforcement) {
-            // Make Zombie reinforcements stop showing up.
-            Utils.registerEvent(new ZombieBackupSpawnEventHandler());
-        }
 
         /**
          * End of Subscribe Event registration.
@@ -146,7 +125,6 @@ public class CommonProxy {
     public void postInit(final FMLPostInitializationEvent e) {
         Logger.INFO("Cleaning up, doing postInit.");
         PlayerCache.initCache();
-        FluidFactory.postInit();
 
         // Make Burnables burnable
         if (!CORE.burnables.isEmpty()) {
@@ -203,25 +181,9 @@ public class CommonProxy {
 
     public void generateMysteriousParticles(final Entity entity) {}
 
-    public void generateMobSpawners() {
-        // Try register some test spawners
-        Utils.createNewMobSpawner(0, EntityGiantChickenBase.class);
-        Utils.createNewMobSpawner(1, EntitySickBlaze.class);
-        Utils.createNewMobSpawner(2, EntityStaballoyConstruct.class);
-    }
-
-    public void registerCustomItemsForMaterials() {
-        // Material.registerComponentForMaterial(GenericChem.CARBYNE, OrePrefixes.plate,
-        // GregtechItemList.Carbyne_Sheet_Finished.get(1));
-    }
-
     public void registerCustomMobDrops() {
 
         // Zombie
-        EntityUtils.registerDropsForMob(EntityZombie.class, ItemUtils.getSimpleStack(ModItems.itemRope), 3, 100);
-        EntityUtils.registerDropsForMob(EntityZombie.class, ItemUtils.getSimpleStack(ModItems.itemFiber), 5, 250);
-        EntityUtils
-                .registerDropsForMob(EntityZombie.class, ItemUtils.getSimpleStack(ModItems.itemSandstoneHammer), 1, 10);
         EntityUtils.registerDropsForMob(EntityZombie.class, ItemUtils.getSimpleStack(ModItems.itemBomb), 2, 10);
         EntityUtils.registerDropsForMob(EntityZombie.class, ALLOY.TUMBAGA.getTinyDust(1), 1, 10);
         EntityUtils.registerDropsForMob(EntityZombie.class, ALLOY.POTIN.getTinyDust(1), 1, 10);

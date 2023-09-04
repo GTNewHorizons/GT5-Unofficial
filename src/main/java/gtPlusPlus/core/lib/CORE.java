@@ -134,7 +134,6 @@ public class CORE {
         public static boolean dumpItemAndBlockData = false;
 
         // Tools
-        public static boolean enableSkookumChoochers = true;
         public static boolean enableMultiSizeTools = true;
 
         // Block Drops
@@ -153,7 +152,6 @@ public class CORE {
         public static boolean enableCustomCapes = false;
         public static boolean enableCustomCircuits = true;
         public static boolean enableOldGTcircuits = false;
-        public static boolean disableZombieReinforcement = false;
         public static int enableWatchdogBGM = CORE_Preloader.enableWatchdogBGM;
         public static boolean hideUniversalCells = true;
 
@@ -162,7 +160,6 @@ public class CORE {
 
         // Single Block Machines
         public static boolean enableMachine_SolarGenerators = false;
-        public static boolean enableMachine_Safes = true;
         public static boolean enableMachine_Dehydrators = true;
         public static boolean enableMachine_SteamConverter = true;
         public static boolean enableMachine_FluidTanks = true;

@@ -3,7 +3,9 @@ package gtPlusPlus.xmod.gregtech.common.blocks;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
@@ -15,6 +17,13 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbstract {
+
+    @Override
+    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+        for (int i = 0; i < 10; i++) {
+            aList.add(new ItemStack(aItem, 1, i));
+        }
+    }
 
     public static class TieredCasingItemBlock extends GregtechMetaCasingItems {
 
@@ -34,11 +43,6 @@ public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbs
 
     public GregtechMetaTieredCasingBlocks1() {
         super(TieredCasingItemBlock.class, "gtplusplus.blocktieredcasings.1", GT_Material_Casings.INSTANCE);
-        for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-            // TAE.registerTextures(new GT_CopiedBlockTexture(this, 6, i));
-            // Don't register these Textures, Hatches should never need to use their Textures.
-        }
-        int aIndex = 0;
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Integral Encasement I");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Integral Encasement II");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Integral Encasement III");
@@ -49,12 +53,6 @@ public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbs
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Integral Framework III");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Integral Framework IV");
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Integral Framework V");
-        // GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Vacuum Casing");
-        // GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Turbodyne Casing");
-        // GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "");
-        // GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "");
-        // GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "");
-        GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Placeholder Block");
 
         GregtechItemList.GTPP_Casing_ULV.set(new ItemStack(this, 1, 0));
         GregtechItemList.GTPP_Casing_LV.set(new ItemStack(this, 1, 1));
@@ -66,13 +64,6 @@ public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbs
         GregtechItemList.GTPP_Casing_ZPM.set(new ItemStack(this, 1, 7));
         GregtechItemList.GTPP_Casing_UV.set(new ItemStack(this, 1, 8));
         GregtechItemList.GTPP_Casing_MAX.set(new ItemStack(this, 1, 9));
-
-        // GregtechItemList.Casing_LV.set(new ItemStack(this, 1, 10));
-        // GregtechItemList.Casing_LV.set(new ItemStack(this, 1, 11));
-        // GregtechItemList.Casing_LV.set(new ItemStack(this, 1, 12));
-        // GregtechItemList.Casing_LV.set(new ItemStack(this, 1, 13));
-        // GregtechItemList.Casing_LV.set(new ItemStack(this, 1, 14));
-        // GregtechItemList.Casing_LV.set(new ItemStack(this, 1, 15));
     }
 
     @Override

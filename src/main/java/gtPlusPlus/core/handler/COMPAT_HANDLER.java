@@ -1,6 +1,5 @@
 package gtPlusPlus.core.handler;
 
-import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.OpenBlocks;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
@@ -20,7 +19,6 @@ import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
-import gtPlusPlus.core.common.compat.COMPAT_EnderIO;
 import gtPlusPlus.core.common.compat.COMPAT_ExtraUtils;
 import gtPlusPlus.core.common.compat.COMPAT_HarvestCraft;
 import gtPlusPlus.core.common.compat.COMPAT_IC2;
@@ -29,7 +27,6 @@ import gtPlusPlus.core.common.compat.COMPAT_Thaumcraft;
 import gtPlusPlus.core.common.compat.COMPAT_Witchery;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.recipe.RECIPES_GREGTECH;
@@ -37,8 +34,6 @@ import gtPlusPlus.core.recipe.RECIPES_LaserEngraver;
 import gtPlusPlus.core.recipe.ShapedRecipeObject;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaGarbageCollector;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_FluidCanning;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Recycling;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoader_ChemicalSkips;
@@ -93,7 +88,6 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechPowerSubStation;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechQuantumForceTransformer;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRTG;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRocketFuelGenerator;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSafeBlock;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSemiFluidgenerators;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSimpleWasher;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSolarGenerators;
@@ -119,9 +113,6 @@ public class COMPAT_HANDLER {
         Logger.INFO("Registering Materials with OreDict.");
         // In-house
 
-        // tools
-        GT_OreDictUnificator.registerOre("craftingToolSandHammer", new ItemStack(ModItems.itemSandstoneHammer));
-
         for (int i = 1; i <= 10; i++) {
             GT_OreDictUnificator.registerOre(
                     "bufferCore_" + GT_Values.VN[i - 1],
@@ -130,13 +121,6 @@ public class COMPAT_HANDLER {
     }
 
     public static void registerGregtechMachines() {
-        // Debug
-        GregtechItemList.Garbage_Collector_Debug_Machine.set(
-                new GregtechMetaGarbageCollector(
-                        "garbagecollector.01.tier.single",
-                        "JVM Garbage Collector",
-                        "Useful for debugging or smoother performance on local servers").getStackForm(1L));
-
         // Free IDs
         /*
          * --- 859 to 868 --- 911 to 940
@@ -148,7 +132,6 @@ public class COMPAT_HANDLER {
         GregtechLFTR.run();
         GregtechNuclearSaltProcessingPlant.run();
         GregtechSteamCondenser.run();
-        GregtechSafeBlock.run();
         GregtechIndustrialCentrifuge.run();
         GregtechIndustrialCokeOven.run();
         GregtechIndustrialPlatePress.run();
@@ -210,9 +193,6 @@ public class COMPAT_HANDLER {
     // InterMod
     public static void intermodOreDictionarySupport() {
 
-        if (EnderIO.isModLoaded()) {
-            COMPAT_EnderIO.OreDict();
-        }
         if (OpenBlocks.isModLoaded()) {
             COMPAT_OpenBlocks.OreDict();
         }

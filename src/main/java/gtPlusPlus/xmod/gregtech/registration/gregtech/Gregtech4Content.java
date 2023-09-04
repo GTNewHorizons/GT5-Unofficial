@@ -18,12 +18,6 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.GT_MetaTileEntity_R
 import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.GT_MetaTileEntity_RedstoneStrengthScale;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_AdvancedCraftingTable;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_BronzeCraftingTable;
-import gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving.GT4Entity_Shelf;
-import gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving.GT4Entity_Shelf_Compartment;
-import gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving.GT4Entity_Shelf_Desk;
-import gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving.GT4Entity_Shelf_FileCabinet;
-import gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving.GT4Entity_Shelf_Iron;
-import gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving.GT4Entity_Shelf_Large;
 
 public class Gregtech4Content {
 
@@ -35,7 +29,6 @@ public class Gregtech4Content {
         thermalBoiler();
         multiCrafter();
         tesseracts();
-        shelves();
         basic();
         automation();
         redstone();
@@ -157,37 +150,6 @@ public class Gregtech4Content {
                         .getStackForm(1L));
         GregtechItemList.GT4_Tesseract_Terminal.set(
                 new GT_MetaTileEntity_TesseractTerminal(834, "tesseract.terminal", "Tesseract Terminal", 4)
-                        .getStackForm(1L));
-    }
-
-    private static void shelves() {
-        // Gregtech 4 Shelves
-        Logger.INFO("Gregtech 4 Content | Registering Shelves.");
-        GregtechItemList.GT4_Shelf.set(
-                new GT4Entity_Shelf(870, "gtplusplus.shelf.wooden", "Wooden Shelf", "Usually used for books")
-                        .getStackForm(1L));
-        GregtechItemList.GT4_Shelf_Iron.set(
-                new GT4Entity_Shelf_Iron(871, "gtplusplus.shelf.iron", "Metal Shelf", "A heavy duty shelf")
-                        .getStackForm(1L));
-        GregtechItemList.GT4_Shelf_FileCabinet.set(
-                new GT4Entity_Shelf_FileCabinet(
-                        872,
-                        "gtplusplus.shelf.filecabinet",
-                        "File Cabinet",
-                        "Could look nice in your office").getStackForm(1L));
-        GregtechItemList.GT4_Shelf_Desk.set(
-                new GT4Entity_Shelf_Desk(873, "gtplusplus.shelf.desk", "Metal encased Desk", "A place to study")
-                        .getStackForm(1L));
-        GregtechItemList.GT4_Shelf_Compartment.set(
-                new GT4Entity_Shelf_Compartment(
-                        874,
-                        "gtplusplus.shelf.compartment",
-                        "Compartment",
-                        "Stores Books & Things").getStackForm(1L));
-
-        // Custom Storage
-        GregtechItemList.GT4_Shelf_Large.set(
-                new GT4Entity_Shelf_Large(966, "gtplusplus.shelf.large", "Large Shelf", "A spacious shelf", 2048)
                         .getStackForm(1L));
     }
 

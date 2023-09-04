@@ -194,24 +194,6 @@ public class PlayerUtils {
         return null;
     }
 
-    @SideOnly(Side.CLIENT)
-    public static final boolean isPlayerAlkalus() {
-        if (Utils.isServer()) {
-            return false;
-        }
-        return isPlayerAlkalus(Minecraft.getMinecraft().thePlayer);
-    }
-
-    public static final boolean isPlayerAlkalus(EntityPlayer player) {
-        if (player != null) {
-            if (player.getDisplayName().toLowerCase().equals("draknyte1")
-                    || player.getDisplayName().toLowerCase().equals("alkalus")) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static void messageAllPlayers(String string) {
         Utils.sendServerMessage(string);
     }
