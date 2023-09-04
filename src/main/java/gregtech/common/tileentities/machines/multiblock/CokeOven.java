@@ -6,6 +6,8 @@ import static gregtech.api.util.GT_StructureUtilityMuTE.ofMuTECasings;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
@@ -31,13 +33,12 @@ import gregtech.api.task.tasks.PollutionTask;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.multiblock.logic.CokeOvenProcessingLogic;
 
-public class CokeOven extends Controller<CokeOven> implements ProcessingLogicHost {
+public class CokeOven extends Controller<CokeOven, CokeOvenProcessingLogic> {
 
     private static IStructureDefinition<CokeOven> STRUCTURE_DEFINITION = null;
     private static final Vec3Impl OFFSET = new Vec3Impl(1, 1, 0);
     private static final String MAIN = "Main";
     private static final int POLLUTION_AMOUNT = 10;
-    private final ProcessingLogic PROCESSING_LOGIC = new CokeOvenProcessingLogic();
 
     public CokeOven() {
         super();
@@ -147,7 +148,8 @@ public class CokeOven extends Controller<CokeOven> implements ProcessingLogicHos
     }
 
     @Override
-    public ProcessingLogic getProcessingLogic() {
-        return PROCESSING_LOGIC;
+    @Nonnull
+    protected CokeOvenProcessingLogic createProcessingLogic() {
+        return new CokeOvenProcessingLogic();
     }
 }

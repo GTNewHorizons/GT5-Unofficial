@@ -15,7 +15,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
-public class CokeOvenProcessingLogic extends ProcessingLogic {
+public class CokeOvenProcessingLogic extends ProcessingLogic<CokeOvenProcessingLogic> {
 
     private static final int NORMAL_RECIPE_TIME = 1800;
     private static final int WOOD_ORE_ID = getOreID("logWood");

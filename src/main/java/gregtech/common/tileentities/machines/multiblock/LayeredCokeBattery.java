@@ -17,6 +17,8 @@ import static gregtech.api.util.GT_StructureUtilityMuTE.ofMuTECasings;
 import java.util.Arrays;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -36,8 +38,9 @@ import gregtech.api.multitileentity.multiblock.base.StackableModularController;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_StructureUtilityMuTE.UpgradeCasings;
+import gregtech.common.tileentities.machines.multiblock.logic.LayeredCokeBatteryProcessingLogic;
 
-public class LayeredCokeBattery extends StackableModularController<LayeredCokeBattery> implements ProcessingLogicHost {
+public class LayeredCokeBattery extends StackableModularController<LayeredCokeBattery, LayeredCokeBatteryProcessingLogic> {
 
     private static IStructureDefinition<LayeredCokeBattery> STRUCTURE_DEFINITION_MEGA = null;
     protected static final String STRUCTURE_PIECE_BASE = "T1";
@@ -46,7 +49,6 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_START = new Vec3Impl(0, 0, -3);
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_STACK = new Vec3Impl(0, 0, -2);
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_STOP = new Vec3Impl(0, 0, -1);
-    private final ProcessingLogic cokeBatteryProcessingLogic = new ProcessingLogic();
 
     @Override
     public String getTileEntityName() {
@@ -287,7 +289,8 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
     }
 
     @Override
-    public ProcessingLogic getProcessingLogic() {
-        return cokeBatteryProcessingLogic;
+    @Nonnull
+    protected LayeredCokeBatteryProcessingLogic createProcessingLogic() {
+        return new LayeredCokeBatteryProcessingLogic();
     }
 }
