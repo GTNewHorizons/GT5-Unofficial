@@ -1323,14 +1323,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     public ArrayList<FluidStack> getStoredFluids() {
-        for (IDualInputHatch tHatch : mDualInputHatches) {
-            if (supportsCraftingMEBuffer() && tHatch instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
-                GT_MetaTileEntity_Hatch_CraftingInput_ME dualInputHatch = (GT_MetaTileEntity_Hatch_CraftingInput_ME) tHatch;
-
-                if (dualInputHatch.supportsFluids()) {
-                    IDualInputInventory inventory = dualInputHatch.getFirstNonEmptyInventory();
-                    if (inventory != null) {
-                        return Lists.newArrayList(inventory.getFluidInputs());
+        if (supportsCraftingMEBuffer()) {
+            for (IDualInputHatch tHatch : mDualInputHatches) {
+                if (tHatch.supportsFluids()) {
+                    Optional<IDualInputInventory> inventory = tHatch.getFirstNonEmptyInventory();
+                    if (inventory.isPresent()) {
+                        return Lists.newArrayList(
+                            inventory.get()
+                                .getFluidInputs());
                     }
                 }
             }
@@ -1360,15 +1360,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     public ArrayList<ItemStack> getStoredInputs() {
-        for (IDualInputHatch tHatch : mDualInputHatches) {
-            if (supportsCraftingMEBuffer() && tHatch instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
-                GT_MetaTileEntity_Hatch_CraftingInput_ME dualInputHatch = (GT_MetaTileEntity_Hatch_CraftingInput_ME) tHatch;
-
-                IDualInputInventory inventory = dualInputHatch.getFirstNonEmptyInventory();
-                if (inventory != null) {
-                    ArrayList<ItemStack> itemStacks = Lists.newArrayList(inventory.getItemInputs());
-                    itemStacks.addAll(Arrays.asList(dualInputHatch.getSharedItems()));
-                    return itemStacks;
+        if (supportsCraftingMEBuffer()) {
+            for (IDualInputHatch tHatch : mDualInputHatches) {
+                Optional<IDualInputInventory> inventory = tHatch.getFirstNonEmptyInventory();
+                if (inventory.isPresent()) {
+                    return Lists.newArrayList(
+                        inventory.get()
+                            .getItemInputs());
                 }
             }
         }

@@ -961,14 +961,15 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         customName = name;
     }
 
-    @Nullable
-    public IDualInputInventory getFirstNonEmptyInventory() {
+    @Override
+    public Optional<IDualInputInventory> getFirstNonEmptyInventory() {
         for (PatternSlot slot : internalInventory) {
-            if (slot != null && !slot.isEmpty()) return slot;
+            if (slot != null && !slot.isEmpty()) return Optional.of(slot);
         }
-        return null;
+        return Optional.empty();
     }
 
+    @Override
     public boolean supportsFluids() {
         return this.supportFluids;
     }
