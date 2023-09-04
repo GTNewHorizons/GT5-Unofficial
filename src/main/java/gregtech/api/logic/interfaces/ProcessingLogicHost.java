@@ -5,5 +5,9 @@ import gregtech.api.logic.ProcessingLogic;
 
 public interface ProcessingLogicHost<T extends ProcessingLogic<T>> extends IVoidable, ItemInventoryLogicHost, FluidInventoryLogicHost {
 
-    ProcessingLogic getProcessingLogic();
+    T getProcessingLogic();
+
+    boolean isInputSeparated();
+
+    
 }
