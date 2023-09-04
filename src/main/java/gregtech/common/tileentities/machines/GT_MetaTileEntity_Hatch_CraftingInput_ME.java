@@ -962,20 +962,36 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     }
 
     public ArrayList<ItemStack> getCombinedItemInputs() {
-        ArrayList<ItemStack> items = new ArrayList<>();
+        ArrayList<ItemStack> itemStacks = new ArrayList<>();
 
         for (ItemStack itemStack : getSharedItems()) {
             if (itemStack != null && itemStack.stackSize >= 0) {
-                items.add(itemStack);
+                itemStacks.add(itemStack);
             }
         }
 
         for (var slot : internalInventory) {
             if (slot != null && !slot.isEmpty()) {
-                items.addAll(slot.itemInventory);
+                itemStacks.addAll(slot.itemInventory);
             }
         }
 
-        return items;
+        return itemStacks;
+    }
+
+    public ArrayList<FluidStack> getCombinedFluidInputs() {
+        ArrayList<FluidStack> fluidStacks = new ArrayList<>();
+
+        if (!this.supportFluids) {
+            return fluidStacks;
+        }
+
+        for (var slot : internalInventory) {
+            if (slot != null && !slot.isEmpty()) {
+                fluidStacks.addAll(slot.fluidInventory);
+            }
+        }
+
+        return fluidStacks;
     }
 }

@@ -1323,6 +1323,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     public ArrayList<FluidStack> getStoredFluids() {
         ArrayList<FluidStack> rList = new ArrayList<>();
+        HashMap<String, FluidStack> rInputHatchMeList = new HashMap<>();
         for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
             tHatch.mRecipeMap = getRecipeMap();
             if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
@@ -1341,6 +1342,17 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 }
             }
         }
+
+        for (IDualInputHatch tHatch : mDualInputHatches) {
+            if (supportsCraftingMEBuffer() && tHatch instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
+                for (FluidStack fluidStack : ((GT_MetaTileEntity_Hatch_CraftingInput_ME) tHatch)
+                    .getCombinedFluidInputs()) {
+                    if (fluidStack != null) rInputHatchMeList.put(fluidStack.toString(), fluidStack);
+                }
+            }
+        }
+
+        if (!rInputHatchMeList.isEmpty()) rList.addAll(rInputHatchMeList.values());
         return rList;
     }
 
