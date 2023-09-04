@@ -93,41 +93,6 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     }
 
     @Override
-    public boolean isSteampowered() {
-        return false;
-    }
-
-    @Override
-    public boolean isElectric() {
-        return false;
-    }
-
-    @Override
-    public boolean isPneumatic() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnetInput() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnetOutput() {
-        return false;
-    }
-
-    @Override
-    public boolean isInputFacing(ForgeDirection side) {
-        return false;
-    }
-
-    @Override
-    public boolean isOutputFacing(ForgeDirection side) {
-        return false;
-    }
-
-    @Override
     public boolean isTeleporterCompatible() {
         return false;
     }
@@ -432,11 +397,6 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         this.mMaxProgresstime = recipe.mDuration;
         this.mOutputItems = recipe.mOutputs;
         return true;
-    }
-
-    @Override
-    public boolean isGivingInformation() {
-        return false;
     }
 
     @Override

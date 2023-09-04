@@ -299,7 +299,11 @@ public class ProcessingLogic {
             if (!result.wasSuccessful()) {
                 return result;
             } else {
-                lastRecipe = recipe;
+                if (recipe.mCanBeBuffered) {
+                    lastRecipe = recipe;
+                } else {
+                    lastRecipe = null;
+                }
             }
         } else {
             if (findRecipeResult.getState() == FindRecipeResult.State.INSUFFICIENT_VOLTAGE) {
