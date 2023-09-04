@@ -16,7 +16,7 @@ public interface IMachineProgress extends IHasWorldObjectAndCoords {
     int getMaxProgress();
 
     /**
-     * increases the Progress of the Machine
+     * Manually increases the Progress of the Machine by vent cover.
      */
     boolean increaseProgress(int aProgressAmountInTicks);
 

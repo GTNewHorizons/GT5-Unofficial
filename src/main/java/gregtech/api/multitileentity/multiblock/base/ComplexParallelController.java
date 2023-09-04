@@ -3,7 +3,7 @@ package gregtech.api.multitileentity.multiblock.base;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.LongStream;
+import java.util.stream.IntStream;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -17,7 +17,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.logic.ComplexParallelProcessingLogic;
-import gregtech.api.logic.interfaces.PollutionLogicHost;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -28,8 +27,8 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
     protected ComplexParallelProcessingLogic processingLogic;
     protected int maxComplexParallels = 0;
     protected int currentComplexParallels = 0;
-    protected long[] maxProgressTimes = new long[0];
-    protected long[] progressTimes = new long[0];
+    protected int[] maxProgressTimes = new int[0];
+    protected int[] progressTimes = new int[0];
 
     public ComplexParallelController() {
         isSimpleMachine = false;
@@ -40,8 +39,8 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
             if (maxComplexParallels != 0 && stopMachine) {
                 stopMachine(false);
             }
-            maxProgressTimes = new long[parallel];
-            progressTimes = new long[parallel];
+            maxProgressTimes = new int[parallel];
+            progressTimes = new int[parallel];
         }
         maxComplexParallels = parallel;
     }
@@ -107,9 +106,6 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
             issueClientUpdate();
         }
 
-        if (this instanceof PollutionLogicHost && tick % POLLUTION_TICK == 0) {
-            doPollution();
-        }
         emitEnergy();
     }
 
@@ -154,7 +150,7 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
 
     @Override
     public boolean hasThingsToDo() {
-        return LongStream.of(maxProgressTimes)
+        return IntStream.of(maxProgressTimes)
             .sum() > 0;
     }
 
@@ -164,7 +160,7 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
         Arrays.fill(maxProgressTimes, 0);
     }
 
-    protected void setDuration(int index, long duration) {
+    protected void setDuration(int index, int duration) {
         if (duration < 0) {
             duration = -duration;
         }
@@ -223,8 +219,8 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("maxComplexParallels", maxComplexParallels);
         for (int i = 0; i < maxComplexParallels; i++) {
-            tag.setLong("maxProgress" + i, maxProgressTimes[i]);
-            tag.setLong("progress" + i, progressTimes[i]);
+            tag.setInteger("maxProgress" + i, maxProgressTimes[i]);
+            tag.setInteger("progress" + i, progressTimes[i]);
         }
     }
 
@@ -235,8 +231,8 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
         final NBTTagCompound tag = accessor.getNBTData();
         maxComplexParallels = tag.getInteger("maxComplexParallels");
         for (int i = 0; i < maxComplexParallels; i++) {
-            long maxProgress = tag.getLong("maxProgress" + i);
-            long progress = tag.getLong("progress" + i);
+            long maxProgress = tag.getInteger("maxProgress" + i);
+            long progress = tag.getInteger("progress" + i);
             currentTip.add(
                 "Process " + (i + 1)
                     + ": "

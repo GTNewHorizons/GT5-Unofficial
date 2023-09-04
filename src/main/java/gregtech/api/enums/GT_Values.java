@@ -289,7 +289,7 @@ public class GT_Values {
         public static final String COLOR = "gt.color", // Integer
             COVERS = "gt.covers", // String
             CUSTOM_NAME = "name", // String
-            DISPAY = "gt.display", // String
+            DISPLAY = "gt.display", // String
             TIER = "gt.tier", // Number
             FACING = "gt.facing", // Byte
             LOCK_UPGRADE = "gt.locked", // Boolean
@@ -322,6 +322,7 @@ public class GT_Values {
             BURN_TIME_LEFT = "gt.burn.time.left", // Number
             TOTAL_BURN_TIME = "gt.total.burn.time", // Number
             ALLOWED_WORK = "gt.allowed.work", // Boolean
+            TASKS = "gt.tasks", // Compound
 
             // MultiBlock
             STRUCTURE_OK = "gt.structure.ok", ROTATION = "gt.eRotation", FLIP = "gt.eFlip", TARGET = "gt.target", // Boolean
