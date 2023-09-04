@@ -57,6 +57,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     public byte mConnections = IConnectable.NO_CONNECTION;
     protected MetaPipeEntity mMetaTileEntity;
     private final int[] mTimeStatistics = new int[GregTech_API.TICKS_FOR_LAG_AVERAGING];
+    private boolean hasTimeStatisticsStarted;
     private boolean mWorkUpdate = false, mWorks = true;
     private byte mColor = 0, oColor = 0, oStrongRedstone = 0, oRedstoneData = 63, oTextureData = 0, oUpdateData = 0,
         mLagWarningCount = 0;
@@ -165,7 +166,12 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
             mMetaTileEntity.setBaseMetaTileEntity(this);
         }
 
-        long tTime = System.nanoTime();
+        long tTime;
+        if (hasTimeStatisticsStarted) {
+            tTime = System.nanoTime();
+        } else {
+            tTime = 0;
+        }
         try {
             if (hasValidMetaTileEntity()) {
                 if (mTickTimer++ == 0) {
@@ -258,10 +264,9 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
             e.printStackTrace(GT_Log.err);
         }
 
-        if (isServerSide() && hasValidMetaTileEntity()) {
+        if (isServerSide() && hasTimeStatisticsStarted && hasValidMetaTileEntity()) {
             tTime = System.nanoTime() - tTime;
-            if (mTimeStatistics.length > 0) mTimeStatistics[mTimeStatisticsIndex = (mTimeStatisticsIndex + 1)
-                % mTimeStatistics.length] = (int) tTime;
+            mTimeStatistics[mTimeStatisticsIndex = (mTimeStatisticsIndex + 1) % mTimeStatistics.length] = (int) tTime;
             if (tTime > 0 && tTime > (GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING * 1000000L)
                 && mTickTimer > 1000
                 && getMetaTileEntity().doTickProfilingMessageDuringThisTick()
@@ -397,22 +402,33 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                         : " "));
         }
         if (aLogLevel > 1) {
-            if (mTimeStatistics.length > 0) {
+            if (hasTimeStatisticsStarted) {
                 double tAverageTime = 0;
                 double tWorstTime = 0;
+                int amountOfZero = 0;
                 for (int tTime : mTimeStatistics) {
                     tAverageTime += tTime;
                     if (tTime > tWorstTime) {
                         tWorstTime = tTime;
                     }
+                    if (tTime == 0) {
+                        amountOfZero += 1;
+                    }
                 }
-                tList.add(
-                    "Average CPU-load of ~" + (tAverageTime / mTimeStatistics.length)
-                        + "ns since "
-                        + mTimeStatistics.length
-                        + " ticks with worst time of "
-                        + tWorstTime
-                        + "ns.");
+                // tick time zero means it has not been updated yet
+                int samples = mTimeStatistics.length - amountOfZero;
+                if (samples > 0) {
+                    tList.add(
+                        "Average CPU-load of ~" + (tAverageTime / samples)
+                            + "ns since "
+                            + samples
+                            + " ticks with worst time of "
+                            + tWorstTime
+                            + "ns.");
+                }
+            } else {
+                hasTimeStatisticsStarted = true;
+                tList.add("Just started tick time statistics.");
             }
             if (mLagWarningCount > 0) {
                 tList.add(

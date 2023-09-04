@@ -196,4 +196,6 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
     default int[] getTimeStatistics() {
         return null;
     }
+
+    default void startTimeStatistics() {}
 }
