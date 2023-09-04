@@ -968,4 +968,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
         return null;
     }
+
+    public boolean supportsFluids() {
+        return this.supportFluids;
+    }
 }

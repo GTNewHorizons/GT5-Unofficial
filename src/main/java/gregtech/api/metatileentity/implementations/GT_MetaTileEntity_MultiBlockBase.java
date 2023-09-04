@@ -1327,9 +1327,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             if (supportsCraftingMEBuffer() && tHatch instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
                 GT_MetaTileEntity_Hatch_CraftingInput_ME dualInputHatch = (GT_MetaTileEntity_Hatch_CraftingInput_ME) tHatch;
 
-                IDualInputInventory inventory = dualInputHatch.getFirstNonEmptyInventory();
-                if (inventory != null) {
-                    return Lists.newArrayList(inventory.getFluidInputs());
+                if (dualInputHatch.supportsFluids()) {
+                    IDualInputInventory inventory = dualInputHatch.getFirstNonEmptyInventory();
+                    if (inventory != null) {
+                        return Lists.newArrayList(inventory.getFluidInputs());
+                    }
                 }
             }
         }
