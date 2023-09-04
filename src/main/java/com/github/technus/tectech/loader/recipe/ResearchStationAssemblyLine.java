@@ -27,6 +27,7 @@ import static gregtech.api.enums.Mods.TinkersGregworks;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -152,92 +153,6 @@ public class ResearchStationAssemblyLine implements Runnable {
                     8_000_000 * 16);
         }
 
-        // Matter Junction
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
-                CustomItemList.Machine_Multi_Switch.get(1),
-                8000,
-                32,
-                500000,
-                4,
-                new Object[] { CustomItemList.Machine_Multi_Transformer.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 4),
-                        ItemList.Robot_Arm_LuV.get(2), ItemList.Electric_Piston_LuV.get(2),
-                        new Object[] { "circuitSuperconductor", 2 },
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 4), },
-                new FluidStack[] { Materials.UUMatter.getFluid(1000), Materials.Naquadah.getMolten(1296),
-                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000), Materials.Osmium.getMolten(1296), },
-                CustomItemList.Machine_Multi_EMjunction.get(1),
-                12000,
-                100000);
-
-        // Matter Quantizer
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
-                ItemList.Hatch_Input_UV.get(1),
-                12000,
-                32,
-                500000,
-                6,
-                new Object[] { CustomItemList.Machine_Multi_Transformer.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 4),
-                        ItemList.Emitter_UV.get(2), new Object[] { "circuitSuperconductor", 1 },
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 2), },
-                new FluidStack[] { Materials.UUMatter.getFluid(1000), Materials.Naquadah.getMolten(1296),
-                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000), Materials.Osmium.getMolten(1296), },
-                CustomItemList.Machine_Multi_MatterToEM.get(1),
-                12000,
-                100000);
-
-        // Matter DeQuantizer
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
-                ItemList.Hatch_Output_UV.get(1),
-                12000,
-                32,
-                500000,
-                6,
-                new Object[] { CustomItemList.Machine_Multi_Transformer.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 4),
-                        ItemList.Sensor_UV.get(2), new Object[] { "circuitSuperconductor", 1 },
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 2), },
-                new FluidStack[] { Materials.UUMatter.getFluid(1000), Materials.Naquadah.getMolten(1296),
-                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000), Materials.Osmium.getMolten(1296), },
-                CustomItemList.Machine_Multi_EMToMatter.get(1),
-                12000,
-                100000);
-
-        // Essentia Quantizer
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
-                CustomItemList.Machine_Multi_MatterToEM.get(1),
-                15000,
-                32,
-                500000,
-                8,
-                new Object[] { CustomItemList.Machine_Multi_MatterToEM.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Neutronium, 4),
-                        ItemList.Emitter_UV.get(2), new Object[] { "circuitSuperconductor", 1 },
-                        GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Draconium, 2), },
-                new FluidStack[] { Materials.UUMatter.getFluid(2000), Materials.Void.getMolten(2592),
-                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 4000), Materials.Osmium.getMolten(1296), },
-                CustomItemList.Machine_Multi_EssentiaToEM.get(1),
-                24000,
-                500000);
-
-        // Essentia DeQuantizer
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
-                CustomItemList.Machine_Multi_EMToMatter.get(1),
-                15000,
-                32,
-                500000,
-                8,
-                new Object[] { CustomItemList.Machine_Multi_EMToMatter.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Neutronium, 4),
-                        ItemList.Sensor_UV.get(2), new Object[] { "circuitSuperconductor", 1 },
-                        GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Draconium, 2), },
-                new FluidStack[] { Materials.UUMatter.getFluid(2000), Materials.Void.getMolten(2592),
-                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 4000), Materials.Osmium.getMolten(1296), },
-                CustomItemList.Machine_Multi_EMToEssentia.get(1),
-                24000,
-                500000);
-
         // EM Scanner
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 CustomItemList.Machine_Multi_Research.get(1),
@@ -245,7 +160,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 128,
                 500000,
                 16,
-                new Object[] { CustomItemList.Machine_Multi_EMjunction.get(1), CustomItemList.eM_Computer_Bus.get(4),
+                new Object[] { CustomItemList.Machine_BuckConverter_IV.get(1), CustomItemList.eM_Computer_Bus.get(4),
                         ItemList.Field_Generator_UV.get(4), ItemList.Sensor_UV.get(4),
                         new Object[] { OrePrefixes.circuit.get(Materials.Optical), 4L },
                         getItemContainer("MysteriousCrystalLens").get(4),
@@ -253,7 +168,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new FluidStack[] { Materials.UUMatter.getFluid(2000), Materials.Neutronium.getMolten(2592),
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 4000),
                         Materials.Osmiridium.getMolten(1296), },
-                CustomItemList.Machine_Multi_Scanner.get(1),
+                new ItemStack(Items.diamond_axe),
                 24000,
                 500000);
 

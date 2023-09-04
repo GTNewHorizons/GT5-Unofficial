@@ -3059,27 +3059,6 @@ public class Assembler implements Runnable {
                 20,
                 30720);
 
-        // Tunnel
-        addAssemblerRecipeWithCleanroom(
-                new ItemStack[] { CustomItemList.DATApipe.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Osmiridium, 4),
-                        GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmium, 4),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 2),
-                        ItemList.Field_Generator_MV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1) },
-                Materials.Osmium.getMolten(288),
-                CustomItemList.EMpipe.get(1),
-                400,
-                500000);
-
-        // Tunnel Casing
-        addAssemblerRecipeWithCleanroom(
-                new ItemStack[] { CustomItemList.EMpipe.get(1), ItemList.Casing_LuV.get(1) },
-                null,
-                CustomItemList.EMpipeBlock.get(1),
-                20,
-                30720);
-
         // Laser
         addAssemblerRecipeWithCleanroom(
                 new ItemStack[] { CustomItemList.DATApipe.get(1), GT_ModHandler.getIC2Item("reinforcedGlass", 1L),
@@ -3163,36 +3142,6 @@ public class Assembler implements Runnable {
                 CustomItemList.UncertaintyX_Hatch.get(1),
                 1200,
                 122880);
-
-        // Elemental Input
-        addAssemblerRecipeWithCleanroom(
-                new ItemStack[] { CustomItemList.eM_Containment.get(1), ItemList.Hatch_Input_UV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 2),
-                        ItemList.Sensor_UV.get(1) },
-                Materials.Osmiridium.getMolten(1296),
-                CustomItemList.eM_in_UV.get(1),
-                800,
-                500000);
-
-        // Elemental Output
-        addAssemblerRecipeWithCleanroom(
-                new ItemStack[] { CustomItemList.eM_Containment.get(1), ItemList.Hatch_Output_UV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 2),
-                        ItemList.Emitter_UV.get(1) },
-                Materials.Osmiridium.getMolten(1296),
-                CustomItemList.eM_out_UV.get(1),
-                800,
-                500000);
-
-        // Overflow
-        addAssemblerRecipeWithCleanroom(
-                new ItemStack[] { CustomItemList.eM_Containment.get(1), ItemList.Hatch_Muffler_UV.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Naquadah, 1),
-                        ItemList.Field_Generator_UV.get(1) },
-                Materials.Osmiridium.getMolten(1296),
-                CustomItemList.eM_muffler_UV.get(1),
-                800,
-                500000);
 
         // Capacitor Hatch
         GT_Values.RA.addAssemblerRecipe(

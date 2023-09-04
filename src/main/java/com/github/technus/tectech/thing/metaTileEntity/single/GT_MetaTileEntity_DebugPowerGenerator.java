@@ -54,7 +54,7 @@ import gregtech.api.util.GT_Utility;
 public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_TieredMachineBlock
         implements IConnectsToEnergyTunnel, IAddUIWidgets, IAddGregtechLogo {
 
-    private static GT_RenderedTexture GENNY;
+    public static GT_RenderedTexture GENNY;
     private boolean LASER = false;
     public int EUT = 0, AMP = 0;
     public boolean producing = true;

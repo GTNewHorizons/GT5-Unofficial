@@ -8,19 +8,15 @@ import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
 
-import java.util.Objects;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.font.TecTechFontRender;
-import com.github.technus.tectech.thing.item.ElementalDefinitionScanStorage_EM;
 
 /**
  * Created by danie_000 on 17.12.2017.
@@ -30,7 +26,7 @@ public class ScanDisplayScreen extends GuiScreen {
     private static final int sizeX = 240, sizeY = 220, renderedLines = 10;
     private int baseX, baseY;
     private Button up, down, pgUp, pgDown;
-    private final String[] lines;
+    private final String[] lines = { "" };
     private int firstLine;
 
     private static final ResourceLocation[] BACKGROUNDS = new ResourceLocation[] {
@@ -44,10 +40,7 @@ public class ScanDisplayScreen extends GuiScreen {
             new ResourceLocation(MODID + ":textures/gui/scanDisplayScreen8.png") };
     private static final ResourceLocation ITEM = new ResourceLocation(MODID + ":textures/gui/scanDisplayItem.png");
 
-    public ScanDisplayScreen(EntityPlayer player) {
-        lines = Objects.requireNonNull(ElementalDefinitionScanStorage_EM.getLines(player.getHeldItem()))
-                .toArray(new String[0]);
-    }
+    public ScanDisplayScreen() {}
 
     @Override
     public void drawScreen(int x, int y, float partialTicks) {

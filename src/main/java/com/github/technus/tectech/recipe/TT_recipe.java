@@ -4,27 +4,16 @@ import static com.github.technus.tectech.util.CommonValues.EOH_TIER_FANCY_NAMES;
 import static com.google.common.math.LongMath.pow;
 import static gregtech.api.util.GT_Utility.formatNumbers;
 import static java.lang.Math.min;
-import static net.minecraft.util.EnumChatFormatting.BOLD;
-import static net.minecraft.util.EnumChatFormatting.DARK_RED;
-import static net.minecraft.util.EnumChatFormatting.RESET;
+import static net.minecraft.util.EnumChatFormatting.*;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.IEMDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMConstantStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstanceStackMap;
-import com.github.technus.tectech.mechanics.elementalMatter.core.maps.IEMMapRead;
-import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.IEMStack;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
@@ -45,15 +34,9 @@ import gregtech.nei.NEIRecipeInfo;
 public class TT_recipe extends GT_Recipe {
 
     public static final String E_RECIPE_ID = "eRecipeID";
-    public final EMConstantStackMap[] input;
-    public final IEMMapRead<? extends IEMStack>[] output;
-    public final EMConstantStackMap[] eCatalyst;
-    public final IAdditionalCheck additionalCheck;
 
     public TT_recipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances,
-            FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue,
-            EMConstantStackMap[] in, IEMMapRead<? extends IEMStack>[] out, EMConstantStackMap[] catalyst,
-            IAdditionalCheck check) {
+            FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
         super(
                 aOptimize,
                 aInputs,
@@ -65,137 +48,9 @@ public class TT_recipe extends GT_Recipe {
                 aDuration,
                 aEUt,
                 aSpecialValue);
-        input = in;
-        output = out;
-        eCatalyst = catalyst;
-        additionalCheck = check;
     }
 
-    public boolean EMisRecipeInputEqual(boolean consume, boolean doNotCheckStackSizes, ItemStack[] itemStacks,
-            FluidStack[] fluidStacks) {
-        return EMisRecipeInputEqual(consume, doNotCheckStackSizes, itemStacks, fluidStacks, null, null);
-    }
-
-    public boolean EMisRecipeInputEqual(boolean consume, boolean doNotCheckStackSizes, ItemStack[] itemStacks,
-            FluidStack[] fluidStacks, EMInstanceStackMap[] in) {
-        return EMisRecipeInputEqual(consume, doNotCheckStackSizes, itemStacks, fluidStacks, in, null);
-    }
-
-    public boolean EMisRecipeInputEqual(boolean consume, boolean doNotCheckStackSizes, ItemStack[] itemStacks,
-            FluidStack[] fluidStacks, EMInstanceStackMap[] in, EMInstanceStackMap[] catalyst) {
-        if (additionalCheck != null
-                && !additionalCheck.check(this, consume, doNotCheckStackSizes, itemStacks, fluidStacks, in, catalyst)) {
-            return false;
-        }
-        if (eCatalyst != null) {
-            if (catalyst != null && catalyst.length >= eCatalyst.length) {
-                for (int i = 0; i < eCatalyst.length; i++) {
-                    if (eCatalyst[i] != null && eCatalyst[i].hasStacks()) {
-                        if (catalyst[i] != null && catalyst[i].hasStacks()) {
-                            if (!catalyst[i].containsAllAmounts(eCatalyst[i])) {
-                                return false;
-                            }
-                        } else {
-                            return false;
-                        }
-                    }
-                }
-            } else {
-                return false;
-            }
-        }
-        if (input != null) {
-            if (in != null && in.length >= input.length) {
-                for (int i = 0; i < input.length; i++) {
-                    if (input[i] != null && input[i].hasStacks()) {
-                        if (in[i] != null && in[i].hasStacks()) {
-                            if (consume) {
-                                if (!in[i].removeAllAmounts(input[i])) {
-                                    return false;
-                                }
-                            } else {
-                                if (!in[i].containsAllAmounts(input[i])) {
-                                    return false;
-                                }
-                            }
-                        } else {
-                            return false;
-                        }
-                    }
-                }
-            } else {
-                return false;
-            }
-        }
-        return super.isRecipeInputEqual(consume, doNotCheckStackSizes, fluidStacks, itemStacks);
-    }
-
-    @Deprecated
-    public boolean EMisRecipeInputEqualConsumeFromOne(boolean consume, boolean doNotCheckStackSizes,
-            ItemStack[] itemStacks, FluidStack[] fluidStacks, EMInstanceStackMap in) {
-        return EMisRecipeInputEqualConsumeFromOne(consume, doNotCheckStackSizes, itemStacks, fluidStacks, in, null);
-    }
-
-    @Deprecated
-    public boolean EMisRecipeInputEqualConsumeFromOne(boolean consume, boolean doNotCheckStackSizes,
-            ItemStack[] itemStacks, FluidStack[] fluidStacks, EMInstanceStackMap in, EMInstanceStackMap[] catalyst) {
-        if (additionalCheck != null
-                && !additionalCheck.check(this, consume, doNotCheckStackSizes, itemStacks, fluidStacks, in, catalyst)) {
-            return false;
-        }
-        if (eCatalyst != null) {
-            if (catalyst != null && catalyst.length >= eCatalyst.length) {
-                for (int i = 0; i < eCatalyst.length; i++) {
-                    if (eCatalyst[i] != null && eCatalyst[i].hasStacks()) {
-                        if (catalyst[i] != null && catalyst[i].hasStacks()) {
-                            if (!catalyst[i].containsAllAmounts(eCatalyst[i])) {
-                                return false;
-                            }
-                        } else {
-                            return false;
-                        }
-                    }
-                }
-            } else {
-                return false;
-            }
-        }
-        if (input != null) {
-            if (in != null) {
-                for (EMConstantStackMap anInput : input) {
-                    if (anInput != null && anInput.hasStacks()) {
-                        if (in.hasStacks()) {
-                            if (consume) {
-                                if (!in.removeAllAmounts(anInput)) {
-                                    return false;
-                                }
-                            } else {
-                                if (!in.containsAllAmounts(anInput)) {
-                                    return false;
-                                }
-                            }
-                        } else {
-                            return false;
-                        }
-                    }
-                }
-            } else {
-                return false;
-            }
-        }
-        return super.isRecipeInputEqual(consume, doNotCheckStackSizes, fluidStacks, itemStacks);
-    }
-
-    public interface IAdditionalCheck {
-
-        boolean check(TT_recipe thisRecipe, boolean consume, boolean doNotCheckStackSizes, ItemStack[] itemStacks,
-                FluidStack[] fluidStacks, EMInstanceStackMap[] in, EMInstanceStackMap[] e);
-
-        boolean check(TT_recipe thisRecipe, boolean consume, boolean doNotCheckStackSizes, ItemStack[] itemStacks,
-                FluidStack[] fluidStacks, EMInstanceStackMap in, EMInstanceStackMap[] e);
-    }
-
-    public static class TT_Recipe_Map<T extends TT_recipe> {
+    public static class TT_Recipe_Map<T extends GT_Recipe> {
 
         public static TT_Recipe_Map<TT_assLineRecipe> sCrafterRecipes = new TT_Recipe_Map<>();
         public static TT_Recipe_Map<TT_assLineRecipe> sMachineRecipes = new TT_Recipe_Map<>();
@@ -306,14 +161,12 @@ public class TT_recipe extends GT_Recipe {
         }
     }
 
-    public static class TT_assLineRecipe extends TT_recipe {
+    public static class TT_assLineRecipe extends GT_Recipe {
 
         public final ItemStack mResearchItem;
 
         public TT_assLineRecipe(boolean aOptimize, ItemStack researchItem, ItemStack[] aInputs, ItemStack[] aOutputs,
-                Object aSpecialItems, FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue,
-                EMConstantStackMap[] in, EMConstantStackMap[] out, EMConstantStackMap[] catalyst,
-                IAdditionalCheck check) {
+                Object aSpecialItems, FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue) {
             super(
                     aOptimize,
                     aInputs,
@@ -324,115 +177,10 @@ public class TT_recipe extends GT_Recipe {
                     null,
                     aDuration,
                     aEUt,
-                    aSpecialValue,
-                    in,
-                    out,
-                    catalyst,
-                    check);
+                    aSpecialValue);
             mResearchItem = researchItem;
         }
 
-        public TT_assLineRecipe(boolean aOptimize, ItemStack researchItem, ItemStack[] aInputs, ItemStack[] aOutputs,
-                Object aSpecialItems, FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue,
-                EMConstantStackMap[] in) {
-            this(
-                    aOptimize,
-                    researchItem,
-                    aInputs,
-                    aOutputs,
-                    aSpecialItems,
-                    aFluidInputs,
-                    aDuration,
-                    aEUt,
-                    aSpecialValue,
-                    in,
-                    null,
-                    null,
-                    null);
-        }
-    }
-
-    public static class TT_EMRecipe extends TT_recipe {
-
-        public final IEMDefinition mResearchEM;
-        public final GT_Recipe scannerRecipe;
-
-        public TT_EMRecipe(boolean aOptimize, GT_Recipe scannerRecipe, IEMDefinition researchEM, ItemStack[] aInputs,
-                ItemStack[] aOutputs, Object aSpecialItems, FluidStack[] aFluidInputs, int aDuration, int aEUt,
-                int aSpecialValue, EMConstantStackMap[] in, EMConstantStackMap[] out, EMConstantStackMap[] catalyst,
-                IAdditionalCheck check) {
-            super(
-                    aOptimize,
-                    aInputs,
-                    aOutputs,
-                    aSpecialItems,
-                    null,
-                    aFluidInputs,
-                    null,
-                    aDuration,
-                    aEUt,
-                    aSpecialValue,
-                    in,
-                    out,
-                    catalyst,
-                    check);
-            mResearchEM = researchEM;
-            this.scannerRecipe = scannerRecipe;
-        }
-
-        public TT_EMRecipe(boolean aOptimize, GT_Recipe scannerRecipe, IEMDefinition researchEM, ItemStack[] aInputs,
-                ItemStack[] aOutputs, Object aSpecialItems, FluidStack[] aFluidInputs, int aDuration, int aEUt,
-                int aSpecialValue, EMConstantStackMap[] in) {
-            this(
-                    aOptimize,
-                    scannerRecipe,
-                    researchEM,
-                    aInputs,
-                    aOutputs,
-                    aSpecialItems,
-                    aFluidInputs,
-                    aDuration,
-                    aEUt,
-                    aSpecialValue,
-                    in,
-                    null,
-                    null,
-                    null);
-        }
-    }
-
-    public static class TT_Recipe_Map_EM<T extends TT_EMRecipe> {
-
-        public static TT_Recipe_Map_EM<TT_EMRecipe> sCrafterRecipesEM = new TT_Recipe_Map_EM<>(
-                "EM Crafter Recipes",
-                "gt.recipe.em_crafter",
-                null);
-        public static TT_Recipe_Map_EM<TT_EMRecipe> sMachineRecipesEM = new TT_Recipe_Map_EM<>(
-                "EM Machinert Recipe",
-                "gt.recipe.em_machinery",
-                null);
-
-        private final HashMap<IEMDefinition, T> mRecipeMap;
-        public final String mNEIName, mUnlocalizedName, mNEIGUIPath;
-
-        public TT_Recipe_Map_EM(String mNEIName, String mUnlocalizedName, String mNEIGUIPath) {
-            mRecipeMap = new HashMap<>(16);
-            this.mNEIName = mNEIName;
-            this.mUnlocalizedName = mUnlocalizedName;
-            this.mNEIGUIPath = mNEIGUIPath;
-        }
-
-        public T findRecipe(IEMDefinition stack) {
-            return mRecipeMap.get(stack);
-        }
-
-        public void add(T recipe) {
-            mRecipeMap.put(recipe.mResearchEM, recipe);
-        }
-
-        public Collection<T> recipeList() {
-            return mRecipeMap.values();
-        }
     }
 
     public static class Eye_Of_Harmony_Recipe_Map extends GT_Recipe_Map {

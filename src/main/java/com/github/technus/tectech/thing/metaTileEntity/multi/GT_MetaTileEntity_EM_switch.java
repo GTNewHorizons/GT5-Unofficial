@@ -7,7 +7,6 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStat
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_LOW;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_NEUTRAL;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_OK;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_TOO_HIGH;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_TOO_LOW;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_WRONG;
 import static com.github.technus.tectech.util.CommonValues.V;
@@ -95,7 +94,6 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
             if (Double.isNaN(v)) return STATUS_WRONG;
             v = (int) v;
             if (v <= 0) return STATUS_TOO_LOW;
-            if (v >= base.eOutputHatches.size()) return STATUS_TOO_HIGH;
             return STATUS_OK;
         }
         return STATUS_NEUTRAL;

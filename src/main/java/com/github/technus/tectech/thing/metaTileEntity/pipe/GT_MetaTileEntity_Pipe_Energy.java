@@ -1,7 +1,5 @@
 package com.github.technus.tectech.thing.metaTileEntity.pipe;
 
-import static com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_EM.EMCandyActive;
-import static com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_EM.EMcandy;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -39,6 +37,7 @@ import gregtech.common.GT_Client;
 
 public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements IConnectsToEnergyTunnel, IActivePipe {
 
+    static Textures.BlockIcons.CustomIcon EMcandy, EMCandyActive;
     private static Textures.BlockIcons.CustomIcon EMpipe;
     public byte connectionCount = 0;
 
@@ -60,6 +59,8 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
+        EMcandy = new Textures.BlockIcons.CustomIcon("iconsets/EM_CANDY");
+        EMCandyActive = new Textures.BlockIcons.CustomIcon("iconsets/EM_CANDY_ACTIVE");
         EMpipe = new Textures.BlockIcons.CustomIcon("iconsets/EM_LASER");
         super.registerIcons(aBlockIconRegister);
     }

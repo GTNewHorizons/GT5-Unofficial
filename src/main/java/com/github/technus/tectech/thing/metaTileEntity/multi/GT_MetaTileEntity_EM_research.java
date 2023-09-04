@@ -4,8 +4,6 @@ import static com.github.technus.tectech.recipe.TT_recipe.E_RECIPE_ID;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_crafting.crafter;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine.machine;
 import static com.github.technus.tectech.util.CommonValues.V;
 import static com.github.technus.tectech.util.CommonValues.VN;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
@@ -77,6 +75,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockBase_EM
         implements ISurvivalConstructable {
 
+    public static final String machine = "EM Machinery";
+    public static final String crafter = "EM Crafting";
     // region variables
     private final ArrayList<GT_MetaTileEntity_Hatch_Holder> eHolders = new ArrayList<>();
     private GT_Recipe.GT_Recipe_AssemblyLine tRecipe;
