@@ -23,26 +23,26 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.logic.PollutionLogic;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.logic.interfaces.PollutionLogicHost;
 import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.Controller;
+import gregtech.api.task.tasks.PollutionTask;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.multiblock.logic.CokeOvenProcessingLogic;
 
-public class CokeOven extends Controller<CokeOven> implements PollutionLogicHost, ProcessingLogicHost {
+public class CokeOven extends Controller<CokeOven> implements ProcessingLogicHost {
 
     private static IStructureDefinition<CokeOven> STRUCTURE_DEFINITION = null;
     private static final Vec3Impl OFFSET = new Vec3Impl(1, 1, 0);
     private static final String MAIN = "Main";
-    private static final PollutionLogic POLLUTION_LOGIC = new PollutionLogic().setPollutionAmount(10);
+    private static final int POLLUTION_AMOUNT = 10;
     private final ProcessingLogic PROCESSING_LOGIC = new CokeOvenProcessingLogic();
 
     public CokeOven() {
         super();
         setElectric(false);
+        new PollutionTask<>(this).setPollutionPerSecond(POLLUTION_AMOUNT);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class CokeOven extends Controller<CokeOven> implements PollutionLogicHost
             .addInfo("Used for charcoal")
             .beginStructureBlock(3, 3, 3, true)
             .addCasingInfoExactly("Coke Oven Bricks", 25, false)
-            .addPollutionAmount(POLLUTION_LOGIC.getPollutionAmount())
+            .addPollutionAmount(POLLUTION_AMOUNT)
             .toolTipFinisher(GT_Values.AuthorBlueWeabo);
         return tt;
     }
@@ -144,11 +144,6 @@ public class CokeOven extends Controller<CokeOven> implements PollutionLogicHost
     @Override
     public String getLocalName() {
         return StatCollector.translateToLocal("gt.multiBlock.controller.cokeOven");
-    }
-
-    @Override
-    public PollutionLogic getPollutionLogic() {
-        return POLLUTION_LOGIC;
     }
 
     @Override

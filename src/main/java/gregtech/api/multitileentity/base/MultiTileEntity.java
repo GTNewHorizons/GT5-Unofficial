@@ -1,7 +1,6 @@
 package gregtech.api.multitileentity.base;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_Values.NBT;
 import static gregtech.api.enums.GT_Values.VALID_SIDES;
 
 import java.io.IOException;
@@ -220,7 +219,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
         if (nbt.hasKey("y")) yCoord = nbt.getInteger("y");
         if (nbt.hasKey("z")) zCoord = nbt.getInteger("z");
         // read the custom Name.
-        if (nbt.hasKey(NBT.DISPAY)) customName = nbt.getCompoundTag(NBT.DISPAY)
+        if (nbt.hasKey(NBT.DISPLAY)) customName = nbt.getCompoundTag(NBT.DISPLAY)
             .getString(NBT.CUSTOM_NAME);
 
         // And now everything else.
@@ -238,6 +237,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
             if (nbt.hasKey(NBT.FACING)) facing = ForgeDirection.getOrientation(nbt.getInteger(NBT.FACING));
 
             readCoverNBT(nbt);
+            readTasksNBT(nbt);
             readMultiTileNBT(nbt);
 
             if (NetworkUtils.isDedicatedClient()) {
@@ -261,6 +261,8 @@ public abstract class MultiTileEntity extends CoverableTileEntity
         /* Do Nothing */
     }
 
+    protected void readTasksNBT(NBTTagCompound nbt) {}
+
     @Override
     public final void writeToNBT(NBTTagCompound aNBT) {
         super.writeToNBT(aNBT);
@@ -270,11 +272,11 @@ public abstract class MultiTileEntity extends CoverableTileEntity
         // write the Custom Name
         if (GT_Utility.isStringValid(customName)) {
             final NBTTagCompound displayNBT;
-            if (aNBT.hasKey(NBT.DISPAY)) {
-                displayNBT = aNBT.getCompoundTag(NBT.DISPAY);
+            if (aNBT.hasKey(NBT.DISPLAY)) {
+                displayNBT = aNBT.getCompoundTag(NBT.DISPLAY);
             } else {
                 displayNBT = new NBTTagCompound();
-                aNBT.setTag(NBT.DISPAY, displayNBT);
+                aNBT.setTag(NBT.DISPLAY, displayNBT);
             }
             displayNBT.setString(NBT.CUSTOM_NAME, customName);
         }
@@ -287,6 +289,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
             aNBT.setInteger(NBT.FACING, facing.ordinal());
 
             writeCoverNBT(aNBT, false);
+            writeTasksNBT(aNBT);
             writeMultiTileNBT(aNBT);
         } catch (Throwable e) {
             GT_FML_LOGGER.error("writeToNBT", e);
@@ -297,10 +300,13 @@ public abstract class MultiTileEntity extends CoverableTileEntity
         /* Do Nothing */
     }
 
+    protected void writeTasksNBT(NBTTagCompound aNBT) {}
+
     @Override
     public NBTTagCompound writeItemNBT(NBTTagCompound aNBT) {
         writeCoverNBT(aNBT, true);
         if (shouldSaveNBTToItemStack()) {
+            writeTasksNBT(aNBT);
             writeMultiTileNBT(aNBT);
         }
         return aNBT;
