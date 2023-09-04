@@ -2599,7 +2599,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     b.validateInputCount(1, 2)
                         .validateOutputCount(1, 4)
                         .validateNoOutputFluid();
-                    if (b.getFluidInputs() != null || !b.isValid())
+                    if ((b.getFluidInputs() != null && b.getFluidInputs().length > 0) || !b.isValid())
                         return buildOrEmpty(b.validateInputFluidCount(1, 1));
                     int aDuration = b.getDuration(), aEUt = b.getEUt();
                     Collection<GT_Recipe> ret = new ArrayList<>();
