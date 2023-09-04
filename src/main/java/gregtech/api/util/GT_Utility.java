@@ -151,6 +151,7 @@ import gregtech.api.interfaces.tileentity.IUpgradableMachine;
 import gregtech.api.items.GT_EnergyArmor_Item;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.net.GT_Packet_Sound;
 import gregtech.api.objects.CollectorUtils;
 import gregtech.api.objects.GT_ItemStack;
@@ -3891,6 +3892,14 @@ public class GT_Utility {
             if (areStacksEqual(aStack, tStack)) return i;
         }
         return -1;
+    }
+
+    /**
+     * @return Supplied collection that doesn't contain invalid MetaTileEntities
+     */
+    public static <T extends Collection<E>, E extends MetaTileEntity> T filterValidMTEs(T metaTileEntities) {
+        metaTileEntities.removeIf(mte -> mte == null || !mte.isValid());
+        return metaTileEntities;
     }
 
     public static class ItemNBT {

@@ -16,6 +16,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAS
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -265,9 +266,9 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
     public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
         if (Arrays.stream(toOutput)
             .anyMatch(this::isPollutionFluid)) {
-            return filterValidMetaTileEntities(mPollutionOutputHatches);
+            return filterValidMTEs(mPollutionOutputHatches);
         }
-        return filterValidMetaTileEntities(mOutputHatches);
+        return filterValidMTEs(mOutputHatches);
     }
 
     /**
@@ -275,8 +276,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
      */
     public int getPollutionReduction() {
         int reduction = 100;
-        for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
-            if (!isValidMetaTileEntity(tHatch)) continue;
+        for (GT_MetaTileEntity_Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
             reduction = Math.min(tHatch.calculatePollutionReduction(100), reduction);
         }
         return reduction;
@@ -291,8 +291,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
         int mPollutionReduction = getPollutionReduction();
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
-            if (!isValidMetaTileEntity(tHatch)) continue;
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
