@@ -1,9 +1,8 @@
-package gregtech.api.logic;
+package gregtech.api.recipe.check;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;

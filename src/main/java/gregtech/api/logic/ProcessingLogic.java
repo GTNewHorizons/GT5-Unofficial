@@ -295,13 +295,12 @@ public class ProcessingLogic {
 
             // There are two cases:
             // 1 - there are actually no matching recipes
-            // 2 - there is a matching recipes, but we rejected it due to our advanced validation (e.g. OUTPUT_FULL)
+            // 2 - there are some matching recipes, but we rejected it due to our advanced validation (e.g. OUTPUT_FULL)
             if (findRecipeResult.getState() == FindRecipeResult.State.NOT_FOUND
                 && recipeValidator.getFirstCheckResult() != null) {
-                // Here we're handling 2 case
+                // Here we're handling case 2
                 // If there are matching recipes but our validation rejected them,
                 // we should return a first one to display a proper error in the machine GUI
-
                 return recipeValidator.getFirstCheckResult();
             }
 

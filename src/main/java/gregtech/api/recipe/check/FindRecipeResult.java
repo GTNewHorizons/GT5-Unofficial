@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.logic.RecipeValidator;
 import gregtech.api.util.GT_Recipe;
 
 /**
