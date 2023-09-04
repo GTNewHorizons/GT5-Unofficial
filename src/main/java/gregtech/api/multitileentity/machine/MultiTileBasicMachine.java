@@ -9,6 +9,8 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.jetbrains.annotations.ApiStatus.OverrideOnly;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -35,9 +37,9 @@ import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.logic.PowerLogic;
-import gregtech.api.logic.interfaces.FluidInventoryLogicHost;
-import gregtech.api.logic.interfaces.ItemInventoryLogicHost;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
+import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.base.TickableMultiTileEntity;
@@ -47,8 +49,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.client.GT_SoundLoop;
 
-public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
-    implements IMultiTileMachine, ItemInventoryLogicHost, FluidInventoryLogicHost, IMachineProgress {
+public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extends TickableMultiTileEntity
+    implements IMultiTileMachine, IMachineProgress, ProcessingLogicHost<P> {
 
     protected static final int ACTIVE = B[0];
     protected static final int TICKS_BETWEEN_RECIPE_CHECKS = 5 * TickTime.SECOND;
@@ -94,6 +96,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     protected ItemInventoryLogic itemOutput;
     protected FluidInventoryLogic fluidInput;
     protected FluidInventoryLogic fluidOutput;
+
+    protected P processingLogic;
 
     @SideOnly(Side.CLIENT)
     protected GT_SoundLoop activitySoundLoop;
@@ -187,10 +191,14 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     }
 
     protected void loadItemLogic(NBTTagCompound nbt) {
-        itemInput = new ItemInventoryLogic(Math.max(nbt.getInteger(NBT.INV_OUTPUT_SIZE), tier));
-        itemOutput = new ItemInventoryLogic(Math.max(nbt.getInteger(NBT.INV_OUTPUT_SIZE), tier));
-        itemInput.loadFromNBT(nbt.getCompoundTag(NBT.INV_INPUT_LIST));
-        itemOutput.loadFromNBT(nbt.getCompoundTag(NBT.INV_OUTPUT_LIST));
+        itemInput = new ItemInventoryLogic(nbt.getInteger(NBT.INV_OUTPUT_SIZE), tier);
+        itemOutput = new ItemInventoryLogic(nbt.getInteger(NBT.INV_OUTPUT_SIZE), tier);
+        if (nbt.hasKey(NBT.INV_INPUT_LIST)) {
+            itemInput.loadFromNBT(nbt.getCompoundTag(NBT.INV_INPUT_LIST));
+        }
+        if (nbt.hasKey(NBT.INV_OUTPUT_LIST)) {
+            itemOutput.loadFromNBT(nbt.getCompoundTag(NBT.INV_OUTPUT_LIST));
+        }
     }
 
     protected void loadFluidLogic(NBTTagCompound nbt) {
@@ -809,6 +817,24 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
             case Output -> fluidOutput;
             default -> null;
         };
+    }
+
+    @Override
+    @Nonnull
+    public P getProcessingLogic() {
+        if (processingLogic == null) {
+            processingLogic = createProcessingLogic();
+        }
+        return processingLogic;
+    }
+
+    @OverrideOnly
+    @Nonnull
+    protected abstract P createProcessingLogic();
+
+    @Override
+    public boolean isInputSeparated() {
+        return false;
     }
 
 }

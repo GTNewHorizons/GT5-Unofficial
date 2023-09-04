@@ -64,6 +64,7 @@ import gregtech.api.logic.ControllerItemLogic;
 import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.logic.PowerLogic;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.multitileentity.enums.MultiTileCasingPurpose;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
@@ -84,7 +85,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 /**
  * Multi Tile Entities - or MuTEs - don't have dedicated hatches, but their casings can become hatches.
  */
-public abstract class Controller<T extends Controller<T>> extends MultiTileBasicMachine
+public abstract class Controller<T extends Controller<T, P>, P extends ProcessingLogic<P>> extends MultiTileBasicMachine<P>
     implements IAlignment, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable,
     ControllerWithOptionalFeatures, IGlobalWirelessEnergy {
 
@@ -388,8 +389,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     @SuppressWarnings("unchecked")
-    private IStructureDefinition<Controller<T>> getCastedStructureDefinition() {
-        return (IStructureDefinition<Controller<T>>) getStructureDefinition();
+    private IStructureDefinition<Controller<T, P>> getCastedStructureDefinition() {
+        return (IStructureDefinition<Controller<T, P>>) getStructureDefinition();
     }
 
     @Override

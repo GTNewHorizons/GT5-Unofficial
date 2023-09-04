@@ -4,7 +4,9 @@ import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
-public abstract class StackableController<T extends StackableController<T>> extends PowerController<T> {
+import gregtech.api.logic.ProcessingLogic;
+
+public abstract class StackableController<T extends StackableController<T, P>, P extends ProcessingLogic<P>> extends PowerController<T, P> {
 
     protected static String STACKABLE_STOP = "STACKABLE_STOP";
     protected static String STACKABLE_MIDDLE = "STACKABLE_MIDDLE";

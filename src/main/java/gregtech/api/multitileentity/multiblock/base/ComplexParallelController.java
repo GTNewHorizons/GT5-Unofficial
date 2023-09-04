@@ -22,9 +22,8 @@ import gregtech.api.util.GT_Waila;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public abstract class ComplexParallelController<T extends ComplexParallelController<T>> extends PowerController<T> {
+public abstract class ComplexParallelController<T extends ComplexParallelController<T, P>, P extends ComplexParallelProcessingLogic<P>> extends PowerController<T, P> {
 
-    protected ComplexParallelProcessingLogic processingLogic;
     protected int maxComplexParallels = 0;
     protected int currentComplexParallels = 0;
     protected int[] maxProgressTimes = new int[0];
@@ -43,109 +42,6 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
             progressTimes = new int[parallel];
         }
         maxComplexParallels = parallel;
-    }
-
-    @Override
-    protected void runMachine(long tick) {
-        if (acceptsFuel() && isActive()) {
-            if (!consumeFuel()) {
-                stopMachine(true);
-                return;
-            }
-        }
-
-        if (hasThingsToDo()) {
-            markDirty();
-            runningTick(tick);
-        }
-        if ((tick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled() || hasInventoryBeenModified())
-            && maxComplexParallels != currentComplexParallels) {
-            if (isAllowedToWork() && maxComplexParallels > currentComplexParallels) {
-                wasEnabled = false;
-                boolean started = false;
-                for (int i = 0; i < maxComplexParallels; i++) {
-                    if (maxProgressTimes[i] <= 0 && checkRecipe(i)) {
-                        currentComplexParallels++;
-                        started = true;
-                    }
-                }
-                if (started) {
-                    setActive(true);
-                    updateSlots();
-                    markDirty();
-                    issueClientUpdate();
-                }
-            }
-        }
-    }
-
-    @Override
-    protected void runningTick(long tick) {
-        consumeEnergy();
-        boolean allStopped = true;
-        for (int i = 0; i < maxComplexParallels; i++) {
-            if (maxProgressTimes[i] > 0 && ++progressTimes[i] >= maxProgressTimes[i]) {
-                progressTimes[i] = 0;
-                maxProgressTimes[i] = 0;
-                outputItems(i);
-                outputFluids(i);
-                if (isAllowedToWork()) {
-                    if (checkRecipe(i)) {
-                        allStopped = false;
-                    } else {
-                        currentComplexParallels--;
-                    }
-                }
-                updateSlots();
-            } else if (maxProgressTimes[i] > 0) {
-                allStopped = false;
-            }
-        }
-        if (allStopped) {
-            setActive(false);
-            issueClientUpdate();
-        }
-
-        emitEnergy();
-    }
-
-    protected boolean checkRecipe(int index) {
-        ComplexParallelProcessingLogic processingLogic = getComplexProcessingLogic();
-        if (processingLogic == null || index < 0 || index >= maxComplexParallels) {
-            return false;
-        }
-        processingLogic.clear(index);
-        boolean result = processingLogic.setInputItems(index, getInputItems(index))
-            .setInputFluids(index, getInputFluids(index))
-            .setTileEntity(this)
-            .setVoidProtection(index, isVoidProtectionEnabledForItem(index), isVoidProtectionEnabledForFluid(index))
-            .setEut(index, getEutForComplexParallel(index))
-            .setPerfectOverclock(hasPerfectOverclock())
-            .setIsCleanroom(isCleanroom)
-            .process(index);
-        setDuration(index, processingLogic.getDuration(index));
-        setEut(processingLogic.getTotalEU());
-        return result;
-    }
-
-    protected void outputItems(int index) {
-        ComplexParallelProcessingLogic processingLogic = getComplexProcessingLogic();
-        if (processingLogic != null && index >= 0 && index < maxComplexParallels) {
-            itemsToOutput = processingLogic.getOutputItems(index);
-            outputItems(null);
-        }
-    }
-
-    protected void outputFluids(int index) {
-        ComplexParallelProcessingLogic processingLogic = getComplexProcessingLogic();
-        if (processingLogic != null && index >= 0 && index < maxComplexParallels) {
-            fluidsToOutput = processingLogic.getOutputFluids(index);
-            outputFluids(null);
-        }
-    }
-
-    protected ComplexParallelProcessingLogic getComplexProcessingLogic() {
-        return processingLogic;
     }
 
     @Override

@@ -6,10 +6,11 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.multitileentity.interfaces.UpgradableModularMuTE;
 import gregtech.api.util.GT_StructureUtilityMuTE.UpgradeCasings;
 
-public abstract class StackableModularController<T extends StackableModularController<T>> extends StackableController<T>
+public abstract class StackableModularController<T extends StackableModularController<T, P>, P extends ProcessingLogic<P>> extends StackableController<T, P>
     implements UpgradableModularMuTE {
 
     protected double durationMultiplier = 1;
