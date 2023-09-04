@@ -1365,7 +1365,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 IDualInputInventory inventory = dualInputHatch.getFirstNonEmptyInventory();
                 if (inventory != null) {
                     ArrayList<ItemStack> itemStacks = Lists.newArrayList(inventory.getItemInputs());
-                    itemStacks.addAll(List.of(dualInputHatch.getSharedItems()));
+                    itemStacks.addAll(Arrays.asList(dualInputHatch.getSharedItems()));
                     return itemStacks;
                 }
             }
