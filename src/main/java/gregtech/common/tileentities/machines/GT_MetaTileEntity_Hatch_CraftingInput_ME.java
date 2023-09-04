@@ -964,7 +964,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     @Nullable
     public IDualInputInventory getFirstNonEmptyInventory() {
         for (PatternSlot slot : internalInventory) {
-            if (!slot.isEmpty()) return slot;
+            if (slot != null && !slot.isEmpty()) return slot;
         }
         return null;
     }
