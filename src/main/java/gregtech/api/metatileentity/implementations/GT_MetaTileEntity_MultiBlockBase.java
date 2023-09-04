@@ -32,6 +32,7 @@ import org.jetbrains.annotations.TestOnly;
 import org.lwjgl.input.Keyboard;
 
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -1322,8 +1323,18 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     public ArrayList<FluidStack> getStoredFluids() {
+        for (IDualInputHatch tHatch : mDualInputHatches) {
+            if (supportsCraftingMEBuffer() && tHatch instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
+                GT_MetaTileEntity_Hatch_CraftingInput_ME dualInputHatch = (GT_MetaTileEntity_Hatch_CraftingInput_ME) tHatch;
+
+                IDualInputInventory inventory = dualInputHatch.getFirstNonEmptyInventory();
+                if (inventory != null) {
+                    return Lists.newArrayList(inventory.getFluidInputs());
+                }
+            }
+        }
+
         ArrayList<FluidStack> rList = new ArrayList<>();
-        HashMap<String, FluidStack> rInputHatchMeList = new HashMap<>();
         for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
             tHatch.mRecipeMap = getRecipeMap();
             if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
@@ -1343,23 +1354,25 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             }
         }
 
-        for (IDualInputHatch tHatch : mDualInputHatches) {
-            if (supportsCraftingMEBuffer() && tHatch instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
-                for (FluidStack fluidStack : ((GT_MetaTileEntity_Hatch_CraftingInput_ME) tHatch)
-                    .getCombinedFluidInputs()) {
-                    if (fluidStack != null) rInputHatchMeList.put(fluidStack.toString(), fluidStack);
-                }
-            }
-        }
-
-        if (!rInputHatchMeList.isEmpty()) rList.addAll(rInputHatchMeList.values());
         return rList;
     }
 
     public ArrayList<ItemStack> getStoredInputs() {
+        for (IDualInputHatch tHatch : mDualInputHatches) {
+            if (supportsCraftingMEBuffer() && tHatch instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
+                GT_MetaTileEntity_Hatch_CraftingInput_ME dualInputHatch = (GT_MetaTileEntity_Hatch_CraftingInput_ME) tHatch;
+
+                IDualInputInventory inventory = dualInputHatch.getFirstNonEmptyInventory();
+                if (inventory != null) {
+                    ArrayList<ItemStack> itemStacks = Lists.newArrayList(inventory.getItemInputs());
+                    itemStacks.addAll(List.of(dualInputHatch.getSharedItems()));
+                    return itemStacks;
+                }
+            }
+        }
+
         ArrayList<ItemStack> rList = new ArrayList<>();
         HashMap<String, ItemStack> rInputBusMeList = new HashMap<>();
-        HashMap<String, ItemStack> rCraftingInputBusList = new HashMap<>();
 
         for (GT_MetaTileEntity_Hatch_InputBus tHatch : mInputBusses) {
             tHatch.mRecipeMap = getRecipeMap();
@@ -1379,19 +1392,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             }
         }
 
-        for (IDualInputHatch tHatch : mDualInputHatches) {
-            if (supportsCraftingMEBuffer() && tHatch instanceof GT_MetaTileEntity_Hatch_CraftingInput_ME) {
-                for (ItemStack itemStack : ((GT_MetaTileEntity_Hatch_CraftingInput_ME) tHatch)
-                    .getCombinedItemInputs()) {
-                    if (itemStack != null) rCraftingInputBusList.put(itemStack.toString(), itemStack);
-                }
-            }
-        }
-
         if (getStackInSlot(1) != null && getStackInSlot(1).getUnlocalizedName()
             .startsWith("gt.integrated_circuit")) rList.add(getStackInSlot(1));
         if (!rInputBusMeList.isEmpty()) rList.addAll(rInputBusMeList.values());
-        if (!rCraftingInputBusList.isEmpty()) rList.addAll(rCraftingInputBusList.values());
         return rList;
     }
 

@@ -722,7 +722,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         needPatternSync = true;
     }
 
-    private ItemStack[] getSharedItems() {
+    public ItemStack[] getSharedItems() {
         ItemStack[] sharedItems = new ItemStack[SLOT_MANUAL_SIZE + 1];
         sharedItems[0] = mInventory[SLOT_CIRCUIT];
         System.arraycopy(mInventory, SLOT_MANUAL_START, sharedItems, 1, SLOT_MANUAL_SIZE);
@@ -961,37 +961,11 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         customName = name;
     }
 
-    public ArrayList<ItemStack> getCombinedItemInputs() {
-        ArrayList<ItemStack> itemStacks = new ArrayList<>();
-
-        for (ItemStack itemStack : getSharedItems()) {
-            if (itemStack != null && itemStack.stackSize >= 0) {
-                itemStacks.add(itemStack);
-            }
+    @Nullable
+    public IDualInputInventory getFirstNonEmptyInventory() {
+        for (PatternSlot slot : internalInventory) {
+            if (!slot.isEmpty()) return slot;
         }
-
-        for (var slot : internalInventory) {
-            if (slot != null && !slot.isEmpty()) {
-                itemStacks.addAll(slot.itemInventory);
-            }
-        }
-
-        return itemStacks;
-    }
-
-    public ArrayList<FluidStack> getCombinedFluidInputs() {
-        ArrayList<FluidStack> fluidStacks = new ArrayList<>();
-
-        if (!this.supportFluids) {
-            return fluidStacks;
-        }
-
-        for (var slot : internalInventory) {
-            if (slot != null && !slot.isEmpty()) {
-                fluidStacks.addAll(slot.fluidInventory);
-            }
-        }
-
-        return fluidStacks;
+        return null;
     }
 }
