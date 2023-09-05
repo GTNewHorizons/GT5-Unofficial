@@ -132,11 +132,15 @@ public class FluidInventoryLogic {
 
     @Nonnull
     public FluidStack[] getStoredFluids() {
-        return inventory.getFluids()
+        final FluidStack[] fluids = inventory.getFluids()
             .stream()
             .filter(fluid -> fluid != null)
             .collect(Collectors.toList())
             .toArray(new FluidStack[0]);
+        if (fluids == null) {
+            return new FluidStack[0];
+        }
+        return fluids;
     }
 
     public boolean isFluidValid(@Nullable Fluid fluid) {
@@ -179,7 +183,7 @@ public class FluidInventoryLogic {
      * @return A fluidstack with the possible amount drained
      */
     @Nullable
-    public FluidStack drain(int amount, boolean simulate) {
+    public FluidStack drain(long amount, boolean simulate) {
         for (int i = 0; i < inventory.getTanks(); i++) {
             Fluid fluid = inventory.getFluidInTank(i);
             FluidStack drained = drain(fluid, amount, simulate);
@@ -190,7 +194,7 @@ public class FluidInventoryLogic {
     }
 
     @Nullable
-    public FluidStack drain(Fluid fluid, int amount, boolean simulate) {
+    public FluidStack drain(Fluid fluid, long amount, boolean simulate) {
         if (!isFluidValid(fluid)) return null;
         IFluidTankLong tank = fluidToTankMap.get(fluid);
         if (tank != null) {
