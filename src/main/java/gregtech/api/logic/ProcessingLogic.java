@@ -9,12 +9,11 @@ import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.FindRecipeResult;
-import gregtech.api.recipe.check.SingleRecipeCheck;
+import gregtech.api.recipe.check.*;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
@@ -275,7 +274,6 @@ public class ProcessingLogic {
             maxParallel = maxParallelSupplier.get();
         }
 
-        FindRecipeResult findRecipeResult;
         if (isRecipeLocked && recipeLockableMachine != null && recipeLockableMachine.getSingleRecipeCheck() != null) {
             // Recipe checker is already built, we'll use it
             SingleRecipeCheck singleRecipeCheck = recipeLockableMachine.getSingleRecipeCheck();
@@ -284,33 +282,56 @@ public class ProcessingLogic {
             if (singleRecipeCheck.checkRecipeInputs(false, 1, inputItems, inputFluids) == 0) {
                 return CheckRecipeResultRegistry.NO_RECIPE;
             }
-            findRecipeResult = FindRecipeResult.ofSuccess(
+
+            return processRecipe(
                 recipeLockableMachine.getSingleRecipeCheck()
                     .getRecipe());
-        } else {
-            findRecipeResult = findRecipe(recipeMap);
         }
 
-        GT_Recipe recipe;
-        CheckRecipeResult result;
-        if (findRecipeResult.isSuccessful()) {
-            recipe = findRecipeResult.getRecipeNonNull();
-            result = validateRecipe(recipe);
-            if (!result.wasSuccessful()) {
-                return result;
-            } else {
-                if (recipe.mCanBeBuffered) {
-                    lastRecipe = recipe;
-                } else {
-                    lastRecipe = null;
-                }
+        FindRecipeResult findRecipeResult = findRecipe(recipeMap);
+        // If processRecipe is not overridden, advanced recipe validation logic is used, and we can reuse calculations.
+        if (findRecipeResult.hasRecipeValidator()) {
+            RecipeValidator recipeValidator = findRecipeResult.getRecipeValidator();
+
+            // There are two cases:
+            // 1 - there are actually no matching recipes
+            // 2 - there are some matching recipes, but we rejected it due to our advanced validation (e.g. OUTPUT_FULL)
+            if (findRecipeResult.getState() == FindRecipeResult.State.NOT_FOUND
+                && recipeValidator.getFirstCheckResult() != null) {
+                // Here we're handling case 2
+                // If there are matching recipes but our validation rejected them,
+                // we should return a first one to display a proper error in the machine GUI
+                return recipeValidator.getFirstCheckResult();
             }
-        } else {
-            if (findRecipeResult.getState() == FindRecipeResult.State.INSUFFICIENT_VOLTAGE) {
-                return CheckRecipeResultRegistry.insufficientPower(findRecipeResult.getRecipeNonNull().mEUt);
-            } else {
-                return CheckRecipeResultRegistry.NO_RECIPE;
+
+            // If everything is ok, reuse our calculations
+            if (recipeValidator.isExecutedAtLeastOnce() && findRecipeResult.isSuccessful()) {
+                return applyRecipe(
+                    findRecipeResult.getRecipeNonNull(),
+                    recipeValidator.getLastParallelHelper(),
+                    recipeValidator.getLastOverclockCalculator(),
+                    recipeValidator.getLastCheckResult());
             }
+        }
+
+        if (!findRecipeResult.isSuccessful()) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        return processRecipe(findRecipeResult.getRecipeNonNull());
+    }
+
+    /**
+     * Checks if supplied recipe is valid for process.
+     * If so, additionally performs input consumption, output calculation with parallel, and overclock calculation.
+     *
+     * @param recipe The recipe which will be checked and processed
+     */
+    @Nonnull
+    protected CheckRecipeResult processRecipe(@Nonnull GT_Recipe recipe) {
+        CheckRecipeResult result = validateRecipe(recipe);
+        if (!result.wasSuccessful()) {
+            return result;
         }
 
         GT_ParallelHelper helper = createParallelHelper(recipe);
@@ -318,11 +339,24 @@ public class ProcessingLogic {
         helper.setCalculator(calculator);
         helper.build();
 
+        return applyRecipe(recipe, helper, calculator, result);
+    }
+
+    /**
+     * Applies the recipe and calculated parameters
+     */
+    private CheckRecipeResult applyRecipe(@NotNull GT_Recipe recipe, GT_ParallelHelper helper,
+        GT_OverclockCalculator calculator, CheckRecipeResult result) {
         if (!helper.getResult()
             .wasSuccessful()) {
             return helper.getResult();
         }
 
+        if (recipe.mCanBeBuffered) {
+            lastRecipe = recipe;
+        } else {
+            lastRecipe = null;
+        }
         calculatedParallels = helper.getCurrentParallel();
 
         if (calculator.getConsumption() == Long.MAX_VALUE) {
@@ -360,14 +394,25 @@ public class ProcessingLogic {
     @Nonnull
     protected FindRecipeResult findRecipe(@Nullable GT_Recipe_Map map) {
         if (map == null) return FindRecipeResult.NOT_FOUND;
-        return map.findRecipeWithResult(
+
+        RecipeValidator recipeValidator = new RecipeValidator(
+            this::validateRecipe,
+            this::createParallelHelper,
+            this::createOverclockCalculator);
+
+        FindRecipeResult findRecipeResult = map.findRecipeWithResult(
             lastRecipe,
+            recipeValidator,
             false,
             false,
             amperageOC ? availableVoltage * availableAmperage : availableVoltage,
             inputFluids,
             specialSlotItem,
             inputItems);
+
+        findRecipeResult.setRecipeValidator(recipeValidator);
+
+        return findRecipeResult;
     }
 
     /**
