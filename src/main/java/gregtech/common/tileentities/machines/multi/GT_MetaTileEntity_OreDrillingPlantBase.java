@@ -133,7 +133,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             GT_Utility.sendChatToPlayer(
                 aPlayer,
                 StatCollector.translateToLocal("GT5U.machines.workareaset") + " "
-                    + (chunkRadiusConfig << 4)
+                    + GT_Utility.formatNumbers((long) chunkRadiusConfig << 4)
                     + " "
                     + StatCollector.translateToLocal("GT5U.machines.radius"));
         }
@@ -579,8 +579,9 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> StatCollector
-                            .translateToLocalFormatted("GT5U.gui.text.drill_ores_left_chunk", clientOreListSize))
+                        () -> StatCollector.translateToLocalFormatted(
+                            "GT5U.gui.text.drill_ores_left_chunk",
+                            GT_Utility.formatNumbers(clientOreListSize)))
                     .setSynced(false)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(
@@ -591,8 +592,8 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                     .dynamicString(
                         () -> StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.drill_ores_left_layer",
-                            clientYHead,
-                            clientOreListSize))
+                            GT_Utility.formatNumbers(clientYHead),
+                            GT_Utility.formatNumbers(clientOreListSize)))
                     .setSynced(false)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(
@@ -602,8 +603,8 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                     .dynamicString(
                         () -> StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.drill_chunks_left",
-                            clientCurrentChunk,
-                            clientTotalChunks))
+                            GT_Utility.formatNumbers(clientCurrentChunk),
+                            GT_Utility.formatNumbers(clientTotalChunks)))
                     .setSynced(false)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(
@@ -629,8 +630,9 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                     (widget, val) -> widget.notifyTooltipChange())
                 .dynamicTooltip(
                     () -> ImmutableList.of(
-                        StatCollector
-                            .translateToLocalFormatted("GT5U.gui.button.ore_drill_radius_1", chunkRadiusConfig << 4),
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.gui.button.ore_drill_radius_1",
+                            GT_Utility.formatNumbers((long) chunkRadiusConfig << 4)),
                         StatCollector.translateToLocal("GT5U.gui.button.ore_drill_radius_2")))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setSize(16, 16),
@@ -666,7 +668,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
 
     @Override
     public String[] getInfoData() {
-        final int diameter = chunkRadiusConfig * 2;
+        final String diameter = GT_Utility.formatNumbers(chunkRadiusConfig * 2L);
         return new String[] {
             EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.minermulti")
                 + EnumChatFormatting.RESET,

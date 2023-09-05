@@ -370,9 +370,9 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
                     + EnumChatFormatting.RESET,
                 StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
                     + EnumChatFormatting.GREEN
-                    + (chunkRangeConfig)
+                    + GT_Utility.formatNumbers(chunkRangeConfig)
                     + " x "
-                    + (chunkRangeConfig)
+                    + GT_Utility.formatNumbers(chunkRangeConfig)
                     + EnumChatFormatting.RESET
                     + " "
                     + StatCollector.translateToLocal("GT5U.machines.chunks"),
