@@ -190,6 +190,11 @@ public class ProcessingLogic<T extends ProcessingLogic<T>> {
         return getThis();
     }
 
+    public T setMachineHost(ProcessingLogicHost<T> machineHost) {
+        this.machineHost = machineHost;
+        return getThis();
+    }
+
     /**
      * Overwrites duration result of the calculation.
      */
@@ -499,6 +504,8 @@ public class ProcessingLogic<T extends ProcessingLogic<T>> {
             if (fluid == null) continue;
             fluidOutput.fill(fluid.getFluid(), fluid.amount, false);
         }
+        outputItems = new ItemStack[0];
+        outputFluids = new FluidStack[0];
     }
 
     public boolean canWork() {
