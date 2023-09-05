@@ -28,7 +28,6 @@ public class CoalTar extends ItemPackage {
     public static Fluid Coal_Tar_Oil;
     public static Fluid Sulfuric_Coal_Tar_Oil;
     public static Fluid Naphthalene;
-    public static Fluid Phthalic_Acid;
 
     private static void recipeEthylBenzineFuelsIntoHeavyFuel() {
         CORE.RA.addChemicalRecipe(
@@ -238,7 +237,7 @@ public class CoalTar extends ItemPackage {
                 ItemUtils.getItemStackOfAmountFromOreDict("cellNaphthalene", 2),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustLithium", 5),
                 null,
-                FluidUtils.getFluidStack("fluid.phthalicacid", 2500),
+                Materials.PhthalicAcid.getFluid(2500),
                 ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
                 20 * 16);
     }
@@ -246,7 +245,7 @@ public class CoalTar extends ItemPackage {
     private static void recipePhthalicAcidToPhthalicAnhydride() {
         CORE.RA.addDehydratorRecipe(
                 new ItemStack[] { CI.getNumberedBioCircuit(15) },
-                FluidUtils.getFluidStack("fluid.phthalicacid", 1000),
+                Materials.PhthalicAcid.getFluid(1000),
                 null,
                 new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustPhthalicAnhydride", 15) },
                 new int[] { 10000 },
@@ -273,8 +272,6 @@ public class CoalTar extends ItemPackage {
 
         recipeEthylBenzineFuelsIntoHeavyFuel();
 
-        recipePhthalicAcidConversion();
-
         // Burn the coal gas!
         GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalGas", 1), null, 96, 1);
         CORE.RA.addSemifluidFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricCoalTarOil", 1), 64);
@@ -284,19 +281,8 @@ public class CoalTar extends ItemPackage {
         return true;
     }
 
-    private void recipePhthalicAcidConversion() {
-        FluidStack aMyAcid = FluidUtils.getFluidStack(Phthalic_Acid, 500);
-        FluidStack aGtAcid = FluidUtils.getFluidStack("phtalicacid", 500);
-        if (aMyAcid != null && aGtAcid != null) {
-            CORE.RA.addDistilleryRecipe(CI.getNumberedBioCircuit(8), aMyAcid, aGtAcid, null, 50, 16, false);
-            CORE.RA.addDistilleryRecipe(CI.getNumberedBioCircuit(9), aGtAcid, aMyAcid, null, 50, 16, false);
-        }
-    }
-
     @Override
     public void items() {
-        // Phthalic_Acid = FluidUtils.generateFluidNonMolten("PhthalicAcid", "Phthalic Acid", 207, new short[]{210, 220,
-        // 210, 100}, null, null);
         // v - Dehydrate at 180C+
         // Create Phthalic Anhydride
         ItemUtils.generateSpecialUseDusts(
@@ -403,18 +389,5 @@ public class CoalTar extends ItemPackage {
                 new short[] { 210, 185, 135, 100 },
                 null,
                 null);
-        // v - Oxidize with mercury and nitric acid
-        // Create Phthalic Acid
-        Phthalic_Acid = FluidUtils.generateFluidNonMolten(
-                "PhthalicAcid",
-                "Phthalic Acid",
-                207,
-                new short[] { 210, 220, 210, 100 },
-                null,
-                null);
-        // v - Dehydrate at 180C+
-        // Create Phthalic Anhydride
-        // ItemUtils.generateSpecialUseDusts("PhthalicAnhydride", "Phthalic Anhydride", "C6H4(CO)2O",
-        // Utils.rgbtoHexValue(175, 175, 175));
     }
 }

@@ -1669,7 +1669,6 @@ item.CoalTar.name=Coal Tar Cell
 item.CoalTarOil.name=Coal Tar Oil Cell
 item.SulfuricCoalTarOil.name=Sulfuric Coal Tar Oil Cell
 item.Naphthalene.name=Naphthalene Cell
-item.PhthalicAcid.name=Phthalic Acid Cell
 item.itemDustPhthalicAnhydride.name=Phthalic Anhydride Dust
 item.itemDustSmallPhthalicAnhydride.name=Small Pile of Phthalic Anhydride Dust
 item.itemDustTinyPhthalicAnhydride.name=Tiny Pile of Phthalic Anhydride Dust

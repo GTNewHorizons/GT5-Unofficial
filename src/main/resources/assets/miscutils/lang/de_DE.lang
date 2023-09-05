@@ -1633,7 +1633,6 @@ item.CoalTar.name=Kohl-Teer-Zelle
 item.CoalTarOil.name=Kohl-Teeröl-Zelle
 item.SulfuricCoalTarOil.name=Schweflige Kohl-Teeröl-Zelle
 item.Naphthalene.name=Naphthalin-Zelle
-item.PhthalicAcid.name=Phthalsäure-Zelle
 item.itemDustPhthalicAnhydride.name=Phthalsäureanhydrid-Staub
 item.itemDustSmallPhthalicAnhydride.name=Kleines Häufchen Phthalsäureanhydrid-Staub
 item.itemDustTinyPhthalicAnhydride.name=Winziges Häufchen Phthalsäureanhydrid-Staub
