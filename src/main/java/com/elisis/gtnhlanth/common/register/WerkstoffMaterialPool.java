@@ -376,16 +376,6 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 34,
             TextureSet.SET_DULL);
 
-    public static final Werkstoff MonaziteResidue = new Werkstoff(
-            new short[] { 64, 69, 62 },
-            "Monazite Residue",
-            subscriptNumbers("??ZrHfTh??"),
-            new Werkstoff.Stats(),
-            Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().disable().onlyDust(),
-            offsetID + 35,
-            TextureSet.SET_DULL);
-
     public static final Werkstoff AmmoniumNitrate = new Werkstoff(
             new short[] { 255, 255, 255 },
             "Ammonium Nitrate Solution",
@@ -683,27 +673,6 @@ public class WerkstoffMaterialPool implements Runnable {
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
             offsetID2 + 17,
             TextureSet.SET_DULL);
-
-    public static final Werkstoff FluorinatedNeodymicRareEarths = new Werkstoff(
-            new short[] { 170, 90, 60 },
-            "Fluorinated Neodymium Rare Earths",
-            subscriptNumbers("??LaNdPr??"),
-            new Werkstoff.Stats(),
-            Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().disable().onlyDust(),
-            offsetID2 + 18,
-            TextureSet.SET_DULL);
-
-    public static final Werkstoff RareEarthTrifluorides = new Werkstoff(
-            new short[] { 82, 112, 102 },
-            "Rare Earth Trifluorides",
-            subscriptNumbers("??LaNd??"),
-            new Werkstoff.Stats(),
-            Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().disable().onlyDust(),
-            offsetID2 + 20,
-            TextureSet.SET_DULL);
-
     public static final Werkstoff LanthaniumChloride = new Werkstoff(
             new short[] { 82, 112, 102 },
             "Lanthanium Chloride",
