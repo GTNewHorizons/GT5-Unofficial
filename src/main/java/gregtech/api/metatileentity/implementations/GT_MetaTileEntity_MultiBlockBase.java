@@ -775,7 +775,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 for (var it = dualInputHatch.inventories(); it.hasNext();) {
                     IDualInputInventory slot = it.next();
                     processingLogic.setInputItems(slot.getItemInputs());
-                    processingLogic.setInputFluids(slot.getFluidInputs());
+                    if (dualInputHatch.supportsFluids()) {
+                        processingLogic.setInputFluids(slot.getFluidInputs());
+                    } else {
+                        processingLogic.setInputFluids(getStoredFluids());
+                    }
                     result = processingLogic.process();
                     if (result.wasSuccessful()) {
                         return result;
