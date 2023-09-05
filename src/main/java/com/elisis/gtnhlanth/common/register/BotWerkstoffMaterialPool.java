@@ -65,15 +65,6 @@ public class BotWerkstoffMaterialPool implements Runnable {
             new Werkstoff.GenerationFeatures().disable().addCells(),
             29905,
             SET_FINE);
-    public static final Werkstoff Ethylchloroformate = new Werkstoff(
-            new short[] { 0x0a, 0xc2, 0xcc },
-            "Ethyl Chloroformate",
-            subscriptNumbers("C3H5ClO2"),
-            new Werkstoff.Stats(),
-            COMPOUND,
-            new Werkstoff.GenerationFeatures().disable().addCells(),
-            29906,
-            SET_FINE);
     public static final Werkstoff OXylene = new Werkstoff(
             new short[] { 0x88, 0x94, 0xa8 },
             "O-Xylene",

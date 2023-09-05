@@ -154,16 +154,6 @@ public class BotRecipes {
                 .fluidOutputs(BotWerkstoffMaterialPool.Phosgene.getFluidOrGas(1000)).duration(2 * SECONDS + 10 * TICKS)
                 .eut(TierEU.RECIPE_HV).addTo(UniversalChemical);
 
-        // COCl2 + C2H6O = HCl + C3H5ClO2
-        GT_Values.RA.addChemicalRecipe(
-                Phosgene.get(cell, 1),
-                C2,
-                Materials.Ethanol.getFluid(1000),
-                Materials.HydrochloricAcid.getFluid(1000),
-                Ethylchloroformate.get(cell, 1),
-                20,
-                1920);
-
         // H3PO4 = P + H2O
         GT_Values.RA.addDistilleryRecipe(
                 C2,
