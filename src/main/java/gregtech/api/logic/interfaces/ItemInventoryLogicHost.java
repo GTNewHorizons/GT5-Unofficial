@@ -113,9 +113,13 @@ public interface ItemInventoryLogicHost extends ISidedInventory {
     }
 
     @Override
-    default int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-        int[] indexes = new int[getSizeInventory()];
-        for (int i = 0; i < getSizeInventory(); i++) {
+    default int[] getAccessibleSlotsFromSide(int side) {
+        InventoryType type = getItemInventoryType();
+        if (type == null) return new int[0];
+        ItemInventoryLogic logic = getItemLogic(ForgeDirection.UNKNOWN, type == null ? InventoryType.Output : type);
+        if (logic == null) return new int[0];
+        int[] indexes = new int[logic.getSlots()];
+        for (int i = 0; i < logic.getSlots(); i++) {
             indexes[i] = i;
         }
         return indexes;
