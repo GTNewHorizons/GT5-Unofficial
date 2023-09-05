@@ -242,19 +242,19 @@ public class RecipeLoader {
 
         // 2MnO2 + 2KOH + KClO3 = 2KMnO4 + H2O + KCl
         GT_Values.RA.addBlastRecipe(
-            Materials.Pyrolusite.getDust(6),
-            GT_ModHandler.getModItem("dreamcraft", "item.PotassiumHydroxideDust", 6),
-            WerkstoffMaterialPool.PotassiumChlorate.get(OrePrefixes.dust, 5),
-            null,
-            null,
-            Materials.Water.getFluid(1000),
-            WerkstoffMaterialPool.PotassiumPermanganate.get(OrePrefixes.dust, 12),
-            Materials.RockSalt.getDust(2),
-            null,
-            null,
-            150,
-            480,
-            1200);
+                Materials.Pyrolusite.getDust(6),
+                GT_ModHandler.getModItem("dreamcraft", "item.PotassiumHydroxideDust", 6),
+                WerkstoffMaterialPool.PotassiumChlorate.get(OrePrefixes.dust, 5),
+                null,
+                null,
+                Materials.Water.getFluid(1000),
+                WerkstoffMaterialPool.PotassiumPermanganate.get(OrePrefixes.dust, 12),
+                Materials.RockSalt.getDust(2),
+                null,
+                null,
+                150,
+                480,
+                1200);
 
         // Mn + 2O = MnO2
         GT_Values.RA.addChemicalRecipe(
@@ -268,14 +268,14 @@ public class RecipeLoader {
 
         // 6KOH + 6Cl = KClO3 + 5KCl + 3H2O
         GT_Values.RA.addChemicalRecipe(
-            GT_ModHandler.getModItem("dreamcraft", "item.PotassiumHydroxideDust", 18),
-            GT_Utility.getIntegratedCircuit(3),
-            Materials.Chlorine.getGas(6000),
-            Materials.Water.getFluid(3000),
-            Materials.RockSalt.getDust(10),
-            WerkstoffMaterialPool.PotassiumChlorate.get(OrePrefixes.dust, 5),
-            40,
-            30);
+                GT_ModHandler.getModItem("dreamcraft", "item.PotassiumHydroxideDust", 18),
+                GT_Utility.getIntegratedCircuit(3),
+                Materials.Chlorine.getGas(6000),
+                Materials.Water.getFluid(3000),
+                Materials.RockSalt.getDust(10),
+                WerkstoffMaterialPool.PotassiumChlorate.get(OrePrefixes.dust, 5),
+                40,
+                30);
 
         /*
          * //Fluorosilicic Acid GT_Values.RA.addChemicalRecipe( GT_Utility.getIntegratedCircuit(1),

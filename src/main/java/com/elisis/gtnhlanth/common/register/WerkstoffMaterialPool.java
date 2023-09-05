@@ -446,24 +446,24 @@ public class WerkstoffMaterialPool implements Runnable {
             TextureSet.SET_FLUID);
 
     public static final Werkstoff PotassiumPermanganate = new Werkstoff(
-        new short[] { 165, 50, 138 },
-        "Potassium Permanganate",
-        subscriptNumbers("KMnO4"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable().onlyDust(),
-        offsetID + 43,
-        TextureSet.SET_DULL);
+            new short[] { 165, 50, 138 },
+            "Potassium Permanganate",
+            subscriptNumbers("KMnO4"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            offsetID + 43,
+            TextureSet.SET_DULL);
 
     public static final Werkstoff PotassiumPermanganateSolution = new Werkstoff(
-        new short[] { 165, 50, 138 },
-        "Potassium Permanganate Solution",
-        subscriptNumbers("KMnO4"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable().addCells(),
-        offsetID + 44,
-        TextureSet.SET_FLUID);
+            new short[] { 165, 50, 138 },
+            "Potassium Permanganate Solution",
+            subscriptNumbers("KMnO4"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().addCells(),
+            offsetID + 44,
+            TextureSet.SET_FLUID);
 
     public static final Werkstoff SeaweedByproducts = new Werkstoff(
             new short[] { 125, 50, 138 },
@@ -928,15 +928,15 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID3 + 12,
             TextureSet.SET_DULL);
 
-        public static final Werkstoff PotassiumChlorate = new Werkstoff(
-        new short[] { 240, 255, 255 },
-        "Potassium Chlorate",
-        subscriptNumbers("KClO3"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten(),
-        offsetID3 + 14,
-        TextureSet.SET_DULL);
+    public static final Werkstoff PotassiumChlorate = new Werkstoff(
+            new short[] { 240, 255, 255 },
+            "Potassium Chlorate",
+            subscriptNumbers("KClO3"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten(),
+            offsetID3 + 14,
+            TextureSet.SET_DULL);
 
     public static final Werkstoff DilutedAcetone = new Werkstoff(
             new short[] { 254, 254, 250 },
