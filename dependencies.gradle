@@ -2,6 +2,6 @@
 
 dependencies {
     api('com.github.GTNewHorizons:GT5-Unofficial:5.09.43.153:dev')
-    implementation('com.github.GTNewHorizons:GTplusplus:1.9.67:dev')
+    implementation('com.github.GTNewHorizons:GTplusplus:1.10.2:dev')
     implementation('com.github.GTNewHorizons:GoodGenerator:0.6.27:dev')
 }
