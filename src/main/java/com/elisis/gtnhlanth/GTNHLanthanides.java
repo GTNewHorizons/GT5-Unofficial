@@ -68,7 +68,6 @@ public class GTNHLanthanides {
         RecipeLoader.loadLanthanideRecipes();
         RecipeLoader.addRandomChemCrafting();
         BotRecipes.addGTRecipe();
-        BotRecipes.addFuels();
         // RecipeLoader.loadZylonRecipes();
         proxy.postInit(e);
         // GT_Log.out.print(FluidRegistry.getFluid("Sodium Tungstate").getName());

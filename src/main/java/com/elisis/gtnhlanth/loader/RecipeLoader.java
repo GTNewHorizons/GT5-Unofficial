@@ -240,22 +240,6 @@ public class RecipeLoader {
 
         // IODINE-END
 
-        // 2MnO2 + 2KOH + KClO3 = 2KMnO4 + H2O + KCl
-        GT_Values.RA.addBlastRecipe(
-                Materials.Pyrolusite.getDust(6),
-                GT_ModHandler.getModItem("dreamcraft", "item.PotassiumHydroxideDust", 6),
-                WerkstoffMaterialPool.PotassiumChlorate.get(OrePrefixes.dust, 5),
-                null,
-                null,
-                Materials.Water.getFluid(1000),
-                WerkstoffMaterialPool.PotassiumPermanganate.get(OrePrefixes.dust, 12),
-                Materials.RockSalt.getDust(2),
-                null,
-                null,
-                150,
-                480,
-                1200);
-
         // Mn + 2O = MnO2
         GT_Values.RA.addChemicalRecipe(
                 Materials.Manganese.getDust(1),
@@ -263,17 +247,6 @@ public class RecipeLoader {
                 Materials.Oxygen.getGas(2000),
                 null,
                 Materials.Pyrolusite.getDust(3),
-                40,
-                30);
-
-        // 6KOH + 6Cl = KClO3 + 5KCl + 3H2O
-        GT_Values.RA.addChemicalRecipe(
-                GT_ModHandler.getModItem("dreamcraft", "item.PotassiumHydroxideDust", 18),
-                GT_Utility.getIntegratedCircuit(3),
-                Materials.Chlorine.getGas(6000),
-                Materials.Water.getFluid(3000),
-                Materials.RockSalt.getDust(10),
-                WerkstoffMaterialPool.PotassiumChlorate.get(OrePrefixes.dust, 5),
                 40,
                 30);
 
@@ -1128,25 +1101,6 @@ public class RecipeLoader {
                 LanthItemList.DISSOLUTION_TANK,
                 400,
                 960);
-
-        GT_Values.RA.addMixerRecipe(
-                Materials.Nichrome.getDust(4),
-                Materials.Aluminium.getDust(2),
-                WerkstoffMaterialPool.Hafnium.get(OrePrefixes.dust, 1),
-                Materials.Tantalum.getDust(2),
-                Materials.Tungsten.getDust(5),
-                WerkstoffMaterialPool.Zirconium.get(OrePrefixes.dust, 1),
-                Materials.Titanium.getDust(1),
-                null,
-                null,
-                null,
-                null,
-                WerkstoffMaterialPool.MARM247.get(OrePrefixes.dust, 16),
-                null,
-                null,
-                null,
-                800,
-                7680);
 
         GT_Values.RA.addFluidHeaterRecipe(
                 null,
