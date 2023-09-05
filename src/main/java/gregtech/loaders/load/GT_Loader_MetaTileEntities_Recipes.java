@@ -7046,13 +7046,6 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             new Object[] { "CTC", "FMF", "CBC", 'M', ItemList.Hull_EV, 'B',
                 OrePrefixes.pipeLarge.get(Materials.StainlessSteel), 'C', OrePrefixes.circuit.get(Materials.Elite), 'F',
                 ItemList.Robot_Arm_EV, 'T', ItemList.Energy_LapotronicOrb });
-                
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Processing_Array.get(1L),
-            bitsd,
-            new Object[] { "CTC", "FMF", "CBC", 'M', ItemList.Hull_EV, 'B',
-                OrePrefixes.pipeLarge.get(Materials.StainlessSteel), 'C', OrePrefixes.circuit.get(Materials.Elite), 'F',
-                ItemList.Robot_Arm_EV, 'T', ItemList.Energy_LapotronicOrb });
 
         GT_ProcessingArrayRecipeLoader.registerDefaultGregtechMaps();
         GT_ModHandler.addCraftingRecipe(
