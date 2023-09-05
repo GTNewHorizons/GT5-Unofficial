@@ -46,6 +46,7 @@ import gregtech.api.multitileentity.base.TickableMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileMachine;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.task.tasks.ProcessingTask;
 import gregtech.api.util.GT_Utility;
 import gregtech.client.GT_SoundLoop;
 
@@ -98,9 +99,14 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
     protected FluidInventoryLogic fluidOutput;
 
     protected P processingLogic;
+    protected VoidingMode voidingMode;
 
     @SideOnly(Side.CLIENT)
     protected GT_SoundLoop activitySoundLoop;
+
+    public MultiTileBasicMachine() {
+        new ProcessingTask<>(this);
+    }
 
     @Override
     public String getTileEntityName() {
@@ -823,7 +829,7 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
     @Nonnull
     public P getProcessingLogic() {
         if (processingLogic == null) {
-            processingLogic = createProcessingLogic();
+            processingLogic = createProcessingLogic().setMachineHost(this);
         }
         return processingLogic;
     }
@@ -835,6 +841,11 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
     @Override
     public boolean isInputSeparated() {
         return false;
+    }
+
+    @Override
+    public VoidingMode getVoidMode() {
+        return voidingMode;
     }
 
 }
