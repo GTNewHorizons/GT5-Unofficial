@@ -28,12 +28,14 @@ public class ProcessingTask<T extends TaskHost & ProcessingLogicHost<P> & IMachi
         if (!isServerSide) return;
         if (!taskHost.isAllowedToWork()) return;
         P logic = taskHost.getProcessingLogic();
-        if (taskHost.hasThingsToDo() && logic.canWork() && tick % 100 == 0) {
+        if (logic.canWork() && tick % 100 == 0) {
             if (tick % 100 == 0) {
                 logic.startCheck();
             }
-        } else {
-            logic.process();
+        }
+
+        if (taskHost.hasThingsToDo()) {
+            logic.progress();
         }
     }
 

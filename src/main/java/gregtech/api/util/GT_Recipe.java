@@ -106,6 +106,8 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.IGT_RecipeMap;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
+import gregtech.api.logic.FluidInventoryLogic;
+import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
@@ -773,6 +775,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         }
 
         return true;
+    }
+
+    public boolean isRecipeInputEqual(@Nullable ItemInventoryLogic itemInput, @Nullable FluidInventoryLogic fluidInput) {
+        return false;
     }
 
     @Override
@@ -4071,6 +4077,25 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             }
 
             // And nothing has been found.
+            return NOT_FOUND;
+        }
+
+        public FindRecipeResult findRecipeWithResult(@Nullable GT_Recipe lastRecipe, long voltage,
+            @Nullable ItemInventoryLogic itemInput, @Nullable FluidInventoryLogic fluidInput) {
+            if (mRecipeList.isEmpty()) return NOT_FOUND;
+
+            if (itemInput == null) {
+                itemInput = new ItemInventoryLogic(0);
+            }
+
+            if (fluidInput == null) {
+                fluidInput = new FluidInventoryLogic(0, 0);
+            }
+
+            if (mMinimalInputItems > itemInput.getStoredItems().length) return NOT_FOUND;
+
+            if (mMinimalInputFluids > fluidInput.getStoredFluids().length) return NOT_FOUND;
+
             return NOT_FOUND;
         }
 
