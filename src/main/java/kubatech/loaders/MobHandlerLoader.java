@@ -221,16 +221,10 @@ public class MobHandlerLoader {
     @SubscribeEvent
     public void onPostMobRegistration(PostMobRegistrationEvent event) {
         if (!event.drops.isEmpty() && event.recipe.isUsableInVial) {
+            @SuppressWarnings("unchecked")
             ArrayList<MobDrop> drops = (ArrayList<MobDrop>) event.drops.clone();
-            // drops.removeIf(d -> d.chance == 0);
             if (!drops.isEmpty()) {
                 recipeMap.put(event.currentMob, new MobEECRecipe(drops, event.recipe));
-                /*
-                 * event.drops.stream()
-                 * .filter(d -> d.chance == 0)
-                 * .forEach(
-                 * d -> d.additionalInfo.add(StatCollector.translateToLocal("kubatech.mobhandler.eec_disabled")));
-                 */
             }
         }
     }
