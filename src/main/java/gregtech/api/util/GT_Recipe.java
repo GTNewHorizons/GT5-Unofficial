@@ -45,6 +45,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -4186,7 +4187,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 recipesMatching.addAll(
                     recipesForItem.stream()
                         .filter(recipe -> new RecipeInputRequirements(recipe).tryToFillItemRequirements(items))
-                        .toList());
+                        .collect(Collectors.toList()));
             }
 
             Map<Fluid, Long> fluids = fluidInput.getMapOfStoredFluids();
@@ -4195,12 +4196,12 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 recipesMatching.addAll(
                     recipesForFluid.stream()
                         .filter(recipe -> new RecipeInputRequirements(recipe).tryToFillFluidRequirements(fluids))
-                        .toList());
+                        .collect(Collectors.toList()));
             }
             recipesMatching = recipesMatching.stream()
                 .distinct()
                 .filter(recipe -> recipe.mEUt < voltage)
-                .toList();
+                .collect(Collectors.toList());
             if (recipesMatching.size() <= 0) return NOT_FOUND;
 
             return FindRecipeResult.ofSuccess(new ArrayList<>(recipesMatching));

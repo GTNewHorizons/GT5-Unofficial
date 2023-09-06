@@ -222,7 +222,7 @@ public class ItemInventoryLogic {
                 Comparator.comparing(
                     a -> a.getItem()
                         .getUnlocalizedName() + a.getMeta()))
-            .toList();
+            .collect(Collectors.toList());
         putInItemsFromMap(itemMap, sortedItems);
     }
 
