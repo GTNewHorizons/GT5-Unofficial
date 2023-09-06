@@ -1,22 +1,17 @@
 package gregtech.api.logic;
 
-import static net.minecraftforge.oredict.OreDictionary.getOreIDs;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -31,6 +26,7 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.item.ItemHolder;
 
 /**
  * Generic Item logic for MuTEs.
@@ -49,6 +45,8 @@ public class ItemInventoryLogic {
     protected UUID connectedFluidInventory;
     protected int tier;
     protected boolean isUpgradeInventory;
+    protected Map<ItemHolder, Long> cachedItemMap;
+    protected boolean inRecipeCheck;
 
     public ItemInventoryLogic(int numberOfSlots) {
         this(numberOfSlots, 0);
@@ -193,14 +191,13 @@ public class ItemInventoryLogic {
         return inventory.extractItem(slot, amount, false);
     }
 
-    public boolean subtractItemAmount(@Nonnull ItemStack amountToSubtract, boolean simulate) {
-        ItemHolder itemToSubtractFrom = new ItemHolder(amountToSubtract);
-        Map<ItemHolder, Integer> itemMap = getMapOfStoredItems();
-        if (!itemMap.containsKey(itemToSubtractFrom)) {
+    public boolean subtractItemAmount(@Nonnull ItemHolder item, long amount, boolean simulate) {
+        Map<ItemHolder, Long> itemMap = inRecipeCheck ? cachedItemMap : getMapOfStoredItems();
+        if (!itemMap.containsKey(item)) {
             return false;
         }
 
-        if (itemMap.get(itemToSubtractFrom) < amountToSubtract.stackSize) {
+        if (itemMap.get(item) < amount) {
             return false;
         }
 
@@ -208,8 +205,7 @@ public class ItemInventoryLogic {
             return true;
         }
 
-        itemMap.put(itemToSubtractFrom, itemMap.get(itemToSubtractFrom) - amountToSubtract.stackSize);
-        putInItemsFromMap(itemMap, null);
+        itemMap.put(item, itemMap.get(item) - amount);
         return true;
     }
 
@@ -219,21 +215,14 @@ public class ItemInventoryLogic {
     }
 
     public void sort() {
-        Map<ItemHolder, Integer> itemMap = new HashMap<>();
-        List<ItemHolder> sortedItems = new ArrayList<>();
-
-        for (int i = 0; i < inventory.getSlots(); i++) {
-            ItemStack item = getItemInSlot(i);
-            if (item == null) continue;
-            ItemHolder itemHolder = new ItemHolder(item);
-            if (!sortedItems.contains(itemHolder)) sortedItems.add(itemHolder);
-            itemMap.put(itemHolder, itemMap.getOrDefault(itemHolder, 0) + item.stackSize);
-            inventory.setStackInSlot(i, null);
-        }
-        sortedItems.sort(
-            Comparator.comparing(
-                a -> a.getItem()
-                    .getUnlocalizedName() + a.getMeta()));
+        Map<ItemHolder, Long> itemMap = getMapOfStoredItems();
+        List<ItemHolder> sortedItems = itemMap.keySet()
+            .stream()
+            .sorted(
+                Comparator.comparing(
+                    a -> a.getItem()
+                        .getUnlocalizedName() + a.getMeta()))
+            .toList();
         putInItemsFromMap(itemMap, sortedItems);
     }
 
@@ -272,77 +261,47 @@ public class ItemInventoryLogic {
         return scrollable;
     }
 
+    public void startRecipeCheck() {
+        inRecipeCheck = true;
+        cachedItemMap = getMapOfStoredItems();
+    }
+
+    public void stopRecipeCheck() {
+        inRecipeCheck = false;
+        putInItemsFromMap(cachedItemMap, null);
+        cachedItemMap = null;
+    }
+
     @Nonnull
-    private Map<ItemHolder, Integer> getMapOfStoredItems() {
-        Map<ItemHolder, Integer> items = new HashMap<>();
+    public Map<ItemHolder, Long> getMapOfStoredItems() {
+        Map<ItemHolder, Long> items = new HashMap<>();
         for (int i = 0; i < inventory.getSlots(); i++) {
-            ItemStack item = getItemInSlot(i);
+            ItemStack item = extractItem(i, Integer.MAX_VALUE);
             if (item == null) continue;
             ItemHolder itemHolder = new ItemHolder(item);
-            items.put(itemHolder, items.getOrDefault(itemHolder, 0) + item.stackSize);
-            inventory.setStackInSlot(i, null);
+            items.put(itemHolder, items.getOrDefault(itemHolder, 0L) + item.stackSize);
         }
         return items;
     }
 
-    private void putInItemsFromMap(@Nonnull Map<ItemHolder, Integer> itemMap, @Nullable List<ItemHolder> sortedList) {
-        int slot = 0;
+    protected void putInItemsFromMap(@Nonnull Map<ItemHolder, Long> itemMap, @Nullable List<ItemHolder> sortedList) {
         for (ItemHolder itemHolder : (sortedList == null ? itemMap.keySet() : sortedList)) {
-            int itemAmount = itemMap.get(itemHolder);
+            long itemAmount = itemMap.get(itemHolder);
             ItemStack item = new ItemStack(itemHolder.getItem(), 0, itemHolder.getMeta());
             item.setTagCompound(itemHolder.getNBT());
             while (itemAmount > 0) {
-                item.stackSize = Math.min(item.getMaxStackSize(), itemAmount);
+                item.stackSize = (int) Math.min(item.getMaxStackSize(), itemAmount);
                 itemAmount -= item.stackSize;
-                inventory.setStackInSlot(slot, item);
-                slot++;
+                insertItem(item);
             }
         }
     }
 
-    private class ItemHolder {
+    public long calculateAmountOfTimesItemCanBeTaken(ItemHolder item, long amount) {
+        return getMapOfStoredItems().getOrDefault(item, 0L) / amount;
+    }
 
-        private final Item item;
-        private final int meta;
-        private final NBTTagCompound tag;
-        private final int[] oreIDs;
-
-        public ItemHolder(ItemStack item) {
-            this.item = item.getItem();
-            this.meta = Items.feather.getDamage(item);
-            this.tag = item.getTagCompound();
-            this.oreIDs = getOreIDs(item);
-        }
-
-        public Item getItem() {
-            return item;
-        }
-
-        public int getMeta() {
-            return meta;
-        }
-
-        public NBTTagCompound getNBT() {
-            return tag;
-        }
-
-        public int[] getOreDictTagIDs() {
-            return oreIDs;
-        }
-
-        @Override
-        public boolean equals(Object other) {
-            if (!(other instanceof ItemHolder otherIH)) return false;
-            if (Arrays.stream(oreIDs)
-                .anyMatch(id -> {
-                    for (int i = 0; i < otherIH.getOreDictTagIDs().length; i++) {
-                        if (id == otherIH.getOreDictTagIDs()[i]) return true;
-                    }
-                    return false;
-                })) {
-                return true;
-            }
-            return item == otherIH.getItem() && meta == otherIH.getMeta() && tag.equals(otherIH.getNBT());
-        }
+    public Set<ItemHolder> getSetOfStoredItems() {
+        return getMapOfStoredItems().keySet();
     }
 }
