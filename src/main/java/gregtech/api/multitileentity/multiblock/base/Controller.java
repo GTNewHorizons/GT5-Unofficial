@@ -886,47 +886,6 @@ public abstract class Controller<T extends Controller<T, P>, P extends Processin
 
     // #endregion Energy
 
-    /*
-     * Helper Methods For Recipe checking
-     */
-
-    protected void setItemOutputs(String inventory, ItemStack... itemOutputs) {
-
-    }
-
-    @Override
-    protected void setItemOutputs(ItemStack... outputs) {
-        super.setItemOutputs(outputs);
-
-    }
-
-    @Override
-    protected void outputItems(@Nullable UUID inventoryID) {
-        if (itemsToOutput == null) return;
-        ItemInventoryLogic inventory = controllerItemOutput.getInventoryLogic(inventoryID);
-        for (int i = 0; i < itemsToOutput.length; i++) {
-            inventory.insertItem(itemsToOutput[i]);
-        }
-        itemsToOutput = null;
-    }
-
-    protected void setFluidOutputs(String tank, FluidStack... fluidOutputs) {}
-
-    @Override
-    protected void setFluidOutputs(FluidStack... outputs) {
-        super.setFluidOutputs(outputs);
-    }
-
-    @Override
-    protected void outputFluids(@Nullable UUID inventoryID) {
-        if (fluidsToOutput == null) return;
-        FluidInventoryLogic inventory = controllerFluidOutput.getInventoryLogic(inventoryID);
-        for (int i = 0; i < fluidsToOutput.length; i++) {
-            inventory.fill(fluidsToOutput[i]);
-        }
-        fluidsToOutput = null;
-    }
-
     @Override
     protected void updateSlots() {
         controllerItemInput.getAllInventoryLogics()
@@ -937,11 +896,6 @@ public abstract class Controller<T extends Controller<T, P>, P extends Processin
             .update();
         controllerFluidOutput.getAllInventoryLogics()
             .update();
-    }
-
-    @Override
-    protected boolean checkRecipe() {
-        return false;
     }
 
     /*
@@ -1249,8 +1203,9 @@ public abstract class Controller<T extends Controller<T, P>, P extends Processin
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("progress", progressTime);
-        tag.setInteger("maxProgress", maxProgressTime);
+        P processing = getProcessingLogic();
+        tag.setInteger("progress", processing.getProgress());
+        tag.setInteger("maxProgress", processing.getDuration());
         tag.setBoolean("structureOkay", structureOkay);
     }
 

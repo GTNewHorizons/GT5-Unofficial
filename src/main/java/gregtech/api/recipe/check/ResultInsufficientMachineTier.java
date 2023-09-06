@@ -1,7 +1,11 @@
 package gregtech.api.recipe.check;
 
+import java.util.Objects;
+
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
+
+import javax.annotation.Nonnull;
 
 import gregtech.api.util.GT_Utility;
 
@@ -14,6 +18,7 @@ public class ResultInsufficientMachineTier implements CheckRecipeResult {
     }
 
     @Override
+    @Nonnull
     public String getID() {
         return "insufficient_machine_tier";
     }
@@ -24,23 +29,25 @@ public class ResultInsufficientMachineTier implements CheckRecipeResult {
     }
 
     @Override
+    @Nonnull
     public String getDisplayString() {
-        return StatCollector
-            .translateToLocalFormatted("GT5U.gui.text.insufficient_machine_tier", GT_Utility.formatNumbers(required));
+        return Objects.requireNonNull(StatCollector
+            .translateToLocalFormatted("GT5U.gui.text.insufficient_machine_tier", GT_Utility.formatNumbers(required)));
     }
 
     @Override
+    @Nonnull
     public CheckRecipeResult newInstance() {
         return new ResultInsufficientMachineTier(0);
     }
 
     @Override
-    public void encode(PacketBuffer buffer) {
+    public void encode(@Nonnull PacketBuffer buffer) {
         buffer.writeVarIntToBuffer(required);
     }
 
     @Override
-    public void decode(PacketBuffer buffer) {
+    public void decode(@Nonnull PacketBuffer buffer) {
         required = buffer.readVarIntFromBuffer();
     }
 

@@ -2,6 +2,8 @@ package gregtech.api.logic;
 
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.nbt.NBTTagCompound;
 
 import gregtech.api.enums.GT_Values.NBT;
@@ -25,31 +27,37 @@ public class PowerLogic implements IGlobalWirelessEnergy {
 
     public PowerLogic() {}
 
+    @Nonnull
     public PowerLogic setMaxVoltage(long voltage) {
         this.voltage = voltage;
         return this;
     }
 
+    @Nonnull
     public PowerLogic setEnergyCapacity(long energyCapacity) {
         this.energyCapacity = energyCapacity;
         return this;
     }
 
+    @Nonnull
     public PowerLogic setAmperage(long amperage) {
         this.amperage = amperage;
         return this;
     }
 
+    @Nonnull
     public PowerLogic setType(int type) {
         this.type = type;
         return this;
     }
 
+    @Nonnull
     public PowerLogic setCanUseLaser(boolean canUse) {
         canUseLaser = canUse;
         return this;
     }
 
+    @Nonnull
     public PowerLogic setCanUseWireless(boolean canUse, UUID owner) {
         canUseWireless = canUse;
         this.owner = owner;

@@ -372,30 +372,6 @@ public class AdvChemicalProcessor
     }
 
     @Override
-    protected FluidStack[] getInputFluids(int index) {
-        if (index < 0 || index >= MAX_PROCESSES) {
-            return null;
-        }
-        if (separateInputs) {
-            return null;
-        } else {
-            return super.getInputFluids(index);
-        }
-    }
-
-    @Override
-    protected ItemStack[] getInputItems(int index) {
-        if (index < 0 || index >= MAX_PROCESSES) {
-            return null;
-        }
-        if (separateInputs) {
-            return null;
-        } else {
-            return super.getInputItems(index);
-        }
-    }
-
-    @Override
     protected MultiChildWidget createMainPage(IWidgetBuilder<?> builder) {
         MultiChildWidget child = super.createMainPage(builder);
         for (int i = 0; i < MAX_PROCESSES; i++) {

@@ -70,16 +70,11 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
     protected boolean active = false;
     protected long storedEnergy = 0;
     protected long voltage = 0;
-    protected long amperage = 2;
+    protected long amperage = 1;
     protected long eut = 0;
     protected int tier = 0;
-
-    protected int maxProgressTime = 0;
-    protected int progressTime = 0;
     protected long burnTime = 0;
     protected long totalBurnTime = 0;
-    protected FluidStack[] fluidsToOutput = GT_Values.emptyFluidStack;
-    protected ItemStack[] itemsToOutput = GT_Values.emptyItemStackArray;
 
     protected boolean outputInventoryChanged = false;
     protected boolean powerShutDown = false;
@@ -99,7 +94,9 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
     protected FluidInventoryLogic fluidOutput;
 
     protected P processingLogic;
-    protected VoidingMode voidingMode;
+    @Nonnull
+    protected VoidingMode voidingMode = VoidingMode.VOID_NONE;
+    protected boolean processingUpdate = false;
 
     @SideOnly(Side.CLIENT)
     protected GT_SoundLoop activitySoundLoop;
@@ -122,10 +119,6 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
 
         if (active) {
             nbt.setBoolean(NBT.ACTIVE, active);
-        }
-
-        if (itemsToOutput != null) {
-            saveItemsToOutput(nbt);
         }
 
         saveItemLogic(nbt);
@@ -153,19 +146,6 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
         nbt.setTag(NBT.TANK_OUT, fluidOutputNBT);
     }
 
-    protected void saveItemsToOutput(NBTTagCompound aNBT) {
-        final NBTTagList nbtList = new NBTTagList();
-        for (int slot = 0; slot < itemsToOutput.length; slot++) {
-            final ItemStack itemStack = itemsToOutput[slot];
-            if (itemStack != null) {
-                final NBTTagCompound tag = new NBTTagCompound();
-                tag.setByte("s", (byte) slot);
-                itemStack.writeToNBT(tag);
-                nbtList.appendTag(tag);
-            }
-        }
-        aNBT.setTag(NBT.ITEM_OUT, nbtList);
-    }
 
     @Override
     public void readMultiTileNBT(NBTTagCompound nbt) {
@@ -178,13 +158,6 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
             active = nbt.getBoolean(NBT.ACTIVE);
         }
 
-        fluidsToOutput = new FluidStack[getFluidOutputCount()];
-
-        for (int i = 0; i < fluidsToOutput.length; i++) {
-            fluidsToOutput[i] = FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag(NBT.FLUID_OUT + "." + i));
-        }
-
-        loadItemsToOutput(nbt);
         loadItemLogic(nbt);
         loadFluidLogic(nbt);
 
@@ -212,16 +185,6 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
         fluidOutput = new FluidInventoryLogic(16, 10000, tier);
         fluidInput.loadFromNBT(nbt.getCompoundTag(NBT.TANK_IN));
         fluidOutput.loadFromNBT(nbt.getCompoundTag(NBT.TANK_OUT));
-    }
-
-    protected void loadItemsToOutput(NBTTagCompound aNBT) {
-        final NBTTagList tList = aNBT.getTagList(NBT.ITEM_OUT, 10);
-        itemsToOutput = new ItemStack[tList.tagCount()];
-        for (int i = 0; i < tList.tagCount(); i++) {
-            final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
-            final int tSlot = tNBT.getByte("s");
-            if (tSlot >= 0 && tSlot < itemsToOutput.length) itemsToOutput[tSlot] = GT_Utility.loadItem(tNBT);
-        }
     }
 
     @Override
@@ -394,20 +357,6 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
             consumeEnergy();
         }
 
-        if (maxProgressTime > 0 && ++progressTime >= maxProgressTime) {
-            progressTime = 0;
-            maxProgressTime = 0;
-            outputItems(null);
-            outputFluids(null);
-            if (isAllowedToWork()) {
-                if (!checkRecipe()) {
-                    setActive(false);
-                    issueClientUpdate();
-                }
-            }
-            updateSlots();
-        }
-
         emitEnergy();
     }
 
@@ -433,7 +382,9 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
             return;
         }
 
-        if (!logic.removeEnergyUnsafe(eut)) {
+        P processing = getProcessingLogic();
+
+        if (!logic.removeEnergyUnsafe(processing.getCalculatedEut())) {
             stopMachine(true);
         }
     }
@@ -493,35 +444,22 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
         return fluidInput.getStoredFluids();
     }
 
-    protected void outputItems(@Nullable UUID inventoryID) {
-        if (itemsToOutput == null) return;
-        for (int i = 0; i < itemsToOutput.length; i++) {
-            itemOutput.insertItem(itemsToOutput[i]);
-        }
-        itemsToOutput = null;
-    }
-
-    protected void outputFluids(@Nullable UUID inventoryID) {
-        if (fluidsToOutput == null) return;
-        for (int i = 0; i < fluidsToOutput.length; i++) {
-            fluidOutput.fill(fluidsToOutput[i]);
-        }
-        fluidsToOutput = null;
-    }
-
     @Override
     public int getProgress() {
-        return progressTime;
+        P processing = getProcessingLogic();
+        return processing.getProgress();
     }
 
     @Override
     public int getMaxProgress() {
-        return maxProgressTime;
+        P processing = getProcessingLogic();
+        return processing.getDuration();
     }
 
     @Override
-    public boolean increaseProgress(int aProgressAmountInTicks) {
-        progressTime += aProgressAmountInTicks;
+    public boolean increaseProgress(int progressAmount) {
+        P processing = getProcessingLogic();
+        processing.increaseProgress(progressAmount);
         return true;
     }
 
@@ -693,6 +631,9 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
     }
 
     protected void addProgressStringToScanner(EntityPlayer player, int logLevel, ArrayList<String> list) {
+        P processing = getProcessingLogic();
+        int progressTime = processing.getProgress();
+        int maxProgressTime = processing.getDuration();
         list.add(
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
@@ -706,7 +647,6 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
     }
 
     protected void stopMachine(boolean powerShutDown) {
-        progressTime = 0;
         setActive(false);
         disableWorking();
         if (powerShutDown) {
@@ -731,14 +671,6 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
         }
 
         this.eut = eut;
-    }
-
-    protected void setDuration(int duration) {
-        if (duration < 0) {
-            duration = -duration;
-        }
-
-        maxProgressTime = duration;
     }
 
     @Override
@@ -769,14 +701,6 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
 
     protected boolean hasFluidOutput() {
         return true;
-    }
-
-    protected void setItemOutputs(ItemStack... outputs) {
-        itemsToOutput = outputs;
-    }
-
-    protected void setFluidOutputs(FluidStack... outputs) {
-        fluidsToOutput = outputs;
     }
 
     @Override
@@ -848,4 +772,14 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
         return voidingMode;
     }
 
+    @Override
+    public boolean needsUpdate() {
+        return processingUpdate;
+    }
+
+    @Override
+    public void setProcessingUpdate(boolean update) {
+        processingUpdate = update;
+    }
+    
 }

@@ -1,7 +1,11 @@
 package gregtech.api.recipe.check;
 
+import java.util.Objects;
+
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
+
+import javax.annotation.Nonnull;
 
 import gregtech.api.util.GT_Utility;
 
@@ -14,6 +18,7 @@ public class ResultInsufficientPower implements CheckRecipeResult {
     }
 
     @Override
+    @Nonnull
     public String getID() {
         return "insufficient_power";
     }
@@ -24,25 +29,27 @@ public class ResultInsufficientPower implements CheckRecipeResult {
     }
 
     @Override
+    @Nonnull
     public String getDisplayString() {
-        return StatCollector.translateToLocalFormatted(
+        return Objects.requireNonNull(StatCollector.translateToLocalFormatted(
             "GT5U.gui.text.insufficient_power",
             GT_Utility.formatNumbers(required),
-            GT_Utility.getColoredTierNameFromVoltage(required));
+            GT_Utility.getColoredTierNameFromVoltage(required)));
     }
 
     @Override
+    @Nonnull
     public CheckRecipeResult newInstance() {
         return new ResultInsufficientPower(0);
     }
 
     @Override
-    public void encode(PacketBuffer buffer) {
+    public void encode(@Nonnull PacketBuffer buffer) {
         buffer.writeLong(required);
     }
 
     @Override
-    public void decode(PacketBuffer buffer) {
+    public void decode(@Nonnull PacketBuffer buffer) {
         required = buffer.readLong();
     }
 

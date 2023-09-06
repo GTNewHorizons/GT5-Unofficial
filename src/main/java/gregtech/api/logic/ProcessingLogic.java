@@ -376,6 +376,7 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
     /**
      * Applies the recipe and calculated parameters
      */
+    @Nonnull
     private CheckRecipeResult applyRecipe(@Nonnull GT_Recipe recipe, GT_ParallelHelper helper,
         GT_OverclockCalculator calculator, CheckRecipeResult result) {
         if (!helper.getResult()
@@ -573,7 +574,7 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
     }
 
     public boolean canWork() {
-        return !hasWork;
+        return !hasWork && machineHost.isAllowedToWork();
     }
 
     /**

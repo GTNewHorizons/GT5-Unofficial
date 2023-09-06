@@ -2,6 +2,10 @@ package gregtech.api.recipe.check;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.Objects;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
@@ -18,20 +22,24 @@ public class RecipeValidator implements Predicate<GT_Recipe> {
     private GT_ParallelHelper lastParallelHelper;
     private GT_OverclockCalculator lastOverclockCalculator;
     private boolean wasExecutedAtLeastOnce = false;
+    @Nonnull
     private final Function<GT_Recipe, CheckRecipeResult> recipeValidator;
+    @Nonnull
     private final Function<GT_Recipe, GT_ParallelHelper> parallelHelperFactory;
+    @Nonnull
     private final Function<GT_Recipe, GT_OverclockCalculator> overclockCalculatorFactory;
 
-    public RecipeValidator(Function<GT_Recipe, CheckRecipeResult> recipeValidator,
-        Function<GT_Recipe, GT_ParallelHelper> parallelHelperFactory,
-        Function<GT_Recipe, GT_OverclockCalculator> overclockCalculatorFactory) {
+    public RecipeValidator(@Nonnull Function<GT_Recipe, CheckRecipeResult> recipeValidator,
+        @Nonnull Function<GT_Recipe, GT_ParallelHelper> parallelHelperFactory,
+        @Nonnull Function<GT_Recipe, GT_OverclockCalculator> overclockCalculatorFactory) {
         this.recipeValidator = recipeValidator;
         this.parallelHelperFactory = parallelHelperFactory;
         this.overclockCalculatorFactory = overclockCalculatorFactory;
     }
 
     @Override
-    public boolean test(GT_Recipe recipe) {
+    public boolean test(@Nullable GT_Recipe recipe) {
+        if (recipe == null) return false;
         wasExecutedAtLeastOnce = true;
         CheckRecipeResult checkRecipeResult = checkRecipe(recipe);
         if (firstCheckResult == null) {
@@ -40,11 +48,12 @@ public class RecipeValidator implements Predicate<GT_Recipe> {
         return checkRecipeResult.wasSuccessful();
     }
 
-    private CheckRecipeResult checkRecipe(GT_Recipe recipe) {
-        lastCheckResult = recipeValidator.apply(recipe);
+    @Nonnull
+    private CheckRecipeResult checkRecipe(@Nonnull GT_Recipe recipe) {
+        lastCheckResult = Objects.requireNonNull(recipeValidator.apply(recipe));
 
         if (!lastCheckResult.wasSuccessful()) {
-            return lastCheckResult;
+            return Objects.requireNonNull(lastCheckResult);
         }
 
         lastParallelHelper = parallelHelperFactory.apply(recipe);
@@ -55,26 +64,30 @@ public class RecipeValidator implements Predicate<GT_Recipe> {
         return lastParallelHelper.getResult();
     }
 
-    public Boolean isExecutedAtLeastOnce() {
+    public boolean isExecutedAtLeastOnce() {
         return wasExecutedAtLeastOnce;
     }
 
     /**
      * Gets first check result in case if nothing matching recipe found.
      */
+    @Nonnull
     public CheckRecipeResult getFirstCheckResult() {
-        return firstCheckResult;
+        return Objects.requireNonNull(firstCheckResult);
     }
 
+    @Nonnull
     public CheckRecipeResult getLastCheckResult() {
-        return lastCheckResult;
+        return Objects.requireNonNull(lastCheckResult);
     }
 
+    @Nonnull
     public GT_ParallelHelper getLastParallelHelper() {
-        return lastParallelHelper;
+        return Objects.requireNonNull(lastParallelHelper);
     }
 
+    @Nonnull
     public GT_OverclockCalculator getLastOverclockCalculator() {
-        return lastOverclockCalculator;
+        return Objects.requireNonNull(lastOverclockCalculator);
     }
 }

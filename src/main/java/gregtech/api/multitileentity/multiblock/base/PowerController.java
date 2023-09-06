@@ -4,6 +4,8 @@ import static gregtech.api.enums.TickTime.MINUTE;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,6 +30,7 @@ public abstract class PowerController<T extends PowerController<T, P>, P extends
         power = new PowerLogic().setType(PowerLogic.RECEIVER);
     }
 
+    @Nonnull
     protected PowerLogic power;
 
     @Override
@@ -43,7 +46,8 @@ public abstract class PowerController<T extends PowerController<T, P>, P extends
     }
 
     @Override
-    public PowerLogic getPowerLogic(ForgeDirection side) {
+    @Nonnull
+    public PowerLogic getPowerLogic(@Nonnull ForgeDirection side) {
         return power;
     }
 
@@ -64,7 +68,7 @@ public abstract class PowerController<T extends PowerController<T, P>, P extends
     }
 
     protected void updatePowerLogic() {
-        power.setEnergyCapacity(GT_Values.V[tier] * 2 * MINUTE);
+        power.setEnergyCapacity(GT_Values.V[tier] * amperage * 2 * MINUTE);
         power.setAmperage(amperage);
         power.setMaxVoltage(GT_Values.V[tier]);
         power.setCanUseLaser(canUseLaser);

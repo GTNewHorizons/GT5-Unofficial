@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -27,8 +29,6 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
 
     protected int maxComplexParallels = 0;
     protected int currentComplexParallels = 0;
-    protected int[] maxProgressTimes = new int[0];
-    protected int[] progressTimes = new int[0];
 
     public ComplexParallelController() {
         isSimpleMachine = false;
@@ -39,47 +39,15 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
             if (maxComplexParallels != 0 && stopMachine) {
                 stopMachine(false);
             }
-            maxProgressTimes = new int[parallel];
-            progressTimes = new int[parallel];
         }
         maxComplexParallels = parallel;
+        setProcessingUpdate(true);
     }
 
-    @Override
-    public boolean hasThingsToDo() {
-        return IntStream.of(maxProgressTimes)
-            .sum() > 0;
-    }
 
     @Override
     protected void stopMachine(boolean powerShutDown) {
         super.stopMachine(powerShutDown);
-        Arrays.fill(maxProgressTimes, 0);
-    }
-
-    protected void setDuration(int index, int duration) {
-        if (duration < 0) {
-            duration = -duration;
-        }
-        if (index >= 0 && index < maxComplexParallels) {
-            maxProgressTimes[index] = duration;
-        }
-    }
-
-    protected ItemStack[] getInputItems(int index) {
-        return getInputItems();
-    }
-
-    protected FluidStack[] getInputFluids(int index) {
-        return getInputFluids();
-    }
-
-    protected boolean isVoidProtectionEnabledForItem(int index) {
-        return protectsExcessItem();
-    }
-
-    protected boolean isVoidProtectionEnabledForFluid(int index) {
-        return protectsExcessFluid();
     }
 
     protected boolean hasPerfectOverclock() {
@@ -93,20 +61,21 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
 
     @Override
     protected void addProgressStringToScanner(EntityPlayer player, int logLevel, ArrayList<String> list) {
+        P processing = getProcessingLogic();
         for (int i = 0; i < maxComplexParallels; i++) {
             list.add(
                 StatCollector.translateToLocal("GT5U.multiblock.Progress") + " "
                     + (i + 1)
                     + ": "
                     + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(progressTimes[i] > 20 ? progressTimes[i] / 20 : progressTimes[i])
+                    + GT_Utility.formatNumbers(processing.getProgress(i) > 20 ? processing.getProgress(i) / 20 : processing.getProgress(i))
                     + EnumChatFormatting.RESET
-                    + (progressTimes[i] > 20 ? " s / " : " ticks / ")
+                    + (processing.getProgress(i) > 20 ? " s / " : " ticks / ")
                     + EnumChatFormatting.YELLOW
                     + GT_Utility
-                        .formatNumbers(maxProgressTimes[i] > 20 ? maxProgressTimes[i] / 20 : maxProgressTimes[i])
+                        .formatNumbers(processing.getDuration(i) > 20 ? processing.getDuration(i) / 20 : processing.getDuration(i))
                     + EnumChatFormatting.RESET
-                    + (maxProgressTimes[i] > 20 ? " s" : " ticks"));
+                    + (processing.getDuration(i) > 20 ? " s" : " ticks"));
         }
     }
 
@@ -114,10 +83,11 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        P processing = getProcessingLogic();
         tag.setInteger("maxComplexParallels", maxComplexParallels);
         for (int i = 0; i < maxComplexParallels; i++) {
-            tag.setInteger("maxProgress" + i, maxProgressTimes[i]);
-            tag.setInteger("progress" + i, progressTimes[i]);
+            tag.setInteger("maxProgress" + i, processing.getDuration(i));
+            tag.setInteger("progress" + i, processing.getProgress(i));
         }
     }
 
@@ -136,5 +106,17 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
                     + GT_Waila
                         .getMachineProgressString(maxProgress > 0 && maxProgress >= progress, maxProgress, progress));
         }
+    }
+
+    @Override
+    public void setProcessingLogicPower(P processingLogic) {
+        processingLogic.setAmperageOC(true);
+        processingLogic.setAvailableAmperage(getPowerLogic().getAmperage() / maxComplexParallels);
+        processingLogic.setAvailableVoltage(getPowerLogic().getVoltage() / maxComplexParallels);
+    }
+
+    @Override
+    public void updateProcessingLogic(P processingLogic) {
+        processingLogic.setMaxComplexParallel(maxComplexParallels);
     }
 }
