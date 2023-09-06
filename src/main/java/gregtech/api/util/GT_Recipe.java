@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -112,7 +113,10 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.check.FindRecipeResult;
+import gregtech.api.util.GT_RecipeMapUtil.GT_RecipeTemplate;
 import gregtech.api.util.extensions.ArrayExt;
+import gregtech.api.util.item.ItemHolder;
+import gregtech.api.util.recipe.RecipeInputRequirements;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.items.GT_FluidDisplayItem;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
@@ -777,8 +781,58 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         return true;
     }
 
-    public boolean isRecipeInputEqual(@Nullable ItemInventoryLogic itemInput, @Nullable FluidInventoryLogic fluidInput) {
-        return false;
+    public boolean isRecipePossible(@Nullable ItemInventoryLogic itemInput, @Nullable FluidInventoryLogic fluidInput) {
+        return getAmountOfRecipesDone(itemInput, fluidInput, 1, true) > 0;
+    }
+
+    public long getAmountOfRecipesDone(@Nullable ItemInventoryLogic itemInput, @Nullable FluidInventoryLogic fluidInput,
+        long maxParallel, boolean simulate) {
+        if (itemInput == null) {
+            itemInput = new ItemInventoryLogic(0);
+        }
+
+        if (fluidInput == null) {
+            fluidInput = new FluidInventoryLogic(0, 0);
+        }
+
+        itemInput.startRecipeCheck();
+        Map<ItemHolder, Long> recipeItems = getItemInputsAsItemMap();
+        for (Entry<ItemHolder, Long> entry : recipeItems.entrySet()) {
+            maxParallel = Math
+                .min(maxParallel, itemInput.calculateAmountOfTimesItemCanBeTaken(entry.getKey(), entry.getValue()));
+        }
+
+        for (FluidStack fluid : mFluidInputs) {
+            if (fluid == null) continue;
+            maxParallel = Math
+                .min(maxParallel, fluidInput.calculateAmountOfTimesFluidCanBeTaken(fluid.getFluid(), fluid.amount));
+        }
+
+        if (simulate) {
+            itemInput.stopRecipeCheck();
+            return maxParallel;
+        }
+
+        for (Entry<ItemHolder, Long> entry : recipeItems.entrySet()) {
+            itemInput.subtractItemAmount(entry.getKey(), entry.getValue() * maxParallel, false);
+        }
+
+        for (FluidStack fluid : mFluidInputs) {
+            if (fluid == null) continue;
+            fluidInput.drain(fluid.getFluid(), fluid.amount * maxParallel, false);
+        }
+
+        return maxParallel;
+    }
+
+    private Map<ItemHolder, Long> getItemInputsAsItemMap() {
+        Map<ItemHolder, Long> items = new HashMap<>();
+        for (ItemStack item : mInputs) {
+            if (item == null) continue;
+            ItemHolder itemHolder = new ItemHolder(item);
+            items.put(itemHolder, items.getOrDefault(itemHolder, 0L) + item.stackSize);
+        }
+        return items;
     }
 
     @Override
@@ -910,6 +964,25 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
     public GT_Recipe setEUt(int aEUt) {
         this.mEUt = aEUt;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        if (!(other instanceof GT_Recipe recipe)) return false;
+        for (int i = 0; i < Math.min(mInputs.length, recipe.mInputs.length); i++) {
+            if (mInputs[i] == null && recipe.mInputs[i] == null) continue;
+            if (mInputs[i] == null || recipe.mInputs[i] == null) return false;
+            ItemHolder currentIH = new ItemHolder(mInputs[i]);
+            ItemHolder otherIH = new ItemHolder(recipe.mInputs[i]);
+            if (!currentIH.equals(otherIH)) return false;
+        }
+        for (int i = 0; i < Math.min(mFluidInputs.length, recipe.mFluidInputs.length); i++) {
+            if (mFluidInputs[i] == null && recipe.mFluidInputs[i] == null) continue;
+            if (mFluidInputs[i] == null || recipe.mFluidInputs[i] == null) return false;
+            if (!FluidStack.areFluidStackTagsEqual(mFluidInputs[i], recipe.mFluidInputs[i])) return false;
+        }
+        return mDuration == recipe.mDuration && mEUt == recipe.mEUt && mSpecialValue == recipe.mSpecialValue;
     }
 
     public static class GT_Recipe_AssemblyLine {
@@ -3070,7 +3143,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         /**
          * HashMap of Recipes based on their Items
          */
-        public final Map<GT_ItemStack, Collection<GT_Recipe>> mRecipeItemMap = new /* Concurrent */ HashMap<>();
+        public final Map<ItemHolder, Collection<GT_Recipe>> mRecipeItemMap = new /* Concurrent */ HashMap<>();
         /**
          * HashMap of Recipes based on their Fluids
          */
@@ -4080,6 +4153,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return NOT_FOUND;
         }
 
+        @Nonnull
         public FindRecipeResult findRecipeWithResult(@Nullable GT_Recipe lastRecipe, long voltage,
             @Nullable ItemInventoryLogic itemInput, @Nullable FluidInventoryLogic fluidInput) {
             if (mRecipeList.isEmpty()) return NOT_FOUND;
@@ -4092,16 +4166,49 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 fluidInput = new FluidInventoryLogic(0, 0);
             }
 
-            if (mMinimalInputItems > itemInput.getStoredItems().length) return NOT_FOUND;
+            if (mMinimalInputItems > itemInput.getStoredItems().length) {
+                return NOT_FOUND;
+            }
 
-            if (mMinimalInputFluids > fluidInput.getStoredFluids().length) return NOT_FOUND;
+            if (mMinimalInputFluids > fluidInput.getStoredFluids().length) {
+                return NOT_FOUND;
+            }
 
-            return NOT_FOUND;
+            if (lastRecipe != null && lastRecipe.isRecipePossible(itemInput, fluidInput)) {
+                return FindRecipeResult.ofSuccess(lastRecipe);
+            }
+
+            itemInput.startRecipeCheck();
+            Map<ItemHolder, Long> items = itemInput.getMapOfStoredItems();
+            Collection<GT_Recipe> recipesMatching = new ArrayList<>();
+            for (ItemHolder item : items.keySet()) {
+                Collection<GT_Recipe> recipesForItem = mRecipeItemMap.get(item);
+                recipesMatching.addAll(
+                    recipesForItem.stream()
+                        .filter(recipe -> new RecipeInputRequirements(recipe).tryToFillItemRequirements(items))
+                        .toList());
+            }
+
+            Map<Fluid, Long> fluids = fluidInput.getMapOfStoredFluids();
+            for (Fluid fluid : fluids.keySet()) {
+                Collection<GT_Recipe> recipesForFluid = mRecipeFluidMap.get(fluid.getName());
+                recipesMatching.addAll(
+                    recipesForFluid.stream()
+                        .filter(recipe -> new RecipeInputRequirements(recipe).tryToFillFluidRequirements(fluids))
+                        .toList());
+            }
+            recipesMatching = recipesMatching.stream()
+                .distinct()
+                .filter(recipe -> recipe.mEUt < voltage)
+                .toList();
+            if (recipesMatching.size() <= 0) return NOT_FOUND;
+
+            return FindRecipeResult.ofSuccess(new ArrayList<>(recipesMatching));
         }
 
         protected GT_Recipe addToItemMap(GT_Recipe aRecipe) {
             for (ItemStack aStack : aRecipe.mInputs) if (aStack != null) {
-                GT_ItemStack tStack = new GT_ItemStack(aStack);
+                ItemHolder tStack = new ItemHolder(aStack);
                 Collection<GT_Recipe> tList = mRecipeItemMap.computeIfAbsent(tStack, k -> new HashSet<>(1));
                 tList.add(aRecipe);
             }

@@ -1,5 +1,7 @@
 package gregtech.api.recipe.check;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -13,14 +15,20 @@ import gregtech.api.util.GT_Recipe;
  */
 public class FindRecipeResult {
 
+    @Nullable
+    private static final GT_Recipe NULL_RECIPE = null;
     @Nonnull
     private final State state;
-    @Nullable
-    private final GT_Recipe recipe;
+    @Nonnull
+    private final List<GT_Recipe> recipes;
 
     private FindRecipeResult(@Nonnull State state, @Nullable GT_Recipe recipe) {
+        this(state, Collections.singletonList(recipe));
+    }
+
+    private FindRecipeResult(@Nonnull State state, @Nonnull List<GT_Recipe> recipes) {
         this.state = state;
-        this.recipe = recipe;
+        this.recipes = recipes;
     }
 
     @Nonnull
@@ -37,7 +45,7 @@ public class FindRecipeResult {
      */
     @Nullable
     public GT_Recipe getRecipe() {
-        return recipe;
+        return recipes.get(0);
     }
 
     /**
@@ -45,19 +53,31 @@ public class FindRecipeResult {
      */
     @Nonnull
     public GT_Recipe getRecipeNonNull() {
-        return Objects.requireNonNull(recipe);
+        return Objects.requireNonNull(recipes.get(0));
+    }
+
+    @Nonnull
+    public List<GT_Recipe> getRecipesPossible() {
+        return recipes;
     }
 
     /**
      * Successfully found recipe.
      */
+    @Nonnull
     public static FindRecipeResult ofSuccess(@Nonnull GT_Recipe recipe) {
         return new FindRecipeResult(State.FOUND, Objects.requireNonNull(recipe));
+    }
+
+    @Nonnull
+    public static FindRecipeResult ofSuccess(@Nonnull List<GT_Recipe> recipes) {
+        return new FindRecipeResult(State.FOUND, Objects.requireNonNull(recipes));
     }
 
     /**
      * Recipe was found, but voltage is not sufficient to run.
      */
+    @Nonnull
     public static FindRecipeResult ofInsufficientVoltage(@Nonnull GT_Recipe recipe) {
         return new FindRecipeResult(State.INSUFFICIENT_VOLTAGE, Objects.requireNonNull(recipe));
     }
@@ -65,15 +85,18 @@ public class FindRecipeResult {
     /**
      * No recipe found.
      */
-    public static final FindRecipeResult NOT_FOUND = new FindRecipeResult(State.NOT_FOUND, null);
+    @Nonnull
+    public static final FindRecipeResult NOT_FOUND = new FindRecipeResult(State.NOT_FOUND, NULL_RECIPE);
     /**
      * For Microwave.
      */
-    public static final FindRecipeResult EXPLODE = new FindRecipeResult(State.EXPLODE, null);
+    @Nonnull
+    public static final FindRecipeResult EXPLODE = new FindRecipeResult(State.EXPLODE, NULL_RECIPE);
     /**
      * For Microwave.
      */
-    public static final FindRecipeResult ON_FIRE = new FindRecipeResult(State.ON_FIRE, null);
+    @Nonnull
+    public static final FindRecipeResult ON_FIRE = new FindRecipeResult(State.ON_FIRE, NULL_RECIPE);
 
     public enum State {
 
