@@ -1,11 +1,13 @@
 package gregtech.api.ModernMaterials;
 
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.LoaderState;
+import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
 import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
-import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
-import net.minecraftforge.fluids.Fluid;
+import gregtech.api.ModernMaterials.PartsClasses.MaterialPartsEnum;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -18,7 +20,7 @@ import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.M
 @SuppressWarnings("unused")
 public final class ModernMaterial {
 
-    private final HashMap<PartsEnum, CustomPartInfo> existingPartsForMaterial = new HashMap<>();
+    private final HashMap<MaterialPartsEnum, CustomPartInfo> existingPartsForMaterial = new HashMap<>();
     public final ArrayList<ModernMaterialFluid> existingFluids = new ArrayList<>();
     private Color color;
     private int materialID;
@@ -55,7 +57,7 @@ public final class ModernMaterial {
         return materialTier;
     }
 
-    public CustomPartInfo getCustomPartInfo(final PartsEnum part) {
+    public CustomPartInfo getCustomPartInfo(final MaterialPartsEnum part) {
         return existingPartsForMaterial.get(part);
     }
 
@@ -87,22 +89,22 @@ public final class ModernMaterial {
             return this;
         }
 
-        public Builder addParts(PartsEnum... parts) {
-            for (PartsEnum part : parts) {
+        public Builder addParts(MaterialPartsEnum... parts) {
+            for (MaterialPartsEnum part : parts) {
                 part.addAssociatedMaterial(materialToBuild);
                 addPart(part);
             }
             return this;
         }
 
-        public Builder addPart(PartsEnum part) {
+        public Builder addPart(MaterialPartsEnum part) {
             materialToBuild.existingPartsForMaterial.put(part, new CustomPartInfo(part, materialToBuild.textureType));
             return this;
         }
 
         // This will override all existing parts settings and enable ALL possible parts. Be careful!
         public Builder addAllParts() {
-            addParts(PartsEnum.values());
+            addParts(MaterialPartsEnum.values());
             return this;
         }
 

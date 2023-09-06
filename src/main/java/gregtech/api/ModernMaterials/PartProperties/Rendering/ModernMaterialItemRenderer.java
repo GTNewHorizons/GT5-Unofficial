@@ -5,15 +5,12 @@ import static org.lwjgl.opengl.GL11.GL_CURRENT_BIT;
 
 import java.awt.*;
 
-import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
 import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
 import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
-import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
+import gregtech.api.ModernMaterials.PartsClasses.MaterialPartsEnum;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
@@ -22,7 +19,6 @@ import org.lwjgl.opengl.GL11;
 
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.common.render.GT_RenderUtil;
-import singulariteam.eternalsingularity.render.CosmicRenderStuffs;
 
 public class ModernMaterialItemRenderer implements IItemRenderer {
 
@@ -61,7 +57,7 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
         Color materialColor = material.getColor();
 
         MaterialPart materialPart = (MaterialPart) itemStack.getItem();
-        PartsEnum partsEnum = materialPart.getPart();
+        MaterialPartsEnum partsEnum = materialPart.getPart();
         CustomPartInfo customPartInfo = material.getCustomPartInfo(partsEnum);
 
         GL11.glPushMatrix();

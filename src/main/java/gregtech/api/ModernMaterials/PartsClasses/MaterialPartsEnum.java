@@ -5,7 +5,7 @@ import net.minecraft.item.Item;
 
 import java.util.ArrayList;
 
-public enum PartsEnum implements IGetItem, IAssociatedMaterials {
+public enum MaterialPartsEnum implements IGetItem, IAssociatedMaterials {
 
     HotIngot("Hot % Ingot"),
     Ingot("% Ingot"),
@@ -93,7 +93,7 @@ public enum PartsEnum implements IGetItem, IAssociatedMaterials {
 
     private final ArrayList<ModernMaterial> associatedMaterials = new ArrayList<>();
 
-    PartsEnum(final String partName) {
+    MaterialPartsEnum(final String partName) {
         this.partName = partName;
     }
 

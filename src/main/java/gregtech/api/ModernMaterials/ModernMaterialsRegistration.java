@@ -2,7 +2,6 @@ package gregtech.api.ModernMaterials;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.GregTech_API;
-import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.util.GT_Config;
 import net.minecraftforge.common.config.Configuration;
@@ -10,16 +9,17 @@ import net.minecraftforge.common.config.Configuration;
 import java.io.File;
 
 import static gregtech.api.ModernMaterials.Fluids.FluidEnum.*;
+import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsBlocks;
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsItems;
 import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.Metallic;
 
 public class ModernMaterialsRegistration {
 
-    public void run(FMLPreInitializationEvent aEvent) {
+    public void run(FMLPreInitializationEvent event) {
 
         GregTech_API.modernMaterialIDs = new GT_Config(
                 new Configuration(
-                        new File(new File(aEvent.getModConfigurationDirectory(), "GregTech"), "ModerMaterialIDs.cfg")));
+                        new File(new File(event.getModConfigurationDirectory(), "GregTech"), "ModerMaterialIDs.cfg")));
         GregTech_API.lastMaterialID = GregTech_API.modernMaterialIDs.mConfig
                 .get(ConfigCategories.ModernMaterials.materialID.name(), "LastMaterialID", 0).getInt();
 
@@ -80,8 +80,12 @@ public class ModernMaterialsRegistration {
 //        new ModernMaterial("Copper").build();
 
         registerAllMaterialsItems();
+        registerAllMaterialsBlocks();
+
+
         GregTech_API.modernMaterialIDs.mConfig
                 .get(ConfigCategories.ModernMaterials.materialID.name(), "LastMaterialID", 0)
                 .set(GregTech_API.lastMaterialID);
     }
+
 }

@@ -1,8 +1,7 @@
 package gregtech.api.ModernMaterials.PartProperties.Textures;
 
 import gregtech.api.ModernMaterials.PartProperties.Rendering.IconWrapper;
-import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
-import net.minecraft.util.IIcon;
+import gregtech.api.ModernMaterials.PartsClasses.MaterialPartsEnum;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -17,15 +16,15 @@ public enum TextureType {
 //    CustomUnified,
 //    CustomIndividual;
 
-    private final HashMap<PartsEnum, ArrayList<IconWrapper>> textureStorage = new HashMap<>();
+    private final HashMap<MaterialPartsEnum, ArrayList<IconWrapper>> textureStorage = new HashMap<>();
 
-    public void addTexture(PartsEnum part, IconWrapper iconWrapper) {
+    public void addTexture(MaterialPartsEnum part, IconWrapper iconWrapper) {
         ArrayList<IconWrapper> iconList = textureStorage.getOrDefault(part, new ArrayList<>());
         iconList.add(iconWrapper);
         textureStorage.put(part, iconList);
     }
 
-    public ArrayList<IconWrapper> getTextureArray(PartsEnum part) {
+    public ArrayList<IconWrapper> getTextureArray(MaterialPartsEnum part) {
         return textureStorage.get(part);
     }
 

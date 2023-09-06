@@ -4,7 +4,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import gregtech.api.ModernMaterials.PartProperties.Rendering.IconWrapper;
 import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
-import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
+import gregtech.api.ModernMaterials.PartsClasses.MaterialPartsEnum;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -44,7 +44,7 @@ public class ModernMaterialsTextureRegister {
     private void itemTextures(TextureMap map) {
 
         // Pre sort this by part name not enum name to save computation later.
-        PartsEnum[] partsEnum = PartsEnum.values();
+        MaterialPartsEnum[] partsEnum = MaterialPartsEnum.values();
         Arrays.sort(partsEnum, Comparator.comparing(part -> part.partName));
 
         // Iterate over all texture types and their associated item textures to register them and any
@@ -66,7 +66,7 @@ public class ModernMaterialsTextureRegister {
             // Sort according to the actual unlocalised name rather than enum name.
             fileList.sort(Comparator.comparing(File::getName));
 
-            for(PartsEnum part : partsEnum) {
+            for(MaterialPartsEnum part : partsEnum) {
 
                 for(File file : fileList) {
 

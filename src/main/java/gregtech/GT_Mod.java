@@ -15,6 +15,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
+import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxItemRenderer;
+import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxSimpleBlockRenderer;
 import gregtech.api.ModernMaterials.ModernMaterialsTextureRegister;
 import gregtech.loaders.ExtraIcons;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,6 +29,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -302,6 +306,8 @@ public class GT_Mod implements IGT_Mod {
 
     @Mod.EventHandler
     public void onLoad(FMLInitializationEvent aEvent) {
+
+        new FrameBoxSimpleBlockRenderer();
 
         MinecraftForge.EVENT_BUS.register(new ExtraIcons());
         MinecraftForge.EVENT_BUS.register(new ModernMaterialsTextureRegister());

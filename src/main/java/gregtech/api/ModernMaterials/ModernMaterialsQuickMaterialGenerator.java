@@ -1,9 +1,5 @@
 package gregtech.api.ModernMaterials;
 
-import static gregtech.api.ModernMaterials.Fluids.FluidEnum.Molten;
-import static gregtech.api.ModernMaterials.Fluids.FluidEnum.Plasma;
-import static gregtech.api.ModernMaterials.PartsClasses.PartsEnum.*;
-
 public class ModernMaterialsQuickMaterialGenerator {
 //
 //    public void simpleMetal(final String materialName, final int red, final int green, final int blue) {

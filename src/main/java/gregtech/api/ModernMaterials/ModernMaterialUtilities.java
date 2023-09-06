@@ -5,57 +5,60 @@ import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxBlock;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxItemBlock;
+import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxItemRenderer;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxTileEntity;
-import gregtech.api.ModernMaterials.Blocks.FrameBox2.FrameBoxBlock2;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.PartProperties.Rendering.ModernMaterialItemRenderer;
 import gregtech.api.ModernMaterials.PartRecipeGenerators.ModernMaterialsPlateRecipeGenerator;
 import gregtech.api.ModernMaterials.PartsClasses.IGetItem;
 import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
-import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
-import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.ModernMaterials.PartsClasses.MaterialPartsEnum;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import static gregtech.api.enums.ConfigCategories.ModernMaterials.materialID;
-import static gregtech.api.enums.GT_Values.W;
 
 public class ModernMaterialUtilities {
 
-    private static final List<ModernMaterial> mNewMaterials = new ArrayList<>();
+    private static final List<ModernMaterial> newMaterials = new ArrayList<>();
     public static final HashMap<Integer, ModernMaterial> materialIDToMaterial = new HashMap<>();
     public static final HashMap<String, ModernMaterial> materialNameToMaterialMap = new HashMap<>();
 
-    public static void registerMaterial(ModernMaterial aMaterial) {
+    public static void registerMaterial(ModernMaterial material) {
         final int tCurrentMaterialID = GregTech_API.modernMaterialIDs.mConfig
-                .get(materialID.name(), aMaterial.getMaterialName(), -1).getInt();
+                .get(materialID.name(), material.getMaterialName(), -1).getInt();
         if (tCurrentMaterialID == -1) {
-            mNewMaterials.add(aMaterial);
+            newMaterials.add(material);
         } else {
-            aMaterial.setMaterialID(tCurrentMaterialID);
-            materialIDToMaterial.put(tCurrentMaterialID, aMaterial);
+            material.setMaterialID(tCurrentMaterialID);
+            materialIDToMaterial.put(tCurrentMaterialID, material);
             if (tCurrentMaterialID > GregTech_API.lastMaterialID) {
                 GregTech_API.lastMaterialID = tCurrentMaterialID;
             }
         }
-        materialNameToMaterialMap.put(aMaterial.getMaterialName(), aMaterial);
+        materialNameToMaterialMap.put(material.getMaterialName(), material);
     }
 
+    public static void registerAllMaterialsBlocks() {
+
+    }
 
     public static void registerAllMaterialsItems() {
-        for (ModernMaterial tMaterial : mNewMaterials) {
+        for (ModernMaterial tMaterial : newMaterials) {
             tMaterial.setMaterialID(++GregTech_API.lastMaterialID);
             GregTech_API.modernMaterialIDs.mConfig.get(materialID.name(), tMaterial.getMaterialName(), 0)
                     .set(GregTech_API.lastMaterialID);
             materialIDToMaterial.put(GregTech_API.lastMaterialID, tMaterial);
         }
 
-        for (PartsEnum part : PartsEnum.values()) {
+        for (MaterialPartsEnum part : MaterialPartsEnum.values()) {
 
             MaterialPart materialPart = new MaterialPart(part);
             materialPart.setUnlocalizedName(part.partName);
@@ -63,7 +66,7 @@ public class ModernMaterialUtilities {
             // Registers the item with the game, only available in preInit.
             GameRegistry.registerItem(materialPart, part.partName);
 
-            // Store the Item so these parts can be retrieved later.
+            // Store the Item so these parts can be retrieved later for recipe generation etc.
             part.setAssociatedItem(materialPart);
 
             // Registers the renderer which allows for part colouring.
@@ -97,8 +100,11 @@ public class ModernMaterialUtilities {
         //new FrameBoxRenderer();
         // GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + W + ".name", "Any Sub Block of this one");
 
-        GameRegistry.registerBlock(new FrameBoxBlock(), FrameBoxItemBlock.class, "frameBoxBlock");
+        FrameBoxBlock frame = new FrameBoxBlock();
+        GameRegistry.registerBlock(frame, "frameBoxBlock");
         GameRegistry.registerTileEntity(FrameBoxTileEntity.class, "frameBoxBlockTile");
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(frame), new FrameBoxItemRenderer());
+
     }
 
     private static void registerAllMaterialPartRecipes(ModernMaterial material) {

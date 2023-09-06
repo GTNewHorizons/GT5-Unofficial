@@ -2,7 +2,6 @@ package gregtech.api.ModernMaterials.PartsClasses;
 
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.*;
 
-import java.util.HashMap;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
@@ -12,7 +11,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.util.GT_LanguageManager;
@@ -20,9 +18,9 @@ import gregtech.api.util.GT_LanguageManager;
 public class MaterialPart extends Item {
 
     private final String partName;
-    private final PartsEnum part;
+    private final MaterialPartsEnum part;
 
-    public MaterialPart(final PartsEnum part) {
+    public MaterialPart(final MaterialPartsEnum part) {
         setCreativeTab(CreativeTabs.tabMaterials);
         setHasSubtypes(true);
 
@@ -63,7 +61,7 @@ public class MaterialPart extends Item {
         }
     }
 
-    public PartsEnum getPart() {
+    public MaterialPartsEnum getPart() {
         return part;
     }
 }
