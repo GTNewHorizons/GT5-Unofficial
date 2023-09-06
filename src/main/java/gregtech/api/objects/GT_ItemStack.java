@@ -19,7 +19,7 @@ public class GT_ItemStack extends ItemHolder {
     public final short mMetaData;
 
     public GT_ItemStack(Item aItem, long aStackSize, long aMetaData) {
-        super(new ItemStack(aItem));
+        super(new ItemStack(aItem, 1, (int) aMetaData));
         mItem = aItem;
         mStackSize = (byte) aStackSize;
         mMetaData = (short) aMetaData;

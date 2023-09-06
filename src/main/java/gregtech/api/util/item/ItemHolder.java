@@ -56,7 +56,13 @@ public class ItemHolder {
             })) {
             return true;
         }
-        return item == otherIH.getItem() && meta == otherIH.getMeta() && tag.equals(otherIH.getNBT());
+
+        if (item != otherIH.getItem() || meta != otherIH.getMeta()) {
+            return false;
+        }
+        if (this.tag == null && otherIH.getNBT() == null) return true;
+        if (this.tag == null || otherIH.getNBT() == null) return false;
+        return this.tag.equals(otherIH);
     }
 
     @Override
