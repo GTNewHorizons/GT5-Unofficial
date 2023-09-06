@@ -27,6 +27,14 @@ import static gregtech.api.enums.OrePrefixes.gemExquisite;
 import static gregtech.api.enums.OrePrefixes.gemFlawed;
 import static gregtech.api.enums.OrePrefixes.stick;
 import static gregtech.api.enums.OrePrefixes.stickLong;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sSifterRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -62,6 +70,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -167,7 +176,7 @@ public class AdditionalRecipes {
                             new FluidStack[] { FluidRegistry.getFluidStack("ic2distilledwater", 1000) },
                             null,
                             500,
-                            BW_Util.getMachineVoltageFromTier(6),
+                            (int) TierEU.RECIPE_LuV,
                             BW_Util.STANDART);
                 }
             }
@@ -187,7 +196,7 @@ public class AdditionalRecipes {
                     new FluidStack[] { new FluidStack(dnaFluid[0].getFluid(), 8000) },
                     null,
                     500,
-                    BW_Util.getMachineVoltageFromTier(6),
+                    (int) TierEU.RECIPE_LuV,
                     BW_Util.STANDART);
 
             FluidStack[] easyFluids = { Materials.Water.getFluid(1000L),
@@ -209,7 +218,7 @@ public class AdditionalRecipes {
                                         new FluidStack[] { fluidStack },
                                         new FluidStack[] { new FluidStack(bioCulture.getFluid(), 10) },
                                         1000,
-                                        BW_Util.getMachineVoltageFromTier(3),
+                                        (int) TierEU.RECIPE_HV,
                                         BW_Util.STANDART),
                                 true);
                         // aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs,
@@ -229,7 +238,7 @@ public class AdditionalRecipes {
                                         new FluidStack[] { new FluidStack(bioCulture.getFluid(), 1000) },
                                         null,
                                         500,
-                                        BW_Util.getMachineVoltageFromTier(3),
+                                        (int) TierEU.RECIPE_HV,
                                         BW_Util.STANDART));
                     }
                 }
@@ -268,17 +277,20 @@ public class AdditionalRecipes {
                 new ItemStack(ItemRegistry.bw_glasses[0], 1, 12),
                 null,
                 800,
-                BW_Util.getMachineVoltageFromTier(5),
+                (int) TierEU.RECIPE_IV,
                 3663);
-        // Thorianit recipes
-        GT_Values.RA.addSifterRecipe(
-                WerkstoffLoader.Thorianit.get(crushedPurified),
-                new ItemStack[] { WerkstoffLoader.Thorianit.get(dust), WerkstoffLoader.Thorianit.get(dust),
-                        WerkstoffLoader.Thorianit.get(dust), Materials.Thorium.getDust(1), Materials.Thorium.getDust(1),
-                        WerkstoffLoader.Thorium232.get(dust), },
-                new int[] { 7000, 1300, 700, 600, 300, 100 },
-                400,
-                BW_Util.getMachineVoltageFromTier(5));
+        // Thorianite recipes
+        GT_Values.RA.stdBuilder().itemInputs(WerkstoffLoader.Thorianit.get(crushedPurified))
+                .itemOutputs(
+                        WerkstoffLoader.Thorianit.get(dust),
+                        WerkstoffLoader.Thorianit.get(dust),
+                        WerkstoffLoader.Thorianit.get(dust),
+                        Materials.Thorium.getDust(1),
+                        Materials.Thorium.getDust(1),
+                        WerkstoffLoader.Thorium232.get(dust))
+                .outputChances(7000, 1300, 700, 600, 300, 100).noFluidInputs().noFluidOutputs().duration(20 * SECONDS)
+                .eut((int) TierEU.RECIPE_IV).addTo(sSifterRecipes);
+
         // 3ThO2 + 4Al = 3Th + 2Al2O3
         GT_Values.RA.addChemicalRecipe(
                 WerkstoffLoader.Thorianit.get(dust, 9),
@@ -315,15 +327,13 @@ public class AdditionalRecipes {
                 WerkstoffLoader.Prasiolite.get(OrePrefixes.gemFlawed, 20),
                 GT_Values.NI,
                 800,
-                BW_Util.getMachineVoltageFromTier(2),
+                (int) TierEU.RECIPE_MV,
                 500);
-        GT_Values.RA.addPrimitiveBlastRecipe(
-                GT_OreDictUnificator.get(dust, Materials.Quartzite, 40L),
-                Materials.Amethyst.getDust(10),
-                6,
-                WerkstoffLoader.Prasiolite.get(OrePrefixes.gemFlawed, 20),
-                GT_Values.NI,
-                800);
+
+        GT_Values.RA.stdBuilder().itemInputs(GT_OreDictUnificator.get(dust, Materials.Quartzite, 40L))
+                .itemOutputs(Materials.Amethyst.getDust(10)).noFluidInputs().noFluidOutputs().duration(40 * SECONDS)
+                .eut(0).metadata(ADDITIVE_AMOUNT, 6).addTo(sPrimitiveBlastRecipes);
+
         // Cubic Circonia
         // 2Y + 3O = Y2O3
         GT_Values.RA.addChemicalRecipe(
@@ -333,7 +343,7 @@ public class AdditionalRecipes {
                 GT_Values.NF,
                 WerkstoffLoader.YttriumOxide.get(dust, 5),
                 4096,
-                BW_Util.getMachineVoltageFromTier(1));
+                (int) TierEU.RECIPE_LV);
         // Zr + 2O =Y22O3= ZrO2
         GT_Recipe.GT_Recipe_Map.sBlastRecipes.addRecipe(
                 false,
@@ -344,7 +354,7 @@ public class AdditionalRecipes {
                 new FluidStack[] { Materials.Oxygen.getGas(20000) },
                 null,
                 57600,
-                BW_Util.getMachineVoltageFromTier(3),
+                (int) TierEU.RECIPE_HV,
                 2953);
         // Tellurium
         GT_Values.RA.addBlastRecipe(
@@ -355,7 +365,7 @@ public class AdditionalRecipes {
                 Materials.Lead.getIngots(10),
                 Materials.Tellurium.getNuggets(20),
                 800,
-                BW_Util.getMachineVoltageFromTier(2),
+                (int) TierEU.RECIPE_MV,
                 722);
         GT_Values.RA.addFusionReactorRecipe(
                 Materials.Plutonium.getMolten(48),
@@ -380,37 +390,31 @@ public class AdditionalRecipes {
                         Materials.Hydrogen.getGas(55), WerkstoffLoader.Xenon.getFluidOrGas(9) },
                 null,
                 7500,
-                BW_Util.getMachineVoltageFromTier(4));
-        GT_Values.RA.addAutoclaveRecipe(
-                WerkstoffLoader.MagnetoResonaticDust.get(dust),
-                WerkstoffLoader.Neon.getFluidOrGas(1000),
-                WerkstoffLoader.MagnetoResonaticDust.get(gemChipped, 9),
-                9000,
-                4500,
-                BW_Util.getMachineVoltageFromTier(5));
-        GT_Values.RA.addAutoclaveRecipe(
-                WerkstoffLoader.MagnetoResonaticDust.get(dust),
-                WerkstoffLoader.Krypton.getFluidOrGas(1000),
-                WerkstoffLoader.MagnetoResonaticDust.get(gem),
-                10000,
-                4500,
-                BW_Util.getMachineVoltageFromTier(5));
+                (int) TierEU.RECIPE_EV);
+
+        GT_Values.RA.stdBuilder().itemInputs(WerkstoffLoader.MagnetoResonaticDust.get(dust))
+                .itemOutputs(WerkstoffLoader.MagnetoResonaticDust.get(gemChipped, 9)).outputChances(90_00)
+                .fluidInputs(WerkstoffLoader.Neon.getFluidOrGas(1000)).noFluidOutputs()
+                .duration(3 * MINUTES + 45 * SECONDS).eut(TierEU.RECIPE_IV).addTo(sAutoclaveRecipes);
+
+        GT_Values.RA.stdBuilder().itemInputs(WerkstoffLoader.MagnetoResonaticDust.get(dust))
+                .itemOutputs(WerkstoffLoader.MagnetoResonaticDust.get(gem))
+                .fluidInputs(WerkstoffLoader.Krypton.getFluidOrGas(1000)).noFluidOutputs()
+                .duration(3 * MINUTES + 45 * SECONDS).eut(TierEU.RECIPE_IV).addTo(sAutoclaveRecipes);
 
         // Milk
-        GT_Values.RA.addCentrifugeRecipe(
-                GT_Utility.getIntegratedCircuit(1),
-                GT_Values.NI,
-                Materials.Milk.getFluid(10000),
-                Materials.Water.getFluid(8832),
-                Materials.Sugar.getDustSmall(21),
-                Materials.Calcium.getDustTiny(1),
-                Materials.Magnesium.getDustTiny(1),
-                Materials.Potassium.getDustTiny(1),
-                Materials.Sodium.getDustTiny(4),
-                Materials.Phosphor.getDustTiny(1),
-                new int[] { 10000, 10000, 1000, 10000, 1000, 1000 },
-                50,
-                120);
+
+        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(1))
+                .itemOutputs(
+                        Materials.Sugar.getDustSmall(21),
+                        Materials.Calcium.getDustTiny(1),
+                        Materials.Magnesium.getDustTiny(1),
+                        Materials.Potassium.getDustTiny(1),
+                        Materials.Sodium.getDustTiny(4),
+                        Materials.Phosphor.getDustTiny(1))
+                .outputChances(100_00, 100_00, 10_00, 100_00, 10_00, 10_00).fluidInputs(Materials.Milk.getFluid(10000))
+                .fluidOutputs(Materials.Water.getFluid(8832)).duration(2 * SECONDS + 10 * TICKS).eut(TierEU.RECIPE_MV)
+                .addTo(sCentrifugeRecipes);
 
         // Magneto Resonatic Circuits
 
@@ -435,7 +439,7 @@ public class AdditionalRecipes {
                         new FluidStack[] { Materials.SolderingAlloy.getMolten(36) },
                         null,
                         750,
-                        BW_Util.getMachineVoltageFromTier(1),
+                        (int) TierEU.RECIPE_LV,
                         CLEANROOM));
         // LV-EV
         for (int i = 1; i <= 4; i++) {
@@ -631,7 +635,7 @@ public class AdditionalRecipes {
                 null,
                 BW_NonMeta_MaterialItems.TheCoreCell.get(1L),
                 100,
-                BW_Util.getMachineVoltageFromTier(6));
+                (int) TierEU.RECIPE_LuV);
 
         GregTech_API.sAfterGTPostload.add(new AddSomeRecipes());
         AdditionalRecipes.oldGThelperMethod();

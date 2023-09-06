@@ -14,6 +14,9 @@
 package com.github.bartimaeusnek.bartworks.system.material;
 
 import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -44,12 +47,13 @@ public class BW_MetaGeneratedFrames extends MetaPipeEntity {
                 getStackForm(2),
                 RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
                 new Object[] { "SSS", "SwS", "SSS", 'S', mMaterial.get(OrePrefixes.stick) });
-        RA.addAssemblerRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.getVarName(), 4),
-                ItemList.Circuit_Integrated.getWithDamage(0, 4),
-                getStackForm(1),
-                64,
-                8);
+
+        RA.stdBuilder()
+                .itemInputs(
+                        GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.getVarName(), 4),
+                        ItemList.Circuit_Integrated.getWithDamage(0, 4))
+                .itemOutputs(getStackForm(1)).noFluidInputs().noFluidOutputs().duration(3 * SECONDS + 4 * TICKS).eut(8)
+                .addTo(sAssemblerRecipes);
     }
 
     private BW_MetaGeneratedFrames(String aName, Werkstoff aMaterial) {

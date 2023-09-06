@@ -13,6 +13,9 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPressRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashSet;
@@ -43,6 +46,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TC_Aspects;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.items.GT_MetaBase_Item;
@@ -66,12 +70,14 @@ public class BW_Meta_Items {
         BW_Meta_Items.NEWCIRCUITS.addItem(1, "Sliced Circuit", "", SubTag.NO_UNIFICATION, SubTag.NO_RECYCLING);
         BW_Meta_Items.NEWCIRCUITS.addItem(2, "Raw Imprint supporting Board", "A Raw Board needed for Circuit Imprints");
         BW_Meta_Items.NEWCIRCUITS.addItem(3, "Imprint supporting Board", "A Board needed for Circuit Imprints");
-        GT_Values.RA.addFormingPressRecipe(
-                WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.dust, 1),
-                WerkstoffLoader.ArInGaPhoBiBoTe.get(OrePrefixes.dust, 4),
-                BW_Meta_Items.NEWCIRCUITS.getStack(2),
-                300,
-                480);
+
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.dust, 1),
+                        WerkstoffLoader.ArInGaPhoBiBoTe.get(OrePrefixes.dust, 4))
+                .itemOutputs(BW_Meta_Items.NEWCIRCUITS.getStack(2)).noFluidInputs().noFluidOutputs()
+                .duration(15 * SECONDS).eut(TierEU.RECIPE_HV).addTo(sPressRecipes);
+
         GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes.add(
                 new BWRecipes.DynamicGTRecipe(
                         false,
@@ -82,7 +88,7 @@ public class BW_Meta_Items {
                         new FluidStack[] { Materials.SolderingAlloy.getMolten(576) },
                         null,
                         300,
-                        BW_Util.getMachineVoltageFromTier(4),
+                        (int) TierEU.RECIPE_EV,
                         BW_Util.CLEANROOM));
     }
 

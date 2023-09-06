@@ -395,6 +395,7 @@ public class BW_Util {
         return retArr;
     }
 
+    @Deprecated
     public static int getMachineVoltageFromTier(int tier) {
         return (int) (30 * Math.pow(4, (tier - 1)));
     }

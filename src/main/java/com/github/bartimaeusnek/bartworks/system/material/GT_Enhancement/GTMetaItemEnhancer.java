@@ -14,6 +14,8 @@
 package com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement;
 
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,16 +60,14 @@ public class GTMetaItemEnhancer {
                         GT_ModHandler.getModItem(Forestry.ID, "refractoryEmpty", 1));
                 FluidContainerRegistry.registerFluidContainer(emptyData);
                 GT_Utility.addFluidContainerData(emptyData);
-                GT_Values.RA.addFluidCannerRecipe(
-                        GT_ModHandler.getModItem(Forestry.ID, "refractoryEmpty", 1),
-                        new ItemStack(moltenCapsuls, 1, i),
-                        m.getMolten(144),
-                        GT_Values.NF);
-                GT_Values.RA.addFluidCannerRecipe(
-                        new ItemStack(moltenCapsuls, 1, i),
-                        GT_Values.NI,
-                        GT_Values.NF,
-                        m.getMolten(144));
+
+                GT_Values.RA.stdBuilder().itemInputs(GT_ModHandler.getModItem(Forestry.ID, "refractoryEmpty", 1))
+                        .itemOutputs(new ItemStack(moltenCapsuls, 1, i)).fluidInputs(m.getMolten(144)).noFluidOutputs()
+                        .duration(2 * TICKS).eut(2).addTo(sFluidCannerRecipes);
+
+                GT_Values.RA.stdBuilder().itemInputs(new ItemStack(moltenCapsuls, 1, i)).noItemOutputs().noFluidInputs()
+                        .fluidOutputs(m.getMolten(144)).duration(2 * TICKS).eut(2).addTo(sFluidCannerRecipes);
+
             }
             if (m.getFluid(1) == null && m.getGas(1) == null) continue;
             if (OreDictionary.doesOreNameExist("capsule" + m.mName)) continue;
@@ -91,13 +91,14 @@ public class GTMetaItemEnhancer {
                 container);
         FluidContainerRegistry.registerFluidContainer(emptyData);
         GT_Utility.addFluidContainerData(emptyData);
-        GT_Values.RA
-                .addFluidCannerRecipe(container, new ItemStack(filled, 1, it), new FluidStack(f, amount), GT_Values.NF);
-        GT_Values.RA.addFluidCannerRecipe(
-                new ItemStack(filled, 1, it),
-                empty ? GT_Values.NI : container,
-                GT_Values.NF,
-                new FluidStack(f, amount));
+
+        GT_Values.RA.stdBuilder().itemInputs(container).itemOutputs(new ItemStack(filled, 1, it))
+                .fluidInputs(new FluidStack(f, amount)).noFluidOutputs().duration(amount / 62).eut(2)
+                .addTo(sFluidCannerRecipes);
+
+        GT_Values.RA.stdBuilder().itemInputs(new ItemStack(filled, 1, it)).noItemOutputs().noFluidInputs()
+                .fluidOutputs(new FluidStack(f, amount)).duration(amount / 62).eut(2).addTo(sFluidCannerRecipes);
+
     }
 
     public static void addAdditionalOreDictToForestry() {

@@ -15,26 +15,29 @@ package com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.rec
 
 import static gregtech.api.enums.OrePrefixes.block;
 import static gregtech.api.enums.OrePrefixes.ingot;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sExtruderRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
-import gregtech.api.util.GT_ModHandler;
 
 public class MetalLoader implements IWerkstoffRunnable {
 
     @Override
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(ingot)) {
-            GT_ModHandler.addCompressionRecipe(werkstoff.get(ingot, 9), werkstoff.get(block));
-            GT_Values.RA.addExtruderRecipe(
-                    werkstoff.get(ingot, 9),
-                    ItemList.Shape_Extruder_Block.get(0),
-                    werkstoff.get(block),
-                    (int) werkstoff.getStats().getMass(),
-                    8 * werkstoff.getStats().getMeltingPoint() >= 2800 ? 60 : 15);
+            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(ingot, 9)).itemOutputs(werkstoff.get(block))
+                    .noFluidInputs().noFluidOutputs().duration(15 * SECONDS).eut(2).addTo(sCompressorRecipes);
+
+            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(ingot, 9), ItemList.Shape_Extruder_Block.get(0))
+                    .itemOutputs(werkstoff.get(block)).noFluidInputs().noFluidOutputs()
+                    .duration((int) werkstoff.getStats().getMass())
+                    .eut(8 * werkstoff.getStats().getMeltingPoint() >= 2800 ? 60 : 15).addTo(sExtruderRecipes);
+
             GT_Values.RA.addAlloySmelterRecipe(
                     werkstoff.get(ingot, 9),
                     ItemList.Shape_Mold_Block.get(0L),

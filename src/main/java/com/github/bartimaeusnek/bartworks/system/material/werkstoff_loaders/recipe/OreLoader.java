@@ -18,6 +18,8 @@ import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.enums.OrePrefixes.gem;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.ore;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
@@ -37,11 +39,11 @@ public class OreLoader implements IWerkstoffRunnable {
                     .addSmeltingRecipe(WerkstoffLoader.getCorrespondingItemStack(ore, werkstoff), werkstoff.get(ingot));
 
         if (werkstoff.hasItemType(ore)) {
-            GT_Values.RA.addForgeHammerRecipe(
-                    werkstoff.get(ore),
-                    werkstoff.hasItemType(gem) ? werkstoff.get(gem) : werkstoff.get(crushed),
-                    16,
-                    10);
+
+            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(ore))
+                    .itemOutputs(werkstoff.hasItemType(gem) ? werkstoff.get(gem) : werkstoff.get(crushed))
+                    .noFluidInputs().noFluidOutputs().duration(16 * TICKS).eut(10).addTo(sHammerRecipes);
+
             GT_ModHandler.addPulverisationRecipe(
                     werkstoff.get(ore),
                     werkstoff.get(crushed, 2),

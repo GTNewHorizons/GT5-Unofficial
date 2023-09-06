@@ -17,13 +17,17 @@ import static gregtech.api.enums.OrePrefixes.block;
 import static gregtech.api.enums.OrePrefixes.cellMolten;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.plate;
-
-import net.minecraft.item.ItemStack;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCutterRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.UniversalArcFurnace;
 
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.TierEU;
 
 public class BlockLoader implements IWerkstoffRunnable {
 
@@ -31,24 +35,22 @@ public class BlockLoader implements IWerkstoffRunnable {
     public void run(Werkstoff werkstoff) {
         if (!werkstoff.hasItemType(block)) return;
         if (werkstoff.hasItemType(ingot)) {
-            GT_Values.RA.addArcFurnaceRecipe(
-                    werkstoff.get(block),
-                    new ItemStack[] { werkstoff.get(ingot, 9) },
-                    null,
-                    16,
-                    90,
-                    false);
+            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(block)).itemOutputs(werkstoff.get(ingot, 9))
+                    .noFluidInputs().noFluidOutputs().duration(16 * TICKS).eut(90).addTo(UniversalArcFurnace);
         }
         if (werkstoff.hasItemType(cellMolten)) {
-            GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(block), null, werkstoff.getMolten(1296), 0, 288, 8);
+
+            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(block)).noItemOutputs().noFluidInputs()
+                    .fluidOutputs(werkstoff.getMolten(1296)).duration(14 * SECONDS + 8 * TICKS).eut(8)
+                    .addTo(sFluidExtractionRecipes);
+
         }
         if (werkstoff.hasItemType(plate)) {
-            GT_Values.RA.addCutterRecipe(
-                    werkstoff.get(block),
-                    werkstoff.get(plate, 9),
-                    null,
-                    (int) Math.max(werkstoff.getStats().getMass() * 10L, 1L),
-                    30);
+
+            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(block)).itemOutputs(werkstoff.get(plate, 9))
+                    .noFluidInputs().noFluidOutputs().duration((int) Math.max(werkstoff.getStats().getMass() * 10L, 1L))
+                    .eut(TierEU.RECIPE_LV).addTo(sCutterRecipes);
+
         }
     }
 }

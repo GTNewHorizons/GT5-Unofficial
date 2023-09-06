@@ -27,6 +27,7 @@ import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -49,7 +50,7 @@ public class BioRecipeLoader {
                     new int[] { 3300 },
                     new FluidStack[] { fluidStack },
                     500,
-                    BW_Util.getMachineVoltageFromTier(3),
+                    (int) TierEU.RECIPE_HV,
                     BW_Util.STANDART);
 
             BWRecipes.instance.addBioLabRecipeIncubation(
@@ -58,7 +59,7 @@ public class BioRecipeLoader {
                     new int[] { 4500 },
                     new FluidStack[] { fluidStack },
                     500,
-                    BW_Util.getMachineVoltageFromTier(3),
+                    (int) TierEU.RECIPE_HV,
                     BW_Util.STANDART);
 
             BWRecipes.instance.addBioLabRecipeIncubation(
@@ -67,7 +68,7 @@ public class BioRecipeLoader {
                     new int[] { 7500 },
                     new FluidStack[] { fluidStack },
                     500,
-                    BW_Util.getMachineVoltageFromTier(3),
+                    (int) TierEU.RECIPE_HV,
                     BW_Util.STANDART);
 
             BWRecipes.instance.addBioLabRecipeIncubation(
@@ -76,7 +77,7 @@ public class BioRecipeLoader {
                     new int[] { 2500 },
                     new FluidStack[] { fluidStack },
                     500,
-                    BW_Util.getMachineVoltageFromTier(3),
+                    (int) TierEU.RECIPE_HV,
                     BW_Util.STANDART);
 
             BWRecipes.instance.addBioLabRecipeIncubation(
@@ -85,7 +86,7 @@ public class BioRecipeLoader {
                     new int[] { 3300 },
                     new FluidStack[] { fluidStack },
                     500,
-                    BW_Util.getMachineVoltageFromTier(3),
+                    (int) TierEU.RECIPE_HV,
                     BW_Util.STANDART);
 
             BWRecipes.instance.addBioLabRecipeIncubation(
@@ -94,7 +95,7 @@ public class BioRecipeLoader {
                     new int[] { 2500 },
                     new FluidStack[] { fluidStack },
                     500,
-                    BW_Util.getMachineVoltageFromTier(3),
+                    (int) TierEU.RECIPE_HV,
                     BW_Util.STANDART);
 
             BWRecipes.instance.addBioLabRecipeIncubation(
@@ -103,7 +104,7 @@ public class BioRecipeLoader {
                     new int[] { 3300 },
                     new FluidStack[] { fluidStack },
                     500,
-                    BW_Util.getMachineVoltageFromTier(3),
+                    (int) TierEU.RECIPE_HV,
                     BW_Util.STANDART);
 
             BWRecipes.instance.addBioLabRecipeIncubation(
@@ -112,7 +113,7 @@ public class BioRecipeLoader {
                     new int[] { 100 },
                     new FluidStack[] { fluidStack },
                     1500,
-                    BW_Util.getMachineVoltageFromTier(4),
+                    (int) TierEU.RECIPE_EV,
                     BW_Util.STANDART);
         }
     }
@@ -128,7 +129,7 @@ public class BioRecipeLoader {
                         BioCultureLoader.CommonYeast,
                         new FluidStack[] { FluidRegistry.getFluidStack("potion.ghp", 1) },
                         350,
-                        BW_Util.getMachineVoltageFromTier(4));
+                        (int) TierEU.RECIPE_EV);
             }
 
             BWRecipes.instance.addBacterialVatRecipe(
@@ -137,7 +138,7 @@ public class BioRecipeLoader {
                     BioCultureLoader.WhineYeast,
                     new FluidStack[] { FluidRegistry.getFluidStack("potion.wine", 12) },
                     200,
-                    BW_Util.getMachineVoltageFromTier(2));
+                    (int) TierEU.RECIPE_MV);
 
             BWRecipes.instance.addBacterialVatRecipe(
                     new ItemStack[] { new ItemStack(Items.sugar, 4), ItemList.IC2_Hops.get(16L),
@@ -146,7 +147,7 @@ public class BioRecipeLoader {
                     BioCultureLoader.BeerYeast,
                     new FluidStack[] { FluidRegistry.getFluidStack("potion.beer", 5) },
                     600,
-                    BW_Util.getMachineVoltageFromTier(1));
+                    (int) TierEU.RECIPE_LV);
             BWRecipes.instance.addBacterialVatRecipe(
                     new ItemStack[] { ItemList.IC2_Hops.get(32L),
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 16L) },
@@ -154,7 +155,7 @@ public class BioRecipeLoader {
                     BioCultureLoader.BeerYeast,
                     new FluidStack[] { FluidRegistry.getFluidStack("potion.darkbeer", 10) },
                     600,
-                    BW_Util.getMachineVoltageFromTier(1));
+                    (int) TierEU.RECIPE_LV);
         }
     }
 
@@ -167,7 +168,7 @@ public class BioRecipeLoader {
                 BioCultureLoader.WhineYeast,
                 new FluidStack[] { FluidRegistry.getFluidStack("potion.wine", 12) },
                 400,
-                BW_Util.getMachineVoltageFromTier(1));
+                (int) TierEU.RECIPE_LV);
 
         BWRecipes.instance.addBacterialVatRecipe(
                 null,
@@ -175,7 +176,7 @@ public class BioRecipeLoader {
                 BioCultureLoader.anaerobicOil,
                 new FluidStack[] { new FluidStack(FluidLoader.fulvicAcid, 1000) },
                 2748,
-                BW_Util.getMachineVoltageFromTier(3));
+                (int) TierEU.RECIPE_HV);
     }
 
     public static void runOnServerStarted() {

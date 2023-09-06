@@ -26,6 +26,17 @@ import static gregtech.api.enums.OrePrefixes.gemFlawless;
 import static gregtech.api.enums.OrePrefixes.lens;
 import static gregtech.api.enums.OrePrefixes.ore;
 import static gregtech.api.enums.OrePrefixes.plate;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sImplosionRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLatheRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sSifterRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -39,6 +50,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.TierEU;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -51,22 +63,39 @@ public class GemLoader implements IWerkstoffRunnable {
             if (werkstoff.getGenerationFeatures().hasSifterRecipes()
                     || (werkstoff.hasItemType(ore) && werkstoff.hasItemType(dust))) {
 
-                GT_ModHandler.addCompressionRecipe(werkstoff.get(gem, 9), werkstoff.get(block));
-                GT_Values.RA.addForgeHammerRecipe(werkstoff.get(block), werkstoff.get(gem, 9), 100, 24);
-                GT_Values.RA.addSifterRecipe(
-                        werkstoff.get(crushedPurified),
-                        new ItemStack[] { werkstoff.get(gemExquisite), werkstoff.get(gemFlawless), werkstoff.get(gem),
-                                werkstoff.get(gemFlawed), werkstoff.get(gemChipped), werkstoff.get(dust) },
-                        new int[] { 200, 1000, 2500, 2000, 4000, 5000 },
-                        800,
-                        16);
+                GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gem, 9)).itemOutputs(werkstoff.get(block))
+                        .noFluidInputs().noFluidOutputs().duration(15 * SECONDS).eut(2).addTo(sCompressorRecipes);
+
+                GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(block)).itemOutputs(werkstoff.get(gem, 9))
+                        .noFluidInputs().noFluidOutputs().duration(5 * SECONDS).eut(24).addTo(sHammerRecipes);
+
+                GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(crushedPurified))
+                        .itemOutputs(
+                                werkstoff.get(gemExquisite),
+                                werkstoff.get(gemFlawless),
+                                werkstoff.get(gem),
+                                werkstoff.get(gemFlawed),
+                                werkstoff.get(gemChipped),
+                                werkstoff.get(dust))
+                        .outputChances(200, 1000, 2500, 2000, 4000, 5000).noFluidInputs().noFluidOutputs()
+                        .duration(40 * SECONDS).eut(16).addTo(sSifterRecipes);
+
             }
 
-            GT_ModHandler.addPulverisationRecipe(werkstoff.get(gemExquisite), werkstoff.get(dust, 4));
-            GT_ModHandler.addPulverisationRecipe(werkstoff.get(gemFlawless), werkstoff.get(dust, 2));
-            GT_ModHandler.addPulverisationRecipe(werkstoff.get(gem), werkstoff.get(dust));
-            GT_ModHandler.addPulverisationRecipe(werkstoff.get(gemFlawed), werkstoff.get(dustSmall, 2));
-            GT_ModHandler.addPulverisationRecipe(werkstoff.get(gemChipped), werkstoff.get(dustSmall));
+            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gemExquisite)).itemOutputs(werkstoff.get(dust, 4))
+                    .noFluidInputs().noFluidOutputs().duration(20 * SECONDS).eut(2).addTo(sMaceratorRecipes);
+
+            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gemFlawless)).itemOutputs(werkstoff.get(dust, 2))
+                    .noFluidInputs().noFluidOutputs().duration(20 * SECONDS).eut(2).addTo(sMaceratorRecipes);
+
+            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gem)).itemOutputs(werkstoff.get(dust)).noFluidInputs()
+                    .noFluidOutputs().duration(20 * SECONDS).eut(2).addTo(sMaceratorRecipes);
+
+            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gemFlawed)).itemOutputs(werkstoff.get(dustSmall, 2))
+                    .noFluidInputs().noFluidOutputs().duration(20 * SECONDS).eut(2).addTo(sMaceratorRecipes);
+
+            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gemChipped)).itemOutputs(werkstoff.get(dustSmall))
+                    .noFluidInputs().noFluidOutputs().duration(20 * SECONDS).eut(2).addTo(sMaceratorRecipes);
 
             GT_ModHandler.addCraftingRecipe(
                     werkstoff.get(gemFlawless, 2),
@@ -85,70 +114,94 @@ public class GemLoader implements IWerkstoffRunnable {
                     0,
                     new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemFlawed) });
 
-            GT_Values.RA.addForgeHammerRecipe(werkstoff.get(gemExquisite), werkstoff.get(gemFlawless, 2), 64, 16);
-            GT_Values.RA.addForgeHammerRecipe(werkstoff.get(gemFlawless), werkstoff.get(gem, 2), 64, 16);
-            GT_Values.RA.addForgeHammerRecipe(werkstoff.get(gem), werkstoff.get(gemFlawed, 2), 64, 16);
-            GT_Values.RA.addForgeHammerRecipe(werkstoff.get(gemFlawed), werkstoff.get(gemChipped, 2), 64, 16);
-            GT_Values.RA.addForgeHammerRecipe(werkstoff.get(gemChipped), werkstoff.get(dustTiny), 64, 16);
+            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gemExquisite)).itemOutputs(werkstoff.get(gemFlawless, 2))
+                    .noFluidInputs().noFluidOutputs().duration(3 * SECONDS + 4 * TICKS).eut(16).addTo(sHammerRecipes);
+
+            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gemFlawless)).itemOutputs(werkstoff.get(gem, 2))
+                    .noFluidInputs().noFluidOutputs().duration(3 * SECONDS + 4 * TICKS).eut(16).addTo(sHammerRecipes);
+
+            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gem)).itemOutputs(werkstoff.get(gemFlawed, 2))
+                    .noFluidInputs().noFluidOutputs().duration(3 * SECONDS + 4 * TICKS).eut(16).addTo(sHammerRecipes);
+
+            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gemFlawed)).itemOutputs(werkstoff.get(gemChipped, 2))
+                    .noFluidInputs().noFluidOutputs().duration(3 * SECONDS + 4 * TICKS).eut(16).addTo(sHammerRecipes);
+
+            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gemChipped)).itemOutputs(werkstoff.get(dustTiny))
+                    .noFluidInputs().noFluidOutputs().duration(3 * SECONDS + 4 * TICKS).eut(16).addTo(sHammerRecipes);
 
             if (!werkstoff.contains(WerkstoffLoader.NO_BLAST)) {
-                GT_Values.RA.addImplosionRecipe(
-                        werkstoff.get(gemFlawless, 3),
-                        8,
-                        werkstoff.get(gemExquisite),
-                        GT_OreDictUnificator.get(dustTiny, Materials.DarkAsh, 2));
-                GT_Values.RA.addImplosionRecipe(
-                        werkstoff.get(gem, 3),
-                        8,
-                        werkstoff.get(gemFlawless),
-                        GT_OreDictUnificator.get(dustTiny, Materials.DarkAsh, 2));
-                GT_Values.RA.addImplosionRecipe(
-                        werkstoff.get(gemFlawed, 3),
-                        8,
-                        werkstoff.get(gem),
-                        GT_OreDictUnificator.get(dustTiny, Materials.DarkAsh, 2));
-                GT_Values.RA.addImplosionRecipe(
-                        werkstoff.get(gemChipped, 3),
-                        8,
-                        werkstoff.get(gemFlawed),
-                        GT_OreDictUnificator.get(dustTiny, Materials.DarkAsh, 2));
+                GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gemFlawless, 3))
+                        .itemOutputs(
+                                werkstoff.get(gemExquisite),
+                                GT_OreDictUnificator.get(dustTiny, Materials.DarkAsh, 2))
+                        .noFluidInputs().noFluidOutputs().duration(20 * TICKS).eut(TierEU.RECIPE_LV)
+                        .metadata(ADDITIVE_AMOUNT, 8).addTo(sImplosionRecipes);
 
-                GT_Values.RA.addImplosionRecipe(
-                        werkstoff.get(dust, 4),
-                        24,
-                        werkstoff.get(gem, 3),
-                        GT_OreDictUnificator.get(dustTiny, Materials.DarkAsh, 8));
+                GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gem, 3))
+                        .itemOutputs(
+                                werkstoff.get(gemFlawless),
+                                GT_OreDictUnificator.get(dustTiny, Materials.DarkAsh, 2))
+                        .noFluidInputs().noFluidOutputs().duration(20 * TICKS).eut(TierEU.RECIPE_LV)
+                        .metadata(ADDITIVE_AMOUNT, 8).addTo(sImplosionRecipes);
+
+                GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gemFlawed, 3))
+                        .itemOutputs(werkstoff.get(gem), GT_OreDictUnificator.get(dustTiny, Materials.DarkAsh, 2))
+                        .noFluidInputs().noFluidOutputs().duration(20 * TICKS).eut(TierEU.RECIPE_LV)
+                        .metadata(ADDITIVE_AMOUNT, 8).addTo(sImplosionRecipes);
+
+                GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gemChipped, 3))
+                        .itemOutputs(werkstoff.get(gemFlawed), GT_OreDictUnificator.get(dustTiny, Materials.DarkAsh, 2))
+                        .noFluidInputs().noFluidOutputs().duration(20 * TICKS).eut(TierEU.RECIPE_LV)
+                        .metadata(ADDITIVE_AMOUNT, 8).addTo(sImplosionRecipes);
+
+                GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(dust, 4))
+                        .itemOutputs(werkstoff.get(gem, 3), GT_OreDictUnificator.get(dustTiny, Materials.DarkAsh, 8))
+                        .noFluidInputs().noFluidOutputs().duration(20 * TICKS).eut(TierEU.RECIPE_LV)
+                        .metadata(ADDITIVE_AMOUNT, 24).addTo(sImplosionRecipes);
             }
 
             if (werkstoff.hasItemType(plate)) {
-                GT_Values.RA
-                        .addLatheRecipe(werkstoff.get(plate), werkstoff.get(lens), werkstoff.get(dustSmall), 1200, 120);
+
+                GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(plate))
+                        .itemOutputs(werkstoff.get(lens), werkstoff.get(dustSmall)).noFluidInputs().noFluidOutputs()
+                        .duration(60 * SECONDS).eut(TierEU.RECIPE_MV).addTo(sLatheRecipes);
+
             }
 
-            GT_Values.RA
-                    .addLatheRecipe(werkstoff.get(gemExquisite), werkstoff.get(lens), werkstoff.get(dust, 2), 2400, 30);
+            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gemExquisite))
+                    .itemOutputs(werkstoff.get(lens), werkstoff.get(dust, 2)).noFluidInputs().noFluidOutputs()
+                    .duration(2 * MINUTES).eut(TierEU.RECIPE_LV).addTo(sLatheRecipes);
+
             GregTech_API.registerCover(
                     werkstoff.get(lens),
                     TextureFactory.of(
                             Textures.BlockIcons.MACHINE_CASINGS[2][0],
                             TextureFactory.of(Textures.BlockIcons.OVERLAY_LENS, werkstoff.getRGBA(), false)),
                     new gregtech.common.covers.GT_Cover_Lens(BW_ColorUtil.getDyeFromColor(werkstoff.getRGBA()).mIndex));
-            GT_ModHandler.addPulverisationRecipe(werkstoff.get(lens), werkstoff.get(dustSmall, 3));
+
+            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(lens)).itemOutputs(werkstoff.get(dustSmall, 3))
+                    .noFluidInputs().noFluidOutputs().duration(20 * SECONDS).eut(2).addTo(sMaceratorRecipes);
 
             for (ItemStack is : OreDictionary.getOres(
                     "craftingLens" + BW_ColorUtil.getDyeFromColor(werkstoff.getRGBA()).mName.replace(" ", ""))) {
                 is.stackSize = 0;
-                GT_Values.RA
-                        .addLaserEngraverRecipe(werkstoff.get(gemChipped, 3), is, werkstoff.get(gemFlawed, 1), 600, 30);
-                GT_Values.RA.addLaserEngraverRecipe(werkstoff.get(gemFlawed, 3), is, werkstoff.get(gem, 1), 600, 120);
-                GT_Values.RA
-                        .addLaserEngraverRecipe(werkstoff.get(gem, 3), is, werkstoff.get(gemFlawless, 1), 1200, 480);
-                GT_Values.RA.addLaserEngraverRecipe(
-                        werkstoff.get(gemFlawless, 3),
-                        is,
-                        werkstoff.get(gemExquisite, 1),
-                        2400,
-                        2000);
+
+                GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gemChipped, 3), is)
+                        .itemOutputs(werkstoff.get(gemFlawed, 1)).noFluidInputs().noFluidOutputs()
+                        .duration(30 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sLaserEngraverRecipes);
+
+                GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gemFlawed, 3), is).itemOutputs(werkstoff.get(gem, 1))
+                        .noFluidInputs().noFluidOutputs().duration(30 * SECONDS).eut(TierEU.RECIPE_MV)
+                        .addTo(sLaserEngraverRecipes);
+
+                GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gem, 3), is)
+                        .itemOutputs(werkstoff.get(gemFlawless, 1)).noFluidInputs().noFluidOutputs()
+                        .duration(60 * SECONDS).eut(TierEU.RECIPE_HV).addTo(sLaserEngraverRecipes);
+
+                GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gemFlawless, 3), is)
+                        .itemOutputs(werkstoff.get(gemExquisite, 1)).noFluidInputs().noFluidOutputs()
+                        .duration(2 * MINUTES).eut(2000).addTo(sLaserEngraverRecipes);
+
             }
         }
     }
