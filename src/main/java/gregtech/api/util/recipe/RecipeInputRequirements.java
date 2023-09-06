@@ -51,7 +51,7 @@ public class RecipeInputRequirements {
         for (Entry<ItemHolder, Long> entry : itemInputs.entrySet()) {
             if (itemInputsMet.contains(entry.getKey())) continue;
             if (!this.itemInputs.containsKey(entry.getKey())) continue;
-            if (this.itemInputs.get(entry.getKey()) < entry.getValue()) continue;
+            if (this.itemInputs.get(entry.getKey()) > entry.getValue()) continue;
             itemInputsMet.add(entry.getKey());
         }
         metAllItem = itemInputsMet.containsAll(this.itemInputs.keySet());
@@ -68,7 +68,7 @@ public class RecipeInputRequirements {
         for (Entry<Fluid, Long> entry : fluidInputs.entrySet()) {
             if (fluidInputsMet.contains(entry.getKey())) continue;
             if (!this.fluidInputs.containsKey(entry.getKey())) continue;
-            if (this.fluidInputs.get(entry.getKey()) < entry.getValue()) continue;
+            if (this.fluidInputs.get(entry.getKey()) > entry.getValue()) continue;
             fluidInputsMet.add(entry.getKey());
         }
         metAllFluid = fluidInputsMet.containsAll(this.fluidInputs.keySet());

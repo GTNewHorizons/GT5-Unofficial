@@ -9,10 +9,10 @@ import gregtech.api.interfaces.IGlobalWirelessEnergy;
 
 public class PowerLogic implements IGlobalWirelessEnergy {
 
-    public static int NONE = 0;
-    public static int RECEIVER = 1;
-    public static int EMITTER = 2;
-    public static int BOTH = RECEIVER | EMITTER;
+    public static final int NONE = 0;
+    public static final int RECEIVER = 1;
+    public static final int EMITTER = 2;
+    public static final int BOTH = RECEIVER | EMITTER;
     private static float wirelessChargeFactor = 0.5F;
     private long storedEnergy = 0;
     private long energyCapacity = 0;
@@ -125,6 +125,10 @@ public class PowerLogic implements IGlobalWirelessEnergy {
 
     public long getStoredEnergy() {
         return storedEnergy;
+    }
+
+    public long getAmperage() {
+        return amperage;
     }
 
     public boolean isEnergyReceiver() {

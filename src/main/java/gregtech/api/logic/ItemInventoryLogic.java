@@ -192,7 +192,7 @@ public class ItemInventoryLogic {
     }
 
     public boolean subtractItemAmount(@Nonnull ItemHolder item, long amount, boolean simulate) {
-        Map<ItemHolder, Long> itemMap = inRecipeCheck ? cachedItemMap : getMapOfStoredItems();
+        Map<ItemHolder, Long> itemMap = getMapOfStoredItems();
         if (!itemMap.containsKey(item)) {
             return false;
         }
@@ -262,8 +262,8 @@ public class ItemInventoryLogic {
     }
 
     public void startRecipeCheck() {
-        inRecipeCheck = true;
         cachedItemMap = getMapOfStoredItems();
+        inRecipeCheck = true;
     }
 
     public void stopRecipeCheck() {
@@ -274,6 +274,7 @@ public class ItemInventoryLogic {
 
     @Nonnull
     public Map<ItemHolder, Long> getMapOfStoredItems() {
+        if (inRecipeCheck) return cachedItemMap;
         Map<ItemHolder, Long> items = new HashMap<>();
         for (int i = 0; i < inventory.getSlots(); i++) {
             ItemStack item = extractItem(i, Integer.MAX_VALUE);

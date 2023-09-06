@@ -27,15 +27,25 @@ public class ProcessingTask<T extends TaskHost & ProcessingLogicHost<P> & IMachi
     public void update(long tick, boolean isServerSide) {
         if (!isServerSide) return;
         if (!taskHost.isAllowedToWork()) return;
-        P logic = taskHost.getProcessingLogic();
+        final P logic = taskHost.getProcessingLogic();
+        if (taskHost.needsUpdate()) {
+            taskHost.updateProcessingLogic(logic);
+            taskHost.setProcessingUpdate(false);
+        }
         if (logic.canWork() && tick % 100 == 0) {
             if (tick % 100 == 0) {
+                taskHost.setProcessingLogicPower(logic);
                 logic.startCheck();
+                if (logic.getResult().wasSuccessful()) {
+                    taskHost.setActive(true);
+                }
             }
         }
 
         if (taskHost.hasThingsToDo()) {
             logic.progress();
+        } else {
+            taskHost.setActive(false);
         }
     }
 

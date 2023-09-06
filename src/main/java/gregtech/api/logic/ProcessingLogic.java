@@ -28,7 +28,7 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
  * Logic class to calculate result of recipe check from inputs, based on recipemap.
  */
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
-public class ProcessingLogic<T extends ProcessingLogic<T>> {
+public class ProcessingLogic<P extends ProcessingLogic<P>> {
 
     protected IVoidable machine;
     protected IRecipeLockable recipeLockableMachine;
@@ -62,9 +62,13 @@ public class ProcessingLogic<T extends ProcessingLogic<T>> {
     // MuTE Section, do not use for MTEs
     protected boolean hasWork;
     protected int progress;
-    protected ProcessingLogicHost<T> machineHost;
-    protected CheckRecipeResult recipeResult;
+    @Nonnull
+    protected ProcessingLogicHost<P> machineHost;
+    @Nonnull
+    protected CheckRecipeResult recipeResult = CheckRecipeResultRegistry.NONE;
+    @Nullable
     protected UUID itemOutputID;
+    @Nullable
     protected UUID fluidOutputID;
 
     public ProcessingLogic() {}
@@ -72,30 +76,30 @@ public class ProcessingLogic<T extends ProcessingLogic<T>> {
     // #region Setters
 
     @Nonnull
-    public T setInputItems(ItemStack... itemInputs) {
+    public P setInputItems(ItemStack... itemInputs) {
         this.inputItems = itemInputs;
         return getThis();
     }
 
     @Nonnull
-    public T setInputItems(List<ItemStack> itemOutputs) {
+    public P setInputItems(List<ItemStack> itemOutputs) {
         this.inputItems = itemOutputs.toArray(new ItemStack[0]);
         return getThis();
     }
 
     @Nonnull
-    public T setInputFluids(FluidStack... fluidInputs) {
+    public P setInputFluids(FluidStack... fluidInputs) {
         this.inputFluids = fluidInputs;
         return getThis();
     }
 
     @Nonnull
-    public T setInputFluids(List<FluidStack> fluidInputs) {
+    public P setInputFluids(List<FluidStack> fluidInputs) {
         this.inputFluids = fluidInputs.toArray(new FluidStack[0]);
         return getThis();
     }
 
-    public T setSpecialSlotItem(ItemStack specialSlotItem) {
+    public P setSpecialSlotItem(ItemStack specialSlotItem) {
         this.specialSlotItem = specialSlotItem;
         return getThis();
     }
@@ -103,7 +107,7 @@ public class ProcessingLogic<T extends ProcessingLogic<T>> {
     /**
      * Overwrites item output result of the calculation.
      */
-    public T setOutputItems(ItemStack... itemOutputs) {
+    public P setOutputItems(ItemStack... itemOutputs) {
         this.outputItems = itemOutputs;
         return getThis();
     }
@@ -111,17 +115,17 @@ public class ProcessingLogic<T extends ProcessingLogic<T>> {
     /**
      * Overwrites fluid output result of the calculation.
      */
-    public T setOutputFluids(FluidStack... fluidOutputs) {
+    public P setOutputFluids(FluidStack... fluidOutputs) {
         this.outputFluids = fluidOutputs;
         return getThis();
     }
 
-    public T setCurrentOutputItems(ItemStack... currentOutputItems) {
+    public P setCurrentOutputItems(ItemStack... currentOutputItems) {
         this.currentOutputItems = currentOutputItems;
         return getThis();
     }
 
-    public T setCurrentOutputFluids(FluidStack... currentOutputFluids) {
+    public P setCurrentOutputFluids(FluidStack... currentOutputFluids) {
         this.currentOutputFluids = currentOutputFluids;
         return getThis();
     }
@@ -129,13 +133,13 @@ public class ProcessingLogic<T extends ProcessingLogic<T>> {
     /**
      * Enables single recipe locking mode.
      */
-    public T setRecipeLocking(IRecipeLockable recipeLockableMachine, boolean isRecipeLocked) {
+    public P setRecipeLocking(IRecipeLockable recipeLockableMachine, boolean isRecipeLocked) {
         this.recipeLockableMachine = recipeLockableMachine;
         this.isRecipeLocked = isRecipeLocked;
         return getThis();
     }
 
-    public T setIsCleanroom(boolean isCleanroom) {
+    public P setIsCleanroom(boolean isCleanroom) {
         this.isCleanroom = isCleanroom;
         return getThis();
     }
@@ -143,7 +147,7 @@ public class ProcessingLogic<T extends ProcessingLogic<T>> {
     /**
      * Sets max amount of parallel.
      */
-    public T setMaxParallel(int maxParallel) {
+    public P setMaxParallel(int maxParallel) {
         this.maxParallel = maxParallel;
         return getThis();
     }
@@ -151,7 +155,7 @@ public class ProcessingLogic<T extends ProcessingLogic<T>> {
     /**
      * Sets method to get max amount of parallel.
      */
-    public T setMaxParallelSupplier(Supplier<Integer> supplier) {
+    public P setMaxParallelSupplier(Supplier<Integer> supplier) {
         this.maxParallelSupplier = supplier;
         return getThis();
     }
@@ -159,26 +163,26 @@ public class ProcessingLogic<T extends ProcessingLogic<T>> {
     /**
      * Sets batch size for batch mode.
      */
-    public T setBatchSize(int size) {
+    public P setBatchSize(int size) {
         this.batchSize = size;
         return getThis();
     }
 
-    public T setRecipeMap(GT_Recipe_Map recipeMap) {
+    public P setRecipeMap(GT_Recipe_Map recipeMap) {
         return setRecipeMapSupplier(() -> recipeMap);
     }
 
-    public T setRecipeMapSupplier(Supplier<GT_Recipe_Map> supplier) {
+    public P setRecipeMapSupplier(Supplier<GT_Recipe_Map> supplier) {
         this.recipeMapSupplier = supplier;
         return getThis();
     }
 
-    public T setEuModifier(float modifier) {
+    public P setEuModifier(float modifier) {
         this.euModifier = modifier;
         return getThis();
     }
 
-    public T setSpeedBonus(float speedModifier) {
+    public P setSpeedBonus(float speedModifier) {
         this.speedBoost = speedModifier;
         return getThis();
     }
@@ -186,12 +190,12 @@ public class ProcessingLogic<T extends ProcessingLogic<T>> {
     /**
      * Sets machine used for void protection logic.
      */
-    public T setMachine(IVoidable machine) {
+    public P setMachine(IVoidable machine) {
         this.machine = machine;
         return getThis();
     }
 
-    public T setMachineHost(ProcessingLogicHost<T> machineHost) {
+    public P setMachineHost(ProcessingLogicHost<P> machineHost) {
         this.machineHost = machineHost;
         return getThis();
     }
@@ -199,7 +203,7 @@ public class ProcessingLogic<T extends ProcessingLogic<T>> {
     /**
      * Overwrites duration result of the calculation.
      */
-    public T setDuration(int duration) {
+    public P setDuration(int duration) {
         this.duration = duration;
         return getThis();
     }
@@ -207,7 +211,7 @@ public class ProcessingLogic<T extends ProcessingLogic<T>> {
     /**
      * Overwrites EU/t result of the calculation.
      */
-    public T setCalculatedEut(long calculatedEut) {
+    public P setCalculatedEut(long calculatedEut) {
         this.calculatedEut = calculatedEut;
         return getThis();
     }
@@ -217,7 +221,7 @@ public class ProcessingLogic<T extends ProcessingLogic<T>> {
      * For example, most of the multiblock machines set maximum possible input power (including amperage) as voltage
      * and 1 as amperage. That way recipemap search will be executed with overclocked voltage.
      */
-    public T setAvailableVoltage(long voltage) {
+    public P setAvailableVoltage(long voltage) {
         availableVoltage = voltage;
         return getThis();
     }
@@ -226,12 +230,12 @@ public class ProcessingLogic<T extends ProcessingLogic<T>> {
      * Sets amperage of the machine. This amperage doesn't involve in EU/t when searching recipemap.
      * Useful for preventing tier skip but still considering amperage for parallel.
      */
-    public T setAvailableAmperage(long amperage) {
+    public P setAvailableAmperage(long amperage) {
         availableAmperage = amperage;
         return getThis();
     }
 
-    public T setVoidProtection(boolean protectItems, boolean protectFluids) {
+    public P setVoidProtection(boolean protectItems, boolean protectFluids) {
         this.protectItems = protectItems;
         this.protectFluids = protectFluids;
         return getThis();
@@ -241,7 +245,7 @@ public class ProcessingLogic<T extends ProcessingLogic<T>> {
      * Sets custom overclock ratio. 2/4 by default.
      * Parameters represent number of bit shift, so 1 -> 2x, 2 -> 4x.
      */
-    public T setOverclock(int timeReduction, int powerIncrease) {
+    public P setOverclock(int timeReduction, int powerIncrease) {
         this.overClockTimeReduction = timeReduction;
         this.overClockPowerIncrease = powerIncrease;
         return getThis();
@@ -250,14 +254,14 @@ public class ProcessingLogic<T extends ProcessingLogic<T>> {
     /**
      * Sets overclock ratio to 4/4.
      */
-    public T enablePerfectOverclock() {
+    public P enablePerfectOverclock() {
         return this.setOverclock(2, 2);
     }
 
     /**
      * Sets wether the multi should use amperage to OC or not
      */
-    public T setAmperageOC(boolean amperageOC) {
+    public P setAmperageOC(boolean amperageOC) {
         this.amperageOC = amperageOC;
         return getThis();
     }
@@ -265,7 +269,7 @@ public class ProcessingLogic<T extends ProcessingLogic<T>> {
     /**
      * Clears calculated results and provided machine inputs to prepare for the next machine operation.
      */
-    public T clear() {
+    public P clear() {
         this.inputItems = null;
         this.inputFluids = null;
         this.specialSlotItem = null;
@@ -518,13 +522,22 @@ public class ProcessingLogic<T extends ProcessingLogic<T>> {
         return calculatedParallels;
     }
 
+    @Nonnull
+    public CheckRecipeResult getResult() {
+        return recipeResult;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
     // #endregion
 
     // #region Other
 
     @Nonnull
-    public T getThis() {
-        return (T) this;
+    public P getThis() {
+        return (P) this;
     }
 
     public void startCheck() {
@@ -561,6 +574,14 @@ public class ProcessingLogic<T extends ProcessingLogic<T>> {
 
     public boolean canWork() {
         return !hasWork;
+    }
+
+    /**
+     * By how much to increase the progress?
+     * @param progressAmount in ticks
+     */
+    public void increaseProgress(int progressAmount) {
+        progress += progressAmount;
     }
     // #endregion
 }
