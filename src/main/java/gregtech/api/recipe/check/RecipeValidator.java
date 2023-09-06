@@ -1,8 +1,8 @@
 package gregtech.api.recipe.check;
 
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.Objects;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

@@ -36,7 +36,8 @@ public class ProcessingTask<T extends TaskHost & ProcessingLogicHost<P> & IMachi
             if (tick % 100 == 0) {
                 taskHost.setProcessingLogicPower(logic);
                 logic.startCheck();
-                if (logic.getResult().wasSuccessful()) {
+                if (logic.getResult()
+                    .wasSuccessful()) {
                     taskHost.setActive(true);
                 }
             }

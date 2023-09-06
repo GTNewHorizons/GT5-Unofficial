@@ -4227,7 +4227,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 Collection<GT_Recipe> recipesForItem = mRecipeItemMap.get(item);
                 recipesMatching.addAll(
                     recipesForItem.stream()
-                        .filter(recipe -> recipe != null && new RecipeInputRequirements(recipe).tryToFillItemRequirements(items))
+                        .filter(
+                            recipe -> recipe != null
+                                && new RecipeInputRequirements(recipe).tryToFillItemRequirements(items))
                         .collect(Collectors.toList()));
             }
 
@@ -4236,11 +4238,14 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 Collection<GT_Recipe> recipesForFluid = mRecipeFluidMap.get(fluid.getName());
                 recipesMatching.addAll(
                     recipesForFluid.stream()
-                        .filter(recipe -> recipe != null && new RecipeInputRequirements(recipe).tryToFillFluidRequirements(fluids))
+                        .filter(
+                            recipe -> recipe != null
+                                && new RecipeInputRequirements(recipe).tryToFillFluidRequirements(fluids))
                         .collect(Collectors.toList()));
             }
             recipesMatching = recipesMatching.stream()
-                .unordered().distinct()
+                .unordered()
+                .distinct()
                 .filter(recipe -> recipe.mEUt < voltage)
                 .collect(Collectors.toList());
             itemInput.stopRecipeCheck();

@@ -2,10 +2,10 @@ package gregtech.api.recipe.check;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
-
-import javax.annotation.Nonnull;
 
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.util.GT_Utility;
@@ -32,10 +32,11 @@ public class ResultInsufficientHeat implements CheckRecipeResult {
     @Override
     @Nonnull
     public String getDisplayString() {
-        return Objects.requireNonNull(StatCollector.translateToLocalFormatted(
-            "GT5U.gui.text.insufficient_heat",
-            GT_Utility.formatNumbers(required),
-            HeatingCoilLevel.getDisplayNameFromHeat(required, true)));
+        return Objects.requireNonNull(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.gui.text.insufficient_heat",
+                GT_Utility.formatNumbers(required),
+                HeatingCoilLevel.getDisplayNameFromHeat(required, true)));
     }
 
     @Override

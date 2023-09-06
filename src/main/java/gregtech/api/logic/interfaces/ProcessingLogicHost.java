@@ -15,7 +15,7 @@ public interface ProcessingLogicHost<P extends ProcessingLogic<P>>
     VoidingMode getVoidMode();
 
     /**
-     * Called before the processing logic is used for a recipe check
+     * Called when the processing logic should be updated by {@link #needsUpdate()}
      */
     default void updateProcessingLogic(P processingLogic) {}
 
@@ -24,7 +24,15 @@ public interface ProcessingLogicHost<P extends ProcessingLogic<P>>
      */
     default void setProcessingLogicPower(P processingLogic) {}
 
+    /**
+     * DO NOT CALL YOURSELF!!!
+     * 
+     * If you want to make the processing logic be updated call {@link #setProcessingUpdate(boolean)}
+     */
     boolean needsUpdate();
 
+    /**
+     * To be called when one needs to updated the processing logic. That can be when parallel changes, ect.
+     */
     void setProcessingUpdate(boolean update);
 }

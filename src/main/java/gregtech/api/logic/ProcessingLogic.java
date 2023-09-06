@@ -579,6 +579,7 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
 
     /**
      * By how much to increase the progress?
+     * 
      * @param progressAmount in ticks
      */
     public void increaseProgress(int progressAmount) {

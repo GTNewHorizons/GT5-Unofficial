@@ -1,11 +1,7 @@
 package gregtech.api.multitileentity.multiblock.base;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.IntStream;
-
-import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -15,7 +11,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.logic.ComplexParallelProcessingLogic;
@@ -44,7 +39,6 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
         setProcessingUpdate(true);
     }
 
-
     @Override
     protected void stopMachine(boolean powerShutDown) {
         super.stopMachine(powerShutDown);
@@ -68,12 +62,13 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
                     + (i + 1)
                     + ": "
                     + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(processing.getProgress(i) > 20 ? processing.getProgress(i) / 20 : processing.getProgress(i))
+                    + GT_Utility.formatNumbers(
+                        processing.getProgress(i) > 20 ? processing.getProgress(i) / 20 : processing.getProgress(i))
                     + EnumChatFormatting.RESET
                     + (processing.getProgress(i) > 20 ? " s / " : " ticks / ")
                     + EnumChatFormatting.YELLOW
-                    + GT_Utility
-                        .formatNumbers(processing.getDuration(i) > 20 ? processing.getDuration(i) / 20 : processing.getDuration(i))
+                    + GT_Utility.formatNumbers(
+                        processing.getDuration(i) > 20 ? processing.getDuration(i) / 20 : processing.getDuration(i))
                     + EnumChatFormatting.RESET
                     + (processing.getDuration(i) > 20 ? " s" : " ticks"));
         }

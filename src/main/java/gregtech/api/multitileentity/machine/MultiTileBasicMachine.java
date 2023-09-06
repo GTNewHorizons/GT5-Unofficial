@@ -4,7 +4,7 @@ import static gregtech.api.enums.GT_Values.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.UUID;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -13,7 +13,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumChatFormatting;
@@ -145,7 +144,6 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
         NBTTagCompound fluidOutputNBT = fluidOutput.saveToNBT();
         nbt.setTag(NBT.TANK_OUT, fluidOutputNBT);
     }
-
 
     @Override
     public void readMultiTileNBT(NBTTagCompound nbt) {
@@ -755,7 +753,7 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
         if (processingLogic == null) {
             processingLogic = createProcessingLogic().setMachineHost(this);
         }
-        return processingLogic;
+        return Objects.requireNonNull(processingLogic);
     }
 
     @OverrideOnly
@@ -781,5 +779,5 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
     public void setProcessingUpdate(boolean update) {
         processingUpdate = update;
     }
-    
+
 }

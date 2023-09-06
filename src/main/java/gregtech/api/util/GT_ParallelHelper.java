@@ -125,7 +125,8 @@ public class GT_ParallelHelper {
     private Function<Integer, FluidStack[]> customFluidOutputCalculation;
 
     /**
-     * MuTE Mode this is a mode for changing how the GT_ParallelHelper works as Mutes don't use ItemStack and FluidStack arrays for inputs
+     * MuTE Mode this is a mode for changing how the GT_ParallelHelper works as Mutes don't use ItemStack and FluidStack
+     * arrays for inputs
      */
     private boolean muteMode = false;
 
@@ -430,7 +431,8 @@ public class GT_ParallelHelper {
      */
     protected boolean tryConsumeRecipeInputs(GT_Recipe recipe, FluidStack[] fluids, ItemStack[] items,
         int minParallel) {
-        if (muteMode) return recipe.getAmountOfRecipesDone(itemInputInventory, fluidInputInventory, minParallel, false) > 0;
+        if (muteMode)
+            return recipe.getAmountOfRecipesDone(itemInputInventory, fluidInputInventory, minParallel, false) > 0;
         return recipe.isRecipeInputEqual(true, false, minParallel, fluids, items);
     }
 

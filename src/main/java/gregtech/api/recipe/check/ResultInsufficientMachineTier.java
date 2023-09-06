@@ -2,10 +2,10 @@ package gregtech.api.recipe.check;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
-
-import javax.annotation.Nonnull;
 
 import gregtech.api.util.GT_Utility;
 
@@ -31,8 +31,10 @@ public class ResultInsufficientMachineTier implements CheckRecipeResult {
     @Override
     @Nonnull
     public String getDisplayString() {
-        return Objects.requireNonNull(StatCollector
-            .translateToLocalFormatted("GT5U.gui.text.insufficient_machine_tier", GT_Utility.formatNumbers(required)));
+        return Objects.requireNonNull(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.gui.text.insufficient_machine_tier",
+                GT_Utility.formatNumbers(required)));
     }
 
     @Override
