@@ -123,6 +123,11 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
         saveItemLogic(nbt);
         saveFluidLogic(nbt);
 
+        if (processingLogic != null) {
+            NBTTagCompound processingLogicNBT = processingLogic.saveToNBT();
+            nbt.setTag("processingLogic", processingLogicNBT);
+        }
+
         nbt.setInteger(NBT.TIER, tier);
         nbt.setLong(NBT.EUT_CONSUMPTION, eut);
         nbt.setLong(NBT.BURN_TIME_LEFT, burnTime);
@@ -158,6 +163,11 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
 
         loadItemLogic(nbt);
         loadFluidLogic(nbt);
+
+        if (nbt.hasKey("processingLogic")) {
+            P processingLogic = getProcessingLogic();
+            processingLogic.loadFromNBT(Objects.requireNonNull(nbt.getCompoundTag("processingLogic")));
+        }
 
         tier = nbt.getInteger(NBT.TIER);
         eut = nbt.getLong(NBT.EUT_CONSUMPTION);

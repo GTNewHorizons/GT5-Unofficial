@@ -36,9 +36,6 @@ public class CokeOvenProcessingLogic extends ProcessingLogic<CokeOvenProcessingL
         ItemStack input = inputItems[0];
         int originalStackSize = input.stackSize;
         ItemStack output = findRecipe(input);
-        if (currentOutputItems != null && currentOutputItems[0] != null && !currentOutputItems[0].isItemEqual(output)) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
         input.stackSize -= 1;
         setDuration(NORMAL_RECIPE_TIME * timeMultiplier);
         setOutputItems(output);

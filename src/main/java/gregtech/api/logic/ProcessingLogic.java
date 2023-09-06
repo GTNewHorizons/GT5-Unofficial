@@ -1,5 +1,7 @@
 package gregtech.api.logic;
 
+import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
+
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -8,6 +10,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.InventoryType;
@@ -23,6 +27,7 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.GT_Utility;
 
 /**
  * Logic class to calculate result of recipe check from inputs, based on recipemap.
@@ -38,10 +43,8 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
     protected ItemStack specialSlotItem;
     protected ItemStack[] inputItems;
     protected ItemStack[] outputItems;
-    protected ItemStack[] currentOutputItems;
     protected FluidStack[] inputFluids;
     protected FluidStack[] outputFluids;
-    protected FluidStack[] currentOutputFluids;
     protected long calculatedEut;
     protected int duration;
     protected long availableVoltage;
@@ -117,16 +120,6 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
      */
     public P setOutputFluids(FluidStack... fluidOutputs) {
         this.outputFluids = fluidOutputs;
-        return getThis();
-    }
-
-    public P setCurrentOutputItems(ItemStack... currentOutputItems) {
-        this.currentOutputItems = currentOutputItems;
-        return getThis();
-    }
-
-    public P setCurrentOutputFluids(FluidStack... currentOutputFluids) {
-        this.currentOutputFluids = currentOutputFluids;
         return getThis();
     }
 
@@ -584,6 +577,62 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
      */
     public void increaseProgress(int progressAmount) {
         progress += progressAmount;
+    }
+
+    public NBTTagCompound saveToNBT() {
+        NBTTagCompound logicNBT = new NBTTagCompound();
+        logicNBT.setLong("eutConsumption", calculatedEut);
+        logicNBT.setInteger("duration", duration);
+        logicNBT.setInteger("progress", progress);
+        logicNBT.setBoolean("hasWork", hasWork);
+        if (outputItems != null) {
+            NBTTagList itemOutputsNBT = new NBTTagList();
+            for (ItemStack item : outputItems) {
+                itemOutputsNBT.appendTag(GT_Utility.saveItem(item));
+            }
+            logicNBT.setTag("itemOutputs", itemOutputsNBT);
+        }
+        if (outputFluids != null) {
+            NBTTagList fluidOutputsNBT = new NBTTagList();
+            for (FluidStack fluid : outputFluids) {
+                fluidOutputsNBT.appendTag(fluid.writeToNBT(new NBTTagCompound()));
+            }
+            logicNBT.setTag("fluidOutputs", fluidOutputsNBT);
+        }
+        if (itemOutputID != null) {
+            logicNBT.setString("itemOutputID", itemOutputID.toString());
+        }
+        if (fluidOutputID != null) {
+            logicNBT.setString("fluidOutputID", fluidOutputID.toString());
+        }
+        return logicNBT;
+    }
+
+    public void loadFromNBT(@Nonnull NBTTagCompound logicNBT) {
+        calculatedEut = logicNBT.getLong("eutConsumption");
+        duration = logicNBT.getInteger("duration");
+        progress = logicNBT.getInteger("progress");
+        hasWork = logicNBT.getBoolean("hasWork");
+        if (logicNBT.hasKey("itemOutputs")) {
+            NBTTagList itemOutputsNBT = logicNBT.getTagList("itemOutputs", TAG_COMPOUND);
+            outputItems = new ItemStack[itemOutputsNBT.tagCount()];
+            for (int i = 0; i < itemOutputsNBT.tagCount(); i++) {
+                outputItems[i] = GT_Utility.loadItem(itemOutputsNBT.getCompoundTagAt(i));
+            }
+        }
+        if (logicNBT.hasKey("fluidOutputs")) {
+            NBTTagList fluidOutputsNBT = logicNBT.getTagList("fluidOutputs", TAG_COMPOUND);
+            outputFluids = new FluidStack[fluidOutputsNBT.tagCount()];
+            for (int i = 0; i < fluidOutputsNBT.tagCount(); i++) {
+                outputFluids[i] = FluidStack.loadFluidStackFromNBT(fluidOutputsNBT.getCompoundTagAt(i));
+            }
+        }
+        if (logicNBT.hasKey("itemOutputID")) {
+            itemOutputID = UUID.fromString(logicNBT.getString("itemOutputID"));
+        }
+        if (logicNBT.hasKey("fluidOutputID")) {
+            fluidOutputID = UUID.fromString(logicNBT.getString("fluidOutputID"));
+        }
     }
     // #endregion
 }
