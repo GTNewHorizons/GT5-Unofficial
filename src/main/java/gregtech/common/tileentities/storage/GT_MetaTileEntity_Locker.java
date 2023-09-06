@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -218,44 +219,11 @@ public class GT_MetaTileEntity_Locker extends GT_MetaTileEntity_TieredMachineBlo
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         for (int i = 0; i < 4; i++) {
-            final StringBuilder stringBuilder = new StringBuilder();
             final ItemStack itemStack = this.mInventory[3 - i];
-            stringBuilder.append(String.format("Slot %d: ", i + 1));
 
             if (itemStack != null) {
-                stringBuilder.append(EnumChatFormatting.YELLOW)
-                    .append(itemStack.getDisplayName())
-                    .append(EnumChatFormatting.RESET);
-
-                GT_ModHandler.getElectricItemCharge(itemStack)
-                    .ifPresent(chargeInfo -> {
-                        final float ratio = (float) chargeInfo[0] / (float) chargeInfo[1];
-                        stringBuilder.append(" (");
-
-                        if (ratio == 0L) {
-                            stringBuilder.append(EnumChatFormatting.GRAY);
-                        } else if (ratio < 0.25) {
-                            stringBuilder.append(EnumChatFormatting.RED);
-                        } else if (ratio < 0.5) {
-                            stringBuilder.append(EnumChatFormatting.GOLD);
-                        } else if (ratio < 0.75) {
-                            stringBuilder.append(EnumChatFormatting.YELLOW);
-                        } else if (ratio < 1L) {
-                            stringBuilder.append(EnumChatFormatting.GREEN);
-                        } else {
-                            stringBuilder.append(EnumChatFormatting.AQUA);
-                        }
-
-                        stringBuilder.append(String.format("%.2f%s%%)", 100f * ratio, EnumChatFormatting.RESET));
-                    });
-
-            } else {
-                stringBuilder.append(EnumChatFormatting.GRAY)
-                    .append("None")
-                    .append(EnumChatFormatting.RESET);
+                tag.setTag(CHARGE_SLOT_WAILA_TAG + i, itemStack.writeToNBT(new NBTTagCompound()));
             }
-
-            tag.setString(CHARGE_SLOT_WAILA_TAG + i, stringBuilder.toString());
         }
     }
 
@@ -267,8 +235,48 @@ public class GT_MetaTileEntity_Locker extends GT_MetaTileEntity_TieredMachineBlo
         final NBTTagCompound tag = accessor.getNBTData();
 
         for (int i = 0; i < 4; i++) {
+            final String index = GT_Utility.formatNumbers(i + 1);
+
             if (tag.hasKey(CHARGE_SLOT_WAILA_TAG + i)) {
-                currentTip.add(tag.getString(CHARGE_SLOT_WAILA_TAG + i));
+                final ItemStack slotItem = ItemStack
+                    .loadItemStackFromNBT(tag.getCompoundTag(CHARGE_SLOT_WAILA_TAG + i));
+                assert slotItem != null;
+
+                currentTip.add(
+                    GT_ModHandler.getElectricItemCharge(slotItem)
+                        .map(chargeInfo -> {
+                            final float ratio = (float) chargeInfo[0] / (float) chargeInfo[1];
+                            final EnumChatFormatting chargeFormat;
+
+                            if (ratio == 0L) {
+                                chargeFormat = EnumChatFormatting.GRAY;
+                            } else if (ratio < 0.25) {
+                                chargeFormat = EnumChatFormatting.RED;
+                            } else if (ratio < 0.5) {
+                                chargeFormat = EnumChatFormatting.GOLD;
+                            } else if (ratio < 0.75) {
+                                chargeFormat = EnumChatFormatting.YELLOW;
+                            } else if (ratio < 1L) {
+                                chargeFormat = EnumChatFormatting.GREEN;
+                            } else {
+                                chargeFormat = EnumChatFormatting.AQUA;
+                            }
+
+                            return StatCollector.translateToLocalFormatted(
+                                "gt.locker.waila_armor_slot_charged",
+                                index,
+                                slotItem.getDisplayName(),
+                                chargeFormat,
+                                GT_Utility.formatNumbers(ratio * 100));
+                        })
+                        .orElseGet(
+                            // Lazy initialization
+                            () -> StatCollector.translateToLocalFormatted(
+                                "gt.locker.waila_armor_slot_generic",
+                                index,
+                                slotItem.getDisplayName())));
+            } else {
+                currentTip.add(StatCollector.translateToLocalFormatted("gt.locker.waila_armor_slot_none", index));
             }
         }
     }

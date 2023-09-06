@@ -2342,20 +2342,17 @@ public class GT_ModHandler {
         }
 
         final Item item = aStack.getItem();
-        if (item == null) {
-            return Optional.empty();
-        }
 
-        if (item instanceof GT_MetaBase_Item) {
-            final Long[] stats = ((GT_MetaBase_Item) item).getElectricStats(aStack);
+        if (item instanceof final GT_MetaBase_Item metaBaseItem) {
+            final Long[] stats = metaBaseItem.getElectricStats(aStack);
             if (stats != null && stats.length > 0) {
-                return Optional.of(new Long[] { ((GT_MetaBase_Item) item).getRealCharge(aStack), stats[0] });
+                return Optional.of(new Long[] { metaBaseItem.getRealCharge(aStack), stats[0] });
             }
 
-        } else if (item instanceof IElectricItem) {
+        } else if (item instanceof final IElectricItem ic2ElectricItem) {
             return Optional.of(
                 new Long[] { (long) ic2.api.item.ElectricItem.manager.getCharge(aStack),
-                    (long) ((IElectricItem) aStack.getItem()).getMaxCharge(aStack) });
+                    (long) ic2ElectricItem.getMaxCharge(aStack) });
         }
 
         return Optional.empty();
