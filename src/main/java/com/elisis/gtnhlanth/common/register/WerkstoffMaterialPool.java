@@ -376,16 +376,6 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 34,
             TextureSet.SET_DULL);
 
-    public static final Werkstoff MonaziteResidue = new Werkstoff(
-            new short[] { 64, 69, 62 },
-            "Monazite Residue",
-            subscriptNumbers("??ZrHfTh??"),
-            new Werkstoff.Stats(),
-            Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().disable().onlyDust(),
-            offsetID + 35,
-            TextureSet.SET_DULL);
-
     public static final Werkstoff AmmoniumNitrate = new Werkstoff(
             new short[] { 255, 255, 255 },
             "Ammonium Nitrate Solution",
@@ -703,40 +693,6 @@ public class WerkstoffMaterialPool implements Runnable {
             new Werkstoff.GenerationFeatures().disable().onlyDust(),
             offsetID2 + 17,
             TextureSet.SET_DULL);
-
-    public static final Werkstoff FluorinatedNeodymicRareEarths = new Werkstoff(
-            new short[] { 170, 90, 60 },
-            "Fluorinated Neodymium Rare Earths",
-            subscriptNumbers("??LaNdPr??"),
-            new Werkstoff.Stats(),
-            Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().disable().onlyDust(),
-            offsetID2 + 18,
-            TextureSet.SET_DULL);
-
-    public static final Werkstoff PraseodymiumTetrafluoride = new Werkstoff(
-            new short[] { 82, 112, 102 },
-            "Praseodymium Tetrafluoride",
-            subscriptNumbers("PrF4"),
-            new Werkstoff.Stats().setElektrolysis(true),
-            Werkstoff.Types.COMPOUND,
-            new Werkstoff.GenerationFeatures().disable().onlyDust(),
-            offsetID2 + 19,
-            TextureSet.SET_DULL,
-            Arrays.asList(Materials.Praseodymium, Materials.Fluorine),
-            new Pair<>(Materials.Praseodymium, 1),
-            new Pair<>(Materials.Fluorine, 4));
-
-    public static final Werkstoff RareEarthTrifluorides = new Werkstoff(
-            new short[] { 82, 112, 102 },
-            "Rare Earth Trifluorides",
-            subscriptNumbers("??LaNd??"),
-            new Werkstoff.Stats(),
-            Werkstoff.Types.MIXTURE,
-            new Werkstoff.GenerationFeatures().disable().onlyDust(),
-            offsetID2 + 20,
-            TextureSet.SET_DULL);
-
     public static final Werkstoff LanthaniumChloride = new Werkstoff(
             new short[] { 82, 112, 102 },
             "Lanthanium Chloride",
@@ -972,16 +928,6 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID3 + 12,
             TextureSet.SET_DULL);
 
-    public static final Werkstoff MagnesiumPeroxide = new Werkstoff(
-            new short[] { 255, 250, 205 },
-            "Magnesium Peroxide",
-            subscriptNumbers("MnO2"),
-            new Werkstoff.Stats(),
-            Werkstoff.Types.COMPOUND,
-            new Werkstoff.GenerationFeatures().disable().onlyDust(),
-            offsetID3 + 13,
-            TextureSet.SET_METALLIC);
-
     public static final Werkstoff PotassiumChlorate = new Werkstoff(
             new short[] { 240, 255, 255 },
             "Potassium Chlorate",
@@ -991,15 +937,6 @@ public class WerkstoffMaterialPool implements Runnable {
             new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten(),
             offsetID3 + 14,
             TextureSet.SET_DULL);
-
-    public static final Werkstoff MARM247 = new Werkstoff(
-            new short[] { 255, 133, 145 },
-            "MAR-M247",
-            new Werkstoff.Stats().setMeltingPoint(8000).setBlastFurnace(true).setMeltingVoltage(7680),
-            Werkstoff.Types.COMPOUND,
-            new Werkstoff.GenerationFeatures().disable().onlyDust().addMolten().addMetalItems(),
-            offsetID3 + 15,
-            TextureSet.SET_METALLIC);
 
     public static final Werkstoff DilutedAcetone = new Werkstoff(
             new short[] { 254, 254, 250 },

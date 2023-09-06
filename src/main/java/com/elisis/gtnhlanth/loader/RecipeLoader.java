@@ -1129,25 +1129,6 @@ public class RecipeLoader {
                 400,
                 960);
 
-        GT_Values.RA.addMixerRecipe(
-                Materials.Nichrome.getDust(4),
-                Materials.Aluminium.getDust(2),
-                WerkstoffMaterialPool.Hafnium.get(OrePrefixes.dust, 1),
-                Materials.Tantalum.getDust(2),
-                Materials.Tungsten.getDust(5),
-                WerkstoffMaterialPool.Zirconium.get(OrePrefixes.dust, 1),
-                Materials.Titanium.getDust(1),
-                null,
-                null,
-                null,
-                null,
-                WerkstoffMaterialPool.MARM247.get(OrePrefixes.dust, 16),
-                null,
-                null,
-                null,
-                800,
-                7680);
-
         GT_Values.RA.addFluidHeaterRecipe(
                 null,
                 WerkstoffMaterialPool.DilutedAcetone.getFluidOrGas(250),
