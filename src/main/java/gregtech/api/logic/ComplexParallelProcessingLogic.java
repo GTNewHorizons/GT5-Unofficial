@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-
+import gregtech.api.enums.InventoryType;
 import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
@@ -26,14 +26,7 @@ public class ComplexParallelProcessingLogic<P extends ComplexParallelProcessingL
     @Nonnull
     protected FindRecipeResult findRecipe(@Nullable GT_Recipe_Map map) {
         if (map == null) return FindRecipeResult.NOT_FOUND;
-        return map.findRecipeWithResult(
-            lastRecipe,
-            false,
-            false,
-            amperageOC ? availableVoltage * availableAmperage : availableVoltage,
-            inputFluids,
-            specialSlotItem,
-            inputItems);
+        return map.findRecipeWithResult(lastRecipe, availableVoltage, machineHost.getItemLogic(InventoryType.Input, null), machineHost.getFluidLogic(InventoryType.Input, null));
     }
 
     public ItemStack[] getOutputItems(int index) {
@@ -91,6 +84,8 @@ public class ComplexParallelProcessingLogic<P extends ComplexParallelProcessingL
             calculatedEutValues[i] = calculatedEut;
             durations[i] = duration;
             progresses[i] = 0;
+            outputItems[i] = getOutputItems();
+            outputFluids[i] = getOutputFluids();
         }
     }
 
