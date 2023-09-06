@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -20,6 +21,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -27,9 +29,10 @@ import org.jetbrains.annotations.NotNull;
 
 import com.glodblock.github.common.item.ItemFluidPacket;
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -51,7 +54,12 @@ import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.AECableType;
 import appeng.api.util.DimensionalCoord;
+import appeng.core.AppEng;
+import appeng.core.sync.GuiBridge;
+import appeng.helpers.ICustomNameObject;
+import appeng.helpers.IInterfaceTerminalSupport;
 import appeng.items.misc.ItemEncodedPattern;
+import appeng.items.tools.quartz.ToolQuartzCuttingKnife;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
@@ -70,12 +78,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_Utility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_Hatch_InputBus
     implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ICraftingProvider,
-    IGridProxyable, IDualInputHatch {
+    IGridProxyable, IDualInputHatch, ICustomNameObject, IInterfaceTerminalSupport {
 
     // Each pattern slot in the crafting input hatch has its own internal inventory
     public static class PatternSlot implements IDualInputInventory {
@@ -85,11 +94,11 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             ItemStack[] getSharedItem();
         }
 
-        private ItemStack pattern;
-        private ICraftingPatternDetails patternDetails;
-        private List<ItemStack> itemInventory;
-        private List<FluidStack> fluidInventory;
-        private SharedItemGetter sharedItemGetter;
+        private final ItemStack pattern;
+        private final ICraftingPatternDetails patternDetails;
+        private final List<ItemStack> itemInventory;
+        private final List<FluidStack> fluidInventory;
+        private final SharedItemGetter sharedItemGetter;
 
         public PatternSlot(ItemStack pattern, World world, SharedItemGetter getter) {
             this.pattern = pattern;
@@ -100,8 +109,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             this.sharedItemGetter = getter;
         }
 
-        public PatternSlot(NBTTagCompound nbt, World world, SharedItemGetter getter) {
-            this.pattern = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("pattern"));
+        public PatternSlot(ItemStack pattern, NBTTagCompound nbt, World world, SharedItemGetter getter) {
+            this.pattern = pattern;
             this.patternDetails = ((ICraftingPatternItem) Objects.requireNonNull(pattern.getItem()))
                 .getPatternForItem(pattern, world);
             this.itemInventory = new ArrayList<>();
@@ -109,13 +118,31 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             this.sharedItemGetter = getter;
             NBTTagList inv = nbt.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < inv.tagCount(); i++) {
-                var item = ItemStack.loadItemStackFromNBT(inv.getCompoundTagAt(i));
-                if (item != null && item.stackSize > 0) itemInventory.add(item);
+                NBTTagCompound tagItemStack = inv.getCompoundTagAt(i);
+                var item = GT_Utility.loadItem(tagItemStack);
+                if (item != null) {
+                    if (item.stackSize > 0) {
+                        itemInventory.add(item);
+                    }
+                } else {
+                    GT_Mod.GT_FML_LOGGER.warn(
+                        "An error occurred while loading contents of ME Crafting Input Bus. This item has been voided: "
+                            + tagItemStack);
+                }
             }
             NBTTagList fluidInv = nbt.getTagList("fluidInventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < fluidInv.tagCount(); i++) {
-                var fluid = FluidStack.loadFluidStackFromNBT(fluidInv.getCompoundTagAt(i));
-                if (fluid != null && fluid.amount > 0) fluidInventory.add(fluid);
+                NBTTagCompound tagFluidStack = fluidInv.getCompoundTagAt(i);
+                var fluid = FluidStack.loadFluidStackFromNBT(tagFluidStack);
+                if (fluid != null) {
+                    if (fluid.amount > 0) {
+                        fluidInventory.add(fluid);
+                    }
+                } else {
+                    GT_Mod.GT_FML_LOGGER.warn(
+                        "An error occurred while loading contents of ME Crafting Input Bus. This fluid has been voided: "
+                            + tagFluidStack);
+                }
             }
         }
 
@@ -127,24 +154,25 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
 
         private boolean isEmpty() {
-            if (itemInventory.isEmpty() && fluidInventory.isEmpty()) return true;
-
-            for (ItemStack itemStack : itemInventory) {
-                if (itemStack != null && itemStack.stackSize > 0) return false;
+            // if one item / fluid is empty then it should be safe to assume all other is empty,
+            // or at least won't require a recipe check, as long as the pattern is sane
+            if (!itemInventory.isEmpty()) {
+                return itemInventory.get(0) == null || itemInventory.get(0).stackSize <= 0;
             }
 
-            for (FluidStack fluidStack : fluidInventory) {
-                if (fluidStack != null && fluidStack.amount > 0) return false;
+            if (!fluidInventory.isEmpty()) {
+                return fluidInventory.get(0) == null || fluidInventory.get(0).amount <= 0;
             }
-
             return true;
         }
 
+        @Override
         public ItemStack[] getItemInputs() {
             if (isEmpty()) return new ItemStack[0];
             return ArrayUtils.addAll(itemInventory.toArray(new ItemStack[0]), sharedItemGetter.getSharedItem());
         }
 
+        @Override
         public FluidStack[] getFluidInputs() {
             if (isEmpty()) return new FluidStack[0];
             return fluidInventory.toArray(new FluidStack[0]);
@@ -259,7 +287,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
             NBTTagList itemInventoryNbt = new NBTTagList();
             for (ItemStack itemStack : this.itemInventory) {
-                itemInventoryNbt.appendTag(itemStack.writeToNBT(new NBTTagCompound()));
+                itemInventoryNbt.appendTag(GT_Utility.saveItem(itemStack));
             }
             nbt.setTag("inventory", itemInventoryNbt);
 
@@ -274,10 +302,15 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     }
 
     // mInventory is used for storing patterns, circuit and manual slot (typically NC items)
-    private static final int MAX_PATTERN_COUNT = 4 * 8;
-    private static final int MAX_INV_COUNT = MAX_PATTERN_COUNT + 2;
-    private static final int SLOT_MANUAL = MAX_INV_COUNT - 1;
-    private static final int SLOT_CIRCUIT = MAX_INV_COUNT - 2;
+    private static final int MAX_PATTERN_COUNT = 4 * 9;
+    private static final int SLOT_MANUAL_SIZE = 9;
+    private static final int MAX_INV_COUNT = MAX_PATTERN_COUNT + SLOT_MANUAL_SIZE + 1;
+    private static final int SLOT_CIRCUIT = MAX_PATTERN_COUNT;
+    private static final int SLOT_MANUAL_START = SLOT_CIRCUIT + 1;
+    private static final int MANUAL_SLOT_WINDOW = 10;
+    private static final PatternsConfiguration[] patternConfigurations = new PatternsConfiguration[] {
+        new PatternsConfiguration(0, 9), new PatternsConfiguration(9, 9), new PatternsConfiguration(18, 9),
+        new PatternsConfiguration(27, 9) };
 
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
@@ -291,6 +324,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     private boolean needPatternSync = true;
     private boolean justHadNewItems = false;
 
+    private String customName = null;
     private boolean supportFluids;
 
     public GT_MetaTileEntity_Hatch_CraftingInput_ME(int aID, String aName, String aNameRegional,
@@ -382,12 +416,45 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     }
 
     @Override
-    public void gridChanged() {
-        super.gridChanged();
-        if (getProxy().isReady()) {
-            getProxy().getNode()
-                .updateState();
+    public PatternsConfiguration[] getPatternsConfigurations() {
+        return patternConfigurations;
+    }
+
+    @Override
+    public IInventory getPatterns(int i) {
+        return this;
+    }
+
+    @Override
+    public String getName() {
+        if (hasCustomName()) {
+            return getCustomName();
         }
+        StringBuilder name = new StringBuilder();
+        if (getCrafterIcon() != null) {
+            name.append(getCrafterIcon().getDisplayName());
+        } else {
+            name.append(getInventoryName());
+        }
+
+        if (mInventory[SLOT_CIRCUIT] != null) {
+            name.append(" - ");
+            name.append(mInventory[SLOT_CIRCUIT].getItemDamage());
+        }
+        if (mInventory[SLOT_MANUAL_START] != null) {
+            name.append(" - ");
+            name.append(mInventory[SLOT_MANUAL_START].getDisplayName());
+        }
+        return name.toString();
+    }
+
+    @Override
+    public TileEntity getTileEntity() {
+        return (TileEntity) getBaseMetaTileEntity();
+    }
+
+    @Override
+    public void gridChanged() {
         needPatternSync = true;
     }
 
@@ -417,7 +484,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             }
         }
         aNBT.setTag("internalInventory", internalInventoryNBT);
-
+        if (customName != null) aNBT.setString("customName", customName);
         if (GregTech_API.mAE2) {
             getProxy().writeToNBT(aNBT);
         }
@@ -431,10 +498,33 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         for (int i = 0; i < internalInventoryNBT.tagCount(); i++) {
             NBTTagCompound internalInventorySlotNBT = internalInventoryNBT.getCompoundTagAt(i);
             int patternSlot = internalInventorySlotNBT.getInteger("patternSlot");
-            internalInventory[patternSlot] = new PatternSlot(
-                internalInventorySlotNBT.getCompoundTag("patternSlotNBT"),
-                getBaseMetaTileEntity().getWorld(),
-                this::getSharedItems);
+            NBTTagCompound patternSlotNBT = internalInventorySlotNBT.getCompoundTag("patternSlotNBT");
+            ItemStack pattern = ItemStack.loadItemStackFromNBT(patternSlotNBT.getCompoundTag("pattern"));
+            if (pattern != null) {
+                internalInventory[patternSlot] = new PatternSlot(
+                    pattern,
+                    patternSlotNBT,
+                    getBaseMetaTileEntity().getWorld(),
+                    this::getSharedItems);
+            } else {
+                GT_Mod.GT_FML_LOGGER.warn(
+                    "An error occurred while loading contents of ME Crafting Input Bus. This pattern has been voided: "
+                        + patternSlotNBT);
+            }
+        }
+
+        // Migrate from 4x8 to 4x9 pattern inventory
+        int oldPatternCount = 4 * 8;
+        int oldSlotManual = oldPatternCount + 1;
+        int oldSlotCircuit = oldPatternCount;
+
+        if (internalInventory[oldSlotManual] == null && mInventory[oldSlotManual] != null) {
+            mInventory[SLOT_MANUAL_START] = mInventory[oldSlotManual];
+            mInventory[oldSlotManual] = null;
+        }
+        if (internalInventory[oldSlotCircuit] == null && mInventory[oldSlotCircuit] != null) {
+            mInventory[SLOT_CIRCUIT] = mInventory[oldSlotCircuit];
+            mInventory[oldSlotCircuit] = null;
         }
 
         // reconstruct patternDetailsPatternSlotMap
@@ -444,6 +534,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                 patternDetailsPatternSlotMap.put(patternSlot.getPatternDetails(), patternSlot);
             }
         }
+
+        if (aNBT.hasKey("customName")) customName = aNBT.getString("customName");
 
         if (GregTech_API.mAE2) {
             getProxy().readFromNBT(aNBT);
@@ -524,7 +616,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     @Override
     public int getCircuitSlotX() {
-        return 152;
+        return 170;
     }
 
     @Override
@@ -538,9 +630,15 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     }
 
     @Override
+    public int getGUIWidth() {
+        return super.getGUIWidth() + 16;
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.@NotNull Builder builder, UIBuildContext buildContext) {
+        buildContext.addSyncedWindow(MANUAL_SLOT_WINDOW, this::createSlotManualWindow);
         builder.widget(
-            SlotGroup.ofItemHandler(inventoryHandler, 8)
+            SlotGroup.ofItemHandler(inventoryHandler, 9)
                 .startFromSlot(0)
                 .endAtSlot(MAX_PATTERN_COUNT - 1)
                 .phantom(false)
@@ -557,13 +655,20 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                         return output != null ? output : stack;
                     }
                 }.setFilter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
-                    .setChangeListener(() -> onPatternChange(slot)))
+                    .setChangeListener(() -> onPatternChange(slot.getSlotIndex(), slot.getStack())))
                 .build()
                 .setPos(7, 9))
-            .widget(
-                new SlotWidget(inventoryHandler, SLOT_MANUAL).setShiftClickPriority(11)
-                    .setBackground(getGUITextureSet().getItemSlot())
-                    .setPos(151, 45))
+            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                if (clickData.mouseButton == 0) {
+                    widget.getContext()
+                        .openSyncedWindow(MANUAL_SLOT_WINDOW);
+                }
+            })
+                .setPlayClickSound(true)
+                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_PLUS_LARGE)
+                .addTooltips(ImmutableList.of("Place manual items"))
+                .setSize(16, 16)
+                .setPos(170, 45))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (clickData.mouseButton == 0) {
                     refundAll();
@@ -573,12 +678,14 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
                 .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EXPORT)
                 .addTooltips(ImmutableList.of("Return all internally stored items back to AE"))
                 .setSize(16, 16)
-                .setPos(152, 28));
+                .setPos(170, 28));
     }
 
     @Override
     public void updateSlots() {
-        if (mInventory[SLOT_MANUAL] != null && mInventory[SLOT_MANUAL].stackSize <= 0) mInventory[SLOT_MANUAL] = null;
+        for (int slotId = SLOT_MANUAL_START; slotId < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; ++slotId) {
+            if (mInventory[slotId] != null && mInventory[slotId].stackSize <= 0) mInventory[slotId] = null;
+        }
     }
 
     private BaseActionSource getRequest() {
@@ -586,19 +693,19 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         return requestSource;
     }
 
-    private void onPatternChange(BaseSlot slot) {
+    private void onPatternChange(int index, ItemStack newItem) {
         if (!getBaseMetaTileEntity().isServerSide()) return;
 
         var world = getBaseMetaTileEntity().getWorld();
 
         // remove old if applicable
-        var originalPattern = internalInventory[slot.getSlotIndex()];
+        var originalPattern = internalInventory[index];
         if (originalPattern != null) {
-            if (originalPattern.hasChanged(slot.getStack(), world)) {
+            if (originalPattern.hasChanged(newItem, world)) {
                 try {
                     originalPattern.refund(getProxy(), getRequest());
                 } catch (GridAccessException ignored) {}
-                internalInventory[slot.getSlotIndex()] = null;
+                internalInventory[index] = null;
                 needPatternSync = true;
             } else {
                 return; // nothing has changed
@@ -606,18 +713,20 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
 
         // original does not exist or has changed
-        var pattern = slot.getStack();
-        if (pattern == null || !(pattern.getItem() instanceof ICraftingPatternItem)) return;
+        if (newItem == null || !(newItem.getItem() instanceof ICraftingPatternItem)) return;
 
-        var patternSlot = new PatternSlot(pattern, world, this::getSharedItems);
-        internalInventory[slot.getSlotIndex()] = patternSlot;
+        var patternSlot = new PatternSlot(newItem, world, this::getSharedItems);
+        internalInventory[index] = patternSlot;
         patternDetailsPatternSlotMap.put(patternSlot.getPatternDetails(), patternSlot);
 
         needPatternSync = true;
     }
 
     private ItemStack[] getSharedItems() {
-        return new ItemStack[] { mInventory[SLOT_CIRCUIT], mInventory[SLOT_MANUAL] };
+        ItemStack[] sharedItems = new ItemStack[SLOT_MANUAL_SIZE + 1];
+        sharedItems[0] = mInventory[SLOT_CIRCUIT];
+        System.arraycopy(mInventory, SLOT_MANUAL_START, sharedItems, 1, SLOT_MANUAL_SIZE);
+        return sharedItems;
     }
 
     @Override
@@ -629,7 +738,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             for (int i = 0; i < inventory.tagCount(); ++i) {
                 var item = inventory.getCompoundTagAt(i);
                 var name = item.getString("name");
-                var amount = item.getInteger("amount");
+                var amount = item.getLong("amount");
                 currenttip.add(
                     name + ": "
                         + EnumChatFormatting.GOLD
@@ -645,20 +754,20 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         int z) {
 
         NBTTagList inventory = new NBTTagList();
-        HashMap<String, Integer> nameToAmount = new HashMap<>();
+        HashMap<String, Long> nameToAmount = new HashMap<>();
         for (Iterator<PatternSlot> it = inventories(); it.hasNext();) {
             var i = it.next();
             for (var item : i.itemInventory) {
                 if (item != null && item.stackSize > 0) {
                     var name = item.getDisplayName();
-                    var amount = nameToAmount.getOrDefault(name, 0);
+                    var amount = nameToAmount.getOrDefault(name, 0L);
                     nameToAmount.put(name, amount + item.stackSize);
                 }
             }
             for (var fluid : i.fluidInventory) {
                 if (fluid != null && fluid.amount > 0) {
                     var name = fluid.getLocalizedName();
-                    var amount = nameToAmount.getOrDefault(name, 0);
+                    var amount = nameToAmount.getOrDefault(name, 0L);
                     nameToAmount.put(name, amount + fluid.amount);
                 }
             }
@@ -666,11 +775,12 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         for (var entry : nameToAmount.entrySet()) {
             var item = new NBTTagCompound();
             item.setString("name", entry.getKey());
-            item.setInteger("amount", entry.getValue());
+            item.setLong("amount", entry.getValue());
             inventory.appendTag(item);
         }
 
         tag.setTag("inventory", inventory);
+        tag.setString("name", getName());
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
@@ -716,6 +826,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         return false;
     }
 
+    @Override
     public Iterator<PatternSlot> inventories() {
         return Arrays.stream(internalInventory)
             .filter(Objects::nonNull)
@@ -737,6 +848,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
     }
 
+    @Override
     public boolean justUpdated() {
         var ret = justHadNewItems;
         justHadNewItems = false;
@@ -748,7 +860,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         if (!(aPlayer instanceof EntityPlayerMP)) return;
 
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, true, true)) return;
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) return;
 
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("type", "CraftingInputBuffer");
@@ -761,6 +873,25 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             "Crafting Input Buffer Link Data Stick (" + aBaseMetaTileEntity
                 .getXCoord() + ", " + aBaseMetaTileEntity.getYCoord() + ", " + aBaseMetaTileEntity.getZCoord() + ")");
         aPlayer.addChatMessage(new ChatComponentText("Saved Link Data to Data Stick"));
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
+        float aX, float aY, float aZ) {
+        final ItemStack is = aPlayer.inventory.getCurrentItem();
+        if (is != null && is.getItem() instanceof ToolQuartzCuttingKnife) {
+            if (ForgeEventFactory.onItemUseStart(aPlayer, is, 1) <= 0) return false;
+            var te = getBaseMetaTileEntity();
+            aPlayer.openGui(
+                AppEng.instance(),
+                GuiBridge.GUI_RENAMER.ordinal() << 5 | (side.ordinal()),
+                te.getWorld(),
+                te.getXCoord(),
+                te.getYCoord(),
+                te.getZCoord());
+            return true;
+        }
+        return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
     }
 
     @Override
@@ -780,4 +911,52 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         return true;
     }
 
+    protected ModularWindow createSlotManualWindow(final EntityPlayer player) {
+        final int WIDTH = 68;
+        final int HEIGHT = 68;
+        final int PARENT_WIDTH = getGUIWidth();
+        final int PARENT_HEIGHT = getGUIHeight();
+        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
+        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
+        builder.setDraggable(true);
+        // make sure the manual window is within the parent window
+        // otherwise picking up manual items would toss them
+        // See GuiContainer.java flag1
+        builder.setPos(
+            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
+                .add(Alignment.TopRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))));
+        builder.widget(
+            SlotGroup.ofItemHandler(inventoryHandler, 3)
+                .startFromSlot(SLOT_MANUAL_START)
+                .endAtSlot(SLOT_MANUAL_START + SLOT_MANUAL_SIZE - 1)
+                .phantom(false)
+                .background(getGUITextureSet().getItemSlot())
+                .build()
+                .setPos(7, 7));
+        return builder.build();
+    }
+
+    @Override
+    public void setInventorySlotContents(int aIndex, ItemStack aStack) {
+        super.setInventorySlotContents(aIndex, aStack);
+        if (aIndex >= MAX_PATTERN_COUNT) return;
+        onPatternChange(aIndex, aStack);
+        needPatternSync = true;
+    }
+
+    @Override
+    public String getCustomName() {
+        return customName;
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return customName != null;
+    }
+
+    @Override
+    public void setCustomName(String name) {
+        customName = name;
+    }
 }

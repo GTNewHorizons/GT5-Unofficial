@@ -560,16 +560,10 @@ public class GT_MetaTileEntity_PCBFactory extends
             @Nonnull
             @Override
             protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
-                if (isNoOC()) {
-                    return GT_OverclockCalculator.ofNoOverclock(recipe)
-                        .setEUtDiscount((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
-                        .setSpeedBoost(getDurationMultiplierFromRoughness());
-                }
-                GT_OverclockCalculator calculator = super.createOverclockCalculator(recipe)
+                return super.createOverclockCalculator(recipe).setNoOverclock(isNoOC())
                     .setEUtDiscount((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
                     .setSpeedBoost(getDurationMultiplierFromRoughness())
                     .setDurationDecreasePerOC(mOCTier2 ? 2 : 1);
-                return calculator;
             }
 
             @Nonnull
@@ -883,7 +877,19 @@ public class GT_MetaTileEntity_PCBFactory extends
             .beginStructureBlock(30, 38, 13, false)
             .addSeparator()
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
-            .addEnergyHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+            .addEnergyHatch(
+                EnumChatFormatting.GOLD + "1"
+                    + EnumChatFormatting.GRAY
+                    + "-"
+                    + EnumChatFormatting.GOLD
+                    + "2"
+                    + EnumChatFormatting.GRAY
+                    + " or "
+                    + EnumChatFormatting.GOLD
+                    + "1"
+                    + EnumChatFormatting.GRAY
+                    + " TT energy hatch.",
+                1)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)

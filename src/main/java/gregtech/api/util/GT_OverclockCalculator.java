@@ -4,9 +4,11 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.GT_Values;
+
 public class GT_OverclockCalculator {
 
-    private static final double LOG4 = Math.log(4);
+    private static final double LOG2 = Math.log(2);
 
     /**
      * Voltage the recipe will run at
@@ -381,15 +383,15 @@ public class GT_OverclockCalculator {
     }
 
     private void calculateOverclock() {
+        duration = (int) Math.ceil(duration * speedBoost);
         if (noOverclock) {
-            calculateFinalRecipeEUt(calculateHeatDiscountMultiplier());
+            recipeVoltage = calculateFinalRecipeEUt(calculateHeatDiscountMultiplier());
             return;
         }
         if (laserOC && amperageOC) {
             throw new IllegalStateException("Tried to calculate overclock with both laser and amperage overclocking");
         }
         double heatDiscountMultiplier = calculateHeatDiscountMultiplier();
-        duration = (int) Math.ceil(duration * speedBoost);
         if (heatOC) {
             heatOverclockCount = calculateAmountOfHeatOverclocks();
         }
@@ -398,6 +400,9 @@ public class GT_OverclockCalculator {
         double machinePowerTier = calculateMachinePowerTier();
         // Math.log(a) / Math.log(b) equals to log_b (a)
         overclockCount = calculateAmountOfNeededOverclocks(machinePowerTier, recipePowerTier);
+        if (recipeVoltage <= GT_Values.V[0]) {
+            overclockCount = Math.min(overclockCount, calculateRecipeToMachineVoltageDifference());
+        }
         if (overclockCount < 0) {
             recipeVoltage = Long.MAX_VALUE;
             duration = Integer.MAX_VALUE;
@@ -428,15 +433,20 @@ public class GT_OverclockCalculator {
     }
 
     private double calculateRecipePowerTier(double heatDiscountMultiplier) {
-        return Math.max(
-            1,
-            Math.log(recipeVoltage * parallel * eutDiscount * heatDiscountMultiplier * recipeAmperage) / LOG4 - 1);
+        return calculatePowerTier(recipeVoltage * parallel * eutDiscount * heatDiscountMultiplier * recipeAmperage);
     }
 
     private double calculateMachinePowerTier() {
-        return Math.max(
-            1,
-            Math.log(machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel))) / LOG4 - 1);
+        return calculatePowerTier(
+            machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel)));
+    }
+
+    private int calculateRecipeToMachineVoltageDifference() {
+        return (int) (Math.ceil(calculatePowerTier(machineVoltage)) - Math.ceil(calculatePowerTier(recipeVoltage)));
+    }
+
+    private double calculatePowerTier(double voltage) {
+        return 1 + Math.max(0, (Math.log(voltage) / LOG2) - 5) / 2;
     }
 
     private long calculateFinalRecipeEUt(double heatDiscountMultiplier) {
@@ -562,6 +572,9 @@ public class GT_OverclockCalculator {
         double machineTier = calculateMachinePowerTier();
         double recipeTier = calculateRecipePowerTier(heatDiscountMultiplier);
         double amountOfTotalOverclocks = calculateAmountOfOverclocks(machineTier, recipeTier);
+        if (recipeVoltage <= GT_Values.V[0]) {
+            amountOfTotalOverclocks = Math.min(amountOfTotalOverclocks, calculateRecipeToMachineVoltageDifference());
+        }
         return (long) Math.ceil(
             recipeVoltage * Math.pow(1 << eutIncreasePerOC, amountOfParallelOverclocks + amountOfParallelHeatOverclocks)
                 * Math.pow(

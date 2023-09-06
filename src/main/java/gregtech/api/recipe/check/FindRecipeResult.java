@@ -7,6 +7,8 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
 import gregtech.api.util.GT_Recipe;
 
 /**
@@ -21,6 +23,8 @@ public class FindRecipeResult {
     private final State state;
     @Nonnull
     private final List<GT_Recipe> recipes;
+    @Nullable
+    private RecipeValidator recipeValidator;
 
     private FindRecipeResult(@Nonnull State state, @Nullable GT_Recipe recipe) {
         this(state, Collections.singletonList(recipe));
@@ -49,7 +53,7 @@ public class FindRecipeResult {
     }
 
     /**
-     * You should use this ONLY WHEN state == FOUND or INSUFFICIENT_VOLTAGE.
+     * You should use this ONLY WHEN state == FOUND.
      */
     @Nonnull
     public GT_Recipe getRecipeNonNull() {
@@ -59,6 +63,31 @@ public class FindRecipeResult {
     @Nonnull
     public List<GT_Recipe> getRecipesPossible() {
         return recipes;
+    }
+
+    /**
+     * Gets recipeValidator if it is not null.
+     * Be sure to call hasRecipeValidator before to determine if recipeValidator exists
+     *
+     * @return not null recipe validator
+     */
+    @NotNull
+    public RecipeValidator getRecipeValidator() {
+        return Objects.requireNonNull(recipeValidator);
+    }
+
+    /**
+     * Sets recipeValidator which used to get this result
+     */
+    public void setRecipeValidator(@Nullable RecipeValidator recipeValidator) {
+        this.recipeValidator = recipeValidator;
+    }
+
+    /**
+     * Gets if this result has recipeValidator
+     */
+    public boolean hasRecipeValidator() {
+        return recipeValidator != null;
     }
 
     /**
@@ -72,14 +101,6 @@ public class FindRecipeResult {
     @Nonnull
     public static FindRecipeResult ofSuccess(@Nonnull List<GT_Recipe> recipes) {
         return new FindRecipeResult(State.FOUND, Objects.requireNonNull(recipes));
-    }
-
-    /**
-     * Recipe was found, but voltage is not sufficient to run.
-     */
-    @Nonnull
-    public static FindRecipeResult ofInsufficientVoltage(@Nonnull GT_Recipe recipe) {
-        return new FindRecipeResult(State.INSUFFICIENT_VOLTAGE, Objects.requireNonNull(recipe));
     }
 
     /**
@@ -104,10 +125,6 @@ public class FindRecipeResult {
          * Successfully found recipe.
          */
         FOUND(true),
-        /**
-         * Recipe was found, but voltage is not sufficient to run.
-         */
-        INSUFFICIENT_VOLTAGE(false),
         /**
          * No recipe found.
          */

@@ -363,6 +363,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         setMufflers(false);
         mMufflerHatches.clear();
         mMaintenanceHatches.clear();
+        mDualInputHatches.clear();
     }
 
     public boolean checkStructure(boolean aForceReset) {
@@ -756,6 +757,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         logic.setAmperageOC(mEnergyHatches.size() != 1);
     }
 
+    protected boolean supportsCraftingMEBuffer() {
+        return true;
+    }
+
     /**
      * Iterates over hatches and tries to find recipe. Assume {@link #processingLogic} is already set up for use.
      * If return value is successful, inputs are consumed.
@@ -764,18 +769,17 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     protected CheckRecipeResult doCheckRecipe() {
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
         // check crafting input hatches first
-        for (IDualInputHatch dualInputHatch : mDualInputHatches) {
-            for (var it = dualInputHatch.inventories(); it.hasNext();) {
-                IDualInputInventory slot = it.next();
-                processingLogic.setInputItems(slot.getItemInputs());
-                processingLogic.setInputFluids(slot.getFluidInputs());
-                result = processingLogic.process();
-                if (result.wasSuccessful()) {
-                    return result;
+        if (supportsCraftingMEBuffer()) {
+            for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+                for (var it = dualInputHatch.inventories(); it.hasNext();) {
+                    IDualInputInventory slot = it.next();
+                    processingLogic.setInputItems(slot.getItemInputs());
+                    processingLogic.setInputFluids(slot.getFluidInputs());
+                    result = processingLogic.process();
+                    if (result.wasSuccessful()) {
+                        return result;
+                    }
                 }
-            }
-            if (result.wasSuccessful()) {
-                return result;
             }
         }
 
@@ -1525,6 +1529,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof IDualInputHatch hatch) {
+            if (!supportsCraftingMEBuffer()) return false;
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return mDualInputHatches.add(hatch);
