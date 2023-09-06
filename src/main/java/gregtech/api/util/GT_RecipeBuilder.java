@@ -255,6 +255,7 @@ public class GT_RecipeBuilder {
     }
 
     public GT_RecipeBuilder noItemOutputs() {
+        chances = null;
         return itemOutputs();
     }
 
