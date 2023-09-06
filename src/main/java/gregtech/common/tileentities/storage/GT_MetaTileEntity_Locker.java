@@ -5,9 +5,16 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_IN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_LOCKER;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.SoundResource;
@@ -17,10 +24,14 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_Locker extends GT_MetaTileEntity_TieredMachineBlock {
 
+    private static final String CHARGE_SLOT_WAILA_TAG = "charge_slot_";
     public byte mType = 0;
 
     public GT_MetaTileEntity_Locker(int aID, String aName, String aNameRegional, int aTier) {
@@ -201,5 +212,72 @@ public class GT_MetaTileEntity_Locker extends GT_MetaTileEntity_TieredMachineBlo
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        for (int i = 0; i < 4; i++) {
+            final ItemStack itemStack = this.mInventory[3 - i];
+
+            if (itemStack != null) {
+                tag.setTag(CHARGE_SLOT_WAILA_TAG + i, itemStack.writeToNBT(new NBTTagCompound()));
+            }
+        }
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+
+        final NBTTagCompound tag = accessor.getNBTData();
+
+        for (int i = 0; i < 4; i++) {
+            final String index = GT_Utility.formatNumbers(i + 1);
+
+            if (tag.hasKey(CHARGE_SLOT_WAILA_TAG + i)) {
+                final ItemStack slotItem = ItemStack
+                    .loadItemStackFromNBT(tag.getCompoundTag(CHARGE_SLOT_WAILA_TAG + i));
+                assert slotItem != null;
+
+                currentTip.add(
+                    GT_ModHandler.getElectricItemCharge(slotItem)
+                        .map(chargeInfo -> {
+                            final float ratio = (float) chargeInfo[0] / (float) chargeInfo[1];
+                            final EnumChatFormatting chargeFormat;
+
+                            if (ratio == 0L) {
+                                chargeFormat = EnumChatFormatting.GRAY;
+                            } else if (ratio < 0.25) {
+                                chargeFormat = EnumChatFormatting.RED;
+                            } else if (ratio < 0.5) {
+                                chargeFormat = EnumChatFormatting.GOLD;
+                            } else if (ratio < 0.75) {
+                                chargeFormat = EnumChatFormatting.YELLOW;
+                            } else if (ratio < 1L) {
+                                chargeFormat = EnumChatFormatting.GREEN;
+                            } else {
+                                chargeFormat = EnumChatFormatting.AQUA;
+                            }
+
+                            return StatCollector.translateToLocalFormatted(
+                                "gt.locker.waila_armor_slot_charged",
+                                index,
+                                slotItem.getDisplayName(),
+                                chargeFormat,
+                                GT_Utility.formatNumbers(ratio * 100));
+                        })
+                        .orElseGet(
+                            // Lazy initialization
+                            () -> StatCollector.translateToLocalFormatted(
+                                "gt.locker.waila_armor_slot_generic",
+                                index,
+                                slotItem.getDisplayName())));
+            } else {
+                currentTip.add(StatCollector.translateToLocalFormatted("gt.locker.waila_armor_slot_none", index));
+            }
+        }
     }
 }
