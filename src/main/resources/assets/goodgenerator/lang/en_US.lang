@@ -515,6 +515,8 @@ achievement.gt.blockmachines.largefusioncomputer4=イワシがつちからはえ
 achievement.gt.blockmachines.largefusioncomputer4.desc=Pickup this item to see the recipe in NEI
 achievement.gt.blockmachines.largefusioncomputer5=XXXX
 achievement.gt.blockmachines.largefusioncomputer5.desc=Pickup this item to see the recipe in NEI
+achievement.item.advancedRadiationProtectionPlate=Advanced Radiation Proof Plate
+achievement.item.advancedRadiationProtectionPlate.desc=Pickup this item to see the recipe in NEI
 
 #Thaumcraft Research Context
 research.ESSENTIA_GENERATOR.page.0=You have found that Essentia contains much more power than you thought. Is there a way to generate electricity from these Essentia?<BR><BR>The LEG(Large Essentia Generator) will automatically adapt its output voltage according to its dynamo hatch. The the Diffusion Cell determines the highest hatch tier that LEG can accept.
