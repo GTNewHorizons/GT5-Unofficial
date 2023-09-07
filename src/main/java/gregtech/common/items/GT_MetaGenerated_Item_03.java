@@ -857,7 +857,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
             addItem(
                 228,
                 "Heater Upgrade",
-                "Heater upgrade for Industrial Apiary/n Maximum Installed: 8/n * Temperature +25%/n * Energy Consumption +5%",
+                "Heater upgrade for Industrial Apiary/n Maximum Installed: 16/n * Temperature +12.5%/n * Energy Consumption +2.5%",
                 OrePrefixes.apiaryUpgrade.name()));
         ItemList.IndustrialApiary_Upgrade_SIEVE.set(
             addItem(
