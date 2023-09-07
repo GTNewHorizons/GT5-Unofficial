@@ -44,11 +44,11 @@ public class GT_MetaTileEntity_SolarFactory
     extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_SolarFactory> implements ISurvivalConstructable {
 
     private static final int CASING_INDEX = 16;
-    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String Tier1 = "t1";
     private static final IStructureDefinition<GT_MetaTileEntity_SolarFactory> STRUCTURE_DEFINITION = StructureDefinition
         .<GT_MetaTileEntity_SolarFactory>builder()
         .addShape(
-            STRUCTURE_PIECE_MAIN,
+            Tier1,
             transpose(
                 new String[][] {
                     { "   CCC   ", "  CCCCC  ", " CCCCCCC ", "CCCCCCCCC", " CCCCCCC ", "  CCCCC  ", "   CCC   " },
@@ -95,8 +95,10 @@ public class GT_MetaTileEntity_SolarFactory
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Solar Factory")
-            .addInfo("Cheaply & Quickly mass produces Solar Panels")
-            .addInfo("Has discounted recipes for Tech Solars")
+            .addInfo("Cheaply & Quickly mass produces Solar Cells")
+            .addInfo("Has discounted recipes for Solar Panels")
+            .addInfo("Can upgrade Solar Cells to a higher tier with a")
+            .addInfo("cheap recipe.")
             .addInfo("definitely not stolen from Tyrant")
             .beginStructureBlock(7, 10, 9, true)
             .addStructureInfo(BLUE + "8+ " + DARK_AQUA + "Solid Steel Machine Casings")
@@ -165,7 +167,7 @@ public class GT_MetaTileEntity_SolarFactory
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 4, 8, 0) && mCasingAmount >= 8
+        return checkPiece(Tier1, 4, 8, 0) && mCasingAmount >= 8
             && !mEnergyHatches.isEmpty()
             && mMaintenanceHatches.size() == 1;
     }
@@ -192,13 +194,13 @@ public class GT_MetaTileEntity_SolarFactory
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 4, 8, 0);
+        buildPiece(Tier1, stackSize, hintsOnly, 4, 8, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 8, 0, elementBudget, env, false, true);
+        return survivialBuildPiece(Tier1, stackSize, 4, 8, 0, elementBudget, env, false, true);
     }
 
     @Override

@@ -1162,7 +1162,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             "Solar Factory",
             null,
             GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "SolarFactory"),
-            6,
+            9,
             1,
             1,
             0,
