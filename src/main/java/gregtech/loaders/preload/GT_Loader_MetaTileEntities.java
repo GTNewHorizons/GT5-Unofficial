@@ -78,7 +78,6 @@ import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Pump;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Replicator;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_RockBreaker;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Scanner;
-import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_SeismicProspector;
 import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Teleporter;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineFluid;
 import gregtech.common.tileentities.machines.long_distance.GT_MetaTileEntity_LongDistancePipelineItem;
@@ -934,27 +933,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 "basicmachine.mobrep.tier.08",
                 "Advanced Monster Repellator VII",
                 8).getStackForm(1L));
-    }
-
-    private static void registerSeismicProspector() {
-        ItemList.Seismic_Prospector_LV.set(
-            new GT_MetaTileEntity_SeismicProspector(
-                SEISMIC_PROSPECTOR_LV.ID,
-                "basicmachine.seismicprospector.01",
-                "Seismic Prospector LV",
-                1).getStackForm(1));
-        ItemList.Seismic_Prospector_MV.set(
-            new GT_MetaTileEntity_SeismicProspector(
-                SEISMIC_PROSPECTOR_MV.ID,
-                "basicmachine.seismicprospector.02",
-                "Seismic Prospector MV",
-                2).getStackForm(1));
-        ItemList.Seismic_Prospector_HV.set(
-            new GT_MetaTileEntity_SeismicProspector(
-                SEISMIC_PROSPECTOR_HV.ID,
-                "basicmachine.seismicprospector.03",
-                "Seismic Prospector HV",
-                3).getStackForm(1));
     }
 
     private static void registerAdvancedSeismicProspector() {
@@ -3591,7 +3569,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         registerPump();
         registerTeleporter();
         registerMonsterRepellator();
-        registerSeismicProspector();
         registerAdvancedSeismicProspector();
         registerMicrowaveEnergyTransmitter();
         registerChestBuffer();

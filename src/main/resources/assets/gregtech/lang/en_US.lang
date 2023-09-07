@@ -1324,3 +1324,7 @@ gt.solar.system.phobos=Phobos
 gt.specialvalue.stages=Stages:
 
 gt.multiBlock.controller.cokeOven=Coke Oven
+
+gt.locker.waila_armor_slot_none=Slot %s: §7None
+gt.locker.waila_armor_slot_generic=Slot %s: §e%s
+gt.locker.waila_armor_slot_charged=Slot %s: §e%s§r (%s%s%%§r)
