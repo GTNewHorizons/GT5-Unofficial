@@ -12,6 +12,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -173,13 +175,16 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     @Override
     public final boolean isServerSide() {
         if (worldObj == null) {
-            return false;
+            return FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER;
         }
         return !worldObj.isRemote;
     }
 
     @Override
     public final boolean isClientSide() {
+        if (worldObj == null){
+            return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT;
+        }
         return worldObj.isRemote;
     }
 
