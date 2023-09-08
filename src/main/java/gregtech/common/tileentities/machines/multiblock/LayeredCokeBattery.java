@@ -174,13 +174,13 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
         if (!checkPiece(STRUCTURE_PIECE_BASE, buildState.getCurrentOffset())) return buildState.failBuilding();
 
         buildState.addOffset(getMegaPositionOffset());
-        if (!checkPiece(STACKABLE_START, buildState.getCurrentOffset())){
+        if (!checkPiece(STACKABLE_START, buildState.getCurrentOffset())) {
             return buildState.failBuilding();
         }
 
         buildState.addOffset(getStartingStackOffset());
         for (int i = 0; i < getMaxStacks(); i++) {
-            if (!checkPiece(getStackableMiddle(i), buildState.getCurrentOffset())){
+            if (!checkPiece(getStackableMiddle(i), buildState.getCurrentOffset())) {
                 break;
             }
 
@@ -192,7 +192,6 @@ public class LayeredCokeBattery extends StackableModularController<LayeredCokeBa
         if (!checkPiece(getStackableStop(), buildState.stopBuilding())) {
             return buildState.failBuilding();
         }
-
 
         calculateTier();
         if (!calculateMucMultipliers()) {

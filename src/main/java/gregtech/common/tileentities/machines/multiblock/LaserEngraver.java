@@ -200,7 +200,9 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver> {
                     ofMuTECasings(
                         FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN,
                         GT_MultiTileCasing.BlackLaserEngraverCasing.getCasing()))
-                .addElement('C', ofMuTECasings(NOTHING, CLEANROOM_CASINGS, GT_MultiTileCasing.LaserEngraver.getCasing()))
+                .addElement(
+                    'C',
+                    ofMuTECasings(NOTHING, CLEANROOM_CASINGS, GT_MultiTileCasing.LaserEngraver.getCasing()))
                 .addElement('D', ofMuTECasings(NOTHING, WIRELESS_CASINGS, GT_MultiTileCasing.LaserEngraver.getCasing()))
                 .addElement('E', ofMuTECasings(NOTHING, MOTOR_CASINGS))
                 .addElement('F', GT_StructureUtility.ofFrame(Materials.Naquadah)
