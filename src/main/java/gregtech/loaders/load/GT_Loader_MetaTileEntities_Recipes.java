@@ -7454,19 +7454,6 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 15) });
 
         }
-        // Converter recipes in case you had old one lying around
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Seismic_Prospector_Adv_LV.get(1L),
-            bits,
-            new Object[] { ItemList.Seismic_Prospector_LV });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Seismic_Prospector_Adv_MV.get(1L),
-            bits,
-            new Object[] { ItemList.Seismic_Prospector_MV });
-        GT_ModHandler.addShapelessCraftingRecipe(
-            ItemList.Seismic_Prospector_Adv_HV.get(1L),
-            bits,
-            new Object[] { ItemList.Seismic_Prospector_HV });
     }
 
     private static void run4() {

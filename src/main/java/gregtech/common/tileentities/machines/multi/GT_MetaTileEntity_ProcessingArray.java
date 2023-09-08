@@ -79,6 +79,7 @@ import gregtech.common.blocks.GT_Item_Machines;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@Deprecated
 public class GT_MetaTileEntity_ProcessingArray extends
     GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_ProcessingArray> implements ISurvivalConstructable {
 
@@ -132,6 +133,7 @@ public class GT_MetaTileEntity_ProcessingArray extends
             .addInfo("Use a wire cutter to disable UEV+ downtiering")
             .addInfo("Doesn't work on certain machines, deal with it")
             .addInfo("Use it if you hate GT++, or want even more speed later on")
+            .addInfo(EnumChatFormatting.RED + "DEPRECATED!!! WILL BE REMOVED IN LATER VERSIONS")
             .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
