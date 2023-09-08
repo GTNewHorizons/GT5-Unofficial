@@ -80,7 +80,6 @@ import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gregtech.common.net.Utils;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
@@ -2302,13 +2301,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     () -> mOutputFluids != null ? Arrays.asList(mOutputFluids) : Collections.emptyList(),
                     val -> mOutputFluids = val.toArray(new FluidStack[0]),
                     NetworkUtils::writeFluidStack,
-                    Utils::readFluidStack))
+                    NetworkUtils::readFluidStack))
             .widget(
                 new FakeSyncWidget.ListSyncer<>(
                     () -> mOutputItems != null ? Arrays.asList(mOutputItems) : Collections.emptyList(),
                     val -> mOutputItems = val.toArray(new ItemStack[0]),
-                    Utils::writeItemStack,
-                    Utils::readItemStack))
+                    NetworkUtils::writeItemStack,
+                    NetworkUtils::readItemStack))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> mProgresstime, val -> mProgresstime = val))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> mMaxProgresstime, val -> mMaxProgresstime = val));
 
