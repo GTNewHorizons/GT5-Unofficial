@@ -2,17 +2,8 @@ package gregtech.api.logic;
 
 import java.util.stream.LongStream;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-
-import gregtech.api.enums.InventoryType;
-import gregtech.api.recipe.check.FindRecipeResult;
-import gregtech.api.util.GT_ParallelHelper;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
 public class ComplexParallelProcessingLogic<P extends ComplexParallelProcessingLogic<P>> extends ProcessingLogic<P> {
 
@@ -29,25 +20,6 @@ public class ComplexParallelProcessingLogic<P extends ComplexParallelProcessingL
         this.maxComplexParallels = maxComplexParallels;
         updateArrays();
         return getThis();
-    }
-
-    @Override
-    @Nonnull
-    protected FindRecipeResult findRecipe(@Nullable GT_Recipe_Map map) {
-        if (map == null) return FindRecipeResult.NOT_FOUND;
-        return map.findRecipeWithResult(
-            lastRecipe,
-            availableVoltage,
-            machineHost.getItemLogic(InventoryType.Input, null),
-            machineHost.getFluidLogic(InventoryType.Input, null));
-    }
-
-    @Override
-    @Nonnull
-    protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
-        return super.createParallelHelper(recipe).setMuTEMode(true)
-            .setItemInputInventory(machineHost.getItemLogic(InventoryType.Input, null))
-            .setFluidInputInventory(machineHost.getFluidLogic(InventoryType.Input, null));
     }
 
     public ItemStack[] getOutputItems(int index) {
@@ -71,12 +43,6 @@ public class ComplexParallelProcessingLogic<P extends ComplexParallelProcessingL
             allBusy &= progresses[i] < durations[i];
         }
         return !allBusy;
-    }
-
-    @Override
-    public P clear() {
-        // TODO Auto-generated method stub
-        return super.clear();
     }
 
     @Override
