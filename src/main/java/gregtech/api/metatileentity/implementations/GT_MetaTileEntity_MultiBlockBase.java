@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.util.GT_Utility.formatNumbers;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
@@ -1606,30 +1607,30 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         return new String[] {
             /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(mProgresstime / 20)
+                + formatNumbers(mProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s / "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(mMaxProgresstime / 20)
+                + formatNumbers(mMaxProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s",
             /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(storedEnergy)
+                + formatNumbers(storedEnergy)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(maxEnergy)
+                + formatNumbers(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
             /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
                 + EnumChatFormatting.RED
-                + GT_Utility.formatNumbers(getActualEnergyUsage())
+                + formatNumbers(getActualEnergyUsage())
                 + EnumChatFormatting.RESET
                 + " EU/t",
             /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(getMaxInputVoltage())
+                + formatNumbers(getMaxInputVoltage())
                 + EnumChatFormatting.RESET
                 + " EU/t(*2A) "
                 + StatCollector.translateToLocal("GT5U.machines.tier")
@@ -1736,14 +1737,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     currentTip.add(
                         StatCollector.translateToLocalFormatted(
                             "GT5U.waila.energy.use_with_amperage",
-                            GT_Utility.formatNumbers(actualEnergyUsage),
+                            formatNumbers(actualEnergyUsage),
                             GT_Utility.getAmperageForTier(actualEnergyUsage, (byte) energyTier),
                             GT_Utility.getColoredTierNameFromTier((byte) energyTier)));
                 } else if (actualEnergyUsage < 0) {
                     currentTip.add(
                         StatCollector.translateToLocalFormatted(
                             "GT5U.waila.energy.produce_with_amperage",
-                            GT_Utility.formatNumbers(-actualEnergyUsage),
+                            formatNumbers(-actualEnergyUsage),
                             GT_Utility.getAmperageForTier(-actualEnergyUsage, (byte) energyTier),
                             GT_Utility.getColoredTierNameFromTier((byte) energyTier)));
                 }
@@ -1752,13 +1753,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     currentTip.add(
                         StatCollector.translateToLocalFormatted(
                             "GT5U.waila.energy.use",
-                            GT_Utility.formatNumbers(actualEnergyUsage),
+                            formatNumbers(actualEnergyUsage),
                             GT_Utility.getColoredTierNameFromVoltage(actualEnergyUsage)));
                 } else if (actualEnergyUsage < 0) {
                     currentTip.add(
                         StatCollector.translateToLocalFormatted(
                             "GT5U.waila.energy.produce",
-                            GT_Utility.formatNumbers(-actualEnergyUsage),
+                            formatNumbers(-actualEnergyUsage),
                             GT_Utility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
                 }
             }
@@ -1768,7 +1769,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         // Show ns on the tooltip
         if (GT_Mod.gregtechproxy.wailaAverageNS) {
             int tAverageTime = tag.getInteger("averageNS");
-            currentTip.add("Average CPU load of ~" + GT_Utility.formatNumbers(tAverageTime) + " ns");
+            currentTip.add("Average CPU load of ~" + formatNumbers(tAverageTime) + " ns");
         }
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }
@@ -2141,22 +2142,22 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     protected String generateCurrentRecipeInfoString() {
         StringBuilder ret = new StringBuilder(EnumChatFormatting.WHITE + "In progress: ")
-            .append(String.format("%.2f", (double) mProgresstime / 20))
+            .append(String.format("%,.2f", (double) mProgresstime / 20))
             .append("s / ")
-            .append(String.format("%.2f", (double) mMaxProgresstime / 20))
+            .append(String.format("%,.2f", (double) mMaxProgresstime / 20))
             .append("s (")
-            .append(GT_Utility.formatNumbers((Math.round((double) mProgresstime / mMaxProgresstime * 1000) / 10.0)))
+            .append(formatNumbers((Math.round((double) mProgresstime / mMaxProgresstime * 1000) / 10.0)))
             .append("%)\n");
 
         Function<Integer, Void> appendRate = (Integer amount) -> {
             double processPerTick = (double) amount / mMaxProgresstime * 20;
             if (processPerTick > 1) {
                 ret.append(" (")
-                    .append(GT_Utility.formatNumbers(Math.round(processPerTick * 10) / 10.0))
+                    .append(formatNumbers(Math.round(processPerTick * 10) / 10.0))
                     .append("/s)");
             } else {
                 ret.append(" (")
-                    .append(GT_Utility.formatNumbers(Math.round(1 / processPerTick * 10) / 10.0))
+                    .append(formatNumbers(Math.round(1 / processPerTick * 10) / 10.0))
                     .append("s/ea)");
             }
             return null;
@@ -2178,7 +2179,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     .append(EnumChatFormatting.WHITE)
                     .append(" x ")
                     .append(EnumChatFormatting.GOLD)
-                    .append(GT_Utility.formatNumbers(item.stackSize))
+                    .append(formatNumbers(item.stackSize))
                     .append(EnumChatFormatting.WHITE);
                 appendRate.apply(item.stackSize);
                 ret.append('\n');
@@ -2197,7 +2198,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     .append(EnumChatFormatting.WHITE)
                     .append(" x ")
                     .append(EnumChatFormatting.GOLD)
-                    .append(GT_Utility.formatNumbers(fluid.amount))
+                    .append(formatNumbers(fluid.amount))
                     .append("L")
                     .append(EnumChatFormatting.WHITE);
                 appendRate.apply(fluid.amount);
