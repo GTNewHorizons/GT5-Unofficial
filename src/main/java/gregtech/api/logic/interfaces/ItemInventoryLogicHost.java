@@ -1,5 +1,8 @@
 package gregtech.api.logic.interfaces;
 
+import java.util.HashSet;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -45,6 +48,11 @@ public interface ItemInventoryLogicHost extends ISidedInventory {
     @Nullable
     default InventoryType getItemInventoryType() {
         return null;
+    }
+
+    @Nonnull
+    default Set<Entry<UUID, ItemInventoryLogic>> getAllItemInventoryLogics(@Nonnull InventoryType type) {
+        return new HashSet<>();
     }
 
     @Override

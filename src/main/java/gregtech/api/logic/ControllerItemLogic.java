@@ -3,6 +3,8 @@ package gregtech.api.logic;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -42,9 +44,9 @@ public class ControllerItemLogic {
         if (inventory.isUpgradeInventory() && found != null) {
             unallocatedInventories.remove(found);
             inventories.put(found.getLeft(), found.getRight());
-            return found.getLeft();
+            return Objects.requireNonNull(found.getLeft());
         }
-        UUID generatedUUID = UUID.randomUUID();
+        UUID generatedUUID = Objects.requireNonNull(UUID.randomUUID());
         inventories.put(generatedUUID, inventory);
         return generatedUUID;
     }
@@ -69,7 +71,7 @@ public class ControllerItemLogic {
      */
     @Nonnull
     public ItemInventoryLogic removeInventory(@Nonnull UUID id) {
-        return inventories.remove(id);
+        return Objects.requireNonNull(inventories.remove(id));
     }
 
     @Nonnull
@@ -84,7 +86,12 @@ public class ControllerItemLogic {
     @Nonnull
     public ItemInventoryLogic getInventoryLogic(@Nullable UUID id) {
         if (id == null) return getAllInventoryLogics();
-        return inventories.getOrDefault(id, getAllInventoryLogics());
+        return Objects.requireNonNull(inventories.getOrDefault(id, getAllInventoryLogics()));
+    }
+
+    @Nonnull
+    public Set<Entry<UUID, ItemInventoryLogic>> getAllInventoryLogicsAsEntrySet() {
+        return Objects.requireNonNull(inventories.entrySet());
     }
 
     @Nullable
@@ -92,10 +99,9 @@ public class ControllerItemLogic {
         if (id == null) return "";
         ItemInventoryLogic logic = inventories.get(id);
         if (logic == null) return "";
-        if (logic.getDisplayName() == null) return id.toString();
-        if (logic.getDisplayName()
-            .isEmpty()) return id.toString();
-        return logic.getDisplayName();
+        String displayName = logic.getDisplayName();
+        if (displayName == null) return Objects.requireNonNull(id.toString());
+        return displayName;
     }
 
     public void setInventoryDisplayName(@Nullable UUID id, @Nullable String displayName) {

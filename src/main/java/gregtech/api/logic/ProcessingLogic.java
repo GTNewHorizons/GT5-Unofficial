@@ -3,6 +3,8 @@ package gregtech.api.logic;
 import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -73,6 +75,7 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
     protected UUID itemOutputID;
     @Nullable
     protected UUID fluidOutputID;
+    protected boolean muteMode;
 
     public ProcessingLogic() {}
 
@@ -188,7 +191,7 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
         return getThis();
     }
 
-    public P setMachineHost(ProcessingLogicHost<P> machineHost) {
+    public P setMachineHost(@Nonnull ProcessingLogicHost<P> machineHost) {
         this.machineHost = machineHost;
         return getThis();
     }
@@ -196,6 +199,7 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
     /**
      * Overwrites duration result of the calculation.
      */
+
     public P setDuration(int duration) {
         this.duration = duration;
         return getThis();
@@ -204,6 +208,7 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
     /**
      * Overwrites EU/t result of the calculation.
      */
+    @Nonnull
     public P setCalculatedEut(long calculatedEut) {
         this.calculatedEut = calculatedEut;
         return getThis();
@@ -214,6 +219,7 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
      * For example, most of the multiblock machines set maximum possible input power (including amperage) as voltage
      * and 1 as amperage. That way recipemap search will be executed with overclocked voltage.
      */
+    @Nonnull
     public P setAvailableVoltage(long voltage) {
         availableVoltage = voltage;
         return getThis();
@@ -223,11 +229,13 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
      * Sets amperage of the machine. This amperage doesn't involve in EU/t when searching recipemap.
      * Useful for preventing tier skip but still considering amperage for parallel.
      */
+    @Nonnull
     public P setAvailableAmperage(long amperage) {
         availableAmperage = amperage;
         return getThis();
     }
 
+    @Nonnull
     public P setVoidProtection(boolean protectItems, boolean protectFluids) {
         this.protectItems = protectItems;
         this.protectFluids = protectFluids;
@@ -238,6 +246,7 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
      * Sets custom overclock ratio. 2/4 by default.
      * Parameters represent number of bit shift, so 1 -> 2x, 2 -> 4x.
      */
+    @Nonnull
     public P setOverclock(int timeReduction, int powerIncrease) {
         this.overClockTimeReduction = timeReduction;
         this.overClockPowerIncrease = powerIncrease;
@@ -247,6 +256,7 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
     /**
      * Sets overclock ratio to 4/4.
      */
+    @Nonnull
     public P enablePerfectOverclock() {
         return this.setOverclock(2, 2);
     }
@@ -254,14 +264,22 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
     /**
      * Sets wether the multi should use amperage to OC or not
      */
+    @Nonnull
     public P setAmperageOC(boolean amperageOC) {
         this.amperageOC = amperageOC;
+        return getThis();
+    }
+
+    @Nonnull
+    public P setMuTEMode(boolean muteMode) {
+        this.muteMode = muteMode;
         return getThis();
     }
 
     /**
      * Clears calculated results and provided machine inputs to prepare for the next machine operation.
      */
+
     public P clear() {
         this.inputItems = null;
         this.inputFluids = null;
@@ -312,7 +330,33 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
                     .getRecipe());
         }
 
-        FindRecipeResult findRecipeResult = findRecipe(recipeMap);
+        if (muteMode && recipeMap == null) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        FindRecipeResult findRecipeResult = FindRecipeResult.NOT_FOUND;
+        ItemInventoryLogic itemInput = null;
+        FluidInventoryLogic fluidInput = null;
+        if (muteMode) {
+            if (machineHost.isInputSeparated()) {
+                for (Entry<UUID, ItemInventoryLogic> itemEntry : machineHost
+                    .getAllItemInventoryLogics(InventoryType.Input)) {
+                    itemOutputID = Objects.requireNonNull(itemEntry.getKey());
+                    itemInput = Objects.requireNonNull(itemEntry.getValue());
+                    fluidInput = Objects.requireNonNull(
+                        machineHost.getFluidLogic(InventoryType.Input, itemInput.getConnectedFluidInventoryID()));
+                    fluidOutputID = itemInput.getConnectedFluidInventoryID();
+                    findRecipeResult = findRecipe(Objects.requireNonNull(recipeMap), itemInput, fluidInput);
+                    if (findRecipeResult.isSuccessful()) break;
+                }
+            } else {
+                itemInput = Objects.requireNonNull(machineHost.getItemLogic(InventoryType.Input, null));
+                fluidInput = Objects.requireNonNull(machineHost.getFluidLogic(InventoryType.Input, null));
+                findRecipeResult = findRecipe(Objects.requireNonNull(recipeMap), itemInput, fluidInput);
+            }
+        } else {
+            findRecipeResult = findRecipe(recipeMap);
+        }
         // If processRecipe is not overridden, advanced recipe validation logic is used, and we can reuse calculations.
         if (findRecipeResult.hasRecipeValidator()) {
             RecipeValidator recipeValidator = findRecipeResult.getRecipeValidator();
@@ -342,6 +386,13 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
+        if (muteMode) {
+            return processRecipe(
+                findRecipeResult.getRecipesPossible(),
+                Objects.requireNonNull(itemInput),
+                Objects.requireNonNull(fluidInput));
+        }
+
         return processRecipe(findRecipeResult.getRecipeNonNull());
     }
 
@@ -349,6 +400,8 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
      * Checks if supplied recipe is valid for process.
      * If so, additionally performs input consumption, output calculation with parallel, and overclock calculation.
      *
+     * Use {@link #processRecipe(GT_Recipe, ItemInventoryLogic, FluidInventoryLogic)} for MuTEs
+     * 
      * @param recipe The recipe which will be checked and processed
      */
     @Nonnull
@@ -366,12 +419,30 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
         return applyRecipe(recipe, helper, calculator, result);
     }
 
+    @Nonnull
+    protected CheckRecipeResult processRecipe(@Nonnull List<GT_Recipe> recipes, @Nonnull ItemInventoryLogic itemInput,
+        @Nonnull FluidInventoryLogic fluidInput) {
+        CheckRecipeResult result = CheckRecipeResultRegistry.INTERNAL_ERROR;
+        for (GT_Recipe recipe : recipes) {
+            Objects.requireNonNull(recipe);
+            GT_ParallelHelper helper = createParallelHelper(recipe, itemInput, fluidInput);
+            GT_OverclockCalculator calculator = createOverclockCalculator(recipe);
+            helper.setCalculator(calculator);
+            helper.build();
+            result = helper.getResult();
+            if (result.wasSuccessful()) {
+                return applyRecipe(recipe, helper, calculator, result);
+            }
+        }
+        return result;
+    }
+
     /**
      * Applies the recipe and calculated parameters
      */
     @Nonnull
-    private CheckRecipeResult applyRecipe(@Nonnull GT_Recipe recipe, GT_ParallelHelper helper,
-        GT_OverclockCalculator calculator, CheckRecipeResult result) {
+    protected CheckRecipeResult applyRecipe(@Nonnull GT_Recipe recipe, @Nonnull GT_ParallelHelper helper,
+        @Nonnull GT_OverclockCalculator calculator, @Nonnull CheckRecipeResult result) {
         if (!helper.getResult()
             .wasSuccessful()) {
             return helper.getResult();
@@ -415,6 +486,7 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
 
     /**
      * Override if you don't work with regular gt recipe maps
+     * Use {@link #findRecipe(GT_Recipe_Map, ItemInventoryLogic, FluidInventoryLogic)} for MuTEs
      */
     @Nonnull
     protected FindRecipeResult findRecipe(@Nullable GT_Recipe_Map map) {
@@ -441,7 +513,21 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
     }
 
     /**
+     * Override if you don't work with regular gt recipe maps
+     */
+    @Nonnull
+    protected FindRecipeResult findRecipe(@Nonnull GT_Recipe_Map map, @Nonnull ItemInventoryLogic itemInput,
+        @Nonnull FluidInventoryLogic fluidInput) {
+        if (map == null) {
+            return FindRecipeResult.NOT_FOUND;
+        }
+
+        return map.findRecipeWithResult(lastRecipe, availableVoltage, itemInput, fluidInput);
+    }
+
+    /**
      * Override to tweak parallel logic if needed.
+     * Use {@link #createParallelHelper(GT_Recipe, ItemInventoryLogic, FluidInventoryLogic)} for MuTEs
      */
     @Nonnull
     protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
@@ -456,6 +542,21 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
             .enableBatchMode(batchSize)
             .setConsumption(true)
             .setOutputCalculation(true);
+    }
+
+    @Nonnull
+    protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe, @Nonnull ItemInventoryLogic itemInput,
+        @Nonnull FluidInventoryLogic fluidInput) {
+        return new GT_ParallelHelper().setRecipe(recipe)
+            .setItemInputInventory(itemInput)
+            .setFluidInputInventory(fluidInput)
+            .setAvailableEUt(availableVoltage * availableAmperage)
+            .setMaxParallel(maxParallel)
+            .setEUtModifier(euModifier)
+            .enableBatchMode(batchSize)
+            .setConsumption(true)
+            .setOutputCalculation(true)
+            .setMuTEMode(muteMode);
     }
 
     /**

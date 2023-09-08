@@ -10,6 +10,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -1251,4 +1253,25 @@ public abstract class Controller<T extends Controller<T, P>, P extends Processin
     public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
         return new ArrayList<>(0);
     }
+
+    @Override
+    @Nonnull
+    public Set<Entry<UUID, FluidInventoryLogic>> getAllFluidInventoryLogics(@Nonnull InventoryType type) {
+        return switch (type) {
+            case Input -> controllerFluidInput.getAllInventoryLogicsAsEntrySet();
+            case Output -> controllerFluidOutput.getAllInventoryLogicsAsEntrySet();
+            default -> super.getAllFluidInventoryLogics(type);
+        };
+    }
+
+    @Override
+    @Nonnull
+    public Set<Entry<UUID, ItemInventoryLogic>> getAllItemInventoryLogics(@Nonnull InventoryType type) {
+        return switch (type) {
+            case Input -> controllerItemInput.getAllInventoryLogicsAsEntrySet();
+            case Output -> controllerItemOutput.getAllInventoryLogicsAsEntrySet();
+            default -> super.getAllItemInventoryLogics(type);
+        };
+    }
+
 }
