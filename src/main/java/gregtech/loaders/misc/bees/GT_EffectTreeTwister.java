@@ -20,23 +20,27 @@ import gregtech.api.util.GT_ModHandler;
 
 public class GT_EffectTreeTwister extends GT_AlleleEffect {
 
-    private static final Integer[] allowedDims = { 2, // spectre
+    private static final Integer[] ALLOWED_DIMS = { 2, // spectre
         112, // last millenium
         60, // bedrock
         69, // pocket plane
     };
 
-    private static final ItemStack tfTransSapling = GT_ModHandler.getModItem(TwilightForest.ID, "tile.TFSapling", 1, 6);
-    private static final ItemStack barnSapling = GT_ModHandler.getModItem(GalaxySpace.ID, "barnardaCsapling", 1, 0);
+    private static final ItemStack TF_TRANS_SAPLING = GT_ModHandler
+        .getModItem(TwilightForest.ID, "tile.TFSapling", 1, 6);
+    private static final ItemStack BARN_SAPLING = GT_ModHandler.getModItem(GalaxySpace.ID, "barnardaCsapling", 1, 0);
+
+    static {
+        if (TF_TRANS_SAPLING == null) {
+            GT_Mod.GT_FML_LOGGER.info("GT_EffectTreeTwister(): Could not get ItemStack for BarnardaC sapling");
+        }
+        if (BARN_SAPLING == null) {
+            GT_Mod.GT_FML_LOGGER.info("GT_EffectTreeTwister(): Could not get ItemStack for BarnardaC sapling");
+        }
+    }
 
     public GT_EffectTreeTwister() {
         super("effectTreetwister", false);
-        if (tfTransSapling == null) {
-            GT_Mod.GT_FML_LOGGER.info("GT_EffectTreeTwister(): Could not get ItemStack for BarnardaC sapling");
-        }
-        if (barnSapling == null) {
-            GT_Mod.GT_FML_LOGGER.info("GT_EffectTreeTwister(): Could not get ItemStack for BarnardaC sapling");
-        }
     }
 
     public IEffectData validateStorage(IEffectData storedData) {
@@ -44,11 +48,11 @@ public class GT_EffectTreeTwister extends GT_AlleleEffect {
     }
 
     public IEffectData doEffect(IBeeGenome genome, IEffectData storedData, IBeeHousing housing) {
-        if (tfTransSapling == null || barnSapling == null) {
+        if (TF_TRANS_SAPLING == null || BARN_SAPLING == null) {
             return storedData;
         }
         World world = housing.getWorld();
-        if (!Arrays.asList(allowedDims)
+        if (!Arrays.asList(ALLOWED_DIMS)
             .contains(world.provider.dimensionId)) {
             return storedData;
         }
@@ -68,13 +72,13 @@ public class GT_EffectTreeTwister extends GT_AlleleEffect {
             world.getBlock(xCoord, yCoord, zCoord),
             1,
             world.getBlockMetadata(xCoord, yCoord, zCoord));
-        if (tfTransSapling != null && barnSapling != null && tfTransSapling.isItemEqual(sourceBlock)) {
+        if (TF_TRANS_SAPLING != null && BARN_SAPLING != null && TF_TRANS_SAPLING.isItemEqual(sourceBlock)) {
             world.setBlock(
                 xCoord,
                 yCoord,
                 zCoord,
-                Block.getBlockFromItem(barnSapling.getItem()),
-                barnSapling.getItemDamage(),
+                Block.getBlockFromItem(BARN_SAPLING.getItem()),
+                BARN_SAPLING.getItemDamage(),
                 2);
         }
         return storedData;

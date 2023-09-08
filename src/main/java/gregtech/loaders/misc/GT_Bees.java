@@ -98,7 +98,7 @@ public class GT_Bees {
         } else {
             GT_Mod.GT_FML_LOGGER
                 .info("treetwisterEffect: GalaxySpace or TwilightForest was not loaded, using fallback impl");
-            treetwisterEffect = GT_AlleleEffect.forestryBaseEffect;
+            treetwisterEffect = GT_AlleleEffect.FORESTRY_BASE_EFFECT;
         }
     }
 

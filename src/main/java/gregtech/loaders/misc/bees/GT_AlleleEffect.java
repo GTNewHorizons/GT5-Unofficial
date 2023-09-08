@@ -11,7 +11,7 @@ import forestry.core.genetics.alleles.Allele;
 // helper class for implementing custom bee effects, based on MagicBees' implementation
 public abstract class GT_AlleleEffect extends Allele implements IAlleleBeeEffect {
 
-    public static IAlleleBeeEffect forestryBaseEffect = (IAlleleBeeEffect) AlleleManager.alleleRegistry
+    public static final IAlleleBeeEffect FORESTRY_BASE_EFFECT = (IAlleleBeeEffect) AlleleManager.alleleRegistry
         .getAllele("forestry.effectNone");
     protected boolean combinable;
 
@@ -26,8 +26,6 @@ public abstract class GT_AlleleEffect extends Allele implements IAlleleBeeEffect
         return combinable;
     }
 
-    // Not used by treetwisterEffect, but may be used by other custom effects in the future
-    @SuppressWarnings("unused")
     public GT_AlleleEffect setIsCombinable(boolean canCombine) {
         combinable = canCombine;
         return this;
@@ -41,6 +39,6 @@ public abstract class GT_AlleleEffect extends Allele implements IAlleleBeeEffect
 
     @Override
     public IEffectData doFX(IBeeGenome genome, IEffectData storedData, IBeeHousing housing) {
-        return forestryBaseEffect.doFX(genome, storedData, housing);
+        return FORESTRY_BASE_EFFECT.doFX(genome, storedData, housing);
     }
 }
