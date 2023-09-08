@@ -111,26 +111,34 @@ public class AdvChemicalProcessor extends ComplexParallelController<AdvChemicalP
         }
         for (int i = 0; i < MAX_PROCESSES; i++) {
 
-            if (processWhiteLists != null) {
-                final NBTTagCompound itemList = processWhiteLists.getCompoundTag("items" + i);
-                if (itemList != null) {
-                    processWhitelistInventoryHandlers.get(i)
-                        .deserializeNBT(itemList);
+            if (processWhiteLists == null){
+                continue;
+            }
+
+
+            final NBTTagCompound itemList = processWhiteLists.getCompoundTag("items" + i);
+            if (itemList != null) {
+                processWhitelistInventoryHandlers.get(i).deserializeNBT(itemList);
+            }
+            final NBTTagList fluidList = processWhiteLists.getTagList("fluids" + i, Constants.NBT.TAG_COMPOUND);
+
+            if (fluidList == null) {
+                continue;
+            }
+
+            for (int j = 0; j < fluidList.tagCount(); j++) {
+                final NBTTagCompound fluid = fluidList.getCompoundTagAt(j);
+
+                if (fluid == null){
+                    continue;
                 }
-                final NBTTagList fluidList = processWhiteLists.getTagList("fluids" + i, Constants.NBT.TAG_COMPOUND);
-                if (fluidList != null) {
-                    for (int j = 0; j < fluidList.tagCount(); j++) {
-                        final NBTTagCompound fluid = fluidList.getCompoundTagAt(j);
-                        if (fluid != null) {
-                            short index = fluid.getShort("s");
-                            FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fluid);
-                            if (fluidStack != null) {
-                                processFluidWhiteLists.get(i)
-                                    .get(index)
-                                    .fill(fluidStack, true);
-                            }
-                        }
-                    }
+
+                short index = fluid.getShort("s");
+                FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fluid);
+                if (fluidStack != null) {
+                    processFluidWhiteLists.get(i)
+                        .get(index)
+                        .fill(fluidStack, true);
                 }
             }
         }
