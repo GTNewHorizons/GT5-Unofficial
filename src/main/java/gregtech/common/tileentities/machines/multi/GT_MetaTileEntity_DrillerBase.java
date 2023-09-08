@@ -52,7 +52,11 @@ import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.*;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
