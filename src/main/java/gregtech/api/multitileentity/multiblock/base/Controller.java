@@ -261,9 +261,9 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     public String[] getDescription() {
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
             return getTooltip().getStructureInformation();
-        } else {
-            return getTooltip().getInformation();
         }
+
+        return getTooltip().getInformation();
     }
 
     @Override
@@ -399,24 +399,27 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     @Override
     public void setExtendedFacing(ExtendedFacing newExtendedFacing) {
-        if (extendedFacing != newExtendedFacing) {
-            onStructureChange();
-            if (structureOkay) stopMachine(false);
-            extendedFacing = newExtendedFacing;
-            structureOkay = false;
-            if (isServerSide()) {
-                StructureLibAPI.sendAlignment(
-                    this,
-                    new NetworkRegistry.TargetPoint(
-                        getWorld().provider.dimensionId,
-                        getXCoord(),
-                        getYCoord(),
-                        getZCoord(),
-                        512));
-            } else {
-                issueTextureUpdate();
-            }
+        if (extendedFacing == newExtendedFacing){
+            return;
         }
+
+        onStructureChange();
+        if (structureOkay) stopMachine(false);
+        extendedFacing = newExtendedFacing;
+        structureOkay = false;
+        if (isServerSide()) {
+            StructureLibAPI.sendAlignment(
+                this,
+                new NetworkRegistry.TargetPoint(
+                    getWorld().provider.dimensionId,
+                    getXCoord(),
+                    getYCoord(),
+                    getZCoord(),
+                    512));
+        } else {
+            issueTextureUpdate();
+        }
+
     }
 
     @Override
@@ -519,22 +522,25 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     @Override
     public void onPostTick(long tick, boolean isServerSide) {
-        if (isServerSide) {
-            if (tick % 600 == 5) {
-                // Recheck the structure every 30 seconds or so
-                if (!checkStructure(false)) checkStructure(true);
-            }
-            if (checkStructure(false)) {
-                runMachine(tick);
-                pushItemOutputs(tick);
-                pushFluidOutputs(tick);
-
-            } else {
-                stopMachine(false);
-            }
-        } else {
+        if (!isServerSide){ // client side
             doActivitySound(getActivitySoundLoop());
+            return;
         }
+
+        // server side
+        if (tick % 600 == 5) {
+            // Recheck the structure every 30 seconds or so
+            if (!checkStructure(false)) checkStructure(true);
+        }
+        if (checkStructure(false)) {
+            runMachine(tick);
+            pushItemOutputs(tick);
+            pushFluidOutputs(tick);
+
+        } else {
+            stopMachine(false);
+        }
+
     }
 
     protected void pushItemOutputs(long tick) {
@@ -550,27 +556,33 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             }
             if (!part.shouldTick(mTickTimer)) {
                 itemOutputIterator.remove();
-            } else {
-                final IInventory facingInventory = part.getIInventoryAtSide(part.getFrontFacing());
-                if (facingInventory != null) {
-                    moveMultipleItemStacks(
-                        part,
-                        facingInventory,
-                        part.getFrontFacing(),
-                        part.getBackFacing(),
-                        null,
-                        false,
-                        (byte) 64,
-                        (byte) 1,
-                        (byte) 64,
-                        (byte) 1,
-                        part.getSizeInventory());
-                    for (int i = 0; i < part.getSizeInventory(); i++) {
-                        if (part.getStackInSlot(i) != null && part.getStackInSlot(i).stackSize <= 0)
-                            part.setInventorySlotContents(i, null);
-                    }
+                continue;
+            }
+
+            final IInventory facingInventory = part.getIInventoryAtSide(part.getFrontFacing());
+            if (facingInventory == null){
+                continue;
+            }
+
+            moveMultipleItemStacks(
+                part,
+                facingInventory,
+                part.getFrontFacing(),
+                part.getBackFacing(),
+                null,
+                false,
+                (byte) 64,
+                (byte) 1,
+                (byte) 64,
+                (byte) 1,
+                part.getSizeInventory());
+            for (int i = 0; i < part.getSizeInventory(); i++) {
+                if (part.getStackInSlot(i) != null && part.getStackInSlot(i).stackSize <= 0) {
+                    part.setInventorySlotContents(i, null);
                 }
             }
+
+
         }
     }
 
@@ -587,8 +599,6 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             }
             if (!part.shouldTick(mTickTimer)) {
                 fluidOutputIterator.remove();
-            } else {
-
             }
         }
     }

@@ -86,24 +86,26 @@ public abstract class PowerController<T extends PowerController<T>> extends Cont
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         boolean isActive = tag.getBoolean("isActive");
-        if (isActive) {
-            long energyTier = tag.getLong("energyTier");
-            long actualEnergyUsage = tag.getLong("energyUsage");
-            if (actualEnergyUsage > 0) {
-                currentTip.add(
-                    StatCollector.translateToLocalFormatted(
-                        "GT5U.waila.energy.use_with_amperage",
-                        GT_Utility.formatNumbers(actualEnergyUsage),
-                        GT_Utility.getAmperageForTier(actualEnergyUsage, (byte) energyTier),
-                        GT_Utility.getColoredTierNameFromTier((byte) energyTier)));
-            } else if (actualEnergyUsage < 0) {
-                currentTip.add(
-                    StatCollector.translateToLocalFormatted(
-                        "GT5U.waila.energy.produce_with_amperage",
-                        GT_Utility.formatNumbers(-actualEnergyUsage),
-                        GT_Utility.getAmperageForTier(-actualEnergyUsage, (byte) energyTier),
-                        GT_Utility.getColoredTierNameFromTier((byte) energyTier)));
-            }
+        if (!isActive){
+            return;
+        }
+
+        long energyTier = tag.getLong("energyTier");
+        long actualEnergyUsage = tag.getLong("energyUsage");
+        if (actualEnergyUsage > 0) {
+            currentTip.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.energy.use_with_amperage",
+                    GT_Utility.formatNumbers(actualEnergyUsage),
+                    GT_Utility.getAmperageForTier(actualEnergyUsage, (byte) energyTier),
+                    GT_Utility.getColoredTierNameFromTier((byte) energyTier)));
+        } else if (actualEnergyUsage < 0) {
+            currentTip.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.energy.produce_with_amperage",
+                    GT_Utility.formatNumbers(-actualEnergyUsage),
+                    GT_Utility.getAmperageForTier(-actualEnergyUsage, (byte) energyTier),
+                    GT_Utility.getColoredTierNameFromTier((byte) energyTier)));
         }
     }
 }

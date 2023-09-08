@@ -368,13 +368,17 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
         final int aFortune = EnchantmentHelper.getFortuneModifier(aPlayer);
         float aChance = 1.0F;
         final TileEntity aTileEntity = getTileEntity(aWorld, aX, aY, aZ, true);
-        if (aTileEntity instanceof IMultiTileEntity) {
-            final ArrayList<ItemStack> tList = ((IMultiTileEntity) aTileEntity).getDrops(aFortune, aSilkTouch);
-            aChance = ForgeEventFactory
-                .fireBlockHarvesting(tList, aWorld, this, aX, aY, aZ, aMeta, aFortune, aChance, aSilkTouch, aPlayer);
-            for (final ItemStack tStack : tList)
-                if (XSTR.XSTR_INSTANCE.nextFloat() <= aChance) dropBlockAsItem(aWorld, aX, aY, aZ, tStack);
+
+        if (!(aTileEntity instanceof IMultiTileEntity)) {
+            return;
         }
+
+        final ArrayList<ItemStack> tList = ((IMultiTileEntity) aTileEntity).getDrops(aFortune, aSilkTouch);
+        aChance = ForgeEventFactory
+            .fireBlockHarvesting(tList, aWorld, this, aX, aY, aZ, aMeta, aFortune, aChance, aSilkTouch, aPlayer);
+        for (final ItemStack tStack : tList)
+            if (XSTR.XSTR_INSTANCE.nextFloat() <= aChance) dropBlockAsItem(aWorld, aX, aY, aZ, tStack);
+
     }
 
     @Override

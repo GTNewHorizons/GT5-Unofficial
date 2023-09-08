@@ -47,34 +47,35 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
 
     @Override
     protected void runMachine(long tick) {
-        if (acceptsFuel() && isActive()) {
-            if (!consumeFuel()) {
+        if (acceptsFuel() && isActive() && !consumeFuel()) {
                 stopMachine(true);
                 return;
-            }
         }
 
         if (hasThingsToDo()) {
             markDirty();
             runningTick(tick);
         }
-        if ((tick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled() || hasInventoryBeenModified())
-            && maxComplexParallels != currentComplexParallels) {
-            if (isAllowedToWork() && maxComplexParallels > currentComplexParallels) {
-                wasEnabled = false;
-                boolean started = false;
-                for (int i = 0; i < maxComplexParallels; i++) {
-                    if (maxProgressTimes[i] <= 0 && checkRecipe(i)) {
-                        currentComplexParallels++;
-                        started = true;
-                    }
+
+        if (!((tick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled() || hasInventoryBeenModified())
+            && maxComplexParallels != currentComplexParallels)){
+            return;
+        }
+
+        if (isAllowedToWork() && maxComplexParallels > currentComplexParallels) {
+            wasEnabled = false;
+            boolean started = false;
+            for (int i = 0; i < maxComplexParallels; i++) {
+                if (maxProgressTimes[i] <= 0 && checkRecipe(i)) {
+                    currentComplexParallels++;
+                    started = true;
                 }
-                if (started) {
-                    setActive(true);
-                    updateSlots();
-                    markDirty();
-                    issueClientUpdate();
-                }
+            }
+            if (started) {
+                setActive(true);
+                updateSlots();
+                markDirty();
+                issueClientUpdate();
             }
         }
     }

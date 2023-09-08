@@ -147,12 +147,16 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         final NBTTagList nbtList = new NBTTagList();
         for (int slot = 0; slot < itemsToOutput.length; slot++) {
             final ItemStack itemStack = itemsToOutput[slot];
-            if (itemStack != null) {
-                final NBTTagCompound tag = new NBTTagCompound();
-                tag.setByte("s", (byte) slot);
-                itemStack.writeToNBT(tag);
-                nbtList.appendTag(tag);
+
+            if (itemStack == null){
+                continue;
             }
+
+            final NBTTagCompound tag = new NBTTagCompound();
+            tag.setByte("s", (byte) slot);
+            itemStack.writeToNBT(tag);
+            nbtList.appendTag(tag);
+
         }
         aNBT.setTag(NBT.ITEM_OUT, nbtList);
     }
@@ -354,20 +358,28 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         if (hasThingsToDo()) {
             markDirty();
             runningTick(tick);
-        } else {
-            if (tick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled() || hasInventoryBeenModified()) {
-                if (isAllowedToWork()) {
-                    wasEnabled = false;
-                    if (checkRecipe()) {
-                        setActive(true);
-                        setSound(GregTechTileClientEvents.START_SOUND_LOOP, PROCESS_START_SOUND_INDEX);
-                        updateSlots();
-                        markDirty();
-                        issueClientUpdate();
-                    }
-                }
-            }
+            return;
         }
+
+        if (!(tick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled() || hasInventoryBeenModified())){
+            return;
+        }
+
+        if (!isAllowedToWork()){
+            return;
+        }
+
+        wasEnabled = false;
+
+        if (!checkRecipe()){
+            return;
+        }
+
+        setActive(true);
+        setSound(GregTechTileClientEvents.START_SOUND_LOOP, PROCESS_START_SOUND_INDEX);
+        updateSlots();
+        markDirty();
+        issueClientUpdate();
     }
 
     /**
@@ -385,11 +397,9 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
             maxProgressTime = 0;
             outputItems(null);
             outputFluids(null);
-            if (isAllowedToWork()) {
-                if (!checkRecipe()) {
-                    setActive(false);
-                    issueClientUpdate();
-                }
+            if (isAllowedToWork() && !checkRecipe()) {
+                setActive(false);
+                issueClientUpdate();
             }
             updateSlots();
         }
@@ -459,10 +469,11 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
                     .getSoundHandler()
                     .playSound(activitySoundLoop);
             }
-        } else {
-            if (activitySoundLoop != null) {
-                activitySoundLoop = null;
-            }
+            return;
+        }
+
+        if (activitySoundLoop != null) {
+            activitySoundLoop = null;
         }
     }
 
@@ -634,36 +645,39 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
 
         if (this instanceof PowerLogicHost powerLogicHost) {
             PowerLogic logic = powerLogicHost.getPowerLogic(facing);
-            if (isElectric) {
-                list.add(
-                    StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                        + EnumChatFormatting.GREEN
-                        + GT_Utility.formatNumbers(logic.getStoredEnergy())
-                        + EnumChatFormatting.RESET
-                        + " EU / "
-                        + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(logic.getCapacity())
-                        + EnumChatFormatting.RESET
-                        + " EU");
-                list.add(
-                    StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                        + EnumChatFormatting.RED
-                        + GT_Utility.formatNumbers(eut)
-                        + EnumChatFormatting.RESET
-                        + " EU/t");
-                list.add(
-                    StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(logic.getVoltage())
-                        + EnumChatFormatting.RESET
-                        // TODO: Put ampere getter here, once that's variable
-                        + " EU/t(*2A) "
-                        + StatCollector.translateToLocal("GT5U.machines.tier")
-                        + ": "
-                        + EnumChatFormatting.YELLOW
-                        + VN[GT_Utility.getTier(logic.getVoltage())]
-                        + EnumChatFormatting.RESET);
+            if (!isElectric){
+                return;
             }
+
+            list.add(
+                StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                    + EnumChatFormatting.GREEN
+                    + GT_Utility.formatNumbers(logic.getStoredEnergy())
+                    + EnumChatFormatting.RESET
+                    + " EU / "
+                    + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(logic.getCapacity())
+                    + EnumChatFormatting.RESET
+                    + " EU");
+            list.add(
+                StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+                    + EnumChatFormatting.RED
+                    + GT_Utility.formatNumbers(eut)
+                    + EnumChatFormatting.RESET
+                    + " EU/t");
+            list.add(
+                StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
+                    + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(logic.getVoltage())
+                    + EnumChatFormatting.RESET
+                    // TODO: Put ampere getter here, once that's variable
+                    + " EU/t(*2A) "
+                    + StatCollector.translateToLocal("GT5U.machines.tier")
+                    + ": "
+                    + EnumChatFormatting.YELLOW
+                    + VN[GT_Utility.getTier(logic.getVoltage())]
+                    + EnumChatFormatting.RESET);
+
         }
 
         addProgressStringToScanner(player, logLevel, list);
@@ -772,13 +786,15 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         if (isClientSide()) {
             switch (soundEventValue) {
                 case PROCESS_START_SOUND_INDEX -> {
-                    if (getProcessStartSound() != null) GT_Utility.doSoundAtClient(
-                        getProcessStartSound(),
-                        getTimeBetweenProcessSounds(),
-                        1.0F,
-                        getXCoord(),
-                        getYCoord(),
-                        getZCoord());
+                    if (getProcessStartSound() != null) {
+                        GT_Utility.doSoundAtClient(
+                            getProcessStartSound(),
+                            getTimeBetweenProcessSounds(),
+                            1.0F,
+                            getXCoord(),
+                            getYCoord(),
+                            getZCoord());
+                    }
                 }
                 case INTERRUPT_SOUND_INDEX -> GT_Utility.doSoundAtClient(
                     SoundResource.IC2_MACHINES_INTERRUPT_ONE,
