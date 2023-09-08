@@ -84,6 +84,13 @@ public final class CheckRecipeResultRegistry {
      * Machine had an internal error
      */
     public static final CheckRecipeResult INTERNAL_ERROR = SimpleCheckRecipeResult.ofFailure("internal_error");
+    /** Multiblock ore drill has no drilling fluid */
+    public static final CheckRecipeResult NO_DRILLING_FLUID = SimpleCheckRecipeResult.ofFailure("no_drilling_fluid");
+    /** Multiblock drill is missing mining pipe */
+    public static final CheckRecipeResult MISSING_MINING_PIPE = SimpleCheckRecipeResult.ofFailure("no_mining_pipe");
+    /** Concrete backfiller is out of concrete */
+    public static final CheckRecipeResult BACKFILLER_NO_CONCRETE = SimpleCheckRecipeResult
+        .ofFailure("backfiller_no_concrete");
 
     /**
      * Cannot process recipe because the machine cannot handle required EUt.

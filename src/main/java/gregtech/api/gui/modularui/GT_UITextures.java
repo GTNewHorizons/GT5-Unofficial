@@ -281,6 +281,8 @@ public class GT_UITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/batch_mode_off_disabled");
     public static final UITexture OVERLAY_BUTTON_FORBIDDEN = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/forbidden");
+    public static final UITexture OVERLAY_BUTTON_LOCKED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/lock_small");
     public static final UITexture OVERLAY_BUTTON_DOWN_TIERING_ON = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/down_tiering_on");
     public static final UITexture OVERLAY_BUTTON_DOWN_TIERING_OFF = UITexture
@@ -366,6 +368,17 @@ public class GT_UITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/use_processing_state.png");
     public static final UITexture OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/use_inverted_processing_state.png");
+    public static final UITexture OVERLAY_CHUNK_LOADING = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/chunkloading");
+    public static final UITexture OVERLAY_CHUNK_LOADING_OFF = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/chunkloading_off");
+    public static final UITexture OVERLAY_WORK_AREA = UITexture.fullImage(GregTech.ID, "gui/overlay_button/work_area");
+    public static final UITexture OVERLAY_REPLACE_COBBLE_ON = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/replace_cobble_on");
+    public static final UITexture OVERLAY_REPLACE_COBBLE_OFF = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/replace_cobble_off");
+    public static final UITexture OVERLAY_RETRACT_PIPE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/retract_pipes");
 
     /**
      * Can adjust size as needed.

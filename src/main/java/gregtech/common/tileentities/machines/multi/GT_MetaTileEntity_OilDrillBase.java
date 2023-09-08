@@ -29,16 +29,25 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ChunkManager;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -207,6 +216,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
             if (pumpResult.getType() != ValidationType.VALID) {
                 mEUt = 0;
                 mMaxProgresstime = 0;
+                setRuntimeFailureReason(CheckRecipeResultRegistry.OUTPUT_FULL);
                 return false;
             }
             FluidStack tFluid = pumpResult.getResult();
@@ -217,6 +227,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
         }
         GT_ChunkManager.releaseTicket((TileEntity) getBaseMetaTileEntity());
         workState = STATE_UPWARD;
+        setShutdownReason(StatCollector.translateToLocal("GT5U.gui.text.drill_exhausted"));
         return true;
     }
 
@@ -359,22 +370,82 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
                     + EnumChatFormatting.RESET,
                 StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
                     + EnumChatFormatting.GREEN
-                    + (chunkRangeConfig)
+                    + GT_Utility.formatNumbers(chunkRangeConfig)
                     + " x "
-                    + (chunkRangeConfig)
+                    + GT_Utility.formatNumbers(chunkRangeConfig)
                     + EnumChatFormatting.RESET
                     + " "
                     + StatCollector.translateToLocal("GT5U.machines.chunks"),
-                "Drilling fluid: " + EnumChatFormatting.GREEN
-                    + (mOilId > 0 ? FluidRegistry.getFluid(mOilId)
-                        .getName() : "None")
-                    + EnumChatFormatting.RESET,
+                "Drilling fluid: " + EnumChatFormatting.GREEN + getFluidName() + EnumChatFormatting.RESET,
                 "Drilling flow: " + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(this.mMaxProgresstime > 0 ? (mOilFlow / this.mMaxProgresstime) : 0)
+                    + getFlowRatePerTick()
                     + EnumChatFormatting.RESET
                     + " L/t"));
         l.addAll(Arrays.asList(super.getInfoData()));
         return l.toArray(new String[0]);
+    }
+
+    @NotNull
+    protected String getFlowRatePerTick() {
+        return GT_Utility.formatNumbers(this.mMaxProgresstime > 0 ? (mOilFlow / this.mMaxProgresstime) : 0);
+    }
+
+    @NotNull
+    private String getFluidName() {
+        if (mOilId > 0) {
+            final Fluid fluid = FluidRegistry.getFluid(mOilId);
+            return fluid.getLocalizedName(new FluidStack(fluid, 0));
+        }
+        return "None";
+    }
+
+    private @NotNull String clientFluidType = "";
+    private @NotNull String clientPumpRate = "";
+    private @NotNull String clientReservoirContents = "";
+
+    @NotNull
+    private String getReservoirContents() {
+        int amount = 0;
+        for (Chunk chunk : mOilFieldChunks) {
+            final FluidStack fluidStack = undergroundOil(chunk, -1);
+            if (fluidStack != null) {
+                amount += fluidStack.amount;
+            }
+        }
+
+        return StatCollector.translateToLocalFormatted("GT5U.gui.text.pump_recovery", GT_Utility.formatNumbers(amount));
+    }
+
+    @Override
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        super.drawTexts(screenElements, inventorySlot);
+        screenElements
+            .widget(
+                TextWidget
+                    .dynamicString(
+                        () -> StatCollector.translateToLocalFormatted("GT5U.gui.text.pump_fluid_type", clientFluidType))
+                    .setSynced(false)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == STATE_AT_BOTTOM))
+            .widget(
+                TextWidget.dynamicString(
+                    () -> StatCollector
+                        .translateToLocalFormatted("GT5U.gui.text.pump_rate", EnumChatFormatting.AQUA + clientPumpRate))
+                    .setSynced(false)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == STATE_AT_BOTTOM))
+            .widget(
+                TextWidget.dynamicString(() -> clientReservoirContents)
+                    .setSynced(false)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == STATE_AT_BOTTOM))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> workState, newInt -> workState = newInt))
+            .widget(new FakeSyncWidget.StringSyncer(this::getFluidName, newString -> clientFluidType = newString))
+            .widget(new FakeSyncWidget.StringSyncer(this::getFlowRatePerTick, newString -> clientPumpRate = newString))
+            .widget(
+                new FakeSyncWidget.StringSyncer(
+                    this::getReservoirContents,
+                    newString -> clientReservoirContents = newString));
     }
 
     @Override
