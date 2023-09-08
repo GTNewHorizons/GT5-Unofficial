@@ -27,7 +27,8 @@ public class ProcessingTask<T extends TaskHost & ProcessingLogicHost<P> & IMachi
     public void update(long tick, boolean isServerSide) {
         if (!isServerSide) return;
         if (!taskHost.isAllowedToWork()) return;
-        final P logic = taskHost.getProcessingLogic();
+        final P logic = taskHost.getProcessingLogic()
+            .setMuTEMode(true);
         if (taskHost.needsUpdate()) {
             taskHost.updateProcessingLogic(logic);
             taskHost.setProcessingUpdate(false);
