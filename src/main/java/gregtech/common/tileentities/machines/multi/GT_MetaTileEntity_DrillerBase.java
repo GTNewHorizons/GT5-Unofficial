@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -157,6 +156,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
     protected ChunkCoordIntPair mCurrentChunk = null;
     protected boolean mWorkChunkNeedsReload = true;
 
+    /** Stores default result messages for success/failures of each work state. */
     private final Map<ResultRegistryKey, CheckRecipeResult> resultRegistry = new HashMap<>();
 
     /** Allows inheritors to supply custom runtime failure messages. */
@@ -165,9 +165,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
     /** Allows inheritors to supply custom shutdown failure messages. */
     private @NotNull String shutdownReason = "";
 
-    /**
-     * Allows inheritors to suppress wiping the last error if the machine is forcibly turned off.
-     */
+    /** Allows inheritors to suppress wiping the last error if the machine is forcibly turned off. */
     protected boolean suppressErrorWipe = false;
 
     public GT_MetaTileEntity_DrillerBase(int aID, String aName, String aNameRegional) {
@@ -481,7 +479,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
 
     // This is a distinct state from workingUpward, because some inheritors (like concrete backfiller) operate
     // exclusively on the workingUpward phase. It also allows for more distinct status messages.
-    protected boolean workingToAbortOperation(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe,
+    protected boolean workingToAbortOperation(@NotNull ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe,
         int zPipe, int yHead, int oldYHead) {
         if (tryPickPipe()) {
             return true;
@@ -565,8 +563,9 @@ public abstract class GT_MetaTileEntity_DrillerBase
         }
 
         if (runtimeFailure == null) {
-            return getCheckRecipeResult(workState, wasSuccessful)
-                .orElse(SimpleCheckRecipeResult.ofFailure("no_mining_pipe"));
+            return resultRegistry.getOrDefault(
+                new ResultRegistryKey(workState, wasSuccessful),
+                SimpleCheckRecipeResult.ofFailure("no_mining_pipe"));
         } else {
             final CheckRecipeResult result;
             result = runtimeFailure;
@@ -581,7 +580,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
      *
      * @param newFailureReason A new failure reason
      */
-    protected void setRuntimeFailureReason(CheckRecipeResult newFailureReason) {
+    protected void setRuntimeFailureReason(@NotNull CheckRecipeResult newFailureReason) {
         runtimeFailure = newFailureReason;
     }
 
@@ -900,7 +899,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
      * @param state  A work state like {@link #STATE_DOWNWARD}.
      * @param result A previously registered recipe result.
      */
-    protected void addResultMessage(final int state, final CheckRecipeResult result) {
+    protected void addResultMessage(final int state, @NotNull final CheckRecipeResult result) {
         resultRegistry.put(new ResultRegistryKey(state, result.wasSuccessful()), result);
     }
 
@@ -911,15 +910,11 @@ public abstract class GT_MetaTileEntity_DrillerBase
      * @param wasSuccessful Whether the operation was successful.
      * @param resultKey     An I18N key for the message.
      */
-    protected void addResultMessage(final int state, final boolean wasSuccessful, final String resultKey) {
+    protected void addResultMessage(final int state, final boolean wasSuccessful, @NotNull final String resultKey) {
         addResultMessage(
             state,
             wasSuccessful ? SimpleCheckRecipeResult.ofSuccess(resultKey)
                 : SimpleCheckRecipeResult.ofFailure(resultKey));
-    }
-
-    private Optional<CheckRecipeResult> getCheckRecipeResult(final int state, final boolean successful) {
-        return Optional.ofNullable(resultRegistry.get(new ResultRegistryKey(state, successful)));
     }
 
     @SuppressWarnings("ClassCanBeRecord")

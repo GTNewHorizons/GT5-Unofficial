@@ -390,6 +390,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
         return GT_Utility.formatNumbers(this.mMaxProgresstime > 0 ? (mOilFlow / this.mMaxProgresstime) : 0);
     }
 
+    @NotNull
     private String getFluidName() {
         if (mOilId > 0) {
             final Fluid fluid = FluidRegistry.getFluid(mOilId);
@@ -398,10 +399,11 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
         return "None";
     }
 
-    private String clientFluidType = "";
-    private String clientPumpRate = "";
-    private String clientReservoirContents = "";
+    private @NotNull String clientFluidType = "";
+    private @NotNull String clientPumpRate = "";
+    private @NotNull String clientReservoirContents = "";
 
+    @NotNull
     private String getReservoirContents() {
         int amount = 0;
         for (Chunk chunk : mOilFieldChunks) {

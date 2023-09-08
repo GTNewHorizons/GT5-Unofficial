@@ -300,10 +300,12 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         return getCornerCoords(-1, -1);
     }
 
+    @NotNull
     private ChunkCoordIntPair getBottomRightChunkCoords() {
         return getCornerCoords(1, 1);
     }
 
+    @NotNull
     private ChunkCoordIntPair getCornerCoords(int xMultiplier, int zMultiplier) {
         final ChunkCoordIntPair drillPos = getDrillCoords();
         // use corner closest to the drill as mining area center
@@ -314,6 +316,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                 + ((getZDrill() - (drillPos.chunkZPos << 4)) < 8 ? 0 : 1));
     }
 
+    @NotNull
     private ChunkCoordIntPair getDrillCoords() {
         return new ChunkCoordIntPair(getXDrill() >> 4, getZDrill() >> 4);
     }

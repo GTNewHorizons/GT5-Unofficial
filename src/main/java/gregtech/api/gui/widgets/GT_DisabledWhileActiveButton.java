@@ -9,6 +9,8 @@ import java.util.function.Supplier;
 
 import net.minecraft.util.StatCollector;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -21,9 +23,10 @@ import gregtech.api.interfaces.tileentity.IMachineProgress;
 
 public class GT_DisabledWhileActiveButton extends ButtonWidget {
 
+    @NotNull
     private final WeakReference<IMachineProgress> machineRef;
 
-    public GT_DisabledWhileActiveButton(IMachineProgress machine, ModularWindow.Builder builder) {
+    public GT_DisabledWhileActiveButton(@NotNull IMachineProgress machine, @NotNull ModularWindow.Builder builder) {
         super();
         machineRef = new WeakReference<>(machine);
 
@@ -35,8 +38,9 @@ public class GT_DisabledWhileActiveButton extends ButtonWidget {
         super.dynamicTooltip(this::generateTooltip);
     }
 
+    @NotNull
     @Override
-    public ButtonWidget setOnClick(BiConsumer<ClickData, Widget> clickAction) {
+    public ButtonWidget setOnClick(@NotNull BiConsumer<ClickData, Widget> clickAction) {
         return super.setOnClick((clickData, widget) -> isMachineActive().ifPresent(isActive -> {
             if (!isActive) {
                 clickAction.accept(clickData, widget);
@@ -44,18 +48,21 @@ public class GT_DisabledWhileActiveButton extends ButtonWidget {
         }));
     }
 
+    @NotNull
     @Override
-    public Widget setBackground(IDrawable... drawables) {
+    public Widget setBackground(@NotNull IDrawable... drawables) {
         return super.setBackground(() -> appendLockedOverlay(drawables));
     }
 
+    @NotNull
     @Override
-    public Widget setBackground(Supplier<IDrawable[]> drawablesSupplier) {
+    public Widget setBackground(@NotNull Supplier<IDrawable[]> drawablesSupplier) {
         return super.setBackground(() -> appendLockedOverlay(drawablesSupplier.get()));
     }
 
+    @NotNull
     @Override
-    public Widget dynamicTooltip(Supplier<List<String>> dynamicTooltip) {
+    public Widget dynamicTooltip(@NotNull Supplier<List<String>> dynamicTooltip) {
         return super.dynamicTooltip(() -> {
             ImmutableList.Builder<String> tooltips = ImmutableList.<String>builder()
                 .addAll(dynamicTooltip.get());
@@ -65,12 +72,14 @@ public class GT_DisabledWhileActiveButton extends ButtonWidget {
         });
     }
 
+    @NotNull
     private Optional<Boolean> isMachineActive() {
         return Optional.ofNullable(machineRef.get())
             .map(IMachineProgress::isActive);
     }
 
-    private IDrawable[] appendLockedOverlay(IDrawable[] drawables) {
+    @NotNull
+    private IDrawable[] appendLockedOverlay(@NotNull IDrawable[] drawables) {
         return isMachineActive().map(isActive -> {
             if (isActive) {
                 final IDrawable[] copy = Arrays.copyOf(drawables, drawables.length + 1);
@@ -82,6 +91,7 @@ public class GT_DisabledWhileActiveButton extends ButtonWidget {
             .orElse(drawables);
     }
 
+    @NotNull
     private List<String> generateTooltip() {
         return isMachineActive().map(isActive -> {
             if (isActive) {
