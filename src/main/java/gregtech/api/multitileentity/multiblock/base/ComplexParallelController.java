@@ -48,8 +48,8 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
     @Override
     protected void runMachine(long tick) {
         if (acceptsFuel() && isActive() && !consumeFuel()) {
-                stopMachine(true);
-                return;
+            stopMachine(true);
+            return;
         }
 
         if (hasThingsToDo()) {
@@ -58,7 +58,7 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
         }
 
         if (!((tick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled() || hasInventoryBeenModified())
-            && maxComplexParallels != currentComplexParallels)){
+            && maxComplexParallels != currentComplexParallels)) {
             return;
         }
 

@@ -73,7 +73,8 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
     @SuppressWarnings("unchecked")
     public void getSubItems(Item aItem, CreativeTabs aTab, List<ItemStack> aList) {
         for (MultiTileEntityClassContainer tClass : mBlock.mMultiTileEntityRegistry.mRegistrations) {
-            if (!tClass.mHidden && ((IMultiTileEntity) tClass.mCanonicalTileEntity).getSubItems(mBlock, aItem, aTab, aList, tClass.mID)) {
+            if (!tClass.mHidden && ((IMultiTileEntity) tClass.mCanonicalTileEntity)
+                .getSubItems(mBlock, aItem, aTab, aList, tClass.mID)) {
                 aList.add(mBlock.mMultiTileEntityRegistry.getItem(tClass.mID));
             }
         }

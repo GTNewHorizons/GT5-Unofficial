@@ -86,7 +86,7 @@ public abstract class PowerController<T extends PowerController<T>> extends Cont
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         boolean isActive = tag.getBoolean("isActive");
-        if (!isActive){
+        if (!isActive) {
             return;
         }
 

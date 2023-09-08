@@ -399,7 +399,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     @Override
     public void setExtendedFacing(ExtendedFacing newExtendedFacing) {
-        if (extendedFacing == newExtendedFacing){
+        if (extendedFacing == newExtendedFacing) {
             return;
         }
 
@@ -522,7 +522,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     @Override
     public void onPostTick(long tick, boolean isServerSide) {
-        if (!isServerSide){ // client side
+        if (!isServerSide) { // client side
             doActivitySound(getActivitySoundLoop());
             return;
         }
@@ -560,7 +560,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             }
 
             final IInventory facingInventory = part.getIInventoryAtSide(part.getFrontFacing());
-            if (facingInventory == null){
+            if (facingInventory == null) {
                 continue;
             }
 
@@ -581,7 +581,6 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                     part.setInventorySlotContents(i, null);
                 }
             }
-
 
         }
     }

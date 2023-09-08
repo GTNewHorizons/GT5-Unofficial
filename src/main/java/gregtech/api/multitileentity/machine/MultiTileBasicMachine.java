@@ -148,7 +148,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         for (int slot = 0; slot < itemsToOutput.length; slot++) {
             final ItemStack itemStack = itemsToOutput[slot];
 
-            if (itemStack == null){
+            if (itemStack == null) {
                 continue;
             }
 
@@ -361,17 +361,17 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
             return;
         }
 
-        if (!(tick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled() || hasInventoryBeenModified())){
+        if (!(tick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled() || hasInventoryBeenModified())) {
             return;
         }
 
-        if (!isAllowedToWork()){
+        if (!isAllowedToWork()) {
             return;
         }
 
         wasEnabled = false;
 
-        if (!checkRecipe()){
+        if (!checkRecipe()) {
             return;
         }
 
@@ -645,7 +645,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
 
         if (this instanceof PowerLogicHost powerLogicHost) {
             PowerLogic logic = powerLogicHost.getPowerLogic(facing);
-            if (!isElectric){
+            if (!isElectric) {
                 return;
             }
 

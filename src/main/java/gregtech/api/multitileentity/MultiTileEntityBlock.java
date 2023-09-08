@@ -477,12 +477,14 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
     @Override
     public final int getComparatorInputOverride(World aWorld, int aX, int aY, int aZ, int ordinalSide) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (aTileEntity instanceof IMTE_GetComparatorInputOverride override){
+        if (aTileEntity instanceof IMTE_GetComparatorInputOverride override) {
             return override.getComparatorInputOverride(ForgeDirection.getOrientation(ordinalSide));
         }
 
-        if (aTileEntity instanceof IMTE_IsProvidingWeakPower power){
-            return power.isProvidingWeakPower(ForgeDirection.getOrientation(ordinalSide).getOpposite());
+        if (aTileEntity instanceof IMTE_IsProvidingWeakPower power) {
+            return power.isProvidingWeakPower(
+                ForgeDirection.getOrientation(ordinalSide)
+                    .getOpposite());
         }
 
         return super.getComparatorInputOverride(aWorld, aX, aY, aZ, ordinalSide);
