@@ -5,6 +5,7 @@ import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import static net.glease.ggfab.BlockIcons.*;
@@ -21,27 +22,41 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.widget.ISyncedWidget;
+import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.*;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -121,6 +136,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     private boolean stuck;
 
     private final ArrayList<GT_MetaTileEntity_Hatch_DataAccess> mDataAccessHatches = new ArrayList<>();
+    private int currentInputLength;
 
     public MTE_AdvAssLine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -271,11 +287,13 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     private void setCurrentRecipe(ItemStack stick, GT_Recipe.GT_Recipe_AssemblyLine recipe) {
         currentRecipe = recipe;
         currentStick = stick;
+        currentInputLength = recipe.mInputs.length;
     }
 
     private void clearCurrentRecipe() {
         currentRecipe = null;
         currentStick = null;
+        currentInputLength = -1;
         stuck = false;
         baseEUt = 0;
         for (Slice slice : slices) {
@@ -296,7 +314,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             aNBT.setInteger("mRecipeHash", currentRecipe.getPersistentHash());
             aNBT.setIntArray(
                     TAG_KEY_PROGRESS_TIMES,
-                    Arrays.stream(slices).limit(currentRecipe.mInputs.length).mapToInt(s -> s.progress).toArray());
+                    Arrays.stream(slices).limit(currentInputLength).mapToInt(s -> s.progress).toArray());
             aNBT.setBoolean("stuck", stuck);
             aNBT.setLong("inputV", inputVoltage);
             aNBT.setLong("inputEU", inputEUt);
@@ -347,7 +365,8 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                     break;
             }
         }
-        setCurrentRecipe(loadedStack, recipe);
+        if (loadedStack == null || recipe == null) clearCurrentRecipe();
+        else setCurrentRecipe(loadedStack, recipe);
     }
 
     @Override
@@ -415,6 +434,19 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     }
 
     @Override
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        super.drawTexts(screenElements, inventorySlot);
+        SliceStatusWidget[] arr = Arrays.stream(slices).map(SliceStatusWidget::new).toArray(SliceStatusWidget[]::new);
+        screenElements.widgets(arr);
+        screenElements.widget(new FakeSyncWidget.IntegerSyncer(() -> currentInputLength, l -> {
+            currentInputLength = l;
+            for (SliceStatusWidget w : arr) {
+                w.updateText();
+            }
+        }));
+    }
+
+    @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (currentRecipe == null) {
             criticalStopMachine();
@@ -424,7 +456,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             hatch_dataAccess.setActive(true);
         }
 
-        if (mInputBusses.size() < currentRecipe.mInputs.length) {
+        if (mInputBusses.size() < currentInputLength) {
             criticalStopMachine();
             return false;
         }
@@ -445,7 +477,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             if (slice.progress >= 0) {
                 if (!foundWorking) {
                     foundWorking = true;
-                    mProgresstime = (slice.id + 1) * (mMaxProgresstime / currentRecipe.mInputs.length) - slice.progress;
+                    mProgresstime = (slice.id + 1) * (mMaxProgresstime / currentInputLength) - slice.progress;
                 }
             }
             if (slice.progress > 0) working++;
@@ -466,7 +498,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         }
 
         if (getBaseMetaTileEntity().isAllowedToWork()) {
-            if (hasAllFluids(currentRecipe) && slices[0].start()) {
+            if (hasAllItems(currentRecipe) && hasAllFluids(currentRecipe) && slices[0].start()) {
                 drainAllFluids(currentRecipe);
                 mProgresstime = 0;
             }
@@ -496,22 +528,8 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         // If we run into missing buses/hatches or bad inputs, we go to the next data stick.
         // This check only happens if we have a valid up-to-date data stick.
 
-        // Check Inputs align
-        int aItemCount = tRecipe.mInputs.length;
-        if (mInputBusses.size() < aItemCount) return null;
-        for (int i = 0; i < aItemCount; i++) {
-            GT_MetaTileEntity_Hatch_InputBus tInputBus = mInputBusses.get(i);
-            if (tInputBus == null) {
-                return null;
-            }
-            ItemStack tSlotStack = tInputBus.getStackInSlot(0);
-            int tRequiredStackSize = isStackValidIngredient(tSlotStack, tRecipe.mInputs[i], tRecipe.mOreDictAlt[i]);
-            if (tRequiredStackSize < 0) return null;
-
-            if (GT_Values.D1) {
-                GT_FML_LOGGER.info("Item: " + i + " accepted");
-            }
-        }
+        // Check item Inputs align
+        if (!hasAllItems(tRecipe)) return null;
 
         // Check Fluid Inputs align
         if (!hasAllFluids(tRecipe)) return null;
@@ -523,6 +541,25 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             GT_FML_LOGGER.info("Find available recipe");
         }
         return tRecipe;
+    }
+
+    private boolean hasAllItems(GT_Recipe.GT_Recipe_AssemblyLine tRecipe) {
+        int aItemCount = tRecipe.mInputs.length;
+        if (mInputBusses.size() < aItemCount) return false;
+        for (int i = 0; i < aItemCount; i++) {
+            GT_MetaTileEntity_Hatch_InputBus tInputBus = mInputBusses.get(i);
+            if (tInputBus == null) {
+                return false;
+            }
+            ItemStack tSlotStack = tInputBus.getStackInSlot(0);
+            int tRequiredStackSize = isStackValidIngredient(tSlotStack, tRecipe.mInputs[i], tRecipe.mOreDictAlt[i]);
+            if (tRequiredStackSize < 0) return false;
+
+            if (GT_Values.D1) {
+                GT_FML_LOGGER.info("Item: " + i + " accepted");
+            }
+        }
+        return true;
     }
 
     private boolean hasAllFluids(GT_Recipe.GT_Recipe_AssemblyLine tRecipe) {
@@ -577,14 +614,15 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     // and the first slice cannot find a input/fluid cannot be found
     // so we are safe to assume the old recipe no longer works
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
+    @NotNull
+    public CheckRecipeResult checkProcessing() {
         if (GT_Values.D1) {
             GT_FML_LOGGER.info("Start Adv ALine recipe check");
         }
         clearCurrentRecipe();
         ArrayList<ItemStack> tDataStickList = getDataItems(2);
         if (tDataStickList.isEmpty()) {
-            return false;
+            return CheckRecipeResultRegistry.NO_DATA_STICKS;
         }
         if (GT_Values.D1) {
             GT_FML_LOGGER.info("Stick accepted, " + tDataStickList.size() + " Data Sticks found");
@@ -627,7 +665,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             if (GT_Values.D1) {
                 GT_FML_LOGGER.info("Did not find a recipe");
             }
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         if (GT_Values.D1) {
@@ -637,7 +675,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         if (!slices[0].start()) {
             clearCurrentRecipe();
             // something very very wrong...
-            return false;
+            return CheckRecipeResultRegistry.NONE;
         }
         drainAllFluids(recipe);
 
@@ -654,12 +692,17 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         if (GT_Values.D1) {
             GT_FML_LOGGER.info("Recipe successful");
         }
+        return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
         return true;
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return null;
+    public Set<VoidingMode> getAllowedVoidingModes() {
+        return VoidingMode.ITEM_ONLY_MODES;
     }
 
     @Override
@@ -726,13 +769,17 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         if (currentRecipe == null || !getBaseMetaTileEntity().isActive()) return;
         NBTTagList l = new NBTTagList();
-        for (int i = 0; i < currentRecipe.mInputs.length; i++) {
+        for (int i = 0; i < currentInputLength; i++) {
             l.appendTag(new NBTTagInt(slices[i].progress));
         }
         tag.setTag(TAG_KEY_PROGRESS_TIMES, l);
-        tag.setInteger("mDuration", mMaxProgresstime / currentRecipe.mInputs.length);
+        tag.setInteger("mDuration", mMaxProgresstime / currentInputLength);
     }
 
+    /**
+     * Caller is responsible to check and ensure the hatches are there and has all the fluid needed. You will usually
+     * want to ensure hasAllFluid was called right before calling this, otherwise very bad things can happen.
+     */
     private void drainAllFluids(GT_Recipe.GT_Recipe_AssemblyLine recipe) {
         for (int i = 0; i < recipe.mFluidInputs.length; i++) {
             mInputHatches.get(i).drain(ForgeDirection.UNKNOWN, recipe.mFluidInputs[i], true);
@@ -760,6 +807,68 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         return -1;
     }
 
+    private class SliceStatusWidget extends TextWidget implements ISyncedWidget {
+
+        private final Slice slice;
+        private int lastProgress = -2;
+        private Text text;
+
+        private SliceStatusWidget(Slice slice) {
+            this.slice = slice;
+            updateText();
+        }
+
+        @Override
+        public boolean isEnabled() {
+            return super.isEnabled() && slice.progress <= 0 && currentInputLength > slice.id;
+        }
+
+        @Override
+        public Text getText() {
+            return text;
+        }
+
+        @Override
+        public void readOnClient(int id, PacketBuffer buf) {
+            if (id == 0) {
+                slice.progress = buf.readVarIntFromBuffer();
+                updateText();
+                checkNeedsRebuild();
+            }
+        }
+
+        public void updateText() {
+            String type = "unknown";
+            if (slice.progress == 0) type = "stuck";
+            else if (slice.progress < 0) type = "idle";
+            text = Text.localised("ggfab.gui.advassline.slice." + type, slice.id);
+        }
+
+        @Override
+        public void readOnServer(int id, PacketBuffer buf) {}
+
+        @Override
+        public void detectAndSendChanges(boolean init) {
+            if (slice.progress != lastProgress) {
+                // suppress small normal progress update
+                if (slice.progress > 0 && lastProgress > 0 && lastProgress - slice.progress < 10) return;
+                lastProgress = slice.progress;
+                syncToClient(0, b -> b.writeVarIntToBuffer(slice.progress));
+            }
+        }
+
+        @Override
+        public void markForUpdate() {}
+
+        @Override
+        public void unMarkForUpdate() {}
+
+        @Override
+        public boolean isMarkedForUpdate() {
+            return false;
+        }
+    }
+
     private class Slice {
 
         private final int id;
@@ -777,9 +886,9 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             if (progress < 0) return;
             if (progress == 0 || --progress == 0) {
                 // id==0 will be end of chain if 1 input, so we need a +1 here
-                if (id + 1 >= currentRecipe.mInputs.length) {
-                    addOutput(currentRecipe.mOutput);
-                    reset();
+                if (id + 1 >= currentInputLength) {
+                    if (addOutput(currentRecipe.mOutput) || !voidingMode.protectItem) reset();
+                    else stuck = true;
                 } else {
                     if (slices[id + 1].start()) reset();
                     else stuck = true;
@@ -794,7 +903,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             ItemStack stack = bus.getStackInSlot(0);
             int size = isStackValidIngredient(stack, currentRecipe.mInputs[id], currentRecipe.mOreDictAlt[id]);
             if (size < 0) return false;
-            progress = mMaxProgresstime / currentRecipe.mInputs.length;
+            progress = mMaxProgresstime / currentInputLength;
             stack.stackSize -= size;
             bus.updateSlots();
             return true;

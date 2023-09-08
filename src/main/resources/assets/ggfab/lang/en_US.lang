@@ -11,6 +11,9 @@ ggfab.waila.advassline.slice=Slice #%s: %s s / %s s
 ggfab.waila.advassline.slice.small=Slice #%s: %s ticks / %s ticks
 ggfab.waila.advassline.slice.idle=Slice #%s: Idle
 ggfab.waila.advassline.slice.stuck=Slice #%s: §4STUCK
+ggfab.gui.advassline.slice.idle=Slice #%s: Idle
+ggfab.gui.advassline.slice.stuck=Slice #%s: §4STUCK
+ggfab.gui.advassline.slice.unknown=Slice #%s: ?
 
 ggfab.info.linked_input_bus.not_owned=§6The settings were copied from a different owner!
 ggfab.info.linked_input_bus.no_data=§6Configuration data not found!
