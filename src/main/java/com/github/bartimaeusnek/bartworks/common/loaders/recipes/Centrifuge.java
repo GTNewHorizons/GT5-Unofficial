@@ -22,6 +22,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
 
 public class Centrifuge implements Runnable {
@@ -82,7 +83,7 @@ public class Centrifuge implements Runnable {
                     .noFluidInputs().noFluidOutputs().duration(2 * MINUTES + 30 * SECONDS).eut(TierEU.RECIPE_LV)
                     .addTo(sCentrifugeRecipes);
 
-            GT_Values.RA.stdBuilder()
+            GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder()
                     .itemInputs(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 6))
                     .itemOutputs(
                             fuel.recycledItems[0],
@@ -90,8 +91,13 @@ public class Centrifuge implements Runnable {
                             fuel.recycledItems[2],
                             fuel.recycledItems[3],
                             fuel.recycledItems[4])
-                    .outputChances(fuel.recycleChances).noFluidInputs().fluidOutputs(fuel.recycledFluid)
-                    .duration(60 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sCentrifugeRecipes);
+                    .outputChances(fuel.recycleChances).noFluidInputs();
+            if (fuel.recycledFluid == null) {
+                recipeBuilder.noFluidOutputs();
+            } else {
+                recipeBuilder.fluidOutputs(fuel.recycledFluid);
+            }
+            recipeBuilder.duration(1 * MINUTES).eut(TierEU.RECIPE_LV).addTo(sCentrifugeRecipes);
 
             i += MATERIALS_PER_FUEL;
         }

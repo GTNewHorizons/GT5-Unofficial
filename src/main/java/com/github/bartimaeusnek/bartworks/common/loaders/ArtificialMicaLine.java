@@ -49,7 +49,7 @@ public class ArtificialMicaLine {
         GT_Values.RA.stdBuilder().itemInputs(Materials.RockSalt.getDust(4))
                 .itemOutputs(WerkstoffLoader.Potassiumfluorosilicate.get(OrePrefixes.dust, 9))
                 .fluidInputs(WerkstoffLoader.HexafluorosilicicAcid.getFluidOrGas(1000))
-                .fluidOutputs(Materials.HydrochloricAcid.getGas(2000)).duration(1 * SECONDS).eut(8)
+                .fluidOutputs(Materials.HydrochloricAcid.getFluid(2000)).duration(1 * SECONDS).eut(8)
                 .addTo(sMixerRecipes);
 
         // 2K + CO2 + O = K2CO3
