@@ -103,7 +103,7 @@ public class ModernMaterialUtilities {
         FrameBoxBlock frame = new FrameBoxBlock();
         GameRegistry.registerBlock(frame, FrameBoxItemBlock.class, "frameBoxBlock");
         GameRegistry.registerTileEntity(FrameBoxTileEntity.class, "frameBoxBlockTile");
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(frame), new FrameBoxItemRenderer());
+        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(frame), new FrameBoxItemRenderer());
 
     }
 

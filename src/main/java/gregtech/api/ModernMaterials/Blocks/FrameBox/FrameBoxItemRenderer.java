@@ -36,9 +36,9 @@ public class FrameBoxItemRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        RenderBlocks renderBlocks = (RenderBlocks) data[0];
+        //RenderBlocks renderBlocks = (RenderBlocks) data[0];
 
-        renderBlocks.renderBlockAsItem(Block.getBlockFromItem(item.getItem()), item.getItemDamage(), 1.0f);
+        //renderBlocks.renderBlockAsItem(Block.getBlockFromItem(item.getItem()), item.getItemDamage(), 1.0f);
     }
 
 
