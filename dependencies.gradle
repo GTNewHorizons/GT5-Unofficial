@@ -36,13 +36,13 @@
 dependencies {
     api("com.github.GTNewHorizons:StructureLib:1.2.8:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
-    api("com.github.GTNewHorizons:NotEnoughItems:2.3.83-GTNH:dev")
+    api("com.github.GTNewHorizons:NotEnoughItems:2.4.1:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.0.13:dev")
-    api("com.github.GTNewHorizons:ModularUI:1.1.16:dev")
+    api("com.github.GTNewHorizons:ModularUI:1.1.17:dev")
     api("com.github.GTNewHorizons:waila:1.6.0:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-250-GTNH:dev")
-    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.1.41-gtnh:dev")
-    implementation("com.github.GTNewHorizons:Eternal-Singularity:1.1.0:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-254-GTNH:dev")
+    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.1.42-gtnh:dev")
+    implementation("com.github.GTNewHorizons:Avaritia:1.46:dev")
 
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.2.11:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.36:dev") { transitive = false }
@@ -53,13 +53,13 @@ dependencies {
 
     compileOnly("com.github.GTNewHorizons:EnderCore:0.2.17:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Galacticraft:3.0.73-GTNH:dev") { transitive = false }
-    compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.9.39-GTNH:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.10.0-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Chisel:2.11.4-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Translocators:1.1.2.21:dev") { transitive = false }
     compileOnly("curse.maven:cofh-core-69162:2388751") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.4.19:dev") { transitive = false }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
-    compileOnly("com.github.GTNewHorizons:Hodgepodge:2.2.30:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:Hodgepodge:2.3.1:dev") { transitive = false }
     compileOnly('com.github.GTNewHorizons:Botania:1.9.24-GTNH:dev') { transitive = false }
 
     compileOnly("com.google.auto.value:auto-value-annotations:1.10.1") { transitive = false }

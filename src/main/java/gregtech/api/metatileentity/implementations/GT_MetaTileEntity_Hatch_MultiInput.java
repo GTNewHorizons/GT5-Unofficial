@@ -33,6 +33,14 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
         mCapacityPer = getCapacityPerTank(aTier, aSlot);
     }
 
+    public GT_MetaTileEntity_Hatch_MultiInput(int aID, int aSlot, String aName, String aNameRegional, int aTier,
+        String[] aDescription) {
+        super(aID, aSlot, aName, aNameRegional, aTier, aDescription);
+        this.mStoredFluid = new FluidStack[aSlot];
+        fluidTanks = new FluidStackTank[aSlot];
+        mCapacityPer = getCapacityPerTank(aTier, aSlot);
+    }
+
     public GT_MetaTileEntity_Hatch_MultiInput(String aName, int aSlot, int aTier, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aSlot, aTier, aDescription, aTextures);

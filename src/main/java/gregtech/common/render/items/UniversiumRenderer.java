@@ -16,10 +16,10 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import codechicken.lib.render.TextureUtils;
+import fox.spiteful.avaritia.render.CosmicRenderShenanigans;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
-import singulariteam.eternalsingularity.render.CosmicRenderStuffs;
 
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
@@ -81,7 +81,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
     private void magicRenderMethod(ItemRenderType type, ItemStack aStack, IIcon tIcon, boolean fluidDisplay,
         Object... data) {
-        if (!GregTech_API.mEternalSingularity) return;
+        if (!GregTech_API.mAvaritia) return;
 
         RenderItem r = RenderItem.getInstance();
         Minecraft mc = Minecraft.getMinecraft();
@@ -130,9 +130,9 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
                     GL11.glDisable(GL11.GL_BLEND);
                 }
 
-                CosmicRenderStuffs.cosmicOpacity = cosmicOpacity;
-                CosmicRenderStuffs.inventoryRender = true;
-                CosmicRenderStuffs.useShader();
+                CosmicRenderShenanigans.cosmicOpacity = cosmicOpacity;
+                CosmicRenderShenanigans.inventoryRender = true;
+                CosmicRenderShenanigans.useShader();
 
                 GL11.glColor4d(1, 1, 1, 1);
 
@@ -149,8 +149,8 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
                 t.addVertexWithUV(16, 0, 0, maxu, minv);
                 t.draw();
 
-                CosmicRenderStuffs.releaseShader();
-                CosmicRenderStuffs.inventoryRender = false;
+                CosmicRenderShenanigans.releaseShader();
+                CosmicRenderShenanigans.inventoryRender = false;
 
                 GL11.glEnable(GL11.GL_ALPHA_TEST);
                 GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -187,8 +187,8 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glDepthFunc(GL11.GL_EQUAL);
-        CosmicRenderStuffs.cosmicOpacity = cosmicOpacity;
-        CosmicRenderStuffs.useShader();
+        CosmicRenderShenanigans.cosmicOpacity = cosmicOpacity;
+        CosmicRenderShenanigans.useShader();
 
         float minu = icon.getMinU();
         float maxu = icon.getMaxU();
@@ -205,7 +205,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
             icon.getIconWidth(),
             icon.getIconHeight(),
             scale);
-        CosmicRenderStuffs.releaseShader();
+        CosmicRenderShenanigans.releaseShader();
         GL11.glDepthFunc(GL11.GL_LEQUAL);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
@@ -220,7 +220,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
             case ENTITY -> {
                 EntityItem ent = (EntityItem) (data[1]);
                 if (ent != null) {
-                    CosmicRenderStuffs.setLightFromLocation(
+                    CosmicRenderShenanigans.setLightFromLocation(
                         ent.worldObj,
                         MathHelper.floor_double(ent.posX),
                         MathHelper.floor_double(ent.posY),
@@ -230,7 +230,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
             case EQUIPPED, EQUIPPED_FIRST_PERSON -> {
                 EntityLivingBase ent = (EntityLivingBase) (data[1]);
                 if (ent != null) {
-                    CosmicRenderStuffs.setLightFromLocation(
+                    CosmicRenderShenanigans.setLightFromLocation(
                         ent.worldObj,
                         MathHelper.floor_double(ent.posX),
                         MathHelper.floor_double(ent.posY),
@@ -238,10 +238,10 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
                 }
             }
             case INVENTORY -> {
-                CosmicRenderStuffs.setLightLevel(10.2f);
+                CosmicRenderShenanigans.setLightLevel(10.2f);
             }
             default -> {
-                CosmicRenderStuffs.setLightLevel(1.0f);
+                CosmicRenderShenanigans.setLightLevel(1.0f);
             }
         }
     }
