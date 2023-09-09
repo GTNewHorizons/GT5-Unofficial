@@ -44,7 +44,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.gui.widgets.GT_DisabledWhileActiveButton;
+import gregtech.api.gui.widgets.GT_LockedWhileActiveButton;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.objects.ItemData;
@@ -133,7 +133,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             GT_Utility.sendChatToPlayer(
                 aPlayer,
                 StatCollector.translateToLocal("GT5U.machines.workareaset") + " "
-                    + (chunkRadiusConfig << 4)
+                    + GT_Utility.formatNumbers((long) chunkRadiusConfig << 4)
                     + " "
                     + StatCollector.translateToLocal("GT5U.machines.radius"));
         }
@@ -300,10 +300,12 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         return getCornerCoords(-1, -1);
     }
 
+    @NotNull
     private ChunkCoordIntPair getBottomRightChunkCoords() {
         return getCornerCoords(1, 1);
     }
 
+    @NotNull
     private ChunkCoordIntPair getCornerCoords(int xMultiplier, int zMultiplier) {
         final ChunkCoordIntPair drillPos = getDrillCoords();
         // use corner closest to the drill as mining area center
@@ -314,6 +316,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                 + ((getZDrill() - (drillPos.chunkZPos << 4)) < 8 ? 0 : 1));
     }
 
+    @NotNull
     private ChunkCoordIntPair getDrillCoords() {
         return new ChunkCoordIntPair(getXDrill() >> 4, getZDrill() >> 4);
     }
@@ -579,8 +582,9 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> EnumChatFormatting.GRAY + StatCollector
-                            .translateToLocalFormatted("GT5U.gui.text.drill_ores_left_chunk", clientOreListSize))
+                        () -> StatCollector.translateToLocalFormatted(
+                            "GT5U.gui.text.drill_ores_left_chunk",
+                            GT_Utility.formatNumbers(clientOreListSize)))
                     .setSynced(false)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(
@@ -589,10 +593,10 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                        () -> StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.drill_ores_left_layer",
-                            clientYHead,
-                            clientOreListSize))
+                            GT_Utility.formatNumbers(clientYHead),
+                            GT_Utility.formatNumbers(clientOreListSize)))
                     .setSynced(false)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(
@@ -600,10 +604,10 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                        () -> StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.drill_chunks_left",
-                            clientCurrentChunk,
-                            clientTotalChunks))
+                            GT_Utility.formatNumbers(clientCurrentChunk),
+                            GT_Utility.formatNumbers(clientTotalChunks)))
                     .setSynced(false)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(
@@ -619,7 +623,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     @Override
     protected List<ButtonWidget> getAdditionalButtons(ModularWindow.Builder builder, UIBuildContext buildContext) {
         return ImmutableList.of(
-            (ButtonWidget) new GT_DisabledWhileActiveButton(this.getBaseMetaTileEntity(), builder)
+            (ButtonWidget) new GT_LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
                 .setOnClick((clickData, widget) -> adjustChunkRadius(clickData.mouseButton == 0))
                 .setPlayClickSound(true)
                 .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_WORK_AREA)
@@ -629,17 +633,18 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                     (widget, val) -> widget.notifyTooltipChange())
                 .dynamicTooltip(
                     () -> ImmutableList.of(
-                        StatCollector
-                            .translateToLocalFormatted("GT5U.gui.button.ore_drill_radius_1", chunkRadiusConfig << 4),
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.gui.button.ore_drill_radius_1",
+                            GT_Utility.formatNumbers((long) chunkRadiusConfig << 4)),
                         StatCollector.translateToLocal("GT5U.gui.button.ore_drill_radius_2")))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setSize(16, 16),
-            (ButtonWidget) new GT_DisabledWhileActiveButton(this.getBaseMetaTileEntity(), builder)
+            (ButtonWidget) new GT_LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
                 .setOnClick((clickData, widget) -> replaceWithCobblestone = !replaceWithCobblestone)
                 .setPlayClickSound(true)
                 .setBackground(() -> {
                     if (replaceWithCobblestone) {
-                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
+                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
                             GT_UITextures.OVERLAY_REPLACE_COBBLE_ON };
                     }
                     return new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_REPLACE_COBBLE_OFF };
@@ -666,9 +671,8 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
 
     @Override
     public String[] getInfoData() {
-        final int diameter = chunkRadiusConfig * 2;
-        ImmutableList.Builder<String> builder = ImmutableList.builder();
-        builder.add(
+        final String diameter = GT_Utility.formatNumbers(chunkRadiusConfig * 2L);
+        return new String[] {
             EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.minermulti")
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.machines.workarea") + ": "

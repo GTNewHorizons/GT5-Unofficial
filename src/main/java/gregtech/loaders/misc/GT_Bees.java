@@ -1,11 +1,14 @@
 package gregtech.loaders.misc;
 
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.GalaxySpace;
+import static gregtech.api.enums.Mods.TwilightForest;
 
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 
 import forestry.api.apiculture.EnumBeeChromosome;
+import forestry.api.apiculture.IAlleleBeeEffect;
 import forestry.api.core.IClimateProvider;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IAllele;
@@ -22,6 +25,8 @@ import gregtech.common.items.ItemComb;
 import gregtech.common.items.ItemDrop;
 import gregtech.common.items.ItemPollen;
 import gregtech.common.items.ItemPropolis;
+import gregtech.loaders.misc.bees.GT_AlleleEffect;
+import gregtech.loaders.misc.bees.GT_EffectTreeTwister;
 
 public class GT_Bees {
 
@@ -40,6 +45,8 @@ public class GT_Bees {
 
     public static IAlleleInteger blinkLife;
     public static IAlleleInteger superLife;
+
+    public static IAlleleBeeEffect treetwisterEffect;
 
     public static ItemPropolis propolis;
     public static ItemPollen pollen;
@@ -84,6 +91,15 @@ public class GT_Bees {
 
         blinkLife = new AlleleInteger("lifeBlink", 2, false, EnumBeeChromosome.LIFESPAN);
         superLife = new AlleleInteger("lifeEon", 600, false, EnumBeeChromosome.LIFESPAN);
+
+        if (GalaxySpace.isModLoaded() && TwilightForest.isModLoaded()) {
+            GT_Mod.GT_FML_LOGGER.info("treetwisterEffect: GalaxySpace and TwilightForest loaded, using default impl");
+            treetwisterEffect = new GT_EffectTreeTwister();
+        } else {
+            GT_Mod.GT_FML_LOGGER
+                .info("treetwisterEffect: GalaxySpace or TwilightForest was not loaded, using fallback impl");
+            treetwisterEffect = GT_AlleleEffect.FORESTRY_BASE_EFFECT;
+        }
     }
 
     private static class AlleleFloat extends Allele implements IAlleleFloat {

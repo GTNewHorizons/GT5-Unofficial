@@ -304,12 +304,16 @@ public class GT_UITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/autooutput_fluid");
     public static final UITexture OVERLAY_BUTTON_ALLOW_INPUT = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/allow_input");
+    public static final UITexture OVERLAY_BUTTON_ALLOW_OUTPUT = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/allow_output");
     public static final UITexture OVERLAY_BUTTON_AUTOPULL_ME = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/auto_pull_me");
     public static final UITexture OVERLAY_BUTTON_AUTOPULL_ME_DISABLED = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/auto_pull_me_disabled");
     public static final UITexture OVERLAY_BUTTON_BLOCK_INPUT = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/block_input");
+    public static final UITexture OVERLAY_BUTTON_BLOCK_OUTPUT = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/block_output");
     public static final UITexture OVERLAY_BUTTON_ARROW_GREEN_UP = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/arrow_green_up");
     public static final UITexture OVERLAY_BUTTON_ARROW_GREEN_DOWN = UITexture
@@ -360,6 +364,10 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_BUTTON_TANK_VOID_ALL = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/tank_void_all");
     public static final UITexture OVERLAY_BUTTON_NEI = UITexture.fullImage(GregTech.ID, "gui/overlay_button/nei");
+    public static final UITexture OVERLAY_BUTTON_USE_PROCESSING_STATE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/use_processing_state.png");
+    public static final UITexture OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/use_inverted_processing_state.png");
     public static final UITexture OVERLAY_CHUNK_LOADING = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/chunkloading");
     public static final UITexture OVERLAY_CHUNK_LOADING_OFF = UITexture
@@ -371,6 +379,7 @@ public class GT_UITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/replace_cobble_off");
     public static final UITexture OVERLAY_RETRACT_PIPE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/retract_pipes");
+
     /**
      * Can adjust size as needed.
      */

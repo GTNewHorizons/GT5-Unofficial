@@ -41,8 +41,6 @@ public class ExtractorRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(input)
             .itemOutputs(output)
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(sExtractorRecipes);

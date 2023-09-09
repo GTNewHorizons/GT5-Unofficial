@@ -162,8 +162,11 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
         super.drawTexts(screenElements, inventorySlot);
         screenElements
             .widget(
-                TextWidget.dynamicString(
-                    () -> StatCollector.translateToLocalFormatted("GT5U.gui.text.backfiller_current_area", clientYHead))
+                TextWidget
+                    .dynamicString(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "GT5U.gui.text.backfiller_current_area",
+                            GT_Utility.formatNumbers(clientYHead)))
                     .setSynced(false)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == STATE_UPWARD))

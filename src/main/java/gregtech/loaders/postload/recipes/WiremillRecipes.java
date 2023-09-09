@@ -29,8 +29,6 @@ public class WiremillRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Polycaprolactam, 1L))
             .itemOutputs(new ItemStack(Items.string, 32))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(4 * SECONDS)
             .eut(48)
             .addTo(sWiremillRecipes);
@@ -38,8 +36,6 @@ public class WiremillRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Steel, 1))
             .itemOutputs(GT_ModHandler.getIC2Item("miningPipe", 1))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(10 * SECONDS)
             .eut(16)
             .addTo(sWiremillRecipes);
@@ -48,8 +44,6 @@ public class WiremillRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Copper, 1L))
                 .itemOutputs(GT_ModHandler.getIC2Item("copperCableItem", 3L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(5 * SECONDS)
                 .eut(2)
                 .addTo(sWiremillRecipes);
@@ -57,8 +51,6 @@ public class WiremillRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.AnnealedCopper, 1L))
                 .itemOutputs(GT_ModHandler.getIC2Item("copperCableItem", 3L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(5 * SECONDS)
                 .eut(2)
                 .addTo(sWiremillRecipes);
@@ -66,8 +58,6 @@ public class WiremillRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 1L))
                 .itemOutputs(GT_ModHandler.getIC2Item("tinCableItem", 4L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(7 * SECONDS + 10 * TICKS)
                 .eut(1)
                 .addTo(sWiremillRecipes);
@@ -75,8 +65,6 @@ public class WiremillRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L))
                 .itemOutputs(GT_ModHandler.getIC2Item("ironCableItem", 6L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut(2)
                 .addTo(sWiremillRecipes);
@@ -84,8 +72,6 @@ public class WiremillRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L))
                 .itemOutputs(GT_ModHandler.getIC2Item("ironCableItem", 6L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut(2)
                 .addTo(sWiremillRecipes);
@@ -93,8 +79,6 @@ public class WiremillRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Gold, 1L))
                 .itemOutputs(GT_ModHandler.getIC2Item("goldCableItem", 6L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut(1)
                 .addTo(sWiremillRecipes);

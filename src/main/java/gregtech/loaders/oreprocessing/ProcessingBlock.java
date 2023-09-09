@@ -47,7 +47,6 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                             Math.max(
                                 4,
                                 Math.min(1000, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 320))))
-                    .noFluidOutputs()
                     .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(sCutterRecipes);
@@ -60,7 +59,6 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                             Math.max(
                                 3,
                                 Math.min(750, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 426))))
-                    .noFluidOutputs()
                     .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(sCutterRecipes);
@@ -73,7 +71,6 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                             Math.max(
                                 1,
                                 Math.min(250, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 1280))))
-                    .noFluidOutputs()
                     .duration(((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(sCutterRecipes);
@@ -93,7 +90,6 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                             Math.max(
                                 4,
                                 Math.min(1000, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 320))))
-                    .noFluidOutputs()
                     .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(sCutterRecipes);
@@ -106,7 +102,6 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                             Math.max(
                                 3,
                                 Math.min(750, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 426))))
-                    .noFluidOutputs()
                     .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(sCutterRecipes);
@@ -119,7 +114,6 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                             Math.max(
                                 1,
                                 Math.min(250, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 1280))))
-                    .noFluidOutputs()
                     .duration(((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(sCutterRecipes);
@@ -149,7 +143,6 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                         .itemInputs(ItemList.Shape_Mold_Block.get(0L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
                         .fluidInputs(aMaterial.getMolten(1296L))
-                        .noFluidOutputs()
                         .duration(14 * SECONDS + 8 * TICKS)
                         .eut(8)
                         .addTo(sFluidSolidficationRecipes);
@@ -181,8 +174,6 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             GT_Values.RA.stdBuilder()
                 .itemInputs(aStack)
                 .itemOutputs(tStack2)
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(5 * SECONDS)
                 .eut(24)
                 .addTo(sHammerRecipes);
@@ -206,8 +197,6 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L))
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(15 * SECONDS)
                 .eut(calculateRecipeEU(aMaterial, 2))
                 .addTo(sCompressorRecipes);
@@ -219,8 +208,6 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             case "Iron", "WroughtIron", "Steel" -> GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.IC2_Compressed_Coal_Ball.get(8L), GT_Utility.copyAmount(1L, aStack))
                 .itemOutputs(ItemList.IC2_Compressed_Coal_Chunk.get(1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(20 * SECONDS)
                 .eut(4)
                 .addTo(sAssemblerRecipes);

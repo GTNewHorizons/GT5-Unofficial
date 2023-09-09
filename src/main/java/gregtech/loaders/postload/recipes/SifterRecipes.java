@@ -26,8 +26,6 @@ public class SifterRecipes implements Runnable {
                 new ItemStack(Items.flint, 1, 0),
                 new ItemStack(Items.flint, 1, 0))
             .outputChances(10000, 9000, 8000, 6000, 3300, 2500)
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(30 * SECONDS)
             .eut(16)
             .addTo(sSifterRecipes);
@@ -42,8 +40,6 @@ public class SifterRecipes implements Runnable {
                 new ItemStack(Items.coal, 1, 0),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L))
             .outputChances(10000, 9000, 8000, 7000, 6000, 5000)
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(30 * SECONDS)
             .eut(16)
             .addTo(sSifterRecipes);

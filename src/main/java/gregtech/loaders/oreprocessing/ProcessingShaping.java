@@ -53,8 +53,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(9L, aStack), ItemList.Shape_Extruder_Block.get(0L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.block, aMaterial.mSmeltInto, tAmount))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration((10 * tAmount) * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                         .addTo(sExtruderRecipes);
@@ -64,8 +62,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(9L, aStack), ItemList.Shape_Mold_Block.get(0L))
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.block, aMaterial.mSmeltInto, tAmount))
-                            .noFluidInputs()
-                            .noFluidOutputs()
                             .duration((5 * tAmount) * TICKS)
                             .eut(calculateRecipeEU(aMaterial, 4 * tVoltageMultiplier))
                             .addTo(sAlloySmelterRecipes);
@@ -76,8 +72,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Ingot.get(0L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, tAmount))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(10 * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 4 * tVoltageMultiplier))
                         .addTo(sExtruderRecipes);
@@ -86,8 +80,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Pipe_Tiny.get(0L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeTiny, aMaterial.mSmeltInto, tAmount * 2))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration((4 * tAmount) * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                         .addTo(sExtruderRecipes);
@@ -96,8 +88,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Pipe_Small.get(0L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial.mSmeltInto, tAmount))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration((8 * tAmount) * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                         .addTo(sExtruderRecipes);
@@ -106,8 +96,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(3L, aStack), ItemList.Shape_Extruder_Pipe_Medium.get(0L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial.mSmeltInto, tAmount))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration((24 * tAmount) * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                         .addTo(sExtruderRecipes);
@@ -116,8 +104,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(6L, aStack), ItemList.Shape_Extruder_Pipe_Large.get(0L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeLarge, aMaterial.mSmeltInto, tAmount))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration((48 * tAmount) * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                         .addTo(sExtruderRecipes);
@@ -126,8 +112,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(12L, aStack), ItemList.Shape_Extruder_Pipe_Huge.get(0L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeHuge, aMaterial.mSmeltInto, tAmount))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration((96 * tAmount) * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                         .addTo(sExtruderRecipes);
@@ -136,8 +120,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Plate.get(0L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial.mSmeltInto, tAmount))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(((int) Math.max(aMaterialMass * tAmount, tAmount)) * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                         .addTo(sExtruderRecipes);
@@ -146,8 +128,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Small_Gear.get(0L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial.mSmeltInto, tAmount))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(((int) Math.max(aMaterialMass * tAmount, tAmount)) * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                         .addTo(sExtruderRecipes);
@@ -156,8 +136,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(6L, aStack), ItemList.Shape_Extruder_Turbine_Blade.get(0L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial.mSmeltInto, tAmount))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(((int) Math.max(aMaterialMass * tAmount, tAmount)) * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                         .addTo(sExtruderRecipes);
@@ -170,7 +148,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .itemInputs(ItemList.Shape_Mold_Ring.get(0L))
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ring, aMaterial, 1L))
                                 .fluidInputs(aMaterial.getMolten(36L))
-                                .noFluidOutputs()
                                 .duration(5 * SECONDS)
                                 .eut(calculateRecipeEU(aMaterial, 4 * tVoltageMultiplier))
                                 .addTo(sFluidSolidficationRecipes);
@@ -180,7 +157,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .itemInputs(ItemList.Shape_Mold_Screw.get(0L))
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L))
                                 .fluidInputs(aMaterial.getMolten(18L))
-                                .noFluidOutputs()
                                 .duration(2 * SECONDS + 10 * TICKS)
                                 .eut(calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier))
                                 .addTo(sFluidSolidficationRecipes);
@@ -190,7 +166,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .itemInputs(ItemList.Shape_Mold_Rod.get(0L))
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L))
                                 .fluidInputs(aMaterial.getMolten(72L))
-                                .noFluidOutputs()
                                 .duration(7 * SECONDS + 10 * TICKS)
                                 .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                                 .addTo(sFluidSolidficationRecipes);
@@ -200,7 +175,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .itemInputs(ItemList.Shape_Mold_Bolt.get(0L))
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L))
                                 .fluidInputs(aMaterial.getMolten(18L))
-                                .noFluidOutputs()
                                 .duration(2 * SECONDS + 10 * TICKS)
                                 .eut(calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier))
                                 .addTo(sFluidSolidficationRecipes);
@@ -210,7 +184,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .itemInputs(ItemList.Shape_Mold_Round.get(0L))
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.round, aMaterial, 1L))
                                 .fluidInputs(aMaterial.getMolten(18L))
-                                .noFluidOutputs()
                                 .duration(2 * SECONDS + 10 * TICKS)
                                 .eut(calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier))
                                 .addTo(sFluidSolidficationRecipes);
@@ -220,7 +193,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .itemInputs(ItemList.Shape_Mold_Rod_Long.get(0L))
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L))
                                 .fluidInputs(aMaterial.getMolten(144L))
-                                .noFluidOutputs()
                                 .duration(15 * SECONDS)
                                 .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                                 .addTo(sFluidSolidficationRecipes);
@@ -230,7 +202,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .itemInputs(ItemList.Shape_Mold_Turbine_Blade.get(0L))
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 1L))
                                 .fluidInputs(aMaterial.getMolten(864L))
-                                .noFluidOutputs()
                                 .duration(20 * SECONDS)
                                 .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                                 .addTo(sFluidSolidficationRecipes);
@@ -240,7 +211,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .itemInputs(ItemList.Shape_Mold_Pipe_Tiny.get(0L))
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeTiny, aMaterial, 1L))
                                 .fluidInputs(aMaterial.getMolten(72L))
-                                .noFluidOutputs()
                                 .duration(1 * SECONDS)
                                 .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                                 .addTo(sFluidSolidficationRecipes);
@@ -250,7 +220,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .itemInputs(ItemList.Shape_Mold_Pipe_Small.get(0L))
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 1L))
                                 .fluidInputs(aMaterial.getMolten(144L))
-                                .noFluidOutputs()
                                 .duration(2 * SECONDS)
                                 .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                                 .addTo(sFluidSolidficationRecipes);
@@ -260,7 +229,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .itemInputs(ItemList.Shape_Mold_Pipe_Medium.get(0L))
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 1L))
                                 .fluidInputs(aMaterial.getMolten(432L))
-                                .noFluidOutputs()
                                 .duration(4 * SECONDS)
                                 .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                                 .addTo(sFluidSolidficationRecipes);
@@ -270,7 +238,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .itemInputs(ItemList.Shape_Mold_Pipe_Large.get(0L))
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeLarge, aMaterial, 1L))
                                 .fluidInputs(aMaterial.getMolten(864L))
-                                .noFluidOutputs()
                                 .duration(8 * SECONDS)
                                 .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                                 .addTo(sFluidSolidficationRecipes);
@@ -280,7 +247,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .itemInputs(ItemList.Shape_Mold_Pipe_Huge.get(0L))
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeHuge, aMaterial, 1L))
                                 .fluidInputs(aMaterial.getMolten(1728L))
-                                .noFluidOutputs()
                                 .duration(16 * SECONDS)
                                 .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                                 .addTo(sFluidSolidficationRecipes);
@@ -294,8 +260,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Rod.get(0L))
                                 .itemOutputs(
                                     GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mSmeltInto, tAmount * 2))
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .duration(((int) Math.max(aMaterialMass * 2L * tAmount, tAmount)) * TICKS)
                                 .eut(calculateRecipeEU(aMaterial, 6 * tVoltageMultiplier))
                                 .addTo(sExtruderRecipes);
@@ -306,8 +270,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Rod.get(0L))
                                 .itemOutputs(
                                     GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial.mSmeltInto, tAmount * 2))
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .duration(10 * SECONDS)
                                 .eut(calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier))
                                 .addTo(sExtruderRecipes);
@@ -320,8 +282,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Wire.get(0L))
                             .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial.mSmeltInto, tAmount * 2))
-                            .noFluidInputs()
-                            .noFluidOutputs()
                             .duration(((int) Math.max(aMaterialMass * 2L * tAmount, tAmount)) * TICKS)
                             .eut(calculateRecipeEU(aMaterial, 6 * tVoltageMultiplier))
                             .addTo(sExtruderRecipes);
@@ -332,8 +292,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Bolt.get(0L))
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.bolt, aMaterial.mSmeltInto, tAmount * 8))
-                            .noFluidInputs()
-                            .noFluidOutputs()
                             .duration(((int) Math.max(aMaterialMass * 2L * tAmount, tAmount)) * TICKS)
                             .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                             .addTo(sExtruderRecipes);
@@ -344,8 +302,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Ring.get(0L))
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ring, aMaterial.mSmeltInto, tAmount * 4))
-                            .noFluidInputs()
-                            .noFluidOutputs()
                             .duration(((int) Math.max(aMaterialMass * 2L * tAmount, tAmount)) * TICKS)
                             .eut(calculateRecipeEU(aMaterial, 6 * tVoltageMultiplier))
                             .addTo(sExtruderRecipes);
@@ -367,8 +323,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Extruder_Sword.get(0L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, aMaterial.mSmeltInto, tAmount))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(((int) Math.max(aMaterialMass * 2L * tAmount, tAmount)) * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                         .addTo(sExtruderRecipes);
@@ -378,8 +332,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .itemInputs(GT_Utility.copyAmount(3L, aStack), ItemList.Shape_Extruder_Pickaxe.get(0L))
                         .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.toolHeadPickaxe, aMaterial.mSmeltInto, tAmount))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(((int) Math.max(aMaterialMass * 3L * tAmount, tAmount)) * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                         .addTo(sExtruderRecipes);
@@ -389,8 +341,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Shovel.get(0L))
                         .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.toolHeadShovel, aMaterial.mSmeltInto, tAmount))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(((int) Math.max(aMaterialMass * 1L * tAmount, tAmount)) * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                         .addTo(sExtruderRecipes);
@@ -399,8 +349,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(3L, aStack), ItemList.Shape_Extruder_Axe.get(0L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.toolHeadAxe, aMaterial.mSmeltInto, tAmount))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(((int) Math.max(aMaterialMass * 3L * tAmount, tAmount)) * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                         .addTo(sExtruderRecipes);
@@ -409,8 +357,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Extruder_Hoe.get(0L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.toolHeadHoe, aMaterial.mSmeltInto, tAmount))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(((int) Math.max(aMaterialMass * 2L * tAmount, tAmount)) * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                         .addTo(sExtruderRecipes);
@@ -420,8 +366,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .itemInputs(GT_Utility.copyAmount(6L, aStack), ItemList.Shape_Extruder_Hammer.get(0L))
                         .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.toolHeadHammer, aMaterial.mSmeltInto, tAmount))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(((int) Math.max(aMaterialMass * 6L * tAmount, tAmount)) * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                         .addTo(sExtruderRecipes);
@@ -430,8 +374,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Extruder_File.get(0L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.toolHeadFile, aMaterial.mSmeltInto, tAmount))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(((int) Math.max(aMaterialMass * 2L * tAmount, tAmount)) * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                         .addTo(sExtruderRecipes);
@@ -440,8 +382,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Extruder_Saw.get(0L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.toolHeadSaw, aMaterial.mSmeltInto, tAmount))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(((int) Math.max(aMaterialMass * 2L * tAmount, tAmount)) * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                         .addTo(sExtruderRecipes);
@@ -450,8 +390,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(4L, aStack), ItemList.Shape_Extruder_Gear.get(0L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial.mSmeltInto, tAmount))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(((int) Math.max(aMaterialMass * 5L * tAmount, tAmount)) * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                         .addTo(sExtruderRecipes);
@@ -463,8 +401,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Plate.get(0L))
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial.mSmeltInto, tAmount))
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .duration(((int) Math.max(aMaterialMass * 2L * tAmount, tAmount)) * TICKS)
                                 .eut(calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier))
                                 .addTo(sAlloySmelterRecipes);
@@ -477,8 +413,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Mold_Plate.get(0L))
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial.mSmeltInto, tAmount))
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .duration(((int) Math.max(aMaterialMass * 2L * tAmount, tAmount)) * TICKS)
                                 .eut(calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier))
                                 .addTo(sAlloySmelterRecipes);
@@ -492,8 +426,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(8L, aStack), ItemList.Shape_Mold_Gear.get(0L))
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial.mSmeltInto, tAmount))
-                            .noFluidInputs()
-                            .noFluidOutputs()
                             .duration(((int) Math.max(aMaterialMass * 10L * tAmount, tAmount)) * TICKS)
                             .eut(calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier))
                             .addTo(sAlloySmelterRecipes);
@@ -505,16 +437,12 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Bottle.get(0L))
                             .itemOutputs(new ItemStack(Items.glass_bottle, 1))
-                            .noFluidInputs()
-                            .noFluidOutputs()
                             .duration((tAmount * 32) * TICKS)
                             .eut(16)
                             .addTo(sExtruderRecipes);
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Mold_Bottle.get(0L))
                             .itemOutputs(new ItemStack(Items.glass_bottle, 1))
-                            .noFluidInputs()
-                            .noFluidOutputs()
                             .duration((tAmount * 64) * TICKS)
                             .eut(4)
                             .addTo(sAlloySmelterRecipes);
@@ -523,8 +451,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Cell.get(0L))
                             .itemOutputs(ItemList.Cell_Empty.get(tAmount))
-                            .noFluidInputs()
-                            .noFluidOutputs()
                             .duration((tAmount * 128) * TICKS)
                             .eut(TierEU.RECIPE_LV)
                             .addTo(sExtruderRecipes);
@@ -532,8 +458,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Casing.get(0L))
                                 .itemOutputs(GT_ModHandler.getIC2Item("casingadviron", tAmount * 2))
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .duration((tAmount * 32) * TICKS)
                                 .eut(3 * tVoltageMultiplier)
                                 .addTo(sExtruderRecipes);
@@ -542,8 +466,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Casing.get(0L))
                                 .itemOutputs(GT_ModHandler.getIC2Item("casingadviron", tAmount * 3))
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .duration((tAmount * 128) * TICKS)
                                 .eut(1 * tVoltageMultiplier)
                                 .addTo(sAlloySmelterRecipes);
@@ -553,8 +475,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Cell.get(0L))
                             .itemOutputs(GT_ModHandler.getIC2Item("fuelRod", tAmount))
-                            .noFluidInputs()
-                            .noFluidOutputs()
                             .duration((tAmount * 128) * TICKS)
                             .eut(TierEU.RECIPE_LV)
                             .addTo(sExtruderRecipes);
@@ -562,8 +482,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Casing.get(0L))
                                 .itemOutputs(GT_ModHandler.getIC2Item("casingiron", tAmount * 2))
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .duration((tAmount * 32) * TICKS)
                                 .eut(3 * tVoltageMultiplier)
                                 .addTo(sExtruderRecipes);
@@ -572,8 +490,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Casing.get(0L))
                                 .itemOutputs(GT_ModHandler.getIC2Item("casingiron", tAmount * 3))
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .duration((tAmount * 128) * TICKS)
                                 .eut(1 * tVoltageMultiplier)
                                 .addTo(sAlloySmelterRecipes);
@@ -582,8 +498,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(31L, aStack), ItemList.Shape_Mold_Anvil.get(0L))
                                 .itemOutputs(new ItemStack(Blocks.anvil, 1, 0))
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .duration((tAmount * 512) * TICKS)
                                 .eut(4 * tVoltageMultiplier)
                                 .addTo(sAlloySmelterRecipes);
@@ -593,8 +507,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Extruder_Cell.get(0L))
                             .itemOutputs(ItemList.Cell_Empty.get(tAmount))
-                            .noFluidInputs()
-                            .noFluidOutputs()
                             .duration((tAmount * 128) * TICKS)
                             .eut(TierEU.RECIPE_LV)
                             .addTo(sExtruderRecipes);
@@ -602,8 +514,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Casing.get(0L))
                                 .itemOutputs(GT_ModHandler.getIC2Item("casingtin", tAmount * 2))
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .duration((tAmount * 32) * TICKS)
                                 .eut(3 * tVoltageMultiplier)
                                 .addTo(sExtruderRecipes);
@@ -612,8 +522,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Casing.get(0L))
                                 .itemOutputs(GT_ModHandler.getIC2Item("casingtin", tAmount * 3))
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .duration((tAmount * 128) * TICKS)
                                 .eut(1 * tVoltageMultiplier)
                                 .addTo(sAlloySmelterRecipes);
@@ -624,8 +532,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Casing.get(0L))
                                 .itemOutputs(GT_ModHandler.getIC2Item("casinglead", tAmount * 2))
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .duration((tAmount * 32) * TICKS)
                                 .eut(3 * tVoltageMultiplier)
                                 .addTo(sExtruderRecipes);
@@ -634,8 +540,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Casing.get(0L))
                                 .itemOutputs(GT_ModHandler.getIC2Item("casinglead", tAmount * 3))
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .duration((tAmount * 128) * TICKS)
                                 .eut(1 * tVoltageMultiplier)
                                 .addTo(sAlloySmelterRecipes);
@@ -646,8 +550,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Casing.get(0L))
                                 .itemOutputs(GT_ModHandler.getIC2Item("casingcopper", tAmount * 2))
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .duration((tAmount * 32) * TICKS)
                                 .eut(3 * tVoltageMultiplier)
                                 .addTo(sExtruderRecipes);
@@ -656,8 +558,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Casing.get(0L))
                                 .itemOutputs(GT_ModHandler.getIC2Item("casingcopper", tAmount * 3))
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .duration((tAmount * 128) * TICKS)
                                 .eut(1 * tVoltageMultiplier)
                                 .addTo(sAlloySmelterRecipes);
@@ -668,8 +568,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Casing.get(0L))
                                 .itemOutputs(GT_ModHandler.getIC2Item("casingbronze", tAmount * 2))
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .duration((tAmount * 32) * TICKS)
                                 .eut(3 * tVoltageMultiplier)
                                 .addTo(sExtruderRecipes);
@@ -678,8 +576,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Casing.get(0L))
                                 .itemOutputs(GT_ModHandler.getIC2Item("casingbronze", tAmount * 3))
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .duration((tAmount * 128) * TICKS)
                                 .eut(1 * tVoltageMultiplier)
                                 .addTo(sAlloySmelterRecipes);
@@ -690,8 +586,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Casing.get(0L))
                                 .itemOutputs(GT_ModHandler.getIC2Item("casinggold", tAmount * 2))
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .duration((tAmount * 32) * TICKS)
                                 .eut(3 * tVoltageMultiplier)
                                 .addTo(sExtruderRecipes);
@@ -700,8 +594,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(2L, aStack), ItemList.Shape_Mold_Casing.get(0L))
                                 .itemOutputs(GT_ModHandler.getIC2Item("casinggold", tAmount * 3))
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .duration((tAmount * 128) * TICKS)
                                 .eut(1 * tVoltageMultiplier)
                                 .addTo(sAlloySmelterRecipes);
@@ -711,8 +603,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(1L, aStack), ItemList.Shape_Extruder_Cell.get(0L))
                             .itemOutputs(ItemList.Cell_Empty.get(tAmount * 4))
-                            .noFluidInputs()
-                            .noFluidOutputs()
                             .duration((tAmount * 128) * TICKS)
                             .eut(TierEU.RECIPE_LV)
                             .addTo(sExtruderRecipes);

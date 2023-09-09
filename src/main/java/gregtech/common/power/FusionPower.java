@@ -46,7 +46,7 @@ public class FusionPower extends BasicMachineEUPower {
     @Override
     public String getTierString() {
         return GT_Values.TIER_COLORS[tier] + "MK "
-            + FusionSpecialValueFormatter.getFusionTier(specialValue, recipeEuPerTick)
+            + (tier - 5) // Mk1 <-> LuV
             + EnumChatFormatting.RESET;
     }
 }

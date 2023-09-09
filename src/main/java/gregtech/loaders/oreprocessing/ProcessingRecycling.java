@@ -37,9 +37,7 @@ public class ProcessingRecycling implements gregtech.api.interfaces.IOreRecipeRe
                     GT_Utility.getContainerItem(aStack, true),
                     GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, aPrefix.mMaterialAmount / 3628800L));
             }
-            recipeBuilder.noFluidInputs()
-                .noFluidOutputs()
-                .duration(((int) Math.max(aMaterial.getMass() / 2L, 1L)) * TICKS)
+            recipeBuilder.duration(((int) Math.max(aMaterial.getMass() / 2L, 1L)) * TICKS)
                 .eut(2)
                 .addTo(sCannerRecipes);
         }

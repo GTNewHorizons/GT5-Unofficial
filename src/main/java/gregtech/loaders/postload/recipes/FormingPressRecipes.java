@@ -28,8 +28,6 @@ public class FormingPressRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
                     getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
                 .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 1))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(sPressRecipes);
@@ -39,8 +37,6 @@ public class FormingPressRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L),
                     getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
                 .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 1))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(sPressRecipes);
@@ -50,8 +46,6 @@ public class FormingPressRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Gold, 1L),
                     getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
                 .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 2))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(sPressRecipes);
@@ -61,8 +55,6 @@ public class FormingPressRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1L),
                     getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
                 .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 3))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(sPressRecipes);
@@ -72,8 +64,6 @@ public class FormingPressRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.gem, Materials.EnderPearl, 1L),
                     getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
                 .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 2L, 4))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(sPressRecipes);
@@ -83,8 +73,6 @@ public class FormingPressRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NetherQuartz, 1L),
                     getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
                 .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 5))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(sPressRecipes);
@@ -94,8 +82,6 @@ public class FormingPressRecipes implements Runnable {
                     new ItemStack(Items.comparator, 1, 32767),
                     getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
                 .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 6))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(sPressRecipes);
@@ -107,8 +93,6 @@ public class FormingPressRecipes implements Runnable {
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 10),
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 13))
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 16))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut(16)
                 .addTo(sPressRecipes);
@@ -118,8 +102,6 @@ public class FormingPressRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.CertusQuartz, 1L),
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 13))
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 16))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut(16)
                 .addTo(sPressRecipes);
@@ -129,8 +111,6 @@ public class FormingPressRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1L),
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 14))
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 17))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut(16)
                 .addTo(sPressRecipes);
@@ -140,8 +120,6 @@ public class FormingPressRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Gold, 1L),
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 15))
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 18))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut(16)
                 .addTo(sPressRecipes);
@@ -151,8 +129,6 @@ public class FormingPressRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.SiliconSG, 1L),
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 19))
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 20))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut(16)
                 .addTo(sPressRecipes);
@@ -161,8 +137,6 @@ public class FormingPressRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Food_Dough_Sugar.get(4L), ItemList.Shape_Mold_Cylinder.get(0L))
             .itemOutputs(ItemList.Food_Raw_Cake.get(1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(19 * SECONDS + 4 * TICKS)
             .eut(4)
             .addTo(sPressRecipes);
@@ -170,8 +144,6 @@ public class FormingPressRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.glass, 1, 32767), ItemList.Shape_Mold_Arrow.get(0L))
             .itemOutputs(ItemList.Arrow_Head_Glass_Emtpy.get(1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(4)
             .addTo(sPressRecipes);
@@ -181,8 +153,6 @@ public class FormingPressRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Cupronickel, 1L),
                 ItemList.Shape_Mold_Credit.get(0L))
             .itemOutputs(ItemList.Credit_Greg_Cupronickel.get(4L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(16)
             .addTo(sPressRecipes);
@@ -192,8 +162,6 @@ public class FormingPressRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Brass, 1L),
                 ItemList.Shape_Mold_Credit.get(0L))
             .itemOutputs(ItemList.Coin_Doge.get(4L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(16)
             .addTo(sPressRecipes);
@@ -203,8 +171,6 @@ public class FormingPressRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
                 ItemList.Shape_Mold_Credit.get(0L))
             .itemOutputs(ItemList.Credit_Iron.get(4L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(16)
             .addTo(sPressRecipes);
@@ -214,8 +180,6 @@ public class FormingPressRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L),
                 ItemList.Shape_Mold_Credit.get(0L))
             .itemOutputs(ItemList.Credit_Iron.get(4L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(16)
             .addTo(sPressRecipes);
@@ -225,8 +189,6 @@ public class FormingPressRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Brick, 1L),
                 ItemList.Shape_Mold_Ingot.get(0L))
             .itemOutputs(new ItemStack(Items.brick, 1, 0))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(16)
             .addTo(sPressRecipes);

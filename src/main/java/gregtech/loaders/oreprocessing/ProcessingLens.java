@@ -34,8 +34,6 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                     .itemOutputs(
                         GT_OreDictUnificator.get(OrePrefixes.lens, aMaterial, 1L),
                         GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
                     .duration(1 * MINUTES)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(sLatheRecipes);
@@ -45,8 +43,6 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                     .itemOutputs(
                         GT_OreDictUnificator.get(OrePrefixes.lens, aMaterial, 3L),
                         GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
                     .duration(2 * MINUTES)
                     .eut(16)
                     .addTo(sLatheRecipes);
@@ -55,8 +51,6 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 16L))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.lens, aMaterial, 1L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
                     .duration(10 * MINUTES)
                     .eut(TierEU.RECIPE_UHV)
                     .addTo(sCompressorRecipes);
@@ -72,9 +66,7 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                             GT_OreDictUnificator.get(OrePrefixes.lens, aMaterial, 1L),
                             GT_OreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L));
                     }
-                    recipeBuilder.noFluidInputs()
-                        .noFluidOutputs()
-                        .duration(1 * MINUTES)
+                    recipeBuilder.duration(1 * MINUTES)
                         .eut(TierEU.RECIPE_MV)
                         .addTo(sLatheRecipes);
                 }
@@ -88,9 +80,7 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                             GT_OreDictUnificator.get(OrePrefixes.lens, aMaterial, 1L),
                             GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 2L));
                     }
-                    recipeBuilder.noFluidInputs()
-                        .noFluidOutputs()
-                        .duration(2 * MINUTES)
+                    recipeBuilder.duration(2 * MINUTES)
                         .eut(TierEU.RECIPE_LV)
                         .addTo(sLatheRecipes);
                 }
