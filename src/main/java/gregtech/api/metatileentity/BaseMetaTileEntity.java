@@ -612,7 +612,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
 
         if (aSideServer && hasTimeStatisticsStarted && hasValidMetaTileEntity()) {
             tTime = System.nanoTime() - tTime;
-            mTimeStatistics[mTimeStatisticsIndex = (mTimeStatisticsIndex + 1) % mTimeStatistics.length] = (int) tTime;
+            mTimeStatisticsIndex = (mTimeStatisticsIndex + 1) % mTimeStatistics.length;
+            mTimeStatistics[mTimeStatisticsIndex] = (int) tTime;
             if (tTime > 0 && tTime > (GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING * 1_000_000L)
                 && mTickTimer > 1000
                 && getMetaTileEntity().doTickProfilingMessageDuringThisTick()
@@ -834,7 +835,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                             + "ns.");
                 }
             } else {
-                hasTimeStatisticsStarted = true;
+                startTimeStatistics();
                 tList.add("Just started tick time statistics.");
             }
             tList.add(

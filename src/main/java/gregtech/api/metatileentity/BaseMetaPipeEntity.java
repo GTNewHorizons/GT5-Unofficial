@@ -266,7 +266,8 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
         if (isServerSide() && hasTimeStatisticsStarted && hasValidMetaTileEntity()) {
             tTime = System.nanoTime() - tTime;
-            mTimeStatistics[mTimeStatisticsIndex = (mTimeStatisticsIndex + 1) % mTimeStatistics.length] = (int) tTime;
+            mTimeStatisticsIndex = (mTimeStatisticsIndex + 1) % mTimeStatistics.length;
+            mTimeStatistics[mTimeStatisticsIndex] = (int) tTime;
             if (tTime > 0 && tTime > (GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING * 1000000L)
                 && mTickTimer > 1000
                 && getMetaTileEntity().doTickProfilingMessageDuringThisTick()
@@ -427,7 +428,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                             + "ns.");
                 }
             } else {
-                hasTimeStatisticsStarted = true;
+                startTimeStatistics();
                 tList.add("Just started tick time statistics.");
             }
             if (mLagWarningCount > 0) {
@@ -1387,5 +1388,15 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     @Override
     public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider) {
         mMetaTileEntity.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
+    }
+
+    @Override
+    public int[] getTimeStatistics() {
+        return mTimeStatistics;
+    }
+
+    @Override
+    public void startTimeStatistics() {
+        hasTimeStatisticsStarted = true;
     }
 }
