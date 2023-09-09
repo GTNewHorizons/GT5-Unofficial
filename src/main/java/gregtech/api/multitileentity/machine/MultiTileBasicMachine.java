@@ -329,28 +329,25 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
      * @param tick The current tick of the machine
      */
     protected void runMachine(long tick) {
-        if (acceptsFuel() && isActive()) {
-            if (!consumeFuel()) {
+        if (acceptsFuel() && isActive() && !consumeFuel()) {
                 stopMachine(true);
                 return;
-            }
         }
 
         if (hasThingsToDo()) {
             markDirty();
             runningTick(tick);
-        } else {
-            if (tick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled() || hasInventoryBeenModified()) {
-                if (isAllowedToWork()) {
-                    wasEnabled = false;
-                    if (checkRecipe()) {
-                        setActive(true);
-                        setSound(GregTechTileClientEvents.START_SOUND_LOOP, PROCESS_START_SOUND_INDEX);
-                        updateSlots();
-                        markDirty();
-                        issueClientUpdate();
-                    }
-                }
+            return;
+        }
+
+        if (tick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled() || hasInventoryBeenModified() && isAllowedToWork()) {
+            wasEnabled = false;
+            if (checkRecipe()) {
+                setActive(true);
+                setSound(GregTechTileClientEvents.START_SOUND_LOOP, PROCESS_START_SOUND_INDEX);
+                updateSlots();
+                markDirty();
+                issueClientUpdate();
             }
         }
     }
@@ -409,9 +406,8 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
     }
 
     public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-        if (aIndex == PROCESS_START_SOUND_INDEX) {
-            if (getProcessStartSound() != null)
-                GT_Utility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
+        if (aIndex == PROCESS_START_SOUND_INDEX && getProcessStartSound() != null) {
+            GT_Utility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
         }
     }
 
@@ -425,18 +421,18 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
 
     @SideOnly(Side.CLIENT)
     protected void doActivitySound(ResourceLocation activitySound) {
-        if (isActive() && activitySound != null) {
-            if (activitySoundLoop == null) {
-                activitySoundLoop = new GT_SoundLoop(activitySound, this, false, true);
-                Minecraft.getMinecraft()
-                    .getSoundHandler()
-                    .playSound(activitySoundLoop);
-            }
-        } else {
-            if (activitySoundLoop != null) {
-                activitySoundLoop = null;
-            }
+        if (isActive() && activitySound != null && activitySoundLoop == null) {
+            activitySoundLoop = new GT_SoundLoop(activitySound, this, false, true);
+            Minecraft.getMinecraft()
+                .getSoundHandler()
+                .playSound(activitySoundLoop);
+            return;
         }
+
+        if (activitySoundLoop != null) {
+            activitySoundLoop = null;
+        }
+
     }
 
     @SideOnly(Side.CLIENT)
@@ -715,26 +711,29 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
     public void setSound(byte soundEvent, int soundEventValue) {
         this.soundEvent = soundEvent;
         this.soundEventValue = soundEventValue;
-        if (isClientSide()) {
-            switch (soundEventValue) {
-                case PROCESS_START_SOUND_INDEX -> {
-                    if (getProcessStartSound() != null) GT_Utility.doSoundAtClient(
-                        getProcessStartSound(),
-                        getTimeBetweenProcessSounds(),
-                        1.0F,
-                        getXCoord(),
-                        getYCoord(),
-                        getZCoord());
-                }
-                case INTERRUPT_SOUND_INDEX -> GT_Utility.doSoundAtClient(
-                    SoundResource.IC2_MACHINES_INTERRUPT_ONE,
-                    100,
+        if (isServerSide()){
+            return;
+        }
+
+        switch (soundEventValue) {
+            case PROCESS_START_SOUND_INDEX -> {
+                if (getProcessStartSound() != null) GT_Utility.doSoundAtClient(
+                    getProcessStartSound(),
+                    getTimeBetweenProcessSounds(),
                     1.0F,
                     getXCoord(),
                     getYCoord(),
                     getZCoord());
             }
+            case INTERRUPT_SOUND_INDEX -> GT_Utility.doSoundAtClient(
+                SoundResource.IC2_MACHINES_INTERRUPT_ONE,
+                100,
+                1.0F,
+                getXCoord(),
+                getYCoord(),
+                getZCoord());
         }
+
     }
 
     @Nullable
