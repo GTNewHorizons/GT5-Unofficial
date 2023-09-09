@@ -330,8 +330,8 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
      */
     protected void runMachine(long tick) {
         if (acceptsFuel() && isActive() && !consumeFuel()) {
-                stopMachine(true);
-                return;
+            stopMachine(true);
+            return;
         }
 
         if (hasThingsToDo()) {
@@ -340,7 +340,8 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
             return;
         }
 
-        if (tick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled() || hasInventoryBeenModified() && isAllowedToWork()) {
+        if (tick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled()
+            || hasInventoryBeenModified() && isAllowedToWork()) {
             wasEnabled = false;
             if (checkRecipe()) {
                 setActive(true);
@@ -711,7 +712,7 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
     public void setSound(byte soundEvent, int soundEventValue) {
         this.soundEvent = soundEvent;
         this.soundEventValue = soundEventValue;
-        if (isServerSide()){
+        if (isServerSide()) {
             return;
         }
 
