@@ -167,7 +167,7 @@ public class GT_StructureUtilityMuTE {
 
                         part.setTarget((IMultiBlockController) t, modes);
 
-                        ((Controller<?>) t).registerSpecialCasings(part);
+                        ((Controller<?, ?>) t).registerSpecialCasings(part);
                         return true;
                     }
                 }
@@ -210,7 +210,7 @@ public class GT_StructureUtilityMuTE {
                     tContainer.setMultiTile(world, x, y, z);
                     ((MultiBlockPart) te).setTarget((IMultiBlockController) t, modes);
 
-                    ((Controller<?>) t).registerSpecialCasings((MultiBlockPart) te);
+                    ((Controller<?, ?>) t).registerSpecialCasings((MultiBlockPart) te);
                 }
 
                 return false;

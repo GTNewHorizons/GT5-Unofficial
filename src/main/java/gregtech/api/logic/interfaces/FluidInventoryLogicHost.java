@@ -2,6 +2,9 @@ package gregtech.api.logic.interfaces;
 
 import static com.google.common.primitives.Ints.saturatedCast;
 
+import java.util.HashSet;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -38,6 +41,11 @@ public interface FluidInventoryLogicHost extends IFluidHandler {
     @Nullable
     default FluidInventoryLogic getFluidLogic(@Nonnull InventoryType type, @Nullable UUID id) {
         return getFluidLogic(ForgeDirection.UNKNOWN, type);
+    }
+
+    @Nonnull
+    default Set<Entry<UUID, FluidInventoryLogic>> getAllFluidInventoryLogics(@Nonnull InventoryType type) {
+        return new HashSet<>();
     }
 
     @Override

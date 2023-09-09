@@ -11,6 +11,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.api.logic.FluidInventoryLogic;
+import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -59,6 +61,10 @@ public class GT_ParallelHelper {
      */
     private ItemStack[] itemInputs;
     /**
+     * The inputs of the machine for current recipe check
+     */
+    private ItemInventoryLogic itemInputInventory;
+    /**
      * The outputs of the recipe with the applied parallel
      */
     private ItemStack[] itemOutputs;
@@ -66,6 +72,10 @@ public class GT_ParallelHelper {
      * The inputs of the multiblock for the current recipe check
      */
     private FluidStack[] fluidInputs;
+    /**
+     * The inputs of the machine for the current recipe check
+     */
+    private FluidInventoryLogic fluidInputInventory;
     /**
      * The outputs of the recipe with the applied parallel
      */
@@ -122,11 +132,18 @@ public class GT_ParallelHelper {
 
     private Function<Integer, FluidStack[]> customFluidOutputCalculation;
 
+    /**
+     * MuTE Mode this is a mode for changing how the GT_ParallelHelper works as Mutes don't use ItemStack and FluidStack
+     * arrays for inputs
+     */
+    private boolean muteMode = false;
+
     public GT_ParallelHelper() {}
 
     /**
      * Sets machine, with current configuration for void protection mode.
      */
+    @Nonnull
     public GT_ParallelHelper setMachine(IVoidable machine) {
         return setMachine(machine, machine.protectsExcessItem(), machine.protectsExcessFluid());
     }
@@ -134,6 +151,7 @@ public class GT_ParallelHelper {
     /**
      * Sets machine, with void protection mode forcibly.
      */
+    @Nonnull
     public GT_ParallelHelper setMachine(IVoidable machine, boolean protectExcessItem, boolean protectExcessFluid) {
         this.protectExcessItem = protectExcessItem;
         this.protectExcessFluid = protectExcessFluid;
@@ -144,11 +162,13 @@ public class GT_ParallelHelper {
     /**
      * Sets the recipe, which will be used for the parallel calculation
      */
+    @Nonnull
     public GT_ParallelHelper setRecipe(@Nonnull GT_Recipe aRecipe) {
         recipe = Objects.requireNonNull(aRecipe);
         return this;
     }
 
+    @Nonnull
     public GT_ParallelHelper setRecipeLocked(IRecipeLockable singleRecipeMachine, boolean isRecipeLocked) {
         this.singleRecipeMachine = singleRecipeMachine;
         this.isRecipeLocked = isRecipeLocked;
@@ -158,6 +178,7 @@ public class GT_ParallelHelper {
     /**
      * Sets the items available for the recipe check
      */
+    @Nonnull
     public GT_ParallelHelper setItemInputs(ItemStack... aItemInputs) {
         this.itemInputs = aItemInputs;
         return this;
@@ -166,6 +187,7 @@ public class GT_ParallelHelper {
     /**
      * Sets the fluid inputs available for the recipe check
      */
+    @Nonnull
     public GT_ParallelHelper setFluidInputs(FluidStack... aFluidInputs) {
         this.fluidInputs = aFluidInputs;
         return this;
@@ -174,6 +196,7 @@ public class GT_ParallelHelper {
     /**
      * Sets the available eut when trying for more parallels
      */
+    @Nonnull
     public GT_ParallelHelper setAvailableEUt(long aAvailableEUt) {
         this.availableEUt = aAvailableEUt;
         return this;
@@ -182,11 +205,13 @@ public class GT_ParallelHelper {
     /**
      * Sets the modifier for recipe eut. 1 does nothing 0.9 is 10% less. 1.1 is 10% more
      */
+    @Nonnull
     public GT_ParallelHelper setEUtModifier(float aEUtModifier) {
         this.eutModifier = aEUtModifier;
         return this;
     }
 
+    @Nonnull
     public GT_ParallelHelper setCalculator(GT_OverclockCalculator calculator) {
         this.calculator = calculator;
         return this;
@@ -197,6 +222,7 @@ public class GT_ParallelHelper {
      *
      * @param consume Should we consume inputs
      */
+    @Nonnull
     public GT_ParallelHelper setConsumption(boolean consume) {
         this.consume = consume;
         return this;
@@ -205,6 +231,7 @@ public class GT_ParallelHelper {
     /**
      * Sets the MaxParallel a multi can handle
      */
+    @Nonnull
     public GT_ParallelHelper setMaxParallel(int maxParallel) {
         this.maxParallel = maxParallel;
         return this;
@@ -214,6 +241,7 @@ public class GT_ParallelHelper {
      * Enables Batch mode. Can do up to an additional processed recipes of mCurrentParallel * mBatchModifier A batch
      * modifier of 1 does nothing
      */
+    @Nonnull
     public GT_ParallelHelper enableBatchMode(int batchModifier) {
         this.batchMode = batchModifier > 1;
         this.batchModifier = batchModifier;
@@ -225,6 +253,7 @@ public class GT_ParallelHelper {
      *
      * @param calculateOutputs Should we calculate outputs with the helper or not
      */
+    @Nonnull
     public GT_ParallelHelper setOutputCalculation(boolean calculateOutputs) {
         this.calculateOutputs = calculateOutputs;
         return this;
@@ -234,6 +263,7 @@ public class GT_ParallelHelper {
      * Set a custom way to calculate item outputs. You are given the amount of parallels and must return an ItemStack
      * array
      */
+    @Nonnull
     public GT_ParallelHelper setCustomItemOutputCalculation(Function<Integer, ItemStack[]> custom) {
         customItemOutputCalculation = custom;
         return this;
@@ -243,8 +273,27 @@ public class GT_ParallelHelper {
      * Set a custom way to calculate item outputs. You are given the amount of parallels and must return a FluidStack
      * array
      */
+    @Nonnull
     public GT_ParallelHelper setCustomFluidOutputCalculation(Function<Integer, FluidStack[]> custom) {
         customFluidOutputCalculation = custom;
+        return this;
+    }
+
+    @Nonnull
+    public GT_ParallelHelper setMuTEMode(boolean muteMode) {
+        this.muteMode = muteMode;
+        return this;
+    }
+
+    @Nonnull
+    public GT_ParallelHelper setItemInputInventory(ItemInventoryLogic itemInputInventory) {
+        this.itemInputInventory = itemInputInventory;
+        return this;
+    }
+
+    @Nonnull
+    public GT_ParallelHelper setFluidInputInventory(FluidInventoryLogic fluidInputInventory) {
+        this.fluidInputInventory = fluidInputInventory;
         return this;
     }
 
@@ -267,6 +316,7 @@ public class GT_ParallelHelper {
     /**
      * Finishes the GT_ParallelHelper. Anything changed after this will not effect anything
      */
+    @Nonnull
     public GT_ParallelHelper build() {
         if (built) {
             throw new IllegalStateException("Tried to build twice");

@@ -1,5 +1,9 @@
 package gregtech.api.recipe.check;
 
+import java.util.Objects;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
 
@@ -14,6 +18,7 @@ public class ResultInsufficientStartupPower implements CheckRecipeResult {
     }
 
     @Override
+    @Nonnull
     public String getID() {
         return "insufficient_startup_power";
     }
@@ -24,23 +29,27 @@ public class ResultInsufficientStartupPower implements CheckRecipeResult {
     }
 
     @Override
+    @Nonnull
     public String getDisplayString() {
-        return StatCollector
-            .translateToLocalFormatted("GT5U.gui.text.insufficient_startup_power", GT_Utility.formatNumbers(required));
+        return Objects.requireNonNull(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.gui.text.insufficient_startup_power",
+                GT_Utility.formatNumbers(required)));
     }
 
     @Override
+    @Nonnull
     public CheckRecipeResult newInstance() {
         return new ResultInsufficientStartupPower(0);
     }
 
     @Override
-    public void encode(PacketBuffer buffer) {
+    public void encode(@Nonnull PacketBuffer buffer) {
         buffer.writeVarIntToBuffer(required);
     }
 
     @Override
-    public void decode(PacketBuffer buffer) {
+    public void decode(@Nonnull PacketBuffer buffer) {
         required = buffer.readVarIntFromBuffer();
     }
 

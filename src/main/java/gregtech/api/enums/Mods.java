@@ -151,6 +151,7 @@ public enum Mods {
     ThaumicEnergistics(Names.THAUMIC_ENERGISTICS),
     ThaumicExploration(Names.THAUMIC_EXPLORATION),
     ThaumicHorizons(Names.THAUMIC_HORIZONS),
+    ThaumicBoots(Names.THAUMIC_BOOTS),
     ThaumicMachina(Names.THAUMIC_MACHINA),
     ThaumicTinkerer(Names.THAUMIC_TINKERER),
     TinkerConstruct(Names.TINKER_CONSTRUCT),

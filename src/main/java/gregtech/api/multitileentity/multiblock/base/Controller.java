@@ -10,6 +10,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -65,6 +67,7 @@ import gregtech.api.logic.ControllerItemLogic;
 import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.logic.PowerLogic;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.multitileentity.enums.MultiTileCasingPurpose;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
@@ -85,9 +88,9 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 /**
  * Multi Tile Entities - or MuTEs - don't have dedicated hatches, but their casings can become hatches.
  */
-public abstract class Controller<T extends Controller<T>> extends MultiTileBasicMachine
-    implements IAlignment, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable,
-    ControllerWithOptionalFeatures, IGlobalWirelessEnergy {
+public abstract class Controller<T extends Controller<T, P>, P extends ProcessingLogic<P>>
+    extends MultiTileBasicMachine<P> implements IAlignment, IMultiBlockController, IDescribable, IMTE_AddToolTips,
+    ISurvivalConstructable, ControllerWithOptionalFeatures, IGlobalWirelessEnergy {
 
     public static final String ALL_INVENTORIES_NAME = "all";
     protected static final int AUTO_OUTPUT_FREQUENCY_TICK = 20;
@@ -389,8 +392,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     @SuppressWarnings("unchecked")
-    private IStructureDefinition<Controller<T>> getCastedStructureDefinition() {
-        return (IStructureDefinition<Controller<T>>) getStructureDefinition();
+    private IStructureDefinition<Controller<T, P>> getCastedStructureDefinition() {
+        return (IStructureDefinition<Controller<T, P>>) getStructureDefinition();
     }
 
     @Override
@@ -886,47 +889,6 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     // #endregion Energy
 
-    /*
-     * Helper Methods For Recipe checking
-     */
-
-    protected void setItemOutputs(String inventory, ItemStack... itemOutputs) {
-
-    }
-
-    @Override
-    protected void setItemOutputs(ItemStack... outputs) {
-        super.setItemOutputs(outputs);
-
-    }
-
-    @Override
-    protected void outputItems(@Nullable UUID inventoryID) {
-        if (itemsToOutput == null) return;
-        ItemInventoryLogic inventory = controllerItemOutput.getInventoryLogic(inventoryID);
-        for (int i = 0; i < itemsToOutput.length; i++) {
-            inventory.insertItem(itemsToOutput[i]);
-        }
-        itemsToOutput = null;
-    }
-
-    protected void setFluidOutputs(String tank, FluidStack... fluidOutputs) {}
-
-    @Override
-    protected void setFluidOutputs(FluidStack... outputs) {
-        super.setFluidOutputs(outputs);
-    }
-
-    @Override
-    protected void outputFluids(@Nullable UUID inventoryID) {
-        if (fluidsToOutput == null) return;
-        FluidInventoryLogic inventory = controllerFluidOutput.getInventoryLogic(inventoryID);
-        for (int i = 0; i < fluidsToOutput.length; i++) {
-            inventory.fill(fluidsToOutput[i]);
-        }
-        fluidsToOutput = null;
-    }
-
     @Override
     protected void updateSlots() {
         controllerItemInput.getAllInventoryLogics()
@@ -937,11 +899,6 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             .update();
         controllerFluidOutput.getAllInventoryLogics()
             .update();
-    }
-
-    @Override
-    protected boolean checkRecipe() {
-        return false;
     }
 
     /*
@@ -1249,8 +1206,9 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("progress", progressTime);
-        tag.setInteger("maxProgress", maxProgressTime);
+        P processing = getProcessingLogic();
+        tag.setInteger("progress", processing.getProgress());
+        tag.setInteger("maxProgress", processing.getDuration());
         tag.setBoolean("structureOkay", structureOkay);
     }
 
@@ -1296,4 +1254,25 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
         return new ArrayList<>(0);
     }
+
+    @Override
+    @Nonnull
+    public Set<Entry<UUID, FluidInventoryLogic>> getAllFluidInventoryLogics(@Nonnull InventoryType type) {
+        return switch (type) {
+            case Input -> controllerFluidInput.getAllInventoryLogicsAsEntrySet();
+            case Output -> controllerFluidOutput.getAllInventoryLogicsAsEntrySet();
+            default -> super.getAllFluidInventoryLogics(type);
+        };
+    }
+
+    @Override
+    @Nonnull
+    public Set<Entry<UUID, ItemInventoryLogic>> getAllItemInventoryLogics(@Nonnull InventoryType type) {
+        return switch (type) {
+            case Input -> controllerItemInput.getAllInventoryLogicsAsEntrySet();
+            case Output -> controllerItemOutput.getAllInventoryLogicsAsEntrySet();
+            default -> super.getAllItemInventoryLogics(type);
+        };
+    }
+
 }
