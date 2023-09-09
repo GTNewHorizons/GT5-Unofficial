@@ -195,22 +195,26 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
         fluidOutput.loadFromNBT(nbt.getCompoundTag(NBT.TANK_OUT));
     }
 
+    public boolean checkTexture(String modID, String resourcePath) {
+        try {
+            Minecraft.getMinecraft()
+                .getResourceManager()
+                .getResource(new ResourceLocation(modID, resourcePath));
+            return true;
+        } catch (IOException ignored) {
+            return false;
+        }
+    }
+
     @Override
     public void loadTextures(String folder) {
         super.loadTextures(folder);
         for (StatusTextures textureName : StatusTextures.TEXTURES) {
             ITexture texture = null;
-            try {
-                Minecraft.getMinecraft()
-                    .getResourceManager()
-                    .getResource(
-                        new ResourceLocation(
-                            Mods.GregTech.ID,
-                            "textures/blocks/multitileentity/" + folder + "/" + textureName.getName() + ".png"));
-            } catch (IOException ignored) {
+            String texturePath = "textures/blocks/multitileentity/" + folder + "/" + textureName.getName() + ".png";
+            if (!checkTexture(Mods.GregTech.ID, texturePath)) {
                 texture = TextureFactory.of(Textures.BlockIcons.VOID);
-            }
-            if (texture == null) {
+            } else {
                 if (textureName.hasGlow()) {
                     texture = TextureFactory.builder()
                         .addIcon(new CustomIcon("multitileentity/" + folder + "/" + textureName.getName()))
