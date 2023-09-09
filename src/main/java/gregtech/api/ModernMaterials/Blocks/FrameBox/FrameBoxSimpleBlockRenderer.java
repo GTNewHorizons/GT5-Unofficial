@@ -30,30 +30,27 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
     @Override
     public void renderInventoryBlock(Block block, int ID, int modelId, RenderBlocks renderer) {
 
+        Tessellator tessellator = Tessellator.instance;
+
         ModernMaterial material = materialIDToMaterial.getOrDefault(ID, materialIDToMaterial.get(2));
         Color color = material.getColor();
         int red = color.getRed();
         int green = color.getGreen();
         int blue = color.getBlue();
 
-//        GL11.glPushMatrix();
-//        //GL11.glColor4f(red, green, blue, 255);
-//        renderer.useInventoryTint = false;
-//        renderBlockAsItem(block, 0, renderer);
-//        GL11.glPopMatrix();
-
-
         GL11.glPushMatrix();
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         GL11.glColor3f(red / 255.0f, green / 255.0f, blue / 255.0f);
+        tessellator.startDrawingQuads();
         drawBlock(block, ID, renderer);
+        tessellator.draw();
+
         GL11.glPopMatrix();
     }
 
     public static void drawBlock(Block block, int meta, RenderBlocks renderer) {
         Tessellator tessellator = Tessellator.instance;
 
-        tessellator.startDrawingQuads();
 
         //tessellator.setBrightness(16_000_000);
         //tessellator.disableColor();
@@ -76,7 +73,6 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
         tessellator.setNormal(1.0F, 0.0F, 0.0F);
         renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(5, meta));
 
-        tessellator.draw();
     }
 
 
