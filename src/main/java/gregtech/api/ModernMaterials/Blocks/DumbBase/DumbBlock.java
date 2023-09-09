@@ -13,6 +13,7 @@ import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -27,9 +28,9 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public abstract class DumbBlock extends BlockContainer {
+public abstract class DumbBlock extends Block {
 
-        public abstract BlocksEnum getBlockEnum();
+    public abstract BlocksEnum getBlockEnum();
 
     protected DumbBlock() {
         super(Material.rock);
@@ -131,8 +132,4 @@ public abstract class DumbBlock extends BlockContainer {
         return super.getLocalizedName();
     }
 
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new FrameBoxTileEntity();
-    }
 }
