@@ -26,6 +26,7 @@ import gregtech.api.interfaces.covers.IPlayerAttachHandler;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.events.MetricsCoverDataEvent;
 import gregtech.common.events.MetricsCoverHostDeconstructedEvent;
@@ -87,9 +88,9 @@ public class GT_Cover_Metrics_Transmitter
                     baseMTE.getWorldObj().provider.getDimensionName()),
                 StatCollector.translateToLocalFormatted(
                     "gt.event.metrics_cover.coords",
-                    baseMTE.getXCoord(),
-                    baseMTE.getYCoord(),
-                    baseMTE.getZCoord()));
+                    GT_Utility.formatNumbers(baseMTE.getXCoord()),
+                    GT_Utility.formatNumbers(baseMTE.getYCoord()),
+                    GT_Utility.formatNumbers(baseMTE.getZCoord())));
             builder.add(baseMTE.getInfoData());
 
             MinecraftForge.EVENT_BUS.post(new MetricsCoverDataEvent(aCoverVariable.frequency, builder.build()));

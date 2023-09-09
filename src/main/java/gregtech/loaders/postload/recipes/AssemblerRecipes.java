@@ -2965,7 +2965,6 @@ public class AssemblerRecipes implements Runnable {
                 GT_Utility.getIntegratedCircuit(2))
             .itemOutputs(ItemList.Cover_Metrics_Transmitter.get(1))
             .fluidInputs(Materials.SolderingAlloy.getMolten(INGOTS))
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(sAssemblerRecipes);

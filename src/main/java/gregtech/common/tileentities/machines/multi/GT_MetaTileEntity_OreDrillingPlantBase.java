@@ -582,7 +582,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> StatCollector.translateToLocalFormatted(
+                        () -> EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.drill_ores_left_chunk",
                             GT_Utility.formatNumbers(clientOreListSize)))
                     .setSynced(false)
@@ -593,7 +593,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> StatCollector.translateToLocalFormatted(
+                        () -> EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.drill_ores_left_layer",
                             GT_Utility.formatNumbers(clientYHead),
                             GT_Utility.formatNumbers(clientOreListSize)))
@@ -604,7 +604,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> StatCollector.translateToLocalFormatted(
+                        () -> EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.drill_chunks_left",
                             GT_Utility.formatNumbers(clientCurrentChunk),
                             GT_Utility.formatNumbers(clientTotalChunks)))
@@ -672,7 +672,8 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     @Override
     public String[] getInfoData() {
         final String diameter = GT_Utility.formatNumbers(chunkRadiusConfig * 2L);
-        return new String[] {
+        final ImmutableList.Builder<String> builder = ImmutableList.builder();
+        builder.add(
             EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.minermulti")
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
@@ -690,15 +691,14 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                     .translateToLocalFormatted("GT5U.gui.text.drill_ores_left_chunk", oreBlockPositions.size()),
                 StatCollector.translateToLocalFormatted(
                     "GT5U.gui.text.drill_chunks_left",
-                    getChunkNumber(),
-                    getTotalChunkCount()));
+                    GT_Utility.formatNumbers(getChunkNumber()),
+                    GT_Utility.formatNumbers(getTotalChunkCount())));
         }
 
         return builder.build()
             .toArray(new String[0]);
     }
 
-    @Override
     public boolean supportsVoidProtection() {
         return true;
     }
