@@ -42,7 +42,7 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
         int blue = color.getBlue();
 
         GL11.glPushMatrix();
-        GL11.glColor4f(255, 0, 0, 255);
+        GL11.glColor4f(255, 1, 1, 255);
         renderBlockAsItem(Blocks.stone, 0, 1.0f, renderer);
         GL11.glPopMatrix();
     }
@@ -50,12 +50,7 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
     public void renderBlockAsItem(Block p_147800_1_, int p_147800_2_, float p_147800_3_, RenderBlocks renderer)
     {
         Tessellator tessellator = Tessellator.instance;
-        boolean flag = p_147800_1_ == Blocks.grass;
-
-        if (p_147800_1_ == Blocks.dispenser || p_147800_1_ == Blocks.dropper || p_147800_1_ == Blocks.furnace)
-        {
-            p_147800_2_ = 3;
-        }
+        boolean flag = false;
 
         int j;
         float f1;
@@ -65,11 +60,6 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
         if (renderer.useInventoryTint)
         {
             j = p_147800_1_.getRenderColor(p_147800_2_);
-
-            if (flag)
-            {
-                j = 16777215;
-            }
 
             f1 = (float)(j >> 16 & 255) / 255.0F;
             f2 = (float)(j >> 8 & 255) / 255.0F;
@@ -360,8 +350,6 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
                         renderer.setRenderBounds((double)(0.5F - f2), 0.30000001192092896D, (double)(1.0F - f2 * 2.0F), (double)(0.5F + f2), 1.0D, 1.0D);
                     }
 
-                    f2 = 0.0625F;
-
                     if (k == 2)
                     {
                         renderer.setRenderBounds((double)(0.5F - f2), 0.5D, 0.0D, (double)(0.5F + f2), (double)(1.0F - f2), 1.0D);
@@ -523,24 +511,10 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
             renderer.renderFaceYNeg(p_147800_1_, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(p_147800_1_, 0, p_147800_2_));
             tessellator.draw();
 
-            if (flag && renderer.useInventoryTint)
-            {
-                k = p_147800_1_.getRenderColor(p_147800_2_);
-                f2 = (float)(k >> 16 & 255) / 255.0F;
-                f3 = (float)(k >> 8 & 255) / 255.0F;
-                float f4 = (float)(k & 255) / 255.0F;
-                GL11.glColor4f(f2 * p_147800_3_, f3 * p_147800_3_, f4 * p_147800_3_, 1.0F);
-            }
-
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, 1.0F, 0.0F);
             renderer.renderFaceYPos(p_147800_1_, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(p_147800_1_, 1, p_147800_2_));
             tessellator.draw();
-
-            if (flag && renderer.useInventoryTint)
-            {
-                GL11.glColor4f(p_147800_3_, p_147800_3_, p_147800_3_, 1.0F);
-            }
 
             tessellator.startDrawingQuads();
             tessellator.setNormal(0.0F, 0.0F, -1.0F);
