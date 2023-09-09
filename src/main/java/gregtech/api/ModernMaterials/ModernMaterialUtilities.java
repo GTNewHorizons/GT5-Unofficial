@@ -101,7 +101,7 @@ public class ModernMaterialUtilities {
         // GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + W + ".name", "Any Sub Block of this one");
 
         FrameBoxBlock frame = new FrameBoxBlock();
-        GameRegistry.registerBlock(frame, "frameBoxBlock");
+        GameRegistry.registerBlock(frame, FrameBoxItemBlock.class, "frameBoxBlock");
         GameRegistry.registerTileEntity(FrameBoxTileEntity.class, "frameBoxBlockTile");
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(frame), new FrameBoxItemRenderer());
 
