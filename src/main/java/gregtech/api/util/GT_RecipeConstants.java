@@ -268,7 +268,7 @@ public class GT_RecipeConstants {
     public static IGT_RecipeMap Fuel = IGT_RecipeMap.newRecipeMap(builder -> {
         builder.validateInputCount(1, 1)
             .validateNoInputFluid()
-            .validateOutputCount(-1, 0)
+            .validateOutputCount(-1, 1)
             .validateNoOutputFluid();
         if (!builder.isValid()) return Collections.emptyList();
         int fuelType = builder.getMetadata(FUEL_TYPE);

@@ -5,31 +5,23 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.*;
 import static gregtech.api.util.GT_StructureUtilityMuTE.MOTOR_CASINGS;
 import static gregtech.api.util.GT_StructureUtilityMuTE.ofMuTECasings;
 
-import java.util.UUID;
-
-import javax.annotation.Nullable;
-
-import net.minecraftforge.fluids.FluidStack;
+import javax.annotation.Nonnull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
-import com.gtnewhorizons.modularui.api.fluids.IFluidTanksHandler;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.enums.InventoryType;
 import gregtech.api.enums.Materials;
-import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.StackableController;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_ParallelHelper;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
+import gregtech.common.tileentities.machines.multiblock.logic.DistillationTowerProcessingLogic;
 
-public class DistillationTower extends StackableController<DistillationTower> {
+public class DistillationTower extends StackableController<DistillationTower, DistillationTowerProcessingLogic> {
 
     private static IStructureDefinition<DistillationTower> STRUCTURE_DEFINITION_MEGA = null;
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA = new Vec3Impl(8, 3, 0);
@@ -130,48 +122,6 @@ public class DistillationTower extends StackableController<DistillationTower> {
     }
 
     @Override
-    protected void outputFluids(@Nullable UUID inventoryID) {
-        if (fluidsToOutput == null) return;
-        FluidInventoryLogic logic = getFluidLogic(InventoryType.Output, inventoryID);
-        if (logic == null) return;
-        for (int i = 0; i < fluidsToOutput.length; i++) {
-            FluidStack fluid = fluidsToOutput[i];
-            if (fluid == null) continue;
-            IFluidTanksHandler internalHandler = logic.getInventory();
-            internalHandler.fill(i, fluid.getFluid(), fluid.amount, true);
-        }
-        fluidsToOutput = null;
-    }
-
-    @Override
-    protected boolean checkRecipe() {
-
-        GT_Recipe recipe = GT_Recipe.GT_Recipe_Map.sDistillationRecipes
-            .findRecipe(this, false, gregtech.api.enums.GT_Values.V[tier], getInputFluids(), getInputItems());
-
-        if (recipe == null) return false;
-
-        GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(recipe)
-            .setFluidInputs(getInputFluids())
-            .setItemInputs(getInputItems())
-            .setAvailableEUt(gregtech.api.enums.GT_Values.V[tier])
-            .setMaxParallel(1)
-            .enableOutputCalculation()
-            .enableConsumption()
-            .build();
-
-        if (helper.getCurrentParallel() == 0) return false;
-
-        setItemOutputs(helper.getItemOutputs());
-        setFluidOutputs(helper.getFluidOutputs());
-
-        eut = recipe.mEUt;
-        maxProgressTime = recipe.mDuration;
-
-        return true;
-    }
-
-    @Override
     public int getFluidOutputCount() {
         return 12;
     }
@@ -214,5 +164,11 @@ public class DistillationTower extends StackableController<DistillationTower> {
     @Override
     protected String getStackableMiddle(int stackIndex) {
         return stackIndex % 2 == 0 ? STACKABLE_MIDDLE_1 : STACKABLE_MIDDLE_2;
+    }
+
+    @Override
+    @Nonnull
+    protected DistillationTowerProcessingLogic createProcessingLogic() {
+        return new DistillationTowerProcessingLogic();
     }
 }

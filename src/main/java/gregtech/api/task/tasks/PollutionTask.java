@@ -37,8 +37,8 @@ public class PollutionTask<T extends TaskHost & IMachineProgress> extends Tickab
     @Override
     public void update(long tick, boolean isServerSide) {
         if (isServerSide && tick % POLLUTION_TICK == 0 && taskHost.hasThingsToDo()) {
-            if (taskHost instanceof TileEntity) {
-                GT_Pollution.addPollution((TileEntity) taskHost, getPollutionPerSecond());
+            if (taskHost instanceof final TileEntity entity) {
+                GT_Pollution.addPollution(entity, getPollutionPerSecond());
             }
         }
     }

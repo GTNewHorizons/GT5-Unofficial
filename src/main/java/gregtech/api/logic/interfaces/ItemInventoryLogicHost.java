@@ -1,5 +1,8 @@
 package gregtech.api.logic.interfaces;
 
+import java.util.HashSet;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -47,23 +50,26 @@ public interface ItemInventoryLogicHost extends ISidedInventory {
         return null;
     }
 
+    @Nonnull
+    default Set<Entry<UUID, ItemInventoryLogic>> getAllItemInventoryLogics(@Nonnull InventoryType type) {
+        return new HashSet<>();
+    }
+
     @Override
     @Nullable
     default ItemStack decrStackSize(int slot, int count) {
-        if (getItemInventoryType() == InventoryType.Both) return null;
-        ItemInventoryLogic logic = getItemLogic(
-            ForgeDirection.UNKNOWN,
-            getItemInventoryType() == null ? InventoryType.Output : getItemInventoryType());
+        InventoryType type = getItemInventoryType();
+        if (type == InventoryType.Both) return null;
+        ItemInventoryLogic logic = getItemLogic(ForgeDirection.UNKNOWN, type == null ? InventoryType.Output : type);
         if (logic == null) return null;
         return logic.extractItem(slot, count);
     }
 
     @Override
     default int getSizeInventory() {
-        if (getItemInventoryType() == InventoryType.Both) return 0;
-        ItemInventoryLogic logic = getItemLogic(
-            ForgeDirection.UNKNOWN,
-            getItemInventoryType() == null ? InventoryType.Output : getItemInventoryType());
+        InventoryType type = getItemInventoryType();
+        if (type == InventoryType.Both) return 0;
+        ItemInventoryLogic logic = getItemLogic(ForgeDirection.UNKNOWN, type == null ? InventoryType.Output : type);
         if (logic == null) return 0;
         return logic.getSlots();
     }
@@ -71,10 +77,9 @@ public interface ItemInventoryLogicHost extends ISidedInventory {
     @Override
     @Nullable
     default ItemStack getStackInSlot(int slot) {
-        if (getItemInventoryType() == InventoryType.Both) return null;
-        ItemInventoryLogic logic = getItemLogic(
-            ForgeDirection.UNKNOWN,
-            getItemInventoryType() == null ? InventoryType.Output : getItemInventoryType());
+        InventoryType type = getItemInventoryType();
+        if (type == InventoryType.Both) return null;
+        ItemInventoryLogic logic = getItemLogic(ForgeDirection.UNKNOWN, type == null ? InventoryType.Output : type);
         if (logic == null) return null;
         return logic.getInventory()
             .getStackInSlot(slot);
@@ -82,10 +87,9 @@ public interface ItemInventoryLogicHost extends ISidedInventory {
 
     @Override
     default boolean isItemValidForSlot(int slot, @Nullable ItemStack stack) {
-        if (getItemInventoryType() == InventoryType.Both) return false;
-        ItemInventoryLogic logic = getItemLogic(
-            ForgeDirection.UNKNOWN,
-            getItemInventoryType() == null ? InventoryType.Output : getItemInventoryType());
+        InventoryType type = getItemInventoryType();
+        if (type == InventoryType.Both) return false;
+        ItemInventoryLogic logic = getItemLogic(ForgeDirection.UNKNOWN, type == null ? InventoryType.Output : type);
         if (logic == null) return false;
         return logic.getInventory()
             .isItemValid(slot, stack);
@@ -93,10 +97,9 @@ public interface ItemInventoryLogicHost extends ISidedInventory {
 
     @Override
     default void setInventorySlotContents(int slot, @Nullable ItemStack stack) {
-        if (getItemInventoryType() == InventoryType.Both) return;
-        ItemInventoryLogic logic = getItemLogic(
-            ForgeDirection.UNKNOWN,
-            getItemInventoryType() == null ? InventoryType.Output : getItemInventoryType());
+        InventoryType type = getItemInventoryType();
+        if (type == InventoryType.Both) return;
+        ItemInventoryLogic logic = getItemLogic(ForgeDirection.UNKNOWN, type == null ? InventoryType.Output : type);
         if (logic == null) return;
         logic.getInventory()
             .setStackInSlot(slot, stack);
@@ -104,19 +107,27 @@ public interface ItemInventoryLogicHost extends ISidedInventory {
 
     @Override
     default boolean canExtractItem(int ignoredSlot, ItemStack ignoredItem, int side) {
-        return getItemLogic(ForgeDirection.getOrientation(side), getItemInventoryType()) != null;
+        InventoryType type = getItemInventoryType();
+        if (type == null) return false;
+        return getItemLogic(ForgeDirection.getOrientation(side), type) != null;
     }
 
     @Override
     default boolean canInsertItem(int ignoredSlot, ItemStack ignoredItem, int side) {
+        InventoryType type = getItemInventoryType();
+        if (type == null) return false;
         return getItemInventoryType() != InventoryType.Output
-            && getItemLogic(ForgeDirection.getOrientation(side), getItemInventoryType()) != null;
+            && getItemLogic(ForgeDirection.getOrientation(side), type) != null;
     }
 
     @Override
-    default int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-        int[] indexes = new int[getSizeInventory()];
-        for (int i = 0; i < getSizeInventory(); i++) {
+    default int[] getAccessibleSlotsFromSide(int side) {
+        InventoryType type = getItemInventoryType();
+        if (type == null) return new int[0];
+        ItemInventoryLogic logic = getItemLogic(ForgeDirection.UNKNOWN, type == null ? InventoryType.Output : type);
+        if (logic == null) return new int[0];
+        int[] indexes = new int[logic.getSlots()];
+        for (int i = 0; i < logic.getSlots(); i++) {
             indexes[i] = i;
         }
         return indexes;

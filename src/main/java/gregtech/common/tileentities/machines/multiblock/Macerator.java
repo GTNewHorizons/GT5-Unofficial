@@ -9,6 +9,8 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_O
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHING;
 import static gregtech.api.util.GT_StructureUtilityMuTE.*;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.util.ResourceLocation;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -21,8 +23,9 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.StackableController;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.common.tileentities.machines.multiblock.logic.MaceratorProcessingLogic;
 
-public class Macerator extends StackableController<Macerator> {
+public class Macerator extends StackableController<Macerator, MaceratorProcessingLogic> {
 
     private static IStructureDefinition<Macerator> STRUCTURE_DEFINITION = null;
 
@@ -130,5 +133,11 @@ public class Macerator extends StackableController<Macerator> {
     @Override
     protected ResourceLocation getActivitySoundLoop() {
         return SoundResource.IC2_MACHINES_MACERATOR_OP.resourceLocation;
+    }
+
+    @Override
+    @Nonnull
+    protected MaceratorProcessingLogic createProcessingLogic() {
+        return new MaceratorProcessingLogic();
     }
 }

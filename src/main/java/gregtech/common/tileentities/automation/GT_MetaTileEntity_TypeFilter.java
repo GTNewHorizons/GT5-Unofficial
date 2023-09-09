@@ -14,7 +14,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
@@ -86,7 +88,6 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
                 .build());
     }
 
-    @Override
     public void clickTypeIcon(boolean aRightClick, ItemStack aHandStack) {
         if (getBaseMetaTileEntity().isServerSide()) {
             if (aHandStack != null) {
@@ -191,5 +192,22 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
             replacementTooltip.addAll(mTooltipCache.getData(REPRESENTATION_SLOT_TOOLTIP).text);
             return replacementTooltip;
         };
+    }
+
+    @Override
+    protected SlotWidget createFilterIconSlot(BaseSlot slot) {
+        return new TypeFilterIconSlotWidget(slot);
+    }
+
+    private class TypeFilterIconSlotWidget extends FilterIconSlotWidget {
+
+        public TypeFilterIconSlotWidget(BaseSlot slot) {
+            super(slot);
+        }
+
+        @Override
+        protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
+            clickTypeIcon(clickData.mouseButton != 0, cursorStack);
+        }
     }
 }

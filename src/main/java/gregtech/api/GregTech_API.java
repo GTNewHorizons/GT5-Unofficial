@@ -70,6 +70,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.item.ItemHolder;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
@@ -106,7 +107,7 @@ public class GregTech_API {
     /**
      * Fixes the HashMap Mappings for ItemStacks once the Server started
      */
-    public static final Collection<Map<? extends GT_ItemStack, ?>> sItemStackMappings = new ArrayList<>();
+    public static final Collection<Map<? extends ItemHolder, ?>> sItemStackMappings = new ArrayList<>();
 
     /**
      * The MetaTileEntity-ID-List-Length

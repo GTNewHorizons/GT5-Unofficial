@@ -257,7 +257,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         if (!(aPlayer instanceof EntityPlayerMP))
             return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, true, true))
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true))
             return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
         if (!dataStick.hasTagCompound() || !"stockingBus".equals(dataStick.stackTagCompound.getString("type")))
             return false;
@@ -284,7 +284,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         if (!(aPlayer instanceof EntityPlayerMP)) return;
 
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, true, true)) return;
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) return;
 
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("type", "stockingBus");

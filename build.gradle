@@ -1,4 +1,4 @@
-//version: 1690104383
+//version: 1692122114
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -69,7 +69,7 @@ plugins {
     id 'com.diffplug.spotless' version '6.13.0' apply false // 6.13.0 is the last jvm8 supporting version
     id 'com.modrinth.minotaur' version '2.+' apply false
     id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
-    id 'com.gtnewhorizons.retrofuturagradle' version '1.3.21'
+    id 'com.gtnewhorizons.retrofuturagradle' version '1.3.24'
 }
 
 print("You might want to check out './gradlew :faq' if your build fails.\n")
@@ -401,9 +401,13 @@ if (identifiedVersion == versionOverride) {
 
 group = "com.github.GTNewHorizons"
 if (project.hasProperty("customArchiveBaseName") && customArchiveBaseName) {
-    archivesBaseName = customArchiveBaseName
+    base {
+        archivesName = customArchiveBaseName
+    }
 } else {
-    archivesBaseName = modId
+    base {
+        archivesName = modId
+    }
 }
 
 
@@ -558,9 +562,6 @@ repositories {
     maven {
         name 'Overmind forge repo mirror'
         url 'https://gregtech.overminddl1.com/'
-        mavenContent {
-            excludeGroup("net.minecraftforge") // missing the `universal` artefact
-        }
     }
     maven {
         name = "GTNH Maven"
@@ -627,6 +628,8 @@ def mixinProviderSpecNoClassifer = "${mixinProviderGroup}:${mixinProviderModule}
 def mixinProviderSpec = "${mixinProviderSpecNoClassifer}:dev"
 ext.mixinProviderSpec = mixinProviderSpec
 
+def mixingConfigRefMap = 'mixins.' + modId + '.refmap.json'
+
 dependencies {
     if (usesMixins.toBoolean()) {
         annotationProcessor('org.ow2.asm:asm-debug-all:5.0.3')
@@ -638,7 +641,7 @@ dependencies {
         }
     }
     if (usesMixins.toBoolean()) {
-        implementation(modUtils.enableMixins(mixinProviderSpec))
+        implementation(modUtils.enableMixins(mixinProviderSpec, mixingConfigRefMap))
     } else if (forceEnableMixins.toBoolean()) {
         runtimeOnlyNonPublishable(mixinProviderSpec)
     }
@@ -690,8 +693,6 @@ if (file('dependencies.gradle.kts').exists()) {
     logger.error("Neither dependencies.gradle.kts nor dependencies.gradle was found, make sure you extracted the full ExampleMod template.")
     throw new RuntimeException("Missing dependencies.gradle[.kts]")
 }
-
-def mixingConfigRefMap = 'mixins.' + modId + '.refmap.json'
 
 tasks.register('generateAssets') {
     group = "GTNH Buildscript"
@@ -775,10 +776,10 @@ dependencies {
         java17Dependencies("com.github.GTNewHorizons:lwjgl3ify:${lwjgl3ifyVersion}")
     }
     if (modId != 'hodgepodge') {
-        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.2.19')
+        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.2.26')
     }
 
-    java17PatchDependencies('net.minecraft:launchwrapper:1.15') {transitive = false}
+    java17PatchDependencies('net.minecraft:launchwrapper:1.17.2') {transitive = false}
     java17PatchDependencies("org.ow2.asm:asm:${asmVersion}")
     java17PatchDependencies("org.ow2.asm:asm-commons:${asmVersion}")
     java17PatchDependencies("org.ow2.asm:asm-tree:${asmVersion}")
@@ -1148,7 +1149,10 @@ tasks.named("processIdeaSettings").configure {
 
 tasks.named("ideVirtualMainClasses").configure {
     // Make IntelliJ "Build project" build the mod jars
-    dependsOn("jar", "reobfJar", "spotlessCheck")
+    dependsOn("jar", "reobfJar")
+    if (!disableSpotless) {
+        dependsOn("spotlessCheck")
+    }
 }
 
 // workaround variable hiding in pom processing
