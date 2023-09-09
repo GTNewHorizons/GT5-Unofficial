@@ -1689,12 +1689,9 @@ public class MachineLoader implements Runnable {
         Machine_Multi_Computer.set(
                 new GT_MetaTileEntity_EM_computer(15311, "multimachine.em.computer", "Quantum Computer")
                         .getStackForm(1L));
+
         Machine_Multi_DataBank.set(
                 new GT_MetaTileEntity_EM_dataBank(15313, "multimachine.em.databank", "Data Bank").getStackForm(1L));
-
-        Machine_Multi_Research.set(
-                new GT_MetaTileEntity_EM_research(15331, "multimachine.em.research", "Research station")
-                        .getStackForm(1L));
 
         Machine_Multi_Infuser.set(
                 new GT_MetaTileEntity_EM_infuser(15350, "multimachine.em.infuser", "Energy Infuser").getStackForm(1));

@@ -1,42 +1,8 @@
 package com.github.technus.tectech.loader.recipe;
 
-import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
-import static com.google.common.math.LongMath.pow;
-import static gregtech.api.enums.Mods.Avaritia;
-import static gregtech.api.enums.Mods.AvaritiaAddons;
-import static gregtech.api.enums.Mods.BartWorks;
-import static gregtech.api.enums.Mods.BloodMagic;
-import static gregtech.api.enums.Mods.DraconicEvolution;
-import static gregtech.api.enums.Mods.ElectroMagicTools;
-import static gregtech.api.enums.Mods.EternalSingularity;
-import static gregtech.api.enums.Mods.ExtraUtilities;
-import static gregtech.api.enums.Mods.GTNHIntergalactic;
-import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.enums.Mods.GTPlusPlusEverglades;
-import static gregtech.api.enums.Mods.GalaxySpace;
-import static gregtech.api.enums.Mods.GoodGenerator;
-import static gregtech.api.enums.Mods.GraviSuite;
-import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.enums.Mods.KekzTech;
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import static gregtech.api.enums.Mods.SGCraft;
-import static gregtech.api.enums.Mods.SuperSolarPanels;
-import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.enums.Mods.TinkersGregworks;
-import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.rwtema.extrautils.ExtraUtils;
-
 import fox.spiteful.avaritia.compat.ticon.Tonkers;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
@@ -45,9 +11,19 @@ import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import tconstruct.tools.TinkerTools;
 import vexatos.tgregworks.reference.PartTypes;
 import vexatos.tgregworks.util.TGregUtils;
+
+import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
+import static com.google.common.math.LongMath.pow;
+import static gregtech.api.enums.Mods.*;
+import static gregtech.api.util.GT_ModHandler.getModItem;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 
 public class ResearchStationAssemblyLine implements Runnable {
 
@@ -152,25 +128,6 @@ public class ResearchStationAssemblyLine implements Runnable {
                     60 * 20,
                     8_000_000 * 16);
         }
-
-        // EM Scanner
-        TT_recipeAdder.addResearchableAssemblylineRecipe(
-                CustomItemList.Machine_Multi_Research.get(1),
-                150000,
-                128,
-                500000,
-                16,
-                new Object[] { CustomItemList.Machine_BuckConverter_IV.get(1), CustomItemList.eM_Computer_Bus.get(4),
-                        ItemList.Field_Generator_UV.get(4), ItemList.Sensor_UV.get(4),
-                        new Object[] { OrePrefixes.circuit.get(Materials.Optical), 4L },
-                        getItemContainer("MysteriousCrystalLens").get(4),
-                        GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Draconium, 4), },
-                new FluidStack[] { Materials.UUMatter.getFluid(2000), Materials.Neutronium.getMolten(2592),
-                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 4000),
-                        Materials.Osmiridium.getMolten(1296), },
-                new ItemStack(Items.diamond_axe),
-                24000,
-                500000);
 
         // UHV-UMV Energy Hatch & Dynamo
         {
