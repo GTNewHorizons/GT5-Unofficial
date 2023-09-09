@@ -95,6 +95,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     private final boolean[] mActiveEUInputs = new boolean[] { false, false, false, false, false, false };
     private final boolean[] mActiveEUOutputs = new boolean[] { false, false, false, false, false, false };
     private final int[] mTimeStatistics = new int[GregTech_API.TICKS_FOR_LAG_AVERAGING];
+    private boolean hasTimeStatisticsStarted;
     public long mLastSoundTick = 0;
     public boolean mWasShutdown = false;
     protected MetaTileEntity mMetaTileEntity;
@@ -283,7 +284,12 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
         }
 
         mRunningThroughTick = true;
-        long tTime = System.nanoTime();
+        long tTime;
+        if (hasTimeStatisticsStarted) {
+            tTime = System.nanoTime();
+        } else {
+            tTime = 0;
+        }
         final boolean aSideServer = isServerSide();
         final boolean aSideClient = isClientSide();
 
@@ -604,10 +610,10 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
             }
         }
 
-        if (aSideServer && hasValidMetaTileEntity()) {
+        if (aSideServer && hasTimeStatisticsStarted && hasValidMetaTileEntity()) {
             tTime = System.nanoTime() - tTime;
-            if (mTimeStatistics.length > 0) mTimeStatistics[mTimeStatisticsIndex = (mTimeStatisticsIndex + 1)
-                % mTimeStatistics.length] = (int) tTime;
+            mTimeStatisticsIndex = (mTimeStatisticsIndex + 1) % mTimeStatistics.length;
+            mTimeStatistics[mTimeStatisticsIndex] = (int) tTime;
             if (tTime > 0 && tTime > (GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING * 1_000_000L)
                 && mTickTimer > 1000
                 && getMetaTileEntity().doTickProfilingMessageDuringThisTick()
@@ -801,33 +807,44 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                         ? EnumChatFormatting.RED + " MetaTileEntity == null!" + EnumChatFormatting.RESET
                         : " "));
         }
-        if (aLogLevel > 1) {
-            if (mTimeStatistics.length > 0) {
+        if (aLogLevel > 1 && mMetaTileEntity != null) {
+            if (hasTimeStatisticsStarted) {
                 double tAverageTime = 0;
                 double tWorstTime = 0;
+                int amountOfZero = 0;
                 for (int tTime : mTimeStatistics) {
                     tAverageTime += tTime;
                     if (tTime > tWorstTime) {
                         tWorstTime = tTime;
                     }
+                    if (tTime == 0) {
+                        amountOfZero += 1;
+                    }
                     // Uncomment this line to print out tick-by-tick times.
                     // tList.add("tTime " + tTime);
                 }
-                tList.add(
-                    "Average CPU load of ~" + GT_Utility.formatNumbers(tAverageTime / mTimeStatistics.length)
-                        + "ns over "
-                        + GT_Utility.formatNumbers(mTimeStatistics.length)
-                        + " ticks with worst time of "
-                        + GT_Utility.formatNumbers(tWorstTime)
-                        + "ns.");
-                tList.add(
-                    "Recorded " + GT_Utility.formatNumbers(mMetaTileEntity.mSoundRequests)
-                        + " sound requests in "
-                        + GT_Utility.formatNumbers(mTickTimer - mLastCheckTick)
-                        + " ticks.");
-                mLastCheckTick = mTickTimer;
-                mMetaTileEntity.mSoundRequests = 0;
+                // tick time zero means it has not been updated yet
+                int samples = mTimeStatistics.length - amountOfZero;
+                if (samples > 0) {
+                    tList.add(
+                        "Average CPU load of ~" + GT_Utility.formatNumbers(tAverageTime / samples)
+                            + "ns over "
+                            + GT_Utility.formatNumbers(samples)
+                            + " ticks with worst time of "
+                            + GT_Utility.formatNumbers(tWorstTime)
+                            + "ns.");
+                }
+            } else {
+                startTimeStatistics();
+                tList.add("Just started tick time statistics.");
             }
+            tList.add(
+                "Recorded " + GT_Utility.formatNumbers(mMetaTileEntity.mSoundRequests)
+                    + " sound requests in "
+                    + GT_Utility.formatNumbers(mTickTimer - mLastCheckTick)
+                    + " ticks.");
+            mLastCheckTick = mTickTimer;
+            mMetaTileEntity.mSoundRequests = 0;
             if (mLagWarningCount > 0) {
                 tList.add(
                     "Caused " + (mLagWarningCount >= 10 ? "more than 10" : mLagWarningCount)
@@ -2446,6 +2463,11 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     @Override
     public int[] getTimeStatistics() {
         return mTimeStatistics;
+    }
+
+    @Override
+    public void startTimeStatistics() {
+        hasTimeStatisticsStarted = true;
     }
 
     @Override

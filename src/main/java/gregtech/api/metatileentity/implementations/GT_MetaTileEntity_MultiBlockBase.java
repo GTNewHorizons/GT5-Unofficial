@@ -68,6 +68,7 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SingleRecipeCheck;
+import gregtech.api.util.GT_ClientPreference;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ParallelHelper;
@@ -1767,7 +1768,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         currentTip.add(
             GT_Waila.getMachineProgressString(isActive, tag.getInteger("maxProgress"), tag.getInteger("progress")));
         // Show ns on the tooltip
-        if (GT_Mod.gregtechproxy.wailaAverageNS) {
+        if (GT_Mod.gregtechproxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");
             currentTip.add("Average CPU load of ~" + formatNumbers(tAverageTime) + " ns");
         }
@@ -1795,16 +1796,25 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             }
         }
 
-        int tAverageTime = 0;
-        for (int tTime : this.getBaseMetaTileEntity()
-            .getTimeStatistics()) {
-            tAverageTime += tTime;
-        }
+        final GT_ClientPreference preference = GT_Mod.gregtechproxy.getClientPreference(player.getUniqueID());
+        if (preference != null && preference.isWailaAverageNSEnabled()) {
+            getBaseMetaTileEntity().startTimeStatistics();
+            int tAverageTime = 0;
+            int amountOfZero = 0;
+            for (int tTime : this.getBaseMetaTileEntity()
+                .getTimeStatistics()) {
+                tAverageTime += tTime;
+                if (tTime == 0) {
+                    amountOfZero += 1;
+                }
+            }
 
-        tag.setInteger(
-            "averageNS",
-            tAverageTime / this.getBaseMetaTileEntity()
-                .getTimeStatistics().length);
+            // tick time zero means it has not been updated yet
+            int samples = getBaseMetaTileEntity().getTimeStatistics().length - amountOfZero;
+            if (samples > 0) {
+                tag.setInteger("averageNS", tAverageTime / samples);
+            }
+        }
     }
 
     @Override
