@@ -29,7 +29,6 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
 
     @Override
     public void renderInventoryBlock(Block block, int ID, int modelId, RenderBlocks renderer) {
-/*        Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
 
         ModernMaterial material = materialIDToMaterial.getOrDefault(ID, materialIDToMaterial.get(2));
         Color color = material.getColor();
@@ -37,30 +36,119 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
         int green = color.getGreen();
         int blue = color.getBlue();
 
-        GL11.glPushMatrix();
-        //GL11.glColor4f(red, green, blue, 255);
-        renderer.useInventoryTint = false;
-        renderBlockAsItem(block, 0, renderer);
-        GL11.glPopMatrix();*/
+//        GL11.glPushMatrix();
+//        //GL11.glColor4f(red, green, blue, 255);
+//        renderer.useInventoryTint = false;
+//        renderBlockAsItem(block, 0, renderer);
+//        GL11.glPopMatrix();
+
+
         GL11.glPushMatrix();
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        GL11.glColor4f(255, 1, 2, 255);
-        renderPositiveYFacing(null, renderer, block, 0, 0, 0, new ITexture[] { (ITexture) renderer.getBlockIconFromSideAndMetadata(block, 1, ID) }, true);
+        GL11.glColor3f(red / 255.0f, green / 255.0f, blue / 255.0f);
+        drawBlock(block, ID, renderer);
         GL11.glPopMatrix();
     }
 
-    public static void renderPositiveYFacing(IBlockAccess aWorld, RenderBlocks aRenderer, Block aBlock, int aX, int aY,
-                                             int aZ, ITexture[] aIcon, boolean aFullBlock) {
-        if (aWorld != null) {
-            if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY + 1, aZ, 1))) return;
-            Tessellator.instance
-                .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY + 1 : aY, aZ));
+
+    static final double[] BLOCK_X = { -0.5, -0.5, +0.5, +0.5, +0.5, +0.5, -0.5, -0.5 };
+    static final double[] BLOCK_Y = { +0.5, -0.5, -0.5, +0.5, +0.5, -0.5, -0.5, +0.5 };
+    static final double[] BLOCK_Z = { +0.5, +0.5, +0.5, +0.5, -0.5, -0.5, -0.5, -0.5 };
+
+    public static void addRenderedBlockInWorld(final Block block, final int meta, final double x, final double y,
+                                               final double z) {
+        final Tessellator tes = Tessellator.instance;
+
+        IIcon texture;
+
+        double minU;
+        double maxU;
+        double minV;
+        double maxV;
+
+        {
+            texture = block.getIcon(4, meta);
+
+            minU = texture.getMinU();
+            maxU = texture.getMaxU();
+            minV = texture.getMinV();
+            maxV = texture.getMaxV();
+
+            tes.addVertexWithUV(x + BLOCK_X[1], y + BLOCK_Y[1], z + BLOCK_Z[1], maxU, maxV);
+            tes.addVertexWithUV(x + BLOCK_X[0], y + BLOCK_Y[0], z + BLOCK_Z[0], maxU, minV);
+            tes.addVertexWithUV(x + BLOCK_X[7], y + BLOCK_Y[7], z + BLOCK_Z[7], minU, minV);
+            tes.addVertexWithUV(x + BLOCK_X[6], y + BLOCK_Y[6], z + BLOCK_Z[6], minU, maxV);
         }
-        if (aIcon == null) return;
-        for (final ITexture iTexture : aIcon) {
-            if (iTexture != null) {
-                iTexture.renderYPos(aRenderer, aBlock, aX, aY, aZ);
-            }
+
+        {
+            // Bottom face.
+            texture = block.getIcon(0, meta);
+
+            minU = texture.getMinU();
+            maxU = texture.getMaxU();
+            minV = texture.getMinV();
+            maxV = texture.getMaxV();
+
+            tes.addVertexWithUV(x + BLOCK_X[5], y + BLOCK_Y[5], z + BLOCK_Z[5], maxU, minV);
+            tes.addVertexWithUV(x + BLOCK_X[2], y + BLOCK_Y[2], z + BLOCK_Z[2], maxU, maxV);
+            tes.addVertexWithUV(x + BLOCK_X[1], y + BLOCK_Y[1], z + BLOCK_Z[1], minU, maxV);
+            tes.addVertexWithUV(x + BLOCK_X[6], y + BLOCK_Y[6], z + BLOCK_Z[6], minU, minV);
+        }
+
+        {
+            texture = block.getIcon(2, meta);
+
+            minU = texture.getMinU();
+            maxU = texture.getMaxU();
+            minV = texture.getMinV();
+            maxV = texture.getMaxV();
+
+            tes.addVertexWithUV(x + BLOCK_X[6], y + BLOCK_Y[6], z + BLOCK_Z[6], maxU, maxV);
+            tes.addVertexWithUV(x + BLOCK_X[7], y + BLOCK_Y[7], z + BLOCK_Z[7], maxU, minV);
+            tes.addVertexWithUV(x + BLOCK_X[4], y + BLOCK_Y[4], z + BLOCK_Z[4], minU, minV);
+            tes.addVertexWithUV(x + BLOCK_X[5], y + BLOCK_Y[5], z + BLOCK_Z[5], minU, maxV);
+        }
+
+        {
+            texture = block.getIcon(5, meta);
+
+            minU = texture.getMinU();
+            maxU = texture.getMaxU();
+            minV = texture.getMinV();
+            maxV = texture.getMaxV();
+
+            tes.addVertexWithUV(x + BLOCK_X[5], y + BLOCK_Y[5], z + BLOCK_Z[5], maxU, maxV);
+            tes.addVertexWithUV(x + BLOCK_X[4], y + BLOCK_Y[4], z + BLOCK_Z[4], maxU, minV);
+            tes.addVertexWithUV(x + BLOCK_X[3], y + BLOCK_Y[3], z + BLOCK_Z[3], minU, minV);
+            tes.addVertexWithUV(x + BLOCK_X[2], y + BLOCK_Y[2], z + BLOCK_Z[2], minU, maxV);
+        }
+
+        {
+            texture = block.getIcon(1, meta);
+
+            minU = texture.getMinU();
+            maxU = texture.getMaxU();
+            minV = texture.getMinV();
+            maxV = texture.getMaxV();
+
+            tes.addVertexWithUV(x + BLOCK_X[3], y + BLOCK_Y[3], z + BLOCK_Z[3], maxU, maxV);
+            tes.addVertexWithUV(x + BLOCK_X[4], y + BLOCK_Y[4], z + BLOCK_Z[4], maxU, minV);
+            tes.addVertexWithUV(x + BLOCK_X[7], y + BLOCK_Y[7], z + BLOCK_Z[7], minU, minV);
+            tes.addVertexWithUV(x + BLOCK_X[0], y + BLOCK_Y[0], z + BLOCK_Z[0], minU, maxV);
+        }
+
+        {
+            texture = block.getIcon(3, meta);
+
+            minU = texture.getMinU();
+            maxU = texture.getMaxU();
+            minV = texture.getMinV();
+            maxV = texture.getMaxV();
+
+            tes.addVertexWithUV(x + BLOCK_X[2], y + BLOCK_Y[2], z + BLOCK_Z[2], maxU, maxV);
+            tes.addVertexWithUV(x + BLOCK_X[3], y + BLOCK_Y[3], z + BLOCK_Z[3], maxU, minV);
+            tes.addVertexWithUV(x + BLOCK_X[0], y + BLOCK_Y[0], z + BLOCK_Z[0], minU, minV);
+            tes.addVertexWithUV(x + BLOCK_X[1], y + BLOCK_Y[1], z + BLOCK_Z[1], minU, maxV);
         }
     }
 
@@ -69,28 +157,28 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
         Tessellator tessellator = Tessellator.instance;
 
         tessellator.startDrawingQuads();
+
+        //tessellator.setBrightness(16_000_000);
+        //tessellator.disableColor();
+
         tessellator.setNormal(0.0F, -1.0F, 0.0F);
         renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(0, meta));
-        tessellator.draw();
-        tessellator.startDrawingQuads();
+
         tessellator.setNormal(0.0F, 1.0F, 0.0F);
         renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(1, meta));
-        tessellator.draw();
-        tessellator.startDrawingQuads();
+
         tessellator.setNormal(0.0F, 0.0F, -1.0F);
         renderer.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(2, meta));
-        tessellator.draw();
-        tessellator.startDrawingQuads();
+
         tessellator.setNormal(0.0F, 0.0F, 1.0F);
         renderer.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(3, meta));
-        tessellator.draw();
-        tessellator.startDrawingQuads();
+
         tessellator.setNormal(-1.0F, 0.0F, 0.0F);
         renderer.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(4, meta));
-        tessellator.draw();
-        tessellator.startDrawingQuads();
+
         tessellator.setNormal(1.0F, 0.0F, 0.0F);
         renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(5, meta));
+
         tessellator.draw();
     }
 

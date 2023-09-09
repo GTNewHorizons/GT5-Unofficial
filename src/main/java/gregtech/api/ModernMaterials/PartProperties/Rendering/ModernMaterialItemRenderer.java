@@ -75,9 +75,9 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
             // Determines if the layer needs colouring.
             if (iconWrapper.isColoured) {
                 GL11.glColor3f(
-                    materialColor.getRed(),
-                    materialColor.getGreen(),
-                    materialColor.getBlue());
+                    materialColor.getRed() / 255.0f,
+                    materialColor.getGreen() / 255.0f,
+                    materialColor.getBlue() / 255.0f);
             }
 
             renderLayer(iconWrapper.icon, type);
