@@ -56,12 +56,12 @@ public class GT_RecipeBuilder {
         PANIC_MODE = DEBUG_MODE && Boolean.getBoolean("gt.recipebuilder.panic");
     }
 
-    protected ItemStack[] inputsBasic;
+    protected ItemStack[] inputsBasic = new ItemStack[0];
     protected Object[] inputsOreDict;
-    protected ItemStack[] outputs;
+    protected ItemStack[] outputs = new ItemStack[0];
     protected ItemStack[][] alts;
-    protected FluidStack[] fluidInputs;
-    protected FluidStack[] fluidOutputs;
+    protected FluidStack[] fluidInputs = new FluidStack[0];
+    protected FluidStack[] fluidOutputs = new FluidStack[0];
     protected int[] chances;
     protected Object special;
     protected int duration = -1;
@@ -105,6 +105,8 @@ public class GT_RecipeBuilder {
         this.additionalData.putAll(additionalData);
         this.valid = valid;
     }
+
+    // region helper methods
 
     private static FluidStack[] fix(FluidStack[] fluidInputs) {
         return Arrays.stream(fluidInputs)
@@ -162,6 +164,10 @@ public class GT_RecipeBuilder {
             new IllegalArgumentException().printStackTrace(GT_Log.err);
         }
     }
+
+    // endregion
+
+    // region setter
 
     /**
      * Non-OreDicted item inputs. Assumes input is unified.
@@ -221,13 +227,10 @@ public class GT_RecipeBuilder {
     }
 
     /**
-     * Same as itemInputs(), but make it clear that no item inputs is intended, instead of a mistake.
+     * @deprecated You don't need to call this method, RecipeBuilder now takes empty item input array by default.
      */
+    @Deprecated
     public GT_RecipeBuilder noItemInputs() {
-        // this does not call into one of the itemInputs, to make it clear what is the expected behavior here.
-        inputsBasic = new ItemStack[0];
-        inputsOreDict = null;
-        alts = null;
         return this;
     }
 
@@ -254,9 +257,12 @@ public class GT_RecipeBuilder {
         return this;
     }
 
+    /**
+     * @deprecated You don't need to call this method, RecipeBuilder now takes empty item output array by default.
+     */
+    @Deprecated
     public GT_RecipeBuilder noItemOutputs() {
-        chances = null;
-        return itemOutputs();
+        return this;
     }
 
     public GT_RecipeBuilder fluidInputs(FluidStack... fluidInputs) {
@@ -265,8 +271,12 @@ public class GT_RecipeBuilder {
         return this;
     }
 
+    /**
+     * @deprecated You don't need to call this method, RecipeBuilder now takes empty fluid input array by default.
+     */
+    @Deprecated
     public GT_RecipeBuilder noFluidInputs() {
-        return fluidInputs == null ? fluidInputs() : this;
+        return this;
     }
 
     public GT_RecipeBuilder fluidOutputs(FluidStack... fluidOutputs) {
@@ -275,12 +285,20 @@ public class GT_RecipeBuilder {
         return this;
     }
 
+    /**
+     * @deprecated You don't need to call this method, RecipeBuilder now takes empty fluid output array by default.
+     */
+    @Deprecated
     public GT_RecipeBuilder noFluidOutputs() {
-        return fluidOutputs();
+        return this;
     }
 
+    /**
+     * @deprecated You don't need to call this method, RecipeBuilder now takes empty arrays by default.
+     */
+    @Deprecated
     public GT_RecipeBuilder noOutputs() {
-        return noFluidOutputs().noItemOutputs();
+        return this;
     }
 
     public GT_RecipeBuilder outputChances(int... chances) {
@@ -393,6 +411,8 @@ public class GT_RecipeBuilder {
         return metadata(GT_RecipeConstants.LOW_GRAVITY, true);
     }
 
+    // endregion
+
     private static <T> T[] copy(T[] arr) {
         return arr == null ? null : arr.clone();
     }
@@ -458,6 +478,8 @@ public class GT_RecipeBuilder {
             valid);
     }
 
+    // region getter
+
     public ItemStack getItemInputBasic(int index) {
         return index < inputsBasic.length ? inputsBasic[index] : null;
     }
@@ -510,6 +532,10 @@ public class GT_RecipeBuilder {
         return eut;
     }
 
+    // endregion
+
+    // region validator
+
     public GT_RecipeBuilder clearInvalid() {
         valid = true;
         return this;
@@ -537,7 +563,7 @@ public class GT_RecipeBuilder {
      * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
      */
     public GT_RecipeBuilder validateNoInput() {
-        return GT_Utility.isArrayEmptyOrNull(inputsBasic) ? noItemInputs() : invalidate();
+        return GT_Utility.isArrayEmptyOrNull(inputsBasic) ? this : invalidate();
     }
 
     /**
@@ -545,7 +571,7 @@ public class GT_RecipeBuilder {
      * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
      */
     public GT_RecipeBuilder validateNoInputFluid() {
-        return GT_Utility.isArrayEmptyOrNull(fluidInputs) ? noFluidInputs() : invalidate();
+        return GT_Utility.isArrayEmptyOrNull(fluidInputs) ? this : invalidate();
     }
 
     /**
@@ -553,7 +579,7 @@ public class GT_RecipeBuilder {
      * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
      */
     public GT_RecipeBuilder validateNoOutput() {
-        return GT_Utility.isArrayEmptyOrNull(outputs) ? noItemInputs() : invalidate();
+        return GT_Utility.isArrayEmptyOrNull(outputs) ? this : invalidate();
     }
 
     /**
@@ -561,7 +587,7 @@ public class GT_RecipeBuilder {
      * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
      */
     public GT_RecipeBuilder validateNoOutputFluid() {
-        return GT_Utility.isArrayEmptyOrNull(fluidOutputs) ? noFluidOutputs() : invalidate();
+        return GT_Utility.isArrayEmptyOrNull(fluidOutputs) ? this : invalidate();
     }
 
     /**
@@ -569,7 +595,7 @@ public class GT_RecipeBuilder {
      * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
      */
     public GT_RecipeBuilder validateInputCount(int min, int max) {
-        if (inputsBasic == null) return min < 0 ? noItemInputs() : invalidate();
+        if (inputsBasic == null) return min < 0 ? this : invalidate();
         return isArrayValid(inputsBasic, min, max) ? this : invalidate();
     }
 
@@ -578,7 +604,7 @@ public class GT_RecipeBuilder {
      * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
      */
     public GT_RecipeBuilder validateInputFluidCount(int min, int max) {
-        if (fluidInputs == null) return min < 0 ? noItemInputs() : invalidate();
+        if (fluidInputs == null) return min < 0 ? this : invalidate();
         return isArrayValid(fluidInputs, min, max) ? this : invalidate();
     }
 
@@ -587,7 +613,7 @@ public class GT_RecipeBuilder {
      * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
      */
     public GT_RecipeBuilder validateOutputCount(int min, int max) {
-        if (outputs == null) return min < 0 ? noItemInputs() : invalidate();
+        if (outputs == null) return min < 0 ? this : invalidate();
         return isArrayValid(outputs, min, max) ? this : invalidate();
     }
 
@@ -596,29 +622,31 @@ public class GT_RecipeBuilder {
      * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
      */
     public GT_RecipeBuilder validateOutputFluidCount(int min, int max) {
-        if (fluidOutputs == null) return min < 0 ? noItemInputs() : invalidate();
+        if (fluidOutputs == null) return min < 0 ? this : invalidate();
         return isArrayValid(fluidOutputs, min, max) ? this : invalidate();
     }
 
     public GT_RecipeBuilder validateAnyInput() {
         if (fluidInputs != null && isArrayValid(fluidInputs, 1, Integer.MAX_VALUE)) {
-            return inputsBasic == null ? noItemInputs() : this;
+            return this;
         }
         if (inputsBasic != null && isArrayValid(inputsBasic, 1, Integer.MAX_VALUE)) {
-            return fluidInputs == null ? noFluidInputs() : this;
+            return this;
         }
         return invalidate();
     }
 
     public GT_RecipeBuilder validateAnyOutput() {
         if (fluidOutputs != null && isArrayValid(fluidOutputs, 1, Integer.MAX_VALUE)) {
-            return outputs == null ? noItemOutputs() : this;
+            return this;
         }
         if (outputs != null && isArrayValid(outputs, 1, Integer.MAX_VALUE)) {
-            return fluidOutputs == null ? noFluidOutputs() : this;
+            return this;
         }
         return invalidate();
     }
+
+    // endregion
 
     public Optional<GT_Recipe> build() {
         if (!valid) {
@@ -684,10 +712,6 @@ public class GT_RecipeBuilder {
     }
 
     private void preBuildChecks() {
-        if (inputsBasic == null) throw new IllegalStateException("no itemInputs");
-        if (outputs == null) throw new IllegalStateException("no itemOutputs");
-        if (fluidInputs == null) throw new IllegalStateException("no fluidInputs");
-        if (fluidOutputs == null) throw new IllegalStateException("no fluidOutputs");
         if (duration == -1) throw new IllegalStateException("no duration");
         if (eut == -1) throw new IllegalStateException("no eut");
     }
