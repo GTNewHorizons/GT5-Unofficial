@@ -2323,8 +2323,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                                 .get(),
                             b.fluidInputs(in)
                                 .fluidOutputs(out)
-                                .noItemInputs()
-                                .noItemOutputs()
                                 .build()
                                 .get());
                     }

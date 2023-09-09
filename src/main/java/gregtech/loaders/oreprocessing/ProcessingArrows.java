@@ -38,7 +38,6 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
             .itemInputs(GT_Utility.copyAmount(1L, aStack))
             .itemOutputs(tOutput)
             .fluidInputs(Materials.HolyWater.getFluid(25L))
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(sChemicalBathRecipes);
@@ -54,7 +53,6 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
             .itemInputs(GT_Utility.copyAmount(1L, aStack))
             .itemOutputs(tOutput)
             .fluidInputs(Materials.FierySteel.getFluid(25L))
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(sChemicalBathRecipes);
@@ -70,7 +68,6 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
             .itemInputs(GT_Utility.copyAmount(1L, aStack))
             .itemOutputs(tOutput)
             .fluidInputs(Materials.Blaze.getMolten(18L))
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(sChemicalBathRecipes);
@@ -86,7 +83,6 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
             .itemInputs(GT_Utility.copyAmount(1L, aStack))
             .itemOutputs(tOutput)
             .fluidInputs(Materials.Rubber.getMolten(18L))
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(sChemicalBathRecipes);
@@ -103,7 +99,6 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
             .itemInputs(GT_Utility.copyAmount(1L, aStack))
             .itemOutputs(tOutput)
             .fluidInputs(Materials.Mercury.getFluid(25L))
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(sChemicalBathRecipes);

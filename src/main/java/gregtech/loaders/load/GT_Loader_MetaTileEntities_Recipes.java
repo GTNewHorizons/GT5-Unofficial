@@ -7302,7 +7302,6 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(ItemList.Machine_Multi_Cleanroom.get(1L))
                 .fluidInputs(Materials.StainlessSteel.getMolten(864L))
-                .noFluidOutputs()
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(sAssemblerRecipes);
@@ -7489,8 +7488,6 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 ItemList.Electric_Pump_EV.get(1L),
                 GT_Utility.getIntegratedCircuit(5))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Ultimate, 1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(sAssemblerRecipes);
@@ -7500,8 +7497,6 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 ItemList.Electric_Pump_IV.get(1L),
                 GT_Utility.getIntegratedCircuit(5))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Ultimate, 1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(20 * SECONDS)
             .eut(4096)
             .addTo(sAssemblerRecipes);
@@ -7511,8 +7506,6 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 ItemList.Electric_Pump_IV.get(2L),
                 GT_Utility.getIntegratedCircuit(5))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Ultimate, 1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(sAssemblerRecipes);

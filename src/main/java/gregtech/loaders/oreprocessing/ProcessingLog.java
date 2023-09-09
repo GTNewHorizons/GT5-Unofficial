@@ -45,7 +45,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
                 .outputChances(5000, 3750, 2500, 2500)
-                .noFluidInputs()
                 .fluidOutputs(Materials.Methane.getGas(60L))
                 .duration(10 * SECONDS)
                 .eut(20)
@@ -54,8 +53,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(1L, aStack))
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(15 * SECONDS)
                 .eut(2)
                 .addTo(sExtractorRecipes);
@@ -64,16 +61,12 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                 .itemInputs(GT_Utility.copyAmount(1L, aStack))
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L), ItemList.IC2_Resin.get(1L))
                 .outputChances(10000, 3300)
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(sMaceratorRecipes);
         } else {
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1))
-                .noItemOutputs()
-                .noFluidInputs()
                 .fluidOutputs(Materials.Methane.getGas(60L))
                 .duration(10 * SECONDS)
                 .eut(20)
@@ -85,8 +78,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
                 .outputChances(10000, 8000)
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(sMaceratorRecipes);
@@ -103,8 +94,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             .itemOutputs(
                 GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 4L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(8 * SECONDS)
             .eut(7)
             .addTo(sLatheRecipes);
@@ -113,7 +102,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(2))
             .itemOutputs(ItemList.FR_Stick.get(1L))
             .fluidInputs(Materials.SeedOil.getFluid(50L))
-            .noFluidOutputs()
             .duration(16 * TICKS)
             .eut(7)
             .addTo(sAssemblerRecipes);
@@ -122,7 +110,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             .itemInputs(GT_Utility.copyAmount(8L, aStack), GT_Utility.getIntegratedCircuit(8))
             .itemOutputs(ItemList.FR_Casing_Impregnated.get(1L))
             .fluidInputs(Materials.SeedOil.getFluid(250L))
-            .noFluidOutputs()
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16)
             .addTo(sAssemblerRecipes);
@@ -131,7 +118,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             .itemInputs(GT_Utility.copyAmount(1L, aStack))
             .itemOutputs(GT_ModHandler.getModItem(Railcraft.ID, "cube", 1L, 8))
             .fluidInputs(Materials.Creosote.getFluid(750L))
-            .noFluidOutputs()
             .duration(16 * TICKS)
             .eut(TierEU.ULV)
             .addTo(sChemicalBathRecipes);
@@ -173,7 +159,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                                 GT_Utility.copyOrNull(tPlanks),
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
                             .fluidInputs(Materials.Lubricant.getFluid(1L))
-                            .noFluidOutputs()
                             .duration(10 * SECONDS)
                             .eut(8)
                             .addTo(sCutterRecipes);
@@ -186,7 +171,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                                     tStack),
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                             .fluidInputs(Materials.Water.getFluid(Math.min(1000, 200 * 8 / 320)))
-                            .noFluidOutputs()
                             .duration(20 * SECONDS)
                             .eut(8)
                             .addTo(sCutterRecipes);
@@ -199,7 +183,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                                     tStack),
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                             .fluidInputs(GT_ModHandler.getDistilledWater(3))
-                            .noFluidOutputs()
                             .duration(20 * SECONDS)
                             .eut(8)
                             .addTo(sCutterRecipes);
@@ -212,7 +195,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                                     tStack),
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                             .fluidInputs(Materials.Lubricant.getFluid(1))
-                            .noFluidOutputs()
                             .duration(10 * SECONDS)
                             .eut(8)
                             .addTo(sCutterRecipes);
@@ -258,7 +240,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             GT_Utility.copyOrNull(tPlanks),
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
                         .fluidInputs(Materials.Lubricant.getFluid(1L))
-                        .noFluidOutputs()
                         .duration(10 * SECONDS)
                         .eut(8)
                         .addTo(sCutterRecipes);
@@ -270,7 +251,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                                 tStack),
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                         .fluidInputs(Materials.Water.getFluid(Math.min(1000, 200 * 8 / 320)))
-                        .noFluidOutputs()
                         .duration(20 * SECONDS)
                         .eut(8)
                         .addTo(sCutterRecipes);
@@ -282,7 +262,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                                 tStack),
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                         .fluidInputs(GT_ModHandler.getDistilledWater(3))
-                        .noFluidOutputs()
                         .duration(20 * SECONDS)
                         .eut(8)
                         .addTo(sCutterRecipes);
@@ -294,7 +273,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                                 tStack),
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                         .fluidInputs(Materials.Lubricant.getFluid(1))
-                        .noFluidOutputs()
                         .duration(10 * SECONDS)
                         .eut(8)
                         .addTo(sCutterRecipes);
@@ -329,7 +307,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(Materials.Charcoal.getGems(20))
-            .noFluidInputs()
             .fluidOutputs(Materials.Creosote.getFluid(4000))
             .duration(32 * SECONDS)
             .eut(64)
@@ -347,7 +324,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(Materials.Charcoal.getGems(20))
-            .noFluidInputs()
             .fluidOutputs(Materials.CharcoalByproducts.getGas(4000))
             .duration(32 * SECONDS)
             .eut(64)
@@ -365,7 +341,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(5))
             .itemOutputs(Materials.Charcoal.getGems(20))
-            .noFluidInputs()
             .fluidOutputs(Materials.WoodGas.getGas(1500))
             .duration(32 * SECONDS)
             .eut(64)
@@ -383,7 +358,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(7))
             .itemOutputs(Materials.Charcoal.getGems(20))
-            .noFluidInputs()
             .fluidOutputs(Materials.WoodVinegar.getFluid(3000))
             .duration(32 * SECONDS)
             .eut(64)
@@ -401,7 +375,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(9))
             .itemOutputs(Materials.Charcoal.getGems(20))
-            .noFluidInputs()
             .fluidOutputs(Materials.WoodTar.getFluid(1500))
             .duration(32 * SECONDS)
             .eut(64)
@@ -419,7 +392,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(16L, logStack), GT_Utility.getIntegratedCircuit(11))
             .itemOutputs(Materials.Ash.getDust(4))
-            .noFluidInputs()
             .fluidOutputs(Materials.OilHeavy.getFluid(200))
             .duration(16 * SECONDS)
             .eut(192)

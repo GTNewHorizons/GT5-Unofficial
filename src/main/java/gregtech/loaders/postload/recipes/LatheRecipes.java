@@ -24,8 +24,6 @@ public class LatheRecipes implements Runnable {
             .itemOutputs(
                 new ItemStack(Items.bowl, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 1))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(8)
             .addTo(sLatheRecipes);
@@ -35,8 +33,6 @@ public class LatheRecipes implements Runnable {
             .itemOutputs(
                 new ItemStack(Items.bowl, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 1))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(8)
             .addTo(sLatheRecipes);

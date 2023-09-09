@@ -14,8 +14,6 @@ public class LaserEngraverRecipes implements Runnable {
     public void run() {
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
-            .noItemOutputs()
             .fluidInputs(MaterialsUEVplus.DimensionallyTranscendentCrudeCatalyst.getFluid(1000))
             .fluidOutputs(MaterialsUEVplus.ExcitedDTCC.getFluid(1000))
             .requiresCleanRoom()
@@ -25,8 +23,6 @@ public class LaserEngraverRecipes implements Runnable {
             .addTo(sLaserEngraverRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
-            .noItemOutputs()
             .fluidInputs(MaterialsUEVplus.DimensionallyTranscendentProsaicCatalyst.getFluid(1000))
             .fluidOutputs(MaterialsUEVplus.ExcitedDTPC.getFluid(1000))
             .requiresCleanRoom()
@@ -36,8 +32,6 @@ public class LaserEngraverRecipes implements Runnable {
             .addTo(sLaserEngraverRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
-            .noItemOutputs()
             .fluidInputs(MaterialsUEVplus.DimensionallyTranscendentResplendentCatalyst.getFluid(1000))
             .fluidOutputs(MaterialsUEVplus.ExcitedDTRC.getFluid(1000))
             .requiresCleanRoom()
@@ -47,8 +41,6 @@ public class LaserEngraverRecipes implements Runnable {
             .addTo(sLaserEngraverRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
-            .noItemOutputs()
             .fluidInputs(MaterialsUEVplus.DimensionallyTranscendentExoticCatalyst.getFluid(1000))
             .fluidOutputs(MaterialsUEVplus.ExcitedDTEC.getFluid(1000))
             .requiresCleanRoom()
@@ -58,8 +50,6 @@ public class LaserEngraverRecipes implements Runnable {
             .addTo(sLaserEngraverRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
-            .noItemOutputs()
             .fluidInputs(MaterialsUEVplus.DimensionallyTranscendentStellarCatalyst.getFluid(1000))
             .fluidOutputs(MaterialsUEVplus.ExcitedDTSC.getFluid(1000))
             .requiresCleanRoom()

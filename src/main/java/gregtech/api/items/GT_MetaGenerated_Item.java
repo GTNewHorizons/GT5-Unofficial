@@ -151,8 +151,6 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
                                     ((IFoodStat) tRandomData).isRotten(this, rStack, null)
                                         ? ItemList.IC2_Food_Can_Spoiled.get(tFoodValue)
                                         : ItemList.IC2_Food_Can_Filled.get(tFoodValue))
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .duration(tFoodValue * 5 * SECONDS)
                                 .eut(1)
                                 .addTo(sCannerRecipes);

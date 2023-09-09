@@ -48,12 +48,8 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         if (GT_Utility.getFluidForFilledItem(aStack, true) == null
                             && GT_Utility.getContainerItem(aStack, true) != null) {
                             recipeBuilder.itemOutputs(GT_Utility.getContainerItem(aStack, true));
-                        } else {
-                            recipeBuilder.noItemOutputs();
                         }
-                        recipeBuilder.noFluidInputs()
-                            .noFluidOutputs()
-                            .metadata(FUEL_VALUE, aMaterial.mFuelPower)
+                        recipeBuilder.metadata(FUEL_VALUE, aMaterial.mFuelPower)
                             .metadata(FUEL_TYPE, aMaterial.mFuelType)
                             .duration(0)
                             .eut(0)
@@ -130,8 +126,6 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                         ItemStack[] outputsArray = tList
                                             .toArray(new ItemStack[Math.min(tList.size(), 6)]);
                                         recipeBuilder.itemOutputs(outputsArray)
-                                            .noFluidInputs()
-                                            .noFluidOutputs()
                                             .duration(Math.max(1L, Math.abs(aMaterial.getProtons() * 2L * tItemAmount)))
                                             .eut(Math.min(4, tList.size()) * 30)
                                             .addTo(sElectrolyzerRecipes);
@@ -149,8 +143,6 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                         ItemStack[] outputsArray = tList
                                             .toArray(new ItemStack[Math.min(tList.size(), 6)]);
                                         recipeBuilder.itemOutputs(outputsArray)
-                                            .noFluidInputs()
-                                            .noFluidOutputs()
                                             .duration(Math.max(1L, Math.abs(aMaterial.getProtons() * 8L * tItemAmount)))
                                             .eut(Math.min(4, tList.size()) * 30)
                                             .addTo(sElectrolyzerRecipes);
@@ -171,8 +163,6 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                 }
                                 ItemStack[] outputsArray = tList.toArray(new ItemStack[Math.min(tList.size(), 6)]);
                                 recipeBuilder.itemOutputs(outputsArray)
-                                    .noFluidInputs()
-                                    .noFluidOutputs()
                                     .duration(Math.max(1L, Math.abs(aMaterial.getMass() * 2L * tItemAmount)))
                                     .eut(5)
                                     .addTo(sCentrifugeRecipes);
@@ -190,24 +180,18 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                     if (GT_Utility.getFluidForFilledItem(aStack, true) == null
                         && GT_Utility.getContainerItem(aStack, true) != null) {
                         recipeBuilder.itemOutputs(GT_Utility.getContainerItem(aStack, true));
-                    } else {
-                        recipeBuilder.noItemOutputs();
                     }
                     // Switch case to set manual values for specific plasmas and escape the formula based on mass
                     // when it doesn't make sense for powergen balance.
                     switch (aMaterial.mName) {
                         case "Tin":
-                            recipeBuilder.noFluidInputs()
-                                .noFluidOutputs()
-                                .metadata(FUEL_VALUE, 150_000)
+                            recipeBuilder.metadata(FUEL_VALUE, 150_000)
                                 .metadata(FUEL_TYPE, 4)
                                 .duration(0)
                                 .eut(0)
                                 .addTo(GT_RecipeConstants.Fuel);
                         default:
-                            recipeBuilder.noFluidInputs()
-                                .noFluidOutputs()
-                                .metadata(FUEL_VALUE, (int) Math.max(1024L, 1024L * aMaterial.getMass()))
+                            recipeBuilder.metadata(FUEL_VALUE, (int) Math.max(1024L, 1024L * aMaterial.getMass()))
                                 .metadata(FUEL_TYPE, 4)
                                 .duration(0)
                                 .eut(0)
@@ -217,8 +201,6 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(1L, aStack))
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L))
-                            .noFluidInputs()
-                            .noFluidOutputs()
                             .duration(((int) Math.max(aMaterial.getMass() * 2L, 1L)) * TICKS)
                             .eut(TierEU.RECIPE_MV)
                             .addTo(sVacuumRecipes);

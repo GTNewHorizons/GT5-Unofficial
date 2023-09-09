@@ -33,8 +33,6 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
             GT_Values.RA.stdBuilder()
                 .itemInputs(gregtech.api.util.GT_Utility.copyAmount(8L, aStack))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(15 * SECONDS)
                 .eut(2)
                 .addTo(sCompressorRecipes);
@@ -54,7 +52,6 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                 for (Fluid tFluid : waterArray) {
                     GT_Values.RA.stdBuilder()
                         .itemInputs(aStack)
-                        .noItemOutputs()
                         .fluidInputs(new FluidStack(tFluid, 750))
                         .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.tea"), 750))
                         .duration(6 * SECONDS + 8 * TICKS)
@@ -66,7 +63,6 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                 for (Fluid tFluid : waterArray) {
                     GT_Values.RA.stdBuilder()
                         .itemInputs(aStack)
-                        .noItemOutputs()
                         .fluidInputs(new FluidStack(tFluid, 750))
                         .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.grapejuice"), 750))
                         .duration(6 * SECONDS + 8 * TICKS)
@@ -77,16 +73,12 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
             case "cropChilipepper" -> GT_Values.RA.stdBuilder()
                 .itemInputs(aStack)
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chili, 1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(sMaceratorRecipes);
             case "cropCoffee" -> GT_Values.RA.stdBuilder()
                 .itemInputs(aStack)
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coffee, 1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(sMaceratorRecipes);
@@ -94,8 +86,6 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                 GT_Values.RA.stdBuilder()
                     .itemInputs(aStack, ItemList.Shape_Slicer_Flat.get(0))
                     .itemOutputs(ItemList.Food_Raw_PotatoChips.get(1L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
                     .duration(3 * SECONDS + 4 * TICKS)
                     .eut(4)
                     .addTo(sSlicerRecipes);
@@ -103,8 +93,6 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                 GT_Values.RA.stdBuilder()
                     .itemInputs(aStack, ItemList.Shape_Slicer_Stripes.get(0L))
                     .itemOutputs(ItemList.Food_Raw_Fries.get(1L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
                     .duration(3 * SECONDS + 4 * TICKS)
                     .eut(4)
                     .addTo(sSlicerRecipes);
@@ -112,7 +100,6 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                 for (Fluid tFluid : waterArray) {
                     GT_Values.RA.stdBuilder()
                         .itemInputs(aStack)
-                        .noItemOutputs()
                         .fluidInputs(new FluidStack(tFluid, 750))
                         .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.potatojuice"), 750))
                         .duration(6 * SECONDS + 8 * TICKS)
@@ -124,8 +111,6 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                 GT_Values.RA.stdBuilder()
                     .itemInputs(aStack, ItemList.Shape_Slicer_Flat.get(0))
                     .itemOutputs(ItemList.Food_Sliced_Lemon.get(4L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
                     .duration(3 * SECONDS + 4 * TICKS)
                     .eut(4)
                     .addTo(sSlicerRecipes);
@@ -133,7 +118,6 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                 for (Fluid tFluid : waterArray) {
                     GT_Values.RA.stdBuilder()
                         .itemInputs(aStack)
-                        .noItemOutputs()
                         .fluidInputs(new FluidStack(tFluid, 750))
                         .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.lemonjuice"), 750))
                         .duration(6 * SECONDS + 8 * TICKS)
@@ -143,7 +127,6 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(aStack)
-                    .noItemOutputs()
                     .fluidInputs(new FluidStack(FluidRegistry.getFluid("potion.vodka"), 750))
                     .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.leninade"), 750))
                     .duration(6 * SECONDS + 8 * TICKS)
@@ -153,24 +136,18 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
             case "cropTomato" -> GT_Values.RA.stdBuilder()
                 .itemInputs(aStack, ItemList.Shape_Slicer_Flat.get(0))
                 .itemOutputs(ItemList.Food_Sliced_Tomato.get(4L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(3 * SECONDS + 4 * TICKS)
                 .eut(4)
                 .addTo(sSlicerRecipes);
             case "cropCucumber" -> GT_Values.RA.stdBuilder()
                 .itemInputs(aStack, ItemList.Shape_Slicer_Flat.get(0))
                 .itemOutputs(ItemList.Food_Sliced_Cucumber.get(4L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(3 * SECONDS + 4 * TICKS)
                 .eut(4)
                 .addTo(sSlicerRecipes);
             case "cropOnion" -> GT_Values.RA.stdBuilder()
                 .itemInputs(aStack, ItemList.Shape_Slicer_Flat.get(0))
                 .itemOutputs(ItemList.Food_Sliced_Onion.get(4L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(3 * SECONDS + 4 * TICKS)
                 .eut(4)
                 .addTo(sSlicerRecipes);

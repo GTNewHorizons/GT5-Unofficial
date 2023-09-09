@@ -60,7 +60,6 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, LuVMat, 64),
                     GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 2))
                 .fluidInputs(new FluidStack(solderIndalloy, 144), Materials.Lubricant.getFluid(250))
-                .noFluidOutputs()
                 .itemOutputs(ItemList.Electric_Motor_LuV.get(1))
                 .eut(TierEU.RECIPE_IV)
                 .duration(30 * SECONDS)
@@ -80,7 +79,6 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64),
                     GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 2))
                 .fluidInputs(new FluidStack(solderIndalloy, 288), Materials.Lubricant.getFluid(750))
-                .noFluidOutputs()
                 .itemOutputs(ItemList.Electric_Motor_ZPM.get(1))
                 .eut(TierEU.RECIPE_LuV)
                 .duration(30 * SECONDS)
@@ -106,7 +104,6 @@ public class AssemblyLineRecipes implements Runnable {
                     Materials.Naquadria.getMolten(1296),
                     new FluidStack(solderIndalloy, 1296),
                     Materials.Lubricant.getFluid(2000))
-                .noFluidOutputs()
                 .itemOutputs(ItemList.Electric_Motor_UV.get(1))
                 .eut(TierEU.RECIPE_ZPM)
                 .duration(30 * SECONDS)
@@ -128,7 +125,6 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.HSSS, 2),
                     GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 2))
                 .fluidInputs(new FluidStack(solderIndalloy, 144), Materials.Lubricant.getFluid(250))
-                .noFluidOutputs()
                 .itemOutputs(ItemList.Electric_Pump_LuV.get(1))
                 .eut(TierEU.RECIPE_IV)
                 .duration(600)
@@ -147,7 +143,6 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.NaquadahAlloy, 2),
                     GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 2))
                 .fluidInputs(new FluidStack(solderIndalloy, 288), Materials.Lubricant.getFluid(750))
-                .noFluidOutputs()
                 .itemOutputs(ItemList.Electric_Pump_ZPM.get(1))
                 .eut(TierEU.RECIPE_LuV)
                 .duration(30 * SECONDS)
@@ -170,7 +165,6 @@ public class AssemblyLineRecipes implements Runnable {
                     Materials.Naquadria.getMolten(1296),
                     new FluidStack(solderIndalloy, 1296),
                     Materials.Lubricant.getFluid(2000))
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -191,7 +185,6 @@ public class AssemblyLineRecipes implements Runnable {
                     new Object[] { OrePrefixes.plate.get(Materials.AnySyntheticRubber), 10 })
                 .itemOutputs(ItemList.Conveyor_Module_LuV.get(1))
                 .fluidInputs(new FluidStack(solderIndalloy, 144), Materials.Lubricant.getFluid(250))
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_IV)
                 .addTo(AssemblyLine);
@@ -209,7 +202,6 @@ public class AssemblyLineRecipes implements Runnable {
                     new Object[] { OrePrefixes.plate.get(Materials.AnySyntheticRubber), 20 })
                 .itemOutputs(ItemList.Conveyor_Module_ZPM.get(1))
                 .fluidInputs(new FluidStack(solderIndalloy, 288), Materials.Lubricant.getFluid(750))
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
@@ -230,7 +222,6 @@ public class AssemblyLineRecipes implements Runnable {
                     Materials.Naquadria.getMolten(1296),
                     new FluidStack(solderIndalloy, 1296),
                     Materials.Lubricant.getFluid(2000))
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -253,7 +244,6 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 4))
                 .itemOutputs(ItemList.Electric_Piston_LuV.get(1))
                 .fluidInputs(new FluidStack(solderIndalloy, 144), Materials.Lubricant.getFluid(250))
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_IV)
                 .addTo(AssemblyLine);
@@ -273,7 +263,6 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 4))
                 .itemOutputs(ItemList.Electric_Piston_ZPM.get(1))
                 .fluidInputs(new FluidStack(solderIndalloy, 288), Materials.Lubricant.getFluid(750))
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
@@ -296,7 +285,6 @@ public class AssemblyLineRecipes implements Runnable {
                     Materials.Naquadria.getMolten(1296),
                     new FluidStack(solderIndalloy, 1296),
                     Materials.Lubricant.getFluid(2000))
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -320,7 +308,6 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 6))
                 .itemOutputs(ItemList.Robot_Arm_LuV.get(1))
                 .fluidInputs(new FluidStack(solderIndalloy, 576), Materials.Lubricant.getFluid(250))
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_IV)
                 .addTo(AssemblyLine);
@@ -341,7 +328,6 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 6))
                 .itemOutputs(ItemList.Robot_Arm_ZPM.get(1))
                 .fluidInputs(new FluidStack(solderIndalloy, 1152), Materials.Lubricant.getFluid(750))
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
@@ -365,7 +351,6 @@ public class AssemblyLineRecipes implements Runnable {
                     Materials.Naquadria.getMolten(1296),
                     new FluidStack(solderIndalloy, 2304),
                     Materials.Lubricant.getFluid(2000))
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -389,7 +374,6 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 7))
                 .itemOutputs(ItemList.Emitter_LuV.get(1))
                 .fluidInputs(new FluidStack(solderIndalloy, 576))
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_IV)
                 .addTo(AssemblyLine);
@@ -410,7 +394,6 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 7))
                 .itemOutputs(ItemList.Emitter_ZPM.get(1))
                 .fluidInputs(new FluidStack(solderIndalloy, 1152))
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
@@ -431,7 +414,6 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NaquadahAlloy, 7))
                 .itemOutputs(ItemList.Emitter_UV.get(1))
                 .fluidInputs(Materials.Naquadria.getMolten(1296), new FluidStack(solderIndalloy, 2304))
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -455,7 +437,6 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 7))
                 .itemOutputs(ItemList.Sensor_LuV.get(1))
                 .fluidInputs(new FluidStack(solderIndalloy, 576))
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_IV)
                 .addTo(AssemblyLine);
@@ -476,7 +457,6 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 7))
                 .itemOutputs(ItemList.Sensor_ZPM.get(1))
                 .fluidInputs(new FluidStack(solderIndalloy, 1152))
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
@@ -497,7 +477,6 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NaquadahAlloy, 7))
                 .itemOutputs(ItemList.Sensor_UV.get(1))
                 .fluidInputs(Materials.Naquadria.getMolten(1296), new FluidStack(solderIndalloy, 2304))
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -522,7 +501,6 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 8))
                 .itemOutputs(ItemList.Field_Generator_LuV.get(1))
                 .fluidInputs(new FluidStack(solderIndalloy, 576))
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_IV)
                 .addTo(AssemblyLine);
@@ -544,7 +522,6 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 8))
                 .itemOutputs(ItemList.Field_Generator_ZPM.get(1))
                 .fluidInputs(new FluidStack(solderIndalloy, 1152))
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
@@ -568,7 +545,6 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NaquadahAlloy, 8))
                 .itemOutputs(ItemList.Field_Generator_UV.get(1))
                 .fluidInputs(Materials.Naquadria.getMolten(1296), new FluidStack(solderIndalloy, 2304))
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -595,7 +571,6 @@ public class AssemblyLineRecipes implements Runnable {
                 .fluidInputs(
                     new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
                     new FluidStack(solderIndalloy, 720))
-                .noFluidOutputs()
                 .duration(20 * SECONDS)
                 .eut((int) TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
@@ -619,7 +594,6 @@ public class AssemblyLineRecipes implements Runnable {
                 .fluidInputs(
                     new FluidStack(FluidRegistry.getFluid("ic2coolant"), 4000),
                     new FluidStack(solderIndalloy, 1440))
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -647,7 +621,6 @@ public class AssemblyLineRecipes implements Runnable {
                 .fluidInputs(
                     new FluidStack(FluidRegistry.getFluid("ic2coolant"), 8000),
                     new FluidStack(solderIndalloy, 2880))
-                .noFluidOutputs()
                 .duration(40 * SECONDS)
                 .eut((int) TierEU.RECIPE_UV)
                 .addTo(AssemblyLine);
@@ -677,7 +650,6 @@ public class AssemblyLineRecipes implements Runnable {
                 .fluidInputs(
                     new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
                     new FluidStack(solderIndalloy, 720))
-                .noFluidOutputs()
                 .duration(20 * SECONDS)
                 .eut((int) TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
@@ -701,7 +673,6 @@ public class AssemblyLineRecipes implements Runnable {
                 .fluidInputs(
                     new FluidStack(FluidRegistry.getFluid("ic2coolant"), 4000),
                     new FluidStack(solderIndalloy, 1440))
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -729,7 +700,6 @@ public class AssemblyLineRecipes implements Runnable {
                 .fluidInputs(
                     new FluidStack(FluidRegistry.getFluid("ic2coolant"), 8000),
                     new FluidStack(solderIndalloy, 2880))
-                .noFluidOutputs()
                 .duration(40 * SECONDS)
                 .eut((int) TierEU.RECIPE_UV)
                 .addTo(AssemblyLine);
@@ -754,7 +724,6 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 32))
                 .itemOutputs(ItemList.FusionComputer_LuV.get(1))
                 .fluidInputs(new FluidStack(solderIndalloy, 2880), Materials.VanadiumGallium.getMolten(1152))
-                .noFluidOutputs()
                 .duration(50 * SECONDS)
                 .eut((int) TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
@@ -775,7 +744,6 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorZPM, 32))
                 .itemOutputs(ItemList.FusionComputer_ZPMV.get(1))
                 .fluidInputs(new FluidStack(solderIndalloy, 2880), Materials.NiobiumTitanium.getMolten(1152))
-                .noFluidOutputs()
                 .duration(50 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
@@ -796,7 +764,6 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 32))
                 .itemOutputs(ItemList.FusionComputer_UV.get(1))
                 .fluidInputs(new FluidStack(solderIndalloy, 2880), Materials.ElectrumFlux.getMolten(1152))
-                .noFluidOutputs()
                 .duration(50 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -821,7 +788,6 @@ public class AssemblyLineRecipes implements Runnable {
             .fluidInputs(
                 new FluidStack(solderIndalloy, 2880),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000))
-            .noFluidOutputs()
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_ZPM)
             .addTo(AssemblyLine);
@@ -846,7 +812,6 @@ public class AssemblyLineRecipes implements Runnable {
             .fluidInputs(
                 new FluidStack(solderIndalloy, 2880),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000))
-            .noFluidOutputs()
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(200000)
             .addTo(AssemblyLine);
@@ -872,7 +837,6 @@ public class AssemblyLineRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Chrome, 16))
             .itemOutputs(ItemList.Ore_Processor.get(1))
             .fluidInputs(new FluidStack(solderIndalloy, 2880), Materials.Naquadria.getMolten(1440))
-            .noFluidOutputs()
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(AssemblyLine);
