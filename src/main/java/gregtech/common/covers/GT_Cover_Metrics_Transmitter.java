@@ -23,6 +23,7 @@ import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.covers.IPlayerAttachHandler;
+import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GT_CoverBehaviorBase;
@@ -37,6 +38,9 @@ import io.netty.buffer.ByteBuf;
 /**
  * Used to transmit Nuclear Control information across dimensions. The only reason this is a cover is to artificially
  * limit the number of total machines that transmit this data, for performance reasons.
+ * <p>
+ * This cover will retrieve information, preferentially, using {@link IMetricsExporter#reportMetrics()}. Absent this
+ * method, it will resort to {@link BaseMetaTileEntity#getInfoData()} instead.
  */
 public class GT_Cover_Metrics_Transmitter
     extends GT_CoverBehaviorBase<GT_Cover_Metrics_Transmitter.MetricsTransmitterData> implements IPlayerAttachHandler {
@@ -91,7 +95,11 @@ public class GT_Cover_Metrics_Transmitter
                     GT_Utility.formatNumbers(baseMTE.getXCoord()),
                     GT_Utility.formatNumbers(baseMTE.getYCoord()),
                     GT_Utility.formatNumbers(baseMTE.getZCoord())));
-            builder.add(baseMTE.getInfoData());
+            if (baseMTE.getMetaTileEntity() instanceof final IMetricsExporter metricsExporter) {
+                builder.addAll(metricsExporter.reportMetrics());
+            } else {
+                builder.add(baseMTE.getInfoData());
+            }
 
             MinecraftForge.EVENT_BUS.post(new MetricsCoverDataEvent(aCoverVariable.frequency, builder.build()));
         }

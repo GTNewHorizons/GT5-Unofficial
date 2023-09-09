@@ -46,6 +46,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.widgets.GT_LockedWhileActiveButton;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -56,7 +57,8 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 
-public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTileEntity_DrillerBase {
+public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTileEntity_DrillerBase
+    implements IMetricsExporter {
 
     private final List<ChunkPosition> oreBlockPositions = new ArrayList<>();
     protected int mTier = 1;
@@ -672,8 +674,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     @Override
     public String[] getInfoData() {
         final String diameter = GT_Utility.formatNumbers(chunkRadiusConfig * 2L);
-        final ImmutableList.Builder<String> builder = ImmutableList.builder();
-        builder.add(
+        return new String[] {
             EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.minermulti")
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
@@ -683,20 +684,29 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                 + diameter
                 + EnumChatFormatting.RESET
                 + " "
-                + StatCollector.translateToLocal("GT5U.machines.chunks"));
+                + StatCollector.translateToLocal("GT5U.machines.chunks") };
+    }
 
-        if (getBaseMetaTileEntity().isActive()) {
-            builder.add(
-                StatCollector
-                    .translateToLocalFormatted("GT5U.gui.text.drill_ores_left_chunk", oreBlockPositions.size()),
+    @Override
+    public @NotNull List<String> reportMetrics() {
+        return switch (workState) {
+            case STATE_AT_BOTTOM -> ImmutableList.of(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.gui.text.drill_ores_left_chunk",
+                    GT_Utility.formatNumbers(oreBlockPositions.size())),
                 StatCollector.translateToLocalFormatted(
                     "GT5U.gui.text.drill_chunks_left",
                     GT_Utility.formatNumbers(getChunkNumber()),
                     GT_Utility.formatNumbers(getTotalChunkCount())));
-        }
+            case STATE_DOWNWARD -> ImmutableList.of(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.gui.text.drill_ores_left_chunk",
+                    GT_Utility.formatNumbers(oreBlockPositions.size())));
+            case STATE_UPWARD -> ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.text.drill_exhausted"));
+            case STATE_ABORT -> ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.text.drill_retract_pipes_finished"));
 
-        return builder.build()
-            .toArray(new String[0]);
+            default -> ImmutableList.of();
+        };
     }
 
     public boolean supportsVoidProtection() {
