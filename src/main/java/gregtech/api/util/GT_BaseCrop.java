@@ -36,8 +36,8 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
     private int mMaxSize = 0;
     private int mAfterHarvestSize = 0;
     private int mHarvestSize = 0;
-    private int[] mStats = new int[5];
-    private int mGrowthSpeed = 0;
+    private final int[] mStats = new int[5];
+    private final int mGrowthSpeed = 0;
     private ItemStack mDrop = null;
     private ItemStack[] mSpecialDrops = null;
     private Materials mBlock = null;
@@ -215,7 +215,7 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
     @Override
     public boolean rightclick(ICropTile aCrop, EntityPlayer aPlayer) {
         if (!canBeHarvested(aCrop)) return false;
-        return aCrop.harvest(aPlayer == null ? false : aPlayer instanceof EntityPlayerMP);
+        return aCrop.harvest(aPlayer instanceof EntityPlayerMP);
     }
 
     @Override
@@ -237,11 +237,7 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
                     Materials tMaterial = GregTech_API.sGeneratedMaterials[(((GT_TileEntity_Ores) tTileEntity).mMetaData
                         % 1000)];
                     if ((tMaterial != null) && (tMaterial != Materials._NULL)) {
-                        if (tMaterial == mBlock) {
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return tMaterial == mBlock;
                     }
                 }
             } else {
@@ -257,18 +253,6 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
                     return true;
                 }
             }
-            // Block block = aCrop.getWorld().getBlock(aCrop.getLocation().posX, aCrop.getLocation().posY - i,
-            // aCrop.getLocation().posZ);
-            // if (block.isAir(aCrop.getWorld(), aCrop.getLocation().posX, aCrop.getLocation().posY - i,
-            // aCrop.getLocation().posZ)) {
-            // return false;
-            // }
-            // if (block == mBlock) {
-            // int tMeta = aCrop.getWorld().getBlockMetadata(aCrop.getLocation().posX, aCrop.getLocation().posY -
-            // i, aCrop.getLocation().posZ);
-            // if(mMeta < 0 || tMeta == mMeta){
-            // return true;}
-            // }
         }
         return false;
     }

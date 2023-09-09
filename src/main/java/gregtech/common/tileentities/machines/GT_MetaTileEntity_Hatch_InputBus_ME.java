@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -26,7 +28,12 @@ import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.*;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import appeng.api.config.Actionable;
@@ -64,7 +71,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
     private static final int SLOT_COUNT = 16;
     private BaseActionSource requestSource = null;
-    private AENetworkProxy gridProxy = null;
+    private @Nullable AENetworkProxy gridProxy = null;
     private final ItemStack[] shadowInventory = new ItemStack[SLOT_COUNT];
     private final int[] savedStackSizes = new int[SLOT_COUNT];
     private boolean processingRecipe = false;
@@ -168,7 +175,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         aNBT.setBoolean("autoStock", autoPullItemList);
         aNBT.setInteger("minAutoPullStackSize", minAutoPullStackSize);
         if (GregTech_API.mAE2) {
-            gridProxy.writeToNBT(aNBT);
+            getProxy().writeToNBT(aNBT);
         }
     }
 
@@ -250,7 +257,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         if (!(aPlayer instanceof EntityPlayerMP))
             return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, true, true))
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true))
             return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
         if (!dataStick.hasTagCompound() || !"stockingBus".equals(dataStick.stackTagCompound.getString("type")))
             return false;
@@ -277,7 +284,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         if (!(aPlayer instanceof EntityPlayerMP)) return;
 
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, true, true)) return;
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) return;
 
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("type", "stockingBus");
@@ -541,7 +548,10 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 .setPos(80, 10))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullItemList, this::setAutoPullItemList))
             .widget(
-                new SlotWidget(inventoryHandler, getManualSlot()).setBackground(getGUITextureSet().getItemSlot())
+                new SlotWidget(inventoryHandler, getManualSlot())
+                    // ghost slots are prioritized over manual slot
+                    .setShiftClickPriority(11)
+                    .setBackground(getGUITextureSet().getItemSlot())
                     .setPos(79, 45));
     }
 

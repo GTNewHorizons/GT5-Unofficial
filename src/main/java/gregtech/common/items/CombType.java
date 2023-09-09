@@ -206,17 +206,21 @@ public enum CombType {
     INDIUM(159, "indium", true, Materials.Indium, 100, 0x8F5D99, 0xFFA9FF, ItemComb.Voltage.ZPM),
     BLIZZ(160, "blizz", true, Materials.Blizz, 50, 0xFF99A5, 0x5af7ff, ItemComb.Voltage.MV),
     KEVLAR(161, "kevlar", true, Materials._NULL, 50, 0xa2baa3, 0x2d542f, ItemComb.Voltage.MV),
+    DRACONIC(162, "draconium", true, Materials.Draconium, 50, 0x161616, 0x6200e7, ItemComb.Voltage.MV),
+    AWAKENEDDRACONIUM(163, "awakeneddraconium", true, Materials.DraconiumAwakened, 50, 0xD41238, 0xFFA157,
+        ItemComb.Voltage.MV),
+    PALLADIUM(164, "palladium", true, Materials.Palladium, 50, 0x8B8B8B, 0xF1D9D9, ItemComb.Voltage.MV),
+    INFUSEDGOLD(165, "infusedgold", true, Materials.InfusedGold, 50, 0x80641E, 0xFFC83C, ItemComb.Voltage.IV),
 
     // ALWAYS KEEP _NULL AT THE BOTTOM
     _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);
 
     public boolean showInList;
-    public ItemComb.Voltage voltage;
-    public Materials material;
-    public int chance;
+    public final ItemComb.Voltage voltage;
+    public final Materials material;
+    public final int chance;
 
     private final int id;
-    private final String name;
     private final String localizedName;
     private final int[] color;
 
@@ -228,16 +232,16 @@ public enum CombType {
         ItemComb.Voltage voltage) {
         if (id < 0 && !"INVALIDCOMB".equals(pName)) throw new IllegalArgumentException();
         this.id = id;
-        this.name = pName;
         this.voltage = voltage;
         this.material = material;
         this.chance = chance;
         this.showInList = show;
         this.color = new int[] { color1, color2 };
         this.localizedName = GT_LanguageManager.addStringLocalization(
-            "comb." + this.name,
-            this.name.substring(0, 1)
-                .toUpperCase() + this.name.substring(1) + " Comb");
+            "comb." + pName,
+            pName.substring(0, 1)
+                .toUpperCase() + pName.substring(1)
+                + " Comb");
     }
 
     public void setHidden() {

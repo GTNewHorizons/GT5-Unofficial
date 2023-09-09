@@ -1,104 +1,170 @@
 package gregtech.api.util;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.PriorityQueue;
+import java.util.Objects;
+import java.util.function.Function;
 
-import net.minecraft.inventory.IInventory;
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.commons.lang3.tuple.MutableTriple;
-
-import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
-
-import gregtech.api.fluid.FluidTankGT;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.interfaces.tileentity.IRecipeLockable;
+import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.multitileentity.multiblock.base.Controller;
 import gregtech.api.objects.XSTR;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SingleRecipeCheck;
 
+@SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class GT_ParallelHelper {
 
+    private static final double MAX_BATCH_MODE_TICK_TIME = 128;
     /**
-     * @mMachineMeta a MetaTileEntity Controller
+     * Machine used for calculation
      */
-    private GT_MetaTileEntity_MultiBlockBase mMachineMeta;
+    private IVoidable machine;
     /**
-     * @mMachineMulti a MultiTileEntity Controller
+     * Machine used for single recipe locking calculation
      */
-    private Controller<?> mMachineMulti;
+    private IRecipeLockable singleRecipeMachine;
     /**
-     * @mRecipe Recipe used when trying to calculate parallels
+     * Is locked to a single recipe?
      */
-    private GT_Recipe mRecipe;
+    private boolean isRecipeLocked;
     /**
-     * @mAvailableEUt EUt available to the multiblock (This should be the total eut available)
+     * Recipe used when trying to calculate parallels
      */
-    private long mAvailableEUt;
+    private GT_Recipe recipe;
     /**
-     * @mCurrentParallel The current parallel possible for the multiblock
-     * @mMaxParallel The maximum possible parallel possible for the multiblock
-     * @mBatchModifier The Batch Modifier applied when batch mode is enabled. 1 does nothing. 2 doubles max possible
-     *                 parallel, but also duration
+     * EUt available to the multiblock (This should be the total eut available)
      */
-    private int mCurrentParallel = 0, mMaxParallel = 1, mBatchModifier = 1;
+    private long availableEUt;
     /**
-     * @mItemInputs The inputs of the multiblock for the current recipe check
-     * @mItemOutputs The outputs of the recipe with the applied parallel
+     * The current parallel possible for the multiblock
      */
-    private ItemStack[] mItemInputs, mItemOutputs;
+    private int currentParallel = 0;
     /**
-     * @mFluidInputs The inputs of the multiblock for the current recipe check
-     * @mFluidOutputs The outputs of the recipe with the applied parallel
+     * The maximum possible parallel possible for the multiblock
      */
-    private FluidStack[] mFluidInputs, mFluidOutputs;
+    private int maxParallel = 1;
     /**
-     * @mVoidProtection Does the multi have void protection enabled
-     * @mConsume Should the Parallel Helper automatically consume for the multi
-     * @mBatchMode Is batch mode turned on?
-     * @mCalculateOutputs Should the Parallel Helper automatically calculate the outputs of the recipe with current
-     *                    parallel
-     * @mBuilt Has the Parallel Helper been built?
+     * The Batch Modifier applied when batch mode is enabled. 1 does nothing. 2 doubles max possible
+     * parallel, but also duration
      */
-    private boolean mVoidProtection, mConsume, mBatchMode, mCalculateOutputs, mBuilt;
+    private int batchModifier = 1;
     /**
-     * @mDurationMultiplier What is the duration multiplier with batch mode enabled
-     * @mEUtModifier Modifier which is applied on the recipe eut. Useful for GT++ machines
+     * The inputs of the multiblock for the current recipe check
      */
-    private float mDurationMultiplier, mEUtModifier = 1;
+    private ItemStack[] itemInputs;
+    /**
+     * The outputs of the recipe with the applied parallel
+     */
+    private ItemStack[] itemOutputs;
+    /**
+     * The inputs of the multiblock for the current recipe check
+     */
+    private FluidStack[] fluidInputs;
+    /**
+     * The outputs of the recipe with the applied parallel
+     */
+    private FluidStack[] fluidOutputs;
+    /**
+     * Does the multi have void protection enabled for items
+     */
+    private boolean protectExcessItem;
+    /**
+     * Does the multi have void protection enabled for fluids
+     */
+    private boolean protectExcessFluid;
+    /**
+     * Should the Parallel Helper automatically consume for the multi
+     */
+    private boolean consume;
+    /**
+     * Is batch mode turned on?
+     */
+    private boolean batchMode;
+    /**
+     * Should the Parallel Helper automatically calculate the outputs of the recipe with current
+     * parallel
+     */
+    private boolean calculateOutputs;
+    /**
+     * Has the Parallel Helper been built?
+     */
+    private boolean built;
+    /**
+     * What is the duration multiplier with batch mode enabled
+     */
+    private double durationMultiplier;
+    /**
+     * Modifier which is applied on the recipe eut. Useful for GT++ machines
+     */
+    private float eutModifier = 1;
+
+    /**
+     * Calculator to use for overclocking
+     */
+    private GT_OverclockCalculator calculator;
+
+    private CheckRecipeResult result = CheckRecipeResultRegistry.NONE;
+
+    private Function<Integer, ItemStack[]> customItemOutputCalculation;
+
+    private Function<Integer, FluidStack[]> customFluidOutputCalculation;
 
     public GT_ParallelHelper() {}
 
     /**
-     * Enables void protection on a metatile multiblock. Experimental! Still needs to be worked on
+     * Sets MetaTE controller, with current configuration for void protection mode.
+     *
+     * @deprecated Use {@link #setMachine(IVoidable)}
      */
-    public GT_ParallelHelper enableVoidProtection(GT_MetaTileEntity_MultiBlockBase aMachineMeta) {
-        mVoidProtection = true;
-        mMachineMeta = aMachineMeta;
-        return this;
+    @Deprecated
+    public GT_ParallelHelper setController(GT_MetaTileEntity_MultiBlockBase machineMeta) {
+        return setMachine(machineMeta, machineMeta.protectsExcessItem(), machineMeta.protectsExcessFluid());
     }
 
     /**
-     * Enables void protection on a multitile multiblock. Experimental! Still needs to be worked on
+     * Sets MetaTE controller, with void protection mode forcibly.
+     *
+     * @deprecated Use {@link #setMachine(IVoidable, boolean, boolean)}
      */
-    public GT_ParallelHelper enableVoidProtection(Controller<?> aMachineMulti) {
-        mVoidProtection = true;
-        mMachineMulti = aMachineMulti;
+    @Deprecated
+    public GT_ParallelHelper setController(GT_MetaTileEntity_MultiBlockBase machineMeta, boolean protectExcessItem,
+        boolean protectExcessFluid) {
+        return setMachine(machineMeta, protectExcessItem, protectExcessFluid);
+    }
+
+    /**
+     * Sets machine, with current configuration for void protection mode.
+     */
+    public GT_ParallelHelper setMachine(IVoidable machine) {
+        return setMachine(machine, machine.protectsExcessItem(), machine.protectsExcessFluid());
+    }
+
+    /**
+     * Sets machine, with void protection mode forcibly.
+     */
+    public GT_ParallelHelper setMachine(IVoidable machine, boolean protectExcessItem, boolean protectExcessFluid) {
+        this.protectExcessItem = protectExcessItem;
+        this.protectExcessFluid = protectExcessFluid;
+        this.machine = machine;
         return this;
     }
 
     /**
      * Sets the recipe, which will be used for the parallel calculation
      */
-    public GT_ParallelHelper setRecipe(GT_Recipe aRecipe) {
-        mRecipe = aRecipe;
+    public GT_ParallelHelper setRecipe(@Nonnull GT_Recipe aRecipe) {
+        recipe = Objects.requireNonNull(aRecipe);
+        return this;
+    }
+
+    public GT_ParallelHelper setRecipeLocked(IRecipeLockable singleRecipeMachine, boolean isRecipeLocked) {
+        this.singleRecipeMachine = singleRecipeMachine;
+        this.isRecipeLocked = isRecipeLocked;
         return this;
     }
 
@@ -106,7 +172,7 @@ public class GT_ParallelHelper {
      * Sets the items available for the recipe check
      */
     public GT_ParallelHelper setItemInputs(ItemStack... aItemInputs) {
-        mItemInputs = aItemInputs;
+        this.itemInputs = aItemInputs;
         return this;
     }
 
@@ -114,7 +180,7 @@ public class GT_ParallelHelper {
      * Sets the fluid inputs available for the recipe check
      */
     public GT_ParallelHelper setFluidInputs(FluidStack... aFluidInputs) {
-        mFluidInputs = aFluidInputs;
+        this.fluidInputs = aFluidInputs;
         return this;
     }
 
@@ -122,7 +188,7 @@ public class GT_ParallelHelper {
      * Sets the available eut when trying for more parallels
      */
     public GT_ParallelHelper setAvailableEUt(long aAvailableEUt) {
-        mAvailableEUt = aAvailableEUt;
+        this.availableEUt = aAvailableEUt;
         return this;
     }
 
@@ -130,23 +196,38 @@ public class GT_ParallelHelper {
      * Sets the modifier for recipe eut. 1 does nothing 0.9 is 10% less. 1.1 is 10% more
      */
     public GT_ParallelHelper setEUtModifier(float aEUtModifier) {
-        mEUtModifier = aEUtModifier;
+        this.eutModifier = aEUtModifier;
+        return this;
+    }
+
+    public GT_ParallelHelper setCalculator(GT_OverclockCalculator calculator) {
+        this.calculator = calculator;
         return this;
     }
 
     /**
-     * Consume inputs when trying for parallels
+     * Use {@link #setConsumption(boolean)}
      */
+    @Deprecated
     public GT_ParallelHelper enableConsumption() {
-        mConsume = true;
+        return setConsumption(true);
+    }
+
+    /**
+     * Set if we should consume inputs or not when trying for parallels
+     *
+     * @param consume Should we consume inputs
+     */
+    public GT_ParallelHelper setConsumption(boolean consume) {
+        this.consume = consume;
         return this;
     }
 
     /**
      * Sets the MaxParallel a multi can handle
      */
-    public GT_ParallelHelper setMaxParallel(int aMaxParallel) {
-        mMaxParallel = aMaxParallel;
+    public GT_ParallelHelper setMaxParallel(int maxParallel) {
+        this.maxParallel = maxParallel;
         return this;
     }
 
@@ -154,18 +235,45 @@ public class GT_ParallelHelper {
      * Enables Batch mode. Can do up to an additional processed recipes of mCurrentParallel * mBatchModifier A batch
      * modifier of 1 does nothing
      */
-    public GT_ParallelHelper enableBatchMode(int aBatchModifier) {
-        mBatchMode = true;
-        mBatchModifier = aBatchModifier;
+    public GT_ParallelHelper enableBatchMode(int batchModifier) {
+        this.batchMode = batchModifier > 1;
+        this.batchModifier = batchModifier;
         return this;
     }
 
     /**
-     * Enables the outputs to be calculated with its current Parallels, useful if one isn't doing anything special with
-     * outputs
+     * Use {@link #setOutputCalculation(boolean)}
      */
+    @Deprecated
     public GT_ParallelHelper enableOutputCalculation() {
-        mCalculateOutputs = true;
+        return setOutputCalculation(true);
+    }
+
+    /**
+     * Sets if we should calculate outputs with the parallels we found or not
+     *
+     * @param calculateOutputs Should we calculate outputs with the helper or not
+     */
+    public GT_ParallelHelper setOutputCalculation(boolean calculateOutputs) {
+        this.calculateOutputs = calculateOutputs;
+        return this;
+    }
+
+    /**
+     * Set a custom way to calculate item outputs. You are given the amount of parallels and must return an ItemStack
+     * array
+     */
+    public GT_ParallelHelper setCustomItemOutputCalculation(Function<Integer, ItemStack[]> custom) {
+        customItemOutputCalculation = custom;
+        return this;
+    }
+
+    /**
+     * Set a custom way to calculate item outputs. You are given the amount of parallels and must return a FluidStack
+     * array
+     */
+    public GT_ParallelHelper setCustomFluidOutputCalculation(Function<Integer, FluidStack[]> custom) {
+        customFluidOutputCalculation = custom;
         return this;
     }
 
@@ -173,10 +281,13 @@ public class GT_ParallelHelper {
      * Finishes the GT_ParallelHelper. Anything changed after this will not effect anything
      */
     public GT_ParallelHelper build() {
-        if (mBuilt) {
+        if (built) {
             throw new IllegalStateException("Tried to build twice");
         }
-        mBuilt = true;
+        if (recipe == null) {
+            throw new IllegalStateException("Recipe is not set");
+        }
+        built = true;
         determineParallel();
         return this;
     }
@@ -185,487 +296,294 @@ public class GT_ParallelHelper {
      * @return The current parallels possible by the multiblock
      */
     public int getCurrentParallel() {
-        if (!mBuilt) {
+        if (!built) {
             throw new IllegalStateException("Tried to get parallels before building");
         }
-        return mCurrentParallel;
+        return currentParallel;
     }
 
     /**
      * @return The duration multiplier if batch mode was enabled for the multiblock
      */
-    public float getDurationMultiplier() {
-        if (!mBuilt) {
+    public double getDurationMultiplierDouble() {
+        if (!built) {
             throw new IllegalStateException("Tried to get duration multiplier before building");
         }
-        if (mBatchMode) {
-            return mDurationMultiplier;
+        if (batchMode && durationMultiplier > 0) {
+            return durationMultiplier;
         }
         return 1;
     }
 
     /**
+     * @deprecated Use {@link #getDurationMultiplierDouble()}
+     */
+    @Deprecated
+    public float getDurationMultiplier() {
+        return (float) getDurationMultiplierDouble();
+    }
+
+    /**
      * @return The ItemOutputs from the recipe
      */
+    @Nonnull
     public ItemStack[] getItemOutputs() {
-        if (!mBuilt || !mCalculateOutputs) {
+        if (!built || !calculateOutputs) {
             throw new IllegalStateException(
                 "Tried to get item outputs before building or without enabling calculation of outputs");
         }
-        return mItemOutputs;
+        return itemOutputs;
     }
 
     /**
      * @return The FluidOutputs from the recipe
      */
+    @Nonnull
     public FluidStack[] getFluidOutputs() {
-        if (!mBuilt || !mCalculateOutputs) {
+        if (!built || !calculateOutputs) {
             throw new IllegalStateException(
                 "Tried to get fluid outputs before building or without enabling calculation of outputs");
         }
-        return mFluidOutputs;
+        return fluidOutputs;
+    }
+
+    /**
+     * @return The result of why a recipe could've failed or succeeded
+     */
+    @Nonnull
+    public CheckRecipeResult getResult() {
+        if (!built) {
+            throw new IllegalStateException("Tried to get recipe result before building");
+        }
+        return result;
+    }
+
+    /**
+     * Use {@link #tryConsumeRecipeInputs(GT_Recipe, FluidStack[], ItemStack[], int)}
+     */
+    @Deprecated
+    protected boolean tryConsumeRecipeInputs(GT_Recipe recipe, FluidStack[] fluids, ItemStack[] items) {
+        return tryConsumeRecipeInputs(recipe, fluids, items, 1);
+    }
+
+    /**
+     * Try to consume the inputs of the recipe
+     *
+     * @param recipe      Processed recipe
+     * @param fluids      fluid inputs that will be consumed
+     * @param items       item inputs that will be consumed
+     * @param minParallel minimum amount of parallels to do with this check
+     * @return True if recipe was satisfied, else false
+     */
+    protected boolean tryConsumeRecipeInputs(GT_Recipe recipe, FluidStack[] fluids, ItemStack[] items,
+        int minParallel) {
+        return recipe.isRecipeInputEqual(true, false, minParallel, fluids, items);
     }
 
     /**
      * Called by build(). Determines the parallels and everything else that needs to be done at build time
      */
     protected void determineParallel() {
-        if (mRecipe.mEUt > mAvailableEUt) {
+        if (itemInputs == null) {
+            itemInputs = new ItemStack[0];
+        }
+        if (fluidInputs == null) {
+            fluidInputs = new FluidStack[0];
+        }
+
+        if (!consume) {
+            copyInputs();
+        }
+
+        if (calculator == null) {
+            calculator = new GT_OverclockCalculator().setEUt(availableEUt)
+                .setRecipeEUt(recipe.mEUt)
+                .setDuration(recipe.mDuration)
+                .setEUtDiscount(eutModifier);
+        }
+
+        final int tRecipeEUt = (int) Math.ceil(recipe.mEUt * eutModifier);
+        if (availableEUt < tRecipeEUt) {
+            result = CheckRecipeResultRegistry.insufficientPower(tRecipeEUt);
+        }
+
+        // Save the original max parallel before calculating our overclocking under 1 tick
+        int originalMaxParallel = maxParallel;
+        double tickTimeAfterOC = calculator.setParallel(originalMaxParallel)
+            .calculateDurationUnderOneTick();
+        if (tickTimeAfterOC < 1) {
+            maxParallel = (int) (maxParallel / tickTimeAfterOC);
+        }
+
+        int maxParallelBeforeBatchMode = maxParallel;
+        if (batchMode) {
+            maxParallel *= batchModifier;
+        }
+
+        SingleRecipeCheck recipeCheck = null;
+        SingleRecipeCheck.Builder tSingleRecipeCheckBuilder = null;
+        if (isRecipeLocked && singleRecipeMachine != null) {
+            recipeCheck = singleRecipeMachine.getSingleRecipeCheck();
+            if (recipeCheck == null) {
+                // Machine is configured to lock to a single recipe, but haven't built the recipe checker yet.
+                // Build the checker on next successful recipe.
+                GT_Recipe.GT_Recipe_Map recipeMap = singleRecipeMachine.getRecipeMap();
+                if (recipeMap != null) {
+                    tSingleRecipeCheckBuilder = SingleRecipeCheck.builder(recipeMap)
+                        .setBefore(itemInputs, fluidInputs);
+                }
+            }
+        }
+
+        // Let's look at how many parallels we can get with void protection
+        if (protectExcessItem || protectExcessFluid) {
+            if (machine == null) {
+                throw new IllegalStateException("Tried to calculate void protection, but machine is not set");
+            }
+            VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper();
+            voidProtectionHelper.setMachine(machine)
+                .setItemOutputs(recipe.mOutputs)
+                .setFluidOutputs(recipe.mFluidOutputs)
+                .setMaxParallel(maxParallel)
+                .build();
+            maxParallel = Math.min(voidProtectionHelper.getMaxParallel(), maxParallel);
+            if (maxParallel <= 0) {
+                result = CheckRecipeResultRegistry.OUTPUT_FULL;
+                return;
+            }
+        }
+
+        maxParallelBeforeBatchMode = Math.min(maxParallel, maxParallelBeforeBatchMode);
+
+        // Consume inputs to determine normal parallel
+        if (recipeCheck != null) {
+            int actualMaxParallel = (int) Math.min(maxParallelBeforeBatchMode, availableEUt / tRecipeEUt);
+            currentParallel = recipeCheck.checkRecipeInputs(true, actualMaxParallel, itemInputs, fluidInputs);
+        } else {
+            long tCurrentUsage = 0;
+            boolean builtRecipeCheck = false;
+            for (; currentParallel < maxParallelBeforeBatchMode
+                && tCurrentUsage < (availableEUt - tRecipeEUt); currentParallel++) {
+                if (!tryConsumeRecipeInputs(recipe, fluidInputs, itemInputs)) {
+                    break;
+                }
+                tCurrentUsage += tRecipeEUt;
+                if (tSingleRecipeCheckBuilder != null && !builtRecipeCheck) {
+                    // If recipe checker is not built yet, build and set it
+                    SingleRecipeCheck builtCheck = tSingleRecipeCheckBuilder.setAfter(itemInputs, fluidInputs)
+                        .setRecipe(recipe)
+                        .build();
+                    singleRecipeMachine.setSingleRecipeCheck(builtCheck);
+                    builtRecipeCheck = true;
+                }
+            }
+        }
+
+        if (currentParallel <= 0) {
+            result = CheckRecipeResultRegistry.INTERNAL_ERROR;
             return;
         }
-        ItemStack[] tItemInputs = null;
-        FluidStack[] tFluidInputs = null;
-        boolean tMEOutputBus = false;
-        boolean tMEOutputHatch = false;
-        long tCurrentUsage = 0;
-        // see if people want to consume their inputs with the Parallel Helper or not
-        if (mConsume) {
-            tItemInputs = mItemInputs;
-            tFluidInputs = mFluidInputs;
-        } else {
-            if (mItemInputs == null) {
-                tItemInputs = new ItemStack[] {};
-            } else {
-                tItemInputs = new ItemStack[mItemInputs.length];
-                for (int i = 0; i < mItemInputs.length; i++) {
-                    tItemInputs[i] = mItemInputs[i].copy();
-                }
-            }
 
-            if (mFluidInputs == null) {
-                mFluidInputs = new FluidStack[] {};
-            } else {
-                tFluidInputs = new FluidStack[mFluidInputs.length];
-                for (int i = 0; i < mFluidInputs.length; i++) {
-                    tFluidInputs[i] = mFluidInputs[i].copy();
-                }
-            }
+        long eutUseAfterOC = calculator.calculateEUtConsumptionUnderOneTick(originalMaxParallel, currentParallel);
+        calculator.setParallel(Math.min(currentParallel, originalMaxParallel))
+            .calculate();
+        if (currentParallel > originalMaxParallel) {
+            calculator.setRecipeEUt(eutUseAfterOC);
         }
-        if (mBatchMode) {
-            mMaxParallel *= mBatchModifier;
-        }
-        // Let's look at how many parallels we can get with void protection
-        if (mVoidProtection) {
-            if (mMachineMeta != null) {
-                for (GT_MetaTileEntity_Hatch tHatch : mMachineMeta.mOutputBusses) {
-                    if (tHatch instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
-                        tMEOutputBus = true;
-                        break;
-                    }
-                }
-
-                for (GT_MetaTileEntity_Hatch tHatch : mMachineMeta.mOutputHatches) {
-                    if (tHatch instanceof GT_MetaTileEntity_Hatch_Output_ME) {
-                        tMEOutputHatch = true;
-                        break;
-                    }
-                }
-                if (!tMEOutputBus) {
-                    mMaxParallel = Math.min(calculateMaxParallelsForBusses(), mMaxParallel);
-                }
-
-                if (!tMEOutputHatch) {
-                    mMaxParallel = Math.min(calculateMaxParallelsForHatches(), mMaxParallel);
-                }
-            } else if (mMachineMulti != null) {
-                mMaxParallel = Math.min(calculateMaxItemParallelsForMuTEs(), mMaxParallel);
-                mMaxParallel = Math.min(calculateMaxFluidParallelsForMuTEs(), mMaxParallel);
-            }
-        }
-
-        float tRecipeEUt = mRecipe.mEUt * mEUtModifier;
-        // Consume inputs to determine normal parallel
-        for (; mCurrentParallel < mMaxParallel / mBatchModifier
-            && tCurrentUsage < (mAvailableEUt - tRecipeEUt); mCurrentParallel++) {
-            if (mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs)) {
-                tCurrentUsage += tRecipeEUt;
-            } else {
-                break;
-            }
-        }
-
         // If Batch Mode is enabled determine how many extra parallels we can get
-        if (mBatchMode) {
+        if (batchMode && currentParallel > 0 && calculator.getDuration() < MAX_BATCH_MODE_TICK_TIME) {
             int tExtraParallels = 0;
-            while (tExtraParallels < mCurrentParallel * (mBatchModifier - 1)
-                && mRecipe.isRecipeInputEqual(false, false, tFluidInputs, tItemInputs)) {
-                mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs);
-                tExtraParallels++;
+            double batchMultiplierMax = MAX_BATCH_MODE_TICK_TIME / calculator.getDuration();
+            final int maxExtraParallels = (int) Math.floor(
+                Math.min(
+                    currentParallel * Math.min(batchMultiplierMax - 1, batchModifier - 1),
+                    maxParallel - currentParallel));
+            if (recipeCheck != null) {
+                tExtraParallels = recipeCheck.checkRecipeInputs(true, maxExtraParallels, itemInputs, fluidInputs);
+            } else {
+                while (tExtraParallels < maxExtraParallels
+                    && tryConsumeRecipeInputs(recipe, fluidInputs, itemInputs, currentParallel)) {
+                    tExtraParallels += currentParallel;
+                }
             }
-            mDurationMultiplier = 1.0f + (float) tExtraParallels / mCurrentParallel;
-            mCurrentParallel += tExtraParallels;
+            durationMultiplier = 1.0f + (float) tExtraParallels / currentParallel;
+            currentParallel += tExtraParallels;
         }
 
         // If we want to calculate outputs we do it here
-        if (mCalculateOutputs) {
-            if (mRecipe.mOutputs != null) {
-                mItemOutputs = new ItemStack[mRecipe.mOutputs.length];
-                for (int i = 0; i < mRecipe.mOutputs.length; i++) {
-                    if (mRecipe.getOutputChance(i) >= XSTR.XSTR_INSTANCE.nextInt(10000)) {
-                        if (mRecipe.getOutput(i) == null) {
-                            mItemOutputs[i] = null;
-                        } else {
-                            ItemStack tItem = mRecipe.getOutput(i)
-                                .copy();
-                            tItem.stackSize *= mCurrentParallel;
-                            mItemOutputs[i] = tItem;
-                        }
-                    }
+        if (calculateOutputs && currentParallel > 0) {
+            if (recipe.mOutputs != null) {
+                calculateItemOutputs();
+            }
+            if (recipe.mFluidOutputs != null) {
+                calculateFluidOutputs();
+            }
+        }
+        result = CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    protected void copyInputs() {
+        ItemStack[] itemInputsToUse;
+        FluidStack[] fluidInputsToUse;
+        itemInputsToUse = new ItemStack[itemInputs.length];
+        for (int i = 0; i < itemInputs.length; i++) {
+            itemInputsToUse[i] = itemInputs[i].copy();
+        }
+        fluidInputsToUse = new FluidStack[fluidInputs.length];
+        for (int i = 0; i < fluidInputs.length; i++) {
+            fluidInputsToUse[i] = fluidInputs[i].copy();
+        }
+        itemInputs = itemInputsToUse;
+        fluidInputs = fluidInputsToUse;
+    }
+
+    protected void calculateItemOutputs() {
+        if (customItemOutputCalculation != null) {
+            itemOutputs = customItemOutputCalculation.apply(currentParallel);
+            return;
+        }
+        itemOutputs = new ItemStack[recipe.mOutputs.length];
+        for (int i = 0; i < recipe.mOutputs.length; i++) {
+            if (recipe.getOutputChance(i) >= 10000) {
+                ItemStack item = recipe.getOutput(i)
+                    .copy();
+                item.stackSize *= currentParallel;
+                itemOutputs[i] = item;
+                continue;
+            }
+            int items = 0;
+            int itemStackSize = recipe.getOutput(i).stackSize;
+            for (int roll = 0; roll < currentParallel; roll++) {
+                if (recipe.getOutputChance(i) > XSTR.XSTR_INSTANCE.nextInt(10000)) {
+                    items += itemStackSize;
                 }
             }
-            if (mRecipe.mFluidOutputs != null) {
-                mFluidOutputs = new FluidStack[mRecipe.mFluidOutputs.length];
-                for (int i = 0; i < mRecipe.mFluidOutputs.length; i++) {
-                    if (mRecipe.getFluidOutput(i) == null) {
-                        mFluidOutputs[i] = null;
-                    } else {
-                        FluidStack tFluid = mRecipe.getFluidOutput(i)
-                            .copy();
-                        tFluid.amount *= mCurrentParallel;
-                        mFluidOutputs[i] = tFluid;
-                    }
-                }
+            ItemStack item = recipe.getOutput(i)
+                .copy();
+            if (items == 0) {
+                item = null;
+            } else {
+                item.stackSize = items;
             }
+            itemOutputs[i] = item;
         }
     }
 
-    /**
-     * Calculates the max parallel for fluids if void protection is turned on
-     */
-    private int calculateMaxFluidParallelsForMuTEs() {
-        if (mMachineMulti != null && mMachineMulti.getOutputTanks() != null
-            && mMachineMulti.getOutputTanks().length >= mRecipe.mFluidOutputs.length) {
-            // A map to hold the items we will be 'inputting' into the output hatches. These fluidstacks are actually
-            // the
-            // recipe outputs.
-            Map<FluidStack, Integer> tFluidOutputMap = new HashMap<>();
-
-            // Map that keeps track of the number of parallel crafts we can accommodate for each fluid output.
-            // In the pair, we keep track of number of full crafts plus mb of fluid in a partial craft, to avoid
-            // issues with floating point math not being completely accurate when summing.
-            Map<FluidStack, MutablePair<Integer, Integer>> tParallels = new HashMap<>();
-
-            // Iterate over the outputs, calculating require stack spacing they will require.
-            for (FluidStack aY : mRecipe.mFluidOutputs) {
-                if (aY == null) {
-                    continue;
-                }
-                tFluidOutputMap.merge(aY, aY.amount, Integer::sum);
-                tParallels.put(aY, new MutablePair<>(0, 0));
-            }
-
-            if (tFluidOutputMap.isEmpty()) {
-                // nothing to output, bail early
-                return mMaxParallel;
-            }
-
-            for (FluidTankGT tHatch : mMachineMulti.getOutputTanks()) {
-                int tSpaceLeft = tHatch.getCapacity() - tHatch.getFluidAmount();
-
-                // check if hatch filled
-                if (tSpaceLeft <= 0) continue;
-
-                // check if hatch is empty and unrestricted
-                if (tHatch.getFluidAmount() == 0) continue;
-
-                for (Entry<FluidStack, MutablePair<Integer, Integer>> entry : tParallels.entrySet()) {
-                    FluidStack tFluidOutput = entry.getKey();
-                    // this fluid is not prevented by restrictions on output hatch
-                    if (tHatch.getFluidAmount() == 0 || GT_Utility.areFluidsEqual(tHatch.getFluid(), tFluidOutput)) {
-                        MutablePair<Integer, Integer> tParallel = entry.getValue();
-                        Integer tCraftSize = tFluidOutputMap.get(tFluidOutput);
-                        tParallel.left += (tParallel.right + tSpaceLeft) / tCraftSize;
-                        tParallel.right = (tParallel.right + tSpaceLeft) % tCraftSize;
-                    }
-                }
-            }
-            // now that all partial/restricted hatches have been counted, create a priority queue for our outputs
-            // the lowest priority fluid is the number of complete parallel crafts we can support
-            PriorityQueue<MutableTriple<Integer, Integer, FluidStack>> aParallelQueue = new PriorityQueue<>(
-                Comparator.comparing(MutableTriple::getLeft));
-            for (Entry<FluidStack, MutablePair<Integer, Integer>> entry : tParallels.entrySet()) {
-                aParallelQueue.add(new MutableTriple<>(entry.getValue().left, entry.getValue().right, entry.getKey()));
-            }
-            // add extra parallels for open slots as well
-            for (FluidTankGT tHatch : mMachineMulti.getOutputTanks()) {
-                // partially filled or restricted hatch. done in last pass
-                if (tHatch.getFluidAmount() > 0) continue;
-
-                MutableTriple<Integer, Integer, FluidStack> tParallel = aParallelQueue.poll();
-                assert tParallel != null; // will always be true, specifying assert here to avoid IDE/compiler warnings
-                Integer tCraftSize = tFluidOutputMap.get(tParallel.right);
-                int tSpaceLeft = tHatch.getCapacity();
-                tParallel.left += (tParallel.middle + tSpaceLeft) / tCraftSize;
-                tParallel.middle = (tParallel.middle + tSpaceLeft) % tCraftSize;
-                aParallelQueue.add(tParallel);
-            }
-            return aParallelQueue.element().left;
+    protected void calculateFluidOutputs() {
+        if (customFluidOutputCalculation != null) {
+            fluidOutputs = customFluidOutputCalculation.apply(currentParallel);
+            return;
         }
-        return 0;
-    }
-
-    /**
-     * Calculates the max parallel for fluids if void protection is turned on
-     */
-    private int calculateMaxParallelsForHatches() {
-        // For now we are gonna ignore MuTEs existence as there are no recipes for them
-        if (mMachineMeta != null && mMachineMeta.mOutputHatches.size() >= mRecipe.mFluidOutputs.length) {
-            // A map to hold the items we will be 'inputting' into the output hatches. These fluidstacks are actually
-            // the
-            // recipe outputs.
-            Map<FluidStack, Integer> tFluidOutputMap = new HashMap<>();
-
-            // Map that keeps track of the number of parallel crafts we can accommodate for each fluid output.
-            // In the pair, we keep track of number of full crafts plus mb of fluid in a partial craft, to avoid
-            // issues with floating point math not being completely accurate when summing.
-            Map<FluidStack, MutablePair<Integer, Integer>> tParallels = new HashMap<>();
-
-            // Iterate over the outputs, calculating require stack spacing they will require.
-            for (FluidStack aY : mRecipe.mFluidOutputs) {
-                if (aY == null) {
-                    continue;
-                }
-                tFluidOutputMap.merge(aY, aY.amount, Integer::sum);
-                tParallels.put(aY, new MutablePair<>(0, 0));
+        fluidOutputs = new FluidStack[recipe.mFluidOutputs.length];
+        for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
+            if (recipe.getFluidOutput(i) == null) {
+                fluidOutputs[i] = null;
+            } else {
+                FluidStack tFluid = recipe.getFluidOutput(i)
+                    .copy();
+                tFluid.amount *= currentParallel;
+                fluidOutputs[i] = tFluid;
             }
-
-            if (tFluidOutputMap.isEmpty()) {
-                // nothing to output, bail early
-                return mMaxParallel;
-            }
-
-            for (GT_MetaTileEntity_Hatch_Output tHatch : mMachineMeta.mOutputHatches) {
-                int tSpaceLeft = tHatch.getCapacity() - tHatch.getFluidAmount();
-
-                // check if hatch filled
-                if (tSpaceLeft <= 0) continue;
-
-                // check if hatch is empty and unrestricted
-                if (tHatch.mMode == 0 && tHatch.getFluidAmount() == 0) continue;
-
-                String tLockedFluidName = tHatch.getLockedFluidName();
-                for (Entry<FluidStack, MutablePair<Integer, Integer>> entry : tParallels.entrySet()) {
-                    FluidStack tFluidOutput = entry.getKey();
-                    if (GT_ModHandler.isSteam(tFluidOutput)) {
-                        if (!tHatch.outputsSteam()) {
-                            continue;
-                        }
-                    } else {
-                        if (!tHatch.outputsLiquids()) {
-                            continue;
-                        }
-                        if (tHatch.isFluidLocked() && tLockedFluidName != null
-                            && !tLockedFluidName.equals(
-                                tFluidOutput.getFluid()
-                                    .getName())) {
-                            continue;
-                        }
-                    }
-                    // this fluid is not prevented by restrictions on output hatch
-                    if (tHatch.getFluidAmount() == 0 || GT_Utility.areFluidsEqual(tHatch.getFluid(), tFluidOutput)) {
-                        MutablePair<Integer, Integer> tParallel = entry.getValue();
-                        Integer tCraftSize = tFluidOutputMap.get(tFluidOutput);
-                        tParallel.left += (tParallel.right + tSpaceLeft) / tCraftSize;
-                        tParallel.right = (tParallel.right + tSpaceLeft) % tCraftSize;
-                    }
-                }
-            }
-            // now that all partial/restricted hatches have been counted, create a priority queue for our outputs
-            // the lowest priority fluid is the number of complete parallel crafts we can support
-            PriorityQueue<MutableTriple<Integer, Integer, FluidStack>> aParallelQueue = new PriorityQueue<>(
-                Comparator.comparing(MutableTriple::getLeft));
-            for (Entry<FluidStack, MutablePair<Integer, Integer>> entry : tParallels.entrySet()) {
-                aParallelQueue.add(new MutableTriple<>(entry.getValue().left, entry.getValue().right, entry.getKey()));
-            }
-            // add extra parallels for open slots as well
-            for (GT_MetaTileEntity_Hatch_Output tHatch : mMachineMeta.mOutputHatches) {
-                // partially filled or restricted hatch. done in last pass
-                if (tHatch.getFluidAmount() > 0 || tHatch.mMode != 0) continue;
-
-                MutableTriple<Integer, Integer, FluidStack> tParallel = aParallelQueue.poll();
-                assert tParallel != null; // will always be true, specifying assert here to avoid IDE/compiler warnings
-                Integer tCraftSize = tFluidOutputMap.get(tParallel.right);
-                int tSpaceLeft = tHatch.getCapacity();
-                tParallel.left += (tParallel.middle + tSpaceLeft) / tCraftSize;
-                tParallel.middle = (tParallel.middle + tSpaceLeft) % tCraftSize;
-                aParallelQueue.add(tParallel);
-            }
-            return aParallelQueue.element().left;
         }
-        return 0;
-    }
-
-    /**
-     * Calculates the max parallels one can do with items if void protection is on
-     */
-    private int calculateMaxItemParallelsForMuTEs() {
-
-        // A map to hold the items we will be 'inputting' into the output buses. These itemstacks are actually the
-        // recipe outputs.
-        Map<ItemStack, Integer> tItemOutputMap = new ItemStackMap<>();
-
-        // Map that keeps track of the number of parallel crafts we can accommodate for each item output.
-        // In the pair, we keep track of number of full crafts plus number of items in a partial craft, to avoid
-        // issues with floating point math not being completely accurate when summing.
-        Map<ItemStack, MutablePair<Integer, Integer>> tParallels = new ItemStackMap<>();
-        int tSlotsFree = 0;
-        for (ItemStack tItem : mRecipe.mOutputs) {
-            tItemOutputMap.merge(tItem, tItem.stackSize, Integer::sum);
-            tParallels.put(tItem, new MutablePair<>(0, 0));
-        }
-
-        if (tItemOutputMap.isEmpty()) {
-            // nothing to output, bail early
-            return mMaxParallel;
-        }
-
-        if (mRecipe.mOutputs.length > 0 && mMachineMulti != null
-            && mMachineMulti.getOutputInventory() != null
-            && mMachineMulti.getOutputInventory()
-                .getSlots() > 0) {
-            for (int i = 0; i < mMachineMulti.getOutputInventory()
-                .getSlots(); i++) {
-                ItemStack tBusStack = mMachineMulti.getOutputInventory()
-                    .getStackInSlot(i);
-                if (tBusStack == null) {
-                    tSlotsFree++;
-                } else {
-                    // get the real stack size
-                    // we ignore the bus inventory stack limit here as no one set it to anything other than 64
-                    int tMaxBusStackSize = tBusStack.getMaxStackSize();
-                    if (tBusStack.stackSize >= tMaxBusStackSize)
-                        // this bus stack is full. no checking
-                        continue;
-                    int tSpaceLeft = tMaxBusStackSize - tBusStack.stackSize;
-                    Integer tCraftSize = tItemOutputMap.get(tBusStack);
-                    if (tCraftSize == null) {
-                        // we don't have a matching stack to output, ignore this bus stack
-                        continue;
-                    }
-                    MutablePair<Integer, Integer> tParallel = tParallels.get(tBusStack);
-                    tParallel.left += (tParallel.right + tSpaceLeft) / tCraftSize;
-                    tParallel.right = (tParallel.right + tSpaceLeft) % tCraftSize;
-                }
-            }
-            // now that all partial stacks have been counted, create a priority queue for our outputs
-            // the lowest priority item is the number of complete parallel crafts we can support
-            PriorityQueue<MutableTriple<Integer, Integer, ItemStack>> aParallelQueue = new PriorityQueue<>(
-                Comparator.comparing(MutableTriple::getLeft));
-            for (Entry<ItemStack, MutablePair<Integer, Integer>> entry : tParallels.entrySet()) {
-                aParallelQueue.add(new MutableTriple<>(entry.getValue().left, entry.getValue().right, entry.getKey()));
-            }
-
-            while (tSlotsFree > 0) {
-                MutableTriple<Integer, Integer, ItemStack> tParallel = aParallelQueue.poll();
-                assert tParallel != null; // will always be true, specifying assert here to avoid IDE/compiler warnings
-                Integer tCraftSize = tItemOutputMap.get(tParallel.right);
-                int tStackSize = tParallel.right.getMaxStackSize();
-                tParallel.left += (tParallel.middle + tStackSize) / tCraftSize;
-                tParallel.middle = (tParallel.middle + tStackSize) % tCraftSize;
-                aParallelQueue.add(tParallel);
-                --tSlotsFree;
-            }
-
-            return aParallelQueue.element().left;
-        }
-        return 0;
-    }
-
-    /**
-     * Calculates the max parallels one can do with items if void protection is on
-     */
-    private int calculateMaxParallelsForBusses() {
-        // Same thing we are gonna ignore MuTEs existence for now. should be in theory the same later
-
-        // A map to hold the items we will be 'inputting' into the output buses. These itemstacks are actually the
-        // recipe outputs.
-        Map<ItemStack, Integer> tItemOutputMap = new ItemStackMap<>();
-
-        // Map that keeps track of the number of parallel crafts we can accommodate for each item output.
-        // In the pair, we keep track of number of full crafts plus number of items in a partial craft, to avoid
-        // issues with floating point math not being completely accurate when summing.
-        Map<ItemStack, MutablePair<Integer, Integer>> tParallels = new ItemStackMap<>();
-        int tSlotsFree = 0;
-        for (ItemStack tItem : mRecipe.mOutputs) {
-            tItemOutputMap.merge(tItem, tItem.stackSize, Integer::sum);
-            tParallels.put(tItem, new MutablePair<>(0, 0));
-        }
-
-        if (tItemOutputMap.isEmpty()) {
-            // nothing to output, bail early
-            return mMaxParallel;
-        }
-
-        if (mRecipe.mOutputs.length > 0 && mMachineMeta != null) {
-            for (final GT_MetaTileEntity_Hatch tBus : mMachineMeta.mOutputBusses) {
-                if (!GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(tBus)) {
-                    continue;
-                }
-                final IInventory tBusInv = tBus.getBaseMetaTileEntity();
-                for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
-                    ItemStack tBusStack = tBus.getStackInSlot(i);
-                    if (tBusStack == null) {
-                        tSlotsFree++;
-                    } else {
-                        // get the real stack size
-                        // we ignore the bus inventory stack limit here as no one set it to anything other than 64
-                        int tMaxBusStackSize = tBusStack.getMaxStackSize();
-                        if (tBusStack.stackSize >= tMaxBusStackSize)
-                            // this bus stack is full. no checking
-                            continue;
-                        int tSpaceLeft = tMaxBusStackSize - tBusStack.stackSize;
-                        Integer tCraftSize = tItemOutputMap.get(tBusStack);
-                        if (tCraftSize == null) {
-                            // we don't have a matching stack to output, ignore this bus stack
-                            continue;
-                        }
-                        MutablePair<Integer, Integer> tParallel = tParallels.get(tBusStack);
-                        tParallel.left += (tParallel.right + tSpaceLeft) / tCraftSize;
-                        tParallel.right = (tParallel.right + tSpaceLeft) % tCraftSize;
-                    }
-                }
-            }
-            // now that all partial stacks have been counted, create a priority queue for our outputs
-            // the lowest priority item is the number of complete parallel crafts we can support
-            PriorityQueue<MutableTriple<Integer, Integer, ItemStack>> aParallelQueue = new PriorityQueue<>(
-                Comparator.comparing(MutableTriple::getLeft));
-            for (Entry<ItemStack, MutablePair<Integer, Integer>> entry : tParallels.entrySet()) {
-                aParallelQueue.add(new MutableTriple<>(entry.getValue().left, entry.getValue().right, entry.getKey()));
-            }
-
-            while (tSlotsFree > 0) {
-                MutableTriple<Integer, Integer, ItemStack> tParallel = aParallelQueue.poll();
-                assert tParallel != null; // will always be true, specifying assert here to avoid IDE/compiler warnings
-                Integer tCraftSize = tItemOutputMap.get(tParallel.right);
-                int tStackSize = tParallel.right.getMaxStackSize();
-                tParallel.left += (tParallel.middle + tStackSize) / tCraftSize;
-                tParallel.middle = (tParallel.middle + tStackSize) % tCraftSize;
-                aParallelQueue.add(tParallel);
-                --tSlotsFree;
-            }
-
-            return aParallelQueue.element().left;
-        }
-        return 0;
     }
 }

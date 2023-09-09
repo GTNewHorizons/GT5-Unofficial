@@ -8,10 +8,13 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
-import static gregtech.api.util.GT_StructureUtility.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_StructureUtility.ofCoil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -28,14 +31,15 @@ import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_OilCracker>
     implements ISurvivalConstructable {
@@ -167,41 +171,16 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        ArrayList<FluidStack> tInputList = getStoredFluids();
-        FluidStack[] tFluidInputs = tInputList.toArray(new FluidStack[0]);
-        long tVoltage = getMaxInputVoltage();
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-        GT_Recipe tRecipe = getRecipeMap().findRecipe(
-            getBaseMetaTileEntity(),
-            false,
-            gregtech.api.enums.GT_Values.V[tTier],
-            tFluidInputs,
-            mInventory[1]);
-
-        if (tRecipe == null) return false;
-
-        if (tRecipe.isRecipeInputEqual(true, tFluidInputs, mInventory[1])) {
-            this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-            this.mEfficiencyIncrease = 10000;
-            calculateOverclockedNessMultiInternal(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage, false);
-            // In case recipe is too OP for that machine
-            if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) return false;
-
-            // heatLevel.getTier() starts at 0
-            if (this.heatLevel.getTier() < 5) {
-                this.mEUt *= 1 - (0.1D * (this.heatLevel.getTier() + 1));
-            } else {
-                this.mEUt *= 0.5;
+            @Nonnull
+            @Override
+            public CheckRecipeResult process() {
+                setEuModifier(1.0F - Math.min(0.1F * (heatLevel.getTier() + 1), 0.5F));
+                return super.process();
             }
-
-            if (this.mEUt > 0) this.mEUt = (-this.mEUt);
-
-            this.mOutputFluids = new FluidStack[] { tRecipe.getFluidOutput(0) };
-            return true;
-        }
-        return false;
+        };
     }
 
     @Override
@@ -233,20 +212,18 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input tHatch) {
             if (mInputOnSide == 1) return false;
             mInputOnSide = 0;
             mOutputOnSide = 1;
-            GT_MetaTileEntity_Hatch_Input tHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
             tHatch.updateTexture(aBaseCasingIndex);
             tHatch.mRecipeMap = getRecipeMap();
             return mInputHatches.add(tHatch);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output tHatch) {
             if (mOutputOnSide == 1) return false;
             mInputOnSide = 1;
             mOutputOnSide = 0;
-            GT_MetaTileEntity_Hatch_Output tHatch = (GT_MetaTileEntity_Hatch_Output) aMetaTileEntity;
             tHatch.updateTexture(aBaseCasingIndex);
             return mOutputHatches.add(tHatch);
         }
@@ -257,20 +234,18 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input tHatch) {
             if (mInputOnSide == 0) return false;
             mInputOnSide = 1;
             mOutputOnSide = 0;
-            GT_MetaTileEntity_Hatch_Input tHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
             tHatch.updateTexture(aBaseCasingIndex);
             tHatch.mRecipeMap = getRecipeMap();
             return mInputHatches.add(tHatch);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output tHatch) {
             if (mOutputOnSide == 0) return false;
             mInputOnSide = 0;
             mOutputOnSide = 1;
-            GT_MetaTileEntity_Hatch_Output tHatch = (GT_MetaTileEntity_Hatch_Output) aMetaTileEntity;
             tHatch.updateTexture(aBaseCasingIndex);
             return mOutputHatches.add(tHatch);
         }
@@ -392,5 +367,10 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 1, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 }

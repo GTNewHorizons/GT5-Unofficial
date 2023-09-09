@@ -62,7 +62,7 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
      * one kind of MetaTileEntity so only use this if you are sure its the correct one or you will get a Class cast
      * Error.
      *
-     * @param aMetaTileEntity
+     * @param aMetaTileEntity a MetaTileEntity
      */
     void setMetaTileEntity(IMetaTileEntity aMetaTileEntity);
 
@@ -177,9 +177,7 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
             && getMetaTileEntity().isMachineBlockUpdateRecursive();
     }
 
-    default void setShutdownStatus(boolean newStatus) {
-        return;
-    }
+    default void setShutdownStatus(boolean newStatus) {}
 
     /**
      * A randomly called display update to be able to add particles or other items for display The event is proxied by
@@ -191,4 +189,13 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
             getMetaTileEntity().onRandomDisplayTick(this);
         }
     }
+
+    /**
+     * gets the time statistics used for CPU timing
+     */
+    default int[] getTimeStatistics() {
+        return null;
+    }
+
+    default void startTimeStatistics() {}
 }

@@ -7,11 +7,17 @@ import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TierEU;
+import gregtech.api.enums.ToolDictNames;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
+@SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
     public ProcessingPipe() {
@@ -88,8 +94,6 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                             aPrefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.mMaterialAmount),
                         GT_OreDictUnificator.get(aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true))
                     .itemOutputs(GT_Utility.copyAmount(1L, aStack))
-                    .noFluidInputs()
-                    .noFluidOutputs()
                     .duration(
                         ((int) (aPrefix.mSecondaryMaterial.mAmount * 400L / OrePrefixes.ring.mMaterialAmount)) * TICKS)
                     .eut(4)
@@ -109,8 +113,6 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 4),
                         GT_Utility.getIntegratedCircuit(9))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1))
-                    .noFluidInputs()
-                    .noFluidOutputs()
                     .duration(3 * SECONDS)
                     .eut(calculateRecipeEU(aMaterial, 4))
                     .addTo(sAssemblerRecipes);
@@ -129,8 +131,6 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         GT_OreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 9),
                         GT_Utility.getIntegratedCircuit(9))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, aMaterial, 1))
-                    .noFluidInputs()
-                    .noFluidOutputs()
                     .duration(3 * SECONDS)
                     .eut(calculateRecipeEU(aMaterial, 8))
                     .addTo(sAssemblerRecipes);

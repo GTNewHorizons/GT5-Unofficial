@@ -1,8 +1,15 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.enums.GT_Values.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.ExoticEnergy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_Values.AuthorBlueWeabo;
+import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
@@ -13,6 +20,8 @@ import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,6 +31,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
@@ -55,13 +66,17 @@ import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
+import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -85,8 +100,9 @@ public class GT_MetaTileEntity_PCBFactory extends
     private float mRoughnessMultiplier = 1;
     private int mTier = 1, mSetTier = 1, mUpgradesInstalled = 0, mCurrentParallel = 0, mMaxParallel = 0;
     private boolean mBioUpgrade = false, mBioRotate = false, mOCTier1 = false, mOCTier2 = false;
-    private int[] mBioOffsets = new int[] { -5, -1 }, mOCTier1Offsets = new int[] { 2, -11 },
-        mOCTier2Offsets = new int[] { 2, -11 };
+    private final int[] mBioOffsets = new int[] { -5, -1 };
+    private final int[] mOCTier1Offsets = new int[] { 2, -11 };
+    private final int[] mOCTier2Offsets = new int[] { 2, -11 };
     private GT_MetaTileEntity_Hatch_Input mCoolantInputHatch;
     private static final int mBioRotateBitMap = 0b1000000;
     private static final int mOCTier2BitMap = 0b100000;
@@ -506,140 +522,82 @@ public class GT_MetaTileEntity_PCBFactory extends
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        mCurrentParallel = 0;
-        GT_Recipe.GT_Recipe_Map aMap = getRecipeMap();
-        FluidStack[] tFluidInputs = getStoredFluids().toArray(new FluidStack[0]);
-        if (inputSeparation) {
-            ArrayList<ItemStack> tInputList = new ArrayList<>();
-            for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-                for (int i = tBus.getSizeInventory() - 1; i >= 0; i--) {
-                    if (tBus.getStackInSlot(i) != null) tInputList.add(tBus.getStackInSlot(i));
-                }
-                ItemStack[] tInputs = tInputList.toArray(new ItemStack[0]);
-                if (processRecipe(aStack, tInputs, tFluidInputs, aMap)) return true;
-                else tInputList.clear();
-            }
-        } else {
-            ItemStack[] tItemInputs = getStoredInputs().toArray(new ItemStack[0]);
-            return processRecipe(aStack, tItemInputs, tFluidInputs, aMap);
-        }
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-        return false;
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
+                // Here we check the dynamic parallels, which depend on the recipe
+                int numberOfNanites = 0;
+                ItemStack aNanite = recipe.getRepresentativeInput(1);
+                ItemData naniteData = GT_OreDictUnificator.getAssociation(aNanite);
+                if (naniteData != null && naniteData.mPrefix != null && naniteData.mPrefix.equals(OrePrefixes.nanite)) {
+                    for (ItemStack aItem : inputItems) {
+                        if (aItem != null && aItem.isItemEqual(aNanite)) {
+                            numberOfNanites += aItem.stackSize;
+                        }
+                    }
+                }
+                maxParallel = (int) Math.max(Math.ceil(Math.log(numberOfNanites) / Math.log(2) + 0.00001), 1);
+                mMaxParallel = maxParallel;
+
+                int recipeBitMap = recipe.mSpecialValue;
+
+                if (((recipeBitMap & mBioBitMap) == mBioBitMap && !mBioUpgrade))
+                    return SimpleCheckRecipeResult.ofFailure("bio_upgrade_missing");
+
+                int requiredPCBTier = 0;
+                if ((recipeBitMap & mTier3BitMap) == mTier3BitMap) requiredPCBTier = 3;
+                if ((recipeBitMap & mTier2BitMap) == mTier2BitMap) requiredPCBTier = 2;
+                if ((recipeBitMap & mTier1BitMap) == mTier1BitMap) requiredPCBTier = 1;
+
+                if (requiredPCBTier > mTier) return CheckRecipeResultRegistry.insufficientMachineTier(requiredPCBTier);
+
+                return CheckRecipeResultRegistry.SUCCESSFUL;
+            }
+
+            @Nonnull
+            @Override
+            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+                return super.createOverclockCalculator(recipe).setNoOverclock(isNoOC())
+                    .setEUtDiscount((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
+                    .setSpeedBoost(getDurationMultiplierFromRoughness())
+                    .setDurationDecreasePerOC(mOCTier2 ? 2 : 1);
+            }
+
+            @Nonnull
+            @Override
+            protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
+                return super.createParallelHelper(recipe)
+                    .setEUtModifier((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
+                    .setCustomItemOutputCalculation(currentParallel -> {
+                        ArrayList<ItemStack> chancedOutputs = new ArrayList<>();
+                        for (int i = 0; i < currentParallel; i++) {
+                            for (ItemStack item : recipe.mOutputs) {
+                                int remainingEfficiency = getMaxEfficiency(getControllerSlot());
+                                while (remainingEfficiency > 0) {
+                                    if (getBaseMetaTileEntity().getRandomNumber(10000) >= remainingEfficiency) {
+                                        remainingEfficiency -= 10000;
+                                        continue;
+                                    }
+                                    chancedOutputs.add(item);
+                                    remainingEfficiency -= 10000;
+                                }
+                            }
+                        }
+                        return chancedOutputs.toArray(new ItemStack[0]);
+                    });
+            }
+        };
     }
 
-    private boolean processRecipe(ItemStack aStack, ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
-        GT_Recipe.GT_Recipe_Map aMap) {
-        mOutputItems = null;
-        mOutputFluids = null;
-        if (aItemInputs == null || aFluidInputs == null) {
-            return false;
-        }
+    private boolean isNoOC() {
+        return !mOCTier1 && !mOCTier2;
+    }
 
-        long voltage = getAverageInputVoltage();
-        long amps = getMaxInputAmps();
-        int tier = GT_Utility.getTier(voltage);
-
-        GT_Recipe tRecipe = aMap
-            .findRecipe(getBaseMetaTileEntity(), null, true, false, V[tier], aFluidInputs, aStack, aItemInputs);
-
-        if (tRecipe == null) {
-            return false;
-        }
-
-        int recipeBitMap = tRecipe.mSpecialValue;
-
-        int aNanitesOfRecipe = 0;
-
-        ItemStack aNanite = tRecipe.getRepresentativeInput(1);
-        if (GT_OreDictUnificator.getAssociation(aNanite).mPrefix.equals(OrePrefixes.nanite)) {
-            for (ItemStack aItem : aItemInputs) {
-                if (aItem.isItemEqual(aNanite)) {
-                    aNanitesOfRecipe += aItem.stackSize;
-                }
-            }
-        }
-
-        int aMaxParallel = (int) Math.max(Math.ceil(Math.log(aNanitesOfRecipe) / Math.log(2) + 0.00001), 1);
-        mMaxParallel = aMaxParallel;
-        float aExtraPower = (float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled);
-
-        if (tRecipe.mEUt > voltage) {
-            return false;
-        }
-
-        boolean recipeAllowed = (((recipeBitMap & mTier1BitMap) == mTier1BitMap && (mTier >= 1))
-            || ((recipeBitMap & mTier2BitMap) == mTier2BitMap && (mTier >= 2))
-            || ((recipeBitMap & mTier3BitMap) == mTier3BitMap && (mTier >= 3)))
-            && ((recipeBitMap & mBioBitMap) == 0 || ((recipeBitMap & mBioBitMap) == mBioBitMap && mBioUpgrade));
-
-        if (recipeAllowed) {
-            GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe)
-                .setItemInputs(aItemInputs)
-                .setFluidInputs(aFluidInputs)
-                .setMaxParallel(aMaxParallel)
-                .setAvailableEUt(getMaxInputEu())
-                .setEUtModifier(aExtraPower)
-                .enableConsumption()
-                .build();
-            mCurrentParallel = helper.getCurrentParallel();
-
-            if (mCurrentParallel > 0) {
-                this.mEfficiency = (getMaxEfficiency(aStack) - (getIdealStatus() - getRepairStatus()) * 1000);
-                this.mEfficiencyIncrease = getMaxEfficiency(aStack);
-                this.lEUt = -(long) Math.ceil(tRecipe.mEUt * mCurrentParallel * aExtraPower);
-                this.mMaxProgresstime = (int) Math.ceil(tRecipe.mDuration * Math.pow(mRoughnessMultiplier, 2));
-
-                if (mOCTier1 || mOCTier2) {
-                    GT_OverclockCalculator calc = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt)
-                        .setDuration(tRecipe.mDuration)
-                        .setEUt(voltage)
-                        .setAmperage(amps)
-                        .setEUtDiscount(aExtraPower)
-                        .setSpeedBoost((float) Math.pow(mRoughnessMultiplier, 2));
-                    if (mOCTier2) {
-                        calc.enablePerfectOC();
-                    }
-                    calc.calculate();
-                    this.lEUt = calc.getConsumption();
-                    this.mMaxProgresstime = calc.getDuration();
-                }
-
-                if (this.lEUt == Long.MAX_VALUE - 1 || this.mProgresstime == Integer.MAX_VALUE - 1) return false;
-
-                if (this.lEUt > 0) {
-                    this.lEUt *= -1;
-                }
-
-                ArrayList<ItemStack> tOutputs = new ArrayList<>();
-                int remainingEfficiency = getMaxEfficiency(aStack);
-                for (int j = 0; j < (int) Math.ceil(getMaxEfficiency(aStack) / 10000.0f); j++) {
-                    int chanced = getBaseMetaTileEntity().getRandomNumber(10000);
-                    if (chanced >= remainingEfficiency) {
-                        continue;
-                    }
-                    for (ItemStack tOutput : tRecipe.mOutputs) {
-                        if (tOutput == null) {
-                            break;
-                        }
-                        tOutputs.add(tOutput.copy());
-                    }
-                    remainingEfficiency -= 10000;
-                }
-
-                for (ItemStack itemStack : tOutputs) {
-                    itemStack.stackSize *= mCurrentParallel;
-                }
-
-                mOutputItems = tOutputs.toArray(new ItemStack[0]);
-                mOutputFluids = tRecipe.mFluidOutputs.clone();
-                updateSlots();
-
-                return true;
-            }
-        }
-
-        return false;
+    private float getDurationMultiplierFromRoughness() {
+        return (float) Math.pow(mRoughnessMultiplier, 2);
     }
 
     private int ticker = 0;
@@ -800,45 +758,6 @@ public class GT_MetaTileEntity_PCBFactory extends
     }
 
     @Override
-    protected void calculateOverclockedNessMultiInternal(long aEUt, int aDuration, int mAmperage, long maxInputVoltage,
-        boolean perfectOC) {
-        int hatches = Math.max(getExoticEnergyHatches().size(), 1);
-        long zMaxInputVoltage = maxInputVoltage;
-        long zTime = aDuration;
-        long zEUt = aEUt;
-        if (zMaxInputVoltage < zEUt) {
-            this.lEUt = Long.MAX_VALUE - 1;
-            this.mMaxProgresstime = Integer.MAX_VALUE - 1;
-            return;
-        }
-
-        while (zEUt < zMaxInputVoltage) {
-            zEUt = zEUt << 2;
-            zTime = zTime >> (perfectOC ? 2 : 1);
-            if (zTime <= 1) {
-                break;
-            }
-        }
-
-        if (zTime <= 0) {
-            zTime = 1;
-        }
-
-        while (zEUt * mAmperage > zMaxInputVoltage * getMaxInputAmps() / hatches) {
-            zEUt = zEUt >> 2;
-            zTime = zTime << (perfectOC ? 2 : 1);
-        }
-
-        if (zEUt > zMaxInputVoltage) {
-            zEUt = zEUt >> 2;
-            zTime = zTime << (perfectOC ? 2 : 1);
-        }
-
-        this.lEUt = zEUt * mAmperage;
-        this.mMaxProgresstime = (int) zTime;
-    }
-
-    @Override
     protected long getActualEnergyUsage() {
         return (-this.lEUt * 10000) / Math.min(Math.max(1000, mEfficiency), 10000);
     }
@@ -958,7 +877,19 @@ public class GT_MetaTileEntity_PCBFactory extends
             .beginStructureBlock(30, 38, 13, false)
             .addSeparator()
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
-            .addEnergyHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+            .addEnergyHatch(
+                EnumChatFormatting.GOLD + "1"
+                    + EnumChatFormatting.GRAY
+                    + "-"
+                    + EnumChatFormatting.GOLD
+                    + "2"
+                    + EnumChatFormatting.GRAY
+                    + " or "
+                    + EnumChatFormatting.GOLD
+                    + "1"
+                    + EnumChatFormatting.GRAY
+                    + " TT energy hatch.",
+                1)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
@@ -1062,7 +993,8 @@ public class GT_MetaTileEntity_PCBFactory extends
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (!aNBT.hasKey(INPUT_SEPARATION_NBT_KEY)) {
+        if (aNBT.hasKey("mSeparate")) {
+            // backward compatibility
             inputSeparation = aNBT.getBoolean("mSeparate");
         }
         mBioUpgrade = aNBT.getBoolean("mBioUpgrade");
@@ -1352,7 +1284,12 @@ public class GT_MetaTileEntity_PCBFactory extends
     }
 
     @Override
-    protected boolean isInputSeparationButtonEnabled() {
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsInputSeparation() {
         return true;
     }
 }

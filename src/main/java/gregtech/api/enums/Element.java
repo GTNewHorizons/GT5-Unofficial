@@ -277,7 +277,6 @@ public enum Element {
     $Nq(-130, -200, 0, -1, null, "Anti-Naquadah", false),
     $Nt(0, -10000, 0, -1, null, "Anti-Neutronium", false);
 
-    public static volatile int VERSION = 509;
     public final long mProtons, mNeutrons, mAdditionalMass, mHalfLifeSeconds;
     public final String mName, mDecayTo;
     public final boolean mIsIsotope;
@@ -285,6 +284,8 @@ public enum Element {
     /**
      * Links to every pure Material containing just this Element.
      */
+    // bartworks.system.material.werkstoff_loaders.registration.BridgeMaterialsLoader reassigns it, so no final here
+    @SuppressWarnings("NonFinalFieldInEnum")
     public ArrayList<Materials> mLinkedMaterials = new ArrayList<>();
 
     /**

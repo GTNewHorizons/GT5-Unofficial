@@ -196,7 +196,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     /**
-     * Returns false if the tile is no longer valid after ticking the cover
+     * @return {@code false} if the tile is no longer valid after ticking the cover
      */
     public boolean tickCoverAtSide(ForgeDirection side, long aTickTimer) {
         final CoverInfo coverInfo = getCoverInfoAtSide(side);

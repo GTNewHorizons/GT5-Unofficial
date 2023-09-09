@@ -2,6 +2,8 @@ package gregtech.loaders.load;
 
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCannerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -25,6 +27,7 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_RecipeBuilder;
+import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_Utility;
 import mods.railcraft.api.core.items.IToolCrowbar;
 
@@ -120,40 +123,30 @@ public class GT_ItemIterator implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.rotten_flesh, 2, 32767), ItemList.IC2_Food_Can_Empty.get(1L))
             .itemOutputs(ItemList.IC2_Food_Can_Spoiled.get(1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(10 * SECONDS)
             .eut(1)
             .addTo(sCannerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.spider_eye, 2, 32767), ItemList.IC2_Food_Can_Empty.get(1L))
             .itemOutputs(ItemList.IC2_Food_Can_Spoiled.get(1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(1)
             .addTo(sCannerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Food_Poisonous_Potato.get(2L), ItemList.IC2_Food_Can_Empty.get(1L))
             .itemOutputs(ItemList.IC2_Food_Can_Spoiled.get(1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(1)
             .addTo(sCannerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.cake, 1, 32767), ItemList.IC2_Food_Can_Empty.get(12L))
             .itemOutputs(ItemList.IC2_Food_Can_Filled.get(12L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(30 * SECONDS)
             .eut(1)
             .addTo(sCannerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.mushroom_stew, 1, 32767), ItemList.IC2_Food_Can_Empty.get(6L))
             .itemOutputs(ItemList.IC2_Food_Can_Filled.get(6L), new ItemStack(Items.bowl, 1))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(15 * SECONDS)
             .eut(1)
             .addTo(sCannerRecipes);
@@ -224,9 +217,7 @@ public class GT_ItemIterator implements Runnable {
                                         ItemList.IC2_Food_Can_Filled.get(tFoodValue),
                                         GT_Utility.getContainerItem(new ItemStack(tItem, 1, 0), true));
                                 }
-                                recipeBuilder.noFluidInputs()
-                                    .noFluidOutputs()
-                                    .duration(tFoodValue * 5 * SECONDS)
+                                recipeBuilder.duration(tFoodValue * 5 * SECONDS)
                                     .eut(1)
                                     .addTo(sCannerRecipes);
                             }
@@ -238,10 +229,22 @@ public class GT_ItemIterator implements Runnable {
                             GT_OreDictUnificator.set(OrePrefixes.ore, Materials.Vinteum, new ItemStack(tItem, 1, 0));
                         }
                         if (tName.equals("item.ArsMagica:purified_vinteum")) {
-                            GT_Values.RA.addFuel(new ItemStack(tItem, 1, 0), null, 256, 5);
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(new ItemStack(tItem, 1, 0))
+                                .metadata(FUEL_VALUE, 256)
+                                .metadata(FUEL_TYPE, 5)
+                                .duration(0)
+                                .eut(0)
+                                .addTo(GT_RecipeConstants.Fuel);
                         }
                         if ((tName.equals("item.fieryBlood")) || (tName.equals("item.fieryTears"))) {
-                            GT_Values.RA.addFuel(new ItemStack(tItem, 1, 0), null, 2048, 5);
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(new ItemStack(tItem, 1, 0))
+                                .metadata(FUEL_VALUE, 2048)
+                                .metadata(FUEL_TYPE, 5)
+                                .duration(0)
+                                .eut(0)
+                                .addTo(GT_RecipeConstants.Fuel);
                         }
                         if (tName.equals("tile.TFRoots")) {
                             GT_ModHandler.addPulverisationRecipe(
@@ -253,7 +256,14 @@ public class GT_ItemIterator implements Runnable {
                                 new ItemStack(tItem, 1, 0),
                                 new ItemStack(Items.stick, 4),
                                 new ItemStack(Items.stick, 2));
-                            GT_Values.RA.addFuel(new ItemStack(tItem, 1, 1), new ItemStack(Items.stick, 4), 32, 5);
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(new ItemStack(tItem, 1, 1))
+                                .itemOutputs(new ItemStack(Items.stick, 4))
+                                .metadata(FUEL_VALUE, 32)
+                                .metadata(FUEL_TYPE, 5)
+                                .duration(0)
+                                .eut(0)
+                                .addTo(GT_RecipeConstants.Fuel);
                         }
                         if (tName.equals("item.tconstruct.manual")) {
                             GT_OreDictUnificator.registerOre("bookTinkersManual", new ItemStack(tItem, 1, 32767));
@@ -329,9 +339,7 @@ public class GT_ItemIterator implements Runnable {
                             GT_OreDictUnificator
                                 .registerOre(OrePrefixes.stone, Materials.Basalt, new ItemStack(tItem, 1, 6));
                         }
-                        if (
-                        /** (tName.equals("tile.sedimentaryStone")) || **/
-                        ((tName.equals("tile.igneousStone")) || (tName.equals("tile.igneousStoneBrick"))
+                        if (((tName.equals("tile.igneousStone")) || (tName.equals("tile.igneousStoneBrick"))
                             || (tName.equals("tile.igneousCobblestone")))) {
                             GT_OreDictUnificator
                                 .registerOre(OrePrefixes.stone, Materials.GraniteRed, new ItemStack(tItem, 1, 0));

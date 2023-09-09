@@ -21,26 +21,36 @@ import gregtech.api.interfaces.IChunkLoader;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Log;
 
-// This class handles re-initializing chunks after a server restart
+/**
+ * Handles re-initialization of chunks after a server restart.
+ */
 public class GT_ChunkManager
     implements ForgeChunkManager.OrderedLoadingCallback, ForgeChunkManager.PlayerOrderedLoadingCallback {
 
-    private Map<TileEntity, Ticket> registeredTickets = new HashMap<>();
+    private final Map<TileEntity, Ticket> registeredTickets = new HashMap<>();
     public static GT_ChunkManager instance = new GT_ChunkManager();
 
     public static void init() {
         ForgeChunkManager.setForcedChunkLoadingCallback(GT_Mod.instance, instance);
-        // MinecraftForge.EVENT_BUS.register(instance);
     }
 
     @Override
     public void ticketsLoaded(List<Ticket> tickets, World world) {}
 
-    // Determine if tickets should be kept. Based on if the ticket is a machine or working chunk ticket. Working chunk
-    // tickets are tossed
-    // and re-created when the machine re-activates. Machine tickets are kept only if the config
-    // alwaysReloadChunkloaders is true. Otherwise
-    // machine chunks are tossed and re-created only when the machine re-activates, similar to a Passive Anchor.
+    /**
+     * Determines if tickets should be kept. Based on if the ticket is a machine or a working-chunk ticket.
+     * Working-chunk tickets are tossed and recreated when the machine reactivates.
+     * Machine tickets are kept only if the config {@code alwaysReloadChunkloaders} is true.
+     * Otherwise, machine chunks are tossed and recreated only when the machine reactivates,
+     * similarly to a Passive Anchor.
+     *
+     * @param tickets        The tickets that you will want to select from.
+     *                       The list is immutable and cannot be manipulated directly. Copy it first.
+     * @param world          The world
+     * @param maxTicketCount The maximum number of tickets that will be allowed.
+     * @return list of tickets
+     */
+
     @Override
     public List<Ticket> ticketsLoaded(List<Ticket> tickets, World world, int maxTicketCount) {
         List<Ticket> validTickets = new ArrayList<>();
@@ -54,8 +64,7 @@ public class GT_ChunkManager
                     .getInteger("OwnerZ");
                 if (y > 0) {
                     TileEntity tile = world.getTileEntity(x, y, z);
-                    if (tile != null && tile instanceof IGregTechTileEntity
-                        && ((IGregTechTileEntity) tile).isAllowedToWork()) {
+                    if (tile instanceof IGregTechTileEntity && ((IGregTechTileEntity) tile).isAllowedToWork()) {
                         ForgeChunkManager.forceChunk(ticket, new ChunkCoordIntPair(x >> 4, z >> 4));
                         if (!registeredTickets.containsKey(tile)) {
                             registeredTickets.put(tile, ticket);
@@ -72,19 +81,32 @@ public class GT_ChunkManager
         return validTickets;
     }
 
-    // Determine if player tickets should be kept. This is where a ticket list per player would be created and
-    // maintained. When
-    // a player join event occurs, their name/UUID/whatevs is compared against tickets on this list and those tickets
-    // reactivated.
-    // Since that info would be maintained/dealt with on a per-player startup, the list returned back to Forge is empty.
+    /**
+     * Determines if player tickets should be kept. This is where a ticket list per-player would be created and
+     * maintained. When a player joins, an event occurs, their name/UUID/etc is compared against tickets on this list
+     * and those tickets are reactivated.
+     * Since that info would be maintained/dealt with on a per-player startup, the list returned back to Forge is empty.
+     *
+     * @param tickets The tickets that you will want to select from.
+     *                The list is immutable and cannot be manipulated directly. Copy it first.
+     * @param world   The world
+     * @return the list of string-ticket paris
+     */
     @Override
     public ListMultimap<String, Ticket> playerTicketsLoaded(ListMultimap<String, Ticket> tickets, World world) {
         // Not currently used, so just return an empty list.
         return ArrayListMultimap.create();
     }
 
-    // Request a chunk to be loaded for this machine
-    // may pass null chunk to load just the machine itself, if "alwaysReloadChunkloaders" is enabled in config
+    /**
+     * Requests a chunk to be loaded for this machine. May pass a {@code null} chunk to load just the machine itself if
+     * {@code alwaysReloadChunkloaders} is enabled in config.
+     *
+     * @param owner   owner of the TileEntity
+     * @param chunkXZ chunk coordinates
+     * @param player  player
+     * @return if the chunk was loaded successfully
+     */
     public static boolean requestPlayerChunkLoad(TileEntity owner, ChunkCoordIntPair chunkXZ, String player) {
         if (!GT_Values.enableChunkloaders) return false;
         if (!GT_Values.alwaysReloadChunkloaders && chunkXZ == null) return false;
@@ -122,6 +144,7 @@ public class GT_ChunkManager
         return true;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public static boolean requestChunkLoad(TileEntity owner, ChunkCoordIntPair chunkXZ) {
         return requestPlayerChunkLoad(owner, chunkXZ, "");
     }

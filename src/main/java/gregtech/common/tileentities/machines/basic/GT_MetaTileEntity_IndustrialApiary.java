@@ -2,7 +2,22 @@ package gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GT_Values.AuthorKuba;
 import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_INDUSTRIAL_APIARY;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_INDUSTRIAL_APIARY_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_INDUSTRIAL_APIARY_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_INDUSTRIAL_APIARY_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_INDUSTRIAL_APIARY;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_INDUSTRIAL_APIARY_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_INDUSTRIAL_APIARY_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_INDUSTRIAL_APIARY_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_INDUSTRIAL_APIARY;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_INDUSTRIAL_APIARY_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_INDUSTRIAL_APIARY_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_INDUSTRIAL_APIARY_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_INDUSTRIAL_APIARY;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_INDUSTRIAL_APIARY_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_INDUSTRIAL_APIARY_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_INDUSTRIAL_APIARY_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.STALLED_STUTTERING_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
@@ -11,7 +26,12 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
@@ -51,9 +71,30 @@ import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import forestry.api.apiculture.*;
+import forestry.api.apiculture.BeeManager;
+import forestry.api.apiculture.EnumBeeChromosome;
+import forestry.api.apiculture.EnumBeeType;
+import forestry.api.apiculture.FlowerManager;
+import forestry.api.apiculture.IAlleleBeeAcceleratableEffect;
+import forestry.api.apiculture.IAlleleBeeEffect;
+import forestry.api.apiculture.IAlleleBeeSpecies;
+import forestry.api.apiculture.IApiaristTracker;
+import forestry.api.apiculture.IBee;
+import forestry.api.apiculture.IBeeGenome;
+import forestry.api.apiculture.IBeeHousing;
+import forestry.api.apiculture.IBeeHousingInventory;
+import forestry.api.apiculture.IBeeListener;
+import forestry.api.apiculture.IBeeModifier;
+import forestry.api.apiculture.IBeeRoot;
+import forestry.api.apiculture.IBeekeepingLogic;
+import forestry.api.apiculture.IBeekeepingMode;
 import forestry.api.arboriculture.EnumGermlingType;
-import forestry.api.core.*;
+import forestry.api.core.BiomeHelper;
+import forestry.api.core.EnumHumidity;
+import forestry.api.core.EnumTemperature;
+import forestry.api.core.ForestryAPI;
+import forestry.api.core.IErrorLogic;
+import forestry.api.core.IErrorState;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IEffectData;
 import forestry.api.genetics.IIndividual;
@@ -74,6 +115,8 @@ import gregtech.api.util.GT_ApiaryModifier;
 import gregtech.api.util.GT_ApiaryUpgrade;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicMachine
     implements IBeeHousing, IBeeHousingInventory, IErrorLogic, IBeeModifier, IBeeListener, IAddUIWidgets {
@@ -84,10 +127,11 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     static final int drone = 6;
     private static Field AlleleBeeEffectThrottledField;
 
-    IBeeRoot beeRoot = (IBeeRoot) AlleleManager.alleleRegistry.getSpeciesRoot("rootBees");
+    final IBeeRoot beeRoot = (IBeeRoot) AlleleManager.alleleRegistry.getSpeciesRoot("rootBees");
 
     public int mSpeed = 0;
     public boolean mLockedSpeed = true;
+    public boolean mAutoQueen = true;
 
     private ItemStack usedQueen = null;
     private IBee usedQueenBee = null;
@@ -100,7 +144,13 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
             aNameRegional,
             aTier,
             4,
-            new String[] { "BEES GOES BRRRR", EnumChatFormatting.GRAY + AuthorKuba },
+            new String[] { "BEES GOES BRRRR", EnumChatFormatting.GRAY + AuthorKuba,
+                "Effective production chance as a percent is", "2.8 * b^0.52 * (p + t)^0.52 * s^0.37",
+                "where b is the base production chance as a percent,",
+                "p is the production modifier (2 w/o upgrades, or 4 * 1.2^n with n production upgrades),",
+                "t is 8 for the industrial apiary, and", "s is the speed value for the bee",
+                "Outputs are generated at the end of every bee tick (...)",
+                "Primary outputs are rolled once with base chance, once with half base" },
             6,
             9,
             "IndustrialApiary.png",
@@ -207,6 +257,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         super.saveNBTData(aNBT);
         aNBT.setInteger("mSpeed", mSpeed);
         aNBT.setBoolean("mLockedSpeed", mLockedSpeed);
+        aNBT.setBoolean("mAutoQueen", mAutoQueen);
         if (usedQueen != null) aNBT.setTag("usedQueen", usedQueen.writeToNBT(new NBTTagCompound()));
         aNBT.setBoolean("retrievingPollenInThisOperation", retrievingPollenInThisOperation);
         aNBT.setInteger("pollinationDelay", pollinationDelay);
@@ -218,6 +269,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         super.loadNBTData(aNBT);
         mSpeed = aNBT.getInteger("mSpeed");
         mLockedSpeed = aNBT.getBoolean("mLockedSpeed");
+        if (aNBT.hasKey("mAutoQueen")) mAutoQueen = aNBT.getBoolean("mAutoQueen");
         if (aNBT.hasKey("usedQueen")) usedQueen = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("usedQueen"));
         retrievingPollenInThisOperation = aNBT.getBoolean("retrievingPollenInThisOperation");
         pollinationDelay = aNBT.getInteger("pollinationDelay");
@@ -284,7 +336,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 final IAlleleBeeSpecies secondary = genome.getSecondary();
 
                 final float speed = genome.getSpeed();
-                final float prodMod = getProductionModifier(null, 1f) * beemodifier.getProductionModifier(null, 1.f);
+                final float prodMod = getProductionModifier(null, 0f) + beemodifier.getProductionModifier(null, 0f);
 
                 final HashMap<GT_Utility.ItemId, Float> drops = new HashMap<>();
                 final HashMap<GT_Utility.ItemId, ItemStack> dropstacks = new HashMap<>();
@@ -594,9 +646,10 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                                     if (aBaseMetaTileEntity.addStackToSlot(queen, mOutputItems[i])) break;
                                 } else if (beeRoot.isMember(mOutputItems[i], EnumBeeType.DRONE.ordinal()))
                                     if (aBaseMetaTileEntity.addStackToSlot(drone, mOutputItems[i])) break;
-                            } else
-                                if (i == 0 && j == 0 && beeRoot.isMember(mOutputItems[0], EnumBeeType.QUEEN.ordinal()))
-                                    if (aBaseMetaTileEntity.addStackToSlot(queen, mOutputItems[0])) break;
+                            } else if (mAutoQueen && i == 0
+                                && j == 0
+                                && beeRoot.isMember(mOutputItems[0], EnumBeeType.QUEEN.ordinal())
+                                && aBaseMetaTileEntity.addStackToSlot(queen, mOutputItems[0])) break;
                             if (aBaseMetaTileEntity
                                 .addStackToSlot(getOutputSlot() + ((j + i) % mOutputItems.length), mOutputItems[i]))
                                 break;
@@ -1098,7 +1151,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         SPEED_LOCKED_TOOLTIP = "GT5U.machines.industrialapiary.speedlocked.tooltip",
         INFO_TOOLTIP = "GT5U.machines.industrialapiary.info.tooltip",
         INFO_WITH_BEE_TOOLTIP = "GT5U.machines.industrialapiary.infoextended.tooltip",
-        UPGRADE_TOOLTIP = "GT5U.machines.industrialapiary.upgradeslot.tooltip";
+        UPGRADE_TOOLTIP = "GT5U.machines.industrialapiary.upgradeslot.tooltip",
+        AUTOQUEEN_TOOLTIP = "GT5U.machines.industrialapiary.autoqueen.tooltip";
 
     @Override
     public boolean useModularUI() {
@@ -1142,6 +1196,15 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                     .setPos(7, 26)
                     .setSize(18, 18))
             .widget(
+                new CycleButtonWidget().setToggle(() -> mAutoQueen, x -> mAutoQueen = x)
+                    .setTextureGetter(
+                        i -> i == 0 ? GT_UITextures.OVERLAY_BUTTON_CROSS : GT_UITextures.OVERLAY_BUTTON_CHECKMARK)
+                    .setGTTooltip(() -> mTooltipCache.getData(AUTOQUEEN_TOOLTIP))
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                    .setPos(7, 44)
+                    .setSize(18, 18)
+                    .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_SLOT_BEE_QUEEN))
+            .widget(
                 new DrawableWidget().setDrawable(GT_UITextures.PICTURE_INFORMATION)
                     .setGTTooltip(() -> {
                         final String energyreq = GT_Utility.formatNumbers(
@@ -1166,7 +1229,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                                     Temp,
                                     Hum,
                                     genome.getSpeed(),
-                                    getProductionModifier(null, 1f) * mod.getProductionModifier(null, 1f),
+                                    getProductionModifier(null, 0f) + mod.getProductionModifier(null, 0f),
                                     Math.round(
                                         getFloweringModifier(null, 1f) * genome.getFlowering()
                                             * mod.getFloweringModifier(null, 1f)),
@@ -1388,6 +1451,59 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
                 break;
             }
             return null;
+        }
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        if (tag.hasKey("queen")) {
+            currenttip.add(
+                "Current Queen: " + EnumChatFormatting.GREEN + StatCollector.translateToLocal(tag.getString("queen")));
+        }
+        if (tag.hasKey("dummyProduction")) {
+            currenttip.add(
+                "Effective Production: " + EnumChatFormatting.AQUA
+                    + String.format("b^0.52 * %.2f", tag.getFloat("dummyProduction")));
+        }
+        if (tag.hasKey("errors")) {
+            NBTTagCompound errorNbt = tag.getCompoundTag("errors");
+            for (int i = 0; i < errorNbt.getInteger("size"); i++) {
+                currenttip.add(
+                    "Error: " + EnumChatFormatting.RED
+                        + StatCollector.translateToLocal("for." + errorNbt.getString("e" + i)));
+            }
+        }
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        if (usedQueen != null) {
+            IBeeGenome genome = beeRoot.getMember(usedQueen)
+                .getGenome();
+            tag.setString(
+                "queen",
+                genome.getPrimary()
+                    .getUnlocalizedName());
+            float prodModifier = getProductionModifier(genome, 0f);
+            prodModifier += beeRoot.getBeekeepingMode(world)
+                .getBeeModifier()
+                .getProductionModifier(genome, prodModifier);
+            float dummyProduction = 100f * Bee.getFinalChance(0.01f, genome.getSpeed(), prodModifier, 8f);
+            tag.setFloat("dummyProduction", dummyProduction);
+        }
+        if (hasErrors()) {
+            NBTTagCompound errorNbt = new NBTTagCompound();
+            int errorCounter = 0;
+            for (IErrorState error : mErrorStates) {
+                errorNbt.setString("e" + errorCounter++, error.getDescription());
+            }
+            errorNbt.setInteger("size", errorCounter);
+            tag.setTag("errors", errorNbt);
         }
     }
 }

@@ -9,7 +9,12 @@ import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsOreAlum;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -24,7 +29,6 @@ public class GT_BauxiteRefineChain {
                 Materials.SodiumHydroxide.getDust(9),
                 Materials.Quicklime.getDust(4),
                 GT_Utility.getIntegratedCircuit(8))
-            .noItemOutputs()
             .fluidInputs(Materials.Water.getFluid(5000))
             .fluidOutputs(MaterialsOreAlum.BauxiteSlurry.getFluid(8000))
             .duration(10 * SECONDS)
@@ -37,7 +41,6 @@ public class GT_BauxiteRefineChain {
                 Materials.SodiumHydroxide.getDust(9),
                 Materials.Quicklime.getDust(4),
                 GT_Utility.getIntegratedCircuit(8))
-            .noItemOutputs()
             .fluidInputs(Materials.Water.getFluid(5000))
             .fluidOutputs(MaterialsOreAlum.BauxiteSlurry.getFluid(8000))
             .duration(10 * SECONDS)
@@ -75,8 +78,6 @@ public class GT_BauxiteRefineChain {
                 Materials.SiliconDioxide.getDust(1),
                 Materials.Iron.getDust(1))
             .outputChances(10000, 3000, 2000, 9000, 8000)
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(sCentrifugeRecipes);
@@ -110,8 +111,6 @@ public class GT_BauxiteRefineChain {
                 Materials.Manganese.getDust(1),
                 Materials.Magnesium.getDust(1))
             .outputChances(8000, 500, 2000, 5000, 6000)
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(sCentrifugeRecipes);
@@ -125,7 +124,6 @@ public class GT_BauxiteRefineChain {
                     GT_OreDictUnificator.get(ore, Materials.Sapphire, 1),
                     GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
                     GT_Utility.getIntegratedCircuit(1))
-                .noItemOutputs()
                 .fluidInputs(Materials.HydrochloricAcid.getFluid(1000))
                 .fluidOutputs(MaterialsOreAlum.SapphireJuice.getFluid(1000))
                 .duration(2 * SECONDS)
@@ -137,7 +135,6 @@ public class GT_BauxiteRefineChain {
                     GT_OreDictUnificator.get(ore, Materials.GreenSapphire, 1),
                     GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
                     GT_Utility.getIntegratedCircuit(1))
-                .noItemOutputs()
                 .fluidInputs(Materials.HydrochloricAcid.getFluid(1000))
                 .fluidOutputs(MaterialsOreAlum.GreenSapphireJuice.getFluid(1000))
                 .duration(2 * SECONDS)
@@ -149,7 +146,6 @@ public class GT_BauxiteRefineChain {
                     GT_OreDictUnificator.get(ore, Materials.Ruby, 1),
                     GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
                     GT_Utility.getIntegratedCircuit(1))
-                .noItemOutputs()
                 .fluidInputs(Materials.HydrochloricAcid.getFluid(1000))
                 .fluidOutputs(MaterialsOreAlum.RubyJuice.getFluid(1000))
                 .duration(2 * SECONDS)
@@ -258,7 +254,7 @@ public class GT_BauxiteRefineChain {
                 Materials.Gold.getDust(1),
                 Materials.Vanadium.getDust(1),
                 Materials.Rutile.getDust(1))
-            .outputChances(5000, 4000, 300, 300, 200, 200)
+            .outputChances(5000, 4000, 300, 300, 200, 600)
             .fluidInputs(Materials.NitricAcid.getFluid(10))
             .fluidOutputs(MaterialsOreAlum.SluiceJuice.getFluid(10))
             .duration(2 * SECONDS + 5 * TICKS)

@@ -25,6 +25,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 
 import appeng.api.implementations.IPowerChannelState;
@@ -44,8 +46,9 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.modularui.GUITextureSet;
+import gregtech.api.interfaces.ICleanroom;
+import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
-import gregtech.api.interfaces.metatileentity.IMachineCallback;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
@@ -72,7 +75,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * GT_MetaTileEntity_E_Furnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
  */
 @SuppressWarnings("unused")
-public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallback<MetaTileEntity> {
+public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomReceiver {
 
     /**
      * Only assigned for the MetaTileEntity in the List! Also only used to get the localized Name for the ItemStack and
@@ -99,7 +102,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     public boolean doTickProfilingInThisTick = true;
 
-    private MetaTileEntity mCallBackTile;
+    private ICleanroom cleanroom;
 
     /**
      * accessibility to this Field is no longer given, see below
@@ -109,14 +112,22 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     public long mSoundRequests = 0;
 
     /**
-     * This registers your Machine at the List. Use only ID's larger than 2048, because i reserved these ones. See also
-     * the List in the API, as it has a Description containing all the reservations.
+     * This registers your Machine at the List. Use only ID's larger than 2048 - the ones lower are reserved by GT.
+     * See also the list in the API package - it has a description that contains all the reservations.
+     * <p>
+     * The constructor can be overloaded as follows:
+     * <blockquote>
      *
-     * @param aID the ID
-     * @example for Constructor overload.
-     *          <p/>
-     *          public GT_MetaTileEntity_EBench(int aID, String mName, String mNameRegional) { super(aID, mName,
-     *          mNameRegional); }
+     * <pre>
+     *
+     * public GT_MetaTileEntity_EBench(int id, String name, String nameRegional) {
+     *     super(id, name, nameRegional);
+     * }
+     * </pre>
+     *
+     * </blockquote>
+     *
+     * @param aID the machine ID
      */
     public MetaTileEntity(int aID, String aBasicName, String aRegionalName, int aInvSlotCount) {
         if (GregTech_API.sPostloadStarted || !GregTech_API.sPreloadStarted)
@@ -171,6 +182,11 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         if (mBaseMetaTileEntity != null) {
             mBaseMetaTileEntity.setMetaTileEntity(this);
         }
+    }
+
+    public boolean isValid() {
+        return getBaseMetaTileEntity() != null && getBaseMetaTileEntity().getMetaTileEntity() == this
+            && !getBaseMetaTileEntity().isDead();
     }
 
     @Override
@@ -303,6 +319,12 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         }
     }
 
+    public void onTickFail(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {}
+
+    public void onSetActive(boolean active) {}
+
+    public void onDisableWorking() {}
+
     @Override
     public void inValidate() {
         /* Do nothing */
@@ -375,19 +397,15 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         /* Do nothing */
     }
 
+    @Nullable
     @Override
-    public MetaTileEntity getCallbackBase() {
-        return mCallBackTile;
+    public ICleanroom getCleanroom() {
+        return cleanroom;
     }
 
     @Override
-    public void setCallbackBase(MetaTileEntity callback) {
-        this.mCallBackTile = callback;
-    }
-
-    @Override
-    public Class<?> getType() {
-        return null;
+    public void setCleanroom(ICleanroom cleanroom) {
+        this.cleanroom = cleanroom;
     }
 
     @Override

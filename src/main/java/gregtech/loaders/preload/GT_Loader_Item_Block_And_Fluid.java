@@ -29,7 +29,15 @@ import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
+import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsKevlar;
+import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
 import gregtech.api.fluid.GT_FluidFactory;
 import gregtech.api.items.GT_Block_LongDistancePipe;
 import gregtech.api.items.GT_BreederCell_Item;
@@ -41,7 +49,23 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.*;
+import gregtech.common.blocks.GT_Block_Casings1;
+import gregtech.common.blocks.GT_Block_Casings2;
+import gregtech.common.blocks.GT_Block_Casings3;
+import gregtech.common.blocks.GT_Block_Casings4;
+import gregtech.common.blocks.GT_Block_Casings5;
+import gregtech.common.blocks.GT_Block_Casings6;
+import gregtech.common.blocks.GT_Block_Casings8;
+import gregtech.common.blocks.GT_Block_Casings9;
+import gregtech.common.blocks.GT_Block_Concretes;
+import gregtech.common.blocks.GT_Block_Granites;
+import gregtech.common.blocks.GT_Block_Machines;
+import gregtech.common.blocks.GT_Block_Metal;
+import gregtech.common.blocks.GT_Block_Ores;
+import gregtech.common.blocks.GT_Block_Reinforced;
+import gregtech.common.blocks.GT_Block_Stones;
+import gregtech.common.blocks.GT_Cyclotron_Coils;
+import gregtech.common.blocks.GT_TileEntity_Ores;
 import gregtech.common.items.GT_DepletetCell_Item;
 import gregtech.common.items.GT_FluidDisplayItem;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
@@ -238,8 +262,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 2L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(25 * SECONDS)
                 .eut(48)
                 .addTo(sThermalCentrifugeRecipes);
@@ -250,8 +272,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 2L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(25 * SECONDS)
                 .eut(48)
                 .addTo(sThermalCentrifugeRecipes);
@@ -262,8 +282,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 2L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 4L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(25 * SECONDS)
                 .eut(48)
                 .addTo(sThermalCentrifugeRecipes);
@@ -318,8 +336,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 8L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
                 .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(25 * SECONDS)
                 .eut(2000)
                 .addTo(sCentrifugeRecipes);
@@ -334,8 +350,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 18L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L))
                 .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(50 * SECONDS)
                 .eut(2000)
                 .addTo(sCentrifugeRecipes);
@@ -350,8 +364,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 38L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L))
                 .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(100 * SECONDS)
                 .eut(2000)
                 .addTo(sCentrifugeRecipes);
@@ -404,8 +416,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 8L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
                 .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(25 * SECONDS)
                 .eut(2000)
                 .addTo(sCentrifugeRecipes);
@@ -420,8 +430,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 18L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L))
                 .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(50 * SECONDS)
                 .eut(2000)
                 .addTo(sCentrifugeRecipes);
@@ -436,8 +444,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 38L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L))
                 .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(100 * SECONDS)
                 .eut(2000)
                 .addTo(sCentrifugeRecipes);
@@ -641,11 +647,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
 
         BaseMetaTileEntity tBaseMetaTileEntity = GregTech_API.constructBaseMetaTileEntity();
 
-        GT_Log.out.println("GT_Mod: Testing BaseMetaTileEntity.");
-        if (tBaseMetaTileEntity == null) {
-            GT_Log.out.println("GT_Mod: Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
-            throw new RuntimeException("");
-        }
         GT_Log.out.println("GT_Mod: Registering the BaseMetaTileEntity.");
         GameRegistry.registerTileEntity(tBaseMetaTileEntity.getClass(), "BaseMetaTileEntity");
         FMLInterModComms.sendMessage(
@@ -817,7 +818,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .itemInputs(Materials.Empty.getCells(1))
             .itemOutputs(GT_ModHandler.getIC2Item("steamCell", 1))
             .fluidInputs(GT_ModHandler.getSteam(1000))
-            .noFluidOutputs()
             .duration(16 * TICKS)
             .eut(1)
             .addTo(sFluidCannerRecipes);

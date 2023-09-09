@@ -20,7 +20,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.S2BPacketChangeGameState;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.*;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayerFactory;
@@ -124,15 +128,15 @@ public class GT_Entity_Arrow extends EntityArrow {
                 this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ)
                     .expand(1.0D, 1.0D, 1.0D));
             double tLargestDistance = Double.MAX_VALUE;
-            for (Entity tAllPotentiallyHitEntity : tAllPotentiallyHitEntities) {
-                Entity entity1 = tAllPotentiallyHitEntity;
-                if ((entity1.canBeCollidedWith()) && ((entity1 != tShootingEntity) || (this.ticksInAir >= 5))) {
-                    AxisAlignedBB axisalignedbb1 = entity1.boundingBox.expand(0.3D, 0.3D, 0.3D);
+            for (Entity potentiallyHitEntity : tAllPotentiallyHitEntities) {
+                if ((potentiallyHitEntity.canBeCollidedWith())
+                    && ((potentiallyHitEntity != tShootingEntity) || (this.ticksInAir >= 5))) {
+                    AxisAlignedBB axisalignedbb1 = potentiallyHitEntity.boundingBox.expand(0.3D, 0.3D, 0.3D);
                     MovingObjectPosition movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
                     if (movingobjectposition1 != null) {
                         double tDistance = vec31.distanceTo(movingobjectposition1.hitVec);
                         if (tDistance < tLargestDistance) {
-                            tHitEntity = entity1;
+                            tHitEntity = potentiallyHitEntity;
                             tLargestDistance = tDistance;
                         }
                     }
@@ -243,7 +247,7 @@ public class GT_Entity_Arrow extends EntityArrow {
                                         : null,
                                     tHitLivingEntity,
                                     this.mArrow);
-                                if ((tShootingEntity != null) && (tHitLivingEntity != tShootingEntity)
+                                if ((tHitLivingEntity != tShootingEntity)
                                     && ((tHitLivingEntity instanceof EntityPlayer))
                                     && ((tShootingEntity instanceof EntityPlayerMP))) {
                                     ((EntityPlayerMP) tShootingEntity).playerNetServerHandler

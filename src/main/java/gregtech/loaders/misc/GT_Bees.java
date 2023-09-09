@@ -1,13 +1,22 @@
 package gregtech.loaders.misc;
 
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.GalaxySpace;
+import static gregtech.api.enums.Mods.TwilightForest;
 
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 
 import forestry.api.apiculture.EnumBeeChromosome;
+import forestry.api.apiculture.IAlleleBeeEffect;
 import forestry.api.core.IClimateProvider;
-import forestry.api.genetics.*;
+import forestry.api.genetics.AlleleManager;
+import forestry.api.genetics.IAllele;
+import forestry.api.genetics.IAlleleArea;
+import forestry.api.genetics.IAlleleFloat;
+import forestry.api.genetics.IAlleleInteger;
+import forestry.api.genetics.IGenome;
+import forestry.api.genetics.IMutationCondition;
 import forestry.core.genetics.alleles.Allele;
 import forestry.core.utils.StringUtil;
 import gregtech.GT_Mod;
@@ -16,6 +25,8 @@ import gregtech.common.items.ItemComb;
 import gregtech.common.items.ItemDrop;
 import gregtech.common.items.ItemPollen;
 import gregtech.common.items.ItemPropolis;
+import gregtech.loaders.misc.bees.GT_AlleleEffect;
+import gregtech.loaders.misc.bees.GT_EffectTreeTwister;
 
 public class GT_Bees {
 
@@ -34,6 +45,8 @@ public class GT_Bees {
 
     public static IAlleleInteger blinkLife;
     public static IAlleleInteger superLife;
+
+    public static IAlleleBeeEffect treetwisterEffect;
 
     public static ItemPropolis propolis;
     public static ItemPollen pollen;
@@ -78,11 +91,20 @@ public class GT_Bees {
 
         blinkLife = new AlleleInteger("lifeBlink", 2, false, EnumBeeChromosome.LIFESPAN);
         superLife = new AlleleInteger("lifeEon", 600, false, EnumBeeChromosome.LIFESPAN);
+
+        if (GalaxySpace.isModLoaded() && TwilightForest.isModLoaded()) {
+            GT_Mod.GT_FML_LOGGER.info("treetwisterEffect: GalaxySpace and TwilightForest loaded, using default impl");
+            treetwisterEffect = new GT_EffectTreeTwister();
+        } else {
+            GT_Mod.GT_FML_LOGGER
+                .info("treetwisterEffect: GalaxySpace or TwilightForest was not loaded, using fallback impl");
+            treetwisterEffect = GT_AlleleEffect.FORESTRY_BASE_EFFECT;
+        }
     }
 
     private static class AlleleFloat extends Allele implements IAlleleFloat {
 
-        private float value;
+        private final float value;
 
         public AlleleFloat(String id, float val, boolean isDominant) {
             super("gregtech." + id, "gregtech." + id, isDominant);
@@ -98,7 +120,7 @@ public class GT_Bees {
 
     private static class AlleleInteger extends Allele implements IAlleleInteger {
 
-        private int value;
+        private final int value;
 
         public AlleleInteger(String id, int val, boolean isDominant, EnumBeeChromosome c) {
             super("gregtech." + id, "gregtech." + id, isDominant);
@@ -114,7 +136,7 @@ public class GT_Bees {
 
     private static class AlleleArea extends Allele implements IAlleleArea {
 
-        private int[] value;
+        private final int[] value;
 
         public AlleleArea(String id, int rangeXZ, int rangeY, boolean isDominant) {
             super("gregtech." + id, "gregtech." + id, isDominant);
@@ -130,8 +152,8 @@ public class GT_Bees {
 
     public static class DimensionMutationCondition implements IMutationCondition {
 
-        int dimID;
-        String dimName;
+        final int dimID;
+        final String dimName;
 
         public DimensionMutationCondition(int id, String name) {
             dimID = id;
@@ -153,8 +175,8 @@ public class GT_Bees {
 
     public static class BiomeIDMutationCondition implements IMutationCondition {
 
-        int biomeID;
-        String biomeName;
+        final int biomeID;
+        final String biomeName;
 
         public BiomeIDMutationCondition(int id, String name) {
             biomeID = id;

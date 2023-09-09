@@ -4,7 +4,6 @@ import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -446,7 +445,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         final IGregTechTileEntity tGregTechTileEntity = mTemporaryTileEntity.get();
         final ArrayList<ItemStack> tDrops;
         if (tGregTechTileEntity == null) {
-            tDrops = (ArrayList<ItemStack>) Collections.<ItemStack>emptyList();
+            tDrops = new ArrayList<>();
         } else {
             tDrops = tGregTechTileEntity.getDrops();
             mTemporaryTileEntity.remove();
@@ -626,7 +625,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         if (tTileEntity instanceof IDebugableTileEntity) {
             return ((IDebugableTileEntity) tTileEntity).getDebugInfo(aPlayer, aLogLevel);
         }
-        return (ArrayList<String>) Collections.<String>emptyList();
+        return new ArrayList<>();
     }
 
     @Override

@@ -1,7 +1,17 @@
 package gregtech.loaders.preload;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.Mods.*;
+import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.Avaritia;
+import static gregtech.api.enums.Mods.CraftTweaker;
+import static gregtech.api.enums.Mods.EnderIO;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GalacticraftCore;
+import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Mods.HodgePodge;
+import static gregtech.api.enums.Mods.IndustrialCraft2Classic;
+import static gregtech.api.enums.Mods.TinkerConstruct;
+import static gregtech.api.enums.Mods.Translocator;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -129,7 +139,7 @@ public class GT_PreLoad {
         GregTech_API.mGalacticraft = GalacticraftCore.isModLoaded();
         GregTech_API.mAE2 = AppliedEnergistics2.isModLoaded();
         GregTech_API.mHodgepodge = HodgePodge.isModLoaded();
-        GregTech_API.mEternalSingularity = EternalSingularity.isModLoaded();
+        GregTech_API.mAvaritia = Avaritia.isModLoaded();
     }
 
     public static void createLogFiles(File parentFile, Configuration tMainConfig) {
@@ -825,6 +835,10 @@ public class GT_PreLoad {
             .get("render", "RenderDirtParticles", true);
         GT_Mod.gregtechproxy.mRenderPollutionFog = GregTech_API.sClientDataFile
             .get("render", "RenderPollutionFog", true);
+        GT_Mod.gregtechproxy.mRenderItemDurabilityBar = GregTech_API.sClientDataFile
+            .get("render", "RenderItemDurabilityBar", true);
+        GT_Mod.gregtechproxy.mRenderItemChargeBar = GregTech_API.sClientDataFile
+            .get("render", "RenderItemChargeBar", true);
 
         GT_Mod.gregtechproxy.mCoverTabsVisible = GregTech_API.sClientDataFile
             .get("interface", "DisplayCoverTabs", true);
@@ -842,6 +856,7 @@ public class GT_PreLoad {
 
         GT_Mod.gregtechproxy.mWailaTransformerVoltageTier = GregTech_API.sClientDataFile
             .get("waila", "WailaTransformerVoltageTier", true);
+        GT_Mod.gregtechproxy.wailaAverageNS = GregTech_API.sClientDataFile.get("waila", "WailaAverageNS", false);
 
         final String[] Circuits = GregTech_API.sClientDataFile.get("interface", "CircuitsOrder");
         GT_Mod.gregtechproxy.mCircuitsOrder.clear();

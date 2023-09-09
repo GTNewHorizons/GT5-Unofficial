@@ -174,7 +174,7 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
 
     @SuppressWarnings("unchecked")
     @Override
-    public IItemList<IAEItemStack> getAvailableItems(@SuppressWarnings("rawtypes") final IItemList out) {
+    public IItemList<IAEItemStack> getAvailableItems(final IItemList out) {
         ItemStack storedStack = getItemStack();
         if (storedStack != null) {
             AEItemStack s = AEItemStack.create(storedStack);
@@ -214,37 +214,37 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     @Override
     public IAEItemStack injectItems(final IAEItemStack input, final appeng.api.config.Actionable mode,
         final appeng.api.networking.security.BaseActionSource src) {
-        final ItemStack inputStack = input.getItemStack();
-        if (inputStack == null) return null;
         if (getBaseMetaTileEntity() == null) return input;
-        if (mode != appeng.api.config.Actionable.SIMULATE) getBaseMetaTileEntity().markDirty();
-        ItemStack storedStack = getItemStack();
-        if (storedStack != null) {
-            if (GT_Utility.areStacksEqual(storedStack, inputStack)) {
-                if (input.getStackSize() + getItemCount() > getMaxItemCount()) {
-                    if (mVoidOverflow) {
-                        if (mode != appeng.api.config.Actionable.SIMULATE) setItemCount(getMaxItemCount());
-                        return null;
-                    }
-                    return createOverflowStack(input.getStackSize() + getItemCount(), mode);
-                }
-                if (mode != appeng.api.config.Actionable.SIMULATE)
-                    setItemCount(getItemCount() + (int) input.getStackSize());
-                return null;
-            }
+
+        final ItemStack inputStack = input.getItemStack();
+        final int maxCapacity = getMaxItemCount();
+        final int itemCount = getItemCount();
+        final long toAdd = input.getStackSize();
+        final ItemStack storedStack = getItemStack();
+
+        if (storedStack != null && !GT_Utility.areStacksEqual(storedStack, inputStack)) {
+            // Can't stack with existing item, just return the input.
             return input;
         }
-        if (mode != appeng.api.config.Actionable.SIMULATE) setItemStack(inputStack.copy());
-        if (input.getStackSize() > getMaxItemCount()) return createOverflowStack(input.getStackSize(), mode);
-        if (mode != appeng.api.config.Actionable.SIMULATE) setItemCount((int) input.getStackSize());
-        return null;
-    }
 
-    private IAEItemStack createOverflowStack(long size, appeng.api.config.Actionable mode) {
-        final IAEItemStack overflow = AEItemStack.create(getItemStack());
-        overflow.setStackSize(size - getMaxItemCount());
-        if (mode != appeng.api.config.Actionable.SIMULATE) setItemCount(getMaxItemCount());
-        return overflow;
+        // Number of items not added because there's too much to add.
+        final long notAdded = itemCount + toAdd - maxCapacity;
+
+        if (mode == appeng.api.config.Actionable.MODULATE) {
+            final int newCount = (int) Math.min((long) maxCapacity, itemCount + toAdd);
+
+            if (storedStack == null) {
+                setItemStack(inputStack.copy());
+            }
+            setItemCount(newCount);
+            getBaseMetaTileEntity().markDirty();
+        }
+        if (mVoidOverflow || notAdded <= 0) {
+            return null;
+        } else {
+            return input.copy()
+                .setStackSize(notAdded);
+        }
     }
 
     @Override

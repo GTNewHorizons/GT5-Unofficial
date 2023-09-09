@@ -38,8 +38,10 @@ public class FusionSpecialValueFormatter implements INEISpecialInfoFormatter {
             tier = Math.max(tier, 2);
         } else if (voltage <= GT_Values.V[8]) {
             tier = Math.max(tier, 3);
+        } else if (voltage <= GT_Values.V[9]) {
+            tier = Math.max(tier, 4);
         } else {
-            tier = 4;
+            tier = 5;
         }
         return tier;
     }

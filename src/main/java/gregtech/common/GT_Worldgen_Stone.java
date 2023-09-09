@@ -128,10 +128,7 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
             }
         }
 
-        boolean result = true;
-        if (stones.size() == 0) {
-            result = false;
-        }
+        boolean result = stones.size() != 0;
         // Now process each oreseed vs this requested chunk
         for (; stones.size() != 0; stones.remove(0)) {
             int x = stones.get(0).mX * 16;
@@ -260,9 +257,7 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
                             double zCalc = ((double) (iZ - tZ) * zSize);
                             zCalc = zCalc * zCalc;
                             leftHandSize = zCalc + xCalc + yCalc;
-                            if (leftHandSize > rightHandSide) {
-                                continue;
-                            } else {
+                            if (leftHandSize <= rightHandSide) {
                                 // Yay! We can actually place a block now. (this part copied from original code)
                                 Block tTargetedBlock = aWorld.getBlock(iX, iY, iZ);
                                 if (tTargetedBlock instanceof GT_Block_Ores_Abstract) {

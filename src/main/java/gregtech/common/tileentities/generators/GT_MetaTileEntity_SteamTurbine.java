@@ -1,6 +1,26 @@
 package gregtech.common.tileentities.generators;
 
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT;
+import static gregtech.api.enums.Textures.BlockIcons.STEAM_TURBINE_BACK;
+import static gregtech.api.enums.Textures.BlockIcons.STEAM_TURBINE_BACK_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.STEAM_TURBINE_BACK_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.STEAM_TURBINE_BACK_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.STEAM_TURBINE_BOTTOM;
+import static gregtech.api.enums.Textures.BlockIcons.STEAM_TURBINE_BOTTOM_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.STEAM_TURBINE_BOTTOM_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.STEAM_TURBINE_BOTTOM_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.STEAM_TURBINE_FRONT;
+import static gregtech.api.enums.Textures.BlockIcons.STEAM_TURBINE_FRONT_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.STEAM_TURBINE_FRONT_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.STEAM_TURBINE_FRONT_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.STEAM_TURBINE_SIDE;
+import static gregtech.api.enums.Textures.BlockIcons.STEAM_TURBINE_SIDE_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.STEAM_TURBINE_SIDE_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.STEAM_TURBINE_SIDE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.STEAM_TURBINE_TOP;
+import static gregtech.api.enums.Textures.BlockIcons.STEAM_TURBINE_TOP_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.STEAM_TURBINE_TOP_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.STEAM_TURBINE_TOP_GLOW;
 
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;

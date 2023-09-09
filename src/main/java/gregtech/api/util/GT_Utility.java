@@ -26,7 +26,22 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.*;
+import java.util.AbstractCollection;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
@@ -67,7 +82,12 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.*;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
@@ -108,7 +128,14 @@ import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.damagesources.GT_DamageSources.DamageSourceHotItem;
 import gregtech.api.enchants.Enchantment_Hazmat;
 import gregtech.api.enchants.Enchantment_Radioactivity;
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.SubTag;
+import gregtech.api.enums.Textures;
+import gregtech.api.enums.ToolDictNames;
 import gregtech.api.events.BlockScanningEvent;
 import gregtech.api.interfaces.IBlockContainer;
 import gregtech.api.interfaces.IDebugableBlock;
@@ -155,16 +182,12 @@ public class GT_Utility {
     private static final List<FluidContainerData> sFluidContainerList = new ArrayList<>();
 
     private static final Map<GT_ItemStack, FluidContainerData> sFilledContainerToData = new /* Concurrent */ HashMap<>();
-    private static final Map<GT_ItemStack, Map<Fluid, FluidContainerData>> sEmptyContainerToFluidToData = new /*
-                                                                                                               * Concurrent
-                                                                                                               */ HashMap<>();
-    private static final Map<Fluid, List<ItemStack>> sFluidToContainers = new HashMap<>();
-    private static final Map<String, Fluid> sFluidUnlocalizedNameToFluid = new HashMap<>();
+    private static final Map<GT_ItemStack, Map<String, FluidContainerData>> sEmptyContainerToFluidToData = new HashMap<>();
+    private static final Map<String, List<ItemStack>> sFluidToContainers = new HashMap<>();
     /** Must use {@code Supplier} here because the ore prefixes have not yet been registered at class load time. */
     private static final Map<OrePrefixes, Supplier<ItemStack>> sOreToCobble = new HashMap<>();
 
     private static final Map<Integer, Boolean> sOreTable = new HashMap<>();
-    public static volatile int VERSION = 509;
     public static boolean TE_CHECK = false, BC_CHECK = false, CHECK_ALL = true, RF_CHECK = false;
     public static Map<GT_PlayedSound, Integer> sPlayedSoundMap = new /* Concurrent */ HashMap<>();
     private static int sBookCount = 0;
@@ -470,6 +493,24 @@ public class GT_Utility {
         return ceilDiv(voltage, GT_Values.V[tier]);
     }
 
+    /**
+     * Do not use. It is rounding up voltage
+     */
+    @Deprecated
+    public static long roundDownVoltage(long voltage) {
+        return roundUpVoltage(voltage);
+    }
+
+    /**
+     * Rounds up partial voltage that exceeds tiered voltage, e.g. 4,096 -> 8,192(IV)
+     */
+    public static long roundUpVoltage(long voltage) {
+        if (voltage > V[V.length - 1]) {
+            return voltage;
+        }
+        return V[GT_Utility.getTier(voltage)];
+    }
+
     public static String getColoredTierNameFromVoltage(long voltage) {
         return getColoredTierNameFromTier(getTier(voltage));
     }
@@ -478,6 +519,9 @@ public class GT_Utility {
         return GT_Values.TIER_COLORS[tier] + GT_Values.VN[tier] + EnumChatFormatting.RESET;
     }
 
+    /**
+     * @return e.g. {@code " (LV)"}
+     */
     @Nonnull
     public static String getTierNameWithParentheses(long voltage) {
         byte tier = getTier(voltage);
@@ -589,8 +633,6 @@ public class GT_Utility {
                                 byte tMovedItemCount = (byte) (tStack.stackSize
                                     - (rStack == null ? 0 : rStack.stackSize));
                                 if (tMovedItemCount >= 1 /* Math.max(aMinMoveAtOnce, aMinTargetStackSize) */) {
-                                    // ((cofh.api.transport.IItemConduit)aTileEntity2).insertItem(ForgeDirection.getOrientation(aPutTo),
-                                    // copyAmount(tMovedItemCount, tStack), F);
                                     fromInventory.decrStackSize(aGrabSlot, tMovedItemCount);
                                     fromInventory.markDirty();
                                     return tMovedItemCount;
@@ -842,7 +884,8 @@ public class GT_Utility {
                 if (s == null) {
                     tPutFreeSlots.add(slot);
                 } else if ((s.stackSize < s.getMaxStackSize() && s.stackSize < toInventory.getInventoryStackLimit())
-                    && aMinMoveAtOnce <= s.getMaxStackSize() - s.stackSize) {
+                    && aMinMoveAtOnce <= s.getMaxStackSize() - s.stackSize
+                    && isAllowedToPutIntoSlot(toInventory, slot, putSide, s, (byte) 64)) {
                         ItemId sID = ItemId.createNoCopy(s);
                         tPutItems.merge(
                             sID,
@@ -1394,8 +1437,7 @@ public class GT_Utility {
     public static byte moveOneItemStackIntoSlot(Object fromTileEntity, Object toTileEntity, ForgeDirection fromSide,
         int putSlot, List<ItemStack> aFilter, boolean aInvertFilter, byte aMaxTargetStackSize, byte aMinTargetStackSize,
         byte aMaxMoveAtOnce, byte aMinMoveAtOnce) {
-        if (fromTileEntity == null || !(fromTileEntity instanceof IInventory fromInv)
-            || aMaxTargetStackSize <= 0
+        if (!(fromTileEntity instanceof IInventory fromInv) || aMaxTargetStackSize <= 0
             || aMinTargetStackSize <= 0
             || aMaxMoveAtOnce <= 0
             || aMinTargetStackSize > aMaxTargetStackSize
@@ -1693,9 +1735,13 @@ public class GT_Utility {
                 || Items.feather.getDamage(aStack2) == W);
     }
 
+    public static boolean areStacksEqualOrNull(ItemStack stack1, ItemStack stack2) {
+        return (stack1 == null && stack2 == null) || GT_Utility.areStacksEqual(stack1, stack2);
+    }
+
     /**
      * Treat both null list, or both null item stack at same list position as equal.
-     *
+     * <p>
      * Since ItemStack doesn't override equals and hashCode, you cannot just use Objects.equals
      */
     public static boolean areStackListsEqual(List<ItemStack> lhs, List<ItemStack> rhs, boolean ignoreStackSize,
@@ -1747,56 +1793,51 @@ public class GT_Utility {
         sFilledContainerToData.clear();
         sEmptyContainerToFluidToData.clear();
         sFluidToContainers.clear();
-        sFluidUnlocalizedNameToFluid.clear();
         for (FluidContainerData tData : sFluidContainerList) {
+            String fluidName = tData.fluid.getFluid()
+                .getName();
             sFilledContainerToData.put(new GT_ItemStack(tData.filledContainer), tData);
-            Map<Fluid, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData
+            Map<String, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData
                 .get(new GT_ItemStack(tData.emptyContainer));
-            List<ItemStack> tContainers = sFluidToContainers.get(tData.fluid.getFluid());
+            List<ItemStack> tContainers = sFluidToContainers.get(fluidName);
             if (tFluidToContainer == null) {
                 sEmptyContainerToFluidToData
                     .put(new GT_ItemStack(tData.emptyContainer), tFluidToContainer = new /* Concurrent */ HashMap<>());
-                GregTech_API.sFluidMappings.add(tFluidToContainer);
             }
-            tFluidToContainer.put(tData.fluid.getFluid(), tData);
+            tFluidToContainer.put(fluidName, tData);
             if (tContainers == null) {
                 tContainers = new ArrayList<>();
                 tContainers.add(tData.filledContainer);
-                sFluidToContainers.put(tData.fluid.getFluid(), tContainers);
+                sFluidToContainers.put(fluidName, tContainers);
             } else tContainers.add(tData.filledContainer);
         }
-        for (Fluid tFluid : FluidRegistry.getRegisteredFluids()
-            .values()) {
-            sFluidUnlocalizedNameToFluid.put(tFluid.getUnlocalizedName(), tFluid);
-        }
-    }
-
-    public static Fluid getFluidFromUnlocalizedName(String aUnlocalizedName) {
-        return sFluidUnlocalizedNameToFluid.get(aUnlocalizedName);
     }
 
     public static void addFluidContainerData(FluidContainerData aData) {
+        String fluidName = aData.fluid.getFluid()
+            .getName();
         sFluidContainerList.add(aData);
         sFilledContainerToData.put(new GT_ItemStack(aData.filledContainer), aData);
-        Map<Fluid, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData
+        Map<String, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData
             .get(new GT_ItemStack(aData.emptyContainer));
-        List<ItemStack> tContainers = sFluidToContainers.get(aData.fluid.getFluid());
+        List<ItemStack> tContainers = sFluidToContainers.get(fluidName);
         if (tFluidToContainer == null) {
             sEmptyContainerToFluidToData
                 .put(new GT_ItemStack(aData.emptyContainer), tFluidToContainer = new /* Concurrent */ HashMap<>());
-            GregTech_API.sFluidMappings.add(tFluidToContainer);
         }
-        tFluidToContainer.put(aData.fluid.getFluid(), aData);
+        tFluidToContainer.put(fluidName, aData);
         if (tContainers == null) {
             tContainers = new ArrayList<>();
             tContainers.add(aData.filledContainer);
-            sFluidToContainers.put(aData.fluid.getFluid(), tContainers);
+            sFluidToContainers.put(fluidName, tContainers);
         } else tContainers.add(aData.filledContainer);
     }
 
     public static List<ItemStack> getContainersFromFluid(FluidStack tFluidStack) {
         if (tFluidStack != null) {
-            List<ItemStack> tContainers = sFluidToContainers.get(tFluidStack.getFluid());
+            List<ItemStack> tContainers = sFluidToContainers.get(
+                tFluidStack.getFluid()
+                    .getName());
             if (tContainers == null) return new ArrayList<>();
             return tContainers;
         }
@@ -1821,9 +1862,11 @@ public class GT_Utility {
             else((IFluidContainerItem) aStack.getItem()).fill(aStack = copyAmount(1, aStack), aFluid, true);
             return aStack;
         }
-        Map<Fluid, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new GT_ItemStack(aStack));
+        Map<String, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new GT_ItemStack(aStack));
         if (tFluidToContainer == null) return null;
-        FluidContainerData tData = tFluidToContainer.get(aFluid.getFluid());
+        FluidContainerData tData = tFluidToContainer.get(
+            aFluid.getFluid()
+                .getName());
         if (tData == null || tData.fluid.amount > aFluid.amount) return null;
         if (aRemoveFluidDirectly) aFluid.amount -= tData.fluid.amount;
         return copyAmount(1, tData.filledContainer);
@@ -1926,7 +1969,7 @@ public class GT_Utility {
             .hasContainerItem(aStack))
             return aStack.getItem()
                 .getContainerItem(aStack);
-        /**
+        /*
          * These are all special Cases, in which it is intended to have only GT Blocks outputting those Container Items
          */
         if (ItemList.Cell_Empty.isStackEqual(aStack, false, true)) return null;
@@ -2075,7 +2118,7 @@ public class GT_Utility {
         if (isStringInvalid(aMapping)) return null;
         ItemStack rStack = GregTech_API.sBookList.get(aMapping);
         if (rStack != null) return copyAmount(1, rStack);
-        if (isStringInvalid(aTitle) || isStringInvalid(aAuthor) || aPages.length <= 0) return null;
+        if (isStringInvalid(aTitle) || isStringInvalid(aAuthor) || aPages.length == 0) return null;
         sBookCount++;
         rStack = new ItemStack(Items.written_book, 1);
         NBTTagCompound tNBT = new NBTTagCompound();
@@ -2378,8 +2421,7 @@ public class GT_Utility {
     }
 
     public static boolean isStackInvalid(Object aStack) {
-        return aStack == null || !(aStack instanceof ItemStack)
-            || ((ItemStack) aStack).getItem() == null
+        return !(aStack instanceof ItemStack) || ((ItemStack) aStack).getItem() == null
             || ((ItemStack) aStack).stackSize < 0;
     }
 
@@ -2454,7 +2496,7 @@ public class GT_Utility {
 
     /**
      * Initializes new empty texture page for casings page 0 is old CASING_BLOCKS
-     *
+     * <p>
      * Then casings should be registered like this: for (byte i = MIN_USED_META; i < MAX_USED_META; i = (byte) (i + 1))
      * { Textures.BlockIcons.casingTexturePages[PAGE][i+START_INDEX] = new GT_CopiedBlockTexture(this, 6, i); }
      *
@@ -2688,10 +2730,7 @@ public class GT_Utility {
         Map<Integer, Integer> tEnchantments = EnchantmentHelper.getEnchantments(aStack);
         Integer tLevel = tEnchantments.get(Enchantment_Hazmat.INSTANCE.effectId);
 
-        if (tLevel != null && tLevel >= 1) {
-            return true;
-        }
-        return false;
+        return tLevel != null && tLevel >= 1;
     }
 
     public static float getHeatDamageFromItem(ItemStack aStack) {
@@ -2725,19 +2764,15 @@ public class GT_Utility {
     }
 
     private static boolean applyHeatDamage(EntityLivingBase aEntity, float aDamage, DamageSource source) {
-        if (aDamage > 0 && aEntity != null
-            && aEntity.getActivePotionEffect(Potion.fireResistance) == null
-            && !isWearingFullHeatHazmat(aEntity)) {
-            aEntity.attackEntityFrom(source, aDamage);
-            return true;
+        if (aDamage > 0 && aEntity != null && !isWearingFullHeatHazmat(aEntity)) {
+            return aEntity.attackEntityFrom(source, aDamage);
         }
         return false;
     }
 
     public static boolean applyFrostDamage(EntityLivingBase aEntity, float aDamage) {
         if (aDamage > 0 && aEntity != null && !isWearingFullFrostHazmat(aEntity)) {
-            aEntity.attackEntityFrom(GT_DamageSources.getFrostDamage(), aDamage);
-            return true;
+            return aEntity.attackEntityFrom(GT_DamageSources.getFrostDamage(), aDamage);
         }
         return false;
     }
@@ -2745,8 +2780,7 @@ public class GT_Utility {
     public static boolean applyElectricityDamage(EntityLivingBase aEntity, long aVoltage, long aAmperage) {
         long aDamage = getTier(aVoltage) * aAmperage * 4;
         if (aDamage > 0 && aEntity != null && !isWearingFullElectroHazmat(aEntity)) {
-            aEntity.attackEntityFrom(GT_DamageSources.getElectricDamage(), aDamage);
-            return true;
+            return aEntity.attackEntityFrom(GT_DamageSources.getElectricDamage(), aDamage);
         }
         return false;
     }
@@ -2819,12 +2853,14 @@ public class GT_Utility {
     }
 
     public static FluidStack[] copyFluidArray(FluidStack... aStacks) {
+        if (aStacks == null) return null;
         FluidStack[] rStacks = new FluidStack[aStacks.length];
         for (int i = 0; i < aStacks.length; i++) if (aStacks[i] != null) rStacks[i] = aStacks[i].copy();
         return rStacks;
     }
 
-    public static ItemStack[] copyStackArray(Object... aStacks) {
+    public static ItemStack[] copyItemArray(ItemStack... aStacks) {
+        if (aStacks == null) return null;
         ItemStack[] rStacks = new ItemStack[aStacks.length];
         for (int i = 0; i < aStacks.length; i++) rStacks[i] = copy(aStacks[i]);
         return rStacks;
@@ -2869,6 +2905,9 @@ public class GT_Utility {
         return rStack;
     }
 
+    /**
+     * Unlike {@link #copyAmount(long, Object...)}, this method does not restrict stack size by 64.
+     */
     public static ItemStack copyAmountUnsafe(long aAmount, Object... aStacks) {
         ItemStack rStack = copy(aStacks);
         if (isStackInvalid(rStack)) return null;
@@ -3070,8 +3109,7 @@ public class GT_Utility {
         if (!interDimensional) return false;
         startWorld.updateEntityWithOptionalForce(entity, false); // added
 
-        if ((entity instanceof EntityPlayerMP) && interDimensional) {
-            EntityPlayerMP player = (EntityPlayerMP) entity;
+        if (entity instanceof EntityPlayerMP player) {
             player.closeScreen(); // added
             player.dimension = aDimension;
             player.playerNetServerHandler.sendPacket(
@@ -3103,40 +3141,34 @@ public class GT_Utility {
         destinationWorld.theChunkProviderServer.loadChunk((int) aX >> 4, (int) aZ >> 4);
 
         destinationWorld.theProfiler.startSection("placing");
-        if (interDimensional) {
-            if (!(entity instanceof EntityPlayer)) {
-                NBTTagCompound entityNBT = new NBTTagCompound();
-                entity.isDead = false;
-                entityNBT.setString("id", EntityList.getEntityString(entity));
-                entity.writeToNBT(entityNBT);
-                entity.isDead = true;
-                entity = EntityList.createEntityFromNBT(entityNBT, destinationWorld);
-                if (entity == null) {
-                    return false;
-                }
-                entity.dimension = destinationWorld.provider.dimensionId;
+        if (!(entity instanceof EntityPlayer)) {
+            NBTTagCompound entityNBT = new NBTTagCompound();
+            entity.isDead = false;
+            entityNBT.setString("id", EntityList.getEntityString(entity));
+            entity.writeToNBT(entityNBT);
+            entity.isDead = true;
+            entity = EntityList.createEntityFromNBT(entityNBT, destinationWorld);
+            if (entity == null) {
+                return false;
             }
-            destinationWorld.spawnEntityInWorld(entity);
-            entity.setWorld(destinationWorld);
+            entity.dimension = destinationWorld.provider.dimensionId;
         }
+        destinationWorld.spawnEntityInWorld(entity);
+        entity.setWorld(destinationWorld);
         entity.setLocationAndAngles(aX, aY, aZ, entity.rotationYaw, entity.rotationPitch);
 
         destinationWorld.updateEntityWithOptionalForce(entity, false);
         entity.setLocationAndAngles(aX, aY, aZ, entity.rotationYaw, entity.rotationPitch);
 
-        if ((entity instanceof EntityPlayerMP)) {
-            EntityPlayerMP player = (EntityPlayerMP) entity;
-            if (interDimensional) {
-                player.mcServer.getConfigurationManager()
-                    .func_72375_a(player, destinationWorld);
-            }
+        if ((entity instanceof EntityPlayerMP player)) {
+            player.mcServer.getConfigurationManager()
+                .func_72375_a(player, destinationWorld);
             player.playerNetServerHandler.setPlayerLocation(aX, aY, aZ, player.rotationYaw, player.rotationPitch);
         }
 
         destinationWorld.updateEntityWithOptionalForce(entity, false);
 
-        if (((entity instanceof EntityPlayerMP)) && interDimensional) {
-            EntityPlayerMP player = (EntityPlayerMP) entity;
+        if (entity instanceof EntityPlayerMP player) {
             player.theItemInWorldManager.setWorld(destinationWorld);
             player.mcServer.getConfigurationManager()
                 .updateTimeAndWeatherForPlayer(player, destinationWorld);
@@ -3668,6 +3700,7 @@ public class GT_Utility {
      * @return an Array containing the X and the Y Coordinate of the clicked Point, with the top left Corner as Origin,
      *         like on the Texture Sheet. return values should always be between [0.0F and 0.99F].
      */
+    // TODO: use clamp()
     public static float[] getClickedFacingCoords(ForgeDirection side, float aX, float aY, float aZ) {
         return switch (side) {
             case DOWN -> new float[] { Math.min(0.99F, Math.max(0, 1 - aX)), Math.min(0.99F, Math.max(0, aZ)) };
@@ -4195,10 +4228,7 @@ public class GT_Utility {
         }
 
         private static void applyArrayOfBullshit(IBullshit aBullshitModifier, ItemStack[] aStacks) {
-            ItemStack[] aitemstack1 = aStacks;
-            int i = aStacks.length;
-            for (int j = 0; j < i; ++j) {
-                ItemStack itemstack = aitemstack1[j];
+            for (ItemStack itemstack : aStacks) {
                 applyBullshit(aBullshitModifier, itemstack);
             }
         }
@@ -4635,6 +4665,7 @@ public class GT_Utility {
             size = sum;
         }
 
+        @Nonnull
         @Override
         public Iterator<E> iterator() {
             return colls.stream()

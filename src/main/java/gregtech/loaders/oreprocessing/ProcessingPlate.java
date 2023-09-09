@@ -102,9 +102,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         if (aMaterial.mFuelPower > 0) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(1L, aStack))
-                .noItemOutputs()
-                .noFluidInputs()
-                .noFluidOutputs()
                 .metadata(FUEL_VALUE, aMaterial.mFuelPower)
                 .metadata(FUEL_TYPE, aMaterial.mFuelType)
                 .duration(0)
@@ -118,7 +115,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(ItemList.Shape_Mold_Plate.get(0L))
                 .itemOutputs(aMaterial.getPlates(1))
                 .fluidInputs(aMaterial.getMolten(L))
-                .noFluidOutputs()
                 .duration(1 * SECONDS + 12 * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 8))
                 .addTo(sFluidSolidficationRecipes);
@@ -191,19 +187,38 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         GT_ModHandler.removeRecipeByOutputDelayed(aStack);
 
-        if (!aNoSmashing) {
+        if (!aNoSmashing || aMaterial.contains(SubTag.STRETCHY)) {
             // 2 double -> 1 quadruple plate
             if (GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L) != null) {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(2L, aStack), GT_Utility.getIntegratedCircuit(2))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
                     .duration(Math.max(aMaterialMass * 2L, 1L))
                     .eut(calculateRecipeEU(aMaterial, 96))
                     .addTo(sBenderRecipes);
             }
+            // 2 plates -> 1 double plate
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 2L),
+                    GT_Utility.getIntegratedCircuit(2))
+                .itemOutputs(GT_Utility.copyAmount(1L, aStack))
+                .duration(Math.max(aMaterialMass * 2L, 1L))
+                .eut(calculateRecipeEU(aMaterial, 96))
+                .addTo(sBenderRecipes);
+        } else {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 2L),
+                    GT_Utility.getIntegratedCircuit(2))
+                .itemOutputs(GT_Utility.copyAmount(1L, aStack))
+                .fluidInputs(Materials.Glue.getFluid(10L))
+                .duration(3 * SECONDS + 4 * TICKS)
+                .eut(8)
+                .addTo(sAssemblerRecipes);
+        }
 
+        if (!aNoSmashing) {
             if (GregTech_API.sRecipeFile.get(
                 gregtech.api.enums.ConfigCategories.Tools.hammerdoubleplate,
                 OrePrefixes.plate.get(aMaterial)
@@ -220,30 +235,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                             'I', aPlateStack, 'B', aPlateStack });
                 }
             }
-
-            // 2 plates -> 1 double plate
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 2L),
-                    GT_Utility.getIntegratedCircuit(2))
-                .itemOutputs(GT_Utility.copyAmount(1L, aStack))
-                .noFluidInputs()
-                .noFluidOutputs()
-                .duration(Math.max(aMaterialMass * 2L, 1L))
-                .eut(calculateRecipeEU(aMaterial, 96))
-                .addTo(sBenderRecipes);
-
-        } else {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 2L),
-                    GT_Utility.getIntegratedCircuit(2))
-                .itemOutputs(GT_Utility.copyAmount(1L, aStack))
-                .fluidInputs(Materials.Glue.getFluid(10L))
-                .noFluidOutputs()
-                .duration(3 * SECONDS + 4 * TICKS)
-                .eut(8)
-                .addTo(sAssemblerRecipes);
         }
     }
 
@@ -254,18 +245,38 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         GT_ModHandler.removeRecipeByOutputDelayed(aStack);
 
-        if (!aNoSmashing) {
+        if (!aNoSmashing || aMaterial.contains(SubTag.STRETCHY)) {
+            if (GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L) != null) {
+                // 3 triple plates -> 1 dense plate
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(3L, aStack), GT_Utility.getIntegratedCircuit(3))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L))
+                    .duration(Math.max(aMaterialMass * 3L, 1L))
+                    .eut(calculateRecipeEU(aMaterial, 96))
+                    .addTo(sBenderRecipes);
+            }
 
-            // 3 triple plates -> 1 dense plate
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(3L, aStack), GT_Utility.getIntegratedCircuit(3))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L))
-                .noFluidInputs()
-                .noFluidOutputs()
+                .itemInputs(
+                    GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 3L),
+                    GT_Utility.getIntegratedCircuit(3))
+                .itemOutputs(GT_Utility.copyAmount(1L, aStack))
                 .duration(Math.max(aMaterialMass * 3L, 1L))
                 .eut(calculateRecipeEU(aMaterial, 96))
                 .addTo(sBenderRecipes);
+        } else {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 3L),
+                    GT_Utility.getIntegratedCircuit(3))
+                .itemOutputs(GT_Utility.copyAmount(1L, aStack))
+                .fluidInputs(Materials.Glue.getFluid(20L))
+                .duration(4 * SECONDS + 16 * TICKS)
+                .eut(8)
+                .addTo(sAssemblerRecipes);
+        }
 
+        if (!aNoSmashing) {
             if (GregTech_API.sRecipeFile.get(
                 gregtech.api.enums.ConfigCategories.Tools.hammertripleplate,
                 OrePrefixes.plate.get(aMaterial)
@@ -289,29 +300,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                             aPlateStack, aPlateStack });
                 }
             }
-
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 3L),
-                    GT_Utility.getIntegratedCircuit(3))
-                .itemOutputs(GT_Utility.copyAmount(1L, aStack))
-                .noFluidInputs()
-                .noFluidOutputs()
-                .duration(Math.max(aMaterialMass * 3L, 1L))
-                .eut(calculateRecipeEU(aMaterial, 96))
-                .addTo(sBenderRecipes);
-
-        } else {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 3L),
-                    GT_Utility.getIntegratedCircuit(3))
-                .itemOutputs(GT_Utility.copyAmount(1L, aStack))
-                .fluidInputs(Materials.Glue.getFluid(20L))
-                .noFluidOutputs()
-                .duration(4 * SECONDS + 16 * TICKS)
-                .eut(8)
-                .addTo(sAssemblerRecipes);
         }
 
         if (GT_OreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L) != null) {
@@ -320,8 +308,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemOutputs(
                     GT_OreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(sImplosionRecipes);
@@ -330,8 +316,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemOutputs(
                     GT_OreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(sImplosionRecipes);
@@ -340,8 +324,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemOutputs(
                     GT_OreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(sImplosionRecipes);
@@ -350,8 +332,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemOutputs(
                     GT_OreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(sImplosionRecipes);
@@ -365,8 +345,28 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         GT_ModHandler.removeRecipeByOutputDelayed(aStack);
 
+        if (!aNoSmashing || aMaterial.contains(SubTag.STRETCHY)) {
+            // Quadruple plate
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 4L),
+                    GT_Utility.getIntegratedCircuit(4))
+                .itemOutputs(GT_Utility.copyAmount(1L, aStack))
+                .duration(Math.max(aMaterialMass * 4L, 1L))
+                .eut(calculateRecipeEU(aMaterial, 96))
+                .addTo(sBenderRecipes);
+        } else {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 4L),
+                    GT_Utility.getIntegratedCircuit(4))
+                .itemOutputs(GT_Utility.copyAmount(1L, aStack))
+                .fluidInputs(Materials.Glue.getFluid(30L))
+                .duration(6 * SECONDS + 8 * TICKS)
+                .eut(8)
+                .addTo(sAssemblerRecipes);
+        }
         if (!aNoSmashing) {
-
             if (GregTech_API.sRecipeFile.get(
                 gregtech.api.enums.ConfigCategories.Tools.hammerquadrupleplate,
                 OrePrefixes.plate.get(aMaterial)
@@ -389,30 +389,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                             aPlateStack, aPlateStack, aPlateStack });
                 }
             }
-
-            // Quadruple plate
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 4L),
-                    GT_Utility.getIntegratedCircuit(4))
-                .itemOutputs(GT_Utility.copyAmount(1L, aStack))
-                .noFluidInputs()
-                .noFluidOutputs()
-                .duration(Math.max(aMaterialMass * 4L, 1L))
-                .eut(calculateRecipeEU(aMaterial, 96))
-                .addTo(sBenderRecipes);
-
-        } else {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 4L),
-                    GT_Utility.getIntegratedCircuit(4))
-                .itemOutputs(GT_Utility.copyAmount(1L, aStack))
-                .fluidInputs(Materials.Glue.getFluid(30L))
-                .noFluidOutputs()
-                .duration(6 * SECONDS + 8 * TICKS)
-                .eut(8)
-                .addTo(sAssemblerRecipes);
         }
     }
 
@@ -423,8 +399,28 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         GT_ModHandler.removeRecipeByOutputDelayed(aStack);
 
+        if (!aNoSmashing || aMaterial.contains(SubTag.STRETCHY)) {
+            // quintuple plate
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 5L),
+                    GT_Utility.getIntegratedCircuit(5))
+                .itemOutputs(GT_Utility.copyAmount(1L, aStack))
+                .duration(Math.max(aMaterialMass * 5L, 1L))
+                .eut(calculateRecipeEU(aMaterial, 96))
+                .addTo(sBenderRecipes);
+        } else {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 5L),
+                    GT_Utility.getIntegratedCircuit(5))
+                .itemOutputs(GT_Utility.copyAmount(1L, aStack))
+                .fluidInputs(Materials.Glue.getFluid(40L))
+                .duration(8 * SECONDS)
+                .eut(8)
+                .addTo(sAssemblerRecipes);
+        }
         if (!aNoSmashing) {
-
             if (GregTech_API.sRecipeFile.get(
                 gregtech.api.enums.ConfigCategories.Tools.hammerquintupleplate,
                 OrePrefixes.plate.get(aMaterial)
@@ -447,30 +443,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                             aPlateStack, aPlateStack });
                 }
             }
-
-            // quintuple plate
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 5L),
-                    GT_Utility.getIntegratedCircuit(5))
-                .itemOutputs(GT_Utility.copyAmount(1L, aStack))
-                .noFluidInputs()
-                .noFluidOutputs()
-                .duration(Math.max(aMaterialMass * 5L, 1L))
-                .eut(calculateRecipeEU(aMaterial, 96))
-                .addTo(sBenderRecipes);
-
-        } else {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 5L),
-                    GT_Utility.getIntegratedCircuit(5))
-                .itemOutputs(GT_Utility.copyAmount(1L, aStack))
-                .fluidInputs(Materials.Glue.getFluid(40L))
-                .noFluidOutputs()
-                .duration(8 * SECONDS)
-                .eut(8)
-                .addTo(sAssemblerRecipes);
         }
     }
 
@@ -481,15 +453,13 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         GT_ModHandler.removeRecipeByOutputDelayed(aStack);
 
-        if (!aNoSmashing) {
+        if (!aNoSmashing || aMaterial.contains(SubTag.STRETCHY)) {
             // Dense plate
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L),
                     GT_Utility.getIntegratedCircuit(9))
                 .itemOutputs(GT_Utility.copyAmount(1L, aStack))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(Math.max(aMaterialMass * 9L, 1L))
                 .eut(calculateRecipeEU(aMaterial, 96))
                 .addTo(sBenderRecipes);
@@ -506,7 +476,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(ItemList.Shape_Mold_Casing.get(0L))
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 1L))
                 .fluidInputs(aMaterial.getMolten(L / 2))
-                .noFluidOutputs()
                 .duration(16 * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 8))
                 .addTo(sFluidSolidficationRecipes);
@@ -537,8 +506,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 2L),
                     ItemList.Shape_Mold_Casing.get(0L))
                 .itemOutputs(GT_Utility.copyAmount(3L, aStack))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 15))
                 .addTo(sAlloySmelterRecipes);
@@ -548,8 +515,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
                     ItemList.Shape_Extruder_Casing.get(0L))
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 2L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 45))
                 .addTo(sExtruderRecipes);
@@ -566,7 +531,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                             Math.min(
                                 1000,
                                 ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16)) / 320))))
-                .noFluidOutputs()
                 .duration(2 * ((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 16))
                 .addTo(sCutterRecipes);
@@ -581,7 +545,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                             Math.min(
                                 750,
                                 ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16)) / 426))))
-                .noFluidOutputs()
                 .duration(2 * ((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 16))
                 .addTo(sCutterRecipes);
@@ -597,7 +560,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                                 250,
                                 ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16))
                                     / 1280))))
-                .noFluidOutputs()
                 .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 16))
                 .addTo(sCutterRecipes);
@@ -612,8 +574,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_ModHandler.getIC2Item("generator", 1L), GT_Utility.copyAmount(4L, aStack))
                     .itemOutputs(GT_ModHandler.getIC2Item("windMill", 1L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
                     .duration(5 * MINUTES + 20 * SECONDS)
                     .eut(8)
                     .addTo(sAssemblerRecipes);
@@ -621,16 +581,12 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1L, aStack), new ItemStack(Blocks.glass, 3, W))
                     .itemOutputs(GT_ModHandler.getIC2Item("reinforcedGlass", 4L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
                     .duration(20 * SECONDS)
                     .eut(4)
                     .addTo(sAlloySmelterRecipes);
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1L, aStack), Materials.Glass.getDust(3))
                     .itemOutputs(GT_ModHandler.getIC2Item("reinforcedGlass", 4L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
                     .duration(20 * SECONDS)
                     .eut(4)
                     .addTo(sAlloySmelterRecipes);

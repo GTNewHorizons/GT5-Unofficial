@@ -277,10 +277,10 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
             updateFuel(aBaseMetaTileEntity, aTick);
     }
 
-    private void ventSteamIfTankIsFull() {
-        if ((this.mSteam != null) && (this.mSteam.amount > getCapacity())) {
+    protected void ventSteamIfTankIsFull() {
+        if ((this.mSteam != null) && (this.mSteam.amount > getSteamCapacity())) {
             sendSound(SOUND_EVENT_LET_OFF_EXCESS_STEAM);
-            this.mSteam.amount = getCapacity() * 3 / 4;
+            this.mSteam.amount = getSteamCapacity() * 3 / 4;
         }
     }
 
@@ -328,14 +328,14 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     /**
-     * Pushes steam to Fluid inventories at all sides except Front.
+     * Pushes steam to Fluid inventories at all sides except Front and Bottom.
      *
      * @param aBaseMetaTileEntity The tile-entity instance of this Boiler
      */
     protected void pushSteamToInventories(IGregTechTileEntity aBaseMetaTileEntity) {
         if (mSteam == null || mSteam.amount == 0) return;
         for (final ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-            if (direction == aBaseMetaTileEntity.getFrontFacing()) continue;
+            if (direction == aBaseMetaTileEntity.getFrontFacing() || direction == ForgeDirection.DOWN) continue;
             if (this.mSteam == null) break;
             pushSteamToSide(aBaseMetaTileEntity, direction);
         }
@@ -391,6 +391,10 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
         return 16000;
     }
 
+    protected int getSteamCapacity() {
+        return getCapacity();
+    }
+
     protected abstract int getProductionPerSecond();
 
     protected abstract int getMaxTemperature();
@@ -440,7 +444,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
             .widget(createFuelSlot())
             .widget(createAshSlot())
             .widget(
-                new ProgressBar().setProgress(() -> mSteam == null ? 0 : (float) mSteam.amount / getCapacity())
+                new ProgressBar().setProgress(() -> mSteam == null ? 0 : (float) mSteam.amount / getSteamCapacity())
                     .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_STEAM, 10)
                     .setDirection(ProgressBar.Direction.UP)
                     .setPos(70, 25)

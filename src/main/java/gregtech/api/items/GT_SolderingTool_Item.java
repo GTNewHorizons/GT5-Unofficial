@@ -28,10 +28,6 @@ public class GT_SolderingTool_Item extends GT_Tool_Item {
             aDischargedGTID);
         GT_OreDictUnificator.registerOre(ToolDictNames.craftingToolSolderingIron, new ItemStack(this, 1, W));
         GregTech_API.registerSolderingTool(new ItemStack(this, 1, W));
-        // setCraftingSound(GregTech_API.sSoundList.get(103));
-        // setBreakingSound(GregTech_API.sSoundList.get(103));
-        // setEntityHitSound(GregTech_API.sSoundList.get(103));
-        // setUsageAmounts(1, 1, 1);
     }
 
     @Override

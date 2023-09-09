@@ -1,28 +1,50 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.ARROW_DOWN;
+import static gregtech.api.enums.Textures.BlockIcons.ARROW_DOWN_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.ARROW_LEFT;
+import static gregtech.api.enums.Textures.BlockIcons.ARROW_LEFT_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.ARROW_RIGHT;
+import static gregtech.api.enums.Textures.BlockIcons.ARROW_RIGHT_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.ARROW_UP;
+import static gregtech.api.enums.Textures.BlockIcons.ARROW_UP_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_TooltipDataCache;
 import gregtech.api.util.GT_Utility;
 
-public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredMachineBlock {
+public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredMachineBlock implements IAddUIWidgets {
 
     private static final int OUTPUT_INDEX = 0;
     private static final int ARROW_RIGHT_INDEX = 1;
@@ -31,11 +53,19 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     private static final int ARROW_UP_INDEX = 4;
     private static final int FRONT_INDEX = 5;
 
+    private static final String EMIT_ENERGY_TOOLTIP = "GT5U.machines.emit_energy.tooltip";
+    private static final String EMIT_REDSTONE_IF_FULL_TOOLTIP = "GT5U.machines.emit_redstone_if_full.tooltip";
+    private static final String INVERT_REDSTONE_TOOLTIP = "GT5U.machines.invert_redstone.tooltip";
+    private static final String STOCKING_MODE_TOOLTIP = "GT5U.machines.buffer_stocking_mode.tooltip";
+    private static final String SORTING_MODE_TOOLTIP = "GT5U.machines.sorting_mode.tooltip";
+    private static final int BUTTON_SIZE = 18;
+
     public int mMaxStackSize = 64;
     public static int MAX = 8;
     public boolean bOutput = false, bRedstoneIfFull = false, bInvert = false, bStockingMode = false,
         bSortStacks = false;
     public int mSuccess = 0, mTargetStackSize = 0;
+    private int uiButtonCount = 0;
 
     public GT_MetaTileEntity_Buffer(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
         String aDescription) {
@@ -222,7 +252,8 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
 
     @Override
     public long maxEUOutput() {
-        return bOutput ? V[mTier] : 0L;
+        // Return full value if we're an item and don't exist in the world for tooltip purposes
+        return getBaseMetaTileEntity().getWorld() == null || bOutput ? V[mTier] : 0L;
     }
 
     @Override
@@ -264,12 +295,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
         bOutput = aNBT.getBoolean("bOutput");
         bRedstoneIfFull = aNBT.getBoolean("bRedstoneIfFull");
         bSortStacks = aNBT.getBoolean("bSortStacks");
-        if (aNBT.hasKey("bStockingMode")) { // Adding new key to existing NBT, need to protect if it is not there.
-            bStockingMode = aNBT.getBoolean("bStockingMode");
-        }
-        if (aNBT.hasKey("bSortStacks")) {
-            bSortStacks = aNBT.getBoolean("bSortStacks");
-        }
+        bStockingMode = aNBT.getBoolean("bStockingMode");
         mTargetStackSize = aNBT.getInteger("mTargetStackSize");
     }
 
@@ -309,17 +335,18 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     protected void handleRedstoneOutput(IGregTechTileEntity aBaseMetaTileEntity) {
-        if (bRedstoneIfFull) {
-            final boolean hasEmptySlots = IntStream.range(0, mInventory.length)
-                .anyMatch(i -> isValidSlot(i) && mInventory[i] == null);
-            Arrays.stream(ForgeDirection.VALID_DIRECTIONS)
-                .forEach(
-                    side -> aBaseMetaTileEntity
-                        .setInternalOutputRedstoneSignal(side, (byte) (bInvert ^ hasEmptySlots ? 0 : 15)));
-        } else {
-            for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
-                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 0);
-        }
+        int redstoneOutput = getRedstoneOutput();
+        Arrays.stream(ForgeDirection.VALID_DIRECTIONS)
+            .forEach(side -> aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) redstoneOutput));
+    }
+
+    protected int getRedstoneOutput() {
+        return (!bRedstoneIfFull || (bInvert ^ hasEmptySlots())) ? 0 : 15;
+    }
+
+    private boolean hasEmptySlots() {
+        return IntStream.range(0, mInventory.length)
+            .anyMatch(i -> isValidSlot(i) && mInventory[i] == null);
     }
 
     @Override
@@ -451,87 +478,84 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     protected void addEmitEnergyButton(ModularWindow.Builder builder) {
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-            bOutput = !bOutput;
-            if (bOutput) {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans("116", "Emit Energy to Outputside"));
-            } else {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans("117", "Don't emit Energy"));
-            }
-        })
-            .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY)
-            .setPos(7, 62)
-            .setSize(18, 18));
+        builder.widget(
+            createToggleButton(
+                () -> bOutput,
+                val -> bOutput = val,
+                GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY,
+                this::getEmitEnergyButtonTooltip));
     }
 
-    protected void addEmitRedstoneButton(ModularWindow.Builder builder) {
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-            bRedstoneIfFull = !bRedstoneIfFull;
-            if (bRedstoneIfFull) {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans("118", "Emit Redstone if no Slot is free"));
-            } else {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans("119", "Don't emit Redstone"));
-            }
-        })
-            .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EMIT_REDSTONE)
-            .setPos(25, 62)
-            .setSize(18, 18));
+    private GT_TooltipDataCache.TooltipData getEmitEnergyButtonTooltip() {
+        return mTooltipCache.getData(
+            EMIT_ENERGY_TOOLTIP,
+            EnumChatFormatting.GREEN + GT_Utility.formatNumbers(V[mTier])
+                + " ("
+                + GT_Utility.getColoredTierNameFromTier(mTier)
+                + EnumChatFormatting.GREEN
+                + ")"
+                + EnumChatFormatting.GRAY,
+            maxAmperesOut());
+    }
+
+    protected void addEmitRedstoneIfFullButton(ModularWindow.Builder builder) {
+        builder.widget(
+            createToggleButton(
+                () -> bRedstoneIfFull,
+                val -> bRedstoneIfFull = val,
+                GT_UITextures.OVERLAY_BUTTON_EMIT_REDSTONE,
+                this::getEmitRedstoneIfFullButtonTooltip).setUpdateTooltipEveryTick(true));
+    }
+
+    private GT_TooltipDataCache.TooltipData getEmitRedstoneIfFullButtonTooltip() {
+        return mTooltipCache.getUncachedTooltipData(
+            EMIT_REDSTONE_IF_FULL_TOOLTIP,
+            StatCollector.translateToLocal(hasEmptySlots() ? "gui.yes" : "gui.no"),
+            getRedstoneOutput());
     }
 
     protected void addInvertRedstoneButton(ModularWindow.Builder builder) {
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-            bInvert = !bInvert;
-            if (bInvert) {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans("120", "Invert Redstone"));
-            } else {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans("121", "Don't invert Redstone"));
-            }
-        })
-            .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_INVERT_REDSTONE)
-            .setPos(43, 62)
-            .setSize(18, 18));
+        builder.widget(
+            createToggleButton(
+                () -> bInvert,
+                val -> bInvert = val,
+                GT_UITextures.OVERLAY_BUTTON_INVERT_REDSTONE,
+                () -> mTooltipCache.getData(INVERT_REDSTONE_TOOLTIP)));
     }
 
     protected void addStockingModeButton(ModularWindow.Builder builder) {
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-            bStockingMode = !bStockingMode;
-            if (bStockingMode) {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans(
-                        "217",
-                        "Stocking mode. Keeps this many items in destination input slots. This mode can be server unfriendly."));
-            } else {
-                GT_Utility.sendChatToPlayer(
-                    widget.getContext()
-                        .getPlayer(),
-                    GT_Utility.trans(
-                        "218",
-                        "Transfer size mode. Add exactly this many items in destination input slots as long as there is room."));
-            }
-        })
-            .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_STOCKING_MODE)
-            .setPos(61, 62)
-            .setSize(18, 18));
+        builder.widget(
+            createToggleButton(
+                () -> bStockingMode,
+                val -> bStockingMode = val,
+                GT_UITextures.OVERLAY_BUTTON_STOCKING_MODE,
+                () -> mTooltipCache.getData(STOCKING_MODE_TOOLTIP)));
+    }
+
+    protected void addSortStacksButton(ModularWindow.Builder builder) {
+        builder.widget(
+            createToggleButton(
+                () -> bSortStacks,
+                val -> bSortStacks = val,
+                GT_UITextures.OVERLAY_BUTTON_SORTING_MODE,
+                () -> mTooltipCache.getData(SORTING_MODE_TOOLTIP)));
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        buildContext.addCloseListener(() -> uiButtonCount = 0);
+        addEmitEnergyButton(builder);
+    }
+
+    protected Widget createToggleButton(Supplier<Boolean> getter, Consumer<Boolean> setter, UITexture picture,
+        Supplier<GT_TooltipDataCache.TooltipData> tooltipDataSupplier) {
+        return new CycleButtonWidget().setToggle(getter, setter)
+            .setStaticTexture(picture)
+            .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(7 + (uiButtonCount++ * BUTTON_SIZE), 62)
+            .setSize(BUTTON_SIZE, BUTTON_SIZE)
+            .setGTTooltip(tooltipDataSupplier);
     }
 
     protected void addInventorySlots(ModularWindow.Builder builder) {

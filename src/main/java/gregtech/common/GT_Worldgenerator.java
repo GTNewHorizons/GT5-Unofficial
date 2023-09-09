@@ -12,16 +12,24 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.event.world.WorldEvent;
 
 import cpw.mods.fml.common.IWorldGenerator;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.net.GT_Packet_SendOregenPattern;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
@@ -56,6 +64,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
     public static Hashtable<Long, GT_Worldgen_GT_Ore_Layer> validOreveins = new Hashtable<>(1024);
     public boolean mIsGenerating = false;
     public static final Object listLock = new Object();
+    public static OregenPattern oregenPattern = OregenPattern.AXISSYMMETRICAL;
 
     public GT_Worldgenerator() {
         endAsteroids = GregTech_API.sWorldgenFile.get("endasteroids", "GenerateAsteroids", true);
@@ -120,6 +129,84 @@ public class GT_Worldgenerator implements IWorldGenerator {
             }
             this.mIsGenerating = false;
         }
+    }
+
+    public static boolean isOreChunk(int chunkX, int chunkZ) {
+        if (oregenPattern == OregenPattern.EQUAL_SPACING) {
+            return Math.floorMod(chunkX, 3) == 1 && Math.floorMod(chunkZ, 3) == 1;
+        }
+        // add next if statement here or convert to switch when expanding OregenPattern enum
+
+        // AXISSYMMETRICAL
+        return Math.abs(chunkX) % 3 == 1 && Math.abs(chunkZ) % 3 == 1;
+    }
+
+    public static class OregenPatternSavedData extends WorldSavedData {
+
+        private static final String NAME = "GregTech_OregenPattern";
+        private static final String KEY = "oregenPattern";
+
+        public OregenPatternSavedData(String p_i2141_1_) {
+            super(p_i2141_1_);
+        }
+
+        public static void loadData(World world) {
+            if (world.getWorldInfo()
+                .getWorldTotalTime() == 0L) {
+                // The world has just been created -> use newest pattern
+                oregenPattern = OregenPattern.values()[OregenPattern.values().length - 1];
+            } else {
+                // This is an old world. Use legacy pattern for now, readFromNBT may change this if
+                // GregTech_OregenPattern.dat is present
+                oregenPattern = OregenPattern.AXISSYMMETRICAL;
+            }
+
+            // load OregenPatternSavedData
+            WorldSavedData instance = world.mapStorage
+                .loadData(OregenPatternSavedData.class, OregenPatternSavedData.NAME);
+            if (instance == null) {
+                instance = new OregenPatternSavedData(NAME);
+                world.mapStorage.setData(OregenPatternSavedData.NAME, instance);
+            }
+            instance.markDirty();
+        }
+
+        @SubscribeEvent
+        public void onWorldLoad(WorldEvent.Load event) {
+            final World world = event.world;
+            if (!world.isRemote && world.provider.dimensionId == 0) {
+                loadData(world);
+            }
+        }
+
+        @SubscribeEvent
+        public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+            if (event.player instanceof EntityPlayerMP player) {
+                GT_Values.NW.sendToPlayer(new GT_Packet_SendOregenPattern(oregenPattern), player);
+            }
+        }
+
+        @Override
+        public void readFromNBT(NBTTagCompound p_76184_1_) {
+            if (p_76184_1_.hasKey(KEY)) {
+                int ordinal = p_76184_1_.getByte(KEY);
+                ordinal = MathHelper.clamp_int(ordinal, 0, OregenPattern.values().length - 1);
+                oregenPattern = OregenPattern.values()[ordinal];
+            }
+        }
+
+        @Override
+        public void writeToNBT(NBTTagCompound p_76187_1_) {
+            // If we have so many different OregenPatterns that byte isn't good enough something is wrong
+            p_76187_1_.setByte(KEY, (byte) oregenPattern.ordinal());
+        }
+
+    }
+
+    public enum OregenPattern {
+        // The last value is used when creating a new world
+        AXISSYMMETRICAL,
+        EQUAL_SPACING;
     }
 
     public static class WorldGenContainer implements Runnable {
@@ -454,7 +541,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
             for (int x = wXbox; x < eXbox; x++) {
                 for (int z = nZbox; z < sZbox; z++) {
                     // Determine if this X/Z is an orevein seed
-                    if (((Math.abs(x) % 3) == 1) && ((Math.abs(z) % 3) == 1)) {
+                    if (isOreChunk(x, z)) {
                         if (debugWorldGen) GT_Log.out.println("Adding seed x=" + x + " z=" + z);
                         seedList.add(new NearbySeeds(x, z));
                     }
@@ -492,9 +579,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                             tRandomWeight -= tWorldGen.mWeight;
                             if (tRandomWeight <= 0) {
                                 try {
-                                    // if ((tWorldGen.mEndAsteroid && tDimensionType == 1) || (tWorldGen.mAsteroid &&
-                                    // tDimensionType == -30)) {
-                                    if (tWorldGen.mEndAsteroid && tDimensionType == 1) {
+                                    if (tWorldGen.mEndAsteroid) {
                                         primaryMeta = tWorldGen.mPrimaryMeta;
                                         secondaryMeta = tWorldGen.mSecondaryMeta;
                                         betweenMeta = tWorldGen.mBetweenMeta;
@@ -513,11 +598,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                 int tX = mX * 16 + aRandom.nextInt(16);
                 int tY = 50 + aRandom.nextInt(200 - 50);
                 int tZ = mZ * 16 + aRandom.nextInt(16);
-                if (tDimensionType == 1) {
-                    mSize = aRandom.nextInt(endMaxSize - endMinSize);
-                    // } else if (tDimensionName.equals("Asteroids")) {
-                    // mSize = aRandom.nextInt((int) (gcMaxSize - gcMinSize));
-                }
+                mSize = aRandom.nextInt(endMaxSize - endMinSize);
                 if ((mWorld.getBlock(tX, tY, tZ)
                     .isAir(mWorld, tX, tY, tZ))) {
                     float randomRadian = aRandom.nextFloat() * (float) Math.PI;

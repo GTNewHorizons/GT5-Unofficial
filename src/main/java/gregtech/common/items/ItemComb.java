@@ -253,9 +253,9 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             new ItemStack[] { GT_Bees.drop.getStackForType(DropType.LAPIS),
                 GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.LapotronDust", 1, 0),
                 GT_ModHandler.getModItem(MagicBees.ID, "wax", 1, 2) },
-            new int[] { 20 * 100, 15 * 100, 40 * 100 },
+            new int[] { 20 * 100, 100 * 100, 40 * 100 },
             Voltage.HV,
-            196);
+            240);
         addCentrifugeToMaterial(
             CombType.PYROTHEUM,
             new Materials[] { Materials.Blaze, Materials.Pyrotheum },
@@ -969,9 +969,12 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addProcessGT(CombType.PLATINUM, new Materials[] { Materials.Platinum }, Voltage.HV);
         addProcessGT(CombType.MOLYBDENUM, new Materials[] { Materials.Molybdenum }, Voltage.LV);
         addProcessGT(CombType.IRIDIUM, new Materials[] { Materials.Iridium }, Voltage.IV);
+        addProcessGT(CombType.PALLADIUM, new Materials[] { Materials.Palladium }, Voltage.IV);
         addProcessGT(CombType.OSMIUM, new Materials[] { Materials.Osmium }, Voltage.IV);
         addProcessGT(CombType.LITHIUM, new Materials[] { Materials.Lithium }, Voltage.MV);
         addProcessGT(CombType.ELECTROTINE, new Materials[] { Materials.Electrotine }, Voltage.MV);
+        addProcessGT(CombType.DRACONIC, new Materials[] { Materials.Draconium }, Voltage.IV);
+        addProcessGT(CombType.AWAKENEDDRACONIUM, new Materials[] { Materials.DraconiumAwakened }, Voltage.ZPM);
         if (GT_Mod.gregtechproxy.mNerfedCombs) {
             addCentrifugeToItemStack(
                 CombType.SALT,
@@ -1323,6 +1326,17 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addProcessGT(CombType.MYTRYL, new Materials[] { Materials.Mytryl }, Voltage.IV);
         addProcessGT(CombType.QUANTIUM, new Materials[] { Materials.Quantium }, Voltage.IV);
         addProcessGT(CombType.ORIHARUKON, new Materials[] { Materials.Oriharukon }, Voltage.IV);
+        addProcessGT(CombType.INFUSEDGOLD, new Materials[] { Materials.InfusedGold }, Voltage.IV);
+        addCentrifugeToMaterial(
+            CombType.INFUSEDGOLD,
+            new Materials[] { Materials.InfusedGold, Materials.Gold },
+            new int[] { (GT_Mod.gregtechproxy.mNerfedCombs ? 20 : 50) * 100,
+                (GT_Mod.gregtechproxy.mNerfedCombs ? 10 : 30) * 100 },
+            new int[] {},
+            Voltage.IV,
+            200,
+            NI,
+            10 * 100);
         addProcessGT(CombType.MYSTERIOUSCRYSTAL, new Materials[] { Materials.MysteriousCrystal }, Voltage.LuV);
         addCentrifugeToMaterial(
             CombType.MYSTERIOUSCRYSTAL,
@@ -1556,12 +1570,13 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addFluidExtractorProcess(CombType.FLUORINE, Materials.Fluorine.getGas(250), Voltage.MV);
         addFluidExtractorProcess(CombType.OXYGEN, Materials.Oxygen.getGas(500), Voltage.MV);
         // Organic part 2, unknown liquid
-        // yes, unknowwater. Its not my typo, its how it is spelled. Stupid game.
+        // yes, unknowwater. It's not a typo, it's how it is spelled. Stupid game.
         addFluidExtractorProcess(CombType.UNKNOWNWATER, FluidRegistry.getFluidStack("unknowwater", 250), Voltage.ZPM);
-        /**
+        /*
+         * TODO: update this comment
          * The Centrifuge Recipes for Infused Shards and Nether/End-Shard from the Infused Shard Line are below the
-         * NobleGas Lines for Xenon and co. in Gt_MachineRecipeLoader.java In Lines 1525
-         **/
+         * NobleGas Lines for Xenon and co. in GT_MachineRecipeLoader.java In Lines 1525
+         */
     }
 
     /**
@@ -1579,7 +1594,6 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             .itemInputs(GT_Utility.copyAmount(9, getStackForType(comb)), GT_Utility.getIntegratedCircuit(circuitNumber))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4))
             .fluidInputs(Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass() + volt.getUUAmplifier()) / 10))))
-            .noFluidOutputs()
             .duration(((int) (aMaterial.getMass() * 128)) * TICKS)
             .eut(volt.getAutoClaveEnergy());
         if (volt.compareTo(Voltage.HV) > 0) {
@@ -1602,8 +1616,6 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1, getStackForType(comb)))
-            .noItemOutputs()
-            .noFluidInputs()
             .fluidOutputs(fluid)
             .duration(duration)
             .eut(eut)
@@ -1681,9 +1693,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                 recipeBuilder.itemInputs(combInput)
                     .itemOutputs(combOutput)
                     .fluidInputs(fluidInput);
-                if (fluidOutput == null) {
-                    recipeBuilder.noFluidOutputs();
-                } else {
+                if (fluidOutput != null) {
                     recipeBuilder.fluidOutputs(fluidOutput);
                 }
                 recipeBuilder.duration(durationTicks)
@@ -1770,8 +1780,6 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             .itemInputs(tComb)
             .itemOutputs(aItem)
             .outputChances(chance)
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(duration)
             .eut(volt.getSimpleEnergy())
             .addTo(sCentrifugeRecipes);
@@ -1845,19 +1853,19 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             int fluidAmount = this.getFluidAmount();
             return switch (this.getVoltageFromEU()) {
                 case 0 ->
-                    /** ULV **/
+                    /* ULV */
                     Materials.Water.getFluid(fluidAmount);
                 case 1 ->
-                    /** LV **/
+                    /* LV */
                     Materials.SulfuricAcid.getFluid(fluidAmount);
                 case 2 ->
-                    /** MV **/
+                    /* MV */
                     Materials.HydrochloricAcid.getFluid(fluidAmount);
                 case 3 ->
-                    /** HV **/
+                    /* HV */
                     Materials.PhosphoricAcid.getFluid(fluidAmount);
                 case 4 ->
-                    /** EV **/
+                    /* EV */
                     Materials.HydrofluoricAcid.getFluid(this.getFluidAmount());
                 default -> Materials.PhthalicAcid.getFluid(fluidAmount);
             };

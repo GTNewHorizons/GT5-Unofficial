@@ -1,6 +1,11 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import net.minecraft.block.Block;
@@ -85,41 +90,6 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
     public GT_MetaTileEntity_PrimitiveBlastFurnace(String aName) {
         super(aName, INPUT_SLOTS + OUTPUT_SLOTS);
-    }
-
-    @Override
-    public boolean isSteampowered() {
-        return false;
-    }
-
-    @Override
-    public boolean isElectric() {
-        return false;
-    }
-
-    @Override
-    public boolean isPneumatic() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnetInput() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnetOutput() {
-        return false;
-    }
-
-    @Override
-    public boolean isInputFacing(ForgeDirection side) {
-        return false;
-    }
-
-    @Override
-    public boolean isOutputFacing(ForgeDirection side) {
-        return false;
     }
 
     @Override
@@ -365,11 +335,6 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         }
     }
 
-    @Override
-    public Class<?> getType() {
-        return GT_MetaTileEntity_Cleanroom.class;
-    }
-
     protected GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes;
     }
@@ -432,11 +397,6 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         this.mMaxProgresstime = recipe.mDuration;
         this.mOutputItems = recipe.mOutputs;
         return true;
-    }
-
-    @Override
-    public boolean isGivingInformation() {
-        return false;
     }
 
     @Override

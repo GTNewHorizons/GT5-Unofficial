@@ -14,8 +14,8 @@ public enum StarType {
     MClass(0.08, 0.1f),
     NotAStar(0, 0);
 
-    private double solarLuminosity;
-    private float costMultiplier;
+    private final double solarLuminosity;
+    private final float costMultiplier;
 
     StarType(double solarLuminosity, float costMultiplier) {
         this.solarLuminosity = solarLuminosity;

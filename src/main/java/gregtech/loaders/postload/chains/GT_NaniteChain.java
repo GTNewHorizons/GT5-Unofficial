@@ -17,7 +17,12 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeBuilder;
@@ -52,10 +57,9 @@ public class GT_NaniteChain {
                 new FluidStack(solderIndalloy, 144 * 32),
                 Materials.HSSS.getMolten(144L * 32),
                 Materials.Osmiridium.getMolten(144L * 16))
-            .noFluidOutputs()
             .itemOutputs(ItemList.NanoForge.get(1))
             .eut(TierEU.RECIPE_ZPM)
-            .duration(40 * MINUTES)
+            .duration(5 * MINUTES)
             .addTo(AssemblyLine);
 
         GT_Values.RA.stdBuilder()
@@ -69,7 +73,6 @@ public class GT_NaniteChain {
                 GT_OreDictUnificator.get(OrePrefixes.stick, Materials.NaquadahAlloy, 16),
                 Materials.Carbon.getDust(64))
             .fluidInputs(Materials.UUMatter.getFluid(10000), new FluidStack(solderIndalloy, 144 * 32))
-            .noFluidOutputs()
             .itemOutputs(Materials.Carbon.getNanite(2))
             .eut(TierEU.RECIPE_UV)
             .duration(50 * SECONDS)
@@ -228,7 +231,6 @@ public class GT_NaniteChain {
                 MaterialsUEVplus.Space.getMolten(1152),
                 MaterialsUEVplus.ExcitedDTSC.getFluid(50000),
                 MaterialsUEVplus.PrimordialMatter.getFluid(64_000))
-            .noFluidOutputs()
             .duration(750 * GT_RecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_MAX)
             .specialValue(3)

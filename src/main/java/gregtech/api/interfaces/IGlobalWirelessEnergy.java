@@ -1,6 +1,8 @@
 package gregtech.api.interfaces;
 
-import static gregtech.common.misc.GlobalVariableStorage.*;
+import static gregtech.common.misc.GlobalVariableStorage.GlobalEnergy;
+import static gregtech.common.misc.GlobalVariableStorage.GlobalEnergyName;
+import static gregtech.common.misc.GlobalVariableStorage.GlobalEnergyTeam;
 
 import java.math.BigInteger;
 import java.util.UUID;
@@ -133,6 +135,15 @@ public interface IGlobalWirelessEnergy {
 
     default String getUUIDFromUsername(String username) {
         return GlobalEnergyTeam.getOrDefault(GlobalEnergyName.getOrDefault(username, ""), "");
+    }
+
+    /**
+     *
+     * @param username
+     * @return
+     */
+    default String getRawUUIDFromUsername(String username) {
+        return GlobalEnergyName.getOrDefault(username, "");
     }
 
     static void clearGlobalEnergyInformationMaps() {

@@ -7,14 +7,36 @@ import static gregtech.api.enums.FluidState.MOLTEN;
 import static gregtech.api.enums.FluidState.PLASMA;
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.GT_Values.debugEntityCramming;
-import static gregtech.api.enums.Mods.*;
+import static gregtech.api.enums.Mods.AdvancedSolarPanel;
+import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.Avaritia;
+import static gregtech.api.enums.Mods.BetterLoadingScreen;
+import static gregtech.api.enums.Mods.DraconicEvolution;
+import static gregtech.api.enums.Mods.ElectroMagicTools;
+import static gregtech.api.enums.Mods.EnderIO;
+import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GalacticraftCore;
+import static gregtech.api.enums.Mods.GalaxySpace;
+import static gregtech.api.enums.Mods.GanysSurface;
+import static gregtech.api.enums.Mods.GraviSuite;
+import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Mods.IguanaTweaksTinkerConstruct;
+import static gregtech.api.enums.Mods.MagicalCrops;
+import static gregtech.api.enums.Mods.Names;
+import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.enums.Mods.TaintedMagic;
+import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.Mods.ThaumicBoots;
+import static gregtech.api.enums.Mods.ThaumicTinkerer;
+import static gregtech.api.enums.Mods.TwilightForest;
+import static gregtech.api.enums.Mods.WitchingGadgets;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sWiremillRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gregtech.api.util.GT_Util.LAST_BROKEN_TILEENTITY;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -122,7 +144,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.objects.GT_ChunkManager;
-import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_UO_DimensionList;
 import gregtech.api.objects.ItemData;
@@ -680,6 +701,16 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     public boolean mNEIOriginalVoltage = false;
 
     /**
+     * This enables the green->red durability for an item's damage value
+     */
+    public boolean mRenderItemDurabilityBar = true;
+
+    /**
+     * This enables the blue charge bar for an electric item's charge
+     */
+    public boolean mRenderItemChargeBar = true;
+
+    /**
      * This enables showing voltage tier of transformer for Waila, instead of raw voltage number
      */
     public boolean mWailaTransformerVoltageTier = true;
@@ -688,6 +719,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
      * What is the order of the circuits when they are selected?
      */
     public Map<String, Integer> mCircuitsOrder = new HashMap<>();
+
+    public boolean wailaAverageNS = false;
 
     public static final int GUI_ID_COVER_SIDE_BASE = 10; // Takes GUI ID 10 - 15
 
@@ -1062,6 +1095,10 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
 
         MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
         MinecraftForge.EVENT_BUS.register(new SpaceProjectWorldSavedData());
+        MinecraftForge.EVENT_BUS.register(new GT_Worldgenerator.OregenPatternSavedData(""));
+        FMLCommonHandler.instance()
+            .bus()
+            .register(new GT_Worldgenerator.OregenPatternSavedData(""));
 
         // IC2 Hazmat
         addFullHazmatToIC2Item("hazmatHelmet");
@@ -1096,6 +1133,17 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         addFullHazmatToGeneralItem(ElectroMagicTools.ID, "SolarHelmetRevealing", 1L);
         addFullHazmatToGeneralItem(ElectroMagicTools.ID, "NanosuitWing", 1L);
         addFullHazmatToGeneralItem(ElectroMagicTools.ID, "QuantumWing", 1L);
+
+        // Thaumic Boots Hazmat
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemQuantumVoid", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemQuantumMeteor", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemQuantumComet", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemNanoVoid", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemNanoMeteor", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemNanoComet", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemElectricVoid", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemVoidMeteor", 1L);
+        addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemVoidComet", 1L);
 
         // DraconicEvolution Hazmat
         addFullHazmatToGeneralItem(DraconicEvolution.ID, "draconicBoots", 1L, 0);
@@ -1313,8 +1361,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
 
     public void onServerStarted() {
         GregTech_API.sWirelessRedstone.clear();
-        GT_FluidStack.fixAllThoseFuckingFluidIDs();
-
         GT_Log.out.println(
             "GT_Mod: Cleaning up all OreDict Crafting Recipes, which have an empty List in them, since they are never meeting any Condition.");
         List<IRecipe> tList = CraftingManager.getInstance()
@@ -1520,7 +1566,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                     ForgeEventFactory.onPlayerDestroyItem(aEvent.entityPlayer, aStack);
                 }
             }
-            return;
         }
     }
 
@@ -1945,16 +1990,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                                                         GT_Values.RA.stdBuilder()
                                                             .itemInputs(GT_ModHandler.getIC2Item("copperCableItem", 3L))
                                                             .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 1, 8))
-                                                            .noFluidInputs()
-                                                            .noFluidOutputs()
                                                             .duration(20 * SECONDS)
                                                             .eut(1)
                                                             .addTo(sWiremillRecipes);
                                                         GT_Values.RA.stdBuilder()
                                                             .itemInputs(GT_ModHandler.getIC2Item("ironCableItem", 6L))
                                                             .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 1, 9))
-                                                            .noFluidInputs()
-                                                            .noFluidOutputs()
                                                             .duration(20 * SECONDS)
                                                             .eut(2)
                                                             .addTo(sWiremillRecipes);
@@ -2900,7 +2941,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
             GT_Values.cls_enabled = true;
             try {
                 GT_CLS_Compat.stepMaterialsCLS(mEvents, progressBar);
-            } catch (IllegalAccessException | InvocationTargetException e) {
+            } catch (IllegalAccessException e) {
                 GT_FML_LOGGER.catching(e);
             }
         } else GT_Proxy.stepMaterialsVanilla(this.mEvents, progressBar);
@@ -3018,9 +3059,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
 
     @SubscribeEvent
     public void onItemTooltip(ItemTooltipEvent event) {
-        if (event.itemStack == null) {
-            return;
-        } else {
+        if (event.itemStack != null) {
             ItemStack aStackTemp = event.itemStack;
             GT_ItemStack aStack = new GT_ItemStack(aStackTemp);
             if (providesProtection(aStackTemp)) {

@@ -1,9 +1,11 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.GT_Values.VN;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -14,6 +16,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GT_ExoticEnergyInputHelper;
 import gregtech.api.util.GT_Utility;
 
@@ -127,6 +131,28 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
     }
 
     @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(getAverageInputVoltage());
+        logic.setAvailableAmperage(getMaxInputAmps());
+        logic.setAmperageOC(true);
+    }
+
+    @Nonnull
+    @Override
+    protected CheckRecipeResult postCheckRecipe(@Nonnull CheckRecipeResult result,
+        @Nonnull ProcessingLogic processingLogic) {
+        return result;
+    }
+
+    @Override
+    protected void setEnergyUsage(ProcessingLogic processingLogic) {
+        lEUt = processingLogic.getCalculatedEut();
+        if (lEUt > 0) {
+            lEUt = (-lEUt);
+        }
+    }
+
+    @Override
     public String[] getInfoData() {
         int mPollutionReduction = 0;
         for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
@@ -207,14 +233,17 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
         return GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList());
     }
 
+    @Override
     public long getAverageInputVoltage() {
         return GT_ExoticEnergyInputHelper.getAverageInputVoltageMulti(getExoticAndNormalEnergyHatchList());
     }
 
+    @Override
     public long getMaxInputAmps() {
         return GT_ExoticEnergyInputHelper.getMaxWorkingInputAmpsMulti(getExoticAndNormalEnergyHatchList());
     }
 
+    @Override
     public long getMaxInputEu() {
         return GT_ExoticEnergyInputHelper.getTotalEuMulti(getExoticAndNormalEnergyHatchList());
     }

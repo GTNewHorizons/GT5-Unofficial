@@ -4,7 +4,11 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 
 public class GT_DamageSources {
 
@@ -69,6 +73,7 @@ public class GT_DamageSources {
 
         public DamageSourceHeat() {
             super("steam");
+            setFireDamage();
             setDifficultyScaled();
         }
 

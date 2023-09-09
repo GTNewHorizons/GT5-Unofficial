@@ -145,7 +145,7 @@ public class SPM_Command extends CommandBase {
         switch (arguments.length) {
             case 1 -> autoComplete.addAll(Arrays.asList(getSubCommands()));
             case 2 -> {
-                filter = arguments.length == 1 ? "" : arguments[1].trim();
+                filter = arguments[1].trim();
                 if (arguments[0].equals(LIST)) {
                     autoComplete.addAll(Arrays.asList(getListArguments()));
                 } else if (arguments[0].equals(COPY) || arguments[0].equals(RESET)) {
@@ -155,7 +155,7 @@ public class SPM_Command extends CommandBase {
                 }
             }
             case 3 -> {
-                filter = arguments.length == 2 ? "" : arguments[2].trim();
+                filter = arguments[2].trim();
                 if (arguments[1].equals(ALL)) {} else if (arguments[0].equals(LIST)) {
                     autoComplete.addAll(Arrays.asList(getPlayers()));
                 } else {
@@ -163,7 +163,7 @@ public class SPM_Command extends CommandBase {
                 }
             }
             case 4 -> {
-                filter = arguments.length == 3 ? "" : arguments[3].trim();
+                filter = arguments[3].trim();
                 if (arguments[0].equals(UNLOCK_UPGRADE)) {
                     ISpaceProject project = SpaceProjectManager.getProject(arguments[2]);
                     if (project != null) {

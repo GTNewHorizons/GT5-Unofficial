@@ -107,9 +107,7 @@ public abstract class GT_CircuitryBehavior {
         return tRedstoneAmount;
     }
 
-    /*****************
-     * GUI Functions *
-     *****************/
+    // region GUI Functions
 
     /**
      * returns the weakest incoming non-zero RS-Power
@@ -167,9 +165,9 @@ public abstract class GT_CircuitryBehavior {
      */
     public abstract void validateParameters(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock);
 
-    /****************************
-     * Useful Utility Functions *
-     ****************************/
+    // endregion
+
+    // region Utility Functions
 
     /**
      * Called every tick if the Block has enough Energy and if the Block is Active
@@ -210,4 +208,5 @@ public abstract class GT_CircuitryBehavior {
     public String getDataDisplay(int[] aCircuitData, int aCircuitDataIndex) {
         return null;
     }
+    // endregion
 }

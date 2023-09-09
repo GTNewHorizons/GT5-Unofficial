@@ -1061,6 +1061,9 @@ public enum ItemList implements IItemContainer {
     Hatch_Input_Multi_2x2_UHV,
     Hatch_Input_Multi_2x2_UEV,
     Hatch_Input_Multi_2x2_UIV,
+    Hatch_Input_Multi_2x2_UMV,
+    Hatch_Input_Multi_2x2_UXV,
+    Hatch_Input_Multi_2x2_Humongous,
 
     Hatch_Input_Bus_ULV,
     Hatch_Input_Bus_LV,
@@ -1703,9 +1706,6 @@ public enum ItemList implements IItemContainer {
     Honeycomb,
     Charcoal_Pile,
     Block_BrittleCharcoal,
-    Seismic_Prospector_LV,
-    Seismic_Prospector_MV,
-    Seismic_Prospector_HV,
     Seismic_Prospector_Adv_LV,
     Seismic_Prospector_Adv_MV,
     Seismic_Prospector_Adv_HV,
@@ -1998,6 +1998,8 @@ public enum ItemList implements IItemContainer {
 
     Hatch_Input_Bus_ME,
     Hatch_CraftingInput_Bus_ME,
+    Hatch_CraftingInput_Bus_ME_ItemOnly,
+    Hatch_CraftingInput_Bus_Slave,
     AdvDebugStructureWriter,
 
     Superconducting_Magnet_Solenoid_MV,

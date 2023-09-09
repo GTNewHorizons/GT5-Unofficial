@@ -51,13 +51,17 @@ public class Textures {
 
         OVERLAY_PIPELINE_FLUID_BACK,
         OVERLAY_PIPELINE_FLUID_FRONT,
-        OVERLAY_PIPELINE_FLUID_SIDE,
-        OVERLAY_PIPELINE_FLUID_SIDE_GLOW,
+        OVERLAY_PIPELINE_FLUID_SIDE_LEFT_RIGHT,
+        OVERLAY_PIPELINE_FLUID_SIDE_LEFT_RIGHT_GLOW,
+        OVERLAY_PIPELINE_FLUID_SIDE_UP_DOWN,
+        OVERLAY_PIPELINE_FLUID_SIDE_UP_DOWN_GLOW,
 
         OVERLAY_PIPELINE_ITEM_BACK,
         OVERLAY_PIPELINE_ITEM_FRONT,
-        OVERLAY_PIPELINE_ITEM_SIDE,
-        OVERLAY_PIPELINE_ITEM_SIDE_GLOW,
+        OVERLAY_PIPELINE_ITEM_SIDE_LEFT_RIGHT,
+        OVERLAY_PIPELINE_ITEM_SIDE_LEFT_RIGHT_GLOW,
+        OVERLAY_PIPELINE_ITEM_SIDE_UP_DOWN,
+        OVERLAY_PIPELINE_ITEM_SIDE_UP_DOWN_GLOW,
 
         LONG_DISTANCE_PIPE_FLUID,
         LONG_DISTANCE_PIPE_ITEM,
@@ -1285,6 +1289,9 @@ public class Textures {
 
         OVERLAY_ME_HATCH_ACTIVE,
         OVERLAY_ME_INPUT_HATCH,
+        OVERLAY_ME_CRAFTING_INPUT_BUFFER,
+        OVERLAY_ME_CRAFTING_INPUT_BUS,
+        OVERLAY_ME_CRAFTING_INPUT_SLAVE,
         OVERLAY_ME_INPUT_HATCH_ACTIVE,
         OVERLAY_ME_CRAFTING_HATCH,
         OVERLAY_ME_CRAFTING_HATCH_ACTIVE,
@@ -1649,7 +1656,7 @@ public class Textures {
          * USE casingTexturePages[page] instead of CASING_BLOCKS since it is casingTexturePages[0]
          */
         @Deprecated
-        public static ITexture[] CASING_BLOCKS = new ITexture[128]; // original variable still limited to 128
+        public static final ITexture[] CASING_BLOCKS = new ITexture[128]; // original variable still limited to 128
 
         public static ITexture[][] MACHINE_CASINGS = new ITexture[15][17];
         /**
@@ -1677,7 +1684,7 @@ public class Textures {
             setCasingTextureForId(ERROR_TEXTURE_INDEX, ERROR_RENDERING[0]);
         }
 
-        protected IIcon mIcon;
+        IIcon mIcon;
 
         BlockIcons() {
             GregTech_API.sGTBlockIconload.add(this);
@@ -1822,7 +1829,7 @@ public class Textures {
 
         public static final ITexture[] ERROR_RENDERING = { TextureFactory.of(RENDERING_ERROR) };
 
-        protected IIcon mIcon, mOverlay;
+        IIcon mIcon, mOverlay;
 
         ItemIcons() {
             GregTech_API.sGTItemIconload.add(this);

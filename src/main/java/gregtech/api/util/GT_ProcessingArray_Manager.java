@@ -2,9 +2,12 @@ package gregtech.api.util;
 
 import java.util.HashMap;
 
+import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.SoundResource;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
+@Deprecated
 public class GT_ProcessingArray_Manager {
 
     private static final HashMap<String, GT_Recipe_Map> mRecipeSaves = new HashMap<>();
@@ -37,5 +40,12 @@ public class GT_ProcessingArray_Manager {
             return machineSounds.get(machineName);
         }
         return null;
+    }
+
+    public static String getMachineName(ItemStack stack) {
+        int length = stack.getUnlocalizedName()
+            .length();
+        return stack.getUnlocalizedName()
+            .substring(17, length - 8); // trim "gt.blockmachines." and ".tier.xx"
     }
 }

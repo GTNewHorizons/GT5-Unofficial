@@ -41,10 +41,12 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.base.Stopwatch;
 
 import appeng.api.AEApi;
+import appeng.helpers.InterfaceTerminalSupportedClassProvider;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLModIdMappingEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -58,7 +60,14 @@ import gregtech.api.ModernMaterials.ModernMaterialsRegistration;
 import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Hazmat;
 import gregtech.api.enchants.Enchantment_Radioactivity;
-import gregtech.api.enums.*;
+import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.objects.GT_ItemStack;
@@ -67,7 +76,6 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.GT_Assemblyline_Server;
 import gregtech.api.util.GT_Forestry_Compat;
-import gregtech.api.util.GT_ItsNotMyFaultException;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
@@ -86,6 +94,7 @@ import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.misc.GT_Command;
 import gregtech.common.misc.spaceprojects.commands.SPM_Command;
 import gregtech.common.misc.spaceprojects.commands.SP_Command;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import gregtech.crossmod.Waila;
 import gregtech.loaders.load.GT_CoverBehaviorLoader;
@@ -96,8 +105,28 @@ import gregtech.loaders.load.GT_SonictronLoader;
 import gregtech.loaders.misc.GT_Achievements;
 import gregtech.loaders.misc.GT_Bees;
 import gregtech.loaders.misc.GT_CoverLoader;
-import gregtech.loaders.postload.*;
-import gregtech.loaders.preload.*;
+import gregtech.loaders.postload.GT_BlockResistanceLoader;
+import gregtech.loaders.postload.GT_BookAndLootLoader;
+import gregtech.loaders.postload.GT_CraftingRecipeLoader;
+import gregtech.loaders.postload.GT_CropLoader;
+import gregtech.loaders.postload.GT_ExtremeDieselFuelLoader;
+import gregtech.loaders.postload.GT_FakeRecipeLoader;
+import gregtech.loaders.postload.GT_ItemMaxStacksizeLoader;
+import gregtech.loaders.postload.GT_MachineRecipeLoader;
+import gregtech.loaders.postload.GT_MachineTooltipsLoader;
+import gregtech.loaders.postload.GT_MinableRegistrator;
+import gregtech.loaders.postload.GT_PostLoad;
+import gregtech.loaders.postload.GT_RecyclerBlacklistLoader;
+import gregtech.loaders.postload.GT_ScrapboxDropLoader;
+import gregtech.loaders.postload.GT_Worldgenloader;
+import gregtech.loaders.preload.GT_Loader_CircuitBehaviors;
+import gregtech.loaders.preload.GT_Loader_ItemData;
+import gregtech.loaders.preload.GT_Loader_Item_Block_And_Fluid;
+import gregtech.loaders.preload.GT_Loader_MetaTileEntities;
+import gregtech.loaders.preload.GT_Loader_MultiTileEntities;
+import gregtech.loaders.preload.GT_Loader_OreDictionary;
+import gregtech.loaders.preload.GT_Loader_OreProcessing;
+import gregtech.loaders.preload.GT_PreLoad;
 import gregtech.nei.IMCForNEI;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
@@ -109,7 +138,7 @@ import ic2.api.recipe.RecipeOutput;
     guiFactory = "gregtech.client.GT_GuiFactory",
     dependencies = " required-after:IC2;" + " required-after:structurelib;"
         + " required-after:gtnhlib@[0.0.8,);"
-        + " required-after:modularui@[1.1.7,);"
+        + " required-after:modularui@[1.1.12,);"
         + " after:dreamcraft;"
         + " after:Forestry;"
         + " after:PFAAGeologica;"
@@ -172,20 +201,6 @@ public class GT_Mod implements IGT_Mod {
     public static final String aTextGeneral = "general";
     public static final String aTextIC2 = "ic2_";
     public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
-
-    static {
-        if ((509 != GregTech_API.VERSION) || (509 != GT_ModHandler.VERSION)
-            || (509 != GT_OreDictUnificator.VERSION)
-            || (509 != GT_Recipe.VERSION)
-            || (509 != GT_Utility.VERSION)
-            || (509 != GT_RecipeRegistrator.VERSION)
-            || (509 != Element.VERSION)
-            || (509 != Materials.VERSION)
-            || (509 != OrePrefixes.VERSION)) {
-            throw new GT_ItsNotMyFaultException(
-                "One of your Mods included GregTech-API Files inside it's download, mention this to the Mod Author, who does this bad thing, and tell him/her to use reflection. I have added a Version check, to prevent Authors from breaking my Mod that way.");
-        }
-    }
 
     @SuppressWarnings("deprecation")
     public GT_Mod() {
@@ -271,6 +286,7 @@ public class GT_Mod implements IGT_Mod {
         EntityRegistry.registerModEntity(GT_Entity_Arrow.class, "GT_Entity_Arrow", 1, GT_Values.GT, 160, 1, true);
         EntityRegistry
             .registerModEntity(GT_Entity_Arrow_Potion.class, "GT_Entity_Arrow_Potion", 2, GT_Values.GT, 160, 1, true);
+        InterfaceTerminalSupportedClassProvider.register(GT_MetaTileEntity_Hatch_CraftingInput_ME.class);
 
         GT_PreLoad.runMineTweakerCompat();
 
@@ -290,6 +306,8 @@ public class GT_Mod implements IGT_Mod {
         GregTech_API.sPreloadFinished = true;
         GT_Log.out.println("GT_Mod: Preload-Phase finished!");
         GT_Log.ore.println("GT_Mod: Preload-Phase finished!");
+
+        GT_UIInfos.init();
 
         for (Runnable tRunnable : GregTech_API.sAfterGTPreload) {
             try {
@@ -578,6 +596,18 @@ public class GT_Mod implements IGT_Mod {
     }
 
     @Mod.EventHandler
+    public void onLoadComplete(FMLLoadCompleteEvent aEvent) {
+        for (Runnable tRunnable : GregTech_API.sGTCompleteLoad) {
+            try {
+                tRunnable.run();
+            } catch (Throwable e) {
+                e.printStackTrace(GT_Log.err);
+            }
+        }
+        GregTech_API.sGTCompleteLoad = null;
+    }
+
+    @Mod.EventHandler
     public void onServerStarted(FMLServerStartedEvent aEvent) {
         gregtechproxy.onServerStarted();
     }
@@ -728,11 +758,11 @@ public class GT_Mod implements IGT_Mod {
         }
         GT_Log.out.println("GT_Mod: Smelting");
 
-        // noinspection unchecked// Deal with legacy Minecraft raw types
-        FurnaceRecipes.smelting()
-            .getSmeltingList()
-            .values()
-            .forEach(tStacks::add);
+        // Deal with legacy Minecraft raw types
+        tStacks.addAll(
+            FurnaceRecipes.smelting()
+                .getSmeltingList()
+                .values());
 
         if (gregtechproxy.mCraftingUnification) {
             GT_Log.out.println("GT_Mod: Crafting Recipes");
@@ -744,37 +774,11 @@ public class GT_Mod implements IGT_Mod {
             }
         }
         for (ItemStack tOutput : tStacks) {
-            if (gregtechproxy.mRegisteredOres.contains(tOutput)) {
-                GT_FML_LOGGER.error("GT-ERR-01: @ " + tOutput.getUnlocalizedName() + "   " + tOutput.getDisplayName());
-                GT_FML_LOGGER.error(
-                    "A Recipe used an OreDict Item as Output directly, without copying it before!!! This is a typical CallByReference/CallByValue Error");
-                GT_FML_LOGGER.error(
-                    "Said Item will be renamed to make the invalid Recipe visible, so that you can report it properly.");
-                GT_FML_LOGGER
-                    .error("Please check all Recipes outputting this Item, and report the Recipes to their Owner.");
-                GT_FML_LOGGER.error(
-                    "The Owner of the ==>RECIPE<==, NOT the Owner of the Item, which has been mentioned above!!!");
-                GT_FML_LOGGER.error(
-                    "And ONLY Recipes which are ==>OUTPUTTING<== the Item, sorry but I don't want failed Bug Reports.");
-                GT_FML_LOGGER.error(
-                    "GregTech just reports this Error to you, so you can report it to the Mod causing the Problem.");
-                GT_FML_LOGGER.error(
-                    "Even though I make that Bug visible, I can not and will not fix that for you, that's for the causing Mod to fix.");
-                GT_FML_LOGGER.error("And speaking of failed Reports:");
-                GT_FML_LOGGER.error(
-                    "Both IC2 and GregTech CANNOT be the CAUSE of this Problem, so don't report it to either of them.");
-                GT_FML_LOGGER
-                    .error("I REPEAT, BOTH, IC2 and GregTech CANNOT be the source of THIS BUG. NO MATTER WHAT.");
-                GT_FML_LOGGER.error(
-                    "Asking in the IC2 Forums, which Mod is causing that, won't help anyone, since it is not possible to determine, which Mod it is.");
-                GT_FML_LOGGER.error(
-                    "If it would be possible, then I would have had added the Mod which is causing it to the Message already. But it is not possible.");
-                GT_FML_LOGGER.error(
-                    "Sorry, but this Error is serious enough to justify this Wall-O-Text and the partially allcapsed Language.");
-                GT_FML_LOGGER.error("Also it is a Ban Reason on the IC2-Forums to post this seriously.");
-                tOutput.setStackDisplayName("ERROR! PLEASE CHECK YOUR LOG FOR 'GT-ERR-01'!");
-            } else {
+            if (!gregtechproxy.mRegisteredOres.contains(tOutput)) {
                 GT_OreDictUnificator.setStack(tOutput);
+            } else {
+                logMultilineError(GT_FML_LOGGER, generateGTErr01Message(tOutput));
+                tOutput.setStackDisplayName("ERROR! PLEASE CHECK YOUR LOG FOR 'GT-ERR-01'!");
             }
         }
         GregTech_API.mServerStarted = true;
@@ -860,5 +864,20 @@ public class GT_Mod implements IGT_Mod {
         final StringWriter sw = new StringWriter();
         t.printStackTrace(new PrintWriter(sw));
         GT_FML_LOGGER.error(sw);
+    }
+
+    private static String[] generateGTErr01Message(ItemStack stack) {
+        // The message is presented on a per-line basis to make possible formatting in the future easier.
+        return new String[] { "GT-ERR-01 at " + stack.getUnlocalizedName() + "   " + stack.getDisplayName(),
+            "A recipe used an OreDict item as output directly, without copying the item before that. This is a typical CallByReference/CallByValue error.",
+            "The said item will be renamed to make the invalid recipe visible.",
+            "Please check all recipes that output this item, and report them to the mod that introduced the recipes.", };
+    }
+
+    @SuppressWarnings("SameParameterValue") // The method is used with one logger, but that might change in the future.
+    private static void logMultilineError(Logger logger, String[] errorMessageLines) {
+        for (String errorMessage : errorMessageLines) {
+            logger.error(errorMessage);
+        }
     }
 }

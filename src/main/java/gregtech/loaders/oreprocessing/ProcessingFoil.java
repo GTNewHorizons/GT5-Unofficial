@@ -33,8 +33,6 @@ public class ProcessingFoil implements IOreRecipeRegistrator {
                 GT_Utility.copyAmount(1L, GT_OreDictUnificator.get(OrePrefixes.plate, material, 4L)),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.foil, material, 4L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration((int) Math.max(material.getMass(), 1L))
             .eut(calculateRecipeEU(material, 24))
             .addTo(sBenderRecipes);

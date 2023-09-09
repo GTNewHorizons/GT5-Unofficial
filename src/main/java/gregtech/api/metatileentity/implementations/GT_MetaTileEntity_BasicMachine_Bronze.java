@@ -1,12 +1,22 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.D1;
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZE_BOTTOM;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZE_SIDE;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_BRONZE_TOP;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
+
+import java.util.Arrays;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -41,6 +51,7 @@ import gregtech.common.power.SteamPower;
  */
 public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileEntity_BasicMachine {
 
+    private static final String TT_machineType = "GT5U.MBTT.MachineType";
     private static final int NEEDS_STEAM_VENTING = 64;
     public boolean mNeedsSteamVenting = false;
 
@@ -377,5 +388,15 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     @Override
     protected FluidSlotWidget createFluidOutputSlot(IDrawable[] backgrounds, Pos2d pos) {
         return null;
+    }
+
+    @Override
+    public String[] getDescription() {
+        String[] description = Arrays.copyOf(mDescriptionArray, mDescriptionArray.length + 1);
+        description[mDescriptionArray.length] = StatCollector.translateToLocal(TT_machineType) + ": "
+            + EnumChatFormatting.YELLOW
+            + StatCollector.translateToLocal(this.getRecipeList().mUnlocalizedName)
+            + EnumChatFormatting.RESET;
+        return description;
     }
 }

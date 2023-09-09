@@ -9,11 +9,22 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 
 import forestry.api.apiculture.EnumBeeChromosome;
 import forestry.api.arboriculture.EnumTreeChromosome;
-import forestry.api.genetics.*;
+import forestry.api.genetics.AlleleManager;
+import forestry.api.genetics.EnumTolerance;
+import forestry.api.genetics.IAllele;
+import forestry.api.genetics.IAlleleBoolean;
+import forestry.api.genetics.IAlleleInteger;
+import forestry.api.genetics.IAlleleTolerance;
+import forestry.api.genetics.IChromosomeType;
 import forestry.api.lepidopterology.EnumButterflyChromosome;
 import forestry.apiculture.flowers.FlowerProvider;
 import forestry.core.config.Constants;
-import forestry.core.genetics.alleles.*;
+import forestry.core.genetics.alleles.AlleleBoolean;
+import forestry.core.genetics.alleles.AlleleHelper;
+import forestry.core.genetics.alleles.AlleleInteger;
+import forestry.core.genetics.alleles.AlleleTolerance;
+import forestry.core.genetics.alleles.EnumAllele;
+import forestry.core.genetics.alleles.IAlleleValue;
 import forestry.core.utils.vect.IVect;
 import forestry.plugins.PluginManager;
 import gregtech.GT_Mod;
@@ -151,10 +162,10 @@ public class GT_AlleleHelper extends AlleleHelper {
             return;
         }
 
-        // uncomment this once all addon mods are using the allele registration with IChromosomeType
+        // TODO: uncomment this once all addon mods are using the allele registration with IChromosomeType
         // Collection<IChromosomeType> validTypes = AlleleManager.alleleRegistry.getChromosomeTypes(allele);
         // if (validTypes.size() > 0 && !validTypes.contains(chromosomeType)) {
-        // throw new IllegalArgumentException("Allele can't applied to this Chromosome type. Expected: " + validTypes
+        // throw new IllegalArgumentException("Allele can't be applied to this Chromosome type. Expected: " + validTypes
         // + " Got: " + chromosomeType);
         // }
 
@@ -162,8 +173,7 @@ public class GT_AlleleHelper extends AlleleHelper {
     }
 
     @Override
-    public <T extends Enum<T> & IChromosomeType> void set(IAllele[] alleles, T chromosomeType,
-        @SuppressWarnings("rawtypes") IAlleleValue value) {
+    public <T extends Enum<T> & IChromosomeType> void set(IAllele[] alleles, T chromosomeType, IAlleleValue value) {
         set(alleles, chromosomeType, get(value));
     }
 

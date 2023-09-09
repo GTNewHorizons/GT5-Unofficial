@@ -22,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.ChunkPosition;
@@ -38,14 +39,13 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.interfaces.metatileentity.IMachineCallback;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.ICleanroom;
+import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GT_Packet_Pollution;
 import gregtech.api.util.GT_ChunkAssociatedData;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_PollutionRenderer;
-import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 
 public class GT_Pollution {
 
@@ -79,7 +79,7 @@ public class GT_Pollution {
     private boolean blank = true;
     public static int mPlayerPollution;
 
-    private static int POLLUTIONPACKET_MINVALUE = 1000;
+    private static final int POLLUTIONPACKET_MINVALUE = 1000;
 
     private static GT_PollutionEventHandler EVENT_HANDLER;
 
@@ -180,9 +180,6 @@ public class GT_Pollution {
 
                     // Poison effects
                     if (tPollution > GT_Mod.gregtechproxy.mPollutionPoisonLimit) {
-                        // AxisAlignedBB chunk = AxisAlignedBB.getBoundingBox(tPos.chunkPosX*16, 0, tPos.chunkPosZ*16,
-                        // tPos.chunkPosX*16+16, 256, tPos.chunkPosZ*16+16);
-                        // List<EntityLiving> tEntitys = aWorld.getEntitiesWithinAABB(EntityLiving.class, chunk);
                         for (EntityLivingBase tEnt : tEntitys) {
                             if (tEnt instanceof EntityPlayerMP && ((EntityPlayerMP) tEnt).capabilities.isCreativeMode)
                                 continue;
@@ -292,14 +289,12 @@ public class GT_Pollution {
         }
 
         if (sourRain && world.isRaining()
-            && (tBlock == Blocks.stone || tBlock == Blocks.gravel || tBlock == Blocks.cobblestone)
+            && (tBlock == Blocks.gravel || tBlock == Blocks.cobblestone)
             && world.getBlock(x, y + 1, z) == Blocks.air
             && world.canBlockSeeTheSky(x, y, z)) {
-            if (tBlock == Blocks.stone) {
-                world.setBlock(x, y, z, Blocks.cobblestone);
-            } else if (tBlock == Blocks.cobblestone) {
+            if (tBlock == Blocks.cobblestone) {
                 world.setBlock(x, y, z, Blocks.gravel);
-            } else if (tBlock == Blocks.gravel) {
+            } else {
                 world.setBlock(x, y, z, Blocks.sand);
             }
         }
@@ -309,28 +304,32 @@ public class GT_Pollution {
         return dimensionWisePollution.computeIfAbsent(world.provider.dimensionId, i -> new GT_Pollution(world));
     }
 
-    /** @see #addPollution(World, int, int, int) */
-    @SuppressWarnings("rawtypes")
+    /** @see #addPollution(TileEntity, int) */
     public static void addPollution(IGregTechTileEntity te, int aPollution) {
-        if (!GT_Mod.gregtechproxy.mPollution || aPollution == 0 || te.isClientSide()) return;
-        IMetaTileEntity iMetaTileEntity = te.getMetaTileEntity();
+        addPollution((TileEntity) te, aPollution);
+    }
 
-        if (iMetaTileEntity instanceof IMachineCallback) {
-            if (((IMachineCallback) iMetaTileEntity).getCallbackBase() instanceof GT_MetaTileEntity_Cleanroom) {
-                if (aPollution > 0) {
-                    ((GT_MetaTileEntity_Cleanroom) ((IMachineCallback) iMetaTileEntity).getCallbackBase())
-                        .doMaintenanceIssue();
-                }
+    /**
+     * Also pollutes cleanroom if {@code te} is an instance of {@link ICleanroomReceiver}.
+     *
+     * @see #addPollution(World, int, int, int)
+     */
+    public static void addPollution(TileEntity te, int aPollution) {
+        if (!GT_Mod.gregtechproxy.mPollution || aPollution == 0 || te.getWorldObj().isRemote) return;
+
+        if (aPollution > 0 && te instanceof ICleanroomReceiver receiver) {
+            ICleanroom cleanroom = receiver.getCleanroom();
+            if (cleanroom != null && cleanroom.isValidCleanroom()) {
+                cleanroom.pollute();
             }
         }
 
-        mutatePollution(te.getWorld(), te.getXCoord() >> 4, te.getZCoord() >> 4, d -> d.changeAmount(aPollution), null);
+        addPollution(te.getWorldObj(), te.xCoord >> 4, te.zCoord >> 4, aPollution);
     }
 
     /** @see #addPollution(World, int, int, int) */
     public static void addPollution(Chunk ch, int aPollution) {
-        if (!GT_Mod.gregtechproxy.mPollution || aPollution == 0 || ch.worldObj.isRemote) return;
-        mutatePollution(ch.worldObj, ch.xPosition, ch.zPosition, d -> d.changeAmount(aPollution), null);
+        addPollution(ch.worldObj, ch.xPosition, ch.zPosition, aPollution);
     }
 
     /**
@@ -372,7 +371,7 @@ public class GT_Pollution {
 
     /**
      * Get the pollution in specified chunk
-     * 
+     *
      * @param w      world to look in. can be a client world, but that limits the knowledge to what server side send us
      * @param chunkX chunk coordinate X, i.e. blockX >> 4
      * @param chunkZ chunk coordinate Z, i.e. blockZ >> 4

@@ -1,6 +1,8 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.GT_Values.AuthorColen;
+import static gregtech.api.enums.GT_Values.V;
+import static java.lang.Long.min;
 
 import java.math.BigInteger;
 
@@ -124,44 +126,44 @@ public class GT_MetaTileEntity_Wireless_Hatch extends GT_MetaTileEntity_Hatch_En
     }
 
     @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+
+        if (!aBaseMetaTileEntity.isServerSide()) return;
+
+        // UUID and username of the owner.
+        owner_uuid = aBaseMetaTileEntity.getOwnerUuid()
+            .toString();
+        owner_name = aBaseMetaTileEntity.getOwnerName();
+
+        strongCheckOrAddUser(owner_uuid, owner_name);
+
+        tryFetchingEnergy();
+    }
+
+    @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 
         super.onPreTick(aBaseMetaTileEntity, aTick);
 
         if (aBaseMetaTileEntity.isServerSide()) {
-
-            // On first tick find the player name and attempt to add them to the map.
-            if (aTick == 1) {
-
-                // UUID and username of the owner.
-                owner_uuid = aBaseMetaTileEntity.getOwnerUuid()
-                    .toString();
-                owner_name = aBaseMetaTileEntity.getOwnerName();
-
-                strongCheckOrAddUser(owner_uuid, owner_name);
-
-                if (addEUToGlobalEnergyMap(owner_uuid, eu_transferred_per_operation.negate()))
-                    setEUVar(eu_transferred_per_operation_long);
-            }
-
             // This is set up in a way to be as optimised as possible. If a user has a relatively plentiful energy
             // network
             // it should make no difference to them. Minimising the number of operations on BigInteger is essential.
 
             // Every ticks_between_energy_addition add eu_transferred_per_operation to internal EU storage from network.
             if (aTick % ticks_between_energy_addition == 0L) {
-                long total_eu = getBaseMetaTileEntity().getStoredEU();
-
-                // Can the machine store the EU being added?
-                long new_eu_storage = total_eu + eu_transferred_per_operation_long;
-                if (new_eu_storage <= maxEUStore()) {
-
-                    // Attempt to remove energy from the network and add it to the internal buffer of the machine.
-                    if (addEUToGlobalEnergyMap(owner_uuid, eu_transferred_per_operation.negate())) {
-                        setEUVar(new_eu_storage);
-                    }
-                }
+                tryFetchingEnergy();
             }
         }
+    }
+
+    private void tryFetchingEnergy() {
+        long currentEU = getBaseMetaTileEntity().getStoredEU();
+        long maxEU = maxEUStore();
+        long euToTransfer = min(maxEU - currentEU, eu_transferred_per_operation_long);
+        if (euToTransfer <= 0) return; // nothing to transfer
+        if (!addEUToGlobalEnergyMap(owner_uuid, -euToTransfer)) return;
+        setEUVar(currentEU + euToTransfer);
     }
 }

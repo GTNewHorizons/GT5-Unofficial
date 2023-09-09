@@ -2,7 +2,8 @@ package gregtech.common.misc;
 
 import java.lang.reflect.Field;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import net.minecraft.command.CommandBase;
@@ -264,61 +265,65 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
 
                 // Usage is /gt global_energy_join username_of_you username_to_join
 
-                String username_0 = strings[1];
-                String username_1 = strings[2];
+                String usernameSubject = strings[1];
+                String usernameTeam = strings[2];
 
-                String formatted_username_0 = EnumChatFormatting.BLUE + username_0 + EnumChatFormatting.RESET;
-                String formatted_username_1 = EnumChatFormatting.BLUE + username_1 + EnumChatFormatting.RESET;
+                String formattedUsernameSubject = EnumChatFormatting.BLUE + usernameSubject + EnumChatFormatting.RESET;
+                String formattedUsernameTeam = EnumChatFormatting.BLUE + usernameTeam + EnumChatFormatting.RESET;
 
-                String uuid_0 = getUUIDFromUsername(username_0);
-                String uuid_1 = getUUIDFromUsername(username_1);
+                String uuidSubject = getRawUUIDFromUsername(usernameSubject);
+                String uuidTeam = getUUIDFromUsername(usernameTeam);
 
-                if (uuid_1.equals("") && uuid_0.equals("")) {
-                    if (username_0.equals(username_1)) {
-                        sender.addChatMessage(
-                            new ChatComponentText("User " + formatted_username_0 + " has no global energy network."));
-                    } else {
+                if (usernameSubject.equals(usernameTeam)) {
+                    // leave team
+                    if ("".equals(uuidSubject)) {
                         sender.addChatMessage(
                             new ChatComponentText(
-                                "User " + formatted_username_0
-                                    + " and "
-                                    + formatted_username_1
-                                    + " have no global energy networks."));
+                                "User " + formattedUsernameSubject + " has no global energy network."));
+                        break;
                     }
-                    break;
-                }
-
-                if (uuid_0.equals("")) {
-                    sender.addChatMessage(
-                        new ChatComponentText("User " + formatted_username_0 + " has no global energy network."));
-                    break;
-                }
-
-                if (uuid_1.equals("")) {
-                    sender.addChatMessage(
-                        new ChatComponentText("User " + formatted_username_1 + " has no global energy network."));
-                    break;
-                }
-
-                if (uuid_0.equals(uuid_1)) {
-                    joinUserNetwork(uuid_0, uuid_1);
+                    if (uuidSubject.equals(uuidTeam)) {
+                        sender.addChatMessage(
+                            new ChatComponentText("User " + formattedUsernameSubject + " is already in his own team!"));
+                        break;
+                    }
+                    joinUserNetwork(uuidSubject, uuidSubject);
                     sender.addChatMessage(
                         new ChatComponentText(
-                            "User " + formatted_username_0 + " has rejoined their own global energy network."));
+                            "User " + formattedUsernameSubject + " has rejoined their own global energy network."));
                     break;
                 }
 
-                joinUserNetwork(uuid_0, uuid_1);
+                // join other's team
+
+                List<String> noNetPlayers = new ArrayList<>();
+
+                if ("".equals(uuidSubject)) noNetPlayers.add(usernameSubject);
+                if ("".equals(uuidTeam)) noNetPlayers.add(usernameTeam);
+
+                if (!noNetPlayers.isEmpty()) {
+                    sender.addChatMessage(
+                        new ChatComponentText(
+                            "User " + String.join(" and ", noNetPlayers) + " has no global energy network."));
+                    break;
+                }
+
+                if (uuidSubject.equals(uuidTeam)) {
+                    sender.addChatMessage(new ChatComponentText("They are already in the same network!"));
+                    break;
+                }
+
+                joinUserNetwork(uuidSubject, uuidTeam);
 
                 sender.addChatMessage(
                     new ChatComponentText(
-                        "Success! " + formatted_username_0 + " has joined " + formatted_username_1 + "."));
+                        "Success! " + formattedUsernameSubject + " has joined " + formattedUsernameTeam + "."));
                 sender.addChatMessage(
                     new ChatComponentText(
                         "To undo this simply join your own network again with /gt global_energy_join "
-                            + formatted_username_0
+                            + formattedUsernameSubject
                             + " "
-                            + formatted_username_0
+                            + formattedUsernameSubject
                             + "."));
 
             }
@@ -328,9 +333,10 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
 
                 String username = strings[1];
                 String formatted_username = EnumChatFormatting.BLUE + username + EnumChatFormatting.RESET;
-                String uuid = getUUIDFromUsername(username);
+                String uuidTeam = getUUIDFromUsername(username);
+                String uuidSubject = getRawUUIDFromUsername(username);
 
-                if (uuid.equals("")) {
+                if (uuidTeam.equals("")) {
                     sender.addChatMessage(
                         new ChatComponentText("User " + formatted_username + " has no global energy network."));
                     break;
@@ -341,9 +347,17 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                         "User " + formatted_username
                             + " has "
                             + EnumChatFormatting.RED
-                            + GT_Utility.formatNumbers(getUserEU(uuid))
+                            + GT_Utility.formatNumbers(getUserEU(uuidTeam))
                             + EnumChatFormatting.RESET
                             + "EU in their network."));
+                if (!uuidTeam.equals(uuidSubject)) sender.addChatMessage(
+                    new ChatComponentText(
+                        "User " + formatted_username
+                            + " is currently in network of "
+                            + EnumChatFormatting.BLUE
+                            + GetUsernameFromUUID(uuidTeam)
+                            + EnumChatFormatting.RESET
+                            + "."));
 
             }
             default -> {

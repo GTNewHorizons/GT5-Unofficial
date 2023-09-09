@@ -2,7 +2,20 @@ package gregtech.common.misc.spaceprojects;
 
 import static gregtech.common.misc.spaceprojects.SpaceProjectManager.spaceTeamProjects;
 import static gregtech.common.misc.spaceprojects.SpaceProjectManager.spaceTeams;
-import static gregtech.common.misc.spaceprojects.enums.JsonVariables.*;
+import static gregtech.common.misc.spaceprojects.enums.JsonVariables.MAP_MAP;
+import static gregtech.common.misc.spaceprojects.enums.JsonVariables.MAP_PAIR;
+import static gregtech.common.misc.spaceprojects.enums.JsonVariables.MAP_PROJECT;
+import static gregtech.common.misc.spaceprojects.enums.JsonVariables.MAP_UUID;
+import static gregtech.common.misc.spaceprojects.enums.JsonVariables.PAIR_LEFT;
+import static gregtech.common.misc.spaceprojects.enums.JsonVariables.PAIR_RIGHT;
+import static gregtech.common.misc.spaceprojects.enums.JsonVariables.PROJECT_CURRENT_STAGE;
+import static gregtech.common.misc.spaceprojects.enums.JsonVariables.PROJECT_CURRENT_UPGRADE;
+import static gregtech.common.misc.spaceprojects.enums.JsonVariables.PROJECT_LOCATION;
+import static gregtech.common.misc.spaceprojects.enums.JsonVariables.PROJECT_NAME;
+import static gregtech.common.misc.spaceprojects.enums.JsonVariables.PROJECT_UPGRADES_BUILT;
+import static gregtech.common.misc.spaceprojects.enums.JsonVariables.UPGRADE_CURRENT_STAGE;
+import static gregtech.common.misc.spaceprojects.enums.JsonVariables.UPGRADE_NAME;
+import static gregtech.common.misc.spaceprojects.enums.JsonVariables.UPGRADE_PROJECT_PARENT;
 
 import java.io.File;
 import java.io.FileReader;

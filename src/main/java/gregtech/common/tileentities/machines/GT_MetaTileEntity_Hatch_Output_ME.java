@@ -6,6 +6,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTI
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -50,8 +52,8 @@ import gregtech.api.util.GT_Utility;
 public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_Output implements IPowerChannelState {
 
     private BaseActionSource requestSource = null;
-    private AENetworkProxy gridProxy = null;
-    IItemList<IAEFluidStack> fluidCache = GregTech_API.mAE2 ? AEApi.instance()
+    private @Nullable AENetworkProxy gridProxy = null;
+    final IItemList<IAEFluidStack> fluidCache = GregTech_API.mAE2 ? AEApi.instance()
         .storage()
         .createFluidList() : null;
     long lastOutputTick = 0;
@@ -65,7 +67,8 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
             aName,
             aNameRegional,
             1,
-            new String[] { "Fluid Output for Multiblocks", "Stores directly into ME", },
+            new String[] { "Fluid Output for Multiblocks", "Stores directly into ME",
+                "Can cache infinite amount of fluids.", "Change cache behavior by right-clicking with screwdriver." },
             0);
     }
 
@@ -86,6 +89,11 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_FLUID_HATCH_ACTIVE) };
+    }
+
+    @Override
+    public byte getTierForStructure() {
+        return (byte) (GT_Values.V.length - 2);
     }
 
     @Override
@@ -239,7 +247,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
                 fluids.appendTag(tag);
             }
             aNBT.setTag("cachedFluids", fluids);
-            gridProxy.writeToNBT(aNBT);
+            getProxy().writeToNBT(aNBT);
         }
     }
 
@@ -260,7 +268,8 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
                         fluidCache.add(s);
                     } else {
                         GT_Mod.GT_FML_LOGGER.warn(
-                            "An error occurred while loading contents of ME Output Hatch, some fluids have been voided");
+                            "An error occurred while loading contents of ME Output Hatch. This fluid has been voided: "
+                                + tagFluidStack);
                     }
                 }
             }

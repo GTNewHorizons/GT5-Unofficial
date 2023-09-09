@@ -8,7 +8,6 @@ import static gregtech.api.util.GT_Util.getTileEntity;
 import static gregtech.api.util.GT_Util.setTileEntity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -193,7 +192,7 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
         if (aTileEntity instanceof IDebugableTileEntity) {
             return ((IDebugableTileEntity) aTileEntity).getDebugInfo(aPlayer, aLogLevel);
         }
-        return (ArrayList<String>) Collections.<String>emptyList();
+        return new ArrayList<>();
     }
 
     @Override

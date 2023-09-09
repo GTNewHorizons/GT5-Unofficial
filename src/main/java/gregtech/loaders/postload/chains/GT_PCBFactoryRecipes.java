@@ -3,7 +3,6 @@ package gregtech.loaders.postload.chains;
 import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.HOURS;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
@@ -21,6 +20,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
@@ -51,10 +51,9 @@ public class GT_PCBFactoryRecipes {
                 new Object[] { OrePrefixes.circuit.get(Materials.Master), 16 },
                 ItemList.Robot_Arm_ZPM.get(8))
             .fluidInputs(new FluidStack(solderLuV, 144 * 36), Materials.Naquadah.getMolten(144 * 18))
-            .noFluidOutputs()
             .itemOutputs(ItemList.PCBFactory.get(1))
             .eut(TierEU.RECIPE_UV)
-            .duration(1 * HOURS + 40 * MINUTES)
+            .duration(5 * MINUTES)
             .addTo(AssemblyLine);
 
         if (GTPlusPlus.isModLoaded()) {
@@ -64,8 +63,6 @@ public class GT_PCBFactoryRecipes {
                     Materials.get("Artherium-Sn")
                         .getPlates(6))
                 .itemOutputs(ItemList.BasicPhotolithographicFrameworkCasing.get(1))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(sAssemblerRecipes);
@@ -74,8 +71,6 @@ public class GT_PCBFactoryRecipes {
                     GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
                     Materials.EnrichedHolmium.getPlates(6))
                 .itemOutputs(ItemList.ReinforcedPhotolithographicFrameworkCasing.get(1))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(sAssemblerRecipes);
@@ -85,8 +80,6 @@ public class GT_PCBFactoryRecipes {
                     Materials.get("Quantum")
                         .getPlates(6))
                 .itemOutputs(ItemList.RadiationProofPhotolithographicFrameworkCasing.get(1))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_UIV)
                 .addTo(sAssemblerRecipes);
@@ -96,8 +89,7 @@ public class GT_PCBFactoryRecipes {
                     GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Infinity, 2),
                     Materials.Thulium.getPlates(6))
                 .itemOutputs(ItemList.InfinityCooledCasing.get(1))
-                .noFluidInputs()
-                .noFluidOutputs()
+                .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(8 * 144))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(sAssemblerRecipes);

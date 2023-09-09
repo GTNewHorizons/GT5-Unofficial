@@ -1,8 +1,14 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
@@ -13,10 +19,13 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -26,9 +35,9 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -39,8 +48,12 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataA
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_AssemblyLineUtils;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
@@ -177,13 +190,14 @@ public class GT_MetaTileEntity_AssemblyLine
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
+    @NotNull
+    public CheckRecipeResult checkProcessing() {
         if (GT_Values.D1) {
             GT_FML_LOGGER.info("Start ALine recipe check");
         }
         ArrayList<ItemStack> tDataStickList = getDataItems(2);
         if (tDataStickList.isEmpty()) {
-            return false;
+            return CheckRecipeResultRegistry.NO_DATA_STICKS;
         }
         if (GT_Values.D1) {
             GT_FML_LOGGER.info("Stick accepted, " + tDataStickList.size() + " Data Sticks found");
@@ -209,6 +223,8 @@ public class GT_MetaTileEntity_AssemblyLine
                     continue;
                 }
             }
+
+            if (!canOutputAll(new ItemStack[] { tRecipe.mOutput })) continue;
 
             // So here we check against the recipe found on the data stick.
             // If we run into missing buses/hatches or bad inputs, we go to the next data stick.
@@ -294,8 +310,8 @@ public class GT_MetaTileEntity_AssemblyLine
         }
 
         // Best not to run this recipe.
-        if (!foundRecipe || tStack.length <= 0) {
-            return false;
+        if (!foundRecipe || tStack.length == 0) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         if (GT_Values.D1) {
@@ -330,7 +346,7 @@ public class GT_MetaTileEntity_AssemblyLine
         if (GT_Values.D1) {
             GT_FML_LOGGER.info("Recipe successful");
         }
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     private static int isStackValidIngredient(ItemStack aSlotStack, ItemStack aIngredient, ItemStack[] alts) {
@@ -354,14 +370,6 @@ public class GT_MetaTileEntity_AssemblyLine
             hatch_dataAccess.setActive(true);
         }
         return super.onRunningTick(aStack);
-    }
-
-    @Override
-    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-        super.startSoundLoop(aIndex, aX, aY, aZ);
-        if (aIndex == 20) {
-            GT_Utility.doSoundAtClient(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP, 10, 1.0F, aX, aY, aZ);
-        }
     }
 
     @Override
@@ -466,6 +474,16 @@ public class GT_MetaTileEntity_AssemblyLine
             if (build >= 0) return build;
         }
         return survivialBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 1 - tLength, 1, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public Set<VoidingMode> getAllowedVoidingModes() {
+        return VoidingMode.ITEM_ONLY_MODES;
     }
 
     private enum DataHatchElement implements IHatchElement<GT_MetaTileEntity_AssemblyLine> {

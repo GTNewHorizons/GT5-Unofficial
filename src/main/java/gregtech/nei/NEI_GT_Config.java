@@ -19,9 +19,13 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
 import gregtech.common.items.GT_MetaGenerated_Item_02;
 import gregtech.common.items.GT_MetaGenerated_Item_03;
+import gregtech.nei.dumper.BatchModeSupportDumper;
+import gregtech.nei.dumper.InputSeparationSupportDumper;
 import gregtech.nei.dumper.MaterialDumper;
 import gregtech.nei.dumper.MetaItemDumper;
 import gregtech.nei.dumper.MetaTileEntityDumper;
+import gregtech.nei.dumper.RecipeLockingSupportDumper;
+import gregtech.nei.dumper.VoidProtectionSupportDumper;
 
 public class NEI_GT_Config implements IConfigureNEI {
 
@@ -76,6 +80,10 @@ public class NEI_GT_Config implements IConfigureNEI {
             API.addOption(new MetaItemDumper(GT_MetaGenerated_Item_01.INSTANCE, "metaitem01"));
             API.addOption(new MetaItemDumper(GT_MetaGenerated_Item_02.INSTANCE, "metaitem02"));
             API.addOption(new MetaItemDumper(GT_MetaGenerated_Item_03.INSTANCE, "metaitem03"));
+            API.addOption(new VoidProtectionSupportDumper());
+            API.addOption(new InputSeparationSupportDumper());
+            API.addOption(new BatchModeSupportDumper());
+            API.addOption(new RecipeLockingSupportDumper());
         }
         sIsAdded = true;
     }

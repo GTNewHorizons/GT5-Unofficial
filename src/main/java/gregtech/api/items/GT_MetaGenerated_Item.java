@@ -45,6 +45,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
 import squeek.applecore.api.food.FoodValues;
 import squeek.applecore.api.food.IEdible;
+import squeek.applecore.api.food.ItemFoodProxy;
 
 /**
  * @author Gregorius Techneticies
@@ -134,7 +135,6 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
                 }
                 if (tRandomData == SubTag.NO_UNIFICATION) {
                     GT_OreDictUnificator.addToBlacklist(rStack);
-                    continue;
                 }
             }
             // now check for the rest
@@ -151,8 +151,6 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
                                     ((IFoodStat) tRandomData).isRotten(this, rStack, null)
                                         ? ItemList.IC2_Food_Can_Spoiled.get(tFoodValue)
                                         : ItemList.IC2_Food_Can_Filled.get(tFoodValue))
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .duration(tFoodValue * 5 * SECONDS)
                                 .eut(1)
                                 .addTo(sCannerRecipes);
@@ -161,6 +159,8 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
                     tUseOreDict = false;
                 }
                 if (tRandomData instanceof IItemBehaviour) {
+                    // The cast below from is not safe. If you know how to make it safe, please do.
+                    // noinspection unchecked
                     addItemBehavior(mOffset + aID, (IItemBehaviour<GT_MetaBase_Item>) tRandomData);
                     tUseOreDict = false;
                 }
@@ -182,7 +182,6 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
                 }
                 if (tUseOreDict) {
                     GT_OreDictUnificator.registerOre(tRandomData, rStack);
-                    continue;
                 }
             }
             if (GregTech_API.sThaumcraftCompat != null)
@@ -332,14 +331,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
         if (tStat != null) {
             if (AppleCore.isModLoaded()) {
                 aPlayer.getFoodStats()
-                    .func_151686_a(
-                        (ItemFood) GT_Utility.callConstructor(
-                            "squeek.applecore.api.food.ItemFoodProxy.ItemFoodProxy",
-                            0,
-                            null,
-                            true,
-                            this),
-                        aStack);
+                    .func_151686_a(getFoodProxy(this), aStack);
             } else {
                 aPlayer.getFoodStats()
                     .addStats(tStat.getFoodLevel(this, aStack, aPlayer), tStat.getSaturation(this, aStack, aPlayer));
@@ -347,6 +339,11 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
             tStat.onEaten(this, aStack, aPlayer);
         }
         return aStack;
+    }
+
+    @Optional.Method(modid = Mods.Names.APPLE_CORE)
+    private static ItemFood getFoodProxy(Object edible) {
+        return new ItemFoodProxy((IEdible) edible);
     }
 
     @Override

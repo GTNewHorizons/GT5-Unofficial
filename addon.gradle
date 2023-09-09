@@ -29,8 +29,8 @@ minecraft {
             def err = "Cannot automatically determine NBT version. Using defaults hardcoded in buildscript. This could break your world!"
             project.logger.error(err)
             vMajor = 509
-            vMinor = 42
-            vPatch = 55
+            vMinor = 44
+            vPatch = 0
             logLevel = LogLevel.WARN
         }
     }

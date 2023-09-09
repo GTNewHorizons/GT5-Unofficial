@@ -26,7 +26,7 @@ import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
- *
+ * <p>
  * This is the main construct for my generic Tanks. Filling and emptying behavior have to be implemented manually
  */
 public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_TieredMachineBlock
@@ -325,7 +325,7 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
                     .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
                     .setPos(79, 16))
             .widget(
-                new SlotWidget(inventoryHandler, getOutputSlot())
+                new SlotWidget(inventoryHandler, getOutputSlot()).setAccess(true, false)
                     .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
                     .setPos(79, 52))
             .widget(

@@ -124,11 +124,12 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
         for (int i = 0, mInventoryLength = mInventory.length; i < mInventoryLength && aStack.stackSize > 0; i++) {
             ItemStack tSlot = mInventory[i];
             if (GT_Utility.isStackInvalid(tSlot)) {
-                if (aStack.stackSize <= getInventoryStackLimit()) {
+                int tRealStackLimit = Math.min(getInventoryStackLimit(), aStack.getMaxStackSize());
+                if (aStack.stackSize <= tRealStackLimit) {
                     mInventory[i] = aStack;
                     return true;
                 }
-                mInventory[i] = aStack.splitStack(getInventoryStackLimit());
+                mInventory[i] = aStack.splitStack(tRealStackLimit);
             } else {
                 int tRealStackLimit = Math.min(getInventoryStackLimit(), tSlot.getMaxStackSize());
                 if (tSlot.stackSize < tRealStackLimit && tSlot.isItemEqual(aStack)
@@ -180,10 +181,6 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
                     mInventory.length);
                 for (int i = 0; i < mInventory.length; i++)
                     if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
-                // GT_Utility.moveOneItemStack(aBaseMetaTileEntity, tTileEntity,
-                // aBaseMetaTileEntity.getFrontFacing(), aBaseMetaTileEntity.getBackFacing(),
-                // null, false, (byte) 64, (byte) 1, (byte)( 64 *
-                // aBaseMetaTileEntity.getSizeInventory()), (byte) 1);
             }
         }
     }

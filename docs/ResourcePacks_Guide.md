@@ -2,15 +2,16 @@ This is a guide for resource packs to set up advanced configurations for GUI.
 
 ## Override text color with mcmeta files
 
-You might want to change color of text if your texture has similar color to text. You can place mcmeta files at the following locations:
-- `gregtech/textures/gui/background/singleblock_default.mcmeta` (most of the machines)
-- `gregtech/textures/gui/background/bronze.mcmeta` (steam bronze machines)
-- `gregtech/textures/gui/background/steel.mcmeta` (steam steel machines)
-- `gregtech/textures/gui/background/primitive.mcmeta` (steam primitive machines)
-- `gregtech/textures/gui/background/fusion_computer.mcmeta` (fusion reactor controller)
-- `modularui/textures/gui/background/vanilla_background.mcmeta` (NEI)
+You might want to change color of text displayed on GUI. You can place mcmeta files at the following locations:
+- `gregtech/textures/gui/background/singleblock_default.png.mcmeta` (most of the machines)
+- `gregtech/textures/gui/background/bronze.png.mcmeta` (steam bronze machines)
+- `gregtech/textures/gui/background/steel.png.mcmeta` (steam steel machines)
+- `gregtech/textures/gui/background/primitive.png.mcmeta` (steam primitive machines)
+- `gregtech/textures/gui/background/fusion_computer.png.mcmeta` (fusion reactor controller)
+- `modularui/textures/gui/background/vanilla_background.png.mcmeta` (NEI)
 
 (and there might be more in the future, but currently these are exhaustive.)
+You also need to place png file corresponding to mcmeta file, even if it's unchanged from the mod's default one.
 
 Here is an example of the file:
 ```json
@@ -56,7 +57,7 @@ You can simply add textures named by the following rules:
 
 - Basically place at `gregtech/textures/gui/progressbar/${unlocalized name of recipemap}`. Unlocalized name can be found on either of:
   - Hold shift while hovering over NEI tab. "HandlerID" indicates unlocalized name.
-![](/screenshots/recipemap-unlocalized-name.png)
+![](/docs/img/recipemap-unlocalized-name.png)
   - Read code. Usually they're passed as 2nd argument for `GT_Recipe_Map` constructor. Recipemaps are defined at `gregtech.api.util.GT_Recipe`.
 - For steam machines, append `_bronze`, `_steel`, or `_primitive`.
 - Exceptions: Miner: `miner`, Electric Furnace: `E_Furnace`, Electric Oven: `E_Oven`

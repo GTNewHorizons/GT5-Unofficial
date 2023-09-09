@@ -5,7 +5,12 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
@@ -32,14 +37,15 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_DistillationTower extends
     GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_DistillationTower> implements ISurvivalConstructable {
@@ -185,71 +191,8 @@ public class GT_MetaTileEntity_DistillationTower extends
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        GT_Recipe tRecipe;
-
-        ArrayList<ItemStack> tInputList = getStoredInputs();
-        int tInputList_sS = tInputList.size();
-        for (int i = 0; i < tInputList_sS - 1; i++) {
-            for (int j = i + 1; j < tInputList_sS; j++) {
-                if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
-                    if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
-                        tInputList.remove(j--);
-                        tInputList_sS = tInputList.size();
-                    } else {
-                        tInputList.remove(i--);
-                        tInputList_sS = tInputList.size();
-                        break;
-                    }
-                }
-            }
-        }
-        ItemStack[] inputs = tInputList.toArray(new ItemStack[0]);
-
-        ArrayList<FluidStack> tFluidList = getStoredFluids();
-        for (int i = 0; i < tFluidList.size() - 1; i++) {
-            for (int j = i + 1; j < tFluidList.size(); j++) {
-                if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
-                    if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
-                        tFluidList.remove(j--);
-                    } else {
-                        tFluidList.remove(i--);
-                        break;
-                    }
-                }
-            }
-        }
-
-        long tVoltage = getMaxInputVoltage();
-        byte tTier = (byte) Math.max(0, GT_Utility.getTier(tVoltage));
-        FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
-        for (FluidStack tFluid : tFluids) {
-            tRecipe = GT_Recipe.GT_Recipe_Map.sDistillationRecipes.findRecipe(
-                getBaseMetaTileEntity(),
-                false,
-                gregtech.api.enums.GT_Values.V[tTier],
-                new FluidStack[] { tFluid },
-                inputs);
-            if (tRecipe != null) {
-                if (tRecipe.isRecipeInputEqual(true, tFluids, inputs)) {
-                    this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-                    this.mEfficiencyIncrease = 10000;
-                    calculateOverclockedNessMultiInternal(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage, false);
-                    // In case recipe is too OP for that machine
-                    if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) return false;
-                    if (this.mEUt > 0) {
-                        this.mEUt = (-this.mEUt);
-                    }
-                    this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-                    this.mOutputItems = new ItemStack[] { tRecipe.getOutput(0) };
-                    this.mOutputFluids = tRecipe.mFluidOutputs.clone();
-                    updateSlots();
-                    return true;
-                }
-            }
-        }
-
-        return false;
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic();
     }
 
     protected void onCasingFound() {
@@ -274,6 +217,11 @@ public class GT_MetaTileEntity_DistillationTower extends
         tHatch.updateTexture(aBaseCasingIndex);
         return mOutputHatchesByLayer.get(mHeight - 1)
             .add(tHatch);
+    }
+
+    @Override
+    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
+        return getFluidOutputSlotsByLayer(toOutput, mOutputHatchesByLayer);
     }
 
     @Override
@@ -394,5 +342,10 @@ public class GT_MetaTileEntity_DistillationTower extends
     @Override
     protected SoundResource getProcessStartSound() {
         return SoundResource.GT_MACHINES_DISTILLERY_LOOP;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 }

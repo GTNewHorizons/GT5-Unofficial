@@ -1,12 +1,27 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.Muffler;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,6 +35,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -39,6 +56,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -181,23 +200,23 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
         tt.addMachineType("Ore Processor")
             .addInfo("Controller Block for the Integrated Ore Factory")
             .addInfo("It is OP. I mean ore processor.")
-            .addInfo("Do all ore procession in one step.")
-            .addInfo("Can process up to 1024 ores per time.")
+            .addInfo("Do all ore processing in one step.")
+            .addInfo("Can process up to 1024 ores at a time.")
             .addInfo("Every ore costs 30EU/t, 2L lubricant, 200L distilled water.")
-            .addInfo("Process time is depend on mode.")
+            .addInfo("Processing time is dependent on mode.")
             .addInfo("Use a screwdriver to switch mode.")
-            .addInfo("Sneak click with screwdriver to void the stone dusts.")
+            .addInfo("Sneak click with screwdriver to void the stone dust.")
             .addSeparator()
             .beginStructureBlock(6, 12, 11, false)
             .addController("The third layer")
-            .addStructureInfo("128 advanced iridium plated machine casing")
-            .addStructureInfo("105 clean stainless steel machine casing")
-            .addStructureInfo("48 reinforced glass")
-            .addStructureInfo("30 tungstensteel pipe casing")
-            .addStructureInfo("16 tungstensteel frame box")
-            .addStructureInfo("16 steel gear box casing")
-            .addEnergyHatch("Button Casing", 1)
-            .addMaintenanceHatch("Button Casing", 1)
+            .addStructureInfo("128 Advanced Iridium Plated Machine Casing")
+            .addStructureInfo("105 Clean Stainless Steel Machine Casing")
+            .addStructureInfo("48 Reinforced Glass")
+            .addStructureInfo("30 Tungstensteel Pipe Casing")
+            .addStructureInfo("16 Tungstensteel Frame Box")
+            .addStructureInfo("16 Steel Gear Box Casing")
+            .addEnergyHatch("Any bottom Casing", 1)
+            .addMaintenanceHatch("Any bottom Casing", 1)
             .addInputBus("Input ore/crushed ore", 2)
             .addInputHatch("Input lubricant/distilled water/washing chemicals", 3)
             .addMufflerHatch("Output Pollution", 3)
@@ -241,7 +260,8 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
+    @NotNull
+    public CheckRecipeResult checkProcessing() {
         if (!isInit) {
             initHash();
             isInit = true;
@@ -296,7 +316,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
         setCurrentParallelism(tRealUsed);
 
         if (tRealUsed == 0) {
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         depleteInput(GT_ModHandler.getDistilledWater(tRealUsed * 200L));
@@ -334,24 +354,24 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
                 doCentrifuge(isImpureDust, isPureDust);
             }
             default -> {
-                return false;
+                return CheckRecipeResultRegistry.NO_RECIPE;
             }
         }
 
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
         this.mOutputItems = sMidProduct;
-        calculateOverclockedNessMultiInternal(30 * tRealUsed, getTime(sMode), 1, getMaxInputVoltage(), false);
+        calculateOverclockedNessMultiInternal(30L * tRealUsed, getTime(sMode), 1, getMaxInputVoltage(), false);
         if (this.mEUt > 0) {
             this.mEUt = -this.mEUt;
         }
         this.updateSlots();
 
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     @SafeVarargs
-    private final boolean checkTypes(int aID, HashSet<Integer>... aTables) {
+    private boolean checkTypes(int aID, HashSet<Integer>... aTables) {
         for (HashSet<Integer> set : aTables) {
             if (set.contains(aID)) {
                 return true;
@@ -391,7 +411,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @SafeVarargs
-    private final void doMac(HashSet<Integer>... aTables) {
+    private void doMac(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
@@ -413,7 +433,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @SafeVarargs
-    private final void doWash(HashSet<Integer>... aTables) {
+    private void doWash(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
@@ -439,7 +459,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @SafeVarargs
-    private final void doThermal(HashSet<Integer>... aTables) {
+    private void doThermal(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
@@ -461,7 +481,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @SafeVarargs
-    private final void doCentrifuge(HashSet<Integer>... aTables) {
+    private void doCentrifuge(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
@@ -483,7 +503,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @SafeVarargs
-    private final void doSift(HashSet<Integer>... aTables) {
+    private void doSift(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
@@ -505,7 +525,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @SafeVarargs
-    private final void doChemWash(HashSet<Integer>... aTables) {
+    private void doChemWash(HashSet<Integer>... aTables) {
         List<ItemStack> tProduct = new ArrayList<>();
         if (sMidProduct != null) {
             for (ItemStack aStack : sMidProduct) {
@@ -557,15 +577,16 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
             }
             int tChance = aRecipe.getOutputChance(i);
             if (tChance == 10000) {
-                tOutput.add(GT_Utility.copyAmountUnsafe(aTime * aRecipe.getOutput(i).stackSize, aRecipe.getOutput(i)));
+                tOutput.add(
+                    GT_Utility.copyAmountUnsafe((long) aTime * aRecipe.getOutput(i).stackSize, aRecipe.getOutput(i)));
             } else {
                 // Use Normal Distribution
                 double u = aTime * (tChance / 10000D);
                 double e = aTime * (tChance / 10000D) * (1 - (tChance / 10000D));
                 Random random = new Random();
                 int tAmount = (int) Math.ceil(Math.sqrt(e) * random.nextGaussian() + u);
-                tOutput
-                    .add(GT_Utility.copyAmountUnsafe(tAmount * aRecipe.getOutput(i).stackSize, aRecipe.getOutput(i)));
+                tOutput.add(
+                    GT_Utility.copyAmountUnsafe((long) tAmount * aRecipe.getOutput(i).stackSize, aRecipe.getOutput(i)));
             }
         }
         return tOutput.stream()
@@ -704,8 +725,8 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
             case 1 -> {
                 des.add(AQUA + CRUSH + ARROW);
                 des.add(AQUA + WASH + ARROW);
-                des.add(AQUA + CENTRIFUGE + ARROW);
-                des.add(AQUA + CRUSH + ' ');
+                des.add(AQUA + CRUSH + ARROW);
+                des.add(AQUA + CENTRIFUGE + ' ');
             }
             case 2 -> {
                 des.add(AQUA + CRUSH + ARROW);

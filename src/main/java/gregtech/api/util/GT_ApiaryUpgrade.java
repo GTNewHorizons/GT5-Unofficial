@@ -1,6 +1,10 @@
 package gregtech.api.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -10,6 +14,9 @@ import net.minecraft.world.biome.BiomeGenBase;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.common.items.GT_MetaGenerated_Item_03;
 
+/**
+ * Actual items are defined in {@link GT_MetaGenerated_Item_03}
+ */
 public enum GT_ApiaryUpgrade {
 
     speed1(UNIQUE_INDEX.SPEED_UPGRADE, 32200, 1, (mods, n) -> mods.maxSpeed = 1),
@@ -45,17 +52,17 @@ public enum GT_ApiaryUpgrade {
         mods.biomeOverride = BiomeGenBase.taiga;
         mods.energy *= 1.5f;
     }),
-    dryer(UNIQUE_INDEX.DRYER_UPGRADE, 32214, 8, (mods, n) -> {
-        mods.humidity -= 0.25f * n;
-        mods.energy *= Math.pow(1.05f, n);
+    dryer(UNIQUE_INDEX.DRYER_UPGRADE, 32214, 16, (mods, n) -> {
+        mods.humidity -= 0.125f * n;
+        mods.energy *= Math.pow(1.025f, n);
     }),
     automation(UNIQUE_INDEX.AUTOMATION_UPGRADE, 32215, 1, (mods, n) -> {
         mods.isAutomated = true;
         mods.energy *= 1.1f;
     }),
-    humidifier(UNIQUE_INDEX.HUMIDIFIER_UPGRADE, 32216, 8, (mods, n) -> {
-        mods.humidity += 0.25f * n;
-        mods.energy *= Math.pow(1.1f, n);
+    humidifier(UNIQUE_INDEX.HUMIDIFIER_UPGRADE, 32216, 16, (mods, n) -> {
+        mods.humidity += 0.125f * n;
+        mods.energy *= Math.pow(1.05f, n);
     }),
     hell(UNIQUE_INDEX.HELL_UPGRADE, 32217, 1, (mods, n) -> {
         mods.biomeOverride = BiomeGenBase.hell;
@@ -69,9 +76,9 @@ public enum GT_ApiaryUpgrade {
         mods.biomeOverride = BiomeGenBase.desert;
         mods.energy *= 1.2f;
     }),
-    cooler(UNIQUE_INDEX.COOLER_UPGRADE, 32220, 8, (mods, n) -> {
-        mods.temperature -= 0.25f * n;
-        mods.energy *= Math.pow(1.05f, n);
+    cooler(UNIQUE_INDEX.COOLER_UPGRADE, 32220, 16, (mods, n) -> {
+        mods.temperature -= 0.125f * n;
+        mods.energy *= Math.pow(1.025f, n);
     }),
     lifespan(UNIQUE_INDEX.LIFESPAN_UPGRADE, 32221, 4, (mods, n) -> {
         mods.lifespan /= Math.pow(1.5f, n);
@@ -101,9 +108,9 @@ public enum GT_ApiaryUpgrade {
         mods.isSunlightSimulated = true;
         mods.energy *= 1.05f;
     }),
-    heater(UNIQUE_INDEX.HEATER_UPGRADE, 32228, 8, (mods, n) -> {
-        mods.temperature += 0.25f * n;
-        mods.energy *= Math.pow(1.05f, n);
+    heater(UNIQUE_INDEX.HEATER_UPGRADE, 32228, 16, (mods, n) -> {
+        mods.temperature += 0.125f * n;
+        mods.energy *= Math.pow(1.025f, n);
     }),
     sieve(UNIQUE_INDEX.SIEVE_UPGRADE, 32229, 1, (mods, n) -> {
         mods.isCollectingPollen = true;

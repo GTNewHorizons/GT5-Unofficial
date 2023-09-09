@@ -3,19 +3,29 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.Muffler;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,9 +33,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -33,17 +46,35 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.gui.widgets.GT_LockedWhileActiveButton;
 import gregtech.api.interfaces.IChunkLoader;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_DataAccess;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.objects.GT_ChunkManager;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
@@ -114,12 +145,28 @@ public abstract class GT_MetaTileEntity_DrillerBase
         return zDrill;
     }
 
+    protected int getYHead() {
+        return yHead;
+    }
+
     protected int workState;
-    protected static final int STATE_DOWNWARD = 0, STATE_AT_BOTTOM = 1, STATE_UPWARD = 2;
+    protected static final int STATE_DOWNWARD = 0, STATE_AT_BOTTOM = 1, STATE_UPWARD = 2, STATE_ABORT = 3;
 
     protected boolean mChunkLoadingEnabled = true;
     protected ChunkCoordIntPair mCurrentChunk = null;
     protected boolean mWorkChunkNeedsReload = true;
+
+    /** Stores default result messages for success/failures of each work state. */
+    private final Map<ResultRegistryKey, CheckRecipeResult> resultRegistry = new HashMap<>();
+
+    /** Allows inheritors to supply custom runtime failure messages. */
+    private CheckRecipeResult runtimeFailure = null;
+
+    /** Allows inheritors to supply custom shutdown failure messages. */
+    private @NotNull String shutdownReason = "";
+
+    /** Allows inheritors to suppress wiping the last error if the machine is forcibly turned off. */
+    protected boolean suppressErrorWipe = false;
 
     public GT_MetaTileEntity_DrillerBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -141,6 +188,16 @@ public abstract class GT_MetaTileEntity_DrillerBase
             : W;
         casingTextureIndex = getCasingTextureIndex();
         workState = STATE_DOWNWARD;
+
+        // Inheritors can overwrite these to add custom operating messages.
+        addResultMessage(STATE_DOWNWARD, true, "deploying_pipe");
+        addResultMessage(STATE_DOWNWARD, false, "extracting_pipe");
+        addResultMessage(STATE_AT_BOTTOM, true, "drilling");
+        addResultMessage(STATE_AT_BOTTOM, false, "no_mining_pipe");
+        addResultMessage(STATE_UPWARD, true, "retracting_pipe");
+        addResultMessage(STATE_UPWARD, false, "drill_generic_finished");
+        addResultMessage(STATE_ABORT, true, "retracting_pipe");
+        addResultMessage(STATE_ABORT, false, "drill_retract_pipes_finished");
     }
 
     @Override
@@ -367,6 +424,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
         switch (tryLowerPipeState()) {
             case 2 -> {
                 mMaxProgresstime = 0;
+                setRuntimeFailureReason(CheckRecipeResultRegistry.MISSING_MINING_PIPE);
                 return false;
             }
             case 3 -> {
@@ -404,22 +462,136 @@ public abstract class GT_MetaTileEntity_DrillerBase
         }
     }
 
-    @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        // Public pipe actions
-        setElectricityStats();
-        int oldYHead = yHead;
-        if (!checkPipesAndSetYHead() || !isEnergyEnough()) {
+    /** Called once when the abort button is clicked. Use to perform any needed cleanup (e.g. unloading chunks.) */
+    protected void onAbort() {}
+
+    protected void abortDrilling() {
+        if (workState != STATE_ABORT) {
+            workState = STATE_ABORT;
+            onAbort();
+            setShutdownReason("");
+
+            if (!isAllowedToWork()) {
+                enableWorking();
+            }
+        }
+    }
+
+    // This is a distinct state from workingUpward, because some inheritors (like concrete backfiller) operate
+    // exclusively on the workingUpward phase. It also allows for more distinct status messages.
+    protected boolean workingToAbortOperation(@NotNull ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe,
+        int zPipe, int yHead, int oldYHead) {
+        if (tryPickPipe()) {
+            return true;
+        } else {
+            workState = STATE_DOWNWARD;
             stopMachine();
             return false;
         }
+    }
+
+    @Override
+    public void enableWorking() {
+        super.enableWorking();
+        shutdownReason = "";
+    }
+
+    @Override
+    public void onDisableWorking() {
+        if (suppressErrorWipe) {
+            suppressErrorWipe = false;
+        } else {
+            super.onDisableWorking();
+        }
+    }
+
+    @Override
+    @NotNull
+    public CheckRecipeResult checkProcessing() {
+        ItemStack controllerStack = getControllerSlot();
+        // Public pipe actions
+        setElectricityStats();
+        int oldYHead = yHead;
+        if (!checkPipesAndSetYHead()) {
+            stopMachine();
+            return SimpleCheckRecipeResult.ofFailure("no_mining_pipe");
+        } else if (!isEnergyEnough()) {
+            stopMachine();
+            return SimpleCheckRecipeResult.ofFailure("not_enough_energy");
+        }
         putMiningPipesFromInputsInController();
-        return switch (workState) {
-            case STATE_DOWNWARD -> workingDownward(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
-            case STATE_AT_BOTTOM -> workingAtBottom(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
-            case STATE_UPWARD -> workingUpward(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
-            default -> false;
-        };
+
+        final boolean wasSuccessful;
+        switch (workState) {
+            case STATE_DOWNWARD -> wasSuccessful = workingDownward(
+                controllerStack,
+                xDrill,
+                yDrill,
+                zDrill,
+                xPipe,
+                zPipe,
+                yHead,
+                oldYHead);
+            case STATE_AT_BOTTOM -> wasSuccessful = workingAtBottom(
+                controllerStack,
+                xDrill,
+                yDrill,
+                zDrill,
+                xPipe,
+                zPipe,
+                yHead,
+                oldYHead);
+            case STATE_UPWARD -> wasSuccessful = workingUpward(
+                controllerStack,
+                xDrill,
+                yDrill,
+                zDrill,
+                xPipe,
+                zPipe,
+                yHead,
+                oldYHead);
+            case STATE_ABORT -> wasSuccessful = workingToAbortOperation(
+                controllerStack,
+                xDrill,
+                yDrill,
+                zDrill,
+                xPipe,
+                zPipe,
+                yHead,
+                oldYHead);
+            default -> wasSuccessful = false;
+        }
+
+        if (runtimeFailure == null) {
+            return resultRegistry.getOrDefault(
+                new ResultRegistryKey(workState, wasSuccessful),
+                SimpleCheckRecipeResult.ofFailure("no_mining_pipe"));
+        } else {
+            final CheckRecipeResult result;
+            result = runtimeFailure;
+            runtimeFailure = null;
+            return result;
+        }
+    }
+
+    /**
+     * Allow drills to set a specific failure reason specific to their situation. E.g.: out of drilling fluid.
+     * Should be used when the machine doesn't turn off due to the failure.
+     *
+     * @param newFailureReason A new failure reason
+     */
+    protected void setRuntimeFailureReason(@NotNull CheckRecipeResult newFailureReason) {
+        runtimeFailure = newFailureReason;
+    }
+
+    /**
+     * Sets a line in the UI to explain why the drill shut down. E.g.: operation finished.
+     * Should be used when the machine has been turned off due to an operating issue or completion.
+     *
+     * @param newReason The reason for the machine shutdown
+     */
+    protected void setShutdownReason(@NotNull String newReason) {
+        shutdownReason = newReason;
     }
 
     @Override
@@ -606,6 +778,94 @@ public abstract class GT_MetaTileEntity_DrillerBase
         return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 6, 0, elementBudget, env, false, true);
     }
 
+    @Override
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        super.drawTexts(screenElements, inventorySlot);
+        screenElements.widget(
+            TextWidget.dynamicString(() -> shutdownReason)
+                .setSynced(false)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setEnabled(widget -> !(getBaseMetaTileEntity().isActive() || shutdownReason.isEmpty())))
+            .widget(new FakeSyncWidget.StringSyncer(() -> shutdownReason, newString -> shutdownReason = newString));
+    }
+
+    @Override
+    protected boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    /**
+     * Adds additional buttons to the main button row. You do not need to set the position.
+     *
+     * @param builder      Only use to attach SyncWidgets.
+     * @param buildContext Context for things like the player.
+     */
+    protected List<ButtonWidget> getAdditionalButtons(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        return ImmutableList.of();
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        super.addUIWidgets(builder, buildContext);
+        final int BUTTON_Y_LEVEL = 91;
+
+        builder.widget(
+            new GT_LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
+                .setOnClick((clickData, widget) -> mChunkLoadingEnabled = !mChunkLoadingEnabled)
+                .setPlayClickSound(true)
+                .setBackground(() -> {
+                    if (mChunkLoadingEnabled) {
+                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
+                            GT_UITextures.OVERLAY_CHUNK_LOADING };
+                    }
+                    return new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_CHUNK_LOADING_OFF };
+                })
+                .attachSyncer(
+                    new FakeSyncWidget.BooleanSyncer(
+                        () -> mChunkLoadingEnabled,
+                        newBoolean -> mChunkLoadingEnabled = newBoolean),
+                    builder,
+                    (widget, val) -> widget.notifyTooltipChange())
+                .dynamicTooltip(
+                    () -> ImmutableList.of(
+                        StatCollector.translateToLocal(
+                            mChunkLoadingEnabled ? "GT5U.gui.button.chunk_loading_on"
+                                : "GT5U.gui.button.chunk_loading_off")))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setPos(new Pos2d(80, BUTTON_Y_LEVEL))
+                .setSize(16, 16))
+            .widget(
+                new ButtonWidget().setOnClick((clickData, widget) -> abortDrilling())
+                    .setPlayClickSound(true)
+                    .setBackground(() -> {
+                        if (workState == STATE_ABORT) {
+                            return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
+                                GT_UITextures.OVERLAY_RETRACT_PIPE, GT_UITextures.OVERLAY_BUTTON_LOCKED };
+                        }
+                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_RETRACT_PIPE };
+                    })
+                    .attachSyncer(
+                        new FakeSyncWidget.IntegerSyncer(() -> workState, (newInt) -> workState = newInt),
+                        builder,
+                        (widget, integer) -> widget.notifyTooltipChange())
+                    .dynamicTooltip(
+                        () -> ImmutableList.of(
+                            StatCollector.translateToLocalFormatted(
+                                workState == STATE_ABORT ? "GT5U.gui.button.drill_retract_pipes_active"
+                                    : "GT5U.gui.button.drill_retract_pipes")))
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                    .setPos(new Pos2d(174, 130))
+                    .setSize(16, 16));
+
+        int left = 98;
+        for (ButtonWidget button : getAdditionalButtons(builder, buildContext)) {
+            button.setPos(new Pos2d(left, BUTTON_Y_LEVEL))
+                .setSize(16, 16);
+            builder.widget(button);
+            left += 18;
+        }
+    }
+
     protected List<IHatchElement<? super GT_MetaTileEntity_DrillerBase>> getAllowedHatches() {
         return ImmutableList.of(
             InputHatch,
@@ -635,6 +895,59 @@ public abstract class GT_MetaTileEntity_DrillerBase
         @Override
         public long count(GT_MetaTileEntity_DrillerBase t) {
             return t.mDataAccessHatches.size();
+        }
+    }
+
+    /**
+     * Sets or overrides the {@link CheckRecipeResult} for a given work state
+     *
+     * @param state  A work state like {@link #STATE_DOWNWARD}.
+     * @param result A previously registered recipe result.
+     */
+    protected void addResultMessage(final int state, @NotNull final CheckRecipeResult result) {
+        resultRegistry.put(new ResultRegistryKey(state, result.wasSuccessful()), result);
+    }
+
+    /**
+     * Sets or overrides the {@link CheckRecipeResult} for a given work state and operation success type.
+     *
+     * @param state         A work state like {@link #STATE_DOWNWARD}.
+     * @param wasSuccessful Whether the operation was successful.
+     * @param resultKey     An I18N key for the message.
+     */
+    protected void addResultMessage(final int state, final boolean wasSuccessful, @NotNull final String resultKey) {
+        addResultMessage(
+            state,
+            wasSuccessful ? SimpleCheckRecipeResult.ofSuccess(resultKey)
+                : SimpleCheckRecipeResult.ofFailure(resultKey));
+    }
+
+    @SuppressWarnings("ClassCanBeRecord")
+    private final static class ResultRegistryKey {
+
+        private final int state;
+        private final boolean successful;
+
+        public ResultRegistryKey(final int state, final boolean successful) {
+            this.state = state;
+            this.successful = successful;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (!(obj instanceof ResultRegistryKey other)) {
+                return false;
+            }
+
+            return (state == other.state && successful == other.successful);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(state, successful);
         }
     }
 }

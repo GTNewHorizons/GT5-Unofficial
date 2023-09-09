@@ -97,8 +97,6 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, IGT_RegisteredFluid, R
         if (FluidRegistry.registerFluid(GT_Fluid.this)) {
             // Registered as a new Fluid
             registeredFluid = this;
-            // Schedules the gtFluid for the block icons loader run() tasks
-            GregTech_API.sGTBlockIconload.add(this);
             // Adds a server-side localized-name
             GT_LanguageManager.addStringLocalization(getUnlocalizedName(), localizedName);
         } else {
@@ -109,6 +107,8 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, IGT_RegisteredFluid, R
                 registeredFluid.setTemperature(GT_Fluid.this.temperature);
             }
         }
+        // Schedules the fluid for the block icons loader run() tasks
+        GregTech_API.sGTBlockIconload.add(this);
         return this;
     }
 
@@ -126,7 +126,6 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, IGT_RegisteredFluid, R
                 GT_Values.RA.stdBuilder()
                     .itemInputs(fullContainer)
                     .itemOutputs(GT_Utility.getContainerItem(fullContainer, false))
-                    .noFluidInputs()
                     .fluidOutputs(fluidStack)
                     .duration(fluidStack.amount / 62)
                     .eut(1)

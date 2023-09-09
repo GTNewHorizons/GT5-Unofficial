@@ -6,6 +6,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_HATCH_ACTIVE;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -46,8 +48,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
     implements IPowerChannelState {
 
     private BaseActionSource requestSource = null;
-    private AENetworkProxy gridProxy = null;
-    IItemList<IAEItemStack> itemCache = GregTech_API.mAE2 ? AEApi.instance()
+    private @Nullable AENetworkProxy gridProxy = null;
+    final IItemList<IAEItemStack> itemCache = GregTech_API.mAE2 ? AEApi.instance()
         .storage()
         .createItemList() : null;
     long lastOutputTick = 0;
@@ -61,7 +63,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
             aName,
             aNameRegional,
             1,
-            new String[] { "Item Output for Multiblocks", "Stores directly into ME", },
+            new String[] { "Item Output for Multiblocks", "Stores directly into ME",
+                "Can cache infinite amount of items.", "Change cache behavior by right-clicking with screwdriver." },
             0);
     }
 
@@ -212,10 +215,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
             for (IAEItemStack s : itemCache) {
                 if (s.getStackSize() == 0) continue;
                 NBTTagCompound tag = new NBTTagCompound();
-                NBTTagCompound tagItemStack = new NBTTagCompound();
-                s.getItemStack()
-                    .writeToNBT(tagItemStack);
-                tag.setTag("itemStack", tagItemStack);
+                tag.setTag("itemStack", GT_Utility.saveItem(s.getItemStack()));
                 tag.setLong("size", s.getStackSize());
                 items.appendTag(tag);
             }
@@ -254,7 +254,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                         itemCache.add(s);
                     } else {
                         GT_Mod.GT_FML_LOGGER.warn(
-                            "An error occurred while loading contents of ME Output Bus, some items have been voided");
+                            "An error occurred while loading contents of ME Output Bus. This item has been voided: "
+                                + tagItemStack);
                     }
                 }
             }

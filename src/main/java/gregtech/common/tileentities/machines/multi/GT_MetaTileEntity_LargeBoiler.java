@@ -4,7 +4,11 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.Muffler;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.STEAM_PER_WATER;
 import static gregtech.api.enums.ItemList.Circuit_Integrated;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER;
@@ -23,6 +27,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -36,6 +42,8 @@ import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
@@ -122,7 +130,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
             tt.addInfo(
                 "Produces " + formatNumbers((getEUt() * 40) * (runtimeBoost(20) / 20f))
                     + "L of Steam with 1 Coal at "
-                    + formatNumbers(getEUt() * 40)
+                    + formatNumbers(getEUt() * 40L)
                     + "L/s") // ?
                 .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
                 .addInfo("Solid Fuels with a burn value that is too high or too low will not work");
@@ -235,8 +243,9 @@ public abstract class GT_MetaTileEntity_LargeBoiler
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        if (!isFuelValid()) return false;
+    @NotNull
+    public CheckRecipeResult checkProcessing() {
+        if (!isFuelValid()) return CheckRecipeResultRegistry.NO_FUEL_FOUND;
         // Do we have an integrated circuit with a valid configuration?
         if (Circuit_Integrated.isStackEqual(mInventory[1], true, true)) {
             int circuit_config = mInventory[1].getItemDamage();
@@ -259,7 +268,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
                         this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(tRecipe.mSpecialValue / 2));
                         this.mEUt = adjustEUtForConfig(getEUt());
                         this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease() * 4;
-                        return true;
+                        return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
                 }
             }
@@ -272,7 +281,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
                             Math.max(1, runtimeBoost(tRecipe.mSpecialValue * 2)));
                         this.mEUt = adjustEUtForConfig(getEUt());
                         this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
-                        return true;
+                        return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
                 }
             }
@@ -298,7 +307,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
                                 this.mEfficiencyIncrease = 0;
                                 this.mSuperEfficencyIncrease = 20;
                             }
-                            return true;
+                            return CheckRecipeResultRegistry.SUCCESSFUL;
                         }
                     }
                 }
@@ -324,7 +333,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
                                 this.mEfficiencyIncrease = 0;
                                 this.mSuperEfficencyIncrease = 20;
                             }
-                            return true;
+                            return CheckRecipeResultRegistry.SUCCESSFUL;
                         }
                     }
                 }
@@ -332,7 +341,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
         }
         this.mMaxProgresstime = 0;
         this.mEUt = 0;
-        return false;
+        return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
     abstract int runtimeBoost(int mTime);

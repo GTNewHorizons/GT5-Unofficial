@@ -23,26 +23,38 @@ public class GT_MetaTileEntity_Hatch_Input extends GT_MetaTileEntity_Hatch {
     public GT_Recipe_Map mRecipeMap = null;
 
     public GT_MetaTileEntity_Hatch_Input(int aID, String aName, String aNameRegional, int aTier) {
-        super(
+        this(
             aID,
             aName,
             aNameRegional,
             aTier,
-            3,
             new String[] { "Fluid Input for Multiblocks",
-                "Capacity: " + GT_Utility.formatNumbers(8000 * (1 << aTier)) + "L" });
+                "Capacity: " + GT_Utility.formatNumbers(8000L * (1L << aTier)) + "L" });
+    }
+
+    public GT_MetaTileEntity_Hatch_Input(int aID, String aName, String aNameRegional, int aTier,
+        String[] aDescription) {
+        this(aID, 3, aName, aNameRegional, aTier, aDescription);
     }
 
     public GT_MetaTileEntity_Hatch_Input(int aID, int aSlot, String aName, String aNameRegional, int aTier) {
-        super(
+        this(
             aID,
+            aSlot,
             aName,
             aNameRegional,
             aTier,
-            aSlot,
-            new String[] { "Fluid Input for Multiblocks",
-                "Capacity: " + GT_Utility.formatNumbers(8000 * (1 << aTier) / aSlot) + "L",
-                "Can hold " + aSlot + " types of fluid." });
+            new String[] { "Fluid Input for Multiblocks", "", "Can hold " + aSlot + " types of fluid." });
+        mDescriptionArray[1] = "Capacity: " + GT_Utility.formatNumbers(getCapacityPerTank(aTier, aSlot)) + "L";
+    }
+
+    public GT_MetaTileEntity_Hatch_Input(int aID, int aSlot, String aName, String aNameRegional, int aTier,
+        String[] aDescription) {
+        super(aID, aName, aNameRegional, aTier, aSlot, aDescription);
+    }
+
+    public int getCapacityPerTank(int aTier, int aSlot) {
+        return (int) (8000L * (1L << aTier) / aSlot);
     }
 
     public GT_MetaTileEntity_Hatch_Input(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {

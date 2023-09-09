@@ -19,7 +19,24 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.net.*;
+import gregtech.api.net.GT_Packet;
+import gregtech.api.net.GT_Packet_Block_Event;
+import gregtech.api.net.GT_Packet_ClientPreference;
+import gregtech.api.net.GT_Packet_GtTileEntityGuiRequest;
+import gregtech.api.net.GT_Packet_MultiTileEntity;
+import gregtech.api.net.GT_Packet_Pollution;
+import gregtech.api.net.GT_Packet_RequestCoverData;
+import gregtech.api.net.GT_Packet_SendCoverData;
+import gregtech.api.net.GT_Packet_SendOregenPattern;
+import gregtech.api.net.GT_Packet_SetConfigurationCircuit;
+import gregtech.api.net.GT_Packet_Sound;
+import gregtech.api.net.GT_Packet_TileEntity;
+import gregtech.api.net.GT_Packet_TileEntityCover;
+import gregtech.api.net.GT_Packet_TileEntityCoverGUI;
+import gregtech.api.net.GT_Packet_TileEntityCoverNew;
+import gregtech.api.net.GT_Packet_UpdateItem;
+import gregtech.api.net.GT_Packet_WirelessRedstoneCover;
+import gregtech.api.net.IGT_NetworkHandler;
 import gregtech.common.blocks.GT_Packet_Ores;
 import gregtech.common.net.MessageSetFlaskCapacity;
 import io.netty.buffer.ByteBuf;
@@ -57,7 +74,8 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
             new GT_Packet_GtTileEntityGuiRequest(), // 15
             new GT_Packet_SendCoverData(), // 16
             new GT_Packet_RequestCoverData(), // 17
-            new GT_Packet_MultiTileEntity() // 18
+            new GT_Packet_MultiTileEntity(), // 18
+            new GT_Packet_SendOregenPattern() // 19
         );
     }
 
@@ -73,7 +91,7 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
     }
 
     @Override
-    protected void encode(ChannelHandlerContext aContext, GT_Packet aPacket, List<Object> aOutput) throws Exception {
+    protected void encode(ChannelHandlerContext aContext, GT_Packet aPacket, List<Object> aOutput) {
         final ByteBuf tBuf = Unpooled.buffer()
             .writeByte(aPacket.getPacketID());
         aPacket.encode(tBuf);
@@ -86,8 +104,7 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
     }
 
     @Override
-    protected void decode(ChannelHandlerContext aContext, FMLProxyPacket aPacket, List<Object> aOutput)
-        throws Exception {
+    protected void decode(ChannelHandlerContext aContext, FMLProxyPacket aPacket, List<Object> aOutput) {
         final ByteArrayDataInput aData = ByteStreams.newDataInput(
             aPacket.payload()
                 .array());

@@ -44,7 +44,6 @@ public class GT_OreDictUnificator {
     private static final Map<GT_ItemStack2, ItemData> sItemStack2DataMap = new HashMap<>();
     private static final Map<GT_ItemStack2, List<ItemStack>> sUnificationTable = new HashMap<>();
     private static final Set<GT_ItemStack2> sNoUnificationList = new HashSet<>();
-    public static volatile int VERSION = 509;
     private static int isRegisteringOre = 0, isAddingOre = 0;
     private static boolean mRunThroughTheList = true;
 
@@ -114,16 +113,12 @@ public class GT_OreDictUnificator {
     }
 
     public static ItemStack get(OrePrefixes aPrefix, Object aMaterial, ItemStack aReplacement, long aAmount) {
-        // if (Materials.mDefaultComponents.contains(aPrefix) && !aPrefix.mDynamicItems.contains((Materials)aMaterial))
-        // aPrefix.mDynamicItems.add((Materials) aMaterial);
         if (OrePrefixes.mPreventableComponents.contains(aPrefix) && aPrefix.mDisabledItems.contains(aMaterial))
             return aReplacement;
         return get(aPrefix.get(aMaterial), aReplacement, aAmount, false, true);
     }
 
     public static ItemStack get(OrePrefixes aPrefix, Object aMaterial, long aAmount, boolean aNoInvalidAmounts) {
-        // if (Materials.mDefaultComponents.contains(aPrefix) && !aPrefix.mDynamicItems.contains((Materials)aMaterial))
-        // aPrefix.mDynamicItems.add((Materials) aMaterial);
         if (OrePrefixes.mPreventableComponents.contains(aPrefix) && aPrefix.mDisabledItems.contains(aMaterial))
             return null;
         return get(aPrefix.get(aMaterial), null, aAmount, false, aNoInvalidAmounts);
@@ -136,10 +131,6 @@ public class GT_OreDictUnificator {
         if (stackFromName != null) return GT_Utility.copyAmount(aAmount, stackFromName);
         if (aMentionPossibleTypos) {
             GT_Log.err.println("Unknown Key for Unification, Typo? " + aName);
-            // Debug callstack of entries not in sName2StackMap
-            // StackTraceElement[] cause = Thread.currentThread().getStackTrace();
-            // GT_Log.err.println(Arrays.toString(cause));
-
         }
         final ItemStack stackFirstOre = getFirstOre(aName, aAmount);
         if (stackFirstOre != null) return GT_Utility.copyAmount(aAmount, stackFirstOre);
@@ -153,7 +144,9 @@ public class GT_OreDictUnificator {
 
     public static ItemStack[] getStackArray(boolean aUseBlackList, Object... aStacks) {
         ItemStack[] rStacks = new ItemStack[aStacks.length];
-        for (int i = 0; i < aStacks.length; i++) rStacks[i] = get(aUseBlackList, GT_Utility.copy(aStacks[i]));
+        for (int i = 0; i < aStacks.length; i++) {
+            rStacks[i] = get(aUseBlackList, GT_Utility.copy(aStacks[i]), true);
+        }
         return rStacks;
     }
 
@@ -178,6 +171,9 @@ public class GT_OreDictUnificator {
         return get(aUseBlackList, aStack, false);
     }
 
+    /**
+     * @param unsafe If true, it does not limit stack size by 64.
+     */
     public static ItemStack get(boolean aUseBlackList, ItemStack aStack, boolean unsafe) {
         if (GT_Utility.isStackInvalid(aStack)) return null;
         ItemData tPrefixMaterial = getAssociation(aStack);
@@ -360,6 +356,13 @@ public class GT_OreDictUnificator {
             for (Object tObject : aData.mExtraData)
                 if (!tData.mExtraData.contains(tObject)) tData.mExtraData.add(tObject);
         }
+    }
+
+    public static void removeItemData(ItemStack aStack) {
+        if (GT_Utility.isStackInvalid(aStack)) {
+            return;
+        }
+        sItemStack2DataMap.remove(new GT_ItemStack2(aStack));
     }
 
     public static void addAssociation(OrePrefixes aPrefix, Materials aMaterial, ItemStack aStack,

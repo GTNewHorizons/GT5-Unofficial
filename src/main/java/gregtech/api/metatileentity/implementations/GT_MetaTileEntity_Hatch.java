@@ -135,6 +135,16 @@ public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTan
     }
 
     /**
+     * Some multiblocks restrict hatches by tier. This method allows hatches to specify custom tier used for
+     * structure check, while keeping {@link #mTier} for other uses.
+     * 
+     * @return Tier used for multiblock structure
+     */
+    public byte getTierForStructure() {
+        return mTier;
+    }
+
+    /**
      * Sets texture with page and index, rather unusable, but kept FFS
      *
      * @param page  page of texure

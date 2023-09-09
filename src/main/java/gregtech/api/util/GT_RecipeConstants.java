@@ -2,7 +2,12 @@ package gregtech.api.util;
 
 import static gregtech.api.util.GT_RecipeMapUtil.convertCellToFluid;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Optional;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -126,7 +131,7 @@ public class GT_RecipeConstants {
             builder.copy()
                 .addTo(GT_Recipe_Map.sChemicalRecipes),
             convertCellToFluid(builder, false)
-                // LCR does not need cleanroom, for now.
+                // LCR does not need cleanroom.
                 .metadata(CLEANROOM, false)
                 .addTo(GT_Recipe_Map.sMultiblockChemicalRecipes));
     });
@@ -153,11 +158,25 @@ public class GT_RecipeConstants {
         for (int i = 0, mOreDictAltLength = mOreDictAlt.length; i < mOreDictAltLength; i++) {
             ItemStack[] alts = mOreDictAlt[i];
             Object input = inputs[i];
-            if (input instanceof ItemStack)
+            if (input == null) {
+                GT_Log.err.println(
+                    "addAssemblingLineRecipe " + aResearchItem.getDisplayName()
+                        + " --> "
+                        + aOutput.getUnlocalizedName()
+                        + " there is some null item in that recipe");
+            }
+            if (input instanceof ItemStack) {
                 tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash((ItemStack) input, true, false);
-            else if (input instanceof ItemStack[]) {
+            } else if (input instanceof ItemStack[]) {
                 for (ItemStack alt : ((ItemStack[]) input)) {
                     tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(alt, true, false);
+                    if (alt == null) {
+                        GT_Log.err.println(
+                            "addAssemblingLineRecipe " + aResearchItem.getDisplayName()
+                                + " --> "
+                                + aOutput.getUnlocalizedName()
+                                + " there is some null alt item in that recipe");
+                    }
                 }
                 tPersistentHash *= 31;
             } else if (input instanceof Object[]objs) {
@@ -172,11 +191,6 @@ public class GT_RecipeConstants {
                 tPersistentHash = tPersistentHash * 31 + (objs[0] == null ? "" : objs[0].toString()).hashCode();
                 tPersistentHash = tPersistentHash * 31 + ((Number) objs[1]).intValue();
             }
-            GT_Log.err.println(
-                "addAssemblingLineRecipe " + aResearchItem.getDisplayName()
-                    + " --> "
-                    + aOutput.getUnlocalizedName()
-                    + " there is some null item in that recipe");
         }
         tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(aResearchItem, true, false);
         tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(aOutput, true, false);
@@ -254,7 +268,7 @@ public class GT_RecipeConstants {
     public static IGT_RecipeMap Fuel = IGT_RecipeMap.newRecipeMap(builder -> {
         builder.validateInputCount(1, 1)
             .validateNoInputFluid()
-            .validateOutputCount(-1, 0)
+            .validateOutputCount(-1, 1)
             .validateNoOutputFluid();
         if (!builder.isValid()) return Collections.emptyList();
         int fuelType = builder.getMetadata(FUEL_TYPE);

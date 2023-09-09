@@ -7,7 +7,11 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OreDictNames;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -34,7 +38,6 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
             .itemInputs(GT_Utility.copyAmount(1L, aStack))
             .itemOutputs(tOutput)
             .fluidInputs(Materials.HolyWater.getFluid(25L))
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(sChemicalBathRecipes);
@@ -50,7 +53,6 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
             .itemInputs(GT_Utility.copyAmount(1L, aStack))
             .itemOutputs(tOutput)
             .fluidInputs(Materials.FierySteel.getFluid(25L))
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(sChemicalBathRecipes);
@@ -66,7 +68,6 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
             .itemInputs(GT_Utility.copyAmount(1L, aStack))
             .itemOutputs(tOutput)
             .fluidInputs(Materials.Blaze.getMolten(18L))
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(sChemicalBathRecipes);
@@ -82,7 +83,6 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
             .itemInputs(GT_Utility.copyAmount(1L, aStack))
             .itemOutputs(tOutput)
             .fluidInputs(Materials.Rubber.getMolten(18L))
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(sChemicalBathRecipes);
@@ -99,7 +99,6 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
             .itemInputs(GT_Utility.copyAmount(1L, aStack))
             .itemOutputs(tOutput)
             .fluidInputs(Materials.Mercury.getFluid(25L))
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(sChemicalBathRecipes);

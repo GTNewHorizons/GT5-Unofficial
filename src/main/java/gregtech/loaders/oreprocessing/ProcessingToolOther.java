@@ -3,7 +3,11 @@ package gregtech.loaders.oreprocessing;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 

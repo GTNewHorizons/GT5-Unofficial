@@ -1,6 +1,11 @@
 package gregtech.api.enums;
 
-import static gregtech.api.enums.OrePrefixes.*;
+import static gregtech.api.enums.OrePrefixes.gem;
+import static gregtech.api.enums.OrePrefixes.ingot;
+import static gregtech.api.enums.OrePrefixes.nugget;
+import static gregtech.api.enums.OrePrefixes.plate;
+import static gregtech.api.enums.OrePrefixes.rod;
+import static gregtech.api.enums.OrePrefixes.rotor;
 
 import java.util.Arrays;
 
@@ -206,6 +211,7 @@ public class MaterialsBotania {
         Dreamwood.add(SubTag.WOOD, SubTag.FLAMMABLE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
         ManaDiamond.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         BotaniaDragonstone.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        GaiaSpirit.add(SubTag.SOFT);
 
         // Botania native items
         ingot.mNotGeneratedItems.add(Manasteel);

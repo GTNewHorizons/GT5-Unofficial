@@ -21,7 +21,7 @@ import gregtech.common.render.GT_TextureBuilder;
  * <p>
  * Example of the {@link #builder()}:
  * </p>
- * 
+ *
  * <pre>
  * {@code
  *     // Texture that glows in the dark
@@ -31,7 +31,7 @@ import gregtech.common.render.GT_TextureBuilder;
  *     TextureFactory.builder().addIcon(GRANITE_RED_STONE).stdOrient().build();
  * }
  * </pre>
- * 
+ *
  * See: the {@link ITextureBuilder} interface
  */
 @SuppressWarnings("unused")

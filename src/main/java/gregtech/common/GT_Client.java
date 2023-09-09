@@ -30,6 +30,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
@@ -51,13 +52,18 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.GT_GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 import gregtech.api.net.GT_Packet_ClientPreference;
 import gregtech.api.objects.GT_ItemStack;
@@ -71,9 +77,17 @@ import gregtech.api.util.GT_PlayedSound;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
+import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
-import gregtech.common.render.*;
+import gregtech.common.render.GT_CapeRenderer;
+import gregtech.common.render.GT_FlaskRenderer;
+import gregtech.common.render.GT_FluidDisplayStackRenderer;
+import gregtech.common.render.GT_MetaGenerated_Tool_Renderer;
+import gregtech.common.render.GT_MultiTile_Renderer;
+import gregtech.common.render.GT_PollutionRenderer;
+import gregtech.common.render.GT_Renderer_Block;
+import gregtech.common.render.GT_Renderer_Entity_Arrow;
 import gregtech.common.render.items.GT_MetaGenerated_Item_Renderer;
 import gregtech.common.tileentities.debug.GT_MetaTileEntity_AdvDebugStructureWriter;
 import gregtech.loaders.misc.GT_Bees;
@@ -287,22 +301,18 @@ public class GT_Client extends GT_Proxy implements Runnable {
         }
 
         GL11.glPushMatrix();
-        GL11.glTranslated(
-            -(aEvent.player.lastTickPosX
-                + (aEvent.player.posX - aEvent.player.lastTickPosX) * (double) aEvent.partialTicks),
-            -(aEvent.player.lastTickPosY
-                + (aEvent.player.posY - aEvent.player.lastTickPosY) * (double) aEvent.partialTicks),
-            -(aEvent.player.lastTickPosZ
-                + (aEvent.player.posZ - aEvent.player.lastTickPosZ) * (double) aEvent.partialTicks));
-        GL11.glTranslated(
-            (float) aEvent.target.blockX + 0.5F,
-            (float) aEvent.target.blockY + 0.5F,
-            (float) aEvent.target.blockZ + 0.5F);
-        final int tSideHit = aEvent.target.sideHit;
+        MovingObjectPosition target = aEvent.target;
+        EntityPlayer player = aEvent.player;
+        double camX = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double) aEvent.partialTicks;
+        double camY = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double) aEvent.partialTicks;
+        double camZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double) aEvent.partialTicks;
+        GL11.glTranslated(target.blockX - (int) camX, target.blockY - (int) camY, target.blockZ - (int) camZ);
+        GL11.glTranslated(0.5D - (camX - (int) camX), 0.5D - (camY - (int) camY), 0.5D - (camZ - (int) camZ));
+        final int tSideHit = target.sideHit;
         Rotation.sideRotations[tSideHit].glApply();
         // draw grid
-        GL11.glTranslated(0.0D, -0.501D, 0.0D);
-        GL11.glLineWidth(2.0F);
+        GL11.glTranslated(0.0D, -0.502D, 0.0D);
+        GL11.glLineWidth(2.5F);
         GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.5F);
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex3d(+.50D, .0D, -.25D);
@@ -313,8 +323,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
         GL11.glVertex3d(+.25D, .0D, +.50D);
         GL11.glVertex3d(-.25D, .0D, -.50D);
         GL11.glVertex3d(-.25D, .0D, +.50D);
-        final TileEntity tTile = aEvent.player.worldObj
-            .getTileEntity(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
+        final TileEntity tTile = player.worldObj.getTileEntity(target.blockX, target.blockY, target.blockZ);
 
         // draw connection indicators
         int tConnections = 0;
@@ -329,7 +338,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
         if (tConnections != 0) {
             for (ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
                 if ((tConnections & tSide.flag) != 0) {
-                    switch (GRID_SWITCH_TABLE[aEvent.target.sideHit][tSide.ordinal()]) {
+                    switch (GRID_SWITCH_TABLE[target.sideHit][tSide.ordinal()]) {
                         case 0 -> {
                             GL11.glVertex3d(+.25D, .0D, +.25D);
                             GL11.glVertex3d(-.25D, .0D, -.25D);
@@ -744,6 +753,14 @@ public class GT_Client extends GT_Proxy implements Runnable {
 
         if (!(aTileEntity instanceof ICoverable)) return;
 
+        if (aEvent.player.isSneaking() && aTileEntity instanceof IGregTechTileEntity gtEntity
+            && gtEntity.getMetaTileEntity() instanceof MetaPipeEntity) {
+            if (aEvent.currentItem != null && aEvent.currentItem.getItem() instanceof GT_Item_Machines
+                && GregTech_API.METATILEENTITIES[aEvent.currentItem.getItemDamage()] instanceof MetaPipeEntity) {
+                drawGrid(aEvent, false, false, false);
+            }
+        }
+
         if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sWireCutterList)
             || GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sSolderingToolList)
             || (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sSoftHammerList)
@@ -981,7 +998,10 @@ public class GT_Client extends GT_Proxy implements Runnable {
                 || GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWireCutterList)
                 || GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSolderingToolList)
                 || GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCrowbarList)
-                || GregTech_API.sCovers.containsKey(new GT_ItemStack(tCurrentItem))) {
+                || GregTech_API.sCovers.containsKey(new GT_ItemStack(tCurrentItem))
+                || (tCurrentItem.getItem() instanceof GT_Item_Machines
+                    && GregTech_API.METATILEENTITIES[tCurrentItem.getItemDamage()] instanceof MetaPipeEntity
+                    && player.isSneaking())) {
                 hide |= 0x2;
             }
             return hide;

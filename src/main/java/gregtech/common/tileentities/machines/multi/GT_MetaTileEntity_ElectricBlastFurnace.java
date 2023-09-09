@@ -1,14 +1,28 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.Muffler;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.enums.GT_Values.VN;
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofCoil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -28,11 +42,19 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
@@ -167,117 +189,24 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        if (inputSeparation) {
-            FluidStack[] tFluids = getStoredFluids().toArray(new FluidStack[0]);
-            for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
-                ArrayList<ItemStack> tInputs = new ArrayList<>();
-                tBus.mRecipeMap = getRecipeMap();
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-                if (isValidMetaTileEntity(tBus)) {
-                    for (int i = tBus.getBaseMetaTileEntity()
-                        .getSizeInventory() - 1; i >= 0; i--) {
-                        if (tBus.getBaseMetaTileEntity()
-                            .getStackInSlot(i) != null) {
-                            tInputs.add(
-                                tBus.getBaseMetaTileEntity()
-                                    .getStackInSlot(i));
-                        }
-                    }
-                }
-                ItemStack[] tItems = tInputs.toArray(new ItemStack[0]);
-                if (processRecipe(tItems, tFluids)) {
-                    return true;
-                }
+            @Nonnull
+            @Override
+            protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
+                return super.createOverclockCalculator(recipe).setRecipeHeat(recipe.mSpecialValue)
+                    .setMachineHeat(mHeatingCapacity)
+                    .setHeatOC(true)
+                    .setHeatDiscount(true);
             }
-            return false;
-        } else {
-            return processRecipe(getCompactedInputs(), getCompactedFluids());
-        }
-    }
 
-    protected boolean processRecipe(ItemStack[] tItems, FluidStack[] tFluids) {
-        if (tItems.length <= 0) return false;
-
-        long tVoltage = getMaxInputVoltage();
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-
-        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes
-            .findRecipe(getBaseMetaTileEntity(), false, V[tTier], tFluids, tItems);
-
-        if (tRecipe == null) return false;
-        if (this.mHeatingCapacity < tRecipe.mSpecialValue) return false;
-        if (!tRecipe.isRecipeInputEqual(true, tFluids, tItems)) return false;
-        // In case recipe is too OP for that machine
-        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) return false;
-
-        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-
-        int tHeatCapacityDivTiers = (mHeatingCapacity - tRecipe.mSpecialValue) / 900;
-        byte overclockCount = calculateOverclockednessEBF(tRecipe.mEUt, tRecipe.mDuration, tVoltage);
-        if (this.mEUt > 0) {
-            this.mEUt = (-this.mEUt);
-        }
-        if (tHeatCapacityDivTiers > 0) {
-            this.mEUt = (int) (this.mEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
-            this.mMaxProgresstime >>= Math.min(tHeatCapacityDivTiers / 2, overclockCount); // extra free overclocking if
-                                                                                           // possible
-            if (this.mMaxProgresstime < 1) this.mMaxProgresstime = 1; // no eu efficiency correction
-        }
-        this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-        this.mOutputItems = new ItemStack[] { tRecipe.getOutput(0), tRecipe.getOutput(1) };
-        this.mOutputFluids = new FluidStack[] { tRecipe.getFluidOutput(0) };
-        updateSlots();
-        return true;
-    }
-
-    /**
-     * Calcualtes overclocked ness using long integers
-     *
-     * @param aEUt      - recipe EUt
-     * @param aDuration - recipe Duration
-     */
-    protected byte calculateOverclockednessEBF(int aEUt, int aDuration, long maxInputVoltage) {
-        byte mTier = (byte) Math.max(0, GT_Utility.getTier(maxInputVoltage)), timesOverclocked = 0;
-        if (mTier == 0) {
-            // Long time calculation
-            long xMaxProgresstime = ((long) aDuration) << 1;
-            if (xMaxProgresstime > Integer.MAX_VALUE - 1) {
-                // make impossible if too long
-                mEUt = Integer.MAX_VALUE - 1;
-                mMaxProgresstime = Integer.MAX_VALUE - 1;
-            } else {
-                mEUt = aEUt >> 2;
-                mMaxProgresstime = (int) xMaxProgresstime;
+            @Override
+            protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
+                return recipe.mSpecialValue <= mHeatingCapacity ? CheckRecipeResultRegistry.SUCCESSFUL
+                    : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
-            // return 0;
-        } else {
-            // Long EUt calculation
-            long xEUt = aEUt;
-            // Isnt too low EUt check?
-            long tempEUt = Math.max(xEUt, V[1]);
-
-            mMaxProgresstime = aDuration;
-
-            while (tempEUt <= V[mTier - 1]) {
-                tempEUt <<= 2; // this actually controls overclocking
-                // xEUt *= 4;//this is effect of everclocking
-                mMaxProgresstime >>= 1; // this is effect of overclocking
-                xEUt = mMaxProgresstime == 0 ? xEUt >> 1 : xEUt << 2; // U know, if the time is less than 1 tick make
-                                                                      // the machine use less power
-                timesOverclocked++;
-            }
-            if (xEUt > Integer.MAX_VALUE - 1) {
-                mEUt = Integer.MAX_VALUE - 1;
-                mMaxProgresstime = Integer.MAX_VALUE - 1;
-            } else {
-                mEUt = (int) xEUt;
-                if (mEUt == 0) mEUt = 1;
-                if (mMaxProgresstime == 0) mMaxProgresstime = 1; // set time to 1 tick
-            }
-        }
-        return timesOverclocked;
+        };
     }
 
     public boolean addOutputHatchToTopList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -313,37 +242,53 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
     public boolean addOutput(FluidStack aLiquid) {
         if (aLiquid == null) return false;
         FluidStack tLiquid = aLiquid.copy();
-        boolean isOutputPollution = false;
-        for (FluidStack pollutionFluidStack : pollutionFluidStacks) {
-            if (!tLiquid.isFluidEqual(pollutionFluidStack)) continue;
-
-            isOutputPollution = true;
-            break;
-        }
         ArrayList<GT_MetaTileEntity_Hatch_Output> tOutputHatches;
-        if (isOutputPollution) {
+        if (isPollutionFluid(tLiquid)) {
             tOutputHatches = this.mPollutionOutputHatches;
-            int pollutionReduction = 0;
-            for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
-                if (!isValidMetaTileEntity(tHatch)) continue;
-                pollutionReduction = 100 - tHatch.calculatePollutionReduction(100);
-                break;
-            }
-            tLiquid.amount = tLiquid.amount * (pollutionReduction + 5) / 100;
+            multiplyPollutionFluidAmount(tLiquid);
         } else {
             tOutputHatches = this.mOutputHatches;
         }
         return dumpFluid(tOutputHatches, tLiquid, true) || dumpFluid(tOutputHatches, tLiquid, false);
     }
 
+    protected boolean isPollutionFluid(@Nullable FluidStack fluidStack) {
+        if (fluidStack == null) return false;
+        for (FluidStack pollutionFluidStack : pollutionFluidStacks) {
+            if (!fluidStack.isFluidEqual(pollutionFluidStack)) continue;
+            return true;
+        }
+        return false;
+    }
+
     @Override
-    public String[] getInfoData() {
-        int mPollutionReduction = 0;
+    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
+        if (Arrays.stream(toOutput)
+            .anyMatch(this::isPollutionFluid)) {
+            return filterValidMetaTileEntities(mPollutionOutputHatches);
+        }
+        return filterValidMetaTileEntities(mOutputHatches);
+    }
+
+    /**
+     * @return 100 -> all released to air, 0 -> all dumped to hatch
+     */
+    public int getPollutionReduction() {
+        int reduction = 100;
         for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
             if (!isValidMetaTileEntity(tHatch)) continue;
-            mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
+            reduction = Math.min(tHatch.calculatePollutionReduction(100), reduction);
         }
+        return reduction;
+    }
 
+    protected void multiplyPollutionFluidAmount(@Nonnull FluidStack fluid) {
+        fluid.amount = fluid.amount * Math.min(100 - getPollutionReduction() + 5, 100) / 100;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        int mPollutionReduction = getPollutionReduction();
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
@@ -434,12 +379,23 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         if (aNBT.hasKey("isBussesSeparate")) {
+            // backward compatibility
             inputSeparation = aNBT.getBoolean("isBussesSeparate");
         }
     }
 
     @Override
-    protected boolean isInputSeparationButtonEnabled() {
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsInputSeparation() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
         return true;
     }
 }

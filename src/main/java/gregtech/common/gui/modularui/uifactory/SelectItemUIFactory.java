@@ -10,16 +10,16 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+import com.gtnewhorizons.modularui.api.GlStateManager;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.drawable.GuiHelper;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.Dyes;
@@ -45,7 +45,6 @@ public class SelectItemUIFactory {
     private boolean anotherWindow = false;
     private AtomicBoolean dialogOpened;
     private int guiTint = GT_Util.getRGBInt(Dyes.MACHINE_METAL.getRGBA());
-    private final ItemStackHandler currentDisplayItemHandler = new ItemStackHandler();
     private Supplier<ItemStack> currentGetter;
 
     private final GT_GUIColorOverride colorOverride = GT_GUIColorOverride.get("SelectItemUIFactory");
@@ -70,7 +69,7 @@ public class SelectItemUIFactory {
     /**
      * Constructor for a dialog to select an item from given list. Given callback may be called zero or more times
      * depending on user action.
-     * 
+     *
      * @param header           Header text
      * @param headerItem       ItemStack to use as Dialog icon
      * @param selectedCallback callback upon selected
@@ -88,7 +87,6 @@ public class SelectItemUIFactory {
         this.stacks = stacks;
         this.noDeselect = noDeselect;
         this.selected = noDeselect ? Math.max(0, selected) : selected;
-        this.currentDisplayItemHandler.setStackInSlot(0, getCandidate(selected));
     }
 
     /**
@@ -131,52 +129,58 @@ public class SelectItemUIFactory {
             new TextWidget(header).setDefaultColor(COLOR_TITLE.get())
                 .setPos(25, 9));
 
-        builder.widget(new SlotWidget(BaseSlot.phantom(currentDisplayItemHandler, 0)) {
+        int currentSlotX = 9
+            + getFontRenderer().getStringWidth(StatCollector.translateToLocal("GT5U.gui.select.current"));
+        int currentSlotY = 24;
+        builder.widget(new DrawableWidget() {
 
             @Override
-            public void draw(float partialTicks) {
+            public void onScreenUpdate() {
+                super.onScreenUpdate();
                 if (currentGetter != null) {
                     ItemStack current = currentGetter.get();
-                    currentDisplayItemHandler.setStackInSlot(0, current);
                     selected = GT_Utility.findMatchingStackInList(stacks, current);
                 }
-                super.draw(partialTicks);
             }
-        }.disableInteraction()
-            .setBackground(GT_UITextures.SLOT_DARK_GRAY)
-            .setPos(
-                9 + getFontRenderer().getStringWidth(StatCollector.translateToLocal("GT5U.gui.select.current")),
-                24))
+        }.setDrawable(GT_UITextures.SLOT_DARK_GRAY)
+            .setPos(currentSlotX, currentSlotY)
+            .setSize(18, 18))
             .widget(
-                new TextWidget(StatCollector.translateToLocal("GT5U.gui.select.current"))
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(8, 25 + (18 - getFontRenderer().FONT_HEIGHT) / 2));
+                new ItemDrawable(() -> getCandidate(getSelected())).asWidgetWithTooltip()
+                    .setPos(currentSlotX + 1, currentSlotY + 1));
+        builder.widget(
+            new TextWidget(StatCollector.translateToLocal("GT5U.gui.select.current"))
+                .setDefaultColor(COLOR_TEXT_GRAY.get())
+                .setPos(8, 25 + (18 - getFontRenderer().FONT_HEIGHT) / 2));
 
         for (int i = 0; i < stacks.size(); i++) {
             final int index = i;
-            builder.widget(
-                new SlotWidget(new BaseSlot(new ItemStackHandler(new ItemStack[] { stacks.get(index) }), 0, true)) {
+            builder.widget(new ButtonWidget() {
 
-                    @Override
-                    public ClickResult onClick(int buttonId, boolean doubleClick) {
-                        if (buttonId == 0) {
-                            setSelected(index);
-                        } else if (buttonId == 1) {
-                            setSelected(UNSELECTED);
-                        } else {
-                            return ClickResult.ACCEPT;
-                        }
-                        selectedCallback.accept(getCandidate(getSelected()));
-                        return ClickResult.SUCCESS;
-                    }
-
-                    @Override
-                    public IDrawable[] getBackground() {
-                        return new IDrawable[] {
-                            index == selected ? GT_UITextures.SLOT_DARK_GRAY : ModularUITextures.ITEM_SLOT };
-                    }
-                }.disableInteraction()
-                    .setPos(7 + 18 * (index % cols), 43 + 18 * (index / cols)));
+                @Override
+                public void draw(float partialTicks) {
+                    GlStateManager.pushMatrix();
+                    // so that item z levels are properly ordered
+                    GlStateManager.translate(0, 0, 150 * getWindowLayer());
+                    new ItemDrawable(stacks.get(index)).draw(1, 1, 16, 16, partialTicks);
+                    GlStateManager.popMatrix();
+                }
+            }.setOnClick((clickData, widget) -> {
+                if (clickData.mouseButton == 0) {
+                    setSelected(index);
+                } else {
+                    setSelected(UNSELECTED);
+                }
+                selectedCallback.accept(getCandidate(getSelected()));
+            })
+                .setSynced(false, false)
+                .dynamicTooltip(() -> GuiHelper.getItemTooltip(stacks.get(index)))
+                .setUpdateTooltipEveryTick(true)
+                .setBackground(
+                    () -> new IDrawable[] {
+                        index == selected ? GT_UITextures.SLOT_DARK_GRAY : ModularUITextures.ITEM_SLOT, })
+                .setPos(7 + 18 * (index % cols), 43 + 18 * (index / cols))
+                .setSize(18, 18));
         }
 
         if (anotherWindow) {
@@ -190,6 +194,7 @@ public class SelectItemUIFactory {
             }.setOnClick(
                 (clickData, widget) -> widget.getWindow()
                     .tryClose())
+                .setSynced(false, false)
                 .setBackground(ModularUITextures.VANILLA_BACKGROUND, new Text("x"))
                 .setPos(getGUIWidth() - 15, 3)
                 .setSize(12, 12));
@@ -208,7 +213,6 @@ public class SelectItemUIFactory {
         if (noDeselect && newSelected == UNSELECTED) return;
 
         this.selected = newSelected;
-        currentDisplayItemHandler.setStackInSlot(0, getCandidate(this.selected));
     }
 
     private ItemStack getCandidate(int listIndex) {

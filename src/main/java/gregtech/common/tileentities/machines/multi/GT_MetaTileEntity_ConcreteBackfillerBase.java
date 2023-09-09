@@ -1,18 +1,28 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_Values.VN;
 
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 
@@ -20,12 +30,21 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
 
     private int mLastXOff = 0, mLastZOff = 0;
 
+    /** Used to drive the readout in the GUI for the backfiller's current y-level. */
+    private int clientYHead;
+
     public GT_MetaTileEntity_ConcreteBackfillerBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        initRecipeResults();
     }
 
     public GT_MetaTileEntity_ConcreteBackfillerBase(String aName) {
         super(aName);
+        initRecipeResults();
+    }
+
+    private void initRecipeResults() {
+        addResultMessage(STATE_UPWARD, true, "backfiller_working");
     }
 
     protected GT_Multiblock_Tooltip_Builder createTooltip(String aStructureName) {
@@ -45,7 +64,7 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
             .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
             .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
-            .addEnergyHatch(VN[getMinTier()] + "+, Any base casing", 1)
+            .addEnergyHatch("1x " + VN[getMinTier()] + "+, Any base casing", 1)
             .addMaintenanceHatch("Any base casing", 1)
             .addInputBus("Mining Pipes, optional, any base casing", 1)
             .addInputHatch("GT Concrete, any base casing", 1)
@@ -58,7 +77,7 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
 
     @Override
     protected boolean checkHatches() {
-        return !mMaintenanceHatches.isEmpty() && !mInputHatches.isEmpty() && !mEnergyHatches.isEmpty();
+        return !mMaintenanceHatches.isEmpty() && !mInputHatches.isEmpty() && mEnergyHatches.size() == 1;
     }
 
     @Override
@@ -104,6 +123,7 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
         } else {
             workState = STATE_DOWNWARD;
             stopMachine();
+            setShutdownReason(StatCollector.translateToLocal("GT5U.gui.text.backfiller_finished"));
             return false;
         }
     }
@@ -115,14 +135,15 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
                 .getMaterial()
                 .isSolid())
             return false;
-        if (!GT_Utility
-            .setBlockByFakePlayer(getFakePlayer(aBaseTile), aX, aY, aZ, GregTech_API.sBlockConcretes, 8, true))
-            return false;
-        return true;
+        return GT_Utility
+            .setBlockByFakePlayer(getFakePlayer(aBaseTile), aX, aY, aZ, GregTech_API.sBlockConcretes, 8, true);
     }
 
     private boolean tryRefillBlock(int aX, int aY, int aZ) {
-        if (!tryConsumeFluid()) return false;
+        if (!tryConsumeFluid()) {
+            setRuntimeFailureReason(CheckRecipeResultRegistry.BACKFILLER_NO_CONCRETE);
+            return false;
+        }
         getBaseMetaTileEntity().getWorld()
             .setBlock(aX, aY, aZ, GregTech_API.sBlockConcretes, 8, 3);
         return true;
@@ -134,5 +155,22 @@ public abstract class GT_MetaTileEntity_ConcreteBackfillerBase extends GT_MetaTi
             return false;
         }
         return true;
+    }
+
+    @Override
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        super.drawTexts(screenElements, inventorySlot);
+        screenElements
+            .widget(
+                TextWidget
+                    .dynamicString(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "GT5U.gui.text.backfiller_current_area",
+                            GT_Utility.formatNumbers(clientYHead)))
+                    .setSynced(false)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == STATE_UPWARD))
+            .widget(new FakeSyncWidget.IntegerSyncer(this::getYHead, newInt -> clientYHead = newInt))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> workState, newInt -> workState = newInt));
     }
 }

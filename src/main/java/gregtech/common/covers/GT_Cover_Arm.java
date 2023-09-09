@@ -218,7 +218,7 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
         } else {
             int x = (adjSlot - step);
             if (x > SLOT_ID_MASK) return createVar(SLOT_ID_MASK, 0, EXPORT_MASK);
-            else if (x < 1) return createVar(0, +step - adjSlot + 1, 0);
+            else if (x < 1) return createVar(0, step - adjSlot + 1, 0);
             else return createVar(x, 0, EXPORT_MASK);
         }
     }

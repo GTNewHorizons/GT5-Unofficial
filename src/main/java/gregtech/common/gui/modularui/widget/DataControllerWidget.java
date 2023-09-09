@@ -25,7 +25,7 @@ import gregtech.api.util.ISerializableObject;
  * This widget wraps data and handles validation, e.g. tell client to close GUI when tile is broken or cover is removed.
  * <br>
  * Data can be anything, e.g. {@link ISerializableObject} or machine recipe mode.
- * 
+ *
  * @param <T> Data type stored in this widget
  * @see IDataFollowerWidget
  */
@@ -53,7 +53,6 @@ public abstract class DataControllerWidget<T> extends MultiChildWidget implement
 
     @Override
     public void onPostInit() {
-        super.onPostInit();
         // client _should_ have received initial cover data from `GT_UIInfos#openCoverUI`
         lastData = dataGetter.get();
         if (NetworkUtils.isClient()) {

@@ -3,11 +3,19 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
-import java.util.ArrayList;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -18,11 +26,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.*;
+import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
 import gregtech.api.GregTech_API;
@@ -31,12 +44,11 @@ import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Single_Recipe_Check;
-import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_LargeChemicalReactor extends
     GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_LargeChemicalReactor> implements ISurvivalConstructable {
@@ -154,68 +166,8 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
-        long tVoltage = getMaxInputVoltage();
-        byte tier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-        GT_Recipe tRecipe;
-
-        if (mLockedToSingleRecipe && mSingleRecipeCheck != null) {
-            if (!mSingleRecipeCheck.checkRecipeInputsSingleStack(true)) {
-                return false;
-            }
-            tRecipe = mSingleRecipeCheck.getRecipe();
-        } else {
-            ArrayList<ItemStack> tInputList = getStoredInputs();
-            ArrayList<FluidStack> tFluidList = getStoredFluids();
-
-            ItemStack[] inputs = tInputList.toArray(new ItemStack[0]);
-            FluidStack[] fluids = tFluidList.toArray(new FluidStack[0]);
-
-            if (inputs.length == 0 && fluids.length == 0) {
-                return false;
-            }
-
-            GT_Single_Recipe_Check.Builder tSingleRecipeCheckBuilder = null;
-            if (mLockedToSingleRecipe) {
-                // We're locked to a single recipe, but haven't built the recipe checker yet.
-                // Build the checker on next successful recipe.
-                tSingleRecipeCheckBuilder = GT_Single_Recipe_Check.builder(this)
-                    .setBefore(inputs, fluids);
-            }
-
-            tRecipe = GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.findRecipe(
-                getBaseMetaTileEntity(),
-                false,
-                false,
-                gregtech.api.enums.GT_Values.V[tier],
-                fluids,
-                inputs);
-
-            if (tRecipe == null || !tRecipe.isRecipeInputEqual(true, fluids, inputs)) {
-                return false;
-            }
-
-            if (mLockedToSingleRecipe) {
-                mSingleRecipeCheck = tSingleRecipeCheckBuilder.setAfter(inputs, fluids)
-                    .setRecipe(tRecipe)
-                    .build();
-            }
-        }
-
-        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-
-        calculateOverclockedNessMultiInternal(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage, true);
-        // In case recipe is too OP for that machine
-        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) return false;
-        if (this.mEUt > 0) {
-            this.mEUt = (-this.mEUt);
-        }
-
-        this.mOutputItems = tRecipe.mOutputs;
-        this.mOutputFluids = tRecipe.mFluidOutputs;
-        this.updateSlots();
-        return true;
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic().enablePerfectOverclock();
     }
 
     @Override
@@ -263,6 +215,11 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends
         if (mMachine) return -1;
         mCoilAmount = 0;
         return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 
     private enum CoilStructureElement implements IStructureElement<GT_MetaTileEntity_LargeChemicalReactor> {

@@ -1,6 +1,21 @@
 package gregtech.common.tileentities.machines.basic;
 
-import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_POTIONBREWER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_POTIONBREWER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_POTIONBREWER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_POTIONBREWER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_POTIONBREWER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_POTIONBREWER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_POTIONBREWER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_POTIONBREWER_GLOW;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -8,6 +23,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
@@ -28,7 +44,7 @@ public class GT_MetaTileEntity_PotionBrewer extends GT_MetaTileEntity_BasicMachi
             aNameRegional,
             aTier,
             1,
-            "Brewing your Drinks",
+            MachineType.BREWERY.tooltipDescription(),
             1,
             0,
             "PotionBrewer.png",

@@ -3,7 +3,11 @@ package gregtech.api.metatileentity;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.NW;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -53,6 +57,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     public byte mConnections = IConnectable.NO_CONNECTION;
     protected MetaPipeEntity mMetaTileEntity;
     private final int[] mTimeStatistics = new int[GregTech_API.TICKS_FOR_LAG_AVERAGING];
+    private boolean hasTimeStatisticsStarted;
     private boolean mWorkUpdate = false, mWorks = true;
     private byte mColor = 0, oColor = 0, oStrongRedstone = 0, oRedstoneData = 63, oTextureData = 0, oUpdateData = 0,
         mLagWarningCount = 0;
@@ -161,7 +166,12 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
             mMetaTileEntity.setBaseMetaTileEntity(this);
         }
 
-        long tTime = System.nanoTime();
+        long tTime;
+        if (hasTimeStatisticsStarted) {
+            tTime = System.nanoTime();
+        } else {
+            tTime = 0;
+        }
         try {
             if (hasValidMetaTileEntity()) {
                 if (mTickTimer++ == 0) {
@@ -254,10 +264,10 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
             e.printStackTrace(GT_Log.err);
         }
 
-        if (isServerSide() && hasValidMetaTileEntity()) {
+        if (isServerSide() && hasTimeStatisticsStarted && hasValidMetaTileEntity()) {
             tTime = System.nanoTime() - tTime;
-            if (mTimeStatistics.length > 0) mTimeStatistics[mTimeStatisticsIndex = (mTimeStatisticsIndex + 1)
-                % mTimeStatistics.length] = (int) tTime;
+            mTimeStatisticsIndex = (mTimeStatisticsIndex + 1) % mTimeStatistics.length;
+            mTimeStatistics[mTimeStatisticsIndex] = (int) tTime;
             if (tTime > 0 && tTime > (GregTech_API.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING * 1000000L)
                 && mTickTimer > 1000
                 && getMetaTileEntity().doTickProfilingMessageDuringThisTick()
@@ -393,22 +403,33 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                         : " "));
         }
         if (aLogLevel > 1) {
-            if (mTimeStatistics.length > 0) {
+            if (hasTimeStatisticsStarted) {
                 double tAverageTime = 0;
                 double tWorstTime = 0;
+                int amountOfZero = 0;
                 for (int tTime : mTimeStatistics) {
                     tAverageTime += tTime;
                     if (tTime > tWorstTime) {
                         tWorstTime = tTime;
                     }
+                    if (tTime == 0) {
+                        amountOfZero += 1;
+                    }
                 }
-                tList.add(
-                    "Average CPU-load of ~" + (tAverageTime / mTimeStatistics.length)
-                        + "ns since "
-                        + mTimeStatistics.length
-                        + " ticks with worst time of "
-                        + tWorstTime
-                        + "ns.");
+                // tick time zero means it has not been updated yet
+                int samples = mTimeStatistics.length - amountOfZero;
+                if (samples > 0) {
+                    tList.add(
+                        "Average CPU-load of ~" + (tAverageTime / samples)
+                            + "ns since "
+                            + samples
+                            + " ticks with worst time of "
+                            + tWorstTime
+                            + "ns.");
+                }
+            } else {
+                startTimeStatistics();
+                tList.add("Just started tick time statistics.");
             }
             if (mLagWarningCount > 0) {
                 tList.add(
@@ -516,11 +537,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
         }
         leaveEnet();
         super.invalidate();
-    }
-
-    @Override
-    public void onChunkUnload() {
-        super.onChunkUnload();
     }
 
     @Override
@@ -771,7 +787,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
     @Override
     public boolean shouldDropItemAt(int index) {
-        return this.mMetaTileEntity != null ? this.mMetaTileEntity.shouldDropItemAt(index) : true;
+        return this.mMetaTileEntity == null || this.mMetaTileEntity.shouldDropItemAt(index);
     }
 
     @Override
@@ -851,10 +867,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                 }
 
                 if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sHardHammerList)) {
-                    // if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                    // GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(1), 1.0F, -1, xCoord, yCoord,
-                    // zCoord);
-                    // }
                     return true;
                 }
 
@@ -1305,7 +1317,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
     @Override
     public float getBlastResistance(ForgeDirection side) {
-        return (mConnections & IConnectable.HAS_FOAM) != 0 ? 50.0F : 5.0F;
+        return canAccessData() ? Math.max(0, getMetaTileEntity().getExplosionResistance(side)) : 5.0F;
     }
 
     @Override
@@ -1376,5 +1388,15 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     @Override
     public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider) {
         mMetaTileEntity.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
+    }
+
+    @Override
+    public int[] getTimeStatistics() {
+        return mTimeStatistics;
+    }
+
+    @Override
+    public void startTimeStatistics() {
+        hasTimeStatisticsStarted = true;
     }
 }
