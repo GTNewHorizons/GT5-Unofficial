@@ -2,9 +2,9 @@ package gregtech.loaders.preload;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.CraftTweaker;
 import static gregtech.api.enums.Mods.EnderIO;
-import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GregTech;
@@ -139,7 +139,7 @@ public class GT_PreLoad {
         GregTech_API.mGalacticraft = GalacticraftCore.isModLoaded();
         GregTech_API.mAE2 = AppliedEnergistics2.isModLoaded();
         GregTech_API.mHodgepodge = HodgePodge.isModLoaded();
-        GregTech_API.mEternalSingularity = EternalSingularity.isModLoaded();
+        GregTech_API.mAvaritia = Avaritia.isModLoaded();
     }
 
     public static void createLogFiles(File parentFile, Configuration tMainConfig) {
