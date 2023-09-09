@@ -566,8 +566,6 @@ public class GT_ModHandler {
             recipeBuilder.itemInputs(aInput, input2);
         }
         recipeBuilder.itemOutputs(aOutput)
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(duration * TICKS)
             .eut(3);
         if (hidden) {

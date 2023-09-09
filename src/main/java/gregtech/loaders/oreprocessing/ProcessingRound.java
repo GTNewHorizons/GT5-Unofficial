@@ -30,8 +30,6 @@ public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegist
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial, 1L))
                     .itemOutputs(GT_Utility.copyAmount(1L, aStack))
-                    .noFluidInputs()
-                    .noFluidOutputs()
                     .duration(((int) Math.max(aMaterial.getMass() / 4L, 1L)) * TICKS)
                     .eut(8)
                     .addTo(sLatheRecipes);

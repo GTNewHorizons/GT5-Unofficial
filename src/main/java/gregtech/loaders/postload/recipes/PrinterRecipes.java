@@ -22,7 +22,6 @@ public class PrinterRecipes implements Runnable {
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Paper, 1L))
             .itemOutputs(ItemList.Paper_Punch_Card_Empty.get(1L))
             .fluidInputs(getFluidStack("squidink", 36))
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(sPrinterRecipes);
@@ -32,7 +31,6 @@ public class PrinterRecipes implements Runnable {
             .specialItem(ItemList.Tool_DataStick.getWithName(0L, "With Punch Card Data"))
             .itemOutputs(ItemList.Paper_Punch_Card_Encoded.get(1L))
             .fluidInputs(getFluidStack("squidink", 36))
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(sPrinterRecipes);
@@ -42,7 +40,6 @@ public class PrinterRecipes implements Runnable {
             .specialItem(ItemList.Tool_DataStick.getWithName(0L, "With Scanned Book Data"))
             .itemOutputs(ItemList.Paper_Printed_Pages.get(1L))
             .fluidInputs(getFluidStack("squidink", 144))
-            .noFluidOutputs()
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(sPrinterRecipes);
@@ -52,7 +49,6 @@ public class PrinterRecipes implements Runnable {
             .specialItem(ItemList.Tool_DataStick.getWithName(0L, "With Scanned Map Data"))
             .itemOutputs(new ItemStack(Items.filled_map, 1, 0))
             .fluidInputs(getFluidStack("squidink", 144))
-            .noFluidOutputs()
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(sPrinterRecipes);
@@ -61,7 +57,6 @@ public class PrinterRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.book, 1, 32767))
             .itemOutputs(GT_Utility.getWrittenBook("Manual_Printer", ItemList.Book_Written_01.get(1L)))
             .fluidInputs(getFluidStack("squidink", 144))
-            .noFluidOutputs()
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(sPrinterRecipes);

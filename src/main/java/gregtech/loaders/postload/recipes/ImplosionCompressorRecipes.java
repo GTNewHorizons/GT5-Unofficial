@@ -25,8 +25,6 @@ public class ImplosionCompressorRecipes implements Runnable {
             .itemOutputs(
                 ItemList.IC2_Industrial_Diamond.get(1L),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .metadata(GT_RecipeConstants.ADDITIVE_AMOUNT, 8)
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -37,8 +35,6 @@ public class ImplosionCompressorRecipes implements Runnable {
             .itemOutputs(
                 GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .metadata(GT_RecipeConstants.ADDITIVE_AMOUNT, 8)
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -51,8 +47,6 @@ public class ImplosionCompressorRecipes implements Runnable {
                 .itemOutputs(
                     getModItem(GalacticraftCore.ID, "item.heavyPlating", 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.StainlessSteel, 1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .metadata(GT_RecipeConstants.ADDITIVE_AMOUNT, 8)
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -63,8 +57,6 @@ public class ImplosionCompressorRecipes implements Runnable {
                 .itemOutputs(
                     getModItem(GalacticraftMars.ID, "item.null", 1L, 3),
                     GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.TungstenSteel, 2L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .metadata(GT_RecipeConstants.ADDITIVE_AMOUNT, 16)
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -75,8 +67,6 @@ public class ImplosionCompressorRecipes implements Runnable {
                 .itemOutputs(
                     getModItem(GalacticraftMars.ID, "item.itemBasicAsteroids", 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Platinum, 3L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .metadata(GT_RecipeConstants.ADDITIVE_AMOUNT, 24)
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -89,8 +79,6 @@ public class ImplosionCompressorRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(input)
             .itemOutputs(outputs)
-            .noFluidInputs()
-            .noFluidOutputs()
             .metadata(GT_RecipeConstants.ADDITIVE_AMOUNT, explosiveAmount)
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)

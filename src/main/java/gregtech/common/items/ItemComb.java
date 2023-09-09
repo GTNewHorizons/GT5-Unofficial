@@ -1594,7 +1594,6 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             .itemInputs(GT_Utility.copyAmount(9, getStackForType(comb)), GT_Utility.getIntegratedCircuit(circuitNumber))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4))
             .fluidInputs(Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass() + volt.getUUAmplifier()) / 10))))
-            .noFluidOutputs()
             .duration(((int) (aMaterial.getMass() * 128)) * TICKS)
             .eut(volt.getAutoClaveEnergy());
         if (volt.compareTo(Voltage.HV) > 0) {
@@ -1617,8 +1616,6 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1, getStackForType(comb)))
-            .noItemOutputs()
-            .noFluidInputs()
             .fluidOutputs(fluid)
             .duration(duration)
             .eut(eut)
@@ -1696,9 +1693,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                 recipeBuilder.itemInputs(combInput)
                     .itemOutputs(combOutput)
                     .fluidInputs(fluidInput);
-                if (fluidOutput == null) {
-                    recipeBuilder.noFluidOutputs();
-                } else {
+                if (fluidOutput != null) {
                     recipeBuilder.fluidOutputs(fluidOutput);
                 }
                 recipeBuilder.duration(durationTicks)
@@ -1785,8 +1780,6 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             .itemInputs(tComb)
             .itemOutputs(aItem)
             .outputChances(chance)
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(duration)
             .eut(volt.getSimpleEnergy())
             .addTo(sCentrifugeRecipes);

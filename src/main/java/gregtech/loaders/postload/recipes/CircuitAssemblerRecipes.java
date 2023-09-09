@@ -46,7 +46,6 @@ public class CircuitAssemblerRecipes implements Runnable {
                     ItemList.Cover_Controller.get(1))
                 .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 4L, 0))
                 .fluidInputs(tMat.getMolten(144L * tMultiplier / 2))
-                .noFluidOutputs()
                 .duration(15 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(sCircuitAssemblerRecipes);
@@ -58,7 +57,6 @@ public class CircuitAssemblerRecipes implements Runnable {
                     ItemList.Sensor_LV.get(1))
                 .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 4L, 1))
                 .fluidInputs(tMat.getMolten(144L * tMultiplier / 2))
-                .noFluidOutputs()
                 .duration(15 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(sCircuitAssemblerRecipes);
@@ -70,7 +68,6 @@ public class CircuitAssemblerRecipes implements Runnable {
                     getModItem(Railcraft.ID, "part.signal.lamp", 1L, 0))
                 .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 4L, 2))
                 .fluidInputs(tMat.getMolten(144L * tMultiplier / 2))
-                .noFluidOutputs()
                 .duration(15 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(sCircuitAssemblerRecipes);
@@ -82,7 +79,6 @@ public class CircuitAssemblerRecipes implements Runnable {
                     ItemList.Cover_Controller.get(1))
                 .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 8L, 0))
                 .fluidInputs(tMat.getMolten(144L * tMultiplier / 2))
-                .noFluidOutputs()
                 .duration(20 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(sCircuitAssemblerRecipes);
@@ -94,7 +90,6 @@ public class CircuitAssemblerRecipes implements Runnable {
                     ItemList.Sensor_LV.get(1))
                 .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 8L, 1))
                 .fluidInputs(tMat.getMolten(144L * tMultiplier / 2))
-                .noFluidOutputs()
                 .duration(20 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(sCircuitAssemblerRecipes);
@@ -106,7 +101,6 @@ public class CircuitAssemblerRecipes implements Runnable {
                     getModItem(Railcraft.ID, "part.signal.lamp", 1L, 0))
                 .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 8L, 2))
                 .fluidInputs(tMat.getMolten(144L * tMultiplier / 2))
-                .noFluidOutputs()
                 .duration(20 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(sCircuitAssemblerRecipes);
@@ -118,7 +112,6 @@ public class CircuitAssemblerRecipes implements Runnable {
                     ItemList.Cover_Controller.get(1))
                 .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 16L, 0))
                 .fluidInputs(tMat.getMolten(144L * tMultiplier / 2))
-                .noFluidOutputs()
                 .duration(25 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(sCircuitAssemblerRecipes);
@@ -130,7 +123,6 @@ public class CircuitAssemblerRecipes implements Runnable {
                     ItemList.Sensor_LV.get(1))
                 .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 16L, 1))
                 .fluidInputs(tMat.getMolten(144L * tMultiplier / 2))
-                .noFluidOutputs()
                 .duration(25 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(sCircuitAssemblerRecipes);
@@ -142,7 +134,6 @@ public class CircuitAssemblerRecipes implements Runnable {
                     getModItem(Railcraft.ID, "part.signal.lamp", 1L, 0))
                 .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 16L, 2))
                 .fluidInputs(tMat.getMolten(144L * tMultiplier / 2))
-                .noFluidOutputs()
                 .duration(25 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(sCircuitAssemblerRecipes);
@@ -157,7 +148,6 @@ public class CircuitAssemblerRecipes implements Runnable {
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(getModItem(Forestry.ID, "chipsets", 1L, 0))
                 .fluidInputs(tMat.getMolten(1152L * tMultiplier / 2))
-                .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(sCircuitAssemblerRecipes);
@@ -172,7 +162,6 @@ public class CircuitAssemblerRecipes implements Runnable {
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(getModItem(Forestry.ID, "chipsets", 1L, 1))
                 .fluidInputs(tMat.getMolten(1152L * tMultiplier / 2))
-                .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(sCircuitAssemblerRecipes);
@@ -187,7 +176,6 @@ public class CircuitAssemblerRecipes implements Runnable {
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(getModItem(Forestry.ID, "chipsets", 1L, 2))
                 .fluidInputs(tMat.getMolten(1152L * tMultiplier / 2))
-                .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(sCircuitAssemblerRecipes);
@@ -202,7 +190,6 @@ public class CircuitAssemblerRecipes implements Runnable {
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(getModItem(Forestry.ID, "chipsets", 1L, 3))
                 .fluidInputs(tMat.getMolten(1152L * tMultiplier / 2))
-                .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(sCircuitAssemblerRecipes);
@@ -225,7 +212,6 @@ public class CircuitAssemblerRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.AnnealedCopper, 2))
             .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, 0))
             .fluidInputs(Materials.Glass.getMolten(576))
-            .noFluidOutputs()
             .duration(10 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(sCircuitAssemblerRecipes);
@@ -240,7 +226,6 @@ public class CircuitAssemblerRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.WroughtIron, 2))
             .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, 3))
             .fluidInputs(Materials.Glass.getMolten(576))
-            .noFluidOutputs()
             .duration(10 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(sCircuitAssemblerRecipes);
@@ -270,7 +255,6 @@ public class CircuitAssemblerRecipes implements Runnable {
                     rodMaterials[metaid])
                 .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, metaid))
                 .fluidInputs(Materials.Glass.getMolten(576))
-                .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(sCircuitAssemblerRecipes);
@@ -291,7 +275,6 @@ public class CircuitAssemblerRecipes implements Runnable {
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(getModItem(Forestry.ID, "chipsets", 1L, 0))
                 .fluidInputs(tMat.getMolten(1152L * tMultiplier / 2))
-                .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(sCircuitAssemblerRecipes);
@@ -306,7 +289,6 @@ public class CircuitAssemblerRecipes implements Runnable {
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(getModItem(Forestry.ID, "chipsets", 1L, 1))
                 .fluidInputs(tMat.getMolten(1152L * tMultiplier / 2))
-                .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(sCircuitAssemblerRecipes);
@@ -321,7 +303,6 @@ public class CircuitAssemblerRecipes implements Runnable {
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(getModItem(Forestry.ID, "chipsets", 1L, 2))
                 .fluidInputs(tMat.getMolten(1152L * tMultiplier / 2))
-                .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(sCircuitAssemblerRecipes);
@@ -336,7 +317,6 @@ public class CircuitAssemblerRecipes implements Runnable {
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(getModItem(Forestry.ID, "chipsets", 1L, 3))
                 .fluidInputs(tMat.getMolten(1152L * tMultiplier / 2))
-                .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(sCircuitAssemblerRecipes);

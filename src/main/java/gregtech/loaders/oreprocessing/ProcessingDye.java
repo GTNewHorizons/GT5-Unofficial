@@ -43,7 +43,6 @@ public class ProcessingDye implements IOreRecipeRegistrator {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1L, stack), GT_Utility.getIntegratedCircuit(1))
-            .noItemOutputs()
             .fluidInputs(Materials.Water.getFluid(216L))
             .fluidOutputs(FluidRegistry.getFluidStack(fluidName, 192))
             .duration(16 * TICKS)
@@ -52,7 +51,6 @@ public class ProcessingDye implements IOreRecipeRegistrator {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1L, stack), GT_Utility.getIntegratedCircuit(1))
-            .noItemOutputs()
             .fluidInputs(GT_ModHandler.getDistilledWater(288L))
             .fluidOutputs(FluidRegistry.getFluidStack(fluidName, 216))
             .duration(16 * TICKS)
@@ -84,7 +82,6 @@ public class ProcessingDye implements IOreRecipeRegistrator {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1L, stack), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Salt, 2))
-            .noItemOutputs()
             .fluidInputs(Materials.SulfuricAcid.getFluid(432))
             .fluidOutputs(FluidRegistry.getFluidStack(fluidName, 288))
             .duration(30 * SECONDS)
