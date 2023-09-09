@@ -1,9 +1,7 @@
 package gregtech.api.gui.widgets;
 
-import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -21,17 +19,17 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 
-public class GT_DisabledWhileActiveButton extends ButtonWidget {
+public class GT_LockedWhileActiveButton extends ButtonWidget {
 
     @NotNull
-    private final WeakReference<IMachineProgress> machineRef;
+    private final IMachineProgress machine;
 
-    public GT_DisabledWhileActiveButton(@NotNull IMachineProgress machine, @NotNull ModularWindow.Builder builder) {
+    public GT_LockedWhileActiveButton(@NotNull IMachineProgress machine, @NotNull ModularWindow.Builder builder) {
         super();
-        machineRef = new WeakReference<>(machine);
+        this.machine = machine;
 
         super.attachSyncer(
-            new FakeSyncWidget.BooleanSyncer(() -> isMachineActive().orElse(true), a -> {}),
+            new FakeSyncWidget.BooleanSyncer(machine::isActive, a -> {}),
             builder,
             (widget, aBoolean) -> widget.notifyTooltipChange());
 
@@ -41,11 +39,11 @@ public class GT_DisabledWhileActiveButton extends ButtonWidget {
     @NotNull
     @Override
     public ButtonWidget setOnClick(@NotNull BiConsumer<ClickData, Widget> clickAction) {
-        return super.setOnClick((clickData, widget) -> isMachineActive().ifPresent(isActive -> {
-            if (!isActive) {
+        return super.setOnClick((clickData, widget) -> {
+            if (!machine.isActive()) {
                 clickAction.accept(clickData, widget);
             }
-        }));
+        });
     }
 
     @NotNull
@@ -73,32 +71,20 @@ public class GT_DisabledWhileActiveButton extends ButtonWidget {
     }
 
     @NotNull
-    private Optional<Boolean> isMachineActive() {
-        return Optional.ofNullable(machineRef.get())
-            .map(IMachineProgress::isActive);
-    }
-
-    @NotNull
     private IDrawable[] appendLockedOverlay(@NotNull IDrawable[] drawables) {
-        return isMachineActive().map(isActive -> {
-            if (isActive) {
-                final IDrawable[] copy = Arrays.copyOf(drawables, drawables.length + 1);
-                copy[drawables.length] = GT_UITextures.OVERLAY_BUTTON_LOCKED;
-                return copy;
-            }
-            return drawables;
-        })
-            .orElse(drawables);
+        if (machine.isActive()) {
+            final IDrawable[] copy = Arrays.copyOf(drawables, drawables.length + 1);
+            copy[drawables.length] = GT_UITextures.OVERLAY_BUTTON_LOCKED;
+            return copy;
+        }
+        return drawables;
     }
 
     @NotNull
     private List<String> generateTooltip() {
-        return isMachineActive().map(isActive -> {
-            if (isActive) {
-                return ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.button.forbidden_while_running"));
-            }
-            return ImmutableList.<String>of();
-        })
-            .orElse(ImmutableList.of());
+        if (machine.isActive()) {
+            return ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.button.forbidden_while_running"));
+        }
+        return ImmutableList.of();
     }
 }

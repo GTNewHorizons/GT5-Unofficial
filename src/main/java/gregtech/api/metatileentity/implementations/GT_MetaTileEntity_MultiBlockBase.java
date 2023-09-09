@@ -2289,28 +2289,30 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                         && shouldDisplayCheckRecipeResult()))
             .widget(new CheckRecipeResultSyncer(() -> checkRecipeResult, (result) -> checkRecipeResult = result));
 
-        // Display current recipe
-        screenElements.widget(
-            TextWidget.dynamicString(this::generateCurrentRecipeInfoString)
-                .setSynced(false)
-                .setTextAlignment(Alignment.CenterLeft)
-                .setEnabled(
-                    widget -> (mOutputFluids != null && mOutputFluids.length > 0)
-                        || (mOutputItems != null && mOutputItems.length > 0)))
-            .widget(
-                new FakeSyncWidget.ListSyncer<>(
-                    () -> mOutputFluids != null ? Arrays.asList(mOutputFluids) : Collections.emptyList(),
-                    val -> mOutputFluids = val.toArray(new FluidStack[0]),
-                    NetworkUtils::writeFluidStack,
-                    NetworkUtils::readFluidStack))
-            .widget(
-                new FakeSyncWidget.ListSyncer<>(
-                    () -> mOutputItems != null ? Arrays.asList(mOutputItems) : Collections.emptyList(),
-                    val -> mOutputItems = val.toArray(new ItemStack[0]),
-                    NetworkUtils::writeItemStack,
-                    NetworkUtils::readItemStack))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> mProgresstime, val -> mProgresstime = val))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> mMaxProgresstime, val -> mMaxProgresstime = val));
+        if (showRecipeTextInGUI()) {
+            // Display current recipe
+            screenElements.widget(
+                TextWidget.dynamicString(this::generateCurrentRecipeInfoString)
+                    .setSynced(false)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setEnabled(
+                        widget -> (mOutputFluids != null && mOutputFluids.length > 0)
+                            || (mOutputItems != null && mOutputItems.length > 0)))
+                .widget(
+                    new FakeSyncWidget.ListSyncer<>(
+                        () -> mOutputFluids != null ? Arrays.asList(mOutputFluids) : Collections.emptyList(),
+                        val -> mOutputFluids = val.toArray(new FluidStack[0]),
+                        NetworkUtils::writeFluidStack,
+                        NetworkUtils::readFluidStack))
+                .widget(
+                    new FakeSyncWidget.ListSyncer<>(
+                        () -> mOutputItems != null ? Arrays.asList(mOutputItems) : Collections.emptyList(),
+                        val -> mOutputItems = val.toArray(new ItemStack[0]),
+                        NetworkUtils::writeItemStack,
+                        NetworkUtils::readItemStack))
+                .widget(new FakeSyncWidget.IntegerSyncer(() -> mProgresstime, val -> mProgresstime = val))
+                .widget(new FakeSyncWidget.IntegerSyncer(() -> mMaxProgresstime, val -> mMaxProgresstime = val));
+        }
 
         screenElements.widget(
             new TextWidget(GT_Utility.trans("144", "Missing Turbine Rotor")).setDefaultColor(COLOR_TEXT_WHITE.get())
@@ -2326,6 +2328,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                     }
                     return false;
                 }));
+    }
+
+    protected boolean showRecipeTextInGUI() {
+        return true;
     }
 
     @TestOnly

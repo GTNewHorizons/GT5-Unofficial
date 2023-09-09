@@ -61,7 +61,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.gui.widgets.GT_DisabledWhileActiveButton;
+import gregtech.api.gui.widgets.GT_LockedWhileActiveButton;
 import gregtech.api.interfaces.IChunkLoader;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -789,6 +789,11 @@ public abstract class GT_MetaTileEntity_DrillerBase
             .widget(new FakeSyncWidget.StringSyncer(() -> shutdownReason, newString -> shutdownReason = newString));
     }
 
+    @Override
+    protected boolean showRecipeTextInGUI() {
+        return false;
+    }
+
     /**
      * Adds additional buttons to the main button row. You do not need to set the position.
      *
@@ -805,7 +810,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
         final int BUTTON_Y_LEVEL = 91;
 
         builder.widget(
-            new GT_DisabledWhileActiveButton(this.getBaseMetaTileEntity(), builder)
+            new GT_LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
                 .setOnClick((clickData, widget) -> mChunkLoadingEnabled = !mChunkLoadingEnabled)
                 .setPlayClickSound(true)
                 .setBackground(() -> {

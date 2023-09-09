@@ -44,7 +44,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.gui.widgets.GT_DisabledWhileActiveButton;
+import gregtech.api.gui.widgets.GT_LockedWhileActiveButton;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.objects.ItemData;
@@ -623,7 +623,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     @Override
     protected List<ButtonWidget> getAdditionalButtons(ModularWindow.Builder builder, UIBuildContext buildContext) {
         return ImmutableList.of(
-            (ButtonWidget) new GT_DisabledWhileActiveButton(this.getBaseMetaTileEntity(), builder)
+            (ButtonWidget) new GT_LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
                 .setOnClick((clickData, widget) -> adjustChunkRadius(clickData.mouseButton == 0))
                 .setPlayClickSound(true)
                 .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_WORK_AREA)
@@ -639,12 +639,12 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                         StatCollector.translateToLocal("GT5U.gui.button.ore_drill_radius_2")))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setSize(16, 16),
-            (ButtonWidget) new GT_DisabledWhileActiveButton(this.getBaseMetaTileEntity(), builder)
+            (ButtonWidget) new GT_LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
                 .setOnClick((clickData, widget) -> replaceWithCobblestone = !replaceWithCobblestone)
                 .setPlayClickSound(true)
                 .setBackground(() -> {
                     if (replaceWithCobblestone) {
-                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
+                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
                             GT_UITextures.OVERLAY_REPLACE_COBBLE_ON };
                     }
                     return new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_REPLACE_COBBLE_OFF };
