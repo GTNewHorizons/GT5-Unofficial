@@ -47,6 +47,7 @@ public class GT_Cover_Metrics_Transmitter
 
     public static final String FREQUENCY_MSB_KEY = "frequency_msb";
     public static final String FREQUENCY_LSB_KEY = "frequency_lsb";
+    public static final String MACHINE_NAME_KEY = "machine_name";
     public static final String CARD_STATE_KEY = "card_state";
 
     @SuppressWarnings("unused")
@@ -132,6 +133,10 @@ public class GT_Cover_Metrics_Transmitter
         tagCompound.setLong(FREQUENCY_MSB_KEY, newFrequency.getMostSignificantBits());
         tagCompound.setLong(FREQUENCY_LSB_KEY, newFrequency.getLeastSignificantBits());
         tagCompound.setInteger(CARD_STATE_KEY, State.OPERATIONAL.getType());
+
+        if (aTileEntity instanceof final BaseMetaTileEntity baseMTE) {
+            tagCompound.setString(MACHINE_NAME_KEY, baseMTE.getLocalName());
+        }
 
         aTileEntity.getCoverInfoAtSide(side)
             .setCoverData(new MetricsTransmitterData(newFrequency));

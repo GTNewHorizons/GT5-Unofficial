@@ -393,7 +393,8 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
                 StatCollector.translateToLocalFormatted("GT5U.gui.text.pump_fluid_type", getFluidName()),
                 StatCollector.translateToLocalFormatted(
                     "GT5U.gui.text.pump_rate.1",
-                    EnumChatFormatting.AQUA + getFlowRatePerTick()) + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"),
+                    EnumChatFormatting.AQUA + getFlowRatePerTick())
+                    + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"),
                 getReservoirContents() + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"));
         } else if (workState == STATE_UPWARD && mOilFlow <= 0) {
             return ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.text.drill_exhausted"));
@@ -430,7 +431,8 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
             }
         }
 
-        return StatCollector.translateToLocalFormatted("GT5U.gui.text.pump_recovery.1", GT_Utility.formatNumbers(amount));
+        return StatCollector
+            .translateToLocalFormatted("GT5U.gui.text.pump_recovery.1", GT_Utility.formatNumbers(amount));
     }
 
     @Override
@@ -440,21 +442,29 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted("GT5U.gui.text.pump_fluid_type", clientFluidType))
+                        () -> EnumChatFormatting.GRAY
+                            + StatCollector.translateToLocalFormatted("GT5U.gui.text.pump_fluid_type", clientFluidType))
                     .setSynced(false)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == STATE_AT_BOTTOM))
             .widget(
-                TextWidget.dynamicString(
-                    () -> EnumChatFormatting.GRAY + StatCollector
-                        .translateToLocalFormatted("GT5U.gui.text.pump_rate.1", EnumChatFormatting.AQUA + clientPumpRate)
-                        + EnumChatFormatting.GRAY + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2")
-                    )
+                TextWidget
+                    .dynamicString(
+                        () -> EnumChatFormatting.GRAY
+                            + StatCollector.translateToLocalFormatted(
+                                "GT5U.gui.text.pump_rate.1",
+                                EnumChatFormatting.AQUA + clientPumpRate)
+                            + EnumChatFormatting.GRAY
+                            + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"))
                     .setSynced(false)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == STATE_AT_BOTTOM))
             .widget(
-                TextWidget.dynamicString(() -> EnumChatFormatting.GRAY + clientReservoirContents + EnumChatFormatting.GRAY + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"))
+                TextWidget
+                    .dynamicString(
+                        () -> EnumChatFormatting.GRAY + clientReservoirContents
+                            + EnumChatFormatting.GRAY
+                            + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"))
                     .setSynced(false)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == STATE_AT_BOTTOM))

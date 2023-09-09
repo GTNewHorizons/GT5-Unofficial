@@ -96,6 +96,7 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
      * @param frequency The UUID corresponding to the frequency to retrieve.
      * @return An Optional with the frequency's data, or an empty Optional if it doesn't exist.
      */
+    @NotNull
     public static Optional<Data> getData(UUID frequency) {
         return Optional.ofNullable(DATABASE.get(frequency));
     }
@@ -211,6 +212,7 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
          *
          * @return The data if present, or an empty Optional otherwise.
          */
+        @NotNull
         public Optional<List<String>> getPayload() {
             return Optional.ofNullable(payload);
         }
@@ -220,6 +222,7 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
          *
          * @return The state
          */
+        @NotNull
         public State getState() {
             return state;
         }
@@ -267,6 +270,7 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
             this.type = type;
         }
 
+        @NotNull
         public static Optional<State> find(int candidate) {
             return Optional.ofNullable(VALID_TYPE_INTEGERS.get(candidate));
         }

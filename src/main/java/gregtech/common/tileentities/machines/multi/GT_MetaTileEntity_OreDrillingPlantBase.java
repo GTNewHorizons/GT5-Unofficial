@@ -703,7 +703,8 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                     "GT5U.gui.text.drill_ores_left_chunk",
                     GT_Utility.formatNumbers(oreBlockPositions.size())));
             case STATE_UPWARD -> ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.text.drill_exhausted"));
-            case STATE_ABORT -> ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.text.drill_retract_pipes_finished"));
+            case STATE_ABORT -> ImmutableList
+                .of(StatCollector.translateToLocal("GT5U.gui.text.drill_retract_pipes_finished"));
 
             default -> ImmutableList.of();
         };

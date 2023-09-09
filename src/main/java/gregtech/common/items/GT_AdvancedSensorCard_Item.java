@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.common.covers.GT_Cover_Metrics_Transmitter.CARD_STATE_KEY;
 import static gregtech.common.covers.GT_Cover_Metrics_Transmitter.FREQUENCY_LSB_KEY;
 import static gregtech.common.covers.GT_Cover_Metrics_Transmitter.FREQUENCY_MSB_KEY;
+import static gregtech.common.covers.GT_Cover_Metrics_Transmitter.MACHINE_NAME_KEY;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 
@@ -71,14 +74,22 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
     public void addInformation(final ItemStack itemStack, final EntityPlayer player, final List<String> tooltip,
         final boolean p_77624_4_) {
         super.addInformation(itemStack, player, tooltip, p_77624_4_);
+
         tooltip.add("Created by attaching a Metrics Transmitter cover, no standard recipe");
-        getUUID(itemStack).ifPresent(uuid -> tooltip.add("Frequency: " + EnumChatFormatting.YELLOW + uuid));
+
         getCardState(itemStack).ifPresent(state -> {
             if (state == State.SELF_DESTRUCTED) {
                 tooltip.add(
                     EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.LIGHT_PURPLE
                         + "This thing looks completely fried...");
                 tooltip.add(EnumChatFormatting.RED + "Destroyed due to metrics transmitter being removed from machine");
+            } else {
+                getMachineName(itemStack).ifPresent(
+                    machineName -> tooltip.add(
+                        "Machine: " + EnumChatFormatting.AQUA
+                            + itemStack.getTagCompound()
+                                .getString(MACHINE_NAME_KEY)));
+                getUUID(itemStack).ifPresent(uuid -> tooltip.add("Frequency: " + EnumChatFormatting.YELLOW + uuid));
             }
         });
     }
@@ -127,7 +138,9 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
                 case DECONSTRUCTED -> DECONSTRUCTED_OUTPUT.size();
                 case OPERATIONAL -> data.getPayload()
                     .map(List::size)
-                    .orElse(0);
+                    .orElse(0)
+                    + getMachineName(card.getItemStack()).map(machineName -> 1)
+                        .orElse(0);
             };
         });
         return CardState.OK;
@@ -142,12 +155,18 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
         return getCardState(card).map(state -> switch (state) {
             case SELF_DESTRUCTED -> new ArrayList<>(SELF_DESTRUCTED_OUTPUT);
             case DECONSTRUCTED -> new ArrayList<>(DECONSTRUCTED_OUTPUT);
-            case OPERATIONAL -> getDataFromDatabase(card).flatMap(GlobalMetricsCoverDatabase.Data::getPayload)
+            case OPERATIONAL -> getDataFromDatabase(card).map(data -> {
+                final ImmutableList.Builder<String> builder = ImmutableList.builder();
+                getMachineName(card.getItemStack()).ifPresent(builder::add);
+                data.getPayload()
+                    .ifPresent(builder::addAll);
+                return builder.build();
+            })
                 .filter(payload -> !payload.isEmpty())
                 .map(
                     payload -> IntStream.range(0, payload.size())
                         .filter(i -> (displaySettings & (1 << i)) != 0)
-                        .mapToObj(i -> prebakePanelString(payload.get(i)))
+                        .mapToObj(i -> prebakePanelString(payload.get(i), i == 0))
                         .collect(Collectors.toCollection(ArrayList::new)))
                 .orElse(null);
         })
@@ -196,10 +215,12 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
 
     }
 
+    @NotNull
     private Optional<State> getCardState(ICardWrapper card) {
         return getCardState(card.getItemStack());
     }
 
+    @NotNull
     private Optional<State> getCardState(ItemStack itemStack) {
         if (itemStack.hasTagCompound() && itemStack.getTagCompound()
             .hasKey(CARD_STATE_KEY)) {
@@ -211,6 +232,7 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
         return Optional.empty();
     }
 
+    @NotNull
     private Optional<UUID> getUUID(ItemStack stack) {
         if (stack.hasTagCompound()) {
             NBTTagCompound nbt = stack.getTagCompound();
@@ -222,18 +244,34 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
         return Optional.empty();
     }
 
+    @NotNull
+    private Optional<String> getMachineName(ItemStack stack) {
+        if (stack.hasTagCompound() && stack.getTagCompound()
+            .hasKey(MACHINE_NAME_KEY)) {
+            return Optional.of(
+                stack.getTagCompound()
+                    .getString(MACHINE_NAME_KEY));
+        }
+
+        return Optional.empty();
+    }
+
+    @NotNull
     private Optional<GlobalMetricsCoverDatabase.Data> getDataFromDatabase(ICardWrapper card) {
         return getDataFromDatabase(card.getItemStack());
     }
 
+    @NotNull
     private Optional<GlobalMetricsCoverDatabase.Data> getDataFromDatabase(ItemStack stack) {
         return getUUID(stack).flatMap(GlobalMetricsCoverDatabase::getData);
     }
 
+    @NotNull
     private static PanelString prebakePanelString(String info) {
         return prebakePanelString(info, false);
     }
 
+    @NotNull
     private static PanelString prebakePanelString(String info, boolean center) {
         final PanelString panelString = new PanelString();
         if (center) {
