@@ -795,6 +795,8 @@ public enum OrePrefixes {
         arrowGtPlastic.mNotGeneratedItems.add(MaterialsUEVplus.TranscendentMetal);
         arrow.mNotGeneratedItems.add(MaterialsUEVplus.TranscendentMetal);
         arrowGtWood.mNotGeneratedItems.add(MaterialsUEVplus.TranscendentMetal);
+        stickLong.mNotGeneratedItems.add(Materials.Obsidian);
+        dust.mNotGeneratedItems.add(Materials.CertusQuartzCharged);
 
         // -----
 

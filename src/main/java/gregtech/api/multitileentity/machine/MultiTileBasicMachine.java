@@ -4,7 +4,7 @@ import static gregtech.api.enums.GT_Values.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.UUID;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -13,7 +13,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumChatFormatting;
@@ -21,6 +20,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.ApiStatus.OverrideOnly;
 
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
@@ -35,20 +36,21 @@ import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.logic.PowerLogic;
-import gregtech.api.logic.interfaces.FluidInventoryLogicHost;
-import gregtech.api.logic.interfaces.ItemInventoryLogicHost;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
+import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.base.TickableMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileMachine;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.task.tasks.ProcessingTask;
 import gregtech.api.util.GT_Utility;
 import gregtech.client.GT_SoundLoop;
 
-public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
-    implements IMultiTileMachine, ItemInventoryLogicHost, FluidInventoryLogicHost, IMachineProgress {
+public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extends TickableMultiTileEntity
+    implements IMultiTileMachine, IMachineProgress, ProcessingLogicHost<P> {
 
     protected static final int ACTIVE = B[0];
     protected static final int TICKS_BETWEEN_RECIPE_CHECKS = 5 * TickTime.SECOND;
@@ -67,16 +69,11 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     protected boolean active = false;
     protected long storedEnergy = 0;
     protected long voltage = 0;
-    protected long amperage = 2;
+    protected long amperage = 1;
     protected long eut = 0;
     protected int tier = 0;
-
-    protected int maxProgressTime = 0;
-    protected int progressTime = 0;
     protected long burnTime = 0;
     protected long totalBurnTime = 0;
-    protected FluidStack[] fluidsToOutput = GT_Values.emptyFluidStack;
-    protected ItemStack[] itemsToOutput = GT_Values.emptyItemStackArray;
 
     protected boolean outputInventoryChanged = false;
     protected boolean powerShutDown = false;
@@ -95,8 +92,17 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     protected FluidInventoryLogic fluidInput;
     protected FluidInventoryLogic fluidOutput;
 
+    protected P processingLogic;
+    @Nonnull
+    protected VoidingMode voidingMode = VoidingMode.VOID_NONE;
+    protected boolean processingUpdate = false;
+
     @SideOnly(Side.CLIENT)
     protected GT_SoundLoop activitySoundLoop;
+
+    public MultiTileBasicMachine() {
+        new ProcessingTask<>(this);
+    }
 
     @Override
     public String getTileEntityName() {
@@ -114,12 +120,13 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
             nbt.setBoolean(NBT.ACTIVE, active);
         }
 
-        if (itemsToOutput != null) {
-            saveItemsToOutput(nbt);
-        }
-
         saveItemLogic(nbt);
         saveFluidLogic(nbt);
+
+        if (processingLogic != null) {
+            NBTTagCompound processingLogicNBT = processingLogic.saveToNBT();
+            nbt.setTag("processingLogic", processingLogicNBT);
+        }
 
         nbt.setInteger(NBT.TIER, tier);
         nbt.setLong(NBT.EUT_CONSUMPTION, eut);
@@ -143,24 +150,6 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         nbt.setTag(NBT.TANK_OUT, fluidOutputNBT);
     }
 
-    protected void saveItemsToOutput(NBTTagCompound aNBT) {
-        final NBTTagList nbtList = new NBTTagList();
-        for (int slot = 0; slot < itemsToOutput.length; slot++) {
-            final ItemStack itemStack = itemsToOutput[slot];
-
-            if (itemStack == null) {
-                continue;
-            }
-
-            final NBTTagCompound tag = new NBTTagCompound();
-            tag.setByte("s", (byte) slot);
-            itemStack.writeToNBT(tag);
-            nbtList.appendTag(tag);
-
-        }
-        aNBT.setTag(NBT.ITEM_OUT, nbtList);
-    }
-
     @Override
     public void readMultiTileNBT(NBTTagCompound nbt) {
         super.readMultiTileNBT(nbt);
@@ -172,15 +161,13 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
             active = nbt.getBoolean(NBT.ACTIVE);
         }
 
-        fluidsToOutput = new FluidStack[getFluidOutputCount()];
-
-        for (int i = 0; i < fluidsToOutput.length; i++) {
-            fluidsToOutput[i] = FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag(NBT.FLUID_OUT + "." + i));
-        }
-
-        loadItemsToOutput(nbt);
         loadItemLogic(nbt);
         loadFluidLogic(nbt);
+
+        if (nbt.hasKey("processingLogic")) {
+            P processingLogic = getProcessingLogic();
+            processingLogic.loadFromNBT(Objects.requireNonNull(nbt.getCompoundTag("processingLogic")));
+        }
 
         tier = nbt.getInteger(NBT.TIER);
         eut = nbt.getLong(NBT.EUT_CONSUMPTION);
@@ -191,10 +178,14 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     }
 
     protected void loadItemLogic(NBTTagCompound nbt) {
-        itemInput = new ItemInventoryLogic(Math.max(nbt.getInteger(NBT.INV_OUTPUT_SIZE), tier));
-        itemOutput = new ItemInventoryLogic(Math.max(nbt.getInteger(NBT.INV_OUTPUT_SIZE), tier));
-        itemInput.loadFromNBT(nbt.getCompoundTag(NBT.INV_INPUT_LIST));
-        itemOutput.loadFromNBT(nbt.getCompoundTag(NBT.INV_OUTPUT_LIST));
+        itemInput = new ItemInventoryLogic(nbt.getInteger(NBT.INV_OUTPUT_SIZE), tier);
+        itemOutput = new ItemInventoryLogic(nbt.getInteger(NBT.INV_OUTPUT_SIZE), tier);
+        if (nbt.hasKey(NBT.INV_INPUT_LIST)) {
+            itemInput.loadFromNBT(nbt.getCompoundTag(NBT.INV_INPUT_LIST));
+        }
+        if (nbt.hasKey(NBT.INV_OUTPUT_LIST)) {
+            itemOutput.loadFromNBT(nbt.getCompoundTag(NBT.INV_OUTPUT_LIST));
+        }
     }
 
     protected void loadFluidLogic(NBTTagCompound nbt) {
@@ -202,16 +193,6 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         fluidOutput = new FluidInventoryLogic(16, 10000, tier);
         fluidInput.loadFromNBT(nbt.getCompoundTag(NBT.TANK_IN));
         fluidOutput.loadFromNBT(nbt.getCompoundTag(NBT.TANK_OUT));
-    }
-
-    protected void loadItemsToOutput(NBTTagCompound aNBT) {
-        final NBTTagList tList = aNBT.getTagList(NBT.ITEM_OUT, 10);
-        itemsToOutput = new ItemStack[tList.tagCount()];
-        for (int i = 0; i < tList.tagCount(); i++) {
-            final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
-            final int tSlot = tNBT.getByte("s");
-            if (tSlot >= 0 && tSlot < itemsToOutput.length) itemsToOutput[tSlot] = GT_Utility.loadItem(tNBT);
-        }
     }
 
     @Override
@@ -358,28 +339,20 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         if (hasThingsToDo()) {
             markDirty();
             runningTick(tick);
-            return;
+        } else {
+            if (tick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled() || hasInventoryBeenModified()) {
+                if (isAllowedToWork()) {
+                    wasEnabled = false;
+                    if (checkRecipe()) {
+                        setActive(true);
+                        setSound(GregTechTileClientEvents.START_SOUND_LOOP, PROCESS_START_SOUND_INDEX);
+                        updateSlots();
+                        markDirty();
+                        issueClientUpdate();
+                    }
+                }
+            }
         }
-
-        if (!(tick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled() || hasInventoryBeenModified())) {
-            return;
-        }
-
-        if (!isAllowedToWork()) {
-            return;
-        }
-
-        wasEnabled = false;
-
-        if (!checkRecipe()) {
-            return;
-        }
-
-        setActive(true);
-        setSound(GregTechTileClientEvents.START_SOUND_LOOP, PROCESS_START_SOUND_INDEX);
-        updateSlots();
-        markDirty();
-        issueClientUpdate();
     }
 
     /**
@@ -390,18 +363,6 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     protected void runningTick(long tick) {
         if (this instanceof PowerLogicHost) {
             consumeEnergy();
-        }
-
-        if (maxProgressTime > 0 && ++progressTime >= maxProgressTime) {
-            progressTime = 0;
-            maxProgressTime = 0;
-            outputItems(null);
-            outputFluids(null);
-            if (isAllowedToWork() && !checkRecipe()) {
-                setActive(false);
-                issueClientUpdate();
-            }
-            updateSlots();
         }
 
         emitEnergy();
@@ -429,7 +390,9 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
             return;
         }
 
-        if (!logic.removeEnergyUnsafe(eut)) {
+        P processing = getProcessingLogic();
+
+        if (!logic.removeEnergyUnsafe(processing.getCalculatedEut())) {
             stopMachine(true);
         }
     }
@@ -469,11 +432,10 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
                     .getSoundHandler()
                     .playSound(activitySoundLoop);
             }
-            return;
-        }
-
-        if (activitySoundLoop != null) {
-            activitySoundLoop = null;
+        } else {
+            if (activitySoundLoop != null) {
+                activitySoundLoop = null;
+            }
         }
     }
 
@@ -490,35 +452,22 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         return fluidInput.getStoredFluids();
     }
 
-    protected void outputItems(@Nullable UUID inventoryID) {
-        if (itemsToOutput == null) return;
-        for (int i = 0; i < itemsToOutput.length; i++) {
-            itemOutput.insertItem(itemsToOutput[i]);
-        }
-        itemsToOutput = null;
-    }
-
-    protected void outputFluids(@Nullable UUID inventoryID) {
-        if (fluidsToOutput == null) return;
-        for (int i = 0; i < fluidsToOutput.length; i++) {
-            fluidOutput.fill(fluidsToOutput[i]);
-        }
-        fluidsToOutput = null;
-    }
-
     @Override
     public int getProgress() {
-        return progressTime;
+        P processing = getProcessingLogic();
+        return processing.getProgress();
     }
 
     @Override
     public int getMaxProgress() {
-        return maxProgressTime;
+        P processing = getProcessingLogic();
+        return processing.getDuration();
     }
 
     @Override
-    public boolean increaseProgress(int aProgressAmountInTicks) {
-        progressTime += aProgressAmountInTicks;
+    public boolean increaseProgress(int progressAmount) {
+        P processing = getProcessingLogic();
+        processing.increaseProgress(progressAmount);
         return true;
     }
 
@@ -645,39 +594,36 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
 
         if (this instanceof PowerLogicHost powerLogicHost) {
             PowerLogic logic = powerLogicHost.getPowerLogic(facing);
-            if (!isElectric) {
-                return;
+            if (isElectric) {
+                list.add(
+                    StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GT_Utility.formatNumbers(logic.getStoredEnergy())
+                        + EnumChatFormatting.RESET
+                        + " EU / "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(logic.getCapacity())
+                        + EnumChatFormatting.RESET
+                        + " EU");
+                list.add(
+                    StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+                        + EnumChatFormatting.RED
+                        + GT_Utility.formatNumbers(eut)
+                        + EnumChatFormatting.RESET
+                        + " EU/t");
+                list.add(
+                    StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(logic.getVoltage())
+                        + EnumChatFormatting.RESET
+                        // TODO: Put ampere getter here, once that's variable
+                        + " EU/t(*2A) "
+                        + StatCollector.translateToLocal("GT5U.machines.tier")
+                        + ": "
+                        + EnumChatFormatting.YELLOW
+                        + VN[GT_Utility.getTier(logic.getVoltage())]
+                        + EnumChatFormatting.RESET);
             }
-
-            list.add(
-                StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                    + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(logic.getStoredEnergy())
-                    + EnumChatFormatting.RESET
-                    + " EU / "
-                    + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(logic.getCapacity())
-                    + EnumChatFormatting.RESET
-                    + " EU");
-            list.add(
-                StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                    + EnumChatFormatting.RED
-                    + GT_Utility.formatNumbers(eut)
-                    + EnumChatFormatting.RESET
-                    + " EU/t");
-            list.add(
-                StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-                    + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(logic.getVoltage())
-                    + EnumChatFormatting.RESET
-                    // TODO: Put ampere getter here, once that's variable
-                    + " EU/t(*2A) "
-                    + StatCollector.translateToLocal("GT5U.machines.tier")
-                    + ": "
-                    + EnumChatFormatting.YELLOW
-                    + VN[GT_Utility.getTier(logic.getVoltage())]
-                    + EnumChatFormatting.RESET);
-
         }
 
         addProgressStringToScanner(player, logLevel, list);
@@ -693,6 +639,9 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     }
 
     protected void addProgressStringToScanner(EntityPlayer player, int logLevel, ArrayList<String> list) {
+        P processing = getProcessingLogic();
+        int progressTime = processing.getProgress();
+        int maxProgressTime = processing.getDuration();
         list.add(
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
@@ -706,7 +655,6 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     }
 
     protected void stopMachine(boolean powerShutDown) {
-        progressTime = 0;
         setActive(false);
         disableWorking();
         if (powerShutDown) {
@@ -731,14 +679,6 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         }
 
         this.eut = eut;
-    }
-
-    protected void setDuration(int duration) {
-        if (duration < 0) {
-            duration = -duration;
-        }
-
-        maxProgressTime = duration;
     }
 
     @Override
@@ -771,14 +711,6 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         return true;
     }
 
-    protected void setItemOutputs(ItemStack... outputs) {
-        itemsToOutput = outputs;
-    }
-
-    protected void setFluidOutputs(FluidStack... outputs) {
-        fluidsToOutput = outputs;
-    }
-
     @Override
     public void setSound(byte soundEvent, int soundEventValue) {
         this.soundEvent = soundEvent;
@@ -786,15 +718,13 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         if (isClientSide()) {
             switch (soundEventValue) {
                 case PROCESS_START_SOUND_INDEX -> {
-                    if (getProcessStartSound() != null) {
-                        GT_Utility.doSoundAtClient(
-                            getProcessStartSound(),
-                            getTimeBetweenProcessSounds(),
-                            1.0F,
-                            getXCoord(),
-                            getYCoord(),
-                            getZCoord());
-                    }
+                    if (getProcessStartSound() != null) GT_Utility.doSoundAtClient(
+                        getProcessStartSound(),
+                        getTimeBetweenProcessSounds(),
+                        1.0F,
+                        getXCoord(),
+                        getYCoord(),
+                        getZCoord());
                 }
                 case INTERRUPT_SOUND_INDEX -> GT_Utility.doSoundAtClient(
                     SoundResource.IC2_MACHINES_INTERRUPT_ONE,
@@ -825,6 +755,39 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
             case Output -> fluidOutput;
             default -> null;
         };
+    }
+
+    @Override
+    @Nonnull
+    public P getProcessingLogic() {
+        if (processingLogic == null) {
+            processingLogic = createProcessingLogic().setMachineHost(this);
+        }
+        return Objects.requireNonNull(processingLogic);
+    }
+
+    @OverrideOnly
+    @Nonnull
+    protected abstract P createProcessingLogic();
+
+    @Override
+    public boolean isInputSeparated() {
+        return false;
+    }
+
+    @Override
+    public VoidingMode getVoidMode() {
+        return voidingMode;
+    }
+
+    @Override
+    public boolean needsUpdate() {
+        return processingUpdate;
+    }
+
+    @Override
+    public void setProcessingUpdate(boolean update) {
+        processingUpdate = update;
     }
 
 }

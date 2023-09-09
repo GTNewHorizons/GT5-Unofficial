@@ -268,7 +268,8 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
                         fluidCache.add(s);
                     } else {
                         GT_Mod.GT_FML_LOGGER.warn(
-                            "An error occurred while loading contents of ME Output Hatch, some fluids have been voided");
+                            "An error occurred while loading contents of ME Output Hatch. This fluid has been voided: "
+                                + tagFluidStack);
                     }
                 }
             }

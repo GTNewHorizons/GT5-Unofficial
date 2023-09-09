@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
+@Deprecated
 public class GT_ProcessingArray_Manager {
 
     private static final HashMap<String, GT_Recipe_Map> mRecipeSaves = new HashMap<>();

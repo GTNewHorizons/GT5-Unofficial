@@ -4,9 +4,11 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.GT_Values;
+
 public class GT_OverclockCalculator {
 
-    private static final double LOG4 = Math.log(4);
+    private static final double LOG2 = Math.log(2);
 
     /**
      * Voltage the recipe will run at
@@ -150,6 +152,7 @@ public class GT_OverclockCalculator {
     /**
      * @param recipeEUt Sets the Recipe's starting voltage
      */
+    @Nonnull
     public GT_OverclockCalculator setRecipeEUt(long recipeEUt) {
         this.recipeVoltage = recipeEUt;
         return this;
@@ -158,6 +161,7 @@ public class GT_OverclockCalculator {
     /**
      * @param machineVoltage Sets the EUt that the machine can use. This is the voltage of the machine
      */
+    @Nonnull
     public GT_OverclockCalculator setEUt(long machineVoltage) {
         this.machineVoltage = machineVoltage;
         return this;
@@ -166,6 +170,7 @@ public class GT_OverclockCalculator {
     /**
      * @param duration Sets the duration of the recipe
      */
+    @Nonnull
     public GT_OverclockCalculator setDuration(int duration) {
         this.duration = duration;
         return this;
@@ -174,6 +179,7 @@ public class GT_OverclockCalculator {
     /**
      * @param machineAmperage Sets the Amperage that the machine can support
      */
+    @Nonnull
     public GT_OverclockCalculator setAmperage(long machineAmperage) {
         this.machineAmperage = machineAmperage;
         return this;
@@ -182,6 +188,7 @@ public class GT_OverclockCalculator {
     /**
      * @param recipeAmperage Sets the Amperage of the recipe
      */
+    @Nonnull
     public GT_OverclockCalculator setRecipeAmperage(long recipeAmperage) {
         this.recipeAmperage = recipeAmperage;
         return this;
@@ -190,6 +197,7 @@ public class GT_OverclockCalculator {
     /**
      * Enables Perfect OC in calculation
      */
+    @Nonnull
     public GT_OverclockCalculator enablePerfectOC() {
         this.durationDecreasePerOC = 2;
         return this;
@@ -206,6 +214,7 @@ public class GT_OverclockCalculator {
     /**
      * Set if we should be calculating overclocking using EBF's perfectOC
      */
+    @Nonnull
     public GT_OverclockCalculator setHeatOC(boolean heatOC) {
         this.heatOC = heatOC;
         return this;
@@ -222,6 +231,7 @@ public class GT_OverclockCalculator {
     /**
      * Sets if we should add a heat discount at the end of calculating an overclock, just like the EBF
      */
+    @Nonnull
     public GT_OverclockCalculator setHeatDiscount(boolean heatDiscount) {
         this.heatDiscount = heatDiscount;
         return this;
@@ -230,6 +240,7 @@ public class GT_OverclockCalculator {
     /**
      * Sets the starting heat of the recipe
      */
+    @Nonnull
     public GT_OverclockCalculator setRecipeHeat(int recipeHeat) {
         this.recipeHeat = recipeHeat;
         return this;
@@ -246,6 +257,7 @@ public class GT_OverclockCalculator {
     /**
      * Sets the heat of the coils on the machine
      */
+    @Nonnull
     public GT_OverclockCalculator setMachineHeat(int machineHeat) {
         this.machineHeat = machineHeat;
         return this;
@@ -254,6 +266,7 @@ public class GT_OverclockCalculator {
     /**
      * Sets an EUtDiscount. 0.9 is 10% less energy. 1.1 is 10% more energy
      */
+    @Nonnull
     public GT_OverclockCalculator setEUtDiscount(float aEUtDiscount) {
         this.eutDiscount = aEUtDiscount;
         return this;
@@ -262,6 +275,7 @@ public class GT_OverclockCalculator {
     /**
      * Sets a Speed Boost for the multiblock. 0.9 is 10% faster. 1.1 is 10% slower
      */
+    @Nonnull
     public GT_OverclockCalculator setSpeedBoost(float aSpeedBoost) {
         this.speedBoost = aSpeedBoost;
         return this;
@@ -270,6 +284,7 @@ public class GT_OverclockCalculator {
     /**
      * Sets the parallel that the multiblock uses
      */
+    @Nonnull
     public GT_OverclockCalculator setParallel(int aParallel) {
         this.parallel = aParallel;
         return this;
@@ -279,6 +294,7 @@ public class GT_OverclockCalculator {
      * Sets the heat discount during OC calculation if HeatOC is used. Default: 0.95 = 5% discount Used like a EU/t
      * Discount
      */
+    @Nonnull
     public GT_OverclockCalculator setHeatDiscountMultiplier(float heatDiscountExponent) {
         this.heatDiscountExponent = heatDiscountExponent;
         return this;
@@ -288,6 +304,7 @@ public class GT_OverclockCalculator {
      * Sets the Overclock that should be calculated when one. This uses BitShifting! Default is 2, which is a 4x
      * decrease
      */
+    @Nonnull
     public GT_OverclockCalculator setHeatPerfectOC(int heatPerfectOC) {
         this.durationDecreasePerHeatOC = heatPerfectOC;
         return this;
@@ -296,6 +313,7 @@ public class GT_OverclockCalculator {
     /**
      * Sets the amount that the EUt increases per overclock. This uses BitShifting! Default is 2, which is a 4x increase
      */
+    @Nonnull
     public GT_OverclockCalculator setEUtIncreasePerOC(int aEUtIncreasePerOC) {
         this.eutIncreasePerOC = aEUtIncreasePerOC;
         return this;
@@ -305,6 +323,7 @@ public class GT_OverclockCalculator {
      * Sets the amount that the duration decreases per overclock. This uses BitShifting! Default is 1, which halves the
      * duration
      */
+    @Nonnull
     public GT_OverclockCalculator setDurationDecreasePerOC(int durationDecreasePerOC) {
         this.durationDecreasePerOC = durationDecreasePerOC;
         return this;
@@ -322,6 +341,7 @@ public class GT_OverclockCalculator {
      * Set One Tick Discount on EUt based on Duration Decrease Per Overclock. This functions the same as single
      * blocks.
      */
+    @Nonnull
     public GT_OverclockCalculator setOneTickDiscount(boolean oneTickDiscount) {
         this.oneTickDiscount = oneTickDiscount;
         return this;
@@ -331,22 +351,26 @@ public class GT_OverclockCalculator {
      * Limit the amount of overclocks that can be performed, regardless of how much power is available. Mainly used for
      * fusion reactors.
      */
+    @Nonnull
     public GT_OverclockCalculator limitOverclockCount(int maxOverclocks) {
         this.limitOverclocks = true;
         this.maxOverclocks = maxOverclocks;
         return this;
     }
 
+    @Nonnull
     public GT_OverclockCalculator setLaserOC(boolean laserOC) {
         this.laserOC = laserOC;
         return this;
     }
 
+    @Nonnull
     public GT_OverclockCalculator setAmperageOC(boolean amperageOC) {
         this.amperageOC = amperageOC;
         return this;
     }
 
+    @Nonnull
     public GT_OverclockCalculator setLaserOCPenalty(double laserOCPenalty) {
         this.laserOCPenalty = laserOCPenalty;
         return this;
@@ -355,6 +379,7 @@ public class GT_OverclockCalculator {
     /**
      * Set a supplier for calculating custom duration for when its needed under one tick
      */
+    @Nonnull
     public GT_OverclockCalculator setDurationUnderOneTickSupplier(Supplier<Double> supplier) {
         this.durationUnderOneTickSupplier = supplier;
         return this;
@@ -363,6 +388,7 @@ public class GT_OverclockCalculator {
     /**
      * Sets if we should do overclocking or not
      */
+    @Nonnull
     public GT_OverclockCalculator setNoOverclock(boolean noOverclock) {
         this.noOverclock = noOverclock;
         return this;
@@ -371,6 +397,7 @@ public class GT_OverclockCalculator {
     /**
      * Call this when all values have been put it.
      */
+    @Nonnull
     public GT_OverclockCalculator calculate() {
         if (calculated) {
             throw new IllegalStateException("Tried to calculate overclocks twice");
@@ -381,15 +408,15 @@ public class GT_OverclockCalculator {
     }
 
     private void calculateOverclock() {
+        duration = (int) Math.ceil(duration * speedBoost);
         if (noOverclock) {
-            calculateFinalRecipeEUt(calculateHeatDiscountMultiplier());
+            recipeVoltage = calculateFinalRecipeEUt(calculateHeatDiscountMultiplier());
             return;
         }
         if (laserOC && amperageOC) {
             throw new IllegalStateException("Tried to calculate overclock with both laser and amperage overclocking");
         }
         double heatDiscountMultiplier = calculateHeatDiscountMultiplier();
-        duration = (int) Math.ceil(duration * speedBoost);
         if (heatOC) {
             heatOverclockCount = calculateAmountOfHeatOverclocks();
         }
@@ -398,6 +425,9 @@ public class GT_OverclockCalculator {
         double machinePowerTier = calculateMachinePowerTier();
         // Math.log(a) / Math.log(b) equals to log_b (a)
         overclockCount = calculateAmountOfNeededOverclocks(machinePowerTier, recipePowerTier);
+        if (recipeVoltage <= GT_Values.V[0]) {
+            overclockCount = Math.min(overclockCount, calculateRecipeToMachineVoltageDifference());
+        }
         if (overclockCount < 0) {
             recipeVoltage = Long.MAX_VALUE;
             duration = Integer.MAX_VALUE;
@@ -428,15 +458,20 @@ public class GT_OverclockCalculator {
     }
 
     private double calculateRecipePowerTier(double heatDiscountMultiplier) {
-        return Math.max(
-            1,
-            Math.log(recipeVoltage * parallel * eutDiscount * heatDiscountMultiplier * recipeAmperage) / LOG4 - 1);
+        return calculatePowerTier(recipeVoltage * parallel * eutDiscount * heatDiscountMultiplier * recipeAmperage);
     }
 
     private double calculateMachinePowerTier() {
-        return Math.max(
-            1,
-            Math.log(machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel))) / LOG4 - 1);
+        return calculatePowerTier(
+            machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel)));
+    }
+
+    private int calculateRecipeToMachineVoltageDifference() {
+        return (int) (Math.ceil(calculatePowerTier(machineVoltage)) - Math.ceil(calculatePowerTier(recipeVoltage)));
+    }
+
+    private double calculatePowerTier(double voltage) {
+        return 1 + Math.max(0, (Math.log(voltage) / LOG2) - 5) / 2;
     }
 
     private long calculateFinalRecipeEUt(double heatDiscountMultiplier) {
@@ -562,6 +597,9 @@ public class GT_OverclockCalculator {
         double machineTier = calculateMachinePowerTier();
         double recipeTier = calculateRecipePowerTier(heatDiscountMultiplier);
         double amountOfTotalOverclocks = calculateAmountOfOverclocks(machineTier, recipeTier);
+        if (recipeVoltage <= GT_Values.V[0]) {
+            amountOfTotalOverclocks = Math.min(amountOfTotalOverclocks, calculateRecipeToMachineVoltageDifference());
+        }
         return (long) Math.ceil(
             recipeVoltage * Math.pow(1 << eutIncreasePerOC, amountOfParallelOverclocks + amountOfParallelHeatOverclocks)
                 * Math.pow(

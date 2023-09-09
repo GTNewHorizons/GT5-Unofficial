@@ -61,7 +61,7 @@ public class FluidInventoryLogic {
     }
 
     public FluidInventoryLogic(Collection<IFluidTanksHandler> inventories) {
-        this(new ListFluidHandler(inventories), 0, false);
+        this(new ListFluidHandler(inventories), -1, false);
     }
 
     @Nullable
@@ -117,6 +117,9 @@ public class FluidInventoryLogic {
             final int tank = tankNBT.getShort("s");
             if (tank >= 0 && tank < inventory.getTanks()) inventory.getFluidTank(tank)
                 .loadFromNBT(tankNBT);
+            if (inventory.getFluidInTank(tank) != null) {
+                fluidToTankMap.put(inventory.getFluidInTank(tank), inventory.getFluidTank(tank));
+            }
         }
         tier = nbt.getInteger("tier");
         if (nbt.hasKey("displayName")) {
@@ -132,11 +135,15 @@ public class FluidInventoryLogic {
 
     @Nonnull
     public FluidStack[] getStoredFluids() {
-        return inventory.getFluids()
+        final FluidStack[] fluids = inventory.getFluids()
             .stream()
             .filter(fluid -> fluid != null)
             .collect(Collectors.toList())
             .toArray(new FluidStack[0]);
+        if (fluids == null) {
+            return new FluidStack[0];
+        }
+        return fluids;
     }
 
     public boolean isFluidValid(@Nullable Fluid fluid) {
@@ -179,7 +186,7 @@ public class FluidInventoryLogic {
      * @return A fluidstack with the possible amount drained
      */
     @Nullable
-    public FluidStack drain(int amount, boolean simulate) {
+    public FluidStack drain(long amount, boolean simulate) {
         for (int i = 0; i < inventory.getTanks(); i++) {
             Fluid fluid = inventory.getFluidInTank(i);
             FluidStack drained = drain(fluid, amount, simulate);
@@ -190,7 +197,7 @@ public class FluidInventoryLogic {
     }
 
     @Nullable
-    public FluidStack drain(Fluid fluid, int amount, boolean simulate) {
+    public FluidStack drain(Fluid fluid, long amount, boolean simulate) {
         if (!isFluidValid(fluid)) return null;
         IFluidTankLong tank = fluidToTankMap.get(fluid);
         if (tank != null) {
@@ -211,6 +218,26 @@ public class FluidInventoryLogic {
             if (tank.getFluidAmountLong() > 0) continue;
             tank.setFluid(null, 0);
         }
+    }
+
+    public long calculateAmountOfTimesFluidCanBeTaken(Fluid fluid, long amountToTake) {
+        if (!isFluidValid(fluid)) return 0;
+        IFluidTankLong tank = fluidToTankMap.get(fluid);
+        if (tank == null) return 0;
+        return tank.getFluidAmountLong() / amountToTake;
+    }
+
+    @Nonnull
+    public Map<Fluid, Long> getMapOfStoredFluids() {
+        Map<Fluid, Long> map = new HashMap<>();
+        for (int i = 0; i < inventory.getTanks(); i++) {
+            IFluidTankLong tank = inventory.getFluidTank(i);
+            if (tank == null) continue;
+            Fluid fluid = tank.getStoredFluid();
+            if (fluid == null) continue;
+            map.put(fluid, map.getOrDefault(fluid, 0L) + tank.getFluidAmountLong());
+        }
+        return map;
     }
 
     public Widget getGuiPart() {

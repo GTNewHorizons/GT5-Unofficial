@@ -358,6 +358,13 @@ public class GT_OreDictUnificator {
         }
     }
 
+    public static void removeItemData(ItemStack aStack) {
+        if (GT_Utility.isStackInvalid(aStack)) {
+            return;
+        }
+        sItemStack2DataMap.remove(new GT_ItemStack2(aStack));
+    }
+
     public static void addAssociation(OrePrefixes aPrefix, Materials aMaterial, ItemStack aStack,
         boolean aBlackListed) {
         if (aPrefix == null || aMaterial == null || GT_Utility.isStackInvalid(aStack)) return;

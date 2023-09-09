@@ -149,6 +149,7 @@ public enum Mods {
     ThaumicEnergistics(Names.THAUMIC_ENERGISTICS),
     ThaumicExploration(Names.THAUMIC_EXPLORATION),
     ThaumicHorizons(Names.THAUMIC_HORIZONS),
+    ThaumicBoots(Names.THAUMIC_BOOTS),
     ThaumicMachina(Names.THAUMIC_MACHINA),
     ThaumicTinkerer(Names.THAUMIC_TINKERER),
     TinkerConstruct(Names.TINKER_CONSTRUCT),
@@ -324,6 +325,7 @@ public enum Mods {
         public static final String THAUMIC_ENERGISTICS = "thaumicenergistics";
         public static final String THAUMIC_EXPLORATION = "ThaumicExploration";
         public static final String THAUMIC_HORIZONS = "ThaumicHorizons";
+        public static final String THAUMIC_BOOTS = "thaumicboots";
         public static final String THAUMIC_MACHINA = "ThaumicMachina";
         public static final String THAUMIC_TINKERER = "ThaumicTinkerer";
         public static final String TINKER_CONSTRUCT = "TConstruct";

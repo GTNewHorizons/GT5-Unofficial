@@ -102,6 +102,7 @@ public class GT_Loader_ItemData implements Runnable {
             .addItemData(new ItemStack(Blocks.packed_ice, 1, 32767), new ItemData(Materials.Ice, 7257600L));
         GT_OreDictUnificator
             .addItemData(new ItemStack(Items.clay_ball, 1, 32767), new ItemData(Materials.Clay, 1814400L));
+        GT_OreDictUnificator.removeItemData(new ItemStack(Blocks.clay, 1, 0));
         GT_OreDictUnificator.addItemData(new ItemStack(Blocks.clay, 1, 32767), new ItemData(Materials.Clay, 7257600L));
         GT_OreDictUnificator
             .addItemData(new ItemStack(Blocks.hardened_clay, 1, 32767), new ItemData(Materials.Clay, 3628800L));

@@ -5,6 +5,7 @@ import static net.minecraftforge.oredict.OreDictionary.getOreID;
 import static net.minecraftforge.oredict.OreDictionary.getOreIDs;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -15,7 +16,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
-public class CokeOvenProcessingLogic extends ProcessingLogic {
+public class CokeOvenProcessingLogic extends ProcessingLogic<CokeOvenProcessingLogic> {
 
     private static final int NORMAL_RECIPE_TIME = 1800;
     private static final int WOOD_ORE_ID = getOreID("logWood");
@@ -35,9 +36,6 @@ public class CokeOvenProcessingLogic extends ProcessingLogic {
         ItemStack input = inputItems[0];
         int originalStackSize = input.stackSize;
         ItemStack output = findRecipe(input);
-        if (currentOutputItems != null && currentOutputItems[0] != null && !currentOutputItems[0].isItemEqual(output)) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
         input.stackSize -= 1;
         setDuration(NORMAL_RECIPE_TIME * timeMultiplier);
         setOutputItems(output);
@@ -46,7 +44,8 @@ public class CokeOvenProcessingLogic extends ProcessingLogic {
             : CheckRecipeResultRegistry.NO_RECIPE;
     }
 
-    protected ItemStack findRecipe(ItemStack input) {
+    @Nullable
+    protected ItemStack findRecipe(@Nonnull ItemStack input) {
         for (int oreId : getOreIDs(input)) {
             if (oreId == COAL_ORE_ID) {
                 return GT_OreDictUnificator.get("fuelCoke", null, 1);

@@ -4,6 +4,8 @@ import static gregtech.api.enums.TickTime.MINUTE;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,18 +16,21 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.logic.PowerLogic;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.util.GT_Utility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public abstract class PowerController<T extends PowerController<T>> extends Controller<T> implements PowerLogicHost {
+public abstract class PowerController<T extends PowerController<T, P>, P extends ProcessingLogic<P>>
+    extends Controller<T, P> implements PowerLogicHost {
 
     public PowerController() {
         super();
         power = new PowerLogic().setType(PowerLogic.RECEIVER);
     }
 
+    @Nonnull
     protected PowerLogic power;
 
     @Override
@@ -41,7 +46,8 @@ public abstract class PowerController<T extends PowerController<T>> extends Cont
     }
 
     @Override
-    public PowerLogic getPowerLogic(ForgeDirection side) {
+    @Nonnull
+    public PowerLogic getPowerLogic(@Nonnull ForgeDirection side) {
         return power;
     }
 
@@ -62,7 +68,7 @@ public abstract class PowerController<T extends PowerController<T>> extends Cont
     }
 
     protected void updatePowerLogic() {
-        power.setEnergyCapacity(GT_Values.V[tier] * 2 * MINUTE);
+        power.setEnergyCapacity(GT_Values.V[tier] * amperage * 2 * MINUTE);
         power.setAmperage(amperage);
         power.setMaxVoltage(GT_Values.V[tier]);
         power.setCanUseLaser(canUseLaser);

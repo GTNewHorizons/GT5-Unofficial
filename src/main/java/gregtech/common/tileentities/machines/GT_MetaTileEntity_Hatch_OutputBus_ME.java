@@ -215,10 +215,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
             for (IAEItemStack s : itemCache) {
                 if (s.getStackSize() == 0) continue;
                 NBTTagCompound tag = new NBTTagCompound();
-                NBTTagCompound tagItemStack = new NBTTagCompound();
-                s.getItemStack()
-                    .writeToNBT(tagItemStack);
-                tag.setTag("itemStack", tagItemStack);
+                tag.setTag("itemStack", GT_Utility.saveItem(s.getItemStack()));
                 tag.setLong("size", s.getStackSize());
                 items.appendTag(tag);
             }
@@ -257,7 +254,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                         itemCache.add(s);
                     } else {
                         GT_Mod.GT_FML_LOGGER.warn(
-                            "An error occurred while loading contents of ME Output Bus, some items have been voided");
+                            "An error occurred while loading contents of ME Output Bus. This item has been voided: "
+                                + tagItemStack);
                     }
                 }
             }
