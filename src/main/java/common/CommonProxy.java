@@ -2,7 +2,6 @@ package common;
 
 import common.items.ErrorItem;
 import common.items.MetaItem_CraftingComponent;
-import common.items.MetaItem_ReactorComponent;
 import common.tileentities.GTMTE_TFFTHatch;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -15,7 +14,6 @@ public class CommonProxy {
     public void preInit(final FMLPreInitializationEvent e) {
         // Items
         ErrorItem.getInstance().registerItem();
-        MetaItem_ReactorComponent.getInstance().registerItem();
         MetaItem_CraftingComponent.getInstance().registerItem();
         Items.registerOreDictNames();
         // Blocks

@@ -17,7 +17,6 @@ public class TileEntities {
     // Multiblock controllers
     public static GTMTE_SOFuelCellMK1 sofc1;
     public static GTMTE_SOFuelCellMK2 sofc2;
-    // public static GTMTE_ModularNuclearReactor mdr;
     public static GTMTE_TFFT tfft;
     public static GTMTE_LapotronicSuperCapacitor lsc;
 
