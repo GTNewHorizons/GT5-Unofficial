@@ -3,10 +3,7 @@ package gregtech.api.ModernMaterials;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
-import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxBlock;
-import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxItemBlock;
-import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxItemRenderer;
-import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxTileEntity;
+import gregtech.api.ModernMaterials.Blocks.FrameBox.*;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.PartProperties.Rendering.ModernMaterialItemRenderer;
 import gregtech.api.ModernMaterials.PartRecipeGenerators.ModernMaterialsPlateRecipeGenerator;
@@ -101,8 +98,10 @@ public class ModernMaterialUtilities {
         // GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + W + ".name", "Any Sub Block of this one");
 
         FrameBoxBlock frame = new FrameBoxBlock();
-        GameRegistry.registerBlock(frame, FrameBoxItemBlock.class, "frameBoxBlock");
-        GameRegistry.registerTileEntity(FrameBoxTileEntity.class, "frameBoxBlockTile");
+        frame.registerBlock(FrameBoxTileEntity.class, FrameBoxItemBlock.class, new FrameBoxSimpleBlockRenderer());
+
+        //GameRegistry.registerBlock(frame, FrameBoxItemBlock.class, "frameBoxBlock");
+        //GameRegistry.registerTileEntity(FrameBoxTileEntity.class, "frameBoxBlockTile");
         //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(frame), new FrameBoxItemRenderer());
 
     }

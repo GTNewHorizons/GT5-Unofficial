@@ -4,10 +4,12 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
+import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxSimpleBlockRenderer;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxTileEntity;
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.ModernMaterialUtilities;
@@ -44,7 +46,7 @@ public abstract class DumbBlock extends Block {
         return true;
     }
 
-    public void registerBlock(Class<? extends DumbTileEntity> dumbTileEntity, Class<? extends DumbItemBlock> dumbItemBlock) {
+    public void registerBlock(Class<? extends DumbTileEntity> dumbTileEntity, Class<? extends DumbItemBlock> dumbItemBlock, ISimpleBlockRenderingHandler simpleRenderer) {
         GameRegistry.registerBlock(this, dumbItemBlock, getBlockEnum().name());
         GameRegistry.registerTileEntity(dumbTileEntity, getBlockEnum().name());
     }
