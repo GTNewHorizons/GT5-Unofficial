@@ -185,9 +185,6 @@ tile.kekztech_spaceelevatortether_block.name=Space Elevator Tether
 # -------- Cosmetic Blocks
 tile.kekztech_largehextile_block.name=Large Hex Tile
 
-# -------- Beam Transmitter
-tile.kekztech_beamtransmitter_block=Beam Transmitter
-
 # -------- Achievements
 achievement.tile.kekztech_lapotronicenergyunit_block.2.desc=Pickup this item to see the recipe in NEI
 achievement.tile.kekztech_lapotronicenergyunit_block.2=Lapotronic Capacitor (LuV)

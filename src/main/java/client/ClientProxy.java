@@ -1,11 +1,9 @@
 package client;
 
 import common.CommonProxy;
-import common.tileentities.TE_BeamTransmitter;
 import common.tileentities.TE_SpaceElevatorCapacitor;
 import common.tileentities.TE_SpaceElevatorTether;
 
-import client.renderer.TESR_BeamTransmitter;
 import client.renderer.TESR_SECapacitor;
 import client.renderer.TESR_SETether;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -20,7 +18,6 @@ public class ClientProxy extends CommonProxy {
         // Register TESR
         ClientRegistry.bindTileEntitySpecialRenderer(TE_SpaceElevatorTether.class, new TESR_SETether());
         ClientRegistry.bindTileEntitySpecialRenderer(TE_SpaceElevatorCapacitor.class, new TESR_SECapacitor());
-        ClientRegistry.bindTileEntitySpecialRenderer(TE_BeamTransmitter.class, new TESR_BeamTransmitter());
     }
 
     @Override
