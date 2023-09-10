@@ -972,7 +972,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
         tileEntityInvalid = false;
         leaveEnet();
         if (canAccessData()) {
-            if (GregTech_API.mAE2) invalidateAE();
+            invalidateAE();
             mMetaTileEntity.onRemoval();
             mMetaTileEntity.setBaseMetaTileEntity(null);
         }
@@ -982,7 +982,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     @Override
     public void onChunkUnload() {
         super.onChunkUnload();
-        if (GregTech_API.mAE2) onChunkUnloadAE();
+        onChunkUnloadAE();
     }
 
     @Override

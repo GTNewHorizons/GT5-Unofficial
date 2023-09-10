@@ -342,7 +342,7 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
                 mInventory[2] = null;
             }
 
-            if (GregTech_API.mAE2) notifyListeners(count - savedCount, stack);
+            notifyListeners(count - savedCount, stack);
             if (count != savedCount) getBaseMetaTileEntity().markDirty();
         }
     }
@@ -468,14 +468,14 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        if (GregTech_API.mAE2 && GT_Values.disableDigitalChestsExternalAccess && hasActiveMEConnection()) return false;
+        if (GT_Values.disableDigitalChestsExternalAccess && hasActiveMEConnection()) return false;
         return aIndex == 1;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        if (GregTech_API.mAE2 && GT_Values.disableDigitalChestsExternalAccess && hasActiveMEConnection()) return false;
+        if (GT_Values.disableDigitalChestsExternalAccess && hasActiveMEConnection()) return false;
         if (aIndex != 0) return false;
         if ((mInventory[0] != null && !GT_Utility.areStacksEqual(mInventory[0], aStack))) return false;
         if (mDisableFilter) return true;
