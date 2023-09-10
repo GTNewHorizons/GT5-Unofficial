@@ -23,9 +23,6 @@ public class Blocks {
     public static Block jarThaumiumReinforced;
     public static Block jarIchor;
     public static Block lscLapotronicEnergyUnit;
-    public static Block spaceElevatorStructure;
-    public static Block spaceElevatorCapacitor;
-    public static Block spaceElevatorTether;
 
     public static Block largeHexPlate;
 

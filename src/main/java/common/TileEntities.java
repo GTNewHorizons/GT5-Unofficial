@@ -3,7 +3,6 @@ package common;
 import common.tileentities.GTMTE_LapotronicSuperCapacitor;
 import common.tileentities.GTMTE_SOFuelCellMK1;
 import common.tileentities.GTMTE_SOFuelCellMK2;
-import common.tileentities.GTMTE_SpaceElevator;
 import common.tileentities.GTMTE_TFFT;
 import common.tileentities.GTMTE_TFFTHatch;
 import common.tileentities.TE_IchorJar;
@@ -21,7 +20,6 @@ public class TileEntities {
     // public static GTMTE_ModularNuclearReactor mdr;
     public static GTMTE_TFFT tfft;
     public static GTMTE_LapotronicSuperCapacitor lsc;
-    public static GTMTE_SpaceElevator se;
 
     // Singleblocks
     public static GTMTE_TFFTHatch tfftHatch;
