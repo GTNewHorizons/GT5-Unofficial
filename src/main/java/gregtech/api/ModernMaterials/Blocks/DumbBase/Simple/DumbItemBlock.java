@@ -1,4 +1,4 @@
-package gregtech.api.ModernMaterials.Blocks.DumbBase;
+package gregtech.api.ModernMaterials.Blocks.DumbBase.Simple;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -6,7 +6,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.ModernMaterialUtilities;
-import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;

@@ -1,4 +1,4 @@
-package gregtech.api.ModernMaterials.Blocks.DumbBase;
+package gregtech.api.ModernMaterials.Blocks.DumbBase.Simple;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -9,23 +9,17 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
-import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxSimpleBlockRenderer;
-import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxTileEntity;
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -47,8 +41,11 @@ public abstract class DumbBlock extends Block {
     }
 
     public void registerBlock(Class<? extends DumbTileEntity> dumbTileEntity, Class<? extends DumbItemBlock> dumbItemBlock, ISimpleBlockRenderingHandler simpleRenderer) {
-        GameRegistry.registerBlock(this, dumbItemBlock, getBlockEnum().name());
-        GameRegistry.registerTileEntity(dumbTileEntity, getBlockEnum().name());
+        GameRegistry.registerBlock(this, dumbItemBlock, "Simple" + getBlockEnum().name());
+        GameRegistry.registerTileEntity(dumbTileEntity, "Simple" + getBlockEnum().name());
+
+        //GameRegistry.registerBlock(this, dumbItemBlock, "TESR" + getBlockEnum().name());
+        //GameRegistry.registerTileEntity(dumbTileEntity, "TESR" + getBlockEnum().name());
     }
 
     @Override

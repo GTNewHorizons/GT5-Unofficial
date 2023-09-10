@@ -3,7 +3,7 @@ package gregtech.api.ModernMaterials;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.DumbItemBlock;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.Simple.DumbItemBlock;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.*;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.PartProperties.Rendering.ModernMaterialItemRenderer;
@@ -11,13 +11,14 @@ import gregtech.api.ModernMaterials.PartRecipeGenerators.ModernMaterialsPlateRec
 import gregtech.api.ModernMaterials.PartsClasses.IGetItem;
 import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
 import gregtech.api.ModernMaterials.PartsClasses.MaterialPartsEnum;
-import gregtech.api.enums.Materials;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.FluidRegistry;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -131,6 +132,17 @@ public class ModernMaterialUtilities {
         return modernMaterial;
     }
 
+    public static ModernMaterial getMaterialFromID(final int materialID) {
+
+        ModernMaterial modernMaterial = materialIDToMaterial.getOrDefault(materialID, null);
+
+        if (modernMaterial == null) {
+            throw new IllegalArgumentException("Material with ID " + materialID + " does not exist.");
+        }
+
+        return modernMaterial;
+    }
+
     public static ArrayList<String> tooltipGenerator(Item part, ModernMaterial material) {
         // Todo, this is just temporary as a proof of concept/debug info.
         // Probably will put radioactive warning here. Not sure what else yet, if any.
@@ -147,5 +159,28 @@ public class ModernMaterialUtilities {
         }
 
         return tooltip;
+    }
+
+    public static void drawBlock(Block block, int meta, RenderBlocks renderer) {
+        Tessellator tessellator = Tessellator.instance;
+
+        tessellator.setNormal(0.0F, -1.0F, 0.0F);
+        renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(0, meta));
+
+        tessellator.setNormal(0.0F, 1.0F, 0.0F);
+        renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(1, meta));
+
+        tessellator.setNormal(0.0F, 0.0F, -1.0F);
+        renderer.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(2, meta));
+
+        tessellator.setNormal(0.0F, 0.0F, 1.0F);
+        renderer.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(3, meta));
+
+        tessellator.setNormal(-1.0F, 0.0F, 0.0F);
+        renderer.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(4, meta));
+
+        tessellator.setNormal(1.0F, 0.0F, 0.0F);
+        renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(5, meta));
+
     }
 }

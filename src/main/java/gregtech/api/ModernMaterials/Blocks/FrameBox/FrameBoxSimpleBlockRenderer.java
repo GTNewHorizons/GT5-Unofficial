@@ -18,6 +18,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
+import static gregtech.api.ModernMaterials.ModernMaterialUtilities.drawBlock;
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.materialIDToMaterial;
 
 public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler {
@@ -59,28 +60,6 @@ public class FrameBoxSimpleBlockRenderer implements ISimpleBlockRenderingHandler
         GL11.glPopMatrix();
     }
 
-    public static void drawBlock(Block block, int meta, RenderBlocks renderer) {
-        Tessellator tessellator = Tessellator.instance;
-
-        tessellator.setNormal(0.0F, -1.0F, 0.0F);
-        renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(0, meta));
-
-        tessellator.setNormal(0.0F, 1.0F, 0.0F);
-        renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(1, meta));
-
-        tessellator.setNormal(0.0F, 0.0F, -1.0F);
-        renderer.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(2, meta));
-
-        tessellator.setNormal(0.0F, 0.0F, 1.0F);
-        renderer.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(3, meta));
-
-        tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-        renderer.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, block.getIcon(4, meta));
-
-        tessellator.setNormal(1.0F, 0.0F, 0.0F);
-        renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, block.getIcon(5, meta));
-
-    }
 
 
     @Override
