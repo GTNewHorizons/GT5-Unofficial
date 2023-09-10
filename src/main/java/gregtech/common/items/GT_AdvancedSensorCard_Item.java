@@ -24,6 +24,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
@@ -75,23 +76,28 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
         final boolean p_77624_4_) {
         super.addInformation(itemStack, player, tooltip, p_77624_4_);
 
-        tooltip.add("Created by attaching a Metrics Transmitter cover, no standard recipe");
+        final Optional<State> cardState = getCardState(itemStack);
+        if (cardState.isPresent()) {
+            final State state = cardState.get();
 
-        getCardState(itemStack).ifPresent(state -> {
             if (state == State.SELF_DESTRUCTED) {
-                tooltip.add(
-                    EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.LIGHT_PURPLE
-                        + "This thing looks completely fried...");
-                tooltip.add(EnumChatFormatting.RED + "Destroyed due to metrics transmitter being removed from machine");
+                tooltip.add(StatCollector.translateToLocal("gt.item.adv_sensor_card.tooltip.fried.1"));
+                tooltip.add(StatCollector.translateToLocal("gt.item.adv_sensor_card.tooltip.fried.2"));
             } else {
                 getMachineName(itemStack).ifPresent(
                     machineName -> tooltip.add(
-                        "Machine: " + EnumChatFormatting.AQUA
-                            + itemStack.getTagCompound()
-                                .getString(MACHINE_NAME_KEY)));
-                getUUID(itemStack).ifPresent(uuid -> tooltip.add("Frequency: " + EnumChatFormatting.YELLOW + uuid));
+                        StatCollector.translateToLocalFormatted(
+                            "gt.item.adv_sensor_card.tooltip.machine",
+                            itemStack.getTagCompound()
+                                .getString(MACHINE_NAME_KEY))));
+                getUUID(itemStack).ifPresent(
+                    uuid -> tooltip.add(
+                        StatCollector
+                            .translateToLocalFormatted("gt.item.adv_sensor_card.tooltip.frequency", uuid.toString())));
             }
-        });
+        } else {
+            tooltip.add(StatCollector.translateToLocal("gt.item.adv_sensor_card.tooltip.recipe_hint"));
+        }
     }
 
     @Override
@@ -139,7 +145,10 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
                 case OPERATIONAL -> data.getPayload()
                     .map(List::size)
                     .orElse(0)
-                    + getMachineName(card.getItemStack()).map(machineName -> 1)
+                    + getMachineName(card.getItemStack()).map(x -> 1)
+                        .orElse(0)
+                    + data.getCoordinates()
+                        .map(x -> 2)
                         .orElse(0);
             };
         });
@@ -157,9 +166,21 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
             case DECONSTRUCTED -> new ArrayList<>(DECONSTRUCTED_OUTPUT);
             case OPERATIONAL -> getDataFromDatabase(card).map(data -> {
                 final ImmutableList.Builder<String> builder = ImmutableList.builder();
+
                 getMachineName(card.getItemStack()).ifPresent(builder::add);
+                data.getCoordinates()
+                    .ifPresent(
+                        coordinates -> builder.add(
+                            StatCollector.translateToLocalFormatted(
+                                "gt.item.adv_sensor_card.dimension",
+                                coordinates.getDimension()),
+                            StatCollector.translateToLocalFormatted(
+                                "gt.item.adv_sensor_card.coords",
+                                coordinates.getLocalizedCoordinates())));
+
                 data.getPayload()
                     .ifPresent(builder::addAll);
+
                 return builder.build();
             })
                 .filter(payload -> !payload.isEmpty())

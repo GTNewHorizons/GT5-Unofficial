@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.event.world.WorldEvent;
@@ -24,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.events.MetricsCoverDataEvent;
 import gregtech.common.events.MetricsCoverHostDeconstructedEvent;
 import gregtech.common.events.MetricsCoverSelfDestructEvent;
@@ -58,19 +60,24 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
     @SuppressWarnings("unused")
     @SubscribeEvent
     public void receiveMetricsData(MetricsCoverDataEvent event) {
-        store(event.getFrequency(), State.OPERATIONAL, event.getPayload());
+        store(
+            event.getFrequency(),
+            State.OPERATIONAL,
+            event.getPayload(),
+            event.getCoordinates()
+                .orElse(null));
     }
 
     @SuppressWarnings("unused")
     @SubscribeEvent
     public void receiveDeconstructed(MetricsCoverHostDeconstructedEvent event) {
-        store(event.getFrequency(), State.DECONSTRUCTED, null);
+        store(event.getFrequency(), State.DECONSTRUCTED);
     }
 
     @SuppressWarnings("unused")
     @SubscribeEvent
     public void receiveSelfDestruct(MetricsCoverSelfDestructEvent event) {
-        store(event.getFrequency(), State.SELF_DESTRUCTED, null);
+        store(event.getFrequency(), State.SELF_DESTRUCTED);
     }
 
     @SuppressWarnings("unused")
@@ -123,14 +130,14 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
 
         if (deconstructed != null) {
             for (int i = 0; i < deconstructed.tagCount(); i++) {
-                NBTTagByteArray byteArray = (NBTTagByteArray) deconstructed.removeTag(0);
+                final NBTTagByteArray byteArray = (NBTTagByteArray) deconstructed.removeTag(0);
                 DATABASE.put(reconstituteUUID(byteArray.func_150292_c()), new Data(State.DECONSTRUCTED, null));
             }
         }
 
         if (selfDestructed != null) {
             for (int i = 0; i < selfDestructed.tagCount(); i++) {
-                NBTTagByteArray byteArray = (NBTTagByteArray) selfDestructed.removeTag(0);
+                final NBTTagByteArray byteArray = (NBTTagByteArray) selfDestructed.removeTag(0);
                 DATABASE.put(reconstituteUUID(byteArray.func_150292_c()), new Data(State.SELF_DESTRUCTED, null));
             }
         }
@@ -162,10 +169,23 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
      *
      * @param frequency Maps to a unique deployed cover.
      * @param state     The new cover state.
-     * @param payload   A list of strings to display on the information panel, if the card is slotted properly.
      */
-    private static void store(@NotNull UUID frequency, @NotNull State state, @Nullable List<String> payload) {
-        final Data newData = new Data(state, payload);
+    private static void store(@NotNull UUID frequency, @NotNull State state) {
+        store(frequency, state, null, null);
+    }
+
+    /**
+     * Stores the new result and flag the static {@link MapStorage} instance as dirty if the information updated. Will
+     * not flag dirty for any data in the {@link State#OPERATIONAL OPERATIONAL} state since they aren't stored.
+     *
+     * @param frequency   Maps to a unique deployed cover.
+     * @param state       The new cover state.
+     * @param payload     A list of strings to display on the information panel, if the card is slotted properly.
+     * @param coordinates Coordinates of the active machine (including dimension.)
+     */
+    private static void store(@NotNull UUID frequency, @NotNull State state, @Nullable List<String> payload,
+        @Nullable Coordinates coordinates) {
+        final Data newData = new Data(state, payload, coordinates);
         final Data oldData = DATABASE.put(frequency, newData);
 
         if (state != State.OPERATIONAL && (oldData == null || oldData != newData)) {
@@ -186,7 +206,8 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
         return buffer.array();
     }
 
-    private static UUID reconstituteUUID(byte[] bytes) {
+    @NotNull
+    private static UUID reconstituteUUID(byte[] bytes) throws IllegalArgumentException {
         if (bytes.length != 16) {
             throw new IllegalArgumentException("Byte array passed must be exactly 16 bytes");
         }
@@ -195,20 +216,46 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
         return new UUID(buffer.getLong(), buffer.getLong());
     }
 
-    /** Data transmitted by a Metrics Transmitter cover. */
+    /**
+     * Data transmitted by a Metrics Transmitter cover.
+     * <p>
+     * Since only negative states ({@link State#DECONSTRUCTED DECONSTRUCTED} and
+     * {@link State#SELF_DESTRUCTED SELF DESTRUCTED}) are persisted, additional fields can be added to this data with
+     * little consequence. Ensure that any new fields are nullable, and make any getter for these fields return an
+     * {@link Optional}.
+     */
     public static class Data {
 
+        @NotNull
         private final State state;
+        @Nullable
         private final List<String> payload;
+        @Nullable
+        private final Coordinates coordinates;
+
+        public Data(@NotNull State state) {
+            this.state = state;
+            this.payload = null;
+            this.coordinates = null;
+        }
 
         public Data(@NotNull State state, @Nullable List<String> payload) {
             this.state = state;
             this.payload = payload;
+            this.coordinates = null;
+        }
+
+        public Data(@NotNull State state, @Nullable List<String> payload, @Nullable Coordinates coordinates) {
+            this.state = state;
+            this.payload = payload;
+            this.coordinates = coordinates;
+
         }
 
         /**
-         * Retrieves the payload for this data. Only present if the frequency is in an operational state. Will be
-         * cleared if the frequency goes into a deconstructed or self-destructed state.
+         * Retrieves the payload for this data. Only present if the frequency is in an
+         * {@link State#OPERATIONAL operational} state. Will be cleared if the frequency goes into a
+         * {@link State#DECONSTRUCTED deconstructed} or {@link State#SELF_DESTRUCTED self-destructed} state.
          *
          * @return The data if present, or an empty Optional otherwise.
          */
@@ -227,18 +274,82 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
             return state;
         }
 
-        @Override
-        public int hashCode() {
-            return Objects.hash(state, payload);
+        /**
+         * Gets the last known coordinates for the machine broadcasting metrics. Will only be present in an
+         * {@link State#OPERATIONAL operational} state.
+         *
+         * @return The coordinates
+         */
+        @NotNull
+        public Optional<Coordinates> getCoordinates() {
+            return Optional.ofNullable(coordinates);
         }
 
         @Override
-        public boolean equals(final Object obj) {
-            if (!(obj instanceof final Data otherData)) {
-                return false;
-            }
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            final Data data = (Data) o;
+            return state == data.state && Objects.equals(payload, data.payload)
+                && Objects.equals(coordinates, data.coordinates);
+        }
 
-            return this.state == otherData.state && Objects.equals(this.payload, otherData.payload);
+        @Override
+        public int hashCode() {
+            return Objects.hash(state, payload, coordinates);
+        }
+    }
+
+    @SuppressWarnings("ClassCanBeRecord")
+    public static class Coordinates {
+
+        private final String dimension;
+        private final int x;
+        private final int y;
+        private final int z;
+
+        public Coordinates(final String dimension, final int x, final int y, final int z) {
+            this.dimension = dimension;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public int getY() {
+            return y;
+        }
+
+        public int getZ() {
+            return z;
+        }
+
+        public String getDimension() {
+            return dimension;
+        }
+
+        public String getLocalizedCoordinates() {
+            return StatCollector.translateToLocalFormatted(
+                "gt.db.metrics_cover.coords",
+                GT_Utility.formatNumbers(x),
+                GT_Utility.formatNumbers(y),
+                GT_Utility.formatNumbers(z));
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            final Coordinates that = (Coordinates) o;
+            return x == that.x && y == that.y && z == that.z && Objects.equals(dimension, that.dimension);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(dimension, x, y, z);
         }
     }
 
@@ -265,7 +376,7 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
 
         State(final int type) {
             if (type <= 0) {
-                throw new IllegalArgumentException("A state must have a positive, nonzero typeInt.");
+                throw new IllegalArgumentException("A state must have a positive, nonzero type parameter.");
             }
             this.type = type;
         }

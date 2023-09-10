@@ -5,6 +5,7 @@ import static gregtech.api.enums.GT_HatchElement.InputBus;
 import static gregtech.api.enums.GT_HatchElement.InputHatch;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_Values.TIER_COLORS;
 import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
@@ -446,9 +447,13 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         this.mEfficiencyIncrease = 10000;
         int tier = Math.max(1, GT_Utility.getTier(getMaxInputVoltage()));
         this.mEUt = -3 * (1 << (tier << 1));
-        this.mMaxProgresstime = ((workState == STATE_DOWNWARD || workState == STATE_AT_BOTTOM) ? getBaseProgressTime()
-            : 80) / (1 << tier);
-        this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+        this.mMaxProgresstime = calculateMaxProgressTime(tier);
+    }
+
+    private int calculateMaxProgressTime(int tier) {
+        return Math.max(
+            1,
+            ((workState == STATE_DOWNWARD || workState == STATE_AT_BOTTOM) ? getBaseProgressTime() : 80) / (1 << tier));
     }
 
     private ItemStack[] getOutputByDrops(Collection<ItemStack> oreBlockDrops) {
@@ -553,15 +558,20 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             .getDisplayName();
 
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+        final int baseCycleTime = calculateMaxProgressTime(getMinTier());
         tt.addMachineType("Miner")
             .addInfo("Controller Block for the Ore Drilling Plant " + (tierSuffix != null ? tierSuffix : ""))
             .addInfo("Use a Screwdriver to configure block radius")
-            .addInfo("Maximum radius is " + (getRadiusInChunks() << 4) + " blocks")
+            .addInfo("Maximum radius is " + GT_Utility.formatNumbers((long) getRadiusInChunks() << 4) + " blocks")
             .addInfo("Use Soldering iron to turn off chunk mode")
             .addInfo("Use Wire Cutter to toggle replacing mined blocks with cobblestone")
             .addInfo("In chunk mode, working area center is the chunk corner nearest to the drill")
             .addInfo("Gives ~3x as much crushed ore vs normal processing")
-            .addInfo("Fortune bonus of " + (mTier + 3) + ". Only works on small ores")
+            .addInfo("Fortune bonus of " + GT_Utility.formatNumbers(mTier + 3) + ". Only works on small ores")
+            .addInfo("Minimum energy hatch tier: " + TIER_COLORS[getMinTier()] + VN[getMinTier()])
+            .addInfo(
+                "Base cycle time: " + (baseCycleTime < 20 ? GT_Utility.formatNumbers(baseCycleTime) + " ticks"
+                    : GT_Utility.formatNumbers(baseCycleTime / 20) + " seconds"))
             .addSeparator()
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom")

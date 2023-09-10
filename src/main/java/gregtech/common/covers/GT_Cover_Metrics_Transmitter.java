@@ -27,11 +27,11 @@ import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GT_CoverBehaviorBase;
-import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.events.MetricsCoverDataEvent;
 import gregtech.common.events.MetricsCoverHostDeconstructedEvent;
 import gregtech.common.events.MetricsCoverSelfDestructEvent;
+import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.GlobalMetricsCoverDatabase.State;
 import io.netty.buffer.ByteBuf;
 
@@ -85,24 +85,24 @@ public class GT_Cover_Metrics_Transmitter
     protected MetricsTransmitterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
         MetricsTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         if (aTileEntity instanceof final BaseMetaTileEntity baseMTE && baseMTE.isGivingInformation()) {
-            final ImmutableList.Builder<String> builder = ImmutableList.builder();
+            final List<String> payload;
 
-            builder.add(
-                StatCollector.translateToLocalFormatted(
-                    "gt.event.metrics_cover.dimension",
-                    baseMTE.getWorldObj().provider.getDimensionName()),
-                StatCollector.translateToLocalFormatted(
-                    "gt.event.metrics_cover.coords",
-                    GT_Utility.formatNumbers(baseMTE.getXCoord()),
-                    GT_Utility.formatNumbers(baseMTE.getYCoord()),
-                    GT_Utility.formatNumbers(baseMTE.getZCoord())));
             if (baseMTE.getMetaTileEntity() instanceof final IMetricsExporter metricsExporter) {
-                builder.addAll(metricsExporter.reportMetrics());
+                payload = metricsExporter.reportMetrics();
             } else {
-                builder.add(baseMTE.getInfoData());
+                payload = ImmutableList.copyOf(baseMTE.getInfoData());
             }
 
-            MinecraftForge.EVENT_BUS.post(new MetricsCoverDataEvent(aCoverVariable.frequency, builder.build()));
+            MinecraftForge.EVENT_BUS.post(new MetricsCoverDataEvent(
+                aCoverVariable.frequency,
+                payload,
+                new GlobalMetricsCoverDatabase.Coordinates(
+                    baseMTE.getWorld().provider.getDimensionName(),
+                    baseMTE.getXCoord(),
+                    baseMTE.getYCoord(),
+                    baseMTE.getZCoord()
+                )
+            ));
         }
 
         return aCoverVariable;
@@ -153,8 +153,10 @@ public class GT_Cover_Metrics_Transmitter
 
     @Override
     public List<String> getAdditionalTooltipImpl(MetricsTransmitterData data) {
-        return ImmutableList
-            .of("Frequency: " + EnumChatFormatting.UNDERLINE + EnumChatFormatting.YELLOW + data.frequency.toString());
+        return ImmutableList.of(
+            StatCollector.translateToLocalFormatted(
+                "gt.item.adv_sensor_card.tooltip.frequency",
+                EnumChatFormatting.UNDERLINE.toString() + EnumChatFormatting.YELLOW + data.frequency.toString()));
     }
 
     public static class MetricsTransmitterData implements ISerializableObject {

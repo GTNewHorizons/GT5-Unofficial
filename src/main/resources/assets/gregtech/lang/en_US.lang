@@ -1360,5 +1360,12 @@ gt.locker.waila_armor_slot_none=Slot %s: §7None
 gt.locker.waila_armor_slot_generic=Slot %s: §e%s
 gt.locker.waila_armor_slot_charged=Slot %s: §e%s§r (%s%s%%§r)
 
-gt.event.metrics_cover.dimension=Dimension: §a%s
-gt.event.metrics_cover.coords=Coordinates: §a%s§r, §a%s§r, §a%s§r
+gt.db.metrics_cover.coords=§a%s§r, §a%s§r, §a%s§r
+
+gt.item.adv_sensor_card.dimension=Dimension: §a%s
+gt.item.adv_sensor_card.coords=Coordinates: %s
+gt.item.adv_sensor_card.tooltip.recipe_hint=Created by attaching a Metrics Transmitter cover, no standard recipe
+gt.item.adv_sensor_card.tooltip.fried.1=§o§dThis thing looks completely fried...
+gt.item.adv_sensor_card.tooltip.fried.2=§cDestroyed due to metrics transmitter being removed from machine
+gt.item.adv_sensor_card.tooltip.machine=Machine: §b%s
+gt.item.adv_sensor_card.tooltip.frequency=Frequency: §b%s

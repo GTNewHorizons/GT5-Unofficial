@@ -68,6 +68,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class CoverableTileEntity extends BaseTileEntity implements ICoverable, IGregtechWailaProvider {
 
@@ -241,8 +242,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     @Override
     public void issueCoverUpdate(ForgeDirection side) {
         // If we've got a null worldObj we're getting called as a part of readingNBT from a non tickable MultiTileEntity
-        // on chunk load before the world is set
-        // so we'll want to send a cover update.
+        // on chunk load before the world is set, so we'll want to send a cover update.
         final CoverInfo coverInfo = getCoverInfoAtSide(side);
         if (worldObj == null || (isServerSide() && coverInfo.isDataNeededOnClient())) coverInfo.setNeedsUpdate(true);
     }
@@ -430,7 +430,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public void setStrongOutputRedstoneSignal(ForgeDirection side, byte strength) {
-        mStrongRedstone |= side.flag;
+        mStrongRedstone |= (byte)side.flag;
         setOutputRedstoneSignal(side, strength);
     }
 
@@ -757,6 +757,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         }
     }
 
+    @NotNull
     private Map<ForgeDirection, ISerializableObject> collectCoverData() {
         final ImmutableMap.Builder<ForgeDirection, ISerializableObject> builder = ImmutableMap.builder();
         for (final ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
@@ -769,7 +770,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return builder.build();
     }
 
-    private void writeClientCoverData(PacketBuffer buffer, Map<ForgeDirection, ISerializableObject> dataMap) {
+    private void writeClientCoverData(@NotNull PacketBuffer buffer, @NotNull Map<ForgeDirection, ISerializableObject> dataMap) {
         buffer.writeInt(dataMap.size());
         dataMap.forEach((direction, serializableObject) -> {
             final ByteBuf individualBuffer = Unpooled.buffer();
@@ -781,7 +782,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         });
     }
 
-    private Map<ForgeDirection, ISerializableObject> readClientCoverData(PacketBuffer buffer) {
+    @NotNull
+    private Map<ForgeDirection, ISerializableObject> readClientCoverData(@NotNull PacketBuffer buffer) {
         ImmutableMap.Builder<ForgeDirection, ISerializableObject> builder = ImmutableMap.builder();
         final int size = buffer.readInt();
         for (int i = 0; i < size; i++) {
