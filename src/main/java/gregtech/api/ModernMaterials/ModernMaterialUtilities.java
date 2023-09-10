@@ -1,10 +1,14 @@
 package gregtech.api.ModernMaterials;
 
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.Simple.DumbBlock;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.Simple.DumbItemBlock;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.Simple.DumbTileEntity;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.*;
+import gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.UniversiumFrameRenderer;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.PartProperties.Rendering.ModernMaterialItemRenderer;
 import gregtech.api.ModernMaterials.PartRecipeGenerators.ModernMaterialsPlateRecipeGenerator;
@@ -19,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -91,14 +96,12 @@ public class ModernMaterialUtilities {
 
         BlocksEnum.FrameBox.getAssociatedMaterials().addAll(materialIDToMaterial.values());
 
-        //GameRegistry.registerBlock(new FrameBoxBlock2(), FrameBoxItemBlock.class, "exampleBlock");
-        //GameRegistry.registerTileEntity(FrameBoxTileEntity.class, "exampleTileEntity");
-
-
-
-
-        FrameBoxBlock frame = new FrameBoxBlock();
-        frame.registerBlock(FrameBoxTileEntity.class, FrameBoxItemBlock.class, new FrameBoxSimpleBlockRenderer());
+        try {
+            registerBlock(FrameBoxBlock.class, FrameBoxTileEntity.class, FrameBoxItemBlock.class, new FrameBoxSimpleBlockRenderer());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("Invalid block registration in ModernMaterials");
+        }
 
     }
 
@@ -152,6 +155,28 @@ public class ModernMaterialUtilities {
         }
 
         return tooltip;
+    }
+
+
+    // We do some complicated stuff here to register two distinct blocks using minimal inputs.
+    public static void registerBlock(Class<? extends DumbBlock> blockClass, Class<? extends DumbTileEntity> dumbTileEntity, Class<? extends DumbItemBlock> dumbItemBlock, ISimpleBlockRenderingHandler simpleRenderer) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, InvocationTargetException {
+
+        DumbBlock simpleBlock = blockClass.getDeclaredConstructor().newInstance();
+        simpleBlock.setBlockName("Simple" + simpleBlock.getBlockEnum());
+
+        DumbBlock TESRBlock = blockClass.getDeclaredConstructor().newInstance();
+        TESRBlock.setBlockName("TESR" + TESRBlock.getBlockEnum());
+
+        GameRegistry.registerBlock(simpleBlock, dumbItemBlock, "Simple" + simpleBlock.getBlockEnum());
+        GameRegistry.registerBlock(TESRBlock, dumbItemBlock, "TESR" + TESRBlock.getBlockEnum());
+
+        GameRegistry.registerTileEntity(dumbTileEntity, "Simple" + simpleBlock.getBlockEnum());
+        GameRegistry.registerTileEntity(dumbTileEntity, "TESR" + TESRBlock.getBlockEnum());
+
+        //ClientRegistry.bindTileEntitySpecialRenderer(dumbTileEntity, new MasterTESR());
+
+        DumbTileEntity.masterTESRMap.put(2, new UniversiumFrameRenderer());
+
     }
 
     public static void drawBlock(Block block, int meta, RenderBlocks renderer) {

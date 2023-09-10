@@ -40,14 +40,6 @@ public abstract class DumbBlock extends Block {
         return true;
     }
 
-    public void registerBlock(Class<? extends DumbTileEntity> dumbTileEntity, Class<? extends DumbItemBlock> dumbItemBlock, ISimpleBlockRenderingHandler simpleRenderer) {
-        GameRegistry.registerBlock(this, dumbItemBlock, "Simple" + getBlockEnum().name());
-        GameRegistry.registerTileEntity(dumbTileEntity, "Simple" + getBlockEnum().name());
-
-        //GameRegistry.registerBlock(this, dumbItemBlock, "TESR" + getBlockEnum().name());
-        //GameRegistry.registerTileEntity(dumbTileEntity, "TESR" + getBlockEnum().name());
-    }
-
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
 

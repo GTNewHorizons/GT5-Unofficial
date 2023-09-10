@@ -9,7 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 
 import java.util.HashMap;
 
-public class DumbTileEntity extends TileEntity {
+public abstract class DumbTileEntity extends TileEntity {
 
     private int materialID;
 
@@ -53,6 +53,6 @@ public class DumbTileEntity extends TileEntity {
         return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, NBTTag);
     }
 
-    HashMap<Integer, TileEntitySpecialRenderer> masterTESRMap = new HashMap<>();
+    public static HashMap<Integer, TileEntitySpecialRenderer> masterTESRMap = new HashMap<>();
 
 }

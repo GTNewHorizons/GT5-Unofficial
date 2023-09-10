@@ -2,6 +2,6 @@ package gregtech.api.ModernMaterials.Blocks.DumbBase;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 
-public interface GetTESR {
-
+public interface IGetTESR {
+    TileEntitySpecialRenderer getTESR(int ID);
 }
