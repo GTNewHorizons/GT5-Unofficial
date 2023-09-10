@@ -1,5 +1,13 @@
 package gtPlusPlus.core.item.chemistry;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBlastRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
+import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,7 +20,10 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_RecipeConstants;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
@@ -36,22 +47,8 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 public class GenericChem extends ItemPackage {
 
     /**
-     * Switches
-     */
-    private static boolean usingGregtechNitricOxide = false;
-
-    private static boolean usingGregtechNitrogenDioxide = false;
-
-    /**
      * Materials
      */
-
-    // public static final Material BAKELITE = new Material("Bakelite", MaterialState.SOLID, TextureSet.SET_DULL, new
-    // short[]{90, 140, 140}, 120, 240, 23, 24, true, null, 0);//Not a GT Inherited Material
-    // public static final Material NYLON = new Material("Nylon", MaterialState.SOLID, TextureSet.SET_SHINY, new
-    // short[]{45, 45, 45}, 300, 600, 44, 48, true, null, 0);//Not a GT Inherited Material
-    // public static final Material CARBYNE = new Material("Carbyne", MaterialState.SOLID, TextureSet.SET_DULL, new
-    // short[]{25, 25, 25}, 2500, 5000, 63, 52, true, null, 0);//Not a GT Inherited Material
 
     // Refined PTFE
     public static final Material TEFLON = new Material(
@@ -91,8 +88,6 @@ public class GenericChem extends ItemPackage {
     public static Fluid Ethylanthrahydroquinone2;
     public static Fluid Hydrogen_Peroxide;
     public static Fluid Lithium_Peroxide;
-    public static Fluid Nitric_Oxide;
-    public static Fluid Nitrogen_Dioxide;
     public static Fluid Carbon_Disulfide;
 
     /**
@@ -329,24 +324,6 @@ public class GenericChem extends ItemPackage {
                 null,
                 null);
 
-        if (FluidRegistry.isFluidRegistered("nitricoxide")) {
-            Nitric_Oxide = FluidRegistry.getFluid("nitricoxide");
-            usingGregtechNitricOxide = true;
-        } else {
-            Nitric_Oxide = FluidUtils
-                    .generateFluidNoPrefix("nitricoxide", "Nitric Oxide", 200, new short[] { 125, 200, 240, 100 });
-        }
-        if (FluidRegistry.isFluidRegistered("nitrogendioxide")) {
-            Nitrogen_Dioxide = FluidRegistry.getFluid("nitrogendioxide");
-            usingGregtechNitrogenDioxide = true;
-        } else {
-            Nitrogen_Dioxide = FluidUtils.generateFluidNoPrefix(
-                    "nitrogendioxide",
-                    "Nitrogen Dioxide",
-                    200,
-                    new short[] { 100, 175, 255, 100 });
-        }
-
         // Lithium Hydroperoxide - LiOH + H2O2 → LiOOH + 2 H2O
         // ItemUtils.generateSpecialUseDusts("LithiumHydroperoxide", "Lithium Hydroperoxide", "HLiO2",
         // Utils.rgbtoHexValue(125, 125, 125));
@@ -398,18 +375,6 @@ public class GenericChem extends ItemPackage {
         recipeHydrogenPeroxide();
         recipeLithiumHydroperoxide();
         recipeLithiumPeroxide();
-        // The follow is using alk science, ignore them
-        if (!usingGregtechNitricOxide) {
-            recipeNitricOxide();
-        }
-        if (!usingGregtechNitrogenDioxide) {
-            recipeNitrogenDioxide();
-        }
-
-        // Add recipes if we are not using GT's fluid.
-        if (!FluidRegistry.isFluidRegistered("hydrochloricacid_gt5u")) {
-            recipeHydrochloricAcid();
-        }
 
         recipeSodiumEthoxide();
         recipeCarbonDisulfide();
@@ -475,15 +440,13 @@ public class GenericChem extends ItemPackage {
 
     private void recipeCarbonDisulfide() {
 
-        CORE.RA.addBlastRecipe(
-                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 8),
-                        ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 16) },
-                new FluidStack[] {},
-                new ItemStack[] { ItemUtils.getItemStackOfAmountFromOreDict("dustDarkAsh", 1) },
-                new FluidStack[] { FluidUtils.getFluidStack(Carbon_Disulfide, 4000) },
-                20 * 60 * 10,
-                30,
-                1500);
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 8),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 16L))
+                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L)).noFluidInputs()
+                .fluidOutputs(FluidUtils.getFluidStack(Carbon_Disulfide, 4000)).duration(10 * MINUTES)
+                .eut(TierEU.RECIPE_LV).metadata(COIL_HEAT, 1500).addTo(sBlastRecipes);
 
         CORE.RA.addChemicalPlantRecipe(
                 new ItemStack[] { CI.getNumberedCircuit(20), ItemUtils.getSimpleStack(mBrownCatalyst, 0),
@@ -518,229 +481,29 @@ public class GenericChem extends ItemPackage {
         // Burnables
 
         // Gas Fuels
-        GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellNitrobenzene", 1), null, 1600, 1);
+        GT_Values.RA.stdBuilder().itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("cellNitrobenzene", 1))
+                .noItemOutputs().noFluidInputs().noFluidOutputs().metadata(FUEL_VALUE, 1600).metadata(FUEL_TYPE, 1)
+                .duration(0).eut(0).addTo(GT_RecipeConstants.Fuel);
     }
 
     private void recipeGrindingBallAlumina() {
-        CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { CI.getNumberedCircuit(10), ItemUtils.getSimpleStack(AgriculturalChem.mAlumina, 64) },
-                FluidUtils.getFluidStack(GenericChem.Aniline, 4000),
-                ItemUtils.getSimpleStack(mMillingBallAlumina, 8),
-                180 * 20,
-                480);
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        ItemUtils.getSimpleStack(AgriculturalChem.mAlumina, 64),
+                        GT_Utility.getIntegratedCircuit(10))
+                .itemOutputs(ItemUtils.getSimpleStack(mMillingBallAlumina, 8))
+                .fluidInputs(FluidUtils.getFluidStack(GenericChem.Aniline, 4000)).noFluidOutputs().duration(3 * MINUTES)
+                .eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
     }
 
     private void recipeGrindingBallSoapstone() {
-        CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { CI.getNumberedCircuit(10),
-                        ItemUtils.getItemStackOfAmountFromOreDict("dustSoapstone", 32) },
-                FluidUtils.getFluidStack(AgrichemFluids.mLiquidResin, 2500),
-                ItemUtils.getSimpleStack(mMillingBallSoapstone, 8),
-                120 * 20,
-                480);
-    }
-
-    // The follow is using alk science, ignore them
-    private void recipeNitrogenDioxide() {
-        ItemStack aNitricOxideCell = ItemUtils.getItemStackOfAmountFromOreDict("cellNitricOxide", 1);
-        ItemStack aNitrogenDioxideCell = ItemUtils.getItemStackOfAmountFromOreDict("cellNitrogenDioxide", 1);
-        GT_Values.RA.addChemicalRecipe(
-                ItemUtils.getSimpleStack(aNitricOxideCell, 2),
-                GT_Utility.getIntegratedCircuit(1),
-                ELEMENT.getInstance().OXYGEN.getFluidStack(1000),
-                FluidUtils.getFluidStack(Nitrogen_Dioxide, 3000),
-                CI.emptyCells(2),
-                160);
-        GT_Values.RA.addChemicalRecipe(
-                ELEMENT.getInstance().OXYGEN.getCell(1),
-                GT_Utility.getIntegratedCircuit(1),
-                FluidUtils.getFluidStack(Nitric_Oxide, 2000),
-                FluidUtils.getFluidStack(Nitrogen_Dioxide, 3000),
-                CI.emptyCells(1),
-                160);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-                ItemUtils.getSimpleStack(aNitricOxideCell, 2),
-                CI.emptyCells(1),
-                ELEMENT.getInstance().OXYGEN.getFluidStack(1000),
-                GT_Values.NF,
-                ItemUtils.getSimpleStack(aNitrogenDioxideCell, 3),
-                GT_Values.NI,
-                160,
-                30);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-                ELEMENT.getInstance().OXYGEN.getCell(1),
-                CI.emptyCells(2),
-                FluidUtils.getFluidStack(Nitric_Oxide, 2000),
-                GT_Values.NF,
-                ItemUtils.getSimpleStack(aNitrogenDioxideCell, 3),
-                GT_Values.NI,
-                160,
-                30);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-                ItemUtils.getSimpleStack(aNitricOxideCell, 2),
-                ELEMENT.getInstance().OXYGEN.getCell(1),
-                GT_Values.NF,
-                GT_Values.NF,
-                ItemUtils.getSimpleStack(aNitrogenDioxideCell, 3),
-                GT_Values.NI,
-                160,
-                30);
-    }
-
-    // The follow is using alk science, ignore them
-    private void recipeNitricOxide() {
-        ItemStack aWaterCell = ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 1);
-        ItemStack aNitricOxideCell = ItemUtils.getItemStackOfAmountFromOreDict("cellNitricOxide", 1);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-                MISC_MATERIALS.AMMONIA.getCell(8),
-                CI.emptyCells(1),
-                ELEMENT.getInstance().OXYGEN.getFluidStack(5000),
-                FluidUtils.getFluidStack(Nitric_Oxide, 4000),
-                ItemUtils.getSimpleStack(aWaterCell, 9),
-                GT_Values.NI,
-                160,
-                30);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-                ELEMENT.getInstance().OXYGEN.getCell(5),
-                CI.emptyCells(4),
-                MISC_MATERIALS.AMMONIA.getFluidStack(8000),
-                FluidUtils.getFluidStack(Nitric_Oxide, 4000),
-                ItemUtils.getSimpleStack(aWaterCell, 9),
-                GT_Values.NI,
-                160,
-                30);
-        GT_Values.RA.addChemicalRecipe(
-                MISC_MATERIALS.AMMONIA.getCell(8),
-                GT_Utility.getIntegratedCircuit(11),
-                ELEMENT.getInstance().OXYGEN.getFluidStack(5000),
-                FluidUtils.getWater(9000),
-                ItemUtils.getSimpleStack(aNitricOxideCell, 4),
-                CI.emptyCells(4),
-                160);
-        GT_Values.RA.addChemicalRecipe(
-                ELEMENT.getInstance().OXYGEN.getCell(5),
-                GT_Utility.getIntegratedCircuit(11),
-                MISC_MATERIALS.AMMONIA.getFluidStack(8000),
-                FluidUtils.getWater(9000),
-                ItemUtils.getSimpleStack(aNitricOxideCell, 4),
-                CI.emptyCells(1),
-                160);
-        GT_Values.RA.addChemicalRecipe(
-                MISC_MATERIALS.AMMONIA.getCell(8),
-                GT_Utility.getIntegratedCircuit(2),
-                ELEMENT.getInstance().OXYGEN.getFluidStack(5000),
-                FluidUtils.getFluidStack(Nitric_Oxide, 4000),
-                CI.emptyCells(8),
-                320);
-        GT_Values.RA.addChemicalRecipe(
-                ELEMENT.getInstance().OXYGEN.getCell(5),
-                GT_Utility.getIntegratedCircuit(2),
-                MISC_MATERIALS.AMMONIA.getFluidStack(8000),
-                FluidUtils.getFluidStack(Nitric_Oxide, 4000),
-                CI.emptyCells(5),
-                320);
-        GT_Values.RA.addChemicalRecipe(
-                MISC_MATERIALS.AMMONIA.getCell(8),
-                GT_Utility.getIntegratedCircuit(12),
-                ELEMENT.getInstance().OXYGEN.getFluidStack(5000),
-                GT_Values.NF,
-                ItemUtils.getSimpleStack(aNitricOxideCell, 4),
-                CI.emptyCells(4),
-                160);
-        GT_Values.RA.addChemicalRecipe(
-                ELEMENT.getInstance().OXYGEN.getCell(5),
-                GT_Utility.getIntegratedCircuit(12),
-                MISC_MATERIALS.AMMONIA.getFluidStack(8000),
-                GT_Values.NF,
-                ItemUtils.getSimpleStack(aNitricOxideCell, 4),
-                CI.emptyCells(1),
-                160);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-                MISC_MATERIALS.AMMONIA.getCell(8),
-                ELEMENT.getInstance().OXYGEN.getCell(5),
-                GT_Values.NF,
-                GT_Values.NF,
-                ItemUtils.getSimpleStack(aNitricOxideCell, 4),
-                ItemUtils.getSimpleStack(aWaterCell, 9),
-                160,
-                30);
-        GT_Values.RA.addMultiblockChemicalRecipe(
-                new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },
-                new FluidStack[] { MISC_MATERIALS.AMMONIA.getFluidStack(8000),
-                        ELEMENT.getInstance().OXYGEN.getFluidStack(5000) },
-                new FluidStack[] { FluidUtils.getFluidStack(Nitric_Oxide, 4000), FluidUtils.getWater(9000) },
-                null,
-                160,
-                30);
-    }
-
-    // The follow is using alk science, ignore them
-    private void recipeHydrochloricAcid() {
-
-        ItemStack aAcidCell = ItemUtils.getItemStackOfAmountFromOreDict("cellHydrochloricAcid", 1);
-
-        CORE.RA.addChemicalRecipe(
-                ELEMENT.getInstance().CHLORINE.getCell(1),
-                GT_Utility.getIntegratedCircuit(1),
-                ELEMENT.getInstance().HYDROGEN.getFluidStack(1000),
-                FluidUtils.getFluidStack(HydrochloricAcid, 2000),
-                CI.emptyCells(1),
-                60,
-                8);
-
-        CORE.RA.addChemicalRecipe(
-                ELEMENT.getInstance().HYDROGEN.getCell(1),
-                GT_Utility.getIntegratedCircuit(1),
-                ELEMENT.getInstance().CHLORINE.getFluidStack(1000),
-                FluidUtils.getFluidStack(HydrochloricAcid, 2000),
-                CI.emptyCells(1),
-                60,
-                8);
-
-        GT_Values.RA.addElectrolyzerRecipe(
-                CI.emptyCells(1),
-                GT_Utility.getIntegratedCircuit(1),
-                FluidUtils.getFluidStack(HydrochloricAcid, 2000),
-                ELEMENT.getInstance().CHLORINE.getFluidStack(1000),
-                ELEMENT.getInstance().HYDROGEN.getCell(1),
-                GT_Values.NI,
-                GT_Values.NI,
-                GT_Values.NI,
-                GT_Values.NI,
-                GT_Values.NI,
-                null,
-                720,
-                30);
-
-        GT_Values.RA.addElectrolyzerRecipe(
-                CI.emptyCells(1),
-                GT_Utility.getIntegratedCircuit(11),
-                FluidUtils.getFluidStack(HydrochloricAcid, 2000),
-                ELEMENT.getInstance().HYDROGEN.getFluidStack(1000),
-                ELEMENT.getInstance().CHLORINE.getCell(1),
-                GT_Values.NI,
-                GT_Values.NI,
-                GT_Values.NI,
-                GT_Values.NI,
-                GT_Values.NI,
-                null,
-                720,
-                30);
-
-        GT_Values.RA.addElectrolyzerRecipe(
-                ItemUtils.getSimpleStack(aAcidCell, 2),
-                GT_Values.NI,
-                GT_Values.NF,
-                GT_Values.NF,
-                ELEMENT.getInstance().HYDROGEN.getCell(1),
-                ELEMENT.getInstance().CHLORINE.getCell(1),
-                GT_Values.NI,
-                GT_Values.NI,
-                GT_Values.NI,
-                GT_Values.NI,
-                null,
-                720,
-                30);
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Soapstone, 32L),
+                        GT_Utility.getIntegratedCircuit(10))
+                .itemOutputs(ItemUtils.getSimpleStack(mMillingBallSoapstone, 8))
+                .fluidInputs(FluidUtils.getFluidStack(AgrichemFluids.mLiquidResin, 2500)).noFluidOutputs()
+                .duration(2 * MINUTES).eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
     }
 
     private void recipeCyclohexane() {
@@ -781,113 +544,122 @@ public class GenericChem extends ItemPackage {
     }
 
     private void recipeCatalystRed() {
-        // Assembly Recipe
-        CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { getTierOneChip(), CI.getEmptyCatalyst(10), ELEMENT.getInstance().IRON.getDust(2),
-                        ELEMENT.getInstance().COPPER.getDust(2), },
-                GT_Values.NF,
-                ItemUtils.getSimpleStack(mRedCatalyst, 10),
-                20 * 20,
-                30);
+        // Assembler Recipe
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        getTierOneChip(),
+                        CI.getEmptyCatalyst(10),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 2L),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 2L))
+                .itemOutputs(ItemUtils.getSimpleStack(mRedCatalyst, 10)).noFluidInputs().noFluidOutputs()
+                .duration(20 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sAssemblerRecipes);
     }
 
     private void recipeCatalystYellow() {
-        // Assembly Recipe
-        CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { getTierThreeChip(), CI.getEmptyCatalyst(10),
-                        ELEMENT.getInstance().TUNGSTEN.getDust(4), ELEMENT.getInstance().NICKEL.getDust(4), },
-                GT_Values.NF,
-                ItemUtils.getSimpleStack(mYellowCatalyst, 10),
-                60 * 20,
-                2000);
+        // Assembler Recipe
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        getTierThreeChip(),
+                        CI.getEmptyCatalyst(10),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 4L),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 4L))
+                .itemOutputs(ItemUtils.getSimpleStack(mYellowCatalyst, 10)).noFluidInputs().noFluidOutputs()
+                .duration(1 * MINUTES).eut(TierEU.RECIPE_EV).addTo(sAssemblerRecipes);
     }
 
     private void recipeCatalystBlue() {
-        // Assembly Recipe
-        CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { getTierTwoChip(), CI.getEmptyCatalyst(10), ELEMENT.getInstance().COBALT.getDust(3),
-                        ELEMENT.getInstance().TITANIUM.getDust(3), },
-                GT_Values.NF,
-                ItemUtils.getSimpleStack(mBlueCatalyst, 10),
-                40 * 20,
-                500);
+        // Assembler Recipe
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        getTierTwoChip(),
+                        CI.getEmptyCatalyst(10),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 3L),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 3L))
+                .itemOutputs(ItemUtils.getSimpleStack(mBlueCatalyst, 10)).noFluidInputs().noFluidOutputs()
+                .duration(40 * SECONDS).eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
     }
 
     private void recipeCatalystOrange() {
-        // Assembly Recipe
-        CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { getTierTwoChip(), CI.getEmptyCatalyst(10), ELEMENT.getInstance().VANADIUM.getDust(5),
-                        ELEMENT.getInstance().PALLADIUM.getDust(5), },
-                GT_Values.NF,
-                ItemUtils.getSimpleStack(mOrangeCatalyst, 10),
-                40 * 20,
-                500);
+        // Assembler Recipe
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        getTierTwoChip(),
+                        CI.getEmptyCatalyst(10),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 5L),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 5L))
+                .itemOutputs(ItemUtils.getSimpleStack(mOrangeCatalyst, 10)).noFluidInputs().noFluidOutputs()
+                .duration(40 * SECONDS).eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
     }
 
     private void recipeCatalystPurple() {
-        // Assembly Recipe
-        CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { getTierFourChip(), CI.getEmptyCatalyst(10), ELEMENT.getInstance().IRIDIUM.getDust(6),
-                        ELEMENT.getInstance().RUTHENIUM.getDust(6), },
-                GT_Values.NF,
-                ItemUtils.getSimpleStack(mPurpleCatalyst, 10),
-                120 * 20,
-                8000);
+        // Assembler Recipe
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        getTierFourChip(),
+                        CI.getEmptyCatalyst(10),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 6L),
+                        ELEMENT.getInstance().RUTHENIUM.getDust(6))
+                .itemOutputs(ItemUtils.getSimpleStack(mPurpleCatalyst, 10)).noFluidInputs().noFluidOutputs()
+                .duration(2 * MINUTES).eut(TierEU.RECIPE_IV).addTo(sAssemblerRecipes);
     }
 
     private void recipeCatalystBrown() {
-        // Assembly Recipe
-        CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { getTierOneChip(), CI.getEmptyCatalyst(10), ELEMENT.getInstance().NICKEL.getDust(4),
-                        ELEMENT.getInstance().ALUMINIUM.getDust(4), },
-                GT_Values.NF,
-                ItemUtils.getSimpleStack(mBrownCatalyst, 10),
-                15 * 20,
-                30);
+        // Assembler Recipe
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        getTierOneChip(),
+                        CI.getEmptyCatalyst(10),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 4L),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4L))
+                .itemOutputs(ItemUtils.getSimpleStack(mBrownCatalyst, 10)).noFluidInputs().noFluidOutputs()
+                .duration(15 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sAssemblerRecipes);
     }
 
     private void recipeCatalystPink() {
-        // Assembly Recipe
-        CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { getTierThreeChip(), CI.getEmptyCatalyst(10),
-                        ELEMENT.getInstance().PLATINUM.getDust(4), ELEMENT.getInstance().RHODIUM.getDust(4), },
-                GT_Values.NF,
-                ItemUtils.getSimpleStack(mPinkCatalyst, 10),
-                30 * 20,
-                2000);
+        // Assembler Recipe
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        getTierThreeChip(),
+                        CI.getEmptyCatalyst(10),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L),
+                        ELEMENT.getInstance().RHODIUM.getDust(4))
+                .itemOutputs(ItemUtils.getSimpleStack(mFormaldehydeCatalyst, 4)).noFluidInputs().noFluidOutputs()
+                .duration(30 * SECONDS).eut(TierEU.RECIPE_HV / 2).addTo(sAssemblerRecipes);
     }
 
     private void recipeCatalystFormaldehyde() {
-        // Assembly Recipe
-        CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { getTierThreeChip(), CI.getEmptyCatalyst(4),
-                        ItemUtils.getSimpleStack(RocketFuels.Formaldehyde_Catalyst_Dust, 8) },
-                GT_Values.NF,
-                ItemUtils.getSimpleStack(mFormaldehydeCatalyst, 4),
-                30 * 20,
-                240);
+        // Assembler Recipe
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        getTierThreeChip(),
+                        CI.getEmptyCatalyst(4),
+                        ItemUtils.getSimpleStack(RocketFuels.Formaldehyde_Catalyst_Dust, 8))
+                .itemOutputs(ItemUtils.getSimpleStack(mBrownCatalyst, 10)).noFluidInputs().noFluidOutputs()
+                .duration(15 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sAssemblerRecipes);
     }
 
     private void recipeCatalystSolidAcid() {
-        // Assembly Recipe
-        CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { getTierThreeChip(), CI.getEmptyCatalyst(5),
-                        ItemUtils.getItemStackOfAmountFromOreDict("dustLapis", 2) },
-                MISC_MATERIALS.SOLID_ACID_MIXTURE.getFluidStack(1000),
-                ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 5),
-                30 * 20,
-                2000);
+        // Assembler Recipe
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        getTierThreeChip(),
+                        CI.getEmptyCatalyst(5),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 2L))
+                .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 5))
+                .fluidInputs(MISC_MATERIALS.SOLID_ACID_MIXTURE.getFluidStack(1000)).noFluidOutputs()
+                .duration(30 * SECONDS).eut(TierEU.RECIPE_EV).addTo(sAssemblerRecipes);
     }
 
     private void recipeCatalystInfiniteMutation() {
-        // Assembly Recipe
-        CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { getTierThreeChip(), CI.getEmptyCatalyst(5), Materials.Infinity.getDust(1),
-                        Materials.Naquadria.getDust(10) },
-                GT_Values.NF,
-                ItemUtils.getSimpleStack(GenericChem.mInfiniteMutationCatalyst, 5),
-                5 * 20,
-                1966080);
+        // Assembler Recipe
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        getTierThreeChip(),
+                        CI.getEmptyCatalyst(5),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 10L))
+                .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mInfiniteMutationCatalyst, 5)).noFluidInputs()
+                .noFluidOutputs().duration(5 * SECONDS).eut(TierEU.RECIPE_UHV).addTo(sAssemblerRecipes);
     }
 
     private void recipeCadaverineAndPutrescine() {

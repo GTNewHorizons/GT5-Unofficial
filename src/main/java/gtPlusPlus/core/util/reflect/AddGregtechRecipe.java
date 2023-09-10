@@ -62,6 +62,7 @@ public final class AddGregtechRecipe {
                 aRecipe.mEUt);
     }
 
+    @Deprecated
     public static boolean addCokeAndPyrolyseRecipes(ItemStack input1, int circuitNumber, FluidStack inputFluid1,
             ItemStack output1, FluidStack outputFluid1, int timeInSeconds, int euTick) {
         // Seconds Conversion

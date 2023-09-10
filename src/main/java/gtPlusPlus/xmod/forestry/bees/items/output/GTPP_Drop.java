@@ -1,6 +1,8 @@
 package gtPlusPlus.xmod.forestry.bees.items.output;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.util.List;
 
@@ -112,6 +114,11 @@ public class GTPP_Drop extends Item {
     }
 
     public static boolean addProcess(ItemStack tDrop, FluidStack aOutput, int aDuration, int aEUt) {
-        return GT_Values.RA.addFluidExtractionRecipe(tDrop, null, aOutput, 10000, aDuration, aEUt);
+        if (aOutput == null) {
+            return false;
+        }
+        GT_Values.RA.stdBuilder().itemInputs(tDrop).noItemOutputs().noFluidInputs().fluidOutputs(aOutput)
+                .duration(aDuration * TICKS).eut(aEUt).addTo(sFluidExtractionRecipes);
+        return true;
     }
 }

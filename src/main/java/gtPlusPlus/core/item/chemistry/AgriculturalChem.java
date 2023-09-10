@@ -3,6 +3,11 @@ package gtPlusPlus.core.item.chemistry;
 import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.TinkerConstruct;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -17,13 +22,15 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
-import gtPlusPlus.api.helpers.MaterialHelper;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.circuit.GTPP_IntegratedCircuit_Item;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -166,7 +173,7 @@ public class AgriculturalChem extends ItemPackage {
         mAluminiumPellet = ItemUtils.simpleMetaStack(mAgrichemItem1, 17, 1);
         mSodiumAluminate = ItemUtils.simpleMetaStack(mAgrichemItem1, 18, 1);
 
-        /**
+        /*
          * If It exists, don't add a new one.
          */
         if (OreDictionary.doesOreNameExist("dustSodiumHydroxide_GT5U")
@@ -413,46 +420,26 @@ public class AgriculturalChem extends ItemPackage {
         ItemStack aDirtDust = ItemUtils.getSimpleStack(dustDirt, 1);
 
         // Poop Juice to Basic Slurry
-        GT_Values.RA.addCentrifugeRecipe(
-                CI.getNumberedCircuit(10),
-                null,
-                FluidUtils.getFluidStack(PoopJuice, 1000), // In
-                // Fluid
-                FluidUtils.getFluidStack(ManureSlurry, 250), // Out Fluid
-                aDirtDust,
-                aDirtDust,
-                aManureByprod1,
-                aManureByprod1,
-                aManureByprod1,
-                aManureByprod1,
-                new int[] { 2000, 2000, 500, 500, 250, 250 }, // Chances
-                10 * 20, // Time
-                30); // EU
+        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(10))
+                .itemOutputs(aDirtDust, aDirtDust, aManureByprod1, aManureByprod1, aManureByprod1, aManureByprod1)
+                .outputChances(2000, 2000, 500, 500, 250, 250).fluidInputs(FluidUtils.getFluidStack(PoopJuice, 1000))
+                .fluidOutputs(FluidUtils.getFluidStack(ManureSlurry, 250)).duration(10 * SECONDS).eut(TierEU.RECIPE_LV)
+                .addTo(sCentrifugeRecipes);
 
         // More Efficient way to get byproducts, less Slurry
-        GT_Values.RA.addCentrifugeRecipe(
-                CI.getNumberedCircuit(20),
-                null,
-                FluidUtils.getFluidStack(PoopJuice, 1000), // In
-                // Fluid
-                FluidUtils.getFluidStack(ManureSlurry, 50), // Out Fluid
-                aDirtDust,
-                aDirtDust,
-                aManureByprod1,
-                aManureByprod1,
-                aManureByprod2,
-                aManureByprod2,
-                new int[] { 4000, 3000, 1250, 1250, 675, 675 }, // Chances
-                20 * 20, // Time
-                60); // EU
+        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(20))
+                .itemOutputs(aDirtDust, aDirtDust, aManureByprod1, aManureByprod1, aManureByprod2, aManureByprod2)
+                .outputChances(4000, 3000, 1250, 1250, 675, 675).fluidInputs(FluidUtils.getFluidStack(PoopJuice, 1000))
+                .fluidOutputs(FluidUtils.getFluidStack(ManureSlurry, 50)).duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_MV / 2).addTo(sCentrifugeRecipes);
     }
 
     private static void addAdvancedSlurryRecipes() {
 
-        ItemStack aCircuit = CI.getNumberedCircuit(10);
+        ItemStack aCircuit = GT_Utility.getIntegratedCircuit(10);
         ItemStack aBone;
         ItemStack aMeat;
-        ItemStack aEmptyCells = CI.emptyCells(2);
+        ItemStack aEmptyCells = Materials.Empty.getCells(2);
         ItemStack aInputCells = ItemUtils.getItemStackOfAmountFromOreDict("cellRawAnimalWaste", 2);
         FluidStack aOutput = FluidUtils.getFluidStack(FertileManureSlurry, 1000);
 
@@ -462,17 +449,9 @@ public class AgriculturalChem extends ItemPackage {
                 for (ItemStack aMeatStack : mList_Master_Meats) {
                     aMeat = ItemUtils.getSimpleStack(aMeatStack, 5);
                     // Poop Juice to Fertile Slurry
-                    GT_Values.RA.addMixerRecipe(
-                            aCircuit,
-                            aBone,
-                            aMeat,
-                            aInputCells,
-                            aBloodStack, // Input Fluid
-                            aOutput, // Output Fluid
-                            aEmptyCells, // Output Item
-                            20 * 8, // Time?
-                            60 // Eu?
-                    );
+                    GT_Values.RA.stdBuilder().itemInputs(aCircuit, aBone, aMeat, aInputCells).itemOutputs(aEmptyCells)
+                            .fluidInputs(aBloodStack).fluidOutputs(aOutput).duration(8 * SECONDS)
+                            .eut(TierEU.RECIPE_MV / 2).addTo(sMixerRecipes);
                 }
             }
         }
@@ -487,13 +466,14 @@ public class AgriculturalChem extends ItemPackage {
             aPeat = ItemUtils.getSimpleStack(aPeatStack, 3);
             for (ItemStack aMeatStack : mList_Master_Meats) {
                 aMeat = ItemUtils.getSimpleStack(aMeatStack, 5);
-                CORE.RA.addChemicalRecipe(aPeat, aMeat, aInputFluid, null, aOutputDust, 20 * 20, 120);
+                GT_Values.RA.stdBuilder().itemInputs(aPeat, aMeat).itemOutputs(aOutputDust).fluidInputs(aInputFluid)
+                        .noFluidOutputs().duration(20 * SECONDS).eut(TierEU.RECIPE_MV).addTo(UniversalChemical);
             }
-
             aPeat = ItemUtils.getSimpleStack(aPeatStack, 2);
             for (ItemStack aMeatStack : mList_Master_FruitVege) {
                 aMeat = ItemUtils.getSimpleStack(aMeatStack, 9);
-                CORE.RA.addChemicalRecipe(aPeat, aMeat, aInputFluid, null, aOutputDust, 10 * 20, 120);
+                GT_Values.RA.stdBuilder().itemInputs(aPeat, aMeat).itemOutputs(aOutputDust).fluidInputs(aInputFluid)
+                        .noFluidOutputs().duration(10 * SECONDS).eut(TierEU.RECIPE_MV).addTo(UniversalChemical);
             }
         }
     }
@@ -507,12 +487,14 @@ public class AgriculturalChem extends ItemPackage {
             aPeat = ItemUtils.getSimpleStack(aPeatStack, 5);
             for (ItemStack aMeatStack : mList_Master_Meats) {
                 aMeat = ItemUtils.getSimpleStack(aMeatStack, 7);
-                CORE.RA.addChemicalRecipe(aPeat, aMeat, aInputFluid, null, aOutputDust, 10 * 20, 140);
+                GT_Values.RA.stdBuilder().itemInputs(aPeat, aMeat).itemOutputs(aOutputDust).fluidInputs(aInputFluid)
+                        .noFluidOutputs().duration(10 * SECONDS).eut(140).addTo(UniversalChemical);
             }
             aPeat = ItemUtils.getSimpleStack(aPeatStack, 3);
             for (ItemStack aMeatStack : mList_Master_FruitVege) {
                 aMeat = ItemUtils.getSimpleStack(aMeatStack, 12);
-                CORE.RA.addChemicalRecipe(aPeat, aMeat, aInputFluid, null, aOutputDust, 5 * 20, 140);
+                GT_Values.RA.stdBuilder().itemInputs(aPeat, aMeat).itemOutputs(aOutputDust).fluidInputs(aInputFluid)
+                        .noFluidOutputs().duration(5 * SECONDS).eut(140).addTo(UniversalChemical);
             }
         }
     }
@@ -527,7 +509,7 @@ public class AgriculturalChem extends ItemPackage {
 
         // Dehydrate Organise Fert to Normal Fert.
 
-        /**
+        /*
          * Forestry Support
          */
         if (Forestry.isModLoaded()) {
@@ -558,7 +540,7 @@ public class AgriculturalChem extends ItemPackage {
             }
         }
 
-        /**
+        /*
          * IC2 Support
          */
         aFertIC2 = ItemUtils.getItemStackFromFQRN("IC2:itemFertilizer", 1);
@@ -573,29 +555,25 @@ public class AgriculturalChem extends ItemPackage {
                 240);
 
         // Dirt Production
-        CORE.RA.addCompressorRecipe(
-                ItemUtils.getSimpleStack(dustDirt, 9),
-                ItemUtils.getSimpleStack(Blocks.dirt),
-                20 * 2,
-                8);
+        GT_Values.RA.stdBuilder().itemInputs(ItemUtils.getSimpleStack(dustDirt, 9))
+                .itemOutputs(ItemUtils.getSimpleStack(Blocks.dirt)).noFluidInputs().noFluidOutputs()
+                .duration(2 * SECONDS).eut(8).addTo(sCompressorRecipes);
 
         // Centrifuge Byproducts
 
         // Ammonium Nitrate, Phosphates, Calcium, Copper, Carbon
-        GT_Values.RA.addCentrifugeRecipe(
-                CI.getNumberedCircuit(20),
-                ItemUtils.getSimpleStack(aManureByprod, 4),
-                FluidUtils.getFluidStack("sulfuricacid", 250), // In Fluid
-                FluidUtils.getFluidStack("sulfuricapatite", 50), // Out Fluid
-                MaterialHelper.getDustSmall(Materials.Phosphorus, 2),
-                MaterialHelper.getDustSmall(Materials.Calcium, 2),
-                MaterialHelper.getDustTiny(Materials.Copper, 1),
-                MaterialHelper.getDust(Materials.Carbon, 1),
-                ItemUtils.getSimpleStack(dustDirt, 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAmmoniumNitrate", 1),
-                new int[] { 2500, 2500, 750, 1000, 5000, 250 }, // Chances
-                20 * 20, // Time
-                60); // EU
+        GT_Values.RA.stdBuilder()
+                .itemInputs(ItemUtils.getSimpleStack(aManureByprod, 4), GT_Utility.getIntegratedCircuit(20))
+                .itemOutputs(
+                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Phosphorus, 2L),
+                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Calcium, 2L),
+                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Copper, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
+                        ItemUtils.getSimpleStack(dustDirt, 1),
+                        ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAmmoniumNitrate", 1))
+                .outputChances(2500, 2500, 750, 1000, 5000, 250).fluidInputs(Materials.SulfuricAcid.getFluid(250))
+                .fluidOutputs(FluidUtils.getFluidStack("sulfuricapatite", 50)).duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_MV / 2).addTo(sCentrifugeRecipes);
 
         // Add Fuel Usages
         CORE.RA.addSemifluidFuel(FluidUtils.getFluidStack(PoopJuice, 1000), 12);
@@ -603,20 +581,18 @@ public class AgriculturalChem extends ItemPackage {
         CORE.RA.addSemifluidFuel(FluidUtils.getFluidStack(FertileManureSlurry, 1000), 32);
 
         // Red Slurry / Tailings Processing
-        GT_Values.RA.addCentrifugeRecipe(
-                CI.getNumberedBioCircuit(10),
-                GT_Values.NI,
-                FluidUtils.getFluidStack(AgriculturalChem.RedMud, 1000),
-                FluidUtils.getWater(500),
-                ELEMENT.getInstance().IRON.getSmallDust(1),
-                ELEMENT.getInstance().COPPER.getSmallDust(1),
-                ELEMENT.getInstance().TIN.getSmallDust(1),
-                ELEMENT.getInstance().SULFUR.getSmallDust(1),
-                ELEMENT.getInstance().NICKEL.getTinyDust(1),
-                ELEMENT.getInstance().LEAD.getTinyDust(1),
-                new int[] { 3000, 3000, 2000, 2000, 1000, 1000 },
-                30 * 20,
-                30);
+        GT_Values.RA.stdBuilder().itemInputs(CI.getNumberedBioCircuit(10))
+                .itemOutputs(
+                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Iron, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Copper, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Tin, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Sulfur, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Nickel, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lead, 1L))
+                .outputChances(3000, 3000, 2000, 2000, 1000, 1000)
+                .fluidInputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 1000))
+                .fluidOutputs(Materials.Water.getFluid(500)).duration(30 * SECONDS).eut(TierEU.RECIPE_LV)
+                .addTo(sCentrifugeRecipes);
     }
 
     @Override

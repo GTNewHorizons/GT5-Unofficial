@@ -67,7 +67,7 @@ public interface IGregtech_RecipeAdder {
      * @param aEUt      = EU per tick needed for heating up (must be >= 0)
      * @return true if the Recipe got added, otherwise false.
      */
-    @Deprecated
+
     boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aOutput, int aChance, int aDuration, int aEUt);
 
     /**
@@ -81,7 +81,7 @@ public interface IGregtech_RecipeAdder {
      * @param aEUt        = EU per tick needed for heating up (must be >= 0)
      * @return true if the Recipe got added, otherwise false.
      */
-    @Deprecated
+
     boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput, int aChance,
             int aDuration, int aEUt);
 
@@ -96,7 +96,7 @@ public interface IGregtech_RecipeAdder {
      * @param aEUt        = EU per tick needed for heating up (must be >= 0)
      * @return true if the Recipe got added, otherwise false.
      */
-    @Deprecated
+
     boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack[] aInputFluid, FluidStack aOutput, int aChance,
             int aDuration, int aEUt);
 
@@ -112,15 +112,13 @@ public interface IGregtech_RecipeAdder {
      * @param aEUt         = EU per tick needed for heating up (must be >= 0)
      * @return true if the Recipe got added, otherwise false.
      */
-    @Deprecated
+
     boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput,
             ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt);
 
-    @Deprecated
     boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput, int aChance,
             int aDuration, int aEUt, int aSpecialValue);
 
-    @Deprecated
     boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput,
             ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt, int aSpecialValue,
             boolean aOptimizeRecipe);
@@ -137,15 +135,13 @@ public interface IGregtech_RecipeAdder {
      * @param aEUt         = EU per tick needed for heating up (must be >= 0)
      * @return true if the Recipe got added, otherwise false.
      */
-    @Deprecated
+
     boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack[] aInputFluid, FluidStack aOutput,
             ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt);
 
-    @Deprecated
     boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack[] aInputFluid, FluidStack aOutput, int aChance,
             int aDuration, int aEUt, int aSpecialValue);
 
-    @Deprecated
     boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack[] aInputFluid, FluidStack aOutput,
             ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt, int aSpecialValue,
             boolean aOptimizeRecipe);
@@ -163,7 +159,7 @@ public interface IGregtech_RecipeAdder {
      * @param aSpecialValue = Power produced in EU/t per dynamo
      * @return true if the Recipe got added, otherwise false.
      */
-    @Deprecated
+
     boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput,
             ItemStack[] aOutputStack, int[] aChance, int aDuration, int aEUt, int aSpecialValue);
 

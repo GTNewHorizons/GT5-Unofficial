@@ -3,6 +3,10 @@ package gtPlusPlus.xmod.railcraft;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 
 import net.minecraft.init.Blocks;
@@ -151,33 +155,22 @@ public class HANDLER_Railcraft {
                     240);
 
             // Fluid Extracting the Charcoals for Wood Tar
-            GT_Values.RA.addFluidExtractionRecipe(
-                    aInputs2[i],
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1L),
-                    Materials.WoodTar.getFluid(50L),
-                    1000,
-                    30,
-                    16);
+            GT_Values.RA.stdBuilder().itemInputs(aInputs2[i])
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1L)).outputChances(1000)
+                    .noFluidInputs().fluidOutputs(Materials.WoodTar.getFluid(50L)).duration(1 * SECONDS + 10 * TICKS)
+                    .eut(16).addTo(sFluidExtractionRecipes);
 
             // Processing the Charcoals with Oxygen to get CO and CO2
             // C + O = CO
-            GT_Values.RA.addChemicalRecipe(
-                    aInputs2[i],
-                    GT_Utility.getIntegratedCircuit(1),
-                    Materials.Oxygen.getGas(500),
-                    Materials.CarbonMonoxide.getGas(500),
-                    Materials.Ash.getDustTiny(1),
-                    80,
-                    8);
+            GT_Values.RA.stdBuilder().itemInputs(aInputs2[i], GT_Utility.getIntegratedCircuit(1))
+                    .itemOutputs(Materials.Ash.getDustTiny(1)).fluidInputs(Materials.Oxygen.getGas(500))
+                    .fluidOutputs(Materials.CarbonMonoxide.getGas(500)).duration(4 * SECONDS).eut(8)
+                    .addTo(UniversalChemical);
             // C + 2O = CO2
-            GT_Values.RA.addChemicalRecipe(
-                    aInputs2[i],
-                    GT_Utility.getIntegratedCircuit(2),
-                    Materials.Oxygen.getGas(2000),
-                    Materials.CarbonDioxide.getGas(1000),
-                    Materials.Ash.getDustTiny(1),
-                    40,
-                    8);
+            GT_Values.RA.stdBuilder().itemInputs(aInputs2[i], GT_Utility.getIntegratedCircuit(2))
+                    .itemOutputs(Materials.Ash.getDustTiny(1)).fluidInputs(Materials.Oxygen.getGas(2000))
+                    .fluidOutputs(Materials.CarbonDioxide.getGas(1000)).duration(2 * SECONDS).eut(8)
+                    .addTo(UniversalChemical);
         }
         if (Railcraft.isModLoaded()) {
             for (int i = 0; i < aOutputs.length; i++) {

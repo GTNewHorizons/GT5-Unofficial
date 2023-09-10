@@ -2,6 +2,9 @@ package gtPlusPlus.core.recipe;
 
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gtPlusPlus.core.recipe.common.CI.bitsd;
 import static gtPlusPlus.core.util.minecraft.ItemUtils.getSimpleStack;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generatePipeRecipes;
@@ -11,8 +14,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
@@ -23,7 +28,6 @@ import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
@@ -193,22 +197,25 @@ public class RECIPES_General {
                     ItemUtils.simpleMetaStack(ModItems.itemBasicTurbine, 2, 1));
         }
 
-        CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { CI.getNumberedAdvancedCircuit(4), ItemUtils.getSimpleStack(Blocks.glass, 16),
-                        ItemUtils.getSimpleStack(Blocks.glowstone, 16), ItemList.Large_Fluid_Cell_Steel.get(1) },
-                FluidUtils.getFluidStack("molten.borosilicateglass", 2000),
-                VolumetricFlaskHelper.getLargeVolumetricFlask(2),
-                20 * 15,
-                MaterialUtils.getVoltageForTier(3));
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        ItemUtils.getSimpleStack(Blocks.glass, 16),
+                        ItemUtils.getSimpleStack(Blocks.glowstone, 16),
+                        ItemList.Large_Fluid_Cell_Steel.get(1),
+                        CI.getNumberedAdvancedCircuit(4))
+                .itemOutputs(VolumetricFlaskHelper.getLargeVolumetricFlask(2))
+                .fluidInputs(FluidUtils.getFluidStack("molten.borosilicateglass", 2000)).noFluidOutputs()
+                .duration(15 * SECONDS).eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
 
-        CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { CI.getNumberedAdvancedCircuit(5), ItemUtils.getSimpleStack(Blocks.glass, 64),
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        ItemUtils.getSimpleStack(Blocks.glass, 64),
                         ItemUtils.getSimpleStack(Blocks.glowstone, 64),
-                        ItemList.Large_Fluid_Cell_TungstenSteel.get(1) },
-                FluidUtils.getFluidStack("molten.borosilicateglass", 8000),
-                VolumetricFlaskHelper.getGiganticVolumetricFlask(2),
-                20 * 15,
-                MaterialUtils.getVoltageForTier(5));
+                        ItemList.Large_Fluid_Cell_TungstenSteel.get(1),
+                        CI.getNumberedAdvancedCircuit(5))
+                .itemOutputs(VolumetricFlaskHelper.getGiganticVolumetricFlask(2))
+                .fluidInputs(FluidUtils.getFluidStack("molten.borosilicateglass", 8000)).noFluidOutputs()
+                .duration(15 * SECONDS).eut(TierEU.RECIPE_IV).addTo(sAssemblerRecipes);
 
         // Mining Explosive
         Logger.RECIPE("[Inspection] Explosives");
@@ -267,25 +274,29 @@ public class RECIPES_General {
         }
 
         // Magic Feather
-        CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { ItemUtils.getSimpleStack(Items.feather, 64),
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        ItemUtils.getSimpleStack(Items.feather, 64),
                         ItemUtils.getSimpleStack(Blocks.emerald_block, 32),
-                        ItemUtils.getSimpleStack(Blocks.diamond_block, 32), Materials.Ruby.getBlocks(32),
-                        Materials.Sapphire.getBlocks(32), ItemUtils.getSimpleStack(Blocks.gold_block, 32), },
-                Materials.Silver.getMolten(32 * 144), // Fluid
-                ItemUtils.getSimpleStack(ModItems.itemMagicFeather, 1), // Output
-                20 * 120, // Dur
-                MaterialUtils.getVoltageForTier(4)); // Eu
+                        ItemUtils.getSimpleStack(Blocks.diamond_block, 32),
+                        Materials.Ruby.getBlocks(32),
+                        Materials.Sapphire.getBlocks(32),
+                        ItemUtils.getSimpleStack(Blocks.gold_block, 32))
+                .itemOutputs(ItemUtils.getSimpleStack(ModItems.itemMagicFeather, 1))
+                .fluidInputs(Materials.Silver.getMolten(32 * 144)).noFluidOutputs().duration(2 * MINUTES)
+                .eut(TierEU.RECIPE_EV).addTo(sAssemblerRecipes);
 
         // Pest Killer
-        CORE.RA.addSixSlotAssemblingRecipe(
-                new ItemStack[] { CI.getNumberedCircuit(16), CI.getTieredMachineCasing(1), CI.getElectricPump(2, 1),
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        CI.getTieredMachineCasing(1),
+                        CI.getElectricPump(2, 1),
                         CI.getPlate(2, 4),
-                        ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(0), 2), },
-                FluidUtils.getHotWater(500), // Fluid
-                ItemUtils.getSimpleStack(ModBlocks.blockPestKiller), // Output
-                20 * 60, // Dur
-                16); // Eu
+                        ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(0), 2),
+                        CI.getNumberedCircuit(16))
+                .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockPestKiller))
+                .fluidInputs(FluidUtils.getHotWater(500)).noFluidOutputs().duration(1 * MINUTES)
+                .eut(TierEU.RECIPE_LV / 2).addTo(sAssemblerRecipes);
     }
 
     private static boolean addCompressedObsidian() {

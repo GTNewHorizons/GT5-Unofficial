@@ -1,11 +1,15 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
@@ -114,10 +118,14 @@ public class GregtechDehydrator {
         ItemStack spoolT4 = ItemUtils.getItemStackOfAmountFromOreDict("pipeMediumTitanium", 1);
 
         // Make some coils by wrapping wire around a spool.
-        GT_Values.RA.addAssemblerRecipe(coilWire1, spoolT1, coilT1, 8 * 20, 120);
-        GT_Values.RA.addAssemblerRecipe(coilWire2, spoolT2, coilT2, 8 * 20, 240);
-        GT_Values.RA.addAssemblerRecipe(coilWire3, spoolT3, coilT3, 8 * 20, 480);
-        GT_Values.RA.addAssemblerRecipe(coilWire4, spoolT4, coilT4, 8 * 20, 960);
+        GT_Values.RA.stdBuilder().itemInputs(coilWire1, spoolT1).itemOutputs(coilT1).noFluidInputs().noFluidOutputs()
+                .duration(8 * SECONDS).eut(TierEU.RECIPE_MV).addTo(sAssemblerRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(coilWire2, spoolT2).itemOutputs(coilT2).noFluidInputs().noFluidOutputs()
+                .duration(8 * SECONDS).eut(TierEU.RECIPE_HV / 2).addTo(sAssemblerRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(coilWire3, spoolT3).itemOutputs(coilT3).noFluidInputs().noFluidOutputs()
+                .duration(8 * SECONDS).eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(coilWire4, spoolT4).itemOutputs(coilT4).noFluidInputs().noFluidOutputs()
+                .duration(8 * SECONDS).eut(TierEU.RECIPE_EV / 2).addTo(sAssemblerRecipes);
 
         // Add recipes for the Dehydrators.
 

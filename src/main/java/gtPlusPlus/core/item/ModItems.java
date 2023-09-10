@@ -4,6 +4,8 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 
 import net.minecraft.item.EnumRarity;
@@ -700,7 +702,9 @@ public final class ModItems {
                         temp1,
                         null,
                         true);
-                GT_Values.RA.addFluidExtractionRecipe(temp2, null, new FluidStack(fluidFertBasic, 36), 10000, 5, 16);
+                GT_Values.RA.stdBuilder().itemInputs(temp2).noItemOutputs().noFluidInputs()
+                        .fluidOutputs(new FluidStack(fluidFertBasic, 36)).duration(5 * TICKS).eut(16)
+                        .addTo(sFluidExtractionRecipes);
             }
             fluidFertUN32 = FluidUtils.generateFluidNonMolten(
                     "UN32Fertiliser",
@@ -871,7 +875,7 @@ public final class ModItems {
     public static void registerCustomMaterialComponents() {
         // Custom GT++ Crafting Components
 
-        /**
+        /*
          * Try generate dusts for missing rare earth materials if they don't exist
          */
         if (!ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGadolinium", 1))) {

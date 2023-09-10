@@ -1,13 +1,18 @@
 package gtPlusPlus.core.item.chemistry;
 
-import net.minecraft.init.Items;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
+
 import net.minecraftforge.fluids.Fluid;
 
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class NuclearChem extends ItemPackage {
 
@@ -79,20 +84,18 @@ public class NuclearChem extends ItemPackage {
     @Override
     public boolean generateRecipes() {
         if (generateMutagenRecipe) {
-            chemReator_CreateMutagen();
+            chemReactor_CreateMutagen();
         }
         return true;
     }
 
-    private static void chemReator_CreateMutagen() {
-        CORE.RA.addChemicalRecipe(
-                CI.getNumberedCircuit(20),
-                ItemUtils.getSimpleStack(Items.nether_star, 2),
-                FluidUtils.getMobEssence(5000),
-                FluidUtils.getFluidStack(GeneticMutagen, 8000),
-                null,
-                30 * 20,
-                500);
+    private static void chemReactor_CreateMutagen() {
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 2),
+                        GT_Utility.getIntegratedCircuit(20))
+                .noItemOutputs().fluidInputs(FluidUtils.getMobEssence(5000))
+                .fluidOutputs(FluidUtils.getFluidStack(GeneticMutagen, 8000)).duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_HV).addTo(UniversalChemical);
     }
-
 }

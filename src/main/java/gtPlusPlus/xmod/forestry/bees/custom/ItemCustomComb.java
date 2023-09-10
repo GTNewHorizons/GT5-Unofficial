@@ -1,6 +1,9 @@
 package gtPlusPlus.xmod.forestry.bees.custom;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.util.List;
 
@@ -14,13 +17,11 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
-import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class ItemCustomComb extends Item {
@@ -130,134 +131,8 @@ public class ItemCustomComb extends Item {
     }
 
     public void addSpecialCent(ItemStack tComb, ItemStack aOutput, int chance) {
-        GT_Values.RA.addCentrifugeRecipe(
-                tComb,
-                GT_Values.NI,
-                GT_Values.NF,
-                GT_Values.NF,
-                aOutput,
-                ItemList.FR_Wax.get(1, new Object[0]),
-                GT_Values.NI,
-                GT_Values.NI,
-                GT_Values.NI,
-                GT_Values.NI,
-                new int[] { chance * 100, 3000 },
-                128,
-                5);
-        // RecipeManagers.centrifugeManager.addRecipe(40, tComb, ImmutableMap.of(aOutput, chance * 0.01f,
-        // ItemList.FR_Wax.get(1, new Object[0]), 0.3f));
-    }
-
-    public void addSpecialCent(ItemStack tComb, ItemStack aOutput, int chance, ItemStack aOutput2, int chance2) {
-        GT_Values.RA.addCentrifugeRecipe(
-                tComb,
-                GT_Values.NI,
-                GT_Values.NF,
-                GT_Values.NF,
-                aOutput,
-                ItemList.FR_Wax.get(1, new Object[0]),
-                aOutput2,
-                GT_Values.NI,
-                GT_Values.NI,
-                GT_Values.NI,
-                new int[] { chance * 100, 3000, chance2 * 100 },
-                128,
-                5);
-        // RecipeManagers.centrifugeManager.addRecipe(40, tComb, ImmutableMap.of(aOutput, chance * 0.01f,
-        // ItemList.FR_Wax.get(1, new Object[0]), 0.3f,aOutput2,chance2 * 0.01f));
-    }
-
-    public void addSpecialCent(ItemStack tComb, ItemStack aOutput, int chance, ItemStack aOutput2, int chance2,
-            ItemStack aOutput3, int chance3) {
-        GT_Values.RA.addCentrifugeRecipe(
-                tComb,
-                GT_Values.NI,
-                GT_Values.NF,
-                GT_Values.NF,
-                aOutput,
-                ItemList.FR_Wax.get(1, new Object[0]),
-                aOutput2,
-                aOutput3,
-                GT_Values.NI,
-                GT_Values.NI,
-                new int[] { chance * 100, 3000, chance2 * 100, chance3 * 100 },
-                128,
-                5);
-        // RecipeManagers.centrifugeManager.addRecipe(40, tComb, ImmutableMap.of(aOutput, chance * 0.01f,
-        // ItemList.FR_Wax.get(1, new Object[0]), 0.3f,aOutput2,chance2 * 0.01f,aOutput3,chance3*0.01f));
-    }
-
-    public void addProcess(ItemStack tComb, Materials aMaterial, int chance) {
-        if (GT_Mod.gregtechproxy.mNerfedCombs) {
-            GT_Values.RA.addChemicalRecipe(
-                    GT_Utility.copyAmount(9, tComb),
-                    GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1),
-                    Materials.Water.getFluid(1000),
-                    aMaterial.mOreByProducts.isEmpty() ? null : aMaterial.mOreByProducts.get(0).getMolten(144),
-                    GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4),
-                    96);
-            GT_Values.RA.addAutoclaveRecipe(
-                    GT_Utility.copyAmount(16, tComb),
-                    Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass() + 9) / 10))),
-                    GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1),
-                    10000,
-                    (int) (aMaterial.getMass() * 128),
-                    384);
-        } else {
-            GT_Values.RA.addCentrifugeRecipe(
-                    tComb,
-                    GT_Values.NI,
-                    GT_Values.NF,
-                    GT_Values.NF,
-                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1),
-                    ItemList.FR_Wax.get(1, new Object[0]),
-                    GT_Values.NI,
-                    GT_Values.NI,
-                    GT_Values.NI,
-                    GT_Values.NI,
-                    new int[] { chance * 100, 3000 },
-                    128,
-                    5);
-            // RecipeManagers.centrifugeManager.addRecipe(40, tComb,
-            // ImmutableMap.of(GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1), chance * 0.01f,
-            // ItemList.FR_Wax.get(1, new Object[0]), 0.3f));
-        }
-    }
-
-    public void addProcess(ItemStack tComb, Materials aInMaterial, Materials aOutMaterial, int chance) {
-        if (GT_Mod.gregtechproxy.mNerfedCombs) {
-            GT_Values.RA.addChemicalRecipe(
-                    GT_Utility.copyAmount(9, tComb),
-                    GT_OreDictUnificator.get(OrePrefixes.crushed, aInMaterial, 1),
-                    Materials.Water.getFluid(1000),
-                    aInMaterial.mOreByProducts.isEmpty() ? null : aInMaterial.mOreByProducts.get(0).getMolten(144),
-                    GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aOutMaterial, 4),
-                    96);
-            GT_Values.RA.addAutoclaveRecipe(
-                    GT_Utility.copyAmount(16, tComb),
-                    Materials.UUMatter.getFluid(Math.max(1, ((aOutMaterial.getMass() + 9) / 10))),
-                    GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aOutMaterial, 1),
-                    10000,
-                    (int) (aOutMaterial.getMass() * 128),
-                    384);
-        } else {
-            GT_Values.RA.addCentrifugeRecipe(
-                    tComb,
-                    GT_Values.NI,
-                    GT_Values.NF,
-                    GT_Values.NF,
-                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, aOutMaterial, 1),
-                    ItemList.FR_Wax.get(1, new Object[0]),
-                    GT_Values.NI,
-                    GT_Values.NI,
-                    GT_Values.NI,
-                    GT_Values.NI,
-                    new int[] { chance * 100, 3000 },
-                    128,
-                    5);
-            // RecipeManagers.centrifugeManager.addRecipe(40, tComb,
-            // ImmutableMap.of(GT_OreDictUnificator.get(OrePrefixes.dustTiny, aOutMaterial, 1), chance * 0.01f,
-            // ItemList.FR_Wax.get(1, new Object[0]), 0.3f));
-        }
+        GT_Values.RA.stdBuilder().itemInputs(tComb).itemOutputs(aOutput, ItemList.FR_Wax.get(1))
+                .outputChances(chance * 100, 3000).noFluidInputs().noFluidOutputs().duration(6 * SECONDS + 8 * TICKS)
+                .eut(5).addTo(sCentrifugeRecipes);
     }
 }

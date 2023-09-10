@@ -2,6 +2,8 @@ package gtPlusPlus.core.item.base.ingots;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sVacuumRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -12,6 +14,7 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GT_Values;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.lib.CORE;
@@ -51,11 +54,9 @@ public class BaseItemIngotHot extends BaseItemIngot {
 
     private void generateRecipe() {
         Logger.WARNING("Adding Vacuum Freezer recipe for a Hot Ingot of " + this.materialName + ".");
-        CORE.RA.addVacuumFreezerRecipe(
-                ItemUtils.getSimpleStack(this),
-                this.outputIngot.copy(),
-                (int) Math.max(this.componentMaterial.getMass() * 3L, 1L),
-                this.componentMaterial.vVoltageMultiplier);
+        GT_Values.RA.stdBuilder().itemInputs(ItemUtils.getSimpleStack(this)).itemOutputs(this.outputIngot.copy())
+                .noFluidInputs().noFluidOutputs().duration(Math.max(this.componentMaterial.getMass() * 3L, 1L) * TICKS)
+                .eut(this.componentMaterial.vVoltageMultiplier).addTo(sVacuumRecipes);
     }
 
     @Override

@@ -1,6 +1,9 @@
 package gtPlusPlus.xmod.forestry.bees.custom;
 
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -13,12 +16,12 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import gregtech.GT_Mod;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot_OLD;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc.MiscTypes;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -88,7 +91,8 @@ public class GTPP_Bees {
     }
 
     private void addExtractorRecipe(ItemStack input, FluidStack output) {
-        CORE.RA.addFluidExtractionRecipe(input, output, 30, 8);
+        GT_Values.RA.stdBuilder().itemInputs(input).noItemOutputs().noFluidInputs().fluidOutputs(output)
+                .duration(1 * SECONDS + 10 * TICKS).eut(8).addTo(sFluidExtractionRecipes);
     }
 
     private static boolean tryGetBeesBoolean() {
