@@ -10,6 +10,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.GregTech_API;
@@ -240,6 +242,7 @@ public final class CoverInfo {
         return getCoverBehavior().getFacadeMeta(coverSide, coverID, coverData, coveredTile.get());
     }
 
+    @NotNull
     public List<String> getAdditionalTooltip(ISerializableObject data) {
         return getCoverBehavior().getAdditionalTooltip(data);
     }

@@ -408,6 +408,8 @@ GT5U.gui.text.internal_error=§4Recipe was found, but had internal error
 GT5U.gui.text.drill_ores_left_chunk=Ores left in current chunk: §a%s
 GT5U.gui.text.drill_ores_left_layer=Ores left at y-level %s: §a%s
 GT5U.gui.text.drill_chunks_left=Drilling chunk: §a%s / %s
+GT5U.gui.text.drill_offline_reason=Drill Offline: %s
+GT5U.gui.text.drill_offline_generic=Drill Offline
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
@@ -1369,3 +1371,6 @@ gt.item.adv_sensor_card.tooltip.fried.1=§o§dThis thing looks completely fried.
 gt.item.adv_sensor_card.tooltip.fried.2=§cDestroyed due to metrics transmitter being removed from machine
 gt.item.adv_sensor_card.tooltip.machine=Machine: §b%s
 gt.item.adv_sensor_card.tooltip.frequency=Frequency: §b%s
+gt.item.adv_sensor_card.error.deconstructed.1=-ERROR- Machine Deconstructed
+gt.item.adv_sensor_card.error.deconstructed.2=Place machine again to re-enable
+gt.item.adv_sensor_card.error.no_data=No data found

@@ -46,13 +46,17 @@ import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource {
 
     public static final UUID CARD_TYPE_ID = UUID.fromString("ff952e84-7608-4c4a-85af-dd6e1aa27fc7");
+
+    // This has obfuscated formatting, so no need to localize it.
     private static final ImmutableList<PanelString> SELF_DESTRUCTED_OUTPUT = ImmutableList
         .of(prebakePanelString(EnumChatFormatting.OBFUSCATED + "critical error" + EnumChatFormatting.RESET, true));
+
     private static final ImmutableList<PanelString> DECONSTRUCTED_OUTPUT = ImmutableList.of(
-        prebakePanelString("-ERROR- Machine Deconstructed", true),
-        prebakePanelString("Place machine again to re-enable", true));
+        prebakePanelString(StatCollector.translateToLocal("gt.item.adv_sensor_card.error.deconstructed.1"), true),
+        prebakePanelString(StatCollector.translateToLocal("gt.item.adv_sensor_card.error.deconstructed.2"), true));
+
     private static final ImmutableList<PanelString> NO_DATA_FOUND = ImmutableList
-        .of(prebakePanelString("No data found", true));
+        .of(prebakePanelString(StatCollector.translateToLocal("gt.item.adv_sensor_card.error.no_data"), true));
 
     private int payloadSize = 0;
 
@@ -211,7 +215,7 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int slot, boolean isHeld) {
         super.onUpdate(stack, worldIn, entityIn, slot, isHeld);
-        if ((worldIn.getWorldTime() % 20) == 0) {
+        if ((worldIn.getWorldTime() % 20) == 13) {
             getDataFromDatabase(stack).ifPresent(data -> {
                 reconcileSelfDestructedCard(stack, data.getState());
                 if (!stack.hasTagCompound()) {

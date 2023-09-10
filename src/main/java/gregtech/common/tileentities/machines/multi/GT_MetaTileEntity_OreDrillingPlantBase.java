@@ -699,25 +699,32 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
 
     @Override
     public @NotNull List<String> reportMetrics() {
-        return switch (workState) {
-            case STATE_AT_BOTTOM -> ImmutableList.of(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.gui.text.drill_ores_left_chunk",
-                    GT_Utility.formatNumbers(oreBlockPositions.size())),
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.gui.text.drill_chunks_left",
-                    GT_Utility.formatNumbers(getChunkNumber()),
-                    GT_Utility.formatNumbers(getTotalChunkCount())));
-            case STATE_DOWNWARD -> ImmutableList.of(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.gui.text.drill_ores_left_chunk",
-                    GT_Utility.formatNumbers(oreBlockPositions.size())));
-            case STATE_UPWARD -> ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.text.drill_exhausted"));
-            case STATE_ABORT -> ImmutableList
-                .of(StatCollector.translateToLocal("GT5U.gui.text.drill_retract_pipes_finished"));
+        if (getBaseMetaTileEntity().isActive()) {
+            return switch (workState) {
+                case STATE_AT_BOTTOM -> ImmutableList.of(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.text.drill_ores_left_chunk",
+                        GT_Utility.formatNumbers(oreBlockPositions.size())),
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.text.drill_chunks_left",
+                        GT_Utility.formatNumbers(getChunkNumber()),
+                        GT_Utility.formatNumbers(getTotalChunkCount())));
+                case STATE_DOWNWARD -> ImmutableList.of(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.text.drill_ores_left_layer",
+                        getYHead(),
+                        GT_Utility.formatNumbers(oreBlockPositions.size())));
+                case STATE_UPWARD, STATE_ABORT -> ImmutableList
+                    .of(StatCollector.translateToLocal("GT5U.gui.text.retracting_pipe"));
 
-            default -> ImmutableList.of();
-        };
+                default -> ImmutableList.of();
+            };
+        }
+
+        return ImmutableList.of(
+            getFailureReason()
+                .map(reason -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_reason", reason))
+                .orElseGet(() -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_generic")));
     }
 
     public boolean supportsVoidProtection() {

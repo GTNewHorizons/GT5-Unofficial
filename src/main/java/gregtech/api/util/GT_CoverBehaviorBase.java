@@ -17,6 +17,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
@@ -823,6 +825,7 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         return true;
     }
 
+    @NotNull
     public final List<String> getAdditionalTooltip(ISerializableObject coverData) {
         return getAdditionalTooltipImpl(forceCast(coverData));
     }
