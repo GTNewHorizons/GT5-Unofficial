@@ -20,9 +20,7 @@ public enum Items {
     YSZCeramicPlate(14, 1),
     GDCCeramicPlate(15, 1),
     // Error Item
-    Error(0, 1),
-    // Configurator
-    Configurator(0, 1);
+    Error(0, 1);
 
     static {
         YttriaDust.setOreDictName("dustYttriumOxide");
