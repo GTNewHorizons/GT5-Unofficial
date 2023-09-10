@@ -9,7 +9,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import gregtech.api.GregTech_API;
 import kekztech.GuiHandler;
 import kekztech.Items;
 import kekztech.KekzCore;
@@ -43,6 +42,6 @@ public class CommonProxy {
         // Research
         Researches.postInit();
 
-        if (GregTech_API.mAE2) GTMTE_TFFTHatch.registerAEIntegration();
+        GTMTE_TFFTHatch.registerAEIntegration();
     }
 }
