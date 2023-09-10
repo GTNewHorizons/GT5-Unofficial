@@ -1,8 +1,20 @@
 package com.github.technus.tectech.loader.recipe;
 
+import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
+import static com.google.common.math.LongMath.pow;
+import static gregtech.api.enums.Mods.*;
+import static gregtech.api.util.GT_ModHandler.getModItem;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.rwtema.extrautils.ExtraUtils;
+
 import fox.spiteful.avaritia.compat.ticon.Tonkers;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
@@ -11,19 +23,9 @@ import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import tconstruct.tools.TinkerTools;
 import vexatos.tgregworks.reference.PartTypes;
 import vexatos.tgregworks.util.TGregUtils;
-
-import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
-import static com.google.common.math.LongMath.pow;
-import static gregtech.api.enums.Mods.*;
-import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 
 public class ResearchStationAssemblyLine implements Runnable {
 
