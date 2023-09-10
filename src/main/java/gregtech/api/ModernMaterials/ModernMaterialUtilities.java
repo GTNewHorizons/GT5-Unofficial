@@ -96,16 +96,9 @@ public class ModernMaterialUtilities {
 
 
 
-        //(new FrameBoxBlock()).registerBlock(FrameBoxTileEntity.class, FrameBoxItemBlock.class);
-        //new FrameBoxRenderer();
-        // GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + W + ".name", "Any Sub Block of this one");
 
         FrameBoxBlock frame = new FrameBoxBlock();
         frame.registerBlock(FrameBoxTileEntity.class, FrameBoxItemBlock.class, new FrameBoxSimpleBlockRenderer());
-
-        //GameRegistry.registerBlock(frame, FrameBoxItemBlock.class, "frameBoxBlock");
-        //GameRegistry.registerTileEntity(FrameBoxTileEntity.class, "frameBoxBlockTile");
-        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(frame), new FrameBoxItemRenderer());
 
     }
 
