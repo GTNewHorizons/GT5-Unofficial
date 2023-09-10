@@ -39,7 +39,6 @@ import appeng.me.helpers.IGridProxyable;
 import appeng.util.IWideReadableNumberConverter;
 import appeng.util.ReadableNumberConverter;
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
@@ -53,9 +52,9 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
 
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
-    final IItemList<IAEFluidStack> fluidCache = GregTech_API.mAE2 ? AEApi.instance()
+    final IItemList<IAEFluidStack> fluidCache = AEApi.instance()
         .storage()
-        .createFluidList() : null;
+        .createFluidList();
     long lastOutputTick = 0;
     long tickCounter = 0;
     boolean lastOutputFailed = false;
@@ -104,7 +103,6 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
 
     @Override
     public int fill(FluidStack aFluid, boolean doFill) {
-        if (!GregTech_API.mAE2) return 0;
         if (doFill) {
             return tryFillAE(aFluid);
         } else {
@@ -234,47 +232,43 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        if (GregTech_API.mAE2) {
-            NBTTagList fluids = new NBTTagList();
-            for (IAEFluidStack s : fluidCache) {
-                if (s.getStackSize() == 0) continue;
-                NBTTagCompound tag = new NBTTagCompound();
-                NBTTagCompound tagFluidStack = new NBTTagCompound();
-                s.getFluidStack()
-                    .writeToNBT(tagFluidStack);
-                tag.setTag("fluidStack", tagFluidStack);
-                tag.setLong("size", s.getStackSize());
-                fluids.appendTag(tag);
-            }
-            aNBT.setTag("cachedFluids", fluids);
-            getProxy().writeToNBT(aNBT);
+        NBTTagList fluids = new NBTTagList();
+        for (IAEFluidStack s : fluidCache) {
+            if (s.getStackSize() == 0) continue;
+            NBTTagCompound tag = new NBTTagCompound();
+            NBTTagCompound tagFluidStack = new NBTTagCompound();
+            s.getFluidStack()
+                .writeToNBT(tagFluidStack);
+            tag.setTag("fluidStack", tagFluidStack);
+            tag.setLong("size", s.getStackSize());
+            fluids.appendTag(tag);
         }
+        aNBT.setTag("cachedFluids", fluids);
+        getProxy().writeToNBT(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (GregTech_API.mAE2) {
-            NBTBase t = aNBT.getTag("cachedFluids");
-            if (t instanceof NBTTagList l) {
-                for (int i = 0; i < l.tagCount(); ++i) {
-                    NBTTagCompound tag = l.getCompoundTagAt(i);
-                    NBTTagCompound tagFluidStack = tag.getCompoundTag("fluidStack");
-                    final IAEFluidStack s = AEApi.instance()
-                        .storage()
-                        .createFluidStack(GT_Utility.loadFluid(tagFluidStack));
-                    if (s != null) {
-                        s.setStackSize(tag.getLong("size"));
-                        fluidCache.add(s);
-                    } else {
-                        GT_Mod.GT_FML_LOGGER.warn(
-                            "An error occurred while loading contents of ME Output Hatch. This fluid has been voided: "
-                                + tagFluidStack);
-                    }
+        NBTBase t = aNBT.getTag("cachedFluids");
+        if (t instanceof NBTTagList l) {
+            for (int i = 0; i < l.tagCount(); ++i) {
+                NBTTagCompound tag = l.getCompoundTagAt(i);
+                NBTTagCompound tagFluidStack = tag.getCompoundTag("fluidStack");
+                final IAEFluidStack s = AEApi.instance()
+                    .storage()
+                    .createFluidStack(GT_Utility.loadFluid(tagFluidStack));
+                if (s != null) {
+                    s.setStackSize(tag.getLong("size"));
+                    fluidCache.add(s);
+                } else {
+                    GT_Mod.GT_FML_LOGGER.warn(
+                        "An error occurred while loading contents of ME Output Hatch. This fluid has been voided: "
+                            + tagFluidStack);
                 }
             }
-            getProxy().readFromNBT(aNBT);
         }
+        getProxy().readFromNBT(aNBT);
     }
 
     public boolean isLastOutputFailed() {
@@ -288,7 +282,6 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
 
     @Override
     public String[] getInfoData() {
-        if (!GregTech_API.mAE2) return new String[] {};
         List<String> ss = new ArrayList<>();
         ss.add(
             "The hatch is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"

@@ -6,7 +6,6 @@ import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import net.minecraft.item.ItemStack;
 
 import appeng.core.Api;
-import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -46,10 +45,8 @@ public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegist
                     new Object[] { "fXh", 'X', OrePrefixes.ingot.get(aMaterial) });
             }
         }
-        if (GT_Mod.gregtechproxy.mAE2Integration) {
-            Api.INSTANCE.registries()
-                .matterCannon()
-                .registerAmmo(GT_OreDictUnificator.get(OrePrefixes.round, aMaterial, 1L), aMaterial.getMass());
-        }
+        Api.INSTANCE.registries()
+            .matterCannon()
+            .registerAmmo(GT_OreDictUnificator.get(OrePrefixes.round, aMaterial, 1L), aMaterial.getMass());
     }
 }

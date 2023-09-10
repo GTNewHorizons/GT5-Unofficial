@@ -67,7 +67,6 @@ import appeng.util.IWideReadableNumberConverter;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
@@ -485,9 +484,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
         aNBT.setTag("internalInventory", internalInventoryNBT);
         if (customName != null) aNBT.setString("customName", customName);
-        if (GregTech_API.mAE2) {
-            getProxy().writeToNBT(aNBT);
-        }
+        getProxy().writeToNBT(aNBT);
     }
 
     @Override
@@ -537,9 +534,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
         if (aNBT.hasKey("customName")) customName = aNBT.getString("customName");
 
-        if (GregTech_API.mAE2) {
-            getProxy().readFromNBT(aNBT);
-        }
+        getProxy().readFromNBT(aNBT);
     }
 
     @Override
@@ -557,44 +552,42 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     @Override
     public String[] getInfoData() {
-        if (GregTech_API.mAE2) {
-            var ret = new ArrayList<String>();
-            ret.add(
-                "The bus is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
-                    : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET);
-            ret.add("Internal Inventory: ");
-            var i = 0;
-            for (var slot : internalInventory) {
-                if (slot == null) continue;
-                IWideReadableNumberConverter nc = ReadableNumberConverter.INSTANCE;
+        var ret = new ArrayList<String>();
+        ret.add(
+            "The bus is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
+                : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET);
+        ret.add("Internal Inventory: ");
+        var i = 0;
+        for (var slot : internalInventory) {
+            if (slot == null) continue;
+            IWideReadableNumberConverter nc = ReadableNumberConverter.INSTANCE;
 
-                i += 1;
+            i += 1;
+            ret.add(
+                "Slot " + i
+                    + " "
+                    + EnumChatFormatting.BLUE
+                    + describePattern(slot.patternDetails)
+                    + EnumChatFormatting.RESET);
+            for (var item : slot.itemInventory) {
+                if (item == null || item.stackSize == 0) continue;
                 ret.add(
-                    "Slot " + i
-                        + " "
-                        + EnumChatFormatting.BLUE
-                        + describePattern(slot.patternDetails)
+                    item.getItem()
+                        .getItemStackDisplayName(item) + ": "
+                        + EnumChatFormatting.GOLD
+                        + nc.toWideReadableForm(item.stackSize)
                         + EnumChatFormatting.RESET);
-                for (var item : slot.itemInventory) {
-                    if (item == null || item.stackSize == 0) continue;
-                    ret.add(
-                        item.getItem()
-                            .getItemStackDisplayName(item) + ": "
-                            + EnumChatFormatting.GOLD
-                            + nc.toWideReadableForm(item.stackSize)
-                            + EnumChatFormatting.RESET);
-                }
-                for (var fluid : slot.fluidInventory) {
-                    if (fluid == null || fluid.amount == 0) continue;
-                    ret.add(
-                        fluid.getLocalizedName() + ": "
-                            + EnumChatFormatting.AQUA
-                            + nc.toWideReadableForm(fluid.amount)
-                            + EnumChatFormatting.RESET);
-                }
             }
-            return ret.toArray(new String[0]);
-        } else return new String[] {};
+            for (var fluid : slot.fluidInventory) {
+                if (fluid == null || fluid.amount == 0) continue;
+                ret.add(
+                    fluid.getLocalizedName() + ": "
+                        + EnumChatFormatting.AQUA
+                        + nc.toWideReadableForm(fluid.amount)
+                        + EnumChatFormatting.RESET);
+            }
+        }
+        return ret.toArray(new String[0]);
     }
 
     @Override

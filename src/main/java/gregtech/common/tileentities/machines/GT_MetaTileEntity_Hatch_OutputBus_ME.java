@@ -34,7 +34,6 @@ import appeng.util.IWideReadableNumberConverter;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
@@ -49,9 +48,9 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
 
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
-    final IItemList<IAEItemStack> itemCache = GregTech_API.mAE2 ? AEApi.instance()
+    final IItemList<IAEItemStack> itemCache = AEApi.instance()
         .storage()
-        .createItemList() : null;
+        .createItemList();
     long lastOutputTick = 0;
     long tickCounter = 0;
     boolean lastOutputFailed = false;
@@ -96,7 +95,6 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
 
     @Override
     public boolean storeAll(ItemStack aStack) {
-        if (!GregTech_API.mAE2) return false;
         aStack.stackSize = store(aStack);
         return aStack.stackSize == 0;
     }
@@ -210,57 +208,53 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
 
-        if (GregTech_API.mAE2) {
-            NBTTagList items = new NBTTagList();
-            for (IAEItemStack s : itemCache) {
-                if (s.getStackSize() == 0) continue;
-                NBTTagCompound tag = new NBTTagCompound();
-                tag.setTag("itemStack", GT_Utility.saveItem(s.getItemStack()));
-                tag.setLong("size", s.getStackSize());
-                items.appendTag(tag);
-            }
-            aNBT.setTag("cachedItems", items);
-            getProxy().writeToNBT(aNBT);
+        NBTTagList items = new NBTTagList();
+        for (IAEItemStack s : itemCache) {
+            if (s.getStackSize() == 0) continue;
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setTag("itemStack", GT_Utility.saveItem(s.getItemStack()));
+            tag.setLong("size", s.getStackSize());
+            items.appendTag(tag);
         }
+        aNBT.setTag("cachedItems", items);
+        getProxy().writeToNBT(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
 
-        if (GregTech_API.mAE2) {
-            NBTBase t = aNBT.getTag("cachedStack"); // legacy
-            if (t instanceof NBTTagCompound) itemCache.add(
-                AEApi.instance()
+        NBTBase t = aNBT.getTag("cachedStack"); // legacy
+        if (t instanceof NBTTagCompound) itemCache.add(
+            AEApi.instance()
+                .storage()
+                .createItemStack(GT_Utility.loadItem((NBTTagCompound) t)));
+        t = aNBT.getTag("cachedItems");
+        if (t instanceof NBTTagList l) {
+            for (int i = 0; i < l.tagCount(); ++i) {
+                NBTTagCompound tag = l.getCompoundTagAt(i);
+                if (!tag.hasKey("itemStack")) { // legacy #868
+                    itemCache.add(
+                        AEApi.instance()
+                            .storage()
+                            .createItemStack(GT_Utility.loadItem(l.getCompoundTagAt(i))));
+                    continue;
+                }
+                NBTTagCompound tagItemStack = tag.getCompoundTag("itemStack");
+                final IAEItemStack s = AEApi.instance()
                     .storage()
-                    .createItemStack(GT_Utility.loadItem((NBTTagCompound) t)));
-            t = aNBT.getTag("cachedItems");
-            if (t instanceof NBTTagList l) {
-                for (int i = 0; i < l.tagCount(); ++i) {
-                    NBTTagCompound tag = l.getCompoundTagAt(i);
-                    if (!tag.hasKey("itemStack")) { // legacy #868
-                        itemCache.add(
-                            AEApi.instance()
-                                .storage()
-                                .createItemStack(GT_Utility.loadItem(l.getCompoundTagAt(i))));
-                        continue;
-                    }
-                    NBTTagCompound tagItemStack = tag.getCompoundTag("itemStack");
-                    final IAEItemStack s = AEApi.instance()
-                        .storage()
-                        .createItemStack(GT_Utility.loadItem(tagItemStack));
-                    if (s != null) {
-                        s.setStackSize(tag.getLong("size"));
-                        itemCache.add(s);
-                    } else {
-                        GT_Mod.GT_FML_LOGGER.warn(
-                            "An error occurred while loading contents of ME Output Bus. This item has been voided: "
-                                + tagItemStack);
-                    }
+                    .createItemStack(GT_Utility.loadItem(tagItemStack));
+                if (s != null) {
+                    s.setStackSize(tag.getLong("size"));
+                    itemCache.add(s);
+                } else {
+                    GT_Mod.GT_FML_LOGGER.warn(
+                        "An error occurred while loading contents of ME Output Bus. This item has been voided: "
+                            + tagItemStack);
                 }
             }
-            getProxy().readFromNBT(aNBT);
         }
+        getProxy().readFromNBT(aNBT);
     }
 
     public boolean isLastOutputFailed() {
@@ -274,7 +268,6 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
 
     @Override
     public String[] getInfoData() {
-        if (!GregTech_API.mAE2) return new String[] {};
         List<String> ss = new ArrayList<>();
         ss.add(
             "The bus is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
