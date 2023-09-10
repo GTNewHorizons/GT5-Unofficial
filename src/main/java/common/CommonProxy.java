@@ -2,24 +2,18 @@ package common;
 
 import common.items.ErrorItem;
 import common.items.MetaItem_CraftingComponent;
-import common.items.MetaItem_ReactorComponent;
 import common.tileentities.GTMTE_TFFTHatch;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import gregtech.api.GregTech_API;
-import kekztech.GuiHandler;
 import kekztech.Items;
-import kekztech.KekzCore;
 
 public class CommonProxy {
 
     public void preInit(final FMLPreInitializationEvent e) {
         // Items
         ErrorItem.getInstance().registerItem();
-        MetaItem_ReactorComponent.getInstance().registerItem();
         MetaItem_CraftingComponent.getInstance().registerItem();
         Items.registerOreDictNames();
         // Blocks
@@ -28,8 +22,6 @@ public class CommonProxy {
         TileEntities.preInit();
         // TC Research
         Researches.preInit();
-        // GUI Handler
-        NetworkRegistry.INSTANCE.registerGuiHandler(KekzCore.instance, new GuiHandler());
     }
 
     public void init(final FMLInitializationEvent e) {
@@ -43,6 +35,6 @@ public class CommonProxy {
         // Research
         Researches.postInit();
 
-        if (GregTech_API.mAE2) GTMTE_TFFTHatch.registerAEIntegration();
+        GTMTE_TFFTHatch.registerAEIntegration();
     }
 }

@@ -16,85 +16,7 @@ mbdesc.addOutputBus.OutputBus=输出总线
 mbdesc.addOutputHatch.OutputHatch=输出仓
 mbdesc.signAndFinalize.Hold=按住
 mbdesc.signAndFinalize.todisplay=以显示结构指导
-mbdesc.signAndFinalize.createdby=添加者: 
-
-# -------- Reactor: Structure Blocks
-tile.kekztech_controlrod_block.name=核反应堆控制棒
-tile.kekztech_reactorchamberoff_block.name=核反应堆室(OFF)
-tile.kekztech_reactorchamberon_block.name=核反应堆室(ON)
-
-# -------- Reactor: Heat Vents
-item.kekztech_reactor_item.0.name=简易散热风扇
-item.kekztech_reactor_item.1.name=基础散热风扇
-item.kekztech_reactor_item.2.name=进阶散热风扇
-item.kekztech_reactor_item.3.name=高科技散热风扇
-item.kekztech_reactor_item.4.name=简易散热风扇组件
-item.kekztech_reactor_item.5.name=基础散热风扇组件
-item.kekztech_reactor_item.6.name=进阶散热风扇组件
-item.kekztech_reactor_item.7.name=高科技散热风扇组件
-item.kekztech_reactor_item.8.name=简易超频散热风扇
-item.kekztech_reactor_item.9.name=基础超频散热风扇
-item.kekztech_reactor_item.10.name=进阶超频散热风扇
-item.kekztech_reactor_item.11.name=高科技超频散热风扇
-
-# -------- Reactor: Heat Exchangers
-item.kekztech_reactor_item.12.name=简易热交换器
-item.kekztech_reactor_item.13.name=基础热交换器
-item.kekztech_reactor_item.14.name=进阶热交换器
-item.kekztech_reactor_item.15.name=高科技热交换器
-
-# -------- Reactor: Fuel Rods
-item.kekztech_reactor_item.16.name=燃料棒(浓缩铀)
-item.kekztech_reactor_item.17.name=二联燃料棒(浓缩铀)
-item.kekztech_reactor_item.18.name=四联燃料棒(浓缩铀)
-item.kekztech_reactor_item.19.name=燃料棒(钍)
-item.kekztech_reactor_item.20.name=二联燃料棒(钍)
-item.kekztech_reactor_item.21.name=四联燃料棒(钍)
-item.kekztech_reactor_item.22.name=燃料棒(钚MOX)
-item.kekztech_reactor_item.23.name=二联燃料棒(钚MOX)
-item.kekztech_reactor_item.24.name=四联燃料棒(钚MOX)
-item.kekztech_reactor_item.25.name=燃料棒(富集硅岩)
-item.kekztech_reactor_item.26.name=二联燃料棒(富集硅岩)
-item.kekztech_reactor_item.27.name=四联燃料棒(富集硅岩)
-item.kekztech_reactor_item.28.name=燃料棒(钍MOX)
-item.kekztech_reactor_item.29.name=二联燃料棒(钍MOX)
-item.kekztech_reactor_item.30.name=四联燃料棒(钍MOX)
-
-# -------- Reactor: Fuel Rods (Depleted)
-item.kekztech_reactor_item.31.name=枯竭燃料棒(浓缩铀)
-item.kekztech_reactor_item.32.name=枯竭二联燃料棒(浓缩铀)
-item.kekztech_reactor_item.33.name=枯竭四联燃料棒(浓缩铀)
-item.kekztech_reactor_item.34.name=枯竭燃料棒(钍)
-item.kekztech_reactor_item.35.name=枯竭二联燃料棒(钍)
-item.kekztech_reactor_item.36.name=枯竭四联燃料棒(钍)
-item.kekztech_reactor_item.37.name=枯竭燃料棒(钚MOX)
-item.kekztech_reactor_item.38.name=枯竭二联燃料棒(钚MOX)
-item.kekztech_reactor_item.39.name=枯竭四联燃料棒(钚MOX)
-item.kekztech_reactor_item.40.name=枯竭燃料棒(富集硅岩)
-item.kekztech_reactor_item.41.name=枯竭二联燃料棒(富集硅岩)
-item.kekztech_reactor_item.42.name=枯竭四联燃料棒(富集硅岩)
-item.kekztech_reactor_item.43.name=枯竭燃料棒(钍MOX)
-item.kekztech_reactor_item.44.name=枯竭燃料棒(钍MOX)
-item.kekztech_reactor_item.45.name=枯竭燃料棒(钍MOX)
-
-# -------- Reactor: Neutron Reflectors
-item.kekztech_reactor_item.46.name=中子反射板
-item.kekztech_reactor_item.47.name=超级中子反射板(坚不可摧)
-
-# -------- Reactor: Coolant Cells
-item.kekztech_reactor_item.48.name=氦冷却单元
-item.kekztech_reactor_item.49.name=钠钾冷却单元
-
-# -------- Reactor: Crafting Components
-item.kekztech_crafting_item.0.name=铜导热管
-item.kekztech_crafting_item.1.name=银导热管
-item.kekztech_crafting_item.2.name=砷化硼导热管
-item.kekztech_crafting_item.3.name=钻石导热管
-item.kekztech_crafting_item.4.name=砷化硼粉
-item.kekztech_crafting_item.5.name=钻石同位素粉
-item.kekztech_crafting_item.6.name=氨基甲酸酯粉
-item.kekztech_crafting_item.7.name=砷化硼晶体
-item.kekztech_crafting_item.8.name=钻石同位素晶体
+mbdesc.signAndFinalize.createdby=添加者:
 
 # -------- Fuel Cell: Structure Blocks
 tile.kekztech_gdcceramicelectrolyteunit_block.name=钆铈陶瓷电解质单元
@@ -122,17 +44,6 @@ tile.kekztech_tfftstoragefield_block.8.name=T.F.F.T存储库方块(T8)
 tile.kekztech_tfftstoragefield_block.9.name=T.F.F.T存储库方块(T9)
 tile.kekztech_tfftstoragefield_block.10.name=T.F.F.T存储库方块(T10)
 tile.kekztech_tfftstoragefield_block.desc=这不是流体储罐
-
-# -------- Item Proxy: Structure Blocks
-tile.kekztech_itemproxycable_block.name=物流网络线缆
-tile.kekztech_itemproxycable_block.0.desc=连接物流网络节点
-tile.kekztech_itemproxysource_block.name=物流网络源
-tile.kekztech_itemproxysource_block.0.desc=指向容器/存储, 充当物流网络的源头
-tile.kekztech_itemproxysource_block.1.desc=插入编程电路以设置网络频道
-tile.kekztech_itemproxysource_block.2.desc=同一网络中只有一个源可以使用一个频道
-tile.kekztech_itemproxyendpoint_block.name=物流网络终端
-tile.kekztech_itemproxyendpoint_block.0.desc=将标记的一面指向你需要物流网络提供物品的地方
-tile.kekztech_itemproxyendpoint_block.1.desc=插入编程电路以设置网络频道
 
 # -------- Lapotronic Super Capacitor: Structure Blocks
 tile.kekztech_lapotronicenergyunit_block.0.name=兰波顿超级电容机械方块
@@ -167,19 +78,8 @@ tc.research_name.ICHORJAR=灵液源质罐子
 tc.research_text.ICHORJAR=非常好的罐子
 kekztech.research_page.ICHORJAR.0=就是这个!<BR><BR>将一点灵液注魔进源质罐子,你获得了可以与数字化源质存储相匹敌,同时还不用牺牲美感的新罐子.<BR><BR>灵液源质罐子可以装下惊人的4096点源质,非常适合你刚解锁的这些基于灵液的注魔.<BR><BR>你绝对不会想打扰这些罐子的.不过幸运的是,灵液源质罐子拥有足够的柔韧性,不太容易被误操作摧毁.
 
-# -------- Space Elevator: Block
-tile.kekztech_spaceelevator_block.0.name=太空电梯基座
-tile.kekztech_spaceelevator_block.1.name=太空电梯线圈
-tile.kekztech_spaceelevator_block.desc=太空电梯基站的一部分
-tile.kekztech_spaceelevatorcapacitor_block.name=太空电梯电容
-tile.kekztech_spaceelevatorcapacitor_block.desc=透视对你的FPS有好处!
-tile.kekztech_spaceelevatortether_block.name=太空电梯线缆
-
 # -------- Cosmetic Blocks
 tile.kekztech_largehextile_block.name=大六角瓷砖
-
-# -------- Beam Transmitter
-tile.kekztech_beamtransmitter_block=光束发射器
 
 # -------- Achievements
 achievement.tile.kekztech_lapotronicenergyunit_block.2.desc=捡起这个物品以在NEI内查看配方

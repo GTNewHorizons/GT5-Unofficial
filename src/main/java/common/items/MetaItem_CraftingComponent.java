@@ -35,17 +35,6 @@ public class MetaItem_CraftingComponent extends Item {
     @Override
     public void registerIcons(IIconRegister reg) {
         int counter = 9;
-        // Raw heat pipes
-        /*
-         * icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "CopperHeatPipe"); icons[counter++] =
-         * reg.registerIcon(KekzCore.MODID + ":" + "SilverHeatPipe"); icons[counter++] = reg.registerIcon(KekzCore.MODID
-         * + ":" + "BoronArsenideHeatPipe"); icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" +
-         * "DiamondHeatPipe"); // Dust icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "BoronArsenideDust");
-         * icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "IsotopicallyPureDiamondDust"); icons[counter++] =
-         * reg.registerIcon(KekzCore.MODID + ":" + "AmineCarbamateDust"); // Crystal icons[counter++] =
-         * reg.registerIcon(KekzCore.MODID + ":" + "BoronArsenideCrystal"); icons[counter++] =
-         * reg.registerIcon(KekzCore.MODID + ":" + "IsotopicallyPureDiamondCrystal");
-         */
         // Ceramics
         icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "YSZCeramicDust");
         icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "GDCCeramicDust");

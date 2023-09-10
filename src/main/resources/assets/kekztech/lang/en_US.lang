@@ -18,84 +18,6 @@ mbdesc.signAndFinalize.Hold=Hold
 mbdesc.signAndFinalize.todisplay=to display structure guidelines
 mbdesc.signAndFinalize.createdby=Created by
 
-# -------- Reactor: Structure Blocks
-tile.kekztech_controlrod_block.name=Nuclear Reactor Control Rod
-tile.kekztech_reactorchamberoff_block.name=Nuclear Reactor Chamber (OFF)
-tile.kekztech_reactorchamberon_block.name=Nuclear Reactor Chamber (ON)
-
-# -------- Reactor: Heat Vents
-item.kekztech_reactor_item.0.name=Weak Heat Vent
-item.kekztech_reactor_item.1.name=Basic Heat Vent
-item.kekztech_reactor_item.2.name=Advanced Heat Vent
-item.kekztech_reactor_item.3.name=High-Tech Heat Vent
-item.kekztech_reactor_item.4.name=Weak Component Heat Vent
-item.kekztech_reactor_item.5.name=Basic Component Heat Vent
-item.kekztech_reactor_item.6.name=Advanced Component Heat Vent
-item.kekztech_reactor_item.7.name=High-Tech Component Heat Vent
-item.kekztech_reactor_item.8.name=Weak Overclocked Heat Vent
-item.kekztech_reactor_item.9.name=Basic Overclocked Heat Vent
-item.kekztech_reactor_item.10.name=Advanced Overclocked Heat Vent
-item.kekztech_reactor_item.11.name=High-Tech Overclocked Heat Vent
-
-# -------- Reactor: Heat Exchangers
-item.kekztech_reactor_item.12.name=Weak Heat Exchanger
-item.kekztech_reactor_item.13.name=Basic Heat Exchanger
-item.kekztech_reactor_item.14.name=Advanced Heat Exchanger
-item.kekztech_reactor_item.15.name=High-Tech Heat Exchanger
-
-# -------- Reactor: Fuel Rods
-item.kekztech_reactor_item.16.name=Fuel Rod (Enriched Uranium)
-item.kekztech_reactor_item.17.name=Dual Fuel Rod (Enriched Uranium)
-item.kekztech_reactor_item.18.name=Quad Fuel Rod (Enriched Uranium)
-item.kekztech_reactor_item.19.name=Fuel Rod (Thorium)
-item.kekztech_reactor_item.20.name=Dual Fuel Rod (Thorium)
-item.kekztech_reactor_item.21.name=Quad Fuel Rod (Thorium)
-item.kekztech_reactor_item.22.name=Fuel Rod (Plutonium MOX)
-item.kekztech_reactor_item.23.name=Dual Fuel Rod (Plutonium MOX)
-item.kekztech_reactor_item.24.name=Quad Fuel Rod (Plutonium MOX)
-item.kekztech_reactor_item.25.name=Fuel Rod (Enriched Naquadah)
-item.kekztech_reactor_item.26.name=Dual Fuel Rod (Enriched Naquadah)
-item.kekztech_reactor_item.27.name=Quad Fuel Rod (Enriched Naquadah)
-item.kekztech_reactor_item.28.name=Fuel Rod (Thorium MOX)
-item.kekztech_reactor_item.29.name=Dual Fuel Rod (Thorium MOX)
-item.kekztech_reactor_item.30.name=Quad Fuel Rod (Thorium MOX)
-
-# -------- Reactor: Fuel Rods (Depleted)
-item.kekztech_reactor_item.31.name=Depleted Fuel Rod (Enriched Uranium)
-item.kekztech_reactor_item.32.name=Depleted Dual Fuel Rod (Enriched Uranium)
-item.kekztech_reactor_item.33.name=Depleted Quad Fuel Rod (Enriched Uranium)
-item.kekztech_reactor_item.34.name=Depleted Fuel Rod (Thorium)
-item.kekztech_reactor_item.35.name=Depleted Dual Fuel Rod (Thorium)
-item.kekztech_reactor_item.36.name=Depleted Quad Fuel Rod (Thorium)
-item.kekztech_reactor_item.37.name=Depleted Fuel Rod (Plutonium MOX)
-item.kekztech_reactor_item.38.name=Depleted Dual Fuel Rod (Plutonium MOX)
-item.kekztech_reactor_item.39.name=Depleted Quad Fuel Rod (Plutonium MOX)
-item.kekztech_reactor_item.40.name=Depleted Fuel Rod (Enriched Naquadah)
-item.kekztech_reactor_item.41.name=Depleted Dual Fuel Rod (Enriched Naquadah)
-item.kekztech_reactor_item.42.name=Depleted Quad Fuel Rod (Enriched Naquadah)
-item.kekztech_reactor_item.43.name=Depleted Fuel Rod (Thorium MOX)
-item.kekztech_reactor_item.44.name=Depleted Fuel Rod (Thorium MOX)
-item.kekztech_reactor_item.45.name=Depleted Fuel Rod (Thorium MOX)
-
-# -------- Reactor: Neutron Reflectors
-item.kekztech_reactor_item.46.name=Neutron Reflector
-item.kekztech_reactor_item.47.name=Neutron Supermirror (Unbreakable)
-
-# -------- Reactor: Coolant Cells
-item.kekztech_reactor_item.48.name=Helium Coolant Cell
-item.kekztech_reactor_item.49.name=NaK Coolant Cell
-
-# -------- Reactor: Crafting Components
-item.kekztech_crafting_item.0.name=Copper Heat Pipe
-item.kekztech_crafting_item.1.name=Silver Heat Pipe
-item.kekztech_crafting_item.2.name=Boron Arsenide Heat Pipe
-item.kekztech_crafting_item.3.name=Diamond Heat Pipe
-item.kekztech_crafting_item.4.name=Boron Arsenide Dust
-item.kekztech_crafting_item.5.name=Isotopically Pure Diamond Dust
-item.kekztech_crafting_item.6.name=Amine Carbamate Dust
-item.kekztech_crafting_item.7.name=Boron Arsenide Crystal
-item.kekztech_crafting_item.8.name=Isotopically Pure Diamond Crystal
-
 # -------- Fuel Cell: Structure Blocks
 tile.kekztech_gdcceramicelectrolyteunit_block.name=GDC Ceramic Electrolyte Unit
 tile.kekztech_yszceramicelectrolyteunit_block.name=YSZ Ceramic Electrolyte Unit
@@ -126,17 +48,6 @@ tile.kekztech_tfftstoragefield_block.hint.1=Hint 1 Dot: T.F.F.T Casing
 tile.kekztech_tfftstoragefield_block.hint.2=Hint 2 Dot: T.F.F.T Casing, Maintenance Hatch, T.F.F.T Multi I/O Hatch, Input/Output Hatch, Energy Hatch
 tile.kekztech_tfftstoragefield_block.hint.3=Hint 3 Dot: EV+ Tier Glass, T.F.F.T Multi I/O Hatch, Input/Output Hatch
 tile.kekztech_tfftstoragefield_block.hint.4=Hint 4 Dot: EV+ Tier Glass
-
-# -------- Item Proxy: Structure Blocks
-tile.kekztech_itemproxycable_block.name=Item Proxy Network Cable
-tile.kekztech_itemproxycable_block.0.desc=Connects Item Proxy Nodes
-tile.kekztech_itemproxysource_block.name=Item Proxy Network Source
-tile.kekztech_itemproxysource_block.0.desc=Point to an inventory to act as source for the item proxy network
-tile.kekztech_itemproxysource_block.1.desc=Insert an Integrated Circuit to set the network channel
-tile.kekztech_itemproxysource_block.2.desc=Only one source can use one channel on the same network
-tile.kekztech_itemproxyendpoint_block.name=Item Proxy Network Endpoint
-tile.kekztech_itemproxyendpoint_block.0.desc=Point the marked side to where you want to provide an inventory proxy to
-tile.kekztech_itemproxyendpoint_block.1.desc=Insert an Integrated Circuit to set the network channel
 
 # -------- Lapotronic Super Capacitor: Structure Blocks
 tile.kekztech_lapotronicenergyunit_block.0.name=Lapotronic Super Capacitor Casing
@@ -174,19 +85,8 @@ tc.research_name.ICHORJAR=Ichor Jars
 tc.research_text.ICHORJAR=Much better jars
 kekztech.research_page.ICHORJAR.0=This is it!<BR><BR>By infusing a jar with just a single piece of Ichor you have created something to rival digitized Essentia storage without sacrificing any of the beauty of Warded Jars.<BR><BR>Ichor Jars can hold an astounding 4096 Essentia and fit nicely into your recently aquired set of Ichor based achievements.<BR><BR>You definitely don't want to disturb these jars. Luckily Ichor is resilient enough to make accidentially destroying one unlikely.
 
-# -------- Space Elevator: Block
-tile.kekztech_spaceelevator_block.0.name=Space Elevator Base
-tile.kekztech_spaceelevator_block.1.name=Space Elevator Coil Holder
-tile.kekztech_spaceelevator_block.desc=Part of the Space Elevator Base Station
-tile.kekztech_spaceelevatorcapacitor_block.name=Space Elevator Capacitor
-tile.kekztech_spaceelevatorcapacitor_block.desc=The see-through is good for your FPS!
-tile.kekztech_spaceelevatortether_block.name=Space Elevator Tether
-
 # -------- Cosmetic Blocks
 tile.kekztech_largehextile_block.name=Large Hex Tile
-
-# -------- Beam Transmitter
-tile.kekztech_beamtransmitter_block=Beam Transmitter
 
 # -------- Achievements
 achievement.tile.kekztech_lapotronicenergyunit_block.2.desc=Pickup this item to see the recipe in NEI

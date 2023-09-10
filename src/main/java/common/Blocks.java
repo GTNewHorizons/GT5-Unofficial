@@ -17,15 +17,9 @@ public class Blocks {
     public static Block yszUnit;
     public static Block gdcUnit;
     public static Block tfftStorageField;
-    public static Block reactorChamberOFF;
-    public static Block reactorChamberON;
-    public static Block reactorControlRod;
     public static Block jarThaumiumReinforced;
     public static Block jarIchor;
     public static Block lscLapotronicEnergyUnit;
-    public static Block spaceElevatorStructure;
-    public static Block spaceElevatorCapacitor;
-    public static Block spaceElevatorTether;
 
     public static Block largeHexPlate;
 
