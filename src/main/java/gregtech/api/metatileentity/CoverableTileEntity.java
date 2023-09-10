@@ -30,6 +30,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.ByteStreams;
@@ -68,7 +70,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class CoverableTileEntity extends BaseTileEntity implements ICoverable, IGregtechWailaProvider {
 
@@ -430,7 +431,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public void setStrongOutputRedstoneSignal(ForgeDirection side, byte strength) {
-        mStrongRedstone |= (byte)side.flag;
+        mStrongRedstone |= (byte) side.flag;
         setOutputRedstoneSignal(side, strength);
     }
 
@@ -770,7 +771,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return builder.build();
     }
 
-    private void writeClientCoverData(@NotNull PacketBuffer buffer, @NotNull Map<ForgeDirection, ISerializableObject> dataMap) {
+    private void writeClientCoverData(@NotNull PacketBuffer buffer,
+        @NotNull Map<ForgeDirection, ISerializableObject> dataMap) {
         buffer.writeInt(dataMap.size());
         dataMap.forEach((direction, serializableObject) -> {
             final ByteBuf individualBuffer = Unpooled.buffer();
