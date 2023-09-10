@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.util.GT_LanguageManager;
+import org.jetbrains.annotations.NotNull;
 
 public class MaterialPart extends Item {
 
@@ -52,7 +53,7 @@ public class MaterialPart extends Item {
     // Tooltip information.
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List tooltipList, boolean aF3_H)  {
+    public void addInformation(@NotNull ItemStack itemStack, EntityPlayer player, List<String> tooltipList, boolean aF3_H)  {
 
         final ModernMaterial material = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
 

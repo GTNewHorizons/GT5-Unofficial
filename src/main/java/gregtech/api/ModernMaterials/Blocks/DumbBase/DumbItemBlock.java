@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -33,13 +34,13 @@ public abstract class DumbItemBlock extends ItemBlock {
     // Tooltip information.
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> tooltipList, boolean aF3_H)  {
+    public void addInformation(@NotNull ItemStack itemStack, EntityPlayer player, List<String> tooltipList, boolean aF3_H)  {
 
         final ModernMaterial material = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
 
-        //for (String line : tooltipGenerator((MaterialPart) itemStack.getItem(), material)) {
-        //    tooltipList.add(line);
-        //}
+        for (String line : tooltipGenerator((DumbItemBlock) itemStack.getItem(), material)) {
+            tooltipList.add(line);
+        }
     }
 
     @Override

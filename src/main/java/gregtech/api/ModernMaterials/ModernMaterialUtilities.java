@@ -3,6 +3,7 @@ package gregtech.api.ModernMaterials;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.DumbItemBlock;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.*;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.PartProperties.Rendering.ModernMaterialItemRenderer;
@@ -10,6 +11,7 @@ import gregtech.api.ModernMaterials.PartRecipeGenerators.ModernMaterialsPlateRec
 import gregtech.api.ModernMaterials.PartsClasses.IGetItem;
 import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
 import gregtech.api.ModernMaterials.PartsClasses.MaterialPartsEnum;
+import gregtech.api.enums.Materials;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -129,13 +131,20 @@ public class ModernMaterialUtilities {
         return modernMaterial;
     }
 
-    public static ArrayList<String> tooltipGenerator(MaterialPart materialPart, ModernMaterial material) {
+    public static ArrayList<String> tooltipGenerator(Item part, ModernMaterial material) {
         // Todo, this is just temporary as a proof of concept/debug info.
-        // Probably will put radioactive warning here. Not sure what else yet.
+        // Probably will put radioactive warning here. Not sure what else yet, if any.
+
         ArrayList<String> tooltip = new ArrayList<>();
+
         tooltip.add("Generic Tooltip");
         tooltip.add("Material Name: " + material.getMaterialName());
-        tooltip.add("Material Part Type: " + material.getCustomPartInfo(materialPart.getPart()).getTextureType());
+
+        if (part instanceof DumbItemBlock blockPart) {
+            tooltip.add("Material Part Type: " + "Blah blah do later");
+        } else if (part instanceof MaterialPart itemPart) {
+            tooltip.add("Material Part Type: " + material.getCustomPartInfo(itemPart.getPart()).getTextureType());
+        }
 
         return tooltip;
     }
