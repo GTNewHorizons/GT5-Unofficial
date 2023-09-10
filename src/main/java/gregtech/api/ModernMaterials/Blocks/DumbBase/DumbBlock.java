@@ -94,12 +94,6 @@ public abstract class DumbBlock extends Block {
         return aWillHarvest || super.removedByPlayer(aWorld, aPlayer, x, y, z, false);
     }
 
-    @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
-        // Return the actual item when pick block is used in creative.
-        return getDroppedItemStack(world, x, y, z);
-    }
-
     public ItemStack getDroppedItemStack(World world, int x, int y, int z) {
         return new ItemStack(this, 1, getMaterialID(world, x, y, z));
     }
@@ -132,4 +126,9 @@ public abstract class DumbBlock extends Block {
         return super.getLocalizedName();
     }
 
+    @Override
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
+    {
+        return getPickBlock(target, world, x, y, z);
+    }
 }
