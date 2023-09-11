@@ -112,9 +112,15 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
                 return false;
             }
 
-            if (! ((aPlayer == null || aPlayer.isSneaking()
-                || !(aMTEContainer.mTileEntity instanceof IMTE_OnlyPlaceableWhenSneaking mteSNeaking)
-                || !mteSNeaking.onlyPlaceableWhenSneaking()))){
+            if (aPlayer == null){
+                return false;
+            }
+
+            if (!aPlayer.isSneaking()){
+                return false;
+            }
+
+            if (aMTEContainer.mTileEntity instanceof IMTE_OnlyPlaceableWhenSneaking mteSNeaking && mteSNeaking.onlyPlaceableWhenSneaking()){
                 return false;
             }
 
