@@ -108,7 +108,7 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
                 .getNewTileEntityContainer(aWorld, aX, aY, aZ, aStack);
 
             // todo: break this condition is way too long, must be broken down into many smaller ones with early exit
-            if (! (aMTEContainer != null)){
+            if (aMTEContainer == null){
                 return false;
             }
 
