@@ -108,72 +108,88 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
                 .getNewTileEntityContainer(aWorld, aX, aY, aZ, aStack);
 
             // todo: break this condition is way too long, must be broken down into many smaller ones with early exit
-            if (aMTEContainer != null
-                && (aPlayer == null || aPlayer.isSneaking()
-                    || !(aMTEContainer.mTileEntity instanceof IMTE_OnlyPlaceableWhenSneaking mteSNeaking)
-                    || !mteSNeaking.onlyPlaceableWhenSneaking())
-                && (aWorld.checkNoEntityCollision(AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1))
-                    || (aMTEContainer.mTileEntity instanceof IMTE_IgnoreEntityCollisionWhenPlacing mteIgnoreCollision
-                        && mteIgnoreCollision.ignoreEntityCollisionWhenPlacing(
-                            aStack,
-                            aPlayer,
-                            aWorld,
-                            aX,
-                            aY,
-                            aZ,
-                            side,
-                            aHitX,
-                            aHitY,
-                            aHitZ)))
-                && (!(aMTEContainer.mTileEntity instanceof IMTE_CanPlace mteCanPlace)
-                    || mteCanPlace.canPlace(aStack, aPlayer, aWorld, aX, aY, aZ, side, aHitX, aHitY, aHitZ))
-                && aWorld.setBlock(aX, aY, aZ, aMTEContainer.mBlock, 15 - aMTEContainer.mBlockMetaData, 2)) {
-                aMTEContainer.setMultiTile(aWorld, aX, aY, aZ);
-
-                try {
-                    if (((IMultiTileEntity) aMTEContainer.mTileEntity)
-                        .onPlaced(aStack, aPlayer, aWorld, aX, aY, aZ, side, aHitX, aHitY, aHitZ)) {
-                        aWorld.playSoundEffect(
-                            aX + 0.5,
-                            aY + 0.5,
-                            aZ + 0.5,
-                            aMTEContainer.mBlock.stepSound.func_150496_b(),
-                            (aMTEContainer.mBlock.stepSound.getVolume() + 1) / 2,
-                            aMTEContainer.mBlock.stepSound.getPitch() * 0.8F);
-                    }
-                } catch (Throwable e) {
-                    GT_FML_LOGGER.error("onPlaced", e);
-                }
-                try {
-                    if (aMTEContainer.mTileEntity instanceof IMTE_HasMultiBlockMachineRelevantData mteData
-                        && (mteData.hasMultiBlockMachineRelevantData())) {
-                        GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
-                    }
-                } catch (Throwable e) {
-                    GT_FML_LOGGER.error("causeMachineUpdate", e);
-                }
-                try {
-                    if (!aWorld.isRemote) {
-                        aWorld.notifyBlockChange(aX, aY, aZ, tReplacedBlock);
-                        aWorld.func_147453_f /* updateNeighborsAboutBlockChange */(aX, aY, aZ, aMTEContainer.mBlock);
-                    }
-                } catch (Throwable e) {
-                    GT_FML_LOGGER.error("notifyBlockChange", e);
-                }
-                try {
-                    ((IMultiTileEntity) aMTEContainer.mTileEntity).onTileEntityPlaced();
-                } catch (Throwable e) {
-                    GT_FML_LOGGER.error("onTileEntityPlaced", e);
-                }
-                try {
-                    aWorld.func_147451_t /* updateAllLightTypes */(aX, aY, aZ);
-                } catch (Throwable e) {
-                    GT_FML_LOGGER.error("updateAllLightTypes", e);
-                }
-
-                aStack.stackSize--;
-                return true;
+            if (! (aMTEContainer != null)){
+                return false;
             }
+
+            if (! ((aPlayer == null || aPlayer.isSneaking()
+                || !(aMTEContainer.mTileEntity instanceof IMTE_OnlyPlaceableWhenSneaking mteSNeaking)
+                || !mteSNeaking.onlyPlaceableWhenSneaking()))){
+                return false;
+            }
+
+            if (! ((aWorld.checkNoEntityCollision(AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1))
+                || (aMTEContainer.mTileEntity instanceof IMTE_IgnoreEntityCollisionWhenPlacing mteIgnoreCollision
+                && mteIgnoreCollision.ignoreEntityCollisionWhenPlacing(
+                aStack,
+                aPlayer,
+                aWorld,
+                aX,
+                aY,
+                aZ,
+                side,
+                aHitX,
+                aHitY,
+                aHitZ))))){
+                return false;
+            }
+
+            if (! ((!(aMTEContainer.mTileEntity instanceof IMTE_CanPlace mteCanPlace)
+                || mteCanPlace.canPlace(aStack, aPlayer, aWorld, aX, aY, aZ, side, aHitX, aHitY, aHitZ)))){
+                return false;
+            }
+
+            if (! (aWorld.setBlock(aX, aY, aZ, aMTEContainer.mBlock, 15 - aMTEContainer.mBlockMetaData, 2))){
+                return false;
+            }
+
+
+            aMTEContainer.setMultiTile(aWorld, aX, aY, aZ);
+
+            try {
+                if (((IMultiTileEntity) aMTEContainer.mTileEntity)
+                    .onPlaced(aStack, aPlayer, aWorld, aX, aY, aZ, side, aHitX, aHitY, aHitZ)) {
+                    aWorld.playSoundEffect(
+                        aX + 0.5,
+                        aY + 0.5,
+                        aZ + 0.5,
+                        aMTEContainer.mBlock.stepSound.func_150496_b(),
+                        (aMTEContainer.mBlock.stepSound.getVolume() + 1) / 2,
+                        aMTEContainer.mBlock.stepSound.getPitch() * 0.8F);
+                }
+            } catch (Throwable e) {
+                GT_FML_LOGGER.error("onPlaced", e);
+            }
+            try {
+                if (aMTEContainer.mTileEntity instanceof IMTE_HasMultiBlockMachineRelevantData mteData
+                    && (mteData.hasMultiBlockMachineRelevantData())) {
+                    GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+                }
+            } catch (Throwable e) {
+                GT_FML_LOGGER.error("causeMachineUpdate", e);
+            }
+            try {
+                if (!aWorld.isRemote) {
+                    aWorld.notifyBlockChange(aX, aY, aZ, tReplacedBlock);
+                    aWorld.func_147453_f /* updateNeighborsAboutBlockChange */(aX, aY, aZ, aMTEContainer.mBlock);
+                }
+            } catch (Throwable e) {
+                GT_FML_LOGGER.error("notifyBlockChange", e);
+            }
+            try {
+                ((IMultiTileEntity) aMTEContainer.mTileEntity).onTileEntityPlaced();
+            } catch (Throwable e) {
+                GT_FML_LOGGER.error("onTileEntityPlaced", e);
+            }
+            try {
+                aWorld.func_147451_t /* updateAllLightTypes */(aX, aY, aZ);
+            } catch (Throwable e) {
+                GT_FML_LOGGER.error("updateAllLightTypes", e);
+            }
+
+            aStack.stackSize--;
+            return true;
+
         } catch (Throwable e) {
             GT_FML_LOGGER.error("onItemUse", e);
         }
