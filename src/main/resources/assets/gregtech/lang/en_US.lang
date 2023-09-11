@@ -334,6 +334,7 @@ GT5U.machines.allow_nbt.tooltip=Allow items with NBT
 GT5U.machines.allow_nbt.tooltip.extended=§7By default, all items with NBT are blocked.
 GT5U.machines.ignore_nbt.tooltip=Ignore item NBT
 GT5U.machines.ignore_nbt.tooltip.extended=§7By default, item NBT must match.
+GT5U.machines.stocking_bus.failed_dump=Failed to dump items stored in the bus to ME network. Abort dismantling.
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear
@@ -363,6 +364,7 @@ GT5U.gui.button.ore_drill_cobblestone_on=§7Replace with cobblestone: §aON
 GT5U.gui.button.ore_drill_cobblestone_off=§7Replace with cobblestone: §4OFF
 GT5U.gui.button.drill_retract_pipes=§7Abort and retract mining pipes
 GT5U.gui.button.drill_retract_pipes_active=§4Cannot interrupt abort procedure
+GT5U.gui.button.dismantle_machine=Safely dismantle machine
 GT5U.gui.text.success=§aProcessing recipe
 GT5U.gui.text.generating=§aGenerating power
 GT5U.gui.text.no_recipe=§7No valid recipe found

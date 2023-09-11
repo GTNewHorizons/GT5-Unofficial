@@ -10,8 +10,10 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -19,12 +21,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -32,6 +36,7 @@ import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
@@ -55,6 +60,7 @@ import appeng.me.helpers.IGridProxyable;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
@@ -66,6 +72,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.widget.AESlotWidget;
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -87,6 +94,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     private int minAutoPullStackSize = 1;
     private final int fetchIntervalSec = 5;
     private static final int CONFIG_WINDOW_ID = 10;
+    private static IDrawable WRENCH_DRAWABLE;
     private boolean additionalConnection = false;
 
     public GT_MetaTileEntity_Hatch_InputBus_ME(int aID, String aName, String aNameRegional) {
@@ -338,7 +346,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
     @Override
     public int getCircuitSlotY() {
-        return 64;
+        return 61;
     }
 
     @Override
@@ -524,7 +532,17 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     }
 
     @Override
+    public int getGUIHeight() {
+        return 182;
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        if (WRENCH_DRAWABLE == null) {
+            WRENCH_DRAWABLE = new ItemDrawable(
+                GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(124, 1, Materials._NULL, Materials._NULL, null))
+                    .withFixedSize(16, 16, 1, 1);
+        }
         buildContext.addSyncedWindow(CONFIG_WINDOW_ID, this::createStackSizeConfigurationWindow);
         builder.widget(
             SlotGroup.ofItemHandler(inventoryHandler, 4)
@@ -557,7 +575,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                     }
                 })
                 .build()
-                .setPos(7, 9))
+                .setPos(7, 6))
             .widget(
                 SlotGroup.ofItemHandler(stockedInventory, 4)
                     .startFromSlot(0)
@@ -565,10 +583,10 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                     .background(GT_UITextures.SLOT_DARK_GRAY)
                     .widgetCreator(slot -> new AESlotWidget(slot).disableInteraction())
                     .build()
-                    .setPos(97, 9))
+                    .setPos(97, 6))
             .widget(
                 new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_DOUBLE)
-                    .setPos(82, 30)
+                    .setPos(82, 27)
                     .setSize(12, 12))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (clickData.mouseButton == 0) {
@@ -590,15 +608,41 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                     ImmutableList.of(
                         "Click to toggle automatic item pulling from ME.",
                         "Right-Click to edit minimum stack size for item pulling."))
-                .setSize(16, 16)
-                .setPos(80, 10))
+                .setSize(18, 18)
+                .setPos(7, 79))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullItemList, this::setAutoPullItemList))
+            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                if (NetworkUtils.isClient()) return;
+                for (int i = 0; i < SLOT_COUNT; i++) {
+                    mInventory[i] = null;
+                }
+                if (tryPushBackAllItems()) {
+                    int x = getBaseMetaTileEntity().getXCoord();
+                    int y = getBaseMetaTileEntity().getYCoord();
+                    int z = getBaseMetaTileEntity().getZCoord();
+                    World world = getBaseMetaTileEntity().getWorld();
+                    Block block = world.getBlock(x, y, z);
+                    int blockMeta = world.getBlockMetadata(x, y, z);
+
+                    block.dropBlockAsItem(world, x, y, z, blockMeta, 0);
+                    world.setBlock(x, y, z, Blocks.air);
+                    world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(block) + (blockMeta << 12));
+                } else {
+                    widget.getContext()
+                        .getPlayer()
+                        .addChatMessage(new ChatComponentTranslation("GT5U.machines.stocking_bus.failed_dump"));
+                }
+            })
+                .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.dismantle_machine"))
+                .setBackground(GT_UITextures.BUTTON_STANDARD, WRENCH_DRAWABLE)
+                .setSize(18, 18)
+                .setPos(151, 79))
             .widget(
                 new SlotWidget(inventoryHandler, getManualSlot())
                     // ghost slots are prioritized over manual slot
                     .setShiftClickPriority(11)
                     .setBackground(getGUITextureSet().getItemSlot())
-                    .setPos(79, 45));
+                    .setPos(79, 42));
     }
 
     protected ModularWindow createStackSizeConfigurationWindow(final EntityPlayer player) {
