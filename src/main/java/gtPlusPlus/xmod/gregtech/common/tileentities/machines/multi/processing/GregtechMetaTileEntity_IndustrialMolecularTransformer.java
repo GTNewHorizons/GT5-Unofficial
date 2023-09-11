@@ -13,8 +13,8 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -175,6 +175,11 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer
     }
 
     @Override
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> d == ForgeDirection.UP;
+    }
+
+    @Override
     protected IIconContainer getActiveOverlay() {
         return TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active;
     }
@@ -227,10 +232,5 @@ public class GregtechMetaTileEntity_IndustrialMolecularTransformer
     @Override
     public boolean explodesOnComponentBreak(final ItemStack aStack) {
         return false;
-    }
-
-    @Override
-    public boolean isNewExtendedFacingValid(ExtendedFacing alignment) {
-        return alignment.getDirection() == ForgeDirection.UP && super.isNewExtendedFacingValid(alignment);
     }
 }

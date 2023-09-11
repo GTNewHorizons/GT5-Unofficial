@@ -24,6 +24,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -823,13 +824,8 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
     }
 
     @Override
-    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPreTick(aBaseMetaTileEntity, aTick);
-        // Fix GT bug
-        if (this.getBaseMetaTileEntity().getFrontFacing() != ForgeDirection.UP) {
-            log("Fixing Bad Facing. (GT Bug)");
-            this.getBaseMetaTileEntity().setFrontFacing(ForgeDirection.UP);
-        }
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> d == ForgeDirection.UP;
     }
 
     /**

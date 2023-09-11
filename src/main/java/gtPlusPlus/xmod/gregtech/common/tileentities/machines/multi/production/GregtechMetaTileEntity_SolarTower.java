@@ -21,6 +21,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -520,6 +521,11 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
         return false;
     }
 
+    @Override
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> d == ForgeDirection.UP;
+    }
+
     private Fluid mColdSalt = null;
     private Fluid mHotSalt = null;
 
@@ -651,20 +657,6 @@ public class GregtechMetaTileEntity_SolarTower extends GregtechMeta_MultiBlockBa
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mHeatLevel = aNBT.getInteger("mHeatLevel");
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-    }
-
-    @Override
-    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPreTick(aBaseMetaTileEntity, aTick);
-        // Fix GT bug
-        if (this.getBaseMetaTileEntity().getFrontFacing() != ForgeDirection.UP) {
-            this.getBaseMetaTileEntity().setFrontFacing(ForgeDirection.UP);
-        }
     }
 
     @Override

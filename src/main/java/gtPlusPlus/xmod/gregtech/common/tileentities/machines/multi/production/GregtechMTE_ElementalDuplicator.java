@@ -24,6 +24,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -261,6 +262,11 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
     }
 
     @Override
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> d == ForgeDirection.UP;
+    }
+
+    @Override
     protected IIconContainer getActiveOverlay() {
         return TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active;
     }
@@ -355,15 +361,6 @@ public class GregtechMTE_ElementalDuplicator extends GregtechMeta_MultiBlockBase
     @Override
     public boolean explodesOnComponentBreak(final ItemStack aStack) {
         return false;
-    }
-
-    @Override
-    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPreTick(aBaseMetaTileEntity, aTick);
-        // Fix GT bug
-        if (this.getBaseMetaTileEntity().getFrontFacing() != ForgeDirection.UP) {
-            this.getBaseMetaTileEntity().setFrontFacing(ForgeDirection.UP);
-        }
     }
 
     @Override
