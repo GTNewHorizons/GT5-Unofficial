@@ -137,7 +137,7 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
                 return false;
             }
 
-            if (! (aWorld.setBlock(aX, aY, aZ, aMTEContainer.mBlock, 15 - aMTEContainer.mBlockMetaData, 2))){
+            if (!aWorld.setBlock(aX, aY, aZ, aMTEContainer.mBlock, 15 - aMTEContainer.mBlockMetaData, 2)){
                 return false;
             }
 
