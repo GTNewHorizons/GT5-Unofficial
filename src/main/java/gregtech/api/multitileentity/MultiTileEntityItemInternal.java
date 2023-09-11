@@ -124,19 +124,12 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
                 return false;
             }
 
-            if (! ((aWorld.checkNoEntityCollision(AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1))
-                || (aMTEContainer.mTileEntity instanceof IMTE_IgnoreEntityCollisionWhenPlacing mteIgnoreCollision
-                && mteIgnoreCollision.ignoreEntityCollisionWhenPlacing(
-                aStack,
-                aPlayer,
-                aWorld,
-                aX,
-                aY,
-                aZ,
-                side,
-                aHitX,
-                aHitY,
-                aHitZ))))){
+            if (!aWorld.checkNoEntityCollision(AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1))){
+                return false;
+            }
+
+            if (!(aMTEContainer.mTileEntity instanceof IMTE_IgnoreEntityCollisionWhenPlacing mteIgnoreCollision)
+                || !mteIgnoreCollision.ignoreEntityCollisionWhenPlacing(aStack,aPlayer,aWorld,aX,aY,aZ,side,aHitX,aHitY,aHitZ)){
                 return false;
             }
 
