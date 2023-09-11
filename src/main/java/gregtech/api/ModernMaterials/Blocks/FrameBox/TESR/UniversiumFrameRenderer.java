@@ -5,6 +5,7 @@ import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxTileEntity;
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
@@ -22,7 +23,10 @@ public class UniversiumFrameRenderer extends TileEntitySpecialRenderer {
         CosmicRenderShenanigans.useShader();
 
         RenderBlocks renderBlocks = new RenderBlocks(tile.getWorldObj());
+
+        Tessellator.instance.startDrawingQuads();
         renderBlocks.renderBlockAsItem(tile.getBlockType(), ID, 1f);
+        Tessellator.instance.draw();
 
         CosmicRenderShenanigans.releaseShader();
         GL11.glPopMatrix();

@@ -30,7 +30,6 @@ public abstract class DumbBlock extends Block {
 
     protected DumbBlock() {
         super(Material.rock);
-        setBlockName(getBlockEnum().name());
         setHardness(1.5F);
         setResistance(10.0F);
     }

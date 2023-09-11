@@ -53,6 +53,5 @@ public abstract class DumbTileEntity extends TileEntity {
         return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, NBTTag);
     }
 
-    public static HashMap<Integer, TileEntitySpecialRenderer> masterTESRMap = new HashMap<>();
 
 }
