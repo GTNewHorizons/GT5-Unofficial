@@ -83,10 +83,15 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
     @Override
     public boolean onItemUse(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
         int ordinalSide, float aHitX, float aHitY, float aHitZ) {
+
         if (aY < 0 || aY > aWorld.getHeight()) return false;
+
+        if (aPlayer == null) return false;
+
         try {
             ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
             final Block tClickedBlock = aWorld.getBlock(aX, aY, aZ);
+
             if (tClickedBlock instanceof BlockSnow && (aWorld.getBlockMetadata(aX, aY, aZ) & 7) < 1) {
                 ordinalSide = SIDE_TOP;
                 side = ForgeDirection.UP;
@@ -100,46 +105,42 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
             final Block tReplacedBlock = aWorld.getBlock(aX, aY, aZ);
 
             if (!tReplacedBlock.isReplaceable(aWorld, aX, aY, aZ)
-                || !mBlock.canReplace(aWorld, aX, aY, aZ, ordinalSide, aStack)) return false;
-            if (aStack.stackSize == 0 || (aPlayer != null && !aPlayer.canPlayerEdit(aX, aY, aZ, ordinalSide, aStack)))
+                || !mBlock.canReplace(aWorld, aX, aY, aZ, ordinalSide, aStack)) {
                 return false;
+            }
+
+            if (aStack.stackSize == 0 || (!aPlayer.canPlayerEdit(aX, aY, aZ, ordinalSide, aStack))) {
+                return false;
+            }
 
             final MultiTileEntityContainer aMTEContainer = mBlock.mMultiTileEntityRegistry
                 .getNewTileEntityContainer(aWorld, aX, aY, aZ, aStack);
 
-            if (aMTEContainer == null){
+            if (aMTEContainer == null) return false;
+
+            if (!aPlayer.isSneaking() && aMTEContainer.mTileEntity instanceof IMTE_OnlyPlaceableWhenSneaking mteSNeaking
+                && mteSNeaking.onlyPlaceableWhenSneaking()) {
                 return false;
             }
 
-            if (aPlayer == null){
-                return false;
-            }
-
-            if (!aPlayer.isSneaking()){
-                return false;
-            }
-
-            if (aMTEContainer.mTileEntity instanceof IMTE_OnlyPlaceableWhenSneaking mteSNeaking && mteSNeaking.onlyPlaceableWhenSneaking()){
-                return false;
-            }
-
-            if (!aWorld.checkNoEntityCollision(AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1))){
+            if (!aWorld.checkNoEntityCollision(AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1))) {
                 return false;
             }
 
             if (!(aMTEContainer.mTileEntity instanceof IMTE_IgnoreEntityCollisionWhenPlacing mteIgnoreCollision)
-                || !mteIgnoreCollision.ignoreEntityCollisionWhenPlacing(aStack,aPlayer,aWorld,aX,aY,aZ,side,aHitX,aHitY,aHitZ)){
+                || !mteIgnoreCollision
+                    .ignoreEntityCollisionWhenPlacing(aStack, aPlayer, aWorld, aX, aY, aZ, side, aHitX, aHitY, aHitZ)) {
                 return false;
             }
 
-            if (aMTEContainer.mTileEntity instanceof IMTE_CanPlace mteCanPlace && !mteCanPlace.canPlace(aStack, aPlayer, aWorld, aX, aY, aZ, side, aHitX, aHitY, aHitZ)){
+            if (aMTEContainer.mTileEntity instanceof IMTE_CanPlace mteCanPlace
+                && !mteCanPlace.canPlace(aStack, aPlayer, aWorld, aX, aY, aZ, side, aHitX, aHitY, aHitZ)) {
                 return false;
             }
 
-            if (!aWorld.setBlock(aX, aY, aZ, aMTEContainer.mBlock, 15 - aMTEContainer.mBlockMetaData, 2)){
+            if (!aWorld.setBlock(aX, aY, aZ, aMTEContainer.mBlock, 15 - aMTEContainer.mBlockMetaData, 2)) {
                 return false;
             }
-
 
             aMTEContainer.setMultiTile(aWorld, aX, aY, aZ);
 
