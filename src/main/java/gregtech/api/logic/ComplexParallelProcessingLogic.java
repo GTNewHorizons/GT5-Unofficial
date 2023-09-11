@@ -18,7 +18,7 @@ public class ComplexParallelProcessingLogic<P extends ComplexParallelProcessingL
 
     public P setMaxComplexParallel(int maxComplexParallels) {
         this.maxComplexParallels = maxComplexParallels;
-        updateArrays();
+        reinitializeProcessingArrays();
         return getThis();
     }
 
@@ -38,11 +38,12 @@ public class ComplexParallelProcessingLogic<P extends ComplexParallelProcessingL
 
     @Override
     public boolean canWork() {
-        boolean allBusy = true;
         for (int i = 0; i < maxComplexParallels; i++) {
-            allBusy &= progresses[i] < durations[i];
+            if (progresses[i] >= durations[i]) {
+                return false;
+            }
         }
-        return !allBusy;
+        return true;
     }
 
     @Override
@@ -66,6 +67,7 @@ public class ComplexParallelProcessingLogic<P extends ComplexParallelProcessingL
                 progresses[i] = 0;
                 durations[i] = 0;
                 output(i);
+                continue;
             }
             progresses[i] = progresses[i] + 1;
         }
@@ -90,7 +92,7 @@ public class ComplexParallelProcessingLogic<P extends ComplexParallelProcessingL
         output();
     }
 
-    protected void updateArrays() {
+    protected void reinitializeProcessingArrays() {
         ItemStack[][] oldOutputItems = outputItems;
         FluidStack[][] oldOutputFluids = outputFluids;
         long[] oldCalculatedEutValues = calculatedEutValues;
