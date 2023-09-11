@@ -368,6 +368,12 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public void onExplosion() {
         super.onExplosion();
+        tryPushBackAllItems();
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        tryPushBackAllItems();
     }
 
     @Override
@@ -462,6 +468,21 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
             ItemStack pulled = (result != null) ? result.getItemStack() : null;
             stockedInventory.insertItem(index, pulled, false);
         } catch (final GridAccessException ignored) {}
+    }
+
+    /**
+     * Tries to push back all the stocked items to the ME network.
+     *
+     * @return If successfully pushed all items
+     */
+    private boolean tryPushBackAllItems() {
+        boolean success = true;
+        for (int i = 0; i < SLOT_COUNT; i++) {
+            if (!tryPushBackItem(i)) {
+                success = false;
+            }
+        }
+        return success;
     }
 
     /**
