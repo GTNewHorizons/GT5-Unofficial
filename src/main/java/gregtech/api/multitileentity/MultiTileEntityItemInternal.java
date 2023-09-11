@@ -133,8 +133,7 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
                 return false;
             }
 
-            if (! ((!(aMTEContainer.mTileEntity instanceof IMTE_CanPlace mteCanPlace)
-                || mteCanPlace.canPlace(aStack, aPlayer, aWorld, aX, aY, aZ, side, aHitX, aHitY, aHitZ)))){
+            if (aMTEContainer.mTileEntity instanceof IMTE_CanPlace mteCanPlace && !mteCanPlace.canPlace(aStack, aPlayer, aWorld, aX, aY, aZ, side, aHitX, aHitY, aHitZ)){
                 return false;
             }
 
