@@ -1862,36 +1862,32 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
     }
 
     private static void registerAE2Hatches() {
-        if (GregTech_API.mAE2) {
-            ItemList.Hatch_Output_Bus_ME.set(
-                new GT_MetaTileEntity_Hatch_OutputBus_ME(OUTPUT_BUS_ME.ID, "hatch.output_bus.me", "Output Bus (ME)")
-                    .getStackForm(1L));
-            ItemList.Hatch_Input_Bus_ME.set(
-                new GT_MetaTileEntity_Hatch_InputBus_ME(
-                    INPUT_BUS_ME.ID,
-                    "hatch.input_bus.me",
-                    "Stocking Input Bus (ME)").getStackForm(1L));
-            ItemList.Hatch_Output_ME.set(
-                new GT_MetaTileEntity_Hatch_Output_ME(OUTPUT_HATCH_ME.ID, "hatch.output.me", "Output Hatch (ME)")
-                    .getStackForm(1L));
-            ItemList.Hatch_CraftingInput_Bus_ME.set(
-                new GT_MetaTileEntity_Hatch_CraftingInput_ME(
-                    CRAFTING_INPUT_ME.ID,
-                    "hatch.crafting_input.me",
-                    "Crafting Input Buffer (ME)",
-                    true).getStackForm(1L));
-            ItemList.Hatch_CraftingInput_Bus_ME_ItemOnly.set(
-                new GT_MetaTileEntity_Hatch_CraftingInput_ME(
-                    CRAFTING_INPUT_ME_BUS.ID,
-                    "hatch.crafting_input.me.item_only",
-                    "Crafting Input Bus (ME)",
-                    false).getStackForm(1L));
-            ItemList.Hatch_CraftingInput_Bus_Slave.set(
-                new GT_MetaTileEntity_Hatch_CraftingInput_Slave(
-                    CRAFTING_INPUT_SLAVE.ID,
-                    "hatch.crafting_input.slave",
-                    "Crafting Input Slave").getStackForm(1L));
-        }
+        ItemList.Hatch_Output_Bus_ME.set(
+            new GT_MetaTileEntity_Hatch_OutputBus_ME(OUTPUT_BUS_ME.ID, "hatch.output_bus.me", "Output Bus (ME)")
+                .getStackForm(1L));
+        ItemList.Hatch_Input_Bus_ME.set(
+            new GT_MetaTileEntity_Hatch_InputBus_ME(INPUT_BUS_ME.ID, "hatch.input_bus.me", "Stocking Input Bus (ME)")
+                .getStackForm(1L));
+        ItemList.Hatch_Output_ME.set(
+            new GT_MetaTileEntity_Hatch_Output_ME(OUTPUT_HATCH_ME.ID, "hatch.output.me", "Output Hatch (ME)")
+                .getStackForm(1L));
+        ItemList.Hatch_CraftingInput_Bus_ME.set(
+            new GT_MetaTileEntity_Hatch_CraftingInput_ME(
+                CRAFTING_INPUT_ME.ID,
+                "hatch.crafting_input.me",
+                "Crafting Input Buffer (ME)",
+                true).getStackForm(1L));
+        ItemList.Hatch_CraftingInput_Bus_ME_ItemOnly.set(
+            new GT_MetaTileEntity_Hatch_CraftingInput_ME(
+                CRAFTING_INPUT_ME_BUS.ID,
+                "hatch.crafting_input.me.item_only",
+                "Crafting Input Bus (ME)",
+                false).getStackForm(1L));
+        ItemList.Hatch_CraftingInput_Bus_Slave.set(
+            new GT_MetaTileEntity_Hatch_CraftingInput_Slave(
+                CRAFTING_INPUT_SLAVE.ID,
+                "hatch.crafting_input.slave",
+                "Crafting Input Slave").getStackForm(1L));
     }
 
     private static void registerInputBus() {

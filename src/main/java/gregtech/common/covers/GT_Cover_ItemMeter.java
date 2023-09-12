@@ -17,7 +17,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.BaseTextFieldWidget;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -85,7 +84,7 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
         if (mte instanceof GT_MetaTileEntity_DigitalChestBase dc) {
             max = dc.getMaxItemCount();
             used = dc.getProgresstime();
-        } else if (GregTech_API.mAE2 && mte instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
+        } else if (mte instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {
             if (((GT_MetaTileEntity_Hatch_OutputBus_ME) mte).isLastOutputFailed()) {
                 max = 64;
                 used = 64;

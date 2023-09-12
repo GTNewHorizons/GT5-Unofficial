@@ -359,10 +359,8 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
         if (GalacticraftCore.isModLoaded() && GT_GC_Compat.canConnect(tileEntity, oppositeSide)) return true;
 
         // AE2-p2p Compat
-        if (GT_Mod.gregtechproxy.mAE2Integration) {
-            if (tileEntity instanceof appeng.tile.powersink.IC2 ic2sink
-                && ic2sink.acceptsEnergyFrom((TileEntity) baseMetaTile, oppositeSide)) return true;
-        }
+        if (tileEntity instanceof appeng.tile.powersink.IC2 ic2sink
+            && ic2sink.acceptsEnergyFrom((TileEntity) baseMetaTile, oppositeSide)) return true;
 
         // IC2 Compat
         {

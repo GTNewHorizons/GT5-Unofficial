@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 
 import appeng.api.config.TunnelType;
 import appeng.core.Api;
-import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -47,13 +46,11 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        if (GT_Mod.gregtechproxy.mAE2Integration) {
-            if (tt == TunnelType.ME) {
-                try {
-                    tt = TunnelType.valueOf("GT_POWER");
-                } catch (IllegalArgumentException ignored) {
-                    tt = TunnelType.IC2_POWER;
-                }
+        if (tt == TunnelType.ME) {
+            try {
+                tt = TunnelType.valueOf("GT_POWER");
+            } catch (IllegalArgumentException ignored) {
+                tt = TunnelType.IC2_POWER;
             }
         }
 
@@ -223,9 +220,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             new Object[] { OrePrefixes.wireGt12.get(aMaterial), OrePrefixes.wireGt04.get(aMaterial) });
                     }
 
-                    if (GT_Mod.gregtechproxy.mAE2Integration) {
-                        AE2addNewAttunement(aStack);
-                    }
+                    AE2addNewAttunement(aStack);
                 }
             }
             default -> {
@@ -479,15 +474,14 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                 .addTo(sUnboxinatorRecipes);
         }
 
-        if (GT_Mod.gregtechproxy.mAE2Integration
-            && GT_OreDictUnificator.get(correspondingCable, aMaterial, 1L) != null) {
+        if (GT_OreDictUnificator.get(correspondingCable, aMaterial, 1L) != null) {
             AE2AddNetAttunementCable(aStack, correspondingCable, aMaterial);
         }
     }
 
     // region AE2 compat
     static {
-        if (GT_Mod.gregtechproxy.mAE2Integration) setAE2Field();
+        setAE2Field();
     }
 
     private static void setAE2Field() {
