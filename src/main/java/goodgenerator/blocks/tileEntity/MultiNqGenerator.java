@@ -374,7 +374,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                 .addInfo("Environmentally Friendly!").addInfo("Generate power from high-energy liquids.")
                 .addInfo(
                         String.format(
-                                "Consumes &d L/s Liquid Air to keep running, otherwise" + EnumChatFormatting.YELLOW
+                                "Consumes %d L/s Liquid Air to keep running, otherwise" + EnumChatFormatting.YELLOW
                                         + " it will void your fuel"
                                         + EnumChatFormatting.GRAY
                                         + ".",
