@@ -19,6 +19,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.bauble.BatteryPackBaseBauble;
+import gtPlusPlus.core.item.bauble.FireProtectionBauble;
 import gtPlusPlus.core.item.general.ItemCloakingDevice;
 import gtPlusPlus.core.item.general.ItemHealingDevice;
 import gtPlusPlus.core.item.general.ItemSlowBuildingRing;
@@ -35,6 +36,7 @@ public class COMPAT_Baubles {
         Logger.INFO("Baubles Found - Loading Wearables.");
         ModItems.itemPersonalCloakingDevice = new ItemCloakingDevice(0);
         ModItems.itemPersonalHealingDevice = new ItemHealingDevice();
+        ModItems.itemSupremePizzaGloves = new FireProtectionBauble();
 
         ModItems.itemChargePack_Low_1 = new BatteryPackBaseBauble(1);
         registerTieredTooltip(new ItemStack(ModItems.itemChargePack_Low_1, 1, OreDictionary.WILDCARD_VALUE), LV);
