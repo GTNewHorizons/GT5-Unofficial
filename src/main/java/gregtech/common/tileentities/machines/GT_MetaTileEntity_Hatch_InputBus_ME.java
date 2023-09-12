@@ -218,6 +218,12 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        for (int i = 0; i <= 15; i++) {
+            // Migration from old save: Make sure configuration slots have 0 stack size
+            if (mInventory[i] != null) {
+                mInventory[i].stackSize = 0;
+            }
+        }
         for (int i = 16; i <= 31; i++) {
             // Migration from old save: We used to store stocked items in ghost format with `mInventory`
             mInventory[i] = null;
@@ -422,7 +428,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
             while (iterator.hasNext() && index < SLOT_COUNT) {
                 IAEItemStack currItem = iterator.next();
                 if (currItem.getStackSize() >= minAutoPullStackSize) {
-                    ItemStack itemstack = GT_Utility.copyAmount(1, currItem.getItemStack());
+                    ItemStack itemstack = GT_Utility.copyAmount(0, currItem.getItemStack());
                     this.mInventory[index] = itemstack;
                     index++;
                 }
@@ -556,6 +562,14 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                     @Override
                     public boolean isEnabled() {
                         return !autoPullItemList && super.isEnabled();
+                    }
+
+                    @Override
+                    public void putStack(ItemStack stack) {
+                        if (stack != null) {
+                            stack.stackSize = 0;
+                        }
+                        super.putStack(stack);
                     }
                 })
                 .widgetCreator(slot -> new SlotWidget(slot) {
