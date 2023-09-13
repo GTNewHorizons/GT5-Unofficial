@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -13,11 +13,12 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.recipe.GT_RecipeUtils;
 
 public class RecipeGen_MultisUsingFluidInsteadOfCells {
 
     private static ItemStack mEmptyCell;
-    private static AutoMap<ItemStack> mItemsToIgnore = new AutoMap<ItemStack>();
+    private static final AutoMap<ItemStack> mItemsToIgnore = new AutoMap<>();
     private static boolean mInit = false;
 
     private static void init() {
@@ -32,9 +33,7 @@ public class RecipeGen_MultisUsingFluidInsteadOfCells {
             return false;
         }
         if (a.getItem() == b.getItem()) {
-            if (a.getItemDamage() == b.getItemDamage()) {
-                return true;
-            }
+            return a.getItemDamage() == b.getItemDamage();
         }
         return false;
     }
@@ -49,9 +48,7 @@ public class RecipeGen_MultisUsingFluidInsteadOfCells {
         if (mEmptyCell != null) {
             ItemStack aTempStack = mEmptyCell.copy();
             aTempStack.stackSize = aCell.stackSize;
-            if (GT_Utility.areStacksEqual(aTempStack, aCell)) {
-                return true;
-            }
+            return GT_Utility.areStacksEqual(aTempStack, aCell);
         }
         return false;
     }
@@ -60,11 +57,7 @@ public class RecipeGen_MultisUsingFluidInsteadOfCells {
         if (ingot == null) {
             return null;
         }
-        FluidStack aFluid = GT_Utility.getFluidForFilledItem(ingot, true);
-        if (aFluid != null) {
-            return aFluid;
-        }
-        return null;
+        return GT_Utility.getFluidForFilledItem(ingot, true);
     }
 
     public static synchronized int generateRecipesNotUsingCells(GT_Recipe_Map aInputs, GT_Recipe_Map aOutputs) {
@@ -72,6 +65,7 @@ public class RecipeGen_MultisUsingFluidInsteadOfCells {
         int aRecipesHandled = 0;
         int aInvalidRecipesToConvert = 0;
         int aOriginalCount = aInputs.mRecipeList.size();
+        ArrayList<GT_Recipe> deDuplicationInputArray = new ArrayList<>();
 
         recipe: for (GT_Recipe x : aInputs.mRecipeList) {
             if (x != null) {
@@ -81,13 +75,13 @@ public class RecipeGen_MultisUsingFluidInsteadOfCells {
                 FluidStack[] aInputFluids = x.mFluidInputs.clone();
                 FluidStack[] aOutputFluids = x.mFluidOutputs.clone();
 
-                AutoMap<ItemStack> aInputItemsMap = new AutoMap<ItemStack>();
-                AutoMap<ItemStack> aOutputItemsMap = new AutoMap<ItemStack>();
-                AutoMap<FluidStack> aInputFluidsMap = new AutoMap<FluidStack>();
-                AutoMap<FluidStack> aOutputFluidsMap = new AutoMap<FluidStack>();
+                AutoMap<ItemStack> aInputItemsMap = new AutoMap<>();
+                AutoMap<ItemStack> aOutputItemsMap = new AutoMap<>();
+                AutoMap<FluidStack> aInputFluidsMap = new AutoMap<>();
+                AutoMap<FluidStack> aOutputFluidsMap = new AutoMap<>();
 
                 // Iterate Inputs, Convert valid items into fluids
-                inputs: for (ItemStack aInputStack : aInputItems) {
+                for (ItemStack aInputStack : aInputItems) {
                     FluidStack aFoundFluid = getFluidFromItemStack(aInputStack);
                     if (aFoundFluid == null) {
                         for (ItemStack aBadStack : mItemsToIgnore) {
@@ -104,7 +98,7 @@ public class RecipeGen_MultisUsingFluidInsteadOfCells {
                     }
                 }
                 // Iterate Outputs, Convert valid items into fluids
-                outputs: for (ItemStack aOutputStack : aOutputItems) {
+                for (ItemStack aOutputStack : aOutputItems) {
                     FluidStack aFoundFluid = getFluidFromItemStack(aOutputStack);
                     if (aFoundFluid == null) {
                         for (ItemStack aBadStack : mItemsToIgnore) {
@@ -121,13 +115,9 @@ public class RecipeGen_MultisUsingFluidInsteadOfCells {
                     }
                 }
                 // Add Input fluids second
-                for (FluidStack aInputFluid : aInputFluids) {
-                    aInputFluidsMap.add(aInputFluid);
-                }
+                aInputFluidsMap.addAll(Arrays.asList(aInputFluids));
                 // Add Output fluids second
-                for (FluidStack aOutputFluid : aOutputFluids) {
-                    aOutputFluidsMap.add(aOutputFluid);
-                }
+                aOutputFluidsMap.addAll(Arrays.asList(aOutputFluids));
 
                 // Make some new Arrays
                 ItemStack[] aNewItemInputs = new ItemStack[aInputItemsMap.size()];
@@ -151,10 +141,8 @@ public class RecipeGen_MultisUsingFluidInsteadOfCells {
 
                 if (!ItemUtils.checkForInvalidItems(aNewItemInputs, aNewItemOutputs)) {
                     aInvalidRecipesToConvert++;
-                    continue recipe; // Skip this recipe entirely if we find an item we don't like
+                    continue; // Skip this recipe entirely if we find an item we don't like
                 }
-
-                // Add Recipe to map
                 GT_Recipe aNewRecipe = new GTPP_Recipe(
                         false,
                         aNewItemInputs,
@@ -167,13 +155,22 @@ public class RecipeGen_MultisUsingFluidInsteadOfCells {
                         x.mEUt,
                         x.mSpecialValue);
                 aNewRecipe.owners = new ArrayList<>(x.owners);
-                aOutputs.add(aNewRecipe);
+
+                // add all recipes to an intermediate array
+                deDuplicationInputArray.add(aNewRecipe);
+
                 aRecipesHandled++;
             } else {
                 aInvalidRecipesToConvert++;
             }
         }
-
+        // cast arraylist of input to a regular array and pass it to a duplicate recipe remover.
+        List<GT_Recipe> deDuplicationOutputArray = GT_RecipeUtils
+                .removeDuplicates(deDuplicationInputArray, aOutputs.mNEIName);
+        // add each recipe from the above output to the intended recipe map
+        for (GT_Recipe recipe : deDuplicationOutputArray) {
+            aOutputs.add(recipe);
+        }
         Logger.INFO("Generated Recipes for " + aOutputs.mNEIName);
         Logger.INFO("Original Map contains " + aOriginalCount + " recipes.");
         Logger.INFO("Output Map contains " + aRecipesHandled + " recipes.");
