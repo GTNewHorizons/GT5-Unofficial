@@ -14,6 +14,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import gregtech.api.CustomStructureRendering.Trophies.Trophies;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -308,6 +309,8 @@ public class GT_Mod implements IGT_Mod {
         if (FMLCommonHandler.instance()
             .getEffectiveSide()
             .isServer()) GT_Assemblyline_Server.fillMap(aEvent);
+
+        Trophies.registerRenderer();
     }
 
     @Mod.EventHandler
