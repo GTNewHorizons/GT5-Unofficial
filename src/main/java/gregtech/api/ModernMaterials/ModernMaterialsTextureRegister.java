@@ -17,6 +17,8 @@ import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
 
 public class ModernMaterialsTextureRegister {
 
+    public static IIcon frameGT;
+
     // This event is solely used for ModernMaterials icon registration.
     // That means all blocks, items and fluids for ModernMaterials.
     @SubscribeEvent
@@ -42,6 +44,8 @@ public class ModernMaterialsTextureRegister {
     }
 
     private void itemTextures(TextureMap map) {
+
+        frameGT = map.registerIcon("gregtech:ModernMaterialsIcons/Blocks/frameGt");
 
         // Pre sort this by part name not enum name to save computation later.
         MaterialPartsEnum[] partsEnum = MaterialPartsEnum.values();
