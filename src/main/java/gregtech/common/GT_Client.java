@@ -68,16 +68,7 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 import gregtech.api.net.GT_Packet_ClientPreference;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.ColorsMetadataSection;
-import gregtech.api.util.ColorsMetadataSectionSerializer;
-import gregtech.api.util.GT_ClientPreference;
-import gregtech.api.util.GT_CoverBehaviorBase;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_PlayedSound;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.WorldSpawnedEventBuilder;
+import gregtech.api.util.*;
 import gregtech.common.blocks.GT_Item_Machines;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
@@ -400,27 +391,34 @@ public class GT_Client extends GT_Proxy implements Runnable {
             if (tAlignment != null) {
                 final ForgeDirection direction = tAlignment.getDirection();
                 if (direction.ordinal() == tSideHit)
-                    drawExtendedRotationMarker(ROTATION_MARKER_TRANSFORM_CENTER, aIsSneaking, false);
+                    drawExtendedRotationMarker(ROTATION_MARKER_TRANSFORM_CENTER, aIsSneaking, tAlignment);
                 else if (direction.getOpposite()
                     .ordinal() == tSideHit) {
                         for (Transformation t : ROTATION_MARKER_TRANSFORMS_CORNER) {
-                            drawExtendedRotationMarker(t, aIsSneaking, true);
+                            drawExtendedRotationMarker(t, aIsSneaking, tAlignment);
                         }
                     } else {
                         drawExtendedRotationMarker(
                             ROTATION_MARKER_TRANSFORMS_SIDES_TRANSFORMS[ROTATION_MARKER_TRANSFORMS_SIDES[tSideHit * 6
                                 + direction.ordinal()]],
                             aIsSneaking,
-                            true);
+                            tAlignment);
                     }
             }
         }
         GL11.glPopMatrix(); // get back to player center
     }
 
-    private static void drawExtendedRotationMarker(Transformation transform, boolean sneaking, boolean small) {
-        if (sneaking) drawFlipMarker(transform);
-        else drawRotationMarker(transform);
+    private static void drawExtendedRotationMarker(Transformation transform, boolean sneaking, IAlignment alignment) {
+        if (sneaking) {
+            if (alignment.isFlipChangeAllowed()) {
+                drawFlipMarker(transform);
+            }
+        } else {
+            if (alignment.isRotationChangeAllowed()) {
+                drawRotationMarker(transform);
+            }
+        }
     }
 
     private static void drawRotationMarker(Transformation transform) {

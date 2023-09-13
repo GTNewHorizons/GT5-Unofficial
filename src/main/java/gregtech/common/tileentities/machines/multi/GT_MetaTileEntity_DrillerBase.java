@@ -601,6 +601,11 @@ public abstract class GT_MetaTileEntity_DrillerBase
     }
 
     @Override
+    public boolean isRotationChangeAllowed() {
+        return false;
+    }
+
+    @Override
     public final IStructureDefinition<GT_MetaTileEntity_DrillerBase> getStructureDefinition() {
         return STRUCTURE_DEFINITION.get(getClass());
     }
