@@ -22,14 +22,13 @@ import com.google.common.io.ByteArrayDataInput;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.covers.IPlayerAttachHandler;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GT_CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.events.MetricsCoverDataEvent;
-import gregtech.common.events.MetricsCoverHostDeconstructedEvent;
 import gregtech.common.events.MetricsCoverSelfDestructEvent;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.GlobalMetricsCoverDatabase.State;
@@ -43,11 +42,13 @@ import io.netty.buffer.ByteBuf;
  * method, it will resort to {@link BaseMetaTileEntity#getInfoData()} instead.
  */
 public class GT_Cover_Metrics_Transmitter
-    extends GT_CoverBehaviorBase<GT_Cover_Metrics_Transmitter.MetricsTransmitterData> implements IPlayerAttachHandler {
+    extends GT_CoverBehaviorBase<GT_Cover_Metrics_Transmitter.MetricsTransmitterData> {
 
-    public static final String FREQUENCY_MSB_KEY = "frequency_msb";
-    public static final String FREQUENCY_LSB_KEY = "frequency_lsb";
-    public static final String MACHINE_NAME_KEY = "machine_name";
+    @SuppressWarnings("SpellCheckingInspection")
+    public static final String FREQUENCY_MSB_KEY = "gt.metricscover.freq_msb";
+    @SuppressWarnings("SpellCheckingInspection")
+    public static final String FREQUENCY_LSB_KEY = "gt.metricscover.freq_lsb";
+    public static final String MACHINE_KEY = "machine_name";
     public static final String CARD_STATE_KEY = "card_state";
 
     @SuppressWarnings("unused")
@@ -78,7 +79,7 @@ public class GT_Cover_Metrics_Transmitter
 
     @Override
     public boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable aTileEntity) {
-        return (aTileEntity instanceof final BaseMetaTileEntity baseMTE && baseMTE.isGivingInformation());
+        return aTileEntity instanceof final IGregTechDeviceInformation device && device.isGivingInformation();
     }
 
     @Override
@@ -115,15 +116,13 @@ public class GT_Cover_Metrics_Transmitter
     }
 
     @Override
-    protected void onBaseTEDestroyedImpl(ForgeDirection side, int aCoverID, MetricsTransmitterData aCoverVariable,
-        ICoverable aTileEntity) {
-        MinecraftForge.EVENT_BUS.post(new MetricsCoverHostDeconstructedEvent(aCoverVariable.frequency));
-    }
-
-    @Override
     public void onPlayerAttach(EntityPlayer player, ItemStack aCover, ICoverable aTileEntity, ForgeDirection side) {
         final UUID newFrequency = UUID.randomUUID();
         final ItemStack cardStack = ItemList.NC_AdvancedSensorCard.get(1);
+
+        if (cardStack == null) {
+            return;
+        }
 
         if (!cardStack.hasTagCompound()) {
             cardStack.setTagCompound(new NBTTagCompound());
@@ -135,7 +134,10 @@ public class GT_Cover_Metrics_Transmitter
         tagCompound.setInteger(CARD_STATE_KEY, State.OPERATIONAL.getType());
 
         if (aTileEntity instanceof final BaseMetaTileEntity baseMTE) {
-            tagCompound.setString(MACHINE_NAME_KEY, baseMTE.getLocalName());
+            final ItemStack baseMTEStack = baseMTE.getStackForm(1);
+            if (baseMTEStack != null) {
+                tagCompound.setTag(MACHINE_KEY, baseMTEStack.writeToNBT(new NBTTagCompound()));
+            }
         }
 
         aTileEntity.getCoverInfoAtSide(side)
@@ -167,8 +169,13 @@ public class GT_Cover_Metrics_Transmitter
             this.frequency = UUID.randomUUID();
         }
 
-        public MetricsTransmitterData(UUID frequency) {
+        public MetricsTransmitterData(@NotNull UUID frequency) {
             this.frequency = frequency;
+        }
+
+        @NotNull
+        public UUID getFrequency() {
+            return frequency;
         }
 
         @NotNull
@@ -187,16 +194,16 @@ public class GT_Cover_Metrics_Transmitter
         }
 
         @Override
-        public void writeToByteBuf(ByteBuf aBuf) {
-            aBuf.writeLong(frequency.getMostSignificantBits());
-            aBuf.writeLong(frequency.getLeastSignificantBits());
-        }
-
-        @Override
         public void loadDataFromNBT(NBTBase aNBT) {
             if (aNBT instanceof final NBTTagCompound tag) {
                 frequency = new UUID(tag.getLong(FREQUENCY_MSB_KEY), tag.getLong(FREQUENCY_LSB_KEY));
             }
+        }
+
+        @Override
+        public void writeToByteBuf(ByteBuf aBuf) {
+            aBuf.writeLong(frequency.getMostSignificantBits());
+            aBuf.writeLong(frequency.getLeastSignificantBits());
         }
 
         @NotNull

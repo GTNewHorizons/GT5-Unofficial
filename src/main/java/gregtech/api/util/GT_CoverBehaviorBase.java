@@ -390,6 +390,18 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         return getDropImpl(side, aCoverID, forceCast(aCoverVariable), aTileEntity);
     }
 
+    /**
+     * Called when the cover is initially attached to a machine.
+     *
+     * @param player      The attaching player
+     * @param aCover      An {@link ItemStack} containing the cover
+     * @param aTileEntity The machine receiving the cover
+     * @param side        Which side the cover is attached to
+     */
+    public void onPlayerAttach(EntityPlayer player, ItemStack aCover, ICoverable aTileEntity, ForgeDirection side) {
+        // Do nothing by default.
+    }
+
     // endregion
 
     // region UI stuff

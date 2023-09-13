@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.common.eventhandler.Event;
 
-public class BaseMetricsCoverEvent extends Event {
+abstract public class BaseMetricsCoverEvent extends Event {
 
     protected final UUID frequency;
 

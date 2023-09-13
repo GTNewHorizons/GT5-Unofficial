@@ -4,7 +4,7 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.common.covers.GT_Cover_Metrics_Transmitter.CARD_STATE_KEY;
 import static gregtech.common.covers.GT_Cover_Metrics_Transmitter.FREQUENCY_LSB_KEY;
 import static gregtech.common.covers.GT_Cover_Metrics_Transmitter.FREQUENCY_MSB_KEY;
-import static gregtech.common.covers.GT_Cover_Metrics_Transmitter.MACHINE_NAME_KEY;
+import static gregtech.common.covers.GT_Cover_Metrics_Transmitter.MACHINE_KEY;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,13 +87,12 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
             if (state == State.SELF_DESTRUCTED) {
                 tooltip.add(StatCollector.translateToLocal("gt.item.adv_sensor_card.tooltip.fried.1"));
                 tooltip.add(StatCollector.translateToLocal("gt.item.adv_sensor_card.tooltip.fried.2"));
+                tooltip.add(StatCollector.translateToLocal("gt.item.adv_sensor_card.tooltip.fried.3"));
             } else {
                 getMachineName(itemStack).ifPresent(
                     machineName -> tooltip.add(
-                        StatCollector.translateToLocalFormatted(
-                            "gt.item.adv_sensor_card.tooltip.machine",
-                            itemStack.getTagCompound()
-                                .getString(MACHINE_NAME_KEY))));
+                        StatCollector
+                            .translateToLocalFormatted("gt.item.adv_sensor_card.tooltip.machine", machineName)));
                 getUUID(itemStack).ifPresent(
                     uuid -> tooltip.add(
                         StatCollector
@@ -145,7 +144,8 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
                     .getType());
             payloadSize = switch (data.getState()) {
                 case SELF_DESTRUCTED -> SELF_DESTRUCTED_OUTPUT.size();
-                case DECONSTRUCTED -> DECONSTRUCTED_OUTPUT.size();
+                case HOST_DECONSTRUCTED -> DECONSTRUCTED_OUTPUT.size() + getMachineName(card.getItemStack()).map(x -> 1)
+                    .orElse(0);
                 case OPERATIONAL -> data.getPayload()
                     .map(List::size)
                     .orElse(0)
@@ -167,7 +167,12 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
 
         return getCardState(card).map(state -> switch (state) {
             case SELF_DESTRUCTED -> new ArrayList<>(SELF_DESTRUCTED_OUTPUT);
-            case DECONSTRUCTED -> new ArrayList<>(DECONSTRUCTED_OUTPUT);
+            case HOST_DECONSTRUCTED -> {
+                final ArrayList<PanelString> list = new ArrayList<>();
+                getMachineName(card.getItemStack()).ifPresent(name -> list.add(prebakePanelString(name, true)));
+                list.addAll(DECONSTRUCTED_OUTPUT);
+                yield list;
+            }
             case OPERATIONAL -> getDataFromDatabase(card).map(data -> {
                 final ImmutableList.Builder<String> builder = ImmutableList.builder();
 
@@ -215,6 +220,9 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int slot, boolean isHeld) {
         super.onUpdate(stack, worldIn, entityIn, slot, isHeld);
+        // At the time of this comment's writing, there are 52 matches of the regex:
+        // /% \d+0 \)?\s*== 0/ in the code base, indicating an over-reliance on events happening on either the 10th or
+        // 20th tick. Let's tick on something slightly off of that. A prime number will do nicely.
         if ((worldIn.getWorldTime() % 20) == 13) {
             getDataFromDatabase(stack).ifPresent(data -> {
                 reconcileSelfDestructedCard(stack, data.getState());
@@ -272,10 +280,15 @@ public class GT_AdvancedSensorCard_Item extends Item implements IPanelDataSource
     @NotNull
     private Optional<String> getMachineName(ItemStack stack) {
         if (stack.hasTagCompound() && stack.getTagCompound()
-            .hasKey(MACHINE_NAME_KEY)) {
-            return Optional.of(
-                stack.getTagCompound()
-                    .getString(MACHINE_NAME_KEY));
+            .hasKey(MACHINE_KEY)) {
+            try {
+                final ItemStack machine = ItemStack.loadItemStackFromNBT(
+                    stack.getTagCompound()
+                        .getCompoundTag(MACHINE_KEY));
+                if (machine != null) {
+                    return Optional.of(machine.getDisplayName());
+                }
+            } catch (Exception ignored) {}
         }
 
         return Optional.empty();

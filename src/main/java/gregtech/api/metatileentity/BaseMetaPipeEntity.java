@@ -33,7 +33,6 @@ import gregtech.api.graphs.Lock;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.paths.NodePath;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.covers.IPlayerAttachHandler;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
@@ -958,9 +957,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                             && mMetaTileEntity.allowCoverOnSide(coverSide, new GT_ItemStack(tCurrentItem))) {
 
                             setCoverItemAtSide(coverSide, tCurrentItem);
-                            if (coverBehavior instanceof final IPlayerAttachHandler handler) {
-                                handler.onPlayerAttach(aPlayer, tCurrentItem, this, side);
-                            }
+                            coverBehavior.onPlayerAttach(aPlayer, tCurrentItem, this, side);
 
                             mMetaTileEntity.markDirty();
                             if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;

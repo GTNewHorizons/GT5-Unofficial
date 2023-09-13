@@ -1,11 +1,9 @@
 package gregtech.common.events;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 
@@ -17,11 +15,11 @@ public class MetricsCoverDataEvent extends BaseMetricsCoverEvent {
     @NotNull
     private final List<String> payload;
 
-    @Nullable
+    @NotNull
     private final GlobalMetricsCoverDatabase.Coordinates coordinates;
 
     public MetricsCoverDataEvent(@NotNull UUID frequency, @NotNull List<String> payload,
-        @Nullable GlobalMetricsCoverDatabase.Coordinates coordinates) {
+        @NotNull GlobalMetricsCoverDatabase.Coordinates coordinates) {
         super(frequency);
         this.payload = payload;
         this.coordinates = coordinates;
@@ -33,7 +31,7 @@ public class MetricsCoverDataEvent extends BaseMetricsCoverEvent {
     }
 
     @NotNull
-    public Optional<GlobalMetricsCoverDatabase.Coordinates> getCoordinates() {
-        return Optional.ofNullable(coordinates);
+    public GlobalMetricsCoverDatabase.Coordinates getCoordinates() {
+        return coordinates;
     }
 }

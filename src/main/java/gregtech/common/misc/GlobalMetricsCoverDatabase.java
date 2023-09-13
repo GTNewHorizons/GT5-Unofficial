@@ -1,31 +1,46 @@
 package gregtech.common.misc;
 
 import static net.minecraftforge.common.util.Constants.NBT.TAG_BYTE_ARRAY;
+import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.MapStorage;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.item.ItemExpireEvent;
+import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.ExplosionEvent.Detonate;
 import net.minecraftforge.event.world.WorldEvent;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.covers.CoverInfo;
+import gregtech.common.covers.GT_Cover_Metrics_Transmitter;
 import gregtech.common.events.MetricsCoverDataEvent;
 import gregtech.common.events.MetricsCoverHostDeconstructedEvent;
 import gregtech.common.events.MetricsCoverSelfDestructEvent;
@@ -44,7 +59,11 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
 
     private static GlobalMetricsCoverDatabase INSTANCE;
 
+    /** Holds received metrics. */
     private static final Map<UUID, Data> DATABASE = new ConcurrentHashMap<>();
+    /** Used to speed up event handlers dealing with block breaking and explosions. Not persisted. */
+    private static final Map<Coordinates, Set<UUID>> REVERSE_LOOKUP = new ConcurrentHashMap<>();
+
     private static final String DATA_NAME = "GregTech_MetricsCoverDatabase";
     private static final String DECONSTRUCTED_KEY = "GregTech_MetricsCoverDatabase_Deconstructed";
     private static final String SELF_DESTRUCTED_KEY = "GregTech_MetricsCoverDatabase_SelfDestructed";
@@ -60,23 +79,27 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
     @SuppressWarnings("unused")
     @SubscribeEvent
     public void receiveMetricsData(MetricsCoverDataEvent event) {
-        store(
-            event.getFrequency(),
-            State.OPERATIONAL,
-            event.getPayload(),
-            event.getCoordinates()
-                .orElse(null));
+        final Coordinates coordinates = event.getCoordinates();
+        store(event.getFrequency(), State.OPERATIONAL, event.getPayload(), coordinates);
+
+        if (!REVERSE_LOOKUP.containsKey(coordinates)) {
+            REVERSE_LOOKUP.put(coordinates, new HashSet<>());
+        }
+        REVERSE_LOOKUP.get(coordinates)
+            .add(event.getFrequency());
     }
 
     @SuppressWarnings("unused")
     @SubscribeEvent
-    public void receiveDeconstructed(MetricsCoverHostDeconstructedEvent event) {
-        store(event.getFrequency(), State.DECONSTRUCTED);
+    public void receiveHostDeconstructed(MetricsCoverHostDeconstructedEvent event) {
+        cullReverseLookupEntry(event.getFrequency());
+        store(event.getFrequency(), State.HOST_DECONSTRUCTED);
     }
 
     @SuppressWarnings("unused")
     @SubscribeEvent
     public void receiveSelfDestruct(MetricsCoverSelfDestructEvent event) {
+        cullReverseLookupEntry(event.getFrequency());
         store(event.getFrequency(), State.SELF_DESTRUCTED);
     }
 
@@ -95,6 +118,55 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
 
             INSTANCE.markDirty();
         }
+    }
+
+    @SuppressWarnings("unused")
+    @SubscribeEvent
+    public void onBlockBreak(BlockEvent.BreakEvent event) {
+        final Coordinates coords = new Coordinates(event.world.provider.getDimensionName(), event.x, event.y, event.z);
+        // In case someone else wants to listen to these, go the roundabout way.
+        final Set<UUID> uuids = REVERSE_LOOKUP.get(coords);
+        if (uuids != null) {
+            uuids.forEach(
+                uuid -> MinecraftForge.EVENT_BUS.post(
+                    ForgeHooks.canHarvestBlock(event.block, event.getPlayer(), event.blockMetadata)
+                        && !event.getPlayer().capabilities.isCreativeMode ? new MetricsCoverHostDeconstructedEvent(uuid)
+                            : new MetricsCoverSelfDestructEvent(uuid)));
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @SubscribeEvent
+    public void onExplosion(Detonate event) {
+        final String dimensionName = event.world.provider.getDimensionName();
+
+        event.getAffectedBlocks()
+            .forEach(chunkPosition -> {
+                final Set<UUID> uuids = REVERSE_LOOKUP.get(
+                    new Coordinates(
+                        dimensionName,
+                        chunkPosition.chunkPosX,
+                        chunkPosition.chunkPosY,
+                        chunkPosition.chunkPosZ));
+
+                if (uuids != null) {
+                    uuids.forEach(uuid -> MinecraftForge.EVENT_BUS.post(new MetricsCoverSelfDestructEvent(uuid)));
+                }
+            });
+
+        event.getAffectedEntities().forEach(entity -> {
+            if (entity instanceof final EntityItem entityItem) {
+                getCoverUUIDsFromItemStack(entityItem.getEntityItem())
+                    .forEach(uuid -> MinecraftForge.EVENT_BUS.post(new MetricsCoverSelfDestructEvent(uuid)));
+            }
+        });
+    }
+
+    @SuppressWarnings("unused")
+    @SubscribeEvent
+    public void onItemExpiration(ItemExpireEvent event) {
+        getCoverUUIDsFromItemStack(event.entityItem.getEntityItem())
+            .forEach(uuid -> MinecraftForge.EVENT_BUS.post(new MetricsCoverSelfDestructEvent(uuid)));
     }
 
     /**
@@ -128,18 +200,16 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
         final NBTTagList deconstructed = nbtTagCompound.getTagList(DECONSTRUCTED_KEY, TAG_BYTE_ARRAY);
         final NBTTagList selfDestructed = nbtTagCompound.getTagList(SELF_DESTRUCTED_KEY, TAG_BYTE_ARRAY);
 
-        if (deconstructed != null) {
-            for (int i = 0; i < deconstructed.tagCount(); i++) {
-                final NBTTagByteArray byteArray = (NBTTagByteArray) deconstructed.removeTag(0);
-                DATABASE.put(reconstituteUUID(byteArray.func_150292_c()), new Data(State.DECONSTRUCTED, null));
-            }
+        for (int i = 0; i < deconstructed.tagCount(); i++) {
+            final NBTTagByteArray byteArray = (NBTTagByteArray) deconstructed.removeTag(0);
+            reconstituteUUID(byteArray.func_150292_c())
+                .ifPresent(uuid -> DATABASE.put(uuid, new Data(State.HOST_DECONSTRUCTED)));
         }
 
-        if (selfDestructed != null) {
-            for (int i = 0; i < selfDestructed.tagCount(); i++) {
-                final NBTTagByteArray byteArray = (NBTTagByteArray) selfDestructed.removeTag(0);
-                DATABASE.put(reconstituteUUID(byteArray.func_150292_c()), new Data(State.SELF_DESTRUCTED, null));
-            }
+        for (int i = 0; i < selfDestructed.tagCount(); i++) {
+            final NBTTagByteArray byteArray = (NBTTagByteArray) selfDestructed.removeTag(0);
+            reconstituteUUID(byteArray.func_150292_c())
+                .ifPresent(uuid -> DATABASE.put(uuid, new Data(State.SELF_DESTRUCTED)));
         }
     }
 
@@ -150,7 +220,7 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
         final NBTTagList selfDestructed = new NBTTagList();
         DATABASE.forEach((uuid, data) -> {
             switch (data.getState()) {
-                case DECONSTRUCTED -> deconstructed.appendTag(new NBTTagByteArray(dumpUUID(uuid)));
+                case HOST_DECONSTRUCTED -> deconstructed.appendTag(new NBTTagByteArray(dumpUUID(uuid)));
                 case SELF_DESTRUCTED -> selfDestructed.appendTag(new NBTTagByteArray(dumpUUID(uuid)));
             }
         });
@@ -207,19 +277,46 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
     }
 
     @NotNull
-    private static UUID reconstituteUUID(byte[] bytes) throws IllegalArgumentException {
+    private static Optional<UUID> reconstituteUUID(byte[] bytes) throws IllegalArgumentException {
         if (bytes.length != 16) {
-            throw new IllegalArgumentException("Byte array passed must be exactly 16 bytes");
+            return Optional.empty();
         }
 
         ByteBuffer buffer = ByteBuffer.wrap(bytes);
-        return new UUID(buffer.getLong(), buffer.getLong());
+        return Optional.of(new UUID(buffer.getLong(), buffer.getLong()));
+    }
+
+    private static void cullReverseLookupEntry(UUID frequency) {
+        getData(frequency).ifPresent(data -> {
+            if (data.state == State.OPERATIONAL && REVERSE_LOOKUP.containsKey(data.coordinates)) {
+                final Set<UUID> set = REVERSE_LOOKUP.get(data.coordinates);
+                set.remove(frequency);
+                if (set.isEmpty()) {
+                    REVERSE_LOOKUP.remove(data.coordinates);
+                }
+            }
+        });
+    }
+
+    private static Stream<UUID> getCoverUUIDsFromItemStack(final ItemStack stack) {
+        if (stack.hasTagCompound() && stack.getTagCompound()
+            .hasKey(GT_Values.NBT.COVERS, TAG_COMPOUND)) {
+            final NBTTagList tagList = stack.getTagCompound()
+                .getTagList(GT_Values.NBT.COVERS, TAG_COMPOUND);
+            return IntStream.range(0, tagList.tagCount())
+                .mapToObj(tagList::getCompoundTagAt)
+                .map(nbt -> new CoverInfo(null, nbt).getCoverData())
+                .filter(
+                    serializableObject -> serializableObject instanceof GT_Cover_Metrics_Transmitter.MetricsTransmitterData)
+                .map(data -> ((GT_Cover_Metrics_Transmitter.MetricsTransmitterData) data).getFrequency());
+        }
+        return Stream.empty();
     }
 
     /**
      * Data transmitted by a Metrics Transmitter cover.
      * <p>
-     * Since only negative states ({@link State#DECONSTRUCTED DECONSTRUCTED} and
+     * Since only negative states ({@link State#HOST_DECONSTRUCTED HOST_DECONSTRUCTED} and
      * {@link State#SELF_DESTRUCTED SELF DESTRUCTED}) are persisted, additional fields can be added to this data with
      * little consequence. Ensure that any new fields are nullable, and make any getter for these fields return an
      * {@link Optional}.
@@ -255,7 +352,7 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
         /**
          * Retrieves the payload for this data. Only present if the frequency is in an
          * {@link State#OPERATIONAL operational} state. Will be cleared if the frequency goes into a
-         * {@link State#DECONSTRUCTED deconstructed} or {@link State#SELF_DESTRUCTED self-destructed} state.
+         * {@link State#HOST_DECONSTRUCTED host-deconstructed} or {@link State#SELF_DESTRUCTED self-destructed} state.
          *
          * @return The data if present, or an empty Optional otherwise.
          */
@@ -363,10 +460,10 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
          * The machine was picked up, but the cover is still attached. Will transition to operational state if the
          * machine is placed back down and started up again.
          */
-        DECONSTRUCTED(2),
+        HOST_DECONSTRUCTED(2),
         /**
-         * Cover was removed from its host machine. Any frequency in this state will no longer get updates nor leave
-         * this state.
+         * Cover was removed from its host machine, or machine was destroyed (in the limited number of ways we can
+         * detect.) Any frequency in this state will no longer get updates nor leave this state.
          */
         SELF_DESTRUCTED(3);
 
