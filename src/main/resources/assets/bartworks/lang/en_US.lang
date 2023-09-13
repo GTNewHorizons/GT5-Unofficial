@@ -143,6 +143,7 @@ tooltip.tile.acidgen.1.name=Creates Power from Chemical Energy Potentials.
 nei.biovat.0.name=Needs Glass Tier:
 nei.biovat.1.name=Need exactly
 nei.biovat.2.name=Need minimum
+nei.biovat.tooltip=Outputs up to 1,001x amount, depending on the amount of fluid stored in the Output Hatch
 
 tile.diode.name=Cable Diode
 tile.energydistributor.name=Energy Distributor
