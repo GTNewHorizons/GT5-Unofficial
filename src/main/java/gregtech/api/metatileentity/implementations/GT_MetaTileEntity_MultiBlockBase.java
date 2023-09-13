@@ -34,6 +34,7 @@ import org.jetbrains.annotations.TestOnly;
 import org.lwjgl.input.Keyboard;
 
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -82,11 +83,7 @@ import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_InputBus_ME;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
-import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
-import gregtech.common.tileentities.machines.IDualInputHatch;
-import gregtech.common.tileentities.machines.IDualInputInventory;
+import gregtech.common.tileentities.machines.*;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -1330,6 +1327,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     public ArrayList<FluidStack> getStoredFluids() {
+        if (supportsCraftingMEBuffer()) {
+            for (IDualInputHatch tHatch : mDualInputHatches) {
+                if (tHatch.supportsFluids()) {
+                    Optional<IDualInputInventory> inventory = tHatch.getFirstNonEmptyInventory();
+                    if (inventory.isPresent()) {
+                        return Lists.newArrayList(
+                            inventory.get()
+                                .getFluidInputs());
+                    }
+                }
+            }
+        }
+
         ArrayList<FluidStack> rList = new ArrayList<>();
         for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
             tHatch.mRecipeMap = getRecipeMap();
@@ -1349,12 +1359,25 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 }
             }
         }
+
         return rList;
     }
 
     public ArrayList<ItemStack> getStoredInputs() {
+        if (supportsCraftingMEBuffer()) {
+            for (IDualInputHatch tHatch : mDualInputHatches) {
+                Optional<IDualInputInventory> inventory = tHatch.getFirstNonEmptyInventory();
+                if (inventory.isPresent()) {
+                    return Lists.newArrayList(
+                        inventory.get()
+                            .getItemInputs());
+                }
+            }
+        }
+
         ArrayList<ItemStack> rList = new ArrayList<>();
         HashMap<String, ItemStack> rInputBusMeList = new HashMap<>();
+
         for (GT_MetaTileEntity_Hatch_InputBus tHatch : mInputBusses) {
             tHatch.mRecipeMap = getRecipeMap();
             if (isValidMetaTileEntity(tHatch)) {
@@ -1372,6 +1395,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 }
             }
         }
+
         if (getStackInSlot(1) != null && getStackInSlot(1).getUnlocalizedName()
             .startsWith("gt.integrated_circuit")) rList.add(getStackInSlot(1));
         if (!rInputBusMeList.isEmpty()) rList.addAll(rInputBusMeList.values());
