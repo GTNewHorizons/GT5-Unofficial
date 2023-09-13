@@ -124,11 +124,7 @@ public class GT_Cover_Metrics_Transmitter
             return;
         }
 
-        if (!cardStack.hasTagCompound()) {
-            cardStack.setTagCompound(new NBTTagCompound());
-        }
-
-        final NBTTagCompound tagCompound = cardStack.getTagCompound();
+        final NBTTagCompound tagCompound = new NBTTagCompound();
         tagCompound.setLong(FREQUENCY_MSB_KEY, newFrequency.getMostSignificantBits());
         tagCompound.setLong(FREQUENCY_LSB_KEY, newFrequency.getLeastSignificantBits());
         tagCompound.setInteger(CARD_STATE_KEY, State.OPERATIONAL.getType());
@@ -140,6 +136,7 @@ public class GT_Cover_Metrics_Transmitter
             }
         }
 
+        cardStack.setTagCompound(tagCompound);
         aTileEntity.getCoverInfoAtSide(side)
             .setCoverData(new MetricsTransmitterData(newFrequency));
 

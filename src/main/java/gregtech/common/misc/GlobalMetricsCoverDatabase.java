@@ -106,18 +106,20 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
     @SuppressWarnings("unused")
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event) {
-        if (!event.world.isRemote && event.world.provider.dimensionId == 0) {
-            DATABASE.clear();
-
-            final MapStorage storage = event.world.mapStorage;
-            INSTANCE = (GlobalMetricsCoverDatabase) storage.loadData(GlobalMetricsCoverDatabase.class, DATA_NAME);
-            if (INSTANCE == null) {
-                INSTANCE = new GlobalMetricsCoverDatabase();
-                storage.setData(DATA_NAME, INSTANCE);
-            }
-
-            INSTANCE.markDirty();
+        if (event.world.isRemote || event.world.provider.dimensionId != 0) {
+            return;
         }
+
+        DATABASE.clear();
+
+        final MapStorage storage = event.world.mapStorage;
+        INSTANCE = (GlobalMetricsCoverDatabase) storage.loadData(GlobalMetricsCoverDatabase.class, DATA_NAME);
+        if (INSTANCE == null) {
+            INSTANCE = new GlobalMetricsCoverDatabase();
+            storage.setData(DATA_NAME, INSTANCE);
+        }
+
+        INSTANCE.markDirty();
     }
 
     @SuppressWarnings("unused")
