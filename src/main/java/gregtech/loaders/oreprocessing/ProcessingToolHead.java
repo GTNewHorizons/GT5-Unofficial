@@ -65,7 +65,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             .itemInputs(ItemList.Shape_Mold_Arrow.get(0L))
                             .itemOutputs(GT_Utility.copyAmount(1L, aStack))
                             .fluidInputs(aMaterial.getMolten(36L))
-                            .noFluidOutputs()
                             .duration(16 * TICKS)
                             .eut(8)
                             .addTo(sFluidSolidficationRecipes);
@@ -100,8 +99,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                                 aMaterial,
                                 aMaterial.mHandleMaterial,
                                 null))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(10 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
                         .addTo(sAssemblerRecipes);
@@ -533,7 +530,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             .itemInputs(ItemList.Shape_Mold_ToolHeadDrill.get(0))
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, aMaterial, 1L))
                             .fluidInputs(aMaterial.getMolten(144 * 4))
-                            .noFluidOutputs()
                             .duration(5 * SECONDS)
                             .eut(calculateRecipeEU(aMaterial, (int) TierEU.RECIPE_MV))
                             .addTo(sFluidSolidficationRecipes);
@@ -544,8 +540,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                                 GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 4L),
                                 ItemList.Shape_Extruder_ToolHeadDrill.get(0))
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, aMaterial, 1L))
-                            .noFluidInputs()
-                            .noFluidOutputs()
                             .duration(5 * SECONDS)
                             .eut(calculateRecipeEU(aMaterial, (int) TierEU.RECIPE_MV))
                             .addTo(sExtruderRecipes);
@@ -592,8 +586,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                                 aMaterial,
                                 aMaterial.mHandleMaterial,
                                 null))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(aMaterial, (int) TierEU.RECIPE_MV))
                         .addTo(sAssemblerRecipes);
@@ -623,8 +615,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                                 aMaterial,
                                 aMaterial.mHandleMaterial,
                                 null))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(aMaterial, (int) TierEU.RECIPE_MV))
                         .addTo(sAssemblerRecipes);
@@ -675,8 +665,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                                 aMaterial,
                                 aMaterial.mHandleMaterial,
                                 null))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(aMaterial, (int) TierEU.RECIPE_MV))
                         .addTo(sAssemblerRecipes);
@@ -717,8 +705,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                                 aMaterial,
                                 aMaterial.mHandleMaterial,
                                 null))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(aMaterial, (int) TierEU.RECIPE_MV))
                         .addTo(sAssemblerRecipes);
@@ -760,8 +746,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                                 aMaterial,
                                 aMaterial.mHandleMaterial,
                                 null))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(aMaterial, (int) TierEU.RECIPE_MV))
                         .addTo(sAssemblerRecipes);
@@ -803,8 +787,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                                 aMaterial,
                                 aMaterial.mHandleMaterial,
                                 null))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(aMaterial, (int) TierEU.RECIPE_MV))
                         .addTo(sAssemblerRecipes);
@@ -832,8 +814,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                                 aMaterial,
                                 aMaterial.mHandleMaterial,
                                 null))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(aMaterial, (int) TierEU.RECIPE_MV))
                         .addTo(sAssemblerRecipes);
@@ -884,8 +864,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                                 aMaterial,
                                 aMaterial.mHandleMaterial,
                                 null))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(aMaterial, (int) TierEU.RECIPE_MV))
                         .addTo(sAssemblerRecipes);
@@ -912,8 +890,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                                 aMaterial,
                                 aMaterial.mHandleMaterial,
                                 null))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(aMaterial, (int) TierEU.RECIPE_MV))
                         .addTo(sAssemblerRecipes);
@@ -1185,8 +1161,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                                 aMaterial,
                                 aMaterial.mHandleMaterial,
                                 null))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(aMaterial, (int) TierEU.RECIPE_MV))
                         .addTo(sAssemblerRecipes);
@@ -1241,8 +1215,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 4L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Magnalium, 1L))
                     .itemOutputs(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(170, 1, aMaterial, aMaterial, null))
-                    .noFluidInputs()
-                    .noFluidOutputs()
                     .duration(8 * SECONDS)
                     .eut(calculateRecipeEU(aMaterial, 100))
                     .addTo(sAssemblerRecipes);
@@ -1251,8 +1223,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 8L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Titanium, 1L))
                     .itemOutputs(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(172, 1, aMaterial, aMaterial, null))
-                    .noFluidInputs()
-                    .noFluidOutputs()
                     .duration(16 * SECONDS)
                     .eut(calculateRecipeEU(aMaterial, 400))
                     .addTo(sAssemblerRecipes);
@@ -1261,8 +1231,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 12L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.TungstenSteel, 1L))
                     .itemOutputs(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(174, 1, aMaterial, aMaterial, null))
-                    .noFluidInputs()
-                    .noFluidOutputs()
                     .duration(32 * SECONDS)
                     .eut(calculateRecipeEU(aMaterial, 1600))
                     .addTo(sAssemblerRecipes);
@@ -1271,8 +1239,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 16L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Americium, 1L))
                     .itemOutputs(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(176, 1, aMaterial, aMaterial, null))
-                    .noFluidInputs()
-                    .noFluidOutputs()
                     .duration(1 * MINUTES + 4 * SECONDS)
                     .eut(calculateRecipeEU(aMaterial, 6400))
                     .addTo(sAssemblerRecipes);
@@ -1295,8 +1261,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 3L),
                                 GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 2L))
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 1L))
-                            .noFluidInputs()
-                            .noFluidOutputs()
                             .duration(10 * SECONDS)
                             .eut(calculateRecipeEU(aMaterial, 60))
                             .addTo(sPressRecipes);

@@ -23,9 +23,6 @@ public class ProcessingWax implements gregtech.api.interfaces.IOreRecipeRegistra
         if (aOreDictName.equals("waxMagical")) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(1L, aStack))
-                .noItemOutputs()
-                .noFluidInputs()
-                .noFluidOutputs()
                 .metadata(FUEL_VALUE, 6)
                 .metadata(FUEL_TYPE, 5)
                 .duration(0)

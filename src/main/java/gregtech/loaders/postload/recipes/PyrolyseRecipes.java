@@ -30,7 +30,6 @@ public class PyrolyseRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16),
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(RailcraftToolItems.getCoalCoke(16))
-                .noFluidInputs()
                 .fluidOutputs(Materials.Creosote.getFluid(8000))
                 .duration(32 * SECONDS)
                 .eut(64)
@@ -52,7 +51,6 @@ public class PyrolyseRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 8),
                     GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(EnumCube.COKE_BLOCK.getItem(8))
-                .noFluidInputs()
                 .fluidOutputs(Materials.Creosote.getFluid(32000))
                 .duration(2 * MINUTES + 8 * SECONDS)
                 .eut(64)
@@ -73,7 +71,6 @@ public class PyrolyseRecipes implements Runnable {
         if (!GregTech_API.mIC2Classic) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_ModHandler.getIC2Item("biochaff", 4), GT_Utility.getIntegratedCircuit(1))
-                .noItemOutputs()
                 .fluidInputs(Materials.Water.getFluid(4000))
                 .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 5000))
                 .duration(45 * SECONDS)
@@ -84,7 +81,6 @@ public class PyrolyseRecipes implements Runnable {
         if (Forestry.isModLoaded()) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(getModItem(Forestry.ID, "fertilizerBio", 4), GT_Utility.getIntegratedCircuit(1))
-                .noItemOutputs()
                 .fluidInputs(Materials.Water.getFluid(4000))
                 .fluidOutputs(Materials.Biomass.getFluid(5000))
                 .duration(45 * SECONDS)
@@ -93,7 +89,6 @@ public class PyrolyseRecipes implements Runnable {
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(getModItem(Forestry.ID, "mulch", 32), GT_Utility.getIntegratedCircuit(1))
-                .noItemOutputs()
                 .fluidInputs(Materials.Water.getFluid(4000))
                 .fluidOutputs(Materials.Biomass.getFluid(5000))
                 .duration(45 * SECONDS)
@@ -103,7 +98,6 @@ public class PyrolyseRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_ModHandler.getIC2Item("biochaff", 1), GT_Utility.getIntegratedCircuit(2))
-            .noItemOutputs()
             .fluidInputs(Materials.Water.getFluid(1500))
             .fluidOutputs(Materials.FermentedBiomass.getFluid(1500))
             .duration(10 * SECONDS)
@@ -112,7 +106,6 @@ public class PyrolyseRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(2))
-            .noItemOutputs()
             .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 1000))
             .fluidOutputs(Materials.FermentedBiomass.getFluid(1000))
             .duration(5 * SECONDS)
@@ -121,7 +114,6 @@ public class PyrolyseRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(2))
-            .noItemOutputs()
             .fluidInputs(Materials.Biomass.getFluid(1000))
             .fluidOutputs(Materials.FermentedBiomass.getFluid(1000))
             .duration(5 * SECONDS)
@@ -131,7 +123,6 @@ public class PyrolyseRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Sugar.getDust(23), GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(Materials.Charcoal.getDust(12))
-            .noFluidInputs()
             .fluidOutputs(Materials.Water.getFluid(1500))
             .duration(16 * SECONDS)
             .eut(64)

@@ -546,7 +546,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     public boolean mIgnoreTcon = true;
     public boolean mDisableIC2Cables = false;
     public boolean mAchievements = true;
-    public boolean mAE2Integration = true;
     public boolean mArcSmeltIntoAnnealed = true;
     public boolean mMagneticraftRecipes = false;
     public boolean mImmersiveEngineeringRecipes = false;
@@ -1990,16 +1989,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                                                         GT_Values.RA.stdBuilder()
                                                             .itemInputs(GT_ModHandler.getIC2Item("copperCableItem", 3L))
                                                             .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 1, 8))
-                                                            .noFluidInputs()
-                                                            .noFluidOutputs()
                                                             .duration(20 * SECONDS)
                                                             .eut(1)
                                                             .addTo(sWiremillRecipes);
                                                         GT_Values.RA.stdBuilder()
                                                             .itemInputs(GT_ModHandler.getIC2Item("ironCableItem", 6L))
                                                             .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 1, 9))
-                                                            .noFluidInputs()
-                                                            .noFluidOutputs()
                                                             .duration(20 * SECONDS)
                                                             .eut(2)
                                                             .addTo(sWiremillRecipes);

@@ -123,40 +123,30 @@ public class GT_ItemIterator implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.rotten_flesh, 2, 32767), ItemList.IC2_Food_Can_Empty.get(1L))
             .itemOutputs(ItemList.IC2_Food_Can_Spoiled.get(1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(10 * SECONDS)
             .eut(1)
             .addTo(sCannerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.spider_eye, 2, 32767), ItemList.IC2_Food_Can_Empty.get(1L))
             .itemOutputs(ItemList.IC2_Food_Can_Spoiled.get(1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(1)
             .addTo(sCannerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Food_Poisonous_Potato.get(2L), ItemList.IC2_Food_Can_Empty.get(1L))
             .itemOutputs(ItemList.IC2_Food_Can_Spoiled.get(1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(1)
             .addTo(sCannerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.cake, 1, 32767), ItemList.IC2_Food_Can_Empty.get(12L))
             .itemOutputs(ItemList.IC2_Food_Can_Filled.get(12L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(30 * SECONDS)
             .eut(1)
             .addTo(sCannerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.mushroom_stew, 1, 32767), ItemList.IC2_Food_Can_Empty.get(6L))
             .itemOutputs(ItemList.IC2_Food_Can_Filled.get(6L), new ItemStack(Items.bowl, 1))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(15 * SECONDS)
             .eut(1)
             .addTo(sCannerRecipes);
@@ -227,9 +217,7 @@ public class GT_ItemIterator implements Runnable {
                                         ItemList.IC2_Food_Can_Filled.get(tFoodValue),
                                         GT_Utility.getContainerItem(new ItemStack(tItem, 1, 0), true));
                                 }
-                                recipeBuilder.noFluidInputs()
-                                    .noFluidOutputs()
-                                    .duration(tFoodValue * 5 * SECONDS)
+                                recipeBuilder.duration(tFoodValue * 5 * SECONDS)
                                     .eut(1)
                                     .addTo(sCannerRecipes);
                             }
@@ -243,9 +231,6 @@ public class GT_ItemIterator implements Runnable {
                         if (tName.equals("item.ArsMagica:purified_vinteum")) {
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(new ItemStack(tItem, 1, 0))
-                                .noItemOutputs()
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .metadata(FUEL_VALUE, 256)
                                 .metadata(FUEL_TYPE, 5)
                                 .duration(0)
@@ -255,9 +240,6 @@ public class GT_ItemIterator implements Runnable {
                         if ((tName.equals("item.fieryBlood")) || (tName.equals("item.fieryTears"))) {
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(new ItemStack(tItem, 1, 0))
-                                .noItemOutputs()
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .metadata(FUEL_VALUE, 2048)
                                 .metadata(FUEL_TYPE, 5)
                                 .duration(0)
@@ -277,8 +259,6 @@ public class GT_ItemIterator implements Runnable {
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(new ItemStack(tItem, 1, 1))
                                 .itemOutputs(new ItemStack(Items.stick, 4))
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .metadata(FUEL_VALUE, 32)
                                 .metadata(FUEL_TYPE, 5)
                                 .duration(0)

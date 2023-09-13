@@ -72,16 +72,12 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(this, 1, 0), GT_Utility.getIntegratedCircuit(4))
             .itemOutputs(new ItemStack(this, 1, 3))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(4)
             .addTo(sAssemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(this, 1, 8), GT_Utility.getIntegratedCircuit(4))
             .itemOutputs(new ItemStack(this, 1, 11))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(4)
             .addTo(sAssemblerRecipes);
@@ -134,8 +130,6 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(this, 1, 3))
             .itemOutputs(new ItemStack(this, 1, 4))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(16 * TICKS)
             .eut(10)
             .addTo(sHammerRecipes);
@@ -143,8 +137,6 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(this, 1, 11))
             .itemOutputs(new ItemStack(this, 1, 12))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(16 * TICKS)
             .eut(10)
             .addTo(sHammerRecipes);
@@ -152,8 +144,6 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(this, 1, 0))
             .itemOutputs(new ItemStack(this, 1, 1))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(16 * TICKS)
             .eut(10)
             .addTo(sHammerRecipes);
@@ -161,8 +151,6 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(this, 1, 8))
             .itemOutputs(new ItemStack(this, 1, 9))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(16 * TICKS)
             .eut(10)
             .addTo(sHammerRecipes);
@@ -176,8 +164,6 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
             GT_Values.RA.stdBuilder()
                 .itemInputs(new ItemStack(this, 1, 7), GT_Utility.copyAmount(0L, aStack))
                 .itemOutputs(new ItemStack(this, 1, 6))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(2 * SECONDS + 10 * TICKS)
                 .eut(16)
                 .addTo(sLaserEngraverRecipes);
@@ -185,8 +171,6 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
             GT_Values.RA.stdBuilder()
                 .itemInputs(new ItemStack(this, 1, 15), GT_Utility.copyAmount(0L, aStack))
                 .itemOutputs(new ItemStack(this, 1, 14))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(2 * SECONDS + 10 * TICKS)
                 .eut(16)
                 .addTo(sLaserEngraverRecipes);

@@ -50,7 +50,6 @@ import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEItemStack;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
@@ -174,9 +173,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         aNBT.setIntArray("sizes", sizes);
         aNBT.setBoolean("autoStock", autoPullItemList);
         aNBT.setInteger("minAutoPullStackSize", minAutoPullStackSize);
-        if (GregTech_API.mAE2) {
-            getProxy().writeToNBT(aNBT);
-        }
+        getProxy().writeToNBT(aNBT);
     }
 
     private void setAutoPullItemList(boolean pullItemList) {
@@ -208,9 +205,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         }
         autoPullItemList = aNBT.getBoolean("autoStock");
         minAutoPullStackSize = aNBT.getInteger("minAutoPullStackSize");
-        if (GregTech_API.mAE2) {
-            getProxy().readFromNBT(aNBT);
-        }
+        getProxy().readFromNBT(aNBT);
     }
 
     @Override
@@ -220,11 +215,9 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
     @Override
     public String[] getInfoData() {
-        if (GregTech_API.mAE2) {
-            return new String[] {
-                "The bus is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
-                    : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET };
-        } else return new String[] {};
+        return new String[] {
+            "The bus is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
+                : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET };
     }
 
     @Override
@@ -337,7 +330,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
             // Display slots
             return null;
         if (aIndex == getCircuitSlot() || aIndex == getManualSlot()) return mInventory[aIndex];
-        if (GregTech_API.mAE2 && mInventory[aIndex] != null) {
+        if (mInventory[aIndex] != null) {
             AENetworkProxy proxy = getProxy();
             if (proxy == null) {
                 return null;
@@ -385,28 +378,26 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     }
 
     private void refreshItemList() {
-        if (GregTech_API.mAE2) {
-            AENetworkProxy proxy = getProxy();
-            try {
-                IMEMonitor<IAEItemStack> sg = proxy.getStorage()
-                    .getItemInventory();
-                Iterator<IAEItemStack> iterator = sg.getStorageList()
-                    .iterator();
-                int index = 0;
-                while (iterator.hasNext() && index < SLOT_COUNT) {
-                    IAEItemStack currItem = iterator.next();
-                    if (currItem.getStackSize() >= minAutoPullStackSize) {
-                        ItemStack itemstack = GT_Utility.copyAmount(1, currItem.getItemStack());
-                        this.mInventory[index] = itemstack;
-                        index++;
-                    }
+        AENetworkProxy proxy = getProxy();
+        try {
+            IMEMonitor<IAEItemStack> sg = proxy.getStorage()
+                .getItemInventory();
+            Iterator<IAEItemStack> iterator = sg.getStorageList()
+                .iterator();
+            int index = 0;
+            while (iterator.hasNext() && index < SLOT_COUNT) {
+                IAEItemStack currItem = iterator.next();
+                if (currItem.getStackSize() >= minAutoPullStackSize) {
+                    ItemStack itemstack = GT_Utility.copyAmount(1, currItem.getItemStack());
+                    this.mInventory[index] = itemstack;
+                    index++;
                 }
-                for (int i = index; i < SLOT_COUNT; i++) {
-                    mInventory[i] = null;
-                }
+            }
+            for (int i = index; i < SLOT_COUNT; i++) {
+                mInventory[i] = null;
+            }
 
-            } catch (final GridAccessException ignored) {}
-        }
+        } catch (final GridAccessException ignored) {}
     }
 
     private void updateAllInformationSlots() {
@@ -417,33 +408,31 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
     @Override
     public void endRecipeProcessing() {
-        if (GregTech_API.mAE2) {
-            for (int i = 0; i < SLOT_COUNT; ++i) {
-                if (savedStackSizes[i] != 0) {
-                    ItemStack oldStack = shadowInventory[i];
-                    if (oldStack == null || oldStack.stackSize < savedStackSizes[i]) {
-                        AENetworkProxy proxy = getProxy();
-                        try {
-                            IMEMonitor<IAEItemStack> sg = proxy.getStorage()
-                                .getItemInventory();
-                            IAEItemStack request = AEItemStack.create(mInventory[i]);
-                            request.setStackSize(savedStackSizes[i] - (oldStack == null ? 0 : oldStack.stackSize));
-                            sg.extractItems(request, Actionable.MODULATE, getRequestSource());
-                            proxy.getEnergy()
-                                .extractAEPower(request.getStackSize(), Actionable.MODULATE, PowerMultiplier.CONFIG);
-                            setInventorySlotContents(i + SLOT_COUNT, oldStack);
-                        } catch (final GridAccessException ignored) {}
-                    }
-                    savedStackSizes[i] = 0;
-                    shadowInventory[i] = null;
+        for (int i = 0; i < SLOT_COUNT; ++i) {
+            if (savedStackSizes[i] != 0) {
+                ItemStack oldStack = shadowInventory[i];
+                if (oldStack == null || oldStack.stackSize < savedStackSizes[i]) {
+                    AENetworkProxy proxy = getProxy();
+                    try {
+                        IMEMonitor<IAEItemStack> sg = proxy.getStorage()
+                            .getItemInventory();
+                        IAEItemStack request = AEItemStack.create(mInventory[i]);
+                        request.setStackSize(savedStackSizes[i] - (oldStack == null ? 0 : oldStack.stackSize));
+                        sg.extractItems(request, Actionable.MODULATE, getRequestSource());
+                        proxy.getEnergy()
+                            .extractAEPower(request.getStackSize(), Actionable.MODULATE, PowerMultiplier.CONFIG);
+                        setInventorySlotContents(i + SLOT_COUNT, oldStack);
+                    } catch (final GridAccessException ignored) {}
                 }
+                savedStackSizes[i] = 0;
+                shadowInventory[i] = null;
             }
         }
         processingRecipe = false;
     }
 
     public ItemStack updateInformationSlot(int aIndex, ItemStack aStack) {
-        if (GregTech_API.mAE2 && aIndex >= 0 && aIndex < SLOT_COUNT) {
+        if (aIndex >= 0 && aIndex < SLOT_COUNT) {
             if (aStack == null) {
                 super.setInventorySlotContents(aIndex + SLOT_COUNT, null);
             } else {

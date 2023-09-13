@@ -38,7 +38,6 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemInputs(ItemList.Shape_Mold_Gear.get(0L))
                             .itemOutputs(GT_OreDictUnificator.get(aPrefix, aMaterial, 1L))
                             .fluidInputs(aMaterial.getMolten(576L))
-                            .noFluidOutputs()
                             .duration(6 * SECONDS + 8 * TICKS)
                             .eut(calculateRecipeEU(aMaterial, 8))
                             .addTo(sFluidSolidficationRecipes);
@@ -76,7 +75,6 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemInputs(ItemList.Shape_Mold_Gear_Small.get(0L))
                             .itemOutputs(GT_Utility.copyAmount(1L, aStack))
                             .fluidInputs(aMaterial.getMolten(144L))
-                            .noFluidOutputs()
                             .duration(16 * TICKS)
                             .eut(calculateRecipeEU(aMaterial, 8))
                             .addTo(sFluidSolidficationRecipes);

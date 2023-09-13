@@ -16,8 +16,6 @@ public class ElectromagneticSeparatorRecipes implements Runnable {
             .itemInputs(MaterialsOreAlum.SluiceSand.getDust(1))
             .itemOutputs(Materials.Iron.getDust(1), Materials.Neodymium.getDust(1), Materials.Chrome.getDust(1))
             .outputChances(4000, 2000, 2000)
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(sElectroMagneticSeparatorRecipes);
@@ -29,8 +27,6 @@ public class ElectromagneticSeparatorRecipes implements Runnable {
                 Materials.NeodymiumMagnetic.getDust(1),
                 Materials.SamariumMagnetic.getDust(1))
             .outputChances(10000, 1000, 1000)
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(sElectroMagneticSeparatorRecipes);

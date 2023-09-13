@@ -53,8 +53,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                             } else {
                                 recipeBuilder.itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L));
                             }
-                            recipeBuilder.noFluidInputs()
-                                .noFluidOutputs()
+                            recipeBuilder
                                 .duration(Math.max(aMaterial.getMass() / 4L, 1L) * aMaterial.mBlastFurnaceTemp * TICKS)
                                 .eut(TierEU.RECIPE_MV)
                                 .metadata(COIL_HEAT, (int) aMaterial.mBlastFurnaceTemp)
@@ -88,8 +87,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                 GT_Values.RA.stdBuilder()
                                     .itemInputs(GT_Utility.copyAmount(2, aStack))
                                     .itemOutputs(aMaterial.mDirectSmelting.getIngots(outputAmount))
-                                    .noFluidInputs()
-                                    .noFluidOutputs()
                                     .duration(2 * MINUTES)
                                     .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
@@ -100,8 +97,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                     .itemOutputs(
                                         aMaterial.mDirectSmelting.getIngots(outputAmount),
                                         Materials.Ferrosilite.getDustSmall(2 * outputAmount))
-                                    .noFluidInputs()
-                                    .noFluidOutputs()
                                     .duration(2 * MINUTES)
                                     .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
@@ -111,8 +106,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                     .itemOutputs(
                                         aMaterial.mDirectSmelting.getIngots(outputAmount),
                                         Materials.Ferrosilite.getDustSmall(7 * outputAmount))
-                                    .noFluidInputs()
-                                    .noFluidOutputs()
                                     .duration(2 * MINUTES)
                                     .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
@@ -122,8 +115,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                     .itemOutputs(
                                         aMaterial.mDirectSmelting.getIngots(outputAmount),
                                         Materials.Ferrosilite.getDustSmall(outputAmount))
-                                    .noFluidInputs()
-                                    .noFluidOutputs()
                                     .duration(2 * MINUTES)
                                     .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
@@ -133,8 +124,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                     .itemOutputs(
                                         aMaterial.mDirectSmelting.getIngots(outputAmount),
                                         Materials.Ferrosilite.getDustSmall(outputAmount))
-                                    .noFluidInputs()
-                                    .noFluidOutputs()
                                     .duration(2 * MINUTES)
                                     .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
@@ -144,8 +133,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                     .itemOutputs(
                                         aMaterial.mDirectSmelting.getIngots(outputAmount),
                                         Materials.Ferrosilite.getDustSmall(outputAmount))
-                                    .noFluidInputs()
-                                    .noFluidOutputs()
                                     .duration(2 * MINUTES)
                                     .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
@@ -155,8 +142,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                     .itemOutputs(
                                         aMaterial.mDirectSmelting.getIngots(outputAmount),
                                         Materials.Ferrosilite.getDustSmall(outputAmount))
-                                    .noFluidInputs()
-                                    .noFluidOutputs()
                                     .duration(2 * MINUTES)
                                     .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
@@ -167,8 +152,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                     .itemOutputs(
                                         aMaterial.mDirectSmelting.getIngots(outputAmount),
                                         Materials.Antimony.getNuggets(3 * outputAmount))
-                                    .noFluidInputs()
-                                    .noFluidOutputs()
                                     .duration(2 * MINUTES)
                                     .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
@@ -179,8 +162,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                     .itemOutputs(
                                         aMaterial.mDirectSmelting.getIngots(outputAmount),
                                         Materials.Silver.getNuggets(3 * outputAmount))
-                                    .noFluidInputs()
-                                    .noFluidOutputs()
                                     .duration(2 * MINUTES)
                                     .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)

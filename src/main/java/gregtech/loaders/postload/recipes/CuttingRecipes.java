@@ -232,7 +232,6 @@ public class CuttingRecipes implements Runnable {
                 .itemInputs(inputs)
                 .itemOutputs(outputs)
                 .fluidInputs(Materials.Water.getFluid(Math.max(4, Math.min(1000, duration * eut / 320))))
-                .noFluidOutputs()
                 .duration(2 * duration)
                 .eut(eut)
                 .requiresCleanRoom()
@@ -242,7 +241,6 @@ public class CuttingRecipes implements Runnable {
                 .itemInputs(inputs)
                 .itemOutputs(outputs)
                 .fluidInputs(GT_ModHandler.getDistilledWater(Math.max(3, Math.min(750, duration * eut / 426))))
-                .noFluidOutputs()
                 .duration(2 * duration)
                 .eut(eut)
                 .requiresCleanRoom()
@@ -252,7 +250,6 @@ public class CuttingRecipes implements Runnable {
                 .itemInputs(inputs)
                 .itemOutputs(outputs)
                 .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, duration * eut / 1280))))
-                .noFluidOutputs()
                 .duration(duration)
                 .eut(eut)
                 .requiresCleanRoom()
@@ -262,7 +259,6 @@ public class CuttingRecipes implements Runnable {
                 .itemInputs(inputs)
                 .itemOutputs(outputs)
                 .fluidInputs(Materials.Water.getFluid(Math.max(4, Math.min(1000, duration * eut / 320))))
-                .noFluidOutputs()
                 .duration(2 * duration)
                 .eut(eut)
                 .addTo(sCutterRecipes);
@@ -271,7 +267,6 @@ public class CuttingRecipes implements Runnable {
                 .itemInputs(inputs)
                 .itemOutputs(outputs)
                 .fluidInputs(GT_ModHandler.getDistilledWater(Math.max(3, Math.min(750, duration * eut / 426))))
-                .noFluidOutputs()
                 .duration(2 * duration)
                 .eut(eut)
                 .addTo(sCutterRecipes);
@@ -280,7 +275,6 @@ public class CuttingRecipes implements Runnable {
                 .itemInputs(inputs)
                 .itemOutputs(outputs)
                 .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, duration * eut / 1280))))
-                .noFluidOutputs()
                 .duration(duration)
                 .eut(eut)
                 .addTo(sCutterRecipes);

@@ -197,7 +197,6 @@ public class ItemDrop extends Item {
             .itemInputs(tDrop)
             .itemOutputs(aOutput2)
             .outputChances(aChance)
-            .noFluidInputs()
             .fluidOutputs(aOutput)
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(aEUt)
@@ -210,7 +209,6 @@ public class ItemDrop extends Item {
             .itemInputs(tDrop)
             .itemOutputs(aOutput2)
             .outputChances(aChance)
-            .noFluidInputs()
             .fluidOutputs(aOutput)
             .duration(aDuration)
             .eut(aEUt)
@@ -222,7 +220,6 @@ public class ItemDrop extends Item {
             .itemInputs(tDrop)
             .itemOutputs(aOutput2)
             .outputChances(aChance)
-            .noFluidInputs()
             .fluidOutputs(aOutput)
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(aEUt)
@@ -232,14 +229,11 @@ public class ItemDrop extends Item {
     public void addProcessHV(ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance) {
         GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
         recipeBuilder.itemInputs(tDrop);
-        if (aOutput2 == GT_Values.NI) {
-            recipeBuilder.noItemOutputs();
-        } else {
+        if (aOutput2 != GT_Values.NI) {
             recipeBuilder.itemOutputs(aOutput2)
                 .outputChances(aChance);
         }
-        recipeBuilder.noFluidInputs()
-            .fluidOutputs(aOutput)
+        recipeBuilder.fluidOutputs(aOutput)
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(sFluidExtractionRecipes);

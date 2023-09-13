@@ -215,7 +215,7 @@ public class GT_ParallelHelper {
 
     /**
      * Set if we should consume inputs or not when trying for parallels
-     * 
+     *
      * @param consume Should we consume inputs
      */
     public GT_ParallelHelper setConsumption(boolean consume) {
@@ -251,7 +251,7 @@ public class GT_ParallelHelper {
 
     /**
      * Sets if we should calculate outputs with the parallels we found or not
-     * 
+     *
      * @param calculateOutputs Should we calculate outputs with the helper or not
      */
     public GT_ParallelHelper setOutputCalculation(boolean calculateOutputs) {
@@ -402,6 +402,11 @@ public class GT_ParallelHelper {
                 .setEUtDiscount(eutModifier);
         }
 
+        final int tRecipeEUt = (int) Math.ceil(recipe.mEUt * eutModifier);
+        if (availableEUt < tRecipeEUt) {
+            result = CheckRecipeResultRegistry.insufficientPower(tRecipeEUt);
+        }
+
         // Save the original max parallel before calculating our overclocking under 1 tick
         int originalMaxParallel = maxParallel;
         double tickTimeAfterOC = calculator.setParallel(originalMaxParallel)
@@ -450,7 +455,6 @@ public class GT_ParallelHelper {
 
         maxParallelBeforeBatchMode = Math.min(maxParallel, maxParallelBeforeBatchMode);
 
-        final int tRecipeEUt = (int) Math.ceil(recipe.mEUt * eutModifier);
         // Consume inputs to determine normal parallel
         if (recipeCheck != null) {
             int actualMaxParallel = (int) Math.min(maxParallelBeforeBatchMode, availableEUt / tRecipeEUt);
