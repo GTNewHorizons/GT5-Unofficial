@@ -28,9 +28,9 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
@@ -598,7 +598,6 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 .startFromSlot(0)
                 .endAtSlot(15)
                 .phantom(true)
-                .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_ARROW_ME)
                 .slotCreator(index -> new BaseSlot(inventoryHandler, index, true) {
 
                     @Override
@@ -637,13 +636,14 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                         .openSyncedWindow(CONFIG_WINDOW_ID);
                 }
             })
-                .setPlayClickSound(true)
                 .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
-                    if (autoPullItemList) ret.add(GT_UITextures.OVERLAY_BUTTON_AUTOPULL_ME);
-                    else ret.add(GT_UITextures.OVERLAY_BUTTON_AUTOPULL_ME_DISABLED);
-                    return ret.toArray(new IDrawable[0]);
+                    if (autoPullItemList) {
+                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD_PRESSED,
+                            GT_UITextures.OVERLAY_BUTTON_AUTOPULL_ME };
+                    } else {
+                        return new IDrawable[] { GT_UITextures.BUTTON_STANDARD,
+                            GT_UITextures.OVERLAY_BUTTON_AUTOPULL_ME_DISABLED };
+                    }
                 })
                 .addTooltips(
                     ImmutableList.of(
@@ -682,7 +682,6 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 new SlotWidget(inventoryHandler, getManualSlot())
                     // ghost slots are prioritized over manual slot
                     .setShiftClickPriority(11)
-                    .setBackground(getGUITextureSet().getItemSlot())
                     .setPos(79, 42));
     }
 
@@ -762,6 +761,17 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
             if (getBaseMetaTileEntity().isServerSide()) {
                 updateStockedItem(index);
             }
+        }
+
+        @Override
+        public IDrawable[] getBackground() {
+            IDrawable slot;
+            if (autoPullItemList) {
+                slot = GT_UITextures.SLOT_DARK_GRAY;
+            } else {
+                slot = ModularUITextures.ITEM_SLOT;
+            }
+            return new IDrawable[] { slot, GT_UITextures.OVERLAY_SLOT_ARROW_ME };
         }
 
         private boolean containsSuchStack(ItemStack stack) {
