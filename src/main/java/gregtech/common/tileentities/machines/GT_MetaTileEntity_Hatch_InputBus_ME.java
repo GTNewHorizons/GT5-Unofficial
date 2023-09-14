@@ -572,30 +572,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                         super.putStack(stack);
                     }
                 })
-                .widgetCreator(slot -> new SlotWidget(slot) {
-
-                    @Override
-                    protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
-                        if (clickData.mouseButton != 0 || !getMcSlot().isEnabled()) return;
-                        final int aSlotIndex = getMcSlot().getSlotIndex();
-                        if (cursorStack == null) {
-                            getMcSlot().putStack(null);
-                        } else {
-                            if (containsSuchStack(cursorStack)) return;
-                            getMcSlot().putStack(GT_Utility.copyAmount(1L, cursorStack));
-                        }
-                        if (getBaseMetaTileEntity().isServerSide()) {
-                            updateStockedItem(aSlotIndex);
-                        }
-                    }
-
-                    private boolean containsSuchStack(ItemStack tStack) {
-                        for (int i = 0; i < 16; ++i) {
-                            if (GT_Utility.areStacksEqual(mInventory[i], tStack, false)) return true;
-                        }
-                        return false;
-                    }
-                })
+                .widgetCreator(StockConfigSlotWidget::new)
                 .build()
                 .setPos(7, 6))
             .widget(
@@ -722,5 +699,36 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         tag.setBoolean("autoPull", autoPullItemList);
         tag.setInteger("minStackSize", minAutoPullStackSize);
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
+    }
+
+    private class StockConfigSlotWidget extends SlotWidget {
+
+        public StockConfigSlotWidget(BaseSlot slot) {
+            super(slot);
+        }
+
+        @Override
+        protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
+            if (clickData.mouseButton != 0 || !getMcSlot().isEnabled()) return;
+            final int index = getMcSlot().getSlotIndex();
+            if (cursorStack == null) {
+                getMcSlot().putStack(null);
+            } else {
+                if (containsSuchStack(cursorStack)) return;
+                getMcSlot().putStack(GT_Utility.copyAmount(1L, cursorStack));
+            }
+            if (getBaseMetaTileEntity().isServerSide()) {
+                updateStockedItem(index);
+            }
+        }
+
+        private boolean containsSuchStack(ItemStack stack) {
+            for (int i = 0; i < SLOT_COUNT; ++i) {
+                if (GT_Utility.areStacksEqual(mInventory[i], stack, false)) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }
