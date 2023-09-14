@@ -4,6 +4,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -77,6 +78,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     private boolean autoPullItemList = false;
     private int minAutoPullStackSize = 1;
     private static final int CONFIG_WINDOW_ID = 10;
+    private boolean additionalConnection = false;
 
     public GT_MetaTileEntity_Hatch_InputBus_ME(int aID, String aName, String aNameRegional) {
         super(
@@ -134,6 +136,23 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         return isOutputFacing(forgeDirection) ? AECableType.SMART : AECableType.NONE;
     }
 
+    public void setAdditionalConnectionOption() {
+        if (additionalConnection) {
+            gridProxy.setValidSides(EnumSet.allOf(ForgeDirection.class));
+        } else {
+            gridProxy.setValidSides(EnumSet.of(getBaseMetaTileEntity().getFrontFacing()));
+        }
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ) {
+        additionalConnection = !additionalConnection;
+        setAdditionalConnectionOption();
+        GT_Utility.sendChatToPlayer(aPlayer, "Additional connection " + additionalConnection);
+        return true;
+    }
+
     @Override
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
@@ -144,6 +163,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                     ItemList.Hatch_Output_Bus_ME.get(1),
                     true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
+                setAdditionalConnectionOption();
                 if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
                     getBaseMetaTileEntity().getWorld()
                         .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
@@ -173,6 +193,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         aNBT.setIntArray("sizes", sizes);
         aNBT.setBoolean("autoStock", autoPullItemList);
         aNBT.setInteger("minAutoPullStackSize", minAutoPullStackSize);
+        aNBT.setBoolean("additionalConnection", additionalConnection);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -205,6 +226,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         }
         autoPullItemList = aNBT.getBoolean("autoStock");
         minAutoPullStackSize = aNBT.getInteger("minAutoPullStackSize");
+        if (aNBT.hasKey("additionalConnection")) additionalConnection = aNBT.getBoolean("additionalConnection");
         getProxy().readFromNBT(aNBT);
     }
 

@@ -4,6 +4,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -59,6 +60,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
     long tickCounter = 0;
     boolean lastOutputFailed = false;
     boolean infiniteCache = true;
+    boolean additionalConnection = false;
 
     public GT_MetaTileEntity_Hatch_Output_ME(int aID, String aName, String aNameRegional) {
         super(
@@ -136,6 +138,14 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         return isOutputFacing(side) ? AECableType.SMART : AECableType.NONE;
     }
 
+    public void setAdditionalConnectionOption() {
+        if (additionalConnection) {
+            gridProxy.setValidSides(EnumSet.allOf(ForgeDirection.class));
+        } else {
+            gridProxy.setValidSides(EnumSet.of(getBaseMetaTileEntity().getFrontFacing()));
+        }
+    }
+
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         return false;
@@ -163,6 +173,15 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
     }
 
     @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ) {
+        additionalConnection = !additionalConnection;
+        setAdditionalConnectionOption();
+        GT_Utility.sendChatToPlayer(aPlayer, "Additional connection " + additionalConnection);
+        return true;
+    }
+
+    @Override
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
@@ -172,6 +191,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
                     ItemList.Hatch_Output_ME.get(1),
                     true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
+                setAdditionalConnectionOption();
                 if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
                     getBaseMetaTileEntity().getWorld()
                         .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
@@ -244,6 +264,8 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
             fluids.appendTag(tag);
         }
         aNBT.setTag("cachedFluids", fluids);
+        aNBT.setBoolean("infiniteCache", infiniteCache);
+        aNBT.setBoolean("additionalConnection", additionalConnection);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -268,6 +290,8 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
                 }
             }
         }
+        if (aNBT.hasKey("infiniteCache")) infiniteCache = aNBT.getBoolean("infiniteCache");
+        if (aNBT.hasKey("additionalConnection")) additionalConnection = aNBT.getBoolean("additionalConnection");
         getProxy().readFromNBT(aNBT);
     }
 
