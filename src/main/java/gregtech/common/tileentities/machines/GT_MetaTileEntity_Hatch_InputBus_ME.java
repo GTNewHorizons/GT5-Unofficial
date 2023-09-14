@@ -5,6 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTI
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -440,7 +441,13 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         } catch (final GridAccessException ignored) {}
     }
 
+    /**
+     * Pulls items stored in the ME network or pushes excess items to the ME network.
+     */
     private void updateAllStockedItems() {
+        if (autoPullItemList) {
+            sortStockedItems();
+        }
         for (int index = 0; index < SLOT_COUNT; index++) {
             updateStockedItem(index);
         }
@@ -458,12 +465,21 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         ItemStack toPull = mInventory[index];
         if (toPull == null) {
             // Configured to empty
-            tryPushBackItem(index);
+            if (!autoPullItemList) {
+                // We don't push back wrong item in auto-pull mode,
+                // in case the network is configured to be un-insertable
+                tryPushBackItem(index);
+            }
             return;
         }
         ItemStack currentStored = stockedInventory.getStackInSlot(index);
         if (currentStored != null && !GT_Utility.areStacksEqual(toPull, currentStored)) {
-            // Wrong item stocked, push it back
+            // Wrong item stocked
+            if (autoPullItemList) {
+                // When in auto-pull mode, let it there
+                return;
+            }
+            // Otherwise push it back
             if (!tryPushBackItem(index)) {
                 // If failed, we can't pull new item
                 return;
@@ -483,6 +499,32 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
             ItemStack pulled = (result != null) ? result.getItemStack() : null;
             stockedInventory.insertItem(index, pulled, false);
         } catch (final GridAccessException ignored) {}
+    }
+
+    /**
+     * Sorts stocked items to match order of auto-pull configurations
+     */
+    private void sortStockedItems() {
+        List<ItemStack> stash = new ArrayList<>();
+        for (int i = 0; i < SLOT_COUNT; i++) {
+            stash.add(stockedInventory.getStackInSlot(i));
+        }
+
+        stash.sort(Comparator.comparingInt(stack -> {
+            if (stack == null) {
+                return Integer.MAX_VALUE;
+            }
+            for (int configIndex = 0; configIndex < SLOT_COUNT; configIndex++) {
+                if (GT_Utility.areStacksEqual(stack, mInventory[configIndex])) {
+                    return configIndex;
+                }
+            }
+            return Integer.MAX_VALUE;
+        }));
+
+        for (int stockIndex = 0; stockIndex < SLOT_COUNT; stockIndex++) {
+            stockedInventory.setStackInSlot(stockIndex, stash.get(stockIndex));
+        }
     }
 
     /**
