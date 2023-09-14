@@ -808,17 +808,36 @@ public class BWRecipes {
         }
 
         @Override
+        protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
+                GT_NEI_DefaultHandler.FixedPositionedStack pStack) {
+            if (pStack.isFluid()) {
+                currentTip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("nei.biovat.input.tooltip"));
+                return currentTip;
+            }
+            return super.handleNEIItemInputTooltip(currentTip, pStack);
+        }
+
+        @Override
         protected List<String> handleNEIItemOutputTooltip(List<String> currentTip,
                 GT_NEI_DefaultHandler.FixedPositionedStack pStack) {
             if (pStack.isFluid()) {
-                currentTip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("nei.biovat.tooltip"));
+                currentTip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("nei.biovat.output.tooltip"));
                 return currentTip;
             }
             return super.handleNEIItemOutputTooltip(currentTip, pStack);
         }
 
         @Override
+        protected void drawNEIOverlayForInput(GT_NEI_DefaultHandler.FixedPositionedStack stack) {
+            drawFluidOverlay(stack);
+        }
+
+        @Override
         protected void drawNEIOverlayForOutput(GT_NEI_DefaultHandler.FixedPositionedStack stack) {
+            drawFluidOverlay(stack);
+        }
+
+        private void drawFluidOverlay(GT_NEI_DefaultHandler.FixedPositionedStack stack) {
             if (stack.isFluid()) {
                 drawNEIOverlayText(
                         "+",
