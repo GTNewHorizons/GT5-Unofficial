@@ -12,6 +12,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -581,6 +583,17 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         if (chunk != null) {
             chunk.setChunkModified();
         }
+    }
+
+    /**
+     * Gets items to be displayed for HoloInventory mod.
+     *
+     * @return null if default implementation should be used, i.e. {@link IInventory#getStackInSlot}.
+     *         Otherwise, a list of items to be displayed. Null element may be contained.
+     */
+    @Nullable
+    public List<ItemStack> getItemsForHoloGlasses() {
+        return null;
     }
 
     @Deprecated
