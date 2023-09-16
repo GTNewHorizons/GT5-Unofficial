@@ -1,19 +1,13 @@
 package gregtech.api.ModernMaterials.Blocks.FrameBox.TESR;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import fox.spiteful.avaritia.render.CosmicRenderShenanigans;
-import gregtech.api.GregTech_API;
-import gregtech.api.ModernMaterials.ModernMaterialsTextureRegister;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.opengl.GL11;
 
 import static gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.CustomTextureRegister.universiumFrameTexture;
-import static gregtech.api.enums.Mods.GregTech;
 
 public class UniversiumFrameRenderer extends TileEntitySpecialRenderer {
 

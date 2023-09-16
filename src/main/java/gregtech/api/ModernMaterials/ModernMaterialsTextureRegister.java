@@ -19,10 +19,9 @@ import static gregtech.api.enums.Mods.GregTech;
 
 public class ModernMaterialsTextureRegister {
 
-    public static IIcon frameGT;
-
     // This event is solely used for ModernMaterials icon registration.
     // That means all blocks, items and fluids for ModernMaterials.
+    @SubscribeEvent
     public void registerIcons(TextureStitchEvent.Pre event) {
         if (event.map.getTextureType() == 1) {
             itemTextures(event.map);

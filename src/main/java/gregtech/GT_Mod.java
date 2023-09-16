@@ -273,7 +273,6 @@ public class GT_Mod implements IGT_Mod {
 
         MinecraftForge.EVENT_BUS.register(new ExtraIcons());
         MinecraftForge.EVENT_BUS.register(new ModernMaterialsTextureRegister());
-        MinecraftForge.EVENT_BUS.register(new CustomTextureRegister());
 
         if (GregTech_API.sLoadStarted) {
             return;

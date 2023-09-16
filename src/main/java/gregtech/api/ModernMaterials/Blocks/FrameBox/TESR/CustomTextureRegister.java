@@ -1,7 +1,5 @@
 package gregtech.api.ModernMaterials.Blocks.FrameBox.TESR;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.GregTech_API;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.event.TextureStitchEvent;

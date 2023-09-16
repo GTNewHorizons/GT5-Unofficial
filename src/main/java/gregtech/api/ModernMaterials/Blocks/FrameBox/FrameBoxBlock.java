@@ -4,7 +4,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.Simple.DumbBlock;
-import gregtech.api.ModernMaterials.ModernMaterialsTextureRegister;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -37,15 +36,13 @@ public class FrameBoxBlock extends DumbBlock {
     @Override
     public IIcon getIcon(IBlockAccess worldIn, int x, int y, int z, int side)
     {
-        this.blockIcon = ModernMaterialsTextureRegister.frameGT;
-        return ModernMaterialsTextureRegister.frameGT;
+        return null;
     }
 
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta)
     {
-        this.blockIcon = ModernMaterialsTextureRegister.frameGT;
-        return ModernMaterialsTextureRegister.frameGT;
+        return null;
     }
 
     // Make block see through.
