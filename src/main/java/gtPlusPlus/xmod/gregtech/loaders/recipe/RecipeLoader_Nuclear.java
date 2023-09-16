@@ -517,7 +517,7 @@ public class RecipeLoader_Nuclear {
         GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs()
                 .fluidInputs(
                         new FluidStack(ELEMENT.STANDALONE.ADVANCED_NITINOL.getPlasma(), 144),
-                        Materials.Tartarite.getMolten(8))
+                        Materials.Tartarite.getMolten(2))
                 .fluidOutputs(new FluidStack(ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 1000))
                 .duration(16 * TICKS).eut(TierEU.RECIPE_UV).metadata(FUSION_THRESHOLD, 500000000).addTo(sFusionRecipes);
     }
