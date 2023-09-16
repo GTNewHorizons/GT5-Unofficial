@@ -507,7 +507,8 @@ public class RECIPES_GREGTECH {
                             CI.getTertiaryTieredFluid(8, 144 * 18 * 16),
                             CI.getAlternativeTieredFluid(7, 144 * 18 * 16),
                             CI.getAlternativeTieredFluid(8, 144 * 18 * 16))
-                    .noFluidOutputs().itemOutputs(ItemUtils.getItemStackFromFQRN("miscutils:personalCloakingDevice", 1))
+                    .noFluidOutputs()
+                    .itemOutputs(ItemUtils.getItemStackFromFQRN("miscutils:personalCloakingDevice-0.0", 1))
                     .eut(TierEU.RECIPE_UV).duration(1 * HOURS).addTo(AssemblyLine);
         }
 
