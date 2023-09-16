@@ -45,7 +45,7 @@ public class ModernMaterialsTextureRegister {
 
     private void itemTextures(TextureMap map) {
 
-        frameGT = map.registerIcon("gregtech:ModernMaterialsIcons/Blocks/frameGt");
+        frameGT = map.registerIcon(RES_PATH_ITEM + "test");
 
         // Pre sort this by part name not enum name to save computation later.
         MaterialPartsEnum[] partsEnum = MaterialPartsEnum.values();
