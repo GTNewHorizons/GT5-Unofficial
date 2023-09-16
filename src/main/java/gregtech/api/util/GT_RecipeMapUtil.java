@@ -107,16 +107,24 @@ public class GT_RecipeMapUtil {
         }
         fluidInputs.removeIf(Objects::isNull);
         fluidOutputs.removeIf(Objects::isNull);
-        if (!itemInputs.isEmpty()) {
+        if (itemInputs.size() == 0) {
+            b.noItemInputs();
+        } else {
             b.itemInputs(itemInputs.toArray(new ItemStack[0]));
         }
-        if (!itemOutputs.isEmpty()) {
+        if (itemOutputs.size() == 0) {
+            b.noItemOutputs();
+        } else {
             b.itemOutputs(itemOutputs.toArray(new ItemStack[0]), chances != null ? chances.toArray() : null);
         }
-        if (!fluidInputs.isEmpty()) {
+        if (fluidInputs.size() == 0) {
+            b.noFluidInputs();
+        } else {
             b.fluidInputs(fluidInputs.toArray(new FluidStack[0]));
         }
-        if (!fluidOutputs.isEmpty()) {
+        if (fluidOutputs.size() == 0) {
+            b.noFluidOutputs();
+        } else {
             b.fluidOutputs(fluidOutputs.toArray(new FluidStack[0]));
         }
         return b;

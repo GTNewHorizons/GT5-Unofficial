@@ -227,7 +227,8 @@ public class GT_RecipeBuilder {
     }
 
     /**
-     * You don't need to call this method for new recipes as RecipeBuilder takes empty item input array by default. But it is needed for manipulation of existing recipes.
+     * You don't need to call this method for new recipes as RecipeBuilder takes empty item input array by default. But
+     * it is needed for manipulation of existing recipes.
      */
     public GT_RecipeBuilder noItemInputs() {
         inputsBasic = new ItemStack[0];
@@ -260,7 +261,8 @@ public class GT_RecipeBuilder {
     }
 
     /**
-     * You don't need to call this method for new recipes as RecipeBuilder takes empty item output array by default. But it is needed for manipulation of existing recipes.
+     * You don't need to call this method for new recipes as RecipeBuilder takes empty item output array by default. But
+     * it is needed for manipulation of existing recipes.
      */
     public GT_RecipeBuilder noItemOutputs() {
         chances = null;
