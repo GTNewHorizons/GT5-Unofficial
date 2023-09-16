@@ -227,10 +227,12 @@ public class GT_RecipeBuilder {
     }
 
     /**
-     * @deprecated You don't need to call this method, RecipeBuilder now takes empty item input array by default.
+     * You don't need to call this method for new recipes as RecipeBuilder takes empty item input array by default. But it is needed for manipulation of existing recipes.
      */
-    @Deprecated
     public GT_RecipeBuilder noItemInputs() {
+        inputsBasic = new ItemStack[0];
+        inputsOreDict = null;
+        alts = null;
         return this;
     }
 
@@ -258,11 +260,11 @@ public class GT_RecipeBuilder {
     }
 
     /**
-     * @deprecated You don't need to call this method, RecipeBuilder now takes empty item output array by default.
+     * You don't need to call this method for new recipes as RecipeBuilder takes empty item output array by default. But it is needed for manipulation of existing recipes.
      */
-    @Deprecated
     public GT_RecipeBuilder noItemOutputs() {
-        return this;
+        chances = null;
+        return itemOutputs();
     }
 
     public GT_RecipeBuilder fluidInputs(FluidStack... fluidInputs) {
@@ -271,12 +273,8 @@ public class GT_RecipeBuilder {
         return this;
     }
 
-    /**
-     * @deprecated You don't need to call this method, RecipeBuilder now takes empty fluid input array by default.
-     */
-    @Deprecated
     public GT_RecipeBuilder noFluidInputs() {
-        return this;
+        return fluidInputs == null ? fluidInputs() : this;
     }
 
     public GT_RecipeBuilder fluidOutputs(FluidStack... fluidOutputs) {
@@ -285,20 +283,12 @@ public class GT_RecipeBuilder {
         return this;
     }
 
-    /**
-     * @deprecated You don't need to call this method, RecipeBuilder now takes empty fluid output array by default.
-     */
-    @Deprecated
     public GT_RecipeBuilder noFluidOutputs() {
-        return this;
+        return fluidOutputs();
     }
 
-    /**
-     * @deprecated You don't need to call this method, RecipeBuilder now takes empty arrays by default.
-     */
-    @Deprecated
     public GT_RecipeBuilder noOutputs() {
-        return this;
+        return noFluidOutputs().noItemOutputs();
     }
 
     public GT_RecipeBuilder outputChances(int... chances) {
