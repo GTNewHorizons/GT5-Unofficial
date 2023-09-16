@@ -19,6 +19,7 @@ import net.minecraft.util.IIcon;
 import org.lwjgl.opengl.GL11;
 
 public class UniversiumFrameRenderer extends TileEntitySpecialRenderer {
+
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
 
@@ -31,44 +32,19 @@ public class UniversiumFrameRenderer extends TileEntitySpecialRenderer {
 
         CosmicRenderShenanigans.useShader();
 
-        RenderBlocks blockRenderer = new RenderBlocks(tile.getWorldObj());
-
         CosmicRenderShenanigans.bindItemTexture();
 
         GL11.glTranslated(0.5 + x, 0.5 + y, 0.5 + z);
-        blockRenderer.renderBlockAsItem(tile.getBlockType(), 0, 1.0f);
-        //drawBlock(tile.blockType, 0, blockRenderer);
-        blockRenderer.renderMaxY =  1;
-        blockRenderer.renderMinY = -1;
 
         // This is a bit of a hack here, we do this solely because rendering a block icon will cause the stars
         // in the shader to not appear as they are part of the item atlas. So we store our block in the item atlas
-        // to draw it along with the stars. Otherwise the shader would need to be edited.
+        // to draw it along with the stars. Otherwise, the shader would need to be edited.
         CosmicRenderShenanigans.bindItemTexture();
 
-        blockRenderer.renderBlockAsItem(Blocks.coal_block, 0, 1.0f);
-        //drawBlock(Blocks.coal_block, 0, blockRenderer);
-
-        //IIcon tIcon = Items.diamond.getIcon(new ItemStack(Items.diamond), 0);
-        IIcon tIcon = ModernMaterialsTextureRegister.frameGT;
-
-        GL11.glTranslated(0, 1 , 0);
-        ItemRenderer.renderItemIn2D(
-            Tessellator.instance,
-            tIcon.getMaxU(),
-            tIcon.getMinV(),
-            tIcon.getMinU(),
-            tIcon.getMaxV(),
-            tIcon.getIconWidth(),
-            tIcon.getIconHeight(),
-            0);
+        GL11.glColor4f(1,1,1,0.5f);
+        renderBlockInWorld(ModernMaterialsTextureRegister.frameGT);
 
         CosmicRenderShenanigans.releaseShader();
-
-        //blockRenderer.renderFaceYPos(Blocks.coal_block, 0,0,0, );
-
-        //Minecraft mc = Minecraft.getMinecraft();
-        //mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
 
         GL11.glPopMatrix();
 
@@ -113,10 +89,10 @@ public class UniversiumFrameRenderer extends TileEntitySpecialRenderer {
             minV = texture.getMinV();
             maxV = texture.getMaxV();
 
-            tes.addVertexWithUV(X[2], Y[2], Z[2], maxU, maxV);
-            tes.addVertexWithUV(X[5], Y[5], Z[5], maxU, minV);
-            tes.addVertexWithUV(X[6], Y[6], Z[6], minU, minV);
             tes.addVertexWithUV(X[1], Y[1], Z[1], minU, maxV);
+            tes.addVertexWithUV(X[6], Y[6], Z[6], minU, minV);
+            tes.addVertexWithUV(X[5], Y[5], Z[5], maxU, minV);
+            tes.addVertexWithUV(X[2], Y[2], Z[2], maxU, maxV);
         }
 
         {
