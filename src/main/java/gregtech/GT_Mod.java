@@ -9,6 +9,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import gregtech.api.GregTech_API;
+import gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.CustomTextureRegister;
 import gregtech.api.ModernMaterials.ModernMaterialsRegistration;
 import gregtech.api.ModernMaterials.ModernMaterialsTextureRegister;
 import gregtech.api.enchants.Enchantment_EnderDamage;
@@ -272,6 +273,7 @@ public class GT_Mod implements IGT_Mod {
 
         MinecraftForge.EVENT_BUS.register(new ExtraIcons());
         MinecraftForge.EVENT_BUS.register(new ModernMaterialsTextureRegister());
+        MinecraftForge.EVENT_BUS.register(new CustomTextureRegister());
 
         if (GregTech_API.sLoadStarted) {
             return;

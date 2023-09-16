@@ -1,6 +1,7 @@
 package gregtech.api.ModernMaterials;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.CustomTextureRegister;
 import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import gregtech.api.ModernMaterials.PartProperties.Rendering.IconWrapper;
 import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
@@ -14,6 +15,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
+import static gregtech.api.enums.Mods.GregTech;
 
 public class ModernMaterialsTextureRegister {
 
@@ -21,7 +23,6 @@ public class ModernMaterialsTextureRegister {
 
     // This event is solely used for ModernMaterials icon registration.
     // That means all blocks, items and fluids for ModernMaterials.
-    @SubscribeEvent
     public void registerIcons(TextureStitchEvent.Pre event) {
         if (event.map.getTextureType() == 1) {
             itemTextures(event.map);
@@ -30,6 +31,9 @@ public class ModernMaterialsTextureRegister {
             blockTextures(event.map);
             fluidTextures(event.map);
         }
+
+        // This is ONLY to be used for unavoidable situations. Do not dump all your crap here.
+        CustomTextureRegister.registerIcons(event);
     }
 
     private void blockTextures(TextureMap map) {
@@ -38,14 +42,12 @@ public class ModernMaterialsTextureRegister {
 
     private void fluidTextures(TextureMap map) {
         for (FluidEnum fluidEnum : FluidEnum.values()) {
-            fluidEnum.stillIcon = map.registerIcon( RES_PATH_ITEM + "ModernMaterialsIcons/Fluids/still_" + fluidEnum.name().toLowerCase());
-            fluidEnum.flowingIcon = map.registerIcon( RES_PATH_ITEM + "ModernMaterialsIcons/Fluids/flowing_" + fluidEnum.name().toLowerCase());
+            fluidEnum.stillIcon = map.registerIcon( GregTech.getResourcePath() + "ModernMaterialsIcons/Fluids/still_" + fluidEnum.name().toLowerCase());
+            fluidEnum.flowingIcon = map.registerIcon( GregTech.getResourcePath() + "ModernMaterialsIcons/Fluids/flowing_" + fluidEnum.name().toLowerCase());
         }
     }
 
     private void itemTextures(TextureMap map) {
-
-        frameGT = map.registerIcon(RES_PATH_ITEM + "test");
 
         // Pre sort this by part name not enum name to save computation later.
         MaterialPartsEnum[] partsEnum = MaterialPartsEnum.values();
@@ -90,7 +92,7 @@ public class ModernMaterialsTextureRegister {
                         continue;
                     }
                     // textures/items
-                    IIcon icon = map.registerIcon( RES_PATH_ITEM + "ModernMaterialsIcons/" + textureType + "/Items/" + removePNG(trueFileName));
+                    IIcon icon = map.registerIcon( GregTech.getResourcePath() + "ModernMaterialsIcons/" + textureType + "/Items/" + removePNG(trueFileName));
 
                     IconWrapper iconWrapper = new IconWrapper(priority, isColoured, icon);
                     textureType.addTexture(part, iconWrapper);
