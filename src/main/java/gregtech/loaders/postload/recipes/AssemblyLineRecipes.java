@@ -840,5 +840,27 @@ public class AssemblyLineRecipes implements Runnable {
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(AssemblyLine);
+
+        // Solar Factory
+        GT_Values.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.Machine_HP_Solar.get(1))
+            .metadata(RESEARCH_TIME, 6 * HOURS)
+            .itemInputs(
+                ItemList.Hull_ZPM.get(1),
+                ItemList.Electric_Motor_ZPM.get(8),
+                ItemList.Conveyor_Module_ZPM.get(4),
+                ItemList.Robot_Arm_ZPM.get(2),
+                ItemList.Cover_SolarPanel_IV.get(1),
+                new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 4 },
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorLuV, 16),
+                    GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorZPM, 4) },
+                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.NaquadahAlloy, 16))
+            .itemOutputs(ItemList.Machine_SolarFactory.get(1))
+            .fluidInputs(new FluidStack(solderIndalloy, 1440), Materials.Naquadria.getMolten(2880))
+            .noFluidOutputs()
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(AssemblyLine);
+
     }
 }

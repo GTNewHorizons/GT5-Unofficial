@@ -4246,7 +4246,6 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.NEBRISUM, 8L),
                 new TC_Aspects.TC_AspectStack(TC_Aspects.STRONTIO, 8L)));
-
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Sensor_LV.get(1L), ItemList.Emitter_LV.get(1L), GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.NC_SensorKit.get(1L))

@@ -1148,6 +1148,25 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 .setSlotOverlay(false, true, GT_UITextures.OVERLAY_SLOT_DUST)
                 .setRecipeConfigFile("thermalcentrifuge", FIRST_ITEM_INPUT)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+        public static final GT_Recipe_Map sSolarFactoryRecipes = new GT_Recipe_Map(
+            new HashSet<>(60),
+            "gt.recipe.solarfactory",
+            "Solar Factory",
+            null,
+            GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "SolarFactory"),
+            9,
+            1,
+            1,
+            0,
+            1,
+            E,
+            1,
+            E,
+            false,
+            true).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_SQUARE)
+                .setSlotOverlay(false, true, GT_UITextures.OVERLAY_SLOT_SQUARE)
+                .setRecipeConfigFile("solarfactory", FIRST_ITEM_INPUT)
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sCompressorRecipes = new GT_Recipe_Map(
             new HashSet<>(750),
             "gt.recipe.compressor",

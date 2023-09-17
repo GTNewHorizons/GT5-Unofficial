@@ -52,6 +52,7 @@ import gregtech.loaders.postload.recipes.RecipeRemover;
 import gregtech.loaders.postload.recipes.SifterRecipes;
 import gregtech.loaders.postload.recipes.SlicerRecipes;
 import gregtech.loaders.postload.recipes.SmelterRecipes;
+import gregtech.loaders.postload.recipes.SolarFactoryRecipes;
 import gregtech.loaders.postload.recipes.ThaumcraftRecipes;
 import gregtech.loaders.postload.recipes.ThermalCentrifugeRecipes;
 import gregtech.loaders.postload.recipes.TranscendentPlasmaMixerRecipes;
@@ -118,6 +119,7 @@ public class GT_MachineRecipeLoader implements Runnable {
         new SifterRecipes().run();
         new SlicerRecipes().run();
         new SmelterRecipes().run();
+        new SolarFactoryRecipes().run();
         new ThaumcraftRecipes().run();
         new ThermalCentrifugeRecipes().run();
         new VacuumFreezerRecipes().run();
