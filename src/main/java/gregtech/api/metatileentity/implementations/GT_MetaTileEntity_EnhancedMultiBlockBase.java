@@ -86,12 +86,17 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
         if (wrenchingSide != getBaseMetaTileEntity().getFrontFacing())
             return super.onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ);
         if (entityPlayer.isSneaking()) {
-            // we won't be allowing horizontal flips, as it can be perfectly emulated by rotating twice and flipping
-            // horizontally
-            // allowing an extra round of flip make it hard to draw meaningful flip markers in GT_Proxy#drawGrid
-            toolSetFlip(getFlip().isHorizontallyFlipped() ? Flip.NONE : Flip.HORIZONTAL);
+            if (isFlipChangeAllowed()) {
+                toolSetFlip(getFlip().isHorizontallyFlipped() ? Flip.NONE : Flip.HORIZONTAL);
+            } else {
+                return false;
+            }
         } else {
-            toolSetRotation(null);
+            if (isRotationChangeAllowed()) {
+                toolSetRotation(null);
+            } else {
+                return false;
+            }
         }
         return true;
     }
@@ -148,6 +153,33 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
             getBaseMetaTileEntity().getFrontFacing(),
             Rotation.byIndex(aNBT.getByte("eRotation")),
             Flip.byIndex(aNBT.getByte("eFlip")));
+        if (!getAlignmentLimits().isNewExtendedFacingValid(mExtendedFacing)) {
+            mExtendedFacing = getCorrectedAlignment(mExtendedFacing);
+        }
+    }
+
+    /**
+     * When an old {@link ExtendedFacing} is loaded upon MTE deserialization, and the loaded facing cannot pass test of
+     * current {@link #getAlignmentLimits()}, this method will be called to retrieve a corrected version. This method
+     * is currently only intended to be used as a mean to migrate alignment limits, so if you never change the alignment
+     * limit then you can probably just use the default implementation.
+     *
+     * The returned new facing must be able to pass the test of {@link #isNewExtendedFacingValid(ExtendedFacing)}
+     */
+    protected ExtendedFacing getCorrectedAlignment(ExtendedFacing aOldFacing) {
+        if (isNewExtendedFacingValid(ExtendedFacing.DEFAULT)) {
+            return ExtendedFacing.DEFAULT;
+        }
+        for (ExtendedFacing facing : ExtendedFacing.VALUES) {
+            if (facing.getFlip()
+                .isVerticallyFliped()) {
+                continue;
+            }
+            if (isNewExtendedFacingValid(facing)) {
+                return facing;
+            }
+        }
+        throw new AssertionError("No ExtendedFacing can pass the test of isNewExtendedFacingValid");
     }
 
     @SuppressWarnings("unchecked")

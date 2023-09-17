@@ -232,6 +232,11 @@ public class GT_MetaTileEntity_DistillationTower extends
     }
 
     @Override
+    public boolean isRotationChangeAllowed() {
+        return false;
+    }
+
+    @Override
     public IStructureDefinition<GT_MetaTileEntity_DistillationTower> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
