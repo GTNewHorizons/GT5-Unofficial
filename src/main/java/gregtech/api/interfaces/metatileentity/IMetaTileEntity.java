@@ -4,12 +4,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -522,6 +525,17 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
 
     @Override
     default ItemStack getMachineCraftingIcon() {
+        return null;
+    }
+
+    /**
+     * Gets items to be displayed for HoloInventory mod.
+     *
+     * @return null if default implementation should be used, i.e. {@link IInventory#getStackInSlot}.
+     *         Otherwise, a list of items to be displayed. Null element may be contained.
+     */
+    @Nullable
+    default List<ItemStack> getItemsForHoloGlasses() {
         return null;
     }
 }

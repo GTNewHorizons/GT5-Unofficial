@@ -715,7 +715,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         needPatternSync = true;
     }
 
-    private ItemStack[] getSharedItems() {
+    public ItemStack[] getSharedItems() {
         ItemStack[] sharedItems = new ItemStack[SLOT_MANUAL_SIZE + 1];
         sharedItems[0] = mInventory[SLOT_CIRCUIT];
         System.arraycopy(mInventory, SLOT_MANUAL_START, sharedItems, 1, SLOT_MANUAL_SIZE);
@@ -951,5 +951,18 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
     @Override
     public void setCustomName(String name) {
         customName = name;
+    }
+
+    @Override
+    public Optional<IDualInputInventory> getFirstNonEmptyInventory() {
+        for (PatternSlot slot : internalInventory) {
+            if (slot != null && !slot.isEmpty()) return Optional.of(slot);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public boolean supportsFluids() {
+        return this.supportFluids;
     }
 }

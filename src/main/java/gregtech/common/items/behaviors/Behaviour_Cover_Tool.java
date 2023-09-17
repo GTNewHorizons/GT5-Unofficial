@@ -112,14 +112,22 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
                     ? GT_Utility.determineWrenchingSide(side, hitX, hitY, hitZ)
                     : ForgeDirection.UNKNOWN;
             if (tSide != ForgeDirection.UNKNOWN) {
-                mStoredData = tCoverable.getComplexCoverDataAtSide(tSide);
-                mCoverType = tCoverable.getCoverIDAtSide(tSide);
-                aList.add("Block Side: " + EnumChatFormatting.AQUA + tSide.name() + EnumChatFormatting.RESET);
-                aList.add(
-                    "Cover Type: " + EnumChatFormatting.GREEN
-                        + tCoverable.getCoverItemAtSide(tSide)
-                            .getDisplayName()
-                        + EnumChatFormatting.RESET);
+                if (tCoverable.getCoverBehaviorAtSideNew(tSide)
+                    .allowsCopyPasteTool()) {
+                    mStoredData = tCoverable.getComplexCoverDataAtSide(tSide);
+                    mCoverType = tCoverable.getCoverIDAtSide(tSide);
+
+                    aList.add("Block Side: " + EnumChatFormatting.AQUA + tSide.name() + EnumChatFormatting.RESET);
+                    aList.add(
+                        "Cover Type: " + EnumChatFormatting.GREEN
+                            + tCoverable.getCoverItemAtSide(tSide)
+                                .getDisplayName()
+                            + EnumChatFormatting.RESET);
+                } else {
+                    mStoredData = GregTech_API.sNoBehavior.createDataObject();
+                    mCoverType = 0;
+                    aList.add("Copy unavailable for this cover type");
+                }
             } else {
                 mStoredData = GregTech_API.sNoBehavior.createDataObject();
                 mCoverType = 0;

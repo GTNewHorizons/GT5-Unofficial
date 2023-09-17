@@ -144,6 +144,16 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_Slave extends GT_MetaTileEnti
     }
 
     @Override
+    public Optional<IDualInputInventory> getFirstNonEmptyInventory() {
+        return getMaster() != null ? getMaster().getFirstNonEmptyInventory() : Optional.empty();
+    }
+
+    @Override
+    public boolean supportsFluids() {
+        return getMaster() != null && getMaster().supportsFluids();
+    }
+
+    @Override
     public boolean justUpdated() {
         return getMaster() != null && getMaster().justUpdated();
     }

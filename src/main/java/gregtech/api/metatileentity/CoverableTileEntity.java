@@ -9,8 +9,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.IntStream;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
@@ -19,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -26,6 +30,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.io.ByteStreams;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
@@ -34,6 +43,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.Column;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 
 import cpw.mods.fml.relauncher.Side;
@@ -56,6 +66,8 @@ import gregtech.api.util.ISerializableObject;
 import gregtech.common.GT_Client;
 import gregtech.common.covers.CoverInfo;
 import gregtech.common.covers.GT_Cover_Fluidfilter;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -91,6 +103,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     protected short mID = 0;
     public long mTickTimer = 0;
+    private Map<ForgeDirection, ISerializableObject> clientCoverData = new HashMap<>();
 
     protected void writeCoverNBT(NBTTagCompound aNBT, boolean isDrop) {
         final NBTTagList tList = new NBTTagList();
@@ -230,8 +243,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     @Override
     public void issueCoverUpdate(ForgeDirection side) {
         // If we've got a null worldObj we're getting called as a part of readingNBT from a non tickable MultiTileEntity
-        // on chunk load before the world is set
-        // so we'll want to send a cover update.
+        // on chunk load before the world is set, so we'll want to send a cover update.
         final CoverInfo coverInfo = getCoverInfoAtSide(side);
         if (worldObj == null || (isServerSide() && coverInfo.isDataNeededOnClient())) coverInfo.setNeedsUpdate(true);
     }
@@ -419,7 +431,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public void setStrongOutputRedstoneSignal(ForgeDirection side, byte strength) {
-        mStrongRedstone |= side.flag;
+        mStrongRedstone |= (byte) side.flag;
         setOutputRedstoneSignal(side, strength);
     }
 
@@ -682,7 +694,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                     return backgrounds.toArray(new IDrawable[] {});
                 }
             }.setOnClick((clickData, widget) -> onTabClicked(clickData, widget, direction))
-                .dynamicTooltip(() -> getCoverTabTooltip(direction))
+                .dynamicTooltip(() -> getCoverTabTooltip(direction, clientCoverData.get(direction)))
                 .setSize(COVER_TAB_WIDTH, COVER_TAB_HEIGHT))
                 .addChild(
                     new ItemDrawable(() -> getCoverItemAtSide(direction)).asWidget()
@@ -691,10 +703,17 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                             (COVER_TAB_HEIGHT - ICON_SIZE) / 2))
                 .setEnabled(widget -> getCoverItemAtSide(direction) != null));
         }
+
+        builder.widget(
+            new FakeSyncWidget<>(
+                this::collectCoverData,
+                data -> clientCoverData = data,
+                this::writeClientCoverData,
+                this::readClientCoverData));
     }
 
     @SideOnly(Side.CLIENT)
-    protected List<String> getCoverTabTooltip(ForgeDirection side) {
+    protected List<String> getCoverTabTooltip(ForgeDirection side, ISerializableObject coverData) {
         final String[] SIDE_TOOLTIPS = new String[] { "GT5U.interface.coverTabs.down", "GT5U.interface.coverTabs.up",
             "GT5U.interface.coverTabs.north", "GT5U.interface.coverTabs.south", "GT5U.interface.coverTabs.west",
             "GT5U.interface.coverTabs.east" };
@@ -704,19 +723,18 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final boolean coverHasGUI = coverInfo.hasCoverGUI();
 
         final List<String> tooltip = coverItem.getTooltip(Minecraft.getMinecraft().thePlayer, true);
-        for (int i = 0; i < tooltip.size(); i++) {
-            if (i == 0) {
-                tooltip.set(
-                    0,
-                    (coverHasGUI ? EnumChatFormatting.UNDERLINE : EnumChatFormatting.DARK_GRAY)
-                        + StatCollector.translateToLocal(SIDE_TOOLTIPS[side.ordinal()])
-                        + (coverHasGUI ? EnumChatFormatting.RESET + ": " : ": " + EnumChatFormatting.RESET)
-                        + tooltip.get(0));
-            } else {
-                tooltip.set(i, EnumChatFormatting.GRAY + tooltip.get(i));
-            }
-        }
-        return tooltip;
+        final ImmutableList.Builder<String> builder = ImmutableList.builder();
+        builder.add(
+            (coverHasGUI ? EnumChatFormatting.UNDERLINE : EnumChatFormatting.DARK_GRAY)
+                + StatCollector.translateToLocal(SIDE_TOOLTIPS[side.ordinal()])
+                + (coverHasGUI ? EnumChatFormatting.RESET + ": " : ": " + EnumChatFormatting.RESET)
+                + tooltip.get(0));
+        builder.addAll(coverInfo.getAdditionalTooltip(coverData));
+        builder.addAll(
+            IntStream.range(1, tooltip.size())
+                .mapToObj(index -> EnumChatFormatting.GRAY + tooltip.get(index))
+                .iterator());
+        return builder.build();
     }
 
     protected void onTabClicked(Widget.ClickData ignoredClickData, Widget widget, ForgeDirection side) {
@@ -738,5 +756,52 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                 (EntityPlayerMP) widget.getContext()
                     .getPlayer());
         }
+    }
+
+    @NotNull
+    private Map<ForgeDirection, ISerializableObject> collectCoverData() {
+        final ImmutableMap.Builder<ForgeDirection, ISerializableObject> builder = ImmutableMap.builder();
+        for (final ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+            final CoverInfo coverInfo = getCoverInfoAtSide(direction);
+            if (coverInfo.isValid()) {
+                builder.put(direction, coverInfo.getCoverData());
+            }
+        }
+
+        return builder.build();
+    }
+
+    private void writeClientCoverData(@NotNull PacketBuffer buffer,
+        @NotNull Map<ForgeDirection, ISerializableObject> dataMap) {
+        buffer.writeInt(dataMap.size());
+        dataMap.forEach((direction, serializableObject) -> {
+            final ByteBuf individualBuffer = Unpooled.buffer();
+            serializableObject.writeToByteBuf(individualBuffer);
+
+            buffer.writeByte(direction.ordinal());
+            buffer.writeInt(individualBuffer.array().length);
+            buffer.writeBytes(individualBuffer.array());
+        });
+    }
+
+    @NotNull
+    private Map<ForgeDirection, ISerializableObject> readClientCoverData(@NotNull PacketBuffer buffer) {
+        ImmutableMap.Builder<ForgeDirection, ISerializableObject> builder = ImmutableMap.builder();
+        final int size = buffer.readInt();
+        for (int i = 0; i < size; i++) {
+            final ForgeDirection direction = ForgeDirection.getOrientation(buffer.readByte());
+            final int length = buffer.readInt();
+            final byte[] object = buffer.readBytes(length)
+                .array();
+
+            // noinspection UnstableApiUsage
+            builder.put(
+                direction,
+                getCoverInfoAtSide(direction).getCoverBehavior()
+                    .createDataObject()
+                    .readFromPacket(ByteStreams.newDataInput(object), null));
+        }
+
+        return builder.build();
     }
 }
