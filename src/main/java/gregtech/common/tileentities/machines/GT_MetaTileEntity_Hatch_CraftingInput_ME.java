@@ -325,6 +325,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     private String customName = null;
     private boolean supportFluids;
+    private boolean additionalConnection = false;
 
     public GT_MetaTileEntity_Hatch_CraftingInput_ME(int aID, String aName, String aNameRegional,
         boolean supportFluids) {
@@ -389,14 +390,32 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         return isOutputFacing(forgeDirection) ? AECableType.SMART : AECableType.NONE;
     }
 
+    public void setAdditionalConnectionOption() {
+        if (additionalConnection) {
+            gridProxy.setValidSides(EnumSet.allOf(ForgeDirection.class));
+        } else {
+            gridProxy.setValidSides(EnumSet.of(getBaseMetaTileEntity().getFrontFacing()));
+        }
+    }
+
     @Override
     public void securityBreak() {}
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ) {
+        additionalConnection = !additionalConnection;
+        setAdditionalConnectionOption();
+        GT_Utility.sendChatToPlayer(aPlayer, "Additional connection " + additionalConnection);
+        return true;
+    }
 
     @Override
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
             gridProxy = new AENetworkProxy(this, "proxy", ItemList.Hatch_CraftingInput_Bus_ME.get(1), true);
             gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
+            setAdditionalConnectionOption();
             if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
                 getBaseMetaTileEntity().getWorld()
                     .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
@@ -484,6 +503,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
         aNBT.setTag("internalInventory", internalInventoryNBT);
         if (customName != null) aNBT.setString("customName", customName);
+        aNBT.setBoolean("additionalConnection", additionalConnection);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -533,6 +553,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
 
         if (aNBT.hasKey("customName")) customName = aNBT.getString("customName");
+        if (aNBT.hasKey("additionalConnection")) additionalConnection = aNBT.getBoolean("additionalConnection");
 
         getProxy().readFromNBT(aNBT);
     }

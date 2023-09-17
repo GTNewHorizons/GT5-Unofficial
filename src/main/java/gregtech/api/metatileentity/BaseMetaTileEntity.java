@@ -2386,7 +2386,6 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
 
     @Override
     public IGridNode getGridNode(ForgeDirection forgeDirection) {
-        if (mFacing != forgeDirection) return null;
         final AENetworkProxy gp = getProxy();
         return gp != null ? gp.getNode() : null;
     }
