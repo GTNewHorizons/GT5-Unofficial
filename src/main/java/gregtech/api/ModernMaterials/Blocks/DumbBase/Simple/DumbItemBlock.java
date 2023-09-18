@@ -16,7 +16,7 @@ import java.util.List;
 
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.tooltipGenerator;
 
-public abstract class DumbItemBlock extends ItemBlock {
+public class DumbItemBlock extends ItemBlock {
 
     public DumbItemBlock(Block block) {
         super(block);
@@ -43,8 +43,22 @@ public abstract class DumbItemBlock extends ItemBlock {
     }
 
     @Override
-    public abstract String getItemStackDisplayName(ItemStack itemStack);
+    public String getItemStackDisplayName(ItemStack itemStack) {
+        final ModernMaterial associatedMaterial = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
 
-    public abstract BlocksEnum getBlockEnum();
+        return getBlockEnum().getLocalisedName(associatedMaterial);
+    }
+
+    public BlocksEnum getBlockEnum() {
+        return BlocksEnum.FrameBox;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getColorFromItemStack(ItemStack itemStack, int renderPass) {
+        final ModernMaterial associatedMaterial = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
+
+        return associatedMaterial.getColor().getRGB();
+    }
 
 }

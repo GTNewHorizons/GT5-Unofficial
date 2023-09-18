@@ -108,7 +108,7 @@ public class ModernMaterialUtilities {
             // Register the actual block.
             DumbBlock simpleBlock = blockType.getBlockClass().getDeclaredConstructor().newInstance();
             simpleBlock.setBlockName(name);
-            GameRegistry.registerBlock(simpleBlock, FrameBoxItemBlock.class, name);
+            GameRegistry.registerBlock(simpleBlock, DumbItemBlock.class, name);
 
             // Register the tile entity itself.
             GameRegistry.registerTileEntity(blockType.getTileEntityClass(), name);
@@ -186,29 +186,6 @@ public class ModernMaterialUtilities {
         }
 
         return tooltip;
-    }
-
-
-    // We do some complicated stuff here to register two distinct blocks using minimal inputs.
-    public static void registerBlock(Class<? extends DumbBlock> blockClass, Class<? extends DumbTileEntity> dumbTileEntity, Class<? extends DumbItemBlock> dumbItemBlock, ISimpleBlockRenderingHandler simpleRenderer) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-
-        DumbBlock simpleBlock = blockClass.getDeclaredConstructor().newInstance();
-        simpleBlock.setBlockName("Simple:" + simpleBlock.getBlockEnum());
-
-        DumbBlock TESRBlock = blockClass.getDeclaredConstructor().newInstance();
-        TESRBlock.setBlockName("TESR:" + TESRBlock.getBlockEnum());
-
-        GameRegistry.registerBlock(simpleBlock, dumbItemBlock, "Simple:" + simpleBlock.getBlockEnum());
-        GameRegistry.registerBlock(TESRBlock, dumbItemBlock, "TESR:" + TESRBlock.getBlockEnum());
-
-        GameRegistry.registerTileEntity(dumbTileEntity, "Simple:" + simpleBlock.getBlockEnum());
-        GameRegistry.registerTileEntity(dumbTileEntity, "TESR:" + TESRBlock.getBlockEnum());
-
-
-        //ClientRegistry.bindTileEntitySpecialRenderer(dumbTileEntity, new MasterTESR());
-
-
-
     }
 
     public static void drawBlock(Block block, int meta, RenderBlocks renderer) {
