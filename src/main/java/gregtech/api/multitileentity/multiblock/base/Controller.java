@@ -179,7 +179,7 @@ public abstract class Controller<T extends Controller<T, P>, P extends Processin
             totalSum += casing.getPartTier() * casing.getPartWeight();
             weightSum += casing.getPartWeight();
         }
-        tier = (int) Math.min(Math.floor(totalSum / functionalCasings.size()), 14);
+        tier = (int) Math.min(Math.floor(totalSum / weightSum), 14);
     }
 
     @Override
