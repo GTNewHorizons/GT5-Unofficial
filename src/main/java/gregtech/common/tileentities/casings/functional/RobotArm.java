@@ -10,7 +10,7 @@ public class RobotArm extends FunctionalCasing {
     }
 
     @Override
-    public float getPartModifier() {
         return 1.5f;
+    public float getPartWeight() {
     }
 }

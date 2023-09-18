@@ -170,14 +170,16 @@ public abstract class Controller<T extends Controller<T, P>, P extends Processin
     }
 
     protected void calculateTier() {
-        double sum = 0;
+        double totalSum = 0;
+        double weightSum = 0;
         if (functionalCasings == null || functionalCasings.size() == 0) {
             return;
         }
         for (FunctionalCasing casing : functionalCasings) {
-            sum += casing.getPartTier() * casing.getPartModifier();
+            totalSum += casing.getPartTier() * casing.getPartWeight();
+            weightSum += casing.getPartWeight();
         }
-        tier = (int) Math.min(Math.floor(sum / functionalCasings.size()), 14);
+        tier = (int) Math.min(Math.floor(totalSum / functionalCasings.size()), 14);
     }
 
     @Override

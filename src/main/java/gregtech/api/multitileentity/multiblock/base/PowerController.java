@@ -14,7 +14,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.enums.GT_Values;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
@@ -68,9 +67,10 @@ public abstract class PowerController<T extends PowerController<T, P>, P extends
     }
 
     protected void updatePowerLogic() {
-        power.setEnergyCapacity(GT_Values.V[tier] * amperage * 2 * MINUTE);
+        long voltage = (long) Math.ceil(Math.pow(2, 4 + tier));
+        power.setEnergyCapacity(voltage * amperage * 2 * MINUTE);
         power.setAmperage(amperage);
-        power.setMaxVoltage(GT_Values.V[tier]);
+        power.setMaxVoltage(voltage);
         power.setCanUseLaser(canUseLaser);
         power.setCanUseWireless(canUseWireless, getOwnerUuid());
     }
@@ -82,7 +82,7 @@ public abstract class PowerController<T extends PowerController<T, P>, P extends
         tag.setBoolean("isActive", isActive());
         if (isActive()) {
             tag.setLong("energyUsage", eut);
-            tag.setLong("energyTier", tier);
+            tag.setLong("energyTier", (long) Math.ceil(tier));
         }
     }
 

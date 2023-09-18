@@ -71,7 +71,7 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
     protected long voltage = 0;
     protected long amperage = 1;
     protected long eut = 0;
-    protected int tier = 0;
+    protected float tier = 0;
     protected long burnTime = 0;
     protected long totalBurnTime = 0;
 
@@ -128,7 +128,7 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
             nbt.setTag("processingLogic", processingLogicNBT);
         }
 
-        nbt.setInteger(NBT.TIER, tier);
+        nbt.setFloat(NBT.TIER, tier);
         nbt.setLong(NBT.EUT_CONSUMPTION, eut);
         nbt.setLong(NBT.BURN_TIME_LEFT, burnTime);
         nbt.setLong(NBT.TOTAL_BURN_TIME, totalBurnTime);
@@ -178,8 +178,8 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
     }
 
     protected void loadItemLogic(NBTTagCompound nbt) {
-        itemInput = new ItemInventoryLogic(nbt.getInteger(NBT.INV_OUTPUT_SIZE), tier);
-        itemOutput = new ItemInventoryLogic(nbt.getInteger(NBT.INV_OUTPUT_SIZE), tier);
+        itemInput = new ItemInventoryLogic(nbt.getInteger(NBT.INV_OUTPUT_SIZE), (int) Math.floor(tier));
+        itemOutput = new ItemInventoryLogic(nbt.getInteger(NBT.INV_OUTPUT_SIZE), (int) Math.floor(tier));
         if (nbt.hasKey(NBT.INV_INPUT_LIST)) {
             itemInput.loadFromNBT(nbt.getCompoundTag(NBT.INV_INPUT_LIST));
         }
@@ -189,8 +189,8 @@ public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extend
     }
 
     protected void loadFluidLogic(NBTTagCompound nbt) {
-        fluidInput = new FluidInventoryLogic(16, 10000, tier);
-        fluidOutput = new FluidInventoryLogic(16, 10000, tier);
+        fluidInput = new FluidInventoryLogic(16, 10000, (int) Math.floor(tier));
+        fluidOutput = new FluidInventoryLogic(16, 10000, (int) Math.floor(tier));
         fluidInput.loadFromNBT(nbt.getCompoundTag(NBT.TANK_IN));
         fluidOutput.loadFromNBT(nbt.getCompoundTag(NBT.TANK_OUT));
     }

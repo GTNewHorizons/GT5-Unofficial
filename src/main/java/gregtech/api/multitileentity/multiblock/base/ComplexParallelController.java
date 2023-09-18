@@ -12,7 +12,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import gregtech.api.enums.GT_Values;
 import gregtech.api.logic.ComplexParallelProcessingLogic;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
@@ -42,15 +41,6 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
     @Override
     protected void stopMachine(boolean powerShutDown) {
         super.stopMachine(powerShutDown);
-    }
-
-    protected boolean hasPerfectOverclock() {
-        return false;
-    }
-
-    protected long getEutForComplexParallel(int index) {
-        // As default behavior we'll give the parallel all remaining EU we have
-        return GT_Values.V[tier] - eut;
     }
 
     @Override

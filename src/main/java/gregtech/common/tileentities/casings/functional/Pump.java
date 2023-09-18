@@ -10,7 +10,7 @@ public class Pump extends FunctionalCasing {
     }
 
     @Override
-    public float getPartModifier() {
         return 1.1f;
+    public float getPartWeight() {
     }
 }
