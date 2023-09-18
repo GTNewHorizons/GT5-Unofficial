@@ -10,7 +10,7 @@ public class Motor extends FunctionalCasing {
     }
 
     @Override
-        return 1;
     public float getPartWeight() {
+        return 1f;
     }
 }

@@ -10,7 +10,7 @@ public class Emitter extends FunctionalCasing {
     }
 
     @Override
-        return 1.3f;
     public float getPartWeight() {
+        return 7f;
     }
 }

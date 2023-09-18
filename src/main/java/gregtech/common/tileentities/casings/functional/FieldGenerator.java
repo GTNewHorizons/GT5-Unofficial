@@ -10,7 +10,7 @@ public class FieldGenerator extends FunctionalCasing {
     }
 
     @Override
-        return 2f;
     public float getPartWeight() {
+        return 10f;
     }
 }

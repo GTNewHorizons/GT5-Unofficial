@@ -10,7 +10,7 @@ public class Conveyor extends FunctionalCasing {
     }
 
     @Override
-        return 1.1f;
     public float getPartWeight() {
+        return 3f;
     }
 }
