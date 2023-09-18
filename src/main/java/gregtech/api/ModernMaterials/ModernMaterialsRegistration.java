@@ -80,7 +80,6 @@ public class ModernMaterialsRegistration {
 //        new ModernMaterial("Copper").build();
 
         registerAllMaterialsItems();
-        registerAllMaterialsBlocks();
 
 
         GregTech_API.modernMaterialIDs.mConfig

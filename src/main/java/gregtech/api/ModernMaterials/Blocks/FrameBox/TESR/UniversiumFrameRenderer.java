@@ -32,16 +32,14 @@ public class UniversiumFrameRenderer extends TileEntitySpecialRenderer {
         // to draw it along with the stars. Otherwise, the shader would need to be edited.
         CosmicRenderShenanigans.bindItemTexture();
 
-        GL11.glColor4f(1,1,1,0.5f);
-        renderBlockInWorld(universiumFrameTexture);
+        renderBlock(universiumFrameTexture);
 
         CosmicRenderShenanigans.releaseShader();
 
         GL11.glPopMatrix();
-
     }
 
-    private void renderBlockInWorld(IIcon texture) {
+    private void renderBlock(IIcon texture) {
         Tessellator tes = Tessellator.instance;
 
         double x = 0;

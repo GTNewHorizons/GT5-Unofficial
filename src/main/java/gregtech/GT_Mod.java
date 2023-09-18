@@ -73,6 +73,7 @@ import java.util.function.Predicate;
 
 import static gregtech.GT_Version.*;
 import static gregtech.api.GregTech_API.registerCircuitProgrammer;
+import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsBlocks;
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsFluids;
 import static gregtech.api.enums.Mods.Forestry;
 
@@ -280,6 +281,7 @@ public class GT_Mod implements IGT_Mod {
 
         // --- Modern Materials fluid registration ---
         registerAllMaterialsFluids();
+        registerAllMaterialsBlocks();
         // -------------------------------------------
 
         for (Runnable tRunnable : GregTech_API.sBeforeGTLoad) {

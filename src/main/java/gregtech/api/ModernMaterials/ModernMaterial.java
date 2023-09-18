@@ -3,11 +3,13 @@ package gregtech.api.ModernMaterials;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.LoaderState;
 import gregtech.api.GregTech_API;
+import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
 import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
 import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
 import gregtech.api.ModernMaterials.PartsClasses.MaterialPartsEnum;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -101,6 +103,14 @@ public final class ModernMaterial {
             materialToBuild.existingPartsForMaterial.put(part, new CustomPartInfo(part, materialToBuild.textureType));
             return this;
         }
+
+        private final HashMap<BlocksEnum, TileEntitySpecialRenderer> TESRMap = new HashMap<>();
+
+        public Builder addBlockTESR(BlocksEnum block, TileEntitySpecialRenderer TESR) {
+            TESRMap.put(block, TESR);
+            return this;
+        }
+
 
         // This will override all existing parts settings and enable ALL possible parts. Be careful!
         public Builder addAllParts() {

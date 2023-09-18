@@ -53,10 +53,6 @@ public class ModernMaterialUtilities {
         materialNameToMaterialMap.put(material.getMaterialName(), material);
     }
 
-    public static void registerAllMaterialsBlocks() {
-
-    }
-
     public static void registerAllMaterialsItems() {
         for (ModernMaterial tMaterial : newMaterials) {
             tMaterial.setMaterialID(++GregTech_API.lastMaterialID);
@@ -87,6 +83,49 @@ public class ModernMaterialUtilities {
 
     }
 
+
+
+
+    public static void registerAllMaterialsBlocks() {
+        BlocksEnum.FrameBox.getAssociatedMaterials().addAll(materialIDToMaterial.values());
+
+        for (int matID : materialIDToMaterial.keySet()) {
+            FrameBoxTileEntity.masterTESRMap.put(matID, new UniversiumFrameRenderer());
+        }
+
+        for (BlocksEnum blockType : BlocksEnum.values()) {
+            registerSimpleBlock(blockType);
+            registerTESRBlock(blockType);
+        }
+
+    }
+
+    private static void registerTESRBlock(BlocksEnum blockType) {
+
+        final String name = "TESR:" + blockType;
+
+        try {
+            // Register the actual block.
+            DumbBlock simpleBlock = blockType.getBlockClass().getDeclaredConstructor().newInstance();
+            simpleBlock.setBlockName(name);
+            GameRegistry.registerBlock(simpleBlock, FrameBoxItemBlock.class, name);
+
+            // Register the tile entity itself.
+            GameRegistry.registerTileEntity(blockType.getTileEntityClass(), name);
+
+            // Register the master TESR. This only exists to redirect to different TESRs for different materials.
+            ClientRegistry.bindTileEntitySpecialRenderer(blockType.getTileEntityClass(), new MasterTESR());
+
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException("Failed to instantiate block", e);
+        }
+
+    }
+
+    private static void registerSimpleBlock(BlocksEnum blockType) {
+
+    }
+
     public static void registerAllMaterialsFluids() {
 
         // Register the fluids with forge.
@@ -95,17 +134,6 @@ public class ModernMaterialUtilities {
                 FluidRegistry.registerFluid(fluid);
             }
         }
-
-        BlocksEnum.FrameBox.getAssociatedMaterials().addAll(materialIDToMaterial.values());
-
-        try {
-            //registerBlock(FrameBoxBlock.class, FrameBoxTileEntity.class, FrameBoxItemBlock.class, new FrameBoxSimpleBlockRenderer());
-            registerBlock(FrameBoxBlock.class, FrameBoxTileEntity.class, FrameBoxItemBlock.class, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalArgumentException("Invalid block registration in ModernMaterials");
-        }
-
     }
 
     private static void registerAllMaterialPartRecipes(ModernMaterial material) {
@@ -162,23 +190,24 @@ public class ModernMaterialUtilities {
 
 
     // We do some complicated stuff here to register two distinct blocks using minimal inputs.
-    public static void registerBlock(Class<? extends DumbBlock> blockClass, Class<? extends DumbTileEntity> dumbTileEntity, Class<? extends DumbItemBlock> dumbItemBlock, ISimpleBlockRenderingHandler simpleRenderer) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    public static void registerBlock(Class<? extends DumbBlock> blockClass, Class<? extends DumbTileEntity> dumbTileEntity, Class<? extends DumbItemBlock> dumbItemBlock, ISimpleBlockRenderingHandler simpleRenderer) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 
-        //DumbBlock simpleBlock = blockClass.getDeclaredConstructor().newInstance();
-        //simpleBlock.setBlockName("Simple" + simpleBlock.getBlockEnum());
+        DumbBlock simpleBlock = blockClass.getDeclaredConstructor().newInstance();
+        simpleBlock.setBlockName("Simple:" + simpleBlock.getBlockEnum());
 
         DumbBlock TESRBlock = blockClass.getDeclaredConstructor().newInstance();
-        TESRBlock.setBlockName("TESR" + TESRBlock.getBlockEnum());
+        TESRBlock.setBlockName("TESR:" + TESRBlock.getBlockEnum());
 
-        //GameRegistry.registerBlock(simpleBlock, dumbItemBlock, "Simple" + simpleBlock.getBlockEnum());
-        GameRegistry.registerBlock(TESRBlock, dumbItemBlock, "TESR" + TESRBlock.getBlockEnum());
+        GameRegistry.registerBlock(simpleBlock, dumbItemBlock, "Simple:" + simpleBlock.getBlockEnum());
+        GameRegistry.registerBlock(TESRBlock, dumbItemBlock, "TESR:" + TESRBlock.getBlockEnum());
 
-        //GameRegistry.registerTileEntity(dumbTileEntity, "Simple" + simpleBlock.getBlockEnum());
-        GameRegistry.registerTileEntity(dumbTileEntity, "TESR" + TESRBlock.getBlockEnum());
+        GameRegistry.registerTileEntity(dumbTileEntity, "Simple:" + simpleBlock.getBlockEnum());
+        GameRegistry.registerTileEntity(dumbTileEntity, "TESR:" + TESRBlock.getBlockEnum());
 
-        ClientRegistry.bindTileEntitySpecialRenderer(dumbTileEntity, new MasterTESR());
 
-        FrameBoxTileEntity.masterTESRMap.put(2, new UniversiumFrameRenderer());
+        //ClientRegistry.bindTileEntitySpecialRenderer(dumbTileEntity, new MasterTESR());
+
+
 
     }
 
