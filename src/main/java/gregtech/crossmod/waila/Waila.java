@@ -1,4 +1,4 @@
-package gregtech.crossmod;
+package gregtech.crossmod.waila;
 
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.enums.Mods;

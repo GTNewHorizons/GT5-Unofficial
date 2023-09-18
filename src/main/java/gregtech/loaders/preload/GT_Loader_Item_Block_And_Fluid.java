@@ -169,6 +169,17 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 ? new GT_Generic_Item("sensorcard", "GregTech Sensor Card", "Nuclear Control not installed", false)
                 : tItem);
 
+        Item advSensorCard = (Item) GT_Utility
+            .callConstructor("gregtech.common.items.GT_AdvancedSensorCard_Item", 0, null, false);
+        ItemList.NC_AdvancedSensorCard.set(
+            advSensorCard == null
+                ? new GT_Generic_Item(
+                    "advancedsensorcard",
+                    "GregTech Advanced Sensor Card",
+                    "Nuclear Control not installed",
+                    false)
+                : advSensorCard);
+
         ItemList.Neutron_Reflector
             .set(new GT_NeutronReflector_Item("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1

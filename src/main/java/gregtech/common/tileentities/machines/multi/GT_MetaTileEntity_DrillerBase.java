@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -161,6 +162,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
 
     /** Allows inheritors to supply custom runtime failure messages. */
     private CheckRecipeResult runtimeFailure = null;
+    private CheckRecipeResult lastRuntimeFailure = null;
 
     /** Allows inheritors to supply custom shutdown failure messages. */
     private @NotNull String shutdownReason = "";
@@ -563,12 +565,16 @@ public abstract class GT_MetaTileEntity_DrillerBase
         }
 
         if (runtimeFailure == null) {
+            if (wasSuccessful) {
+                lastRuntimeFailure = null;
+            }
+
             return resultRegistry.getOrDefault(
                 new ResultRegistryKey(workState, wasSuccessful),
                 SimpleCheckRecipeResult.ofFailure("no_mining_pipe"));
         } else {
             final CheckRecipeResult result;
-            result = runtimeFailure;
+            result = lastRuntimeFailure = runtimeFailure;
             runtimeFailure = null;
             return result;
         }
@@ -582,6 +588,25 @@ public abstract class GT_MetaTileEntity_DrillerBase
      */
     protected void setRuntimeFailureReason(@NotNull CheckRecipeResult newFailureReason) {
         runtimeFailure = newFailureReason;
+    }
+
+    /**
+     * Gets a reason for why the drill turned off, for use in UIs and such.
+     *
+     * @return A reason, or empty if the machine is active or there is no message set yet.
+     */
+    @NotNull
+    protected Optional<String> getFailureReason() {
+        if (getBaseMetaTileEntity().isActive()) {
+            return Optional.empty();
+        }
+
+        if (!shutdownReason.isEmpty()) {
+            return Optional.of(shutdownReason);
+        }
+
+        return Optional.ofNullable(lastRuntimeFailure)
+            .map(CheckRecipeResult::getDisplayString);
     }
 
     /**

@@ -36,7 +36,8 @@ import gregtech.common.misc.spaceprojects.commands.SPM_Command;
 import gregtech.common.misc.spaceprojects.commands.SP_Command;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_CraftingInput_ME;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
-import gregtech.crossmod.Waila;
+import gregtech.crossmod.holoinventory.HoloInventory;
+import gregtech.crossmod.waila.Waila;
 import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.load.*;
 import gregtech.loaders.misc.GT_Achievements;
@@ -323,6 +324,9 @@ public class GT_Mod implements IGT_Mod {
         }
         if (Mods.Waila.isModLoaded()) {
             Waila.init();
+        }
+        if (Mods.HoloInventory.isModLoaded()) {
+            HoloInventory.init();
         }
         IMCForNEI.IMCSender();
         GregTech_API.sLoadFinished = true;

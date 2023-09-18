@@ -2956,6 +2956,19 @@ public class AssemblerRecipes implements Runnable {
             .eut(TierEU.RECIPE_EV)
             .addTo(sAssemblerRecipes);
 
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1),
+                ItemList.NC_SensorKit.get(1),
+                ItemList.Emitter_EV.get(1),
+                getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 28),
+                GT_Utility.getIntegratedCircuit(2))
+            .itemOutputs(ItemList.Cover_Metrics_Transmitter.get(1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(INGOTS))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(sAssemblerRecipes);
+
         ItemStack[] plates = new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
             GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L),
             GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L) };

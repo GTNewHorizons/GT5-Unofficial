@@ -1,5 +1,10 @@
 package gregtech.common.tileentities.storage;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -79,5 +84,19 @@ public class GT_MetaTileEntity_QuantumChest extends GT_MetaTileEntity_DigitalChe
     @Override
     protected void setItemStack(ItemStack s) {
         mItemStack = s;
+    }
+
+    @Nullable
+    @Override
+    public List<ItemStack> getItemsForHoloGlasses() {
+        List<ItemStack> ret = new ArrayList<>();
+        ret.add(getStackInSlot(0));
+        ret.add(getStackInSlot(1));
+        if (mItemStack != null) {
+            ItemStack copy = mItemStack.copy();
+            copy.stackSize = mItemCount;
+            ret.add(copy);
+        }
+        return ret;
     }
 }
