@@ -13,6 +13,8 @@ import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.api.logic.FluidInventoryLogic;
+import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 
 /**
@@ -45,9 +47,21 @@ public class VoidProtectionHelper {
      */
     private FluidStack[] fluidOutputs;
     /**
+     * The item output inventory
+     */
+    private ItemInventoryLogic itemOutputInventory;
+    /**
+     * The fluid output inventory
+     */
+    private FluidInventoryLogic fluidOutputInventory;
+    /**
      * Has this helper been built?
      */
     private boolean built;
+    /**
+     * Is this helper working for a MuTE?
+     */
+    private boolean muteMode;
 
     public VoidProtectionHelper() {}
 
@@ -104,6 +118,21 @@ public class VoidProtectionHelper {
      */
     public VoidProtectionHelper setMaxParallel(int maxParallel) {
         this.maxParallel = maxParallel;
+        return this;
+    }
+
+    public VoidProtectionHelper setItemOutputInventory(ItemInventoryLogic itemOutputInventory) {
+        this.itemOutputInventory = itemOutputInventory;
+        return this;
+    }
+
+    public VoidProtectionHelper setFluidOutputInventory(FluidInventoryLogic fluidOutputInventory) {
+        this.fluidOutputInventory = fluidOutputInventory;
+        return this;
+    }
+
+    public VoidProtectionHelper setMuTEMode(boolean muteMode) {
+        this.muteMode = muteMode;
         return this;
     }
 
