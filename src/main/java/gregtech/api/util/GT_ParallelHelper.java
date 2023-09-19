@@ -343,13 +343,13 @@ public class GT_ParallelHelper {
      */
     @Nonnull
     public GT_ParallelHelper setItemOutputInventory(ItemInventoryLogic itemOutputInventory) {
-
+        this.itemOutputInventory = itemOutputInventory;
         return this;
     }
 
     @Nonnull
     public GT_ParallelHelper setFluidOutputInventory(FluidInventoryLogic fluidOutputInventory) {
-
+        this.fluidOutputInventory = fluidOutputInventory;
         return this;
     }
 
