@@ -67,7 +67,7 @@ public abstract class PowerController<T extends PowerController<T, P>, P extends
     }
 
     protected void updatePowerLogic() {
-        long voltage = (long) Math.ceil(Math.pow(2, 4 + tier));
+        long voltage = (long) Math.ceil(Math.pow(2, 3 + (2 * tier)));
         power.setEnergyCapacity(voltage * amperage * 2 * MINUTE);
         power.setAmperage(amperage);
         power.setMaxVoltage(voltage);
