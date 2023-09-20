@@ -1232,6 +1232,9 @@ public class ItemUtils {
         if (GT_Utility.areStacksEqual(aStack, GenericChem.mSynchrotronCapableCatalyst, true)) {
             return true;
         }
+        if (GT_Utility.areStacksEqual(aStack, GenericChem.mAlgagenicGrowthPromoterCatalyst, true)) {
+            return true;
+        }
 
         return false;
     }

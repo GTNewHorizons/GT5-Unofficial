@@ -2,9 +2,12 @@ package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
 import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.EternalSingularity;
+import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.GoodGenerator;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GT_ModHandler.getModItem;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -296,6 +299,23 @@ public class RecipeLoader_ChemicalSkips {
                 200 * 20,
                 (int) TierEU.RECIPE_UIV,
                 4);
+
+        if (GalaxySpace.isModLoaded()) {
+            // Seaweed
+            ItemStack seaweed = GT_Utility
+                    .copyAmountUnsafe(64 * 32, getModItem(GalaxySpace.ID, "tcetiedandelions", 1, 4));
+            CORE.RA.addQuantumTransformerRecipe(
+                    new ItemStack[] { GT_OreDictUnificator.get("cropSeaweed", 64), Materials.Mytryl.getDust(16),
+                            ItemUtils.getSimpleStack(GenericChem.mAlgagenicGrowthPromoterCatalyst, 0) },
+                    new FluidStack[] { FluidUtils.getFluidStack("unknowwater", 25_000) },
+                    new FluidStack[] { FluidUtils.getFluidStack("seaweedbroth", 50_000),
+                            FluidUtils.getFluidStack("iodine", 64_000) },
+                    new ItemStack[] { seaweed, getModItem(NewHorizonsCoreMod.ID, "item.TCetiESeaweedExtract", 16) },
+                    new int[] { 2_500, 2_500, 2_500, 2_500 },
+                    20 * SECONDS,
+                    (int) TierEU.RECIPE_UIV,
+                    4);
+        }
     }
 
     private static void fusionReactorRecipes() {
@@ -461,6 +481,17 @@ public class RecipeLoader_ChemicalSkips {
                 ItemUtils.getSimpleStack(GenericChem.TemporalHarmonyCatalyst, 1),
                 60 * 20,
                 (int) TierEU.RECIPE_UXV);
+
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        CI.getNumberedCircuit(10),
+                        CI.getEmptyCatalyst(1),
+                        getModItem(NewHorizonsCoreMod.ID, "item.TCetiESeaweedExtract", 64),
+                        GT_OreDictUnificator.get("dustIodine", 64),
+                        MaterialsUEVplus.TranscendentMetal.getNanite(1))
+                .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mAlgagenicGrowthPromoterCatalyst, 1))
+                .fluidInputs(FluidUtils.getFluidStack("molten.shirabon", 92_160)).duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_UMV).addTo(sAssemblerRecipes);
     }
 
     private static void tieredCasingRecipes() {
