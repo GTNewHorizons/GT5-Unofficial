@@ -12,7 +12,7 @@ public class NEI_IMC_Sender {
 
     public static void IMCSender() {
         // NEI jar is using some outdated handler names
-        sendHandler("gtpp.recipe.alloyblastsmelter", "gregtech:gt.blockmachines:810", 1);
+        sendHandler("gtpp.recipe.alloyblastsmelter", "gregtech:gt.blockmachines:810", 2);
         sendCatalyst("gtpp.recipe.alloyblastsmelter", "gregtech:gt.blockmachines:31150");
         sendHandler("gtpp.recipe.rocketenginefuel", "gregtech:gt.blockmachines:793");
         sendHandler("gtpp.recipe.cyclotron", "gregtech:gt.blockmachines:828");
