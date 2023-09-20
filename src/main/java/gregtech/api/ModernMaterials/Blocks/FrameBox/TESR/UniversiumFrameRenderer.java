@@ -1,10 +1,8 @@
 package gregtech.api.ModernMaterials.Blocks.FrameBox.TESR;
 
 import fox.spiteful.avaritia.render.CosmicRenderShenanigans;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import org.lwjgl.opengl.GL11;
 
 import static gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.CustomTextureRegister.universiumFrameTexture;
