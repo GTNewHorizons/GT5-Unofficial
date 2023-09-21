@@ -3,9 +3,9 @@ package gregtech.api.logic.interfaces;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.logic.MuTEProcessingLogic;
 
-public interface ProcessingLogicHost<P extends ProcessingLogic<P>>
+public interface ProcessingLogicHost<P extends MuTEProcessingLogic<P>>
     extends IVoidable, ItemInventoryLogicHost, FluidInventoryLogicHost, IMachineProgress {
 
     P getProcessingLogic();
@@ -26,7 +26,7 @@ public interface ProcessingLogicHost<P extends ProcessingLogic<P>>
 
     /**
      * DO NOT CALL YOURSELF!!!
-     * 
+     *
      * If you want to make the processing logic be updated call {@link #setProcessingUpdate(boolean)}
      */
     boolean needsUpdate();

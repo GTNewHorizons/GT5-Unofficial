@@ -1,25 +1,14 @@
 package gregtech.api.logic;
 
-import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
-
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.InventoryType;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
-import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.FindRecipeResult;
@@ -29,292 +18,76 @@ import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gregtech.api.util.GT_Utility;
 
 /**
- * Logic class to calculate result of recipe check from inputs, based on recipemap.
+ * Processing logic class, dedicated for MetaTileEntities.
  */
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
-public class ProcessingLogic<P extends ProcessingLogic<P>> {
+public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
 
-    protected IVoidable machine;
     protected IRecipeLockable recipeLockableMachine;
-    protected Supplier<GT_Recipe_Map> recipeMapSupplier;
-    protected GT_Recipe lastRecipe;
-    protected GT_Recipe_Map lastRecipeMap;
     protected ItemStack specialSlotItem;
     protected ItemStack[] inputItems;
-    protected ItemStack[] outputItems;
     protected FluidStack[] inputFluids;
-    protected FluidStack[] outputFluids;
-    protected long calculatedEut;
-    protected int duration;
-    protected long availableVoltage;
-    protected long availableAmperage;
-    protected int overClockTimeReduction = 1;
-    protected int overClockPowerIncrease = 2;
-    protected boolean protectItems;
-    protected boolean protectFluids;
     protected boolean isRecipeLocked;
-    protected int maxParallel = 1;
-    protected int calculatedParallels = 0;
-    protected Supplier<Integer> maxParallelSupplier;
-    protected int batchSize = 1;
-    protected float euModifier = 1.0f;
-    protected float speedBoost = 1.0f;
-    protected boolean amperageOC = true;
-    protected boolean isCleanroom;
-    // MuTE Section, do not use for MTEs
-    protected boolean hasWork;
-    protected int progress;
-    @Nonnull
-    protected ProcessingLogicHost<P> machineHost;
-    @Nonnull
-    protected CheckRecipeResult recipeResult = CheckRecipeResultRegistry.NONE;
-    @Nullable
-    protected UUID itemOutputID;
-    @Nullable
-    protected UUID fluidOutputID;
-    protected boolean muteMode;
 
     public ProcessingLogic() {}
 
     // #region Setters
 
-    @Nonnull
-    public P setInputItems(ItemStack... itemInputs) {
+    public ProcessingLogic setInputItems(ItemStack... itemInputs) {
         this.inputItems = itemInputs;
-        return getThis();
+        return this;
     }
 
-    @Nonnull
-    public P setInputItems(List<ItemStack> itemOutputs) {
+    public ProcessingLogic setInputItems(List<ItemStack> itemOutputs) {
         this.inputItems = itemOutputs.toArray(new ItemStack[0]);
-        return getThis();
+        return this;
     }
 
-    @Nonnull
-    public P setInputFluids(FluidStack... fluidInputs) {
+    public ProcessingLogic setInputFluids(FluidStack... fluidInputs) {
         this.inputFluids = fluidInputs;
-        return getThis();
+        return this;
     }
 
-    @Nonnull
-    public P setInputFluids(List<FluidStack> fluidInputs) {
+    public ProcessingLogic setInputFluids(List<FluidStack> fluidInputs) {
         this.inputFluids = fluidInputs.toArray(new FluidStack[0]);
-        return getThis();
+        return this;
     }
 
-    public P setSpecialSlotItem(ItemStack specialSlotItem) {
+    public ProcessingLogic setSpecialSlotItem(ItemStack specialSlotItem) {
         this.specialSlotItem = specialSlotItem;
-        return getThis();
-    }
-
-    /**
-     * Overwrites item output result of the calculation.
-     */
-    public P setOutputItems(ItemStack... itemOutputs) {
-        this.outputItems = itemOutputs;
-        return getThis();
-    }
-
-    /**
-     * Overwrites fluid output result of the calculation.
-     */
-    public P setOutputFluids(FluidStack... fluidOutputs) {
-        this.outputFluids = fluidOutputs;
-        return getThis();
+        return this;
     }
 
     /**
      * Enables single recipe locking mode.
      */
-    public P setRecipeLocking(IRecipeLockable recipeLockableMachine, boolean isRecipeLocked) {
+    public ProcessingLogic setRecipeLocking(IRecipeLockable recipeLockableMachine, boolean isRecipeLocked) {
         this.recipeLockableMachine = recipeLockableMachine;
         this.isRecipeLocked = isRecipeLocked;
-        return getThis();
+        return this;
     }
 
-    public P setIsCleanroom(boolean isCleanroom) {
-        this.isCleanroom = isCleanroom;
-        return getThis();
-    }
-
-    /**
-     * Sets max amount of parallel.
-     */
-    public P setMaxParallel(int maxParallel) {
-        this.maxParallel = maxParallel;
-        return getThis();
-    }
-
-    /**
-     * Sets method to get max amount of parallel.
-     */
-    public P setMaxParallelSupplier(Supplier<Integer> supplier) {
-        this.maxParallelSupplier = supplier;
-        return getThis();
-    }
-
-    /**
-     * Sets batch size for batch mode.
-     */
-    public P setBatchSize(int size) {
-        this.batchSize = size;
-        return getThis();
-    }
-
-    public P setRecipeMap(GT_Recipe_Map recipeMap) {
-        return setRecipeMapSupplier(() -> recipeMap);
-    }
-
-    public P setRecipeMapSupplier(Supplier<GT_Recipe_Map> supplier) {
-        this.recipeMapSupplier = supplier;
-        return getThis();
-    }
-
-    public P setEuModifier(float modifier) {
-        this.euModifier = modifier;
-        return getThis();
-    }
-
-    public P setSpeedBonus(float speedModifier) {
-        this.speedBoost = speedModifier;
-        return getThis();
-    }
-
-    /**
-     * Sets machine used for void protection logic.
-     */
-    public P setMachine(IVoidable machine) {
-        this.machine = machine;
-        return getThis();
-    }
-
-    public P setMachineHost(@Nonnull ProcessingLogicHost<P> machineHost) {
-        this.machineHost = machineHost;
-        return getThis();
-    }
-
-    /**
-     * Overwrites duration result of the calculation.
-     */
-
-    public P setDuration(int duration) {
-        this.duration = duration;
-        return getThis();
-    }
-
-    /**
-     * Overwrites EU/t result of the calculation.
-     */
-    @Nonnull
-    public P setCalculatedEut(long calculatedEut) {
-        this.calculatedEut = calculatedEut;
-        return getThis();
-    }
-
-    /**
-     * Sets voltage of the machine. It doesn't need to be actual voltage (excluding amperage) of the machine;
-     * For example, most of the multiblock machines set maximum possible input power (including amperage) as voltage
-     * and 1 as amperage. That way recipemap search will be executed with overclocked voltage.
-     */
-    @Nonnull
-    public P setAvailableVoltage(long voltage) {
-        availableVoltage = voltage;
-        return getThis();
-    }
-
-    /**
-     * Sets amperage of the machine. This amperage doesn't involve in EU/t when searching recipemap.
-     * Useful for preventing tier skip but still considering amperage for parallel.
-     */
-    @Nonnull
-    public P setAvailableAmperage(long amperage) {
-        availableAmperage = amperage;
-        return getThis();
-    }
-
-    @Nonnull
-    public P setVoidProtection(boolean protectItems, boolean protectFluids) {
-        this.protectItems = protectItems;
-        this.protectFluids = protectFluids;
-        return getThis();
-    }
-
-    /**
-     * Sets custom overclock ratio. 2/4 by default.
-     * Parameters represent number of bit shift, so 1 -> 2x, 2 -> 4x.
-     */
-    @Nonnull
-    public P setOverclock(int timeReduction, int powerIncrease) {
-        this.overClockTimeReduction = timeReduction;
-        this.overClockPowerIncrease = powerIncrease;
-        return getThis();
-    }
-
-    /**
-     * Sets overclock ratio to 4/4.
-     */
-    @Nonnull
-    public P enablePerfectOverclock() {
-        return this.setOverclock(2, 2);
-    }
-
-    /**
-     * Sets wether the multi should use amperage to OC or not
-     */
-    @Nonnull
-    public P setAmperageOC(boolean amperageOC) {
-        this.amperageOC = amperageOC;
-        return getThis();
-    }
-
-    @Nonnull
-    public P setMuTEMode(boolean muteMode) {
-        this.muteMode = muteMode;
-        return getThis();
-    }
-
-    /**
-     * Clears calculated results and provided machine inputs to prepare for the next machine operation.
-     */
-
-    public P clear() {
+    @Override
+    public ProcessingLogic clear() {
+        super.clear();
         this.inputItems = null;
         this.inputFluids = null;
         this.specialSlotItem = null;
         this.outputItems = null;
         this.outputFluids = null;
-        this.calculatedEut = 0;
-        this.duration = 0;
-        this.calculatedParallels = 0;
-        return getThis();
+        return this;
     }
 
     // #endregion
 
     // #region Logic
 
-    /**
-     * Executes the recipe check: Find recipe from recipemap, Calculate parallel, overclock and outputs.
-     */
     @Nonnull
+    @Override
     public CheckRecipeResult process() {
-        GT_Recipe_Map recipeMap;
-        if (recipeMapSupplier == null) {
-            recipeMap = null;
-        } else {
-            recipeMap = recipeMapSupplier.get();
-        }
-        if (lastRecipeMap != recipeMap) {
-            lastRecipe = null;
-            lastRecipeMap = recipeMap;
-        }
-
-        if (maxParallelSupplier != null) {
-            maxParallel = maxParallelSupplier.get();
-        }
+        GT_Recipe_Map recipeMap = preProcess();
 
         if (isRecipeLocked && recipeLockableMachine != null && recipeLockableMachine.getSingleRecipeCheck() != null) {
             // Recipe checker is already built, we'll use it
@@ -330,67 +103,15 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
                     .getRecipe());
         }
 
-        if (muteMode && recipeMap == null) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
+        FindRecipeResult findRecipeResult = findRecipe(recipeMap);
 
-        FindRecipeResult findRecipeResult = FindRecipeResult.NOT_FOUND;
-        ItemInventoryLogic itemInput = null;
-        FluidInventoryLogic fluidInput = null;
-        if (muteMode) {
-            if (machineHost.isInputSeparated()) {
-                for (Entry<UUID, ItemInventoryLogic> itemEntry : machineHost
-                    .getAllItemInventoryLogics(InventoryType.Input)) {
-                    itemOutputID = Objects.requireNonNull(itemEntry.getKey());
-                    itemInput = Objects.requireNonNull(itemEntry.getValue());
-                    fluidInput = Objects.requireNonNull(
-                        machineHost.getFluidLogic(InventoryType.Input, itemInput.getConnectedFluidInventoryID()));
-                    fluidOutputID = itemInput.getConnectedFluidInventoryID();
-                    findRecipeResult = findRecipe(Objects.requireNonNull(recipeMap), itemInput, fluidInput);
-                    if (findRecipeResult.isSuccessful()) break;
-                }
-            } else {
-                itemInput = Objects.requireNonNull(machineHost.getItemLogic(InventoryType.Input, null));
-                fluidInput = Objects.requireNonNull(machineHost.getFluidLogic(InventoryType.Input, null));
-                findRecipeResult = findRecipe(Objects.requireNonNull(recipeMap), itemInput, fluidInput);
-            }
-        } else {
-            findRecipeResult = findRecipe(recipeMap);
-        }
-        // If processRecipe is not overridden, advanced recipe validation logic is used, and we can reuse calculations.
-        if (findRecipeResult.hasRecipeValidator()) {
-            RecipeValidator recipeValidator = findRecipeResult.getRecipeValidator();
-
-            // There are two cases:
-            // 1 - there are actually no matching recipes
-            // 2 - there are some matching recipes, but we rejected it due to our advanced validation (e.g. OUTPUT_FULL)
-            if (findRecipeResult.getState() == FindRecipeResult.State.NOT_FOUND
-                && recipeValidator.getFirstCheckResult() != null) {
-                // Here we're handling case 2
-                // If there are matching recipes but our validation rejected them,
-                // we should return a first one to display a proper error in the machine GUI
-                return recipeValidator.getFirstCheckResult();
-            }
-
-            // If everything is ok, reuse our calculations
-            if (recipeValidator.isExecutedAtLeastOnce() && findRecipeResult.isSuccessful()) {
-                return applyRecipe(
-                    findRecipeResult.getRecipeNonNull(),
-                    recipeValidator.getLastParallelHelper(),
-                    recipeValidator.getLastOverclockCalculator(),
-                    recipeValidator.getLastCheckResult());
-            }
+        CheckRecipeResult recipeValidatorResult = processRecipeValidator(findRecipeResult);
+        if (recipeValidatorResult != null) {
+            return recipeValidatorResult;
         }
 
         if (!findRecipeResult.isSuccessful()) {
             return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
-        if (muteMode) {
-            return processRecipe(
-                findRecipeResult.getRecipesPossible(),
-                Objects.requireNonNull(itemInput),
-                Objects.requireNonNull(fluidInput));
         }
 
         return processRecipe(findRecipeResult.getRecipeNonNull());
@@ -400,8 +121,6 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
      * Checks if supplied recipe is valid for process.
      * If so, additionally performs input consumption, output calculation with parallel, and overclock calculation.
      *
-     * Use {@link #processRecipe(GT_Recipe, ItemInventoryLogic, FluidInventoryLogic)} for MuTEs
-     * 
      * @param recipe The recipe which will be checked and processed
      */
     @Nonnull
@@ -419,74 +138,8 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
         return applyRecipe(recipe, helper, calculator, result);
     }
 
-    @Nonnull
-    protected CheckRecipeResult processRecipe(@Nonnull List<GT_Recipe> recipes, @Nonnull ItemInventoryLogic itemInput,
-        @Nonnull FluidInventoryLogic fluidInput) {
-        CheckRecipeResult result = CheckRecipeResultRegistry.INTERNAL_ERROR;
-        for (GT_Recipe recipe : recipes) {
-            Objects.requireNonNull(recipe);
-            GT_ParallelHelper helper = createParallelHelper(recipe, itemInput, fluidInput);
-            GT_OverclockCalculator calculator = createOverclockCalculator(recipe);
-            helper.setCalculator(calculator);
-            helper.build();
-            result = helper.getResult();
-            if (result.wasSuccessful()) {
-                return applyRecipe(recipe, helper, calculator, result);
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Applies the recipe and calculated parameters
-     */
-    @Nonnull
-    protected CheckRecipeResult applyRecipe(@Nonnull GT_Recipe recipe, @Nonnull GT_ParallelHelper helper,
-        @Nonnull GT_OverclockCalculator calculator, @Nonnull CheckRecipeResult result) {
-        if (!helper.getResult()
-            .wasSuccessful()) {
-            return helper.getResult();
-        }
-
-        if (recipe.mCanBeBuffered) {
-            lastRecipe = recipe;
-        } else {
-            lastRecipe = null;
-        }
-        calculatedParallels = helper.getCurrentParallel();
-
-        if (calculator.getConsumption() == Long.MAX_VALUE) {
-            return CheckRecipeResultRegistry.POWER_OVERFLOW;
-        }
-        if (calculator.getDuration() == Integer.MAX_VALUE) {
-            return CheckRecipeResultRegistry.DURATION_OVERFLOW;
-        }
-
-        calculatedEut = calculator.getConsumption();
-
-        double finalDuration = calculateDuration(recipe, helper, calculator);
-        if (finalDuration >= Integer.MAX_VALUE) {
-            return CheckRecipeResultRegistry.DURATION_OVERFLOW;
-        }
-        duration = (int) finalDuration;
-
-        outputItems = helper.getItemOutputs();
-        outputFluids = helper.getFluidOutputs();
-
-        return result;
-    }
-
-    /**
-     * Override to tweak final duration that will be set as a result of this logic class.
-     */
-    protected double calculateDuration(@Nonnull GT_Recipe recipe, @Nonnull GT_ParallelHelper helper,
-        @Nonnull GT_OverclockCalculator calculator) {
-        return calculator.getDuration() * helper.getDurationMultiplierDouble();
-    }
-
     /**
      * Override if you don't work with regular gt recipe maps
-     * Use {@link #findRecipe(GT_Recipe_Map, ItemInventoryLogic, FluidInventoryLogic)} for MuTEs
      */
     @Nonnull
     protected FindRecipeResult findRecipe(@Nullable GT_Recipe_Map map) {
@@ -513,21 +166,7 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
     }
 
     /**
-     * Override if you don't work with regular gt recipe maps
-     */
-    @Nonnull
-    protected FindRecipeResult findRecipe(@Nonnull GT_Recipe_Map map, @Nonnull ItemInventoryLogic itemInput,
-        @Nonnull FluidInventoryLogic fluidInput) {
-        if (map == null) {
-            return FindRecipeResult.NOT_FOUND;
-        }
-
-        return map.findRecipeWithResult(lastRecipe, availableVoltage, itemInput, fluidInput);
-    }
-
-    /**
      * Override to tweak parallel logic if needed.
-     * Use {@link #createParallelHelper(GT_Recipe, ItemInventoryLogic, FluidInventoryLogic)} for MuTEs
      */
     @Nonnull
     protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe) {
@@ -544,196 +183,5 @@ public class ProcessingLogic<P extends ProcessingLogic<P>> {
             .setOutputCalculation(true);
     }
 
-    @Nonnull
-    protected GT_ParallelHelper createParallelHelper(@Nonnull GT_Recipe recipe, @Nonnull ItemInventoryLogic itemInput,
-        @Nonnull FluidInventoryLogic fluidInput) {
-        return new GT_ParallelHelper().setRecipe(recipe)
-            .setItemInputInventory(itemInput)
-            .setFluidInputInventory(fluidInput)
-            .setAvailableEUt(availableVoltage * availableAmperage)
-            .setMaxParallel(maxParallel)
-            .setEUtModifier(euModifier)
-            .enableBatchMode(batchSize)
-            .setConsumption(true)
-            .setOutputCalculation(true)
-            .setMuTEMode(muteMode);
-    }
-
-    /**
-     * Override to do additional check for finding recipe if needed, mainly for special value of the recipe.
-     */
-    @Nonnull
-    protected CheckRecipeResult validateRecipe(@Nonnull GT_Recipe recipe) {
-        return CheckRecipeResultRegistry.SUCCESSFUL;
-    }
-
-    /**
-     * Use {@link #createOverclockCalculator(GT_Recipe)}
-     */
-    @Nonnull
-    @Deprecated
-    protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe,
-        @Nullable GT_ParallelHelper helper) {
-        return createOverclockCalculator(recipe);
-    }
-
-    /**
-     * Override to tweak overclock logic if needed.
-     */
-    @Nonnull
-    protected GT_OverclockCalculator createOverclockCalculator(@Nonnull GT_Recipe recipe) {
-        return new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
-            .setAmperage(availableAmperage)
-            .setEUt(availableVoltage)
-            .setDuration(recipe.mDuration)
-            .setSpeedBoost(speedBoost)
-            .setEUtDiscount(euModifier)
-            .setAmperageOC(amperageOC)
-            .setDurationDecreasePerOC(overClockTimeReduction)
-            .setEUtIncreasePerOC(overClockPowerIncrease);
-    }
-
-    // #endregion
-
-    // #region Getters
-
-    public ItemStack[] getOutputItems() {
-        return outputItems;
-    }
-
-    public FluidStack[] getOutputFluids() {
-        return outputFluids;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public long getCalculatedEut() {
-        return calculatedEut;
-    }
-
-    public int getCurrentParallels() {
-        return calculatedParallels;
-    }
-
-    @Nonnull
-    public CheckRecipeResult getResult() {
-        return recipeResult;
-    }
-
-    public int getProgress() {
-        return progress;
-    }
-
-    // #endregion
-
-    // #region Other
-
-    @Nonnull
-    public P getThis() {
-        return (P) this;
-    }
-
-    public void startCheck() {
-        recipeResult = process();
-    }
-
-    public void progress() {
-        if (!hasWork) return;
-        if (progress == duration) {
-            progress = 0;
-            duration = 0;
-            calculatedEut = 0;
-            output();
-            return;
-        }
-        progress++;
-    }
-
-    protected void output() {
-        ItemInventoryLogic itemOutput = machineHost.getItemLogic(InventoryType.Output, itemOutputID);
-        FluidInventoryLogic fluidOutput = machineHost.getFluidLogic(InventoryType.Output, fluidOutputID);
-        if (itemOutput == null || fluidOutput == null) return;
-        for (ItemStack item : outputItems) {
-            if (item == null) continue;
-            itemOutput.insertItem(item);
-        }
-        for (FluidStack fluid : outputFluids) {
-            if (fluid == null) continue;
-            fluidOutput.fill(fluid.getFluid(), fluid.amount, false);
-        }
-        outputItems = new ItemStack[0];
-        outputFluids = new FluidStack[0];
-    }
-
-    public boolean canWork() {
-        return !hasWork && machineHost.isAllowedToWork();
-    }
-
-    /**
-     * By how much to increase the progress?
-     * 
-     * @param progressAmount in ticks
-     */
-    public void increaseProgress(int progressAmount) {
-        progress += progressAmount;
-    }
-
-    public NBTTagCompound saveToNBT() {
-        NBTTagCompound logicNBT = new NBTTagCompound();
-        logicNBT.setLong("eutConsumption", calculatedEut);
-        logicNBT.setInteger("duration", duration);
-        logicNBT.setInteger("progress", progress);
-        logicNBT.setBoolean("hasWork", hasWork);
-        if (outputItems != null) {
-            NBTTagList itemOutputsNBT = new NBTTagList();
-            for (ItemStack item : outputItems) {
-                itemOutputsNBT.appendTag(GT_Utility.saveItem(item));
-            }
-            logicNBT.setTag("itemOutputs", itemOutputsNBT);
-        }
-        if (outputFluids != null) {
-            NBTTagList fluidOutputsNBT = new NBTTagList();
-            for (FluidStack fluid : outputFluids) {
-                fluidOutputsNBT.appendTag(fluid.writeToNBT(new NBTTagCompound()));
-            }
-            logicNBT.setTag("fluidOutputs", fluidOutputsNBT);
-        }
-        if (itemOutputID != null) {
-            logicNBT.setString("itemOutputID", itemOutputID.toString());
-        }
-        if (fluidOutputID != null) {
-            logicNBT.setString("fluidOutputID", fluidOutputID.toString());
-        }
-        return logicNBT;
-    }
-
-    public void loadFromNBT(@Nonnull NBTTagCompound logicNBT) {
-        calculatedEut = logicNBT.getLong("eutConsumption");
-        duration = logicNBT.getInteger("duration");
-        progress = logicNBT.getInteger("progress");
-        hasWork = logicNBT.getBoolean("hasWork");
-        if (logicNBT.hasKey("itemOutputs")) {
-            NBTTagList itemOutputsNBT = logicNBT.getTagList("itemOutputs", TAG_COMPOUND);
-            outputItems = new ItemStack[itemOutputsNBT.tagCount()];
-            for (int i = 0; i < itemOutputsNBT.tagCount(); i++) {
-                outputItems[i] = GT_Utility.loadItem(itemOutputsNBT.getCompoundTagAt(i));
-            }
-        }
-        if (logicNBT.hasKey("fluidOutputs")) {
-            NBTTagList fluidOutputsNBT = logicNBT.getTagList("fluidOutputs", TAG_COMPOUND);
-            outputFluids = new FluidStack[fluidOutputsNBT.tagCount()];
-            for (int i = 0; i < fluidOutputsNBT.tagCount(); i++) {
-                outputFluids[i] = FluidStack.loadFluidStackFromNBT(fluidOutputsNBT.getCompoundTagAt(i));
-            }
-        }
-        if (logicNBT.hasKey("itemOutputID")) {
-            itemOutputID = UUID.fromString(logicNBT.getString("itemOutputID"));
-        }
-        if (logicNBT.hasKey("fluidOutputID")) {
-            fluidOutputID = UUID.fromString(logicNBT.getString("fluidOutputID"));
-        }
-    }
     // #endregion
 }
