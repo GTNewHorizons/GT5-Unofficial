@@ -39,11 +39,8 @@ public class UniversiumFrameItemRenderer implements IItemRenderer {
         //GL11.glTranslated(0.5, 0.5, 0.5);
         processLightLevel(type, data);
 
-        repositionItem(type);
-
         CosmicRenderShenanigans.inventoryRender = shouldUseInventoryCosmicRenderHelper(type);
         CosmicRenderShenanigans.cosmicOpacity = 2.5f;
-
 
         CosmicRenderShenanigans.useShader();
 
@@ -62,14 +59,6 @@ public class UniversiumFrameItemRenderer implements IItemRenderer {
 
     }
 
-    private void repositionItem(ItemRenderType type) {
-        switch (type) {
-            case EQUIPPED_FIRST_PERSON, EQUIPPED, INVENTORY -> GL11.glTranslated(0.5, 0.5, 0.5);
-            case FIRST_PERSON_MAP, ENTITY -> {
-                return;
-            }
-        };
-    }
 
     private void processLightLevel(ItemRenderType type, Object... data) {
         switch (type) {

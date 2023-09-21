@@ -4,12 +4,12 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.MasterItemRenderer;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.MasterTESR;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.Simple.DumbBlock;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.Simple.DumbItemBlock;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxTileEntity;
-import gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.UniversiumFrameItemRenderer;
-import gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.UniversiumFrameRenderer;
+import gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.UniversiumFrameBlockRenderer;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.PartProperties.Rendering.ModernMaterialItemRenderer;
 import gregtech.api.ModernMaterials.PartRecipeGenerators.ModernMaterialsPlateRecipeGenerator;
@@ -24,7 +24,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraft.util.IIcon;
 import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.InvocationTargetException;
@@ -41,17 +40,7 @@ public class ModernMaterialUtilities {
     public static final HashMap<String, ModernMaterial> materialNameToMaterialMap = new HashMap<>();
 
     public static void registerMaterial(ModernMaterial material) {
-        final int tCurrentMaterialID = GregTech_API.modernMaterialIDs.mConfig
-                .get(materialID.name(), material.getMaterialName(), -1).getInt();
-        if (tCurrentMaterialID == -1) {
-            newMaterials.add(material);
-        } else {
-            material.setMaterialID(tCurrentMaterialID);
-            materialIDToMaterial.put(tCurrentMaterialID, material);
-            if (tCurrentMaterialID > GregTech_API.lastMaterialID) {
-                GregTech_API.lastMaterialID = tCurrentMaterialID;
-            }
-        }
+        materialIDToMaterial.put(material.getMaterialID(), material);
         materialNameToMaterialMap.put(material.getMaterialName(), material);
     }
 
@@ -92,7 +81,7 @@ public class ModernMaterialUtilities {
         BlocksEnum.FrameBox.getAssociatedMaterials().addAll(materialIDToMaterial.values());
 
         for (int matID : materialIDToMaterial.keySet()) {
-            FrameBoxTileEntity.masterTESRMap.put(matID, new UniversiumFrameRenderer());
+            FrameBoxTileEntity.masterTESRMap.put(matID, new UniversiumFrameBlockRenderer());
         }
 
         for (BlocksEnum blockType : BlocksEnum.values()) {
@@ -116,7 +105,7 @@ public class ModernMaterialUtilities {
             GameRegistry.registerTileEntity(blockType.getTileEntityClass(), name);
 
             Item blockItem = Item.getItemFromBlock(simpleBlock);
-            MinecraftForgeClient.registerItemRenderer(blockItem, blockType.getItemRenderer());
+            MinecraftForgeClient.registerItemRenderer(blockItem, new MasterItemRenderer());
 
             // Register the master TESR. This only exists to redirect to different TESRs for different materials.
             ClientRegistry.bindTileEntitySpecialRenderer(blockType.getTileEntityClass(), new MasterTESR());
