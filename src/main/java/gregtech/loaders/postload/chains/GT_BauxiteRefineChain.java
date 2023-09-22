@@ -50,7 +50,6 @@ public class GT_BauxiteRefineChain {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
-            .noItemOutputs()
             .fluidInputs(MaterialsOreAlum.BauxiteSlurry.getFluid(32000), GT_ModHandler.getSteam(2000))
             .fluidOutputs(MaterialsOreAlum.HeatedBauxiteSlurry.getFluid(32000))
             .duration(8 * SECONDS)

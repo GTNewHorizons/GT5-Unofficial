@@ -616,8 +616,6 @@ public class GT_ModHandler {
         RA.stdBuilder()
             .itemInputs(aInput)
             .itemOutputs(aOutput)
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(sExtractorRecipes);
@@ -734,8 +732,6 @@ public class GT_ModHandler {
         RA.stdBuilder()
             .itemInputs(aInput1, aInput2)
             .itemOutputs(aOutput1)
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(aDuration)
             .eut(aEUt)
             .addTo(sAlloySmelterRecipes);
@@ -931,7 +927,6 @@ public class GT_ModHandler {
             .itemOutputs((ItemStack) aOutput[0], (ItemStack) aOutput[1], (ItemStack) aOutput[2])
             .outputChances(aChances)
             .fluidInputs(GT_ModHandler.getWater(aWaterAmount))
-            .noFluidOutputs()
             .duration(25 * SECONDS)
             .eut(16)
             .addTo(sOreWasherRecipes);
@@ -941,7 +936,6 @@ public class GT_ModHandler {
             .itemOutputs((ItemStack) aOutput[0], (ItemStack) aOutput[1], (ItemStack) aOutput[2])
             .outputChances(aChances)
             .fluidInputs(GT_ModHandler.getDistilledWater(aWaterAmount / 5))
-            .noFluidOutputs()
             .duration(15 * SECONDS)
             .eut(16)
             .addTo(sOreWasherRecipes);
@@ -955,7 +949,6 @@ public class GT_ModHandler {
             .itemInputs(aInput)
             .itemOutputs((ItemStack) aOutput[0], (ItemStack) aOutput[1], (ItemStack) aOutput[2])
             .fluidInputs(GT_ModHandler.getWater(aWaterAmount))
-            .noFluidOutputs()
             .duration(25 * SECONDS)
             .eut(16)
             .addTo(sOreWasherRecipes);
@@ -964,7 +957,6 @@ public class GT_ModHandler {
             .itemInputs(aInput)
             .itemOutputs((ItemStack) aOutput[0], (ItemStack) aOutput[1], (ItemStack) aOutput[2])
             .fluidInputs(GT_ModHandler.getDistilledWater(aWaterAmount / 5))
-            .noFluidOutputs()
             .duration(15 * SECONDS)
             .eut(16)
             .addTo(sOreWasherRecipes);

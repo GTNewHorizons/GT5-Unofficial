@@ -228,7 +228,6 @@ public class GT_RecipeRegistrator {
             RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(1, aStack))
                 .itemOutputs(recipeOutput)
-                .noFluidInputs()
                 .fluidOutputs(aMaterial.mSmeltInto.getMolten((L * aMaterialAmount) / (M * aStack.stackSize)))
                 .duration((int) Math.max(1, (24 * aMaterialAmount) / M))
                 .eut(Math.max(8, (int) Math.sqrt(2 * aMaterial.mSmeltInto.mStandardMoltenFluid.getTemperature())))
@@ -236,8 +235,6 @@ public class GT_RecipeRegistrator {
         } else {
             RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(1, aStack))
-                .noItemOutputs()
-                .noFluidInputs()
                 .fluidOutputs(aMaterial.mSmeltInto.getMolten((L * aMaterialAmount) / (M * aStack.stackSize)))
                 .duration((int) Math.max(1, (24 * aMaterialAmount) / M))
                 .eut(Math.max(8, (int) Math.sqrt(2 * aMaterial.mSmeltInto.mStandardMoltenFluid.getTemperature())))

@@ -60,8 +60,6 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
                         1L),
                     GT_OreDictUnificator.getDust(aPrefix.mSecondaryMaterial))
                 .outputChances(10000, 100 * 5 * aMultiplier, 10000)
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(sMaceratorRecipes);

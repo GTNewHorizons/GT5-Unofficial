@@ -2007,8 +2007,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                                                     GT_Values.RA.stdBuilder()
                                                         .itemInputs(new ItemStack(aEvent.Ore.getItem(), 1, 3))
                                                         .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 16, 4))
-                                                        .noFluidInputs()
-                                                        .noFluidOutputs()
                                                         .duration(20 * SECONDS)
                                                         .eut(8)
                                                         .addTo(sCutterRecipes);
@@ -2584,7 +2582,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
             int hydrogenAmount = 2 * i + 2;
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.getIntegratedCircuit(i + 1))
-                .noItemOutputs()
                 .fluidInputs(new FluidStack(uncrackedFluid, 1000), Materials.Hydrogen.getGas(hydrogenAmount * 800))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 1000))
                 .duration((1 + i) * SECONDS)
@@ -2637,7 +2634,6 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.getIntegratedCircuit(i + 1))
-                .noItemOutputs()
                 .fluidInputs(new FluidStack(uncrackedFluid, 1000), GT_ModHandler.getSteam(1000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 1200))
                 .duration((1 + i) * SECONDS)

@@ -45,8 +45,6 @@ public class GT_ItemIterator implements Runnable {
             GT_Values.RA.stdBuilder()
                 .itemInputs(tStack)
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 8L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(sMaceratorRecipes);
@@ -63,8 +61,6 @@ public class GT_ItemIterator implements Runnable {
             GT_Values.RA.stdBuilder()
                 .itemInputs(tStack)
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 8L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(sMaceratorRecipes);
@@ -91,8 +87,6 @@ public class GT_ItemIterator implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 4L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L))
                 .outputChances(10000, 1000)
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(sMaceratorRecipes);
@@ -117,8 +111,6 @@ public class GT_ItemIterator implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 4L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L))
                 .outputChances(10000, 1000)
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(sMaceratorRecipes);
@@ -264,8 +256,6 @@ public class GT_ItemIterator implements Runnable {
                                 .itemInputs(new ItemStack(tItem, 1, 0))
                                 .itemOutputs(new ItemStack(Items.stick, 2), new ItemStack(Items.stick, 1))
                                 .outputChances(10000, 3000)
-                                .noFluidInputs()
-                                .noFluidOutputs()
                                 .duration(20 * SECONDS)
                                 .eut(2)
                                 .addTo(sMaceratorRecipes);
