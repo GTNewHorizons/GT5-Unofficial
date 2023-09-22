@@ -30,19 +30,19 @@ public class TF_Gregtech_Recipes {
         // Gelid Cryotheum
         GT_Values.RA.stdBuilder().itemInputs(GT_OreDictUnificator.get(OrePrefixes.ore, Materials.Cinnabar, 1L))
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cinnabar, 3L))
-                .fluidInputs(getFluidStack("cryotheum", 144)).noFluidOutputs().duration(20 * SECONDS)
-                .eut(TierEU.RECIPE_LV).addTo(sChemicalBathRecipes);
+                .fluidInputs(getFluidStack("cryotheum", 144)).duration(20 * SECONDS).eut(TierEU.RECIPE_LV)
+                .addTo(sChemicalBathRecipes);
 
         // Blizz Powder
         GT_Values.RA.stdBuilder().itemInputs(new ItemStack(Items.snowball, 4))
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Blizz, 1L)).fluidInputs(moltenBlaze)
-                .noFluidOutputs().duration(20 * SECONDS).eut(TierEU.RECIPE_HV / 2).addTo(sChemicalBathRecipes);
+                .duration(20 * SECONDS).eut(TierEU.RECIPE_HV / 2).addTo(sChemicalBathRecipes);
 
         // Blizz Rod
         GT_Values.RA.stdBuilder().itemInputs(new ItemStack(Items.blaze_rod))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Blizz, 1L)).noFluidInputs()
-                .noFluidOutputs().duration(((int) Math.max((Materials.Blaze.getMass() * 4) * 3L, 1L)) * TICKS)
-                .eut(TierEU.RECIPE_MV).addTo(sVacuumRecipes);
+                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Blizz, 1L))
+                .duration(((int) Math.max((Materials.Blaze.getMass() * 4) * 3L, 1L)) * TICKS).eut(TierEU.RECIPE_MV)
+                .addTo(sVacuumRecipes);
 
         GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -50,8 +50,8 @@ public class TF_Gregtech_Recipes {
                         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L),
                         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
                         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1L))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Pyrotheum, 1L)).noFluidInputs()
-                .noFluidOutputs().duration(8 * SECONDS).eut(TierEU.RECIPE_MV).addTo(sMixerRecipes);
+                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Pyrotheum, 1L)).duration(8 * SECONDS)
+                .eut(TierEU.RECIPE_MV).addTo(sMixerRecipes);
 
         GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -59,8 +59,8 @@ public class TF_Gregtech_Recipes {
                         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Snow, 1L),
                         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
                         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Blizz, 1L))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cryotheum, 1L)).noFluidInputs()
-                .noFluidOutputs().duration(8 * SECONDS).eut(TierEU.RECIPE_MV).addTo(sMixerRecipes);
+                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cryotheum, 1L)).duration(8 * SECONDS)
+                .eut(TierEU.RECIPE_MV).addTo(sMixerRecipes);
 
         GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -68,8 +68,8 @@ public class TF_Gregtech_Recipes {
                         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Snow, 1L),
                         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
                         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Blizz, 1L))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cryotheum, 1L)).noFluidInputs()
-                .noFluidOutputs().duration(8 * SECONDS).eut(TierEU.RECIPE_MV).addTo(sMixerRecipes);
+                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cryotheum, 1L)).duration(8 * SECONDS)
+                .eut(TierEU.RECIPE_MV).addTo(sMixerRecipes);
     }
 
     private static FluidStack getFluidStack(final String fluidName, final int amount) {

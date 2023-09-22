@@ -27,14 +27,13 @@ public class FishTrapHandler {
                         .itemOutputs(
                                 ItemUtils.getItemStackOfAmountFromOreDict("dustMeatRaw", 1),
                                 ItemUtils.getItemStackOfAmountFromOreDict("dustTinyBone", 1))
-                        .outputChances(10000, 1000).noFluidInputs().noFluidOutputs().duration(20 * SECONDS).eut(2)
-                        .addTo(sMaceratorRecipes);
+                        .outputChances(10000, 1000).duration(20 * SECONDS).eut(2).addTo(sMaceratorRecipes);
                 GT_Values.RA.stdBuilder().itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1))
-                        .noItemOutputs().noFluidInputs().fluidOutputs(FluidUtils.getFluidStack("methane", 96))
-                        .duration(19 * SECONDS).eut(5).addTo(sCentrifugeRecipes);
+                        .fluidOutputs(FluidUtils.getFluidStack("methane", 96)).duration(19 * SECONDS).eut(5)
+                        .addTo(sCentrifugeRecipes);
                 GT_Values.RA.stdBuilder().itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1))
-                        .noItemOutputs().noFluidInputs().fluidOutputs(FluidUtils.getFluidStack("fishoil", 50))
-                        .duration(16 * TICKS).eut(4).addTo(sFluidExtractionRecipes);
+                        .fluidOutputs(FluidUtils.getFluidStack("fishoil", 50)).duration(16 * TICKS).eut(4)
+                        .addTo(sFluidExtractionRecipes);
             }
         }
         if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken(greenheartFish, 1) != null) {
@@ -42,14 +41,13 @@ public class FishTrapHandler {
                     .itemOutputs(
                             ItemUtils.getItemStackOfAmountFromOreDict("dustMeatRaw", 1),
                             ItemUtils.getItemStackOfAmountFromOreDict("dustTinyBone", 1))
-                    .outputChances(10000, 1000).noFluidInputs().noFluidOutputs().duration(20 * SECONDS).eut(2)
-                    .addTo(sMaceratorRecipes);
+                    .outputChances(10000, 1000).duration(20 * SECONDS).eut(2).addTo(sMaceratorRecipes);
             GT_Values.RA.stdBuilder().itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1))
-                    .noItemOutputs().noFluidInputs().fluidOutputs(FluidUtils.getFluidStack("methane", 96))
-                    .duration(19 * SECONDS).eut(5).addTo(sCentrifugeRecipes);
+                    .fluidOutputs(FluidUtils.getFluidStack("methane", 96)).duration(19 * SECONDS).eut(5)
+                    .addTo(sCentrifugeRecipes);
             GT_Values.RA.stdBuilder().itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1))
-                    .noItemOutputs().noFluidInputs().fluidOutputs(FluidUtils.getFluidStack("fishoil", 50))
-                    .duration(16 * TICKS).eut(4).addTo(sFluidExtractionRecipes);
+                    .fluidOutputs(FluidUtils.getFluidStack("fishoil", 50)).duration(16 * TICKS).eut(4)
+                    .addTo(sFluidExtractionRecipes);
         }
     }
 }

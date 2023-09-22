@@ -703,9 +703,8 @@ public final class ModItems {
                         temp1,
                         null,
                         true);
-                GT_Values.RA.stdBuilder().itemInputs(temp2).noItemOutputs().noFluidInputs()
-                        .fluidOutputs(new FluidStack(fluidFertBasic, 36)).duration(5 * TICKS).eut(16)
-                        .addTo(sFluidExtractionRecipes);
+                GT_Values.RA.stdBuilder().itemInputs(temp2).fluidOutputs(new FluidStack(fluidFertBasic, 36))
+                        .duration(5 * TICKS).eut(16).addTo(sFluidExtractionRecipes);
             }
             fluidFertUN32 = FluidUtils.generateFluidNonMolten(
                     "UN32Fertiliser",

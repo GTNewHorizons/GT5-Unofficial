@@ -118,14 +118,14 @@ public class GregtechDehydrator {
         ItemStack spoolT4 = ItemUtils.getItemStackOfAmountFromOreDict("pipeMediumTitanium", 1);
 
         // Make some coils by wrapping wire around a spool.
-        GT_Values.RA.stdBuilder().itemInputs(coilWire1, spoolT1).itemOutputs(coilT1).noFluidInputs().noFluidOutputs()
-                .duration(8 * SECONDS).eut(TierEU.RECIPE_MV).addTo(sAssemblerRecipes);
-        GT_Values.RA.stdBuilder().itemInputs(coilWire2, spoolT2).itemOutputs(coilT2).noFluidInputs().noFluidOutputs()
-                .duration(8 * SECONDS).eut(TierEU.RECIPE_HV / 2).addTo(sAssemblerRecipes);
-        GT_Values.RA.stdBuilder().itemInputs(coilWire3, spoolT3).itemOutputs(coilT3).noFluidInputs().noFluidOutputs()
-                .duration(8 * SECONDS).eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
-        GT_Values.RA.stdBuilder().itemInputs(coilWire4, spoolT4).itemOutputs(coilT4).noFluidInputs().noFluidOutputs()
-                .duration(8 * SECONDS).eut(TierEU.RECIPE_EV / 2).addTo(sAssemblerRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(coilWire1, spoolT1).itemOutputs(coilT1).duration(8 * SECONDS)
+                .eut(TierEU.RECIPE_MV).addTo(sAssemblerRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(coilWire2, spoolT2).itemOutputs(coilT2).duration(8 * SECONDS)
+                .eut(TierEU.RECIPE_HV / 2).addTo(sAssemblerRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(coilWire3, spoolT3).itemOutputs(coilT3).duration(8 * SECONDS)
+                .eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(coilWire4, spoolT4).itemOutputs(coilT4).duration(8 * SECONDS)
+                .eut(TierEU.RECIPE_EV / 2).addTo(sAssemblerRecipes);
 
         // Add recipes for the Dehydrators.
 

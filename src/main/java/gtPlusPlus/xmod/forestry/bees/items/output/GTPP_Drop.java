@@ -117,8 +117,8 @@ public class GTPP_Drop extends Item {
         if (aOutput == null) {
             return false;
         }
-        GT_Values.RA.stdBuilder().itemInputs(tDrop).noItemOutputs().noFluidInputs().fluidOutputs(aOutput)
-                .duration(aDuration * TICKS).eut(aEUt).addTo(sFluidExtractionRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(tDrop).fluidOutputs(aOutput).duration(aDuration * TICKS).eut(aEUt)
+                .addTo(sFluidExtractionRecipes);
         return true;
     }
 }

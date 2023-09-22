@@ -80,8 +80,8 @@ public class BaseItemIngot_OLD extends Item {
             if ((temp != null) && !temp.equals("")) {
                 tempOutput = ItemUtils.getItemStackOfAmountFromOreDict(temp, 1);
                 if (tempOutput != null) {
-                    GT_Values.RA.stdBuilder().itemInputs(tempStack).itemOutputs(tempOutput).noFluidInputs()
-                            .noFluidOutputs().duration(15 * SECONDS).eut(2).addTo(sCompressorRecipes);
+                    GT_Values.RA.stdBuilder().itemInputs(tempStack).itemOutputs(tempOutput).duration(15 * SECONDS)
+                            .eut(2).addTo(sCompressorRecipes);
                 }
             }
         } else if (this.unlocalName.contains("itemHotIngot")) {

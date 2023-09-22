@@ -96,8 +96,8 @@ public class GTPP_Propolis extends Item {
         if (aOutput == null) {
             return false;
         }
-        GT_Values.RA.stdBuilder().itemInputs(tDrop).itemOutputs(aOutput).outputChances(aChance).noFluidInputs()
-                .noFluidOutputs().duration(aDuration * TICKS).eut(aEUt).addTo(sExtractorRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(tDrop).itemOutputs(aOutput).outputChances(aChance)
+                .duration(aDuration * TICKS).eut(aEUt).addTo(sExtractorRecipes);
         return true;
     }
 }

@@ -284,6 +284,7 @@ public class RecipeGen_MaterialProcessing extends RecipeGen_Base {
         }
     }
 
+    @Deprecated
     public static boolean addCentrifgeRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput,
             FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4,
             ItemStack aOutput5, ItemStack aOutput6, int[] aChances, int aDuration, int aEUt) {

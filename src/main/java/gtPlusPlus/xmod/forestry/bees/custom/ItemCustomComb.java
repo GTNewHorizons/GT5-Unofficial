@@ -132,7 +132,6 @@ public class ItemCustomComb extends Item {
 
     public void addSpecialCent(ItemStack tComb, ItemStack aOutput, int chance) {
         GT_Values.RA.stdBuilder().itemInputs(tComb).itemOutputs(aOutput, ItemList.FR_Wax.get(1))
-                .outputChances(chance * 100, 3000).noFluidInputs().noFluidOutputs().duration(6 * SECONDS + 8 * TICKS)
-                .eut(5).addTo(sCentrifugeRecipes);
+                .outputChances(chance * 100, 3000).duration(6 * SECONDS + 8 * TICKS).eut(5).addTo(sCentrifugeRecipes);
     }
 }

@@ -1,5 +1,10 @@
 package gtPlusPlus.core.item.chemistry;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sDistilleryRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sVacuumRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -12,7 +17,11 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTPP_Recipe;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.lib.CORE;
@@ -61,37 +70,23 @@ public class RocketFuels extends ItemPackage {
         FluidStack fuelB = FluidUtils.getFluidStack("fuel", 3000);
 
         if (fuelA != null) {
-            // GT_Values.RA.addDistilleryRecipe(23, fuelA, FluidUtils.getFluidStack(Kerosene, 50), 200, 64, false);
-            GT_Values.RA.addDistilleryRecipe(
-                    CI.getNumberedCircuit(23),
-                    fuelA,
-                    FluidUtils.getFluidStack(Kerosene, 1800),
-                    200,
-                    64,
-                    false);
+            GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(23)).fluidInputs(fuelA)
+                    .fluidOutputs(FluidUtils.getFluidStack(Kerosene, 1800)).duration(10 * SECONDS)
+                    .eut(TierEU.RECIPE_MV / 2).addTo(sDistilleryRecipes);
         }
         if (fuelA == null && fuelB != null) {
-            // GT_Values.RA.addDistilleryRecipe(23, fuelB, FluidUtils.getFluidStack(Kerosene, 50), 200, 64, false);
-            GT_Values.RA.addDistilleryRecipe(
-                    CI.getNumberedCircuit(23),
-                    fuelB,
-                    FluidUtils.getFluidStack(Kerosene, 1800),
-                    200,
-                    64,
-                    false);
+            GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(23)).fluidInputs(fuelB)
+                    .fluidOutputs(FluidUtils.getFluidStack(Kerosene, 1800)).duration(10 * SECONDS)
+                    .eut(TierEU.RECIPE_MV / 2).addTo(sDistilleryRecipes);
         }
     }
 
     public static void createRP1() {
         FluidStack fuelA = FluidUtils.getFluidStack(Kerosene, 1000);
         if (fuelA != null) {
-            GT_Values.RA.addDistilleryRecipe(
-                    CI.getNumberedCircuit(23),
-                    fuelA,
-                    FluidUtils.getFluidStack(RP1, 750),
-                    20 * 40,
-                    120,
-                    false);
+            GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(23)).fluidInputs(fuelA)
+                    .fluidOutputs(FluidUtils.getFluidStack(RP1, 750)).duration(40 * SECONDS).eut(TierEU.RECIPE_MV)
+                    .addTo(sDistilleryRecipes);
         }
     }
 
@@ -139,10 +134,10 @@ public class RocketFuels extends ItemPackage {
     }
 
     private static void createLOH() {
-        GT_Values.RA.addVacuumFreezerRecipe(
-                ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("cellLiquidHydrogen", 1),
-                20 * 16);
+        GT_Values.RA.stdBuilder().itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1))
+                .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellLiquidHydrogen", 1)).duration(16 * SECONDS)
+                .eut(TierEU.RECIPE_MV).addTo(sVacuumRecipes);
+
         CORE.RA.addAdvancedFreezerRecipe(
                 new ItemStack[] {},
                 new FluidStack[] { FluidUtils.getFluidStack("hydrogen", 300) },
@@ -195,16 +190,13 @@ public class RocketFuels extends ItemPackage {
     }
 
     private static void createFormaldehydeCatalyst() {
-        GT_Values.RA.addMixerRecipe(
-                ItemUtils.getItemStackOfAmountFromOreDict("dustIron", 16),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustVanadium", 1),
-                CI.getNumberedCircuit(18),
-                null,
-                null,
-                null,
-                ItemUtils.getSimpleStack(Formaldehyde_Catalyst_Dust, 4),
-                160,
-                30);
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 16L),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 1L),
+                        GT_Utility.getIntegratedCircuit(18))
+                .itemOutputs(ItemUtils.getSimpleStack(Formaldehyde_Catalyst_Dust, 4)).duration(8 * SECONDS)
+                .eut(TierEU.RECIPE_LV).addTo(sMixerRecipes);
     }
 
     private static void createUnsymmetricalDimethylhydrazine() {

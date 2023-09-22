@@ -157,8 +157,8 @@ public class HANDLER_Railcraft {
             // Fluid Extracting the Charcoals for Wood Tar
             GT_Values.RA.stdBuilder().itemInputs(aInputs2[i])
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 1L)).outputChances(1000)
-                    .noFluidInputs().fluidOutputs(Materials.WoodTar.getFluid(50L)).duration(1 * SECONDS + 10 * TICKS)
-                    .eut(16).addTo(sFluidExtractionRecipes);
+                    .fluidOutputs(Materials.WoodTar.getFluid(50L)).duration(1 * SECONDS + 10 * TICKS).eut(16)
+                    .addTo(sFluidExtractionRecipes);
 
             // Processing the Charcoals with Oxygen to get CO and CO2
             // C + O = CO

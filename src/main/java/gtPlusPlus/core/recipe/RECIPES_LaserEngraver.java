@@ -1,15 +1,20 @@
 package gtPlusPlus.core.recipe;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.HOURS;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.everglades.dimension.Dimension_Everglades;
@@ -24,32 +29,18 @@ public class RECIPES_LaserEngraver implements IOreRecipeRegistrator {
     public void registerOre(final OrePrefixes aPrefix, final Materials aMaterial, final String aOreDictName,
             final String aModName, final ItemStack aStack) {
         if (aOreDictName.equals(OreDictNames.craftingLensWhite.toString())) {
-            if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateLithium", 1) != null) {
-                GT_Values.RA.addLaserEngraverRecipe(
-                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Lithium, 2L),
-                        GT_Utility.copyAmount(0L, new Object[] { aStack }),
-                        ItemUtils.getItemStackOfAmountFromOreDict("plateDoubleLithium7", 1),
-                        4 * 60 * 20,
-                        2000);
-            } else {
-                Logger.INFO(
-                        "plateLithium does not exist within Gregtech, please report this issue to Blood-asp on github.");
-                Logger.INFO(
-                        "This material item can be re-enabled within the gregtech configuration files, If you wish to fix this yourself.");
-            }
-            if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustLithium", 1) != null) {
-                GT_Values.RA.addLaserEngraverRecipe(
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 3L),
-                        GT_Utility.copyAmount(0L, new Object[] { aStack }),
-                        ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 1),
-                        2 * 60 * 20,
-                        2000);
-            } else {
-                Logger.INFO(
-                        "dustLithium does not exist within Gregtech, please report this issue to Blood-asp on github.");
-                Logger.INFO(
-                        "This material item can be re-enabled within the gregtech configuration files, If you wish to fix this yourself.");
-            }
+            GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Lithium, 2L),
+                            GT_Utility.copyAmount(0L, aStack))
+                    .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("plateDoubleLithium7", 1))
+                    .duration(4 * MINUTES).eut(TierEU.RECIPE_EV).addTo(sLaserEngraverRecipes);
+            GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 3L),
+                            GT_Utility.copyAmount(0L, aStack))
+                    .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 1)).duration(2 * MINUTES)
+                    .eut(TierEU.RECIPE_EV).addTo(sLaserEngraverRecipes);
 
         } else if (aOreDictName.equals(OreDictNames.craftingLensLime.toString())) {
             // Coil Wires
@@ -76,65 +67,31 @@ public class RECIPES_LaserEngraver implements IOreRecipeRegistrator {
             ItemStack wireT4a = ItemUtils.getItemStackOfAmountFromOreDict(wire + "Naquadah", 1);
 
             // T1
-            GT_Values.RA.addLaserEngraverRecipe(
-                    wireT1a,
-                    GT_Utility.copyAmount(0L, new Object[] { aStack }),
-                    coilWire1,
-                    10 * 20,
-                    500);
-            GT_Values.RA.addLaserEngraverRecipe(
-                    wireT1b,
-                    GT_Utility.copyAmount(0L, new Object[] { aStack }),
-                    coilWire1,
-                    10 * 20,
-                    500);
+            GT_Values.RA.stdBuilder().itemInputs(wireT1a, GT_Utility.copyAmount(0L, aStack)).itemOutputs(coilWire1)
+                    .duration(10 * SECONDS).eut(TierEU.RECIPE_HV).addTo(sLaserEngraverRecipes);
+            GT_Values.RA.stdBuilder().itemInputs(wireT1b, GT_Utility.copyAmount(0L, aStack)).itemOutputs(coilWire1)
+                    .duration(10 * SECONDS).eut(TierEU.RECIPE_HV).addTo(sLaserEngraverRecipes);
             // T2
-            GT_Values.RA.addLaserEngraverRecipe(
-                    wireT2a,
-                    GT_Utility.copyAmount(0L, new Object[] { aStack }),
-                    coilWire2,
-                    20 * 20,
-                    2000);
-            GT_Values.RA.addLaserEngraverRecipe(
-                    wireT2b,
-                    GT_Utility.copyAmount(0L, new Object[] { aStack }),
-                    coilWire2,
-                    20 * 20,
-                    2000);
+            GT_Values.RA.stdBuilder().itemInputs(wireT2a, GT_Utility.copyAmount(0L, aStack)).itemOutputs(coilWire2)
+                    .duration(20 * SECONDS).eut(TierEU.RECIPE_EV).addTo(sLaserEngraverRecipes);
+            GT_Values.RA.stdBuilder().itemInputs(wireT2b, GT_Utility.copyAmount(0L, aStack)).itemOutputs(coilWire2)
+                    .duration(20 * SECONDS).eut(TierEU.RECIPE_EV).addTo(sLaserEngraverRecipes);
             // T3
-            GT_Values.RA.addLaserEngraverRecipe(
-                    wireT3a,
-                    GT_Utility.copyAmount(0L, new Object[] { aStack }),
-                    coilWire3,
-                    30 * 20,
-                    8000);
-            GT_Values.RA.addLaserEngraverRecipe(
-                    wireT3b,
-                    GT_Utility.copyAmount(0L, new Object[] { aStack }),
-                    coilWire3,
-                    30 * 20,
-                    8000);
-            GT_Values.RA.addLaserEngraverRecipe(
-                    wireT3c,
-                    GT_Utility.copyAmount(0L, new Object[] { aStack }),
-                    coilWire3,
-                    30 * 20,
-                    8000);
+            GT_Values.RA.stdBuilder().itemInputs(wireT3a, GT_Utility.copyAmount(0L, aStack)).itemOutputs(coilWire3)
+                    .duration(30 * SECONDS).eut(TierEU.RECIPE_IV).addTo(sLaserEngraverRecipes);
+            GT_Values.RA.stdBuilder().itemInputs(wireT3b, GT_Utility.copyAmount(0L, aStack)).itemOutputs(coilWire3)
+                    .duration(30 * SECONDS).eut(TierEU.RECIPE_IV).addTo(sLaserEngraverRecipes);
+            GT_Values.RA.stdBuilder().itemInputs(wireT3c, GT_Utility.copyAmount(0L, aStack)).itemOutputs(coilWire3)
+                    .duration(30 * SECONDS).eut(TierEU.RECIPE_IV).addTo(sLaserEngraverRecipes);
             // T4
-            GT_Values.RA.addLaserEngraverRecipe(
-                    wireT4a,
-                    GT_Utility.copyAmount(0L, new Object[] { aStack }),
-                    coilWire4,
-                    40 * 20,
-                    32000);
+            GT_Values.RA.stdBuilder().itemInputs(wireT4a, GT_Utility.copyAmount(0L, aStack)).itemOutputs(coilWire4)
+                    .duration(40 * SECONDS).eut(TierEU.RECIPE_LuV).addTo(sLaserEngraverRecipes);
 
         } else if (aOreDictName.equals(OreDictNames.craftingLensOrange.toString())) {
-            GT_Values.RA.addLaserEngraverRecipe(
-                    ItemUtils.getSimpleStack(ModItems.itemAlkalusDisk),
-                    GT_Utility.copyAmount(0L, new Object[] { aStack }),
-                    ItemUtils.getSimpleStack(Dimension_Everglades.portalItem),
-                    360 * 60 * 20,
-                    4096);
+            GT_Values.RA.stdBuilder()
+                    .itemInputs(ItemUtils.getSimpleStack(ModItems.itemAlkalusDisk), GT_Utility.copyAmount(0L, aStack))
+                    .itemOutputs(ItemUtils.getSimpleStack(Dimension_Everglades.portalItem)).duration(3 * HOURS)
+                    .eut(TierEU.RECIPE_IV).addTo(sLaserEngraverRecipes);
         }
     }
 }

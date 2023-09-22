@@ -94,7 +94,7 @@ public class NuclearChem extends ItemPackage {
                 .itemInputs(
                         GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 2),
                         GT_Utility.getIntegratedCircuit(20))
-                .noItemOutputs().fluidInputs(FluidUtils.getMobEssence(5000))
+                .fluidInputs(FluidUtils.getMobEssence(5000))
                 .fluidOutputs(FluidUtils.getFluidStack(GeneticMutagen, 8000)).duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_HV).addTo(UniversalChemical);
     }

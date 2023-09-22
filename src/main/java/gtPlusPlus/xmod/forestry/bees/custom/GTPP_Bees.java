@@ -91,8 +91,8 @@ public class GTPP_Bees {
     }
 
     private void addExtractorRecipe(ItemStack input, FluidStack output) {
-        GT_Values.RA.stdBuilder().itemInputs(input).noItemOutputs().noFluidInputs().fluidOutputs(output)
-                .duration(1 * SECONDS + 10 * TICKS).eut(8).addTo(sFluidExtractionRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(input).fluidOutputs(output).duration(1 * SECONDS + 10 * TICKS).eut(8)
+                .addTo(sFluidExtractionRecipes);
     }
 
     private static boolean tryGetBeesBoolean() {

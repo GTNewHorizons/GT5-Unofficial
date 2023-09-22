@@ -10,7 +10,7 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 public final class MISC_MATERIALS {
 
     /*
-     * Some of these materials purely exist as data objects, items will most likely be assigned seperately. Most are
+     * Some of these materials purely exist as data objects, items will most likely be assigned separately. Most are
      * just compositions which will have dusts assigned to them.
      */
 
@@ -313,12 +313,6 @@ public final class MISC_MATERIALS {
             MaterialState.PURE_GAS,
             new MaterialStack(ELEMENT.getInstance().SODIUM, 1),
             new MaterialStack(ELEMENT.getInstance().CHLORINE, 1));
-
-    public static final Material SODIUM_HYDROXIDE = new Material(
-            "Sodium Hydroxide",
-            MaterialState.PURE_GAS,
-            new MaterialStack(ELEMENT.getInstance().SODIUM, 1),
-            new MaterialStack(HYDROXIDE, 1));
 
     public static final Material SALT_WATER = new Material(
             "Salt Water",

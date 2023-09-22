@@ -1,63 +1,41 @@
 package gtPlusPlus.core.recipe;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBrewingRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gtPlusPlus.core.material.MISC_MATERIALS.BRINE;
 import static gtPlusPlus.core.material.MISC_MATERIALS.HYDROGEN_CHLORIDE;
 import static gtPlusPlus.core.material.MISC_MATERIALS.RARE_EARTH_HIGH;
 import static gtPlusPlus.core.material.MISC_MATERIALS.RARE_EARTH_LOW;
 import static gtPlusPlus.core.material.MISC_MATERIALS.RARE_EARTH_MID;
-import static gtPlusPlus.core.material.MISC_MATERIALS.SALT_WATER;
-import static gtPlusPlus.core.material.MISC_MATERIALS.SODIUM_CHLORIDE;
-import static gtPlusPlus.core.material.MISC_MATERIALS.SODIUM_HYDROXIDE;
 
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.ORES;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class RECIPES_RareEarthProcessing {
 
-    private static ItemStack mDustSodiumHydroxide;
-    private static ItemStack mDustSalt;
-    private static FluidStack mSaltWater;
-    private static FluidStack mBrine;
-    private static FluidStack mHydrogenChloride;
-
     public static void init() {
 
-        // Salt Check and Assignment
-        mDustSalt = ItemUtils.getItemStackOfAmountFromOreDict("dustSalt", 1);
-        if (mDustSalt == null) {
-            MaterialUtils.generateSpecialDustAndAssignToAMaterial(SODIUM_CHLORIDE, false);
-            mDustSalt = SODIUM_CHLORIDE.getDust(1);
-        } else {
-            SODIUM_CHLORIDE.registerComponentForMaterial(OrePrefixes.dust, mDustSalt);
-        }
-
-        // Salt water Check and Assignment
-        mSaltWater = FluidUtils.getFluidStack("saltwater", 1000);
-        if (mSaltWater == null) {
-            Fluid f = SALT_WATER.generateFluid();
-            SALT_WATER.registerComponentForMaterial(FluidUtils.getFluidStack(f, 1000));
-            mSaltWater = SALT_WATER.getFluidStack(1000);
-        } else {
-            SALT_WATER.registerComponentForMaterial(FluidUtils.getFluidStack(mSaltWater, 1000));
-        }
-
         // Brine Check and assignment
-        mBrine = FluidUtils.getFluidStack("brine", 1000);
+        FluidStack mBrine = FluidUtils.getFluidStack("brine", 1000);
         if (mBrine == null) {
             Fluid f = BRINE.generateFluid();
             BRINE.registerComponentForMaterial(FluidUtils.getFluidStack(f, 1000));
@@ -66,22 +44,8 @@ public class RECIPES_RareEarthProcessing {
             BRINE.registerComponentForMaterial(FluidUtils.getFluidStack(mBrine, 1000));
         }
 
-        // Check Sodium Hydroxide Exists, generate if not.
-        mDustSodiumHydroxide = ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 1);
-        if (mDustSodiumHydroxide == null) {
-            mDustSodiumHydroxide = ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide_GT5U", 1);
-            if (mDustSodiumHydroxide == null) {
-                MaterialUtils.generateSpecialDustAndAssignToAMaterial(SODIUM_HYDROXIDE, false);
-                mDustSodiumHydroxide = SODIUM_HYDROXIDE.getDust(1);
-            } else {
-                SODIUM_HYDROXIDE.registerComponentForMaterial(OrePrefixes.dust, mDustSodiumHydroxide);
-            }
-        } else {
-            SODIUM_HYDROXIDE.registerComponentForMaterial(OrePrefixes.dust, mDustSodiumHydroxide);
-        }
-
         // Hydrogen Chloride Check and assignment
-        mHydrogenChloride = FluidUtils.getFluidStack("hydrogenchloride", 1000);
+        FluidStack mHydrogenChloride = FluidUtils.getFluidStack("hydrogenchloride", 1000);
         if (mHydrogenChloride == null) {
             HYDROGEN_CHLORIDE.generateFluid();
             mHydrogenChloride = BRINE.getFluidStack(1000);
@@ -90,50 +54,34 @@ public class RECIPES_RareEarthProcessing {
         }
 
         // Add Process for creating Brine
-        CORE.RA.addBrewingRecipe(
-                ItemUtils.getSimpleStack(mDustSalt, 16),
-                MISC_MATERIALS.SALT_WATER.getFluidStack(2000),
-                FluidUtils.getFluidStack(mBrine, 4000),
-                20 * 20,
-                120,
-                false);
+        GT_Values.RA.stdBuilder().itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Salt, 16L))
+                .fluidInputs(Materials.SaltWater.getFluid(2000L)).fluidOutputs(FluidUtils.getFluidStack(mBrine, 4000))
+                .duration(20 * SECONDS).eut(TierEU.RECIPE_MV).addTo(sBrewingRecipes);
 
         // Chloralkali process
-        GT_Values.RA.addElectrolyzerRecipe(
-                CI.getNumberedCircuit(16),
-                CI.emptyCells(4),
-                FluidUtils.getFluidStack(mBrine, 4000),
-                null, // Out
-                ItemUtils.getItemStackOfAmountFromOreDict("cellChlorine", 2),
-                ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 2),
-                ItemUtils.getSimpleStack(mDustSodiumHydroxide, 2),
-                null,
-                null,
-                null,
-                new int[] { 10000, 10000, 10000 },
-                20 * 30,
-                120);
+        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(1), ItemList.Cell_Empty.get(2L))
+                .itemOutputs(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 1L))
+                .fluidInputs(FluidUtils.getFluidStack(mBrine, 2000)).duration(30 * SECONDS).eut(TierEU.RECIPE_MV)
+                .addTo(sElectrolyzerRecipes);
 
         // Generate Special Laser Recipe
-        CORE.RA.addMixerRecipe(
-                CI.getNumberedBioCircuit(2),
-                ItemUtils.getItemStackOfAmountFromOreDict("cellChlorine", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1),
-                null,
-                null,
-                null,
-                ItemUtils.getSimpleStack(ModItems.cellHydrogenChlorideMix, 2),
-                null,
-                null,
-                null,
-                20 * 10,
-                480);
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1L),
+                        CI.getNumberedBioCircuit(2))
+                .itemOutputs(ItemUtils.getSimpleStack(ModItems.cellHydrogenChlorideMix, 2)).duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_HV).addTo(sMixerRecipes);
 
-        CORE.RA.addUvLaserRecipe(
-                ItemUtils.getSimpleStack(ModItems.cellHydrogenChlorideMix, 4),
-                ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 4),
-                20 * 30,
-                480);
+        GT_Values.RA.stdBuilder()
+                .itemInputs(
+                        ItemUtils.getSimpleStack(ModItems.cellHydrogenChlorideMix, 4),
+                        GregtechItemList.Laser_Lens_WoodsGlass.get(0))
+                .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 4))
+                .duration(30 * SECONDS).eut(TierEU.RECIPE_HV).noOptimize().addTo(sLaserEngraverRecipes);
 
         // Set Material Tiers correctly
         ORES.GREENOCKITE.vTier = 1;
@@ -162,72 +110,37 @@ public class RECIPES_RareEarthProcessing {
         MaterialGenerator.generateOreMaterial(RARE_EARTH_MID);
         MaterialGenerator.generateOreMaterial(RARE_EARTH_HIGH);
 
-        ItemStack aRareEarth = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RareEarth, 1L);
-
-        Fluid aSulfuric = FluidUtils.getFluidStack("sulfuricacid", 1).getFluid();
-        Fluid aHydrocholric = FluidUtils.getFluidStack("hydrogenchloride", 1).getFluid();
-        Fluid aNitric = FluidUtils.getFluidStack("hydrofluoricacid", 1).getFluid();
+        // industrial strength HCl
+        Fluid aHydrochloric = FluidUtils.getFluidStack("hydrogenchloride", 1).getFluid();
 
         // LV Rare Earth
-        GT_Values.RA.addChemicalBathRecipe(
-                ItemUtils.getSimpleStack(aRareEarth, 3),
-                FluidUtils.getFluidStack(aSulfuric, 1000),
-                RARE_EARTH_LOW.getCrushed(2),
-                RARE_EARTH_LOW.getCrushed(2),
-                RARE_EARTH_LOW.getCrushed(2),
-                new int[] { 10000, 10000, 10000 },
-                20 * 30,
-                MaterialUtils.getVoltageForTier(1));
+        GT_Values.RA.stdBuilder().itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RareEarth, 3L))
+                .itemOutputs(RARE_EARTH_LOW.getCrushed(2), RARE_EARTH_LOW.getCrushed(2), RARE_EARTH_LOW.getCrushed(2))
+                .fluidInputs(Materials.SulfuricAcid.getFluid(1000L)).duration(30 * SECONDS).eut(TierEU.RECIPE_LV)
+                .addTo(sChemicalBathRecipes);
 
         // HV Rare Earth
-        GT_Values.RA.addChemicalBathRecipe(
-                ItemUtils.getSimpleStack(aRareEarth, 6),
-                FluidUtils.getFluidStack(aHydrocholric, 2000),
-                RARE_EARTH_MID.getCrushed(4),
-                RARE_EARTH_MID.getCrushed(4),
-                RARE_EARTH_MID.getCrushed(4),
-                new int[] { 10000, 9000, 8000 },
-                20 * 30,
-                MaterialUtils.getVoltageForTier(3));
+        GT_Values.RA.stdBuilder().itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RareEarth, 3L))
+                .itemOutputs(RARE_EARTH_MID.getCrushed(2), RARE_EARTH_MID.getCrushed(2), RARE_EARTH_MID.getCrushed(2))
+                .outputChances(10000, 9000, 8000).fluidInputs(FluidUtils.getFluidStack(aHydrochloric, 1000))
+                .duration(15 * SECONDS).eut(TierEU.RECIPE_HV).addTo(sChemicalBathRecipes);
 
         // IV Rare Earth
-        GT_Values.RA.addChemicalBathRecipe(
-                ItemUtils.getSimpleStack(aRareEarth, 9),
-                FluidUtils.getHydrofluoricAcid(3000),
-                RARE_EARTH_HIGH.getCrushed(6),
-                RARE_EARTH_HIGH.getCrushed(6),
-                RARE_EARTH_HIGH.getCrushed(6),
-                new int[] { 10000, 9000, 8000 },
-                20 * 30,
-                MaterialUtils.getVoltageForTier(5));
+        GT_Values.RA.stdBuilder().itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RareEarth, 3L))
+                .itemOutputs(
+                        RARE_EARTH_HIGH.getCrushed(2),
+                        RARE_EARTH_HIGH.getCrushed(2),
+                        RARE_EARTH_HIGH.getCrushed(2))
+                .outputChances(10000, 9000, 8000).fluidInputs(FluidUtils.getHydrofluoricAcid(1000))
+                .duration(10 * SECONDS).eut(TierEU.RECIPE_IV).addTo(sChemicalBathRecipes);
 
-        if (FluidUtils.doesHydrofluoricAcidGtExist()) {
-            // IV Rare Earth
-            GT_Values.RA.addChemicalBathRecipe(
-                    ItemUtils.getSimpleStack(aRareEarth, 9),
-                    FluidUtils.getHydrofluoricAcidGT(6000),
-                    RARE_EARTH_HIGH.getCrushed(6),
-                    RARE_EARTH_HIGH.getCrushed(6),
-                    RARE_EARTH_HIGH.getCrushed(6),
-                    new int[] { 9000, 8000, 7000 },
-                    20 * 30,
-                    MaterialUtils.getVoltageForTier(5));
-        }
-    }
-
-    public static void processCopperRecipes() {
-
-        // Rare Earth Processing
-        /*
-         * GT_Values.RA.addSifterRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustRareEarth", 1), new ItemStack[] {
-         * ELEMENT.getInstance().YTTRIUM.getSmallDust(1), ELEMENT.getInstance().NEODYMIUM.getSmallDust(1),
-         * ELEMENT.getInstance().LANTHANUM.getSmallDust(1), ELEMENT.getInstance().CERIUM.getSmallDust(1),
-         * ELEMENT.getInstance().CADMIUM.getSmallDust(1), ELEMENT.getInstance().CAESIUM.getSmallDust(1),
-         * ORES.SAMARSKITE_YB.getSmallDust(1), ORES.FLORENCITE.getSmallDust(1), ORES.FLUORCAPHITE.getSmallDust(1),
-         * //ELEMENT.getInstance().YTTERBIUM.getTinyDust(1), //ELEMENT.getInstance().SAMARIUM.getTinyDust(1),
-         * //ELEMENT.getInstance().GADOLINIUM.getTinyDust(1) }, new int[] { 2000, 2000, 2000, 2000, 2000, 2000, 2000,
-         * 2000, 2000 }, 20 * 30, 500);
-         */
-
+        // IV Rare Earth
+        GT_Values.RA.stdBuilder().itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RareEarth, 3L))
+                .itemOutputs(
+                        RARE_EARTH_HIGH.getCrushed(2),
+                        RARE_EARTH_HIGH.getCrushed(2),
+                        RARE_EARTH_HIGH.getCrushed(2))
+                .outputChances(9000, 8000, 7000).fluidInputs(Materials.HydrofluoricAcid.getFluid(2000L))
+                .duration(10 * SECONDS).eut(TierEU.RECIPE_IV).addTo(sChemicalBathRecipes);
     }
 }

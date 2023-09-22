@@ -204,8 +204,8 @@ public class RECIPES_General {
                         ItemList.Large_Fluid_Cell_Steel.get(1),
                         CI.getNumberedAdvancedCircuit(4))
                 .itemOutputs(VolumetricFlaskHelper.getLargeVolumetricFlask(2))
-                .fluidInputs(FluidUtils.getFluidStack("molten.borosilicateglass", 2000)).noFluidOutputs()
-                .duration(15 * SECONDS).eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
+                .fluidInputs(FluidUtils.getFluidStack("molten.borosilicateglass", 2000)).duration(15 * SECONDS)
+                .eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -214,8 +214,8 @@ public class RECIPES_General {
                         ItemList.Large_Fluid_Cell_TungstenSteel.get(1),
                         CI.getNumberedAdvancedCircuit(5))
                 .itemOutputs(VolumetricFlaskHelper.getGiganticVolumetricFlask(2))
-                .fluidInputs(FluidUtils.getFluidStack("molten.borosilicateglass", 8000)).noFluidOutputs()
-                .duration(15 * SECONDS).eut(TierEU.RECIPE_IV).addTo(sAssemblerRecipes);
+                .fluidInputs(FluidUtils.getFluidStack("molten.borosilicateglass", 8000)).duration(15 * SECONDS)
+                .eut(TierEU.RECIPE_IV).addTo(sAssemblerRecipes);
 
         // Mining Explosive
         Logger.RECIPE("[Inspection] Explosives");
@@ -283,8 +283,8 @@ public class RECIPES_General {
                         Materials.Sapphire.getBlocks(32),
                         ItemUtils.getSimpleStack(Blocks.gold_block, 32))
                 .itemOutputs(ItemUtils.getSimpleStack(ModItems.itemMagicFeather, 1))
-                .fluidInputs(Materials.Silver.getMolten(32 * 144)).noFluidOutputs().duration(2 * MINUTES)
-                .eut(TierEU.RECIPE_EV).addTo(sAssemblerRecipes);
+                .fluidInputs(Materials.Silver.getMolten(32 * 144)).duration(2 * MINUTES).eut(TierEU.RECIPE_EV)
+                .addTo(sAssemblerRecipes);
 
         // Pest Killer
         GT_Values.RA.stdBuilder()
@@ -295,8 +295,8 @@ public class RECIPES_General {
                         ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(0), 2),
                         CI.getNumberedCircuit(16))
                 .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockPestKiller))
-                .fluidInputs(FluidUtils.getHotWater(500)).noFluidOutputs().duration(1 * MINUTES)
-                .eut(TierEU.RECIPE_LV / 2).addTo(sAssemblerRecipes);
+                .fluidInputs(FluidUtils.getHotWater(500)).duration(1 * MINUTES).eut(TierEU.RECIPE_LV / 2)
+                .addTo(sAssemblerRecipes);
     }
 
     private static boolean addCompressedObsidian() {

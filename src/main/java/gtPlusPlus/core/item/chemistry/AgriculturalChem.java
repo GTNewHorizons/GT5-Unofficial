@@ -467,13 +467,13 @@ public class AgriculturalChem extends ItemPackage {
             for (ItemStack aMeatStack : mList_Master_Meats) {
                 aMeat = ItemUtils.getSimpleStack(aMeatStack, 5);
                 GT_Values.RA.stdBuilder().itemInputs(aPeat, aMeat).itemOutputs(aOutputDust).fluidInputs(aInputFluid)
-                        .noFluidOutputs().duration(20 * SECONDS).eut(TierEU.RECIPE_MV).addTo(UniversalChemical);
+                        .duration(20 * SECONDS).eut(TierEU.RECIPE_MV).addTo(UniversalChemical);
             }
             aPeat = ItemUtils.getSimpleStack(aPeatStack, 2);
             for (ItemStack aMeatStack : mList_Master_FruitVege) {
                 aMeat = ItemUtils.getSimpleStack(aMeatStack, 9);
                 GT_Values.RA.stdBuilder().itemInputs(aPeat, aMeat).itemOutputs(aOutputDust).fluidInputs(aInputFluid)
-                        .noFluidOutputs().duration(10 * SECONDS).eut(TierEU.RECIPE_MV).addTo(UniversalChemical);
+                        .duration(10 * SECONDS).eut(TierEU.RECIPE_MV).addTo(UniversalChemical);
             }
         }
     }
@@ -488,13 +488,13 @@ public class AgriculturalChem extends ItemPackage {
             for (ItemStack aMeatStack : mList_Master_Meats) {
                 aMeat = ItemUtils.getSimpleStack(aMeatStack, 7);
                 GT_Values.RA.stdBuilder().itemInputs(aPeat, aMeat).itemOutputs(aOutputDust).fluidInputs(aInputFluid)
-                        .noFluidOutputs().duration(10 * SECONDS).eut(140).addTo(UniversalChemical);
+                        .duration(10 * SECONDS).eut(140).addTo(UniversalChemical);
             }
             aPeat = ItemUtils.getSimpleStack(aPeatStack, 3);
             for (ItemStack aMeatStack : mList_Master_FruitVege) {
                 aMeat = ItemUtils.getSimpleStack(aMeatStack, 12);
                 GT_Values.RA.stdBuilder().itemInputs(aPeat, aMeat).itemOutputs(aOutputDust).fluidInputs(aInputFluid)
-                        .noFluidOutputs().duration(5 * SECONDS).eut(140).addTo(UniversalChemical);
+                        .duration(5 * SECONDS).eut(140).addTo(UniversalChemical);
             }
         }
     }
@@ -556,8 +556,8 @@ public class AgriculturalChem extends ItemPackage {
 
         // Dirt Production
         GT_Values.RA.stdBuilder().itemInputs(ItemUtils.getSimpleStack(dustDirt, 9))
-                .itemOutputs(ItemUtils.getSimpleStack(Blocks.dirt)).noFluidInputs().noFluidOutputs()
-                .duration(2 * SECONDS).eut(8).addTo(sCompressorRecipes);
+                .itemOutputs(ItemUtils.getSimpleStack(Blocks.dirt)).duration(2 * SECONDS).eut(8)
+                .addTo(sCompressorRecipes);
 
         // Centrifuge Byproducts
 

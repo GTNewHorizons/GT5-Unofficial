@@ -68,23 +68,16 @@ public class MaterialGenerator {
     @SuppressWarnings("unused")
     private static volatile Block tempBlock;
 
+    @Deprecated
     public static boolean addFluidCannerRecipe(ItemStack aEmpty, ItemStack aFullContainer, FluidStack aFluidIn,
             FluidStack rFluidOut) {
         return addFluidCannerRecipe(aEmpty, aFullContainer, aFluidIn, rFluidOut, null, null);
     }
 
-    /**
-     * Called Reflectively from CORE.RA.addFluidCannerRecipe
-     * 
-     * @return
-     */
+    @Deprecated
     public static boolean addFluidCannerRecipe(ItemStack aEmpty, ItemStack aFullContainer, FluidStack aFluidIn,
             FluidStack rFluidOut, Integer aTime, Integer aEu) {
-        /*
-         * GT_Recipe r = new Recipe_GT( true, new ItemStack[] {aEmpty}, new ItemStack[] {aFullContainer}, null, new
-         * int[] {}, new FluidStack[] {rFluidIn}, new FluidStack[] {rFluidOut}, 0, 0, 0);
-         */
-        // new RecipeGen_FluidCanning(r, false);
+
         RecipeGen_FluidCanning g = new RecipeGen_FluidCanning(false, aEmpty, aFullContainer, aFluidIn, null, null, 0);
         if (g != null && g.valid()) {
             return true;
