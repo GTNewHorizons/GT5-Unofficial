@@ -489,7 +489,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
                 + EnumChatFormatting.YELLOW
                 + GT_Utility.formatNumbers(mMaxOverheat)
                 + EnumChatFormatting.RESET,
-            "Current Amperage: " + EnumChatFormatting.GREEN
+            "Amperage: " + EnumChatFormatting.GREEN
                 + GT_Utility.formatNumbers(amps)
                 + EnumChatFormatting.RESET
                 + " / "
