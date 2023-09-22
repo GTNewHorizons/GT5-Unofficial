@@ -91,10 +91,6 @@ public class ModernMaterialsRegistration {
 
         registerAllMaterialsItems();
 
-
-        GregTech_API.modernMaterialIDs.mConfig
-                .get(ConfigCategories.ModernMaterials.materialID.name(), "LastMaterialID", 0)
-                .set(GregTech_API.lastMaterialID);
     }
 
 }

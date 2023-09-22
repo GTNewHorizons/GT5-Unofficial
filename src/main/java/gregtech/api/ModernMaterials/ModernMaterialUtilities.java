@@ -8,6 +8,7 @@ import gregtech.api.ModernMaterials.Blocks.DumbBase.MasterItemRenderer;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.MasterTESR;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.Simple.DumbBlock;
 import gregtech.api.ModernMaterials.Blocks.DumbBase.Simple.DumbItemBlock;
+import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxSimpleBlockRenderer;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxTileEntity;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.UniversiumFrameBlockRenderer;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
@@ -89,6 +90,8 @@ public class ModernMaterialUtilities {
             registerTESRBlock(blockType);
         }
 
+        new FrameBoxSimpleBlockRenderer();
+
     }
 
     private static void registerTESRBlock(BlocksEnum blockType) {
@@ -117,6 +120,21 @@ public class ModernMaterialUtilities {
     }
 
     private static void registerSimpleBlock(BlocksEnum blockType) {
+
+        final String name = "Simple:" + blockType;
+
+        try {
+            // Register the actual block.
+            DumbBlock simpleBlock = blockType.getBlockClass().getDeclaredConstructor().newInstance();
+            simpleBlock.setBlockName(name);
+            GameRegistry.registerBlock(simpleBlock, DumbItemBlock.class, name);
+
+            // Register the tile entity itself.
+            GameRegistry.registerTileEntity(blockType.getTileEntityClass(), name);
+
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException("Failed to instantiate block", e);
+        }
 
     }
 
