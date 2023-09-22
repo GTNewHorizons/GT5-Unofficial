@@ -3,12 +3,12 @@ package gregtech.api.task.tasks;
 import javax.annotation.Nonnull;
 
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.logic.MuTEProcessingLogic;
 import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.task.TaskHost;
 import gregtech.api.task.TickableTask;
 
-public class ProcessingTask<T extends TaskHost & ProcessingLogicHost<P> & IMachineProgress, P extends ProcessingLogic<P>>
+public class ProcessingTask<T extends TaskHost & ProcessingLogicHost<P> & IMachineProgress, P extends MuTEProcessingLogic<P>>
     extends TickableTask<T> {
 
     public ProcessingTask(@Nonnull T taskHost) {
@@ -27,8 +27,7 @@ public class ProcessingTask<T extends TaskHost & ProcessingLogicHost<P> & IMachi
     public void update(long tick, boolean isServerSide) {
         if (!isServerSide) return;
         if (!taskHost.isAllowedToWork()) return;
-        final P logic = taskHost.getProcessingLogic()
-            .setMuTEMode(true);
+        final P logic = taskHost.getProcessingLogic();
         if (taskHost.needsUpdate()) {
             taskHost.updateProcessingLogic(logic);
             taskHost.setProcessingUpdate(false);

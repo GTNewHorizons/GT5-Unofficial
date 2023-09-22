@@ -1,7 +1,7 @@
 package gregtech.common.tileentities.machines.multiblock.logic;
 
-import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.logic.MuTEProcessingLogic;
 
-public class LayeredCokeBatteryProcessingLogic extends ProcessingLogic<LayeredCokeBatteryProcessingLogic> {
+public class LayeredCokeBatteryProcessingLogic extends MuTEProcessingLogic<LayeredCokeBatteryProcessingLogic> {
 
 }

@@ -15,14 +15,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.logic.MuTEProcessingLogic;
 import gregtech.api.logic.PowerLogic;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.util.GT_Utility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public abstract class PowerController<T extends PowerController<T, P>, P extends ProcessingLogic<P>>
+public abstract class PowerController<T extends PowerController<T, P>, P extends MuTEProcessingLogic<P>>
     extends Controller<T, P> implements PowerLogicHost {
 
     public PowerController() {

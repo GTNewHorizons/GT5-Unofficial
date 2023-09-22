@@ -38,8 +38,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
+import gregtech.api.logic.MuTEProcessingLogic;
 import gregtech.api.logic.PowerLogic;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
@@ -52,7 +52,7 @@ import gregtech.api.task.tasks.ProcessingTask;
 import gregtech.api.util.GT_Utility;
 import gregtech.client.GT_SoundLoop;
 
-public abstract class MultiTileBasicMachine<P extends ProcessingLogic<P>> extends TickableMultiTileEntity
+public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> extends TickableMultiTileEntity
     implements IMultiTileMachine, IMachineProgress, ProcessingLogicHost<P> {
 
     protected static final int ACTIVE = B[0];
