@@ -212,6 +212,17 @@ public class RecipeLoader_NuclearFuelProcessing {
                 300 * 10,
                 MaterialUtils.getVoltageForTier(5),
                 5400);
+        // Alternative recipe to the above, for chemplant, to not use cells
+        CORE.RA.addChemicalPlantRecipe(
+                new ItemStack[] {},
+                new FluidStack[] { FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(1000),
+                        NUCLIDE.LiFBeF2.getFluidStack(1000), ELEMENT.getInstance().HYDROGEN.getFluidStack(2000) },
+                new ItemStack[] {},
+                new FluidStack[] { NUCLIDE.LiFBeF2UF4.getFluidStack(3000),
+                        FluidUtils.getFluidStack("hydrofluoricacid", 2000) },
+                300 * 10,
+                MaterialUtils.getVoltageForTier(5),
+                4);
 
         // LiFBeF2ZrF4U235 - We can't add both ZrF4 and U235 here, so best we leave this disabled.
         /*
