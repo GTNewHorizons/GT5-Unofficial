@@ -498,8 +498,9 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     // #region Energy - Depending on the part type - proxy to the multiblock controller, if we have one
 
     @Override
-    public PowerLogic getPowerLogic(ForgeDirection side) {
-        if (facing != side) {
+    @Nullable
+    public PowerLogic getPowerLogic(@Nonnull ForgeDirection side) {
+        if (side != facing && side != ForgeDirection.UNKNOWN) {
             return null;
         }
 

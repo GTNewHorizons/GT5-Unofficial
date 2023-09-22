@@ -364,8 +364,6 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
         if (this instanceof PowerLogicHost) {
             consumeEnergy();
         }
-
-        emitEnergy();
     }
 
     /**
@@ -374,11 +372,6 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     protected boolean checkRecipe() {
         return false;
     }
-
-    /**
-     * Runs only on server side
-     */
-    protected void emitEnergy() {}
 
     /**
      * Runs only on server side

@@ -5,6 +5,7 @@ import static gregtech.api.enums.TickTime.MINUTE;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -46,8 +47,9 @@ public abstract class PowerController<T extends PowerController<T, P>, P extends
     }
 
     @Override
-    @Nonnull
+    @Nullable
     public PowerLogic getPowerLogic(@Nonnull ForgeDirection side) {
+        if (side == facing) return null;
         return power;
     }
 
