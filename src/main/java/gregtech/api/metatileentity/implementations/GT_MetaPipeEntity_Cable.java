@@ -38,6 +38,7 @@ import gregtech.api.graphs.PowerNodes;
 import gregtech.api.graphs.consumers.ConsumerNode;
 import gregtech.api.graphs.paths.PowerNodePath;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityCable;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -70,15 +71,19 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     public final Materials mMaterial;
     public final long mCableLossPerMeter, mAmperage, mVoltage;
     public final boolean mInsulated, mCanShock;
-    public int mTransferredAmperage = 0, mTransferredAmperageLast20 = 0, mTransferredAmperageLast20OK = 0,
-        mTransferredAmperageOK = 0;
-    public long mTransferredVoltageLast20 = 0, mTransferredVoltage = 0, mTransferredVoltageLast20OK = 0,
-        mTransferredVoltageOK = 0;
+
+    public int mTransferredAmperage = 0;
+    public long mTransferredVoltage = 0;
+
+    @Deprecated
+    public int mTransferredAmperageLast20 = 0, mTransferredAmperageLast20OK = 0, mTransferredAmperageOK = 0;
+    @Deprecated
+    public long mTransferredVoltageLast20 = 0, mTransferredVoltageLast20OK = 0, mTransferredVoltageOK = 0;
+
     public long mRestRF;
     public int mOverheat;
     public static short mMaxOverheat = (short) (GT_Mod.gregtechproxy.mWireHeatingTicks * 100);
 
-    private int[] lastAmperage;
     private long lastWorldTick;
 
     public GT_MetaPipeEntity_Cable(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
@@ -174,13 +179,22 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
 
     @Override
     public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity aEntity) {
-        if (mCanShock && (((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections & -128) == 0
-            && aEntity instanceof EntityLivingBase
-            && !isCoverOnSide((BaseMetaPipeEntity) getBaseMetaTileEntity(), (EntityLivingBase) aEntity))
-            GT_Utility.applyElectricityDamage(
-                (EntityLivingBase) aEntity,
-                mTransferredVoltageLast20,
-                mTransferredAmperageLast20);
+
+        if (!mCanShock) return;
+
+        final BaseMetaPipeEntity baseEntity = (BaseMetaPipeEntity) getBaseMetaTileEntity();
+
+        if (!(aEntity instanceof EntityLivingBase livingEntity)) return;
+        if (!(baseEntity.getNodePath() instanceof PowerNodePath powerPath)) return;
+
+        if (isCoverOnSide(baseEntity, livingEntity)) return;
+        if ((baseEntity.mConnections & IConnectable.HAS_HARDENEDFOAM) == 1) return;
+
+        final long amperage = powerPath.getAmps();
+
+        if (amperage == 0L) return;
+
+        GT_Utility.applyElectricityDamage(livingEntity, mVoltage, amperage);
     }
 
     @Override
@@ -205,7 +219,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
 
     @Override
     public int getProgresstime() {
-        return mTransferredAmperage * 64;
+        return (int) mTransferredAmperage * 64;
     }
 
     @Override
@@ -253,11 +267,11 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            lastAmperage = new int[16];
             lastWorldTick = aBaseMetaTileEntity.getWorld()
-                .getTotalWorldTime() - 1; // sets initial value -1 since it is
-                                          // in the same tick as first on post
-                                          // tick
+                .getTotalWorldTime() - 1;
+            // sets initial value -1 since it is
+            // in the same tick as first on post
+            // tick
         }
     }
 
@@ -468,7 +482,6 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
             volts = path.getVoltage(this);
         }
         return new String[] {
-            // EnumChatFormatting.BLUE + mName + EnumChatFormatting.RESET,
             "Heat: " + EnumChatFormatting.RED
                 + GT_Utility.formatNumbers(mOverheat)
                 + EnumChatFormatting.RESET
@@ -476,30 +489,22 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
                 + EnumChatFormatting.YELLOW
                 + GT_Utility.formatNumbers(mMaxOverheat)
                 + EnumChatFormatting.RESET,
-            "Max Load (1t):",
-            EnumChatFormatting.GREEN + GT_Utility.formatNumbers(amps)
+            "Amperage: " + EnumChatFormatting.GREEN
+                + GT_Utility.formatNumbers(amps)
                 + EnumChatFormatting.RESET
-                + " A / "
+                + " / "
                 + EnumChatFormatting.YELLOW
                 + GT_Utility.formatNumbers(mAmperage)
                 + EnumChatFormatting.RESET
                 + " A",
-            "Max EU/p (1t):",
-            EnumChatFormatting.GREEN + GT_Utility.formatNumbers(volts)
+            "Max Output: " + EnumChatFormatting.GREEN
+                + GT_Utility.formatNumbers(volts)
                 + EnumChatFormatting.RESET
-                + " EU / "
+                + " / "
                 + EnumChatFormatting.YELLOW
                 + GT_Utility.formatNumbers(mVoltage)
                 + EnumChatFormatting.RESET
-                + " EU",
-            "Max Load (20t): " + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(mTransferredAmperageLast20OK)
-                + EnumChatFormatting.RESET
-                + " A",
-            "Max EU/p (20t): " + EnumChatFormatting.GREEN
-                + GT_Utility.formatNumbers(mTransferredVoltageLast20OK)
-                + EnumChatFormatting.RESET
-                + " EU" };
+                + " EU/t" };
     }
 
     @Override
