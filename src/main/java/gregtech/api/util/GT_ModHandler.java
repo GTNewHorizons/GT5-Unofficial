@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -66,6 +67,7 @@ import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.internal.IGT_CraftingRecipe;
+import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.objects.GT_HashSet;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
@@ -567,8 +569,6 @@ public class GT_ModHandler {
             recipeBuilder.itemInputs(aInput, input2);
         }
         recipeBuilder.itemOutputs(aOutput)
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(duration * TICKS)
             .eut(3);
         if (hidden) {
@@ -2093,24 +2093,23 @@ public class GT_ModHandler {
         recyclerWhitelist = new HashSet<>();
         for (IRecipeInput input : ic2.api.recipe.Recipes.recyclerWhitelist) {
             for (ItemStack stack : input.getInputs()) {
-                recyclerWhitelist.add(GT_Utility.ItemId.create(stack));
+                recyclerWhitelist.add(GT_Utility.ItemId.create(stack.getItem(), stack.getItemDamage(), null));
             }
         }
         recyclerBlacklist = new HashSet<>();
         for (IRecipeInput input : ic2.api.recipe.Recipes.recyclerBlacklist) {
             for (ItemStack stack : input.getInputs()) {
-                recyclerBlacklist.add(GT_Utility.ItemId.create(stack));
+                recyclerBlacklist.add(GT_Utility.ItemId.create(stack.getItem(), stack.getItemDamage(), null));
             }
         }
     }
 
     private static boolean searchRecyclerCache(ItemStack stack, Set<GT_Utility.ItemId> set) {
-        if (set.contains(GT_Utility.ItemId.createNoCopy(stack))) {
+        if (set.contains(GT_Utility.ItemId.createNoCopy(stack.getItem(), stack.getItemDamage(), null))) {
             return true;
         }
         // ic2.api.recipe.RecipeInputItemStack#matches expects item with wildcard meta to accept arbitrary meta
-        return set.contains(
-            GT_Utility.ItemId.createNoCopy(stack.getItem(), OreDictionary.WILDCARD_VALUE, stack.getTagCompound()));
+        return set.contains(GT_Utility.ItemId.createNoCopy(stack.getItem(), OreDictionary.WILDCARD_VALUE, null));
     }
 
     /**
@@ -2360,6 +2359,35 @@ public class GT_ModHandler {
             /* Do nothing */
         }
         return false;
+    }
+
+    /**
+     * Returns the current charge and maximum charge of an ItemStack.
+     *
+     * @param aStack Any ItemStack.
+     * @return Optional.empty() if the stack is null or not an electric item, or an Optional containing a payload of an
+     *         array containing [ current_charge, maximum_charge ] on success.
+     */
+    public static Optional<Long[]> getElectricItemCharge(ItemStack aStack) {
+        if (aStack == null || !isElectricItem(aStack)) {
+            return Optional.empty();
+        }
+
+        final Item item = aStack.getItem();
+
+        if (item instanceof final GT_MetaBase_Item metaBaseItem) {
+            final Long[] stats = metaBaseItem.getElectricStats(aStack);
+            if (stats != null && stats.length > 0) {
+                return Optional.of(new Long[] { metaBaseItem.getRealCharge(aStack), stats[0] });
+            }
+
+        } else if (item instanceof final IElectricItem ic2ElectricItem) {
+            return Optional.of(
+                new Long[] { (long) ic2.api.item.ElectricItem.manager.getCharge(aStack),
+                    (long) ic2ElectricItem.getMaxCharge(aStack) });
+        }
+
+        return Optional.empty();
     }
 
     /**

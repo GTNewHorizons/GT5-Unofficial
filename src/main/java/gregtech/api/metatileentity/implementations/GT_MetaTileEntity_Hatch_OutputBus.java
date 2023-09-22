@@ -124,11 +124,12 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
         for (int i = 0, mInventoryLength = mInventory.length; i < mInventoryLength && aStack.stackSize > 0; i++) {
             ItemStack tSlot = mInventory[i];
             if (GT_Utility.isStackInvalid(tSlot)) {
-                if (aStack.stackSize <= getInventoryStackLimit()) {
+                int tRealStackLimit = Math.min(getInventoryStackLimit(), aStack.getMaxStackSize());
+                if (aStack.stackSize <= tRealStackLimit) {
                     mInventory[i] = aStack;
                     return true;
                 }
-                mInventory[i] = aStack.splitStack(getInventoryStackLimit());
+                mInventory[i] = aStack.splitStack(tRealStackLimit);
             } else {
                 int tRealStackLimit = Math.min(getInventoryStackLimit(), tSlot.getMaxStackSize());
                 if (tSlot.stackSize < tRealStackLimit && tSlot.isItemEqual(aStack)

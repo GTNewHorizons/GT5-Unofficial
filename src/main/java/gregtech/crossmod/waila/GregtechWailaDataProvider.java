@@ -1,4 +1,4 @@
-package gregtech.crossmod;
+package gregtech.crossmod.waila;
 
 import java.util.List;
 

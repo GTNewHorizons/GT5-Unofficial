@@ -619,7 +619,11 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         }
 
         public boolean isNotConsumed() {
-            return !ItemList.Display_Fluid.isStackEqual(item, true, true) && item.stackSize == 0;
+            return !isFluid() && item.stackSize == 0;
+        }
+
+        public boolean isFluid() {
+            return ItemList.Display_Fluid.isStackEqual(item, true, true);
         }
     }
 

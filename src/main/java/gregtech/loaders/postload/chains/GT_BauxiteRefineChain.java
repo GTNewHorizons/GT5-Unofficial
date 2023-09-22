@@ -30,7 +30,6 @@ public class GT_BauxiteRefineChain {
                 Materials.SodiumHydroxide.getDust(9),
                 Materials.Quicklime.getDust(4),
                 GT_Utility.getIntegratedCircuit(8))
-            .noItemOutputs()
             .fluidInputs(Materials.Water.getFluid(5000))
             .fluidOutputs(MaterialsOreAlum.BauxiteSlurry.getFluid(8000))
             .duration(10 * SECONDS)
@@ -43,7 +42,6 @@ public class GT_BauxiteRefineChain {
                 Materials.SodiumHydroxide.getDust(9),
                 Materials.Quicklime.getDust(4),
                 GT_Utility.getIntegratedCircuit(8))
-            .noItemOutputs()
             .fluidInputs(Materials.Water.getFluid(5000))
             .fluidOutputs(MaterialsOreAlum.BauxiteSlurry.getFluid(8000))
             .duration(10 * SECONDS)
@@ -82,8 +80,6 @@ public class GT_BauxiteRefineChain {
                 Materials.SiliconDioxide.getDust(1),
                 Materials.Iron.getDust(1))
             .outputChances(10000, 3000, 2000, 9000, 8000)
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(sCentrifugeRecipes);
@@ -117,8 +113,6 @@ public class GT_BauxiteRefineChain {
                 Materials.Manganese.getDust(1),
                 Materials.Magnesium.getDust(1))
             .outputChances(8000, 500, 2000, 5000, 6000)
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(sCentrifugeRecipes);
@@ -132,7 +126,6 @@ public class GT_BauxiteRefineChain {
                     GT_OreDictUnificator.get(ore, Materials.Sapphire, 1),
                     GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
                     GT_Utility.getIntegratedCircuit(1))
-                .noItemOutputs()
                 .fluidInputs(Materials.HydrochloricAcid.getFluid(1000))
                 .fluidOutputs(MaterialsOreAlum.SapphireJuice.getFluid(1000))
                 .duration(2 * SECONDS)
@@ -144,7 +137,6 @@ public class GT_BauxiteRefineChain {
                     GT_OreDictUnificator.get(ore, Materials.GreenSapphire, 1),
                     GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
                     GT_Utility.getIntegratedCircuit(1))
-                .noItemOutputs()
                 .fluidInputs(Materials.HydrochloricAcid.getFluid(1000))
                 .fluidOutputs(MaterialsOreAlum.GreenSapphireJuice.getFluid(1000))
                 .duration(2 * SECONDS)
@@ -156,7 +148,6 @@ public class GT_BauxiteRefineChain {
                     GT_OreDictUnificator.get(ore, Materials.Ruby, 1),
                     GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
                     GT_Utility.getIntegratedCircuit(1))
-                .noItemOutputs()
                 .fluidInputs(Materials.HydrochloricAcid.getFluid(1000))
                 .fluidOutputs(MaterialsOreAlum.RubyJuice.getFluid(1000))
                 .duration(2 * SECONDS)

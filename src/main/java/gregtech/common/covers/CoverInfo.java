@@ -1,6 +1,7 @@
 package gregtech.common.covers;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,6 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
@@ -237,5 +240,10 @@ public final class CoverInfo {
 
     public int getFacadeMeta() {
         return getCoverBehavior().getFacadeMeta(coverSide, coverID, coverData, coveredTile.get());
+    }
+
+    @NotNull
+    public List<String> getAdditionalTooltip(ISerializableObject data) {
+        return getCoverBehavior().getAdditionalTooltip(data);
     }
 }

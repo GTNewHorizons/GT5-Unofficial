@@ -29,16 +29,26 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ChunkManager;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -46,7 +56,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ValidationResult;
 import gregtech.api.util.ValidationType;
 
-public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_DrillerBase {
+public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_DrillerBase implements IMetricsExporter {
 
     private final ArrayList<Chunk> mOilFieldChunks = new ArrayList<>();
     private int mOilId = 0;
@@ -120,7 +130,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
             .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
             .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
-            .addEnergyHatch(VN[getMinTier()] + "+, Any base casing", 1)
+            .addEnergyHatch("1x " + VN[getMinTier()] + "+, Any base casing", 1)
             .addMaintenanceHatch("Any base casing", 1)
             .addInputBus("Mining Pipes or Circuits, optional, any base casing", 1)
             .addOutputHatch("Any base casing", 1)
@@ -157,7 +167,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
 
     @Override
     protected boolean checkHatches() {
-        return !mMaintenanceHatches.isEmpty() && !mOutputHatches.isEmpty() && !mEnergyHatches.isEmpty();
+        return !mMaintenanceHatches.isEmpty() && !mOutputHatches.isEmpty() && mEnergyHatches.size() == 1;
     }
 
     @Override
@@ -207,6 +217,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
             if (pumpResult.getType() != ValidationType.VALID) {
                 mEUt = 0;
                 mMaxProgresstime = 0;
+                setRuntimeFailureReason(CheckRecipeResultRegistry.OUTPUT_FULL);
                 return false;
             }
             FluidStack tFluid = pumpResult.getResult();
@@ -217,6 +228,7 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
         }
         GT_ChunkManager.releaseTicket((TileEntity) getBaseMetaTileEntity());
         workState = STATE_UPWARD;
+        setShutdownReason(StatCollector.translateToLocal("GT5U.gui.text.drill_exhausted"));
         return true;
     }
 
@@ -359,22 +371,118 @@ public abstract class GT_MetaTileEntity_OilDrillBase extends GT_MetaTileEntity_D
                     + EnumChatFormatting.RESET,
                 StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
                     + EnumChatFormatting.GREEN
-                    + (chunkRangeConfig)
+                    + GT_Utility.formatNumbers(chunkRangeConfig)
                     + " x "
-                    + (chunkRangeConfig)
+                    + GT_Utility.formatNumbers(chunkRangeConfig)
                     + EnumChatFormatting.RESET
                     + " "
                     + StatCollector.translateToLocal("GT5U.machines.chunks"),
-                "Drilling fluid: " + EnumChatFormatting.GREEN
-                    + (mOilId > 0 ? FluidRegistry.getFluid(mOilId)
-                        .getName() : "None")
-                    + EnumChatFormatting.RESET,
+                "Drilling fluid: " + EnumChatFormatting.GREEN + getFluidName() + EnumChatFormatting.RESET,
                 "Drilling flow: " + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(this.mMaxProgresstime > 0 ? (mOilFlow / this.mMaxProgresstime) : 0)
+                    + getFlowRatePerTick()
                     + EnumChatFormatting.RESET
                     + " L/t"));
         l.addAll(Arrays.asList(super.getInfoData()));
         return l.toArray(new String[0]);
+    }
+
+    @Override
+    public @NotNull List<String> reportMetrics() {
+        if (getBaseMetaTileEntity().isActive()) {
+            return switch (workState) {
+                case STATE_AT_BOTTOM -> ImmutableList.of(
+                    StatCollector.translateToLocalFormatted("GT5U.gui.text.pump_fluid_type", getFluidName()),
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.text.pump_rate.1",
+                        EnumChatFormatting.AQUA + getFlowRatePerTick())
+                        + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"),
+                    getReservoirContents() + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"));
+                case STATE_DOWNWARD -> ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.text.deploying_pipe"));
+                case STATE_UPWARD, STATE_ABORT -> ImmutableList
+                    .of(StatCollector.translateToLocal("GT5U.gui.text.retracting_pipe"));
+
+                default -> ImmutableList.of();
+            };
+        }
+
+        return ImmutableList.of(
+            getFailureReason()
+                .map(reason -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_reason", reason))
+                .orElseGet(() -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_generic")));
+    }
+
+    @NotNull
+    protected String getFlowRatePerTick() {
+        return GT_Utility.formatNumbers(this.mMaxProgresstime > 0 ? (mOilFlow / this.mMaxProgresstime) : 0);
+    }
+
+    @NotNull
+    private String getFluidName() {
+        if (mOilId > 0) {
+            final Fluid fluid = FluidRegistry.getFluid(mOilId);
+            return fluid.getLocalizedName(new FluidStack(fluid, 0));
+        }
+        return "None";
+    }
+
+    private @NotNull String clientFluidType = "";
+    private @NotNull String clientPumpRate = "";
+    private @NotNull String clientReservoirContents = "";
+
+    @NotNull
+    private String getReservoirContents() {
+        int amount = 0;
+        for (Chunk chunk : mOilFieldChunks) {
+            final FluidStack fluidStack = undergroundOil(chunk, -1);
+            if (fluidStack != null) {
+                amount += fluidStack.amount;
+            }
+        }
+
+        return StatCollector
+            .translateToLocalFormatted("GT5U.gui.text.pump_recovery.1", GT_Utility.formatNumbers(amount));
+    }
+
+    @Override
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        super.drawTexts(screenElements, inventorySlot);
+        screenElements
+            .widget(
+                TextWidget
+                    .dynamicString(
+                        () -> EnumChatFormatting.GRAY
+                            + StatCollector.translateToLocalFormatted("GT5U.gui.text.pump_fluid_type", clientFluidType))
+                    .setSynced(false)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == STATE_AT_BOTTOM))
+            .widget(
+                TextWidget
+                    .dynamicString(
+                        () -> EnumChatFormatting.GRAY
+                            + StatCollector.translateToLocalFormatted(
+                                "GT5U.gui.text.pump_rate.1",
+                                EnumChatFormatting.AQUA + clientPumpRate)
+                            + EnumChatFormatting.GRAY
+                            + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"))
+                    .setSynced(false)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == STATE_AT_BOTTOM))
+            .widget(
+                TextWidget
+                    .dynamicString(
+                        () -> EnumChatFormatting.GRAY + clientReservoirContents
+                            + EnumChatFormatting.GRAY
+                            + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"))
+                    .setSynced(false)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setEnabled(widget -> getBaseMetaTileEntity().isActive() && workState == STATE_AT_BOTTOM))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> workState, newInt -> workState = newInt))
+            .widget(new FakeSyncWidget.StringSyncer(this::getFluidName, newString -> clientFluidType = newString))
+            .widget(new FakeSyncWidget.StringSyncer(this::getFlowRatePerTick, newString -> clientPumpRate = newString))
+            .widget(
+                new FakeSyncWidget.StringSyncer(
+                    this::getReservoirContents,
+                    newString -> clientReservoirContents = newString));
     }
 
     @Override

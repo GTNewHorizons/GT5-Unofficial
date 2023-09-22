@@ -31,8 +31,6 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1L, aStack))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustImpure, aMaterial.mMacerateInto, 1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(10)
             .eut(16)
             .addTo(sHammerRecipes);
@@ -82,8 +80,6 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                     1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L))
             .outputChances(10000, 1111, 10000)
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(25 * SECONDS)
             .eut(48)
             .addTo(sThermalCentrifugeRecipes);
@@ -108,7 +104,6 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L))
                 .outputChances(10000, 7000, 4000)
                 .fluidInputs(Materials.Mercury.getFluid(1000L))
-                .noFluidOutputs()
                 .duration(40 * SECONDS)
                 .eut(8)
                 .addTo(sChemicalBathRecipes);
@@ -122,7 +117,6 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L))
                 .outputChances(10000, 9900, 4000)
                 .fluidInputs(Materials.Mercury.getFluid(1000L))
-                .noFluidOutputs()
                 .duration(40 * SECONDS)
                 .eut(8)
                 .addTo(sChemicalBathRecipes);
@@ -136,7 +130,6 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L))
                 .outputChances(10000, 7000, 4000)
                 .fluidInputs(Materials.SodiumPersulfate.getFluid(100L))
-                .noFluidOutputs()
                 .duration(40 * SECONDS)
                 .eut(8)
                 .addTo(sChemicalBathRecipes);

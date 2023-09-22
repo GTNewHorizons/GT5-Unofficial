@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OverclockCalculator;
 
 class GT_OverclockCalculator_UnitTest {
@@ -400,5 +401,111 @@ class GT_OverclockCalculator_UnitTest {
         GT_OverclockCalculator calculator = GT_OverclockCalculator.ofNoOverclock(2_693_264_510L, 100)
             .setParallel(24 * 64);
         assertEquals(100, calculator.calculateDurationUnderOneTick());
+    }
+
+    @Test
+    void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOC() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(2)
+            .setEUt(V[3])
+            .setParallel(16)
+            .setDuration(20)
+            .setAmperageOC(false)
+            .setAmperage(16)
+            .calculate();
+        assertEquals(32 * 16, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOCVersion2() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(2)
+            .setEUt(V[3])
+            .setParallel(64)
+            .setDuration(20)
+            .setAmperageOC(false)
+            .setAmperage(16)
+            .calculate();
+        assertEquals((32 * 64), calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOCVersion3() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(2)
+            .setEUt(V[3])
+            .setParallel(16)
+            .setDuration(20)
+            .setAmperageOC(false)
+            .setAmperage(64)
+            .calculate();
+        assertEquals(32 * 16, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOCVersion4() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(8)
+            .setEUt(V[3])
+            .setParallel(16)
+            .setDuration(20)
+            .setAmperageOC(false)
+            .setAmperage(16)
+            .calculate();
+        assertEquals((8 << 4) * 16, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOCVersion5() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(8)
+            .setEUt(V[3])
+            .setParallel(16)
+            .setDuration(20)
+            .setAmperageOC(false)
+            .calculate();
+        assertEquals((8 << 2) * 16, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOCVersion6() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(7)
+            .setEUt(V[3])
+            .setParallel(64)
+            .setDuration(160)
+            .setAmperage(64)
+            .setAmperageOC(false)
+            .calculate();
+        assertEquals((7 << 4) * 64, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOCVersion7() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(7)
+            .setEUt(V[3])
+            .setParallel(19)
+            .setDuration(160)
+            .setAmperage(19)
+            .setAmperageOC(false)
+            .calculate();
+        assertEquals((7 << 4) * 19, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void ulvRecipeDoesntOverclockExtraWithAmperageWithoutAmperageOCVersion8() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(7)
+            .setEUt(V[3])
+            .setParallel(29)
+            .setDuration(160)
+            .setAmperage(25)
+            .setAmperageOC(false)
+            .calculate();
+        assertEquals((7 << 4) * 29, calculator.getConsumption(), messageEUt);
+    }
+
+    @Test
+    void ulvRecipeWorkCorrectlyWithCalculatingEutUnderOneTick() {
+        GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(2)
+            .setEUt(TierEU.UV)
+            .setParallel(64)
+            .setDuration(300)
+            .setAmperage(64)
+            .setAmperageOC(false);
+        assertEquals(TierEU.LuV * 64, calculator.calculateEUtConsumptionUnderOneTick(64, 64), messageEUt);
     }
 }

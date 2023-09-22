@@ -52,8 +52,6 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
                     GT_OreDictUnificator.get(OrePrefixes.stick, aMaterial, 4),
                     GT_Utility.getIntegratedCircuit(4))
                 .itemOutputs(getStackForm(1))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(3 * SECONDS + 4 * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 7))
                 .addTo(sAssemblerRecipes);

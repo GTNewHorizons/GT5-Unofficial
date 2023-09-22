@@ -3,7 +3,6 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.GT_Values.V;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -208,19 +207,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && aTick % 10 == 0) {
-            if (mFluid == null) {
-                if (aBaseMetaTileEntity.getUniversalEnergyStored() < maxEUOutput() + getMinimumStoredEU()) {
-                    mInventory[getStackDisplaySlot()] = null;
-                } else {
-                    if (mInventory[getStackDisplaySlot()] == null)
-                        mInventory[getStackDisplaySlot()] = new ItemStack(Blocks.fire, 1);
-                    mInventory[getStackDisplaySlot()].setStackDisplayName(
-                        "Draining internal buffer: "
-                            + GT_Utility.formatNumbers(
-                                aBaseMetaTileEntity.getUniversalEnergyStored() - getMinimumStoredEU())
-                            + " EU");
-                }
-            } else {
+            if (mFluid != null) {
                 long tFuelValue = getFuelValue(mFluid), tConsumed = consumedFluidPerOperation(mFluid);
                 if (tFuelValue > 0 && tConsumed > 0 && mFluid.amount >= tConsumed) {
                     long tFluidAmountToUse = Math.min(

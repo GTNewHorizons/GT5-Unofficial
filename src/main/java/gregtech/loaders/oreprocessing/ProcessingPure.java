@@ -26,8 +26,6 @@ public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistr
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1L, aStack))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustPure, aMaterial.mMacerateInto, 1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(10)
             .eut(16)
             .addTo(sHammerRecipes);

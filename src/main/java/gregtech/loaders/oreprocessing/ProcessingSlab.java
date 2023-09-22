@@ -27,7 +27,6 @@ public class ProcessingSlab implements gregtech.api.interfaces.IOreRecipeRegistr
                     .itemInputs(GT_Utility.copyAmount(3L, aStack))
                     .itemOutputs(ItemList.RC_Tie_Wood.get(3L))
                     .fluidInputs(Materials.Creosote.getFluid(300L))
-                    .noFluidOutputs()
                     .duration(10 * SECONDS)
                     .eut(4)
                     .addTo(sChemicalBathRecipes);

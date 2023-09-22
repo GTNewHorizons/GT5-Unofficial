@@ -34,8 +34,6 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(9L, aStack), ItemList.Shape_Mold_Ball.get(0L))
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial.mSmeltInto, 1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut(calculateRecipeEU(aMaterial, 2))
                 .addTo(sAlloySmelterRecipes);
@@ -46,8 +44,6 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(9L, aStack), ItemList.Shape_Mold_Ingot.get(0L))
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut(calculateRecipeEU(aMaterial, 2))
                 .addTo(sAlloySmelterRecipes);
@@ -59,7 +55,6 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                     .itemInputs(ItemList.Shape_Mold_Nugget.get(0L))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial, 1L))
                     .fluidInputs(aMaterial.getMolten(16L))
-                    .noFluidOutputs()
                     .duration(16 * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 4))
                     .addTo(sFluidSolidficationRecipes);
@@ -76,8 +71,6 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                     GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
                     ItemList.Shape_Mold_Nugget.get(0L))
                 .itemOutputs(GT_Utility.copyAmount(9L, aStack))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(5 * SECONDS)
                 .eut(calculateRecipeEU(aMaterial, 1))
                 .addTo(sAlloySmelterRecipes);

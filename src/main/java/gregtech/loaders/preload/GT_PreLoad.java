@@ -1,10 +1,9 @@
 package gregtech.loaders.preload;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.CraftTweaker;
 import static gregtech.api.enums.Mods.EnderIO;
-import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GregTech;
@@ -137,9 +136,8 @@ public class GT_PreLoad {
         GregTech_API.mTranslocator = Translocator.isModLoaded();
         GregTech_API.mTConstruct = TinkerConstruct.isModLoaded();
         GregTech_API.mGalacticraft = GalacticraftCore.isModLoaded();
-        GregTech_API.mAE2 = AppliedEnergistics2.isModLoaded();
         GregTech_API.mHodgepodge = HodgePodge.isModLoaded();
-        GregTech_API.mEternalSingularity = EternalSingularity.isModLoaded();
+        GregTech_API.mAvaritia = Avaritia.isModLoaded();
     }
 
     public static void createLogFiles(File parentFile, Configuration tMainConfig) {
@@ -513,8 +511,6 @@ public class GT_PreLoad {
             .getBoolean(true);
         GT_Mod.gregtechproxy.mAchievements = tMainConfig.get(GT_Mod.aTextGeneral, "EnableAchievements", true)
             .getBoolean(true);
-        GT_Mod.gregtechproxy.mAE2Integration = GregTech_API.sSpecialFile
-            .get(ConfigCategories.general, "EnableAE2Integration", GregTech_API.mAE2);
         GT_Mod.gregtechproxy.mNerfedCombs = tMainConfig.get(GT_Mod.aTextGeneral, "NerfCombs", true)
             .getBoolean(true);
         GT_Mod.gregtechproxy.mNerfedCrops = tMainConfig.get(GT_Mod.aTextGeneral, "NerfCrops", true)

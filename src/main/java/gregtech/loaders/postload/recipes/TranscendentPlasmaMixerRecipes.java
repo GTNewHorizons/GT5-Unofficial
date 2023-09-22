@@ -22,7 +22,6 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(1))
-            .noItemOutputs()
             .fluidInputs(
                 Materials.Helium.getPlasma(1000),
                 Materials.Iron.getPlasma(1000),
@@ -36,7 +35,6 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(2))
-            .noItemOutputs()
             .fluidInputs(
                 Materials.Helium.getPlasma(1000),
                 Materials.Iron.getPlasma(1000),
@@ -54,7 +52,6 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(3))
-            .noItemOutputs()
             .fluidInputs(
                 Materials.Helium.getPlasma(1000),
                 Materials.Iron.getPlasma(1000),
@@ -76,7 +73,6 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(4))
-            .noItemOutputs()
             .fluidInputs(
                 Materials.Helium.getPlasma(1000),
                 Materials.Iron.getPlasma(1000),
@@ -102,7 +98,6 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(5))
-            .noItemOutputs()
             .fluidInputs(
                 Materials.Helium.getPlasma(1000),
                 Materials.Iron.getPlasma(1000),
@@ -132,7 +127,6 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(24))
-            .noItemOutputs()
             .fluidInputs(
                 MaterialsUEVplus.RawStarMatter.getFluid(1000L),
                 MaterialsUEVplus.SpaceTime.getMolten(1000L),

@@ -126,7 +126,6 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, IGT_RegisteredFluid, R
                 GT_Values.RA.stdBuilder()
                     .itemInputs(fullContainer)
                     .itemOutputs(GT_Utility.getContainerItem(fullContainer, false))
-                    .noFluidInputs()
                     .fluidOutputs(fluidStack)
                     .duration(fluidStack.amount / 62)
                     .eut(1)

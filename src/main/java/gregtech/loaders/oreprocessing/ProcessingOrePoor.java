@@ -46,8 +46,6 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(1L, aStack))
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, aMultiplier))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(10)
                 .eut(16)
                 .addTo(sHammerRecipes);

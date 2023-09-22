@@ -171,6 +171,17 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 ? new GT_Generic_Item("sensorcard", "GregTech Sensor Card", "Nuclear Control not installed", false)
                 : tItem);
 
+        Item advSensorCard = (Item) GT_Utility
+            .callConstructor("gregtech.common.items.GT_AdvancedSensorCard_Item", 0, null, false);
+        ItemList.NC_AdvancedSensorCard.set(
+            advSensorCard == null
+                ? new GT_Generic_Item(
+                    "advancedsensorcard",
+                    "GregTech Advanced Sensor Card",
+                    "Nuclear Control not installed",
+                    false)
+                : advSensorCard);
+
         ItemList.Neutron_Reflector
             .set(new GT_NeutronReflector_Item("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1
@@ -264,8 +275,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 2L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(25 * SECONDS)
                 .eut(48)
                 .addTo(sThermalCentrifugeRecipes);
@@ -276,8 +285,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 2L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(25 * SECONDS)
                 .eut(48)
                 .addTo(sThermalCentrifugeRecipes);
@@ -288,8 +295,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 2L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 4L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(25 * SECONDS)
                 .eut(48)
                 .addTo(sThermalCentrifugeRecipes);
@@ -344,8 +349,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 8L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
                 .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(25 * SECONDS)
                 .eut(2000)
                 .addTo(sCentrifugeRecipes);
@@ -360,8 +363,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 18L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L))
                 .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(50 * SECONDS)
                 .eut(2000)
                 .addTo(sCentrifugeRecipes);
@@ -376,8 +377,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 38L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L))
                 .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(100 * SECONDS)
                 .eut(2000)
                 .addTo(sCentrifugeRecipes);
@@ -430,8 +429,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 8L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
                 .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(25 * SECONDS)
                 .eut(2000)
                 .addTo(sCentrifugeRecipes);
@@ -446,8 +443,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 18L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L))
                 .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(50 * SECONDS)
                 .eut(2000)
                 .addTo(sCentrifugeRecipes);
@@ -462,8 +457,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 38L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L))
                 .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(100 * SECONDS)
                 .eut(2000)
                 .addTo(sCentrifugeRecipes);
@@ -838,7 +831,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .itemInputs(Materials.Empty.getCells(1))
             .itemOutputs(GT_ModHandler.getIC2Item("steamCell", 1))
             .fluidInputs(GT_ModHandler.getSteam(1000))
-            .noFluidOutputs()
             .duration(16 * TICKS)
             .eut(1)
             .addTo(sFluidCannerRecipes);

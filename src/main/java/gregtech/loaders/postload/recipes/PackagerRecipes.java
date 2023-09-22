@@ -17,8 +17,6 @@ public class PackagerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Scrap.get(9), ItemList.Schematic_3by3.get(0))
             .itemOutputs(ItemList.IC2_Scrapbox.get(1))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(16 * TICKS)
             .eut(1)
             .addTo(sBoxinatorRecipes);
@@ -28,8 +26,6 @@ public class PackagerRecipes implements Runnable {
                 ItemList.Food_Fries.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Paper, 1))
             .itemOutputs(ItemList.Food_Packaged_Fries.get(1))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16)
             .addTo(sBoxinatorRecipes);
@@ -39,8 +35,6 @@ public class PackagerRecipes implements Runnable {
                 ItemList.Food_PotatoChips.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 1))
             .itemOutputs(ItemList.Food_Packaged_PotatoChips.get(1))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16)
             .addTo(sBoxinatorRecipes);
@@ -50,8 +44,6 @@ public class PackagerRecipes implements Runnable {
                 ItemList.Food_ChiliChips.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 1))
             .itemOutputs(ItemList.Food_Packaged_ChiliChips.get(1))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16)
             .addTo(sBoxinatorRecipes);

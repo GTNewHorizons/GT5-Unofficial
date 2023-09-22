@@ -28,8 +28,6 @@ public class ProcessingSand implements gregtech.api.interfaces.IOreRecipeRegistr
                 .itemOutputs(
                     GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oil, 1L),
                     new ItemStack(Blocks.sand, 1, 0))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(50 * SECONDS)
                 .eut(5)
                 .addTo(sCentrifugeRecipes);

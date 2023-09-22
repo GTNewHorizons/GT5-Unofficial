@@ -79,6 +79,7 @@ import gregtech.common.blocks.GT_Item_Machines;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@Deprecated
 public class GT_MetaTileEntity_ProcessingArray extends
     GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_MetaTileEntity_ProcessingArray> implements ISurvivalConstructable {
 
@@ -132,6 +133,7 @@ public class GT_MetaTileEntity_ProcessingArray extends
             .addInfo("Use a wire cutter to disable UEV+ downtiering")
             .addInfo("Doesn't work on certain machines, deal with it")
             .addInfo("Use it if you hate GT++, or want even more speed later on")
+            .addInfo(EnumChatFormatting.RED + "DEPRECATED!!! WILL BE REMOVED IN LATER VERSIONS")
             .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
@@ -178,14 +180,18 @@ public class GT_MetaTileEntity_ProcessingArray extends
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][48] };
     }
 
-    @Override
-    public GT_Recipe_Map getRecipeMap() {
+    private GT_Recipe_Map fetchRecipeMap() {
         if (isCorrectMachinePart(getControllerSlot())) {
             // Gets the recipe map for the given machine through its unlocalized name
             return GT_ProcessingArray_Manager
                 .giveRecipeMap(GT_ProcessingArray_Manager.getMachineName(getControllerSlot()));
         }
         return null;
+    }
+
+    @Override
+    public GT_Recipe_Map getRecipeMap() {
+        return mLastRecipeMap;
     }
 
     @Override
@@ -218,7 +224,7 @@ public class GT_MetaTileEntity_ProcessingArray extends
         if (!GT_Utility.areStacksEqual(lastControllerStack, getControllerSlot())) {
             // controller slot has changed
             lastControllerStack = getControllerSlot();
-            mLastRecipeMap = getRecipeMap();
+            mLastRecipeMap = fetchRecipeMap();
             setTierAndMult();
         }
         if (mLastRecipeMap == null) return SimpleCheckRecipeResult.ofFailure("no_machine");
@@ -254,10 +260,9 @@ public class GT_MetaTileEntity_ProcessingArray extends
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        GT_Recipe_Map recipeMap = getRecipeMap();
-        logic.setAvailableVoltage(GT_Values.V[tTier] * (recipeMap != null ? recipeMap.mAmperage : 1));
+        logic.setAvailableVoltage(GT_Values.V[tTier] * (mLastRecipeMap != null ? mLastRecipeMap.mAmperage : 1));
         logic.setAvailableAmperage(getMaxParallel());
-        logic.setAmperageOC(true);
+        logic.setAmperageOC(false);
     }
 
     private void setTierAndMult() {
@@ -285,11 +290,11 @@ public class GT_MetaTileEntity_ProcessingArray extends
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (mMachine && aTick % 20 == 0) {
-            GT_Recipe_Map tCurrentMap = getRecipeMap();
-            if (tCurrentMap != mLastRecipeMap) {
-                for (GT_MetaTileEntity_Hatch_InputBus tInputBus : mInputBusses) tInputBus.mRecipeMap = tCurrentMap;
-                for (GT_MetaTileEntity_Hatch_Input tInputHatch : mInputHatches) tInputHatch.mRecipeMap = tCurrentMap;
-                mLastRecipeMap = tCurrentMap;
+            for (GT_MetaTileEntity_Hatch_InputBus tInputBus : mInputBusses) {
+                tInputBus.mRecipeMap = mLastRecipeMap;
+            }
+            for (GT_MetaTileEntity_Hatch_Input tInputHatch : mInputHatches) {
+                tInputHatch.mRecipeMap = mLastRecipeMap;
             }
         }
     }
@@ -519,7 +524,7 @@ public class GT_MetaTileEntity_ProcessingArray extends
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        if (getControllerSlot() != null) {
+        if (mLastRecipeMap != null && getControllerSlot() != null) {
             tag.setString("type", getControllerSlot().getDisplayName());
         }
     }

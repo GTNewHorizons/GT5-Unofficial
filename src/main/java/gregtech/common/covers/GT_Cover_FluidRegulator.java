@@ -314,8 +314,8 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
                             coverData.condition = Conditional.Conditional;
                             return coverData;
                         },
-                        widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON)
-                            .addTooltip(GT_Utility.trans("225", "Active with Redstone Signal"))
+                        widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_USE_PROCESSING_STATE)
+                            .addTooltip(GT_Utility.trans("343", "Use Machine Processing State"))
                             .setPos(spaceX * 1, spaceY * 1))
                     .addFollower(
                         CoverDataFollower_ToggleButtonWidget.ofDisableable(),
@@ -324,8 +324,8 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
                             coverData.condition = Conditional.Inverted;
                             return coverData;
                         },
-                        widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                            .addTooltip(GT_Utility.trans("226", "Inactive with Redstone Signal"))
+                        widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
+                            .addTooltip(GT_Utility.trans("343.1", "Use Inverted Machine Processing State"))
                             .setPos(spaceX * 2, spaceY * 1))
                     .addFollower(
                         new CoverDataFollower_TextFieldWidget<>(),
@@ -382,10 +382,10 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
                     .setPos(startX, startY))
                 .widget(
                     new TextWidget(GT_Utility.trans("229", "Import/Export")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0))
+                        .setPos(3 + startX + spaceX * 4, 4 + startY + spaceY * 0))
                 .widget(
                     new TextWidget(GT_Utility.trans("230", "Conditional")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 4, 4 + startY + spaceY * 1))
+                        .setPos(3 + startX + spaceX * 4, 4 + startY + spaceY * 1))
                 .widget(
                     new TextWidget(GT_Utility.trans("208", " L")).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 4, 4 + startY + spaceY * 2))

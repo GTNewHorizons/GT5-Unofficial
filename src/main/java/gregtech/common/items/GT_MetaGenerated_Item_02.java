@@ -2465,8 +2465,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(sAssemblerRecipes);
@@ -2476,8 +2474,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(sAssemblerRecipes);
@@ -2487,8 +2483,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 ItemList.Emitter_EV.get(1L),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Cover_WirelessFluidDetector.get(1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(sAssemblerRecipes);
@@ -2498,8 +2492,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 ItemList.Emitter_EV.get(1L),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Cover_WirelessItemDetector.get(1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(sAssemblerRecipes);
@@ -2509,8 +2501,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 ItemList.Emitter_EV.get(1L),
                 GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Cover_WirelessNeedsMaintainance.get(1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(sAssemblerRecipes);
@@ -2564,8 +2554,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Crop_Drop_Coppon.get(4L))
                 .itemOutputs(new ItemStack(Blocks.wool, 1, 1))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(15 * SECONDS)
                 .eut(2)
                 .addTo(sCompressorRecipes);
@@ -2573,8 +2561,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Crop_Drop_Plumbilia.get(4L))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(15 * SECONDS)
                 .eut(2)
                 .addTo(sCompressorRecipes);
@@ -2582,8 +2568,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Crop_Drop_Argentia.get(4L))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(15 * SECONDS)
                 .eut(2)
                 .addTo(sCompressorRecipes);
@@ -2591,8 +2575,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Crop_Drop_Indigo.get(4L))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(15 * SECONDS)
                 .eut(2)
                 .addTo(sCompressorRecipes);
@@ -2600,8 +2582,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Crop_Drop_Ferru.get(4L))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(15 * SECONDS)
                 .eut(2)
                 .addTo(sCompressorRecipes);
@@ -2609,8 +2589,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Crop_Drop_Aurelia.get(4L))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(15 * SECONDS)
                 .eut(2)
                 .addTo(sCompressorRecipes);
@@ -2618,8 +2596,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Crop_Drop_OilBerry.get(4L))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(15 * SECONDS)
                 .eut(2)
                 .addTo(sCompressorRecipes);
@@ -2627,8 +2603,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Crop_Drop_BobsYerUncleRanks.get(4L))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(15 * SECONDS)
                 .eut(2)
                 .addTo(sCompressorRecipes);
@@ -2636,8 +2610,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Crop_Drop_Tine.get(4L))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(15 * SECONDS)
                 .eut(2)
                 .addTo(sCompressorRecipes);
@@ -2645,8 +2617,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Crop_Drop_Rape.get(4L))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(15 * SECONDS)
                 .eut(2)
                 .addTo(sCompressorRecipes);
@@ -2654,8 +2624,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             GT_Values.RA.stdBuilder()
                 .itemInputs(new ItemStack(Blocks.red_flower, 8, 32767))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(15 * SECONDS)
                 .eut(2)
                 .addTo(sCompressorRecipes);
@@ -2663,8 +2631,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             GT_Values.RA.stdBuilder()
                 .itemInputs(new ItemStack(Blocks.yellow_flower, 8, 32767))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(15 * SECONDS)
                 .eut(2)
                 .addTo(sCompressorRecipes);

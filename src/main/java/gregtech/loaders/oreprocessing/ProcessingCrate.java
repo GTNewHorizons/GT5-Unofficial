@@ -37,8 +37,6 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
                             GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 16L),
                             ItemList.Crate_Empty.get(1L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.crateGtDust, aMaterial, 1L))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(5 * SECONDS)
                         .eut(8)
                         .addTo(sBoxinatorRecipes);
@@ -47,8 +45,6 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
                         .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 16L),
                             ItemList.Crate_Empty.get(1L))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(40 * SECONDS)
                         .eut(1)
                         .addTo(sUnboxinatorRecipes);
@@ -65,8 +61,6 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
                             GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 16L),
                             ItemList.Crate_Empty.get(1L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.crateGtIngot, aMaterial, 1L))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(5 * SECONDS)
                         .eut(8)
                         .addTo(sBoxinatorRecipes);
@@ -75,8 +69,6 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
                         .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 16L),
                             ItemList.Crate_Empty.get(1L))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(40 * SECONDS)
                         .eut(1)
                         .addTo(sUnboxinatorRecipes);
@@ -93,8 +85,6 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
                             GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 16L),
                             ItemList.Crate_Empty.get(1L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.crateGtGem, aMaterial, 1L))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(5 * SECONDS)
                         .eut(8)
                         .addTo(sBoxinatorRecipes);
@@ -103,8 +93,6 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
                         .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 16L),
                             ItemList.Crate_Empty.get(1L))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(40 * SECONDS)
                         .eut(1)
                         .addTo(sUnboxinatorRecipes);
@@ -121,8 +109,6 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
                             GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 16L),
                             ItemList.Crate_Empty.get(1L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.crateGtPlate, aMaterial, 1L))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(5 * SECONDS)
                         .eut(8)
                         .addTo(sBoxinatorRecipes);
@@ -131,8 +117,6 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
                         .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 16L),
                             ItemList.Crate_Empty.get(1L))
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration(40 * SECONDS)
                         .eut(1)
                         .addTo(sUnboxinatorRecipes);

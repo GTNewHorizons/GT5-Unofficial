@@ -65,8 +65,6 @@ public class ElectrolyzerRecipes implements Runnable {
             .itemOutputs(
                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 2L),
                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(30)
             .addTo(sElectrolyzerRecipes);
@@ -74,7 +72,6 @@ public class ElectrolyzerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_ModHandler.getIC2Item("electrolyzedWaterCell", 1L), GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L))
-            .noFluidInputs()
             .fluidOutputs(Materials.Hydrogen.getGas(2000L))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(30)
@@ -83,8 +80,6 @@ public class ElectrolyzerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L))
             .itemOutputs(GT_ModHandler.getIC2Item("electrolyzedWaterCell", 1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(1 * MINUTES + 13 * SECONDS + 10 * TICKS)
             .eut(30)
             .addTo(sElectrolyzerRecipes);
@@ -92,8 +87,6 @@ public class ElectrolyzerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Dye_Bonemeal.get(3L))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(4 * SECONDS + 18 * TICKS)
             .eut(26)
             .addTo(sElectrolyzerRecipes);
@@ -101,8 +94,6 @@ public class ElectrolyzerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.sand, 8, 0))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(25 * SECONDS)
             .eut(25)
             .addTo(sElectrolyzerRecipes);
@@ -110,8 +101,6 @@ public class ElectrolyzerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.sand, 8, 1))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(25 * SECONDS)
             .eut(25)
             .addTo(sElectrolyzerRecipes);
@@ -119,8 +108,6 @@ public class ElectrolyzerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 4))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(64)
             .addTo(sElectrolyzerRecipes);
@@ -133,8 +120,6 @@ public class ElectrolyzerRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gallium, 1))
             .outputChances(10000, 10000, 917)
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(10 * SECONDS)
             .eut(30)
             .addTo(sElectrolyzerRecipes);
@@ -145,7 +130,6 @@ public class ElectrolyzerRecipes implements Runnable {
             .itemOutputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L))
-            .noFluidInputs()
             .fluidOutputs(Materials.Water.getFluid(1000L))
             .duration(5 * SECONDS)
             .eut(30)
@@ -156,7 +140,6 @@ public class ElectrolyzerRecipes implements Runnable {
             .itemInputs(Materials.SodiumHydroxide.getDust(3), Materials.Empty.getCells(1))
             .itemOutputs(Materials.Sodium.getDust(1), Materials.Hydrogen.getCells(1))
             .outputChances(10000, 10000)
-            .noFluidInputs()
             .fluidOutputs(Materials.Oxygen.getGas(1000))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -175,7 +158,6 @@ public class ElectrolyzerRecipes implements Runnable {
             .itemInputs(GT_Utility.getIntegratedCircuit(11), Materials.Empty.getCells(2))
             .itemOutputs(Materials.Carbon.getDust(1), Materials.Oxygen.getCells(2))
             .fluidInputs(Materials.CarbonDioxide.getGas(1000))
-            .noFluidOutputs()
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(sElectrolyzerRecipes);
@@ -194,7 +176,6 @@ public class ElectrolyzerRecipes implements Runnable {
             .itemInputs(GT_Utility.getIntegratedCircuit(11), Materials.Empty.getCells(2))
             .itemOutputs(Materials.Sulfur.getDust(1), Materials.Oxygen.getCells(2))
             .fluidInputs(Materials.SulfurDioxide.getGas(1000))
-            .noFluidOutputs()
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(sElectrolyzerRecipes);
@@ -203,7 +184,6 @@ public class ElectrolyzerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Salt.getDust(2))
             .itemOutputs(Materials.Sodium.getDust(1))
-            .noFluidInputs()
             .fluidOutputs(Materials.Chlorine.getGas(1000))
             .duration(16 * SECONDS)
             .eut(30)
@@ -250,7 +230,6 @@ public class ElectrolyzerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.HydrochloricAcid.getCells(1), GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(Materials.Hydrogen.getCells(1))
-            .noFluidInputs()
             .fluidOutputs(Materials.Chlorine.getGas(1000))
             .duration(36 * SECONDS)
             .eut(30)
@@ -259,7 +238,6 @@ public class ElectrolyzerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.HydrochloricAcid.getCells(1), GT_Utility.getIntegratedCircuit(11))
             .itemOutputs(Materials.Chlorine.getCells(1))
-            .noFluidInputs()
             .fluidOutputs(Materials.Hydrogen.getGas(1000))
             .duration(36 * SECONDS)
             .eut(30)
@@ -269,14 +247,12 @@ public class ElectrolyzerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.SodiumBisulfate.getDust(14), Materials.Empty.getCells(2))
             .itemOutputs(Materials.Hydrogen.getCells(2))
-            .noFluidInputs()
             .fluidOutputs(Materials.SodiumPersulfate.getFluid(1000))
             .duration(30 * SECONDS)
             .eut(30)
             .addTo(sElectrolyzerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
             .itemOutputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 3),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 1),

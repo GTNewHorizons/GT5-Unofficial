@@ -51,7 +51,6 @@ public class GT_PCBFactoryRecipes {
                 new Object[] { OrePrefixes.circuit.get(Materials.Master), 16 },
                 ItemList.Robot_Arm_ZPM.get(8))
             .fluidInputs(new FluidStack(solderLuV, 144 * 36), Materials.Naquadah.getMolten(144 * 18))
-            .noFluidOutputs()
             .itemOutputs(ItemList.PCBFactory.get(1))
             .eut(TierEU.RECIPE_UV)
             .duration(5 * MINUTES)
@@ -64,8 +63,6 @@ public class GT_PCBFactoryRecipes {
                     Materials.get("Artherium-Sn")
                         .getPlates(6))
                 .itemOutputs(ItemList.BasicPhotolithographicFrameworkCasing.get(1))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(sAssemblerRecipes);
@@ -74,8 +71,6 @@ public class GT_PCBFactoryRecipes {
                     GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
                     Materials.EnrichedHolmium.getPlates(6))
                 .itemOutputs(ItemList.ReinforcedPhotolithographicFrameworkCasing.get(1))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(sAssemblerRecipes);
@@ -85,8 +80,6 @@ public class GT_PCBFactoryRecipes {
                     Materials.get("Quantum")
                         .getPlates(6))
                 .itemOutputs(ItemList.RadiationProofPhotolithographicFrameworkCasing.get(1))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_UIV)
                 .addTo(sAssemblerRecipes);
@@ -97,7 +90,6 @@ public class GT_PCBFactoryRecipes {
                     Materials.Thulium.getPlates(6))
                 .itemOutputs(ItemList.InfinityCooledCasing.get(1))
                 .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(8 * 144))
-                .noFluidOutputs()
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(sAssemblerRecipes);

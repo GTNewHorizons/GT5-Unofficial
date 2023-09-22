@@ -71,8 +71,6 @@ public class AlloySmelterRecipes implements Runnable {
                     GT_Values.RA.stdBuilder()
                         .itemInputs(ingot1, dust2)
                         .itemOutputs(outputIngot)
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration((int) materials[2].mAmount * 50)
                         .eut(16)
                         .addTo(sAlloySmelterRecipes);
@@ -80,8 +78,6 @@ public class AlloySmelterRecipes implements Runnable {
                         GT_Values.RA.stdBuilder()
                             .itemInputs(ingot1, ingot2)
                             .itemOutputs(outputIngot)
-                            .noFluidInputs()
-                            .noFluidOutputs()
                             .duration((int) materials[2].mAmount * 50)
                             .eut(16)
                             .addTo(sAlloySmelterRecipes);
@@ -92,8 +88,6 @@ public class AlloySmelterRecipes implements Runnable {
                     GT_Values.RA.stdBuilder()
                         .itemInputs(dust1, ingot2)
                         .itemOutputs(outputIngot)
-                        .noFluidInputs()
-                        .noFluidOutputs()
                         .duration((int) materials[2].mAmount * 50)
                         .eut(16)
                         .addTo(sAlloySmelterRecipes);
@@ -102,8 +96,6 @@ public class AlloySmelterRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(dust1, dust2)
                     .itemOutputs(outputIngot)
-                    .noFluidInputs()
-                    .noFluidOutputs()
                     .duration((int) materials[2].mAmount * 50)
                     .eut(16)
                     .addTo(sAlloySmelterRecipes);
@@ -117,8 +109,6 @@ public class AlloySmelterRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 3L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(10 * SECONDS)
             .eut(8)
             .addTo(sAlloySmelterRecipes);
