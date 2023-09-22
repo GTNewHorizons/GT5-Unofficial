@@ -109,7 +109,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public ForgeDirection mMainFacing = ForgeDirection.WEST;
     public FluidStack mOutputFluid;
     @Deprecated
-    public String mGUIName, mNEIName;
+    public String mGUIName = "", mNEIName = "";
     protected final Power mPower;
 
     /**
