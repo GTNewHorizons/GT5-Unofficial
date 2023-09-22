@@ -22,22 +22,22 @@ public class FormingPress implements Runnable {
                 .itemInputs(
                         new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials),
                         Materials.Graphite.getDust(64))
-                .itemOutputs(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 1)).noFluidInputs()
-                .noFluidOutputs().duration(2 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sPressRecipes);
+                .itemOutputs(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 1))
+                .duration(2 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sPressRecipes);
 
         GT_Values.RA.stdBuilder()
                 .itemInputs(
                         new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 1),
                         Materials.Silicon.getDust(64))
-                .itemOutputs(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 2)).noFluidInputs()
-                .noFluidOutputs().duration(2 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sPressRecipes);
+                .itemOutputs(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 2))
+                .duration(2 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sPressRecipes);
 
         GT_Values.RA.stdBuilder()
                 .itemInputs(
                         new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 2),
                         Materials.Graphite.getDust(64))
-                .itemOutputs(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 3)).noFluidInputs()
-                .noFluidOutputs().duration(2 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sPressRecipes);
+                .itemOutputs(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 3))
+                .duration(2 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sPressRecipes);
 
         int i = 0;
         for (GT_TileEntity_HTGR.HTGRMaterials.Fuel_ fuel : sHTGR_Fuel) {
@@ -46,21 +46,21 @@ public class FormingPress implements Runnable {
                             new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i),
                             Materials.Carbon.getDust(64))
                     .itemOutputs(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 1))
-                    .noFluidInputs().noFluidOutputs().duration(2 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sPressRecipes);
+                    .duration(2 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sPressRecipes);
 
             GT_Values.RA.stdBuilder()
                     .itemInputs(
                             new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 1),
                             Materials.Silicon.getDust(64))
                     .itemOutputs(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 2))
-                    .noFluidInputs().noFluidOutputs().duration(2 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sPressRecipes);
+                    .duration(2 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sPressRecipes);
 
             GT_Values.RA.stdBuilder()
                     .itemInputs(
                             new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 2),
                             Materials.Graphite.getDust(64))
                     .itemOutputs(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 3))
-                    .noFluidInputs().noFluidOutputs().duration(2 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sPressRecipes);
+                    .duration(2 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sPressRecipes);
             i += MATERIALS_PER_FUEL;
         }
     }

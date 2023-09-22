@@ -42,7 +42,7 @@ public class OreLoader implements IWerkstoffRunnable {
 
             GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(ore))
                     .itemOutputs(werkstoff.hasItemType(gem) ? werkstoff.get(gem) : werkstoff.get(crushed))
-                    .noFluidInputs().noFluidOutputs().duration(16 * TICKS).eut(10).addTo(sHammerRecipes);
+                    .duration(16 * TICKS).eut(10).addTo(sHammerRecipes);
 
             GT_ModHandler.addPulverisationRecipe(
                     werkstoff.get(ore),

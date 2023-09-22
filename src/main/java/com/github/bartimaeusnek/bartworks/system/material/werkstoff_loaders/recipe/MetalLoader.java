@@ -31,11 +31,10 @@ public class MetalLoader implements IWerkstoffRunnable {
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(ingot)) {
             GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(ingot, 9)).itemOutputs(werkstoff.get(block))
-                    .noFluidInputs().noFluidOutputs().duration(15 * SECONDS).eut(2).addTo(sCompressorRecipes);
+                    .duration(15 * SECONDS).eut(2).addTo(sCompressorRecipes);
 
             GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(ingot, 9), ItemList.Shape_Extruder_Block.get(0))
-                    .itemOutputs(werkstoff.get(block)).noFluidInputs().noFluidOutputs()
-                    .duration((int) werkstoff.getStats().getMass())
+                    .itemOutputs(werkstoff.get(block)).duration((int) werkstoff.getStats().getMass())
                     .eut(8 * werkstoff.getStats().getMeltingPoint() >= 2800 ? 60 : 15).addTo(sExtruderRecipes);
 
             GT_Values.RA.addAlloySmelterRecipe(

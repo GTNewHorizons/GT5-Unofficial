@@ -288,8 +288,8 @@ public class AdditionalRecipes {
                         Materials.Thorium.getDust(1),
                         Materials.Thorium.getDust(1),
                         WerkstoffLoader.Thorium232.get(dust))
-                .outputChances(7000, 1300, 700, 600, 300, 100).noFluidInputs().noFluidOutputs().duration(20 * SECONDS)
-                .eut((int) TierEU.RECIPE_IV).addTo(sSifterRecipes);
+                .outputChances(7000, 1300, 700, 600, 300, 100).duration(20 * SECONDS).eut((int) TierEU.RECIPE_IV)
+                .addTo(sSifterRecipes);
 
         // 3ThO2 + 4Al = 3Th + 2Al2O3
         GT_Values.RA.addChemicalRecipe(
@@ -331,8 +331,8 @@ public class AdditionalRecipes {
                 500);
 
         GT_Values.RA.stdBuilder().itemInputs(GT_OreDictUnificator.get(dust, Materials.Quartzite, 40L))
-                .itemOutputs(Materials.Amethyst.getDust(10)).noFluidInputs().noFluidOutputs().duration(40 * SECONDS)
-                .eut(0).metadata(ADDITIVE_AMOUNT, 6).addTo(sPrimitiveBlastRecipes);
+                .itemOutputs(Materials.Amethyst.getDust(10)).duration(40 * SECONDS).eut(0).metadata(ADDITIVE_AMOUNT, 6)
+                .addTo(sPrimitiveBlastRecipes);
 
         // Cubic Circonia
         // 2Y + 3O = Y2O3
@@ -394,13 +394,13 @@ public class AdditionalRecipes {
 
         GT_Values.RA.stdBuilder().itemInputs(WerkstoffLoader.MagnetoResonaticDust.get(dust))
                 .itemOutputs(WerkstoffLoader.MagnetoResonaticDust.get(gemChipped, 9)).outputChances(90_00)
-                .fluidInputs(WerkstoffLoader.Neon.getFluidOrGas(1000)).noFluidOutputs()
-                .duration(3 * MINUTES + 45 * SECONDS).eut(TierEU.RECIPE_IV).addTo(sAutoclaveRecipes);
+                .fluidInputs(WerkstoffLoader.Neon.getFluidOrGas(1000)).duration(3 * MINUTES + 45 * SECONDS)
+                .eut(TierEU.RECIPE_IV).addTo(sAutoclaveRecipes);
 
         GT_Values.RA.stdBuilder().itemInputs(WerkstoffLoader.MagnetoResonaticDust.get(dust))
                 .itemOutputs(WerkstoffLoader.MagnetoResonaticDust.get(gem))
-                .fluidInputs(WerkstoffLoader.Krypton.getFluidOrGas(1000)).noFluidOutputs()
-                .duration(3 * MINUTES + 45 * SECONDS).eut(TierEU.RECIPE_IV).addTo(sAutoclaveRecipes);
+                .fluidInputs(WerkstoffLoader.Krypton.getFluidOrGas(1000)).duration(3 * MINUTES + 45 * SECONDS)
+                .eut(TierEU.RECIPE_IV).addTo(sAutoclaveRecipes);
 
         // Milk
 

@@ -16,8 +16,7 @@ public class LaserEngraver implements Runnable {
     public void run() {
 
         GT_Values.RA.stdBuilder().itemInputs(new ItemStack(Items.emerald), GT_Utility.getIntegratedCircuit(17))
-                .noItemOutputs().noFluidInputs().noFluidOutputs().duration(5 * SECONDS).eut(TierEU.RECIPE_LV)
-                .addTo(sLaserEngraverRecipes);
+                .duration(5 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sLaserEngraverRecipes);
 
     }
 }

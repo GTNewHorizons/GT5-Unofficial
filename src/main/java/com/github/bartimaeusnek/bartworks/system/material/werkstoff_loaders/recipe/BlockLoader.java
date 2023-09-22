@@ -36,20 +36,19 @@ public class BlockLoader implements IWerkstoffRunnable {
         if (!werkstoff.hasItemType(block)) return;
         if (werkstoff.hasItemType(ingot)) {
             GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(block)).itemOutputs(werkstoff.get(ingot, 9))
-                    .noFluidInputs().noFluidOutputs().duration(16 * TICKS).eut(90).addTo(UniversalArcFurnace);
+                    .duration(16 * TICKS).eut(90).addTo(UniversalArcFurnace);
         }
         if (werkstoff.hasItemType(cellMolten)) {
 
-            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(block)).noItemOutputs().noFluidInputs()
-                    .fluidOutputs(werkstoff.getMolten(1296)).duration(14 * SECONDS + 8 * TICKS).eut(8)
-                    .addTo(sFluidExtractionRecipes);
+            GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(block)).fluidOutputs(werkstoff.getMolten(1296))
+                    .duration(14 * SECONDS + 8 * TICKS).eut(8).addTo(sFluidExtractionRecipes);
 
         }
         if (werkstoff.hasItemType(plate)) {
 
             GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(block)).itemOutputs(werkstoff.get(plate, 9))
-                    .noFluidInputs().noFluidOutputs().duration((int) Math.max(werkstoff.getStats().getMass() * 10L, 1L))
-                    .eut(TierEU.RECIPE_LV).addTo(sCutterRecipes);
+                    .duration((int) Math.max(werkstoff.getStats().getMass() * 10L, 1L)).eut(TierEU.RECIPE_LV)
+                    .addTo(sCutterRecipes);
 
         }
     }

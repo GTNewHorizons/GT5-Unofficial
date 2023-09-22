@@ -75,8 +75,8 @@ public class BW_Meta_Items {
                 .itemInputs(
                         WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.dust, 1),
                         WerkstoffLoader.ArInGaPhoBiBoTe.get(OrePrefixes.dust, 4))
-                .itemOutputs(BW_Meta_Items.NEWCIRCUITS.getStack(2)).noFluidInputs().noFluidOutputs()
-                .duration(15 * SECONDS).eut(TierEU.RECIPE_HV).addTo(sPressRecipes);
+                .itemOutputs(BW_Meta_Items.NEWCIRCUITS.getStack(2)).duration(15 * SECONDS).eut(TierEU.RECIPE_HV)
+                .addTo(sPressRecipes);
 
         GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes.add(
                 new BWRecipes.DynamicGTRecipe(

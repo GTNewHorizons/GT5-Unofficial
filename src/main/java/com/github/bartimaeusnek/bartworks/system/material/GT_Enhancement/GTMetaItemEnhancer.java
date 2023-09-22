@@ -62,11 +62,11 @@ public class GTMetaItemEnhancer {
                 GT_Utility.addFluidContainerData(emptyData);
 
                 GT_Values.RA.stdBuilder().itemInputs(GT_ModHandler.getModItem(Forestry.ID, "refractoryEmpty", 1))
-                        .itemOutputs(new ItemStack(moltenCapsuls, 1, i)).fluidInputs(m.getMolten(144)).noFluidOutputs()
+                        .itemOutputs(new ItemStack(moltenCapsuls, 1, i)).fluidInputs(m.getMolten(144))
                         .duration(2 * TICKS).eut(2).addTo(sFluidCannerRecipes);
 
-                GT_Values.RA.stdBuilder().itemInputs(new ItemStack(moltenCapsuls, 1, i)).noItemOutputs().noFluidInputs()
-                        .fluidOutputs(m.getMolten(144)).duration(2 * TICKS).eut(2).addTo(sFluidCannerRecipes);
+                GT_Values.RA.stdBuilder().itemInputs(new ItemStack(moltenCapsuls, 1, i)).fluidOutputs(m.getMolten(144))
+                        .duration(2 * TICKS).eut(2).addTo(sFluidCannerRecipes);
 
             }
             if (m.getFluid(1) == null && m.getGas(1) == null) continue;
@@ -93,11 +93,10 @@ public class GTMetaItemEnhancer {
         GT_Utility.addFluidContainerData(emptyData);
 
         GT_Values.RA.stdBuilder().itemInputs(container).itemOutputs(new ItemStack(filled, 1, it))
-                .fluidInputs(new FluidStack(f, amount)).noFluidOutputs().duration(amount / 62).eut(2)
-                .addTo(sFluidCannerRecipes);
+                .fluidInputs(new FluidStack(f, amount)).duration(amount / 62).eut(2).addTo(sFluidCannerRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(new ItemStack(filled, 1, it)).noItemOutputs().noFluidInputs()
-                .fluidOutputs(new FluidStack(f, amount)).duration(amount / 62).eut(2).addTo(sFluidCannerRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(new ItemStack(filled, 1, it)).fluidOutputs(new FluidStack(f, amount))
+                .duration(amount / 62).eut(2).addTo(sFluidCannerRecipes);
 
     }
 

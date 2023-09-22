@@ -433,17 +433,16 @@ public class ToolLoader implements IWerkstoffRunnable {
                             screw.get(werkstoff.getBridgeMaterial()) });
 
             GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(ingot, 6), ItemList.Shape_Extruder_Turbine_Blade.get(0))
-                    .itemOutputs(werkstoff.get(turbineBlade, 1)).noFluidInputs().noFluidOutputs()
-                    .duration((int) werkstoff.getStats().getMass() / 2 * 20).eut(TierEU.RECIPE_MV)
-                    .addTo(sExtruderRecipes);
+                    .itemOutputs(werkstoff.get(turbineBlade, 1)).duration((int) werkstoff.getStats().getMass() / 2 * 20)
+                    .eut(TierEU.RECIPE_MV).addTo(sExtruderRecipes);
 
             GT_Values.RA.stdBuilder().itemInputs(ItemList.Shape_Mold_Turbine_Blade.get(0))
-                    .itemOutputs(werkstoff.get(turbineBlade, 1)).fluidInputs(werkstoff.getMolten(864)).noFluidOutputs()
+                    .itemOutputs(werkstoff.get(turbineBlade, 1)).fluidInputs(werkstoff.getMolten(864))
                     .duration((int) werkstoff.getStats().getMass() * 20).eut(TierEU.RECIPE_MV)
                     .addTo(sFluidSolidficationRecipes);
 
             GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(plateDouble, 3), werkstoff.get(screw, 2))
-                    .itemOutputs(werkstoff.get(turbineBlade, 1)).noFluidInputs().noFluidOutputs()
+                    .itemOutputs(werkstoff.get(turbineBlade, 1))
                     .duration((werkstoff.getStats().getMass() / 4) * SECONDS).eut(TierEU.RECIPE_LV)
                     .addTo(sPressRecipes);
 
@@ -458,7 +457,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                                     werkstoff.getBridgeMaterial(),
                                     Materials.Magnalium,
                                     null))
-                    .noFluidInputs().noFluidOutputs().duration(8 * SECONDS).eut(100).addTo(sAssemblerRecipes);
+                    .duration(8 * SECONDS).eut(100).addTo(sAssemblerRecipes);
 
             GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -471,7 +470,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                                     werkstoff.getBridgeMaterial(),
                                     Materials.Titanium,
                                     null))
-                    .noFluidInputs().noFluidOutputs().duration(16 * SECONDS).eut(400).addTo(sAssemblerRecipes);
+                    .duration(16 * SECONDS).eut(400).addTo(sAssemblerRecipes);
 
             GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -484,7 +483,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                                     werkstoff.getBridgeMaterial(),
                                     Materials.TungstenSteel,
                                     null))
-                    .noFluidInputs().noFluidOutputs().duration(32 * SECONDS).eut(1600).addTo(sAssemblerRecipes);
+                    .duration(32 * SECONDS).eut(1600).addTo(sAssemblerRecipes);
 
             GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -497,8 +496,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                                     werkstoff.getBridgeMaterial(),
                                     Materials.Americium,
                                     null))
-                    .noFluidInputs().noFluidOutputs().duration(1 * MINUTES + 4 * SECONDS).eut(6400)
-                    .addTo(sAssemblerRecipes);
+                    .duration(1 * MINUTES + 4 * SECONDS).eut(6400).addTo(sAssemblerRecipes);
         }
 
         if (!werkstoff.hasItemType(gem)) {

@@ -316,20 +316,16 @@ public class DustLoader implements IWerkstoffRunnable {
                     new Object[] { "T  ", 'T', werkstoff.get(dust) });
 
             GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(dustTiny, 9), ItemList.Schematic_Dust.get(0L))
-                    .itemOutputs(werkstoff.get(dust)).noFluidInputs().noFluidOutputs().duration(5 * SECONDS).eut(4)
-                    .addTo(sBoxinatorRecipes);
+                    .itemOutputs(werkstoff.get(dust)).duration(5 * SECONDS).eut(4).addTo(sBoxinatorRecipes);
 
             GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(dustSmall, 4), ItemList.Schematic_Dust.get(0L))
-                    .itemOutputs(werkstoff.get(dust)).noFluidInputs().noFluidOutputs().duration(5 * SECONDS).eut(4)
-                    .addTo(sBoxinatorRecipes);
+                    .itemOutputs(werkstoff.get(dust)).duration(5 * SECONDS).eut(4).addTo(sBoxinatorRecipes);
 
             GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(dustTiny, 9), ItemList.Schematic_3by3.get(0L))
-                    .itemOutputs(werkstoff.get(dust)).noFluidInputs().noFluidOutputs().duration(5 * SECONDS).eut(4)
-                    .addTo(sBoxinatorRecipes);
+                    .itemOutputs(werkstoff.get(dust)).duration(5 * SECONDS).eut(4).addTo(sBoxinatorRecipes);
 
             GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(dustSmall, 4), ItemList.Schematic_2by2.get(0L))
-                    .itemOutputs(werkstoff.get(dust)).noFluidInputs().noFluidOutputs().duration(5 * SECONDS).eut(4)
-                    .addTo(sBoxinatorRecipes);
+                    .itemOutputs(werkstoff.get(dust)).duration(5 * SECONDS).eut(4).addTo(sBoxinatorRecipes);
 
             if (werkstoff.hasItemType(ingot) && !werkstoff.getStats().isBlastFurnace()) {
                 GT_ModHandler.addSmeltingRecipe(werkstoff.get(dust), werkstoff.get(ingot));
@@ -342,7 +338,7 @@ public class DustLoader implements IWerkstoffRunnable {
                                     .itemOutputs(
                                             werkstoff.getStats().getMeltingPoint() < 1750 ? werkstoff.get(ingot)
                                                     : werkstoff.get(ingotHot))
-                                    .fluidInputs(Materials.Nitrogen.getGas(1000)).noFluidOutputs()
+                                    .fluidInputs(Materials.Nitrogen.getGas(1000))
                                     .duration(
                                             Math.max(werkstoff.getStats().getMass() / 40L, 1L)
                                                     * werkstoff.getStats().getMeltingPoint())
@@ -355,7 +351,7 @@ public class DustLoader implements IWerkstoffRunnable {
                                     .itemOutputs(
                                             werkstoff.getStats().getMeltingPoint() < 1750 ? werkstoff.get(ingot)
                                                     : werkstoff.get(ingotHot))
-                                    .fluidInputs(Materials.Argon.getGas(1000)).noFluidOutputs()
+                                    .fluidInputs(Materials.Argon.getGas(1000))
                                     .duration(
                                             Math.max(werkstoff.getStats().getMass() / 40L, 1L)
                                                     * werkstoff.getStats().getMeltingPoint())
@@ -368,7 +364,6 @@ public class DustLoader implements IWerkstoffRunnable {
                                     .itemOutputs(
                                             werkstoff.getStats().getMeltingPoint() < 1750 ? werkstoff.get(ingot)
                                                     : werkstoff.get(ingotHot))
-                                    .noFluidInputs().noFluidOutputs()
                                     .duration(
                                             Math.max(werkstoff.getStats().getMass() / 40L, 1L)
                                                     * werkstoff.getStats().getMeltingPoint())
@@ -377,7 +372,7 @@ public class DustLoader implements IWerkstoffRunnable {
 
                             if (werkstoff.getStats().getMeltingPoint() <= 1000) {
                                 GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(dust))
-                                        .itemOutputs(werkstoff.get(ingot)).noFluidInputs().noFluidOutputs()
+                                        .itemOutputs(werkstoff.get(ingot))
                                         .duration(
                                                 (int) Math.max(werkstoff.getStats().getMass() / 40L, 1L)
                                                         * werkstoff.getStats().getMeltingPoint())
@@ -388,7 +383,6 @@ public class DustLoader implements IWerkstoffRunnable {
 
             if (werkstoff.getStats().isBlastFurnace() && werkstoff.getStats().getMeltingPoint() > 1750) {
                 GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(ingotHot)).itemOutputs(werkstoff.get(ingot))
-                        .noFluidInputs().noFluidOutputs()
                         .duration((int) Math.max(werkstoff.getStats().getMass() * 3L, 1L)).eut(TierEU.RECIPE_MV)
                         .addTo(sVacuumRecipes);
             }
@@ -396,16 +390,16 @@ public class DustLoader implements IWerkstoffRunnable {
             if (werkstoff.hasItemType(ingot)) {
 
                 GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(ingot)).itemOutputs(werkstoff.get(dust))
-                        .noFluidInputs().noFluidOutputs().duration(20 * SECONDS).eut(2).addTo(sMaceratorRecipes);
+                        .duration(20 * SECONDS).eut(2).addTo(sMaceratorRecipes);
 
                 GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(nugget)).itemOutputs(werkstoff.get(dustTiny))
-                        .noFluidInputs().noFluidOutputs().duration(20 * SECONDS).eut(2).addTo(sMaceratorRecipes);
+                        .duration(20 * SECONDS).eut(2).addTo(sMaceratorRecipes);
 
             }
             if (werkstoff.hasItemType(ingot) || werkstoff.hasItemType(gem)) {
 
                 GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(block)).itemOutputs(werkstoff.get(dust, 9))
-                        .noFluidInputs().noFluidOutputs().duration(20 * SECONDS).eut(2).addTo(sMaceratorRecipes);
+                        .duration(20 * SECONDS).eut(2).addTo(sMaceratorRecipes);
 
             }
         }

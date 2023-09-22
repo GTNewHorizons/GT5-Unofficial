@@ -16,7 +16,7 @@ public class FluidHeater implements Runnable {
 
     @Override
     public void run() {
-        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(10)).noItemOutputs()
+        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(10))
                 .fluidInputs(new FluidStack(FluidLoader.fulvicAcid, 1000))
                 .fluidOutputs(new FluidStack(FluidLoader.heatedfulvicAcid, 1000)).duration(4 * SECONDS + 10 * TICKS)
                 .eut(TierEU.RECIPE_MV).addTo(sFluidHeaterRecipes);

@@ -25,15 +25,15 @@ public class Extractor implements Runnable {
             for (ItemStack stack : oreCropVine) {
 
                 GT_Values.RA.stdBuilder().itemInputs(BW_Util.setStackSize(stack, 12))
-                        .itemOutputs(BioItemList.getOther(1)).noFluidInputs().noFluidOutputs().duration(25 * SECONDS)
-                        .eut((int) TierEU.RECIPE_HV).addTo(sExtractorRecipes);
+                        .itemOutputs(BioItemList.getOther(1)).duration(25 * SECONDS).eut((int) TierEU.RECIPE_HV)
+                        .addTo(sExtractorRecipes);
 
             }
         }
 
         GT_Values.RA.stdBuilder().itemInputs(ItemList.Circuit_Chip_Stemcell.get(1L))
-                .itemOutputs(BioItemList.getOther(4)).noFluidInputs().noFluidOutputs().duration(25 * SECONDS)
-                .eut((int) TierEU.RECIPE_LuV).addTo(sExtractorRecipes);
+                .itemOutputs(BioItemList.getOther(4)).duration(25 * SECONDS).eut((int) TierEU.RECIPE_LuV)
+                .addTo(sExtractorRecipes);
 
     }
 }

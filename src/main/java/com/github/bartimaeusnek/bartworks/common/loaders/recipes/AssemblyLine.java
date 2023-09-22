@@ -39,8 +39,8 @@ public class AssemblyLine implements Runnable {
                 .fluidInputs(
                         new FluidStack(solderIndalloy, 32 * 144),
                         Materials.Polytetrafluoroethylene.getMolten(32 * 144))
-                .noFluidOutputs().itemOutputs(ItemRegistry.dehp).eut(TierEU.RECIPE_LuV)
-                .duration(4 * MINUTES + 10 * SECONDS).addTo(AssemblyLine);
+                .itemOutputs(ItemRegistry.dehp).eut(TierEU.RECIPE_LuV).duration(4 * MINUTES + 10 * SECONDS)
+                .addTo(AssemblyLine);
 
         if (GalactiGreg.isModLoaded()) {
             GT_Values.RA.stdBuilder().metadata(RESEARCH_ITEM, ItemList.OreDrill4.get(1L))
@@ -54,8 +54,8 @@ public class AssemblyLine implements Runnable {
                             ItemList.Field_Generator_LuV.get(9L),
                             GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Europium, 36L))
                     .fluidInputs(new FluidStack(solderIndalloy, 1440), WerkstoffLoader.Neon.getFluidOrGas(20000))
-                    .noFluidOutputs().itemOutputs(ItemRegistry.voidminer[0].copy()).eut(TierEU.RECIPE_LuV)
-                    .duration(5 * MINUTES).addTo(AssemblyLine);
+                    .itemOutputs(ItemRegistry.voidminer[0].copy()).eut(TierEU.RECIPE_LuV).duration(5 * MINUTES)
+                    .addTo(AssemblyLine);
         }
 
         GT_Values.RA.stdBuilder().metadata(RESEARCH_ITEM, ItemList.Machine_LuV_CircuitAssembler.get(1L))
@@ -68,7 +68,7 @@ public class AssemblyLine implements Runnable {
                         ItemList.Emitter_LuV.get(1L),
                         ItemList.Sensor_LuV.get(1L),
                         WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plate, 8))
-                .fluidInputs(new FluidStack(solderIndalloy, 1440)).noFluidOutputs().itemOutputs(ItemRegistry.cal.copy())
+                .fluidInputs(new FluidStack(solderIndalloy, 1440)).itemOutputs(ItemRegistry.cal.copy())
                 .eut(TierEU.RECIPE_LuV).duration(20 * MINUTES).addTo(AssemblyLine);
     }
 }

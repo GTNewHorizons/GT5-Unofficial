@@ -36,8 +36,8 @@ public class Centrifuge implements Runnable {
                         WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1),
                         WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1),
                         WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1))
-                .outputChances(800, 375, 22, 22, 5).noFluidInputs().noFluidOutputs()
-                .duration(8 * MINUTES + 20 * SECONDS).eut(TierEU.RECIPE_EV).addTo(sCentrifugeRecipes);
+                .outputChances(800, 375, 22, 22, 5).duration(8 * MINUTES + 20 * SECONDS).eut(TierEU.RECIPE_EV)
+                .addTo(sCentrifugeRecipes);
 
         ItemStack[] pellets = new ItemStack[6];
         Arrays.fill(pellets, new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 64, 4));
@@ -46,19 +46,18 @@ public class Centrifuge implements Runnable {
                 .itemInputs(
                         new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 3),
                         GT_Utility.getIntegratedCircuit(17))
-                .itemOutputs(pellets).noFluidInputs().noFluidOutputs().duration(40 * MINUTES).eut(TierEU.RECIPE_LV)
-                .addTo(sCentrifugeRecipes);
+                .itemOutputs(pellets).duration(40 * MINUTES).eut(TierEU.RECIPE_LV).addTo(sCentrifugeRecipes);
 
         GT_Values.RA.stdBuilder()
                 .itemInputs(
                         new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 5),
                         GT_Utility.getIntegratedCircuit(17))
-                .itemOutputs(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 64, 6)).noFluidInputs()
-                .noFluidOutputs().duration(40 * MINUTES).eut(TierEU.RECIPE_LV).addTo(sCentrifugeRecipes);
+                .itemOutputs(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 64, 6))
+                .duration(40 * MINUTES).eut(TierEU.RECIPE_LV).addTo(sCentrifugeRecipes);
 
         GT_Values.RA.stdBuilder().itemInputs(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 6))
-                .itemOutputs(Materials.Lead.getDust(1)).outputChances(300).noFluidInputs().noFluidOutputs()
-                .duration(60 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sCentrifugeRecipes);
+                .itemOutputs(Materials.Lead.getDust(1)).outputChances(300).duration(60 * SECONDS).eut(TierEU.RECIPE_LV)
+                .addTo(sCentrifugeRecipes);
 
         int i = 0;
         for (GT_TileEntity_HTGR.HTGRMaterials.Fuel_ fuel : sHTGR_Fuel) {
@@ -72,16 +71,14 @@ public class Centrifuge implements Runnable {
                             new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 4),
                             new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 4),
                             new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 4))
-                    .noFluidInputs().noFluidOutputs().duration(10 * MINUTES).eut(TierEU.RECIPE_LV)
-                    .addTo(sCentrifugeRecipes);
+                    .duration(10 * MINUTES).eut(TierEU.RECIPE_LV).addTo(sCentrifugeRecipes);
 
             GT_Values.RA.stdBuilder()
                     .itemInputs(
                             new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 5),
                             GT_Utility.getIntegratedCircuit(17))
                     .itemOutputs(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 6))
-                    .noFluidInputs().noFluidOutputs().duration(2 * MINUTES + 30 * SECONDS).eut(TierEU.RECIPE_LV)
-                    .addTo(sCentrifugeRecipes);
+                    .duration(2 * MINUTES + 30 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sCentrifugeRecipes);
 
             GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder()
                     .itemInputs(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 6))
@@ -91,10 +88,8 @@ public class Centrifuge implements Runnable {
                             fuel.recycledItems[2],
                             fuel.recycledItems[3],
                             fuel.recycledItems[4])
-                    .outputChances(fuel.recycleChances).noFluidInputs();
-            if (fuel.recycledFluid == null) {
-                recipeBuilder.noFluidOutputs();
-            } else {
+                    .outputChances(fuel.recycleChances);
+            if (fuel.recycledFluid != null) {
                 recipeBuilder.fluidOutputs(fuel.recycledFluid);
             }
             recipeBuilder.duration(1 * MINUTES).eut(TierEU.RECIPE_LV).addTo(sCentrifugeRecipes);
@@ -107,12 +102,12 @@ public class Centrifuge implements Runnable {
                 .fluidOutputs(new FluidStack(FluidLoader.BioLabFluidMaterials[1], 10)).duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_HV).addTo(sCentrifugeRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(17)).noItemOutputs()
+        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(17))
                 .fluidInputs(new FluidStack(FluidLoader.BioLabFluidMaterials[1], 1000))
                 .fluidOutputs(new FluidStack(FluidLoader.BioLabFluidMaterials[3], 250)).duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_HV).addTo(sCentrifugeRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(17)).noItemOutputs()
+        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(17))
                 .fluidInputs(new FluidStack(BioCultureLoader.CommonYeast.getFluid(), 1000))
                 .fluidOutputs(new FluidStack(FluidLoader.BioLabFluidMaterials[2], 10)).duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_HV).addTo(sCentrifugeRecipes);

@@ -156,8 +156,8 @@ public class CircuitPartLoader implements Runnable {
 
             GT_Values.RA.stdBuilder().itemInputs(single.get(16).copy(), GT_Utility.getIntegratedCircuit(16))
                     .itemOutputs(BW_Meta_Items.getNEWCIRCUITS().getStack(CircuitImprintLoader.reverseIDs))
-                    .fluidInputs(Materials.Plastic.getMolten(72)).noFluidOutputs().duration(30 * SECONDS)
-                    .eut(TierEU.RECIPE_LV).addTo(sAssemblerRecipes);
+                    .fluidInputs(Materials.Plastic.getMolten(72)).duration(30 * SECONDS).eut(TierEU.RECIPE_LV)
+                    .addTo(sAssemblerRecipes);
 
             CircuitImprintLoader.circuitIIconRefs.put(CircuitImprintLoader.reverseIDs, single);
             CircuitImprintLoader.reverseIDs--;

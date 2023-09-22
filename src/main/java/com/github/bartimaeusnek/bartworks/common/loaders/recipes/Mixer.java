@@ -31,14 +31,14 @@ public class Mixer implements Runnable {
                         WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 10),
                         Materials.Uranium235.getDust(1),
                         GT_Utility.getIntegratedCircuit(2))
-                .itemOutputs(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials)).noFluidInputs()
-                .noFluidOutputs().duration(20 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sMixerRecipes);
+                .itemOutputs(new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials)).duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_LV).addTo(sMixerRecipes);
 
         int i = 0;
         for (GT_TileEntity_HTGR.HTGRMaterials.Fuel_ fuel : sHTGR_Fuel) {
             GT_Values.RA.stdBuilder().itemInputs(fuel.mainItem, fuel.secondaryItem, GT_Utility.getIntegratedCircuit(1))
-                    .itemOutputs(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i)).noFluidInputs()
-                    .noFluidOutputs().duration(20 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sMixerRecipes);
+                    .itemOutputs(new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i))
+                    .duration(20 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sMixerRecipes);
 
             i += MATERIALS_PER_FUEL;
         }
