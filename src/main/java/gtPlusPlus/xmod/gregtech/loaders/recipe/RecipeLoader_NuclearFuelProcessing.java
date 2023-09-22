@@ -205,8 +205,8 @@ public class RecipeLoader_NuclearFuelProcessing {
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2))
                 .fluidOutputs(NUCLIDE.LiFBeF2UF4.getFluidStack(3000)).duration(2 * MINUTES + 30 * SECONDS)
                 .eut(TierEU.RECIPE_IV).metadata(COIL_HEAT, 5400).addTo(sBlastRecipes);
-                // Alternative recipe to the above, for chemplant, to not use cells
-        
+        // Alternative recipe to the above, for chemplant, to not use cells
+
         CORE.RA.addChemicalPlantRecipe(
                 new ItemStack[] {},
                 new FluidStack[] { FLUORIDES.URANIUM_HEXAFLUORIDE.getFluidStack(1000),
