@@ -12,7 +12,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import gregtech.api.enums.GT_Values;
 import gregtech.api.logic.ComplexParallelProcessingLogic;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
@@ -20,7 +19,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class ComplexParallelController<T extends ComplexParallelController<T, P>, P extends ComplexParallelProcessingLogic<P>>
-    extends PowerController<T, P> {
+    extends Controller<T, P> {
 
     protected int maxComplexParallels = 0;
     protected int currentComplexParallels = 0;
@@ -46,11 +45,6 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
 
     protected boolean hasPerfectOverclock() {
         return false;
-    }
-
-    protected long getEutForComplexParallel(int index) {
-        // As default behavior we'll give the parallel all remaining EU we have
-        return GT_Values.V[tier] - eut;
     }
 
     @Override

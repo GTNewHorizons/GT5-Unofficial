@@ -1,9 +1,9 @@
 package gregtech.api.logic.interfaces;
 
-import net.minecraftforge.common.util.ForgeDirection;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.logic.PowerLogic;
@@ -27,6 +27,9 @@ public interface PowerLogicHost {
     }
 
     default void emitEnergyFromLogic() {
-        IEnergyConnected.Util.emitEnergyToNetwork(this);
+        IEnergyConnected.Util.emitEnergyToNetwork(this, getPowerOutputSide());
     }
+
+    @Nonnull
+    ForgeDirection getPowerOutputSide();
 }

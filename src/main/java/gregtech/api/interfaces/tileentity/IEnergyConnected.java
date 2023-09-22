@@ -1,9 +1,11 @@
 package gregtech.api.interfaces.tileentity;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
+
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cofh.api.energy.IEnergyReceiver;
 import gregtech.api.GregTech_API;
@@ -105,8 +107,9 @@ public interface IEnergyConnected extends IColoredTileEntity {
             return usedAmperes;
         }
 
-        public static void emitEnergyToNetwork(@Nonnull final PowerLogicHost emitter) {
-            PowerLogic emitterLogic = emitter.getPowerLogic();
+        public static void emitEnergyToNetwork(@Nonnull final PowerLogicHost emitter, @Nonnull final ForgeDirection outputSide) {
+            if (outputSide == ForgeDirection.UNKNOWN) return;
+            final PowerLogic emitterLogic = emitter.getPowerLogic();
             if (emitterLogic == null) return;
             long usedAmperes = 0;
             long voltage = emitterLogic.getVoltage();
@@ -114,44 +117,59 @@ public interface IEnergyConnected extends IColoredTileEntity {
             if (!(emitter instanceof final IHasWorldObjectAndCoords emitterTile)) {
                 return;
             }
+            if (usedAmperes > emitterLogic.getAmperage()) {
+                return;
+            }
+            if (emitter.getPowerLogic(outputSide) == null) {
+                return;
+            }
 
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                if (usedAmperes > emitterLogic.getAmperage()) break;
-                if (emitter.getPowerLogic(side) == null) {
-                    continue;
+            final ForgeDirection oppositeSide = Objects.requireNonNull(outputSide.getOpposite());
+            final TileEntity tileEntity = emitterTile.getTileEntityAtSide(outputSide);
+            if (tileEntity instanceof PowerLogicHost host) {
+
+                final PowerLogic logic = host.getPowerLogic(oppositeSide);
+                if (logic == null || logic.isEnergyReceiver()) {
+                    return;
                 }
 
-                final ForgeDirection oppositeSide = side.getOpposite();
-                final TileEntity tileEntity = emitterTile.getTileEntityAtSide(side);
-                if (tileEntity instanceof PowerLogicHost host) {
+                usedAmperes += logic.injectEnergy(voltage, amperage);
+                emitterLogic.removeEnergyUnsafe(usedAmperes * voltage);
+                return;
+            }
 
-                    final PowerLogic logic = host.getPowerLogic(oppositeSide);
-                    if (logic == null || logic.isEnergyReceiver()) {
-                        continue;
+            if (tileEntity instanceof IEnergyConnected energyConnected) {
+                if (emitter instanceof IColoredTileEntity coloredEmitter && coloredEmitter.getColorization() >= 0) {
+                    final byte tColor = energyConnected.getColorization();
+                    if (tColor >= 0 && tColor != coloredEmitter.getColorization()) {
+                        return;
                     }
-
-                    usedAmperes += logic.injectEnergy(voltage, amperage - usedAmperes);
-                } else if (tileEntity instanceof IEnergyConnected energyConnected) {
-                    if (emitter instanceof IColoredTileEntity coloredEmitter && coloredEmitter.getColorization() >= 0) {
-                        final byte tColor = energyConnected.getColorization();
-                        if (tColor >= 0 && tColor != coloredEmitter.getColorization()) continue;
-                    }
-                    usedAmperes += energyConnected.injectEnergyUnits(oppositeSide, voltage, amperage - usedAmperes);
-
-                } else if (tileEntity instanceof IEnergySink sink) {
-                    if (sink.acceptsEnergyFrom((TileEntity) emitter, oppositeSide)) {
-                        while (amperage > usedAmperes && sink.getDemandedEnergy() > 0
-                            && sink.injectEnergy(oppositeSide, voltage, voltage) < voltage) usedAmperes++;
-                    }
-                } else if (GregTech_API.mOutputRF && tileEntity instanceof IEnergyReceiver receiver) {
-                    final int rfOut = GT_Utility.safeInt(voltage * GregTech_API.mEUtoRF / 100);
-                    if (receiver.receiveEnergy(oppositeSide, rfOut, true) == rfOut) {
-                        receiver.receiveEnergy(oppositeSide, rfOut, false);
-                        usedAmperes++;
-                    }
+                }
+                usedAmperes += energyConnected.injectEnergyUnits(oppositeSide, voltage, amperage - usedAmperes);
+                emitterLogic.removeEnergyUnsafe(usedAmperes * voltage);
+                return;
+            }
+    
+            if (tileEntity instanceof IEnergySink sink) {
+                if (sink.acceptsEnergyFrom((TileEntity) emitter, oppositeSide)) {
+                    while (amperage > usedAmperes && sink.getDemandedEnergy() > 0
+                        && sink.injectEnergy(oppositeSide, voltage, voltage) < voltage) {
+                            usedAmperes++;
+                        }
+                    emitterLogic.removeEnergyUnsafe(usedAmperes * voltage);
+                    return;
                 }
             }
-            emitterLogic.removeEnergyUnsafe(usedAmperes * voltage);
+
+            if (GregTech_API.mOutputRF && tileEntity instanceof IEnergyReceiver receiver) {
+                final int rfOut = GT_Utility.safeInt(voltage * GregTech_API.mEUtoRF / 100);
+                if (receiver.receiveEnergy(oppositeSide, rfOut, true) == rfOut) {
+                    receiver.receiveEnergy(oppositeSide, rfOut, false);
+                    usedAmperes++;
+                    emitterLogic.removeEnergyUnsafe(usedAmperes * voltage);
+                    return;
+                }
+            }
         }
     }
 }

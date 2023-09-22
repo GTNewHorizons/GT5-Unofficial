@@ -9,7 +9,7 @@ import gregtech.api.task.TickableTask;
 
 public class PowerOutputTask<T extends PowerLogicHost & TaskHost & IMachineProgress> extends TickableTask<T> {
 
-    private static final String NAME = "powerTask";
+    private static final String NAME = "powerOutput";
 
     public PowerOutputTask(@Nonnull T taskHost) {
         super(taskHost);
@@ -26,7 +26,7 @@ public class PowerOutputTask<T extends PowerLogicHost & TaskHost & IMachineProgr
         if (!isServerSide) return;
         if (!taskHost.isActive()) return;
         if (!taskHost.isEnergyEmitter()) return;
-         
+        taskHost.emitEnergyFromLogic();
     }
-    
+
 }

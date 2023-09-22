@@ -686,4 +686,11 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         }
         return "";
     }
+
+    @Override
+    @Nonnull
+    public ForgeDirection getPowerOutputSide() {
+        if (!modeSelected(ENERGY_OUT)) return ForgeDirection.UNKNOWN;
+        return facing;
+    }
 }
