@@ -769,17 +769,16 @@ public class GT_ModHandler {
         boolean aExcludeGTIC2Items) {
         Map<ItemStack, ItemStack> aRecipesToRemove = new HashMap<>();
         for (Entry<IRecipeInput, RecipeOutput> iRecipeInputRecipeOutputEntry : aIC2RecipeList.entrySet()) {
-            if (iRecipeInputRecipeOutputEntry.getValue().items.isEmpty()){
+            if (iRecipeInputRecipeOutputEntry.getValue().items.isEmpty()) {
                 continue;
             }
 
             for (ItemStack tStack : (iRecipeInputRecipeOutputEntry.getKey()).getInputs()) {
-                if (!GT_Utility.isStackValid(tStack)){
+                if (!GT_Utility.isStackValid(tStack)) {
                     continue;
                 }
 
-                if (aAddGTRecipe
-                    && (aGTRecipeMap.findRecipe(null, false, Long.MAX_VALUE, null, tStack) == null)) {
+                if (aAddGTRecipe && (aGTRecipeMap.findRecipe(null, false, Long.MAX_VALUE, null, tStack) == null)) {
                     try {
                         if (aExcludeGTIC2Items && ((tStack.getUnlocalizedName()
                             .contains("gt.metaitem.01")
