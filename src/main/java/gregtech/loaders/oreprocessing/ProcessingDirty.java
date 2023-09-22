@@ -48,8 +48,6 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                     GT_Utility.selectItemInList(0, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
                     1L))
             .outputChances(10000, 1000)
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(sMaceratorRecipes);

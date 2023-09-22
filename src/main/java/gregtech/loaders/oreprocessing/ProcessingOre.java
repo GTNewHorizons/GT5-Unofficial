@@ -224,8 +224,6 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                             .get(OrePrefixes.gem, tPrimaryByMaterial, GT_Utility.copyAmount(1L, tPrimaryByProduct), 1L),
                     GT_OreDictUnificator.getDust(aPrefix.mSecondaryMaterial))
                 .outputChances(10000, chanceOre2, 5000)
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(sMaceratorRecipes);

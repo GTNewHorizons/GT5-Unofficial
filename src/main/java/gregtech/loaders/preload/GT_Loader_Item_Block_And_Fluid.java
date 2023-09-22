@@ -2076,8 +2076,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.cobblestone, 1, WILDCARD))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(sMaceratorRecipes);
@@ -2086,8 +2084,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .itemInputs(new ItemStack(Blocks.gravel, 1, WILDCARD))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L), new ItemStack(Items.flint, 1))
             .outputChances(10000, 1000)
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(sMaceratorRecipes);
@@ -2095,8 +2091,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.furnace, 1, WILDCARD))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 8L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(sMaceratorRecipes);
@@ -2104,8 +2098,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.lit_furnace, 1, WILDCARD))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 8L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(sMaceratorRecipes);

@@ -2639,8 +2639,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Food_Sliced_Cheese.get(1L))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Cheese, 1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(sMaceratorRecipes);
@@ -2648,8 +2646,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Dye_Cocoa.get(1L))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(sMaceratorRecipes);
@@ -2657,8 +2653,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Crop_Drop_Tine.get(1L))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(sMaceratorRecipes);
@@ -2667,8 +2661,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             .itemInputs(new ItemStack(Blocks.melon_block, 1, 0))
             .itemOutputs(new ItemStack(Items.melon, 8, 0), new ItemStack(Items.melon_seeds, 1))
             .outputChances(10000, 8000)
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(sMaceratorRecipes);
@@ -2676,8 +2668,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.pumpkin, 1, 0))
             .itemOutputs(new ItemStack(Items.pumpkin_seeds, 4, 0))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(sMaceratorRecipes);
@@ -2685,8 +2675,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.melon, 1, 0))
             .itemOutputs(new ItemStack(Items.melon_seeds, 1, 0))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(sMaceratorRecipes);
@@ -2694,8 +2682,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.wheat, 1, 0))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(sMaceratorRecipes);
@@ -2703,8 +2689,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_ModHandler.getIC2Item("crop", 1L))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(sMaceratorRecipes);
@@ -2712,8 +2696,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.stick, 1))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(sMaceratorRecipes);
@@ -2722,8 +2704,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             .itemInputs(new ItemStack(Blocks.wool, 1, WILDCARD))
             .itemOutputs(new ItemStack(Items.string, 2), new ItemStack(Items.string, 1))
             .outputChances(10000, 5000)
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(sMaceratorRecipes);
@@ -2731,8 +2711,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.TranscendentMetal, 8L))
-            .noFluidInputs()
-            .noFluidOutputs()
             .duration(5 * SECONDS)
             .eut(32_000_000)
             .addTo(sMaceratorRecipes);

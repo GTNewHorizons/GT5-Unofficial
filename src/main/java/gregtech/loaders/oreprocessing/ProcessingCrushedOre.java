@@ -43,8 +43,6 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                             GT_Utility.selectItemInList(2, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
                             1L))
                     .outputChances(10000, 1000)
-                    .noFluidInputs()
-                    .noFluidOutputs()
                     .duration(20 * SECONDS)
                     .eut(2)
                     .addTo(sMaceratorRecipes);

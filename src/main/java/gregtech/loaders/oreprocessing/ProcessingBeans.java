@@ -24,8 +24,6 @@ public class ProcessingBeans implements gregtech.api.interfaces.IOreRecipeRegist
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(1L, aStack))
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(sMaceratorRecipes);
