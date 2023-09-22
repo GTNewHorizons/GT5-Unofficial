@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL11;
 import static gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.CustomTextureRegister.universiumFrameTexture;
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.renderBlock;
 
-public class UniversiumFrameRenderer extends TileEntitySpecialRenderer {
+public class UniversiumFrameBlockRenderer extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {

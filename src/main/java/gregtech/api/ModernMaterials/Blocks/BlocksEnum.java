@@ -8,11 +8,13 @@ import gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.UniversiumFrameItemRend
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.PartsClasses.IAssociatedMaterials;
 import gregtech.api.ModernMaterials.PartsClasses.IGetItem;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.IItemRenderer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public enum BlocksEnum implements IGetItem, IAssociatedMaterials {
 
@@ -20,11 +22,8 @@ public enum BlocksEnum implements IGetItem, IAssociatedMaterials {
     FrameBox(
         "% LARP Box",
         FrameBoxBlock.class,
-        FrameBoxTileEntity.class,
-        new UniversiumFrameItemRenderer()
+        FrameBoxTileEntity.class
     );
-
-    private final IItemRenderer itemRenderer;
 
     public String getLocalisedName(final ModernMaterial material) {
         return unlocalizedName.replace("%", material.getMaterialName());
@@ -45,13 +44,11 @@ public enum BlocksEnum implements IGetItem, IAssociatedMaterials {
     private Item item;
     private final ArrayList<ModernMaterial> associatedMaterials = new ArrayList<>();
 
-    BlocksEnum(@NotNull final String unlocalizedName, @NotNull final Class<? extends DumbBlock> blockClass, @NotNull final Class<? extends DumbTileEntity> tileClass, @NotNull final IItemRenderer itemRenderer) {
+    BlocksEnum(@NotNull final String unlocalizedName, @NotNull final Class<? extends DumbBlock> blockClass, @NotNull final Class<? extends DumbTileEntity> tileClass) {
         this.unlocalizedName = unlocalizedName;
 
         this.blockClass = blockClass;
         this.tileClass = tileClass;
-
-        this.itemRenderer = itemRenderer;
     }
 
     @Override
@@ -74,7 +71,24 @@ public enum BlocksEnum implements IGetItem, IAssociatedMaterials {
         associatedMaterials.add(modernMaterial);
     }
 
-    public IItemRenderer getItemRenderer() {
-        return itemRenderer;
+    public IItemRenderer getItemRenderer(final int materialID) {
+        return itemRendererHashMap.get(materialID);
     }
+
+    public TileEntitySpecialRenderer getBlockRenderer(final int materialID) {
+        return tileEntitySpecialRendererHashMap.get(materialID);
+    }
+
+    public void setBlockRenderer(int materialID, final TileEntitySpecialRenderer tileEntitySpecialRenderer) {
+        tileEntitySpecialRendererHashMap.put(materialID, tileEntitySpecialRenderer);
+    }
+
+    public void setItemRenderer(int materialID, IItemRenderer itemRenderer) {
+        itemRendererHashMap.put(materialID, itemRenderer);
+    }
+
+    // Material ID -> renderers.
+    private final HashMap<Integer, IItemRenderer> itemRendererHashMap = new HashMap<>();
+    private final HashMap<Integer, TileEntitySpecialRenderer> tileEntitySpecialRendererHashMap = new HashMap<>();
+
 }

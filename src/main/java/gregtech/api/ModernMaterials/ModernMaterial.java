@@ -1,5 +1,6 @@
 package gregtech.api.ModernMaterials;
 
+import org.jetbrains.annotations.NotNull;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.LoaderState;
 import gregtech.api.GregTech_API;
@@ -10,7 +11,7 @@ import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
 import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
 import gregtech.api.ModernMaterials.PartsClasses.MaterialPartsEnum;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import org.jetbrains.annotations.NotNull;
+import net.minecraftforge.client.IItemRenderer;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -149,6 +150,17 @@ public final class ModernMaterial {
 
         public Builder setTextureMode(@NotNull final TextureType textureType) {
             materialToBuild.textureType = textureType;
+            return this;
+        }
+
+        public Builder setMaterialID(int materialID) {
+            materialToBuild.materialID = materialID;
+            return this;
+        }
+
+        public Builder setCustomRenderer(@NotNull final BlocksEnum blocksEnum, @NotNull final IItemRenderer itemRenderer, @NotNull final TileEntitySpecialRenderer tileEntitySpecialRenderer) {
+            blocksEnum.setItemRenderer(materialToBuild.materialID, itemRenderer);
+            blocksEnum.setBlockRenderer(materialToBuild.materialID, tileEntitySpecialRenderer);
             return this;
         }
 
