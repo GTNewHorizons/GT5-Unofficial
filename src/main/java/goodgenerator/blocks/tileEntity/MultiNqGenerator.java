@@ -254,7 +254,7 @@ public class MultiNqGenerator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     public String[] getInfoData() {
         String[] info = super.getInfoData();
         info[4] = "Probably makes: " + EnumChatFormatting.RED
-                + Math.abs(this.trueOutput)
+                + GT_Utility.formatNumbers(Math.abs(this.trueOutput))
                 + EnumChatFormatting.RESET
                 + " EU/t";
         info[6] = "Problems: " + EnumChatFormatting.RED
