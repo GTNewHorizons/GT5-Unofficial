@@ -1,5 +1,7 @@
 package gregtech.api.logic;
 
+import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
+
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -7,9 +9,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.nbt.NBTTagCompound;
 
 import gregtech.api.enums.GT_Values.NBT;
-import gregtech.api.interfaces.IGlobalWirelessEnergy;
 
-public class PowerLogic implements IGlobalWirelessEnergy {
 /**
  * Power logic for machines. This is used to store all the important variables for a machine to have energy and use it
  * in any way.
