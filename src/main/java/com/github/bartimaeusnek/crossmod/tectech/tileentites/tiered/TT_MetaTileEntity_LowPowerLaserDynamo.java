@@ -16,6 +16,8 @@ package com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoTunnel;
 
@@ -24,7 +26,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Utility;
 
-@SuppressWarnings("deprecation")
 public class TT_MetaTileEntity_LowPowerLaserDynamo extends GT_MetaTileEntity_Hatch_DynamoTunnel
         implements LowPowerLaser {
 
@@ -32,9 +33,9 @@ public class TT_MetaTileEntity_LowPowerLaserDynamo extends GT_MetaTileEntity_Hat
         super(aID, aName, aNameRegional, aTier, aAmp);
     }
 
-    public TT_MetaTileEntity_LowPowerLaserDynamo(String aName, int aTier, int aAmp, String aDescription,
+    public TT_MetaTileEntity_LowPowerLaserDynamo(String aName, int aTier, int aAmp, String[] aDescription,
             ITexture[][][] aTextures) {
-        super(aName, aTier, aAmp, new String[] { aDescription }, aTextures);
+        super(aName, aTier, aAmp, aDescription, aTextures);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class TT_MetaTileEntity_LowPowerLaserDynamo extends GT_MetaTileEntity_Hat
                 this.mName,
                 this.mTier,
                 this.Amperes,
-                this.mDescription,
+                this.mDescriptionArray,
                 this.mTextures);
     }
 
@@ -69,13 +70,14 @@ public class TT_MetaTileEntity_LowPowerLaserDynamo extends GT_MetaTileEntity_Hat
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription,
+        return ArrayUtils.addAll(
+                this.mDescriptionArray,
                 StatCollector.translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": "
                         + EnumChatFormatting.YELLOW
                         + GT_Utility.formatNumbers(this.getTotalPower())
                         + EnumChatFormatting.RESET
                         + " EU/t",
-                BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
+                BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
     }
 
     @Override

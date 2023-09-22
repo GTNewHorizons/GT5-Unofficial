@@ -51,7 +51,6 @@ import gregtech.common.items.behaviors.Behaviour_DataOrb;
 
 public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
 
-    private static final String MGUINAME = "BW.GUI.BioLab.png";
     private static final int DNA_EXTRACTION_MODULE = 0;
     private static final int PCR_THERMOCYCLE_MODULE = 1;
     private static final int PLASMID_SYNTHESIS_MODULE = 2;
@@ -69,8 +68,6 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                 (String) null,
                 6,
                 2,
-                GT_MetaTileEntity_BioLab.MGUINAME,
-                null,
                 TextureFactory.of(
                         TextureFactory.of(
                                 new Textures.BlockIcons.CustomIcon(
@@ -127,21 +124,19 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
                                 .glow().build()));
     }
 
-    public GT_MetaTileEntity_BioLab(String aName, int aTier, int aAmperage, String aDescription,
-            ITexture[][][] aTextures, String aNEIName) {
-        super(aName, aTier, aAmperage, aDescription, aTextures, 6, 2, GT_MetaTileEntity_BioLab.MGUINAME, aNEIName);
+    public GT_MetaTileEntity_BioLab(String aName, int aTier, int aAmperage, String[] aDescription,
+            ITexture[][][] aTextures) {
+        super(aName, aTier, aAmperage, aDescription, aTextures, 6, 2);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
         return new GT_MetaTileEntity_BioLab(
                 this.mName,
                 this.mTier,
                 this.mAmperage,
-                this.mDescription,
-                this.mTextures,
-                this.mNEIName);
+                this.mDescriptionArray,
+                this.mTextures);
     }
 
     @Override

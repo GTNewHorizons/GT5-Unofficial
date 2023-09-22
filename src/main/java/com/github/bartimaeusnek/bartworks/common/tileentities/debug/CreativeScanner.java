@@ -24,20 +24,13 @@ public class CreativeScanner extends GT_MetaTileEntity_Scanner {
         super(aID, aName, aNameRegional, aTier);
     }
 
-    public CreativeScanner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, String aGUIName,
-            String aNEIName) {
-        super(aName, aTier, aDescription, aTextures, aGUIName, aNEIName);
+    public CreativeScanner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new CreativeScanner(
-                this.mName,
-                this.mTier,
-                this.mDescriptionArray,
-                this.mTextures,
-                this.mGUIName,
-                this.mNEIName);
+        return new CreativeScanner(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
