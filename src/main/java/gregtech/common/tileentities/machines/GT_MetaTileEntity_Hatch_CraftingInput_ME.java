@@ -392,7 +392,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     public void setAdditionalConnectionOption() {
         if (additionalConnection) {
-            gridProxy.setValidSides(EnumSet.allOf(ForgeDirection.class));
+            gridProxy.setValidSides(EnumSet.complementOf(EnumSet.of(ForgeDirection.UNKNOWN)));
         } else {
             gridProxy.setValidSides(EnumSet.of(getBaseMetaTileEntity().getFrontFacing()));
         }
@@ -406,7 +406,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         float aX, float aY, float aZ) {
         additionalConnection = !additionalConnection;
         setAdditionalConnectionOption();
-        GT_Utility.sendChatToPlayer(aPlayer, "Additional connection " + additionalConnection);
+        GT_Utility.sendChatToPlayer(aPlayer, "Allow connection from any side: " + additionalConnection);
         return true;
     }
 
@@ -553,7 +553,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
 
         if (aNBT.hasKey("customName")) customName = aNBT.getString("customName");
-        if (aNBT.hasKey("additionalConnection")) additionalConnection = aNBT.getBoolean("additionalConnection");
+        additionalConnection = aNBT.getBoolean("additionalConnection");
 
         getProxy().readFromNBT(aNBT);
     }

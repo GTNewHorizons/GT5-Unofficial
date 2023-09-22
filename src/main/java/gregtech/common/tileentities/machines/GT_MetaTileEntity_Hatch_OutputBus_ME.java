@@ -128,7 +128,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
 
     public void setAdditionalConnectionOption() {
         if (additionalConnection) {
-            gridProxy.setValidSides(EnumSet.allOf(ForgeDirection.class));
+            gridProxy.setValidSides(EnumSet.complementOf(EnumSet.of(ForgeDirection.UNKNOWN)));
         } else {
             gridProxy.setValidSides(EnumSet.of(getBaseMetaTileEntity().getFrontFacing()));
         }
@@ -153,7 +153,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
         float aX, float aY, float aZ) {
         additionalConnection = !additionalConnection;
         setAdditionalConnectionOption();
-        GT_Utility.sendChatToPlayer(aPlayer, "Additional connection " + additionalConnection);
+        GT_Utility.sendChatToPlayer(aPlayer, "Allow connection from any side: " + additionalConnection);
         return true;
     }
 
@@ -276,8 +276,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                 }
             }
         }
-        if (aNBT.hasKey("infiniteCache")) infiniteCache = aNBT.getBoolean("infiniteCache");
-        if (aNBT.hasKey("additionalConnection")) additionalConnection = aNBT.getBoolean("additionalConnection");
+        infiniteCache = aNBT.getBoolean("infiniteCache");
+        additionalConnection = aNBT.getBoolean("additionalConnection");
         getProxy().readFromNBT(aNBT);
     }
 
