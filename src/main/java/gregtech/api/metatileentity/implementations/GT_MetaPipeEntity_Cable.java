@@ -71,11 +71,20 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     public final Materials mMaterial;
     public final long mCableLossPerMeter, mAmperage, mVoltage;
     public final boolean mInsulated, mCanShock;
-    public long mTransferredAmperage = 0;
+
+    public int mTransferredAmperage = 0;
     public long mTransferredVoltage = 0;
+
+    @Deprecated
+    public int mTransferredAmperageLast20 = 0, mTransferredAmperageLast20OK = 0, mTransferredAmperageOK = 0;
+    @Deprecated
+    public long mTransferredVoltageLast20 = 0, mTransferredVoltageLast20OK = 0, mTransferredVoltageOK = 0;
+
     public long mRestRF;
     public int mOverheat;
     public static short mMaxOverheat = (short) (GT_Mod.gregtechproxy.mWireHeatingTicks * 100);
+
+    private long lastWorldTick;
 
     public GT_MetaPipeEntity_Cable(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
         long aCableLossPerMeter, long aAmperage, long aVoltage, boolean aInsulated, boolean aCanShock) {
@@ -173,15 +182,12 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
 
         if (!mCanShock) return;
 
-        final var baseEntity = (BaseMetaPipeEntity) getBaseMetaTileEntity();
-        final PowerNodePath powerPath = (PowerNodePath) baseEntity.getNodePath();
-        if (powerPath == null) return;
+        final BaseMetaPipeEntity baseEntity = (BaseMetaPipeEntity) getBaseMetaTileEntity();
 
-        final var livingEntity = aEntity instanceof EntityLivingBase ? (EntityLivingBase) aEntity : null;
-        if (livingEntity == null) return;
+        if (!(aEntity instanceof EntityLivingBase livingEntity)) return;
+        if (!(baseEntity.getNodePath() instanceof PowerNodePath powerPath)) return;
 
         if (isCoverOnSide(baseEntity, livingEntity)) return;
-
         if ((baseEntity.mConnections & IConnectable.HAS_HARDENEDFOAM) == 1) return;
 
         final long amperage = powerPath.getAmps();
@@ -259,7 +265,15 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     }
 
     @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {}
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        if (aBaseMetaTileEntity.isServerSide()) {
+            lastWorldTick = aBaseMetaTileEntity.getWorld()
+                .getTotalWorldTime() - 1;
+            // sets initial value -1 since it is
+            // in the same tick as first on post
+            // tick
+        }
+    }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
