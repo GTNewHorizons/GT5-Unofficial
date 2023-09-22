@@ -1,15 +1,9 @@
 package gregtech.api.ModernMaterials;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.UniversiumFrameItemRenderer;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.TESR.UniversiumFrameBlockRenderer;
-import gregtech.api.enums.ConfigCategories;
-import gregtech.api.util.GT_Config;
-import net.minecraftforge.common.config.Configuration;
-
-import java.io.File;
 
 import static gregtech.api.ModernMaterials.Fluids.FluidEnum.*;
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsItems;
@@ -25,7 +19,7 @@ public class ModernMaterialsRegistration {
 //        GregTech_API.lastMaterialID = GregTech_API.modernMaterialIDs.mConfig
 //                .get(ConfigCategories.ModernMaterials.materialID.name(), "LastMaterialID", 0).getInt();
 
-        new ModernMaterial.Builder("Copper")
+        new ModernMaterial.ModernMaterialBuilder("Copper")
             .setMaterialID(1)
             .setColor(120, 100, 0)
             .setCustomRenderer(BlocksEnum.FrameBox, new UniversiumFrameItemRenderer(), new UniversiumFrameBlockRenderer())
@@ -37,7 +31,7 @@ public class ModernMaterialsRegistration {
             .addFluid(Plasma, 100_000)
             .build();
 
-        new ModernMaterial.Builder("GERE")
+        new ModernMaterial.ModernMaterialBuilder("GERE")
             .setMaterialID(2)
             .setColor(3, 100, 97)
             .setTextureMode(Metallic)
@@ -49,7 +43,7 @@ public class ModernMaterialsRegistration {
             .addFluid(Plasma, 100_000)
             .build();
 
-        new ModernMaterial.Builder("EWAD")
+        new ModernMaterial.ModernMaterialBuilder("EWAD")
             .setMaterialID(3)
             .setColor(120, 100, 123)
             .setTextureMode(Metallic)
@@ -61,7 +55,7 @@ public class ModernMaterialsRegistration {
             .addFluid(Plasma, 100_000)
             .build();
 
-        new ModernMaterial.Builder("TEST")
+        new ModernMaterial.ModernMaterialBuilder("TEST")
             .setColor(120, 2, 0)
             .setMaterialID(4)
             .setTextureMode(Metallic)
