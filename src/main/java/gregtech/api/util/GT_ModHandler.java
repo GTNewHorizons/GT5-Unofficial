@@ -738,7 +738,7 @@ public class GT_ModHandler {
             .noFluidOutputs()
             .duration(aDuration)
             .eut(aEUt)
-            .addTo(sOreWasherRecipes);
+            .addTo(sAlloySmelterRecipes);
         return true;
     }
 
