@@ -769,61 +769,68 @@ public class GT_ModHandler {
         boolean aExcludeGTIC2Items) {
         Map<ItemStack, ItemStack> aRecipesToRemove = new HashMap<>();
         for (Entry<IRecipeInput, RecipeOutput> iRecipeInputRecipeOutputEntry : aIC2RecipeList.entrySet()) {
-            if (!iRecipeInputRecipeOutputEntry.getValue().items.isEmpty()) {
-                for (ItemStack tStack : (iRecipeInputRecipeOutputEntry.getKey()).getInputs()) {
-                    if (GT_Utility.isStackValid(tStack)) {
-                        if (aAddGTRecipe
-                            && (aGTRecipeMap.findRecipe(null, false, Long.MAX_VALUE, null, tStack) == null)) {
-                            try {
-                                if (aExcludeGTIC2Items && ((tStack.getUnlocalizedName()
-                                    .contains("gt.metaitem.01")
-                                    || tStack.getUnlocalizedName()
-                                        .contains("gt.blockores")
-                                    || tStack.getUnlocalizedName()
-                                        .contains("ic2.itemCrushed")
-                                    || tStack.getUnlocalizedName()
-                                        .contains("ic2.itemPurifiedCrushed"))))
-                                    continue;
-                                switch (aGTRecipeMap.mUnlocalizedName) {
-                                    case "gt.recipe.macerator", "gt.recipe.extractor", "gt.recipe.compressor" -> aGTRecipeMap
-                                        .addRecipe(
-                                            true,
-                                            new ItemStack[] { GT_Utility.copyAmount(
-                                                iRecipeInputRecipeOutputEntry.getKey()
-                                                    .getAmount(),
-                                                tStack) },
-                                            iRecipeInputRecipeOutputEntry.getValue().items.toArray(new ItemStack[0]),
-                                            null,
-                                            null,
-                                            null,
-                                            null,
-                                            300,
-                                            2,
-                                            0);
-                                    case "gt.recipe.thermalcentrifuge" -> aGTRecipeMap.addRecipe(
-                                        true,
-                                        new ItemStack[] { GT_Utility.copyAmount(
-                                            iRecipeInputRecipeOutputEntry.getKey()
-                                                .getAmount(),
-                                            tStack) },
-                                        iRecipeInputRecipeOutputEntry.getValue().items.toArray(new ItemStack[0]),
-                                        null,
-                                        null,
-                                        null,
-                                        null,
-                                        500,
-                                        48,
-                                        0);
-                                }
-                            } catch (Exception e) {
-                                System.err.println(e);
-                            }
+            if (iRecipeInputRecipeOutputEntry.getValue().items.isEmpty()){
+                continue;
+            }
+
+            for (ItemStack tStack : (iRecipeInputRecipeOutputEntry.getKey()).getInputs()) {
+                if (!GT_Utility.isStackValid(tStack)){
+                    continue;
+                }
+
+                if (aAddGTRecipe
+                    && (aGTRecipeMap.findRecipe(null, false, Long.MAX_VALUE, null, tStack) == null)) {
+                    try {
+                        if (aExcludeGTIC2Items && ((tStack.getUnlocalizedName()
+                            .contains("gt.metaitem.01")
+                            || tStack.getUnlocalizedName()
+                                .contains("gt.blockores")
+                            || tStack.getUnlocalizedName()
+                                .contains("ic2.itemCrushed")
+                            || tStack.getUnlocalizedName()
+                                .contains("ic2.itemPurifiedCrushed"))))
+                            continue;
+                        switch (aGTRecipeMap.mUnlocalizedName) {
+                            case "gt.recipe.macerator", "gt.recipe.extractor", "gt.recipe.compressor" -> aGTRecipeMap
+                                .addRecipe(
+                                    true,
+                                    new ItemStack[] { GT_Utility.copyAmount(
+                                        iRecipeInputRecipeOutputEntry.getKey()
+                                            .getAmount(),
+                                        tStack) },
+                                    iRecipeInputRecipeOutputEntry.getValue().items.toArray(new ItemStack[0]),
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    300,
+                                    2,
+                                    0);
+                            case "gt.recipe.thermalcentrifuge" -> aGTRecipeMap.addRecipe(
+                                true,
+                                new ItemStack[] { GT_Utility.copyAmount(
+                                    iRecipeInputRecipeOutputEntry.getKey()
+                                        .getAmount(),
+                                    tStack) },
+                                iRecipeInputRecipeOutputEntry.getValue().items.toArray(new ItemStack[0]),
+                                null,
+                                null,
+                                null,
+                                null,
+                                500,
+                                48,
+                                0);
                         }
-                        if (aRemoveIC2Recipe)
-                            aRecipesToRemove.put(tStack, iRecipeInputRecipeOutputEntry.getValue().items.get(0));
+                    } catch (Exception e) {
+                        System.err.println(e);
                     }
                 }
+                if (aRemoveIC2Recipe) {
+                    aRecipesToRemove.put(tStack, iRecipeInputRecipeOutputEntry.getValue().items.get(0));
+                }
+
             }
+
         }
         GT_Utility.bulkRemoveSimpleIC2MachineRecipe(aRecipesToRemove, aIC2RecipeList);
     }
