@@ -261,18 +261,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         for (int i = 0; i < aFluidInputs.length; i++) aFluidInputs[i] = aFluidInputs[i].copy();
         for (int i = 0; i < aFluidOutputs.length; i++) aFluidOutputs[i] = aFluidOutputs[i].copy();
 
-        for (ItemStack aInput : aInputs)
-            if (aInput != null && Items.feather.getDamage(aInput) != W) for (int j = 0; j < aOutputs.length; j++) {
-                if (GT_Utility.areStacksEqual(aInput, aOutputs[j]) && aChances[j] >= 10000) {
-                    if (aInput.stackSize >= aOutputs[j].stackSize) {
-                        aInput.stackSize -= aOutputs[j].stackSize;
-                        aOutputs[j] = null;
-                    } else {
-                        aOutputs[j].stackSize -= aInput.stackSize;
-                    }
-                }
-            }
-
         if (aOptimize && aDuration >= 32) {
             ArrayList<ItemStack> tList = new ArrayList<>();
             tList.addAll(Arrays.asList(aInputs));
