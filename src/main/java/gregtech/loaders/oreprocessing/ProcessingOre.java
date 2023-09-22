@@ -3,6 +3,7 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBlastRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 
@@ -206,23 +207,28 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                 .eut(16)
                 .addTo(sHammerRecipes);
 
-            GT_ModHandler.addPulverisationRecipe(
-                aOreStack,
-                GT_Utility.mul(2L, tCrushed),
-                tMaterial.contains(SubTag.PULVERIZING_CINNABAR)
-                    ? GT_OreDictUnificator.get(
+            int chanceOre2 = tPrimaryByProduct == null ? 0
+                : tPrimaryByProduct.stackSize * 10 * aMultiplier * aMaterial.mByProductMultiplier;
+            chanceOre2 = 100 * chanceOre2; // converting to the GT format, 100% is 10000
+            GT_Values.RA.stdBuilder()
+                .itemInputs(aOreStack)
+                .itemOutputs(
+                    GT_Utility.mul(2L, tCrushed),
+                    tMaterial.contains(SubTag.PULVERIZING_CINNABAR) ? GT_OreDictUnificator.get(
                         OrePrefixes.crystal,
                         Materials.Cinnabar,
                         GT_OreDictUnificator
                             .get(OrePrefixes.gem, tPrimaryByMaterial, GT_Utility.copyAmount(1L, tPrimaryByProduct), 1L),
                         1L)
-                    : GT_OreDictUnificator
-                        .get(OrePrefixes.gem, tPrimaryByMaterial, GT_Utility.copyAmount(1L, tPrimaryByProduct), 1L),
-                tPrimaryByProduct == null ? 0
-                    : tPrimaryByProduct.stackSize * 10 * aMultiplier * aMaterial.mByProductMultiplier,
-                GT_OreDictUnificator.getDust(aPrefix.mSecondaryMaterial),
-                50,
-                true);
+                        : GT_OreDictUnificator
+                            .get(OrePrefixes.gem, tPrimaryByMaterial, GT_Utility.copyAmount(1L, tPrimaryByProduct), 1L),
+                    GT_OreDictUnificator.getDust(aPrefix.mSecondaryMaterial))
+                .outputChances(10000, chanceOre2, 5000)
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(20 * SECONDS)
+                .eut(2)
+                .addTo(sMaceratorRecipes);
         }
         return true;
     }
