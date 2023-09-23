@@ -13,7 +13,7 @@
 
 package com.github.bartimaeusnek.bartworks.util;
 
-import java.awt.*;
+import java.awt.Color;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Objects;

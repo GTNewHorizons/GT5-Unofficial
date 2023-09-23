@@ -13,7 +13,7 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 

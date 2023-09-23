@@ -13,7 +13,7 @@
 
 package com.github.bartimaeusnek.bartworks.common.loaders;
 
-import java.awt.*;
+import java.awt.Color;
 
 import net.minecraft.item.EnumRarity;
 
