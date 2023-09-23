@@ -14,6 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_EMPTY;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 
@@ -30,8 +31,11 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -112,6 +116,27 @@ public abstract class GT_MetaTileEntity_LargeTurbine
     @Override
     public IStructureDefinition<GT_MetaTileEntity_LargeTurbine> getStructureDefinition() {
         return STRUCTURE_DEFINITION.get(getClass());
+    }
+
+    @Override
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> r.isNotRotated() && f.isNotFlipped();
+    }
+
+    @Override
+    protected ExtendedFacing getCorrectedAlignment(ExtendedFacing aOldFacing) {
+        return aOldFacing.with(Flip.NONE)
+            .with(Rotation.NORMAL);
+    }
+
+    @Override
+    public boolean isFlipChangeAllowed() {
+        return false;
+    }
+
+    @Override
+    public boolean isRotationChangeAllowed() {
+        return false;
     }
 
     @Override
@@ -313,11 +338,9 @@ public abstract class GT_MetaTileEntity_LargeTurbine
     // Gets the maximum output that the turbine currently can handle. Going above this will cause the turbine to explode
     public long getMaximumOutput() {
         long aTotal = 0;
-        for (GT_MetaTileEntity_Hatch_Dynamo aDynamo : mDynamoHatches) {
-            if (isValidMetaTileEntity(aDynamo)) {
-                long aVoltage = aDynamo.maxEUOutput();
-                aTotal = aDynamo.maxAmperesOut() * aVoltage;
-            }
+        for (GT_MetaTileEntity_Hatch_Dynamo aDynamo : filterValidMTEs(mDynamoHatches)) {
+            long aVoltage = aDynamo.maxEUOutput();
+            aTotal = aDynamo.maxAmperesOut() * aVoltage;
         }
         return aTotal;
     }
@@ -359,10 +382,8 @@ public abstract class GT_MetaTileEntity_LargeTurbine
     @Override
     public String[] getInfoData() {
         int mPollutionReduction = 0;
-        for (GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
-            }
+        for (GT_MetaTileEntity_Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches)) {
+            mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
         }
 
         String tRunning = mMaxProgresstime > 0
@@ -385,13 +406,11 @@ public abstract class GT_MetaTileEntity_LargeTurbine
 
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                storedEnergy += tHatch.getBaseMetaTileEntity()
-                    .getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity()
-                    .getEUCapacity();
-            }
+        for (GT_MetaTileEntity_Hatch_Dynamo tHatch : filterValidMTEs(mDynamoHatches)) {
+            storedEnergy += tHatch.getBaseMetaTileEntity()
+                .getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity()
+                .getEUCapacity();
         }
         String[] ret = new String[] {
             // 8 Lines available for information panels

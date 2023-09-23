@@ -31,6 +31,8 @@ import static gregtech.api.enums.Mods.ThaumicBoots;
 import static gregtech.api.enums.Mods.ThaumicTinkerer;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.enums.Mods.WitchingGadgets;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCrackingRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCutterRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sWiremillRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
@@ -2001,12 +2003,13 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                                                             .eut(2)
                                                             .addTo(sWiremillRecipes);
                                                     }
-                                                    GT_Values.RA.addCutterRecipe(
-                                                        new ItemStack(aEvent.Ore.getItem(), 1, 3),
-                                                        new ItemStack(aEvent.Ore.getItem(), 16, 4),
-                                                        null,
-                                                        400,
-                                                        8);
+
+                                                    GT_Values.RA.stdBuilder()
+                                                        .itemInputs(new ItemStack(aEvent.Ore.getItem(), 1, 3))
+                                                        .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 16, 4))
+                                                        .duration(20 * SECONDS)
+                                                        .eut(8)
+                                                        .addTo(sCutterRecipes);
                                                 }
                                     }
                                     default -> {}
@@ -2577,13 +2580,13 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 .asFluid();
 
             int hydrogenAmount = 2 * i + 2;
-            GT_Values.RA.addCrackingRecipe(
-                i + 1,
-                new FluidStack(uncrackedFluid, 1000),
-                Materials.Hydrogen.getGas(hydrogenAmount * 800),
-                new FluidStack(crackedFluids[i], 1000),
-                20 + 20 * i,
-                240);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GT_Utility.getIntegratedCircuit(i + 1))
+                .fluidInputs(new FluidStack(uncrackedFluid, 1000), Materials.Hydrogen.getGas(hydrogenAmount * 800))
+                .fluidOutputs(new FluidStack(crackedFluids[i], 1000))
+                .duration((1 + i) * SECONDS)
+                .eut(240)
+                .addTo(sCrackingRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(Materials.Hydrogen.getCells(hydrogenAmount), GT_Utility.getIntegratedCircuit(i + 1))
@@ -2629,13 +2632,13 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                     ItemList.Cell_Empty.get(1L))
                 .asFluid();
 
-            GT_Values.RA.addCrackingRecipe(
-                i + 1,
-                new FluidStack(uncrackedFluid, 1000),
-                GT_ModHandler.getSteam(1000),
-                new FluidStack(crackedFluids[i], 1200),
-                20 + 20 * i,
-                240);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GT_Utility.getIntegratedCircuit(i + 1))
+                .fluidInputs(new FluidStack(uncrackedFluid, 1000), GT_ModHandler.getSteam(1000))
+                .fluidOutputs(new FluidStack(crackedFluids[i], 1200))
+                .duration((1 + i) * SECONDS)
+                .eut(240)
+                .addTo(sCrackingRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_ModHandler.getIC2Item("steamCell", 1L), GT_Utility.getIntegratedCircuit(i + 1))

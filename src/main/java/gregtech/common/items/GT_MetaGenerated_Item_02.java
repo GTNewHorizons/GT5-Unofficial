@@ -9,8 +9,10 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_ITEM_DETEC
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_MAINTENANCE_DETECTOR;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
 
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.enchantment.Enchantment;
@@ -2634,63 +2636,84 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 .addTo(sCompressorRecipes);
         }
 
-        GT_ModHandler.addPulverisationRecipe(
-            ItemList.Food_Sliced_Cheese.get(1L),
-            GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Cheese, 1L));
-        GT_ModHandler.addPulverisationRecipe(
-            ItemList.Dye_Cocoa.get(1L),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L));
-        GT_ModHandler.addPulverisationRecipe(
-            ItemList.Crop_Drop_Tine.get(1L),
-            GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L));
-        GT_ModHandler.addPulverisationRecipe(
-            new ItemStack(Blocks.melon_block, 1, 0),
-            new ItemStack(Items.melon, 8, 0),
-            new ItemStack(Items.melon_seeds, 1),
-            80,
-            false);
-        GT_ModHandler.addPulverisationRecipe(
-            new ItemStack(Blocks.pumpkin, 1, 0),
-            new ItemStack(Items.pumpkin_seeds, 4, 0),
-            null,
-            0,
-            false);
-        GT_ModHandler.addPulverisationRecipe(
-            new ItemStack(Items.melon, 1, 0),
-            new ItemStack(Items.melon_seeds, 1, 0),
-            null,
-            0,
-            false);
-        GT_ModHandler.addPulverisationRecipe(
-            new ItemStack(Items.wheat, 1, 0),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L),
-            null,
-            0,
-            false);
-        GT_ModHandler.addPulverisationRecipe(
-            GT_ModHandler.getIC2Item("crop", 1L),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L),
-            null,
-            0,
-            false);
-        GT_ModHandler.addPulverisationRecipe(
-            new ItemStack(Items.stick, 1),
-            GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L),
-            null,
-            0,
-            false);
-        GT_ModHandler.addPulverisationRecipe(
-            new ItemStack(Blocks.wool, 1, 32767),
-            new ItemStack(Items.string, 2),
-            new ItemStack(Items.string, 1),
-            50,
-            false);
-        GT_ModHandler.addPulverisationRecipe(
-            ItemList.Tesseract.get(1),
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.TranscendentMetal, 8L) },
-            new int[] { 10000 },
-            32_000_000,
-            100);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Food_Sliced_Cheese.get(1L))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Cheese, 1L))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(sMaceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Dye_Cocoa.get(1L))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(sMaceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Crop_Drop_Tine.get(1L))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(sMaceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.melon_block, 1, 0))
+            .itemOutputs(new ItemStack(Items.melon, 8, 0), new ItemStack(Items.melon_seeds, 1))
+            .outputChances(10000, 8000)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(sMaceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.pumpkin, 1, 0))
+            .itemOutputs(new ItemStack(Items.pumpkin_seeds, 4, 0))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(sMaceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.melon, 1, 0))
+            .itemOutputs(new ItemStack(Items.melon_seeds, 1, 0))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(sMaceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.wheat, 1, 0))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(sMaceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_ModHandler.getIC2Item("crop", 1L))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(sMaceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.stick, 1))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(sMaceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.wool, 1, WILDCARD))
+            .itemOutputs(new ItemStack(Items.string, 2), new ItemStack(Items.string, 1))
+            .outputChances(10000, 5000)
+            .duration(20 * SECONDS)
+            .eut(2)
+            .addTo(sMaceratorRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(ItemList.Tesseract.get(1))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.TranscendentMetal, 8L))
+            .duration(5 * SECONDS)
+            .eut(32_000_000)
+            .addTo(sMaceratorRecipes);
         try {
             CropCard tCrop;
             GT_Utility.getField(tCrop = Crops.instance.getCropList()[13], "mDrop")

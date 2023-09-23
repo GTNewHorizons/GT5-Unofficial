@@ -1,4 +1,4 @@
-//version: 1692122114
+//version: 1695323114
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -600,15 +600,10 @@ repositories {
         }
         maven {
             name = "ic2"
-            url = "https://maven.ic2.player.to/"
-            metadataSources {
-                mavenPom()
-                artifact()
+            url = getURL("https://maven.ic2.player.to/", "https://maven2.ic2.player.to/")
+            content {
+                includeGroup "net.industrial-craft"
             }
-        }
-        maven {
-            name = "ic2-mirror"
-            url = "https://maven2.ic2.player.to/"
             metadataSources {
                 mavenPom()
                 artifact()
@@ -1574,6 +1569,25 @@ def getSecondaryArtifacts() {
     if (!noPublishedSources) secondaryArtifacts += [sourcesJar]
     if (apiPackage) secondaryArtifacts += [apiJar]
     return secondaryArtifacts
+}
+
+def getURL(String main, String fallback) {
+    return pingURL(main, 10000) ? main : fallback
+}
+
+// credit: https://stackoverflow.com/a/3584332
+def pingURL(String url, int timeout) {
+    url = url.replaceFirst("^https", "http") // Otherwise an exception may be thrown on invalid SSL certificates.
+    try {
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection()
+        connection.setConnectTimeout(timeout)
+        connection.setReadTimeout(timeout)
+        connection.setRequestMethod("HEAD")
+        int responseCode = connection.getResponseCode()
+        return 200 <= responseCode && responseCode <= 399
+    } catch (IOException ignored) {
+        return false
+    }
 }
 
 // For easier scripting of things that require variables defined earlier in the buildscript

@@ -2474,6 +2474,15 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
         hasTimeStatisticsStarted = true;
     }
 
+    @Nullable
+    @Override
+    public List<ItemStack> getItemsForHoloGlasses() {
+        if (canAccessData()) {
+            return mMetaTileEntity.getItemsForHoloGlasses();
+        }
+        return null;
+    }
+
     @Override
     public String getCustomName() {
         return getMetaTileEntity() instanceof ICustomNameObject customNameObject ? customNameObject.getCustomName()

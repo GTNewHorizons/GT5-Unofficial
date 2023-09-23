@@ -14,6 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 
@@ -248,12 +249,12 @@ public class GT_MetaTileEntity_MultiFurnace
     @Override
     public String[] getInfoData() {
         int mPollutionReduction = 0;
-        for (final GT_MetaTileEntity_Hatch_Muffler tHatch : mMufflerHatches) if (isValidMetaTileEntity(tHatch))
+        for (final GT_MetaTileEntity_Hatch_Muffler tHatch : filterValidMTEs(mMufflerHatches))
             mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
 
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (final GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) if (isValidMetaTileEntity(tHatch)) {
+        for (final GT_MetaTileEntity_Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
