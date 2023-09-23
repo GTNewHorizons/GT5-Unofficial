@@ -1,6 +1,6 @@
 package com.gtnewhorizons.gtnhintergalactic.nei;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.util.Map;
 
 import net.minecraft.client.Minecraft;
