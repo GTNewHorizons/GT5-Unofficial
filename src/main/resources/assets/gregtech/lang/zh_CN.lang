@@ -217,6 +217,8 @@ GT5U.hatch.disableLimited.true=限制模式：§c关闭§r
 GT5U.hatch.disableLimited.false=限制模式：§c开启§r
 GT5U.hatch.infiniteCache.true=ME输出总线将无限缓存物品，直到连接上ME网络
 GT5U.hatch.infiniteCache.false=ME输出总线离线超过2秒后将停止接收物品
+GT5U.hatch.additionalConnection.true=可从任意方向连入ME网络
+GT5U.hatch.additionalConnection.false=仅可从正面连入ME网络
 
 GT5U.multiblock.pollution=污染减少到
 GT5U.multiblock.energy=存储能量
