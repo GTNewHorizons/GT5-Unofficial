@@ -28,8 +28,6 @@ public class GregtechMetaTileEntity_BasicWasher extends GT_MetaTileEntity_BasicM
                 "It's like an automatic Cauldron for washing dusts.",
                 1,
                 1,
-                "PotionBrewer.png",
-                "",
                 new ITexture[] { new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER_ACTIVE),
                         new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER),
                         new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_POTIONBREWER_ACTIVE),
@@ -40,9 +38,9 @@ public class GregtechMetaTileEntity_BasicWasher extends GT_MetaTileEntity_BasicM
                         new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_ROCK_BREAKER) });
     }
 
-    public GregtechMetaTileEntity_BasicWasher(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-            String aGUIName, String aNEIName) {
-        super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
+    public GregtechMetaTileEntity_BasicWasher(String aName, int aTier, String[] aDescription,
+            ITexture[][][] aTextures) {
+        super(aName, aTier, 1, aDescription, aTextures, 1, 1);
     }
 
     @Override
@@ -53,13 +51,7 @@ public class GregtechMetaTileEntity_BasicWasher extends GT_MetaTileEntity_BasicM
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaTileEntity_BasicWasher(
-                this.mName,
-                this.mTier,
-                this.mDescriptionArray,
-                this.mTextures,
-                this.mGUIName,
-                this.mNEIName);
+        return new GregtechMetaTileEntity_BasicWasher(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override

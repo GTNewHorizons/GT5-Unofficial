@@ -1,6 +1,6 @@
 package gtPlusPlus.nei;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Iterator;

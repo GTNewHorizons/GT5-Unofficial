@@ -1,7 +1,17 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.xmod.gregtech.common.blocks.*;
+import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks;
+import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks2;
+import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks3;
+import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks4;
+import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks5;
+import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks6;
+import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocksPipeGearbox;
+import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaSpecialMachineCasings;
+import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaSpecialMultiCasings;
+import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaSpecialMultiCasings2;
+import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaTieredCasingBlocks1;
 
 public class Gregtech_Blocks {
 

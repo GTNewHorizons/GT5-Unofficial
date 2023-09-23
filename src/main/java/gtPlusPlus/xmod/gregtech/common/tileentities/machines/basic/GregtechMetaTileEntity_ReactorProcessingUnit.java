@@ -28,8 +28,6 @@ public class GregtechMetaTileEntity_ReactorProcessingUnit extends GT_MetaTileEnt
                 "Processes Nuclear things",
                 2,
                 9,
-                "Dehydrator.png",
-                "",
                 new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_SIDE_ACTIVE),
                         new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_SIDE),
                         new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_PROCESSINGUNIT_FRONT_ACTIVE),
@@ -41,8 +39,8 @@ public class GregtechMetaTileEntity_ReactorProcessingUnit extends GT_MetaTileEnt
     }
 
     public GregtechMetaTileEntity_ReactorProcessingUnit(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures, String aGUIName, String aNEIName) {
-        super(aName, aTier, 1, aDescription, aTextures, 2, 9, aGUIName, aNEIName);
+            ITexture[][][] aTextures) {
+        super(aName, aTier, 1, aDescription, aTextures, 2, 9);
     }
 
     @Override
@@ -56,9 +54,7 @@ public class GregtechMetaTileEntity_ReactorProcessingUnit extends GT_MetaTileEnt
                 this.mName,
                 this.mTier,
                 this.mDescriptionArray,
-                this.mTextures,
-                this.mGUIName,
-                this.mNEIName);
+                this.mTextures);
     }
 
     @Override

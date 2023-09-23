@@ -42,15 +42,11 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMa
                 4,
                 "Loads " + getMaxChunksToLoadForTier(aTier) + " chunks when powered",
                 0,
-                0,
-                "Recycler.png",
-                "",
-                new ITexture[] {});
+                0);
     }
 
-    public GregtechMetaTileEntityChunkLoader(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-            String aGUIName, String aNEIName) {
-        super(aName, aTier, 4, aDescription, aTextures, 0, 0, aGUIName, aNEIName);
+    public GregtechMetaTileEntityChunkLoader(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, 4, aDescription, aTextures, 0, 0);
     }
 
     public static int getMaxChunksToLoadForTier(int aTier) {
@@ -187,13 +183,7 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMa
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaTileEntityChunkLoader(
-                this.mName,
-                this.mTier,
-                this.mDescriptionArray,
-                this.mTextures,
-                this.mGUIName,
-                this.mNEIName);
+        return new GregtechMetaTileEntityChunkLoader(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override

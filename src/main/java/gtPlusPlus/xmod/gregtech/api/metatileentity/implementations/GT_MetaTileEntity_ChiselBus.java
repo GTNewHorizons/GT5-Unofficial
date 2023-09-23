@@ -12,7 +12,6 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.util.extensions.ArrayExt;
 
 public class GT_MetaTileEntity_ChiselBus extends GT_MetaTileEntity_Hatch_InputBus implements IAddUIWidgets {
 
@@ -35,7 +34,7 @@ public class GT_MetaTileEntity_ChiselBus extends GT_MetaTileEntity_Hatch_InputBu
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_ChiselBus(this.mName, this.mTier, ArrayExt.of(this.mDescription), this.mTextures);
+        return new GT_MetaTileEntity_ChiselBus(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override

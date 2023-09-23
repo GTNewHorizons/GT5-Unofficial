@@ -43,8 +43,6 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
                 "Chisels things, Gregtech style",
                 1,
                 1,
-                "Compressor.png",
-                "",
                 new ITexture[] { new GT_RenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
                         new GT_RenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB),
                         new GT_RenderedTexture(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE),
@@ -55,20 +53,13 @@ public class GregtechMetaTileEntity_AutoChisel extends GT_MetaTileEntity_BasicMa
                         new GT_RenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB) });
     }
 
-    public GregtechMetaTileEntity_AutoChisel(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-            String aGUIName, String aNEIName) {
-        super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
+    public GregtechMetaTileEntity_AutoChisel(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, 1, aDescription, aTextures, 1, 1);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaTileEntity_AutoChisel(
-                this.mName,
-                this.mTier,
-                this.mDescriptionArray,
-                this.mTextures,
-                this.mGUIName,
-                this.mNEIName);
+        return new GregtechMetaTileEntity_AutoChisel(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override

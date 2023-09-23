@@ -2,7 +2,7 @@ package gtPlusPlus.nei;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.awt.*;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

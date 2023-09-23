@@ -76,8 +76,6 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
                 "Making sure you don't live in Gwalior - Uses 2A",
                 3,
                 0,
-                "Recycler.png",
-                "",
                 new ITexture[] { new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
                         new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB),
                         new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active),
@@ -90,8 +88,8 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
     }
 
     public GregtechMetaAtmosphericReconditioner(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures, String aGUIName, String aNEIName) {
-        super(aName, aTier, 2, aDescription, aTextures, 2, 0, aGUIName, aNEIName);
+            ITexture[][][] aTextures) {
+        super(aName, aTier, 2, aDescription, aTextures, 2, 0);
         mPollutionEnabled = PollutionUtils.isPollutionEnabled();
     }
 
@@ -103,13 +101,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaAtmosphericReconditioner(
-                this.mName,
-                this.mTier,
-                this.mDescriptionArray,
-                this.mTextures,
-                this.mGUIName,
-                this.mNEIName);
+        return new GregtechMetaAtmosphericReconditioner(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override

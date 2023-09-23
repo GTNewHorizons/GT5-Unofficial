@@ -28,8 +28,6 @@ public class GregtechMetaTileEntity_ReactorColdTrap extends GT_MetaTileEntity_Ba
                 "Just like the Arctic",
                 2,
                 9,
-                "Dehydrator.png",
-                "",
                 new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_COLDTRAP_SIDE_ACTIVE),
                         new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_COLDTRAP_SIDE),
                         new GT_RenderedTexture(TexturesGtBlock.OVERLAY_REACTOR_COLDTRAP_FRONT_ACTIVE),
@@ -41,8 +39,8 @@ public class GregtechMetaTileEntity_ReactorColdTrap extends GT_MetaTileEntity_Ba
     }
 
     public GregtechMetaTileEntity_ReactorColdTrap(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures, String aGUIName, String aNEIName) {
-        super(aName, aTier, 1, aDescription, aTextures, 2, 9, aGUIName, aNEIName);
+            ITexture[][][] aTextures) {
+        super(aName, aTier, 1, aDescription, aTextures, 2, 9);
     }
 
     @Override
@@ -56,9 +54,7 @@ public class GregtechMetaTileEntity_ReactorColdTrap extends GT_MetaTileEntity_Ba
                 this.mName,
                 this.mTier,
                 this.mDescriptionArray,
-                this.mTextures,
-                this.mGUIName,
-                this.mNEIName);
+                this.mTextures);
     }
 
     @Override

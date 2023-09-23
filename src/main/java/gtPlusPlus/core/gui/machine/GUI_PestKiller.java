@@ -2,7 +2,7 @@ package gtPlusPlus.core.gui.machine;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.awt.*;
+import java.awt.Color;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;

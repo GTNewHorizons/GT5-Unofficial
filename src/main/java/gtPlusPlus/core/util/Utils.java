@@ -1,6 +1,7 @@
 package gtPlusPlus.core.util;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
