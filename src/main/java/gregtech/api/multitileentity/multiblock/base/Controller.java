@@ -1,6 +1,7 @@
 package gregtech.api.multitileentity.multiblock.base;
 
 import static gregtech.api.util.GT_Utility.moveMultipleItemStacks;
+import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static mcp.mobius.waila.api.SpecialChars.*;
 
 import java.lang.ref.WeakReference;
@@ -59,7 +60,6 @@ import gregtech.api.enums.InventoryType;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IDescribable;
-import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.modularui.ControllerWithOptionalFeatures;
 import gregtech.api.logic.ControllerFluidLogic;
@@ -91,7 +91,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  */
 public abstract class Controller<T extends Controller<T, P>, P extends MuTEProcessingLogic<P>>
     extends MultiTileBasicMachine<P> implements IAlignment, IMultiBlockController, IDescribable, IMTE_AddToolTips,
-    ISurvivalConstructable, ControllerWithOptionalFeatures, IGlobalWirelessEnergy {
+    ISurvivalConstructable, ControllerWithOptionalFeatures {
 
     public static final String ALL_INVENTORIES_NAME = "all";
     protected static final int AUTO_OUTPUT_FREQUENCY_TICK = 20;

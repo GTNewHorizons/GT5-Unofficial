@@ -1,5 +1,7 @@
 package gregtech.api.logic.interfaces;
 
+import javax.annotation.Nonnull;
+
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.interfaces.tileentity.IVoidable;
@@ -8,21 +10,29 @@ import gregtech.api.logic.MuTEProcessingLogic;
 public interface ProcessingLogicHost<P extends MuTEProcessingLogic<P>>
     extends IVoidable, ItemInventoryLogicHost, FluidInventoryLogicHost, IMachineProgress {
 
+    /**
+     * Get the processing logic for the current machine
+     */
+    @Nonnull
     P getProcessingLogic();
 
     boolean isInputSeparated();
 
+    /**
+     * Get what the machine can void or not
+     */
+    @Nonnull
     VoidingMode getVoidMode();
 
     /**
      * Called when the processing logic should be updated by {@link #needsUpdate()}
      */
-    default void updateProcessingLogic(P processingLogic) {}
+    default void updateProcessingLogic(@Nonnull P processingLogic) {}
 
     /**
-     * called before the recipe check, but after any other updates
+     * Called before the recipe check, but after any other updates
      */
-    default void setProcessingLogicPower(P processingLogic) {}
+    default void setProcessingLogicPower(@Nonnull P processingLogic) {}
 
     /**
      * DO NOT CALL YOURSELF!!!

@@ -78,8 +78,6 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     protected boolean isElectric = true;
     protected boolean isSteam = false;
     protected boolean acceptsFuel = false;
-    protected boolean canUseWireless = false;
-    protected boolean canUseLaser = false;
 
     protected byte soundEvent = 0;
     protected int soundEventValue = 0;
@@ -525,22 +523,6 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
 
     protected void setFuel(boolean acceptsFuel) {
         this.acceptsFuel = acceptsFuel;
-    }
-
-    protected boolean canUseWireless() {
-        return canUseWireless;
-    }
-
-    protected boolean drainEut(long eut) {
-        return decreaseStoredEnergyUnits(eut, false);
-    }
-
-    protected boolean generateEut(long eut) {
-        return increaseStoredEnergyUnits(eut, true);
-    }
-
-    protected boolean isGenerator() {
-        return false;
     }
 
     protected boolean consumeFuel() {

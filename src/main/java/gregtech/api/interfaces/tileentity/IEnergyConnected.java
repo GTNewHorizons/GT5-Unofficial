@@ -74,7 +74,7 @@ public interface IEnergyConnected extends IColoredTileEntity {
                     continue;
                 }
 
-                final ForgeDirection oppositeSide = side.getOpposite();
+                final ForgeDirection oppositeSide = Objects.requireNonNull(side.getOpposite());
                 final TileEntity tTileEntity = emitterTile.getTileEntityAtSide(side);
                 if (tTileEntity instanceof PowerLogicHost host) {
 
@@ -107,19 +107,21 @@ public interface IEnergyConnected extends IColoredTileEntity {
             return usedAmperes;
         }
 
+        /**
+         * Same as {@link #emitEnergyToNetwork(long, long, IEnergyConnected)}, but instead we remove the energy directly from the logic itself.
+         * @param emitter The host, which is trying to emit energy in the network
+         * @param outputSide side from where energy is being outputted to. If its {@link ForgeDirection#UNKNOWN} then it doesn't emit energy to the network
+         */
         public static void emitEnergyToNetwork(@Nonnull final PowerLogicHost emitter, @Nonnull final ForgeDirection outputSide) {
             if (outputSide == ForgeDirection.UNKNOWN) return;
             final PowerLogic emitterLogic = emitter.getPowerLogic();
-            if (emitterLogic == null) return;
             long usedAmperes = 0;
             long voltage = emitterLogic.getVoltage();
             long amperage = emitterLogic.getAmperage();
             if (!(emitter instanceof final IHasWorldObjectAndCoords emitterTile)) {
                 return;
             }
-            if (usedAmperes > emitterLogic.getAmperage()) {
-                return;
-            }
+            // We need to make sure we can actually output energy on this side. This is more of a safety check.
             if (emitter.getPowerLogic(outputSide) == null) {
                 return;
             }
