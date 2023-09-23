@@ -63,32 +63,40 @@ public class GT_ExoticEnergyInputHelper {
 
     public static long getTotalEuMulti(Collection<? extends GT_MetaTileEntity_Hatch> hatches) {
         long rEU = 0L;
-        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(hatches)) rEU += tHatch.getBaseMetaTileEntity()
-            .getInputVoltage() * tHatch.maxWorkingAmperesIn();
+        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(hatches)) {
+            rEU += tHatch.getBaseMetaTileEntity()
+                .getInputVoltage() * tHatch.maxWorkingAmperesIn();
+        }
         return rEU;
     }
 
     public static long getMaxInputVoltageMulti(Collection<? extends GT_MetaTileEntity_Hatch> hatches) {
         long rVoltage = 0;
-        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(hatches)) rVoltage += tHatch.getBaseMetaTileEntity()
-            .getInputVoltage();
+        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(hatches)) {
+            rVoltage += tHatch.getBaseMetaTileEntity()
+                .getInputVoltage();
+        }
         return rVoltage;
     }
 
     public static long getAverageInputVoltageMulti(Collection<? extends GT_MetaTileEntity_Hatch> hatches) {
         long rVoltage = 0;
-        if (hatches.size() == 0) {
+        if (hatches.isEmpty()) {
             return rVoltage;
         }
-        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(hatches)) rVoltage += tHatch.getBaseMetaTileEntity()
-            .getInputVoltage();
+        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(hatches)) {
+            rVoltage += tHatch.getBaseMetaTileEntity()
+                .getInputVoltage();
+        }
         return rVoltage / hatches.size();
     }
 
     public static long getMaxInputAmpsMulti(Collection<? extends GT_MetaTileEntity_Hatch> hatches) {
         long rAmp = 0;
-        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(hatches)) rAmp += tHatch.getBaseMetaTileEntity()
-            .getInputAmperage();
+        for (GT_MetaTileEntity_Hatch tHatch : filterValidMTEs(hatches)) {
+            rAmp += tHatch.getBaseMetaTileEntity()
+                .getInputAmperage();
+        }
         return rAmp;
     }
 
