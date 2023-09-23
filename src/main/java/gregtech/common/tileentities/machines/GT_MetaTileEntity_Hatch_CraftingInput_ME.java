@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -337,7 +338,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             MAX_INV_COUNT,
             new String[] { "Advanced item input for Multiblocks", "Processes patterns directly from ME",
                 supportFluids ? "It supports patterns including fluids"
-                    : "It does not support patterns including fluids" });
+                    : "It does not support patterns including fluids",
+                "Change ME connection behavior by right-clicking with wire cutter" });
         disableSort = true;
         this.supportFluids = supportFluids;
     }
@@ -406,7 +408,9 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         float aX, float aY, float aZ) {
         additionalConnection = !additionalConnection;
         setAdditionalConnectionOption();
-        GT_Utility.sendChatToPlayer(aPlayer, "Allow connection from any side: " + additionalConnection);
+        GT_Utility.sendChatToPlayer(
+            aPlayer,
+            StatCollector.translateToLocal("GT5U.hatch.additionalConnection." + additionalConnection));
         return true;
     }
 

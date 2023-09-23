@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -92,6 +93,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 "Auto-Pull from ME mode will automatically stock the first 16 items in the ME system, updated every 5 seconds.",
                 "Toggle by right-clicking with screwdriver, or use the GUI.",
                 "Use the GUI to limit the minimum stack size for Auto-Pulling.",
+                "Change ME connection behavior by right-clicking with wire cutter",
                 "Configuration data can be copy+pasted using a data stick." });
         disableSort = true;
     }
@@ -149,7 +151,9 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         float aX, float aY, float aZ) {
         additionalConnection = !additionalConnection;
         setAdditionalConnectionOption();
-        GT_Utility.sendChatToPlayer(aPlayer, "Allow connection from any side: " + additionalConnection);
+        GT_Utility.sendChatToPlayer(
+            aPlayer,
+            StatCollector.translateToLocal("GT5U.hatch.additionalConnection." + additionalConnection));
         return true;
     }
 
@@ -283,6 +287,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         if (GT_Utility.isStackInvalid(circuit)) circuit = null;
         setAutoPullItemList(nbt.getBoolean("autoPull"));
         minAutoPullStackSize = nbt.getInteger("minStackSize");
+        additionalConnection = nbt.getBoolean("additionalConnection");
         if (!autoPullItemList) {
             NBTTagList stockingItems = nbt.getTagList("itemsToStock", 10);
             for (int i = 0; i < stockingItems.tagCount(); i++) {
@@ -290,6 +295,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
             }
         }
         setInventorySlotContents(getCircuitSlot(), circuit);
+        setAdditionalConnectionOption();
         aPlayer.addChatMessage(new ChatComponentText("Loaded Config From Data Stick"));
         return true;
     }
@@ -305,6 +311,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         tag.setString("type", "stockingBus");
         tag.setBoolean("autoPull", autoPullItemList);
         tag.setInteger("minStackSize", minAutoPullStackSize);
+        tag.setBoolean("additionalConnection", additionalConnection);
         tag.setTag("circuit", GT_Utility.saveItem(getStackInSlot(getCircuitSlot())));
 
         NBTTagList stockingItems = new NBTTagList();

@@ -69,7 +69,8 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
             aNameRegional,
             1,
             new String[] { "Fluid Output for Multiblocks", "Stores directly into ME",
-                "Can cache infinite amount of fluids.", "Change cache behavior by right-clicking with screwdriver." },
+                "Can cache infinite amount of fluids.", "Change cache behavior by right-clicking with screwdriver.",
+                "Change ME connection behavior by right-clicking with wire cutter" },
             0);
     }
 
@@ -177,7 +178,9 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         float aX, float aY, float aZ) {
         additionalConnection = !additionalConnection;
         setAdditionalConnectionOption();
-        GT_Utility.sendChatToPlayer(aPlayer, "Allow connection from any side: " + additionalConnection);
+        GT_Utility.sendChatToPlayer(
+            aPlayer,
+            StatCollector.translateToLocal("GT5U.hatch.additionalConnection." + additionalConnection));
         return true;
     }
 
