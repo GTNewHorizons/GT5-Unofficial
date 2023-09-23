@@ -334,6 +334,13 @@ GT5U.machines.allow_nbt.tooltip=Allow items with NBT
 GT5U.machines.allow_nbt.tooltip.extended=§7By default, all items with NBT are blocked.
 GT5U.machines.ignore_nbt.tooltip=Ignore item NBT
 GT5U.machines.ignore_nbt.tooltip.extended=§7By default, item NBT must match.
+GT5U.machines.stocking_bus.auto_pull.tooltip=Click to toggle automatic item pulling from ME.
+GT5U.machines.stocking_bus.auto_pull.tooltip.1=Right-Click to edit minimum stack size for item pulling.
+GT5U.machines.stocking_bus.min_stack_size=Min Stack Size
+GT5U.machines.stocking_bus.auto_pull_toggle.enabled=Automatic Item Pull Enabled
+GT5U.machines.stocking_bus.auto_pull_toggle.disabled=Automatic Item Pull Disabled
+GT5U.machines.stocking_bus.saved=Saved Config to Data Stick
+GT5U.machines.stocking_bus.loaded=Loaded Config From Data Stick
 GT5U.machines.stocking_bus.failed_dump=Failed to dump items stored in the bus to ME network. Abort dismantling.
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
@@ -541,6 +548,9 @@ GT5U.waila.energy.use=Probably uses: §e%s§r EU/t (%s)
 GT5U.waila.energy.use_with_amperage=Probably uses: §e%s§r EU/t (%sA %s)
 GT5U.waila.energy.produce=Probably generates: §a%s§r EU/t (%s)
 GT5U.waila.energy.produce_with_amperage=Probably generates: §a%s§r EU/t (%sA %s)
+GT5U.waila.stocking_bus.auto_pull.enabled=Auto-Pull from ME: Enabled
+GT5U.waila.stocking_bus.auto_pull.disabled=Auto-Pull from ME: Disabled
+GT5U.waila.stocking_bus.min_stack_size=Minimum Stack Size: %s
 
 achievement.flintpick=First Tools
 achievement.flintpick.desc=Craft a flint pick
