@@ -5,7 +5,9 @@ import net.glease.ggfab.mte.MTE_LinkedInputBus;
 import net.glease.ggfab.nei.IMCForNEI;
 
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.GregTech_API;
 
 @Mod(
