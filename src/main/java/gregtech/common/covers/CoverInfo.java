@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
@@ -19,11 +20,15 @@ import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.ISerializableObject;
 
 public final class CoverInfo {
 
-    private static final String NBT_SIDE = "s", NBT_ID = "id", NBT_DATA = "d";
+    private static final String NBT_SIDE = "s", NBT_ID = "id", NBT_DATA = "d", NBT_TICK_RATE_MULTIPLIER = "trm";
+
+    // Five minutes
+    private static final int MAX_TICK_RATE = 6000;
 
     public static final CoverInfo EMPTY_INFO = new CoverInfo(ForgeDirection.UNKNOWN, null);
     private final ForgeDirection coverSide;
@@ -32,6 +37,8 @@ public final class CoverInfo {
     private ISerializableObject coverData = null;
     private final WeakReference<ICoverable> coveredTile;
     private boolean needsUpdate = false;
+
+    private int tickRateMultiplier = 1;
 
     public CoverInfo(ForgeDirection side, ICoverable aTile) {
         coverSide = side;
@@ -53,6 +60,7 @@ public final class CoverInfo {
         coverData = aNBT.hasKey(NBT_DATA) ? coverBehavior.createDataObject(aNBT.getTag(NBT_DATA))
             : coverBehavior.createDataObject();
         coveredTile = new WeakReference<>(aTile);
+        tickRateMultiplier = aNBT.hasKey(NBT_TICK_RATE_MULTIPLIER) ? aNBT.getInteger(NBT_TICK_RATE_MULTIPLIER) : 1;
     }
 
     public boolean isValid() {
@@ -62,6 +70,7 @@ public final class CoverInfo {
     public NBTTagCompound writeToNBT(NBTTagCompound aNBT) {
         aNBT.setByte(NBT_SIDE, (byte) coverSide.ordinal());
         aNBT.setInteger(NBT_ID, coverID);
+        aNBT.setInteger(NBT_TICK_RATE_MULTIPLIER, tickRateMultiplier);
         if (coverData != null) aNBT.setTag(NBT_DATA, coverData.saveDataToNBT());
 
         return aNBT;
@@ -122,7 +131,7 @@ public final class CoverInfo {
     }
 
     public int getTickRate() {
-        return getCoverBehavior().getTickRate(coverSide, coverID, coverData, coveredTile.get());
+        return getCoverBehavior().getTickRate(coverSide, coverID, coverData, coveredTile.get()) * tickRateMultiplier;
     }
 
     public ForgeDirection getSide() {
@@ -234,6 +243,37 @@ public final class CoverInfo {
             .onCoverScrewdriverClick(coverSide, coverID, coverData, coveredTile.get(), aPlayer, aX, aY, aZ);
     }
 
+    public void onCoverJackhammer(EntityPlayer aPlayer) {
+        final int stepAmount = tickRateMultiplier == 20 ? (aPlayer.isSneaking() ? 5 : 20)
+            : (tickRateMultiplier <= 20 ? 5 : 20);
+        final String units;
+        final String displayNumber;
+
+        tickRateMultiplier = clamp(stepAmount * ((aPlayer.isSneaking() ? -1 : 1) + tickRateMultiplier / stepAmount));
+
+        if (tickRateMultiplier < 20) {
+            displayNumber = GT_Utility.formatNumbers(tickRateMultiplier);
+            units = StatCollector
+                .translateToLocal(tickRateMultiplier == 1 ? "gt.time.tick.singular" : "gt.time.tick.plural");
+        } else {
+            displayNumber = GT_Utility.formatNumbers(tickRateMultiplier / 20);
+            units = StatCollector
+                .translateToLocal(tickRateMultiplier == 20 ? "gt.time.second.singular" : "gt.time.second.plural");
+        }
+
+        GT_Utility.sendChatToPlayer(
+            aPlayer,
+            StatCollector.translateToLocalFormatted("gt.cover.info.tick_rate", displayNumber, units));
+    }
+
+    public int getTickRateMultiplier() {
+        return tickRateMultiplier;
+    }
+
+    public void setTickRateMultiplier(final int tickRateMultiplier) {
+        this.tickRateMultiplier = clamp(tickRateMultiplier);
+    }
+
     public Block getFacadeBlock() {
         return getCoverBehavior().getFacadeBlock(coverSide, coverID, coverData, coveredTile.get());
     }
@@ -245,5 +285,17 @@ public final class CoverInfo {
     @NotNull
     public List<String> getAdditionalTooltip(ISerializableObject data) {
         return getCoverBehavior().getAdditionalTooltip(data);
+    }
+
+    private int clamp(int input) {
+        final int lowerBound = getCoverBehavior().getTickRate(coverSide, coverID, coverData, coveredTile.get());
+
+        if (input < lowerBound) {
+            input = lowerBound;
+        } else if (input >= MAX_TICK_RATE) {
+            input = MAX_TICK_RATE;
+        }
+
+        return input;
     }
 }

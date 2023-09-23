@@ -31,6 +31,7 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
 
     private ISerializableObject mStoredData = GregTech_API.sNoBehavior.createDataObject();
     private int mCoverType;
+    private int mTickRateMultiplier = 1;
 
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
@@ -65,6 +66,7 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
             NBTBase tData = aNBT.getTag("mCoverData");
             if (tData != null) mStoredData = tBehavior.createDataObject(tData);
             else mStoredData = GregTech_API.sNoBehavior.createDataObject();
+            mTickRateMultiplier = aNBT.hasKey("mTickRateMultiplier") ? aNBT.getInteger("mTickRateMultiplier") : 1;
         }
     }
 
@@ -72,6 +74,7 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
         aNBT.setInteger("mCoverType", mCoverType);
         if (mStoredData == null) mStoredData = GregTech_API.sNoBehavior.createDataObject();
         aNBT.setTag("mCoverData", mStoredData.saveDataToNBT());
+        aNBT.setInteger("mTickRateMultiplier", mTickRateMultiplier);
     }
 
     @SuppressWarnings("rawtypes")
@@ -116,6 +119,8 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
                     .allowsCopyPasteTool()) {
                     mStoredData = tCoverable.getComplexCoverDataAtSide(tSide);
                     mCoverType = tCoverable.getCoverIDAtSide(tSide);
+                    mTickRateMultiplier = tCoverable.getCoverInfoAtSide(tSide)
+                        .getTickRateMultiplier();
 
                     aList.add("Block Side: " + EnumChatFormatting.AQUA + tSide.name() + EnumChatFormatting.RESET);
                     aList.add(
@@ -126,16 +131,19 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
                 } else {
                     mStoredData = GregTech_API.sNoBehavior.createDataObject();
                     mCoverType = 0;
+                    mTickRateMultiplier = 1;
                     aList.add("Copy unavailable for this cover type");
                 }
             } else {
                 mStoredData = GregTech_API.sNoBehavior.createDataObject();
                 mCoverType = 0;
+                mTickRateMultiplier = 1;
                 aList.add("No Cover Found");
             }
         } else {
             mStoredData = GregTech_API.sNoBehavior.createDataObject();
             mCoverType = 0;
+            mTickRateMultiplier = 1;
             aList.add("No Cover Found");
         }
     }
@@ -155,6 +163,8 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
                 int tCoverID = tCoverable.getCoverIDAtSide(tSide);
                 if (tCoverID == mCoverType) {
                     tCoverable.setCoverDataAtSide(tSide, mStoredData);
+                    tCoverable.getCoverInfoAtSide(tSide)
+                        .setTickRateMultiplier(mTickRateMultiplier);
                     GT_Utility.sendChatToPlayer(aPlayer, "Cover Data Pasted.");
                 } else {
                     GT_Utility.sendChatToPlayer(aPlayer, "Not Matched Cover.");

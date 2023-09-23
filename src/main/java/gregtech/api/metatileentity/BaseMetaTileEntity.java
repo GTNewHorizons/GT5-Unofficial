@@ -1696,6 +1696,24 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                                 dropCover(coverSide, side, false);
                             }
                             return true;
+                        } else if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sJackhammerList)) {
+                            // Configuration of delicate electronics calls for a tool with precision and subtlety.
+                            if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
+                                final CoverInfo info = getCoverInfoAtSide(coverSide);
+                                if (info != CoverInfo.EMPTY_INFO) {
+                                    info.onCoverJackhammer(aPlayer);
+                                    GT_Utility.sendSoundToPlayers(
+                                        worldObj,
+                                        SoundResource.IC2_TOOLS_DRILL_DRILL_SOFT,
+                                        1.0F,
+                                        1,
+                                        xCoord,
+                                        yCoord,
+                                        zCoord);
+
+                                    return true;
+                                }
+                            }
                         }
                     }
                     // End item != null

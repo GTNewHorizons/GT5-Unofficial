@@ -1375,3 +1375,9 @@ gt.item.adv_sensor_card.tooltip.frequency=Frequency: §b%s
 gt.item.adv_sensor_card.error.deconstructed.1=-ERROR- Machine Deconstructed
 gt.item.adv_sensor_card.error.deconstructed.2=Place machine again to re-enable
 gt.item.adv_sensor_card.error.no_data=No data found
+
+gt.cover.info.tick_rate=Cover tick rate set to §a%s§r %s
+gt.time.tick.singular=tick
+gt.time.tick.plural=ticks
+gt.time.second.singular=second
+gt.time.second.plural=seconds
