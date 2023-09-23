@@ -16,8 +16,16 @@ import goodgenerator.items.MyMaterial;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;
 import goodgenerator.util.MyRecipeAdder;
-import gregtech.api.enums.*;
-import gregtech.api.util.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
@@ -669,8 +677,8 @@ public class RecipeLoader_02 {
                 .itemOutputs(
                         WerkstoffLoader.Tiberium.get(OrePrefixes.gem, 1),
                         WerkstoffLoader.Tiberium.get(OrePrefixes.gem, 1))
-                .outputChances(10000, 2000).fluidInputs(MyMaterial.naquadahGas.getFluidOrGas(250)).noFluidOutputs()
-                .duration(400).eut(TierEU.RECIPE_HV).addTo(sAutoclaveRecipes);
+                .outputChances(10000, 2000).fluidInputs(MyMaterial.naquadahGas.getFluidOrGas(250)).duration(400)
+                .eut(TierEU.RECIPE_HV).addTo(sAutoclaveRecipes);
 
         GT_Values.RA.addChemicalBathRecipe(
                 Materials.Firestone.getGems(1),
