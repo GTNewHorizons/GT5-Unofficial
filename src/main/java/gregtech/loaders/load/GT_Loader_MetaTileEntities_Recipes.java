@@ -5256,76 +5256,8 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             new Object[] { aTextPlate, "PhP", "BBB", 'P', OrePrefixes.plate.get(Materials.WroughtIron), 'B',
                 new ItemStack(Blocks.brick_block, 1) });
 
-        // These hull recipes are only to register recycling, hence their immediate removal afterwards.
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Hull_ULV.get(1L),
-            GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextCableHull, 'M', ItemList.Casing_ULV, 'C', OrePrefixes.cableGt01.get(Materials.Lead),
-                'H', OrePrefixes.plate.get(Materials.WroughtIron), 'P', OrePrefixes.plate.get(Materials.Wood) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Hull_LV.get(1L),
-            GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextCableHull, 'M', ItemList.Casing_LV, 'C', OrePrefixes.cableGt01.get(Materials.Tin), 'H',
-                OrePrefixes.plate.get(Materials.Steel), 'P', OrePrefixes.plate.get(Materials.WroughtIron) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Hull_MV.get(1L),
-            GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextCableHull, 'M', ItemList.Casing_MV, 'C', OrePrefixes.cableGt01.get(Materials.AnyCopper),
-                'H', OrePrefixes.plate.get(Materials.Aluminium), 'P', OrePrefixes.plate.get(Materials.WroughtIron) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Hull_HV.get(1L),
-            GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextCableHull, 'M', ItemList.Casing_HV, 'C', OrePrefixes.cableGt01.get(Materials.Gold), 'H',
-                OrePrefixes.plate.get(Materials.StainlessSteel), 'P', OrePrefixes.plate.get(Materials.Plastic) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Hull_EV.get(1L),
-            GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextCableHull, 'M', ItemList.Casing_EV, 'C', OrePrefixes.cableGt01.get(Materials.Aluminium),
-                'H', OrePrefixes.plate.get(Materials.Titanium), 'P', OrePrefixes.plate.get(Materials.Plastic) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Hull_IV.get(1L),
-            GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextCableHull, 'M', ItemList.Casing_IV, 'C', OrePrefixes.cableGt01.get(Materials.Tungsten),
-                'H', OrePrefixes.plate.get(Materials.TungstenSteel), 'P',
-                OrePrefixes.plate.get(Materials.Polytetrafluoroethylene) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Hull_LuV.get(1L),
-            GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextCableHull, 'M', ItemList.Casing_LuV, 'C',
-                OrePrefixes.cableGt01.get(Materials.VanadiumGallium), 'H',
-                OrePrefixes.plate.get(ExternalMaterials.getRhodiumPlatedPalladium()), 'P',
-                OrePrefixes.plate.get(Materials.Polytetrafluoroethylene) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Hull_ZPM.get(1L),
-            GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextCableHull, 'M', ItemList.Casing_ZPM, 'C', OrePrefixes.cableGt02.get(Materials.Naquadah),
-                'H', OrePrefixes.plate.get(Materials.Iridium), 'P',
-                OrePrefixes.plate.get(Materials.Polybenzimidazole) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Hull_UV.get(1L),
-            GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextCableHull, 'M', ItemList.Casing_UV, 'C',
-                OrePrefixes.cableGt04.get(Materials.NaquadahAlloy), 'H', OrePrefixes.plate.get(Materials.Osmium), 'P',
-                OrePrefixes.plate.get(Materials.Polybenzimidazole) });
-        GT_ModHandler.addCraftingRecipe(
-            ItemList.Hull_MAX.get(1L),
-            GT_ModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextCableHull, 'M', ItemList.Casing_MAX, 'C',
-                OrePrefixes.wireGt04.get(Materials.SuperconductorUV), 'H', OrePrefixes.plate.get(Materials.Neutronium),
-                'P', OrePrefixes.plate.get(Materials.Polybenzimidazole) });
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_ULV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_LV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_MV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_HV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_EV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_IV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_LuV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_ZPM.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_UV.get(1L));
-        GT_ModHandler.removeRecipeByOutput(ItemList.Hull_MAX.get(1L));
-
-        // These are the actual hull crafting recipes. (They can't be used for recycling as that would create an exploit
-        // loop with the assembler recipes.)
+        // hull crafting recipes. (They can't be used for recycling as that would create an exploit loop with the
+        // assembler recipes.)
         if (GT_Mod.gregtechproxy.mHardMachineCasings) {
             GT_ModHandler.addCraftingRecipe(
                 ItemList.Hull_ULV.get(1L),
@@ -5441,6 +5373,58 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
                 new Object[] { aTextCableHull, 'M', ItemList.Casing_MAX, 'C',
                     OrePrefixes.wireGt04.get(Materials.SuperconductorUV) });
         }
+        // hull recycling data
+        GT_OreDictUnificator.addItemDataFromInputs(
+            ItemList.Hull_ULV.get(1L),
+            ItemList.Casing_ULV.get(1),
+            OrePrefixes.cableGt01.get(Materials.Lead),
+            OrePrefixes.cableGt01.get(Materials.Lead));
+        GT_OreDictUnificator.addItemDataFromInputs(
+            ItemList.Hull_LV.get(1L),
+            ItemList.Casing_LV.get(1),
+            OrePrefixes.cableGt01.get(Materials.Tin),
+            OrePrefixes.cableGt01.get(Materials.Tin));
+        GT_OreDictUnificator.addItemDataFromInputs(
+            ItemList.Hull_MV.get(1L),
+            ItemList.Casing_MV.get(1),
+            OrePrefixes.cableGt01.get(Materials.AnyCopper),
+            OrePrefixes.cableGt01.get(Materials.AnyCopper));
+        GT_OreDictUnificator.addItemDataFromInputs(
+            ItemList.Hull_HV.get(1L),
+            ItemList.Casing_HV.get(1),
+            OrePrefixes.cableGt01.get(Materials.Gold),
+            OrePrefixes.cableGt01.get(Materials.Gold));
+        GT_OreDictUnificator.addItemDataFromInputs(
+            ItemList.Hull_EV.get(1L),
+            ItemList.Casing_EV.get(1),
+            OrePrefixes.cableGt01.get(Materials.Aluminium),
+            OrePrefixes.cableGt01.get(Materials.Aluminium));
+        GT_OreDictUnificator.addItemDataFromInputs(
+            ItemList.Hull_IV.get(1L),
+            ItemList.Casing_IV.get(1),
+            OrePrefixes.cableGt01.get(Materials.Tungsten),
+            OrePrefixes.cableGt01.get(Materials.Tungsten));
+        GT_OreDictUnificator.addItemDataFromInputs(
+            ItemList.Hull_LuV.get(1L),
+            ItemList.Casing_LuV.get(1),
+            OrePrefixes.cableGt01.get(Materials.VanadiumGallium),
+            OrePrefixes.cableGt01.get(Materials.VanadiumGallium));
+        GT_OreDictUnificator.addItemDataFromInputs(
+            ItemList.Hull_ZPM.get(1L),
+            ItemList.Casing_ZPM.get(1),
+            OrePrefixes.cableGt02.get(Materials.Naquadah),
+            OrePrefixes.cableGt02.get(Materials.Naquadah));
+        GT_OreDictUnificator.addItemDataFromInputs(
+            ItemList.Hull_UV.get(1L),
+            ItemList.Casing_UV.get(1),
+            OrePrefixes.cableGt04.get(Materials.NaquadahAlloy),
+            OrePrefixes.cableGt04.get(Materials.NaquadahAlloy));
+        GT_OreDictUnificator.addItemDataFromInputs(
+            ItemList.Hull_MAX.get(1L),
+            ItemList.Casing_MAX.get(1),
+            OrePrefixes.cableGt04.get(Materials.SuperconductorUV),
+            OrePrefixes.cableGt04.get(Materials.SuperconductorUV));
+
         GT_ModHandler.addCraftingRecipe(
             ItemList.Transformer_LV_ULV.get(1L),
             bitsd,
@@ -5567,6 +5551,50 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             bitsd,
             new Object[] { "MX ", "PR ", 'M', ItemList.Hull_MV, 'P', OrePrefixes.pipeMedium.get(Materials.Steel), 'R',
                 OrePrefixes.rotor.get(Materials.Steel), 'X', ItemList.Electric_Motor_MV });
+
+        // recycling data for the other mufflers, recipes are in assembler
+        GT_OreDictUnificator.addItemDataFromInputs(
+            ItemList.Hatch_Muffler_HV.get(1L),
+            ItemList.Hull_HV.get(1),
+            OrePrefixes.pipeLarge.get(Materials.StainlessSteel),
+            OrePrefixes.rotor.get(Materials.StainlessSteel),
+            ItemList.Electric_Motor_HV.get(1));
+        GT_OreDictUnificator.addItemDataFromInputs(
+            ItemList.Hatch_Muffler_EV.get(1L),
+            ItemList.Hull_EV.get(1),
+            OrePrefixes.pipeLarge.get(Materials.Titanium),
+            OrePrefixes.rotor.get(Materials.Titanium),
+            ItemList.Electric_Motor_EV.get(1));
+        GT_OreDictUnificator.addItemDataFromInputs(
+            ItemList.Hatch_Muffler_IV.get(1L),
+            ItemList.Hull_IV.get(1),
+            OrePrefixes.pipeLarge.get(Materials.TungstenSteel),
+            OrePrefixes.rotor.get(Materials.TungstenSteel),
+            ItemList.Electric_Motor_IV.get(1));
+        GT_OreDictUnificator.addItemDataFromInputs(
+            ItemList.Hatch_Muffler_LuV.get(1L),
+            ItemList.Hull_LuV.get(1),
+            OrePrefixes.pipeLarge.get(Materials.Enderium),
+            OrePrefixes.rotor.get(Materials.Enderium),
+            ItemList.Electric_Motor_LuV.get(1));
+        GT_OreDictUnificator.addItemDataFromInputs(
+            ItemList.Hatch_Muffler_ZPM.get(1L),
+            ItemList.Hull_ZPM.get(1),
+            OrePrefixes.pipeLarge.get(Materials.Naquadah),
+            OrePrefixes.rotor.get(Materials.NaquadahAlloy),
+            ItemList.Electric_Motor_ZPM.get(1));
+        GT_OreDictUnificator.addItemDataFromInputs(
+            ItemList.Hatch_Muffler_UV.get(1L),
+            ItemList.Hull_UV.get(1),
+            OrePrefixes.pipeLarge.get(Materials.NetherStar),
+            OrePrefixes.rotor.get(Materials.Neutronium),
+            ItemList.Electric_Motor_UV.get(1));
+        GT_OreDictUnificator.addItemDataFromInputs(
+            ItemList.Hatch_Muffler_MAX.get(1L),
+            ItemList.Hull_MAX.get(1),
+            OrePrefixes.pipeLarge.get(Materials.MysteriousCrystal),
+            OrePrefixes.rotor.get(Materials.CosmicNeutronium),
+            ItemList.Electric_Motor_UHV.get(1));
 
         GT_ModHandler.addCraftingRecipe(
             ItemList.Machine_Bronze_Boiler.get(1L),
