@@ -15,6 +15,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -248,7 +249,7 @@ public class GT_MetaTileEntity_AssemblyLine
             tStack = new int[aItemCount];
             for (int i = 0; i < aItemCount; i++) {
                 GT_MetaTileEntity_Hatch_InputBus tInputBus = mInputBusses.get(i);
-                if (!isValidMetaTileEntity(tInputBus)) {
+                if (!tInputBus.isValid()) {
                     continue nextDataStick;
                 }
                 ItemStack tSlotStack = tInputBus.getStackInSlot(0);
@@ -266,7 +267,8 @@ public class GT_MetaTileEntity_AssemblyLine
             tFluids = new int[aFluidCount];
             tFluidSlot = new int[aFluidCount];
             for (int i = 0; i < aFluidCount; i++) {
-                if (!isValidMetaTileEntity(mInputHatches.get(i))) {
+                if (!mInputHatches.get(i)
+                    .isValid()) {
                     continue nextDataStick;
                 } else {
                     if (mInputHatches.get(i) instanceof GT_MetaTileEntity_Hatch_MultiInput tMultiHatch) {
@@ -410,19 +412,17 @@ public class GT_MetaTileEntity_AssemblyLine
         if (GT_Utility.isStackValid(mInventory[1]) && isCorrectDataItem(mInventory[1], state)) {
             rList.add(mInventory[1]);
         }
-        for (GT_MetaTileEntity_Hatch_DataAccess tHatch : mDataAccessHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
-                for (int i = 0; i < tHatch.getBaseMetaTileEntity()
-                    .getSizeInventory(); i++) {
-                    if (tHatch.getBaseMetaTileEntity()
-                        .getStackInSlot(i) != null && isCorrectDataItem(
-                            tHatch.getBaseMetaTileEntity()
-                                .getStackInSlot(i),
-                            state))
-                        rList.add(
-                            tHatch.getBaseMetaTileEntity()
-                                .getStackInSlot(i));
-                }
+        for (GT_MetaTileEntity_Hatch_DataAccess tHatch : filterValidMTEs(mDataAccessHatches)) {
+            for (int i = 0; i < tHatch.getBaseMetaTileEntity()
+                .getSizeInventory(); i++) {
+                if (tHatch.getBaseMetaTileEntity()
+                    .getStackInSlot(i) != null && isCorrectDataItem(
+                        tHatch.getBaseMetaTileEntity()
+                            .getStackInSlot(i),
+                        state))
+                    rList.add(
+                        tHatch.getBaseMetaTileEntity()
+                            .getStackInSlot(i));
             }
         }
         return rList;

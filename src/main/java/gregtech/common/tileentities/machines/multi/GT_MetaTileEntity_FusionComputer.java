@@ -11,6 +11,7 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.filterByMTETier;
+import static gregtech.api.util.GT_Utility.filterValidMTEs;
 
 import java.util.Set;
 
@@ -384,15 +385,14 @@ public abstract class GT_MetaTileEntity_FusionComputer
                 if (mMachine) {
                     this.mEUStore = aBaseMetaTileEntity.getStoredEU();
                     if (this.mEnergyHatches != null) {
-                        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
-                            if (isValidMetaTileEntity(tHatch)) {
-                                long energyToMove = GT_Values.V[tier()] / 16;
-                                if (aBaseMetaTileEntity.getStoredEU() + energyToMove < maxEUStore()
-                                    && tHatch.getBaseMetaTileEntity()
-                                        .decreaseStoredEnergyUnits(energyToMove, false)) {
-                                    aBaseMetaTileEntity.increaseStoredEnergyUnits(energyToMove, true);
-                                }
+                        for (GT_MetaTileEntity_Hatch_Energy tHatch : filterValidMTEs(mEnergyHatches)) {
+                            long energyToMove = GT_Values.V[tier()] / 16;
+                            if (aBaseMetaTileEntity.getStoredEU() + energyToMove < maxEUStore()
+                                && tHatch.getBaseMetaTileEntity()
+                                    .decreaseStoredEnergyUnits(energyToMove, false)) {
+                                aBaseMetaTileEntity.increaseStoredEnergyUnits(energyToMove, true);
                             }
+                        }
                     }
                     if (this.mEUStore <= 0 && mMaxProgresstime > 0) {
                         criticalStopMachine();
