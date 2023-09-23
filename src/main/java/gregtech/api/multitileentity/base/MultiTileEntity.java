@@ -1,7 +1,6 @@
 package gregtech.api.multitileentity.base;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_Values.NBT;
 import static gregtech.api.enums.GT_Values.VALID_SIDES;
 
 import java.io.IOException;
@@ -37,8 +36,12 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
