@@ -17,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -325,6 +326,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
 
     private String customName = null;
     private boolean supportFluids;
+    private boolean additionalConnection = false;
 
     public GT_MetaTileEntity_Hatch_CraftingInput_ME(int aID, String aName, String aNameRegional,
         boolean supportFluids) {
@@ -336,7 +338,8 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
             MAX_INV_COUNT,
             new String[] { "Advanced item input for Multiblocks", "Processes patterns directly from ME",
                 supportFluids ? "It supports patterns including fluids"
-                    : "It does not support patterns including fluids" });
+                    : "It does not support patterns including fluids",
+                "Change ME connection behavior by right-clicking with wire cutter" });
         disableSort = true;
         this.supportFluids = supportFluids;
     }
@@ -389,14 +392,33 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         return isOutputFacing(forgeDirection) ? AECableType.SMART : AECableType.NONE;
     }
 
+    public void setAdditionalConnectionOption() {
+        if (additionalConnection) {
+            gridProxy.setValidSides(EnumSet.complementOf(EnumSet.of(ForgeDirection.UNKNOWN)));
+        } else {
+            gridProxy.setValidSides(EnumSet.of(getBaseMetaTileEntity().getFrontFacing()));
+        }
+    }
+
     @Override
     public void securityBreak() {}
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ) {
+        additionalConnection = !additionalConnection;
+        setAdditionalConnectionOption();
+        aPlayer.addChatComponentMessage(
+            new ChatComponentTranslation("GT5U.hatch.additionalConnection." + additionalConnection));
+        return true;
+    }
 
     @Override
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
             gridProxy = new AENetworkProxy(this, "proxy", ItemList.Hatch_CraftingInput_Bus_ME.get(1), true);
             gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
+            setAdditionalConnectionOption();
             if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
                 getBaseMetaTileEntity().getWorld()
                     .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
@@ -484,6 +506,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
         aNBT.setTag("internalInventory", internalInventoryNBT);
         if (customName != null) aNBT.setString("customName", customName);
+        aNBT.setBoolean("additionalConnection", additionalConnection);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -533,6 +556,7 @@ public class GT_MetaTileEntity_Hatch_CraftingInput_ME extends GT_MetaTileEntity_
         }
 
         if (aNBT.hasKey("customName")) customName = aNBT.getString("customName");
+        additionalConnection = aNBT.getBoolean("additionalConnection");
 
         getProxy().readFromNBT(aNBT);
     }
