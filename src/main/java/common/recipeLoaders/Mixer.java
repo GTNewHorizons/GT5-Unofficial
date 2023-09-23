@@ -29,7 +29,7 @@ public class Mixer implements Runnable {
                         Items.ZirconiaDust.getOreDictedItemStack(5),
                         GT_Utility.getIntegratedCircuit(6))
                 .itemOutputs(craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 6))
-                .noFluidInputs().noFluidOutputs().duration(20 * SECONDS).eut(96).addTo(sMixerRecipes);
+                .duration(20 * SECONDS).eut(96).addTo(sMixerRecipes);
 
         // GDC Ceramic Dust
         GT_Values.RA.stdBuilder().itemInputs(
@@ -38,6 +38,6 @@ public class Mixer implements Runnable {
                 craftingItem.getStackOfAmountFromDamage(Items.CeriaDust.getMetaID(), 9),
                 GT_Utility.getIntegratedCircuit(6))
                 .itemOutputs(craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicDust.getMetaID(), 10))
-                .noFluidInputs().noFluidOutputs().duration(20 * SECONDS).eut(TierEU.RECIPE_EV).addTo(sMixerRecipes);
+                .duration(20 * SECONDS).eut(TierEU.RECIPE_EV).addTo(sMixerRecipes);
     }
 }

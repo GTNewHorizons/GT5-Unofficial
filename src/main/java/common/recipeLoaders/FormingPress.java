@@ -22,6 +22,6 @@ public class FormingPress implements Runnable {
                         craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicDust.getMetaID(), 10),
                         ItemList.Shape_Mold_Plate.get(0))
                 .itemOutputs(craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicPlate.getMetaID(), 1))
-                .noFluidInputs().noFluidOutputs().duration(40 * SECONDS).eut(TierEU.RECIPE_HV).addTo(sPressRecipes);
+                .duration(40 * SECONDS).eut(TierEU.RECIPE_HV).addTo(sPressRecipes);
     }
 }
