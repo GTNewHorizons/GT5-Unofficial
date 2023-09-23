@@ -1,7 +1,8 @@
 package gregtech.api.multitileentity.machine;
 
 import static com.google.common.primitives.Ints.saturatedCast;
-import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.GT_Values.B;
+import static gregtech.api.enums.GT_Values.VN;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,9 +27,13 @@ import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
+import gregtech.api.enums.Mods;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
+import gregtech.api.enums.TickTime;
 import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.logic.PollutionLogic;

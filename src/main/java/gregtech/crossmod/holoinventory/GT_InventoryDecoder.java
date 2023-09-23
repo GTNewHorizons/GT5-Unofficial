@@ -1,6 +1,6 @@
 package gregtech.crossmod.holoinventory;
 
-import static net.dries007.holoInventory.util.NBTKeys.*;
+import static net.dries007.holoInventory.util.NBTKeys.NBT_KEY_COUNT;
 
 import java.util.List;
 

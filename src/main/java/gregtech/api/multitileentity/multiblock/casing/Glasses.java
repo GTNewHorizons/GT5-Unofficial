@@ -2,7 +2,10 @@ package gregtech.api.multitileentity.multiblock.casing;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUnlocalizedName;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static gregtech.api.enums.Mods.*;
+import static gregtech.api.enums.Mods.BartWorks;
+import static gregtech.api.enums.Mods.Botania;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.enums.Mods.Thaumcraft;
 
 import com.gtnewhorizon.structurelib.structure.IStructureElementChain;
 
