@@ -5568,6 +5568,53 @@ public class GT_Loader_MetaTileEntities_Recipes implements Runnable {
             new Object[] { "MX ", "PR ", 'M', ItemList.Hull_MV, 'P', OrePrefixes.pipeMedium.get(Materials.Steel), 'R',
                 OrePrefixes.rotor.get(Materials.Steel), 'X', ItemList.Electric_Motor_MV });
 
+        // The higher tier muffler recipes are for recycling only, hence their immediate removal afterwards. The actual
+        // recipes are in the assembler.
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hatch_Muffler_HV.get(1L),
+            GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { "MX ", "PR ", 'M', ItemList.Hull_HV, 'P',
+                OrePrefixes.pipeLarge.get(Materials.StainlessSteel), 'R',
+                OrePrefixes.rotor.get(Materials.StainlessSteel), 'X', ItemList.Electric_Motor_HV });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hatch_Muffler_EV.get(1L),
+            GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { "MX ", "PR ", 'M', ItemList.Hull_EV, 'P', OrePrefixes.pipeLarge.get(Materials.Titanium), 'R',
+                OrePrefixes.rotor.get(Materials.Titanium), 'X', ItemList.Electric_Motor_EV });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hatch_Muffler_IV.get(1L),
+            GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { "MX ", "PR ", 'M', ItemList.Hull_IV, 'P', OrePrefixes.pipeLarge.get(Materials.TungstenSteel),
+                'R', OrePrefixes.rotor.get(Materials.TungstenSteel), 'X', ItemList.Electric_Motor_IV });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hatch_Muffler_LuV.get(1L),
+            GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { "MX ", "PR ", 'M', ItemList.Hull_LuV, 'P', OrePrefixes.pipeLarge.get(Materials.Enderium),
+                'R', OrePrefixes.rotor.get(Materials.Enderium), 'X', ItemList.Electric_Motor_LuV });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hatch_Muffler_ZPM.get(1L),
+            GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { "MX ", "PR ", 'M', ItemList.Hull_ZPM, 'P', OrePrefixes.pipeLarge.get(Materials.Naquadah),
+                'R', OrePrefixes.rotor.get(Materials.NaquadahAlloy), 'X', ItemList.Electric_Motor_ZPM });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hatch_Muffler_UV.get(1L),
+            GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { "MX ", "PR ", 'M', ItemList.Hull_UV, 'P', OrePrefixes.pipeLarge.get(Materials.NetherStar),
+                'R', OrePrefixes.rotor.get(Materials.Neutronium), 'X', ItemList.Electric_Motor_UV });
+        GT_ModHandler.addCraftingRecipe(
+            ItemList.Hatch_Muffler_MAX.get(1L),
+            GT_ModHandler.RecipeBits.REVERSIBLE,
+            new Object[] { "MX ", "PR ", 'M', ItemList.Hull_MAX, 'P',
+                OrePrefixes.pipeLarge.get(Materials.MysteriousCrystal), 'R',
+                OrePrefixes.rotor.get(Materials.CosmicNeutronium), 'X', ItemList.Electric_Motor_UHV });
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hatch_Muffler_HV.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hatch_Muffler_EV.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hatch_Muffler_IV.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hatch_Muffler_LuV.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hatch_Muffler_ZPM.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hatch_Muffler_UV.get(1L));
+        GT_ModHandler.removeRecipeByOutput(ItemList.Hatch_Muffler_MAX.get(1L));
+
         GT_ModHandler.addCraftingRecipe(
             ItemList.Machine_Bronze_Boiler.get(1L),
             bitsd,

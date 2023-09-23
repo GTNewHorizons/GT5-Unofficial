@@ -689,6 +689,8 @@ public class AssemblerRecipes implements Runnable {
             }
         }
 
+        // Mufflers. When changing make sure to change the recycling too.
+
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_LV.get(1),
