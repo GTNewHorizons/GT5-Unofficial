@@ -37,38 +37,37 @@ public class BW_MetaGeneratedBlock_Item extends BW_ItemBlocks {
         super(par1);
     }
 
+    @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
             float hitX, float hitY, float hitZ) {
         return false;
     }
 
+    @Override
     public String getUnlocalizedName(ItemStack aStack) {
         return this.field_150939_a.getUnlocalizedName() + "." + this.getDamage(aStack);
     }
 
+    @Override
     public String getItemStackDisplayName(ItemStack aStack) {
         Block block = Block.getBlockFromItem(aStack.getItem());
-        if (block != null) {
-            if (block instanceof BW_MetaGenerated_Blocks) {
-                int aMetaData = aStack.getItemDamage();
-                Werkstoff werkstoff = werkstoffHashMap.get((short) aMetaData);
-                if (werkstoff == null) werkstoff = Werkstoff.default_null_Werkstoff;
-                return ((BW_MetaGenerated_Blocks) block).blockTypeLocalizedName
-                        .replace("%material", werkstoff.getLocalizedName());
-            }
+        if (block instanceof BW_MetaGenerated_Blocks metaBlock) {
+            int aMetaData = aStack.getItemDamage();
+            Werkstoff werkstoff = werkstoffHashMap.get((short) aMetaData);
+            if (werkstoff == null) werkstoff = Werkstoff.default_null_Werkstoff;
+            return metaBlock.blockTypeLocalizedName.replace("%material", werkstoff.getLocalizedName());
         }
-        return GT_LanguageManager.getTranslation(getUnlocalizedName(aStack) + ".name");
+        return GT_LanguageManager.getTranslation(this.getUnlocalizedName(aStack) + ".name");
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings("unchecked")
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         if (!GT_Utility.isStackValid(aStack) || aPlayer == null || aStack.getItemDamage() <= 0) {
             return;
         }
         if (aList == null) {
-            aList = new ArrayList<String>();
+            aList = new ArrayList<>();
         }
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) aStack.getItemDamage());
         if (werkstoff != null) {
@@ -88,6 +87,7 @@ public class BW_MetaGeneratedBlock_Item extends BW_ItemBlocks {
         }
     }
 
+    @Override
     public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side,
             float hitX, float hitY, float hitZ, int aMeta) {
         short tDamage = (short) this.getDamage(aStack);

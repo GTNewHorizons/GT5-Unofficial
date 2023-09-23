@@ -25,7 +25,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 
-@SuppressWarnings({ "unused", "RedundantSuppression" })
 public class TT_TileEntity_ManualTrafo extends GT_TileEntity_ManualTrafo {
 
     ArrayList<GT_MetaTileEntity_Hatch_EnergyMulti> mTTEnergyHatches = new ArrayList<>();
@@ -39,29 +38,28 @@ public class TT_TileEntity_ManualTrafo extends GT_TileEntity_ManualTrafo {
         super(aName);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
         return new TT_TileEntity_ManualTrafo(this.mName);
     }
 
+    @Override
     public boolean addEnergyOutput(long aEU) {
         if (aEU <= 0L) {
             return true;
-        } else {
-            return mTTDynamos.size() > 0
-                    || this.mDynamoHatches.size() > 0 && this.addEnergyOutputMultipleDynamos(aEU, true);
         }
+        return this.mTTDynamos.size() > 0
+                || this.mDynamoHatches.size() > 0 && this.addEnergyOutputMultipleDynamos(aEU, true);
     }
 
+    @Override
     public boolean addEnergyOutputMultipleDynamos(long aEU, boolean aAllowMixedVoltageDynamos) {
         int injected = 0;
         long totalOutput = 0L;
         long aFirstVoltageFound = -1L;
         boolean aFoundMixedDynamos = false;
-        Iterator<GT_MetaTileEntity_Hatch_Dynamo> var10 = this.mDynamoHatches.iterator();
-
         long aVoltage;
-        while (var10.hasNext()) {
-            GT_MetaTileEntity_Hatch_Dynamo aDynamo = var10.next();
+        for (GT_MetaTileEntity_Hatch_Dynamo aDynamo : this.mDynamoHatches) {
             if (aDynamo == null) {
                 return false;
             }
@@ -82,38 +80,38 @@ public class TT_TileEntity_ManualTrafo extends GT_TileEntity_ManualTrafo {
         if (totalOutput < aEU || aFoundMixedDynamos && !aAllowMixedVoltageDynamos) {
             this.explodeMultiblock();
             return false;
-        } else {
-            Iterator<GT_MetaTileEntity_Hatch_Dynamo> var17 = this.mDynamoHatches.iterator();
+        }
+        Iterator<GT_MetaTileEntity_Hatch_Dynamo> var17 = this.mDynamoHatches.iterator();
 
-            while (true) {
-                GT_MetaTileEntity_Hatch_Dynamo aDynamo;
-                do {
-                    if (!var17.hasNext()) {
-                        return injected > 0;
-                    }
-
-                    aDynamo = var17.next();
-                } while (!isValidMetaTileEntity(aDynamo));
-
-                long leftToInject = aEU - (long) injected;
-                aVoltage = aDynamo.maxEUOutput();
-                int aAmpsToInject = (int) (leftToInject / aVoltage);
-                int aRemainder = (int) (leftToInject - (long) aAmpsToInject * aVoltage);
-                int ampsOnCurrentHatch = (int) Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
-
-                for (int i = 0; i < ampsOnCurrentHatch; ++i) {
-                    aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(aVoltage, false);
+        while (true) {
+            GT_MetaTileEntity_Hatch_Dynamo aDynamo;
+            do {
+                if (!var17.hasNext()) {
+                    return injected > 0;
                 }
 
-                injected = (int) ((long) injected + aVoltage * (long) ampsOnCurrentHatch);
-                if (aRemainder > 0 && (long) ampsOnCurrentHatch < aDynamo.maxAmperesOut()) {
-                    aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(aRemainder, false);
-                    injected += aRemainder;
-                }
+                aDynamo = var17.next();
+            } while (!isValidMetaTileEntity(aDynamo));
+
+            long leftToInject = aEU - injected;
+            aVoltage = aDynamo.maxEUOutput();
+            int aAmpsToInject = (int) (leftToInject / aVoltage);
+            int aRemainder = (int) (leftToInject - aAmpsToInject * aVoltage);
+            int ampsOnCurrentHatch = (int) Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
+
+            for (int i = 0; i < ampsOnCurrentHatch; ++i) {
+                aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(aVoltage, false);
+            }
+
+            injected = (int) (injected + aVoltage * ampsOnCurrentHatch);
+            if (aRemainder > 0 && ampsOnCurrentHatch < aDynamo.maxAmperesOut()) {
+                aDynamo.getBaseMetaTileEntity().increaseStoredEnergyUnits(aRemainder, false);
+                injected += aRemainder;
             }
         }
     }
 
+    @Override
     public boolean drainEnergyInput(long aEU) {
         if (aEU > 0L) {
             {

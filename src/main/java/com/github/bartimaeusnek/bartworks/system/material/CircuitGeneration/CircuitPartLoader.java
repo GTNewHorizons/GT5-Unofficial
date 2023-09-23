@@ -148,7 +148,7 @@ public class CircuitPartLoader implements Runnable {
             ArrayList<String> toolTip = new ArrayList<>();
             if (FMLCommonHandler.instance().getEffectiveSide().isClient())
                 single.getItem().addInformation(single.get(1).copy(), null, toolTip, true);
-            String tt = (toolTip.size() > 0 ? toolTip.get(0) : "");
+            String tt = toolTip.size() > 0 ? toolTip.get(0) : "";
             // tt += "Internal Name = "+single;
             String localised = GT_LanguageManager
                     .getTranslation(GT_LanguageManager.getTranslateableItemStackName(itemStack));

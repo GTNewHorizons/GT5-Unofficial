@@ -139,7 +139,7 @@ import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
 import ic2.api.recipe.Recipes;
 
-@SuppressWarnings({ "unchecked", "deprecation" })
+@SuppressWarnings("deprecation")
 public class WerkstoffLoader {
 
     private WerkstoffLoader() {}
@@ -169,7 +169,7 @@ public class WerkstoffLoader {
         } catch (NullPointerException | IllegalArgumentException ignored) {}
 
         // add tiberium
-        Element t = EnumUtils.createNewElement("Tr", 123L, 203L, 0L, -1L, null, "Tiberium", false);
+        EnumUtils.createNewElement("Tr", 123L, 203L, 0L, -1L, null, "Tiberium", false);
 
         bottle.mDefaultStackSize = 1;
         Werkstoff.GenerationFeatures.initPrefixLogic();
@@ -1440,7 +1440,7 @@ public class WerkstoffLoader {
             if (ret != null) return ret;
         }
         if (orePrefixes == ore) return new ItemStack(WerkstoffLoader.BWOres, amount, werkstoff.getmID());
-        else if (orePrefixes == oreSmall) return new ItemStack(WerkstoffLoader.BWSmallOres, amount, werkstoff.getmID());
+        if (orePrefixes == oreSmall) return new ItemStack(WerkstoffLoader.BWSmallOres, amount, werkstoff.getmID());
         else if (orePrefixes == block) return new ItemStack(WerkstoffLoader.BWBlocks, amount, werkstoff.getmID());
         else if (orePrefixes == OrePrefixes.blockCasing)
             return new ItemStack(WerkstoffLoader.BWBlockCasings, amount, werkstoff.getmID());
@@ -1453,7 +1453,7 @@ public class WerkstoffLoader {
     public static ItemStack getCorrespondingItemStack(OrePrefixes orePrefixes, Werkstoff werkstoff, int amount) {
         ItemStack stack = getCorrespondingItemStackUnsafe(orePrefixes, werkstoff, amount);
         if (stack != null) return stack;
-        else MainMod.LOGGER.catching(
+        MainMod.LOGGER.catching(
                 Level.ERROR,
                 new Exception(
                         "NO SUCH ITEM! " + orePrefixes
@@ -1478,9 +1478,9 @@ public class WerkstoffLoader {
         MainMod.LOGGER.info(
                 "Making Meta Items for BW Materials took " + (timepost - timepre)
                         + "ns/"
-                        + ((timepost - timepre) / 1000000)
+                        + (timepost - timepre) / 1000000
                         + "ms/"
-                        + ((timepost - timepre) / 1000000000)
+                        + (timepost - timepre) / 1000000000
                         + "s!");
     }
 
@@ -1491,12 +1491,12 @@ public class WerkstoffLoader {
             ProgressManager.ProgressBar progressBar = ProgressManager
                     .push("Register BW Materials", Werkstoff.werkstoffHashSet.size() + 1);
             DebugLog.log("Loading Recipes" + (System.nanoTime() - timepre));
-            Integer[] clsArr = new Integer[0];
+            Integer[] clsArr = {};
             int size = 0;
             if (BetterLoadingScreen.isModLoaded()) clsArr = CLSCompat.initCls();
 
-            IWerkstoffRunnable[] werkstoffRunnables = new IWerkstoffRunnable[] { new ToolLoader(), new DustLoader(),
-                    new GemLoader(), new SimpleMetalLoader(), new CasingLoader(), new AspectLoader(), new OreLoader(),
+            IWerkstoffRunnable[] werkstoffRunnables = { new ToolLoader(), new DustLoader(), new GemLoader(),
+                    new SimpleMetalLoader(), new CasingLoader(), new AspectLoader(), new OreLoader(),
                     new CrushedLoader(), new CraftingMaterialLoader(), new CellLoader(), new MoltenCellLoader(),
                     new MultipleMetalLoader(), new MetalLoader(), new BlockLoader() };
 
@@ -1536,14 +1536,15 @@ public class WerkstoffLoader {
             MainMod.LOGGER.info(
                     "Loading Processing Recipes for BW Materials took " + (timepost - timepre)
                             + "ns/"
-                            + ((timepost - timepre) / 1000000)
+                            + (timepost - timepre) / 1000000
                             + "ms/"
-                            + ((timepost - timepre) / 1000000000)
+                            + (timepost - timepre) / 1000000000
                             + "s!");
             registered = true;
         }
     }
 
+    @SuppressWarnings("unchecked")
     private static void addSubTags() {
         WerkstoffLoader.CubicZirconia.getStats().setDurOverride(Materials.Diamond.mDurability);
         WerkstoffLoader.HDCS.getStats().setSpeedOverride(Materials.HSSS.mToolSpeed);
@@ -1590,7 +1591,8 @@ public class WerkstoffLoader {
                 if (pair.getKey() instanceof Materials && pair.getKey() == Materials.Neodymium) {
                     W.add(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM);
                     break;
-                } else if (pair.getKey() instanceof Materials && pair.getKey() == Materials.Iron) {
+                }
+                if (pair.getKey() instanceof Materials && pair.getKey() == Materials.Iron) {
                     W.add(SubTag.ELECTROMAGNETIC_SEPERATION_IRON);
                     break;
                 } else if (pair.getKey() instanceof Materials && pair.getKey() == Materials.Gold) {
@@ -1649,12 +1651,13 @@ public class WerkstoffLoader {
                     && (werkstoff.getGenerationFeatures().toGenerate & p.mMaterialGenerationBits) != 0
                     && OreDictHandler.getItemStack(werkstoff.getDefaultName(), p, 1) != null) {
                         DebugLog.log(
-                                "Found: " + (p + werkstoff.getVarName())
+                                "Found: " + p
+                                        + werkstoff.getVarName()
                                         + " in GT material system, disable and reroute my Items to that, also add a Tooltip.");
                         werkstoff.getGenerationFeatures().setBlacklist(p);
                     }
-            WerkstoffLoader.toGenerateGlobal = (WerkstoffLoader.toGenerateGlobal
-                    | werkstoff.getGenerationFeatures().toGenerate);
+            WerkstoffLoader.toGenerateGlobal = WerkstoffLoader.toGenerateGlobal
+                    | werkstoff.getGenerationFeatures().toGenerate;
         }
         DebugLog.log("GlobalGeneration: " + WerkstoffLoader.toGenerateGlobal);
         if ((WerkstoffLoader.toGenerateGlobal & 0b1) != 0) {
@@ -1781,8 +1784,8 @@ public class WerkstoffLoader {
     }
 
     private static void runGTItemDataRegistrator() {
-        IWerkstoffRunnable[] registrations = new IWerkstoffRunnable[] { new BridgeMaterialsLoader(),
-                new AssociationLoader(), new CasingRegistrator() };
+        IWerkstoffRunnable[] registrations = { new BridgeMaterialsLoader(), new AssociationLoader(),
+                new CasingRegistrator() };
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             for (IWerkstoffRunnable registration : registrations) {
                 registration.run(werkstoff);
@@ -1821,6 +1824,7 @@ public class WerkstoffLoader {
      * used for the miners mostly removing this hacky material from the materials map instantly. we only need the item
      * data.
      */
+    @SuppressWarnings("unchecked")
     private static void addFakeItemDataToInWorldBlocksAndCleanUpFakeData() {
 
         Map<String, Materials> MATERIALS_MAP = null;
@@ -1855,7 +1859,7 @@ public class WerkstoffLoader {
             Set<Map.Entry<IRecipeInput, RecipeOutput>> remset = new HashSet<>();
             for (Map.Entry<IRecipeInput, RecipeOutput> curr : Recipes.macerator.getRecipes().entrySet()) {
                 if (curr.getKey() instanceof RecipeInputOreDict) {
-                    if (((RecipeInputOreDict) curr.getKey()).input.equalsIgnoreCase("oreNULL")) {
+                    if ("oreNULL".equalsIgnoreCase(((RecipeInputOreDict) curr.getKey()).input)) {
                         remset.add(curr);
                     }
                     for (ItemStack stack : curr.getValue().items) {

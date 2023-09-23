@@ -49,13 +49,13 @@ public class BW_NEI_BioVatHandler extends GT_NEI_DefaultHandler {
     }
 
     private void loadLabPartRecipes(ItemStack aResult) {
-        for (CachedDefaultRecipe recipe : getCache()) {
+        for (CachedDefaultRecipe recipe : this.getCache()) {
             // dirty way of finding the special slot item
             // see constructor of CachedDefaultRecipe on why relx==120 and rely==52 means special slot
             for (PositionedStack stack : recipe.mInputs) {
-                if (stack.relx == 120 && stack.rely == 52) {
-                    if (NEI_BW_Config.checkRecipe(aResult, Collections.singletonList(stack))) arecipes.add(recipe);
-                }
+                if (stack.relx == 120 && stack.rely == 52
+                        && NEI_BW_Config.checkRecipe(aResult, Collections.singletonList(stack)))
+                    this.arecipes.add(recipe);
             }
         }
     }
@@ -65,7 +65,7 @@ public class BW_NEI_BioVatHandler extends GT_NEI_DefaultHandler {
         if (aResult != null && aResult.getItem() instanceof LabParts
                 && aResult.getItemDamage() < 3
                 && aResult.getTagCompound() != null) {
-            loadLabPartRecipes(aResult);
+            this.loadLabPartRecipes(aResult);
         } else {
             super.loadUsageRecipes(aResult);
         }

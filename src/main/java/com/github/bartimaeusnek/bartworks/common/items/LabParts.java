@@ -46,15 +46,11 @@ public class LabParts extends SimpleSubItemClass {
 
         if (itemStack == null || itemStack.getTagCompound() == null) return EnumRarity.common;
 
-        switch (itemStack.getItemDamage()) {
-            case 0:
-                return BW_Util.getRarityFromByte(itemStack.getTagCompound().getCompoundTag("DNA").getByte("Rarity"));
-            case 1:
-            case 2:
-                return BW_Util.getRarityFromByte(itemStack.getTagCompound().getByte("Rarity"));
-            default:
-                return EnumRarity.common;
-        }
+        return switch (itemStack.getItemDamage()) {
+            case 0 -> BW_Util.getRarityFromByte(itemStack.getTagCompound().getCompoundTag("DNA").getByte("Rarity"));
+            case 1, 2 -> BW_Util.getRarityFromByte(itemStack.getTagCompound().getByte("Rarity"));
+            default -> EnumRarity.common;
+        };
     }
 
     @Override
@@ -70,8 +66,7 @@ public class LabParts extends SimpleSubItemClass {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean b) {
+    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List<String> list, boolean b) {
         if (itemStack == null) return;
 
         if (itemStack.getTagCompound() == null) {
@@ -129,17 +124,17 @@ public class LabParts extends SimpleSubItemClass {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public void getSubItems(Item item, CreativeTabs creativeTabs, List list) {
+    public void getSubItems(Item item, CreativeTabs creativeTabs, List<ItemStack> list) {
         list.addAll(getAllPetriDishes());
         list.addAll(getAllDNASampleFlasks());
         list.addAll(getAllPlasmidCells());
         super.getSubItems(item, creativeTabs, list);
     }
 
+    @Override
     public String getUnlocalizedName(ItemStack itemStack) {
         if (itemStack.getItemDamage() == 0 && itemStack.getTagCompound() != null)
-            return "filled.item." + this.tex[itemStack.getItemDamage()].replaceAll("/", ".");
+            return "filled.item." + this.tex[itemStack.getItemDamage()].replace('/', '.');
         return super.getUnlocalizedName(itemStack);
     }
 }

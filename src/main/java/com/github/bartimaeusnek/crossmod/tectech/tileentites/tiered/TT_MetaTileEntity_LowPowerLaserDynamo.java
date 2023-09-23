@@ -83,13 +83,11 @@ public class TT_MetaTileEntity_LowPowerLaserDynamo extends GT_MetaTileEntity_Hat
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            byte Tick = (byte) ((int) (aTick % 20L));
-            if (16 == Tick) {
-                if (aBaseMetaTileEntity.getStoredEU() > 0L) {
-                    this.setEUVar(aBaseMetaTileEntity.getStoredEU() - (long) this.Amperes);
-                    if (aBaseMetaTileEntity.getStoredEU() < 0L) {
-                        this.setEUVar(0L);
-                    }
+            byte Tick = (byte) (int) (aTick % 20L);
+            if (16 == Tick && aBaseMetaTileEntity.getStoredEU() > 0L) {
+                this.setEUVar(aBaseMetaTileEntity.getStoredEU() - this.Amperes);
+                if (aBaseMetaTileEntity.getStoredEU() < 0L) {
+                    this.setEUVar(0L);
                 }
             }
             if (aBaseMetaTileEntity.getStoredEU() > this.getMinimumStoredEU()) {

@@ -32,6 +32,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
@@ -74,7 +75,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.objects.XSTR;
+import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -89,7 +90,6 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
     private static final IIconContainer[] iIconContainers = new IIconContainer[2];
     private static final ITexture[] iTextures = new ITexture[3];
 
-    private static final XSTR localRandomInstance = new XSTR();
     private BW_RotorBlock rotorBlock;
     private int mDoor = 0;
     private int mHardenedClay = 0;
@@ -137,13 +137,13 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
                                 @Override
                                 public boolean check(GT_TileEntity_Windmill gt_tileEntity_windmill, World world, int x,
                                         int y, int z) {
-                                    return delegate.check(gt_tileEntity_windmill, world, x, y, z);
+                                    return this.delegate.check(gt_tileEntity_windmill, world, x, y, z);
                                 }
 
                                 @Override
                                 public boolean spawnHint(GT_TileEntity_Windmill gt_tileEntity_windmill, World world,
                                         int x, int y, int z, ItemStack trigger) {
-                                    return delegate.spawnHint(gt_tileEntity_windmill, world, x, y, z, trigger);
+                                    return this.delegate.spawnHint(gt_tileEntity_windmill, world, x, y, z, trigger);
                                 }
                             })))
             .addElement('b', ofBlock(Blocks.brick_block, 0))
@@ -195,7 +195,8 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
                 .addInfo("The structure is too complex!")
                 .addInfo("Follow the StructureLib hologram projector to build the main structure.").addSeparator()
                 .beginStructureBlock(7, 12, 7, false).addController("Front bottom center")
-                .addCasingInfo("Hardened Clay block", 40).addOtherStructurePart("Dispenser", "Any Hardened Clay block")
+                .addCasingInfoMin("Hardened Clay block", 40, false)
+                .addOtherStructurePart("Dispenser", "Any Hardened Clay block")
                 .addOtherStructurePart("0-1 Wooden door", "Any Hardened Clay block")
                 .addStructureHint("Primitive Kinetic Shaftbox", 1).toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
         return tt;
@@ -211,7 +212,7 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (this.mMaxProgresstime > 0) this.mProgresstime += this.rotorBlock.getGrindPower();
-        if (!rotorBlock.rotorSlot.isEmpty()) this.setRotorDamage(rotorBlock, this.rotorBlock.getGrindPower());
+        if (!this.rotorBlock.rotorSlot.isEmpty()) this.setRotorDamage(this.rotorBlock, this.rotorBlock.getGrindPower());
         return this.rotorBlock.getGrindPower() > 0;
     }
 
@@ -228,47 +229,51 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
 
     private float[] multiplierRecipe(ItemStack itemStack) {
         // will return max and min value of the multiplier, the average of these is used to calculate the multiplier.
-        if (itemStack.getItem().equals(Items.wheat)) return new float[] { 1.13f, 1.5f };
-        else if (itemStack.getItem().equals(Items.bone)
-                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.glowstone)
-                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.pumpkin))
+        final Item item = itemStack.getItem();
+        if (item == Items.wheat) {
+            return new float[] { 1.13f, 1.5f };
+        }
+        final Block block = Block.getBlockFromItem(item);
+        if (item == Items.bone || block == Blocks.glowstone || block == Blocks.pumpkin) {
             return new float[] { 0.8f, 1f };
-        else if (Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.gravel)
-                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.cobblestone)
-                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.stone)
-                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.sandstone)
-                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.clay)
-                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.hardened_clay)
-                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.stained_hardened_clay)
-                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.wool)
-                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.netherrack)
-                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.log)
-                || Block.getBlockFromItem(itemStack.getItem()).equals(Blocks.log2))
+        }
+        if (block == Blocks.gravel || block == Blocks.cobblestone
+                || block == Blocks.stone
+                || block == Blocks.sandstone
+                || block == Blocks.clay
+                || block == Blocks.hardened_clay
+                || block == Blocks.stained_hardened_clay
+                || block == Blocks.wool
+                || block == Blocks.netherrack
+                || block == Blocks.log
+                || block == Blocks.log2) {
             return new float[] { 1f, 1.5f };
-        else if (GT_OreDictUnificator.getAssociation(itemStack) == null
-                || GT_OreDictUnificator.getAssociation(itemStack).mPrefix == null
-                || GT_OreDictUnificator.getAssociation(itemStack).mMaterial == null
-                || GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial == null
-                || GT_OreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.getDust(1) == null)
+        }
+        final ItemData association = GT_OreDictUnificator.getAssociation(itemStack);
+        final OrePrefixes prefix = association == null ? null : association.mPrefix;
+        if (prefix == null || association.mMaterial == null
+                || association.mMaterial.mMaterial == null
+                || association.mMaterial.mMaterial.getDust(1) == null) {
             return new float[] { 1f, 1f };
-        else if (OrePrefixes.ore.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-                || OrePrefixes.oreNetherrack.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-                || OrePrefixes.oreEndstone.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-                || OrePrefixes.oreBlackgranite.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-                || OrePrefixes.oreRedgranite.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-                || OrePrefixes.oreMarble.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-                || OrePrefixes.oreBasalt.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix))
+        }
+        if (OrePrefixes.ore == prefix || OrePrefixes.oreNetherrack == prefix
+                || OrePrefixes.oreEndstone == prefix
+                || OrePrefixes.oreBlackgranite == prefix
+                || OrePrefixes.oreRedgranite == prefix
+                || OrePrefixes.oreMarble == prefix
+                || OrePrefixes.oreBasalt == prefix) {
             return new float[] { 0.5f, 1f };
-        else if (OrePrefixes.stone.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-                || OrePrefixes.stoneBricks.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-                || OrePrefixes.stoneChiseled.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-                || OrePrefixes.stoneCobble.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-                || OrePrefixes.stoneCracked.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-                || OrePrefixes.stoneMossy.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-                || OrePrefixes.stoneMossyBricks.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-                || OrePrefixes.stoneSmooth.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix)
-                || OrePrefixes.cobblestone.equals(GT_OreDictUnificator.getAssociation(itemStack).mPrefix))
+        }
+        if (OrePrefixes.stone == prefix || OrePrefixes.stoneBricks == prefix
+                || OrePrefixes.stoneChiseled == prefix
+                || OrePrefixes.stoneCobble == prefix
+                || OrePrefixes.stoneCracked == prefix
+                || OrePrefixes.stoneMossy == prefix
+                || OrePrefixes.stoneMossyBricks == prefix
+                || OrePrefixes.stoneSmooth == prefix
+                || OrePrefixes.cobblestone == prefix) {
             return new float[] { 1f, 1.5f };
+        }
         return new float[] { 1f, 1f };
     }
 
@@ -294,13 +299,13 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
             }
             this.updateSlots();
             this.mOutputItems[0] = tRecipe.getOutput(0);
-            float[] mRecipe = multiplierRecipe(itemStack);
+            float[] mRecipe = this.multiplierRecipe(itemStack);
             float multiper = Math.min(
                     mRecipe[1],
                     Math.max(
                             mRecipe[0],
-                            2f * ((float) Math.sqrt((float) 1 / (this.rotorBlock.getWindStrength() + 1)))
-                                    * OutputMultiplier(rotorBlock)
+                            2f * (float) Math.sqrt((float) 1 / (this.rotorBlock.getWindStrength() + 1))
+                                    * this.OutputMultiplier(this.rotorBlock)
                                     * (mRecipe[0] + mRecipe[1])));
             int amount = (int) Math.floor(multiper * (this.mOutputItems[0].stackSize * this.mMulti));
 
@@ -315,16 +320,16 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
             ItemStack tmp = this.mOutputItems[0].copy();
             tmp.stackSize = amount;
             splitStacks.add(tmp);
-            mOutputItems = splitStacks.toArray(new ItemStack[splitStacks.size()]);
+            this.mOutputItems = splitStacks.toArray(new ItemStack[splitStacks.size()]);
         }
-        this.mMaxProgresstime = (tRecipe.mDuration * 2 * 100 * this.mMulti) / getSpeed(rotorBlock);
+        this.mMaxProgresstime = tRecipe.mDuration * 2 * 100 * this.mMulti / this.getSpeed(this.rotorBlock);
         this.mMulti = 16;
         return true;
     }
 
     @Override
     public void stopMachine() {
-        getBaseMetaTileEntity().disableWorking();
+        this.getBaseMetaTileEntity().disableWorking();
     }
 
     public boolean addDispenserToOutputSet(TileEntity aTileEntity) {
@@ -343,7 +348,6 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
         return false;
     }
 
-    @SuppressWarnings("ALL")
     @Override
     public boolean addOutput(ItemStack aStack) {
         if (GT_Utility.isStackInvalid(aStack)) return false;
@@ -363,11 +367,10 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
                     if (GT_Utility.areStacksEqual(tHatch.getStackInSlot(i), aStack)) {
                         aStack = null;
                         return true;
-                    } else {
-                        tHatch.setInventorySlotContents(i, null);
-                        aStack = null;
-                        return false;
                     }
+                    tHatch.setInventorySlotContents(i, null);
+                    aStack = null;
+                    return false;
                 }
             }
         }
@@ -381,9 +384,10 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
         this.mDoor = 0;
         this.mHardenedClay = 0;
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 11, 0)) return false;
-
-        if (this.tileEntityDispensers.isEmpty() || this.mDoor > 2 || this.mHardenedClay < 40) return false;
+        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 3, 11, 0) || this.tileEntityDispensers.isEmpty()
+                || this.mDoor > 2
+                || this.mHardenedClay < 40)
+            return false;
 
         this.mWrench = true;
         this.mScrewdriver = true;
@@ -512,13 +516,13 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
 
     @Override
     public void construct(ItemStack itemStack, boolean b) {
-        buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 3, 11, 0);
+        this.buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 3, 11, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 11, 0, elementBudget, env, false, true);
+        if (this.mMachine) return -1;
+        return this.survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 11, 0, elementBudget, env, false, true);
     }
 
     public float OutputMultiplier(BW_RotorBlock rotorBlock) {
@@ -563,13 +567,14 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
 
     @Override
     public int getTitleColor() {
-        return COLOR_TITLE_WHITE.get();
+        return this.COLOR_TITLE_WHITE.get();
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new SlotWidget(inventoryHandler, 1).setBackground(getGUITextureSet().getItemSlot()).setPos(59, 35))
+                new SlotWidget(this.inventoryHandler, 1).setBackground(this.getGUITextureSet().getItemSlot())
+                        .setPos(59, 35))
                 .widget(new DrawableWidget() {
 
                     private static final int DIVIDER = 125;
@@ -577,24 +582,27 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
                     @Override
                     public void onScreenUpdate() {
                         super.onScreenUpdate();
-                        if (mMaxProgresstime > 0) {
+                        if (GT_TileEntity_Windmill.this.mMaxProgresstime > 0) {
                             if (System.currentTimeMillis() / DIVIDER % 40 == 30)
-                                setDrawable(BW_UITextures.PICTURE_WINDMILL_ROTATING[3]);
+                                this.setDrawable(BW_UITextures.PICTURE_WINDMILL_ROTATING[3]);
                             else if (System.currentTimeMillis() / DIVIDER % 40 == 20)
-                                setDrawable(BW_UITextures.PICTURE_WINDMILL_ROTATING[2]);
+                                this.setDrawable(BW_UITextures.PICTURE_WINDMILL_ROTATING[2]);
                             else if (System.currentTimeMillis() / DIVIDER % 40 == 10)
-                                setDrawable(BW_UITextures.PICTURE_WINDMILL_ROTATING[1]);
+                                this.setDrawable(BW_UITextures.PICTURE_WINDMILL_ROTATING[1]);
                             else if (System.currentTimeMillis() / DIVIDER % 40 == 0)
-                                setDrawable(BW_UITextures.PICTURE_WINDMILL_ROTATING[0]);
+                                this.setDrawable(BW_UITextures.PICTURE_WINDMILL_ROTATING[0]);
                         } else {
-                            setDrawable(BW_UITextures.PICTURE_WINDMILL_EMPTY);
+                            this.setDrawable(BW_UITextures.PICTURE_WINDMILL_EMPTY);
                         }
                     }
                 }.setDrawable(BW_UITextures.PICTURE_WINDMILL_EMPTY).setPos(85, 27).setSize(32, 32))
-                .widget(new FakeSyncWidget.IntegerSyncer(() -> mMaxProgresstime, val -> mMaxProgresstime = val))
+                .widget(
+                        new FakeSyncWidget.IntegerSyncer(
+                                () -> this.mMaxProgresstime,
+                                val -> this.mMaxProgresstime = val))
                 .widget(
                         new ItemDrawable(
-                                () -> mMachine && !getBaseMetaTileEntity().isActive()
+                                () -> this.mMachine && !this.getBaseMetaTileEntity().isActive()
                                         ? GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
                                                 GT_MetaGenerated_Tool_01.SOFTMALLET,
                                                 1,
@@ -604,12 +612,12 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
                                         : null).asWidget().setPos(66, 66))
                 .widget(
                         new FakeSyncWidget.BooleanSyncer(
-                                () -> getBaseMetaTileEntity().isActive(),
-                                val -> getBaseMetaTileEntity().setActive(val)))
+                                () -> this.getBaseMetaTileEntity().isActive(),
+                                val -> this.getBaseMetaTileEntity().setActive(val)))
                 .widget(
                         new TextWidget(GT_Utility.trans("138", "Incomplete Structure."))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setMaxWidth(150)
-                                .setEnabled(widget -> !mMachine).setPos(92, 22))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
+                                .setDefaultColor(this.COLOR_TEXT_WHITE.get()).setMaxWidth(150)
+                                .setEnabled(widget -> !this.mMachine).setPos(92, 22))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> this.mMachine, val -> this.mMachine = val));
     }
 }

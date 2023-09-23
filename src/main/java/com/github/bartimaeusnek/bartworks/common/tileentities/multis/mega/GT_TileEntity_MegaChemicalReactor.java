@@ -116,7 +116,7 @@ public class GT_TileEntity_MegaChemicalReactor
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         if (!aNBT.hasKey(BATCH_MODE_NBT_KEY)) {
-            batchMode = aNBT.getBoolean("mUseMultiparallelMode");
+            this.batchMode = aNBT.getBoolean("mUseMultiparallelMode");
         }
     }
 
@@ -124,8 +124,8 @@ public class GT_TileEntity_MegaChemicalReactor
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
             float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
+            this.batchMode = !this.batchMode;
+            if (this.batchMode) {
                 GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
             } else {
                 GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
@@ -142,31 +142,30 @@ public class GT_TileEntity_MegaChemicalReactor
 
     @Override
     public void construct(ItemStack aStack, boolean aHintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, aStack, aHintsOnly, 2, 2, 0);
+        this.buildPiece(STRUCTURE_PIECE_MAIN, aStack, aHintsOnly, 2, 2, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
-        if (mMachine) return -1;
+        if (this.mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 0, realBudget, source, actor, false, true);
+        return this
+                .survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 0, realBudget, source, actor, false, true);
     }
     // -------------- TEC TECH COMPAT ----------------
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        glassTier = 0;
+        this.glassTier = 0;
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 2, 0)) return false;
+        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 2, 2, 0) || this.mMaintenanceHatches.size() != 1) return false;
 
-        if (mMaintenanceHatches.size() != 1) return false;
-
-        if (glassTier < 8) {
-            for (GT_MetaTileEntity_Hatch hatch : mExoticEnergyHatches) {
+        if (this.glassTier < 8) {
+            for (GT_MetaTileEntity_Hatch hatch : this.mExoticEnergyHatches) {
                 if (hatch.getConnectionType() == GT_MetaTileEntity_Hatch.ConnectionType.LASER) {
                     return false;
                 }
-                if (glassTier < hatch.mTier) {
+                if (this.glassTier < hatch.mTier) {
                     return false;
                 }
             }

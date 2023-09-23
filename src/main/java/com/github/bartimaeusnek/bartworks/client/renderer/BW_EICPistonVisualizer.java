@@ -18,7 +18,7 @@ import gregtech.api.GregTech_API;
 public class BW_EICPistonVisualizer extends EntityFX {
 
     public BW_EICPistonVisualizer(World world, int x, int y, int z, int age) {
-        super(world, (double) x, ((double) y), (double) z);
+        super(world, x, y, z);
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
@@ -43,9 +43,9 @@ public class BW_EICPistonVisualizer extends EntityFX {
         // Look at nearby block for correct tiered block to use
         Pair<Block, Integer> tieredBlock;
         if (this.worldObj != null) {
-            int nX = (int) posX;
-            int nY = (int) posY + 1;
-            int nZ = (int) posZ;
+            int nX = (int) this.posX;
+            int nY = (int) this.posY + 1;
+            int nZ = (int) this.posZ;
             Block neighborBlock = this.worldObj.getBlock(nX, nY, nZ);
             int neighborMeta = this.worldObj.getBlockMetadata(nX, nY, nZ);
             tieredBlock = Pair.of(neighborBlock, neighborMeta);

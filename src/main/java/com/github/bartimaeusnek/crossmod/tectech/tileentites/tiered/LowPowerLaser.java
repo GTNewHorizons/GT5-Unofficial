@@ -52,7 +52,7 @@ public interface LowPowerLaser extends IMetaTileEntity, IConnectsToEnergyTunnel 
     }
 
     default long getTotalPower() {
-        return this.getAMPERES() * Math.max(this.maxEUOutput(), this.maxEUInput()) - (this.getAMPERES() / 20);
+        return this.getAMPERES() * Math.max(this.maxEUOutput(), this.maxEUInput()) - this.getAMPERES() / 20;
     }
 
     default void moveAroundLowPower(IGregTechTileEntity aBaseMetaTileEntity) {
@@ -73,42 +73,44 @@ public interface LowPowerLaser extends IMetaTileEntity, IConnectsToEnergyTunnel 
                     return;
                 }
 
-                if (aMetaTileEntity instanceof LowPowerLaser && ((LowPowerLaser) aMetaTileEntity).isReceiver()
+                if (aMetaTileEntity instanceof LowPowerLaser lowPowerLaser && lowPowerLaser.isReceiver()
                         && opposite == tGTTileEntity.getFrontFacing()) {
-                    if (this.maxEUOutput() > ((LowPowerLaser) aMetaTileEntity).maxEUInput()
-                            || this.getAMPERES() > ((LowPowerLaser) aMetaTileEntity).getAMPERES()) {
+                    if (this.maxEUOutput() > lowPowerLaser.maxEUInput()
+                            || this.getAMPERES() > lowPowerLaser.getAMPERES()) {
                         aMetaTileEntity.doExplosion(this.maxEUOutput());
                         this.setEUVar(aBaseMetaTileEntity.getStoredEU() - this.maxEUOutput());
                         return;
                     }
 
-                    if (this.maxEUOutput() == ((LowPowerLaser) aMetaTileEntity).maxEUInput()) {
+                    if (this.maxEUOutput() == lowPowerLaser.maxEUInput()) {
                         long diff = Math.min(
                                 this.getAMPERES() * 20L * this.maxEUOutput(),
                                 Math.min(
-                                        ((LowPowerLaser) aMetaTileEntity).maxEUStore()
+                                        lowPowerLaser.maxEUStore()
                                                 - aMetaTileEntity.getBaseMetaTileEntity().getStoredEU(),
                                         aBaseMetaTileEntity.getStoredEU()));
                         this.setEUVar(aBaseMetaTileEntity.getStoredEU() - diff);
-                        ((LowPowerLaser) aMetaTileEntity)
-                                .setEUVar(aMetaTileEntity.getBaseMetaTileEntity().getStoredEU() + diff);
+                        lowPowerLaser.setEUVar(aMetaTileEntity.getBaseMetaTileEntity().getStoredEU() + diff);
                     }
                     return;
                 }
 
-                if ((!(aMetaTileEntity instanceof LowPowerLaser) || !((LowPowerLaser) aMetaTileEntity).isTunnel())
+                if ((!(aMetaTileEntity instanceof LowPowerLaser lowPowerLaser) || !lowPowerLaser.isTunnel())
                         && !(aMetaTileEntity instanceof GT_MetaTileEntity_Pipe_Energy)) {
                     return;
                 }
 
-                if (aMetaTileEntity instanceof GT_MetaTileEntity_Pipe_Energy) {
-                    if (((GT_MetaTileEntity_Pipe_Energy) aMetaTileEntity).connectionCount < 2) {
+                if (aMetaTileEntity instanceof GT_MetaTileEntity_Pipe_Energy tePipeEnergy) {
+                    if (tePipeEnergy.connectionCount < 2) {
                         return;
                     }
+                    tePipeEnergy.markUsed();
+                    return;
+                }
 
-                    ((GT_MetaTileEntity_Pipe_Energy) aMetaTileEntity).markUsed();
-                } else if (aMetaTileEntity instanceof LowPowerLaser && ((LowPowerLaser) aMetaTileEntity).isTunnel()) {
-                    if (!((LowPowerLaser) aMetaTileEntity).isConnectedCorrectly(front)) return;
+                if (aMetaTileEntity instanceof LowPowerLaser lowPowerLaser && lowPowerLaser.isTunnel()
+                        && !lowPowerLaser.isConnectedCorrectly(front)) {
+                    return;
                 }
             }
         }

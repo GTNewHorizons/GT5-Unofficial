@@ -26,19 +26,19 @@ public class SummonRuin extends CommandBase {
     }
 
     @Override
-    public String getCommandUsage(ICommandSender p_71518_1_) {
+    public String getCommandUsage(ICommandSender sender) {
         return "SummonRuin <x> <z>";
     }
 
     @Override
-    public void processCommand(ICommandSender iCommandSender, String[] p_71515_2_) {
+    public void processCommand(ICommandSender iCommandSender, String[] args) {
         try {
             new MapGenRuins.RuinsBase().generate(
                     iCommandSender.getEntityWorld(),
                     iCommandSender.getEntityWorld().rand,
-                    Integer.parseInt(p_71515_2_[0]),
+                    Integer.parseInt(args[0]),
                     256,
-                    Integer.parseInt(p_71515_2_[1]));
+                    Integer.parseInt(args[1]));
         } catch (Exception e) {
             e.printStackTrace();
         }

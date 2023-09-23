@@ -50,11 +50,11 @@ public abstract class BW_MetaGenerated_Blocks extends BW_TileEntityContainer {
         this.setResistance(5.0F);
         this.setBlockTextureName("stone");
         this.setCreativeTab(metaTab);
-        _prefixes = types;
-        if (_prefixes != null) {
+        this._prefixes = types;
+        if (this._prefixes != null) {
             this.blockTypeLocalizedName = GT_LanguageManager.addStringLocalization(
-                    "bw.blocktype." + _prefixes,
-                    _prefixes.mLocalizedMaterialPre + "%material" + _prefixes.mLocalizedMaterialPost);
+                    "bw.blocktype." + this._prefixes,
+                    this._prefixes.mLocalizedMaterialPre + "%material" + this._prefixes.mLocalizedMaterialPost);
         }
         Werkstoff.werkstoffHashSet.forEach(this::doRegistrationStuff);
     }
@@ -69,7 +69,7 @@ public abstract class BW_MetaGenerated_Blocks extends BW_TileEntityContainer {
 
     @SideOnly(Side.CLIENT)
     public final BW_MetaGenerated_Block_TE getProperTileEntityForRendering() {
-        return (BW_MetaGenerated_Block_TE) createNewTileEntity(null, 0);
+        return (BW_MetaGenerated_Block_TE) this.createNewTileEntity(null, 0);
     }
 
     protected abstract void doRegistrationStuff(Werkstoff w);
@@ -79,19 +79,22 @@ public abstract class BW_MetaGenerated_Blocks extends BW_TileEntityContainer {
         return "pickaxe";
     }
 
+    @Override
     protected boolean canSilkHarvest() {
         return false;
     }
 
+    @Override
     public int getRenderType() {
         if (BW_Renderer_Block_Ores.INSTANCE == null) return super.getRenderType();
         return BW_Renderer_Block_Ores.INSTANCE.mRenderID;
     }
 
+    @Override
     public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (((tTileEntity instanceof BW_MetaGenerated_Block_TE))) {
-            return ((BW_MetaGenerated_Block_TE) tTileEntity).mMetaData;
+        if (tTileEntity instanceof BW_MetaGenerated_Block_TE metaTE) {
+            return metaTE.mMetaData;
         }
         return 0;
     }
@@ -106,18 +109,20 @@ public abstract class BW_MetaGenerated_Blocks extends BW_TileEntityContainer {
         return true;
     }
 
+    @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
         TileEntity tTileEntity = world.getTileEntity(x, y, z);
-        if ((tTileEntity instanceof BW_MetaGenerated_Block_TE)) {
-            mTemporaryTileEntity.set((BW_MetaGenerated_Block_TE) tTileEntity);
+        if (tTileEntity instanceof BW_MetaGenerated_Block_TE metaTE) {
+            mTemporaryTileEntity.set(metaTE);
         }
         super.breakBlock(world, x, y, z, block, meta);
     }
 
+    @Override
     public ArrayList<ItemStack> getDrops(World aWorld, int aX, int aY, int aZ, int aMeta, int aFortune) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity instanceof BW_MetaGenerated_Block_TE)) {
-            return ((BW_MetaGenerated_Block_TE) tTileEntity).getDrops(aFortune);
+        if (tTileEntity instanceof BW_MetaGenerated_Block_TE metaTE) {
+            return metaTE.getDrops(aFortune);
         }
         return mTemporaryTileEntity.get() == null ? new ArrayList<>() : mTemporaryTileEntity.get().getDrops(aFortune);
     }

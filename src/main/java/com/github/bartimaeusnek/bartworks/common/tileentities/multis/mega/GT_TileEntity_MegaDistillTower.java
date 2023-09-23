@@ -168,21 +168,18 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
                     t.mTopState = 1;
                     // hatch adder
                     TileEntity tileEntity = world.getTileEntity(x, y, z);
-                    if (tileEntity instanceof IGregTechTileEntity) {
-                        IGregTechTileEntity entity = (IGregTechTileEntity) tileEntity;
-                        if (t.addLayerOutputHatch(entity, CASING_INDEX)) {
-                            t.onTopLayerFound(false);
-                            return true;
-                        }
+                    if (tileEntity instanceof IGregTechTileEntity entity
+                            && t.addLayerOutputHatch(entity, CASING_INDEX)) {
+                        t.onTopLayerFound(false);
+                        return true;
                     }
                     // block adder
                     if (world.getBlock(x, y, z) == GregTech_API.sBlockCasings4
                             && world.getBlockMetadata(x, y, z) == 1) {
                         t.onTopLayerFound(true);
                         return true;
-                    } else {
-                        return false;
                     }
+                    return false;
                 }).build();
     }
 
@@ -208,27 +205,27 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
     }
 
     protected void onCasingFound() {
-        mCasing++;
+        this.mCasing++;
     }
 
     protected int getCurrentLayerOutputHatchCount() {
-        return mOutputHatchesByLayer.size() < mHeight || mHeight <= 0 ? 0
-                : mOutputHatchesByLayer.get(mHeight - 1).size();
+        return this.mOutputHatchesByLayer.size() < this.mHeight || this.mHeight <= 0 ? 0
+                : this.mOutputHatchesByLayer.get(this.mHeight - 1).size();
     }
 
     protected boolean addLayerOutputHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null || aTileEntity.isDead()
                 || !(aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Output))
             return false;
-        while (mOutputHatchesByLayer.size() < mHeight) mOutputHatchesByLayer.add(new ArrayList<>());
+        while (this.mOutputHatchesByLayer.size() < this.mHeight) this.mOutputHatchesByLayer.add(new ArrayList<>());
         GT_MetaTileEntity_Hatch_Output tHatch = (GT_MetaTileEntity_Hatch_Output) aTileEntity.getMetaTileEntity();
         tHatch.updateTexture(aBaseCasingIndex);
-        return mOutputHatchesByLayer.get(mHeight - 1).add(tHatch);
+        return this.mOutputHatchesByLayer.get(this.mHeight - 1).add(tHatch);
     }
 
     protected void onTopLayerFound(boolean aIsCasing) {
-        mTopLayerFound = true;
-        if (aIsCasing) onCasingFound();
+        this.mTopLayerFound = true;
+        if (aIsCasing) this.onCasingFound();
     }
 
     @Override
@@ -277,63 +274,58 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         // reset
-        mOutputHatchesByLayer.forEach(List::clear);
-        mHeight = 1;
-        mTopLayerFound = false;
-        mTopState = -1;
+        this.mOutputHatchesByLayer.forEach(List::clear);
+        this.mHeight = 1;
+        this.mTopLayerFound = false;
+        this.mTopState = -1;
 
         // check base
-        if (!checkPiece(STRUCTURE_PIECE_BASE, 7, 0, 0)) return false;
+        if (!this.checkPiece(STRUCTURE_PIECE_BASE, 7, 0, 0)) return false;
 
         // check each layer
-        while (mHeight < 12 && checkPiece(STRUCTURE_PIECE_LAYER, 7, mHeight * 5, 0) && !mTopLayerFound) {
-            if (mOutputHatchesByLayer.size() < mHeight || mOutputHatchesByLayer.get(mHeight - 1).isEmpty())
+        while (this.mHeight < 12 && this.checkPiece(STRUCTURE_PIECE_LAYER, 7, this.mHeight * 5, 0)
+                && !this.mTopLayerFound) {
+            if (this.mOutputHatchesByLayer.size() < this.mHeight
+                    || this.mOutputHatchesByLayer.get(this.mHeight - 1).isEmpty())
                 // layer without output hatch
                 return false;
-            mTopState = -1;
+            this.mTopState = -1;
             // not top
-            mHeight++;
+            this.mHeight++;
         }
 
         // validate final invariants...
-        return mCasing >= 75 * mHeight + 10 && mHeight >= 2 && mTopLayerFound && mMaintenanceHatches.size() == 1;
+        return this.mCasing >= 75 * this.mHeight + 10 && this.mHeight >= 2
+                && this.mTopLayerFound
+                && this.mMaintenanceHatches.size() == 1;
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_BASE, stackSize, hintsOnly, 7, 0, 0);
+        this.buildPiece(STRUCTURE_PIECE_BASE, stackSize, hintsOnly, 7, 0, 0);
         int tTotalHeight = Math.min(12, stackSize.stackSize + 2); // min 2 output layer, so at least 1 + 2 height
         for (int i = 1; i < tTotalHeight - 1; i++) {
-            buildPiece(STRUCTURE_PIECE_LAYER, stackSize, hintsOnly, 7, 5 * i, 0);
+            this.buildPiece(STRUCTURE_PIECE_LAYER, stackSize, hintsOnly, 7, 5 * i, 0);
         }
-        buildPiece(STRUCTURE_PIECE_TOP_HINT, stackSize, hintsOnly, 7, 5 * (tTotalHeight - 1), 0);
+        this.buildPiece(STRUCTURE_PIECE_TOP_HINT, stackSize, hintsOnly, 7, 5 * (tTotalHeight - 1), 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
-        if (mMachine) return -1;
+        if (this.mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        mHeight = 0;
-        int built = survivialBuildPiece(
-                STRUCTURE_PIECE_BASE,
-                stackSize,
-                7,
-                0,
-                0,
-                realBudget,
-                source,
-                actor,
-                false,
-                true);
+        this.mHeight = 0;
+        int built = this
+                .survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 7, 0, 0, realBudget, source, actor, false, true);
         if (built >= 0) return built;
         int tTotalHeight = Math.min(12, stackSize.stackSize + 2); // min 2 output layer, so at least 1 + 2 height
         for (int i = 1; i < tTotalHeight - 1; i++) {
-            mHeight = i;
-            built = survivialBuildPiece(
+            this.mHeight = i;
+            built = this.survivialBuildPiece(
                     STRUCTURE_PIECE_LAYER,
                     stackSize,
                     7,
-                    5 * mHeight,
+                    5 * this.mHeight,
                     0,
                     realBudget,
                     source,
@@ -342,12 +334,12 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
                     true);
             if (built >= 0) return built;
         }
-        mHeight = tTotalHeight - 1;
-        return survivialBuildPiece(
+        this.mHeight = tTotalHeight - 1;
+        return this.survivialBuildPiece(
                 STRUCTURE_PIECE_TOP_HINT,
                 stackSize,
                 7,
-                5 * mHeight,
+                5 * this.mHeight,
                 0,
                 realBudget,
                 source,
@@ -360,7 +352,7 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         if (!aNBT.hasKey(BATCH_MODE_NBT_KEY)) {
-            batchMode = aNBT.getBoolean("mUseMultiparallelMode");
+            this.batchMode = aNBT.getBoolean("mUseMultiparallelMode");
         }
     }
 
@@ -368,8 +360,8 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
             float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
+            this.batchMode = !this.batchMode;
+            if (this.batchMode) {
                 GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
             } else {
                 GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
@@ -386,16 +378,16 @@ public class GT_TileEntity_MegaDistillTower extends GT_TileEntity_MegaMultiBlock
 
     @Override
     protected void addFluidOutputs(FluidStack[] mOutputFluids2) {
-        for (int i = 0; i < mOutputFluids2.length && i < mOutputHatchesByLayer.size(); i++) {
+        for (int i = 0; i < mOutputFluids2.length && i < this.mOutputHatchesByLayer.size(); i++) {
             FluidStack tStack = mOutputFluids2[i].copy();
-            if (!dumpFluid(mOutputHatchesByLayer.get(i), tStack, true))
-                dumpFluid(mOutputHatchesByLayer.get(i), tStack, false);
+            if (!dumpFluid(this.mOutputHatchesByLayer.get(i), tStack, true))
+                dumpFluid(this.mOutputHatchesByLayer.get(i), tStack, false);
         }
     }
 
     @Override
     public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
-        return this.getFluidOutputSlotsByLayer(toOutput, mOutputHatchesByLayer);
+        return this.getFluidOutputSlotsByLayer(toOutput, this.mOutputHatchesByLayer);
     }
 
     @Override

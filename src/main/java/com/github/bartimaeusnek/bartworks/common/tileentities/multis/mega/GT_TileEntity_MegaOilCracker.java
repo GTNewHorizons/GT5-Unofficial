@@ -189,52 +189,53 @@ public class GT_TileEntity_MegaOilCracker extends GT_TileEntity_MegaMultiBlockBa
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
+            @Override
             @Nonnull
             public CheckRecipeResult process() {
-                setEuModifier(1.0F - Math.min(0.1F * (heatLevel.getTier() + 1), 0.5F));
+                this.setEuModifier(
+                        1.0F - Math.min(0.1F * (GT_TileEntity_MegaOilCracker.this.heatLevel.getTier() + 1), 0.5F));
                 return super.process();
             }
         }.setMaxParallel(ConfigHandler.megaMachinesMax);
     }
 
     public HeatingCoilLevel getCoilLevel() {
-        return heatLevel;
+        return this.heatLevel;
     }
 
     public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
-        heatLevel = aCoilLevel;
+        this.heatLevel = aCoilLevel;
     }
 
     @Override
     public void construct(ItemStack aStack, boolean aHintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, aStack, aHintsOnly, 6, 6, 0);
+        this.buildPiece(STRUCTURE_PIECE_MAIN, aStack, aHintsOnly, 6, 6, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
-        if (mMachine) return -1;
+        if (this.mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 6, 6, 0, realBudget, source, actor, false, true);
+        return this
+                .survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 6, 6, 0, realBudget, source, actor, false, true);
     }
     // -------------- TEC TECH COMPAT ----------------
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        glassTier = 0;
-        mInputOnSide = -1;
-        mOutputOnSide = -1;
-        mMiddleInputHatches.clear();
+        this.glassTier = 0;
+        this.mInputOnSide = -1;
+        this.mOutputOnSide = -1;
+        this.mMiddleInputHatches.clear();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 6, 6, 0)) return false;
+        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 6, 6, 0) || this.mMaintenanceHatches.size() != 1) return false;
 
-        if (mMaintenanceHatches.size() != 1) return false;
-
-        if (glassTier < 8) {
-            for (GT_MetaTileEntity_Hatch hatch : mExoticEnergyHatches) {
+        if (this.glassTier < 8) {
+            for (GT_MetaTileEntity_Hatch hatch : this.mExoticEnergyHatches) {
                 if (hatch.getConnectionType() == GT_MetaTileEntity_Hatch.ConnectionType.LASER) {
                     return false;
                 }
-                if (glassTier < hatch.mTier) {
+                if (this.glassTier < hatch.mTier) {
                     return false;
                 }
             }
@@ -252,25 +253,25 @@ public class GT_TileEntity_MegaOilCracker extends GT_TileEntity_MegaMultiBlockBa
             return false;
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            if (mInputOnSide == 1) {
+            if (this.mInputOnSide == 1) {
                 return false;
             }
-            mInputOnSide = 0;
-            mOutputOnSide = 1;
+            this.mInputOnSide = 0;
+            this.mOutputOnSide = 1;
             GT_MetaTileEntity_Hatch_Input tHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
             tHatch.updateTexture(aBaseCasingIndex);
-            tHatch.mRecipeMap = getRecipeMap();
-            return mInputHatches.add(tHatch);
+            tHatch.mRecipeMap = this.getRecipeMap();
+            return this.mInputHatches.add(tHatch);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-            if (mOutputOnSide == 1) {
+            if (this.mOutputOnSide == 1) {
                 return false;
             }
-            mInputOnSide = 1;
-            mOutputOnSide = 0;
+            this.mInputOnSide = 1;
+            this.mOutputOnSide = 0;
             GT_MetaTileEntity_Hatch_Output tHatch = (GT_MetaTileEntity_Hatch_Output) aMetaTileEntity;
             tHatch.updateTexture(aBaseCasingIndex);
-            return mOutputHatches.add(tHatch);
+            return this.mOutputHatches.add(tHatch);
         }
         return false;
     }
@@ -284,25 +285,25 @@ public class GT_TileEntity_MegaOilCracker extends GT_TileEntity_MegaMultiBlockBa
             return false;
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            if (mInputOnSide == 0) {
+            if (this.mInputOnSide == 0) {
                 return false;
             }
-            mInputOnSide = 1;
-            mOutputOnSide = 0;
+            this.mInputOnSide = 1;
+            this.mOutputOnSide = 0;
             GT_MetaTileEntity_Hatch_Input tHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
             tHatch.updateTexture(aBaseCasingIndex);
-            tHatch.mRecipeMap = getRecipeMap();
-            return mInputHatches.add(tHatch);
+            tHatch.mRecipeMap = this.getRecipeMap();
+            return this.mInputHatches.add(tHatch);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-            if (mOutputOnSide == 0) {
+            if (this.mOutputOnSide == 0) {
                 return false;
             }
-            mInputOnSide = 0;
-            mOutputOnSide = 1;
+            this.mInputOnSide = 0;
+            this.mOutputOnSide = 1;
             GT_MetaTileEntity_Hatch_Output tHatch = (GT_MetaTileEntity_Hatch_Output) aMetaTileEntity;
             tHatch.updateTexture(aBaseCasingIndex);
-            return mOutputHatches.add(tHatch);
+            return this.mOutputHatches.add(tHatch);
         }
         return false;
     }
@@ -315,11 +316,10 @@ public class GT_TileEntity_MegaOilCracker extends GT_TileEntity_MegaMultiBlockBa
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            GT_MetaTileEntity_Hatch_Input tHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input tHatch) {
             tHatch.updateTexture(aBaseCasingIndex);
-            tHatch.mRecipeMap = getRecipeMap();
-            return mMiddleInputHatches.add(tHatch);
+            tHatch.mRecipeMap = this.getRecipeMap();
+            return this.mMiddleInputHatches.add(tHatch);
         }
         return false;
     }

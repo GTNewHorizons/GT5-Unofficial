@@ -32,15 +32,18 @@ public abstract class BW_MetaGenerated_Block_TE extends TileEntity implements IT
 
     public short mMetaData;
 
+    @Override
     public boolean canUpdate() {
         return false;
     }
 
+    @Override
     public void readFromNBT(NBTTagCompound aNBT) {
         super.readFromNBT(aNBT);
         this.mMetaData = aNBT.getShort("m");
     }
 
+    @Override
     public void writeToNBT(NBTTagCompound aNBT) {
         aNBT.setShort("m", this.mMetaData);
         super.writeToNBT(aNBT);
@@ -64,7 +67,7 @@ public abstract class BW_MetaGenerated_Block_TE extends TileEntity implements IT
             rList.add(new ItemStack(Blocks.cobblestone, 1, 0));
             return rList;
         }
-        rList.add(new ItemStack(GetProperBlock(), 1, this.mMetaData));
+        rList.add(new ItemStack(this.GetProperBlock(), 1, this.mMetaData));
         return rList;
     }
 }

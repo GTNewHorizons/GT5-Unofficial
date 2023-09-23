@@ -66,13 +66,14 @@ public class BW_Stonage_Rotors extends Item implements IKineticRotor {
         this.itemTex = itemTex;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         this.itemIcon = iconRegister.registerIcon(MainMod.MOD_ID + ":" + this.itemTex);
     }
 
-    @SuppressWarnings("unchecked")
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List info, boolean b) {
+    @Override
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> info, boolean b) {
         info.add(
                 StatCollector
                         .translateToLocalFormatted("ic2.itemrotor.wind.info", this.DiaMinMax[1], this.DiaMinMax[2]));
@@ -85,14 +86,14 @@ public class BW_Stonage_Rotors extends Item implements IKineticRotor {
         info.add(StatCollector.translateToLocal("tooltip.rotor.0.name") + " " + this.DiaMinMax[0]);
         info.add(
                 StatCollector.translateToLocal("tooltip.rotor.1.name") + " "
-                        + ((this.getMaxDamageEx() - this.getDamageOfStack(itemStack)) / 100)
+                        + (this.getMaxDamageEx() - this.getDamageOfStack(itemStack)) / 100
                         + "/"
-                        + (this.getMaxDamageEx() / 100));
+                        + this.getMaxDamageEx() / 100);
         info.add(StatCollector.translateToLocal("tooltip.rotor.2.name") + " " + this.eff);
         info.add(StatCollector.translateToLocal("tooltip.rotor.3.name") + " " + this.speed);
         info.add(StatCollector.translateToLocal("tooltip.rotor.4.name") + " " + this.mRotor);
         if (type != null) {
-            info.add(StatCollector.translateToLocal(("ic2.itemrotor.fitsin." + this.isAcceptedType(itemStack, type))));
+            info.add(StatCollector.translateToLocal("ic2.itemrotor.fitsin." + this.isAcceptedType(itemStack, type)));
         }
         info.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
@@ -128,11 +129,11 @@ public class BW_Stonage_Rotors extends Item implements IKineticRotor {
     }
 
     public int getSpeed() {
-        return speed;
+        return this.speed;
     }
 
     public float getmRotor() {
-        return mRotor;
+        return this.mRotor;
     }
 
     public void setDamageForStack(ItemStack stack, int advDmg) {
@@ -160,6 +161,6 @@ public class BW_Stonage_Rotors extends Item implements IKineticRotor {
     }
 
     public void damageItemStack(ItemStack stack, int Dmg) {
-        setDamageForStack(stack, getDamageOfStack(stack) + Dmg);
+        this.setDamageForStack(stack, this.getDamageOfStack(stack) + Dmg);
     }
 }

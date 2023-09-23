@@ -45,9 +45,9 @@ public class ServerEventHandler {
     // FMLCommonHandler.instance().bus()
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onPlayerTickEventServer(TickEvent.PlayerTickEvent event) {
-        if (event == null || !(event.player instanceof EntityPlayerMP)) return;
-
-        if (event.player.worldObj.getTotalWorldTime() % 20 != 0) return;
+        if (event == null || !(event.player instanceof EntityPlayerMP)
+                || event.player.worldObj.getTotalWorldTime() % 20 != 0)
+            return;
 
         boolean replace = false;
         ItemStack toReplace = null;
@@ -70,17 +70,16 @@ public class ServerEventHandler {
                                 }
                                 toReplace = GT_OreDictUnificator.get(prefixes, e.getVarName(), stack.stackSize);
                                 break loop;
-                            } else {
-                                for (String s : e.getADDITIONAL_OREDICT()) {
-                                    if (oreDictName.contains(s)) {
-                                        String prefix = oreDictName.replace(s, "");
-                                        OrePrefixes prefixes = OrePrefixes.getPrefix(prefix);
-                                        if (prefixes == null) {
-                                            continue;
-                                        }
-                                        toReplace = GT_OreDictUnificator.get(prefixes, e.getVarName(), stack.stackSize);
-                                        break loop;
+                            }
+                            for (String s : e.getADDITIONAL_OREDICT()) {
+                                if (oreDictName.contains(s)) {
+                                    String prefix = oreDictName.replace(s, "");
+                                    OrePrefixes prefixes = OrePrefixes.getPrefix(prefix);
+                                    if (prefixes == null) {
+                                        continue;
                                     }
+                                    toReplace = GT_OreDictUnificator.get(prefixes, e.getVarName(), stack.stackSize);
+                                    break loop;
                                 }
                             }
                         }

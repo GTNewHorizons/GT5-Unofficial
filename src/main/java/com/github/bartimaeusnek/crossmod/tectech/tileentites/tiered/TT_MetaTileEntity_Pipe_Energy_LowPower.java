@@ -138,7 +138,6 @@ public class TT_MetaTileEntity_Pipe_Energy_LowPower extends GT_MetaPipeEntity_Ca
 
     @Override
     @Deprecated
-    @SuppressWarnings("deprecation")
     public long transferElectricity(ForgeDirection side, long aVoltage, long aAmperage,
             ArrayList<TileEntity> aAlreadyPassedTileEntityList) {
         return 0L;

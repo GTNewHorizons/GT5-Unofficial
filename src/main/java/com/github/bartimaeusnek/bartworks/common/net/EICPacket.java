@@ -35,10 +35,10 @@ public class EICPacket extends GT_Packet_New {
 
     @Override
     public void encode(ByteBuf aOut) {
-        aOut.writeInt(coords.x);
-        aOut.writeInt(coords.y);
-        aOut.writeInt(coords.z);
-        aOut.writeBoolean(bool);
+        aOut.writeInt(this.coords.x);
+        aOut.writeInt(this.coords.y);
+        aOut.writeInt(this.coords.z);
+        aOut.writeBoolean(this.bool);
     }
 
     @Override
@@ -49,11 +49,12 @@ public class EICPacket extends GT_Packet_New {
     @Override
     public void process(IBlockAccess aWorld) {
         if (SideReference.Side.Client) {
-            TileEntity te = aWorld.getTileEntity(coords.x, coords.y, coords.z);
+            TileEntity te = aWorld.getTileEntity(this.coords.x, this.coords.y, this.coords.z);
             if (!(te instanceof IGregTechTileEntity)) return;
             IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
             if (!(mte instanceof GT_TileEntity_ElectricImplosionCompressor)) return;
-            if (bool && !((IGregTechTileEntity) te).hasMufflerUpgrade()) ((IGregTechTileEntity) te).addMufflerUpgrade();
+            if (this.bool && !((IGregTechTileEntity) te).hasMufflerUpgrade())
+                ((IGregTechTileEntity) te).addMufflerUpgrade();
         }
     }
 }

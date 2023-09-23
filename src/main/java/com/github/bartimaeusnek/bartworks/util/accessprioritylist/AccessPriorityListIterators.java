@@ -32,51 +32,51 @@ public class AccessPriorityListIterators {
                 boolean reverse) {
             this.head = head;
             this.tail = tail;
-            current = reverse ? tail : head;
+            this.current = reverse ? tail : head;
             this.reverse = reverse;
         }
 
         public AccessPriorityListListIterator(AccessPriorityList<E> list, int index) {
             this.head = list.head;
             this.tail = list.tail;
-            current = list.getNode(index);
-            counter = index;
+            this.current = list.getNode(index);
+            this.counter = index;
         }
 
         @Override
         public boolean hasNext() {
-            return reverse ? head != current : tail != current;
+            return this.reverse ? this.head != this.current : this.tail != this.current;
         }
 
         @Override
         public E next() {
-            counter++;
-            E ret = current.getELEMENT();
-            current = current.getNext();
+            this.counter++;
+            E ret = this.current.getELEMENT();
+            this.current = this.current.getNext();
             return ret;
         }
 
         @Override
         public boolean hasPrevious() {
-            return !reverse ? head != current : tail != current;
+            return !this.reverse ? this.head != this.current : this.tail != this.current;
         }
 
         @Override
         public E previous() {
-            counter--;
-            E ret = current.getELEMENT();
-            current = current.getBefore();
+            this.counter--;
+            E ret = this.current.getELEMENT();
+            this.current = this.current.getBefore();
             return ret;
         }
 
         @Override
         public int nextIndex() {
-            return counter + 1;
+            return this.counter + 1;
         }
 
         @Override
         public int previousIndex() {
-            return counter - 1;
+            return this.counter - 1;
         }
 
         @Override
@@ -106,13 +106,13 @@ public class AccessPriorityListIterators {
 
         @Override
         public boolean hasNext() {
-            return current != null;
+            return this.current != null;
         }
 
         @Override
         public E next() {
-            E ret = current.getELEMENT();
-            current = current.getNext();
+            E ret = this.current.getELEMENT();
+            this.current = this.current.getNext();
             return ret;
         }
     }
@@ -128,13 +128,13 @@ public class AccessPriorityListIterators {
 
         @Override
         public boolean hasNext() {
-            return current != null;
+            return this.current != null;
         }
 
         @Override
         public E next() {
-            E ret = current.getELEMENT();
-            current = current.getBefore();
+            E ret = this.current.getELEMENT();
+            this.current = this.current.getBefore();
             return ret;
         }
     }
@@ -150,13 +150,13 @@ public class AccessPriorityListIterators {
 
         @Override
         public boolean hasNext() {
-            return current != null;
+            return this.current != null;
         }
 
         @Override
         public AccessPriorityListNode<E> next() {
-            AccessPriorityListNode<E> ret = current;
-            current = current.getNext();
+            AccessPriorityListNode<E> ret = this.current;
+            this.current = this.current.getNext();
             return ret;
         }
     }

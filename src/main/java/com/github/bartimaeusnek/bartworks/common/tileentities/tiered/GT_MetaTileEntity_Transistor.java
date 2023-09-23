@@ -90,21 +90,18 @@ public class GT_MetaTileEntity_Transistor extends GT_MetaTileEntity_TieredMachin
     @Override
     public void saveNBTData(NBTTagCompound nbtTagCompound) {}
 
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             final ForgeDirection side = ForgeDirection.EAST;
             if (aBaseMetaTileEntity.inputEnergyFrom(side)) {
                 TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(side);
-                if (!(tTileEntity instanceof IBasicEnergyContainer)) {
+                if (!(tTileEntity instanceof IBasicEnergyContainer tileAtSide)) {
                     this.powered = false;
                     return;
                 }
-                IBasicEnergyContainer tileAtSide = (IBasicEnergyContainer) tTileEntity;
-                if (!tileAtSide.outputsEnergyTo(ForgeDirection.WEST) || !tileAtSide.isUniversalEnergyStored(4L)) {
-                    this.powered = false;
-                    return;
-                }
-                if (!tileAtSide.decreaseStoredEnergyUnits(4, false)) {
+                if (!tileAtSide.outputsEnergyTo(ForgeDirection.WEST) || !tileAtSide.isUniversalEnergyStored(4L)
+                        || !tileAtSide.decreaseStoredEnergyUnits(4, false)) {
                     this.powered = false;
                     return;
                 }
@@ -117,6 +114,7 @@ public class GT_MetaTileEntity_Transistor extends GT_MetaTileEntity_TieredMachin
         }
     }
 
+    @Override
     public long maxEUInput() {
         return GT_Values.V[this.mTier];
     }
@@ -131,6 +129,7 @@ public class GT_MetaTileEntity_Transistor extends GT_MetaTileEntity_TieredMachin
         return this.powered ? 1L : 0;
     }
 
+    @Override
     public long maxEUOutput() {
         return this.powered ? GT_Values.V[this.mTier] : 0;
     }

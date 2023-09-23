@@ -127,7 +127,7 @@ public class CellLoader implements IWerkstoffRunnable {
                             stOutputs.add(
                                     ((Werkstoff) container.getKey()).get(
                                             dust,
-                                            (tracker.get(container.getKey()).getKey() + container.getValue())));
+                                            tracker.get(container.getKey()).getKey() + container.getValue()));
                             stOutputs.remove(tracker.get(container.getKey()).getValue() + 1);
                         }
                     }
@@ -218,7 +218,7 @@ public class CellLoader implements IWerkstoffRunnable {
 
         }
 
-        if (werkstoff.getType().equals(Werkstoff.Types.ELEMENT)) {
+        if (Werkstoff.Types.ELEMENT.equals(werkstoff.getType())) {
             Materials werkstoffBridgeMaterial = null;
             boolean ElementSet = false;
             for (Element e : Element.values()) {

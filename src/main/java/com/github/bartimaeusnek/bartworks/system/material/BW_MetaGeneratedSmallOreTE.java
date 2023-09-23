@@ -31,6 +31,7 @@ import gregtech.api.util.GT_Utility;
 
 public class BW_MetaGeneratedSmallOreTE extends BW_MetaGeneratedOreTE {
 
+    @Override
     public ArrayList<ItemStack> getDrops(int aFortune) {
         ArrayList<ItemStack> rList = new ArrayList<>();
         Materials aMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData).getBridgeMaterial();
@@ -100,7 +101,7 @@ public class BW_MetaGeneratedSmallOreTE extends BW_MetaGeneratedOreTE {
             if (tSelector.size() > 0) {
                 int i = 0;
 
-                for (int j = Math.max(1, (aFortune > 0 ? tRandom.nextInt(1 + aFortune) : 0)); i < j; ++i) {
+                for (int j = Math.max(1, aFortune > 0 ? tRandom.nextInt(1 + aFortune) : 0); i < j; ++i) {
                     rList.add(GT_Utility.copyAmount(1L, tSelector.get(tRandom.nextInt(tSelector.size()))));
                 }
             }
@@ -118,7 +119,7 @@ public class BW_MetaGeneratedSmallOreTE extends BW_MetaGeneratedOreTE {
     @Override
     public ITexture[] getTexture(Block aBlock, ForgeDirection side) {
         Werkstoff aMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData);
-        if ((aMaterial != null)) {
+        if (aMaterial != null) {
             ITexture aIconSet = TextureFactory
                     .of(aMaterial.getTexSet().mTextures[OrePrefixes.oreSmall.mTextureIndex], aMaterial.getRGBA());
             return new ITexture[] { TextureFactory.of(Blocks.stone), aIconSet };

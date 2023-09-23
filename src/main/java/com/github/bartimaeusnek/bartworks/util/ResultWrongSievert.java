@@ -32,17 +32,14 @@ public class ResultWrongSievert implements CheckRecipeResult {
 
     @Override
     public String getDisplayString() {
-        switch (type) {
-            case EXACTLY:
-                return StatCollector.translateToLocalFormatted(
-                        "GT5U.gui.text.wrong_sievert_exactly",
-                        GT_Utility.formatNumbers(required));
-            case MINIMUM:
-                return StatCollector.translateToLocalFormatted(
-                        "GT5U.gui.text.wrong_sievert_min",
-                        GT_Utility.formatNumbers(required));
-        }
-        return "";
+        return switch (this.type) {
+            case EXACTLY -> StatCollector.translateToLocalFormatted(
+                    "GT5U.gui.text.wrong_sievert_exactly",
+                    GT_Utility.formatNumbers(this.required));
+            case MINIMUM -> StatCollector.translateToLocalFormatted(
+                    "GT5U.gui.text.wrong_sievert_min",
+                    GT_Utility.formatNumbers(this.required));
+        };
     }
 
     @Override
@@ -52,22 +49,22 @@ public class ResultWrongSievert implements CheckRecipeResult {
 
     @Override
     public void encode(PacketBuffer buffer) {
-        buffer.writeVarIntToBuffer(required);
-        buffer.writeVarIntToBuffer(type.ordinal());
+        buffer.writeVarIntToBuffer(this.required);
+        buffer.writeVarIntToBuffer(this.type.ordinal());
     }
 
     @Override
     public void decode(PacketBuffer buffer) {
-        required = buffer.readVarIntFromBuffer();
-        type = NeededSievertType.values()[buffer.readVarIntFromBuffer()];
+        this.required = buffer.readVarIntFromBuffer();
+        this.type = NeededSievertType.values()[buffer.readVarIntFromBuffer()];
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || this.getClass() != o.getClass()) return false;
         ResultWrongSievert that = (ResultWrongSievert) o;
-        return required == that.required;
+        return this.required == that.required;
     }
 
     /**

@@ -36,7 +36,7 @@ public class BW_MetaGeneratedBlocks_Casing_TE extends BW_MetaGenerated_Block_TE 
     public ITexture[] getTexture(Block aBlock, ForgeDirection side) {
         if (SideReference.Side.Client) {
             Werkstoff aMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData);
-            if ((aMaterial != null)) {
+            if (aMaterial != null) {
                 TextureSet set = aMaterial.getTexSet();
                 ITexture aIconSet = TextureFactory.of(
                         PrefixTextureLinker.texMapBlocks.get(OrePrefixes.blockCasing)

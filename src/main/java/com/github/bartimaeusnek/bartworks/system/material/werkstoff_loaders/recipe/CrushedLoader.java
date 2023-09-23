@@ -50,7 +50,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
         if (!werkstoff.hasItemType(ore) || !werkstoff.hasItemType(dust)) return;
 
         if (werkstoff.hasItemType(ingot) && !werkstoff.getStats().isBlastFurnace()) {
-            if (werkstoff.getType().equals(Werkstoff.Types.ELEMENT)) {
+            if (Werkstoff.Types.ELEMENT.equals(werkstoff.getType())) {
                 GT_ModHandler.addSmeltingRecipe(werkstoff.get(crushed), werkstoff.get(nugget, 10));
                 GT_ModHandler.addSmeltingRecipe(werkstoff.get(crushedPurified), werkstoff.get(nugget, 10));
                 GT_ModHandler.addSmeltingRecipe(werkstoff.get(crushedCentrifuged), werkstoff.get(nugget, 10));

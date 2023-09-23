@@ -29,6 +29,7 @@ public class BW_RotorBlock extends TileEntityWindKineticGenerator {
         return super.getKuOutput();
     }
 
+    @Override
     public int getKuOutput() {
         return 0;
     }

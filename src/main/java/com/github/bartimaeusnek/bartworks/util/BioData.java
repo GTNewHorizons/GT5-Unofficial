@@ -100,9 +100,9 @@ public class BioData {
         if (o == null || this.getClass() != o.getClass()) return false;
         BioData bioData = (BioData) o;
         return this.getID() == bioData.getID()
-                || (this.getChance() == bioData.getChance() && this.getTier() == bioData.getTier()
+                || this.getChance() == bioData.getChance() && this.getTier() == bioData.getTier()
                         && Objects.equals(this.getName(), bioData.getName())
-                        && this.getRarity() == bioData.getRarity());
+                        && this.getRarity() == bioData.getRarity();
     }
 
     @Override
@@ -127,7 +127,7 @@ public class BioData {
 
     @Override
     public String toString() {
-        return "BioData{" + "name='" + name + '\'' + ", ID=" + ID + '}';
+        return "BioData{" + "name='" + this.name + '\'' + ", ID=" + this.ID + '}';
     }
 
     public EnumRarity getRarity() {

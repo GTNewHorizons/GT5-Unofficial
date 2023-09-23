@@ -24,7 +24,6 @@ import com.github.bartimaeusnek.bartworks.util.BioCulture;
 
 import gregtech.api.enums.Materials;
 
-@SuppressWarnings("ALL")
 public final class BioRecipeAdder {
 
     public static final int STANDART = 0;
@@ -108,6 +107,7 @@ public final class BioRecipeAdder {
      * @param exactSv       if the recipe needs EXACTLY the Sv or can use less...
      * @return
      */
+    @Deprecated
     public static boolean addBacterialVatRecipe(ItemStack[] aInputs, @Nonnull BioCulture aCulture,
             @Nonnull FluidStack[] aFluidInputs, @Nonnull FluidStack[] aFluidOutputs, @Nonnegative int aDuration,
             @Nonnegative int aEUt, Materials material, @Nonnegative int glasTier, int aSpecialValue, boolean exactSv) {

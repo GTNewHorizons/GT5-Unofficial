@@ -90,7 +90,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implem
                         StatCollector.translateToLocal("tooltip.tile.tiereddsc.3.name") + " "
                                 + (aTier - 2)
                                 + " "
-                                + ((aTier - 2) >= 2 ? StatCollector.translateToLocal("tooltip.bw.kg.1.name")
+                                + (aTier - 2 >= 2 ? StatCollector.translateToLocal("tooltip.bw.kg.1.name")
                                         : StatCollector.translateToLocal("tooltip.bw.kg.0.name")),
                         StatCollector.translateToLocal("tooltip.tile.radhatch.1.name"),
                         BW_Tooltip_Reference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() });
@@ -108,12 +108,12 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implem
     }
 
     public int getSievert() {
-        return this.sievert - MathUtils.ceilInt((float) this.sievert / 100f * (float) this.coverage);
+        return this.sievert - MathUtils.ceilInt(this.sievert / 100f * this.coverage);
     }
 
     public short[] getColorForGUI() {
         if (this.colorForGUI != null) return this.colorForGUI;
-        return colorForGUI = new short[] { 0xFA, 0xFA, 0xFF };
+        return this.colorForGUI = new short[] { 0xFA, 0xFA, 0xFF };
     }
 
     public byte getMass() {
@@ -159,29 +159,26 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implem
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        BaseMetaTileEntity myMetaTileEntity = ((BaseMetaTileEntity) this.getBaseMetaTileEntity());
+        BaseMetaTileEntity myMetaTileEntity = (BaseMetaTileEntity) this.getBaseMetaTileEntity();
         if (myMetaTileEntity.isServerSide()) {
 
             if (this.mass > 0) {
                 ++this.timer;
             }
 
-            if (this.mass > 0) {
-                if (this.decayTime == 0 || (this.decayTime > 0 && this.timer % this.decayTime == 0)) {
-                    this.mass--;
-                    if (this.mass == 0) {
-                        this.material = StatCollector.translateToLocal("tooltip.bw.empty.name");
-                        this.sievert = 0;
-                    }
-                    this.timer = 1;
+            if (this.mass > 0 && (this.decayTime == 0 || this.decayTime > 0 && this.timer % this.decayTime == 0)) {
+                this.mass--;
+                if (this.mass == 0) {
+                    this.material = StatCollector.translateToLocal("tooltip.bw.empty.name");
+                    this.sievert = 0;
                 }
+                this.timer = 1;
             }
 
-            if (myMetaTileEntity.mTickTimer > (myMetaTileEntity.mLastSoundTick + ticksBetweenSounds)) {
-                if (this.sievert > 0) {
-                    sendLoopStart((byte) 1);
-                    myMetaTileEntity.mLastSoundTick = myMetaTileEntity.mTickTimer;
-                }
+            if (myMetaTileEntity.mTickTimer > myMetaTileEntity.mLastSoundTick + ticksBetweenSounds
+                    && this.sievert > 0) {
+                this.sendLoopStart((byte) 1);
+                myMetaTileEntity.mLastSoundTick = myMetaTileEntity.mTickTimer;
             }
 
             if (this.mass == 0) {
@@ -190,14 +187,13 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implem
                 if (lStack == null) {
                     this.colorForGUI = new short[] { 0x37, 0x37, 0x37 };
                     return;
+                }
+                ItemData itemData = GT_OreDictUnificator.getAssociation(lStack);
+                if (itemData != null) {
+                    Materials mat = itemData.mMaterial.mMaterial;
+                    this.colorForGUI = new short[] { mat.getRGBA()[0], mat.getRGBA()[1], mat.getRGBA()[2] };
                 } else {
-                    ItemData itemData = GT_OreDictUnificator.getAssociation(lStack);
-                    if (itemData != null) {
-                        Materials mat = itemData.mMaterial.mMaterial;
-                        this.colorForGUI = new short[] { mat.getRGBA()[0], mat.getRGBA()[1], mat.getRGBA()[2] };
-                    } else {
-                        this.colorForGUI = new short[] { 0x37, 0x37, 0x37 };
-                    }
+                    this.colorForGUI = new short[] { 0x37, 0x37, 0x37 };
                 }
 
                 if (this.lastFail && GT_Utility.areStacksEqual(this.lastUsedItem, lStack, true)) {
@@ -211,7 +207,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implem
                         this.sievert = this.lastRecipe.mEUt;
                         this.material = this.lastUsedItem.getDisplayName();
                         lStack.stackSize--;
-                        updateSlots();
+                        this.updateSlots();
                     } else {
                         this.lastRecipe = null;
                     }
@@ -223,7 +219,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implem
                             false,
                             Integer.MAX_VALUE - 7,
                             null,
-                            mInventory[0]);
+                            this.mInventory[0]);
                     if (this.lastRecipe == null) {
                         this.lastFail = true;
                         this.lastUsedItem = this.mInventory[0] == null ? null : this.mInventory[0].copy();
@@ -240,7 +236,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implem
                         this.sievert = this.lastRecipe.mEUt;
                         this.material = lStack.getDisplayName();
                         lStack.stackSize--;
-                        updateSlots();
+                        this.updateSlots();
                     }
                 }
             }
@@ -271,7 +267,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implem
                         + "/"
                         + (this.decayTime - this.timer % this.decayTime) / 20 / 60 / 60
                         + StatCollector.translateToLocal("tooltip.tile.radhatch.9.name") };
-        else return new String[] {
+        return new String[] {
                 StatCollector.translateToLocal("tooltip.tile.radhatch.2.name") + " "
                         + StatCollector.translateToLocal("tooltip.bw.empty.name"),
                 StatCollector.translateToLocal("tooltip.tile.radhatch.3.name") + " " + "0",
@@ -283,6 +279,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implem
         return true;
     }
 
+    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
@@ -349,12 +346,12 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implem
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         buildContext.addSyncedWindow(RADIATION_SHUTTER_WINDOW_ID, this::createShutterWindow);
 
-        getBaseMetaTileEntity().add1by1Slot(builder);
+        this.getBaseMetaTileEntity().add1by1Slot(builder);
         builder.widget(
                 new DrawableWidget().setBackground(BW_UITextures.PICTURE_SIEVERT_CONTAINER).setPos(61, 9)
                         .setSize(56, 24))
                 .widget(
-                        new ProgressBar().setProgress(() -> getSievert() / 148f).setDirection(Direction.RIGHT)
+                        new ProgressBar().setProgress(() -> this.getSievert() / 148f).setDirection(Direction.RIGHT)
                                 .setTexture(BW_UITextures.PROGRESSBAR_SIEVERT, 24).setPos(65, 13).setSize(48, 16))
                 .widget(
                         new DrawableWidget().setBackground(BW_UITextures.PICTURE_DECAY_TIME_INSIDE).setPos(124, 18)
@@ -363,9 +360,19 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implem
 
                     @Override
                     public void draw(float partialTicks) {
-                        if (decayTime > 0) {
-                            int height = MathUtils.ceilInt(48 * ((decayTime - timer % decayTime) / (float) decayTime));
-                            new Rectangle().setColor(Color.argb(colorForGUI[0], colorForGUI[1], colorForGUI[2], 255))
+                        if (GT_MetaTileEntity_RadioHatch.this.decayTime > 0) {
+                            int height = MathUtils.ceilInt(
+                                    48 * ((GT_MetaTileEntity_RadioHatch.this.decayTime
+                                            - GT_MetaTileEntity_RadioHatch.this.timer
+                                                    % GT_MetaTileEntity_RadioHatch.this.decayTime)
+                                            / (float) GT_MetaTileEntity_RadioHatch.this.decayTime));
+                            new Rectangle()
+                                    .setColor(
+                                            Color.argb(
+                                                    GT_MetaTileEntity_RadioHatch.this.colorForGUI[0],
+                                                    GT_MetaTileEntity_RadioHatch.this.colorForGUI[1],
+                                                    GT_MetaTileEntity_RadioHatch.this.colorForGUI[2],
+                                                    255))
                                     .draw(new Pos2d(0, 48 - height), new Size(16, height), partialTicks);
                         }
                     }
@@ -373,32 +380,31 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implem
                         () -> Collections.singletonList(
                                 StatCollector.translateToLocalFormatted(
                                         "tooltip.tile.radhatch.10.name",
-                                        timer <= 1 ? 0 : (decayTime - timer) / 20,
-                                        timer <= 1 ? 0 : decayTime / 20)))
+                                        this.timer <= 1 ? 0 : (this.decayTime - this.timer) / 20,
+                                        this.timer <= 1 ? 0 : this.decayTime / 20)))
                         .setPos(124, 18).setSize(16, 48)
                         .attachSyncer(
-                                new FakeSyncWidget.LongSyncer(() -> decayTime, val -> decayTime = val),
+                                new FakeSyncWidget.LongSyncer(() -> this.decayTime, val -> this.decayTime = val),
                                 builder,
                                 (widget, val) -> widget.notifyTooltipChange())
                         .attachSyncer(
-                                new FakeSyncWidget.LongSyncer(() -> timer, val -> timer = val),
+                                new FakeSyncWidget.LongSyncer(() -> this.timer, val -> this.timer = val),
                                 builder,
                                 (widget, val) -> widget.notifyTooltipChange()))
-                .widget(new FakeSyncWidget.ShortSyncer(() -> colorForGUI[0], val -> colorForGUI[0] = val))
-                .widget(new FakeSyncWidget.ShortSyncer(() -> colorForGUI[1], val -> colorForGUI[1] = val))
-                .widget(new FakeSyncWidget.ShortSyncer(() -> colorForGUI[2], val -> colorForGUI[2] = val))
+                .widget(new FakeSyncWidget.ShortSyncer(() -> this.colorForGUI[0], val -> this.colorForGUI[0] = val))
+                .widget(new FakeSyncWidget.ShortSyncer(() -> this.colorForGUI[1], val -> this.colorForGUI[1] = val))
+                .widget(new FakeSyncWidget.ShortSyncer(() -> this.colorForGUI[2], val -> this.colorForGUI[2] = val))
                 .widget(
                         new DrawableWidget().setBackground(BW_UITextures.PICTURE_DECAY_TIME_CONTAINER).setPos(120, 14)
                                 .setSize(24, 56))
                 .widget(
                         TextWidget.dynamicString(
-                                () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", mass))
+                                () -> StatCollector.translateToLocalFormatted("BW.NEI.display.radhatch.1", this.mass))
                                 .setTextAlignment(Alignment.Center).setPos(65, 62))
                 .widget(
-                        TextWidget
-                                .dynamicString(
-                                        () -> StatCollector
-                                                .translateToLocalFormatted("BW.NEI.display.radhatch.0", getSievert()))
+                        TextWidget.dynamicString(
+                                () -> StatCollector
+                                        .translateToLocalFormatted("BW.NEI.display.radhatch.0", this.getSievert()))
                                 .setTextAlignment(Alignment.Center).setPos(60, 72))
                 .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                     if (!widget.isClient()) {
@@ -416,25 +422,26 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implem
     private ModularWindow createShutterWindow(EntityPlayer player) {
         ModularWindow.Builder builder = ModularWindow.builder(176, 107);
         builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
-        builder.setGuiTint(getGUIColorization());
+        builder.setGuiTint(this.getGUIColorization());
 
-        builder.widget(new TextWidget("Radiation Shutter Control").setDefaultColor(COLOR_TITLE.get()).setPos(10, 9))
+        builder.widget(
+                new TextWidget("Radiation Shutter Control").setDefaultColor(this.COLOR_TITLE.get()).setPos(10, 9))
                 .widget(
                         new DrawableWidget().setDrawable(BW_UITextures.PICTURE_RADIATION_SHUTTER_FRAME).setPos(14, 27)
                                 .setSize(55, 54))
                 .widget(
-                        new DrawableWidget()
-                                .setDrawable(
-                                        () -> coverage < 100 ? BW_UITextures.PICTURE_RADIATION_SHUTTER_INSIDE : null)
+                        new DrawableWidget().setDrawable(
+                                () -> this.coverage < 100 ? BW_UITextures.PICTURE_RADIATION_SHUTTER_INSIDE : null)
                                 .setPos(16, 29).setSize(51, 50).attachSyncer(
                                         new FakeSyncWidget.ByteSyncer(this::getCoverage, this::setCoverage),
                                         builder,
-                                        (widget, val) -> widget.setPos(16, 29 + coverage / 2)
-                                                .setSize(51, 50 - coverage / 2)))
+                                        (widget, val) -> widget.setPos(16, 29 + this.coverage / 2)
+                                                .setSize(51, 50 - this.coverage / 2)))
                 .widget(
-                        new TextFieldWidget().setSetterInt(val -> coverage = val.byteValue())
-                                .setGetterInt(() -> (int) coverage).setNumbers(0, 100).setTextColor(Color.WHITE.dark(1))
-                                .setOnScrollNumbers(1, 5, 50).setTextAlignment(Alignment.CenterLeft)
+                        new TextFieldWidget().setSetterInt(val -> this.coverage = val.byteValue())
+                                .setGetterInt(() -> (int) this.coverage).setNumbers(0, 100)
+                                .setTextColor(Color.WHITE.dark(1)).setOnScrollNumbers(1, 5, 50)
+                                .setTextAlignment(Alignment.CenterLeft)
                                 .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
                                 .setPos(86, 27).setSize(30, 12))
                 .widget(ButtonWidget.closeWindowButton(true).setPos(176 - 15, 3));

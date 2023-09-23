@@ -57,8 +57,8 @@ public class TileEntity_GTDataServer extends TileEntity
     @Callback
     public Object[] listData(Context context, Arguments args) {
         Set<String> ret = new HashSet<>();
-        for (Map.Entry<Long, GT_NBT_DataBase> entry : OrbDataBase.entrySet()) {
-            ret.add((entry.getValue().getId() + Long.MAX_VALUE) + ". " + entry.getValue().getmDataTitle());
+        for (Map.Entry<Long, GT_NBT_DataBase> entry : this.OrbDataBase.entrySet()) {
+            ret.add(entry.getValue().getId() + Long.MAX_VALUE + ". " + entry.getValue().getmDataTitle());
         }
         return ret.toArray(new String[0]);
     }
@@ -78,41 +78,39 @@ public class TileEntity_GTDataServer extends TileEntity
         if (this.TickTimer++ % 20 != 0) return;
 
         if (this.isServerSide()) {
-            if (GT_Utility.areStacksEqual(this.mItems[0], ItemList.Tool_DataOrb.get(1))) {
-                if (this.mItems[0].hasTagCompound()) {
-                    if (GT_NBT_DataBase.getIdFromTag(this.mItems[0].getTagCompound()) == null) {
-                        this.OrbDataBase.put(
-                                GT_NBT_DataBase.getMaxID(),
-                                new GT_NBT_DataBase(
-                                        Behaviour_DataOrb.getDataName(this.mItems[0]),
-                                        Behaviour_DataOrb.getDataTitle(this.mItems[0]),
-                                        this.mItems[0].getTagCompound()));
-                    } else {
-                        long id = GT_NBT_DataBase.getIdFromTag(this.mItems[0].getTagCompound());
-                        this.OrbDataBase.put(id, GT_NBT_DataBase.getGTTagFromId(id));
-                    }
+            if (GT_Utility.areStacksEqual(this.mItems[0], ItemList.Tool_DataOrb.get(1))
+                    && this.mItems[0].hasTagCompound()) {
+                if (GT_NBT_DataBase.getIdFromTag(this.mItems[0].getTagCompound()) == null) {
+                    this.OrbDataBase.put(
+                            GT_NBT_DataBase.getMaxID(),
+                            new GT_NBT_DataBase(
+                                    Behaviour_DataOrb.getDataName(this.mItems[0]),
+                                    Behaviour_DataOrb.getDataTitle(this.mItems[0]),
+                                    this.mItems[0].getTagCompound()));
+                } else {
+                    long id = GT_NBT_DataBase.getIdFromTag(this.mItems[0].getTagCompound());
+                    this.OrbDataBase.put(id, GT_NBT_DataBase.getGTTagFromId(id));
                 }
             }
-            if (GT_Utility.areStacksEqual(this.mItems[0], ItemList.Tool_DataStick.get(1))) {
-                if (this.mItems[0].hasTagCompound()) {
+            if (GT_Utility.areStacksEqual(this.mItems[0], ItemList.Tool_DataStick.get(1))
+                    && this.mItems[0].hasTagCompound()) {
 
-                    String bookTitle = GT_Utility.ItemNBT.getBookTitle(this.mItems[0]);
-                    String punchcardData = GT_Utility.ItemNBT.getPunchCardData(this.mItems[0]);
-                    short mapID = GT_Utility.ItemNBT.getMapID(this.mItems[0]);
-                    byte data = (byte) (bookTitle.isEmpty() ? punchcardData.isEmpty() ? mapID != -1 ? 3 : -1 : 2 : 1);
+                String bookTitle = GT_Utility.ItemNBT.getBookTitle(this.mItems[0]);
+                String punchcardData = GT_Utility.ItemNBT.getPunchCardData(this.mItems[0]);
+                short mapID = GT_Utility.ItemNBT.getMapID(this.mItems[0]);
+                byte data = (byte) (bookTitle.isEmpty() ? punchcardData.isEmpty() ? mapID != -1 ? 3 : -1 : 2 : 1);
 
-                    String title = data == 1 ? bookTitle
-                            : data == 2 ? punchcardData : data == 3 ? "" + mapID : "Custom Data";
-                    String name = data == 1 ? "eBook"
-                            : data == 2 ? "Punch Card Data" : data == 3 ? "Map Data" : "Custom Data";
-                    if (GT_NBT_DataBase.getIdFromTag(this.mItems[0].getTagCompound()) == null) {
-                        this.OrbDataBase.put(
-                                GT_NBT_DataBase.getMaxID(),
-                                new GT_NBT_DataBase(name, title, this.mItems[0].getTagCompound()));
-                    } else {
-                        long id = GT_NBT_DataBase.getIdFromTag(this.mItems[0].getTagCompound());
-                        this.OrbDataBase.put(id, GT_NBT_DataBase.getGTTagFromId(id));
-                    }
+                String title = data == 1 ? bookTitle
+                        : data == 2 ? punchcardData : data == 3 ? "" + mapID : "Custom Data";
+                String name = data == 1 ? "eBook"
+                        : data == 2 ? "Punch Card Data" : data == 3 ? "Map Data" : "Custom Data";
+                if (GT_NBT_DataBase.getIdFromTag(this.mItems[0].getTagCompound()) == null) {
+                    this.OrbDataBase.put(
+                            GT_NBT_DataBase.getMaxID(),
+                            new GT_NBT_DataBase(name, title, this.mItems[0].getTagCompound()));
+                } else {
+                    long id = GT_NBT_DataBase.getIdFromTag(this.mItems[0].getTagCompound());
+                    this.OrbDataBase.put(id, GT_NBT_DataBase.getGTTagFromId(id));
                 }
             }
         }
@@ -147,24 +145,24 @@ public class TileEntity_GTDataServer extends TileEntity
     }
 
     @Override
-    public ItemStack getStackInSlot(int p_70301_1_) {
-        return p_70301_1_ == 0 ? this.mItems[0] : this.mItems[1];
+    public ItemStack getStackInSlot(int slotIn) {
+        return slotIn == 0 ? this.mItems[0] : this.mItems[1];
     }
 
     @Override
-    public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) {
+    public ItemStack decrStackSize(int index, int count) {
         return null;
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
+    public ItemStack getStackInSlotOnClosing(int index) {
         return null;
     }
 
     @Override
-    public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
-        if (p_70299_1_ > 1 || p_70299_1_ < 0) return;
-        this.mItems[p_70299_1_] = p_70299_2_;
+    public void setInventorySlotContents(int index, ItemStack stack) {
+        if (index > 1 || index < 0) return;
+        this.mItems[index] = stack;
     }
 
     @Override
@@ -183,7 +181,7 @@ public class TileEntity_GTDataServer extends TileEntity
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
+    public boolean isUseableByPlayer(EntityPlayer player) {
         return true;
     }
 
@@ -194,7 +192,7 @@ public class TileEntity_GTDataServer extends TileEntity
     public void closeInventory() {}
 
     @Override
-    public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
-        return p_94041_1_ == 0;
+    public boolean isItemValidForSlot(int index, ItemStack stack) {
+        return index == 0;
     }
 }

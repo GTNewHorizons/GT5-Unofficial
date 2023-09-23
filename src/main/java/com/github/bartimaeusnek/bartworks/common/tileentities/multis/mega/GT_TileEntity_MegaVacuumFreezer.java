@@ -149,7 +149,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Vacuum Freezer").addInfo("Controller Block for the Mega Vacuum Freezer")
                 .addInfo("Cools hot ingots and cells").addSeparator().beginStructureBlock(15, 15, 15, true)
-                .addController("Front center").addCasingInfo("Frost Proof Machine Casing", 900)
+                .addController("Front center").addCasingInfoMin("Frost Proof Machine Casing", 900, false)
                 .addEnergyHatch("Any casing", 1).addMaintenanceHatch("Any casing", 1).addInputHatch("Any casing", 1)
                 .addOutputHatch("Any casing", 1).addInputBus("Any casing", 1).addOutputBus("Any casing", 1)
                 .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
@@ -163,14 +163,15 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
 
     @Override
     public void construct(ItemStack aStack, boolean aHintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, aStack, aHintsOnly, 7, 7, 0);
+        this.buildPiece(STRUCTURE_PIECE_MAIN, aStack, aHintsOnly, 7, 7, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
-        if (mMachine) return -1;
+        if (this.mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 7, 0, realBudget, source, actor, false, true);
+        return this
+                .survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 7, 0, realBudget, source, actor, false, true);
     }
 
     @Override
@@ -182,7 +183,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         if (!aNBT.hasKey(BATCH_MODE_NBT_KEY)) {
-            batchMode = aNBT.getBoolean("mUseMultiparallelMode");
+            this.batchMode = aNBT.getBoolean("mUseMultiparallelMode");
         }
     }
 
@@ -190,8 +191,8 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
             float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
+            this.batchMode = !this.batchMode;
+            if (this.batchMode) {
                 GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
             } else {
                 GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
@@ -211,7 +212,7 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         this.mCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 7, 0)) return false;
+        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 7, 7, 0)) return false;
         return this.mMaintenanceHatches.size() == 1 && this.mCasing >= 900;
     }
 

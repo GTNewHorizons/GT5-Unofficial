@@ -94,7 +94,7 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        String casings = getCasingBlockItem().get(0).getDisplayName();
+        String casings = this.getCasingBlockItem().get(0).getDisplayName();
         tt.addMachineType("Geothermal Heat Pump").addInfo("Consumes " + GT_Values.V[this.mTier + 2] + "EU/t")
                 .addInfo("Has 4 Modes, use the Screwdriver to change them:");
         if (ConfigHandler.DEHPDirectSteam) {
@@ -110,14 +110,16 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
         } else {
             tt.addInfo("0 Idle, 1 & 2 Coolant Heating Mode (no Difference between them), 3 Retract")
                     .addInfo("Explodes when it runs out of Coolant").addInfo(
-                            "Heats up " + (long) (this.mTier * 24 * ((double) GT_TileEntity_DEHP.nulearHeatMod)) * 20
+                            "Heats up " + (long) (this.mTier * 24 * (double) GT_TileEntity_DEHP.nulearHeatMod) * 20
                                     + "L/s Coolant(minus 10% per Maintenance Problem)");
         }
         tt.addSeparator().beginStructureBlock(3, 7, 3, false).addController("Front bottom")
                 .addOtherStructurePart(casings, "form the 3x1x3 Base")
                 .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
-                .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
-                .addEnergyHatch(VN[getMinTier()] + "+, Any base casing").addMaintenanceHatch("Any base casing")
+                .addOtherStructurePart(
+                        this.getFrameMaterial().mName + " Frame Boxes",
+                        "Each pillar's side and 1x3x1 on top")
+                .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing").addMaintenanceHatch("Any base casing")
                 .addInputBus("Mining Pipes, optional, any base casing").addInputHatch("Any base casing")
                 .addOutputHatch("Any base casing").toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS);
         return tt;
@@ -191,6 +193,7 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
     }
 
+    @Override
     protected boolean workingDownward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
             int yHead, int oldYHead) {
         if (this.mMode == 3) {
@@ -202,53 +205,51 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
             return true;
         }
 
-        if (tryLowerPipeState(false) != 0) {
-            if (this.waitForPipes()) {
-                return false;
-            } else {
-                if (this.mMode == 0) this.mMode = 1;
-                if (ConfigHandler.DEHPDirectSteam) {
-                    if (this.mMode == 1) {
-                        long steamProduced = (this.mTier * 600 * 2L * this.mEfficiency / 10000L);
-                        long waterConsume = ((steamProduced + 160) / 160);
+        if (this.tryLowerPipeState(false) == 0) {
+            return true;
+        }
+        if (this.waitForPipes()) {
+            return false;
+        }
+        if (this.mMode == 0) {
+            this.mMode = 1;
+        }
+        if (ConfigHandler.DEHPDirectSteam) {
+            if (this.mMode == 1) {
+                long steamProduced = this.mTier * 600 * 2L * this.mEfficiency / 10000L;
+                long waterConsume = (steamProduced + 160) / 160;
 
-                        if (this.getWaterFromHatches(false) - waterConsume > 0) {
-                            this.consumeFluid(FluidRegistry.WATER, waterConsume);
-                            this.addOutput(GT_ModHandler.getSteam(steamProduced));
-                        } else {
-                            this.explodeMultiblock();
-                            return false;
-                        }
-                    } else if (this.mMode == 2) {
-                        long steamProduced = (this.mTier * 300 * 2L * this.mEfficiency / 10000L);
-                        long waterConsume = ((steamProduced + 160) / 160);
-
-                        if (this.getWaterFromHatches(true) - waterConsume > 0) {
-                            this.consumeFluid(GT_ModHandler.getDistilledWater(1).getFluid(), waterConsume);
-                            this.addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", (int) steamProduced));
-                        } else {
-                            this.explodeMultiblock();
-                            return false;
-                        }
-                    }
+                if (this.getWaterFromHatches(false) - waterConsume > 0) {
+                    this.consumeFluid(FluidRegistry.WATER, waterConsume);
+                    this.addOutput(GT_ModHandler.getSteam(steamProduced));
                 } else {
-                    if (this.mMode == 1 || this.mMode == 2) {
-                        long coolantConverted = (long) (this.mTier * 24
-                                * ((double) GT_TileEntity_DEHP.nulearHeatMod)
-                                * this.mEfficiency
-                                / 10000L);
-                        if (this.getFluidFromHatches(FluidRegistry.getFluid("ic2coolant")) - coolantConverted > 0) {
-                            this.consumeFluid(FluidRegistry.getFluid("ic2coolant"), coolantConverted);
-                            this.addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", (int) coolantConverted));
-                        } else {
-                            this.explodeMultiblock();
-                            return false;
-                        }
-                    }
+                    this.explodeMultiblock();
+                    return false;
+                }
+            } else if (this.mMode == 2) {
+                long steamProduced = this.mTier * 300 * 2L * this.mEfficiency / 10000L;
+                long waterConsume = (steamProduced + 160) / 160;
+
+                if (this.getWaterFromHatches(true) - waterConsume > 0) {
+                    this.consumeFluid(GT_ModHandler.getDistilledWater(1).getFluid(), waterConsume);
+                    this.addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", (int) steamProduced));
+                } else {
+                    this.explodeMultiblock();
+                    return false;
                 }
             }
-        } else {
-            return true;
+        } else if (this.mMode == 1 || this.mMode == 2) {
+            long coolantConverted = (long) (this.mTier * 24
+                    * (double) GT_TileEntity_DEHP.nulearHeatMod
+                    * this.mEfficiency
+                    / 10000L);
+            if (this.getFluidFromHatches(FluidRegistry.getFluid("ic2coolant")) - coolantConverted > 0) {
+                this.consumeFluid(FluidRegistry.getFluid("ic2coolant"), coolantConverted);
+                this.addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", (int) coolantConverted));
+            } else {
+                this.explodeMultiblock();
+                return false;
+            }
         }
         return true;
     }

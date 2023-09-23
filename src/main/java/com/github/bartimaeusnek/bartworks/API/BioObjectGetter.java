@@ -24,7 +24,6 @@ import com.github.bartimaeusnek.bartworks.util.BioDNA;
 import com.github.bartimaeusnek.bartworks.util.BioData;
 import com.github.bartimaeusnek.bartworks.util.BioPlasmid;
 
-@SuppressWarnings("ALL")
 public final class BioObjectGetter {
 
     public static BioCulture getBioCulture(String aName) {

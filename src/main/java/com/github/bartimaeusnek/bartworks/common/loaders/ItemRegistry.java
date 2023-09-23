@@ -283,15 +283,15 @@ public class ItemRegistry {
                 "Electric Implosion Compressor").getStackForm(1L);
 
         // EIC depend on neutronium block to pass on structure updates
-        int bitmask = GregTech_API.sMachineIDs.getOrDefault(GregTech_API.sBlockMetal5, 0) | (1 << 2);
+        int bitmask = GregTech_API.sMachineIDs.getOrDefault(GregTech_API.sBlockMetal5, 0) | 1 << 2;
         GregTech_API.registerMachineBlock(GregTech_API.sBlockMetal5, bitmask);
 
         // Also spacetime, transcendent metal, and universium
-        bitmask = GregTech_API.sMachineIDs.getOrDefault(GregTech_API.sBlockMetal9, 0) | (1 << 3) | (1 << 4) | (1 << 8);
+        bitmask = GregTech_API.sMachineIDs.getOrDefault(GregTech_API.sBlockMetal9, 0) | 1 << 3 | 1 << 4 | 1 << 8;
         GregTech_API.registerMachineBlock(GregTech_API.sBlockMetal9, bitmask);
 
         // Also infinity
-        bitmask = GregTech_API.sMachineIDs.getOrDefault(LudicrousBlocks.resource_block, 0) | (1 << 1);
+        bitmask = GregTech_API.sMachineIDs.getOrDefault(LudicrousBlocks.resource_block, 0) | 1 << 1;
         GregTech_API.registerMachineBlock(LudicrousBlocks.resource_block, bitmask);
 
         ItemRegistry.THTR = new GT_TileEntity_THTR(
@@ -422,31 +422,34 @@ public class ItemRegistry {
             for (int amps = 32; amps <= 128; amps += 32) {
                 for (int tier = 4; tier < 8; tier++) {
                     TecTechLaserAdditions[0][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserBox(
-                            startID++,
+                            startID,
                             GT_Values.VN[tier] + "_LPLaser_Converter_" + amps,
                             GT_Values.VN[tier] + " " + amps + "A/t" + " Low Power Laser Converter",
                             tier,
                             amps).getStackForm(1L);
+                    startID++;
                 }
             }
             for (int amps = 32; amps <= 128; amps += 32) {
                 for (int tier = 4; tier < 8; tier++) {
                     TecTechLaserAdditions[1][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserHatch(
-                            startID++,
+                            startID,
                             GT_Values.VN[tier] + "_LPLaser_Hatch_" + amps,
                             GT_Values.VN[tier] + " " + amps + "A/t" + " Low Power Laser Target Hatch",
                             tier,
                             amps).getStackForm(1L);
+                    startID++;
                 }
             }
             for (int amps = 32; amps <= 128; amps += 32) {
                 for (int tier = 4; tier < 8; tier++) {
                     TecTechLaserAdditions[2][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserDynamo(
-                            startID++,
+                            startID,
                             GT_Values.VN[tier] + "_LPLaser_Dynamo_" + amps,
                             GT_Values.VN[tier] + " " + amps + "A/t" + " Low Power Laser Source Hatch",
                             tier,
                             amps).getStackForm(1L);
+                    startID++;
                 }
             }
         }

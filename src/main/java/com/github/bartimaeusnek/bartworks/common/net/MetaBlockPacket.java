@@ -24,9 +24,10 @@ import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Block
 import com.github.bartimaeusnek.bartworks.util.MurmurHash3;
 import com.google.common.io.ByteArrayDataInput;
 
-import gregtech.api.net.GT_Packet;
+import gregtech.api.net.GT_Packet_New;
+import io.netty.buffer.ByteBuf;
 
-public class MetaBlockPacket extends GT_Packet {
+public class MetaBlockPacket extends GT_Packet_New {
 
     int x;
     short y;
@@ -51,27 +52,23 @@ public class MetaBlockPacket extends GT_Packet {
     }
 
     @Override
-    public byte[] encode() {
+    public void encode(ByteBuf aOut) {
         int hash = MurmurHash3.murmurhash3_x86_32(
                 ByteBuffer.allocate(12).putInt(this.x).putInt(this.z).putShort(this.y).putShort(this.meta).array(),
                 0,
                 12,
                 31);
-        return ByteBuffer.allocate(16).putInt(this.x).putInt(this.z).putShort(this.y).putShort(this.meta).putInt(hash)
-                .array();
+        aOut.writeInt(this.x).writeInt(this.z).writeShort(this.y).writeShort(this.meta).writeInt(hash);
     }
 
     @Override
-    public GT_Packet decode(ByteArrayDataInput byteArrayDataInput) {
-        byte[] tmp = new byte[16];
-        byteArrayDataInput.readFully(tmp);
-        ByteBuffer buff = ByteBuffer.wrap(tmp);
-        this.x = buff.getInt();
-        this.z = buff.getInt();
-        this.y = buff.getShort();
-        this.meta = buff.getShort();
+    public GT_Packet_New decode(ByteArrayDataInput byteArrayDataInput) {
+        this.x = byteArrayDataInput.readInt();
+        this.z = byteArrayDataInput.readInt();
+        this.y = byteArrayDataInput.readShort();
+        this.meta = byteArrayDataInput.readShort();
         MetaBlockPacket todecode = new MetaBlockPacket(this.x, this.y, this.z, this.meta);
-        if (buff.getInt() != MurmurHash3.murmurhash3_x86_32(
+        if (byteArrayDataInput.readInt() != MurmurHash3.murmurhash3_x86_32(
                 ByteBuffer.allocate(12).putInt(this.x).putInt(this.z).putShort(this.y).putShort(this.meta).array(),
                 0,
                 12,
@@ -86,10 +83,10 @@ public class MetaBlockPacket extends GT_Packet {
     public void process(IBlockAccess iBlockAccess) {
         if (iBlockAccess != null) {
             TileEntity tTileEntity = iBlockAccess.getTileEntity(this.x, this.y, this.z);
-            if ((tTileEntity instanceof BW_MetaGenerated_Block_TE)) {
+            if (tTileEntity instanceof BW_MetaGenerated_Block_TE) {
                 ((BW_MetaGenerated_Block_TE) tTileEntity).mMetaData = this.meta;
             }
-            if (((iBlockAccess instanceof World)) && (((World) iBlockAccess).isRemote)) {
+            if (iBlockAccess instanceof World && ((World) iBlockAccess).isRemote) {
                 ((World) iBlockAccess).markBlockForUpdate(this.x, this.y, this.z);
             }
         }

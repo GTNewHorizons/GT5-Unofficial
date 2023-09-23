@@ -25,13 +25,13 @@ public class RunGC extends CommandBase {
     }
 
     @Override
-    public String getCommandUsage(ICommandSender p_71518_1_) {
+    public String getCommandUsage(ICommandSender sender) {
         return "bwgc";
     }
 
     @Override
-    public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
+    public void processCommand(ICommandSender sender, String[] args) {
         Runtime.getRuntime().gc();
-        p_71515_1_.addChatMessage(new ChatComponentText("Ran GC!"));
+        sender.addChatMessage(new ChatComponentText("Ran GC!"));
     }
 }

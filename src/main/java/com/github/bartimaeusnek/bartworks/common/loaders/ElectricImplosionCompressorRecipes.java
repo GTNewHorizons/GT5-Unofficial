@@ -33,7 +33,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 1);
     }
 
-    private static final ItemStack[] circuits = new ItemStack[] { ItemList.Circuit_ExoticProcessor.get(1),
+    private static final ItemStack[] circuits = { ItemList.Circuit_ExoticProcessor.get(1),
             ItemList.Circuit_OpticalAssembly.get(1), ItemList.Circuit_Biowaresupercomputer.get(1),
             ItemList.Circuit_Wetwaremainframe.get(1) };
 
@@ -129,30 +129,30 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 20 * 4,
                 (int) TierEU.RECIPE_MAX);
 
-        addMagnetohydrodynamicallyConstrainedStarMatterPartRecipes();
+        this.addMagnetohydrodynamicallyConstrainedStarMatterPartRecipes();
     }
 
     private void addMagnetohydrodynamicallyConstrainedStarMatterPartRecipes() {
 
-        addWhiteDwarfMagnetoEICRecipe(OrePrefixes.frameGt, 1, 1);
-        addWhiteDwarfMagnetoEICRecipe(OrePrefixes.nugget, 9, 1);
-        addWhiteDwarfMagnetoEICRecipe(OrePrefixes.ingot, 1, 1);
-        addWhiteDwarfMagnetoEICRecipe(OrePrefixes.plate, 1, 1);
-        addWhiteDwarfMagnetoEICRecipe(OrePrefixes.plateDense, 1, 3);
-        addWhiteDwarfMagnetoEICRecipe(OrePrefixes.stick, 2, 1);
-        addWhiteDwarfMagnetoEICRecipe(OrePrefixes.round, 8, 1);
-        addWhiteDwarfMagnetoEICRecipe(OrePrefixes.bolt, 8, 1);
-        addWhiteDwarfMagnetoEICRecipe(OrePrefixes.screw, 8, 1);
-        addWhiteDwarfMagnetoEICRecipe(OrePrefixes.ring, 4, 1);
-        addWhiteDwarfMagnetoEICRecipe(OrePrefixes.foil, 8, 1);
-        addWhiteDwarfMagnetoEICRecipe(OrePrefixes.itemCasing, 2, 1);
-        addWhiteDwarfMagnetoEICRecipe(OrePrefixes.gearGtSmall, 1, 1);
-        addWhiteDwarfMagnetoEICRecipe(OrePrefixes.rotor, 1, 2);
-        addWhiteDwarfMagnetoEICRecipe(OrePrefixes.stickLong, 1, 1);
-        addWhiteDwarfMagnetoEICRecipe(OrePrefixes.springSmall, 2, 1);
-        addWhiteDwarfMagnetoEICRecipe(OrePrefixes.spring, 1, 1);
-        addWhiteDwarfMagnetoEICRecipe(OrePrefixes.gearGt, 1, 2);
-        addWhiteDwarfMagnetoEICRecipe(OrePrefixes.wireFine, 8, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.frameGt, 1, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.nugget, 9, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.ingot, 1, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.plate, 1, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.plateDense, 1, 3);
+        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.stick, 2, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.round, 8, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.bolt, 8, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.screw, 8, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.ring, 4, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.foil, 8, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.itemCasing, 2, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.gearGtSmall, 1, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.rotor, 1, 2);
+        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.stickLong, 1, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.springSmall, 2, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.spring, 1, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.gearGt, 1, 2);
+        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.wireFine, 8, 1);
     }
 
     private void addWhiteDwarfMagnetoEICRecipe(final OrePrefixes part, final int multiplier,

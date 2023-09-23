@@ -101,10 +101,9 @@ public class RecipeFinderForParallel {
                             tInputItem.stackSize -= tCompressedItemRecipe.get(tItem);
                             i.remove();
                             break;
-                        } else {
-                            tCompressedItemRecipe.put(tItem, tCompressedItemRecipe.get(tItem) - tInputItem.stackSize);
-                            tInputItem.stackSize = 0;
                         }
+                        tCompressedItemRecipe.put(tItem, tCompressedItemRecipe.get(tItem) - tInputItem.stackSize);
+                        tInputItem.stackSize = 0;
                     }
                 }
             } else {

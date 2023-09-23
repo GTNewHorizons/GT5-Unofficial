@@ -40,13 +40,13 @@ public class BW_MetaGeneratedFrames extends MetaPipeEntity {
 
     public BW_MetaGeneratedFrames(int aID, String aName, String aNameRegional, Werkstoff aMaterial) {
         super(aID, aName, aNameRegional, 0);
-        mMaterial = aMaterial;
+        this.mMaterial = aMaterial;
 
-        GT_OreDictUnificator.registerOre(OrePrefixes.frameGt, aMaterial, getStackForm(1));
+        GT_OreDictUnificator.registerOre(OrePrefixes.frameGt, aMaterial, this.getStackForm(1));
         GT_ModHandler.addCraftingRecipe(
-                getStackForm(2),
+                this.getStackForm(2),
                 RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[] { "SSS", "SwS", "SSS", 'S', mMaterial.get(OrePrefixes.stick) });
+                new Object[] { "SSS", "SwS", "SSS", 'S', this.mMaterial.get(OrePrefixes.stick) });
 
         RA.stdBuilder()
                 .itemInputs(
@@ -57,7 +57,7 @@ public class BW_MetaGeneratedFrames extends MetaPipeEntity {
 
     private BW_MetaGeneratedFrames(String aName, Werkstoff aMaterial) {
         super(aName, 0);
-        mMaterial = aMaterial;
+        this.mMaterial = aMaterial;
     }
 
     @Override
@@ -129,10 +129,12 @@ public class BW_MetaGeneratedFrames extends MetaPipeEntity {
         return false;
     }
 
+    @Override
     public int connect(ForgeDirection side) {
         return 0;
     }
 
+    @Override
     public void disconnect(ForgeDirection side) {
         /* Do nothing */
     }

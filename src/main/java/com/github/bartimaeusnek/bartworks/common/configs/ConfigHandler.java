@@ -98,7 +98,7 @@ public class ConfigHandler {
                     615, 625, 635, 645, 655, 665, 675 }, };
     private static int[][][] defaultMetasForTiers = { METAFORTIERS_ENERGY, METAFORTIERS_BUFFER, METAFORTIERS_CABLE,
             METAFORTIERS_MACHINE };
-    private static final String[] VOLTAGE_NAMES = new String[] { "High Pressure Steam", "Low Voltage", "Medium Voltage",
+    private static final String[] VOLTAGE_NAMES = { "High Pressure Steam", "Low Voltage", "Medium Voltage",
             "High Voltage", "Extreme Voltage", "Insane Voltage", "Ludicrous Voltage", "ZPM Voltage", "Ultimate Voltage",
             "Ultimate High Voltage", "Ultimate Extreme Voltage", "Ultimate Insane Voltage", "Ultimate Mega Voltage",
             "Ultimate Extended Mega Voltage", "Overpowered Voltage", "Maximum Voltage" };
@@ -147,7 +147,7 @@ public class ConfigHandler {
                 "This switch sets the lowest unnerfed Circuit Recipe Tier. -1 to disable it completely.",
                 -1,
                 VOLTAGE_NAMES.length).getInt(5);
-        ConfigHandler.cutoffTier = (ConfigHandler.cutoffTier == -1 ? VOLTAGE_NAMES.length : ConfigHandler.cutoffTier);
+        ConfigHandler.cutoffTier = ConfigHandler.cutoffTier == -1 ? VOLTAGE_NAMES.length : ConfigHandler.cutoffTier;
         ConfigHandler.disableExtraGassesForEBF = ConfigHandler.c
                 .get(
                         "System",

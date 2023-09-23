@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -66,16 +65,15 @@ import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DrillerBase;
 
-@SuppressWarnings("ALL")
 public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_DrillerBase {
 
     private static ArrayListMultimap<Integer, Pair<Pair<Integer, Boolean>, Float>> extraDropsDimMap = ArrayListMultimap
             .create();
-    private static FluidStack[] NOBLE_GASSES = new FluidStack[] { WerkstoffLoader.Neon.getFluidOrGas(1),
+    private static FluidStack[] NOBLE_GASSES = { WerkstoffLoader.Neon.getFluidOrGas(1),
             WerkstoffLoader.Krypton.getFluidOrGas(1), WerkstoffLoader.Xenon.getFluidOrGas(1),
             WerkstoffLoader.Oganesson.getFluidOrGas(1) };
 
-    private HashMap<Pair<Integer, Boolean>, Float> dropmap = null;
+    private Map<Pair<Integer, Boolean>, Float> dropmap = null;
     private float totalWeight;
     private int multiplier = 1;
 
@@ -106,24 +104,24 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
 
     public GT_TileEntity_VoidMiner_Base(int aID, String aName, String aNameRegional, int tier) {
         super(aID, aName, aNameRegional);
-        TIER_MULTIPLIER = (byte) Math.max(tier, 1);
+        this.TIER_MULTIPLIER = (byte) Math.max(tier, 1);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("mBlacklist", mBlacklist);
+        aNBT.setBoolean("mBlacklist", this.mBlacklist);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        mBlacklist = aNBT.getBoolean("mBlacklist");
+        this.mBlacklist = aNBT.getBoolean("mBlacklist");
     }
 
     public GT_TileEntity_VoidMiner_Base(String aName, int tier) {
         super(aName);
-        TIER_MULTIPLIER = (byte) tier;
+        this.TIER_MULTIPLIER = (byte) tier;
     }
 
     @Override
@@ -156,21 +154,20 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
             int yHead, int oldYHead) {
         // if the dropmap has never been initialised or if the dropmap is empty
-        if (dropmap == null || totalWeight == 0) calculateDropMap();
+        if (this.dropmap == null || this.totalWeight == 0) this.calculateDropMap();
 
-        if (totalWeight != 0.f) {
-            handleFluidConsumption();
-            handleOutputs();
+        if (this.totalWeight != 0.f) {
+            this.handleFluidConsumption();
+            this.handleOutputs();
             return true;
-        } else {
-            stopMachine();
-            return false;
         }
+        this.stopMachine();
+        return false;
     }
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        String casings = getCasingBlockItem().get(0).getDisplayName();
+        String casings = this.getCasingBlockItem().get(0).getDisplayName();
 
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Miner").addInfo("Controller Block for the Void Miner " + GT_Values.VN[this.getMinTier()])
@@ -178,7 +175,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
                 .addInfo(
                         "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
                 .addInfo(
-                        "Will output " + (2 * TIER_MULTIPLIER)
+                        "Will output " + 2 * this.TIER_MULTIPLIER
                                 + " Ores per Second depending on the Dimension it is build in")
                 .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
                 .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
@@ -186,8 +183,10 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
                 .beginStructureBlock(3, 7, 3, false).addController("Front bottom")
                 .addOtherStructurePart(casings, "form the 3x1x3 Base")
                 .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
-                .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
-                .addEnergyHatch(VN[getMinTier()] + "+, Any base casing").addMaintenanceHatch("Any base casing")
+                .addOtherStructurePart(
+                        this.getFrameMaterial().mName + " Frame Boxes",
+                        "Each pillar's side and 1x3x1 on top")
+                .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing").addMaintenanceHatch("Any base casing")
                 .addInputBus("Mining Pipes or Ores, optional, any base casing")
                 .addInputHatch("Optional noble gas, any base casing").addOutputBus("Any base casing")
                 .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS);
@@ -215,23 +214,17 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
      */
     private Predicate<GT_Worldgen_GT_Ore_Layer> makeOreLayerPredicate() {
         World world = this.getBaseMetaTileEntity().getWorld();
-        switch (world.provider.dimensionId) {
-            case -1:
-                return gt_worldgen -> gt_worldgen.mNether;
-            case 0:
-                return gt_worldgen -> gt_worldgen.mOverworld;
-            case 1:
-                return gt_worldgen -> gt_worldgen.mEnd || gt_worldgen.mEndAsteroid;
-            case 7:
-                /*
-                 * explicitely giving different dim numbers so it default to false in the config, keeping compat with
-                 * the current worldgen config
-                 */
-
-                return gt_worldgen -> gt_worldgen.isGenerationAllowed(world, 0, 7);
-            default:
-                throw new IllegalStateException();
-        }
+        return switch (world.provider.dimensionId) {
+            case -1 -> gt_worldgen -> gt_worldgen.mNether;
+            case 0 -> gt_worldgen -> gt_worldgen.mOverworld;
+            case 1 -> gt_worldgen -> gt_worldgen.mEnd || gt_worldgen.mEndAsteroid;
+            /*
+             * explicitely giving different dim numbers so it default to false in the config, keeping compat with the
+             * current worldgen config
+             */
+            case 7 -> gt_worldgen -> gt_worldgen.isGenerationAllowed(world, 0, 7);
+            default -> throw new IllegalStateException();
+        };
     }
 
     /**
@@ -241,22 +234,17 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
      */
     private Predicate<GT_Worldgen_GT_Ore_SmallPieces> makeSmallOresPredicate() {
         World world = this.getBaseMetaTileEntity().getWorld();
-        switch (world.provider.dimensionId) {
-            case -1:
-                return gt_worldgen -> gt_worldgen.mNether;
-            case 0:
-                return gt_worldgen -> gt_worldgen.mOverworld;
-            case 1:
-                return gt_worldgen -> gt_worldgen.mEnd;
-            case 7:
-                /*
-                 * explicitely giving different dim numbers so it default to false in the config, keeping compat with
-                 * the current worldgen config
-                 */
-                return gt_worldgen -> gt_worldgen.isGenerationAllowed(world, 0, 7);
-            default:
-                throw new IllegalStateException();
-        }
+        return switch (world.provider.dimensionId) {
+            case -1 -> gt_worldgen -> gt_worldgen.mNether;
+            case 0 -> gt_worldgen -> gt_worldgen.mOverworld;
+            case 1 -> gt_worldgen -> gt_worldgen.mEnd;
+            /*
+             * explicitely giving different dim numbers so it default to false in the config, keeping compat with the
+             * current worldgen config
+             */
+            case 7 -> gt_worldgen -> gt_worldgen.isGenerationAllowed(world, 0, 7);
+            default -> throw new IllegalStateException();
+        };
     }
 
     /**
@@ -267,15 +255,15 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
      * @param value the non normalised weight
      */
     private void addDrop(Pair<Integer, Boolean> key, float value) {
-        final ItemStack ore = getOreItemStack(key);
+        final ItemStack ore = this.getOreItemStack(key);
         if (ConfigHandler.voidMinerBlacklist.contains(
                 String.format(
                         "%s:%d",
                         GameRegistry.findUniqueIdentifierFor(ore.getItem()).toString(),
                         ore.getItemDamage())))
             return;
-        if (!dropmap.containsKey(key)) dropmap.put(key, value);
-        else dropmap.put(key, dropmap.get(key) + value);
+        if (!this.dropmap.containsKey(key)) this.dropmap.put(key, value);
+        else this.dropmap.put(key, this.dropmap.get(key) + value);
     }
 
     /**
@@ -286,10 +274,10 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
     private void getDropsVanillaVeins(Predicate<GT_Worldgen_GT_Ore_Layer> oreLayerPredicate) {
         GT_Worldgen_GT_Ore_Layer.sList.stream()
                 .filter(gt_worldgen -> gt_worldgen.mEnabled && oreLayerPredicate.test(gt_worldgen)).forEach(element -> {
-                    addDrop(new Pair<>((int) element.mPrimaryMeta, false), (float) element.mWeight);
-                    addDrop(new Pair<>((int) element.mSecondaryMeta, false), (float) element.mWeight);
-                    addDrop(new Pair<>((int) element.mSporadicMeta, false), (element.mWeight / 8f));
-                    addDrop(new Pair<>((int) element.mBetweenMeta, false), (element.mWeight / 8f));
+                    this.addDrop(new Pair<>((int) element.mPrimaryMeta, false), element.mWeight);
+                    this.addDrop(new Pair<>((int) element.mSecondaryMeta, false), element.mWeight);
+                    this.addDrop(new Pair<>((int) element.mSporadicMeta, false), element.mWeight / 8f);
+                    this.addDrop(new Pair<>((int) element.mBetweenMeta, false), element.mWeight / 8f);
                 });
     }
 
@@ -301,7 +289,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
     private void getDropsVanillaSmallOres(Predicate<GT_Worldgen_GT_Ore_SmallPieces> smallOresPredicate) {
         GT_Worldgen_GT_Ore_SmallPieces.sList.stream()
                 .filter(gt_worldgen -> gt_worldgen.mEnabled && smallOresPredicate.test(gt_worldgen))
-                .forEach(element -> addDrop(new Pair<>((int) element.mMeta, false), (float) element.mAmount));
+                .forEach(element -> this.addDrop(new Pair<>((int) element.mMeta, false), element.mAmount));
     }
 
     /**
@@ -310,26 +298,17 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
      * @param finalDef ModDimensionDef corresponding to the target dim
      */
     private void getDropsOreVeinsSpace(ModDimensionDef finalDef) {
-        Set space = GalacticGreg.oreVeinWorldgenList.stream()
+        GalacticGreg.oreVeinWorldgenList.stream()
                 .filter(
-                        gt_worldgen -> gt_worldgen.mEnabled && gt_worldgen instanceof GT_Worldgen_GT_Ore_Layer_Space
-                                && ((GT_Worldgen_GT_Ore_Layer_Space) gt_worldgen).isEnabledForDim(finalDef))
-                .collect(Collectors.toSet());
-
-        space.forEach(element -> {
-            addDrop(
-                    new Pair<>((int) ((GT_Worldgen_GT_Ore_Layer_Space) element).mPrimaryMeta, false),
-                    (float) ((GT_Worldgen_GT_Ore_Layer_Space) element).mWeight);
-            addDrop(
-                    new Pair<>((int) ((GT_Worldgen_GT_Ore_Layer_Space) element).mSecondaryMeta, false),
-                    (float) ((GT_Worldgen_GT_Ore_Layer_Space) element).mWeight);
-            addDrop(
-                    new Pair<>((int) ((GT_Worldgen_GT_Ore_Layer_Space) element).mSporadicMeta, false),
-                    (((GT_Worldgen_GT_Ore_Layer_Space) element).mWeight / 8f));
-            addDrop(
-                    new Pair<>((int) ((GT_Worldgen_GT_Ore_Layer_Space) element).mBetweenMeta, false),
-                    (((GT_Worldgen_GT_Ore_Layer_Space) element).mWeight / 8f));
-        });
+                        gt_worldgen -> gt_worldgen.mEnabled
+                                && gt_worldgen instanceof GT_Worldgen_GT_Ore_Layer_Space oreLayerSpace
+                                && oreLayerSpace.isEnabledForDim(finalDef))
+                .map(gt_worldgen -> (GT_Worldgen_GT_Ore_Layer_Space) gt_worldgen).forEach(element -> {
+                    this.addDrop(new Pair<>((int) element.mPrimaryMeta, false), element.mWeight);
+                    this.addDrop(new Pair<>((int) element.mSecondaryMeta, false), element.mWeight);
+                    this.addDrop(new Pair<>((int) element.mSporadicMeta, false), element.mWeight / 8f);
+                    this.addDrop(new Pair<>((int) element.mBetweenMeta, false), element.mWeight / 8f);
+                });
     }
 
     /**
@@ -338,15 +317,13 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
      * @param finalDef ModDimensionDef corresponding to the target dim
      */
     private void getDropsSmallOreSpace(ModDimensionDef finalDef) {
-        Set space = GalacticGreg.smallOreWorldgenList.stream().filter(
-                gt_worldgen -> gt_worldgen.mEnabled && gt_worldgen instanceof GT_Worldgen_GT_Ore_SmallPieces_Space
-                        && ((GT_Worldgen_GT_Ore_SmallPieces_Space) gt_worldgen).isEnabledForDim(finalDef))
-                .collect(Collectors.toSet());
-
-        space.forEach(
-                element -> addDrop(
-                        new Pair<>((int) ((GT_Worldgen_GT_Ore_SmallPieces_Space) element).mMeta, false),
-                        (float) ((GT_Worldgen_GT_Ore_SmallPieces_Space) element).mAmount));
+        GalacticGreg.smallOreWorldgenList.stream()
+                .filter(
+                        gt_worldgen -> gt_worldgen.mEnabled
+                                && gt_worldgen instanceof GT_Worldgen_GT_Ore_SmallPieces_Space oreSmallPiecesSpace
+                                && oreSmallPiecesSpace.isEnabledForDim(finalDef))
+                .map(gt_worldgen -> (GT_Worldgen_GT_Ore_SmallPieces_Space) gt_worldgen)
+                .forEach(element -> this.addDrop(new Pair<>((int) element.mMeta, false), element.mAmount));
     }
 
     /**
@@ -357,8 +334,8 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
     private Pair<Integer, Boolean> getOreDamage() {
         float curentWeight = 0.f;
         while (true) {
-            float randomnumber = XSTR.XSTR_INSTANCE.nextFloat() * totalWeight;
-            for (Map.Entry<Pair<Integer, Boolean>, Float> entry : dropmap.entrySet()) {
+            float randomnumber = XSTR.XSTR_INSTANCE.nextFloat() * this.totalWeight;
+            for (Map.Entry<Pair<Integer, Boolean>, Float> entry : this.dropmap.entrySet()) {
                 curentWeight += entry.getValue();
                 if (randomnumber < curentWeight) return entry.getKey();
             }
@@ -375,7 +352,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
             for (int i = 0; i < NOBLE_GASSES.length; i++) {
                 FluidStack ng = NOBLE_GASSES[i];
                 if (ng.isFluidEqual(s)) {
-                    multiplier = TIER_MULTIPLIER * (2 << (i == NOBLE_GASSES.length - 1 ? (i + 2) : (i + 1)));
+                    this.multiplier = this.TIER_MULTIPLIER * (2 << (i == NOBLE_GASSES.length - 1 ? i + 2 : i + 1));
                     return s;
                 }
             }
@@ -404,8 +381,8 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
      * handler for the fluid consumption
      */
     private void handleFluidConsumption() {
-        FluidStack storedNobleGas = getNobleGasInputAndSetMultiplier();
-        if (storedNobleGas == null || !consumeNobleGas(storedNobleGas)) multiplier = TIER_MULTIPLIER;
+        FluidStack storedNobleGas = this.getNobleGasInputAndSetMultiplier();
+        if (storedNobleGas == null || !this.consumeNobleGas(storedNobleGas)) this.multiplier = this.TIER_MULTIPLIER;
     }
 
     /**
@@ -414,12 +391,12 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
      * @param aID dim id of Ross128b or Ross128ba
      */
     private void getDropMapRoss(int aID) {
-        Consumer<BW_OreLayer> addToList = makeAddToList();
+        Consumer<BW_OreLayer> addToList = this.makeAddToList();
         BW_OreLayer.sList.stream()
                 .filter(
                         gt_worldgen -> gt_worldgen.mEnabled && gt_worldgen instanceof BW_OreLayer
                                 && gt_worldgen.isGenerationAllowed(null, aID, 0))
-                .collect(Collectors.toSet()).forEach(addToList);
+                .forEach(addToList);
     }
 
     /**
@@ -431,8 +408,8 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
         return element -> {
             List<Pair<Integer, Boolean>> data = element.getStacksRawData();
             for (int i = 0; i < data.size(); i++) {
-                if (i < data.size() - 2) addDrop(data.get(i), (float) element.mWeight);
-                else addDrop(data.get(i), (element.mWeight / 8f));
+                if (i < data.size() - 2) this.addDrop(data.get(i), element.mWeight);
+                else this.addDrop(data.get(i), element.mWeight / 8f);
             }
         };
     }
@@ -459,13 +436,12 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
      */
     private void addOresVeinsBartworks(ModDimensionDef finalDef, Consumer<BW_OreLayer> addToList) {
         try {
-            Set space = GalacticGreg.oreVeinWorldgenList.stream()
+            GalacticGreg.oreVeinWorldgenList.stream()
                     .filter(
-                            gt_worldgen -> gt_worldgen.mEnabled && gt_worldgen instanceof BW_Worldgen_Ore_Layer_Space
-                                    && ((BW_Worldgen_Ore_Layer_Space) gt_worldgen).isEnabledForDim(finalDef))
-                    .collect(Collectors.toSet());
-
-            space.forEach(addToList);
+                            gt_worldgen -> gt_worldgen.mEnabled
+                                    && gt_worldgen instanceof BW_Worldgen_Ore_Layer_Space oreLayerSpace
+                                    && oreLayerSpace.isEnabledForDim(finalDef))
+                    .map(gt_worldgen -> (BW_Worldgen_Ore_Layer_Space) gt_worldgen).forEach(addToList);
         } catch (NullPointerException ignored) {}
     }
 
@@ -476,18 +452,14 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
      */
     private void addSmallOresBartworks(ModDimensionDef finalDef) {
         try {
-            Set space = GalacticGreg.smallOreWorldgenList.stream()
+            GalacticGreg.smallOreWorldgenList.stream()
                     .filter(
-                            gt_worldgen -> gt_worldgen.mEnabled && gt_worldgen instanceof BW_Worldgen_Ore_SmallOre_Space
-                                    && ((BW_Worldgen_Ore_SmallOre_Space) gt_worldgen).isEnabledForDim(finalDef))
-                    .collect(Collectors.toSet());
-
-            space.forEach(
-                    element -> addDrop(
-                            new Pair<>(
-                                    ((BW_Worldgen_Ore_SmallOre_Space) element).mPrimaryMeta,
-                                    ((BW_Worldgen_Ore_SmallOre_Space) element).bwOres != 0),
-                            (float) ((BW_Worldgen_Ore_SmallOre_Space) element).mDensity));
+                            gt_worldgen -> gt_worldgen.mEnabled
+                                    && gt_worldgen instanceof BW_Worldgen_Ore_SmallOre_Space smallOreSpace
+                                    && smallOreSpace.isEnabledForDim(finalDef))
+                    .map(gt_worldgen -> (BW_Worldgen_Ore_SmallOre_Space) gt_worldgen).forEach(
+                            element -> this
+                                    .addDrop(new Pair<>(element.mPrimaryMeta, element.bwOres != 0), element.mDensity));
         } catch (NullPointerException ignored) {}
     }
 
@@ -498,15 +470,15 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
      */
     private void handleExtraDrops(int id) {
         Optional.ofNullable(getExtraDropsDimMap().get(id))
-                .ifPresent(e -> e.forEach(f -> addDrop(f.getKey(), f.getValue())));
+                .ifPresent(e -> e.forEach(f -> this.addDrop(f.getKey(), f.getValue())));
     }
 
     /**
      * Computes the total weight for normalisation
      */
     private void calculateTotalWeight() {
-        totalWeight = 0.0f;
-        dropmap.values().forEach(f -> totalWeight += f);
+        this.totalWeight = 0.0f;
+        this.dropmap.values().forEach(f -> this.totalWeight += f);
     }
 
     /**
@@ -516,25 +488,25 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
      */
     private void handleModDimDef(int id) {
         // vanilla dims or TF
-        if ((id <= 1 && id >= -1) || id == 7) {
-            getDropsVanillaVeins(makeOreLayerPredicate());
-            getDropsVanillaSmallOres(makeSmallOresPredicate());
+        if (id <= 1 && id >= -1 || id == 7) {
+            this.getDropsVanillaVeins(this.makeOreLayerPredicate());
+            this.getDropsVanillaSmallOres(this.makeSmallOresPredicate());
 
             // ross dims
         } else if (id == ConfigHandler.ross128BID || id == ConfigHandler.ross128BAID) {
-            getDropMapRoss(id);
+            this.getDropMapRoss(id);
 
             // other space dims
         } else {
-            Optional.ofNullable(makeModDimDef()).ifPresent(def -> {
+            Optional.ofNullable(this.makeModDimDef()).ifPresent(def -> {
                 // normal space dim
-                getDropsOreVeinsSpace(def);
-                getDropsSmallOreSpace(def);
+                this.getDropsOreVeinsSpace(def);
+                this.getDropsSmallOreSpace(def);
 
                 // BW space dim
-                Consumer<BW_OreLayer> addToList = makeAddToList();
-                addOresVeinsBartworks(def, addToList);
-                addSmallOresBartworks(def);
+                Consumer<BW_OreLayer> addToList = this.makeAddToList();
+                this.addOresVeinsBartworks(def, addToList);
+                this.addSmallOresBartworks(def);
             });
         }
     }
@@ -544,24 +516,23 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
      * totalweight for normalisation
      */
     private void calculateDropMap() {
-        dropmap = new HashMap<>();
+        this.dropmap = new HashMap<>();
         int id = this.getBaseMetaTileEntity().getWorld().provider.dimensionId;
-        handleModDimDef(id);
-        handleExtraDrops(id);
-        calculateTotalWeight();
+        this.handleModDimDef(id);
+        this.handleExtraDrops(id);
+        this.calculateTotalWeight();
     }
 
     /**
      * Output logic of the VM
      */
     private void handleOutputs() {
-        Pair<Integer, Boolean> stats = getOreDamage();
         final List<ItemStack> inputOres = this.getStoredInputs().stream().filter(GT_Utility::isOre)
                 .collect(Collectors.toList());
-        final ItemStack output = getOreItemStack(stats);
+        final ItemStack output = this.getOreItemStack(this.getOreDamage());
         if (inputOres.size() == 0
-                || (mBlacklist && inputOres.stream().allMatch(is -> !GT_Utility.areStacksEqual(is, output)))
-                || (!mBlacklist && inputOres.stream().anyMatch(is -> GT_Utility.areStacksEqual(is, output))))
+                || this.mBlacklist && inputOres.stream().allMatch(is -> !GT_Utility.areStacksEqual(is, output))
+                || !this.mBlacklist && inputOres.stream().anyMatch(is -> GT_Utility.areStacksEqual(is, output)))
             this.addOutput(output);
         this.updateSlots();
     }
@@ -576,13 +547,13 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
     private ItemStack getOreItemStack(Pair<Integer, Boolean> stats) {
         return new ItemStack(
                 stats.getValue() ? WerkstoffLoader.BWOres : GregTech_API.sBlockOres1,
-                multiplier,
+                this.multiplier,
                 stats.getKey());
     }
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        mBlacklist = !mBlacklist;
-        GT_Utility.sendChatToPlayer(aPlayer, "Mode: " + (mBlacklist ? "Blacklist" : "Whitelist"));
+        this.mBlacklist = !this.mBlacklist;
+        GT_Utility.sendChatToPlayer(aPlayer, "Mode: " + (this.mBlacklist ? "Blacklist" : "Whitelist"));
     }
 }

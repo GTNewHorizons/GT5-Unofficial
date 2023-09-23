@@ -33,6 +33,7 @@ public class WorldProviderRoss128b extends AbstractWorldProviderSpace {
         return true;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public Vec3 getFogColor(float cy, float noidea) {
         float angle = MathHelper.cos(cy * (float) Math.PI * 2.0F) * 2.0F + 0.5F;

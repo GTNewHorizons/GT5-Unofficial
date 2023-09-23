@@ -49,8 +49,7 @@ public class GT_Destructopack_Item extends GT_Generic_Item implements IItemWithM
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
         aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
@@ -61,6 +60,7 @@ public class GT_Destructopack_Item extends GT_Generic_Item implements IItemWithM
         return aStack;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aIconRegister) {
         this.mIcon = aIconRegister.registerIcon("bartworks:gt.GT2Destructopack");
@@ -76,7 +76,7 @@ public class GT_Destructopack_Item extends GT_Generic_Item implements IItemWithM
 
             @Override
             public void putStack(ItemStack stack) {
-                onSlotChanged();
+                this.onSlotChanged();
             }
         }).setBackground(ModularUITextures.ITEM_SLOT, BW_UITextures.OVERLAY_SLOT_CROSS).setPos(79, 16)).widget(
                 new DrawableWidget().setDrawable(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT).setSize(17, 17)

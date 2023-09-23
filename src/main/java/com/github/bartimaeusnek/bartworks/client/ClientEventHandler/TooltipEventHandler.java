@@ -67,8 +67,8 @@ public class TooltipEventHandler {
                             UI = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(tmp.getItem()));
                         if (UI != null) {
                             for (ModContainer modContainer : Loader.instance().getModList()) {
-                                if (UI.modId.equals(MainMod.MOD_ID) || UI.modId.equals(BartWorksCrossmod.MOD_ID)
-                                        || UI.modId.equals("BWCore"))
+                                if (MainMod.MOD_ID.equals(UI.modId) || BartWorksCrossmod.MOD_ID.equals(UI.modId)
+                                        || "BWCore".equals(UI.modId))
                                     break;
                                 if (UI.modId.equals(modContainer.getModId())) {
                                     tooAdd.add(

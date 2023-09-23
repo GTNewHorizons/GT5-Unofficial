@@ -19,9 +19,10 @@ import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.google.common.io.ByteArrayDataInput;
 
-import gregtech.api.net.GT_Packet;
+import gregtech.api.net.GT_Packet_New;
+import io.netty.buffer.ByteBuf;
 
-public class ServerJoinedPackage extends GT_Packet {
+public class ServerJoinedPackage extends GT_Packet_New {
 
     private byte config;
 
@@ -41,12 +42,12 @@ public class ServerJoinedPackage extends GT_Packet {
     }
 
     @Override
-    public byte[] encode() {
-        return new byte[] { this.config };
+    public void encode(ByteBuf aOut) {
+        aOut.writeByte(this.config);
     }
 
     @Override
-    public GT_Packet decode(ByteArrayDataInput byteArrayDataInput) {
+    public GT_Packet_New decode(ByteArrayDataInput byteArrayDataInput) {
         this.config = byteArrayDataInput.readByte();
         return this;
     }

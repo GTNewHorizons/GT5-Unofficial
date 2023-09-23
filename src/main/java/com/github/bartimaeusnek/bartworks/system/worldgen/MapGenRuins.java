@@ -39,9 +39,9 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 
-@SuppressWarnings({ "ALL" })
 public abstract class MapGenRuins extends WorldGenerator {
 
+    @SuppressWarnings("unchecked")
     protected Pair<Block, Integer>[][] ToBuildWith = new Pair[4][0];
 
     @Override
@@ -49,6 +49,7 @@ public abstract class MapGenRuins extends WorldGenerator {
         return false;
     }
 
+    @SuppressWarnings("unchecked")
     protected void setFloorBlocks(int[] metas, Block... blocks) {
         this.ToBuildWith[0] = new Pair[metas.length];
         for (int i = 0; i < metas.length; i++) {
@@ -56,6 +57,7 @@ public abstract class MapGenRuins extends WorldGenerator {
         }
     }
 
+    @SuppressWarnings("unchecked")
     protected void setWallBlocks(int[] metas, Block... blocks) {
         this.ToBuildWith[1] = new Pair[metas.length];
         for (int i = 0; i < metas.length; i++) {
@@ -63,6 +65,7 @@ public abstract class MapGenRuins extends WorldGenerator {
         }
     }
 
+    @SuppressWarnings("unchecked")
     protected void setRoofBlocks(int[] metas, Block... blocks) {
         this.ToBuildWith[2] = new Pair[metas.length];
         for (int i = 0; i < metas.length; i++) {
@@ -70,6 +73,7 @@ public abstract class MapGenRuins extends WorldGenerator {
         }
     }
 
+    @SuppressWarnings("unchecked")
     protected void setMiscBlocks(int[] metas, Block... blocks) {
         this.ToBuildWith[3] = new Pair[metas.length];
         for (int i = 0; i < metas.length; i++) {
@@ -123,7 +127,7 @@ public abstract class MapGenRuins extends WorldGenerator {
     protected TileEntity reSetGTTileEntity(IGregTechTileEntity bte, World worldObj, int x, int y, int z, int meta) {
         worldObj.removeTileEntity(x, y, z);
         this.setBlock(worldObj, x, y, z, Blocks.air, 0);
-        return setGTMachineBlock(worldObj, x, y, z, meta);
+        return this.setGTMachineBlock(worldObj, x, y, z, meta);
     }
 
     protected void setGTMachineBlockWChance(World worldObj, int x, int y, int z, Random rand, int airchance, int meta) {
@@ -143,12 +147,12 @@ public abstract class MapGenRuins extends WorldGenerator {
         try {
             GT_Runnable_MachineBlockUpdate.setDisabled();
         } catch (Throwable ignored) {}
-        setGTMachineBlock(worldObj, x, y, z, meta);
+        this.setGTMachineBlock(worldObj, x, y, z, meta);
         BaseMetaTileEntity BTE = (BaseMetaTileEntity) worldObj.getTileEntity(x, y, z);
         BTE.setOwnerName(ownerName);
         BTE.setFrontFacing(facing);
         BTE = (BaseMetaTileEntity) worldObj.getTileEntity(x, y, z);
-        checkTile(BTE, worldObj, x, y, z, meta, ownerName, facing, 0);
+        this.checkTile(BTE, worldObj, x, y, z, meta, ownerName, facing, 0);
         try {
             GT_Runnable_MachineBlockUpdate.setEnabled();
         } catch (Throwable ignored) {}
@@ -158,8 +162,9 @@ public abstract class MapGenRuins extends WorldGenerator {
             ForgeDirection facing, int depth) {
         if (depth < 25) {
             if (BTE.getMetaTileID() != meta || worldObj.getTileEntity(x, y, z) != BTE || BTE.isInvalid()) {
-                redoTile(BTE, worldObj, x, y, z, meta, ownerName, facing);
-                checkTile(BTE, worldObj, x, y, z, meta, ownerName, facing, depth++);
+                this.redoTile(BTE, worldObj, x, y, z, meta, ownerName, facing);
+                this.checkTile(BTE, worldObj, x, y, z, meta, ownerName, facing, depth);
+                depth++;
             }
         } else {
             worldObj.removeTileEntity(x, y, z);
@@ -169,7 +174,7 @@ public abstract class MapGenRuins extends WorldGenerator {
 
     private void redoTile(BaseMetaTileEntity BTE, World worldObj, int x, int y, int z, int meta, String ownerName,
             ForgeDirection facing) {
-        reSetGTTileEntity(BTE, worldObj, x, y, z, meta);
+        this.reSetGTTileEntity(BTE, worldObj, x, y, z, meta);
         BTE = (BaseMetaTileEntity) worldObj.getTileEntity(x, y, z);
         BTE.setOwnerName(ownerName);
         BTE.setFrontFacing(facing);
@@ -179,10 +184,10 @@ public abstract class MapGenRuins extends WorldGenerator {
         try {
             GT_Runnable_MachineBlockUpdate.setDisabled();
         } catch (Throwable ignored) {}
-        BaseMetaPipeEntity BTE = (BaseMetaPipeEntity) setGTMachineBlock(worldObj, x, y, z, meta);
+        BaseMetaPipeEntity BTE = (BaseMetaPipeEntity) this.setGTMachineBlock(worldObj, x, y, z, meta);
         MetaPipeEntity MPE = (MetaPipeEntity) BTE.getMetaTileEntity();
         BTE.mConnections |= (byte) (1 << (byte) 4);
-        BTE.mConnections |= (byte) (1 << (ForgeDirection.getOrientation(4).getOpposite().ordinal()));
+        BTE.mConnections |= (byte) (1 << ForgeDirection.getOrientation(4).getOpposite().ordinal());
         BaseMetaTileEntity BPE = (BaseMetaTileEntity) worldObj.getTileEntity(x, y, z - 1);
         if (BPE != null) {
             BTE.mConnections |= (byte) (1 << (byte) 2);
@@ -243,9 +248,13 @@ public abstract class MapGenRuins extends WorldGenerator {
                                         rand,
                                         5,
                                         this.ToBuildWith[3][0]);
-                            } else if ((dx == 0) && dz == -5 && (dy == 1 || dy == 2)) {
-                                if (dy == 1) this.setBlock(worldObj, x + dx, y + 1, z + -5, Blocks.iron_door, 1);
-                                if (dy == 2) this.setBlock(worldObj, x + dx, y + 2, z + dz, Blocks.iron_door, 8);
+                            } else if (dx == 0 && dz == -5 && (dy == 1 || dy == 2)) {
+                                if (dy == 1) {
+                                    this.setBlock(worldObj, x + dx, y + 1, z + -5, Blocks.iron_door, 1);
+                                }
+                                if (dy == 2) {
+                                    this.setBlock(worldObj, x + dx, y + 2, z + dz, Blocks.iron_door, 8);
+                                }
                             } else if (Math.abs(dx) == 5 && Math.abs(dz) < 5 || Math.abs(dz) == 5 && Math.abs(dx) < 5) {
                                 this.setRandomBlockWAirChance(
                                         worldObj,
@@ -255,16 +264,19 @@ public abstract class MapGenRuins extends WorldGenerator {
                                         rand,
                                         25,
                                         this.ToBuildWith[1]);
-                                if (dy == 2) {
-                                    if (rand.nextInt(100) < 12) if (useColor) this.setRandomBlockWAirChance(
-                                            worldObj,
-                                            x + dx,
-                                            y + 2,
-                                            z + dz,
-                                            rand,
-                                            25,
-                                            new Pair<>(Blocks.stained_glass_pane, colored));
-                                    else this.setRandomBlockWAirChance(
+                                if (dy == 2 && rand.nextInt(100) < 12) {
+                                    if (useColor) {
+                                        this.setRandomBlockWAirChance(
+                                                worldObj,
+                                                x + dx,
+                                                y + 2,
+                                                z + dz,
+                                                rand,
+                                                25,
+                                                new Pair<>(Blocks.stained_glass_pane, colored));
+                                    }
+                                } else {
+                                    this.setRandomBlockWAirChance(
                                             worldObj,
                                             x + dx,
                                             y + dy,
@@ -349,83 +361,113 @@ public abstract class MapGenRuins extends WorldGenerator {
                                     }
                                 }
                             }
-                        } else if (dy == 4) {
-                            if (Math.abs(dx) == 5) this.setRandomBlockWAirChance(
-                                    worldObj,
-                                    x + dx,
-                                    y + 4,
-                                    z + dz,
-                                    rand,
-                                    25,
-                                    this.ToBuildWith[2]);
-                            else if (Math.abs(dz) == 5 && Math.abs(dx) < 5) this.setRandomBlockWAirChance(
-                                    worldObj,
-                                    x + dx,
-                                    y + dy,
-                                    z + dz,
-                                    rand,
-                                    25,
-                                    this.ToBuildWith[1]);
-                        } else if (dy == 5) {
-                            if (Math.abs(dx) == 4) this.setRandomBlockWAirChance(
-                                    worldObj,
-                                    x + dx,
-                                    y + 5,
-                                    z + dz,
-                                    rand,
-                                    25,
-                                    this.ToBuildWith[2]);
-                            else if (Math.abs(dz) == 5 && Math.abs(dx) < 4) this.setRandomBlockWAirChance(
-                                    worldObj,
-                                    x + dx,
-                                    y + dy,
-                                    z + dz,
-                                    rand,
-                                    25,
-                                    this.ToBuildWith[1]);
-                        } else if (dy == 6) {
-                            if (Math.abs(dx) == 3) this.setRandomBlockWAirChance(
-                                    worldObj,
-                                    x + dx,
-                                    y + 6,
-                                    z + dz,
-                                    rand,
-                                    25,
-                                    this.ToBuildWith[2]);
-                            else if (Math.abs(dz) == 5 && Math.abs(dx) < 3) this.setRandomBlockWAirChance(
-                                    worldObj,
-                                    x + dx,
-                                    y + dy,
-                                    z + dz,
-                                    rand,
-                                    25,
-                                    this.ToBuildWith[1]);
-                        } else if (dy == 7) {
-                            if (Math.abs(dx) == 2) this.setRandomBlockWAirChance(
-                                    worldObj,
-                                    x + dx,
-                                    y + 7,
-                                    z + dz,
-                                    rand,
-                                    25,
-                                    this.ToBuildWith[2]);
-                            else if (Math.abs(dz) == 5 && Math.abs(dx) < 2) this.setRandomBlockWAirChance(
-                                    worldObj,
-                                    x + dx,
-                                    y + dy,
-                                    z + dz,
-                                    rand,
-                                    25,
-                                    this.ToBuildWith[1]);
-                        } else if (dy == 8) {
-                            if (Math.abs(dx) == 1 || Math.abs(dx) == 0) this.setRandomBlockWAirChance(
-                                    worldObj,
-                                    x + dx,
-                                    y + 8,
-                                    z + dz,
-                                    rand,
-                                    25,
-                                    this.ToBuildWith[2]);
+                        } else switch (dy) {
+                            case 4:
+                                if (Math.abs(dx) == 5) {
+                                    this.setRandomBlockWAirChance(
+                                            worldObj,
+                                            x + dx,
+                                            y + 4,
+                                            z + dz,
+                                            rand,
+                                            25,
+                                            this.ToBuildWith[2]);
+                                    break;
+                                }
+                                if (Math.abs(dz) == 5 && Math.abs(dx) < 5) {
+                                    this.setRandomBlockWAirChance(
+                                            worldObj,
+                                            x + dx,
+                                            y + dy,
+                                            z + dz,
+                                            rand,
+                                            25,
+                                            this.ToBuildWith[1]);
+                                }
+                                break;
+                            case 5:
+                                if (Math.abs(dx) == 4) {
+                                    this.setRandomBlockWAirChance(
+                                            worldObj,
+                                            x + dx,
+                                            y + 5,
+                                            z + dz,
+                                            rand,
+                                            25,
+                                            this.ToBuildWith[2]);
+                                    break;
+                                }
+                                if (Math.abs(dz) == 5 && Math.abs(dx) < 4) {
+                                    this.setRandomBlockWAirChance(
+                                            worldObj,
+                                            x + dx,
+                                            y + dy,
+                                            z + dz,
+                                            rand,
+                                            25,
+                                            this.ToBuildWith[1]);
+                                }
+                                break;
+                            case 6:
+                                if (Math.abs(dx) == 3) {
+                                    this.setRandomBlockWAirChance(
+                                            worldObj,
+                                            x + dx,
+                                            y + 6,
+                                            z + dz,
+                                            rand,
+                                            25,
+                                            this.ToBuildWith[2]);
+                                    break;
+                                }
+                                if (Math.abs(dz) == 5 && Math.abs(dx) < 3) {
+                                    this.setRandomBlockWAirChance(
+                                            worldObj,
+                                            x + dx,
+                                            y + dy,
+                                            z + dz,
+                                            rand,
+                                            25,
+                                            this.ToBuildWith[1]);
+                                }
+                                break;
+                            case 7:
+                                if (Math.abs(dx) == 2) {
+                                    this.setRandomBlockWAirChance(
+                                            worldObj,
+                                            x + dx,
+                                            y + 7,
+                                            z + dz,
+                                            rand,
+                                            25,
+                                            this.ToBuildWith[2]);
+                                    break;
+                                }
+                                if (Math.abs(dz) == 5 && Math.abs(dx) < 2) {
+                                    this.setRandomBlockWAirChance(
+                                            worldObj,
+                                            x + dx,
+                                            y + dy,
+                                            z + dz,
+                                            rand,
+                                            25,
+                                            this.ToBuildWith[1]);
+                                }
+                                break;
+                            case 8:
+                                if (Math.abs(dx) == 1 || Math.abs(dx) == 0) {
+                                    this.setRandomBlockWAirChance(
+                                            worldObj,
+                                            x + dx,
+                                            y + 8,
+                                            z + dz,
+                                            rand,
+                                            25,
+                                            this.ToBuildWith[2]);
+                                }
+                                break;
+                            default:
+                                break;
                         }
                     }
                 }
@@ -434,19 +476,22 @@ public abstract class MapGenRuins extends WorldGenerator {
                 int dy = 1;
                 int dz = 3;
                 for (int dx = 2; dx > -5; dx--) {
-                    if (set < toSet) {
-                        if (!lastset || treeinaRow > 2 && worldObj.getTileEntity(x + dx, y + dy, z + dz) == null) {
-                            short meta = GT_WorldgenUtil.getMachine(secureRandom, tier);
-                            this.setGTMachine(worldObj, x + dx, y + dy, z + dz, meta, owner, ForgeDirection.UP);
+                    if (set >= toSet) {
+                        break tosetloop;
+                    }
+                    if (!lastset || treeinaRow > 2 && worldObj.getTileEntity(x + dx, y + dy, z + dz) == null) {
+                        short meta = GT_WorldgenUtil.getMachine(secureRandom, tier);
+                        this.setGTMachine(worldObj, x + dx, y + dy, z + dz, meta, owner, ForgeDirection.UP);
 
-                            set++;
-                            treeinaRow = 0;
-                            lastset = true;
-                        } else {
-                            lastset = rand.nextBoolean();
-                            if (lastset) treeinaRow++;
+                        set++;
+                        treeinaRow = 0;
+                        lastset = true;
+                    } else {
+                        lastset = rand.nextBoolean();
+                        if (lastset) {
+                            treeinaRow++;
                         }
-                    } else break tosetloop;
+                    }
                 }
             }
             return true;

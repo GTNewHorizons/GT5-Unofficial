@@ -18,12 +18,11 @@ import java.util.HashSet;
 
 public class NonNullWrappedHashSet<E> extends HashSet<E> {
 
-    public NonNullWrappedHashSet() {
-        super();
-    }
+    private static final long serialVersionUID = 8377161849188229010L;
+
+    public NonNullWrappedHashSet() {}
 
     public NonNullWrappedHashSet(Collection<? extends E> c) {
-        super();
         this.addAll(c);
     }
 
@@ -35,11 +34,13 @@ public class NonNullWrappedHashSet<E> extends HashSet<E> {
         super(initialCapacity);
     }
 
+    @Override
     public boolean add(E e) {
         if (e != null) return super.add(e);
         return false;
     }
 
+    @Override
     public boolean addAll(Collection<? extends E> c) {
         boolean wasChanged = false;
         for (E element : c) {

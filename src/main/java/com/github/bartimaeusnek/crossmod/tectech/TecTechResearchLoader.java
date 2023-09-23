@@ -32,7 +32,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 
 public class TecTechResearchLoader {
 
-    @SuppressWarnings("deprecation")
     public static void runResearches() {
         Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null
                 ? FluidRegistry.getFluid("molten.indalloy140")

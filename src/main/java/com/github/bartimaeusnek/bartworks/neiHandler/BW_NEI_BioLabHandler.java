@@ -40,16 +40,18 @@ public class BW_NEI_BioLabHandler extends GT_NEI_DefaultHandler {
         }
     }
 
+    @Override
     public TemplateRecipeHandler newInstance() {
         return new BW_NEI_BioLabHandler(this.mRecipeMap);
     }
 
+    @Override
     public void loadCraftingRecipes(ItemStack aResult) {
         if (aResult != null && aResult.getItem() instanceof LabParts
                 && aResult.getItemDamage() < 3
                 && aResult.getTagCompound() != null) {
-            for (CachedDefaultRecipe recipe : getCache())
-                if (NEI_BW_Config.checkRecipe(aResult, recipe.mOutputs)) arecipes.add(recipe);
+            for (CachedDefaultRecipe recipe : this.getCache())
+                if (NEI_BW_Config.checkRecipe(aResult, recipe.mOutputs)) this.arecipes.add(recipe);
         } else {
             super.loadCraftingRecipes(aResult);
         }
@@ -60,8 +62,8 @@ public class BW_NEI_BioLabHandler extends GT_NEI_DefaultHandler {
         if (aResult != null && aResult.getItem() instanceof LabParts
                 && aResult.getItemDamage() < 3
                 && aResult.getTagCompound() != null) {
-            for (CachedDefaultRecipe recipe : getCache())
-                if (NEI_BW_Config.checkRecipe(aResult, recipe.mInputs)) arecipes.add(recipe);
+            for (CachedDefaultRecipe recipe : this.getCache())
+                if (NEI_BW_Config.checkRecipe(aResult, recipe.mInputs)) this.arecipes.add(recipe);
         } else {
             super.loadUsageRecipes(aResult);
         }

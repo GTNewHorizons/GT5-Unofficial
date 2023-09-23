@@ -34,7 +34,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_ModHandler;
 
-@SuppressWarnings("ALL")
 public final class BioVatLogicAdder {
 
     public static class RadioHatch {

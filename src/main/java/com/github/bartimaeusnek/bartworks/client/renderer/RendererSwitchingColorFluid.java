@@ -76,9 +76,9 @@ public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler
                 return RendererSwitchingColorFluid.THREE_QUARTERS_FILLED;
             }
         }
-        return (!world.getBlock(x, y, z).getMaterial().isSolid() && world.getBlock(x, y + 1, z) == block)
+        return !world.getBlock(x, y, z).getMaterial().isSolid() && world.getBlock(x, y + 1, z) == block
                 ? RendererSwitchingColorFluid.LIGHT_Y_POS
-                : (block.getQuantaPercentage(world, x, y, z) * RendererSwitchingColorFluid.THREE_QUARTERS_FILLED);
+                : block.getQuantaPercentage(world, x, y, z) * RendererSwitchingColorFluid.THREE_QUARTERS_FILLED;
     }
 
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {}
@@ -86,7 +86,7 @@ public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler
     @SideOnly(Side.CLIENT)
     public boolean renderWorldBlock(IBlockAccess iBlockAccess, int x, int y, int z, Block block, int modelId,
             RenderBlocks renderer) {
-        if ((!(block instanceof BioFluidBlock))) return false;
+        if (!(block instanceof BioFluidBlock)) return false;
         Tessellator tessellator = Tessellator.instance;
         Coords blockat = new Coords(x, y, z, iBlockAccess.getTileEntity(x, y, z).getWorldObj().provider.dimensionId);
         Integer rgb = GT_TileEntity_BioVat.staticColorMap.get(blockat);
@@ -94,15 +94,15 @@ public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler
         int r, g, b;
 
         if (rgb != null) {
-            r = (rgb >> 16) & 0xFF;
-            g = (rgb >> 8) & 0xFF;
+            r = rgb >> 16 & 0xFF;
+            g = rgb >> 8 & 0xFF;
             b = rgb & 0xFF;
         } else {
             r = 0;
             g = 0;
             b = 255;
         }
-        float red = ((float) r) / 255f, green = ((float) g) / 255f, blue = ((float) b) / 255f;
+        float red = r / 255f, green = g / 255f, blue = b / 255f;
 
         BlockFluidBase blockFluidBase = (BlockFluidBase) block;
         boolean renderTop = iBlockAccess.getBlock(x, y + 1, z) != blockFluidBase;
@@ -237,35 +237,40 @@ public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler
             if (renderer.renderAllFaces || renderSides[side]) {
                 rendered = true;
                 double dHeight1, dHeight2, dXcoord1, dXcoord2, dZcoord1, dZcoord2;
-                if (side == 0) {
-                    dHeight1 = heightNW;
-                    dHeight2 = heightNE;
-                    dXcoord1 = x;
-                    dXcoord2 = x + 1;
-                    dZcoord1 = z + RendererSwitchingColorFluid.RENDER_OFFSET;
-                    dZcoord2 = z + RendererSwitchingColorFluid.RENDER_OFFSET;
-                } else if (side == 1) {
-                    dHeight1 = heightSE;
-                    dHeight2 = heightSW;
-                    dXcoord1 = x + 1;
-                    dXcoord2 = x;
-                    dZcoord1 = z + 1 - RendererSwitchingColorFluid.RENDER_OFFSET;
-                    dZcoord2 = z + 1 - RendererSwitchingColorFluid.RENDER_OFFSET;
-                } else if (side == 2) {
-                    dHeight1 = heightSW;
-                    dHeight2 = heightNW;
-                    dXcoord1 = x + RendererSwitchingColorFluid.RENDER_OFFSET;
-                    dXcoord2 = x + RendererSwitchingColorFluid.RENDER_OFFSET;
-                    dZcoord1 = z + 1;
-                    dZcoord2 = z;
-                } else {
-                    dHeight1 = heightNE;
-                    dHeight2 = heightSE;
-                    dXcoord1 = x + 1 - RendererSwitchingColorFluid.RENDER_OFFSET;
-                    dXcoord2 = x + 1 - RendererSwitchingColorFluid.RENDER_OFFSET;
-                    dZcoord1 = z;
-                    dZcoord2 = z + 1;
-                }
+                dZcoord2 = switch (side) {
+                    case 0 -> {
+                        dHeight1 = heightNW;
+                        dHeight2 = heightNE;
+                        dXcoord1 = x;
+                        dXcoord2 = x + 1;
+                        dZcoord1 = z + RendererSwitchingColorFluid.RENDER_OFFSET;
+                        yield z + RendererSwitchingColorFluid.RENDER_OFFSET;
+                    }
+                    case 1 -> {
+                        dHeight1 = heightSE;
+                        dHeight2 = heightSW;
+                        dXcoord1 = x + 1;
+                        dXcoord2 = x;
+                        dZcoord1 = z + 1 - RendererSwitchingColorFluid.RENDER_OFFSET;
+                        yield z + 1 - RendererSwitchingColorFluid.RENDER_OFFSET;
+                    }
+                    case 2 -> {
+                        dHeight1 = heightSW;
+                        dHeight2 = heightNW;
+                        dXcoord1 = x + RendererSwitchingColorFluid.RENDER_OFFSET;
+                        dXcoord2 = x + RendererSwitchingColorFluid.RENDER_OFFSET;
+                        dZcoord1 = z + 1;
+                        yield z;
+                    }
+                    default -> {
+                        dHeight1 = heightNE;
+                        dHeight2 = heightSE;
+                        dXcoord1 = x + 1 - RendererSwitchingColorFluid.RENDER_OFFSET;
+                        dXcoord2 = x + 1 - RendererSwitchingColorFluid.RENDER_OFFSET;
+                        dZcoord1 = z;
+                        yield z + 1;
+                    }
+                };
                 float u1Flow = iconFlow.getInterpolatedU(0.0);
                 float u2Flow = iconFlow.getInterpolatedU(8.0);
                 float v1Flow = iconFlow.getInterpolatedV((1.0 - dHeight1) * 16.0 * 0.5);

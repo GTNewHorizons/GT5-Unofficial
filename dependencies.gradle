@@ -11,5 +11,4 @@ dependencies {
 
     compileOnly("com.github.GTNewHorizons:TinkersGregworks:GTNH-1.0.24-pre:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:OpenComputers:1.9.17-GTNH:api") {transitive = false}
-
 }

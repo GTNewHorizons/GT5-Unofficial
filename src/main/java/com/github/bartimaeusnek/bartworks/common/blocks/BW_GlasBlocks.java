@@ -173,7 +173,7 @@ public class BW_GlasBlocks extends BW_Blocks {
     @Override
     public int getRenderType() {
         if (!this.fake && SideReference.Side.Client) return RendererGlasBlock.RID;
-        else return 0;
+        return 0;
     }
 
     @Override

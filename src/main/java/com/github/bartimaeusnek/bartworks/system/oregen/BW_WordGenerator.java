@@ -81,7 +81,7 @@ public class BW_WordGenerator implements IWorldGenerator {
             XSTR fmlRandom = new XSTR(worldSeed);
             long xSeed = fmlRandom.nextLong() >> 2 + 1L;
             long zSeed = fmlRandom.nextLong() >> 2 + 1L;
-            long chunkSeed = (xSeed * xChunk + zSeed * zChunk) ^ worldSeed;
+            long chunkSeed = xSeed * xChunk + zSeed * zChunk ^ worldSeed;
             fmlRandom.setSeed(chunkSeed);
             return new XSTR(fmlRandom.nextInt());
         }
@@ -96,10 +96,10 @@ public class BW_WordGenerator implements IWorldGenerator {
             if (!BW_WordGenerator.WorldGenContainer.mGenerated.contains(centerChunk)
                     && this.surroundingChunksLoaded(xCenter, zCenter)) {
                 BW_WordGenerator.WorldGenContainer.mGenerated.add(centerChunk);
-                if ((BW_OreLayer.sWeight > 0) && (BW_OreLayer.sList.size() > 0)) {
+                if (BW_OreLayer.sWeight > 0 && BW_OreLayer.sList.size() > 0) {
                     boolean temp = true;
                     int tRandomWeight;
-                    for (int i = 0; (i < 256) && (temp); i++) {
+                    for (int i = 0; i < 256 && temp; i++) {
                         tRandomWeight = random.nextInt(BW_OreLayer.sWeight);
                         for (BW_OreLayer tWorldGen : BW_OreLayer.sList) {
                             if (!tWorldGen.isGenerationAllowed(this.mWorld, this.mDimensionType, this.mDimensionType))
@@ -120,7 +120,7 @@ public class BW_WordGenerator implements IWorldGenerator {
                                                 this.mChunkGenerator,
                                                 this.mChunkProvider);
                                         ++attempts;
-                                    } while ((!placed) && attempts < 25);
+                                    } while (!placed && attempts < 25);
                                     temp = false;
                                     break;
                                 } catch (Throwable e) {

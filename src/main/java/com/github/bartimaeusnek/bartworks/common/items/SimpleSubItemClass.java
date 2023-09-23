@@ -41,6 +41,7 @@ public class SimpleSubItemClass extends Item {
         this.setCreativeTab(MainMod.BWT);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         this.itemIcon = new IIcon[this.tex.length];
@@ -50,29 +51,28 @@ public class SimpleSubItemClass extends Item {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
+    public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List<String> aList, boolean p_77624_4_) {
         super.addInformation(p_77624_1_, p_77624_2_, aList, p_77624_4_);
         aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_) {
+    public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List<ItemStack> p_150895_3_) {
         for (int i = 0; i < this.tex.length; i++) {
             p_150895_3_.add(new ItemStack(p_150895_1_, 1, i));
         }
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int p_77617_1_) {
         if (p_77617_1_ < this.tex.length) return this.itemIcon[p_77617_1_];
-        else return this.itemIcon[0];
+        return this.itemIcon[0];
     }
 
-    public String getUnlocalizedName(ItemStack p_77667_1_) {
-        if (p_77667_1_.getItemDamage() < this.tex.length)
-            return "item." + this.tex[p_77667_1_.getItemDamage()].replaceAll("/", ".");
-        else return "WrongDamageItemDestroyIt";
+    @Override
+    public String getUnlocalizedName(ItemStack stack) {
+        if (stack.getItemDamage() < this.tex.length) return "item." + this.tex[stack.getItemDamage()].replace('/', '.');
+        return "WrongDamageItemDestroyIt";
     }
 }

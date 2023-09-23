@@ -42,13 +42,12 @@ public class BW_SimpleWindMeter extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister p_94581_1_) {
-        this.itemIcon = p_94581_1_.registerIcon(MainMod.MOD_ID + ":BW_SimpleWindMeter");
+    public void registerIcons(IIconRegister register) {
+        this.itemIcon = register.registerIcon(MainMod.MOD_ID + ":BW_SimpleWindMeter");
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean p_77624_4_) {
+    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List<String> list, boolean p_77624_4_) {
         super.addInformation(itemStack, entityPlayer, list, p_77624_4_);
         list.add(StatCollector.translateToLocal("tooltip.windmeter.0.name"));
         list.add(

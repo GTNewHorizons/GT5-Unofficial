@@ -57,37 +57,36 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
         for (int i = 0; i < Materials.values().length; i++) {
             ItemStack tStack = new ItemStack(this, 1, i);
             Materials material = Materials.values()[i];
-            if (((material.getMolten(1) == null && orePrefixes == OrePrefixes.capsuleMolten)
-                    || ((material.getFluid(1) == null && material.getGas(1) == null)
-                            && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
+            if (material.getMolten(1) == null && orePrefixes == OrePrefixes.capsuleMolten
+                    || material.getFluid(1) == null && material.getGas(1) == null
+                            && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))
                 continue;
 
-            if (OreDictionary
-                    .doesOreNameExist(this.orePrefixes.name() + material.mDefaultLocalName.replaceAll(" ", ""))) {
-                hiddenThings.add(i);
+            if (OreDictionary.doesOreNameExist(this.orePrefixes.name() + material.mDefaultLocalName.replace(" ", ""))) {
+                this.hiddenThings.add(i);
                 continue;
             }
             GT_OreDictUnificator
-                    .registerOre(this.orePrefixes.name() + material.mDefaultLocalName.replaceAll(" ", ""), tStack);
+                    .registerOre(this.orePrefixes.name() + material.mDefaultLocalName.replace(" ", ""), tStack);
         }
 
         if (noSubIDMaterials != null) {
-            hasList = true;
+            this.hasList = true;
             // materialloop:
             for (int i = 0; i < noSubIDMaterials.size(); i++) {
                 ItemStack tStack = new ItemStack(this, 1, i + 1001);
                 Materials w = noSubIDMaterials.get(i);
-                if (((w.getMolten(1) == null && orePrefixes == OrePrefixes.capsuleMolten)
-                        || ((w.getFluid(1) == null && w.getGas(1) == null)
-                                && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
+                if (w.getMolten(1) == null && orePrefixes == OrePrefixes.capsuleMolten
+                        || w.getFluid(1) == null && w.getGas(1) == null
+                                && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))
                     continue;
 
-                if (OreDictionary.doesOreNameExist(this.orePrefixes.name() + w.mDefaultLocalName.replaceAll(" ", ""))) {
-                    hiddenThings.add(i);
+                if (OreDictionary.doesOreNameExist(this.orePrefixes.name() + w.mDefaultLocalName.replace(" ", ""))) {
+                    this.hiddenThings.add(i);
                     continue;
                 }
                 GT_OreDictUnificator
-                        .registerOre(this.orePrefixes.name() + w.mDefaultLocalName.replaceAll(" ", ""), tStack);
+                        .registerOre(this.orePrefixes.name() + w.mDefaultLocalName.replace(" ", ""), tStack);
             }
         }
     }
@@ -95,20 +94,19 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
     private Materials getMaterial(ItemStack is) {
         if (is == null || is.getItem() != this) return null;
         final int meta = is.getItemDamage();
-        return getMaterialFromMeta(meta);
+        return this.getMaterialFromMeta(meta);
     }
 
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
-        Materials material = getMaterial(aStack);
+        Materials material = this.getMaterial(aStack);
         if (material == null) material = Materials._NULL;
-        return material.getLocalizedNameForItem(itemTypeLocalizedName);
+        return material.getLocalizedNameForItem(this.itemTypeLocalizedName);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    protected void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
-        Materials material = getMaterial(aStack);
+    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
+        Materials material = this.getMaterial(aStack);
         if (material != null) {
             String tooltip = material.getToolTip();
             if (tooltip != null && !tooltip.isEmpty()) {
@@ -120,13 +118,12 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
 
     @Override
     public IIconContainer getIconContainer(int aMetaData) {
-        if (this.orePrefixes.mTextureIndex == -1) return getIconContainerBartWorks(aMetaData);
-        Materials material = getMaterialFromMeta(aMetaData);
+        if (this.orePrefixes.mTextureIndex == -1) return this.getIconContainerBartWorks(aMetaData);
+        Materials material = this.getMaterialFromMeta(aMetaData);
         if (material != null) {
             return material.mIconSet.mTextures[this.orePrefixes.mTextureIndex];
-        } else {
-            return null;
         }
+        return null;
     }
 
     @Override
@@ -137,7 +134,7 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
 
         if (iconLink == null) return null;
 
-        Materials material = getMaterialFromMeta(aMetaData);
+        Materials material = this.getMaterialFromMeta(aMetaData);
 
         if (material == null || material.mIconSet == null) return null;
 
@@ -146,63 +143,61 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
 
     @Override
     public IIcon getIconFromDamage(int aMetaData) {
-        return getIcon(aMetaData, 0);
+        return this.getIcon(aMetaData, 0);
     }
 
     @Override
     public GT_GeneratedMaterial_Renderer getMaterialRenderer(int aMetaData) {
-        return getMaterialFromMeta(aMetaData).renderer;
+        return this.getMaterialFromMeta(aMetaData).renderer;
     }
 
     public Materials getMaterialFromMeta(int aMetaData) {
-        if (aMetaData > 1000 && hasList) {
+        if (aMetaData > 1000 && this.hasList) {
             return NoMetaValue.get(aMetaData - 1001);
-        } else {
-            if (aMetaData < 0 || aMetaData >= Materials.values().length) {
-                return null;
-            }
-            return Materials.values()[aMetaData];
         }
+        if (aMetaData < 0 || aMetaData >= Materials.values().length) {
+            return null;
+        }
+        return Materials.values()[aMetaData];
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings("unchecked")
-    public void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
+    public void getSubItems(Item var1, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         for (int i = 0; i < Materials.values().length; i++) {
             Materials w = Materials.values()[i];
-            if ((w == null) || (w.mTypes & Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes)) == 0
+            if (w == null || (w.mTypes & Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes)) == 0
                     && Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes) != 0)
                 continue;
-            else if (((w.getMolten(1) == null && orePrefixes == OrePrefixes.capsuleMolten)
-                    || ((w.getFluid(1) == null && w.getGas(1) == null)
-                            && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
+            if (w.getMolten(1) == null && this.orePrefixes == OrePrefixes.capsuleMolten
+                    || w.getFluid(1) == null && w.getGas(1) == null
+                            && (this.orePrefixes == OrePrefixes.capsule || this.orePrefixes == OrePrefixes.bottle))
                 continue;
-            else if (hiddenThings.contains(i)) continue;
+            else if (this.hiddenThings.contains(i)) continue;
             aList.add(new ItemStack(this, 1, i));
         }
-        if (hasList) for (int i = 0; i < NoMetaValue.size(); i++) {
+        if (this.hasList) for (int i = 0; i < NoMetaValue.size(); i++) {
             Materials w = NoMetaValue.get(i);
-            if ((w == null) || (w.mTypes & Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes)) == 0
+            if (w == null || (w.mTypes & Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes)) == 0
                     && Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes) != 0)
                 continue;
-            else if (((w.getMolten(1) == null && orePrefixes == OrePrefixes.capsuleMolten)
-                    || ((w.getFluid(1) == null && w.getGas(1) == null)
-                            && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
+            if (w.getMolten(1) == null && this.orePrefixes == OrePrefixes.capsuleMolten
+                    || w.getFluid(1) == null && w.getGas(1) == null
+                            && (this.orePrefixes == OrePrefixes.capsule || this.orePrefixes == OrePrefixes.bottle))
                 continue;
-            else if (hiddenThings.contains(i)) continue;
+            else if (this.hiddenThings.contains(i)) continue;
             aList.add(new ItemStack(this, 1, i + 1001));
         }
     }
 
     @Override
     public short[] getColorForGUI(ItemStack aStack) {
-        return getMaterial(aStack).mRGBa;
+        return this.getMaterial(aStack).mRGBa;
     }
 
     @Override
     public String getNameForGUI(ItemStack aStack) {
-        return getMaterial(aStack).mDefaultLocalName;
+        return this.getMaterial(aStack).mDefaultLocalName;
     }
 
     @Override
@@ -210,9 +205,10 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
 
     @Override
     public short[] getRGBa(ItemStack aStack) {
-        return getMaterial(aStack).mRGBa;
+        return this.getMaterial(aStack).mRGBa;
     }
 
+    @Override
     public boolean onEntityItemUpdate(EntityItem aItemEntity) {
         return false;
     }

@@ -20,6 +20,7 @@ import java.util.Optional;
 
 public class NonNullWrappedHashMap<K, V> extends HashMap<K, V> {
 
+    private static final long serialVersionUID = 46345163103910175L;
     private V defaultValue;
 
     public NonNullWrappedHashMap(int initialCapacity, float loadFactor, V defaultValue) {
@@ -43,7 +44,7 @@ public class NonNullWrappedHashMap<K, V> extends HashMap<K, V> {
 
     @Override
     public V get(Object key) {
-        return getOrDefault(key, defaultValue);
+        return this.getOrDefault(key, this.defaultValue);
     }
 
     @Override

@@ -85,8 +85,8 @@ public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound p_145841_1_) {
-        super.writeToNBT(p_145841_1_);
+    public void writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
 
         NBTTagList lInternalTank = new NBTTagList();
 
@@ -99,7 +99,7 @@ public class BW_TileEntity_InfinityTank extends TileEntity implements IFluidTank
                 lInternalTank.appendTag(entry);
             }
         }
-        p_145841_1_.setTag("InternalTank", lInternalTank);
+        compound.setTag("InternalTank", lInternalTank);
     }
 
     @Override

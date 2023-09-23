@@ -84,20 +84,21 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
         }
     }
 
+    @Override
     public boolean onEntityItemUpdate(EntityItem aItemEntity) {
         if (this.orePrefixes == OrePrefixes.dustImpure || this.orePrefixes == OrePrefixes.dustPure
                 || this.orePrefixes == OrePrefixes.crushed) {
             int aDamage = aItemEntity.getEntityItem().getItemDamage();
-            if ((aDamage >= 0) && (!aItemEntity.worldObj.isRemote)) {
+            if (aDamage >= 0 && !aItemEntity.worldObj.isRemote) {
                 Werkstoff aMaterial = werkstoffHashMap.get((short) aDamage);
-                if ((aMaterial != null) && (aMaterial != Werkstoff.default_null_Werkstoff)) {
+                if (aMaterial != null && aMaterial != Werkstoff.default_null_Werkstoff) {
                     int tX = MathHelper.floor_double(aItemEntity.posX);
                     int tY = MathHelper.floor_double(aItemEntity.posY);
                     int tZ = MathHelper.floor_double(aItemEntity.posZ);
                     Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
                     byte tMetaData = (byte) aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
-                    if ((this.orePrefixes == OrePrefixes.dustImpure) || (this.orePrefixes == OrePrefixes.dustPure)) {
-                        if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
+                    if (tBlock == Blocks.cauldron && tMetaData > 0) {
+                        if (this.orePrefixes == OrePrefixes.dustImpure || this.orePrefixes == OrePrefixes.dustPure) {
                             aItemEntity.setEntityItemStack(
                                     WerkstoffLoader.getCorrespondingItemStack(
                                             OrePrefixes.dust,
@@ -105,9 +106,7 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
                                             aItemEntity.getEntityItem().stackSize));
                             aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                             return true;
-                        }
-                    } else {
-                        if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
+                        } else {
                             aItemEntity.setEntityItemStack(
                                     WerkstoffLoader.getCorrespondingItemStack(
                                             OrePrefixes.crushedPurified,
@@ -124,8 +123,7 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    protected void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         if (this.orePrefixes == OrePrefixes.dustImpure || this.orePrefixes == OrePrefixes.dustPure) {
             aList.add(GT_LanguageManager.getTranslation("metaitem.01.tooltip.purify"));
         }
@@ -159,13 +157,13 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
         int aMetaData = aStack.getItemDamage();
         Werkstoff werkstoff = werkstoffHashMap.get((short) aMetaData);
         if (werkstoff == null) werkstoff = Werkstoff.default_null_Werkstoff;
-        return itemTypeLocalizedName.replace("%material", werkstoff.getLocalizedName());
+        return this.itemTypeLocalizedName.replace("%material", werkstoff.getLocalizedName());
     }
 
     @Override
     public IIconContainer getIconContainer(int aMetaData) {
         if (werkstoffHashMap.get((short) aMetaData) == null) return null;
-        if (this.orePrefixes.mTextureIndex == -1) return getIconContainerBartWorks(aMetaData);
+        if (this.orePrefixes.mTextureIndex == -1) return this.getIconContainerBartWorks(aMetaData);
         return werkstoffHashMap.get((short) aMetaData).getTexSet().mTextures[this.orePrefixes.mTextureIndex];
     }
 
@@ -177,8 +175,7 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
 
     @Override
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings("unchecked")
-    public void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
+    public void getSubItems(Item var1, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         for (Werkstoff werkstoff : werkstoffHashSet) {
             if (werkstoff != null && werkstoff.hasItemType(this.orePrefixes)) {
                 ItemStack tStack = new ItemStack(this, 1, werkstoff.getmID());

@@ -45,7 +45,7 @@ public class Pair<A, B> implements Map.Entry<A, B> {
     @Override
     public int hashCode() {
         return MurmurHash3.murmurhash3_x86_32(
-                ByteBuffer.allocate(8).putInt(pair[0].hashCode()).putInt(pair[1].hashCode()).array(),
+                ByteBuffer.allocate(8).putInt(this.pair[0].hashCode()).putInt(this.pair[1].hashCode()).array(),
                 0,
                 8,
                 31);
@@ -53,18 +53,18 @@ public class Pair<A, B> implements Map.Entry<A, B> {
 
     @Override
     public A getKey() {
-        return (A) pair[0];
+        return (A) this.pair[0];
     }
 
     @Override
     public B getValue() {
-        return (B) pair[1];
+        return (B) this.pair[1];
     }
 
     @Override
     public B setValue(Object value) {
-        pair[1] = value;
-        return (B) pair[1];
+        this.pair[1] = value;
+        return (B) this.pair[1];
     }
 
     public Pair<A, B> copyWithNewValue(B value) {

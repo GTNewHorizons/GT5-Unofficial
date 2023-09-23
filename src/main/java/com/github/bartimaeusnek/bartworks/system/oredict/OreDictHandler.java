@@ -60,8 +60,8 @@ public class OreDictHandler {
                             (short) tmp.getItemDamage());
                     GameRegistry.UniqueIdentifier UI = GameRegistry.findUniqueIdentifierFor(tmp.getItem());
                     if (UI == null) UI = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(tmp.getItem()));
-                    if (!UI.modId.equals(MainMod.MOD_ID) && !UI.modId.equals(BartWorksCrossmod.MOD_ID)
-                            && !UI.modId.equals("BWCore")) {
+                    if (!MainMod.MOD_ID.equals(UI.modId) && !BartWorksCrossmod.MOD_ID.equals(UI.modId)
+                            && !"BWCore".equals(UI.modId)) {
                         OreDictHandler.cacheNonBW.add(p2);
                     }
                 }
@@ -70,14 +70,15 @@ public class OreDictHandler {
     }
 
     public static ItemStack getItemStack(String elementName, OrePrefixes prefixes, int amount) {
-        if (OreDictHandler.cache.get(prefixes + elementName.replaceAll(" ", "")) != null) {
-            Pair<Integer, Short> p = OreDictHandler.cache.get(prefixes + elementName.replaceAll(" ", ""));
+        if (OreDictHandler.cache.get(prefixes + elementName.replace(" ", "")) != null) {
+            Pair<Integer, Short> p = OreDictHandler.cache.get(prefixes + elementName.replace(" ", ""));
             return new ItemStack(Item.getItemById(p.getKey()), amount, p.getValue());
-        } else if (!OreDictionary.getOres(prefixes + elementName.replaceAll(" ", "")).isEmpty()) {
+        }
+        if (!OreDictionary.getOres(prefixes + elementName.replace(" ", "")).isEmpty()) {
             ItemStack tmp = GT_OreDictUnificator
-                    .get(OreDictionary.getOres(prefixes + elementName.replaceAll(" ", "")).get(0).copy()).copy();
+                    .get(OreDictionary.getOres(prefixes + elementName.replace(" ", "")).get(0).copy()).copy();
             OreDictHandler.cache.put(
-                    prefixes + elementName.replaceAll(" ", ""),
+                    prefixes + elementName.replace(" ", ""),
                     new Pair<>(Item.getIdFromItem(tmp.getItem()), (short) tmp.getItemDamage()));
             tmp.stackSize = amount;
             return tmp;

@@ -25,18 +25,10 @@ import micdoodle8.mods.galacticraft.planets.mars.entities.EntityLandingBalloons;
 public class PlanetsHelperClass {
 
     public static EntityLanderBase getLanderType(EntityPlayerMP player) {
-        EntityLanderBase elb;
-        switch (ConfigHandler.landerType) {
-            case 1:
-                elb = new EntityLander(player);
-                break;
-            case 2:
-                elb = new EntityLandingBalloons(player);
-                break;
-            default:
-                elb = new EntityEntryPod(player);
-                break;
-        }
-        return elb;
+        return switch (ConfigHandler.landerType) {
+            case 1 -> new EntityLander(player);
+            case 2 -> new EntityLandingBalloons(player);
+            default -> new EntityEntryPod(player);
+        };
     }
 }

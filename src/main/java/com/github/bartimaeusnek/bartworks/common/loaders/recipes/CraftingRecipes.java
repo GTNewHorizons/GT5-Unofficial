@@ -443,12 +443,12 @@ public class CraftingRecipes implements Runnable {
 
         for (int i = 3; i < GT_Values.VN.length - 1; i++) {
             // 12625
-            BioLab2[(i - 3)] = new GT_MetaTileEntity_BioLab(
+            BioLab2[i - 3] = new GT_MetaTileEntity_BioLab(
                     ConfigHandler.IDOffset + GT_Values.VN.length * 6 + i,
                     "bw.biolab" + GT_Values.VN[i],
                     GT_Values.VN[i] + " " + StatCollector.translateToLocal("tile.biolab.name"),
                     i).getStackForm(1L);
-            RadioHatch2[(i - 3)] = new GT_MetaTileEntity_RadioHatch(
+            RadioHatch2[i - 3] = new GT_MetaTileEntity_RadioHatch(
                     ConfigHandler.IDOffset + GT_Values.VN.length * 7 - 2 + i,
                     "bw.radiohatch" + GT_Values.VN[i],
                     GT_Values.VN[i] + " " + StatCollector.translateToLocal("tile.radiohatch.name"),
@@ -456,21 +456,21 @@ public class CraftingRecipes implements Runnable {
             try {
                 ItemStack machinehull = ItemList.MACHINE_HULLS[i].get(1L);
                 GT_ModHandler.addCraftingRecipe(
-                        BioLab2[(i - 3)],
+                        BioLab2[i - 3],
                         RecipeLoader.BITSD,
                         new Object[] { "PFP", "WCW", "OGO", 'F',
-                                GT_OreDictUnificator.get(OrePrefixes.frameGt, hulls2[(i - 3)], 1L), 'W',
-                                GT_OreDictUnificator.get(OrePrefixes.wireGt01, wireMat2[(i - 3)], 1L), 'P',
+                                GT_OreDictUnificator.get(OrePrefixes.frameGt, hulls2[i - 3], 1L), 'W',
+                                GT_OreDictUnificator.get(OrePrefixes.wireGt01, wireMat2[i - 3], 1L), 'P',
                                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
                                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G',
-                                "circuit" + circuits2[(i - 3)], 'C', machinehull });
+                                "circuit" + circuits2[i - 3], 'C', machinehull });
                 GT_ModHandler.addCraftingRecipe(
-                        RadioHatch2[(i - 3)],
+                        RadioHatch2[i - 3],
                         RecipeLoader.BITSD,
                         new Object[] { "DPD", "DCD", "DKD", 'D',
                                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 1L), 'C', machinehull,
-                                'K', GT_OreDictUnificator.get(OrePrefixes.cableGt08, cables2[(i - 3)], 1L), 'P',
-                                Pistons2[(i - 3)] });
+                                'K', GT_OreDictUnificator.get(OrePrefixes.cableGt08, cables2[i - 3], 1L), 'P',
+                                Pistons2[i - 3] });
             } catch (ArrayIndexOutOfBoundsException ignored) {
 
             }

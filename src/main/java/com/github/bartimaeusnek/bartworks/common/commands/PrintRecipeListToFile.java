@@ -21,7 +21,6 @@ import java.io.IOException;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
 
 public class PrintRecipeListToFile extends CommandBase {
 
@@ -31,20 +30,19 @@ public class PrintRecipeListToFile extends CommandBase {
     }
 
     @Override
-    public String getCommandUsage(ICommandSender p_71518_1_) {
+    public String getCommandUsage(ICommandSender sender) {
         return "prltf <FilePath>";
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
-        File file = new File(p_71515_2_[0]);
+    public void processCommand(ICommandSender sender, String[] args) {
+        File file = new File(args[0]);
         try {
 
             BufferedWriter fw = new BufferedWriter(new FileWriter(file));
             CraftingManager.getInstance().getRecipeList().forEach(e -> {
                 try {
-                    fw.write(e.toString() + " = " + ((IRecipe) e).getRecipeOutput().getDisplayName() + "\n");
+                    fw.write(e.toString() + " = " + e.getRecipeOutput().getDisplayName() + "\n");
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }

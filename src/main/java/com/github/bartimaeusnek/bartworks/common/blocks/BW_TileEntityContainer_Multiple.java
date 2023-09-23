@@ -64,8 +64,8 @@ public class BW_TileEntityContainer_Multiple extends BlockContainer {
     }
 
     @Override
-    public boolean onBlockActivated(World worldObj, int x, int y, int z, EntityPlayer player, int p_149727_6_,
-            float p_149727_7_, float p_149727_8_, float p_149727_9_) {
+    public boolean onBlockActivated(World worldObj, int x, int y, int z, EntityPlayer player, int side, float subX,
+            float subY, float subZ) {
         if (worldObj.isRemote) {
             return true;
         }
@@ -73,20 +73,19 @@ public class BW_TileEntityContainer_Multiple extends BlockContainer {
             TileEntity tile = worldObj.getTileEntity(x, y, z);
             if (tile instanceof IHasGui) {
                 return worldObj.isRemote || IC2.platform.launchGui(player, (IHasGui) tile);
-            } else if (tile instanceof ITileWithModularUI) {
-                if (!worldObj.isRemote) {
-                    UIInfos.TILE_MODULAR_UI.open(player, worldObj, x, y, z);
-                }
+            }
+            if (tile instanceof ITileWithModularUI && !worldObj.isRemote) {
+                UIInfos.TILE_MODULAR_UI.open(player, worldObj, x, y, z);
             }
         }
 
         return false;
     }
 
+    @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
         TileEntity tile = world.getTileEntity(x, y, z);
-        if (tile instanceof IWrenchable && itemStack != null) {
-            IWrenchable tile2 = (IWrenchable) tile;
+        if (tile instanceof IWrenchable tile2 && itemStack != null) {
             int meta = itemStack.getItemDamage();
             world.setBlockMetadataWithNotify(x, y, z, meta, 2);
             if (entity != null) {
@@ -116,8 +115,7 @@ public class BW_TileEntityContainer_Multiple extends BlockContainer {
 
     @Override
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings("unchecked")
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < this.textureNames.length; i++) {
             list.add(new ItemStack(item, 1, i));
         }
@@ -154,10 +152,10 @@ public class BW_TileEntityContainer_Multiple extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
+    public TileEntity createNewTileEntity(World worldIn, int meta) {
         try {
-            return this.tileEntityArray[p_149915_2_].newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+            return this.tileEntityArray[meta].getConstructor().newInstance();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

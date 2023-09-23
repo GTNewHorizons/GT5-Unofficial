@@ -73,75 +73,74 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                                 1,
                                 null);
         for (OrePrefixes prefixes : values()) {
-            if (!(prefixes == cell && werkstoff.getType().equals(Werkstoff.Types.ELEMENT))) {
-                if (prefixes == dust && werkstoff.getType().equals(Werkstoff.Types.ELEMENT)) {
-                    if (werkstoff.getType().equals(Werkstoff.Types.ELEMENT)) {
-                        boolean ElementSet = false;
-                        for (Element e : Element.values()) {
-                            if (e.toString().equals(werkstoff.getToolTip())) {
-                                if (e.mLinkedMaterials.size() > 0) break;
-                                werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null
-                                        ? werkstoff.getBridgeMaterial()
-                                        : Materials.get(werkstoff.getVarName()) != Materials._NULL
-                                                ? Materials.get(werkstoff.getVarName())
-                                                : new Materials(
-                                                        -1,
-                                                        werkstoff.getTexSet(),
-                                                        werkstoff.getToolSpeed(),
-                                                        werkstoff.getDurability(),
-                                                        werkstoff.getToolQuality(),
-                                                        0,
-                                                        werkstoff.getRGBA()[0],
-                                                        werkstoff.getRGBA()[1],
-                                                        werkstoff.getRGBA()[2],
-                                                        werkstoff.getRGBA()[3],
-                                                        werkstoff.getVarName(),
-                                                        werkstoff.getDefaultName(),
-                                                        0,
-                                                        0,
-                                                        werkstoff.getStats().getMeltingPoint(),
-                                                        werkstoff.getStats().getMeltingPoint(),
-                                                        werkstoff.getStats().isBlastFurnace(),
-                                                        false,
-                                                        0,
-                                                        1,
-                                                        1,
-                                                        null);
-                                werkstoffBridgeMaterial.mElement = e;
-                                e.mLinkedMaterials = new ArrayList<>();
-                                e.mLinkedMaterials.add(werkstoffBridgeMaterial);
-                                if (werkstoff.hasItemType(dust)) {
-                                    GT_OreDictUnificator
-                                            .addAssociation(dust, werkstoffBridgeMaterial, werkstoff.get(dust), false);
-                                    GT_OreDictUnificator
-                                            .set(dust, werkstoffBridgeMaterial, werkstoff.get(dust), true, true);
-                                }
-                                ElementSet = true;
-                                break;
+            if (prefixes != cell || !Werkstoff.Types.ELEMENT.equals(werkstoff.getType())) {
+                if (prefixes == dust && Werkstoff.Types.ELEMENT.equals(werkstoff.getType())
+                        && Werkstoff.Types.ELEMENT.equals(werkstoff.getType())) {
+                    boolean ElementSet = false;
+                    for (Element e : Element.values()) {
+                        if (e.toString().equals(werkstoff.getToolTip())) {
+                            if (e.mLinkedMaterials.size() > 0) break;
+                            werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null
+                                    ? werkstoff.getBridgeMaterial()
+                                    : Materials.get(werkstoff.getVarName()) != Materials._NULL
+                                            ? Materials.get(werkstoff.getVarName())
+                                            : new Materials(
+                                                    -1,
+                                                    werkstoff.getTexSet(),
+                                                    werkstoff.getToolSpeed(),
+                                                    werkstoff.getDurability(),
+                                                    werkstoff.getToolQuality(),
+                                                    0,
+                                                    werkstoff.getRGBA()[0],
+                                                    werkstoff.getRGBA()[1],
+                                                    werkstoff.getRGBA()[2],
+                                                    werkstoff.getRGBA()[3],
+                                                    werkstoff.getVarName(),
+                                                    werkstoff.getDefaultName(),
+                                                    0,
+                                                    0,
+                                                    werkstoff.getStats().getMeltingPoint(),
+                                                    werkstoff.getStats().getMeltingPoint(),
+                                                    werkstoff.getStats().isBlastFurnace(),
+                                                    false,
+                                                    0,
+                                                    1,
+                                                    1,
+                                                    null);
+                            werkstoffBridgeMaterial.mElement = e;
+                            e.mLinkedMaterials = new ArrayList<>();
+                            e.mLinkedMaterials.add(werkstoffBridgeMaterial);
+                            if (werkstoff.hasItemType(dust)) {
+                                GT_OreDictUnificator
+                                        .addAssociation(dust, werkstoffBridgeMaterial, werkstoff.get(dust), false);
+                                GT_OreDictUnificator
+                                        .set(dust, werkstoffBridgeMaterial, werkstoff.get(dust), true, true);
                             }
+                            ElementSet = true;
+                            break;
                         }
-                        if (!ElementSet) {
-                            continue;
-                        }
+                    }
+                    if (!ElementSet) {
+                        continue;
+                    }
 
-                        if (werkstoff.hasItemType(dust)) {
-                            ItemStack scannerOutput = ItemList.Tool_DataOrb.get(1L);
-                            Behaviour_DataOrb.setDataTitle(scannerOutput, "Elemental-Scan");
-                            Behaviour_DataOrb.setDataName(scannerOutput, werkstoff.getToolTip());
-                            GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(
-                                    false,
-                                    new BWRecipes.DynamicGTRecipe(
-                                            false,
-                                            new ItemStack[] { werkstoff.get(prefixes) },
-                                            new ItemStack[] { scannerOutput },
-                                            ItemList.Tool_DataOrb.get(1L),
-                                            null,
-                                            null,
-                                            null,
-                                            (int) (werkstoffBridgeMaterial.getMass() * 8192L),
-                                            30,
-                                            0));
-                        }
+                    if (werkstoff.hasItemType(dust)) {
+                        ItemStack scannerOutput = ItemList.Tool_DataOrb.get(1L);
+                        Behaviour_DataOrb.setDataTitle(scannerOutput, "Elemental-Scan");
+                        Behaviour_DataOrb.setDataName(scannerOutput, werkstoff.getToolTip());
+                        GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(
+                                false,
+                                new BWRecipes.DynamicGTRecipe(
+                                        false,
+                                        new ItemStack[] { werkstoff.get(prefixes) },
+                                        new ItemStack[] { scannerOutput },
+                                        ItemList.Tool_DataOrb.get(1L),
+                                        null,
+                                        null,
+                                        null,
+                                        (int) (werkstoffBridgeMaterial.getMass() * 8192L),
+                                        30,
+                                        0));
                     }
                 }
 

@@ -13,7 +13,6 @@
 
 package com.github.bartimaeusnek.bartworks.common.net;
 
-import java.nio.ByteBuffer;
 import java.util.HashSet;
 
 import net.minecraft.world.IBlockAccess;
@@ -22,9 +21,10 @@ import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.google.common.io.ByteArrayDataInput;
 
-import gregtech.api.net.GT_Packet;
+import gregtech.api.net.GT_Packet_New;
+import io.netty.buffer.ByteBuf;
 
-public class OreDictCachePacket extends GT_Packet {
+public class OreDictCachePacket extends GT_Packet_New {
 
     private HashSet<Pair<Integer, Short>> hashSet = new HashSet<>();
 
@@ -43,15 +43,16 @@ public class OreDictCachePacket extends GT_Packet {
     }
 
     @Override
-    public byte[] encode() {
+    public void encode(ByteBuf aOut) {
         int size = this.hashSet.size();
-        ByteBuffer buff = ByteBuffer.allocate(4 + size * 4 + size * 2).putInt(size);
-        for (Pair<Integer, Short> p : this.hashSet) buff.putInt(p.getKey()).putShort(p.getValue());
-        return buff.array();
+        aOut.writeInt(size);
+        for (Pair<Integer, Short> p : this.hashSet) {
+            aOut.writeInt(p.getKey()).writeShort(p.getValue());
+        }
     }
 
     @Override
-    public GT_Packet decode(ByteArrayDataInput byteArrayDataInput) {
+    public GT_Packet_New decode(ByteArrayDataInput byteArrayDataInput) {
         int size = byteArrayDataInput.readInt();
         for (int i = 0; i < size; i++) {
             this.hashSet.add(new Pair<>(byteArrayDataInput.readInt(), byteArrayDataInput.readShort()));

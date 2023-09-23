@@ -48,13 +48,11 @@ public class AspectLoader implements IWerkstoffRunnable {
                                 werkstoff.getTCAspects(
                                         enabledOrePrefixes == OrePrefixes.ore ? 1
                                                 : (int) (enabledOrePrefixes.mMaterialAmount / 3628800L)));
-                } else if (enabledOrePrefixes.mMaterialAmount >= 0L) {
-                    if (Objects.nonNull(WerkstoffLoader.items.get(enabledOrePrefixes)))
-                        // noinspection unchecked
-                        ThaumcraftHandler.AspectAdder.addAspectViaBW(
-                                werkstoff.get(enabledOrePrefixes),
-                                new Pair<>(TC_Aspects.PERDITIO.mAspect, 1));
-                }
+                } else if (enabledOrePrefixes.mMaterialAmount >= 0L
+                        && Objects.nonNull(WerkstoffLoader.items.get(enabledOrePrefixes)))
+                    ThaumcraftHandler.AspectAdder.addAspectViaBW(
+                            werkstoff.get(enabledOrePrefixes),
+                            new Pair<>(TC_Aspects.PERDITIO.mAspect, 1));
             }
         }
     }

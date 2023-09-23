@@ -38,7 +38,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.versioning.ArtifactVersion;
 import cpw.mods.fml.common.versioning.DefaultArtifactVersion;
 
-@SuppressWarnings("ALL")
 public class BWCore extends DummyModContainer {
 
     public static final String BWCORE_NAME = "BartWorks ASM Core";

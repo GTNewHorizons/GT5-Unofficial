@@ -26,12 +26,12 @@ public class GetWorkingDirectory extends CommandBase {
     }
 
     @Override
-    public String getCommandUsage(ICommandSender p_71518_1_) {
+    public String getCommandUsage(ICommandSender sender) {
         return "bwgwd";
     }
 
     @Override
-    public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
-        p_71515_1_.addChatMessage(new ChatComponentText(Minecraft.getMinecraft().mcDataDir.getAbsolutePath()));
+    public void processCommand(ICommandSender sender, String[] args) {
+        sender.addChatMessage(new ChatComponentText(Minecraft.getMinecraft().mcDataDir.getAbsolutePath()));
     }
 }

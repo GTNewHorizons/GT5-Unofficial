@@ -60,17 +60,18 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 
-@SuppressWarnings("ALL")
 public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
     public static final LinkedHashSet<Werkstoff> werkstoffHashSet = new LinkedHashSet<>();
     public static final LinkedHashMap<Short, Werkstoff> werkstoffHashMap = new LinkedHashMap<>();
     public static final LinkedHashMap<String, Werkstoff> werkstoffNameHashMap = new LinkedHashMap<>();
 
-    public static final Map<String, String> modNameOverrides = new HashMap() {
+    public static final Map<String, String> modNameOverrides = new HashMap<>() {
+
+        private static final long serialVersionUID = 6399917619058898648L;
 
         {
-            put(GalaxySpace.ID, DARK_PURPLE + "GalaxySpace");
+            this.put(GalaxySpace.ID, DARK_PURPLE + "GalaxySpace");
         }
     };
 
@@ -139,7 +140,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
                 materials.mIconSet,
                 (List) materials.mOreByProducts,
                 new Pair<>(materials, 1));
-        if (!(mID > 31_766 && mID <= 32_767)) throw new IllegalArgumentException();
+        if (mID <= 31_766 || mID > 32_767) throw new IllegalArgumentException();
         this.stats.mass = materials.getMass();
         this.stats.protons = materials.getProtons();
         this.stats.meltingPoint = materials.mMeltingPoint;
@@ -160,6 +161,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         }
     }
 
+    @SafeVarargs
     public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type, int meltingpoint,
             Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
             Pair<ISubTagContainer, Integer>... contents) {
@@ -174,6 +176,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
                 contents);
     }
 
+    @SafeVarargs
     public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type,
             Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
             Pair<ISubTagContainer, Integer>... contents) {
@@ -188,6 +191,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
                 contents);
     }
 
+    @SafeVarargs
     public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type, int meltingpoint,
             Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
             List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
@@ -203,6 +207,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
                 contents);
     }
 
+    @SafeVarargs
     public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type,
             Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
             List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
@@ -218,6 +223,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
                 contents);
     }
 
+    @SafeVarargs
     public Werkstoff(short[] rgba, String toolTip, String defaultName, Werkstoff.Types type,
             Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
             List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
@@ -234,6 +240,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
                 contents);
     }
 
+    @SafeVarargs
     public Werkstoff(short[] rgba, String defaultName, Werkstoff.Stats stats, Werkstoff.Types type,
             Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
             List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
@@ -242,12 +249,14 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         this.mOreByProducts.addAll(oreByProduct);
     }
 
+    @SafeVarargs
     public Werkstoff(short[] rgba, String defaultName, Werkstoff.Stats stats, Werkstoff.Types type,
             Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
             Pair<ISubTagContainer, Integer>... contents) {
         this(rgba, defaultName, "", stats, type, generationFeatures, mID, texSet, contents);
     }
 
+    @SafeVarargs
     public Werkstoff(short[] rgba, String defaultName, String toolTip, Werkstoff.Stats stats, Werkstoff.Types type,
             Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
             List<ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
@@ -256,6 +265,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         this.mOreByProducts.addAll(oreByProduct);
     }
 
+    @SafeVarargs
     public Werkstoff(short[] rgba, String defaultName, String toolTip, Werkstoff.Stats stats, Werkstoff.Types type,
             Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
             Pair<ISubTagContainer, Integer>... contents) {
@@ -282,7 +292,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
                         if (((Materials) p.getKey()).mMaterialList.size() > 1 && p.getValue() > 1)
                             this.toolTip += "(" + getFormula((Materials) p.getKey())
                                     + ")"
-                                    + (BW_Util.subscriptNumber(p.getValue()));
+                                    + BW_Util.subscriptNumber(p.getValue());
                         else this.toolTip += getFormula((Materials) p.getKey())
                                 + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
                     }
@@ -290,17 +300,15 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
                         if (((Werkstoff) p.getKey()).CONTENTS.size() > 1 && p.getValue() > 1)
                             this.toolTip += "(" + getFormula((Werkstoff) p.getKey())
                                     + ")"
-                                    + (BW_Util.subscriptNumber(p.getValue()));
+                                    + BW_Util.subscriptNumber(p.getValue());
                         else this.toolTip += getFormula((Werkstoff) p.getKey())
                                 + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
                     }
-                } else {
-                    if (p.getKey() instanceof Materials) {
-                        this.toolTip += getFormula((Materials) p.getKey())
-                                + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
-                    } else if (p.getKey() instanceof Werkstoff) this.toolTip += getFormula((Werkstoff) p.getKey())
+                } else if (p.getKey() instanceof Materials) {
+                    this.toolTip += getFormula((Materials) p.getKey())
                             + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
-                }
+                } else if (p.getKey() instanceof Werkstoff) this.toolTip += getFormula((Werkstoff) p.getKey())
+                        + (p.getValue() > 1 ? BW_Util.subscriptNumber(p.getValue()) : "");
             }
         } else this.toolTip = toolTip;
 
@@ -368,7 +376,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         Werkstoff.werkstoffHashMap.put(this.mID, this);
         Werkstoff.werkstoffNameHashMap.put(this.defaultName, this);
 
-        this.owner = getMaterialOwner();
+        this.owner = this.getMaterialOwner();
     }
 
     private static String getFormula(Materials material) {
@@ -380,23 +388,24 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     public Werkstoff addAdditionalOreDict(String s) {
-        ADDITIONAL_OREDICT.add(s);
+        this.ADDITIONAL_OREDICT.add(s);
         return this;
     }
 
     public HashSet<String> getADDITIONAL_OREDICT() {
-        return ADDITIONAL_OREDICT;
+        return this.ADDITIONAL_OREDICT;
     }
 
     public void setTCAspects(Pair<Object, Integer>... pAspectsArr) {
         this.stats.mTC_Aspects = pAspectsArr;
     }
 
+    @SuppressWarnings("unchecked")
     public Pair<Object, Integer>[] getTCAspects(int ratio) {
         if (this.stats.mTC_Aspects == null) {
             HashSet<TC_Aspects.TC_AspectStack> tc_aspectStacks = new HashSet<>();
             HashSet<Pair<Object, Integer>> set = new HashSet<>();
-            for (Pair p : this.getContents().getValue()) {
+            for (Pair<?, ?> p : this.getContents().getValue()) {
                 if (p.getKey() instanceof Materials) tc_aspectStacks.addAll(((Materials) p.getKey()).mAspects);
                 if (p.getKey() instanceof Werkstoff) set.addAll(Arrays.asList(((Werkstoff) p.getKey()).getTCAspects()));
             }
@@ -414,7 +423,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
     public List<TC_Aspects.TC_AspectStack> getGTWrappedTCAspects() {
         final List<TC_Aspects.TC_AspectStack> ret = new ArrayList<>();
-        Arrays.stream(getTCAspects()).forEach(objectIntegerPair -> {
+        Arrays.stream(this.getTCAspects()).forEach(objectIntegerPair -> {
             try {
                 new TC_Aspects.TC_AspectStack(
                         TC_Aspects.valueOf(
@@ -448,7 +457,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             case MIXTURE:
             case BIOLOGICAL: {
                 for (int i = 0; i < this.CONTENTS.toArray().length; i++) {
-                    ret += ((Pair<ISubTagContainer, Integer>) this.CONTENTS.toArray()[i]).getValue();
+                    ret += (int) this.CONTENTS.toArray(new Pair[0])[i].getValue();
                 }
                 break;
             }
@@ -491,12 +500,12 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     public String getLocalizedName() {
         return GT_LanguageManager.addStringLocalization(
                 String.format("bw.werkstoff.%05d.name", this.mID),
-                defaultName,
+                this.defaultName,
                 !GregTech_API.sPostloadFinished);
     }
 
     public String getVarName() {
-        return this.defaultName.replaceAll(" ", "");
+        return this.defaultName.replace(" ", "");
     }
 
     public String getToolTip() {
@@ -506,7 +515,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     public String getLocalizedToolTip() {
         return GT_LanguageManager.addStringLocalization(
                 String.format("bw.werkstoff.%05d.tooltip", this.mID),
-                toolTip,
+                this.toolTip,
                 !GregTech_API.sPostloadFinished);
     }
 
@@ -579,31 +588,28 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     public byte getToolQuality() {
-        return this.stats
-                .getQualityOverride() > 0
-                        ? this.stats.getQualityOverride()
-                        : (byte) ((15f * (((float) this.getStats().getProtons() / 188f)
-                                + (float) this.getStats().getMeltingPoint() / 10801f))
-                                / (float) this.getContents().getKey());
+        return this.stats.getQualityOverride() > 0 ? this.stats.getQualityOverride()
+                : (byte) (15f * (this.getStats().getProtons() / 188f + this.getStats().getMeltingPoint() / 10801f)
+                        / (float) this.getContents().getKey());
     }
 
     public float getToolSpeed() {
         return this.stats.getSpeedOverride() > 0f ? this.stats.getSpeedOverride()
                 : Math.max(
                         1f,
-                        2f * ((float) -this.getStats().getMass() + 0.1f * (float) this.getStats().getMeltingPoint()
-                                + (float) this.getStats().getProtons())
+                        2f * (-this.getStats().getMass() + 0.1f * this.getStats().getMeltingPoint()
+                                + this.getStats().getProtons())
                                 * 0.1f
                                 / (float) this.getContents().getKey()
                                 * 0.1f
-                                * (float) this.getToolQuality());
+                                * this.getToolQuality());
     }
 
     public int getDurability() {
         return this.stats.getDurOverride() > 0 ? this.stats.getDurOverride()
-                : (int) (this.stats.durMod
-                        * ((0.01f * (float) this.getStats().getMeltingPoint() * (float) this.getStats().getMass())
-                                / (float) this.getContents().getKey()));
+                : (int) (this.stats.durMod * (0.01f * this.getStats().getMeltingPoint()
+                        * this.getStats().getMass()
+                        / (float) this.getContents().getKey()));
     }
 
     /**
@@ -631,7 +637,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     public String getOwner() {
-        return owner;
+        return this.owner;
     }
 
     private String getMaterialOwner() {
@@ -656,15 +662,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         UNDEFINED;
 
         public static Werkstoff.Stats getDefaultStatForType(Werkstoff.Types T) {
-            switch (T) {
-                case COMPOUND:
-                case BIOLOGICAL:
-                    return new Werkstoff.Stats().setElektrolysis(true);
-                case MIXTURE:
-                    return new Werkstoff.Stats().setCentrifuge(true);
-                default:
-                    return new Werkstoff.Stats();
-            }
+            return switch (T) {
+                case COMPOUND, BIOLOGICAL -> new Werkstoff.Stats().setElektrolysis(true);
+                case MIXTURE -> new Werkstoff.Stats().setCentrifuge(true);
+                default -> new Werkstoff.Stats();
+            };
         }
     }
 
@@ -750,7 +752,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         }
 
         public void setExtension() {
-            isExtension = !isExtension;
+            this.isExtension = !this.isExtension;
         }
 
         public static int getPrefixDataRaw(OrePrefixes prefixes) {
@@ -759,7 +761,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         }
 
         public boolean isExtension() {
-            return isExtension;
+            return this.isExtension;
         }
 
         // public byte toGenerateSecondary = 0b0000000;
@@ -809,19 +811,19 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
         @Deprecated
         public Werkstoff.GenerationFeatures removeGems() {
-            if (this.hasGems()) this.toGenerate = (long) (this.toGenerate ^ 0b100);
+            if (this.hasGems()) this.toGenerate = this.toGenerate ^ 0b100;
             return this;
         }
 
         @Deprecated
         public Werkstoff.GenerationFeatures removeDusts() {
-            if (this.hasDusts()) this.toGenerate = (long) (this.toGenerate ^ 0b1);
+            if (this.hasDusts()) this.toGenerate = this.toGenerate ^ 0b1;
             return this;
         }
 
         @Deprecated
         public Werkstoff.GenerationFeatures removeOres() {
-            if (this.hasOres()) this.toGenerate = (long) (this.toGenerate ^ 0b1000);
+            if (this.hasOres()) this.toGenerate = this.toGenerate ^ 0b1000;
             return this;
         }
 
@@ -886,7 +888,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         }
 
         public Werkstoff.GenerationFeatures onlyDust() {
-            this.toGenerate = (long) (0b1);
+            this.toGenerate = 0b1;
             return this;
         }
 
@@ -894,17 +896,17 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
          * Automatically adds Simple Metal Working Items
          */
         public Werkstoff.GenerationFeatures addMetalItems() {
-            this.toGenerate = (long) (this.addSimpleMetalWorkingItems().toGenerate | 0b10);
+            this.toGenerate = this.addSimpleMetalWorkingItems().toGenerate | 0b10;
             return this;
         }
 
         public Werkstoff.GenerationFeatures disable() {
-            this.toGenerate = (long) (0);
+            this.toGenerate = 0;
             return this;
         }
 
         public Werkstoff.GenerationFeatures addCells() {
-            this.toGenerate = (long) (this.toGenerate | 0b10000);
+            this.toGenerate = this.toGenerate | 0b10000;
             return this;
         }
 
@@ -919,7 +921,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         }
 
         public Werkstoff.GenerationFeatures addMolten() {
-            this.toGenerate = (long) (this.toGenerate | 0b1000000);
+            this.toGenerate = this.toGenerate | 0b1000000;
             return this;
         }
 
@@ -927,17 +929,17 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
          * Automatically adds Simple Metal Working Items
          */
         public Werkstoff.GenerationFeatures addGems() {
-            this.toGenerate = (long) (this.addSimpleMetalWorkingItems().toGenerate | 0x4);
+            this.toGenerate = this.addSimpleMetalWorkingItems().toGenerate | 0x4;
             return this;
         }
 
         public Werkstoff.GenerationFeatures addSimpleMetalWorkingItems() {
-            this.toGenerate = (long) (this.toGenerate | 0b10000000);
+            this.toGenerate = this.toGenerate | 0b10000000;
             return this;
         }
 
         public Werkstoff.GenerationFeatures addCasings() {
-            this.toGenerate = (long) (this.toGenerate | 0x382);
+            this.toGenerate = this.toGenerate | 0x382;
             return this;
         }
 
@@ -947,22 +949,22 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         }
 
         public Werkstoff.GenerationFeatures addCraftingMetalWorkingItems() {
-            this.toGenerate = (long) (this.toGenerate | 0x100);
+            this.toGenerate = this.toGenerate | 0x100;
             return this;
         }
 
         public Werkstoff.GenerationFeatures addMultipleIngotMetalWorkingItems() {
-            this.toGenerate = (long) (this.toGenerate | 0x200);
+            this.toGenerate = this.toGenerate | 0x200;
             return this;
         }
 
         public Werkstoff.GenerationFeatures addPrefix(OrePrefixes prefixes) {
-            this.toGenerate = (long) (this.toGenerate | this.getPrefixDataRaw(prefixes));
+            this.toGenerate = this.toGenerate | getPrefixDataRaw(prefixes);
             return this;
         }
 
         public Werkstoff.GenerationFeatures removePrefix(OrePrefixes prefixes) {
-            this.toGenerate = (long) (this.toGenerate ^ this.getPrefixDataRaw(prefixes));
+            this.toGenerate = this.toGenerate ^ getPrefixDataRaw(prefixes);
             return this;
         }
     }
@@ -1027,7 +1029,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         }
 
         public int getDurOverride() {
-            return durOverride;
+            return this.durOverride;
         }
 
         public Werkstoff.Stats setDurOverride(int durOverride) {
@@ -1036,7 +1038,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         }
 
         public float getSpeedOverride() {
-            return speedOverride;
+            return this.speedOverride;
         }
 
         public Werkstoff.Stats setSpeedOverride(float speedOverride) {
@@ -1045,7 +1047,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         }
 
         public byte getQualityOverride() {
-            return qualityOverride;
+            return this.qualityOverride;
         }
 
         public Werkstoff.Stats setQualityOverride(byte qualityOverride) {
@@ -1068,7 +1070,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         float durMod = 1f;
 
         public float getDurMod() {
-            return durMod;
+            return this.durMod;
         }
 
         public void setDurMod(float durMod) {
@@ -1097,14 +1099,12 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (!(o instanceof Werkstoff.Stats)) return false;
+            if (!(o instanceof Werkstoff.Stats that)) return false;
 
-            Werkstoff.Stats that = (Werkstoff.Stats) o;
-
-            if (this.boilingPoint != that.boilingPoint) return false;
-            if (this.meltingPoint != that.meltingPoint) return false;
-            if (this.mass != that.mass) return false;
-            if (this.protons != that.protons) return false;
+            if (this.boilingPoint != that.boilingPoint || this.meltingPoint != that.meltingPoint
+                    || this.mass != that.mass
+                    || this.protons != that.protons)
+                return false;
             if (this.neutrons != that.neutrons) return false;
             if (this.electrons != that.electrons) return false;
             if (Math.abs(this.ebfGasRecipeTimeMultiplier - that.ebfGasRecipeTimeMultiplier) > 1.0e-6D) return false;
@@ -1159,7 +1159,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         byte enchantmentlvl = 3;
 
         public byte getEnchantmentlvl() {
-            return enchantmentlvl;
+            return this.enchantmentlvl;
         }
 
         public Werkstoff.Stats setEnchantmentlvl(byte enchantmentlvl) {
@@ -1193,7 +1193,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         }
 
         public int getMeltingVoltage() {
-            return meltingVoltage;
+            return this.meltingVoltage;
         }
 
         public boolean isElektrolysis() {
@@ -1223,9 +1223,8 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         public FluidState getFluidState() {
             if ((this.quality & 0x40) != 0) {
                 return FluidState.GAS;
-            } else {
-                return FluidState.LIQUID;
             }
+            return FluidState.LIQUID;
         }
 
         public Werkstoff.Stats setGas(boolean gas) {

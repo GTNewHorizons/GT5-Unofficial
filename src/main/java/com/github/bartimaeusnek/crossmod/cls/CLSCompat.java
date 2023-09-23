@@ -79,7 +79,7 @@ public class CLSCompat {
         long time = System.currentTimeMillis();
         if (time - lastUpdate >= MINIMAL_UPDATE_INTERVAL) {
             try {
-                displayProgress.invoke(null, werkstoff.getDefaultName(), ((float) size) / 10000);
+                displayProgress.invoke(null, werkstoff.getDefaultName(), (float) size / 10000);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }

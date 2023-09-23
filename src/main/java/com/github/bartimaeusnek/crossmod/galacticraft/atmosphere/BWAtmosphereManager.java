@@ -32,7 +32,6 @@ import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 
-@SuppressWarnings({ "unused", "RedundantSuppression" })
 public final class BWAtmosphereManager {
 
     private static final Map<Integer, Integer[]> COEFFICIENT_MAP = new HashMap<>();
@@ -82,7 +81,7 @@ public final class BWAtmosphereManager {
     }
 
     private static boolean addGCGasToWorld(int worldID, IAtmosphericGas gas, int aNumber, int aMaxNumber) {
-        if (gas.equals(IAtmosphericGas.CO2)) {
+        if (IAtmosphericGas.CO2.equals(gas)) {
             BWAtmosphereManager.addGasToWorld(
                     worldID,
                     Materials.CarbonDioxide,

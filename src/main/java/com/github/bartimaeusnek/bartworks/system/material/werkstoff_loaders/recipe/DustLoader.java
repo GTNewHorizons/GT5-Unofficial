@@ -70,104 +70,80 @@ public class DustLoader implements IWerkstoffRunnable {
                     || werkstoff.getGenerationFeatures().hasChemicalRecipes()) {
                 for (Pair<ISubTagContainer, Integer> container : werkstoff.getContents().getValue()
                         .toArray(new Pair[0])) {
-                    if (container.getKey() instanceof Materials) {
-                        if ((((Materials) container.getKey()).getGas(0) != null
-                                || ((Materials) container.getKey()).getFluid(0) != null
-                                || ((Materials) container.getKey()).mIconSet == TextureSet.SET_FLUID)
-                                && ((Materials) container.getKey()).getDust(0) == null) {
-                            FluidStack tmpFl = ((Materials) container.getKey()).getGas(1000L * container.getValue());
+                    final ISubTagContainer key = container.getKey();
+                    final int value = container.getValue();
+                    if (key instanceof Materials materialKey) {
+                        if ((materialKey.getGas(0) != null || materialKey.getFluid(0) != null
+                                || materialKey.mIconSet == TextureSet.SET_FLUID) && materialKey.getDust(0) == null) {
+                            FluidStack tmpFl = materialKey.getGas(1000L * value);
                             if (tmpFl == null || tmpFl.getFluid() == null) {
-                                tmpFl = ((Materials) container.getKey()).getFluid(1000L * container.getValue());
+                                tmpFl = materialKey.getFluid(1000L * value);
                             }
                             flOutputs.add(tmpFl);
                             if (flOutputs.size() > 1) {
-                                if (!tracker.containsKey(container.getKey())) {
-                                    stOutputs.add(((Materials) container.getKey()).getCells(container.getValue()));
-                                    tracker.put(
-                                            container.getKey(),
-                                            new Pair<>(container.getValue(), stOutputs.size() - 1));
+                                if (!tracker.containsKey(key)) {
+                                    stOutputs.add(materialKey.getCells(value));
+                                    tracker.put(key, new Pair<>(value, stOutputs.size() - 1));
                                 } else {
-                                    stOutputs.add(
-                                            ((Materials) container.getKey()).getCells(
-                                                    tracker.get(container.getKey()).getKey() + container.getValue()));
-                                    stOutputs.remove(tracker.get(container.getKey()).getValue() + 1);
+                                    stOutputs.add(materialKey.getCells(tracker.get(key).getKey() + value));
+                                    stOutputs.remove(tracker.get(key).getValue() + 1);
                                 }
-                                cells += container.getValue();
+                                cells += value;
                             }
                         } else {
-                            if (((Materials) container.getKey()).getDust(container.getValue()) == null) {
-                                if (((Materials) container.getKey()).getCells(container.getValue()) != null
-                                        && (((Materials) container.getKey()).getMolten(0) != null
-                                                || ((Materials) container.getKey()).getSolid(0) != null)) {
-                                    FluidStack tmpFl = ((Materials) container.getKey())
-                                            .getMolten(1000L * container.getValue());
-                                    if (tmpFl == null || tmpFl.getFluid() == null) {
-                                        tmpFl = ((Materials) container.getKey()).getSolid(1000L * container.getValue());
+                            if (materialKey.getDust(value) == null) {
+                                if (materialKey.getCells(value) == null
+                                        || materialKey.getMolten(0) == null && materialKey.getSolid(0) == null)
+                                    continue;
+                                FluidStack tmpFl = materialKey.getMolten(1000L * value);
+                                if (tmpFl == null || tmpFl.getFluid() == null) {
+                                    tmpFl = materialKey.getSolid(1000L * value);
+                                }
+                                flOutputs.add(tmpFl);
+                                if (flOutputs.size() > 1) {
+                                    if (!tracker.containsKey(key)) {
+                                        stOutputs.add(materialKey.getCells(value));
+                                        tracker.put(key, new Pair<>(value, stOutputs.size() - 1));
+                                    } else {
+                                        stOutputs.add(materialKey.getCells(tracker.get(key).getKey() + value));
+                                        stOutputs.remove(tracker.get(key).getValue() + 1);
                                     }
-                                    flOutputs.add(tmpFl);
-                                    if (flOutputs.size() > 1) {
-                                        if (!tracker.containsKey(container.getKey())) {
-                                            stOutputs.add(
-                                                    ((Materials) container.getKey()).getCells(container.getValue()));
-                                            tracker.put(
-                                                    container.getKey(),
-                                                    new Pair<>(container.getValue(), stOutputs.size() - 1));
-                                        } else {
-                                            stOutputs.add(
-                                                    ((Materials) container.getKey()).getCells(
-                                                            tracker.get(container.getKey()).getKey()
-                                                                    + container.getValue()));
-                                            stOutputs.remove(tracker.get(container.getKey()).getValue() + 1);
-                                        }
-                                        cells += container.getValue();
-                                    }
-                                } else continue;
+                                    cells += value;
+                                }
                             }
-                            if (!tracker.containsKey(container.getKey())) {
-                                stOutputs.add(((Materials) container.getKey()).getDust(container.getValue()));
-                                tracker.put(container.getKey(), new Pair<>(container.getValue(), stOutputs.size() - 1));
+                            if (!tracker.containsKey(key)) {
+                                stOutputs.add(materialKey.getDust(value));
+                                tracker.put(key, new Pair<>(value, stOutputs.size() - 1));
                             } else {
-                                stOutputs.add(
-                                        ((Materials) container.getKey()).getDust(
-                                                tracker.get(container.getKey()).getKey() + container.getValue()));
-                                stOutputs.remove(tracker.get(container.getKey()).getValue() + 1);
+                                stOutputs.add(materialKey.getDust(tracker.get(key).getKey() + value));
+                                stOutputs.remove(tracker.get(key).getValue() + 1);
                             }
                         }
-                    } else if (container.getKey() instanceof Werkstoff) {
-                        if (((Werkstoff) container.getKey()).getStats().isGas()
-                                || ((Werkstoff) container.getKey()).hasItemType(cell)) {
-                            FluidStack tmpFl = ((Werkstoff) container.getKey())
-                                    .getFluidOrGas(1000 * container.getValue());
+                    } else if (key instanceof Werkstoff werkstoffKey) {
+                        if (werkstoffKey.getStats().isGas() || werkstoffKey.hasItemType(cell)) {
+                            FluidStack tmpFl = werkstoffKey.getFluidOrGas(1000 * value);
                             if (tmpFl == null || tmpFl.getFluid() == null) {
-                                tmpFl = ((Werkstoff) container.getKey()).getFluidOrGas(1000 * container.getValue());
+                                tmpFl = werkstoffKey.getFluidOrGas(1000 * value);
                             }
                             flOutputs.add(tmpFl);
                             if (flOutputs.size() > 1) {
-                                if (!tracker.containsKey(container.getKey())) {
-                                    stOutputs.add(((Werkstoff) container.getKey()).get(cell, container.getValue()));
-                                    tracker.put(
-                                            container.getKey(),
-                                            new Pair<>(container.getValue(), stOutputs.size() - 1));
+                                if (!tracker.containsKey(key)) {
+                                    stOutputs.add(werkstoffKey.get(cell, value));
+                                    tracker.put(key, new Pair<>(value, stOutputs.size() - 1));
                                 } else {
-                                    stOutputs.add(
-                                            ((Werkstoff) container.getKey()).get(
-                                                    cell,
-                                                    tracker.get(container.getKey()).getKey() + container.getValue()));
-                                    stOutputs.remove(tracker.get(container.getKey()).getValue() + 1);
+                                    stOutputs.add(werkstoffKey.get(cell, tracker.get(key).getKey() + value));
+                                    stOutputs.remove(tracker.get(key).getValue() + 1);
                                 }
-                                cells += container.getValue();
+                                cells += value;
                             }
                         } else {
-                            if (!((Werkstoff) container.getKey()).hasItemType(dust)) continue;
-                            if (!tracker.containsKey(container.getKey())) {
-                                stOutputs.add(((Werkstoff) container.getKey()).get(dust, container.getValue()));
-                                tracker.put(container.getKey(), new Pair<>(container.getValue(), stOutputs.size() - 1));
+                            if (!werkstoffKey.hasItemType(dust)) continue;
+                            if (!tracker.containsKey(key)) {
+                                stOutputs.add(werkstoffKey.get(dust, value));
+                                tracker.put(key, new Pair<>(value, stOutputs.size() - 1));
                             } else {
-                                stOutputs.add(
-                                        ((Werkstoff) container.getKey()).get(
-                                                dust,
-                                                (tracker.get(container.getKey()).getKey() + container.getValue())));
-                                stOutputs.remove(tracker.get(container.getKey()).getValue() + 1);
+                                stOutputs.add(werkstoffKey.get(dust, tracker.get(key).getKey() + value));
+                                stOutputs.remove(tracker.get(key).getValue() + 1);
                             }
                         }
                     }

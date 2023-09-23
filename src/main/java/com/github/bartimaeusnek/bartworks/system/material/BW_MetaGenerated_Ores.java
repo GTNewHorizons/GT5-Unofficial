@@ -42,9 +42,10 @@ public class BW_MetaGenerated_Ores extends BW_MetaGenerated_Blocks {
                 OrePrefixes.ore.mLocalizedMaterialPre + "%material" + OrePrefixes.ore.mLocalizedMaterialPost);
     }
 
+    @Override
     protected void doRegistrationStuff(Werkstoff w) {
         if (w != null) {
-            if (!w.hasItemType(OrePrefixes.ore) || ((w.getGenerationFeatures().blacklist & 0b1000) != 0)) return;
+            if (!w.hasItemType(OrePrefixes.ore) || (w.getGenerationFeatures().blacklist & 0b1000) != 0) return;
             GT_ModHandler.addValuableOre(this, w.getmID(), 1);
         }
     }
@@ -57,26 +58,22 @@ public class BW_MetaGenerated_Ores extends BW_MetaGenerated_Blocks {
 
         Block tBlock = aWorld.getBlock(aX, aY, aZ);
         Block tOreBlock = WerkstoffLoader.BWOres;
-        if (aMetaData < 0 || tBlock == Blocks.air && !air) {
+        if (aMetaData < 0 || tBlock == Blocks.air && !air
+                || Block.getIdFromBlock(tBlock) != Block.getIdFromBlock(block)) {
             return false;
-        } else {
-
-            if (Block.getIdFromBlock(tBlock) != Block.getIdFromBlock(block)) {
-                return false;
-            }
-            final int aaY = aY;
-            if (Arrays.stream(aBlockMeta).noneMatch(e -> e == aWorld.getBlockMetadata(aX, aaY, aZ))) {
-                return false;
-            }
-
-            aWorld.setBlock(aX, aY, aZ, tOreBlock, aMetaData, 0);
-            TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-            if (tTileEntity instanceof BW_MetaGeneratedOreTE) {
-                ((BW_MetaGeneratedOreTE) tTileEntity).mMetaData = (short) aMetaData;
-            }
-
-            return true;
         }
+        final int aaY = aY;
+        if (Arrays.stream(aBlockMeta).noneMatch(e -> e == aWorld.getBlockMetadata(aX, aaY, aZ))) {
+            return false;
+        }
+
+        aWorld.setBlock(aX, aY, aZ, tOreBlock, aMetaData, 0);
+        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if (tTileEntity instanceof BW_MetaGeneratedOreTE metaTE) {
+            metaTE.mMetaData = (short) aMetaData;
+        }
+
+        return true;
     }
 
     @Override
@@ -85,10 +82,11 @@ public class BW_MetaGenerated_Ores extends BW_MetaGenerated_Blocks {
     }
 
     @Override
-    public IIcon getIcon(IBlockAccess p_149673_1_, int p_149673_2_, int p_149673_3_, int p_149673_4_, int p_149673_5_) {
+    public IIcon getIcon(IBlockAccess worldIn, int x, int y, int z, int side) {
         return Blocks.stone.getIcon(0, 0);
     }
 
+    @Override
     public int getHarvestLevel(int metadata) {
         return 3;
     }
@@ -99,26 +97,12 @@ public class BW_MetaGenerated_Ores extends BW_MetaGenerated_Blocks {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public void getSubBlocks(Item aItem, CreativeTabs aTab, List aList) {
+    public void getSubBlocks(Item aItem, CreativeTabs aTab, List<ItemStack> aList) {
         for (Werkstoff tMaterial : Werkstoff.werkstoffHashSet) {
-            if ((tMaterial != null) && tMaterial.hasItemType(OrePrefixes.ore)
-                    && ((tMaterial.getGenerationFeatures().blacklist & 0x8) == 0)) {
+            if (tMaterial != null && tMaterial.hasItemType(OrePrefixes.ore)
+                    && (tMaterial.getGenerationFeatures().blacklist & 0x8) == 0) {
                 aList.add(new ItemStack(aItem, 1, tMaterial.getmID()));
             }
         }
-    }
-
-    @SuppressWarnings("unused")
-    private boolean checkForAir(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        for (int x = -1; x <= 1; x++) {
-            for (int y = -1; y <= 1; y++) {
-                for (int z = -1; z <= 1; z++) {
-                    if (x == 0 && y == 0 && z == 0) continue;
-                    if (aWorld.getBlock(aX + x, aY + y, aZ + z).isAir(aWorld, aX + x, aY + y, aZ + z)) return true;
-                }
-            }
-        }
-        return false;
     }
 }

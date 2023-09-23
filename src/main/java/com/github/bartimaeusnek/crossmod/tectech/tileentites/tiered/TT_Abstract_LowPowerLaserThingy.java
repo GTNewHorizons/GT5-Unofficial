@@ -56,7 +56,7 @@ public abstract class TT_Abstract_LowPowerLaserThingy extends GT_MetaTileEntity_
 
     @Override
     public long getAMPERES() {
-        return AMPERES;
+        return this.AMPERES;
     }
 
     @Override
@@ -93,12 +93,12 @@ public abstract class TT_Abstract_LowPowerLaserThingy extends GT_MetaTileEntity_
 
     @Override
     public void saveNBTData(NBTTagCompound nbtTagCompound) {
-        Optional.ofNullable(nbtTagCompound).ifPresent(tag -> tag.setLong("AMPERES", AMPERES));
+        Optional.ofNullable(nbtTagCompound).ifPresent(tag -> tag.setLong("AMPERES", this.AMPERES));
     }
 
     @Override
     public void loadNBTData(NBTTagCompound nbtTagCompound) {
-        Optional.ofNullable(nbtTagCompound).ifPresent(tag -> AMPERES = tag.getLong("AMPERES"));
+        Optional.ofNullable(nbtTagCompound).ifPresent(tag -> this.AMPERES = tag.getLong("AMPERES"));
     }
 
     @Override
@@ -148,6 +148,6 @@ public abstract class TT_Abstract_LowPowerLaserThingy extends GT_MetaTileEntity_
 
     @Override
     public long maxEUStore() {
-        return 512L + GT_Values.V[this.mTier + 1] * 24L * AMPERES;
+        return 512L + GT_Values.V[this.mTier + 1] * 24L * this.AMPERES;
     }
 }

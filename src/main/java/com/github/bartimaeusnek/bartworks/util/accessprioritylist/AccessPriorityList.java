@@ -23,37 +23,36 @@ import java.util.Spliterator;
 
 import org.apache.commons.lang3.NotImplementedException;
 
-@SuppressWarnings("ALL")
 public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     transient int size = 0;
     transient AccessPriorityListNode<E> head;
     transient AccessPriorityListNode<E> tail;
 
-    public static AccessPriorityList create() {
-        return new AccessPriorityList();
+    public static <E> AccessPriorityList<E> create() {
+        return new AccessPriorityList<>();
     }
 
     public AccessPriorityList() {}
 
     @Override
     public void addFirst(E t) {
-        final AccessPriorityListNode<E> first = head;
+        final AccessPriorityListNode<E> first = this.head;
         final AccessPriorityListNode<E> newNode = new AccessPriorityListNode<>(null, t, first);
-        head = newNode;
-        if (first == null) tail = newNode;
+        this.head = newNode;
+        if (first == null) this.tail = newNode;
         else first.setBefore(newNode);
-        size++;
+        this.size++;
     }
 
     @Override
     public void addLast(E t) {
-        final AccessPriorityListNode<E> last = tail;
+        final AccessPriorityListNode<E> last = this.tail;
         final AccessPriorityListNode<E> newNode = new AccessPriorityListNode<>(last, t, null);
-        tail = newNode;
-        if (last == null) head = newNode;
+        this.tail = newNode;
+        if (last == null) this.head = newNode;
         else last.setNext(newNode);
-        size++;
+        this.size++;
     }
 
     @Override
@@ -68,10 +67,10 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public E removeFirst() {
-        E first = head.getELEMENT();
-        AccessPriorityListNode<E> node = head;
-        head = node.getNext();
-        head.setBefore(null);
+        E first = this.head.getELEMENT();
+        AccessPriorityListNode<E> node = this.head;
+        this.head = node.getNext();
+        this.head.setBefore(null);
         node.destroy();
         node = null;
         this.size--;
@@ -80,10 +79,10 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public E removeLast() {
-        E last = tail.getELEMENT();
-        AccessPriorityListNode<E> node = tail;
-        tail = node.getBefore();
-        tail.setNext(null);
+        E last = this.tail.getELEMENT();
+        AccessPriorityListNode<E> node = this.tail;
+        this.tail = node.getBefore();
+        this.tail.setNext(null);
         node.destroy();
         node = null;
         this.size--;
@@ -102,22 +101,22 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public E getFirst() {
-        return peekFirst();
+        return this.peekFirst();
     }
 
     @Override
     public E getLast() {
-        return peekLast();
+        return this.peekLast();
     }
 
     @Override
     public E peekFirst() {
-        return head != null ? head.getELEMENT() : null;
+        return this.head != null ? this.head.getELEMENT() : null;
     }
 
     @Override
     public E peekLast() {
-        return tail != null ? tail.getELEMENT() : null;
+        return this.tail != null ? this.tail.getELEMENT() : null;
     }
 
     @Override
@@ -132,12 +131,12 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public int size() {
-        return size;
+        return this.size;
     }
 
     @Override
     public boolean isEmpty() {
-        return size == 0;
+        return this.size == 0;
     }
 
     @Override
@@ -147,42 +146,42 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return new AccessPriorityListIterators.AccessPriorityListIterator<>(head);
+        return new AccessPriorityListIterators.AccessPriorityListIterator<>(this.head);
     }
 
     public Iterator<AccessPriorityListNode<E>> nodeIterator() {
-        return new AccessPriorityListIterators.AccessPriorityListNodeIterator<>(head);
+        return new AccessPriorityListIterators.AccessPriorityListNodeIterator<>(this.head);
     }
 
     @Override
     public Iterator<E> descendingIterator() {
-        return new AccessPriorityListIterators.AccessPriorityListReverseIterator<>(tail);
+        return new AccessPriorityListIterators.AccessPriorityListReverseIterator<>(this.tail);
     }
 
     @Override
     public Object[] toArray() {
-        Object[] ret = new Object[size];
+        Object[] ret = new Object[this.size];
         int index = 0;
-        for (Iterator<E> it = iterator(); it.hasNext(); index++) ret[index] = it.next();
+        for (Iterator<E> it = this.iterator(); it.hasNext(); index++) ret[index] = it.next();
         return ret;
     }
 
     @Override
     public <T> T[] toArray(T[] a) {
-        T[] ret = (T[]) new Object[size];
+        T[] ret = (T[]) new Object[this.size];
         int index = 0;
-        for (Iterator<T> it = (Iterator<T>) iterator(); it.hasNext(); index++) ret[index] = it.next();
+        for (Iterator<T> it = (Iterator<T>) this.iterator(); it.hasNext(); index++) ret[index] = it.next();
         return ret;
     }
 
     @Override
     public boolean add(E e) {
-        addLast(e);
+        this.addLast(e);
         return true;
     }
 
     private void moveNodeUp(AccessPriorityListNode<E> node) {
-        if (node == head || node.getBefore() == null) return;
+        if (node == this.head || node.getBefore() == null) return;
         final AccessPriorityListNode<E> before = node.getBefore();
         final AccessPriorityListNode<E> beforeBefore = before.getBefore();
         final AccessPriorityListNode<E> next = node.getNext();
@@ -193,7 +192,7 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
         // <0,1,2> <1,2,3> N<0,3,4> <3,4,5>
 
         if (beforeBefore != null) beforeBefore.setNext(node);
-        else head = node;
+        else this.head = node;
         // <0,1,3> <1,2,3> N<0,3,4> <3,4,5>
 
         before.setBefore(node);
@@ -203,7 +202,7 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
         // <0,1,3> <3,2,4> N<0,3,4> <3,4,5>
 
         if (next != null) next.setBefore(before);
-        else tail = before;
+        else this.tail = before;
         // <0,1,3> N<0,3,4> <3,2,4> <2,4,5>
 
         node.setNext(before);
@@ -211,15 +210,14 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
     }
 
     AccessPriorityListNode<E> getNode(int index) {
-        if (index <= (size / 2)) {
-            AccessPriorityListNode<E> x = head;
+        if (index <= this.size / 2) {
+            AccessPriorityListNode<E> x = this.head;
             for (int i = 0; i < index; i++) x = x.getNext();
             return x;
-        } else {
-            AccessPriorityListNode<E> x = tail;
-            for (int i = size - 1; i > index; i--) x = x.getBefore();
-            return x;
         }
+        AccessPriorityListNode<E> x = this.tail;
+        for (int i = this.size - 1; i > index; i--) x = x.getBefore();
+        return x;
     }
 
     @Override
@@ -228,7 +226,7 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
     }
 
     private boolean isValidIndex(int index) {
-        if (index >= 0 && index < size) return true;
+        if (index >= 0 && index < this.size) return true;
         throw new ArrayIndexOutOfBoundsException("NOT A VAILD INDEX!");
     }
 
@@ -239,7 +237,7 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public E poll() {
-        return removeFirst();
+        return this.removeFirst();
     }
 
     @Override
@@ -249,17 +247,17 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public E peek() {
-        return getFirst();
+        return this.getFirst();
     }
 
     @Override
     public void push(E e) {
-        addFirst(e);
+        this.addFirst(e);
     }
 
     @Override
     public E pop() {
-        return removeFirst();
+        return this.removeFirst();
     }
 
     @Override
@@ -300,8 +298,8 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public void clear() {
-        if (tail != null) {
-            AccessPriorityListNode<E> node = tail;
+        if (this.tail != null) {
+            AccessPriorityListNode<E> node = this.tail;
             while (node.getBefore() != null) {
                 node.setNext(null);
                 node.setPriority(0L);
@@ -315,33 +313,33 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
     }
 
     public void addPrioToNode(AccessPriorityListNode<E> node) {
-        addPrioToNode(node, 1L);
+        this.addPrioToNode(node, 1L);
     }
 
     public void addPrioToNode(AccessPriorityListNode<E> node, long prio) {
         long current = node.getPriority();
-        if (current == Long.MAX_VALUE || (current > 0 && prio > 0 && prio + current < 0))
+        if (current == Long.MAX_VALUE || current > 0 && prio > 0 && prio + current < 0)
             node.setPriority(Long.MAX_VALUE);
         else node.setPriority(current + prio);
         while (node.getBefore() != null && node.getPriority() >= node.getBefore().getPriority()) {
-            moveNodeUp(node);
+            this.moveNodeUp(node);
         }
     }
 
     public void addPrioToNode(int index, long prio) {
-        if (!isValidIndex(index)) return;
-        AccessPriorityListNode<E> node = getNode(index);
-        addPrioToNode(node, prio);
+        if (!this.isValidIndex(index)) return;
+        AccessPriorityListNode<E> node = this.getNode(index);
+        this.addPrioToNode(node, prio);
     }
 
     public void addPrioToNode(int index) {
-        addPrioToNode(index, 1L);
+        this.addPrioToNode(index, 1L);
     }
 
     @Override
     public E get(int index) {
-        if (!isValidIndex(index)) return null;
-        AccessPriorityListNode<E> node = getNode(index);
+        if (!this.isValidIndex(index)) return null;
+        AccessPriorityListNode<E> node = this.getNode(index);
         return node.getELEMENT();
     }
 
@@ -372,7 +370,7 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
 
     @Override
     public ListIterator<E> listIterator() {
-        return new AccessPriorityListIterators.AccessPriorityListListIterator<>(head, tail, false);
+        return new AccessPriorityListIterators.AccessPriorityListListIterator<>(this.head, this.tail, false);
     }
 
     @Override

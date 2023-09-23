@@ -73,8 +73,7 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
         if (aStack != null && aStack.getTagCompound() != null) aList.add(
                 StatCollector.translateToLocal("tooltip.cp.0.name") + " "
@@ -94,8 +93,7 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
 
     @Override
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings("unchecked")
-    public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List itemList) {
+    public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List<ItemStack> itemList) {
         ItemStack itemStack = new ItemStack(this, 1);
         if (this.getChargedItem(itemStack) == this) {
             ItemStack charged = new ItemStack(this, 1);
@@ -163,10 +161,10 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
 
             @Override
             public void putStack(ItemStack stack) {
-                if (isLVCircuit(stack)) {
-                    stack = createRealCircuit(0);
+                if (Circuit_Programmer.this.isLVCircuit(stack)) {
+                    stack = Circuit_Programmer.this.createRealCircuit(0);
                 }
-                ((IItemHandlerModifiable) this.getItemHandler()).setStackInSlot(getSlotIndex(), stack);
+                ((IItemHandlerModifiable) this.getItemHandler()).setStackInSlot(this.getSlotIndex(), stack);
                 this.onSlotChanged();
             }
         });
@@ -174,7 +172,7 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
         ItemStack initialStack = null;
         NBTTagCompound tag = heldStack.getTagCompound();
         if (tag != null && tag.getBoolean(NBT_KEY_HAS_CHIP)) {
-            initialStack = createRealCircuit(tag.getByte(NBT_KEY_CHIP_CONFIG));
+            initialStack = this.createRealCircuit(tag.getByte(NBT_KEY_CHIP_CONFIG));
         }
         circuitSlotWidget.getMcSlot().putStack(initialStack);
 
@@ -193,17 +191,17 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
                 tag2.setBoolean(NBT_KEY_HAS_CHIP, false);
             }
             heldItem.setTagCompound(tag2);
-        }).setFilter(stack -> isProgrammedCircuit(stack) || isLVCircuit(stack))
+        }).setFilter(stack -> this.isProgrammedCircuit(stack) || this.isLVCircuit(stack))
                 .setBackground(ModularUITextures.ITEM_SLOT, GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT).setPos(122, 60));
 
         for (int i = 0; i < 24; i++) {
             final int index = i;
             builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (circuitSlotWidget.getMcSlot().getHasStack()
-                        && isProgrammedCircuit(circuitSlotWidget.getMcSlot().getStack())) {
-                    circuitSlotWidget.getMcSlot().putStack(createRealCircuit(index + 1));
+                        && this.isProgrammedCircuit(circuitSlotWidget.getMcSlot().getStack())) {
+                    circuitSlotWidget.getMcSlot().putStack(this.createRealCircuit(index + 1));
                 }
-            }).setPos(32 + (i % 12) * 18, 21 + (i / 12) * 18).setSize(18, 18));
+            }).setPos(32 + i % 12 * 18, 21 + i / 12 * 18).setSize(18, 18));
         }
 
         return builder.build();
@@ -219,7 +217,7 @@ public class Circuit_Programmer extends GT_Generic_Item implements IElectricItem
 
     private boolean isLVCircuit(ItemStack stack) {
         return BW_Util.checkStackAndPrefix(stack)
-                && GT_OreDictUnificator.getAssociation(stack).mPrefix.equals(OrePrefixes.circuit)
+                && OrePrefixes.circuit.equals(GT_OreDictUnificator.getAssociation(stack).mPrefix)
                 && GT_OreDictUnificator.getAssociation(stack).mMaterial.mMaterial.equals(Materials.Basic);
     }
 }

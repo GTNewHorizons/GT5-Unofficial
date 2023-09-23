@@ -40,31 +40,37 @@ public class GT_MetaTileEntity_EnergyDistributor extends GT_MetaTileEntity_Trans
         super(aName, aTier, aDescription, aTextures);
     }
 
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_EnergyDistributor(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
+    @Override
     public long maxEUInput() {
         return GT_Values.V[this.mTier];
     }
 
+    @Override
     public long maxEUOutput() {
         return GT_Values.V[this.mTier];
     }
 
+    @Override
     public long maxAmperesOut() {
         return 320;
     }
 
+    @Override
     public long maxAmperesIn() {
         return 320;
     }
 
     @Override
     public long maxEUStore() {
-        return 512L + (GT_Values.V[this.mTier] * 320L);
+        return 512L + GT_Values.V[this.mTier] * 320L;
     }
 
+    @Override
     public String[] getDescription() {
         return new String[] { StatCollector.translateToLocal("tooltip.tile.energydistributor.0.name"),
                 StatCollector.translateToLocal("tooltip.tile.tiereddsc.0.name") + " "

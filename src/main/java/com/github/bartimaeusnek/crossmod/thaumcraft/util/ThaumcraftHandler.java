@@ -14,7 +14,6 @@
 package com.github.bartimaeusnek.crossmod.thaumcraft.util;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import net.minecraft.item.ItemStack;
@@ -27,14 +26,13 @@ import com.github.bartimaeusnek.bartworks.util.log.DebugLog;
 
 import gregtech.api.enums.TC_Aspects;
 
-@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
 public class ThaumcraftHandler {
 
     private ThaumcraftHandler() {}
 
     private static Integer taintBiomeID;
     private static Integer magicalForestBiomeID;
-    private static Class mWandInterface;
+    private static Class<?> mWandInterface;
 
     static {
         try {
@@ -84,8 +82,8 @@ public class ThaumcraftHandler {
 
     public static class AspectAdder {
 
-        public static Class mAspectListClass;
-        public static Class mAspectClass;
+        public static Class<?> mAspectListClass;
+        public static Class<?> mAspectClass;
         public static Method registerObjectTag;
         public static Method addToList;
         public static Method getName;
@@ -129,11 +127,12 @@ public class ThaumcraftHandler {
             }
         }
 
+        @SafeVarargs
         public static void addAspectViaBW(ItemStack stack, Pair<Object, Integer>... aspectPair) {
             if (stack == null || stack.getItem() == null || stack.getUnlocalizedName() == null) return;
             try {
-                Object aspectList = ThaumcraftHandler.AspectAdder.mAspectListClass.newInstance();
-                for (Pair a : aspectPair) {
+                Object aspectList = ThaumcraftHandler.AspectAdder.mAspectListClass.getConstructor().newInstance();
+                for (Pair<Object, Integer> a : aspectPair) {
                     if (API_ConfigValues.debugLog) DebugLog.log(
                             "Stack:" + stack.getDisplayName()
                                     + " Damage:"
@@ -145,18 +144,18 @@ public class ThaumcraftHandler {
                     ThaumcraftHandler.AspectAdder.addToList.invoke(aspectList, a.getKey(), a.getValue());
                 }
                 ThaumcraftHandler.AspectAdder.registerObjectTag.invoke(null, stack, aspectList);
-            } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
         public static void addAspectViaGT(ItemStack stack, TC_Aspects.TC_AspectStack... tc_aspectStacks) {
             try {
-                Object aspectList = ThaumcraftHandler.AspectAdder.mAspectListClass.newInstance();
+                Object aspectList = ThaumcraftHandler.AspectAdder.mAspectListClass.getConstructor().newInstance();
                 for (TC_Aspects.TC_AspectStack tc_aspects : tc_aspectStacks) ThaumcraftHandler.AspectAdder.addToList
                         .invoke(aspectList, tc_aspects.mAspect.mAspect, (int) tc_aspects.mAmount);
                 ThaumcraftHandler.AspectAdder.registerObjectTag.invoke(null, stack, aspectList);
-            } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

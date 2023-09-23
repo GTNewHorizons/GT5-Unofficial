@@ -28,13 +28,13 @@ public class LabModule extends SimpleSubItemClass {
         this.setCreativeTab(MainMod.BIO_TAB);
     }
 
-    public String getUnlocalizedName(ItemStack p_77667_1_) {
-        return "labModule." + super.getUnlocalizedName(p_77667_1_);
+    @Override
+    public String getUnlocalizedName(ItemStack stack) {
+        return "labModule." + super.getUnlocalizedName(stack);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
+    public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List<String> aList, boolean p_77624_4_) {
         aList.add(StatCollector.translateToLocal("tooltip.labmodule.0.name"));
         super.addInformation(p_77624_1_, p_77624_2_, aList, p_77624_4_);
     }

@@ -33,7 +33,7 @@ import com.github.bartimaeusnek.bartworks.util.Coords;
 
 public class BW_TileEntity_ExperimentalFloodGate extends TileFluidHandler implements ITileAddsInformation {
 
-    private static final ForgeDirection[] allowed_directions = new ForgeDirection[] { DOWN, WEST, EAST, SOUTH, NORTH };
+    private static final ForgeDirection[] allowed_directions = { DOWN, WEST, EAST, SOUTH, NORTH };
     private PriorityQueue<Coords> breadthFirstQueue = new PriorityQueue<>(Comparator.comparingInt(x -> x.y));
     private boolean wasInited = false;
 
@@ -47,26 +47,26 @@ public class BW_TileEntity_ExperimentalFloodGate extends TileFluidHandler implem
     }
 
     public void initEntity() {
-        if (wasInited) return;
-        breadthFirstQueue.add(new Coords(this.xCoord, this.yCoord, this.zCoord));
-        wasInited = true;
+        if (this.wasInited) return;
+        this.breadthFirstQueue.add(new Coords(this.xCoord, this.yCoord, this.zCoord));
+        this.wasInited = true;
     }
 
     @Override
     public void updateEntity() {
-        initEntity();
-        Coords current = breadthFirstQueue.poll();
+        this.initEntity();
+        Coords current = this.breadthFirstQueue.poll();
         if (current == null) return;
-        setFluidBlock(current);
+        this.setFluidBlock(current);
         for (ForgeDirection allowed_direction : allowed_directions) {
-            addBlockToQueue(current, allowed_direction);
+            this.addBlockToQueue(current, allowed_direction);
         }
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        tag.setBoolean("init", wasInited);
+        tag.setBoolean("init", this.wasInited);
 
         int[] x = new int[this.breadthFirstQueue.size()];
         int[] y = new int[this.breadthFirstQueue.size()];
@@ -97,15 +97,16 @@ public class BW_TileEntity_ExperimentalFloodGate extends TileFluidHandler implem
     }
 
     private void setFluidBlock(Coords current) {
-        if (!checkForAir(current)) return;
-        if (this.tank.drain(1000, false) == null || this.tank.drain(1000, false).amount != 1000) return;
+        if (!this.checkForAir(current) || this.tank.drain(1000, false) == null
+                || this.tank.drain(1000, false).amount != 1000)
+            return;
         FluidStack stack = this.tank.drain(1000, true);
-        worldObj.setBlock(current.x, current.y, current.z, stack.getFluid().getBlock(), 0, 2);
+        this.worldObj.setBlock(current.x, current.y, current.z, stack.getFluid().getBlock(), 0, 2);
     }
 
     private void addBlockToQueue(Coords current, ForgeDirection allowed_direction) {
         Coords side = current.getCoordsFromSide(allowed_direction);
-        if (checkForAir(side)) breadthFirstQueue.add(side);
+        if (this.checkForAir(side)) this.breadthFirstQueue.add(side);
     }
 
     private boolean checkForAir(Coords coords) {

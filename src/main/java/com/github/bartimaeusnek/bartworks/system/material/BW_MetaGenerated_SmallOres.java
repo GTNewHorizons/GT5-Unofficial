@@ -37,7 +37,7 @@ public class BW_MetaGenerated_SmallOres extends BW_MetaGenerated_Ores {
     @Override
     protected void doRegistrationStuff(Werkstoff w) {
         if (w != null) {
-            if (!w.hasItemType(OrePrefixes.ore) || ((w.getGenerationFeatures().blacklist & 0b1000) != 0)) return;
+            if (!w.hasItemType(OrePrefixes.ore) || (w.getGenerationFeatures().blacklist & 0b1000) != 0) return;
             GT_ModHandler.addValuableOre(this, w.getmID(), 1);
         }
     }
@@ -55,25 +55,21 @@ public class BW_MetaGenerated_SmallOres extends BW_MetaGenerated_Ores {
 
         Block tBlock = aWorld.getBlock(aX, aY, aZ);
         Block tOreBlock = WerkstoffLoader.BWSmallOres;
-        if (aMetaData < 0 || tBlock == Blocks.air && !air) {
+        if (aMetaData < 0 || tBlock == Blocks.air && !air
+                || Block.getIdFromBlock(tBlock) != Block.getIdFromBlock(block)) {
             return false;
-        } else {
-
-            if (Block.getIdFromBlock(tBlock) != Block.getIdFromBlock(block)) {
-                return false;
-            }
-            final int aaY = aY;
-            if (Arrays.stream(aBlockMeta).noneMatch(e -> e == aWorld.getBlockMetadata(aX, aaY, aZ))) {
-                return false;
-            }
-
-            aWorld.setBlock(aX, aY, aZ, tOreBlock, aMetaData, 0);
-            TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-            if (tTileEntity instanceof BW_MetaGeneratedOreTE) {
-                ((BW_MetaGeneratedOreTE) tTileEntity).mMetaData = (short) aMetaData;
-            }
-
-            return true;
         }
+        final int aaY = aY;
+        if (Arrays.stream(aBlockMeta).noneMatch(e -> e == aWorld.getBlockMetadata(aX, aaY, aZ))) {
+            return false;
+        }
+
+        aWorld.setBlock(aX, aY, aZ, tOreBlock, aMetaData, 0);
+        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if (tTileEntity instanceof BW_MetaGeneratedOreTE metaTE) {
+            metaTE.mMetaData = (short) aMetaData;
+        }
+
+        return true;
     }
 }

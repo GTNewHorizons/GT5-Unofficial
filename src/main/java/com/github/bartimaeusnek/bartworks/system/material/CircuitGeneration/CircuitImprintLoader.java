@@ -60,7 +60,6 @@ public class CircuitImprintLoader {
     private static final HashSet<GT_Recipe> ORIGINAL_CAL_RECIPES = new HashSet<>();
     private static final HashSet<GT_Recipe> MODIFIED_CAL_RECIPES = new HashSet<>();
 
-    @SuppressWarnings({ "unused", "RedundantSuppression" })
     public static void run() {
         HashSet<GT_Recipe> toRem = new HashSet<>();
         HashSet<GT_Recipe> toAdd = new HashSet<>();
@@ -112,24 +111,13 @@ public class CircuitImprintLoader {
                 if (newRecipe != null)
                     BWRecipes.instance.getMappingsFor(BWRecipes.CIRCUITASSEMBLYLINE).addRecipe(newRecipe);
                 addCutoffRecipeToSets(toRem, toAdd, circuitRecipe);
-            } else {
-                if (circuitRecipe.mEUt > BW_Util.getTierVoltage(ConfigHandler.cutoffTier)) toRem.add(circuitRecipe);
-            }
+            } else if (circuitRecipe.mEUt > BW_Util.getTierVoltage(ConfigHandler.cutoffTier)) toRem.add(circuitRecipe);
         }
-    }
-
-    @Deprecated
-    private static String getTypeFromOreDict(ItemStack[] outputs) {
-        int[] oreIDS = OreDictionary.getOreIDs(outputs[0]);
-
-        if (oreIDS.length < 1) return "";
-
-        return OreDictionary.getOreName(oreIDS[0]);
     }
 
     private static boolean isCircuitOreDict(ItemStack item) {
         return BW_Util.isTieredCircuit(item)
-                || BW_Util.getOreNames(item).stream().anyMatch(s -> s.equals("circuitPrimitiveArray"));
+                || BW_Util.getOreNames(item).stream().anyMatch(s -> "circuitPrimitiveArray".equals(s));
     }
 
     private static void exchangeRecipesInList(HashSet<GT_Recipe> toRem, HashSet<GT_Recipe> toAdd) {
@@ -310,8 +298,8 @@ public class CircuitImprintLoader {
                 BW_Util.getMachineVoltageFromTier(
                         BW_Util.getCircuitTierFromOreDictName(
                                 OreDictionary.getOreName(
-                                        (OreDictionary.getOreIDs(stack) != null
-                                                && OreDictionary.getOreIDs(stack).length > 0)
+                                        OreDictionary.getOreIDs(stack) != null
+                                                && OreDictionary.getOreIDs(stack).length > 0
                                                         ? OreDictionary.getOreIDs(stack)[0]
                                                         : -1))));
         GT_Recipe slicingRecipe = new BWRecipes.DynamicGTRecipe(

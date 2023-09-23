@@ -15,7 +15,7 @@ package com.github.bartimaeusnek.bartworks.util.accessprioritylist;
 
 public class AccessPriorityListNode<E> {
 
-    public static final AccessPriorityListNode EMPTY_NODE = new AccessPriorityListNode(null);
+    public static final AccessPriorityListNode<?> EMPTY_NODE = new AccessPriorityListNode<>(null);
 
     private final E ELEMENT;
     private long priority = Long.MIN_VALUE;
@@ -23,12 +23,12 @@ public class AccessPriorityListNode<E> {
     private AccessPriorityListNode<E> before;
 
     public AccessPriorityListNode(E element) {
-        ELEMENT = element;
+        this.ELEMENT = element;
     }
 
     public AccessPriorityListNode(AccessPriorityListNode<E> before, E element, AccessPriorityListNode<E> next) {
         this.ELEMENT = element;
-        connect(next, before);
+        this.connect(next, before);
     }
 
     public void connect(AccessPriorityListNode<E> next, AccessPriorityListNode<E> before) {
@@ -37,11 +37,11 @@ public class AccessPriorityListNode<E> {
     }
 
     public E getELEMENT() {
-        return ELEMENT;
+        return this.ELEMENT;
     }
 
     public long getPriority() {
-        return priority;
+        return this.priority;
     }
 
     public void setPriority(long priority) {
@@ -49,7 +49,7 @@ public class AccessPriorityListNode<E> {
     }
 
     public AccessPriorityListNode<E> getNext() {
-        return next;
+        return this.next;
     }
 
     public void setNext(AccessPriorityListNode<E> next) {
@@ -57,7 +57,7 @@ public class AccessPriorityListNode<E> {
     }
 
     public AccessPriorityListNode<E> getBefore() {
-        return before;
+        return this.before;
     }
 
     public void setBefore(AccessPriorityListNode<E> before) {

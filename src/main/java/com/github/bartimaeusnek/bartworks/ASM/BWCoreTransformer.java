@@ -85,7 +85,7 @@ public class BWCoreTransformer implements IClassTransformer {
             nu.add(instruction);
             if (instruction.getOpcode() == INVOKEVIRTUAL) {
                 MethodInsnNode invokevirtual = (MethodInsnNode) instruction;
-                if (invokevirtual.name.equals("addVis")) {
+                if ("addVis".equals(invokevirtual.name)) {
                     AbstractInsnNode beginning = method.instructions.get(j - 7);
                     LabelNode label = new LabelNode();
                     nu.insertBefore(beginning, new VarInsnNode(ALOAD, 0));
@@ -133,7 +133,6 @@ public class BWCoreTransformer implements IClassTransformer {
                     String name_deObfs = "canDoRainSnowIce";
 
                     String dsc_deObfs = "(Lnet/minecraft/world/chunk/Chunk;)Z";
-                    String dsc_Obfs = "(Lapx;)Z";
                     for (int i = 0; i < methods.size(); i++) {
                         if (methods.get(i).name.equalsIgnoreCase(name_deObfs)) {
                             BWCore.BWCORE_LOG.info("Found " + name_deObfs + "! Removing!");
@@ -142,12 +141,7 @@ public class BWCoreTransformer implements IClassTransformer {
                         }
                     }
                     BWCore.BWCORE_LOG.info("Creating new " + name_deObfs + "!");
-                    MethodNode nu = new MethodNode(
-                            ACC_PUBLIC,
-                            name_deObfs,
-                            /* obfs ? dsc_Obfs : */ dsc_deObfs,
-                            null,
-                            new String[0]);
+                    MethodNode nu = new MethodNode(ACC_PUBLIC, name_deObfs, dsc_deObfs, null, new String[0]);
                     InsnList insnList = new InsnList();
                     insnList.add(new InsnNode(ICONST_0));
                     insnList.add(new InsnNode(IRETURN));
@@ -168,7 +162,7 @@ public class BWCoreTransformer implements IClassTransformer {
                     for (int i = 0; i < methods.size(); i++) {
                         if (ASMUtils.isCorrectMethod(methods.get(i), name_deObfs, name_Obfs, name_src)
                                 && ASMUtils.isCorrectMethod(methods.get(i), dsc_deObfs, dsc_Obfs)) {
-                            BWCore.BWCORE_LOG.info("Found " + (name_deObfs) + "! Patching!");
+                            BWCore.BWCORE_LOG.info("Found " + name_deObfs + "! Patching!");
                             MethodNode toPatch = methods.get(i);
                             InsnList insnList = new InsnList();
                             insnList.add(new InsnNode(ACONST_NULL));
@@ -192,7 +186,7 @@ public class BWCoreTransformer implements IClassTransformer {
                     for (MethodNode toPatch : methods) {
                         if (ASMUtils.isCorrectMethod(toPatch, name_deObfs, name_Obfs, name_src)
                                 && ASMUtils.isCorrectMethod(toPatch, dsc_universal)) {
-                            BWCore.BWCORE_LOG.info("Found " + (name_deObfs) + "! Patching!");
+                            BWCore.BWCORE_LOG.info("Found " + name_deObfs + "! Patching!");
                             InsnList nu = new InsnList();
                             LabelNode[] LabelNodes = { new LabelNode(), new LabelNode() };
 
@@ -311,7 +305,7 @@ public class BWCoreTransformer implements IClassTransformer {
                     for (int i = 0; i < methods.size(); i++) {
                         if (ASMUtils.isCorrectMethod(methods.get(i), name_deObfs, name_Obfs, name_src)
                                 && ASMUtils.isCorrectMethod(methods.get(i), dsc_universal, dsc_universal)) {
-                            BWCore.BWCORE_LOG.info("Found " + (name_deObfs) + "! Patching!");
+                            BWCore.BWCORE_LOG.info("Found " + name_deObfs + "! Patching!");
                             methods.set(i, BWCoreTransformer.transformThaumcraftWandPedestal(methods.get(i)));
                             break scase;
                         }
@@ -325,7 +319,7 @@ public class BWCoreTransformer implements IClassTransformer {
                     String name_deObfs = "getNewNoise";
                     for (MethodNode toPatch : methods) {
                         if (ASMUtils.isCorrectMethod(toPatch, name_deObfs)) {
-                            BWCore.BWCORE_LOG.info("Found " + (name_deObfs) + "! Patching!");
+                            BWCore.BWCORE_LOG.info("Found " + name_deObfs + "! Patching!");
                             LabelNode[] LabelNodes = { new LabelNode(), new LabelNode() };
                             InsnList nu = new InsnList();
                             // if (x < -28675) x %= -28675;

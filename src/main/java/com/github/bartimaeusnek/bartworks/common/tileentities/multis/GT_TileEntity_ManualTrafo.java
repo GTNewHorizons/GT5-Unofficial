@@ -98,8 +98,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_EnhancedMultiBl
                 public boolean check(GT_TileEntity_ManualTrafo te, World world, int x, int y, int z) {
                     if (world.isAirBlock(x, y, z)) return true;
                     TileEntity tileEntity = world.getTileEntity(x, y, z);
-                    if (tileEntity == null) return true;
-                    if (!(tileEntity instanceof IGregTechTileEntity)) return true;
+                    if (tileEntity == null || !(tileEntity instanceof IGregTechTileEntity)) return true;
                     IMetaTileEntity mte = ((IGregTechTileEntity) tileEntity).getMetaTileEntity();
                     if (mte instanceof GT_MetaTileEntity_Hatch_Dynamo
                             || mte instanceof GT_MetaTileEntity_Hatch_Energy) {
@@ -108,7 +107,8 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_EnhancedMultiBl
                                 == intier + (te.upstep ? te.mTiers : -te.mTiers)) {
                             te.addToMachineList((IGregTechTileEntity) tileEntity, CASING_INDEX);
                             return true;
-                        } else return false;
+                        }
+                        return false;
                     }
                     return true;
                 }
@@ -135,7 +135,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_EnhancedMultiBl
                 .addInfo("Mode 3: Circuit 2 in controller: Tapped-Upstep (currently disabled)")
                 .addInfo("Mode 4: Circuit 2 in controller: Tapped-Downstep (currently disabled)").addSeparator()
                 .beginVariableStructureBlock(3, 3, 3, 10, 3, 3, false).addController("Front bottom center")
-                .addCasingInfo("MV Machine Casing", 0)
+                .addCasingInfoMin("MV Machine Casing", 0, false)
                 .addOtherStructurePart("Transformer-Winding Blocks", "1 Layer for each tier transformed")
                 .addOtherStructurePart("Nickel-Zinc-Ferrite Blocks", "Middle of Transformer-Winding Blocks")
                 .addMaintenanceHatch("Any bottom layer casing", 1).addEnergyHatch("Any bottom layer casing", 1)
@@ -177,10 +177,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_EnhancedMultiBl
         }
 
         return this.drainEnergyInput(this.getInputTier() * 2 * this.mEnergyHatches.size()) && this.addEnergyOutput(
-                this.getInputTier() * 2
-                        * this.mEnergyHatches.size()
-                        * (long) this.mEfficiency
-                        / this.getMaxEfficiency(null));
+                this.getInputTier() * 2 * this.mEnergyHatches.size() * this.mEfficiency / this.getMaxEfficiency(null));
     }
 
     public boolean onRunningTickTabbedMode() {
@@ -188,11 +185,11 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_EnhancedMultiBl
         for (GT_MetaTileEntity_Hatch_Dynamo E : this.mDynamoHatches) {
             for (GT_MetaTileEntity_Hatch_Energy I : this.mEnergyHatches) {
 
-                long vtt = I.getEUVar() >= (V[E.mTier] / 2) && E.getEUVar() < E.maxEUStore() ? I.getEUVar() : 0;
+                long vtt = I.getEUVar() >= V[E.mTier] / 2 && E.getEUVar() < E.maxEUStore() ? I.getEUVar() : 0;
 
                 if (vtt == 0) continue;
 
-                long vtp = E.getEUVar() + (vtt);
+                long vtp = E.getEUVar() + vtt;
                 long avt = Math.min(vtp, E.maxEUStore());
                 E.setEUVar(avt);
                 I.setEUVar(I.getEUVar() - vtt);
@@ -202,16 +199,18 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_EnhancedMultiBl
         return ret;
     }
 
+    @Override
     public long getInputTier() {
         if (this.mEnergyHatches.size() > 0)
             return GT_Utility.getTier(this.mEnergyHatches.get(0).getBaseMetaTileEntity().getInputVoltage());
-        else return 0L;
+        return 0L;
     }
 
+    @Override
     public long getOutputTier() {
         if (this.mDynamoHatches.size() > 0)
             return GT_Utility.getTier(this.mDynamoHatches.get(0).getBaseMetaTileEntity().getOutputVoltage());
-        else return 0L;
+        return 0L;
     }
 
     @Override
@@ -240,9 +239,7 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_EnhancedMultiBl
         this.upstep = this.mode % 2 == 0;
         boolean tapmode = this.mode > 1;
 
-        if (!checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0)) return false;
-
-        if (this.mEnergyHatches.size() == 0) return false;
+        if (!this.checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0) || this.mEnergyHatches.size() == 0) return false;
 
         byte intier = this.mEnergyHatches.get(0).mTier;
         for (GT_MetaTileEntity_Hatch_Energy in : this.mEnergyHatches) if (in.mTier != intier) return false;
@@ -251,13 +248,13 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_EnhancedMultiBl
         for (mHeight = 1; mHeight <= 8; mHeight++) {
             if (tapmode) {
                 this.mTiers = mHeight;
-                if (!checkPiece(STRUCTURE_PIECE_TAP_LAYER, 2, mHeight, 1)) break;
-            } else if (!checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0)) break;
+                if (!this.checkPiece(STRUCTURE_PIECE_TAP_LAYER, 2, mHeight, 1)) break;
+            } else if (!this.checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0)) break;
         }
-        if (!checkPiece(STRUCTURE_PIECE_TOP, 1, mHeight, 0)) return false;
+        if (!this.checkPiece(STRUCTURE_PIECE_TOP, 1, mHeight, 0)) return false;
         this.mTiers = mHeight - 1;
 
-        if (this.mDynamoHatches.size() == 0 || mMaintenanceHatches.size() != 1 || this.mTiers == 0) return false;
+        if (this.mDynamoHatches.size() == 0 || this.mMaintenanceHatches.size() != 1 || this.mTiers == 0) return false;
 
         byte outtier = this.mDynamoHatches.get(0).mTier;
         for (GT_MetaTileEntity_Hatch_Dynamo out : this.mDynamoHatches) {
@@ -331,11 +328,11 @@ public class GT_TileEntity_ManualTrafo extends GT_MetaTileEntity_EnhancedMultiBl
         else this.mode = (byte) Math.min(3, this.mInventory[1].getItemDamage());
         int mHeight = Math.min(itemStack.stackSize, 8);
         boolean tapmode = this.mode > 1;
-        buildPiece(STRUCTURE_PIECE_BASE, itemStack, b, 1, 0, 0);
+        this.buildPiece(STRUCTURE_PIECE_BASE, itemStack, b, 1, 0, 0);
         for (int i = 0; i < mHeight; i++) {
-            if (tapmode) buildPiece(STRUCTURE_PIECE_TAP_LAYER, itemStack, b, 2, i + 1, 1);
-            else buildPiece(STRUCTURE_PIECE_LAYER, itemStack, b, 1, i + 1, 0);
+            if (tapmode) this.buildPiece(STRUCTURE_PIECE_TAP_LAYER, itemStack, b, 2, i + 1, 1);
+            else this.buildPiece(STRUCTURE_PIECE_LAYER, itemStack, b, 1, i + 1, 0);
         }
-        buildPiece(STRUCTURE_PIECE_TOP, itemStack, b, 1, mHeight + 1, 0);
+        this.buildPiece(STRUCTURE_PIECE_TOP, itemStack, b, 1, mHeight + 1, 0);
     }
 }

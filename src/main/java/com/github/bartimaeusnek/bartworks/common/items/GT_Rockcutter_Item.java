@@ -59,7 +59,7 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
     public GT_Rockcutter_Item(int aTier) {
         super(2 * aTier, Item.ToolMaterial.EMERALD, GT_Rockcutter_Item.mineableBlocks);
         this.mTier = aTier;
-        this.multi = (int) Math.pow(10, (this.mTier - 1));
+        this.multi = (int) Math.pow(10, this.mTier - 1);
         GT_Rockcutter_Item.mineableBlocks = new HashSet<>();
         this.maxStackSize = 1;
         this.mCharge = 10000 * this.multi;
@@ -71,13 +71,14 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
         this.setUnlocalizedName("GT_Rockcutter_Item_" + GT_Values.VN[this.mTier]);
     }
 
-    @SuppressWarnings("unchecked")
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+    @Override
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         aList.add(StatCollector.translateToLocal("tooltip.bw.tier.name") + " " + GT_Values.VN[this.mTier]);
         aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
-    public void onUpdate(ItemStack aStack, World p_77663_2_, Entity p_77663_3_, int p_77663_4_, boolean p_77663_5_) {
+    @Override
+    public void onUpdate(ItemStack aStack, World worldIn, Entity entityIn, int p_77663_4_, boolean p_77663_5_) {
         if (!ElectricItem.manager.canUse(aStack, 500 * this.multi)) {
             if (aStack.isItemEnchanted()) {
                 aStack.getTagCompound().removeTag("ench");
@@ -87,12 +88,14 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
         }
     }
 
+    @Override
     public boolean onItemUse(ItemStack aStack, EntityPlayer aPlayer, World p_77648_3_, int p_77648_4_, int p_77648_5_,
             int p_77648_6_, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
         ElectricItem.manager.use(aStack, 0, aPlayer);
         return false;
     }
 
+    @Override
     public boolean onBlockDestroyed(ItemStack var1, World var2, Block var3, int var4, int var5, int var6,
             EntityLivingBase var7) {
         ElectricItem.manager.use(var1, 0, var7);
@@ -115,9 +118,9 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
                 || mineableBlocks.contains(par1Block);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings("unchecked")
-    public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List itemList) {
+    public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List<ItemStack> itemList) {
         ItemStack itemStack = new ItemStack(this, 1);
         if (this.getChargedItem(itemStack) == this) {
             ItemStack charged = new ItemStack(this, 1);
@@ -159,11 +162,13 @@ public class GT_Rockcutter_Item extends ItemTool implements IElectricItem {
         return this.mTransfer;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         this.icon = iconRegister.registerIcon("bartworks:GT_Rockcutter");
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int par1) {
         return this.icon;

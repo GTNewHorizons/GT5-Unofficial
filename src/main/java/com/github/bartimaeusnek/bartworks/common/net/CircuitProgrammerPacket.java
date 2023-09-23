@@ -13,8 +13,6 @@
 
 package com.github.bartimaeusnek.bartworks.common.net;
 
-import java.nio.ByteBuffer;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -26,9 +24,10 @@ import net.minecraftforge.common.DimensionManager;
 import com.github.bartimaeusnek.bartworks.common.items.Circuit_Programmer;
 import com.google.common.io.ByteArrayDataInput;
 
-import gregtech.api.net.GT_Packet;
+import gregtech.api.net.GT_Packet_New;
+import io.netty.buffer.ByteBuf;
 
-public class CircuitProgrammerPacket extends GT_Packet {
+public class CircuitProgrammerPacket extends GT_Packet_New {
 
     private int dimID, playerID;
     private byte chipCfg;
@@ -52,20 +51,17 @@ public class CircuitProgrammerPacket extends GT_Packet {
     }
 
     @Override
-    public byte[] encode() {
-        return ByteBuffer.allocate(9).putInt(0, this.dimID).putInt(4, this.playerID)
-                .put(8, (this.hasChip ? this.chipCfg : -1)).array();
+    public void encode(ByteBuf aOut) {
+        aOut.writeInt(this.dimID).writeInt(this.playerID).writeByte(this.hasChip ? this.chipCfg : -1);
     }
 
     @Override
-    public GT_Packet decode(ByteArrayDataInput byteArrayDataInput) {
-        byte[] ret = new byte[9];
-        byteArrayDataInput.readFully(ret);
+    public GT_Packet_New decode(ByteArrayDataInput byteArrayDataInput) {
         return new CircuitProgrammerPacket(
-                ByteBuffer.wrap(ret).getInt(0),
-                ByteBuffer.wrap(ret).getInt(4),
-                ByteBuffer.wrap(ret).get(8) > -1,
-                ByteBuffer.wrap(ret).get(8));
+                byteArrayDataInput.readInt(),
+                byteArrayDataInput.readInt(),
+                byteArrayDataInput.readByte() > -1,
+                byteArrayDataInput.readByte());
     }
 
     @Override
@@ -73,7 +69,7 @@ public class CircuitProgrammerPacket extends GT_Packet {
         World w = DimensionManager.getWorld(this.dimID);
         if (w != null && w.getEntityByID(this.playerID) instanceof EntityPlayer) {
             ItemStack stack = ((EntityPlayer) w.getEntityByID(this.playerID)).getHeldItem();
-            if ((stack != null) && (stack.stackSize > 0)) {
+            if (stack != null && stack.stackSize > 0) {
                 Item item = stack.getItem();
                 if (item instanceof Circuit_Programmer) {
                     NBTTagCompound nbt = stack.getTagCompound();

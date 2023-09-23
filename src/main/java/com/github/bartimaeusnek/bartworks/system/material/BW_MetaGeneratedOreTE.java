@@ -26,7 +26,7 @@ public class BW_MetaGeneratedOreTE extends BW_MetaGenerated_Block_TE {
     @Override
     public ITexture[] getTexture(Block aBlock, ForgeDirection side) {
         Werkstoff aMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData);
-        if ((aMaterial != null)) {
+        if (aMaterial != null) {
             ITexture aIconSet = TextureFactory
                     .of(aMaterial.getTexSet().mTextures[OrePrefixes.ore.mTextureIndex], aMaterial.getRGBA());
             return new ITexture[] { TextureFactory.of(Blocks.stone), aIconSet };

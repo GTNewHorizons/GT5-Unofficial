@@ -61,8 +61,7 @@ public class BW_ItemBlocks extends ItemBlock {
 
     @Override
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings("unchecked")
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         byte tier = BorosilicateGlass.getTier(this.field_150939_a, aStack.getItemDamage());
         if (tier >= 0) {
             aList.add(

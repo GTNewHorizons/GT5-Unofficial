@@ -50,9 +50,8 @@ public class BW_GT_ItemRenderer implements IItemRenderer {
                     || aType == IItemRenderer.ItemRenderType.INVENTORY
                     || aType == IItemRenderer.ItemRenderType.EQUIPPED
                     || aType == IItemRenderer.ItemRenderType.ENTITY;
-        } else {
-            return false;
         }
+        return false;
     }
 
     @Override
@@ -60,9 +59,8 @@ public class BW_GT_ItemRenderer implements IItemRenderer {
             IItemRenderer.ItemRendererHelper aHelper) {
         if (GT_Utility.isStackInvalid(aStack)) {
             return false;
-        } else {
-            return aType == IItemRenderer.ItemRenderType.ENTITY;
         }
+        return aType == IItemRenderer.ItemRenderType.ENTITY;
     }
 
     @Override
@@ -85,7 +83,7 @@ public class BW_GT_ItemRenderer implements IItemRenderer {
 
                 Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
                 GL11.glBlendFunc(770, 771);
-                if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+                if (IItemRenderer.ItemRenderType.INVENTORY.equals(type)) {
                     if (aMetaData < CircuitImprintLoader.reverseIDs)
                         GT_RenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     else {
@@ -102,24 +100,22 @@ public class BW_GT_ItemRenderer implements IItemRenderer {
                                     -1.0F);
                         }
                     }
-                } else {
-                    if (aMetaData < CircuitImprintLoader.reverseIDs) ItemRenderer.renderItemIn2D(
-                            Tessellator.instance,
-                            tIcon.getMaxU(),
-                            tIcon.getMinV(),
-                            tIcon.getMinU(),
-                            tIcon.getMaxV(),
-                            tIcon.getIconWidth(),
-                            tIcon.getIconHeight(),
-                            0.0625F);
-                }
+                } else if (aMetaData < CircuitImprintLoader.reverseIDs) ItemRenderer.renderItemIn2D(
+                        Tessellator.instance,
+                        tIcon.getMaxU(),
+                        tIcon.getMinV(),
+                        tIcon.getMinU(),
+                        tIcon.getMaxV(),
+                        tIcon.getIconWidth(),
+                        tIcon.getIconHeight(),
+                        0.0625F);
 
                 IIcon tOverlay = (IIcon) BW_Util.get2DCoordFrom1DArray(aMetaData, 1, 2, aItem.mIconList);
                 GL11.glColor3f(1.0F, 1.0F, 1.0F);
                 if (tOverlay != null) {
                     Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
                     GL11.glBlendFunc(770, 771);
-                    if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
+                    if (IItemRenderer.ItemRenderType.INVENTORY.equals(type)) {
                         GT_RenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     } else {
                         ItemRenderer.renderItemIn2D(

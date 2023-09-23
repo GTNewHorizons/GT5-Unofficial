@@ -69,7 +69,7 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
-        if (outputId.equalsIgnoreCase("quickanddirtyneihandler")) {
+        if ("quickanddirtyneihandler".equalsIgnoreCase(outputId)) {
             HashSet<ItemStack> result = new HashSet<>();
             Werkstoff.werkstoffHashSet.stream().filter(w -> w.hasGenerationFeature(OrePrefixes.ore))
                     .forEach(w -> result.add(w.get(OrePrefixes.ore)));
@@ -83,7 +83,7 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
             this.arecipes.clear();
             this.arecipes.addAll(hashSet);
         }
-        if (outputId.equals("item")) {
+        if ("item".equals(outputId)) {
             this.loadCraftingRecipes((ItemStack) results[0]);
             HashSet<TemplateRecipeHandler.CachedRecipe> hashSet = new HashSet<>(this.arecipes);
             this.arecipes.clear();
@@ -93,7 +93,7 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
 
     @Override
     public void drawExtras(int recipe) {
-        if ((recipe < this.arecipes.size()) && (this.arecipes.get(recipe) instanceof CachedOreRecipe)) {
+        if (recipe < this.arecipes.size() && this.arecipes.get(recipe) instanceof CachedOreRecipe) {
             CachedOreRecipe cachedOreRecipe = (CachedOreRecipe) this.arecipes.get(recipe);
 
             if (cachedOreRecipe == null || cachedOreRecipe.getOtherStacks() == null
@@ -131,11 +131,9 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
                 GuiDraw.drawString(cachedOreRecipe.getOtherStacks().get(2).item.getDisplayName(), 0, 100, 0, false);
                 GuiDraw.drawString(ChatColorHelper.BOLD + "Sporadic:", 0, 110, 0, false);
                 GuiDraw.drawString(cachedOreRecipe.getOtherStacks().get(3).item.getDisplayName(), 0, 120, 0, false);
-            } else {
-                if (cachedOreRecipe.worldGen != null) {
-                    GuiDraw.drawString(ChatColorHelper.BOLD + "Amount per Chunk:", 0, 70, 0, false);
-                    GuiDraw.drawString(cachedOreRecipe.worldGen.mDensity + "", 0, 80, 0, false);
-                }
+            } else if (cachedOreRecipe.worldGen != null) {
+                GuiDraw.drawString(ChatColorHelper.BOLD + "Amount per Chunk:", 0, 70, 0, false);
+                GuiDraw.drawString(cachedOreRecipe.worldGen.mDensity + "", 0, 80, 0, false);
             }
         }
         super.drawExtras(recipe);
@@ -145,11 +143,9 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
     public void loadCraftingRecipes(ItemStack result) {
         Block ore = Block.getBlockFromItem(result.getItem());
         if (ore instanceof BW_MetaGenerated_Ores) {
-            BW_OreLayer.NEIMAP.get((short) result.getItemDamage()).stream()
-                    .filter(
-                            l -> !(ore instanceof BW_MetaGenerated_SmallOres)
-                                    || !(l.getClass().equals(BW_WorldGenRoss128b.class)
-                                            || l.getClass().equals(BW_WorldGenRoss128ba.class)))
+            BW_OreLayer.NEIMAP.get((short) result.getItemDamage()).stream().filter(
+                    l -> !(ore instanceof BW_MetaGenerated_SmallOres) || !l.getClass().equals(BW_WorldGenRoss128b.class)
+                            && !l.getClass().equals(BW_WorldGenRoss128ba.class))
                     .forEach(
                             l -> this.arecipes
                                     .add(new CachedOreRecipe(l, result, ore instanceof BW_MetaGenerated_SmallOres)));
@@ -187,9 +183,9 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
         public List<PositionedStack> getOtherStacks() {
             List<PositionedStack> ret = new ArrayList<>();
             int x = 0;
-            for (int i = 0; i < (small ? 1 : 4); i++) {
+            for (int i = 0; i < (this.small ? 1 : 4); i++) {
                 x += 20;
-                ret.add(new PositionedStack(worldGen.getStacks().get(i), x, 12));
+                ret.add(new PositionedStack(this.worldGen.getStacks().get(i), x, 12));
             }
             return ret;
         }
@@ -197,14 +193,13 @@ public class BW_NEI_OreHandler extends TemplateRecipeHandler {
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (!(o instanceof CachedOreRecipe)) return false;
-            CachedOreRecipe that = (CachedOreRecipe) o;
-            return Objects.equals(worldGen, that.worldGen);
+            if (!(o instanceof CachedOreRecipe that)) return false;
+            return Objects.equals(this.worldGen, that.worldGen);
         }
 
         @Override
         public int hashCode() {
-            return worldGen.hashCode();
+            return this.worldGen.hashCode();
         }
     }
 }

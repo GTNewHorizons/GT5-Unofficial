@@ -92,7 +92,6 @@ public class BW_Meta_Items {
                         BW_Util.CLEANROOM));
     }
 
-    @SuppressWarnings("deprecation")
     public void addNewCircuit(int aTier, int aID, String aName) {
 
         String additionalOreDictData = "";
@@ -147,7 +146,7 @@ public class BW_Meta_Items {
 
         ItemStack tStack = BW_Meta_Items.NEWCIRCUITS.addCircuit(aID, aName, tooltip, aTier);
 
-        GT_OreDictUnificator.registerOre((aOreDictPrefix + additionalOreDictData).replaceAll(" ", ""), tStack);
+        GT_OreDictUnificator.registerOre((aOreDictPrefix + additionalOreDictData).replace(" ", ""), tStack);
     }
 
     public static class BW_GT_MetaGenCircuits extends BW_Meta_Items.BW_GT_MetaGen_Item_Hook {
@@ -159,7 +158,7 @@ public class BW_Meta_Items {
         public final ItemStack addCircuit(int aID, String aEnglish, String aToolTip, int tier) {
             CircuitImprintLoader.bwCircuitTagMap.put(
                     new CircuitData(
-                            BW_Util.getMachineVoltageFromTier(Math.min(1, (tier - 2))),
+                            BW_Util.getMachineVoltageFromTier(Math.min(1, tier - 2)),
                             tier > 2 ? BW_Util.CLEANROOM : 0,
                             (byte) tier),
                     new ItemStack(BW_Meta_Items.NEWCIRCUITS, 1, aID));
@@ -185,8 +184,7 @@ public class BW_Meta_Items {
         }
 
         @Override
-        @SuppressWarnings("unchecked")
-        public void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
+        public void getSubItems(Item var1, CreativeTabs aCreativeTab, List<ItemStack> aList) {
             if (aCreativeTab == this.getCreativeTab())
                 for (NBTTagCompound tag : CircuitImprintLoader.recipeTagMap.keySet()) {
                     ItemStack stack = new ItemStack(BW_Meta_Items.NEWCIRCUITS, 1, 0);
@@ -196,6 +194,7 @@ public class BW_Meta_Items {
             super.getSubItems(var1, aCreativeTab, aList);
         }
 
+        @Override
         @SideOnly(Side.CLIENT)
         public final void registerIcons(IIconRegister aIconRegister) {
 
@@ -230,8 +229,7 @@ public class BW_Meta_Items {
         }
 
         @Override
-        @SuppressWarnings("unchecked")
-        protected void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+        protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
             if (aStack.getItemDamage() == 0) if (aStack.getTagCompound() != null
                     && CircuitImprintLoader.getStackFromTag(aStack.getTagCompound()) != null)
                 aList.add(
@@ -303,10 +301,8 @@ public class BW_Meta_Items {
             Object tRandomData;
             for (var9 = 0; var9 < var8; ++var9) {
                 tRandomData = var7[var9];
-                if (tRandomData instanceof SubTag) {
-                    if (tRandomData == SubTag.NO_UNIFICATION) {
-                        GT_OreDictUnificator.addToBlacklist(rStack);
-                    }
+                if (tRandomData instanceof SubTag && tRandomData == SubTag.NO_UNIFICATION) {
+                    GT_OreDictUnificator.addToBlacklist(rStack);
                 }
             }
 
@@ -351,9 +347,9 @@ public class BW_Meta_Items {
             return rStack;
         }
 
+        @Override
         @SideOnly(Side.CLIENT)
-        @SuppressWarnings("unchecked")
-        public void getSubItems(Item var1, CreativeTabs aCreativeTab, List aList) {
+        public void getSubItems(Item var1, CreativeTabs aCreativeTab, List<ItemStack> aList) {
             int j = this.mEnabledItems.length();
 
             for (int i = 0; i < j; ++i) {
@@ -366,8 +362,7 @@ public class BW_Meta_Items {
         }
 
         @Override
-        @SuppressWarnings("unchecked")
-        protected void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+        protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
             super.addAdditionalToolTips(aList, aStack, aPlayer);
             aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
         }

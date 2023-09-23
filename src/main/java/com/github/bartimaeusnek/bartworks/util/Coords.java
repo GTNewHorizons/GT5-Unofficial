@@ -33,22 +33,15 @@ public class Coords {
     }
 
     public Coords getCoordsFromSide(ForgeDirection direction) {
-        switch (direction) {
-            case UP:
-                return new Coords(this.x, this.y + 1, this.z, this.wID);
-            case DOWN:
-                return new Coords(this.x, this.y - 1, this.z, this.wID);
-            case WEST:
-                return new Coords(this.x - 1, this.y, this.z, this.wID);
-            case EAST:
-                return new Coords(this.x + 1, this.y, this.z, this.wID);
-            case NORTH:
-                return new Coords(this.x, this.y, this.z - 1, this.wID);
-            case SOUTH:
-                return new Coords(this.x, this.y, this.z + 1, this.wID);
-            default:
-                throw new UnsupportedOperationException("This is impossible.");
-        }
+        return switch (direction) {
+            case UP -> new Coords(this.x, this.y + 1, this.z, this.wID);
+            case DOWN -> new Coords(this.x, this.y - 1, this.z, this.wID);
+            case WEST -> new Coords(this.x - 1, this.y, this.z, this.wID);
+            case EAST -> new Coords(this.x + 1, this.y, this.z, this.wID);
+            case NORTH -> new Coords(this.x, this.y, this.z - 1, this.wID);
+            case SOUTH -> new Coords(this.x, this.y, this.z + 1, this.wID);
+            default -> throw new UnsupportedOperationException("This is impossible.");
+        };
     }
 
     @Override
@@ -81,6 +74,6 @@ public class Coords {
 
     @Override
     public String toString() {
-        return x + "," + y + "," + z + "," + wID;
+        return this.x + "," + this.y + "," + this.z + "," + this.wID;
     }
 }

@@ -79,10 +79,10 @@ import gregtech.common.items.behaviors.Behaviour_DataOrb;
 
 public class AdditionalRecipes {
 
-    private static BWRecipes.BW_Recipe_Map_LiquidFuel sAcidGenFuels = ((BWRecipes.BW_Recipe_Map_LiquidFuel) BWRecipes.instance
-            .getMappingsFor((byte) 2));
-    private static BWRecipes.BacteriaVatRecipeMap sBacteriaVat = ((BWRecipes.BacteriaVatRecipeMap) BWRecipes.instance
-            .getMappingsFor((byte) 1));
+    private static BWRecipes.BW_Recipe_Map_LiquidFuel sAcidGenFuels = (BWRecipes.BW_Recipe_Map_LiquidFuel) BWRecipes.instance
+            .getMappingsFor((byte) 2);
+    private static BWRecipes.BacteriaVatRecipeMap sBacteriaVat = (BWRecipes.BacteriaVatRecipeMap) BWRecipes.instance
+            .getMappingsFor((byte) 1);
     private static GT_Recipe.GT_Recipe_Map sBiolab = BWRecipes.instance.getMappingsFor((byte) 0);
 
     private static void runBWRecipes() {
@@ -458,7 +458,7 @@ public class AdditionalRecipes {
                             new FluidStack[] { Materials.SolderingAlloy.getMolten((i + 1) * 36) },
                             null,
                             (i + 1) * 750,
-                            BW_Util.getMachineVoltageFromTier((i + 1)),
+                            BW_Util.getMachineVoltageFromTier(i + 1),
                             CLEANROOM));
         }
         // IV-LuV
@@ -478,7 +478,7 @@ public class AdditionalRecipes {
                             new FluidStack[] { new FluidStack(solderIndalloy, (i + 1) * 36) },
                             null,
                             (i + 1) * 750,
-                            BW_Util.getMachineVoltageFromTier((i + 1)),
+                            BW_Util.getMachineVoltageFromTier(i + 1),
                             CLEANROOM));
         }
         // ZPM
@@ -486,7 +486,7 @@ public class AdditionalRecipes {
                 new BWRecipes.DynamicGTRecipe(
                         false,
                         new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS().getStack(3),
-                                WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, (1)),
+                                WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, 1),
                                 BW_Meta_Items.getNEWCIRCUITS().getStack(7 + 3),
                                 ItemList.Circuit_Parts_DiodeASMD.get((7 + 6) * 4),
                                 ItemList.Circuit_Parts_CapacitorASMD.get((7 + 6) * 4),
@@ -504,7 +504,7 @@ public class AdditionalRecipes {
                 new BWRecipes.DynamicGTRecipe(
                         false,
                         new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS().getStack(3),
-                                WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, (1)),
+                                WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, 1),
                                 BW_Meta_Items.getNEWCIRCUITS().getStack(8 + 3),
                                 ItemList.Circuit_Parts_DiodeASMD.get((8 + 6) * 4),
                                 ItemList.Circuit_Parts_CapacitorASMD.get((8 + 6) * 4),
@@ -523,7 +523,7 @@ public class AdditionalRecipes {
                     new BWRecipes.DynamicGTRecipe(
                             false,
                             new ItemStack[] { BW_Meta_Items.getNEWCIRCUITS().getStack(3),
-                                    WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, (1)),
+                                    WerkstoffLoader.MagnetoResonaticDust.get(gemExquisite, 1),
                                     BW_Meta_Items.getNEWCIRCUITS().getStack(i + 3),
                                     ItemList.Circuit_Parts_DiodeXSMD.get((i + 6) * 4),
                                     ItemList.Circuit_Parts_CapacitorXSMD.get((i + 6) * 4),
@@ -648,7 +648,7 @@ public class AdditionalRecipes {
         Materials werkstoffBridgeMaterial = null;
         boolean aElementSet = false;
         for (Element e : Element.values()) {
-            if (e.toString().equals("Uuo")) {
+            if ("Uuo".equals(e.toString())) {
                 werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null ? werkstoff.getBridgeMaterial()
                         : new Materials(
                                 -1,

@@ -29,44 +29,42 @@ public class ChangeConfig extends CommandBase {
     }
 
     @Override
-    public String getCommandUsage(ICommandSender p_71518_1_) {
+    public String getCommandUsage(ICommandSender sender) {
         return "bwcfg <NameOfVariable> <newValue>";
     }
 
     @Override
     @SuppressWarnings("rawtypes")
-    public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
+    public void processCommand(ICommandSender sender, String[] args) {
         try {
-            Field f = ConfigHandler.class.getField(p_71515_2_[0]);
+            Field f = ConfigHandler.class.getField(args[0]);
             Class c = f.getType();
             if (c.equals(int.class)) {
                 int l;
                 try {
-                    l = Integer.parseInt(p_71515_2_[1]);
+                    l = Integer.parseInt(args[1]);
                 } catch (NumberFormatException e) {
-                    p_71515_1_.addChatMessage(new ChatComponentText("you need to enter a number!"));
+                    sender.addChatMessage(new ChatComponentText("you need to enter a number!"));
                     return;
                 }
                 f.setInt(null, l);
             } else if (c.equals(long.class)) {
                 long l;
                 try {
-                    l = Long.parseLong(p_71515_2_[1]);
+                    l = Long.parseLong(args[1]);
                 } catch (NumberFormatException e) {
-                    p_71515_1_.addChatMessage(new ChatComponentText("you need to enter a number!"));
+                    sender.addChatMessage(new ChatComponentText("you need to enter a number!"));
                     return;
                 }
                 f.setLong(null, l);
             } else if (c.equals(boolean.class)) {
-                if (p_71515_2_[1].equalsIgnoreCase("true") || p_71515_2_[1].equalsIgnoreCase("1"))
-                    f.setBoolean(null, true);
-                else if (p_71515_2_[1].equalsIgnoreCase("false") || p_71515_2_[1].equalsIgnoreCase("0"))
-                    f.setBoolean(null, false);
+                if ("true".equalsIgnoreCase(args[1]) || "1".equalsIgnoreCase(args[1])) f.setBoolean(null, true);
+                else if ("false".equalsIgnoreCase(args[1]) || "0".equalsIgnoreCase(args[1])) f.setBoolean(null, false);
                 else {
-                    p_71515_1_.addChatMessage(new ChatComponentText("booleans need to be set to true or false"));
+                    sender.addChatMessage(new ChatComponentText("booleans need to be set to true or false"));
                 }
             }
-            p_71515_1_.addChatMessage(new ChatComponentText("Set " + p_71515_2_[0] + " to " + p_71515_2_[1]));
+            sender.addChatMessage(new ChatComponentText("Set " + args[0] + " to " + args[1]));
         } catch (Exception e) {
             e.printStackTrace();
         }

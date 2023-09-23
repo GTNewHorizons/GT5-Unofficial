@@ -51,6 +51,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -61,7 +62,7 @@ public class GemLoader implements IWerkstoffRunnable {
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(gem)) {
             if (werkstoff.getGenerationFeatures().hasSifterRecipes()
-                    || (werkstoff.hasItemType(ore) && werkstoff.hasItemType(dust))) {
+                    || werkstoff.hasItemType(ore) && werkstoff.hasItemType(dust)) {
 
                 GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(gem, 9)).itemOutputs(werkstoff.get(block))
                         .duration(15 * SECONDS).eut(2).addTo(sCompressorRecipes);
@@ -172,12 +173,15 @@ public class GemLoader implements IWerkstoffRunnable {
                     .itemOutputs(werkstoff.get(lens), werkstoff.get(dust, 2)).duration(2 * MINUTES)
                     .eut(TierEU.RECIPE_LV).addTo(sLatheRecipes);
 
+            final ITexture texture = TextureFactory.of(
+                    Textures.BlockIcons.MACHINE_CASINGS[2][0],
+                    TextureFactory.of(Textures.BlockIcons.OVERLAY_LENS, werkstoff.getRGBA(), false));
             GregTech_API.registerCover(
                     werkstoff.get(lens),
-                    TextureFactory.of(
-                            Textures.BlockIcons.MACHINE_CASINGS[2][0],
-                            TextureFactory.of(Textures.BlockIcons.OVERLAY_LENS, werkstoff.getRGBA(), false)),
-                    new gregtech.common.covers.GT_Cover_Lens(BW_ColorUtil.getDyeFromColor(werkstoff.getRGBA()).mIndex));
+                    texture,
+                    new gregtech.common.covers.GT_Cover_Lens(
+                            BW_ColorUtil.getDyeFromColor(werkstoff.getRGBA()).mIndex,
+                            texture));
 
             GT_Values.RA.stdBuilder().itemInputs(werkstoff.get(lens)).itemOutputs(werkstoff.get(dustSmall, 3))
                     .duration(20 * SECONDS).eut(2).addTo(sMaceratorRecipes);

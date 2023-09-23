@@ -39,6 +39,7 @@ public class GT_WandBuffer extends GT_MetaTileEntity_BasicBatteryBuffer {
         super(aName, aTier, aDescription, aTextures, aSlotCount);
     }
 
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             this.mCharge = aBaseMetaTileEntity.getStoredEU() / 2L > aBaseMetaTileEntity.getEUCapacity() / 3L;
@@ -63,10 +64,12 @@ public class GT_WandBuffer extends GT_MetaTileEntity_BasicBatteryBuffer {
         return ThaumcraftHandler.isWand(aStack);
     }
 
+    @Override
     public int getInventoryStackLimit() {
         return 1;
     }
 
+    @Override
     public long[] getStoredEnergy() {
         boolean scaleOverflow = false;
         boolean storedOverflow = false;

@@ -64,30 +64,30 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
     public ItemStack fakestack = new ItemStack(Blocks.water);
 
     @Override
-    public void writeToNBT(NBTTagCompound p_145841_1_) {
+    public void writeToNBT(NBTTagCompound compound) {
         NBTTagCompound subItemStack = new NBTTagCompound();
         if (this.fuelstack != null) {
             this.fuelstack.writeToNBT(subItemStack);
         }
-        p_145841_1_.setTag("ItemStack", subItemStack);
+        compound.setTag("ItemStack", subItemStack);
         NBTTagCompound subFluidStack = new NBTTagCompound();
         this.outputstack.writeToNBT(subFluidStack);
-        p_145841_1_.setTag("FluidStack", subFluidStack);
-        p_145841_1_.setInteger("fuel", this.fuel);
-        p_145841_1_.setInteger("maxfuel", this.maxfuel);
-        p_145841_1_.setByte("tick", this.tick);
-        super.writeToNBT(p_145841_1_);
+        compound.setTag("FluidStack", subFluidStack);
+        compound.setInteger("fuel", this.fuel);
+        compound.setInteger("maxfuel", this.maxfuel);
+        compound.setByte("tick", this.tick);
+        super.writeToNBT(compound);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound p_145839_1_) {
-        this.tick = p_145839_1_.getByte("tick");
-        this.fuel = p_145839_1_.getInteger("fuel");
-        this.maxfuel = p_145839_1_.getInteger("maxfuel");
-        this.outputstack = FluidStack.loadFluidStackFromNBT(p_145839_1_.getCompoundTag("FluidStack"));
-        if (!p_145839_1_.getCompoundTag("ItemStack").equals(new NBTTagCompound()))
-            this.fuelstack = ItemStack.loadItemStackFromNBT(p_145839_1_.getCompoundTag("ItemStack"));
-        super.readFromNBT(p_145839_1_);
+    public void readFromNBT(NBTTagCompound compound) {
+        this.tick = compound.getByte("tick");
+        this.fuel = compound.getInteger("fuel");
+        this.maxfuel = compound.getInteger("maxfuel");
+        this.outputstack = FluidStack.loadFluidStackFromNBT(compound.getCompoundTag("FluidStack"));
+        if (!compound.getCompoundTag("ItemStack").equals(new NBTTagCompound()))
+            this.fuelstack = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("ItemStack"));
+        super.readFromNBT(compound);
     }
 
     private boolean checkPreUpdate() {
@@ -111,7 +111,7 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
             ++this.tick;
             --this.fuel;
             if (this.tick % 20 == 0) {
-                if (this.outputstack.amount <= (8000 - ConfigHandler.mbWaterperSec))
+                if (this.outputstack.amount <= 8000 - ConfigHandler.mbWaterperSec)
                     this.outputstack.amount += ConfigHandler.mbWaterperSec;
                 this.tick = 0;
             }
@@ -122,14 +122,14 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
     public void updateEntity() {
         if (this.worldObj.isRemote) return;
 
-        pushWaterToAdjacentTiles();
-        fakestack.setStackDisplayName(outputstack.amount + "L Water");
-        if (checkPreUpdate()) return;
+        this.pushWaterToAdjacentTiles();
+        this.fakestack.setStackDisplayName(this.outputstack.amount + "L Water");
+        if (this.checkPreUpdate()) return;
 
-        fixUnderlflow();
-        handleRefuel();
-        handleWaterGeneration();
-        causePollution();
+        this.fixUnderlflow();
+        this.handleRefuel();
+        this.handleWaterGeneration();
+        this.causePollution();
     }
 
     private void pushWaterToAdjacentTiles() {
@@ -141,20 +141,17 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
                                         this.yCoord + direction.offsetY,
                                         this.zCoord + direction.offsetZ))
                                 .ifPresent(te -> {
-                                    if (te instanceof IFluidHandler) {
-                                        IFluidHandler tank = (IFluidHandler) te;
+                                    if (te instanceof IFluidHandler tank) {
                                         if (tank.canFill(direction.getOpposite(), this.outputstack.getFluid())) {
-                                            int drainage;
-                                            if ((drainage = tank.fill(direction.getOpposite(), this.outputstack, false))
-                                                    > 0) {
+                                            int drainage = tank.fill(direction.getOpposite(), this.outputstack, false);
+                                            if (drainage > 0) {
                                                 tank.fill(direction.getOpposite(), this.outputstack, true);
                                                 this.drain(drainage, true);
                                             }
                                         }
-                                    } else if (te instanceof IFluidTank) {
-                                        IFluidTank tank = (IFluidTank) te;
-                                        int drainage;
-                                        if ((drainage = tank.fill(this.outputstack, false)) > 0) {
+                                    } else if (te instanceof IFluidTank tank) {
+                                        int drainage = tank.fill(this.outputstack, false);
+                                        if (drainage > 0) {
                                             tank.fill(this.outputstack, true);
                                             this.drain(drainage, true);
                                         }
@@ -192,9 +189,9 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
     }
 
     @Override
-    public ItemStack getStackInSlot(int p_70301_1_) {
-        if (p_70301_1_ == 0) return this.fuelstack;
-        else return this.fakestack;
+    public ItemStack getStackInSlot(int slotIn) {
+        if (slotIn == 0) return this.fuelstack;
+        return this.fakestack;
     }
 
     @Override
@@ -207,14 +204,14 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
+    public ItemStack getStackInSlotOnClosing(int index) {
         return null;
     }
 
     @Override
-    public void setInventorySlotContents(int slot, ItemStack p_70299_2_) {
-        if (slot == BW_TileEntity_HeatedWaterPump.FUELSLOT) this.fuelstack = p_70299_2_;
-        else this.fakestack = p_70299_2_;
+    public void setInventorySlotContents(int slot, ItemStack stack) {
+        if (slot == BW_TileEntity_HeatedWaterPump.FUELSLOT) this.fuelstack = stack;
+        else this.fakestack = stack;
     }
 
     @Override
@@ -233,7 +230,7 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
+    public boolean isUseableByPlayer(EntityPlayer player) {
         return true;
     }
 
@@ -244,9 +241,8 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
     public void closeInventory() {}
 
     @Override
-    public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
-        return TileEntityFurnace.getItemBurnTime(p_94041_2_) > 0
-                && p_94041_1_ == BW_TileEntity_HeatedWaterPump.FUELSLOT;
+    public boolean isItemValidForSlot(int index, ItemStack stack) {
+        return TileEntityFurnace.getItemBurnTime(stack) > 0 && index == BW_TileEntity_HeatedWaterPump.FUELSLOT;
     }
 
     @Override
@@ -362,7 +358,7 @@ public class BW_TileEntity_HeatedWaterPump extends TileEntity implements ITileDr
                 new SlotWidget(invWrapper, 0).setFilter(stack -> TileEntityFurnace.getItemBurnTime(stack) > 0)
                         .setPos(55, 52))
                 .widget(SlotWidget.phantom(invWrapper, 1).disableInteraction().setPos(85, 32)).widget(
-                        new ProgressBar().setProgress(() -> (float) fuel / maxfuel)
+                        new ProgressBar().setProgress(() -> (float) this.fuel / this.maxfuel)
                                 .setTexture(BW_UITextures.PROGRESSBAR_FUEL, 14).setDirection(ProgressBar.Direction.UP)
                                 .setPos(56, 36).setSize(14, 14));
 

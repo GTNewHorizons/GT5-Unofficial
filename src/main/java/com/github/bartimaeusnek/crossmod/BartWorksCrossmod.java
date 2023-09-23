@@ -40,14 +40,16 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
         modid = BartWorksCrossmod.MOD_ID,
         name = BartWorksCrossmod.NAME,
         version = BartWorksCrossmod.VERSION,
-        dependencies = "required-after:IC2;      " + "required-after:gregtech; "
-                + "required-after:bartworks;"
-                + "after:GalacticraftMars;  "
-                + "after:GalacticraftCore;  "
-                + "after:Micdoodlecore;     "
-                + "after:miscutils;         "
-                + "after:EMT;               "
-                + "after:tectech;           ")
+        dependencies = """
+                required-after:IC2;\
+                required-after:gregtech;\
+                required-after:bartworks;\
+                after:GalacticraftMars;\
+                after:GalacticraftCore;\
+                after:Micdoodlecore;\
+                after:miscutils;\
+                after:EMT;\
+                after:tectech;""")
 public class BartWorksCrossmod {
 
     public static final String NAME = "BartWorks Mod Additions";

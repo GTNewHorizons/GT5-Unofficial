@@ -170,7 +170,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
     }
 
     public BioCulture setPlasmid(BioPlasmid plasmid) {
-        return checkForExisting(
+        return this.checkForExisting(
                 new BioCulture(this.color, this.name, this.ID, plasmid, this.dDNA, this.rarity, this.bBreedable));
     }
 
@@ -191,7 +191,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
     }
 
     public BioCulture setdDNA(BioDNA dDNA) {
-        return checkForExisting(
+        return this.checkForExisting(
                 new BioCulture(this.color, this.name, this.ID, this.plasmid, dDNA, this.rarity, this.bBreedable));
     }
 
@@ -203,8 +203,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || this.getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (o == null || this.getClass() != o.getClass() || !super.equals(o)) return false;
         BioCulture culture = (BioCulture) o;
         return this.isBreedable() == culture.isBreedable() && Objects.equals(this.getColor(), culture.getColor())
                 && Objects.equals(this.getPlasmid(), culture.getPlasmid())
@@ -218,7 +217,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
                 ByteBuffer.allocate(17)
                         .putInt(MurmurHash3.murmurhash3_x86_32(this.getName(), 0, this.getName().length(), 31))
                         .putInt(this.getColorRGB()).putInt(this.getPlasmid().ID).putInt(this.getdDNA().ID)
-                        .put((byte) (isBreedable() ? 1 : 0)).array(),
+                        .put((byte) (this.isBreedable() ? 1 : 0)).array(),
                 0,
                 17,
                 31);
@@ -226,7 +225,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
 
     @Override
     public short[] getRGBA() {
-        return new short[] { (short) getColor().getRed(), (short) getColor().getGreen(), (short) getColor().getBlue(),
-                (short) getColor().getAlpha() };
+        return new short[] { (short) this.getColor().getRed(), (short) this.getColor().getGreen(),
+                (short) this.getColor().getBlue(), (short) this.getColor().getAlpha() };
     }
 }

@@ -49,7 +49,7 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
 
     protected long[] getCurrentInfoData() {
         long storedEnergy = 0, maxEnergy = 0;
-        for (GT_MetaTileEntity_Hatch hatch : getExoticAndNormalEnergyHatchList()) {
+        for (GT_MetaTileEntity_Hatch hatch : this.getExoticAndNormalEnergyHatchList()) {
             if (GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity(hatch)) {
                 storedEnergy += hatch.getBaseMetaTileEntity().getStoredEU();
                 maxEnergy += hatch.getBaseMetaTileEntity().getEUCapacity();
@@ -68,7 +68,7 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
             }
         }
 
-        long[] ttHatches = getCurrentInfoData();
+        long[] ttHatches = this.getCurrentInfoData();
         long storedEnergy = ttHatches[0];
         long maxEnergy = ttHatches[1];
 
@@ -79,13 +79,13 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
             }
         }
 
-        long nominalV = getMaxInputEu();
+        long nominalV = this.getMaxInputEu();
         String tName = BW_Util.getTierNameFromVoltage(nominalV);
-        if (tName.equals("MAX+")) tName = EnumChatFormatting.OBFUSCATED + "MAX+";
+        if ("MAX+".equals(tName)) tName = EnumChatFormatting.OBFUSCATED + "MAX+";
 
-        String[] extendedInfo = getExtendedInfoData();
+        String[] extendedInfo = this.getExtendedInfoData();
 
-        String[] baseInfo = new String[] {
+        String[] baseInfo = {
                 StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                         + EnumChatFormatting.GREEN
                         + GT_Utility.formatNumbers(this.mProgresstime / 20)
@@ -114,7 +114,7 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
                         + GT_Utility.formatNumbers(this.getMaxInputVoltage())
                         + EnumChatFormatting.RESET
                         + " EU/t(*"
-                        + GT_Utility.formatNumbers(getMaxInputAmps())
+                        + GT_Utility.formatNumbers(this.getMaxInputAmps())
                         + "A) = "
                         + EnumChatFormatting.YELLOW
                         + GT_Utility.formatNumbers(nominalV)
@@ -131,7 +131,7 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
                         + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
                         + ": "
                         + EnumChatFormatting.YELLOW
-                        + (float) this.mEfficiency / 100.0F
+                        + this.mEfficiency / 100.0F
                         + EnumChatFormatting.RESET
                         + " %",
                 StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
@@ -171,7 +171,7 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(getMaxInputEu());
+        logic.setAvailableVoltage(this.getMaxInputEu());
         logic.setAvailableAmperage(1);
     }
 
@@ -220,7 +220,7 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
         @Override
         public PlaceResult survivalPlaceBlock(T o, World world, int x, int y, int z, ItemStack trigger,
                 AutoPlaceEnvironment env) {
-            if (check(o, world, x, y, z)) return PlaceResult.SKIP;
+            if (this.check(o, world, x, y, z)) return PlaceResult.SKIP;
             if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor())) return PlaceResult.REJECT;
             world.setBlock(x, y, z, Blocks.air, 0, 2);
             return PlaceResult.ACCEPT;

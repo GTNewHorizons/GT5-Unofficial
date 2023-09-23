@@ -31,7 +31,7 @@ public interface ITileHasDifferentTextureSides {
 
     @SideOnly(Side.CLIENT)
     default IIcon getTextureForSide(int side, int meta) {
-        return getTextureForSide(ForgeDirection.values()[side], meta);
+        return this.getTextureForSide(ForgeDirection.values()[side], meta);
     }
 
     @SideOnly(Side.CLIENT)

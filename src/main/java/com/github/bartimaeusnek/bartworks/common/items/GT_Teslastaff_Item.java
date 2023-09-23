@@ -61,15 +61,14 @@ public class GT_Teslastaff_Item extends ItemTool implements IElectricItem {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         aList.add(StatCollector.translateToLocal("tooltip.teslastaff.0.name"));
         aList.add(BW_Tooltip_Reference.ADDED_BY_BARTWORKS.get());
     }
 
+    @Override
     public boolean hitEntity(ItemStack aStack, EntityLivingBase aTarget, EntityLivingBase aPlayer) {
-        if (aTarget instanceof EntityLiving && ElectricItem.manager.canUse(aStack, 9000000)) {
-            EntityLiving tTarget = (EntityLiving) aTarget;
+        if (aTarget instanceof EntityLiving tTarget && ElectricItem.manager.canUse(aStack, 9000000)) {
             ElectricItem.manager.use(aStack, 9000000, aPlayer);
             for (int i = 1; i < 5; ++i) {
                 if (tTarget.getEquipmentInSlot(i) != null
@@ -81,9 +80,9 @@ public class GT_Teslastaff_Item extends ItemTool implements IElectricItem {
         return true;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings("unchecked")
-    public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List itemList) {
+    public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List<ItemStack> itemList) {
         ItemStack itemStack = new ItemStack(this, 1);
         if (this.getChargedItem(itemStack) == this) {
             ItemStack charged = new ItemStack(this, 1);
@@ -130,11 +129,13 @@ public class GT_Teslastaff_Item extends ItemTool implements IElectricItem {
         return this.mTransfer;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         this.icon = iconRegister.registerIcon("bartworks:GT_Teslastaff");
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int par1) {
         return this.icon;

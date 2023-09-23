@@ -31,7 +31,7 @@ public class BW_MetaGenerated_WerkstoffBlock_TE extends BW_MetaGenerated_Block_T
     public ITexture[] getTexture(Block aBlock, ForgeDirection side) {
         if (SideReference.Side.Client) {
             Werkstoff aMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData);
-            if ((aMaterial != null)) {
+            if (aMaterial != null) {
                 TextureSet set = aMaterial.getTexSet();
                 ITexture aIconSet = TextureFactory.of(
                         set.mTextures[PrefixTextureLinker.blockTexMap

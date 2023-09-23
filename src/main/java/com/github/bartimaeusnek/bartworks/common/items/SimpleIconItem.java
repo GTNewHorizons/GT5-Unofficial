@@ -27,6 +27,7 @@ public class SimpleIconItem extends Item {
         this.tex = tex;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         this.itemIcon = iconRegister.registerIcon("bartworks:" + this.tex);

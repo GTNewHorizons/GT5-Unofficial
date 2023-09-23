@@ -57,7 +57,7 @@ public class Ross128SolarSystem {
         Ross128SolarSystem.Ross128System.setMainStar(Ross128SolarSystem.Ross128);
 
         Ross128SolarSystem.Ross128b = new Planet("Ross128b").setParentSolarSystem(Ross128SolarSystem.Ross128System);
-        Ross128SolarSystem.Ross128b.setRingColorRGB((0x9F) / 255f, (0x8A) / 255f, (0x79) / 255f);
+        Ross128SolarSystem.Ross128b.setRingColorRGB(0x9F / 255f, 0x8A / 255f, 0x79 / 255f);
         Ross128SolarSystem.Ross128b.setPhaseShift(1.25F);
         Ross128SolarSystem.Ross128b.setBodyIcon(
                 new ResourceLocation(BartWorksCrossmod.MOD_ID + ":galacticraft/Ross128b/MapObjs/Ross128b.png"));

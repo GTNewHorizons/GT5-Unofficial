@@ -138,26 +138,26 @@ public abstract class BW_OreLayer extends GT_Worldgen {
                     int i;
                     if (this.mSecondaryMeta > 0) {
                         for (i = tMinY - 1; i < tMinY + 2; ++i) {
-                            if (shouldPlace(aRandom, cX, eX, tX, cZ, eZ, tZ)) {
+                            if (this.shouldPlace(aRandom, cX, eX, tX, cZ, eZ, tZ)) {
                                 wasPlaced = this.setOreBlock(aWorld, tX, i, tZ, this.mSecondaryMeta, false);
                             }
                         }
                     }
 
-                    if (this.mBetweenMeta > 0 && shouldPlace(aRandom, cX, eX, tX, cZ, eZ, tZ)) {
+                    if (this.mBetweenMeta > 0 && this.shouldPlace(aRandom, cX, eX, tX, cZ, eZ, tZ)) {
                         wasPlaced = this
                                 .setOreBlock(aWorld, tX, tMinY + 2 + aRandom.nextInt(2), tZ, this.mBetweenMeta, false);
                     }
 
                     if (this.mPrimaryMeta > 0) {
                         for (i = tMinY + 3; i < tMinY + 6; ++i) {
-                            if (shouldPlace(aRandom, cX, eX, tX, cZ, eZ, tZ)) {
+                            if (this.shouldPlace(aRandom, cX, eX, tX, cZ, eZ, tZ)) {
                                 wasPlaced = this.setOreBlock(aWorld, tX, i, tZ, this.mPrimaryMeta, false);
                             }
                         }
                     }
 
-                    if (this.mSporadicMeta > 0 && (shouldPlace(aRandom, cX, eX, tX, cZ, eZ, tZ))) {
+                    if (this.mSporadicMeta > 0 && this.shouldPlace(aRandom, cX, eX, tX, cZ, eZ, tZ)) {
                         wasPlaced = this
                                 .setOreBlock(aWorld, tX, tMinY - 1 + aRandom.nextInt(7), tZ, this.mSporadicMeta, false);
                     }
@@ -174,10 +174,10 @@ public abstract class BW_OreLayer extends GT_Worldgen {
 
     private boolean shouldPlace(Random aRandom, int cX, int eX, int tX, int cZ, int eZ, int tZ) {
         if (aRandom.nextInt(
-                Math.max(1, Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ)) / this.mDensity)) == 0)
-            return true;
-        if (aRandom.nextInt(
-                Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX)) / this.mDensity)) == 0)
+                Math.max(1, Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ)) / this.mDensity)) == 0
+                || aRandom.nextInt(
+                        Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX)) / this.mDensity))
+                        == 0)
             return true;
         return false;
     }
@@ -187,10 +187,10 @@ public abstract class BW_OreLayer extends GT_Worldgen {
         TileEntity te = aWorld.getTileEntity(aX, aY, aZ);
         if (te instanceof BW_MetaGeneratedOreTE || te instanceof GT_TileEntity_Ores) return true;
 
-        if ((aMetaData == this.mSporadicMeta && (this.bwOres & 0b0001) != 0)
-                || (aMetaData == this.mBetweenMeta && (this.bwOres & 0b0010) != 0)
-                || (aMetaData == this.mPrimaryMeta && (this.bwOres & 0b1000) != 0)
-                || (aMetaData == this.mSecondaryMeta && (this.bwOres & 0b0100) != 0)) {
+        if (aMetaData == this.mSporadicMeta && (this.bwOres & 0b0001) != 0
+                || aMetaData == this.mBetweenMeta && (this.bwOres & 0b0010) != 0
+                || aMetaData == this.mPrimaryMeta && (this.bwOres & 0b1000) != 0
+                || aMetaData == this.mSecondaryMeta && (this.bwOres & 0b0100) != 0) {
             return isSmallOre
                     ? BW_MetaGenerated_SmallOres.setOreBlock(
                             aWorld,
@@ -216,52 +216,49 @@ public abstract class BW_OreLayer extends GT_Worldgen {
     }
 
     public boolean setGTOreBlockSpace(World aWorld, int aX, int aY, int aZ, int aMetaData, Block block) {
-        if (!GT_TileEntity_Ores.setOreBlock(aWorld, aX, aY, aZ, aMetaData, false, false)) {
-            aY = Math.min(aWorld.getActualHeight(), Math.max(aY, 1));
-            Block tBlock = aWorld.getBlock(aX, aY, aZ);
-            Block tOreBlock = GregTech_API.sBlockOres1;
-            if (aMetaData < 0 || tBlock == Blocks.air) {
+        if (GT_TileEntity_Ores.setOreBlock(aWorld, aX, aY, aZ, aMetaData, false, false)) return true;
+        aY = Math.min(aWorld.getActualHeight(), Math.max(aY, 1));
+        Block tBlock = aWorld.getBlock(aX, aY, aZ);
+        Block tOreBlock = GregTech_API.sBlockOres1;
+        if (aMetaData < 0 || tBlock == Blocks.air) {
+            return false;
+        } else {
+            if (!tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, block)) {
                 return false;
-            } else {
-                if (!tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, block)) {
-                    return false;
-                }
-                aMetaData += 5000;
-                aWorld.setBlock(aX, aY, aZ, tOreBlock, aMetaData, 0);
-                TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-                if (tTileEntity instanceof GT_TileEntity_Ores) {
-                    ((GT_TileEntity_Ores) tTileEntity).mMetaData = (short) aMetaData;
-                }
-                return true;
             }
-        } else return true;
+            aMetaData += 5000;
+            aWorld.setBlock(aX, aY, aZ, tOreBlock, aMetaData, 0);
+            TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+            if (tTileEntity instanceof GT_TileEntity_Ores ore) {
+                ore.mMetaData = (short) aMetaData;
+            }
+            return true;
+        }
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof BW_OreLayer)) return false;
+        if (!(o instanceof BW_OreLayer that)) return false;
 
-        BW_OreLayer that = (BW_OreLayer) o;
-
-        if (bwOres != that.bwOres) return false;
-        if (mMinY != that.mMinY) return false;
-        if (mWeight != that.mWeight) return false;
-        if (mDensity != that.mDensity) return false;
-        if (mSize != that.mSize) return false;
-        if (mMaxY != that.mMaxY) return false;
-        if (mPrimaryMeta != that.mPrimaryMeta) return false;
-        if (mSecondaryMeta != that.mSecondaryMeta) return false;
-        if (mBetweenMeta != that.mBetweenMeta) return false;
-        return mSporadicMeta == that.mSporadicMeta;
+        if (this.bwOres != that.bwOres || this.mMinY != that.mMinY
+                || this.mWeight != that.mWeight
+                || this.mDensity != that.mDensity)
+            return false;
+        if (this.mSize != that.mSize) return false;
+        if (this.mMaxY != that.mMaxY) return false;
+        if (this.mPrimaryMeta != that.mPrimaryMeta) return false;
+        if (this.mSecondaryMeta != that.mSecondaryMeta) return false;
+        if (this.mBetweenMeta != that.mBetweenMeta) return false;
+        return this.mSporadicMeta == that.mSporadicMeta;
     }
 
     @Override
     public int hashCode() {
         return MurmurHash3.murmurhash3_x86_32(
-                ByteBuffer.allocate(37).put(bwOres).putInt(mMinY).putInt(mWeight).putInt(mDensity).putInt(mSize)
-                        .putInt(mMaxY).putInt(mPrimaryMeta).putInt(mSecondaryMeta).putInt(mBetweenMeta)
-                        .putInt(mSporadicMeta).array(),
+                ByteBuffer.allocate(37).put(this.bwOres).putInt(this.mMinY).putInt(this.mWeight).putInt(this.mDensity)
+                        .putInt(this.mSize).putInt(this.mMaxY).putInt(this.mPrimaryMeta).putInt(this.mSecondaryMeta)
+                        .putInt(this.mBetweenMeta).putInt(this.mSporadicMeta).array(),
                 0,
                 37,
                 31);

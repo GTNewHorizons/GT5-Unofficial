@@ -62,13 +62,13 @@ public class MathUtils {
     }
 
     public static byte clamp(byte amount, byte min, byte max) {
-        byte inner = (amount <= max) ? amount : max;
-        return (min >= inner) ? min : inner;
+        byte inner = amount <= max ? amount : max;
+        return min >= inner ? min : inner;
     }
 
     public static short clamp(short amount, short min, short max) {
-        short inner = (amount <= max) ? amount : max;
-        return (min >= inner) ? min : inner;
+        short inner = amount <= max ? amount : max;
+        return min >= inner ? min : inner;
     }
 
     public static int clamp(int amount, int min, int max) {
@@ -88,23 +88,23 @@ public class MathUtils {
     }
 
     public static <T extends Comparable<T>> T clamp(T val, T min, T max) {
-        return (val.compareTo(min) < 0) ? min : (val.compareTo(max) > 0) ? max : val;
+        return val.compareTo(min) < 0 ? min : val.compareTo(max) > 0 ? max : val;
     }
 
     public static int wrap(int input, int bound) {
-        return (((input % bound) + bound) % bound);
+        return (input % bound + bound) % bound;
     }
 
     public static long wrap(long input, long bound) {
-        return (((input % bound) + bound) % bound);
+        return (input % bound + bound) % bound;
     }
 
     public static double wrap(double input, double bound) {
-        return (((input % bound) + bound) % bound);
+        return (input % bound + bound) % bound;
     }
 
     public static float wrap(float input, float bound) {
-        return (((input % bound) + bound) % bound);
+        return (input % bound + bound) % bound;
     }
 
     public static float tanh(float x) {
