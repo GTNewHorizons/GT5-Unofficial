@@ -17,6 +17,7 @@ import net.glease.ggfab.GGConstants;
 import net.glease.ggfab.util.OverclockHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
@@ -62,6 +63,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<MTE_AdvAssLine>
         implements ISurvivalConstructable {
 
+    private static final ItemStack NOT_CHECKED = new ItemStack(Blocks.dirt);
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_LATER = "later";
     private static final String STRUCTURE_PIECE_LAST = "last";
@@ -69,21 +71,32 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     public static final String TAG_KEY_PROGRESS_TIMES = "mProgressTimeArray";
     private static final IStructureDefinition<MTE_AdvAssLine> STRUCTURE_DEFINITION = StructureDefinition
             .<MTE_AdvAssLine>builder()
+            // @formatter:off
             .addShape(
                     STRUCTURE_PIECE_FIRST,
-                    transpose(
-                            new String[][] { { " ", "e", " " }, { "~", "l", "G" }, { "g", "m", "g" },
-                                    { "b", "i", "b" }, }))
+                    transpose(new String[][] {
+                                    { " ", "e", " " },
+                                    { "~", "l", "G" },
+                                    { "g", "m", "g" },
+                                    { "b", "i", "b" },
+                            }))
             .addShape(
                     STRUCTURE_PIECE_LATER,
-                    transpose(
-                            new String[][] { { " ", "e", " " }, { "d", "l", "d" }, { "g", "m", "g" },
-                                    { "b", "I", "b" }, }))
+                    transpose(new String[][] {
+                                    { " ", "e", " " },
+                                    { "d", "l", "d" },
+                                    { "g", "m", "g" },
+                                    { "b", "I", "b" },
+                            }))
             .addShape(
                     STRUCTURE_PIECE_LAST,
-                    transpose(
-                            new String[][] { { " ", "e", " " }, { "d", "l", "d" }, { "g", "m", "g" },
-                                    { "o", "i", "b" }, }))
+                    transpose(new String[][] {
+                                    { " ", "e", " " },
+                                    { "d", "l", "d" },
+                                    { "g", "m", "g" },
+                                    { "o", "i", "b" },
+                            }))
+            // @formatter:on
             .addElement('G', ofBlock(GregTech_API.sBlockCasings3, 10)) // grate machine casing
             .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 9)) // assembler machine casing
             .addElement('m', ofBlock(GregTech_API.sBlockCasings2, 5)) // assembling line casing
@@ -129,7 +142,8 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     private long baseEUt;
     private boolean stuck;
 
-    private final ArrayList<GT_MetaTileEntity_Hatch_DataAccess> mDataAccessHatches = new ArrayList<>();
+    private final List<GT_MetaTileEntity_Hatch_DataAccess> mDataAccessHatches = new ArrayList<>();
+    private final ItemStack[] itemInputsCurTick = new ItemStack[16];
     private int currentInputLength;
 
     public MTE_AdvAssLine(int aID, String aName, String aNameRegional) {
@@ -394,7 +408,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
     }
 
     private void recordEnergySupplier(GT_MetaTileEntity_Hatch hatch) {
-        if (!isValidMetaTileEntity(hatch)) return;
+        if (!hatch.isValid()) return;
         inputEUt += hatch.maxEUInput() * hatch.maxWorkingAmperesIn();
         inputVoltage = Math.min(inputVoltage, hatch.maxEUInput());
         if (inputEUt < 0) inputEUt = Long.MAX_VALUE;
@@ -438,6 +452,12 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                 w.updateText();
             }
         }));
+    }
+
+    @Override
+    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        Arrays.fill(itemInputsCurTick, NOT_CHECKED);
+        super.onPreTick(aBaseMetaTileEntity, aTick);
     }
 
     @Override
@@ -502,6 +522,21 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         return true;
     }
 
+    private ItemStack getInputBusContent(int index) {
+        // compare by identity is on purpose. the content of NOT_CHECKED is not significant.
+        if (itemInputsCurTick[index] == NOT_CHECKED) {
+            ItemStack stuff = null;
+            if (index < mInputBusses.size()) {
+                GT_MetaTileEntity_Hatch_InputBus bus = mInputBusses.get(index);
+                if (bus.isValid()) {
+                    stuff = bus.getStackInSlot(0);
+                }
+            }
+            itemInputsCurTick[index] = stuff;
+        }
+        return itemInputsCurTick[index];
+    }
+
     private GT_Recipe.GT_Recipe_AssemblyLine findRecipe(ItemStack tDataStick) {
         GT_AssemblyLineUtils.LookupResult tLookupResult = GT_AssemblyLineUtils
                 .findAssemblyLineRecipeFromDataStick(tDataStick, false);
@@ -541,11 +576,8 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         int aItemCount = tRecipe.mInputs.length;
         if (mInputBusses.size() < aItemCount) return false;
         for (int i = 0; i < aItemCount; i++) {
-            GT_MetaTileEntity_Hatch_InputBus tInputBus = mInputBusses.get(i);
-            if (tInputBus == null) {
-                return false;
-            }
-            ItemStack tSlotStack = tInputBus.getStackInSlot(0);
+            ItemStack tSlotStack = getInputBusContent(i);
+            if (tSlotStack == null) return false;
             int tRequiredStackSize = isStackValidIngredient(tSlotStack, tRecipe.mInputs[i], tRecipe.mOreDictAlt[i]);
             if (tRequiredStackSize < 0) return false;
 
@@ -561,7 +593,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         if (mInputHatches.size() < aFluidCount) return false;
         for (int i = 0; i < aFluidCount; i++) {
             GT_MetaTileEntity_Hatch_Input tInputHatch = mInputHatches.get(i);
-            if (!isValidMetaTileEntity(tInputHatch)) {
+            if (!tInputHatch.isValid()) {
                 return false;
             }
             FluidStack drained = tInputHatch.drain(ForgeDirection.UNKNOWN, tRecipe.mFluidInputs[i], false);
@@ -593,7 +625,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             rList.add(mInventory[1]);
         }
         for (GT_MetaTileEntity_Hatch_DataAccess tHatch : mDataAccessHatches) {
-            if (isValidMetaTileEntity(tHatch)) {
+            if (tHatch.isValid()) {
                 for (int i = 0; i < tHatch.getBaseMetaTileEntity().getSizeInventory(); i++) {
                     if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) != null
                             && isCorrectDataItem(tHatch.getBaseMetaTileEntity().getStackInSlot(i), state))
@@ -893,13 +925,13 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         public boolean start() {
             if (progress >= 0) return false;
             startRecipeProcessing();
-            GT_MetaTileEntity_Hatch_InputBus bus = mInputBusses.get(id);
-            ItemStack stack = bus.getStackInSlot(0);
+            ItemStack stack = getInputBusContent(id);
+            if (stack == null) return false;
             int size = isStackValidIngredient(stack, currentRecipe.mInputs[id], currentRecipe.mOreDictAlt[id]);
             if (size < 0) return false;
             progress = mMaxProgresstime / currentInputLength;
             stack.stackSize -= size;
-            bus.updateSlots();
+            mInputBusses.get(id).updateSlots();
             return true;
         }
 
@@ -911,7 +943,8 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         }
 
         public boolean hasInput() {
-            ItemStack stack = mInputBusses.get(id).getStackInSlot(0);
+            ItemStack stack = getInputBusContent(id);
+            if (stack == null) return false;
             return isStackValidIngredient(stack, currentRecipe.mInputs[id], currentRecipe.mOreDictAlt[id]) >= 0;
         }
 
