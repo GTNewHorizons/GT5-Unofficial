@@ -240,12 +240,21 @@ public class FluidInventoryLogic {
         return map;
     }
 
+    /**
+     * Return a scrollable widget with only the inventory.
+     */
+    @Nonnull
     public Widget getGuiPart() {
         return getGUIPart(DEFAULT_COLUMNS_PER_ROW);
     }
 
+    /**
+     * Return a scrollable widget with only the inventory.
+     */
+    @Nonnull
     public Widget getGUIPart(int columnsPerRow) {
-        final Scrollable scrollable = new Scrollable().setVerticalScroll();
+        final Scrollable scrollable = new Scrollable();
+        scrollable.setVerticalScroll();
         for (int rows = 0; rows * 4 < inventory.getTanks(); rows++) {
             final int columnsToMake = Math.min(inventory.getTanks() - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
