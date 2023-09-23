@@ -168,8 +168,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
             .isGUIClickable()) return;
         infiniteCache = !infiniteCache;
-        aPlayer.addChatComponentMessage(
-            new ChatComponentTranslation("GT5U.hatch.infiniteCacheFluid." + infiniteCache));
+        aPlayer.addChatComponentMessage(new ChatComponentTranslation("GT5U.hatch.infiniteCacheFluid." + infiniteCache));
     }
 
     @Override
