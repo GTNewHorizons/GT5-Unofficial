@@ -134,8 +134,8 @@ public class MachineRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Graphene, 64),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Graphene, 64))
                 .itemOutputs(new ItemStack(IGItems.SpaceElevatorItems, 1, 0))
-                .fluidInputs(Materials.AdvancedGlue.getFluid(720)).noFluidOutputs().duration(1 * MINUTE)
-                .eut(TierEU.RECIPE_ZPM).requiresCleanRoom().noOptimize().addTo(sAssemblerRecipes);
+                .fluidInputs(Materials.AdvancedGlue.getFluid(720)).duration(1 * MINUTE).eut(TierEU.RECIPE_ZPM)
+                .requiresCleanRoom().noOptimize().addTo(sAssemblerRecipes);
 
         // Space Elevator Cable
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -352,7 +352,7 @@ public class MachineRecipes implements Runnable {
                         metaStableOgScrew_64,
                         GT_OreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.TranscendentMetal, 16))
                 .itemOutputs(IGItems.SpaceElevatorModulePumpT2).fluidInputs(new FluidStack(solderUEV, 4608))
-                .noFluidOutputs().duration(2 * MINUTE).eut(TierEU.RECIPE_UIV).noOptimize().addTo(sAssemblerRecipes);
+                .duration(2 * MINUTE).eut(TierEU.RECIPE_UIV).noOptimize().addTo(sAssemblerRecipes);
 
         // Pump Module MK-III
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -383,7 +383,7 @@ public class MachineRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.WhiteDwarfMatter, 64),
                         GT_OreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.Eternity, 16))
                 .itemOutputs(IGItems.SpaceElevatorModulePumpT3).fluidInputs(new FluidStack(solderUEV, 9216))
-                .noFluidOutputs().duration(2 * MINUTE).eut(TierEU.RECIPE_UIV).noOptimize().addTo(sAssemblerRecipes);
+                .duration(2 * MINUTE).eut(TierEU.RECIPE_UIV).noOptimize().addTo(sAssemblerRecipes);
 
         // Assembler Module MK-I
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -567,8 +567,8 @@ public class MachineRecipes implements Runnable {
                         new ItemStack(GCItems.rocketEngine, 2),
                         ItemList.Sensor_LV.get(8))
                 .itemOutputs(new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.LV.ordinal()))
-                .fluidInputs(Materials.SolderingAlloy.getMolten(720)).noFluidOutputs().duration(1 * MINUTE)
-                .eut(TierEU.RECIPE_LV).addTo(sAssemblerRecipes);
+                .fluidInputs(Materials.SolderingAlloy.getMolten(720)).duration(1 * MINUTE).eut(TierEU.RECIPE_LV)
+                .addTo(sAssemblerRecipes);
 
         // MV
         RA.stdBuilder()
@@ -581,8 +581,8 @@ public class MachineRecipes implements Runnable {
                         new ItemStack(GCItems.rocketEngine, 4),
                         ItemList.Sensor_MV.get(8))
                 .itemOutputs(new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.MV.ordinal()))
-                .fluidInputs(Materials.SolderingAlloy.getMolten(1440)).noFluidOutputs().duration(1 * MINUTE)
-                .eut(TierEU.RECIPE_MV).addTo(sAssemblerRecipes);
+                .fluidInputs(Materials.SolderingAlloy.getMolten(1440)).duration(1 * MINUTE).eut(TierEU.RECIPE_MV)
+                .addTo(sAssemblerRecipes);
 
         // HV
         RA.stdBuilder()
@@ -595,8 +595,8 @@ public class MachineRecipes implements Runnable {
                         new ItemStack(GCItems.rocketEngine, 4),
                         ItemList.Sensor_HV.get(8))
                 .itemOutputs(new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.HV.ordinal()))
-                .fluidInputs(Materials.SolderingAlloy.getMolten(1440)).noFluidOutputs().duration(1 * MINUTE)
-                .eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
+                .fluidInputs(Materials.SolderingAlloy.getMolten(1440)).duration(1 * MINUTE).eut(TierEU.RECIPE_HV)
+                .addTo(sAssemblerRecipes);
 
         // EV
         TT_recipeAdder.addResearchableAssemblylineRecipe(

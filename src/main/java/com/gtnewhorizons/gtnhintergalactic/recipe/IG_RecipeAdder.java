@@ -1,7 +1,10 @@
 package com.gtnewhorizons.gtnhintergalactic.recipe;
 
-import java.awt.*;
-import java.util.*;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.function.Supplier;
 
