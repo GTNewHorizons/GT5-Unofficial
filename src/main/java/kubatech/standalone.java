@@ -1,6 +1,7 @@
 package kubatech;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 public class standalone {
 

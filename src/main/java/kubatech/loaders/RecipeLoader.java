@@ -132,7 +132,6 @@ public class RecipeLoader {
                 .fluidInputs(
                     FluidRegistry.getFluidStack("molten.indalloy140", 28800),
                     FluidRegistry.getFluidStack("for.honey", 20000))
-                .noFluidOutputs()
                 .itemOutputs(ExtremeIndustrialApiary.get(1))
                 .eut(2_048_000)
                 .duration(5 * MINUTES)
@@ -233,7 +232,6 @@ public class RecipeLoader {
                 .itemInputs(TeaLeafDehydrated.get(1))
                 .itemOutputs(SteamedTeaLeaf.get(1))
                 .fluidInputs(FluidRegistry.getFluidStack("water", 50))
-                .noFluidOutputs()
                 .eut(32)
                 .duration(5 * SECONDS)
                 .addTo(sMixerRecipes);
@@ -248,8 +246,6 @@ public class RecipeLoader {
             GT_Values.RA.stdBuilder()
                 .itemInputs(TeaLeafDehydrated.get(1))
                 .itemOutputs(RolledTeaLeaf.get(1))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .eut(32)
                 .duration(5 * SECONDS)
                 .addTo(sBenderRecipes);
@@ -264,8 +260,6 @@ public class RecipeLoader {
             GT_Values.RA.stdBuilder()
                 .itemInputs(RolledTeaLeaf.get(1), GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(OxidizedTeaLeaf.get(1))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .eut(32)
                 .duration(5 * SECONDS)
                 .addTo(UniversalChemical);
@@ -280,8 +274,6 @@ public class RecipeLoader {
             GT_Values.RA.stdBuilder()
                 .itemInputs(RolledTeaLeaf.get(1), GT_Utility.getIntegratedCircuit(2))
                 .itemOutputs(FermentedTeaLeaf.get(1))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .eut(32)
                 .duration(10 * SECONDS)
                 .addTo(UniversalChemical);
@@ -296,16 +288,12 @@ public class RecipeLoader {
             GT_Values.RA.stdBuilder()
                 .itemInputs(TeaLeafDehydrated.get(1))
                 .itemOutputs(BruisedTeaLeaf.get(1))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .eut(32)
                 .duration(5 * SECONDS)
                 .addTo(sCutterRecipes);
             GT_Values.RA.stdBuilder()
                 .itemInputs(BruisedTeaLeaf.get(1), GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(PartiallyOxidizedTeaLeaf.get(1))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .eut(32)
                 .duration(2 * SECONDS + 10 * TICKS)
                 .addTo(UniversalChemical);
@@ -323,8 +311,6 @@ public class RecipeLoader {
             GT_Values.RA.stdBuilder()
                 .itemInputs(BlackTea.get(1), GameRegistry.findItemStack("harvestcraft", "limejuiceItem", 1))
                 .itemOutputs(EarlGrayTea.get(1))
-                .noFluidInputs()
-                .noFluidOutputs()
                 .eut(32)
                 .duration(5 * SECONDS)
                 .addTo(sMixerRecipes);
@@ -333,7 +319,6 @@ public class RecipeLoader {
                 .itemInputs(BlackTea.get(1))
                 .itemOutputs(LemonTea.get(1))
                 .fluidInputs(FluidRegistry.getFluidStack("potion.lemonjuice", 1000))
-                .noFluidOutputs()
                 .eut(32)
                 .duration(5 * SECONDS)
                 .addTo(sMixerRecipes);
@@ -341,7 +326,6 @@ public class RecipeLoader {
                 .itemInputs(BlackTea.get(1))
                 .itemOutputs(MilkTea.get(1))
                 .fluidInputs(FluidRegistry.getFluidStack("milk", 1000))
-                .noFluidOutputs()
                 .eut(32)
                 .duration(5 * SECONDS)
                 .addTo(sMixerRecipes);
@@ -350,7 +334,6 @@ public class RecipeLoader {
                 .itemInputs(GameRegistry.findItemStack("harvestcraft", "peppermintItem", 1))
                 .itemOutputs(PeppermintTea.get(1))
                 .fluidInputs(FluidRegistry.getFluidStack("water", 1000))
-                .noFluidOutputs()
                 .eut(32)
                 .duration(5 * SECONDS)
                 .addTo(sMixerRecipes);
@@ -372,7 +355,6 @@ public class RecipeLoader {
                     new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
                     new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L })
                 .fluidInputs(FluidRegistry.getFluidStack("molten.indalloy140", 28800))
-                .noFluidOutputs()
                 .itemOutputs(TeaAcceptor.get(1))
                 .eut(2_048_000)
                 .duration(5 * MINUTES)
