@@ -2,7 +2,6 @@ package com.elisis.gtnhlanth.loader;
 
 import static com.elisis.gtnhlanth.common.register.WerkstoffMaterialPool.*;
 import static gregtech.common.items.GT_MetaGenerated_Item_01.registerCauldronCleaningFor;
-import static net.minecraft.item.Item.getIdFromItem;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -10,9 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashSet;
-import java.util.Iterator;
 
-import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
@@ -2078,142 +2075,100 @@ public class RecipeLoader {
          * 1/9 Ce + 3 Lu + 10 Green Sapphire = 8 LuAG Blend
          * 2/9 Ce + 6 Lu + 25 Alumina + 9 Oxygen = 12 LuAG Blend
          *
-         * 1 Ce + 60 Lu + 100 Sapphire = 160 LuAG Blend
-         * 1 Ce + 60 Lu +200 Green Sapphire = 160 LuAG Blend
+         * 1 Ce + 60 Lu + 100 Sapphire = 160 LuAG Blend 1 Ce + 60 Lu +200 Green Sapphire = 160 LuAG Blend
          *
          */
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(4),
-                Materials.Cerium.getDustTiny(1),
-                Materials.Lutetium.getDust(3),
-                Materials.Sapphire.getDust(5))
-            .itemOutputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 8))
-            .noFluidInputs()
-            .noFluidOutputs()
-            .eut(491520)
-            .duration(100)
-            .addTo(GT_Recipe.GT_Recipe_Map.sMixerRecipes);
+                .itemInputs(
+                        GT_Utility.getIntegratedCircuit(4),
+                        Materials.Cerium.getDustTiny(1),
+                        Materials.Lutetium.getDust(3),
+                        Materials.Sapphire.getDust(5))
+                .itemOutputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 8)).noFluidInputs()
+                .noFluidOutputs().eut(491520).duration(100).addTo(GT_Recipe.GT_Recipe_Map.sMixerRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(4),
-                Materials.Cerium.getDustTiny(1),
-                Materials.Lutetium.getDust(3),
-                Materials.GreenSapphire.getDust(10))
-            .itemOutputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 8))
-            .noFluidInputs()
-            .noFluidOutputs()
-            .eut(491520)
-            .duration(100)
-            .addTo(GT_Recipe.GT_Recipe_Map.sMixerRecipes);
+                .itemInputs(
+                        GT_Utility.getIntegratedCircuit(4),
+                        Materials.Cerium.getDustTiny(1),
+                        Materials.Lutetium.getDust(3),
+                        Materials.GreenSapphire.getDust(10))
+                .itemOutputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 8)).noFluidInputs()
+                .noFluidOutputs().eut(491520).duration(100).addTo(GT_Recipe.GT_Recipe_Map.sMixerRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(4),
-                Materials.Cerium.getDustTiny(2),
-                Materials.Lutetium.getDust(6),
-                Materials.Aluminiumoxide.getDust(25))
-            .itemOutputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 12))
-            .fluidInputs(Materials.Oxygen.getGas(9000))
-            .noFluidOutputs()
-            .eut(491520)
-            .duration(400)
-            .addTo(GT_Recipe.GT_Recipe_Map.sMixerRecipes);
+                .itemInputs(
+                        GT_Utility.getIntegratedCircuit(4),
+                        Materials.Cerium.getDustTiny(2),
+                        Materials.Lutetium.getDust(6),
+                        Materials.Aluminiumoxide.getDust(25))
+                .itemOutputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 12))
+                .fluidInputs(Materials.Oxygen.getGas(9000)).noFluidOutputs().eut(491520).duration(400)
+                .addTo(GT_Recipe.GT_Recipe_Map.sMixerRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(5),
-                Materials.Cerium.getDust(1),
-                Materials.Lutetium.getDust(60),
-                Materials.Sapphire.getDust(64),
-                Materials.Sapphire.getDust(36))
-            .itemOutputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 64),
-                CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 64),
-                CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 32))
-            .noFluidInputs()
-            .noFluidOutputs()
-            .eut(491520)
-            .duration(1800)
-            .addTo(GT_Recipe.GT_Recipe_Map.sMixerRecipes);
+                .itemInputs(
+                        GT_Utility.getIntegratedCircuit(5),
+                        Materials.Cerium.getDust(1),
+                        Materials.Lutetium.getDust(60),
+                        Materials.Sapphire.getDust(64),
+                        Materials.Sapphire.getDust(36))
+                .itemOutputs(
+                        CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 64),
+                        CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 64),
+                        CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 32))
+                .noFluidInputs().noFluidOutputs().eut(491520).duration(1800)
+                .addTo(GT_Recipe.GT_Recipe_Map.sMixerRecipes);
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.getIntegratedCircuit(5),
-                Materials.Cerium.getDust(1),
-                Materials.Lutetium.getDust(60),
-                Materials.GreenSapphire.getDust(64),
-                Materials.GreenSapphire.getDust(64),
-                Materials.GreenSapphire.getDust(64),
-                Materials.GreenSapphire.getDust(8))
-            .itemOutputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 64),
-                CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 64),
-                CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 32))
-            .noFluidInputs()
-            .noFluidOutputs()
-            .eut(491520)
-            .duration(1800)
-            .addTo(GT_Recipe.GT_Recipe_Map.sMixerRecipes);
+                .itemInputs(
+                        GT_Utility.getIntegratedCircuit(5),
+                        Materials.Cerium.getDust(1),
+                        Materials.Lutetium.getDust(60),
+                        Materials.GreenSapphire.getDust(64),
+                        Materials.GreenSapphire.getDust(64),
+                        Materials.GreenSapphire.getDust(64),
+                        Materials.GreenSapphire.getDust(8))
+                .itemOutputs(
+                        CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 64),
+                        CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 64),
+                        CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 32))
+                .noFluidInputs().noFluidOutputs().eut(491520).duration(1800)
+                .addTo(GT_Recipe.GT_Recipe_Map.sMixerRecipes);
 
         // 1 LuAG Blend = 1 LuAG in Blast or Vacuum Furnace
-        GT_Values.RA.stdBuilder()
-            .itemInputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 1))
-            .itemOutputs(CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
-            .noFluidInputs()
-            .noFluidOutputs()
-            .specialValue(9100)
-            .eut(1919810)
-            .duration(100)
-            .addTo(GTPP_Recipe.GTPP_Recipe_Map.sVacuumFurnaceRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 1))
-            .itemOutputs(CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
-            .fluidInputs(WerkstoffLoader.Krypton.getFluidOrGas(40))
-            .noFluidOutputs()
-            .specialValue(9100)
-            .eut(1919810)
-            .duration(256)
-            .addTo(GT_Recipe.GT_Recipe_Map.sBlastRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 1))
-            .itemOutputs(CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
-            .fluidInputs(WerkstoffLoader.Xenon.getFluidOrGas(25))
-            .noFluidOutputs()
-            .specialValue(9100)
-            .eut(1919810)
-            .duration(128)
-            .addTo(GT_Recipe.GT_Recipe_Map.sBlastRecipes);
-        GT_Values.RA.stdBuilder()
-            .itemInputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 1))
-            .itemOutputs(CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
-            .fluidInputs(WerkstoffLoader.Oganesson.getFluidOrGas(10))
-            .noFluidOutputs()
-            .specialValue(9100)
-            .eut(1919810)
-            .duration(64)
-            .addTo(GT_Recipe.GT_Recipe_Map.sBlastRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 1))
+                .itemOutputs(CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1)).noFluidInputs()
+                .noFluidOutputs().specialValue(9100).eut(1919810).duration(100)
+                .addTo(GTPP_Recipe.GTPP_Recipe_Map.sVacuumFurnaceRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 1))
+                .itemOutputs(CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
+                .fluidInputs(WerkstoffLoader.Krypton.getFluidOrGas(40)).noFluidOutputs().specialValue(9100).eut(1919810)
+                .duration(256).addTo(GT_Recipe.GT_Recipe_Map.sBlastRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 1))
+                .itemOutputs(CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
+                .fluidInputs(WerkstoffLoader.Xenon.getFluidOrGas(25)).noFluidOutputs().specialValue(9100).eut(1919810)
+                .duration(128).addTo(GT_Recipe.GT_Recipe_Map.sBlastRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 1))
+                .itemOutputs(CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
+                .fluidInputs(WerkstoffLoader.Oganesson.getFluidOrGas(10)).noFluidOutputs().specialValue(9100)
+                .eut(1919810).duration(64).addTo(GT_Recipe.GT_Recipe_Map.sBlastRecipes);
 
         // 16 Adv Crystal SoC
         for (ItemStack itemStack : OreDictionary.getOres("craftingLensBlue")) {
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(0, itemStack),
-                    CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
-                .itemOutputs(ItemList.Circuit_Chip_CrystalSoC2.get(16))
-                .noFluidInputs()
-                .noFluidOutputs()
-                .requiresCleanRoom()
-                .eut(160000)
-                .duration(800)
-                .addTo(GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes);
+                    .itemInputs(
+                            GT_Utility.copyAmount(0, itemStack),
+                            CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
+                    .itemOutputs(ItemList.Circuit_Chip_CrystalSoC2.get(16)).noFluidInputs().noFluidOutputs()
+                    .requiresCleanRoom().eut(160000).duration(800).addTo(GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes);
         }
 
         // 1 LuAG = 16 Crystal SoC
         for (ItemStack itemStack : OreDictionary.getOres("craftingLensGreen")) {
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(0, itemStack),
-                    CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
-                .itemOutputs(ItemList.Circuit_Chip_CrystalSoC.get(16))
-                .noFluidInputs()
-                .noFluidOutputs()
-                .requiresCleanRoom()
-                .eut(160000)
-                .duration(800)
-                .addTo(GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes);
+                    .itemInputs(
+                            GT_Utility.copyAmount(0, itemStack),
+                            CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1))
+                    .itemOutputs(ItemList.Circuit_Chip_CrystalSoC.get(16)).noFluidInputs().noFluidOutputs()
+                    .requiresCleanRoom().eut(160000).duration(800).addTo(GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes);
         }
-
-
-
 
     }
 
