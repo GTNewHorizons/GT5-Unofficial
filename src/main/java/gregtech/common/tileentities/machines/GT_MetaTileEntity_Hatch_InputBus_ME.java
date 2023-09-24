@@ -55,6 +55,7 @@ import appeng.api.networking.security.MachineSource;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.AECableType;
+import appeng.core.localization.WailaText;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
@@ -653,6 +654,17 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 .setSize(18, 18)
                 .setPos(7, 79))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullItemList, this::setAutoPullItemList))
+            .widget(TextWidget.dynamicString(() -> {
+                boolean isActive = isActive();
+                boolean isPowered = isPowered();
+                boolean isBooting = isBooting();
+                EnumChatFormatting color = (isActive && isPowered) ? EnumChatFormatting.GREEN
+                    : EnumChatFormatting.DARK_RED;
+                return color + WailaText.getPowerState(isActive, isPowered, isBooting);
+            })
+                .setTextAlignment(Alignment.Center)
+                .setSize(90, 9)
+                .setPos(43, 84))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (NetworkUtils.isClient()) return;
                 for (int i = 0; i < SLOT_COUNT; i++) {
