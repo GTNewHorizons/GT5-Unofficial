@@ -36,6 +36,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Mods;
 import gregtech.api.util.GTPP_Recipe;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
