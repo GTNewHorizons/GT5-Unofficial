@@ -627,7 +627,7 @@ public class RecipeLoader {
         GT_Values.RA.addElectromagneticSeparatorRecipe(
                 WerkstoffMaterialPool.CooledMonaziteRareEarthConcentrate.get(OrePrefixes.dust, 1),
                 WerkstoffMaterialPool.MonaziteRarerEarthSediment.get(OrePrefixes.dust, 1),
-                WerkstoffMaterialPool.EuropiumIIIOxide.get(OrePrefixes.dust, 5), // Maybe also holmium
+                WerkstoffMaterialPool.EuropiumIIIOxide.get(OrePrefixes.dust, 4), // Maybe also holmium
                 null,
                 new int[] { 9000, 500 },
                 600,
