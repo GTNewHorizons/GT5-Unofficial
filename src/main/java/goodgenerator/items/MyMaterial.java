@@ -1244,7 +1244,7 @@ public class MyMaterial implements Runnable {
             new Werkstoff.Stats().setBlastFurnace(true).setProtons(118).setMass(294).setMeltingPoint(11000),
             Werkstoff.Types.ELEMENT,
             new Werkstoff.GenerationFeatures().onlyDust().addMolten().addMetalItems().addCraftingMetalWorkingItems()
-                    .addMultipleIngotMetalWorkingItems(),
+                    .addMultipleIngotMetalWorkingItems().addMetaSolidifierRecipes(),
             OffsetID + 110,
             TextureSet.SET_SHINY);
 
