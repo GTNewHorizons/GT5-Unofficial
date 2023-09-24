@@ -149,8 +149,8 @@ public class RecipeGen_Extruder extends RecipeGen_Base {
                     material.getIngot(5),
                     ItemList.Shape_Extruder_Rotor.get(0),
                     material.getRotor(1),
-                    200,
-                    60)) {
+                    (int) Math.max(material.getMass() * 5L * 1, 1),
+                    material.vVoltageMultiplier)) {
                         Logger.WARNING("Extruder Rotor Recipe: " + material.getLocalizedName() + " - Success");
                     } else {
                         Logger.WARNING("Extruder Rotor Recipe: " + material.getLocalizedName() + " - Failed");

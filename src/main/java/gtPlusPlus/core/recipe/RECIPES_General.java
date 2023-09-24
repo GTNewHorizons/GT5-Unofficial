@@ -25,6 +25,7 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -385,18 +386,18 @@ public class RECIPES_General {
         generateWireRecipes(ELEMENT.STANDALONE.HYPOGEN);
         generateWireRecipes(ELEMENT.STANDALONE.CHRONOMATIC_GLASS);
 
-        GT_Materials[] g = new GT_Materials[] { GT_Materials.Staballoy, GT_Materials.Tantalloy60,
-                GT_Materials.Tantalloy61, GT_Materials.Void, GT_Materials.Potin, GT_Materials.MaragingSteel300,
-                GT_Materials.MaragingSteel350, GT_Materials.Inconel690, GT_Materials.Inconel792,
-                GT_Materials.HastelloyX, GT_Materials.TriniumNaquadahCarbonite, };
-        for (GT_Materials e : g) {
-            if (e == GT_Materials.Void) {
-                if (!Thaumcraft.isModLoaded()) {
-                    continue;
-                }
-            }
-            int tVoltageMultiplier = (e.mBlastFurnaceTemp >= 2800) ? 64 : 16;
-            generatePipeRecipes(e.mDefaultLocalName, e.getMass(), tVoltageMultiplier);
+        // No Material for void, natch.
+        if (Thaumcraft.isModLoaded()) {
+            generatePipeRecipes(GT_Materials.Void.mDefaultLocalName, GT_Materials.Void.getMass(), 16);
+        }
+
+        Material[] gtpp = new Material[] { ALLOY.STABALLOY, ALLOY.TANTALLOY_60, ALLOY.TANTALLOY_61, ALLOY.POTIN,
+                ALLOY.MARAGING300, ALLOY.MARAGING350, ALLOY.INCONEL_690, ALLOY.INCONEL_792, ALLOY.HASTELLOY_X,
+                ALLOY.TRINIUM_NAQUADAH_CARBON };
+
+        for (Material mat : gtpp) {
+            // generatePipeRecipes multiplies the voltage multiplier by 8 because ??! reasons.
+            generatePipeRecipes(mat.getLocalizedName(), mat.getMass(), mat.vVoltageMultiplier / 8);
         }
 
         Materials[] h = new Materials[] { Materials.Europium, Materials.Tungsten, Materials.DarkSteel, Materials.Clay,
