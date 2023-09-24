@@ -48,6 +48,7 @@ import appeng.api.networking.security.MachineSource;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.AECableType;
+import appeng.core.localization.WailaText;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
@@ -501,6 +502,11 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     }
 
     @Override
+    public int getGUIHeight() {
+        return 179;
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final SlotWidget[] aeSlotWidgets = new SlotWidget[16];
         buildContext.addSyncedWindow(CONFIG_WINDOW_ID, this::createStackSizeConfigurationWindow);
@@ -575,6 +581,17 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 .setSize(16, 16)
                 .setPos(80, 10))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullItemList, this::setAutoPullItemList))
+            .widget(TextWidget.dynamicString(() -> {
+                boolean isActive = isActive();
+                boolean isPowered = isPowered();
+                boolean isBooting = isBooting();
+                EnumChatFormatting color = (isActive && isPowered) ? EnumChatFormatting.GREEN
+                    : EnumChatFormatting.DARK_RED;
+                return color + WailaText.getPowerState(isActive, isPowered, isBooting);
+            })
+                .setTextAlignment(Alignment.Center)
+                .setSize(90, 9)
+                .setPos(43, 84))
             .widget(
                 new SlotWidget(inventoryHandler, getManualSlot())
                     // ghost slots are prioritized over manual slot
