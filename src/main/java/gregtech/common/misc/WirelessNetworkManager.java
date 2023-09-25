@@ -71,7 +71,7 @@ public class WirelessNetworkManager {
             exception.printStackTrace();
         }
 
-        // Get the team UUID. Users are by public static in a team with a UUID equal to their player UUID.
+        // Get the team UUID. Users are by default in a team with a UUID equal to their player UUID.
         String teamUUID = GlobalEnergyTeam.getOrDefault(userUUID, userUUID);
 
         // Get the teams total energy stored. If they are not in the map, return 0 EU.
