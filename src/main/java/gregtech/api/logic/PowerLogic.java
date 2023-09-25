@@ -198,7 +198,7 @@ public class PowerLogic {
     /**
      * @return The current maximum Amperage
      */
-    public long getAmperage() {
+    public long getMaxAmperage() {
         return amperage;
     }
 

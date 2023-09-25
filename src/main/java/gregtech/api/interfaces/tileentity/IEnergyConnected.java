@@ -117,7 +117,7 @@ public interface IEnergyConnected extends IColoredTileEntity {
             final PowerLogic emitterLogic = emitter.getPowerLogic();
             long usedAmperes = 0;
             long voltage = emitterLogic.getVoltage();
-            long amperage = emitterLogic.getAmperage();
+            long amperage = emitterLogic.getMaxAmperage();
             if (!(emitter instanceof final IHasWorldObjectAndCoords emitterTile)) {
                 return;
             }

@@ -764,7 +764,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     }
 
     protected void updatePowerLogic() {
-        power.setEnergyCapacity(GT_Values.V[tier] * power.getAmperage() * 2 * MINUTE);
+        power.setEnergyCapacity(GT_Values.V[tier] * power.getMaxAmperage() * 2 * MINUTE);
         power.setMaxVoltage(GT_Values.V[tier]);
     }
 
