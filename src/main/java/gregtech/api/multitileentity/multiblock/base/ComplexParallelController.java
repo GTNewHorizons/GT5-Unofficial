@@ -19,7 +19,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class ComplexParallelController<T extends ComplexParallelController<T, P>, P extends ComplexParallelProcessingLogic<P>>
-    extends PowerController<T, P> {
+    extends Controller<T, P> {
 
     protected int maxComplexParallels = 0;
     protected int currentComplexParallels = 0;
@@ -96,7 +96,7 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
     @Override
     public void setProcessingLogicPower(P processingLogic) {
         processingLogic.setAmperageOC(true);
-        processingLogic.setAvailableAmperage(getPowerLogic().getAmperage() / maxComplexParallels);
+        processingLogic.setAvailableAmperage(getPowerLogic().getMaxAmperage() / maxComplexParallels);
         processingLogic.setAvailableVoltage(getPowerLogic().getVoltage() / maxComplexParallels);
     }
 

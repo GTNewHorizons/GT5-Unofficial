@@ -5,16 +5,15 @@ import java.util.stream.LongStream;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class ComplexParallelProcessingLogic<P extends ComplexParallelProcessingLogic<P>> extends ProcessingLogic<P> {
+public class ComplexParallelProcessingLogic<P extends ComplexParallelProcessingLogic<P>>
+    extends MuTEProcessingLogic<P> {
 
-    protected boolean hasPerfectOverclock;
     protected int maxComplexParallels;
     protected ItemStack[][] outputItems;
     protected FluidStack[][] outputFluids;
     protected long[] calculatedEutValues;
     protected int[] durations;
     protected int[] progresses;
-    protected boolean isCleanroom;
 
     public P setMaxComplexParallel(int maxComplexParallels) {
         this.maxComplexParallels = maxComplexParallels;

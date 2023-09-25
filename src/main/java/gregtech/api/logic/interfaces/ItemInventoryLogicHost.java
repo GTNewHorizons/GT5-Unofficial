@@ -2,6 +2,7 @@ package gregtech.api.logic.interfaces;
 
 import java.util.HashSet;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ public interface ItemInventoryLogicHost extends ISidedInventory {
      * 
      * @param side The side from where items are being inputted or extracted from
      * @param type The type of inventory being accessed. For inputting its Input, For outputting its Output.
-     * @return The Item Logic responsible for said type.
+     * @return The Item Logic responsible for said type. Will return null if the side is not valid
      */
     @Nullable
     ItemInventoryLogic getItemLogic(@Nonnull ForgeDirection side, @Nonnull InventoryType type);
@@ -35,9 +36,9 @@ public interface ItemInventoryLogicHost extends ISidedInventory {
      * @param id   ID of the locked inventory. A null id is all inventories of said controller of said type
      * @return The Item Logic responsible for everything that should be done with said inventory
      */
-    @Nullable
+    @Nonnull
     default ItemInventoryLogic getItemLogic(@Nonnull InventoryType type, @Nullable UUID id) {
-        return getItemLogic(ForgeDirection.UNKNOWN, type);
+        return Objects.requireNonNull(getItemLogic(ForgeDirection.UNKNOWN, type));
     }
 
     /**
@@ -50,6 +51,10 @@ public interface ItemInventoryLogicHost extends ISidedInventory {
         return null;
     }
 
+    /**
+     * Returns an empty set if the type is {@link InventoryType#Both} or this is used when the machine isn't a
+     * controller
+     */
     @Nonnull
     default Set<Entry<UUID, ItemInventoryLogic>> getAllItemInventoryLogics(@Nonnull InventoryType type) {
         return new HashSet<>();

@@ -10,13 +10,16 @@ import javax.annotation.Nullable;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.logic.FluidInventoryLogic;
+import gregtech.api.logic.ItemInventoryLogic;
+import gregtech.api.logic.MuTEProcessingLogic;
+import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
 
-public class CokeOvenProcessingLogic extends ProcessingLogic<CokeOvenProcessingLogic> {
+public class CokeOvenProcessingLogic extends MuTEProcessingLogic<CokeOvenProcessingLogic> {
 
     private static final int NORMAL_RECIPE_TIME = 1800;
     private static final int WOOD_ORE_ID = getOreID("logWood");
@@ -28,24 +31,32 @@ public class CokeOvenProcessingLogic extends ProcessingLogic<CokeOvenProcessingL
     private static final int SUGAR_CHARCOAL_ORE_ID = getOreID("itemCharcoalSugar");
     private int timeMultiplier = 1;
 
+    @Nonnull
     @Override
-    public @Nonnull CheckRecipeResult process() {
-        if (inputItems == null || inputItems[0] == null) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
+    protected FindRecipeResult findRecipe(@Nullable GT_Recipe.GT_Recipe_Map map, @Nonnull ItemInventoryLogic itemInput,
+        @Nonnull FluidInventoryLogic fluidInput) {
+        for (ItemStack item : itemInput.getStoredItems()) {
+            ItemStack output = findRecipe(item);
+            if (output != null) {
+                ItemStack input = item.copy();
+                input.stackSize = 1;
+                return FindRecipeResult.ofSuccess(
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(input)
+                        .itemOutputs(output)
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(NORMAL_RECIPE_TIME * timeMultiplier)
+                        .eut(0)
+                        .build()
+                        .get());
+            }
         }
-        ItemStack input = inputItems[0];
-        int originalStackSize = input.stackSize;
-        ItemStack output = findRecipe(input);
-        input.stackSize -= 1;
-        setDuration(NORMAL_RECIPE_TIME * timeMultiplier);
-        setOutputItems(output);
-
-        return originalStackSize > input.stackSize ? CheckRecipeResultRegistry.SUCCESSFUL
-            : CheckRecipeResultRegistry.NO_RECIPE;
+        return FindRecipeResult.NOT_FOUND;
     }
 
     @Nullable
-    protected ItemStack findRecipe(@Nonnull ItemStack input) {
+    private ItemStack findRecipe(@Nonnull ItemStack input) {
         for (int oreId : getOreIDs(input)) {
             if (oreId == COAL_ORE_ID) {
                 return GT_OreDictUnificator.get("fuelCoke", null, 1);
