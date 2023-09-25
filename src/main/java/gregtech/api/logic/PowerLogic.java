@@ -56,7 +56,7 @@ public class PowerLogic {
      * Sets the maximum amount of amps a machine can receive from an emitter
      */
     @Nonnull
-    public PowerLogic setAmperage(long amperage) {
+    public PowerLogic setMaxAmperage(long amperage) {
         this.amperage = amperage;
         return this;
     }

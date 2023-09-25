@@ -1299,6 +1299,6 @@ public abstract class Controller<T extends Controller<T, P>, P extends MuTEProce
 
     @Override
     public void setMaxAmperage(long amperage) {
-        power.setAmperage(amperage);
+        power.setMaxAmperage(amperage);
     }
 }
