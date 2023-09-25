@@ -1,9 +1,9 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sSifterRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes;
+import static gregtech.api.recipe.RecipeMap.sHammerRecipes;
+import static gregtech.api.recipe.RecipeMap.sMaceratorRecipes;
+import static gregtech.api.recipe.RecipeMap.sSifterRecipes;
+import static gregtech.api.recipe.RecipeMap.sThermalCentrifugeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 

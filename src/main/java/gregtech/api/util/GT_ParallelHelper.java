@@ -12,6 +12,7 @@ import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.XSTR;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SingleRecipeCheck;
@@ -427,7 +428,7 @@ public class GT_ParallelHelper {
             if (recipeCheck == null) {
                 // Machine is configured to lock to a single recipe, but haven't built the recipe checker yet.
                 // Build the checker on next successful recipe.
-                GT_Recipe.GT_Recipe_Map recipeMap = singleRecipeMachine.getRecipeMap();
+                RecipeMap recipeMap = singleRecipeMachine.getRecipeMap();
                 if (recipeMap != null) {
                     tSingleRecipeCheckBuilder = SingleRecipeCheck.builder(recipeMap)
                         .setBefore(itemInputs, fluidInputs);

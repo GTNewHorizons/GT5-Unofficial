@@ -1,6 +1,6 @@
 package gregtech.common.fluid;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes;
+import static gregtech.api.recipe.RecipeMap.sFluidCannerRecipes;
 
 import javax.annotation.Nonnull;
 

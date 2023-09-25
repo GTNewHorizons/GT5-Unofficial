@@ -22,8 +22,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_Steel;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_AlloySmelter_Steel extends GT_MetaTileEntity_BasicMachine_Steel {
@@ -47,8 +47,8 @@ public class GT_MetaTileEntity_AlloySmelter_Steel extends GT_MetaTileEntity_Basi
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeList() {
-        return GT_Recipe.GT_Recipe_Map.sAlloySmelterRecipes;
+    public RecipeMap getRecipeList() {
+        return RecipeMap.sAlloySmelterRecipes;
     }
 
     @Override

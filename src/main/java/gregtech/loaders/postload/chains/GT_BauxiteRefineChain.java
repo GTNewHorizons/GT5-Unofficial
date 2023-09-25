@@ -1,10 +1,10 @@
 package gregtech.loaders.postload.chains;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCrackingRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes;
+import static gregtech.api.recipe.RecipeMap.sCentrifugeRecipes;
+import static gregtech.api.recipe.RecipeMap.sChemicalBathRecipes;
+import static gregtech.api.recipe.RecipeMap.sCrackingRecipes;
+import static gregtech.api.recipe.RecipeMap.sMixerRecipes;
+import static gregtech.api.recipe.RecipeMap.sMultiblockChemicalRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 

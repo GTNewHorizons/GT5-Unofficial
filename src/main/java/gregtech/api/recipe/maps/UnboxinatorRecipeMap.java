@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.ItemList;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
@@ -16,7 +17,7 @@ import gregtech.api.util.GT_Recipe;
 /**
  * Special Class for Unboxinator handling.
  */
-public class UnboxinatorRecipeMap extends GT_Recipe.GT_Recipe_Map {
+public class UnboxinatorRecipeMap extends RecipeMap {
 
     public UnboxinatorRecipeMap(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName,
         String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems,

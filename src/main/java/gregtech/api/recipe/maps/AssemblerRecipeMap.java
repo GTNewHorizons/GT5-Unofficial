@@ -10,13 +10,14 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.GT_Recipe;
 
 /**
  * Special Class for Assembler handling.
  */
-public class AssemblerRecipeMap extends GT_Recipe.GT_Recipe_Map {
+public class AssemblerRecipeMap extends RecipeMap {
 
     public AssemblerRecipeMap(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName,
         String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems,

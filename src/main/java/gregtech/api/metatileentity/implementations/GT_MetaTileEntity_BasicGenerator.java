@@ -16,10 +16,10 @@ import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.maps.FuelRecipeMap;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 
@@ -274,7 +274,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
 
     public abstract int getPollution();
 
-    public abstract GT_Recipe_Map getRecipes();
+    public abstract RecipeMap getRecipes();
 
     public abstract int getEfficiency();
 
@@ -288,7 +288,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     }
 
     public long getFuelValue(FluidStack aLiquid, boolean aLong) {
-        GT_Recipe_Map tRecipes = getRecipes();
+        RecipeMap tRecipes = getRecipes();
         if (aLiquid == null || !(tRecipes instanceof FuelRecipeMap tFuels)) return 0;
         GT_Recipe tFuel = tFuels.findFuel(aLiquid);
         if (tFuel == null) return 0;

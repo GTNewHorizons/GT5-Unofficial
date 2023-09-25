@@ -23,9 +23,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.multitileentity.multiblock.base.StackableController;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
 public class Macerator extends StackableController<Macerator> {
 
@@ -150,7 +150,7 @@ public class Macerator extends StackableController<Macerator> {
     }
 
     private boolean processRecipe(ItemStack[] aItemInputs, String aInventory) {
-        GT_Recipe_Map tRecipeMap = GT_Recipe_Map.sMaceratorRecipes;
+        RecipeMap tRecipeMap = RecipeMap.sMaceratorRecipes;
         GT_Recipe tRecipe = tRecipeMap.findRecipe(this, false, TierEU.IV, null, aItemInputs);
         if (tRecipe == null) {
             return false;

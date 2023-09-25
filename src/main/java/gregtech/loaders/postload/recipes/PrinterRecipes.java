@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPrinterRecipes;
+import static gregtech.api.recipe.RecipeMap.sPrinterRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 

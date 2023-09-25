@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
@@ -23,7 +24,7 @@ import gregtech.api.util.GT_Utility;
 /**
  * Special Class for Macerator/RockCrusher Recipe handling.
  */
-public class MaceratorRecipeMap extends GT_Recipe.GT_Recipe_Map {
+public class MaceratorRecipeMap extends RecipeMap {
 
     public MaceratorRecipeMap(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName,
         String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems,

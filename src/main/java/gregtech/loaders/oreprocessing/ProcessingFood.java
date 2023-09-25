@@ -1,9 +1,9 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBenderRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPressRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sSlicerRecipes;
+import static gregtech.api.recipe.RecipeMap.sBenderRecipes;
+import static gregtech.api.recipe.RecipeMap.sMixerRecipes;
+import static gregtech.api.recipe.RecipeMap.sPressRecipes;
+import static gregtech.api.recipe.RecipeMap.sSlicerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 

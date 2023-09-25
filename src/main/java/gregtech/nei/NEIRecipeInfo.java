@@ -1,5 +1,6 @@
 package gregtech.nei;
 
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.power.Power;
 
@@ -16,7 +17,7 @@ public class NEIRecipeInfo {
     /**
      * RecipeMap the recipe belongs to.
      */
-    public final GT_Recipe.GT_Recipe_Map recipeMap;
+    public final RecipeMap recipeMap;
 
     /**
      * Recipe object for NEI.
@@ -34,7 +35,7 @@ public class NEIRecipeInfo {
      */
     public int yPos;
 
-    public NEIRecipeInfo(GT_Recipe recipe, GT_Recipe.GT_Recipe_Map recipeMap,
+    public NEIRecipeInfo(GT_Recipe recipe, RecipeMap recipeMap,
         GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe, Power power, int descriptionYOffset) {
         this.recipe = recipe;
         this.recipeMap = recipeMap;

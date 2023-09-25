@@ -8,9 +8,10 @@ import java.util.Set;
 
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_Recipe;
 
-public class OilCrackerRecipeMap extends GT_Recipe.GT_Recipe_Map {
+public class OilCrackerRecipeMap extends RecipeMap {
 
     private final Set<String> mValidCatalystFluidNames = new HashSet<>();
 

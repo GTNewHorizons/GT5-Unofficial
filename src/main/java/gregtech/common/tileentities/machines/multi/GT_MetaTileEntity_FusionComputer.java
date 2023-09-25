@@ -57,6 +57,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -292,8 +293,8 @@ public abstract class GT_MetaTileEntity_FusionComputer
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GT_Recipe.GT_Recipe_Map.sFusionRecipes;
+    public RecipeMap getRecipeMap() {
+        return RecipeMap.sFusionRecipes;
     }
 
     @Override
@@ -625,7 +626,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
                 .setDefaultColor(COLOR_TEXT_RED.get())
                 .setPos(50, 155))
             .widget(
-                new ButtonWidget().setNEITransferRect(GT_Recipe.GT_Recipe_Map.sFusionRecipes.mNEIName)
+                new ButtonWidget().setNEITransferRect(RecipeMap.sFusionRecipes.mNEIName)
                     .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_NEI)
                     .setPos(154, 4)
                     .setSize(18, 18));

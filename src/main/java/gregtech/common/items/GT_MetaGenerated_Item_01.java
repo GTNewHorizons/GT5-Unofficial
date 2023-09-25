@@ -32,10 +32,10 @@ import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_LuV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_MV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_ZPM;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCannerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
+import static gregtech.api.recipe.RecipeMap.sAssemblerRecipes;
+import static gregtech.api.recipe.RecipeMap.sBoxinatorRecipes;
+import static gregtech.api.recipe.RecipeMap.sCannerRecipes;
+import static gregtech.api.recipe.RecipeMap.sCompressorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -87,6 +87,7 @@ import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Item_X32;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_FoodStat;
 import gregtech.api.util.GT_LanguageManager;
@@ -4538,7 +4539,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
     }
 
     public boolean isPlasmaCellUsed(OrePrefixes aPrefix, Materials aMaterial) {
-        Collection<GT_Recipe> fusionRecipes = GT_Recipe.GT_Recipe_Map.sFusionRecipes.mRecipeList;
+        Collection<GT_Recipe> fusionRecipes = RecipeMap.sFusionRecipes.mRecipeList;
         if (aPrefix == OrePrefixes.cellPlasma && aMaterial.getPlasma(1L) != null) { // Materials has a plasma fluid
             for (GT_Recipe recipe : fusionRecipes) { // Loop through fusion recipes
                 if (recipe.getFluidOutput(0) != null) { // Make sure fluid output can't be null (not sure if possible)

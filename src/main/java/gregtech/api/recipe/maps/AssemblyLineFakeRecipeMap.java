@@ -11,10 +11,11 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.gui.modularui.UIHelper;
 
-public class AssemblyLineFakeRecipeMap extends GT_Recipe.GT_Recipe_Map {
+public class AssemblyLineFakeRecipeMap extends RecipeMap {
 
     public AssemblyLineFakeRecipeMap(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName,
         String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems,

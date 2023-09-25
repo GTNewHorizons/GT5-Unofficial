@@ -532,6 +532,10 @@ public class GT_RecipeBuilder {
         return eut;
     }
 
+    public boolean isOptimize() {
+        return optimize;
+    }
+
     // endregion
 
     // region validator

@@ -1,14 +1,14 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBlastRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCannerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sElectroMagneticSeparatorRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sImplosionRecipes;
+import static gregtech.api.recipe.RecipeMap.sAutoclaveRecipes;
+import static gregtech.api.recipe.RecipeMap.sBlastRecipes;
+import static gregtech.api.recipe.RecipeMap.sBoxinatorRecipes;
+import static gregtech.api.recipe.RecipeMap.sCannerRecipes;
+import static gregtech.api.recipe.RecipeMap.sCentrifugeRecipes;
+import static gregtech.api.recipe.RecipeMap.sCompressorRecipes;
+import static gregtech.api.recipe.RecipeMap.sElectroMagneticSeparatorRecipes;
+import static gregtech.api.recipe.RecipeMap.sElectrolyzerRecipes;
+import static gregtech.api.recipe.RecipeMap.sImplosionRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;

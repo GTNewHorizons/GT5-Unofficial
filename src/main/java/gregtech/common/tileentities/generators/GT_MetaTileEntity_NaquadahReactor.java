@@ -29,8 +29,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Recipe;
 
 public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGenerator {
 
@@ -67,14 +67,14 @@ public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGe
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipes() {
-        GT_Recipe.GT_Recipe_Map ret;
+    public RecipeMap getRecipes() {
+        RecipeMap ret;
         switch (mTier) {
-            case 4 -> ret = GT_Recipe.GT_Recipe_Map.sSmallNaquadahReactorFuels;
-            case 5 -> ret = GT_Recipe.GT_Recipe_Map.sLargeNaquadahReactorFuels;
-            case 6 -> ret = GT_Recipe.GT_Recipe_Map.sHugeNaquadahReactorFuels;
-            case 7 -> ret = GT_Recipe.GT_Recipe_Map.sExtremeNaquadahReactorFuels;
-            case 8 -> ret = GT_Recipe.GT_Recipe_Map.sUltraHugeNaquadahReactorFuels;
+            case 4 -> ret = RecipeMap.sSmallNaquadahReactorFuels;
+            case 5 -> ret = RecipeMap.sLargeNaquadahReactorFuels;
+            case 6 -> ret = RecipeMap.sHugeNaquadahReactorFuels;
+            case 7 -> ret = RecipeMap.sExtremeNaquadahReactorFuels;
+            case 8 -> ret = RecipeMap.sUltraHugeNaquadahReactorFuels;
             default -> ret = null;
         }
         return ret;

@@ -8,16 +8,17 @@ import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.gui.modularui.UIHelper;
 
 /**
  * Nicely display NEI with many items and fluids. Remember to call
- * {@link GT_Recipe.GT_Recipe_Map#setUsualFluidInputCount} and
- * {@link GT_Recipe.GT_Recipe_Map#setUsualFluidOutputCount}. If row count >= 6, it doesn't fit in 2 recipes per page, so
+ * {@link RecipeMap#setUsualFluidInputCount} and
+ * {@link RecipeMap#setUsualFluidOutputCount}. If row count >= 6, it doesn't fit in 2 recipes per page, so
  * change it via IMC.
  */
-public class LargeNEIDisplayRecipeMap extends GT_Recipe.GT_Recipe_Map {
+public class LargeNEIDisplayRecipeMap extends RecipeMap {
 
     private static final int xDirMaxCount = 3;
     private static final int yOrigin = 8;

@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.FindRecipeResult;
@@ -21,7 +22,6 @@ import gregtech.api.recipe.check.SingleRecipeCheck;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
 /**
  * Logic class to calculate result of recipe check from inputs, based on recipemap.
@@ -31,9 +31,9 @@ public class ProcessingLogic {
 
     protected IVoidable machine;
     protected IRecipeLockable recipeLockableMachine;
-    protected Supplier<GT_Recipe_Map> recipeMapSupplier;
+    protected Supplier<RecipeMap> recipeMapSupplier;
     protected GT_Recipe lastRecipe;
-    protected GT_Recipe_Map lastRecipeMap;
+    protected RecipeMap lastRecipeMap;
     protected ItemStack specialSlotItem;
     protected ItemStack[] inputItems;
     protected ItemStack[] outputItems;
@@ -146,11 +146,11 @@ public class ProcessingLogic {
         return this;
     }
 
-    public ProcessingLogic setRecipeMap(GT_Recipe_Map recipeMap) {
+    public ProcessingLogic setRecipeMap(RecipeMap recipeMap) {
         return setRecipeMapSupplier(() -> recipeMap);
     }
 
-    public ProcessingLogic setRecipeMapSupplier(Supplier<GT_Recipe_Map> supplier) {
+    public ProcessingLogic setRecipeMapSupplier(Supplier<RecipeMap> supplier) {
         this.recipeMapSupplier = supplier;
         return this;
     }
@@ -263,7 +263,7 @@ public class ProcessingLogic {
      */
     @Nonnull
     public CheckRecipeResult process() {
-        GT_Recipe_Map recipeMap;
+        RecipeMap recipeMap;
         if (recipeMapSupplier == null) {
             recipeMap = null;
         } else {
@@ -396,7 +396,7 @@ public class ProcessingLogic {
      * Override if you don't work with regular gt recipe maps
      */
     @Nonnull
-    protected FindRecipeResult findRecipe(@Nullable GT_Recipe_Map map) {
+    protected FindRecipeResult findRecipe(@Nullable RecipeMap map) {
         if (map == null) return FindRecipeResult.NOT_FOUND;
 
         RecipeValidator recipeValidator = new RecipeValidator(

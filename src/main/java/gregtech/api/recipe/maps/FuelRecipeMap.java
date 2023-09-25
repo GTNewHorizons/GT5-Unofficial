@@ -7,13 +7,14 @@ import java.util.Map;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
 /**
  * Just a Recipe Map with Utility specifically for Fuels.
  */
-public class FuelRecipeMap extends GT_Recipe.GT_Recipe_Map {
+public class FuelRecipeMap extends RecipeMap {
 
     private final Map<String, GT_Recipe> mRecipesByFluidInput = new HashMap<>();
 

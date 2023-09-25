@@ -39,10 +39,10 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.ExternalMaterials;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import ic2.core.Ic2Items;
@@ -55,7 +55,7 @@ import ic2.core.Ic2Items;
  */
 public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_BasicMachine {
 
-    private final GT_Recipe.GT_Recipe_Map mRecipes;
+    private final RecipeMap mRecipes;
     private final int mTankCapacity;
     private final SpecialEffects mSpecialEffect;
     private final ResourceLocation mSoundResourceLocation;
@@ -66,7 +66,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
      * Registers machine with single-line description, specific tank capacity, and sound specified by ResourceLocation.
      */
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
-        String aDescription, GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
+        String aDescription, RecipeMap aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
         ResourceLocation aSound, boolean aSharedTank, boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect,
         String aOverlays, Object[] aRecipe) {
         this(
@@ -91,7 +91,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
      * Registers machine with multi-line descriptions, specific tank capacity, and sound specified by ResourceLocation.
      */
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
-        String[] aDescription, GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
+        String[] aDescription, RecipeMap aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
         ResourceLocation aSound, boolean aSharedTank, boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect,
         String aOverlays, Object[] aRecipe) {
         super(
@@ -447,7 +447,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
      * Registers machine with single-line description, auto-scaled fluid tank, and sound specified by SoundResource.
      */
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
-        String aDescription, GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, boolean usesFluids,
+        String aDescription, RecipeMap aRecipes, int aInputSlots, int aOutputSlots, boolean usesFluids,
         SoundResource aSound, boolean aSharedTank, boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect,
         String aOverlays, Object[] aRecipe) {
         this(
@@ -470,11 +470,11 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
 
     /**
      * @deprecated Use {@link #GT_MetaTileEntity_BasicMachine_GT_Recipe(int, String, String, int, String,
-     *             GT_Recipe.GT_Recipe_Map, int, int, boolean, SoundResource, boolean, boolean, SpecialEffects, String, Object[])}
+     *             RecipeMap, int, int, boolean, SoundResource, boolean, boolean, SpecialEffects, String, Object[])}
      */
     @Deprecated
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
-        String aDescription, GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, boolean usesFluids,
+        String aDescription, RecipeMap aRecipes, int aInputSlots, int aOutputSlots, boolean usesFluids,
         int aGUIParameterA, int aGUIParameterB, String aGUIName, SoundResource aSound, boolean aSharedTank,
         boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
         this(
@@ -499,7 +499,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
      * Registers machine with multi-line descriptions, auto-scaled fluid tank, and sound specified by SoundResource.
      */
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
-        String[] aDescription, GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, boolean usesFluids,
+        String[] aDescription, RecipeMap aRecipes, int aInputSlots, int aOutputSlots, boolean usesFluids,
         SoundResource aSound, boolean aSharedTank, boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect,
         String aOverlays, Object[] aRecipe) {
         this(
@@ -522,11 +522,11 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
 
     /**
      * @deprecated Use {@link #GT_MetaTileEntity_BasicMachine_GT_Recipe(int, String, String, int, String[],
-     *             GT_Recipe.GT_Recipe_Map, int, int, boolean, SoundResource, boolean, boolean, SpecialEffects, String, Object[])}
+     *             RecipeMap, int, int, boolean, SoundResource, boolean, boolean, SpecialEffects, String, Object[])}
      */
     @Deprecated
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
-        String[] aDescription, GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, boolean usesFluids,
+        String[] aDescription, RecipeMap aRecipes, int aInputSlots, int aOutputSlots, boolean usesFluids,
         int aGUIParameterA, int aGUIParameterB, String aGUIName, SoundResource aSound, boolean aSharedTank,
         boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
         this(
@@ -551,7 +551,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
      * Registers machine with single-line description, specific tank capacity, and sound specified by SoundResource.
      */
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
-        String aDescription, GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
+        String aDescription, RecipeMap aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
         SoundResource aSound, boolean aSharedTank, boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect,
         String aOverlays, Object[] aRecipe) {
         this(
@@ -574,11 +574,11 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
 
     /**
      * @deprecated Use {@link #GT_MetaTileEntity_BasicMachine_GT_Recipe(int, String, String, int, String,
-     *             GT_Recipe.GT_Recipe_Map, int, int, int, SoundResource, boolean, boolean, SpecialEffects, String, Object[])}
+     *             RecipeMap, int, int, int, SoundResource, boolean, boolean, SpecialEffects, String, Object[])}
      */
     @Deprecated
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
-        String aDescription, GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
+        String aDescription, RecipeMap aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
         int aGUIParameterA, int aGUIParameterB, String aGUIName, SoundResource aSound, boolean aSharedTank,
         boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
         this(
@@ -603,7 +603,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
      * Registers machine with multi-line descriptions, specific tank capacity, and sound specified by SoundResource.
      */
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
-        String[] aDescription, GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
+        String[] aDescription, RecipeMap aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
         SoundResource aSound, boolean aSharedTank, boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect,
         String aOverlays, Object[] aRecipe) {
         this(
@@ -626,11 +626,11 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
 
     /**
      * @deprecated Use {@link #GT_MetaTileEntity_BasicMachine_GT_Recipe(int, String, String, int, String[],
-     *             GT_Recipe.GT_Recipe_Map, int, int, int, SoundResource, boolean, boolean, SpecialEffects, String, Object[])}
+     *             RecipeMap, int, int, int, SoundResource, boolean, boolean, SpecialEffects, String, Object[])}
      */
     @Deprecated
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
-        String[] aDescription, GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
+        String[] aDescription, RecipeMap aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
         int aGUIParameterA, int aGUIParameterB, String aGUIName, SoundResource aSound, boolean aSharedTank,
         boolean aRequiresFluidForFiltering, SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
         this(
@@ -653,11 +653,11 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
 
     /**
      * @deprecated Use {@link #GT_MetaTileEntity_BasicMachine_GT_Recipe(int, String, String, int, String,
-     *             GT_Recipe.GT_Recipe_Map, int, int, int, ResourceLocation, boolean, boolean, SpecialEffects, String, Object[])}
+     *             RecipeMap, int, int, int, ResourceLocation, boolean, boolean, SpecialEffects, String, Object[])}
      */
     @Deprecated
     public GT_MetaTileEntity_BasicMachine_GT_Recipe(int aID, String aName, String aNameRegional, int aTier,
-        String aDescription, GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
+        String aDescription, RecipeMap aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity,
         int aGUIParameterA, int aGUIParameterB, String aGUIName, String aSound, boolean aSharedTank,
         boolean aRequiresFluidForFiltering, int aSpecialEffect, String aOverlays, Object[] aRecipe) {
         this(
@@ -681,9 +681,9 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     /**
      * For {@link #newMetaEntity}.
      */
-    public GT_MetaTileEntity_BasicMachine_GT_Recipe(String aName, int aTier, String[] aDescription,
-        GT_Recipe.GT_Recipe_Map aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, int aAmperage,
-        ITexture[][][] aTextures, ResourceLocation aSound, boolean aSharedTank, boolean aRequiresFluidForFiltering,
+    public GT_MetaTileEntity_BasicMachine_GT_Recipe(String aName, int aTier, String[] aDescription, RecipeMap aRecipes,
+        int aInputSlots, int aOutputSlots, int aTankCapacity, int aAmperage, ITexture[][][] aTextures,
+        ResourceLocation aSound, boolean aSharedTank, boolean aRequiresFluidForFiltering,
         SpecialEffects aSpecialEffect) {
         super(aName, aTier, aAmperage, aDescription, aTextures, aInputSlots, aOutputSlots);
         this.mSharedTank = aSharedTank;
@@ -889,7 +889,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     }
 
     @Override
-    public GT_Recipe.GT_Recipe_Map getRecipeList() {
+    public RecipeMap getRecipeList() {
         return this.mRecipes;
     }
 

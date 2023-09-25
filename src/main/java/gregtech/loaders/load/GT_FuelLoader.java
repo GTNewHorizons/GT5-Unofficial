@@ -16,6 +16,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.fluid.GT_FluidFactory;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -47,7 +48,7 @@ public class GT_FuelLoader implements Runnable {
             30,
             2);
 
-        GT_Recipe.GT_Recipe_Map.sSmallNaquadahReactorFuels.addRecipe(
+        RecipeMap.sSmallNaquadahReactorFuels.addRecipe(
             true,
             new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.NaquadahEnriched, 1L) },
             new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadah, 1L) },
@@ -57,7 +58,7 @@ public class GT_FuelLoader implements Runnable {
             0,
             0,
             50000);
-        GT_Recipe.GT_Recipe_Map.sLargeNaquadahReactorFuels.addRecipe(
+        RecipeMap.sLargeNaquadahReactorFuels.addRecipe(
             true,
             new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, Materials.NaquadahEnriched, 1L) },
             new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 1L) },
@@ -67,7 +68,7 @@ public class GT_FuelLoader implements Runnable {
             0,
             0,
             250000);
-        GT_Recipe.GT_Recipe_Map.sHugeNaquadahReactorFuels.addRecipe(
+        RecipeMap.sHugeNaquadahReactorFuels.addRecipe(
             true,
             new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahEnriched, 1L) },
             new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Naquadah, 1L) },
@@ -77,7 +78,7 @@ public class GT_FuelLoader implements Runnable {
             0,
             0,
             500000);
-        GT_Recipe.GT_Recipe_Map.sExtremeNaquadahReactorFuels.addRecipe(
+        RecipeMap.sExtremeNaquadahReactorFuels.addRecipe(
             true,
             new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadria, 1L) },
             new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadah, 1L) },
@@ -87,7 +88,7 @@ public class GT_FuelLoader implements Runnable {
             0,
             0,
             250000);
-        GT_Recipe.GT_Recipe_Map.sUltraHugeNaquadahReactorFuels.addRecipe(
+        RecipeMap.sUltraHugeNaquadahReactorFuels.addRecipe(
             true,
             new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Naquadria, 1L) },
             new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 1L) },
@@ -97,7 +98,7 @@ public class GT_FuelLoader implements Runnable {
             0,
             0,
             1000000);
-        GT_Recipe.GT_Recipe_Map.sFluidNaquadahReactorFuels.addRecipe(
+        RecipeMap.sFluidNaquadahReactorFuels.addRecipe(
             true,
             new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NaquadahEnriched, 1L) },
             new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Naquadah, 1L) },
@@ -109,7 +110,7 @@ public class GT_FuelLoader implements Runnable {
             1400000);
 
         // BloodMagic
-        GT_Recipe.GT_Recipe_Map.sMagicFuels.addRecipe(
+        RecipeMap.sMagicFuels.addRecipe(
             true,
             new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "reinforcedSlate", 1L) },
             new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "blankSlate", 1L) },
@@ -119,7 +120,7 @@ public class GT_FuelLoader implements Runnable {
             0,
             0,
             400);
-        GT_Recipe.GT_Recipe_Map.sMagicFuels.addRecipe(
+        RecipeMap.sMagicFuels.addRecipe(
             true,
             new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "imbuedSlate", 1L) },
             new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "reinforcedSlate", 1L) },
@@ -129,7 +130,7 @@ public class GT_FuelLoader implements Runnable {
             0,
             0,
             1000);
-        GT_Recipe.GT_Recipe_Map.sMagicFuels.addRecipe(
+        RecipeMap.sMagicFuels.addRecipe(
             true,
             new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "demonicSlate", 1L) },
             new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "imbuedSlate", 1L) },
@@ -139,7 +140,7 @@ public class GT_FuelLoader implements Runnable {
             0,
             0,
             8000);
-        GT_Recipe.GT_Recipe_Map.sMagicFuels.addRecipe(
+        RecipeMap.sMagicFuels.addRecipe(
             true,
             new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "bloodMagicBaseItems", 1L, 27) },
             new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "demonicSlate", 1L) },

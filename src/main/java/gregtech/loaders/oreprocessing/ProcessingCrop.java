@@ -1,10 +1,10 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBrewingRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sSlicerRecipes;
+import static gregtech.api.recipe.RecipeMap.sBrewingRecipes;
+import static gregtech.api.recipe.RecipeMap.sCompressorRecipes;
+import static gregtech.api.recipe.RecipeMap.sMaceratorRecipes;
+import static gregtech.api.recipe.RecipeMap.sSlicerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 

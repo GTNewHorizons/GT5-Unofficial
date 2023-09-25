@@ -13,6 +13,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.FindRecipeResult;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -20,7 +21,7 @@ import gregtech.api.util.GT_Utility;
 /**
  * Special Class for Fluid Canner handling.
  */
-public class FluidCannerRecipeMap extends GT_Recipe.GT_Recipe_Map {
+public class FluidCannerRecipeMap extends RecipeMap {
 
     public FluidCannerRecipeMap(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName,
         String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems,

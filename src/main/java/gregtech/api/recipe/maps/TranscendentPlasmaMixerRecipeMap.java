@@ -8,12 +8,13 @@ import java.util.List;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.NEIRecipeInfo;
 
-public class TranscendentPlasmaMixerRecipeMap extends GT_Recipe.GT_Recipe_Map {
+public class TranscendentPlasmaMixerRecipeMap extends RecipeMap {
 
     public TranscendentPlasmaMixerRecipeMap(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName,
         String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount,

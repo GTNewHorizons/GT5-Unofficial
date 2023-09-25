@@ -12,9 +12,9 @@ import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.recipe.RecipeMap;
 
-public class DistillationTowerRecipeMap extends GT_Recipe.GT_Recipe_Map {
+public class DistillationTowerRecipeMap extends RecipeMap {
 
     public DistillationTowerRecipeMap() {
         super(

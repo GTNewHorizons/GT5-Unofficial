@@ -1,7 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.recipe.RecipeMap.sExtractorRecipes;
 import static gregtech.api.util.GT_ModHandler.getIC2Item;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sExtractorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
 

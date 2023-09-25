@@ -6,12 +6,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_Recipe;
 
 /**
  * Abstract Class for general Recipe Handling of non GT Recipes
  */
-public abstract class NonGTRecipeMap extends GT_Recipe.GT_Recipe_Map {
+public abstract class NonGTRecipeMap extends RecipeMap {
 
     public NonGTRecipeMap(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName,
         String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems,

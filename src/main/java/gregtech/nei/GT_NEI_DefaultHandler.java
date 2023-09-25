@@ -58,6 +58,7 @@ import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.GT_GUIContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -72,7 +73,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
     public static final int sOffsetX = 5;
     public static final int sOffsetY = 11;
 
-    private static final ConcurrentMap<GT_Recipe.GT_Recipe_Map, SortedRecipeListCache> CACHE = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<RecipeMap, SortedRecipeListCache> CACHE = new ConcurrentHashMap<>();
 
     protected Power mPower;
     private String mRecipeName; // Name of the handler displayed on top
@@ -103,7 +104,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
         GuiContainerManager.addTooltipHandler(new GT_RectHandler());
     }
 
-    public GT_NEI_DefaultHandler(GT_Recipe.GT_Recipe_Map aRecipeMap) {
+    public GT_NEI_DefaultHandler(RecipeMap aRecipeMap) {
         super(aRecipeMap);
         Rectangle transferRect = new Rectangle(aRecipeMap.neiTransferRect);
         transferRect.translate(WINDOW_OFFSET.x, WINDOW_OFFSET.y);

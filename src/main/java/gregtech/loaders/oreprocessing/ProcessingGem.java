@@ -1,13 +1,13 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBenderRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sImplosionRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLatheRecipes;
+import static gregtech.api.recipe.RecipeMap.sBenderRecipes;
+import static gregtech.api.recipe.RecipeMap.sCompressorRecipes;
+import static gregtech.api.recipe.RecipeMap.sElectrolyzerRecipes;
+import static gregtech.api.recipe.RecipeMap.sHammerRecipes;
+import static gregtech.api.recipe.RecipeMap.sImplosionRecipes;
+import static gregtech.api.recipe.RecipeMap.sLaserEngraverRecipes;
+import static gregtech.api.recipe.RecipeMap.sLatheRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;

@@ -15,7 +15,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
 import gregtech.common.items.GT_MetaGenerated_Item_02;
 import gregtech.common.items.GT_MetaGenerated_Item_03;
@@ -36,9 +36,10 @@ public class NEI_GT_Config implements IConfigureNEI {
      * Handlers will be displayed in ascending order of integer value. Any recipe map that is not present in this map
      * will be assigned a value of 0. Negative values are fine.
      */
-    private static final ImmutableMap<GT_Recipe.GT_Recipe_Map, Integer> RECIPE_MAP_ORDERING = ImmutableMap.<GT_Recipe.GT_Recipe_Map, Integer>builder()
-        .put(GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes, 1)
-        .put(GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes, 2)
+    private static final ImmutableMap<RecipeMap, Integer> RECIPE_MAP_ORDERING = ImmutableMap
+        .<RecipeMap, Integer>builder()
+        .put(RecipeMap.sAssemblylineVisualRecipes, 1)
+        .put(RecipeMap.sScannerFakeRecipes, 2)
         .build();
 
     private static final Comparator<RecipeMapHandler> RECIPE_MAP_HANDLER_COMPARATOR = Comparator
@@ -64,7 +65,7 @@ public class NEI_GT_Config implements IConfigureNEI {
             .isClient()) {
             List<RecipeMapHandler> handlers = new ArrayList<>();
 
-            for (GT_Recipe.GT_Recipe_Map tMap : GT_Recipe.GT_Recipe_Map.sMappings) {
+            for (RecipeMap tMap : RecipeMap.sMappings) {
                 if (tMap.mNEIAllowed) {
                     handlers.add(new GT_NEI_DefaultHandler(tMap));
                 }

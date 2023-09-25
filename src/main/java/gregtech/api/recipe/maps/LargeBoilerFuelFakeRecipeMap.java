@@ -12,10 +12,11 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 
-public class LargeBoilerFuelFakeRecipeMap extends GT_Recipe.GT_Recipe_Map {
+public class LargeBoilerFuelFakeRecipeMap extends RecipeMap {
 
     private static final List<String> ALLOWED_SOLID_FUELS = Arrays.asList(
         GregTech_API.sMachineFile.mConfig.getStringList(

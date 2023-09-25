@@ -41,6 +41,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -153,7 +154,7 @@ public class GT_MetaTileEntity_DieselEngine
 
     // can't use getRecipeMap() or else the fluid hatch will reject oxygen
     protected FuelRecipeMap getFuelMap() {
-        return GT_Recipe.GT_Recipe_Map.sDieselFuels;
+        return RecipeMap.sDieselFuels;
     }
 
     /**

@@ -1,7 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLatheRecipes;
+import static gregtech.api.recipe.RecipeMap.sCompressorRecipes;
+import static gregtech.api.recipe.RecipeMap.sLatheRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 
 import net.minecraft.item.ItemStack;

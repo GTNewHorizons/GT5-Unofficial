@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes;
+import static gregtech.api.recipe.RecipeMap.sFluidCannerRecipes;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;

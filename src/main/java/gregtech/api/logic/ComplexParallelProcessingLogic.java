@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.multitileentity.multiblock.base.Controller;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
@@ -13,7 +14,7 @@ import gregtech.api.util.GT_Recipe;
 public class ComplexParallelProcessingLogic {
 
     protected Controller<?> tileEntity;
-    protected GT_Recipe.GT_Recipe_Map recipeMap;
+    protected RecipeMap recipeMap;
     protected boolean hasPerfectOverclock;
     protected final int maxComplexParallels;
     protected final ItemStack[][] outputItems;
@@ -30,7 +31,7 @@ public class ComplexParallelProcessingLogic {
         this(null, maxComplexParallels);
     }
 
-    public ComplexParallelProcessingLogic(GT_Recipe.GT_Recipe_Map recipeMap, int maxComplexParallels) {
+    public ComplexParallelProcessingLogic(RecipeMap recipeMap, int maxComplexParallels) {
         this.maxComplexParallels = maxComplexParallels;
         this.recipeMap = recipeMap;
         inputItems = new ItemStack[maxComplexParallels][];
@@ -44,7 +45,7 @@ public class ComplexParallelProcessingLogic {
         isFluidVoidProtected = new boolean[maxComplexParallels];
     }
 
-    public ComplexParallelProcessingLogic setRecipeMap(GT_Recipe.GT_Recipe_Map recipeMap) {
+    public ComplexParallelProcessingLogic setRecipeMap(RecipeMap recipeMap) {
         this.recipeMap = recipeMap;
         return this;
     }

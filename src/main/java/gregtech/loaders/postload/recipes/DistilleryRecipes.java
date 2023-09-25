@@ -1,8 +1,8 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.TinkerConstruct;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sDistillationRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sDistilleryRecipes;
+import static gregtech.api.recipe.RecipeMap.sDistillationRecipes;
+import static gregtech.api.recipe.RecipeMap.sDistilleryRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;

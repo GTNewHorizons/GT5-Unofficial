@@ -22,6 +22,7 @@ import appeng.util.ReadableNumberConverter;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.items.GT_FluidDisplayItem;
@@ -29,7 +30,7 @@ import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 import gregtech.nei.GT_NEI_DefaultHandler;
 
-public class SpaceProjectRecipeMap extends GT_Recipe.GT_Recipe_Map {
+public class SpaceProjectRecipeMap extends RecipeMap {
 
     IDrawable projectTexture;
 

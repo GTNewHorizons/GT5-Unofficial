@@ -10,9 +10,10 @@ import net.minecraft.item.ItemStack;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GT_Recipe;
 
-public class IC2NuclearFakeRecipeMap extends GT_Recipe.GT_Recipe_Map {
+public class IC2NuclearFakeRecipeMap extends RecipeMap {
 
     public IC2NuclearFakeRecipeMap() {
         super(

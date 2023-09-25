@@ -12,7 +12,7 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.SteamTexture;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.recipe.RecipeMap;
 
 public class UIHelper {
 
@@ -21,9 +21,8 @@ public class UIHelper {
      */
     public static void forEachSlots(ForEachSlot forEachItemInputSlot, ForEachSlot forEachItemOutputSlot,
         ForEachSlot forEachSpecialSlot, ForEachSlot forEachFluidInputSlot, ForEachSlot forEachFluidOutputSlot,
-        IDrawable itemSlotBackground, IDrawable fluidSlotBackground, @Nullable GT_Recipe.GT_Recipe_Map recipeMap,
-        int itemInputCount, int itemOutputCount, int fluidInputCount, int fluidOutputCount, SteamVariant steamVariant,
-        Pos2d offset) {
+        IDrawable itemSlotBackground, IDrawable fluidSlotBackground, @Nullable RecipeMap recipeMap, int itemInputCount,
+        int itemOutputCount, int fluidInputCount, int fluidOutputCount, SteamVariant steamVariant, Pos2d offset) {
         List<Pos2d> itemInputPositions = recipeMap != null ? recipeMap.getItemInputPositions(itemInputCount)
             : UIHelper.getItemInputPositions(itemInputCount);
         itemInputPositions = itemInputPositions.stream()
@@ -172,7 +171,7 @@ public class UIHelper {
         return getGridPositions(itemCount, xOrigin, yOrigin, xDirMaxCount, yDirMaxCount);
     }
 
-    private static IDrawable[] getBackgroundsForSlot(IDrawable base, GT_Recipe.GT_Recipe_Map recipeMap, boolean isFluid,
+    private static IDrawable[] getBackgroundsForSlot(IDrawable base, RecipeMap recipeMap, boolean isFluid,
         boolean isOutput, int index, boolean isSpecial, SteamVariant steamVariant) {
         if (recipeMap != null) {
             IDrawable overlay;

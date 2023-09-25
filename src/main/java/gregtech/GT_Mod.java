@@ -64,6 +64,7 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.GT_Assemblyline_Server;
 import gregtech.api.util.GT_Forestry_Compat;
@@ -610,33 +611,17 @@ public class GT_Mod implements IGT_Mod {
 
         gregtechproxy.onServerStarting();
         // Check for more IC2 recipes on ServerStart to also catch MineTweaker additions
-        GT_ModHandler.addIC2RecipesToGT(
-            GT_ModHandler.getMaceratorRecipeList(),
-            GT_Recipe.GT_Recipe_Map.sMaceratorRecipes,
-            true,
-            true,
-            true);
-        GT_ModHandler.addIC2RecipesToGT(
-            GT_ModHandler.getCompressorRecipeList(),
-            GT_Recipe.GT_Recipe_Map.sCompressorRecipes,
-            true,
-            true,
-            true);
-        GT_ModHandler.addIC2RecipesToGT(
-            GT_ModHandler.getExtractorRecipeList(),
-            GT_Recipe.GT_Recipe_Map.sExtractorRecipes,
-            true,
-            true,
-            true);
-        GT_ModHandler.addIC2RecipesToGT(
-            GT_ModHandler.getOreWashingRecipeList(),
-            GT_Recipe.GT_Recipe_Map.sOreWasherRecipes,
-            false,
-            true,
-            true);
+        GT_ModHandler
+            .addIC2RecipesToGT(GT_ModHandler.getMaceratorRecipeList(), RecipeMap.sMaceratorRecipes, true, true, true);
+        GT_ModHandler
+            .addIC2RecipesToGT(GT_ModHandler.getCompressorRecipeList(), RecipeMap.sCompressorRecipes, true, true, true);
+        GT_ModHandler
+            .addIC2RecipesToGT(GT_ModHandler.getExtractorRecipeList(), RecipeMap.sExtractorRecipes, true, true, true);
+        GT_ModHandler
+            .addIC2RecipesToGT(GT_ModHandler.getOreWashingRecipeList(), RecipeMap.sOreWasherRecipes, false, true, true);
         GT_ModHandler.addIC2RecipesToGT(
             GT_ModHandler.getThermalCentrifugeRecipeList(),
-            GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes,
+            RecipeMap.sThermalCentrifugeRecipes,
             true,
             true,
             true);
