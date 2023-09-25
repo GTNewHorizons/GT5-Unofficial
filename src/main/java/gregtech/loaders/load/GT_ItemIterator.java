@@ -237,18 +237,7 @@ public class GT_ItemIterator implements Runnable {
                 if ((tItem instanceof IFluidContainerItem)) {
                     GT_OreDictUnificator.addToBlacklist(new ItemStack(tItem, 1, 32767));
                 }
-                if (tName.equals("tile.ArsMagica:ore_vinteum")) {
-                    GT_OreDictUnificator.set(OrePrefixes.ore, Materials.Vinteum, new ItemStack(tItem, 1, 0));
-                }
-                if (tName.equals("item.ArsMagica:purified_vinteum")) {
-                    GT_Values.RA.stdBuilder()
-                        .itemInputs(new ItemStack(tItem, 1, 0))
-                        .metadata(FUEL_VALUE, 256)
-                        .metadata(FUEL_TYPE, 5)
-                        .duration(0)
-                        .eut(0)
-                        .addTo(GT_RecipeConstants.Fuel);
-                }
+
                 if ((tName.equals("item.fieryBlood")) || (tName.equals("item.fieryTears"))) {
                     GT_Values.RA.stdBuilder()
                         .itemInputs(new ItemStack(tItem, 1, 0))
@@ -283,15 +272,6 @@ public class GT_ItemIterator implements Runnable {
                 }
                 if (tName.equals("item.tconstruct.manual")) {
                     GT_OreDictUnificator.registerOre("bookTinkersManual", new ItemStack(tItem, 1, 32767));
-                }
-                if (tName.equals("item.ArsMagica:spell_parchment")) {
-                    GT_OreDictUnificator.registerOre("paperArsSpellParchment", new ItemStack(tItem, 1, 32767));
-                }
-                if (tName.equals("item.ArsMagica:spell_recipe")) {
-                    GT_OreDictUnificator.registerOre("paperArsSpellRecipe", new ItemStack(tItem, 1, 32767));
-                }
-                if (tName.equals("item.ArsMagica:spell_book")) {
-                    GT_OreDictUnificator.registerOre("bookArsSpells", new ItemStack(tItem, 1, 32767));
                 }
                 if (tName.equals("item.myst.page")) {
                     GT_OreDictUnificator.registerOre("paperMystcraft", new ItemStack(tItem, 1, 32767));
