@@ -29,10 +29,8 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
     }
 
     protected void setMaxComplexParallels(int parallel, boolean stopMachine) {
-        if (parallel != maxComplexParallels) {
-            if (maxComplexParallels != 0 && stopMachine) {
-                stopMachine(false);
-            }
+        if (parallel != maxComplexParallels && maxComplexParallels != 0 && stopMachine) {
+            stopMachine(false);
         }
         maxComplexParallels = parallel;
         setProcessingUpdate(true);

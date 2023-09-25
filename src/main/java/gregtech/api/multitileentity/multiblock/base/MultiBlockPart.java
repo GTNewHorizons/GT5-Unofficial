@@ -188,12 +188,15 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         super.setCoverItemAtSide(side, aCover);
         // TODO: Filter on tickable covers
         final IMultiBlockController tTarget = getTarget(true);
-        if (tTarget != null) {
-            final CoverInfo coverInfo = getCoverInfoAtSide(side);
-            if (coverInfo.isValid() && coverInfo.getTickRate() > 0) {
-                tTarget.registerCoveredPartOnSide(side, this);
-            }
+        if (tTarget == null) {
+            return;
         }
+
+        final CoverInfo coverInfo = getCoverInfoAtSide(side);
+        if (coverInfo.isValid() && coverInfo.getTickRate() > 0) {
+            tTarget.registerCoveredPartOnSide(side, this);
+        }
+
     }
 
     public void unregisterCovers(IMultiBlockController controller) {

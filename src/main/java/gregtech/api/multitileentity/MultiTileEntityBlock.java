@@ -368,13 +368,17 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
         final int aFortune = EnchantmentHelper.getFortuneModifier(aPlayer);
         float aChance = 1.0F;
         final TileEntity aTileEntity = getTileEntity(aWorld, aX, aY, aZ, true);
-        if (aTileEntity instanceof IMultiTileEntity) {
-            final ArrayList<ItemStack> tList = ((IMultiTileEntity) aTileEntity).getDrops(aFortune, aSilkTouch);
-            aChance = ForgeEventFactory
-                .fireBlockHarvesting(tList, aWorld, this, aX, aY, aZ, aMeta, aFortune, aChance, aSilkTouch, aPlayer);
-            for (final ItemStack tStack : tList)
-                if (XSTR.XSTR_INSTANCE.nextFloat() <= aChance) dropBlockAsItem(aWorld, aX, aY, aZ, tStack);
+
+        if (!(aTileEntity instanceof IMultiTileEntity)) {
+            return;
         }
+
+        final ArrayList<ItemStack> tList = ((IMultiTileEntity) aTileEntity).getDrops(aFortune, aSilkTouch);
+        aChance = ForgeEventFactory
+            .fireBlockHarvesting(tList, aWorld, this, aX, aY, aZ, aMeta, aFortune, aChance, aSilkTouch, aPlayer);
+        for (final ItemStack tStack : tList)
+            if (XSTR.XSTR_INSTANCE.nextFloat() <= aChance) dropBlockAsItem(aWorld, aX, aY, aZ, tStack);
+
     }
 
     @Override
@@ -473,12 +477,17 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
     @Override
     public final int getComparatorInputOverride(World aWorld, int aX, int aY, int aZ, int ordinalSide) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity instanceof IMTE_GetComparatorInputOverride override
-            ? override.getComparatorInputOverride(ForgeDirection.getOrientation(ordinalSide))
-            : aTileEntity instanceof IMTE_IsProvidingWeakPower power ? power.isProvidingWeakPower(
+        if (aTileEntity instanceof IMTE_GetComparatorInputOverride override) {
+            return override.getComparatorInputOverride(ForgeDirection.getOrientation(ordinalSide));
+        }
+
+        if (aTileEntity instanceof IMTE_IsProvidingWeakPower power) {
+            return power.isProvidingWeakPower(
                 ForgeDirection.getOrientation(ordinalSide)
-                    .getOpposite())
-                : super.getComparatorInputOverride(aWorld, aX, aY, aZ, ordinalSide);
+                    .getOpposite());
+        }
+
+        return super.getComparatorInputOverride(aWorld, aX, aY, aZ, ordinalSide);
     }
 
     @Override
@@ -629,14 +638,6 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
             mte.issueBlockUpdate();
         }
     }
-    //
-    // te.receiveClientData(GregTechTileClientEvents.CHANGE_COMMON_DATA, aTextureData);
-    //
-    // te.receiveClientData(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aUpdateData & 0x7F);
-    // te.receiveClientData(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aTexturePage | 0x80);
-    //
-    // te.receiveClientData(GregTechTileClientEvents.CHANGE_COLOR, aColorData);
-    // te.receiveClientData(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, aRedstoneData);
 
     @Override
     public final TileEntity createTileEntity(World aWorld, int aMeta) {

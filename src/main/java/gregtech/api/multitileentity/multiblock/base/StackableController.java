@@ -97,12 +97,13 @@ public abstract class StackableController<T extends StackableController<T, P>, P
         buildState.addOffset(getStartingStackOffset());
 
         for (int i = 0; i < getMaxStacks(); i++) {
-            if (checkPiece(getStackableMiddle(i), buildState.getCurrentOffset())) {
-                buildState.addOffset(getPerStackOffset());
-                stackCount++;
-            } else {
+            if (!checkPiece(getStackableMiddle(i), buildState.getCurrentOffset())) {
                 break;
             }
+
+            buildState.addOffset(getPerStackOffset());
+            stackCount++;
+
         }
         if (stackCount < getMinStacks()) return buildState.failBuilding();
 

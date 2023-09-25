@@ -175,22 +175,22 @@ public class LayeredCokeBattery
         if (!checkPiece(STRUCTURE_PIECE_BASE, buildState.getCurrentOffset())) return buildState.failBuilding();
 
         buildState.addOffset(getMegaPositionOffset());
-        if (checkPiece(STACKABLE_START, buildState.getCurrentOffset())) {
-            buildState.addOffset(getStartingStackOffset());
-            for (int i = 0; i < getMaxStacks(); i++) {
-                if (checkPiece(getStackableMiddle(i), buildState.getCurrentOffset())) {
-                    buildState.addOffset(getPerStackOffset());
-                    stackCount++;
-                } else {
-                    break;
-                }
-            }
-            if (stackCount < getMinStacks()) return buildState.failBuilding();
+        if (!checkPiece(STACKABLE_START, buildState.getCurrentOffset())) {
+            return buildState.failBuilding();
+        }
 
-            if (!checkPiece(getStackableStop(), buildState.stopBuilding())) {
-                return buildState.failBuilding();
+        buildState.addOffset(getStartingStackOffset());
+        for (int i = 0; i < getMaxStacks(); i++) {
+            if (!checkPiece(getStackableMiddle(i), buildState.getCurrentOffset())) {
+                break;
             }
-        } else {
+
+            buildState.addOffset(getPerStackOffset());
+            stackCount++;
+        }
+        if (stackCount < getMinStacks()) return buildState.failBuilding();
+
+        if (!checkPiece(getStackableStop(), buildState.stopBuilding())) {
             return buildState.failBuilding();
         }
 
