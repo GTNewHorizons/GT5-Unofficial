@@ -127,7 +127,7 @@ public class WirelessNetworkManager {
         GlobalEnergy.put(GlobalEnergyTeam.get(user_uuid), EU);
     }
 
-    public static String GetUsernameFromUUID(String uuid) {
+    public static String getUsernameFromUUID(String uuid) {
         return GlobalEnergyName.getOrDefault(GlobalEnergyTeam.getOrDefault(uuid, ""), "");
     }
 

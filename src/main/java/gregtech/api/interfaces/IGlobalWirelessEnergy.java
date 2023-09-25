@@ -82,7 +82,7 @@ public interface IGlobalWirelessEnergy {
     }
 
     default String GetUsernameFromUUID(String uuid) {
-        return WirelessNetworkManager.GetUsernameFromUUID(uuid);
+        return WirelessNetworkManager.getUsernameFromUUID(uuid);
     }
 
     default String getUUIDFromUsername(String username) {
