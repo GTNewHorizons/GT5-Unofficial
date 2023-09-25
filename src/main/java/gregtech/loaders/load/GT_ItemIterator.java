@@ -273,18 +273,7 @@ public class GT_ItemIterator implements Runnable {
                 if (tName.equals("item.tconstruct.manual")) {
                     GT_OreDictUnificator.registerOre("bookTinkersManual", new ItemStack(tItem, 1, 32767));
                 }
-                if (tName.equals("item.myst.page")) {
-                    GT_OreDictUnificator.registerOre("paperMystcraft", new ItemStack(tItem, 1, 32767));
-                }
-                if (tName.equals("item.myst.agebook")) {
-                    GT_OreDictUnificator.registerOre("bookMystcraftAge", new ItemStack(tItem, 1, 32767));
-                }
-                if (tName.equals("item.myst.linkbook")) {
-                    GT_OreDictUnificator.registerOre("bookMystcraftLink", new ItemStack(tItem, 1, 32767));
-                }
-                if (tName.equals("item.myst.notebook")) {
-                    GT_OreDictUnificator.registerOre("bookNotes", new ItemStack(tItem, 1, 32767));
-                }
+
                 if (tName.equals("item.itemManuelBook")) {
                     GT_OreDictUnificator.registerOre("bookWritten", new ItemStack(tItem, 1, 0));
                 }
