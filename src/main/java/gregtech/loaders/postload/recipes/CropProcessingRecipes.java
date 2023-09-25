@@ -1,7 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.recipe.RecipeMap.sAutoclaveRecipes;
-import static gregtech.api.recipe.RecipeMap.sExtractorRecipes;
+import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
+import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
@@ -152,7 +152,7 @@ public class CropProcessingRecipes implements Runnable {
                 .fluidInputs(Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass() + 9) / 10))))
                 .duration((int) (aMaterial.getMass() * 128))
                 .eut(384)
-                .addTo(sAutoclaveRecipes);
+                .addTo(autoclaveRecipes);
 
         } else {
             if (aMainOutput) {
@@ -161,7 +161,7 @@ public class CropProcessingRecipes implements Runnable {
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1))
                     .duration(15 * SECONDS)
                     .eut(2)
-                    .addTo(sExtractorRecipes);
+                    .addTo(extractorRecipes);
             }
         }
     }

@@ -30,6 +30,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 
 public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGenerator {
@@ -70,11 +71,11 @@ public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGe
     public RecipeMap getRecipes() {
         RecipeMap ret;
         switch (mTier) {
-            case 4 -> ret = RecipeMap.sSmallNaquadahReactorFuels;
-            case 5 -> ret = RecipeMap.sLargeNaquadahReactorFuels;
-            case 6 -> ret = RecipeMap.sHugeNaquadahReactorFuels;
-            case 7 -> ret = RecipeMap.sExtremeNaquadahReactorFuels;
-            case 8 -> ret = RecipeMap.sUltraHugeNaquadahReactorFuels;
+            case 4 -> ret = RecipeMaps.smallNaquadahReactorFuels;
+            case 5 -> ret = RecipeMaps.largeNaquadahReactorFuels;
+            case 6 -> ret = RecipeMaps.hugeNaquadahReactorFuels;
+            case 7 -> ret = RecipeMaps.extremeNaquadahReactorFuels;
+            case 8 -> ret = RecipeMaps.ultraHugeNaquadahReactorFuels;
             default -> ret = null;
         }
         return ret;

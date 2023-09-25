@@ -11,13 +11,13 @@ import forestry.api.recipes.RecipeManagers;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 
 public class GT_Forestry_Compat {
 
     public static void populateFakeNeiRecipes() {
         if (ItemList.FR_Bee_Drone.get(1L) != null) {
-            RecipeMap.sScannerFakeRecipes.addFakeRecipe(
+            RecipeMaps.scannerFakeRecipes.addFakeRecipe(
                 false,
                 new ItemStack[] { ItemList.FR_Bee_Drone.getWildcard(1L) },
                 new ItemStack[] { ItemList.FR_Bee_Drone.getWithName(1L, "Scanned Drone") },
@@ -29,7 +29,7 @@ public class GT_Forestry_Compat {
                 0);
         }
         if (ItemList.FR_Bee_Princess.get(1L) != null) {
-            RecipeMap.sScannerFakeRecipes.addFakeRecipe(
+            RecipeMaps.scannerFakeRecipes.addFakeRecipe(
                 false,
                 new ItemStack[] { ItemList.FR_Bee_Princess.getWildcard(1L) },
                 new ItemStack[] { ItemList.FR_Bee_Princess.getWithName(1L, "Scanned Princess") },
@@ -41,7 +41,7 @@ public class GT_Forestry_Compat {
                 0);
         }
         if (ItemList.FR_Bee_Queen.get(1L) != null) {
-            RecipeMap.sScannerFakeRecipes.addFakeRecipe(
+            RecipeMaps.scannerFakeRecipes.addFakeRecipe(
                 false,
                 new ItemStack[] { ItemList.FR_Bee_Queen.getWildcard(1L) },
                 new ItemStack[] { ItemList.FR_Bee_Queen.getWithName(1L, "Scanned Queen") },
@@ -53,7 +53,7 @@ public class GT_Forestry_Compat {
                 0);
         }
         if (ItemList.FR_Tree_Sapling.get(1L) != null) {
-            RecipeMap.sScannerFakeRecipes.addFakeRecipe(
+            RecipeMaps.scannerFakeRecipes.addFakeRecipe(
                 false,
                 new ItemStack[] { ItemList.FR_Tree_Sapling.getWildcard(1L) },
                 new ItemStack[] { ItemList.FR_Tree_Sapling.getWithName(1L, "Scanned Sapling") },
@@ -65,7 +65,7 @@ public class GT_Forestry_Compat {
                 0);
         }
         if (ItemList.FR_Butterfly.get(1L) != null) {
-            RecipeMap.sScannerFakeRecipes.addFakeRecipe(
+            RecipeMaps.scannerFakeRecipes.addFakeRecipe(
                 false,
                 new ItemStack[] { ItemList.FR_Butterfly.getWildcard(1L) },
                 new ItemStack[] { ItemList.FR_Butterfly.getWithName(1L, "Scanned Butterfly") },
@@ -77,7 +77,7 @@ public class GT_Forestry_Compat {
                 0);
         }
         if (ItemList.FR_Larvae.get(1L) != null) {
-            RecipeMap.sScannerFakeRecipes.addFakeRecipe(
+            RecipeMaps.scannerFakeRecipes.addFakeRecipe(
                 false,
                 new ItemStack[] { ItemList.FR_Larvae.getWildcard(1L) },
                 new ItemStack[] { ItemList.FR_Larvae.getWithName(1L, "Scanned Larvae") },
@@ -89,7 +89,7 @@ public class GT_Forestry_Compat {
                 0);
         }
         if (ItemList.FR_Serum.get(1L) != null) {
-            RecipeMap.sScannerFakeRecipes.addFakeRecipe(
+            RecipeMaps.scannerFakeRecipes.addFakeRecipe(
                 false,
                 new ItemStack[] { ItemList.FR_Serum.getWildcard(1L) },
                 new ItemStack[] { ItemList.FR_Serum.getWithName(1L, "Scanned Serum") },
@@ -101,7 +101,7 @@ public class GT_Forestry_Compat {
                 0);
         }
         if (ItemList.FR_Caterpillar.get(1L) != null) {
-            RecipeMap.sScannerFakeRecipes.addFakeRecipe(
+            RecipeMaps.scannerFakeRecipes.addFakeRecipe(
                 false,
                 new ItemStack[] { ItemList.FR_Caterpillar.getWildcard(1L) },
                 new ItemStack[] { ItemList.FR_Caterpillar.getWithName(1L, "Scanned Caterpillar") },
@@ -113,7 +113,7 @@ public class GT_Forestry_Compat {
                 0);
         }
         if (ItemList.FR_PollenFertile.get(1L) != null) {
-            RecipeMap.sScannerFakeRecipes.addFakeRecipe(
+            RecipeMaps.scannerFakeRecipes.addFakeRecipe(
                 false,
                 new ItemStack[] { ItemList.FR_PollenFertile.getWildcard(1L) },
                 new ItemStack[] { ItemList.FR_PollenFertile.getWithName(1L, "Scanned Pollen") },
@@ -139,7 +139,7 @@ public class GT_Forestry_Compat {
                         .copy();
                     i++;
                 }
-                RecipeMap.sCentrifugeRecipes.addRecipe(
+                RecipeMaps.centrifugeRecipes.addRecipe(
                     true,
                     new ItemStack[] { tRecipe.getInput() },
                     tOutputs,
@@ -150,7 +150,7 @@ public class GT_Forestry_Compat {
                     128,
                     5,
                     0);
-                RecipeMap.sMultiblockCentrifugeRecipes.addRecipe(
+                RecipeMaps.centrifugeNonCellRecipes.addRecipe(
                     true,
                     new ItemStack[] { tRecipe.getInput() },
                     tOutputs,
@@ -173,7 +173,7 @@ public class GT_Forestry_Compat {
         try {
             for (ISqueezerRecipe tRecipe : RecipeManagers.squeezerManager.recipes()) {
                 if ((tRecipe.getResources().length == 1) && (tRecipe.getFluidOutput() != null)) {
-                    RecipeMap.sFluidExtractionRecipes.addRecipe(
+                    RecipeMaps.fluidExtractionRecipes.addRecipe(
                         true,
                         new ItemStack[] { tRecipe.getResources()[0] },
                         new ItemStack[] { tRecipe.getRemnants() },

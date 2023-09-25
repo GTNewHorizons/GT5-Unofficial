@@ -29,6 +29,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -106,7 +107,7 @@ public class GT_MetaTileEntity_RockBreaker extends GT_MetaTileEntity_BasicMachin
 
     @Override
     public RecipeMap getRecipeList() {
-        return RecipeMap.sRockBreakerFakeRecipes;
+        return RecipeMaps.rockBreakerFakeRecipes;
     }
 
     @Override

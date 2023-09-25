@@ -3,8 +3,8 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.BuildCraftSilicon;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import static gregtech.api.recipe.RecipeMap.sAssemblerRecipes;
-import static gregtech.api.recipe.RecipeMap.sLaserEngraverRecipes;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -39,7 +39,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .fluidInputs(Materials.Concrete.getMolten(144L))
                     .duration(2 * SECONDS)
                     .eut(20)
-                    .addTo(sAssemblerRecipes);
+                    .addTo(assemblerRecipes);
             }
             case "craftingLensBlue" -> {
 
@@ -50,7 +50,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .itemOutputs(GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 13))
                     .duration(1 * MINUTES + 40 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -59,7 +59,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .itemOutputs(GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 13))
                     .duration(1 * MINUTES + 40 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.IC2_LapotronCrystal.getWildcard(1L), GT_Utility.copyAmount(0L, aStack))
@@ -67,7 +67,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(45 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Chip_CrystalCPU.get(1L), GT_Utility.copyAmount(0L, aStack))
@@ -75,7 +75,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(30 * SECONDS)
                     .eut(40000)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer2.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -83,7 +83,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer3.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -91,7 +91,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer5.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -99,7 +99,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(2 * MINUTES)
                     .eut(TierEU.RECIPE_UV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
             }
             case "craftingLensYellow" -> {
@@ -111,7 +111,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .itemOutputs(GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 14))
                     .duration(1 * MINUTES + 40 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -120,14 +120,14 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .itemOutputs(GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 14))
                     .duration(1 * MINUTES + 40 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer.get(1), GT_Utility.copyAmount(0L, aStack))
                     .itemOutputs(ItemList.Circuit_Wafer_LPIC.get(1))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_MV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer2.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -135,7 +135,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer3.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -143,7 +143,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(45 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer4.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -151,7 +151,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_IV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer5.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -159,7 +159,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
             }
             case "craftingLensOrange" -> {
 
@@ -168,28 +168,28 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .itemOutputs(ItemList.Circuit_Wafer_Simple_SoC.get(1))
                     .duration(15 * SECONDS)
                     .eut(64)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer2.get(1), GT_Utility.copyAmount(0L, aStack))
                     .itemOutputs(ItemList.Circuit_Wafer_Simple_SoC.get(4))
                     .duration(15 * SECONDS)
                     .eut(256)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer3.get(1), GT_Utility.copyAmount(0L, aStack))
                     .itemOutputs(ItemList.Circuit_Wafer_Simple_SoC.get(16))
                     .duration(15 * SECONDS)
                     .eut(1024)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer4.get(1), GT_Utility.copyAmount(0L, aStack))
                     .itemOutputs(ItemList.Circuit_Wafer_Simple_SoC.get(64))
                     .duration(15 * SECONDS)
                     .eut(4096)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
             }
             case "craftingLensCyan" -> {
@@ -201,7 +201,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .itemOutputs(GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 15))
                     .duration(1 * MINUTES + 40 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -210,14 +210,14 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .itemOutputs(GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 15))
                     .duration(1 * MINUTES + 40 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer.get(1), GT_Utility.copyAmount(0L, aStack))
                     .itemOutputs(ItemList.Circuit_Wafer_Ram.get(1))
                     .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_MV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer2.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -225,7 +225,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(45 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer3.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -233,7 +233,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer4.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -241,7 +241,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_IV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer5.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -249,7 +249,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(7 * SECONDS + 10 * TICKS)
                     .eut(TierEU.RECIPE_LuV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
             }
             case "craftingLensRed" -> {
@@ -261,7 +261,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .itemOutputs(GT_ModHandler.getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
                     .duration(2 * SECONDS + 10 * TICKS)
                     .eut(TierEU.RECIPE_MV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -270,14 +270,14 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .itemOutputs(GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EtchedLowVoltageWiring", 1L, 0))
                     .duration(10 * SECONDS)
                     .eut(16)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer.get(1), GT_Utility.copyAmount(0L, aStack))
                     .itemOutputs(ItemList.Circuit_Wafer_ILC.get(1))
                     .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_MV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer2.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -285,7 +285,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(45 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer3.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -293,7 +293,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer4.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -301,7 +301,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(1 * MINUTES + 30 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer5.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -309,7 +309,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(1 * MINUTES + 15 * SECONDS)
                     .eut(TierEU.RECIPE_ZPM)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
             }
             case "craftingLensGreen" -> {
@@ -320,7 +320,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(30 * SECONDS)
                     .eut(10000)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Chip_CrystalSoC.get(1L), GT_Utility.copyAmount(0L, aStack))
@@ -328,21 +328,21 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(60 * SECONDS)
                     .eut(80000)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer.get(1), GT_Utility.copyAmount(0L, aStack))
                     .itemOutputs(ItemList.Circuit_Wafer_ULPIC.get(2))
                     .duration(30 * SECONDS)
                     .eut(30)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer2.get(1), GT_Utility.copyAmount(0L, aStack))
                     .itemOutputs(ItemList.Circuit_Wafer_ULPIC.get(8))
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_MV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer3.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -350,7 +350,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(1 * MINUTES + 30 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer4.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -358,7 +358,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(1 * MINUTES + 15 * SECONDS)
                     .eut(TierEU.RECIPE_IV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer5.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -366,7 +366,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_LuV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
             }
             case "craftingLensWhite" -> {
 
@@ -377,7 +377,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .itemOutputs(GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 19))
                     .duration(1 * MINUTES + 40 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -386,28 +386,28 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .itemOutputs(GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 19))
                     .duration(1 * MINUTES + 40 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(new ItemStack(Blocks.sandstone, 1, 2), GT_Utility.copyAmount(0L, aStack))
                     .itemOutputs(new ItemStack(Blocks.sandstone, 1, 1))
                     .duration(2 * SECONDS + 10 * TICKS)
                     .eut(16)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(new ItemStack(Blocks.stone, 1, 0), GT_Utility.copyAmount(0L, aStack))
                     .itemOutputs(new ItemStack(Blocks.stonebrick, 1, 3))
                     .duration(2 * SECONDS + 10 * TICKS)
                     .eut(16)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(new ItemStack(Blocks.quartz_block, 1, 0), GT_Utility.copyAmount(0L, aStack))
                     .itemOutputs(new ItemStack(Blocks.quartz_block, 1, 1))
                     .duration(2 * SECONDS + 10 * TICKS)
                     .eut(16)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(
@@ -416,7 +416,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .itemOutputs(GT_ModHandler.getModItem(AppliedEnergistics2.ID, "tile.BlockQuartzChiseled", 1L))
                     .duration(2 * SECONDS + 10 * TICKS)
                     .eut(16)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -424,7 +424,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(60 * SECONDS)
                     .eut(TierEU.RECIPE_MV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer2.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -432,7 +432,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(45 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer3.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -440,7 +440,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer4.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -448,7 +448,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_IV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Circuit_Silicon_Wafer5.get(1), GT_Utility.copyAmount(0L, aStack))
@@ -456,7 +456,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .requiresCleanRoom()
                     .duration(7 * SECONDS + 10 * TICKS)
                     .eut(TierEU.RECIPE_LuV)
-                    .addTo(sLaserEngraverRecipes);
+                    .addTo(laserEngraverRecipes);
 
             }
         }

@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.recipe.RecipeMap.sElectroMagneticSeparatorRecipes;
+import static gregtech.api.recipe.RecipeMaps.electroMagneticSeparatorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import gregtech.api.enums.GT_Values;
@@ -18,7 +18,7 @@ public class ElectromagneticSeparatorRecipes implements Runnable {
             .outputChances(4000, 2000, 2000)
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
-            .addTo(sElectroMagneticSeparatorRecipes);
+            .addTo(electroMagneticSeparatorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.TengamRaw.getDust(1))
@@ -29,6 +29,6 @@ public class ElectromagneticSeparatorRecipes implements Runnable {
             .outputChances(10000, 1000, 1000)
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
-            .addTo(sElectroMagneticSeparatorRecipes);
+            .addTo(electroMagneticSeparatorRecipes);
     }
 }

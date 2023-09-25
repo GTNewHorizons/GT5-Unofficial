@@ -23,7 +23,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_RecipeBuilder;
 
@@ -234,7 +234,7 @@ public class GT_NaniteChain {
             .duration(750 * GT_RecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_MAX)
             .specialValue(3)
-            .addTo(RecipeMap.sNanoForge);
+            .addTo(RecipeMaps.nanoForgeRecipes);
 
     }
 }

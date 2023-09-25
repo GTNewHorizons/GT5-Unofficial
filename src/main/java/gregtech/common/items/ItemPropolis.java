@@ -3,7 +3,7 @@ package gregtech.common.items;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import static gregtech.api.recipe.RecipeMap.sFluidExtractionRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
@@ -114,7 +114,7 @@ public class ItemPropolis extends Item {
             .fluidOutputs(FluidRegistry.getFluidStack("endergoo", 100))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(sFluidExtractionRecipes);
+            .addTo(fluidExtractionRecipes);
     }
 
     public void addProcessEV(ItemStack tPropolis, ItemStack aOutput2) {
@@ -125,7 +125,7 @@ public class ItemPropolis extends Item {
             .fluidOutputs(FluidRegistry.getFluidStack("endergoo", 200))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
-            .addTo(sFluidExtractionRecipes);
+            .addTo(fluidExtractionRecipes);
     }
 
     public void addProcessIV(ItemStack tPropolis, ItemStack aOutput2) {
@@ -136,6 +136,6 @@ public class ItemPropolis extends Item {
             .fluidOutputs(FluidRegistry.getFluidStack("endergoo", 300))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_IV)
-            .addTo(sFluidExtractionRecipes);
+            .addTo(fluidExtractionRecipes);
     }
 }

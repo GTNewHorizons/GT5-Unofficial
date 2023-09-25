@@ -1,7 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.recipe.RecipeMap.sChemicalBathRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
@@ -29,7 +29,7 @@ public class ProcessingSlab implements gregtech.api.interfaces.IOreRecipeRegistr
                     .fluidInputs(Materials.Creosote.getFluid(300L))
                     .duration(10 * SECONDS)
                     .eut(4)
-                    .addTo(sChemicalBathRecipes);
+                    .addTo(chemicalBathRecipes);
             }
         }
     }

@@ -1,8 +1,8 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.recipe.RecipeMap.sCompressorRecipes;
-import static gregtech.api.recipe.RecipeMap.sLatheRecipes;
-import static gregtech.api.recipe.RecipeMap.sMaceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
+import static gregtech.api.recipe.RecipeMaps.latheRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
@@ -29,14 +29,14 @@ public class ProcessingSaplings implements gregtech.api.interfaces.IOreRecipeReg
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
             .duration(20 * SECONDS)
             .eut(2)
-            .addTo(sMaceratorRecipes);
+            .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(8L, aStack))
             .itemOutputs(ItemList.IC2_Plantball.get(1L))
             .duration(15 * SECONDS)
             .eut(2)
-            .addTo(sCompressorRecipes);
+            .addTo(compressorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1L, aStack))
@@ -45,6 +45,6 @@ public class ProcessingSaplings implements gregtech.api.interfaces.IOreRecipeReg
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Wood, 1L))
             .duration(16 * TICKS)
             .eut(8)
-            .addTo(sLatheRecipes);
+            .addTo(latheRecipes);
     }
 }

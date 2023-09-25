@@ -68,7 +68,7 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 import gregtech.api.net.GT_Packet_ClientPreference;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.util.ColorsMetadataSectionSerializer;
 import gregtech.api.util.GT_ClientPreference;
@@ -688,31 +688,31 @@ public class GT_Client extends GT_Proxy implements Runnable {
                     // Check for more IC2 recipes to also catch MineTweaker additions
                     GT_ModHandler.addIC2RecipesToGT(
                         GT_ModHandler.getMaceratorRecipeList(),
-                        RecipeMap.sMaceratorRecipes,
+                        RecipeMaps.maceratorRecipes,
                         true,
                         true,
                         true);
                     GT_ModHandler.addIC2RecipesToGT(
                         GT_ModHandler.getCompressorRecipeList(),
-                        RecipeMap.sCompressorRecipes,
+                        RecipeMaps.compressorRecipes,
                         true,
                         true,
                         true);
                     GT_ModHandler.addIC2RecipesToGT(
                         GT_ModHandler.getExtractorRecipeList(),
-                        RecipeMap.sExtractorRecipes,
+                        RecipeMaps.extractorRecipes,
                         true,
                         true,
                         true);
                     GT_ModHandler.addIC2RecipesToGT(
                         GT_ModHandler.getOreWashingRecipeList(),
-                        RecipeMap.sOreWasherRecipes,
+                        RecipeMaps.oreWasherRecipes,
                         false,
                         true,
                         true);
                     GT_ModHandler.addIC2RecipesToGT(
                         GT_ModHandler.getThermalCentrifugeRecipeList(),
-                        RecipeMap.sThermalCentrifugeRecipes,
+                        RecipeMaps.thermalCentrifugeRecipes,
                         true,
                         true,
                         true);
@@ -721,7 +721,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
             afterSomeTime++;
             if (afterSomeTime >= 100L) {
                 afterSomeTime = 0;
-                for (GT_Recipe recipe : RecipeMap.sAssemblylineVisualRecipes.mRecipeList) {
+                for (GT_Recipe recipe : RecipeMaps.assemblylineVisualRecipes.mRecipeList) {
                     recipe.mHidden = false;
                 }
             }

@@ -27,7 +27,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
-import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -49,7 +49,7 @@ public class GT_Achievements {
         this.achievementList = new ConcurrentHashMap<>();
         this.issuedAchievements = new ConcurrentHashMap<>();
 
-        for (GT_Recipe recipe : RecipeMap.sAssemblylineVisualRecipes.mRecipeList) registerAssAchievement(recipe);
+        for (GT_Recipe recipe : RecipeMaps.assemblylineVisualRecipes.mRecipeList) registerAssAchievement(recipe);
 
         registerAchievement(
             "flintpick",
@@ -961,7 +961,7 @@ public class GT_Achievements {
                                                // all
                                                // assline
                                                // recipes.
-            for (GT_Recipe recipe : RecipeMap.sAssemblylineVisualRecipes.mRecipeList) {
+            for (GT_Recipe recipe : RecipeMaps.assemblylineVisualRecipes.mRecipeList) {
                 issueAchievement(
                     player,
                     recipe.getOutput(0)
@@ -969,7 +969,7 @@ public class GT_Achievements {
                 recipe.mHidden = false;
             }
         }
-        for (GT_Recipe recipe : RecipeMap.sAssemblylineVisualRecipes.mRecipeList) {
+        for (GT_Recipe recipe : RecipeMaps.assemblylineVisualRecipes.mRecipeList) {
             if (recipe.getOutput(0)
                 .getUnlocalizedName()
                 .equals(stack.getUnlocalizedName())) {

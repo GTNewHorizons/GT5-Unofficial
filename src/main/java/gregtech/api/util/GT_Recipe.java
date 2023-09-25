@@ -18,6 +18,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.extensions.ArrayExt;
 import ic2.core.Ic2Items;
 
@@ -232,25 +233,25 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             switch (aType) {
                 // Diesel Generator
                 case 0 -> {
-                    RecipeMap.sDieselFuels.addRecipe(this);
-                    RecipeMap.sLargeBoilerFakeFuels.addDieselRecipe(this);
+                    RecipeMaps.dieselFuels.addRecipe(this);
+                    RecipeMaps.largeBoilerFakeFuels.addDieselRecipe(this);
                 }
                 // Gas Turbine
-                case 1 -> RecipeMap.sTurbineFuels.addRecipe(this);
+                case 1 -> RecipeMaps.gasTurbineFuels.addRecipe(this);
 
                 // Thermal Generator
-                case 2 -> RecipeMap.sHotFuels.addRecipe(this);
+                case 2 -> RecipeMaps.hotFuels.addRecipe(this);
 
                 // Plasma Generator
-                case 4 -> RecipeMap.sPlasmaFuels.addRecipe(this);
+                case 4 -> RecipeMaps.plasmaFuels.addRecipe(this);
 
                 // Magic Generator
-                case 5 -> RecipeMap.sMagicFuels.addRecipe(this);
+                case 5 -> RecipeMaps.magicFuels.addRecipe(this);
 
                 // Fluid Generator. Usually 3. Every wrong Type ends up in the Semifluid Generator
                 default -> {
-                    RecipeMap.sDenseLiquidFuels.addRecipe(this);
-                    RecipeMap.sLargeBoilerFakeFuels.addDenseLiquidRecipe(this);
+                    RecipeMaps.denseLiquidFuels.addRecipe(this);
+                    RecipeMaps.largeBoilerFakeFuels.addDenseLiquidRecipe(this);
                 }
             }
         }
@@ -270,7 +271,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             aEUt,
             Math.max(Math.min(aSpecialValue, 160000000), 0));
         if (mInputs.length > 1) {
-            RecipeMap.sFusionRecipes.addRecipe(this);
+            RecipeMaps.fusionRecipes.addRecipe(this);
         }
     }
 
@@ -287,7 +288,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             aEUt,
             0);
         if (mInputs.length > 0 && mOutputs[0] != null) {
-            RecipeMap.sLatheRecipes.addRecipe(this);
+            RecipeMaps.latheRecipes.addRecipe(this);
         }
     }
 
@@ -306,7 +307,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             Math.max(aEUt, 1),
             0);
         if (mInputs.length > 0 && mOutputs[0] != null) {
-            RecipeMap.sDistillationRecipes.addRecipe(this);
+            RecipeMaps.distillationRecipes.addRecipe(this);
         }
     }
 
@@ -327,7 +328,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             30,
             0);
         if (mInputs.length > 0 && mOutputs[0] != null) {
-            RecipeMap.sImplosionRecipes.addRecipe(this);
+            RecipeMaps.implosionRecipes.addRecipe(this);
         }
     }
 
@@ -344,7 +345,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             Math.max(aEUt, 1),
             0);
         if (mInputs.length > 0 && mOutputs[0] != null) {
-            RecipeMap.sBenderRecipes.addRecipe(this);
+            RecipeMaps.benderRecipes.addRecipe(this);
         }
     }
 
@@ -361,7 +362,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             Math.max(aEUt, 1),
             0);
         if (mInputs.length > 0 && mOutputs[0] != null) {
-            RecipeMap.sAlloySmelterRecipes.addRecipe(this);
+            RecipeMaps.alloySmelterRecipes.addRecipe(this);
         }
     }
 
@@ -379,7 +380,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             Math.max(aEUt, 1),
             0);
         if (mInputs.length > 0 && mOutputs[0] != null) {
-            RecipeMap.sCannerRecipes.addRecipe(this);
+            RecipeMaps.cannerRecipes.addRecipe(this);
         }
     }
 
@@ -396,7 +397,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             120,
             0);
         if (mInputs.length > 0 && mOutputs[0] != null) {
-            RecipeMap.sVacuumRecipes.addRecipe(this);
+            RecipeMaps.vacuumRecipes.addRecipe(this);
         }
     }
 
@@ -413,7 +414,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             aEUt,
             0);
         if (mInputs.length > 0 && mOutputs[0] != null) {
-            RecipeMap.sVacuumRecipes.addRecipe(this);
+            RecipeMaps.vacuumRecipes.addRecipe(this);
         }
     }
 
@@ -430,7 +431,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             aEUt,
             0);
         if (mFluidInputs.length > 0 && mFluidOutputs[0] != null) {
-            RecipeMap.sVacuumRecipes.addRecipe(this);
+            RecipeMaps.vacuumRecipes.addRecipe(this);
         }
     }
 

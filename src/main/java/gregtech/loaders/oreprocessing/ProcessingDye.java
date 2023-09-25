@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.recipe.RecipeMap.sMixerRecipes;
+import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
@@ -47,7 +47,7 @@ public class ProcessingDye implements IOreRecipeRegistrator {
             .fluidOutputs(FluidRegistry.getFluidStack(fluidName, 192))
             .duration(16 * TICKS)
             .eut(4)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1L, stack), GT_Utility.getIntegratedCircuit(1))
@@ -55,7 +55,7 @@ public class ProcessingDye implements IOreRecipeRegistrator {
             .fluidOutputs(FluidRegistry.getFluidStack(fluidName, 216))
             .duration(16 * TICKS)
             .eut(4)
-            .addTo(sMixerRecipes);
+            .addTo(mixerRecipes);
     }
 
     public void registerAlloySmelter(ItemStack stack, Dyes dye) {

@@ -12,9 +12,9 @@ import static gregtech.api.enums.Mods.MagicBees;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.ThaumicBases;
-import static gregtech.api.recipe.RecipeMap.sAutoclaveRecipes;
-import static gregtech.api.recipe.RecipeMap.sCentrifugeRecipes;
-import static gregtech.api.recipe.RecipeMap.sFluidExtractionRecipes;
+import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.CLEANROOM;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
@@ -1599,7 +1599,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         if (volt.compareTo(Voltage.HV) > 0) {
             recipeBuilder.requiresCleanRoom();
         }
-        recipeBuilder.addTo(sAutoclaveRecipes);
+        recipeBuilder.addTo(autoclaveRecipes);
     }
 
     public void addFluidExtractorProcess(CombType comb, FluidStack fluid, Voltage volt) {
@@ -1619,7 +1619,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             .fluidOutputs(fluid)
             .duration(duration)
             .eut(eut)
-            .addTo(sFluidExtractionRecipes);
+            .addTo(fluidExtractionRecipes);
     }
 
     /**
@@ -1782,7 +1782,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             .outputChances(chance)
             .duration(duration)
             .eut(volt.getSimpleEnergy())
-            .addTo(sCentrifugeRecipes);
+            .addTo(centrifugeRecipes);
     }
 
     public void registerOreDict() {

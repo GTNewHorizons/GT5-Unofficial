@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.recipe.RecipeMap.sBenderRecipes;
+import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
@@ -35,7 +35,7 @@ public class ProcessingFoil implements IOreRecipeRegistrator {
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.foil, material, 4L))
             .duration((int) Math.max(material.getMass(), 1L))
             .eut(calculateRecipeEU(material, 24))
-            .addTo(sBenderRecipes);
+            .addTo(benderRecipes);
     }
 
     private void registerCover(ItemStack stack, Materials material) {

@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.recipe.RecipeMap.sCentrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.init.Blocks;
@@ -30,7 +30,7 @@ public class ProcessingSand implements gregtech.api.interfaces.IOreRecipeRegistr
                     new ItemStack(Blocks.sand, 1, 0))
                 .duration(50 * SECONDS)
                 .eut(5)
-                .addTo(sCentrifugeRecipes);
+                .addTo(centrifugeRecipes);
         }
     }
 }

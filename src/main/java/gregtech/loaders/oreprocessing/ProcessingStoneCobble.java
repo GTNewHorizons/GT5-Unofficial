@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.recipe.RecipeMap.sAssemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.init.Blocks;
@@ -25,6 +25,6 @@ public class ProcessingStoneCobble implements gregtech.api.interfaces.IOreRecipe
             .itemOutputs(new ItemStack(Blocks.furnace, 1))
             .duration(20 * SECONDS)
             .eut(4)
-            .addTo(sAssemblerRecipes);
+            .addTo(assemblerRecipes);
     }
 }

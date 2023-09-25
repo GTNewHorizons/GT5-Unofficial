@@ -1,9 +1,9 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.recipe.RecipeMap.sBenderRecipes;
-import static gregtech.api.recipe.RecipeMap.sFluidSolidficationRecipes;
-import static gregtech.api.recipe.RecipeMap.sHammerRecipes;
-import static gregtech.api.recipe.RecipeMap.sVacuumRecipes;
+import static gregtech.api.recipe.RecipeMaps.benderRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidSolidfierRecipes;
+import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
+import static gregtech.api.recipe.RecipeMaps.vacuumRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
@@ -71,7 +71,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                         .fluidInputs(aMaterial.getMolten(144L))
                         .duration(1 * SECONDS + 12 * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 8))
-                        .addTo(sFluidSolidficationRecipes);
+                        .addTo(fluidSolidfierRecipes);
                 }
                 // Reverse recipes
                 {
@@ -111,7 +111,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 2L))
                             .duration(Math.max(aMaterialMass, 1L))
                             .eut(calculateRecipeEU(aMaterial, 16))
-                            .addTo(sHammerRecipes);
+                            .addTo(hammerRecipes);
                     }
 
                     // Bender recipes
@@ -122,7 +122,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                                 .duration(Math.max(aMaterialMass, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 24))
-                                .addTo(sBenderRecipes);
+                                .addTo(benderRecipes);
                         }
 
                         if (GT_OreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 1L) != null) {
@@ -131,7 +131,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 1L))
                                 .duration(Math.max(aMaterialMass * 2L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 96))
-                                .addTo(sBenderRecipes);
+                                .addTo(benderRecipes);
                         }
 
                         if (GT_OreDictUnificator.get(OrePrefixes.plateTriple, aMaterial, 1L) != null) {
@@ -140,7 +140,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateTriple, aMaterial, 1L))
                                 .duration(Math.max(aMaterialMass * 3L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 96))
-                                .addTo(sBenderRecipes);
+                                .addTo(benderRecipes);
                         }
 
                         if (GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L) != null) {
@@ -149,7 +149,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L))
                                 .duration(Math.max(aMaterialMass * 4L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 96))
-                                .addTo(sBenderRecipes);
+                                .addTo(benderRecipes);
                         }
 
                         if (GT_OreDictUnificator.get(OrePrefixes.plateQuintuple, aMaterial, 1L) != null) {
@@ -158,7 +158,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateQuintuple, aMaterial, 1L))
                                 .duration(Math.max(aMaterialMass * 5L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 96))
-                                .addTo(sBenderRecipes);
+                                .addTo(benderRecipes);
                         }
 
                         if (GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L) != null) {
@@ -167,7 +167,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L))
                                 .duration(Math.max(aMaterialMass * 9L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 96))
-                                .addTo(sBenderRecipes);
+                                .addTo(benderRecipes);
                         }
 
                         if (GT_OreDictUnificator.get(OrePrefixes.foil, aMaterial, 1L) != null) {
@@ -176,7 +176,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.foil, aMaterial, 4L))
                                 .duration(Math.max(aMaterialMass * 2L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 24))
-                                .addTo(sBenderRecipes);
+                                .addTo(benderRecipes);
                         }
                     }
                 }
@@ -190,14 +190,14 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 1L))
                             .duration(Math.max(aMaterialMass, 1L))
                             .eut(calculateRecipeEU(aMaterial, 96))
-                            .addTo(sBenderRecipes);
+                            .addTo(benderRecipes);
 
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(2L, aStack), GT_Utility.getIntegratedCircuit(2))
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L))
                             .duration(Math.max(aMaterialMass * 2L, 1L))
                             .eut(calculateRecipeEU(aMaterial, 96))
-                            .addTo(sBenderRecipes);
+                            .addTo(benderRecipes);
                     }
 
                     // Enable crafting with hammer if tier is < IV.
@@ -220,14 +220,14 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateTriple, aMaterial, 1L))
                             .duration(Math.max(aMaterialMass, 1L))
                             .eut(calculateRecipeEU(aMaterial, 96))
-                            .addTo(sBenderRecipes);
+                            .addTo(benderRecipes);
 
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(3L, aStack), GT_Utility.getIntegratedCircuit(3))
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L))
                             .duration(Math.max(aMaterialMass * 3L, 1L))
                             .eut(calculateRecipeEU(aMaterial, 96))
-                            .addTo(sBenderRecipes);
+                            .addTo(benderRecipes);
                     }
 
                     if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV && aSpecialRecipeReq
@@ -250,7 +250,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L))
                             .duration(Math.max(aMaterialMass, 1L))
                             .eut(calculateRecipeEU(aMaterial, 96))
-                            .addTo(sBenderRecipes);
+                            .addTo(benderRecipes);
                     }
 
                     // If tier < IV add manual crafting.
@@ -274,7 +274,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateQuintuple, aMaterial, 1L))
                             .duration(Math.max(aMaterialMass, 1L))
                             .eut(calculateRecipeEU(aMaterial, 96))
-                            .addTo(sBenderRecipes);
+                            .addTo(benderRecipes);
                     }
 
                     // Crafting recipes
@@ -298,7 +298,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L))
                         .duration(((int) Math.max(aMaterialMass * 3L, 1L)) * TICKS)
                         .eut(TierEU.RECIPE_MV)
-                        .addTo(sVacuumRecipes);
+                        .addTo(vacuumRecipes);
                 }
             }
             default -> {}

@@ -1,8 +1,8 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.recipe.RecipeMap.sAssemblerRecipes;
-import static gregtech.api.recipe.RecipeMap.sCutterRecipes;
-import static gregtech.api.recipe.RecipeMap.sLatheRecipes;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
+import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
@@ -33,7 +33,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L))
                 .duration(10 * TICKS)
                 .eut(8)
-                .addTo(sLatheRecipes);
+                .addTo(latheRecipes);
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     GT_Utility.copyAmount(1L, aStack),
@@ -41,7 +41,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemOutputs(ItemList.Crate_Empty.get(1L))
                 .duration(10 * SECONDS)
                 .eut(1)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     GT_Utility.copyAmount(1L, aStack),
@@ -49,7 +49,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemOutputs(ItemList.Crate_Empty.get(1L))
                 .duration(10 * SECONDS)
                 .eut(1)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     GT_Utility.copyAmount(1L, aStack),
@@ -57,19 +57,19 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemOutputs(ItemList.Crate_Empty.get(1L))
                 .duration(10 * SECONDS)
                 .eut(1)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(8L, aStack), GT_Utility.getIntegratedCircuit(8))
                 .itemOutputs(new ItemStack(Blocks.chest, 1))
                 .duration(40 * SECONDS)
                 .eut(4)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(6L, aStack), new ItemStack(Items.book, 3))
                 .itemOutputs(new ItemStack(Blocks.bookshelf, 1))
                 .duration(20 * SECONDS)
                 .eut(4)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
 
             if (aStack.getItemDamage() == 32767) {
                 for (byte i = 0; i < 64; i = (byte) (i + 1)) {
@@ -83,21 +83,21 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                             .fluidInputs(Materials.Water.getFluid(4))
                             .duration(2 * 25 * TICKS)
                             .eut(4)
-                            .addTo(sCutterRecipes);
+                            .addTo(cutterRecipes);
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(1L, tStack))
                             .itemOutputs(GT_Utility.copyAmount(tOutput.stackSize / 3, tOutput))
                             .fluidInputs(GT_ModHandler.getDistilledWater(3))
                             .duration(2 * 25 * TICKS)
                             .eut(4)
-                            .addTo(sCutterRecipes);
+                            .addTo(cutterRecipes);
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(1L, tStack))
                             .itemOutputs(GT_Utility.copyAmount(tOutput.stackSize / 3, tOutput))
                             .fluidInputs(Materials.Lubricant.getFluid(1))
                             .duration(25 * TICKS)
                             .eut(4)
-                            .addTo(sCutterRecipes);
+                            .addTo(cutterRecipes);
                         GT_ModHandler.removeRecipeDelayed(tStack, tStack, tStack);
                         GT_ModHandler.addCraftingRecipe(
                             GT_Utility.copyAmount(tOutput.stackSize / 3, tOutput),
@@ -117,21 +117,21 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                         .fluidInputs(Materials.Water.getFluid(4))
                         .duration(2 * 25)
                         .eut(4)
-                        .addTo(sCutterRecipes);
+                        .addTo(cutterRecipes);
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(1L, aStack))
                         .itemOutputs(GT_Utility.copyAmount(tOutput.stackSize / 3, tOutput))
                         .fluidInputs(GT_ModHandler.getDistilledWater(3))
                         .duration(2 * 25)
                         .eut(4)
-                        .addTo(sCutterRecipes);
+                        .addTo(cutterRecipes);
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(1L, aStack))
                         .itemOutputs(GT_Utility.copyAmount(tOutput.stackSize / 3, tOutput))
                         .fluidInputs(Materials.Lubricant.getFluid(1))
                         .duration(25)
                         .eut(4)
-                        .addTo(sCutterRecipes);
+                        .addTo(cutterRecipes);
                     GT_ModHandler.removeRecipeDelayed(aStack, aStack, aStack);
                     GT_ModHandler.addCraftingRecipe(
                         GT_Utility.copyAmount(tOutput.stackSize / 3, tOutput),

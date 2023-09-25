@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.recipe.RecipeMap.sLaserEngraverRecipes;
+import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
@@ -20,7 +20,7 @@ public class LaserEngraverRecipes implements Runnable {
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_ZPM)
             .noOptimize()
-            .addTo(sLaserEngraverRecipes);
+            .addTo(laserEngraverRecipes);
 
         GT_Values.RA.stdBuilder()
             .fluidInputs(MaterialsUEVplus.DimensionallyTranscendentProsaicCatalyst.getFluid(1000))
@@ -29,7 +29,7 @@ public class LaserEngraverRecipes implements Runnable {
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UV)
             .noOptimize()
-            .addTo(sLaserEngraverRecipes);
+            .addTo(laserEngraverRecipes);
 
         GT_Values.RA.stdBuilder()
             .fluidInputs(MaterialsUEVplus.DimensionallyTranscendentResplendentCatalyst.getFluid(1000))
@@ -38,7 +38,7 @@ public class LaserEngraverRecipes implements Runnable {
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UHV)
             .noOptimize()
-            .addTo(sLaserEngraverRecipes);
+            .addTo(laserEngraverRecipes);
 
         GT_Values.RA.stdBuilder()
             .fluidInputs(MaterialsUEVplus.DimensionallyTranscendentExoticCatalyst.getFluid(1000))
@@ -47,7 +47,7 @@ public class LaserEngraverRecipes implements Runnable {
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UEV)
             .noOptimize()
-            .addTo(sLaserEngraverRecipes);
+            .addTo(laserEngraverRecipes);
 
         GT_Values.RA.stdBuilder()
             .fluidInputs(MaterialsUEVplus.DimensionallyTranscendentStellarCatalyst.getFluid(1000))
@@ -56,7 +56,7 @@ public class LaserEngraverRecipes implements Runnable {
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UIV)
             .noOptimize()
-            .addTo(sLaserEngraverRecipes);
+            .addTo(laserEngraverRecipes);
 
     }
 }

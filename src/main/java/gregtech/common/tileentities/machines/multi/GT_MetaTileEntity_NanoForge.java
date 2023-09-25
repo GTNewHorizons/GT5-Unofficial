@@ -46,6 +46,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -174,7 +175,7 @@ public class GT_MetaTileEntity_NanoForge extends
 
     @Override
     public RecipeMap getRecipeMap() {
-        return RecipeMap.sNanoForge;
+        return RecipeMaps.nanoForgeRecipes;
     }
 
     @Override

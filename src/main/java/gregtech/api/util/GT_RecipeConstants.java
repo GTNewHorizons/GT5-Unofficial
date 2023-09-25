@@ -18,7 +18,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IGT_RecipeMap;
-import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 
 // this class is intended to be import-static-ed on every recipe script
 // so take care to not put unrelated stuff here!
@@ -95,10 +95,10 @@ public class GT_RecipeConstants {
             GT_RecipeBuilder b2 = builder.copy();
             b2.fluidInputs(mat.getPlasma(tPlasmaAmount))
                 .fluidOutputs(mat.getGas(tPlasmaAmount));
-            ret.addAll(RecipeMap.sPlasmaArcFurnaceRecipes.doAdd(b2));
+            ret.addAll(RecipeMaps.plasmaArcFurnaceRecipes.doAdd(b2));
         }
         ret.addAll(
-            RecipeMap.sArcFurnaceRecipes.doAdd(
+            RecipeMaps.arcFurnaceRecipes.doAdd(
                 builder.copy()
                     .fluidInputs(Materials.Oxygen.getGas(aDuration))));
         return ret;
@@ -112,16 +112,16 @@ public class GT_RecipeConstants {
             // config >= 10 -> this is a special chemical recipe that output fluid/canned fluid variant.
             // it doesn't belong to multiblocks
             if (GT_Utility.isAnyIntegratedCircuit(input) && input.getItemDamage() >= 10) {
-                return builder.addTo(RecipeMap.sChemicalRecipes);
+                return builder.addTo(RecipeMaps.chemicalReactorRecipes);
             }
         }
         return GT_Utility.concat(
             builder.copy()
-                .addTo(RecipeMap.sChemicalRecipes),
+                .addTo(RecipeMaps.chemicalReactorRecipes),
             convertCellToFluid(builder, false)
                 // LCR does not need cleanroom.
                 .metadata(CLEANROOM, false)
-                .addTo(RecipeMap.sMultiblockChemicalRecipes));
+                .addTo(RecipeMaps.multiblockChemicalReactorRecipes));
     });
 
     /**
@@ -192,7 +192,7 @@ public class GT_RecipeConstants {
         tPersistentHash = tPersistentHash * 31 + r.mEUt;
         Collection<GT_Recipe> ret = new ArrayList<>(3);
         ret.add(
-            RecipeMap.sScannerFakeRecipes.addFakeRecipe(
+            RecipeMaps.scannerFakeRecipes.addFakeRecipe(
                 false,
                 new ItemStack[] { aResearchItem },
                 new ItemStack[] { aOutput },
@@ -204,7 +204,7 @@ public class GT_RecipeConstants {
                 -201)); // means it's scanned
 
         ret.add(
-            RecipeMap.sAssemblylineVisualRecipes.addFakeRecipe(
+            RecipeMaps.assemblylineVisualRecipes.addFakeRecipe(
                 false,
                 r.mInputs,
                 new ItemStack[] { aOutput },
@@ -242,7 +242,7 @@ public class GT_RecipeConstants {
             ret.addAll(
                 builder.copy()
                     .itemInputs(GT_RecipeMapUtil.appendArray(builder.getItemInputsBasic(), input))
-                    .addTo(RecipeMap.sAssemblerRecipes));
+                    .addTo(RecipeMaps.assemblerRecipes));
         }
         return ret;
     });
@@ -272,13 +272,13 @@ public class GT_RecipeConstants {
     public enum FuelType {
 
         // ORDER MATTERS. DO NOT INSERT ELEMENT BETWEEN EXISTING ONES
-        DieselFuel(RecipeMap.sDieselFuels),
-        GasTurbine(RecipeMap.sTurbineFuels),
+        DieselFuel(RecipeMaps.dieselFuels),
+        GasTurbine(RecipeMaps.gasTurbineFuels),
         // appears unused
-        HotFuel(RecipeMap.sHotFuels),
-        SemiFluid(RecipeMap.sDenseLiquidFuels),
-        PlasmaTurbine(RecipeMap.sPlasmaFuels),
-        Magic(RecipeMap.sMagicFuels),;
+        HotFuel(RecipeMaps.hotFuels),
+        SemiFluid(RecipeMaps.denseLiquidFuels),
+        PlasmaTurbine(RecipeMaps.plasmaFuels),
+        Magic(RecipeMaps.magicFuels),;
 
         private static final FuelType[] VALUES = values();
         private final IGT_RecipeMap target;

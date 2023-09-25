@@ -3,7 +3,7 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GoodGenerator;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import static gregtech.api.recipe.RecipeMap.sPlasmaForgeRecipes;
+import static gregtech.api.recipe.RecipeMaps.plasmaForgeRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
@@ -31,7 +31,7 @@ public class PlasmaForgeRecipes implements Runnable {
             .duration(86400 * 20 * 2)
             .eut(2_000_000_000)
             .metadata(COIL_HEAT, 13500)
-            .addTo(sPlasmaForgeRecipes);
+            .addTo(plasmaForgeRecipes);
 
         // Quantum anomaly recipe bypass for UEV+. Avoids RNG.
         GT_Values.RA.stdBuilder()
@@ -44,6 +44,6 @@ public class PlasmaForgeRecipes implements Runnable {
             .duration(60 * SECONDS)
             .eut((int) TierEU.RECIPE_UEV)
             .metadata(COIL_HEAT, 10800)
-            .addTo(sPlasmaForgeRecipes);
+            .addTo(plasmaForgeRecipes);
     }
 }

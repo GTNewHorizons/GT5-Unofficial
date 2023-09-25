@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.recipe.RecipeMap.sExtractorRecipes;
+import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
 import static gregtech.api.util.GT_ModHandler.getIC2Item;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
@@ -43,6 +43,6 @@ public class ExtractorRecipes implements Runnable {
             .itemOutputs(output)
             .duration(15 * SECONDS)
             .eut(2)
-            .addTo(sExtractorRecipes);
+            .addTo(extractorRecipes);
     }
 }

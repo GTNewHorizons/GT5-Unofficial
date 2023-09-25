@@ -39,6 +39,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -145,7 +146,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
 
     @Override
     public RecipeMap getRecipeMap() {
-        return RecipeMap.sTranscendentPlasmaMixerRecipes;
+        return RecipeMaps.transcendentPlasmaMixerRecipes;
     }
 
     @Override

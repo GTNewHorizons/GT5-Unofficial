@@ -21,7 +21,7 @@ import gregtech.GT_Mod;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_ToolHarvestHelper;
 import gregtech.api.util.GT_Utility;
@@ -126,18 +126,18 @@ public class GT_Tool_HardHammer extends GT_Tool {
         return GT_ToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "hammer", "pickaxe")
             || GT_ToolHarvestHelper
                 .isAppropriateMaterial(aBlock, Material.rock, Material.glass, Material.ice, Material.packedIce)
-            || RecipeMap.sHammerRecipes.containsInput(new ItemStack(aBlock, 1, aMetaData));
+            || RecipeMaps.hammerRecipes.containsInput(new ItemStack(aBlock, 1, aMetaData));
     }
 
     @Override
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
         int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         int rConversions = 0;
-        GT_Recipe tRecipe = RecipeMap.sHammerRecipes
+        GT_Recipe tRecipe = RecipeMaps.hammerRecipes
             .findRecipe(null, true, MAX_IC2, null, new ItemStack(aBlock, 1, aMetaData));
         if ((tRecipe == null) || (aBlock.hasTileEntity(aMetaData))) {
             for (ItemStack tDrop : aDrops) {
-                tRecipe = RecipeMap.sHammerRecipes
+                tRecipe = RecipeMaps.hammerRecipes
                     .findRecipe(null, true, MAX_IC2, null, GT_Utility.copyAmount(1L, tDrop));
                 if (tRecipe != null) {
                     ItemStack tHammeringOutput = tRecipe.getOutput(0);

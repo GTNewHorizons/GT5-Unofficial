@@ -24,6 +24,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.multitileentity.multiblock.base.StackableController;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 
@@ -150,7 +151,7 @@ public class Macerator extends StackableController<Macerator> {
     }
 
     private boolean processRecipe(ItemStack[] aItemInputs, String aInventory) {
-        RecipeMap tRecipeMap = RecipeMap.sMaceratorRecipes;
+        RecipeMap tRecipeMap = RecipeMaps.maceratorRecipes;
         GT_Recipe tRecipe = tRecipeMap.findRecipe(this, false, TierEU.IV, null, aItemInputs);
         if (tRecipe == null) {
             return false;

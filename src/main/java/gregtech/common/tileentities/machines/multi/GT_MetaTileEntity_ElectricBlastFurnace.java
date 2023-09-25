@@ -52,6 +52,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -177,7 +178,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace extends
 
     @Override
     public RecipeMap getRecipeMap() {
-        return RecipeMap.sBlastRecipes;
+        return RecipeMaps.blastRecipes;
     }
 
     @Override

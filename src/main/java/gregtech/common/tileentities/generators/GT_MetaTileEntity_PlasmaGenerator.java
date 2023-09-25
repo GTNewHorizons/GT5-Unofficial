@@ -14,6 +14,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 
 public class GT_MetaTileEntity_PlasmaGenerator extends GT_MetaTileEntity_BasicGenerator {
@@ -114,7 +115,7 @@ public class GT_MetaTileEntity_PlasmaGenerator extends GT_MetaTileEntity_BasicGe
 
     @Override
     public RecipeMap getRecipes() {
-        return RecipeMap.sPlasmaFuels;
+        return RecipeMaps.plasmaFuels;
     }
 
     @Override

@@ -15,7 +15,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import gregtech.GT_Mod;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_ToolHarvestHelper;
 import gregtech.api.util.GT_Utility;
@@ -78,11 +78,11 @@ public class GT_Tool_JackHammer extends GT_Tool_Drill_LV {
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
         int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         int rConversions = 0;
-        GT_Recipe tRecipe = RecipeMap.sHammerRecipes
+        GT_Recipe tRecipe = RecipeMaps.hammerRecipes
             .findRecipe(null, true, 2147483647L, null, new ItemStack(aBlock, 1, aMetaData));
         if ((tRecipe == null) || (aBlock.hasTileEntity(aMetaData))) {
             for (ItemStack tDrop : aDrops) {
-                tRecipe = RecipeMap.sHammerRecipes
+                tRecipe = RecipeMaps.hammerRecipes
                     .findRecipe(null, true, 2147483647L, null, GT_Utility.copyAmount(1L, tDrop));
                 if (tRecipe != null) {
                     ItemStack tHammeringOutput = tRecipe.getOutput(0);

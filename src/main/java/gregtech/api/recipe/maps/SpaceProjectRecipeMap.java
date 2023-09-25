@@ -8,7 +8,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
@@ -107,9 +109,9 @@ public class SpaceProjectRecipeMap extends RecipeMap {
                 drawNEIOverlayText(displayString, stack, 0xffffff, 0.5f, true, Alignment.BottomRight);
             }
         }
-        if (neiCachedRecipe.mRecipe instanceof GT_FakeSpaceProjectRecipe) {
+        if (neiCachedRecipe.mRecipe instanceof FakeSpaceProjectRecipe) {
             ISpaceProject project = SpaceProjectManager
-                .getProject(((GT_FakeSpaceProjectRecipe) neiCachedRecipe.mRecipe).projectName);
+                .getProject(((FakeSpaceProjectRecipe) neiCachedRecipe.mRecipe).projectName);
             if (project != null) {
                 projectTexture = project.getTexture();
                 GuiDraw.drawStringC(EnumChatFormatting.BOLD + project.getLocalizedName(), 85, 0, 0x404040, false);
@@ -137,5 +139,16 @@ public class SpaceProjectRecipeMap extends RecipeMap {
                 .setSynced(false, false)
                 .setPos(new Pos2d(106, 28).add(windowOffset))
                 .setSize(bar2Width, 72));
+    }
+
+    public static class FakeSpaceProjectRecipe extends GT_Recipe {
+
+        public final String projectName;
+
+        public FakeSpaceProjectRecipe(boolean aOptimize, ItemStack[] aInputs, FluidStack[] aFluidInputs, int aDuration,
+            int aEUt, int aSpecialValue, String projectName) {
+            super(aOptimize, aInputs, null, null, null, aFluidInputs, null, aDuration, aEUt, aSpecialValue);
+            this.projectName = projectName;
+        }
     }
 }

@@ -55,6 +55,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.objects.GT_ChunkManager;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -656,7 +657,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
 
     @Override
     public RecipeMap getRecipeMap() {
-        return RecipeMap.sPlasmaForgeRecipes;
+        return RecipeMaps.plasmaForgeRecipes;
     }
 
     @Override
@@ -698,7 +699,7 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         long tTotalEU = GT_ExoticEnergyInputHelper.getTotalEuMulti(getExoticAndNormalEnergyHatchList());
 
         // Look up recipe. If not found it will return null.
-        GT_Recipe tRecipe_0 = RecipeMap.sPlasmaForgeRecipes
+        GT_Recipe tRecipe_0 = RecipeMaps.plasmaForgeRecipes
             .findRecipe(getBaseMetaTileEntity(), false, tTotalEU, tFluids, tItems);
 
         // Check if recipe found.

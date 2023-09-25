@@ -1,8 +1,8 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.recipe.RecipeMap.sAssemblerRecipes;
-import static gregtech.api.recipe.RecipeMap.sExtruderRecipes;
-import static gregtech.api.recipe.RecipeMap.sFluidSolidficationRecipes;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidSolidfierRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
@@ -51,7 +51,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                     .fluidInputs(Materials.Tin.getMolten(32))
                     .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 24))
-                    .addTo(sAssemblerRecipes);
+                    .addTo(assemblerRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(tPlate.copy(), tRing.copy(), GT_Utility.getIntegratedCircuit(4))
@@ -59,7 +59,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                     .fluidInputs(Materials.Lead.getMolten(48))
                     .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 24))
-                    .addTo(sAssemblerRecipes);
+                    .addTo(assemblerRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(tPlate.copy(), tRing.copy(), GT_Utility.getIntegratedCircuit(4))
@@ -67,7 +67,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                     .fluidInputs(Materials.SolderingAlloy.getMolten(16))
                     .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 24))
-                    .addTo(sAssemblerRecipes);
+                    .addTo(assemblerRecipes);
             }
 
             if (GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
@@ -78,7 +78,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
                     .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 24))
-                    .addTo(sExtruderRecipes);
+                    .addTo(extruderRecipes);
             }
             if (aMaterial.mStandardMoltenFluid != null) {
                 if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
@@ -89,7 +89,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                         .fluidInputs(aMaterial.getMolten(612L))
                         .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 24))
-                        .addTo(sFluidSolidficationRecipes);
+                        .addTo(fluidSolidfierRecipes);
                 }
             }
         }

@@ -7,9 +7,9 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ADVANCED_REDSTONE_T
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_FLUID_DETECTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_ITEM_DETECTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_MAINTENANCE_DETECTOR;
-import static gregtech.api.recipe.RecipeMap.sAssemblerRecipes;
-import static gregtech.api.recipe.RecipeMap.sCompressorRecipes;
-import static gregtech.api.recipe.RecipeMap.sMaceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.WILDCARD;
@@ -2467,7 +2467,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             .itemOutputs(ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sAssemblerRecipes);
+            .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Cover_RedstoneReceiverExternal.get(1L),
@@ -2476,7 +2476,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             .itemOutputs(ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sAssemblerRecipes);
+            .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Cover_FluidDetector.get(1L),
@@ -2485,7 +2485,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             .itemOutputs(ItemList.Cover_WirelessFluidDetector.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sAssemblerRecipes);
+            .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Cover_ItemDetector.get(1L),
@@ -2494,7 +2494,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             .itemOutputs(ItemList.Cover_WirelessItemDetector.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sAssemblerRecipes);
+            .addTo(assemblerRecipes);
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Cover_NeedsMaintainance.get(1L),
@@ -2503,7 +2503,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             .itemOutputs(ItemList.Cover_WirelessNeedsMaintainance.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(sAssemblerRecipes);
+            .addTo(assemblerRecipes);
 
         GT_ModHandler.addShapelessCraftingRecipe(
             ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L),
@@ -2556,84 +2556,84 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 .itemOutputs(new ItemStack(Blocks.wool, 1, 1))
                 .duration(15 * SECONDS)
                 .eut(2)
-                .addTo(sCompressorRecipes);
+                .addTo(compressorRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Crop_Drop_Plumbilia.get(4L))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .duration(15 * SECONDS)
                 .eut(2)
-                .addTo(sCompressorRecipes);
+                .addTo(compressorRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Crop_Drop_Argentia.get(4L))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .duration(15 * SECONDS)
                 .eut(2)
-                .addTo(sCompressorRecipes);
+                .addTo(compressorRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Crop_Drop_Indigo.get(4L))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .duration(15 * SECONDS)
                 .eut(2)
-                .addTo(sCompressorRecipes);
+                .addTo(compressorRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Crop_Drop_Ferru.get(4L))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .duration(15 * SECONDS)
                 .eut(2)
-                .addTo(sCompressorRecipes);
+                .addTo(compressorRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Crop_Drop_Aurelia.get(4L))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .duration(15 * SECONDS)
                 .eut(2)
-                .addTo(sCompressorRecipes);
+                .addTo(compressorRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Crop_Drop_OilBerry.get(4L))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .duration(15 * SECONDS)
                 .eut(2)
-                .addTo(sCompressorRecipes);
+                .addTo(compressorRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Crop_Drop_BobsYerUncleRanks.get(4L))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .duration(15 * SECONDS)
                 .eut(2)
-                .addTo(sCompressorRecipes);
+                .addTo(compressorRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Crop_Drop_Tine.get(4L))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .duration(15 * SECONDS)
                 .eut(2)
-                .addTo(sCompressorRecipes);
+                .addTo(compressorRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Crop_Drop_Rape.get(4L))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .duration(15 * SECONDS)
                 .eut(2)
-                .addTo(sCompressorRecipes);
+                .addTo(compressorRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(new ItemStack(Blocks.red_flower, 8, 32767))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .duration(15 * SECONDS)
                 .eut(2)
-                .addTo(sCompressorRecipes);
+                .addTo(compressorRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(new ItemStack(Blocks.yellow_flower, 8, 32767))
                 .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .duration(15 * SECONDS)
                 .eut(2)
-                .addTo(sCompressorRecipes);
+                .addTo(compressorRecipes);
         }
 
         GT_Values.RA.stdBuilder()
@@ -2641,21 +2641,21 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Cheese, 1L))
             .duration(20 * SECONDS)
             .eut(2)
-            .addTo(sMaceratorRecipes);
+            .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Dye_Cocoa.get(1L))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L))
             .duration(20 * SECONDS)
             .eut(2)
-            .addTo(sMaceratorRecipes);
+            .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Crop_Drop_Tine.get(1L))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
             .duration(20 * SECONDS)
             .eut(2)
-            .addTo(sMaceratorRecipes);
+            .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.melon_block, 1, 0))
@@ -2663,42 +2663,42 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             .outputChances(10000, 8000)
             .duration(20 * SECONDS)
             .eut(2)
-            .addTo(sMaceratorRecipes);
+            .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.pumpkin, 1, 0))
             .itemOutputs(new ItemStack(Items.pumpkin_seeds, 4, 0))
             .duration(20 * SECONDS)
             .eut(2)
-            .addTo(sMaceratorRecipes);
+            .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.melon, 1, 0))
             .itemOutputs(new ItemStack(Items.melon_seeds, 1, 0))
             .duration(20 * SECONDS)
             .eut(2)
-            .addTo(sMaceratorRecipes);
+            .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.wheat, 1, 0))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L))
             .duration(20 * SECONDS)
             .eut(2)
-            .addTo(sMaceratorRecipes);
+            .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_ModHandler.getIC2Item("crop", 1L))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
             .duration(20 * SECONDS)
             .eut(2)
-            .addTo(sMaceratorRecipes);
+            .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.stick, 1))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
             .duration(20 * SECONDS)
             .eut(2)
-            .addTo(sMaceratorRecipes);
+            .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.wool, 1, WILDCARD))
@@ -2706,14 +2706,14 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             .outputChances(10000, 5000)
             .duration(20 * SECONDS)
             .eut(2)
-            .addTo(sMaceratorRecipes);
+            .addTo(maceratorRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.TranscendentMetal, 8L))
             .duration(5 * SECONDS)
             .eut(32_000_000)
-            .addTo(sMaceratorRecipes);
+            .addTo(maceratorRecipes);
         try {
             CropCard tCrop;
             GT_Utility.getField(tCrop = Crops.instance.getCropList()[13], "mDrop")

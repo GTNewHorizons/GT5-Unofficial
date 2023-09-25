@@ -23,6 +23,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_Bronze;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 
@@ -43,7 +44,7 @@ public class GT_MetaTileEntity_Extractor_Bronze extends GT_MetaTileEntity_BasicM
 
     @Override
     public RecipeMap getRecipeList() {
-        return RecipeMap.sExtractorRecipes;
+        return RecipeMaps.extractorRecipes;
     }
 
     @Override

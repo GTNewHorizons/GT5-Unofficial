@@ -2,7 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.BuildCraftSilicon;
-import static gregtech.api.recipe.RecipeMap.sPressRecipes;
+import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -30,7 +30,7 @@ public class FormingPressRecipes implements Runnable {
                 .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 1))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
-                .addTo(sPressRecipes);
+                .addTo(formingPressRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -39,7 +39,7 @@ public class FormingPressRecipes implements Runnable {
                 .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 1))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
-                .addTo(sPressRecipes);
+                .addTo(formingPressRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -48,7 +48,7 @@ public class FormingPressRecipes implements Runnable {
                 .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 2))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
-                .addTo(sPressRecipes);
+                .addTo(formingPressRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -57,7 +57,7 @@ public class FormingPressRecipes implements Runnable {
                 .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 3))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
-                .addTo(sPressRecipes);
+                .addTo(formingPressRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -66,7 +66,7 @@ public class FormingPressRecipes implements Runnable {
                 .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 2L, 4))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
-                .addTo(sPressRecipes);
+                .addTo(formingPressRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -75,7 +75,7 @@ public class FormingPressRecipes implements Runnable {
                 .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 5))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
-                .addTo(sPressRecipes);
+                .addTo(formingPressRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -84,7 +84,7 @@ public class FormingPressRecipes implements Runnable {
                 .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 6))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
-                .addTo(sPressRecipes);
+                .addTo(formingPressRecipes);
         }
 
         if (AppliedEnergistics2.isModLoaded()) {
@@ -95,7 +95,7 @@ public class FormingPressRecipes implements Runnable {
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 16))
                 .duration(10 * SECONDS)
                 .eut(16)
-                .addTo(sPressRecipes);
+                .addTo(formingPressRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -104,7 +104,7 @@ public class FormingPressRecipes implements Runnable {
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 16))
                 .duration(10 * SECONDS)
                 .eut(16)
-                .addTo(sPressRecipes);
+                .addTo(formingPressRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -113,7 +113,7 @@ public class FormingPressRecipes implements Runnable {
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 17))
                 .duration(10 * SECONDS)
                 .eut(16)
-                .addTo(sPressRecipes);
+                .addTo(formingPressRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -122,7 +122,7 @@ public class FormingPressRecipes implements Runnable {
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 18))
                 .duration(10 * SECONDS)
                 .eut(16)
-                .addTo(sPressRecipes);
+                .addTo(formingPressRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(
@@ -131,7 +131,7 @@ public class FormingPressRecipes implements Runnable {
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 20))
                 .duration(10 * SECONDS)
                 .eut(16)
-                .addTo(sPressRecipes);
+                .addTo(formingPressRecipes);
         }
 
         GT_Values.RA.stdBuilder()
@@ -139,14 +139,14 @@ public class FormingPressRecipes implements Runnable {
             .itemOutputs(ItemList.Food_Raw_Cake.get(1L))
             .duration(19 * SECONDS + 4 * TICKS)
             .eut(4)
-            .addTo(sPressRecipes);
+            .addTo(formingPressRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.glass, 1, 32767), ItemList.Shape_Mold_Arrow.get(0L))
             .itemOutputs(ItemList.Arrow_Head_Glass_Emtpy.get(1L))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(4)
-            .addTo(sPressRecipes);
+            .addTo(formingPressRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -155,7 +155,7 @@ public class FormingPressRecipes implements Runnable {
             .itemOutputs(ItemList.Credit_Greg_Cupronickel.get(4L))
             .duration(5 * SECONDS)
             .eut(16)
-            .addTo(sPressRecipes);
+            .addTo(formingPressRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -164,7 +164,7 @@ public class FormingPressRecipes implements Runnable {
             .itemOutputs(ItemList.Coin_Doge.get(4L))
             .duration(5 * SECONDS)
             .eut(16)
-            .addTo(sPressRecipes);
+            .addTo(formingPressRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -173,7 +173,7 @@ public class FormingPressRecipes implements Runnable {
             .itemOutputs(ItemList.Credit_Iron.get(4L))
             .duration(5 * SECONDS)
             .eut(16)
-            .addTo(sPressRecipes);
+            .addTo(formingPressRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -182,7 +182,7 @@ public class FormingPressRecipes implements Runnable {
             .itemOutputs(ItemList.Credit_Iron.get(4L))
             .duration(5 * SECONDS)
             .eut(16)
-            .addTo(sPressRecipes);
+            .addTo(formingPressRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
@@ -191,6 +191,6 @@ public class FormingPressRecipes implements Runnable {
             .itemOutputs(new ItemStack(Items.brick, 1, 0))
             .duration(5 * SECONDS)
             .eut(16)
-            .addTo(sPressRecipes);
+            .addTo(formingPressRecipes);
     }
 }

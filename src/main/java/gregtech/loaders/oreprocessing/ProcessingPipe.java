@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.recipe.RecipeMap.sAssemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
@@ -97,7 +97,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                     .duration(
                         ((int) (aPrefix.mSecondaryMaterial.mAmount * 400L / OrePrefixes.ring.mMaterialAmount)) * TICKS)
                     .eut(4)
-                    .addTo(sAssemblerRecipes);
+                    .addTo(assemblerRecipes);
             }
             case pipeQuadruple -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
@@ -115,7 +115,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1))
                     .duration(3 * SECONDS)
                     .eut(calculateRecipeEU(aMaterial, 4))
-                    .addTo(sAssemblerRecipes);
+                    .addTo(assemblerRecipes);
             }
             case pipeNonuple -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
@@ -133,7 +133,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, aMaterial, 1))
                     .duration(3 * SECONDS)
                     .eut(calculateRecipeEU(aMaterial, 8))
-                    .addTo(sAssemblerRecipes);
+                    .addTo(assemblerRecipes);
             }
             default -> {}
         }

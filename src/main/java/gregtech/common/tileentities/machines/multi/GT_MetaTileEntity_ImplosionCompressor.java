@@ -23,6 +23,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_CubicMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 
@@ -97,7 +98,7 @@ public class GT_MetaTileEntity_ImplosionCompressor
 
     @Override
     public RecipeMap getRecipeMap() {
-        return RecipeMap.sImplosionRecipes;
+        return RecipeMaps.implosionRecipes;
     }
 
     @Override

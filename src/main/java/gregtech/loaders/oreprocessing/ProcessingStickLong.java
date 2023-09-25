@@ -1,7 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.recipe.RecipeMap.sBenderRecipes;
-import static gregtech.api.recipe.RecipeMap.sCutterRecipes;
+import static gregtech.api.recipe.RecipeMaps.benderRecipes;
+import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
@@ -49,7 +49,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                                         / 320))))
                     .duration(2 * ((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 4))
-                    .addTo(sCutterRecipes);
+                    .addTo(cutterRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1L, aStack))
@@ -64,7 +64,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                                         / 426))))
                     .duration(2 * ((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 4))
-                    .addTo(sCutterRecipes);
+                    .addTo(cutterRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1L, aStack))
@@ -79,7 +79,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                                         / 1280))))
                     .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 4))
-                    .addTo(sCutterRecipes);
+                    .addTo(cutterRecipes);
             }
 
             if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
@@ -104,7 +104,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.spring, aMaterial, 1L))
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(aMaterial, 16))
-                        .addTo(sBenderRecipes);
+                        .addTo(benderRecipes);
                 }
             }
 

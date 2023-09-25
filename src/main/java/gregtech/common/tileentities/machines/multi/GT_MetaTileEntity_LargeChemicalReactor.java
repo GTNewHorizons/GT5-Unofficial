@@ -47,6 +47,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 
@@ -162,7 +163,7 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends
 
     @Override
     public RecipeMap getRecipeMap() {
-        return RecipeMap.sMultiblockChemicalRecipes;
+        return RecipeMaps.multiblockChemicalReactorRecipes;
     }
 
     @Override

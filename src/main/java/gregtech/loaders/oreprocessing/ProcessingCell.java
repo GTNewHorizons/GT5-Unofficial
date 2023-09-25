@@ -1,8 +1,8 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.recipe.RecipeMap.sCentrifugeRecipes;
-import static gregtech.api.recipe.RecipeMap.sElectrolyzerRecipes;
-import static gregtech.api.recipe.RecipeMap.sVacuumRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
+import static gregtech.api.recipe.RecipeMaps.vacuumRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GT_RecipeConstants.FUEL_VALUE;
@@ -128,7 +128,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                         recipeBuilder.itemOutputs(outputsArray)
                                             .duration(Math.max(1L, Math.abs(aMaterial.getProtons() * 2L * tItemAmount)))
                                             .eut(Math.min(4, tList.size()) * 30)
-                                            .addTo(sElectrolyzerRecipes);
+                                            .addTo(electrolyzerRecipes);
                                     } else {
                                         long tCellBalance = tCapsuleCount + tItemAmount - 1;
                                         GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
@@ -145,7 +145,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                         recipeBuilder.itemOutputs(outputsArray)
                                             .duration(Math.max(1L, Math.abs(aMaterial.getProtons() * 8L * tItemAmount)))
                                             .eut(Math.min(4, tList.size()) * 30)
-                                            .addTo(sElectrolyzerRecipes);
+                                            .addTo(electrolyzerRecipes);
                                     }
                                 }
                             }
@@ -165,7 +165,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                 recipeBuilder.itemOutputs(outputsArray)
                                     .duration(Math.max(1L, Math.abs(aMaterial.getMass() * 2L * tItemAmount)))
                                     .eut(5)
-                                    .addTo(sCentrifugeRecipes);
+                                    .addTo(centrifugeRecipes);
                             }
                         }
                     }
@@ -203,7 +203,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L))
                             .duration(((int) Math.max(aMaterial.getMass() * 2L, 1L)) * TICKS)
                             .eut(TierEU.RECIPE_MV)
-                            .addTo(sVacuumRecipes);
+                            .addTo(vacuumRecipes);
                     }
                 }
             }

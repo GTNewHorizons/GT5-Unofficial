@@ -1,7 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.recipe.RecipeMap.sAlloySmelterRecipes;
-import static gregtech.api.recipe.RecipeMap.sFluidSolidficationRecipes;
+import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidSolidfierRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
@@ -36,7 +36,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial.mSmeltInto, 1L))
                 .duration(10 * SECONDS)
                 .eut(calculateRecipeEU(aMaterial, 2))
-                .addTo(sAlloySmelterRecipes);
+                .addTo(alloySmelterRecipes);
         }
 
         if ((!aMaterial.contains(SubTag.SMELTING_TO_GEM))
@@ -46,7 +46,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L))
                 .duration(10 * SECONDS)
                 .eut(calculateRecipeEU(aMaterial, 2))
-                .addTo(sAlloySmelterRecipes);
+                .addTo(alloySmelterRecipes);
         }
 
         if (aMaterial.mStandardMoltenFluid != null) {
@@ -57,7 +57,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                     .fluidInputs(aMaterial.getMolten(16L))
                     .duration(16 * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 4))
-                    .addTo(sFluidSolidficationRecipes);
+                    .addTo(fluidSolidfierRecipes);
             }
         }
 
@@ -73,7 +73,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                 .itemOutputs(GT_Utility.copyAmount(9L, aStack))
                 .duration(5 * SECONDS)
                 .eut(calculateRecipeEU(aMaterial, 1))
-                .addTo(sAlloySmelterRecipes);
+                .addTo(alloySmelterRecipes);
             if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                 GT_ModHandler.addCraftingRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial, 8L),

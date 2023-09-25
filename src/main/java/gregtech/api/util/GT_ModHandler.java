@@ -9,9 +9,9 @@ import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.W;
-import static gregtech.api.recipe.RecipeMap.sAlloySmelterRecipes;
-import static gregtech.api.recipe.RecipeMap.sExtractorRecipes;
-import static gregtech.api.recipe.RecipeMap.sOreWasherRecipes;
+import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
+import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
+import static gregtech.api.recipe.RecipeMaps.oreWasherRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
@@ -575,7 +575,7 @@ public class GT_ModHandler {
         if (hidden) {
             recipeBuilder.hidden();
         }
-        recipeBuilder.addTo(sAlloySmelterRecipes);
+        recipeBuilder.addTo(alloySmelterRecipes);
         return true;
     }
 
@@ -619,7 +619,7 @@ public class GT_ModHandler {
             .itemOutputs(aOutput)
             .duration(15 * SECONDS)
             .eut(2)
-            .addTo(sExtractorRecipes);
+            .addTo(extractorRecipes);
         return true;
     }
 
@@ -735,7 +735,7 @@ public class GT_ModHandler {
             .itemOutputs(aOutput1)
             .duration(aDuration)
             .eut(aEUt)
-            .addTo(sAlloySmelterRecipes);
+            .addTo(alloySmelterRecipes);
         return true;
     }
 
@@ -929,7 +929,7 @@ public class GT_ModHandler {
             .fluidInputs(GT_ModHandler.getWater(aWaterAmount))
             .duration(25 * SECONDS)
             .eut(16)
-            .addTo(sOreWasherRecipes);
+            .addTo(oreWasherRecipes);
 
         RA.stdBuilder()
             .itemInputs(aInput)
@@ -938,7 +938,7 @@ public class GT_ModHandler {
             .fluidInputs(GT_ModHandler.getDistilledWater(aWaterAmount / 5))
             .duration(15 * SECONDS)
             .eut(16)
-            .addTo(sOreWasherRecipes);
+            .addTo(oreWasherRecipes);
         return true;
     }
 
@@ -951,7 +951,7 @@ public class GT_ModHandler {
             .fluidInputs(GT_ModHandler.getWater(aWaterAmount))
             .duration(25 * SECONDS)
             .eut(16)
-            .addTo(sOreWasherRecipes);
+            .addTo(oreWasherRecipes);
 
         RA.stdBuilder()
             .itemInputs(aInput)
@@ -959,7 +959,7 @@ public class GT_ModHandler {
             .fluidInputs(GT_ModHandler.getDistilledWater(aWaterAmount / 5))
             .duration(15 * SECONDS)
             .eut(16)
-            .addTo(sOreWasherRecipes);
+            .addTo(oreWasherRecipes);
         return true;
     }
 

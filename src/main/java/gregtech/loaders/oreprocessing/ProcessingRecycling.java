@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.recipe.RecipeMap.sCannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
@@ -39,7 +39,7 @@ public class ProcessingRecycling implements gregtech.api.interfaces.IOreRecipeRe
             }
             recipeBuilder.duration(((int) Math.max(aMaterial.getMass() / 2L, 1L)) * TICKS)
                 .eut(2)
-                .addTo(sCannerRecipes);
+                .addTo(cannerRecipes);
         }
     }
 }

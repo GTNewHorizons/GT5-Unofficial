@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.recipe.RecipeMap.sFluidCannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -16,7 +16,7 @@ public class FluidCannerRecipes implements Runnable {
             .fluidInputs(Materials.Redstone.getMolten(288))
             .duration(4)
             .eut(1)
-            .addTo(sFluidCannerRecipes);
+            .addTo(fluidCannerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Hull_LV.get(1))
@@ -24,7 +24,7 @@ public class FluidCannerRecipes implements Runnable {
             .fluidInputs(Materials.Mercury.getFluid(1000))
             .duration(16)
             .eut(1)
-            .addTo(sFluidCannerRecipes);
+            .addTo(fluidCannerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Hull_MV.get(1))
@@ -32,7 +32,7 @@ public class FluidCannerRecipes implements Runnable {
             .fluidInputs(Materials.Mercury.getFluid(4000))
             .duration(64)
             .eut(1)
-            .addTo(sFluidCannerRecipes);
+            .addTo(fluidCannerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Hull_HV.get(1))
@@ -40,7 +40,7 @@ public class FluidCannerRecipes implements Runnable {
             .fluidInputs(Materials.Mercury.getFluid(16000))
             .duration(258)
             .eut(1)
-            .addTo(sFluidCannerRecipes);
+            .addTo(fluidCannerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Hull_LV.get(1))
@@ -48,7 +48,7 @@ public class FluidCannerRecipes implements Runnable {
             .fluidInputs(Materials.SulfuricAcid.getFluid(1000))
             .duration(16)
             .eut(1)
-            .addTo(sFluidCannerRecipes);
+            .addTo(fluidCannerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Hull_MV.get(1))
@@ -56,7 +56,7 @@ public class FluidCannerRecipes implements Runnable {
             .fluidInputs(Materials.SulfuricAcid.getFluid(4000))
             .duration(64)
             .eut(1)
-            .addTo(sFluidCannerRecipes);
+            .addTo(fluidCannerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Hull_HV.get(1))
@@ -64,7 +64,7 @@ public class FluidCannerRecipes implements Runnable {
             .fluidInputs(Materials.SulfuricAcid.getFluid(16000))
             .duration(258)
             .eut(1)
-            .addTo(sFluidCannerRecipes);
+            .addTo(fluidCannerRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.TF_Vial_FieryTears.get(1))
@@ -72,6 +72,6 @@ public class FluidCannerRecipes implements Runnable {
             .fluidOutputs(Materials.FierySteel.getFluid(250))
             .duration(4)
             .eut(1)
-            .addTo(sFluidCannerRecipes);
+            .addTo(fluidCannerRecipes);
     }
 }

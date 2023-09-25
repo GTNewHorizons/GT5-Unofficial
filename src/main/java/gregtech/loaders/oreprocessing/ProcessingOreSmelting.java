@@ -1,7 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.recipe.RecipeMap.sBlastRecipes;
-import static gregtech.api.recipe.RecipeMap.sPrimitiveBlastRecipes;
+import static gregtech.api.recipe.RecipeMaps.blastRecipes;
+import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
@@ -57,7 +57,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                 .duration(Math.max(aMaterial.getMass() / 4L, 1L) * aMaterial.mBlastFurnaceTemp * TICKS)
                                 .eut(TierEU.RECIPE_MV)
                                 .metadata(COIL_HEAT, (int) aMaterial.mBlastFurnaceTemp)
-                                .addTo(sBlastRecipes);
+                                .addTo(blastRecipes);
                         }
             } else {
                 OrePrefixes outputPrefix;
@@ -90,7 +90,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                     .duration(2 * MINUTES)
                                     .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
-                                    .addTo(sPrimitiveBlastRecipes);
+                                    .addTo(primitiveBlastRecipes);
                             } else if (aMaterial == Materials.Chalcopyrite) {
                                 GT_Values.RA.stdBuilder()
                                     .itemInputs(aMaterial.getDust(2), new ItemStack(Blocks.sand, 2))
@@ -100,7 +100,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                     .duration(2 * MINUTES)
                                     .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
-                                    .addTo(sPrimitiveBlastRecipes);
+                                    .addTo(primitiveBlastRecipes);
                                 GT_Values.RA.stdBuilder()
                                     .itemInputs(aMaterial.getDust(2), Materials.Glass.getDust(2))
                                     .itemOutputs(
@@ -109,7 +109,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                     .duration(2 * MINUTES)
                                     .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
-                                    .addTo(sPrimitiveBlastRecipes);
+                                    .addTo(primitiveBlastRecipes);
                                 GT_Values.RA.stdBuilder()
                                     .itemInputs(aMaterial.getDust(2), Materials.SiliconDioxide.getDust(2))
                                     .itemOutputs(
@@ -118,7 +118,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                     .duration(2 * MINUTES)
                                     .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
-                                    .addTo(sPrimitiveBlastRecipes);
+                                    .addTo(primitiveBlastRecipes);
                                 GT_Values.RA.stdBuilder()
                                     .itemInputs(aMaterial.getDust(2), Materials.Quartzite.getDust(4))
                                     .itemOutputs(
@@ -127,7 +127,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                     .duration(2 * MINUTES)
                                     .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
-                                    .addTo(sPrimitiveBlastRecipes);
+                                    .addTo(primitiveBlastRecipes);
                                 GT_Values.RA.stdBuilder()
                                     .itemInputs(aMaterial.getDust(2), Materials.NetherQuartz.getDust(2))
                                     .itemOutputs(
@@ -136,7 +136,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                     .duration(2 * MINUTES)
                                     .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
-                                    .addTo(sPrimitiveBlastRecipes);
+                                    .addTo(primitiveBlastRecipes);
                                 GT_Values.RA.stdBuilder()
                                     .itemInputs(aMaterial.getDust(2), Materials.CertusQuartz.getDust(2))
                                     .itemOutputs(
@@ -145,7 +145,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                     .duration(2 * MINUTES)
                                     .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
-                                    .addTo(sPrimitiveBlastRecipes);
+                                    .addTo(primitiveBlastRecipes);
                             } else if (aMaterial == Materials.Tetrahedrite) {
                                 GT_Values.RA.stdBuilder()
                                     .itemInputs(aMaterial.getDust(2))
@@ -155,7 +155,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                     .duration(2 * MINUTES)
                                     .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
-                                    .addTo(sPrimitiveBlastRecipes);
+                                    .addTo(primitiveBlastRecipes);
                             } else if (aMaterial == Materials.Galena) {
                                 GT_Values.RA.stdBuilder()
                                     .itemInputs(aMaterial.getDust(2))
@@ -165,7 +165,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                     .duration(2 * MINUTES)
                                     .eut(0)
                                     .metadata(ADDITIVE_AMOUNT, 2)
-                                    .addTo(sPrimitiveBlastRecipes);
+                                    .addTo(primitiveBlastRecipes);
                             }
                         }
                     case dustImpure:

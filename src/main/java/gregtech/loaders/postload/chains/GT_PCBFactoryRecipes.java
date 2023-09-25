@@ -2,7 +2,7 @@ package gregtech.loaders.postload.chains;
 
 import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.recipe.RecipeMap.sAssemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.AssemblyLine;
@@ -65,7 +65,7 @@ public class GT_PCBFactoryRecipes {
                 .itemOutputs(ItemList.BasicPhotolithographicFrameworkCasing.get(1))
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
@@ -73,7 +73,7 @@ public class GT_PCBFactoryRecipes {
                 .itemOutputs(ItemList.ReinforcedPhotolithographicFrameworkCasing.get(1))
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     GT_ModHandler.getModItem(GTPlusPlus.ID, "blockFrameGtCelestialTungsten", 1),
@@ -82,7 +82,7 @@ public class GT_PCBFactoryRecipes {
                 .itemOutputs(ItemList.RadiationProofPhotolithographicFrameworkCasing.get(1))
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_UIV)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
             GT_Values.RA.stdBuilder()
                 .itemInputs(
                     GT_ModHandler.getModItem(GTPlusPlus.ID, "blockFrameGtHypogen", 1),
@@ -92,7 +92,7 @@ public class GT_PCBFactoryRecipes {
                 .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(8 * 144))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_UMV)
-                .addTo(sAssemblerRecipes);
+                .addTo(assemblerRecipes);
         }
 
         // Load CircuitBoard Recipes

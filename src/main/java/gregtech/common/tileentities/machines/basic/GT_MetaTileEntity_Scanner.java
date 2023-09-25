@@ -19,7 +19,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_SCANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_SCANNER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_SCANNER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_SCANNER_GLOW;
-import static gregtech.api.recipe.RecipeMap.sScannerFakeRecipes;
+import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 
 import java.util.Objects;
 
@@ -359,7 +359,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                 for (GT_Recipe.GT_Recipe_AssemblyLine tRecipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
                     if (GT_Utility.areStacksEqual(tRecipe.mResearchItem, aStack, true)) {
                         boolean failScanner = true;
-                        for (GT_Recipe scannerRecipe : sScannerFakeRecipes.mRecipeList) {
+                        for (GT_Recipe scannerRecipe : scannerFakeRecipes.mRecipeList) {
                             if (GT_Utility.areStacksEqual(scannerRecipe.mInputs[0], aStack, true)) {
                                 failScanner = false;
                                 break;
@@ -404,7 +404,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
 
     @Override
     public RecipeMap getRecipeList() {
-        return sScannerFakeRecipes;
+        return scannerFakeRecipes;
     }
 
     @Override

@@ -31,9 +31,9 @@ import static gregtech.api.enums.Mods.ThaumicBoots;
 import static gregtech.api.enums.Mods.ThaumicTinkerer;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.enums.Mods.WitchingGadgets;
-import static gregtech.api.recipe.RecipeMap.sCrackingRecipes;
-import static gregtech.api.recipe.RecipeMap.sCutterRecipes;
-import static gregtech.api.recipe.RecipeMap.sWiremillRecipes;
+import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
+import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
+import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static gregtech.api.util.GT_Util.LAST_BROKEN_TILEENTITY;
@@ -1995,13 +1995,13 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                                                             .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 1, 8))
                                                             .duration(20 * SECONDS)
                                                             .eut(1)
-                                                            .addTo(sWiremillRecipes);
+                                                            .addTo(wiremillRecipes);
                                                         GT_Values.RA.stdBuilder()
                                                             .itemInputs(GT_ModHandler.getIC2Item("ironCableItem", 6L))
                                                             .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 1, 9))
                                                             .duration(20 * SECONDS)
                                                             .eut(2)
-                                                            .addTo(sWiremillRecipes);
+                                                            .addTo(wiremillRecipes);
                                                     }
 
                                                     GT_Values.RA.stdBuilder()
@@ -2009,7 +2009,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                                                         .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 16, 4))
                                                         .duration(20 * SECONDS)
                                                         .eut(8)
-                                                        .addTo(sCutterRecipes);
+                                                        .addTo(cutterRecipes);
                                                 }
                                     }
                                     default -> {}
@@ -2586,7 +2586,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 .fluidOutputs(new FluidStack(crackedFluids[i], 1000))
                 .duration((1 + i) * SECONDS)
                 .eut(240)
-                .addTo(sCrackingRecipes);
+                .addTo(crackingRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(Materials.Hydrogen.getCells(hydrogenAmount), GT_Utility.getIntegratedCircuit(i + 1))
@@ -2638,7 +2638,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 .fluidOutputs(new FluidStack(crackedFluids[i], 1200))
                 .duration((1 + i) * SECONDS)
                 .eut(240)
-                .addTo(sCrackingRecipes);
+                .addTo(crackingRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_ModHandler.getIC2Item("steamCell", 1L), GT_Utility.getIntegratedCircuit(i + 1))

@@ -42,7 +42,7 @@ import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.maps.LargeBoilerFuelFakeRecipeMap;
@@ -262,7 +262,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
 
         this.mSuperEfficencyIncrease = 0;
         if (!isSuperheated()) {
-            for (GT_Recipe tRecipe : RecipeMap.sDieselFuels.mRecipeList) {
+            for (GT_Recipe tRecipe : RecipeMaps.dieselFuels.mRecipeList) {
                 FluidStack tFluid = GT_Utility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
                 if (tFluid != null && tRecipe.mSpecialValue > 1) {
                     tFluid.amount = 1000;
@@ -274,7 +274,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
                     }
                 }
             }
-            for (GT_Recipe tRecipe : RecipeMap.sDenseLiquidFuels.mRecipeList) {
+            for (GT_Recipe tRecipe : RecipeMaps.denseLiquidFuels.mRecipeList) {
                 FluidStack tFluid = GT_Utility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
                 if (tFluid != null) {
                     tFluid.amount = 1000;

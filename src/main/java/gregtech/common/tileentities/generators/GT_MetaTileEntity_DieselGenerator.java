@@ -40,6 +40,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
@@ -85,7 +86,7 @@ public class GT_MetaTileEntity_DieselGenerator extends GT_MetaTileEntity_BasicGe
 
     @Override
     public RecipeMap getRecipes() {
-        return RecipeMap.sDieselFuels;
+        return RecipeMaps.dieselFuels;
     }
 
     @Override

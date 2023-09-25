@@ -16,6 +16,7 @@ import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
 import gregtech.common.items.GT_MetaGenerated_Item_02;
 import gregtech.common.items.GT_MetaGenerated_Item_03;
@@ -38,8 +39,8 @@ public class NEI_GT_Config implements IConfigureNEI {
      */
     private static final ImmutableMap<RecipeMap, Integer> RECIPE_MAP_ORDERING = ImmutableMap
         .<RecipeMap, Integer>builder()
-        .put(RecipeMap.sAssemblylineVisualRecipes, 1)
-        .put(RecipeMap.sScannerFakeRecipes, 2)
+        .put(RecipeMaps.assemblylineVisualRecipes, 1)
+        .put(RecipeMaps.scannerFakeRecipes, 2)
         .build();
 
     private static final Comparator<RecipeMapHandler> RECIPE_MAP_HANDLER_COMPARATOR = Comparator

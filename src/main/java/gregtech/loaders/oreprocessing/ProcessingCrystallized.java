@@ -1,7 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.recipe.RecipeMap.sHammerRecipes;
-import static gregtech.api.recipe.RecipeMap.sMaceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
@@ -31,14 +31,14 @@ public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecip
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
                 .duration(10 * TICKS)
                 .eut(16)
-                .addTo(sHammerRecipes);
+                .addTo(hammerRecipes);
 
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.copyAmount(1L, aStack))
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
                 .duration(20 * SECONDS)
                 .eut(2)
-                .addTo(sMaceratorRecipes);
+                .addTo(maceratorRecipes);
         }
     }
 }

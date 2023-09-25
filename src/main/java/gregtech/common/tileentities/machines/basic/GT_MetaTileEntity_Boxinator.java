@@ -27,6 +27,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
@@ -108,7 +109,7 @@ public class GT_MetaTileEntity_Boxinator extends GT_MetaTileEntity_BasicMachine 
 
     @Override
     public RecipeMap getRecipeList() {
-        return RecipeMap.sBoxinatorRecipes;
+        return RecipeMaps.packagerRecipes;
     }
 
     private boolean hasValidCache(ItemStack mItem, int mType, boolean mClearOnFailure) {
@@ -206,7 +207,7 @@ public class GT_MetaTileEntity_Boxinator extends GT_MetaTileEntity_BasicMachine 
         if ((ItemList.Schematic_1by1.isStackEqual(tInput1)) || (ItemList.Schematic_2by2.isStackEqual(tInput1))
             || (ItemList.Schematic_3by3.isStackEqual(tInput1))) {
             if (hasValidCache(aStack, aTypeCache, false)) return true;
-            if (RecipeMap.sBoxinatorRecipes.findRecipe(
+            if (RecipeMaps.packagerRecipes.findRecipe(
                 getBaseMetaTileEntity(),
                 true,
                 gregtech.api.enums.GT_Values.V[mTier],
@@ -224,7 +225,7 @@ public class GT_MetaTileEntity_Boxinator extends GT_MetaTileEntity_BasicMachine 
             return ItemList.Schematic_3by3.isStackEqual(getInputAt(1)) && (GT_ModHandler
                 .getRecipeOutput(aStack, aStack, aStack, aStack, aStack, aStack, aStack, aStack, aStack) != null);
         } else {
-            return RecipeMap.sBoxinatorRecipes.containsInput(aStack);
+            return RecipeMaps.packagerRecipes.containsInput(aStack);
         }
     }
 }

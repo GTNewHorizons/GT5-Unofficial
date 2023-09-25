@@ -60,6 +60,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_LanguageManager;
@@ -441,7 +442,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
 
     @Override
     public RecipeMap getRecipes() {
-        return RecipeMap.sMagicFuels;
+        return RecipeMaps.magicFuels;
     }
 
     @Override

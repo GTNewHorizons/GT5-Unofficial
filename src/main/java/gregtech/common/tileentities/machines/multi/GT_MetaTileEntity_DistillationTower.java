@@ -44,6 +44,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 
@@ -182,7 +183,7 @@ public class GT_MetaTileEntity_DistillationTower extends
 
     @Override
     public RecipeMap getRecipeMap() {
-        return RecipeMap.sDistillationRecipes;
+        return RecipeMaps.distillationTowerRecipes;
     }
 
     @Override

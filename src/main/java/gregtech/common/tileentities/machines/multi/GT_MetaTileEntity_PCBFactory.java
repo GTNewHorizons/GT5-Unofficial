@@ -76,6 +76,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffl
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -520,7 +521,7 @@ public class GT_MetaTileEntity_PCBFactory extends
 
     @Override
     public RecipeMap getRecipeMap() {
-        return RecipeMap.sPCBFactory;
+        return RecipeMaps.pcbFactoryRecipes;
     }
 
     @Override

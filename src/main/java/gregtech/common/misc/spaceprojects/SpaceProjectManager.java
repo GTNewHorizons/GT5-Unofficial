@@ -9,7 +9,8 @@ import net.minecraft.server.MinecraftServer;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.maps.SpaceProjectRecipeMap;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 
@@ -181,8 +182,8 @@ public class SpaceProjectManager {
      */
     public static void addProject(ISpaceProject project) {
         spaceProjects.put(project.getProjectName(), project);
-        RecipeMap.sFakeSpaceProjectRecipes.add(
-            new RecipeMap.GT_FakeSpaceProjectRecipe(
+        RecipeMaps.spaceProjectFakeRecipes.add(
+            new SpaceProjectRecipeMap.FakeSpaceProjectRecipe(
                 false,
                 project.getTotalItemsCost(),
                 project.getTotalFluidsCost(),

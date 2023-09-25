@@ -25,6 +25,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_Steel;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
@@ -51,7 +52,7 @@ public class GT_MetaTileEntity_Furnace_Steel extends GT_MetaTileEntity_BasicMach
 
     @Override
     public RecipeMap getRecipeList() {
-        return RecipeMap.sFurnaceRecipes;
+        return RecipeMaps.furnaceRecipes;
     }
 
     @Override

@@ -157,7 +157,7 @@ import gregtech.api.objects.CollectorUtils;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_ItemStack2;
 import gregtech.api.objects.ItemData;
-import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.GT_Runnable_Sound;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.GT_Pollution;
@@ -4752,7 +4752,7 @@ public class GT_Utility {
 
     public static int getPlasmaFuelValueInEUPerLiterFromFluid(FluidStack aLiquid) {
         if (aLiquid == null) return 0;
-        GT_Recipe tFuel = RecipeMap.sPlasmaFuels.findFuel(aLiquid);
+        GT_Recipe tFuel = RecipeMaps.plasmaFuels.findFuel(aLiquid);
         if (tFuel != null) return tFuel.mSpecialValue;
         return 0;
     }
