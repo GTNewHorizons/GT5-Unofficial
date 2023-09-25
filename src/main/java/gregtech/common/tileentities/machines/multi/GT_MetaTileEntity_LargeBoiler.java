@@ -44,6 +44,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.maps.LargeBoilerFuelFakeRecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
@@ -230,7 +231,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler
     boolean isFuelValid() {
         if (!isSuperheated()) return true;
         for (ItemStack input : getStoredInputs()) {
-            if (!GT_Recipe.GT_Recipe_Map_LargeBoilerFakeFuels.isAllowedSolidFuel(input)
+            if (!LargeBoilerFuelFakeRecipeMap.isAllowedSolidFuel(input)
                 && !Circuit_Integrated.isStackEqual(input, true, true)) {
                 // if any item is not in ALLOWED_SOLID_FUELS, operation cannot be allowed because it might still be
                 // consumed

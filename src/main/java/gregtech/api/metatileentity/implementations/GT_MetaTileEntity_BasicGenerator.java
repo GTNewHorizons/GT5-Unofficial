@@ -16,6 +16,7 @@ import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.maps.FuelRecipeMap;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
@@ -288,7 +289,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
 
     public long getFuelValue(FluidStack aLiquid, boolean aLong) {
         GT_Recipe_Map tRecipes = getRecipes();
-        if (aLiquid == null || !(tRecipes instanceof GT_Recipe.GT_Recipe_Map_Fuel tFuels)) return 0;
+        if (aLiquid == null || !(tRecipes instanceof FuelRecipeMap tFuels)) return 0;
         GT_Recipe tFuel = tFuels.findFuel(aLiquid);
         if (tFuel == null) return 0;
 
