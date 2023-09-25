@@ -7,7 +7,7 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import gregtech.api.logic.MuTEProcessingLogic;
 
 public abstract class StackableController<T extends StackableController<T, P>, P extends MuTEProcessingLogic<P>>
-    extends PowerController<T, P> {
+    extends Controller<T, P> {
 
     protected static String STACKABLE_STOP = "STACKABLE_STOP";
     protected static String STACKABLE_MIDDLE = "STACKABLE_MIDDLE";

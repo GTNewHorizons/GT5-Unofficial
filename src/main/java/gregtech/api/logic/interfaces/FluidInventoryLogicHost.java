@@ -4,6 +4,7 @@ import static com.google.common.primitives.Ints.saturatedCast;
 
 import java.util.HashSet;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -26,7 +27,7 @@ public interface FluidInventoryLogicHost extends IFluidHandler {
      * 
      * @param side The side from where fluids are being inputted or extracted from
      * @param type The type of inventory being accessed. For inputting its Input, For outputting its Output.
-     * @return The Fluid Logic responsible for said type.
+     * @return The Fluid Logic responsible for said type. Can return null if the side is invalid
      */
     @Nullable
     FluidInventoryLogic getFluidLogic(@Nonnull ForgeDirection side, @Nonnull InventoryType type);
@@ -38,11 +39,14 @@ public interface FluidInventoryLogicHost extends IFluidHandler {
      * @param id   ID of the locked inventory. A null id is all inventories of said controller of said type
      * @return The Fluid Logic responsible for everything that should be done with said inventory
      */
-    @Nullable
+    @Nonnull
     default FluidInventoryLogic getFluidLogic(@Nonnull InventoryType type, @Nullable UUID id) {
-        return getFluidLogic(ForgeDirection.UNKNOWN, type);
+        return Objects.requireNonNull(getFluidLogic(ForgeDirection.UNKNOWN, type));
     }
 
+    /**
+     * Returns an empty set if the type is {@link InventoryType#Both} or when the machine isn't a controller.
+     */
     @Nonnull
     default Set<Entry<UUID, FluidInventoryLogic>> getAllFluidInventoryLogics(@Nonnull InventoryType type) {
         return new HashSet<>();
