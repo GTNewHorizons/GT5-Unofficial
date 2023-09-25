@@ -13,8 +13,8 @@ public interface GUIHost<G extends GUIHost<G>> extends ITileWithModularUI {
     @Nonnull
     @Override
     default ModularWindow createWindow(UIBuildContext uiContext) {
-       GUIProvider<G> gui = getGUI();
-       return gui.openGUI(Objects.requireNonNull(uiContext));
+        GUIProvider<G> gui = getGUI();
+        return gui.openGUI(Objects.requireNonNull(uiContext));
     }
 
     default int getWidth() {
@@ -27,5 +27,5 @@ public interface GUIHost<G extends GUIHost<G>> extends ITileWithModularUI {
 
     @Nonnull
     GUIProvider<G> getGUI();
-    
+
 }

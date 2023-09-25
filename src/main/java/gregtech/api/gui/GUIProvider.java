@@ -5,11 +5,11 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 public abstract class GUIProvider<T extends GUIHost<T>> {
-    
+
     protected final T host;
 
     public GUIProvider(T host) {

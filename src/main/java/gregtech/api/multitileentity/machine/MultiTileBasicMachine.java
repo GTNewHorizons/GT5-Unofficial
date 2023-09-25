@@ -32,6 +32,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.*;
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
+import gregtech.api.gui.GUIHost;
+import gregtech.api.gui.GUIProvider;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
@@ -48,9 +50,10 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.task.tasks.ProcessingTask;
 import gregtech.api.util.GT_Utility;
 import gregtech.client.GT_SoundLoop;
+import gregtech.common.gui.MachineGUIProvider;
 
-public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> extends TickableMultiTileEntity
-    implements IMultiTileMachine, ProcessingLogicHost<P>, PowerLogicHost {
+public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>, G extends GUIHost<G> & ProcessingLogicHost<P> & PowerLogicHost>
+    extends TickableMultiTileEntity implements IMultiTileMachine, ProcessingLogicHost<P>, PowerLogicHost, GUIHost<G> {
 
     protected static final int ACTIVE = B[0];
     protected static final int TICKS_BETWEEN_RECIPE_CHECKS = 5 * TickTime.SECOND;
@@ -92,6 +95,8 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     protected boolean processingUpdate = false;
     @Nonnull
     protected PowerLogic power = createPowerLogic();
+    @Nonnull
+    protected GUIProvider<G> guiProvider = createGUIProvider();
 
     @SideOnly(Side.CLIENT)
     protected GT_SoundLoop activitySoundLoop;
@@ -771,5 +776,11 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
     protected PowerLogic createPowerLogic() {
         return new PowerLogic().setMaxAmperage(1)
             .setType(PowerLogic.RECEIVER);
+    }
+
+    // @SuppressWarnings("unchecked")
+    @Nonnull
+    protected GUIProvider<G> createGUIProvider() {
+        return new MachineGUIProvider<G>(this);
     }
 }

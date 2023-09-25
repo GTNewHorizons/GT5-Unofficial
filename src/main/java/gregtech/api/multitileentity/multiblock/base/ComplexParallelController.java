@@ -18,8 +18,8 @@ import gregtech.api.util.GT_Waila;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public abstract class ComplexParallelController<T extends ComplexParallelController<T, P>, P extends ComplexParallelProcessingLogic<P>>
-    extends Controller<T, P> {
+public abstract class ComplexParallelController<C extends ComplexParallelController<C, P>, P extends ComplexParallelProcessingLogic<P>>
+    extends Controller<C, P> {
 
     protected int maxComplexParallels = 0;
     protected int currentComplexParallels = 0;

@@ -87,9 +87,9 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 /**
  * Multi Tile Entities - or MuTEs - don't have dedicated hatches, but their casings can become hatches.
  */
-public abstract class Controller<T extends Controller<T, P>, P extends MuTEProcessingLogic<P>>
-    extends MultiTileBasicMachine<P> implements IAlignment, IMultiBlockController, IDescribable, IMTE_AddToolTips,
-    ISurvivalConstructable, ControllerWithOptionalFeatures {
+public abstract class Controller<C extends Controller<C, P>, P extends MuTEProcessingLogic<P>>
+    extends MultiTileBasicMachine<P, Controller<C, P>> implements IAlignment, IMultiBlockController, IDescribable,
+    IMTE_AddToolTips, ISurvivalConstructable, ControllerWithOptionalFeatures {
 
     public static final String ALL_INVENTORIES_NAME = "all";
     protected static final int AUTO_OUTPUT_FREQUENCY_TICK = 20;
@@ -157,7 +157,7 @@ public abstract class Controller<T extends Controller<T, P>, P extends MuTEProce
      * other instances, even for those of the same class.
      */
     @Override
-    public abstract IStructureDefinition<T> getStructureDefinition();
+    public abstract IStructureDefinition<C> getStructureDefinition();
 
     /**
      * Checks the Machine.
@@ -392,8 +392,8 @@ public abstract class Controller<T extends Controller<T, P>, P extends MuTEProce
     }
 
     @SuppressWarnings("unchecked")
-    private IStructureDefinition<Controller<T, P>> getCastedStructureDefinition() {
-        return (IStructureDefinition<Controller<T, P>>) getStructureDefinition();
+    private IStructureDefinition<Controller<C, P>> getCastedStructureDefinition() {
+        return (IStructureDefinition<Controller<C, P>>) getStructureDefinition();
     }
 
     @Override

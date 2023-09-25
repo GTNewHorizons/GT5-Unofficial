@@ -10,14 +10,14 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.widget.Scrollable;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.Scrollable;
 
 import gregtech.api.enums.InventoryType;
 import gregtech.api.logic.interfaces.ProcessingLogicHost;
@@ -255,7 +255,7 @@ public class MuTEProcessingLogic<P extends MuTEProcessingLogic<P>> extends Abstr
         }
     }
 
-    /** 
+    /**
      * Returns a gui part, which will be displayed in a separate tab on the machine's gui.
      */
     @Nonnull
