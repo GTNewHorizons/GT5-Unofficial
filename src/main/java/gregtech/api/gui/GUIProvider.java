@@ -8,11 +8,12 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
-public abstract class GUIProvider<T extends GUIHost<T>> {
+public abstract class GUIProvider<T extends GUIHost> {
 
+    @Nonnull
     protected final T host;
 
-    public GUIProvider(T host) {
+    public GUIProvider(@Nonnull T host) {
         this.host = host;
     }
 

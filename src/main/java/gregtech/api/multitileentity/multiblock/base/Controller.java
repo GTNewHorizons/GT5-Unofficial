@@ -88,7 +88,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * Multi Tile Entities - or MuTEs - don't have dedicated hatches, but their casings can become hatches.
  */
 public abstract class Controller<C extends Controller<C, P>, P extends MuTEProcessingLogic<P>>
-    extends MultiTileBasicMachine<P, Controller<C, P>> implements IAlignment, IMultiBlockController, IDescribable,
+    extends MultiTileBasicMachine<P> implements IAlignment, IMultiBlockController, IDescribable,
     IMTE_AddToolTips, ISurvivalConstructable, ControllerWithOptionalFeatures {
 
     public static final String ALL_INVENTORIES_NAME = "all";
@@ -1173,11 +1173,6 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     @Override
     public Pos2d getRecipeLockingButtonPos() {
         return new Pos2d(0, 0);
-    }
-
-    @Override
-    public ModularWindow createWindowGUI(UIBuildContext buildContext) {
-        return createWindow(buildContext);
     }
 
     @Override

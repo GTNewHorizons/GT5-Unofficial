@@ -7,14 +7,13 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import gregtech.api.gui.GUIHost;
 import gregtech.api.gui.GUIProvider;
-import gregtech.api.logic.MuTEProcessingLogic;
+import gregtech.api.logic.interfaces.FluidInventoryLogicHost;
+import gregtech.api.logic.interfaces.ItemInventoryLogicHost;
 import gregtech.api.logic.interfaces.PowerLogicHost;
-import gregtech.api.logic.interfaces.ProcessingLogicHost;
 
-public class MachineGUIProvider<T extends GUIHost & ProcessingLogicHost<? extends MuTEProcessingLogic<?>> & PowerLogicHost>
-    extends GUIProvider<T> {
+public class PartGUIProvider<T extends GUIHost & ItemInventoryLogicHost & PowerLogicHost & FluidInventoryLogicHost> extends GUIProvider<T> {
 
-    public MachineGUIProvider(@Nonnull T host) {
+    public PartGUIProvider(@Nonnull T host) {
         super(host);
     }
 
@@ -29,5 +28,5 @@ public class MachineGUIProvider<T extends GUIHost & ProcessingLogicHost<? extend
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'addWidgets'");
     }
-
+    
 }

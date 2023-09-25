@@ -34,6 +34,8 @@ import com.gtnewhorizons.modularui.common.widget.*;
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.InventoryType;
 import gregtech.api.fluid.FluidTankGT;
+import gregtech.api.gui.GUIHost;
+import gregtech.api.gui.GUIProvider;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
@@ -49,11 +51,12 @@ import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.covers.CoverInfo;
+import gregtech.common.gui.PartGUIProvider;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MultiBlockPart extends NonTickableMultiTileEntity
-    implements IMultiBlockPart, IMTE_HasModes, PowerLogicHost, IMultiTileEntity.IMTE_AddToolTips {
+    implements IMultiBlockPart, IMTE_HasModes, PowerLogicHost, IMultiTileEntity.IMTE_AddToolTips, GUIHost {
 
     public static final int NOTHING = 0, ENERGY_IN = B[0], ENERGY_OUT = B[1], FLUID_IN = B[2], FLUID_OUT = B[3],
         ITEM_IN = B[4], ITEM_OUT = B[5];
@@ -71,6 +74,9 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     protected UUID lockedInventory;
     protected int mLockedInventoryIndex = 0;
     protected FluidTankGT configurationTank = new FluidTankGT();
+
+    @Nonnull
+    protected final GUIProvider<?> guiProvider = createGUIProvider();
 
     /**
      * What Part Tier is this part? All Basic Casings are Tier 1, and will allow: Energy, Item, Fluid input/output. Some
@@ -600,22 +606,6 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     @Override
-    public ModularWindow createWindow(UIBuildContext buildContext) {
-        if (isServerSide()) {
-            issueClientUpdate();
-        }
-        System.out.println("MultiBlockPart::createWindow");
-        if ((modeSelected(NOTHING, ENERGY_IN, ENERGY_OUT) || mode == NOTHING) && canOpenControllerGui()) {
-            IMultiBlockController controller = getTarget(false);
-            if (controller == null) {
-                return super.createWindow(buildContext);
-            }
-            return controller.createWindowGUI(buildContext);
-        }
-        return super.createWindow(buildContext);
-    }
-
-    @Override
     public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
         IMultiBlockController controller = getTarget(false);
@@ -696,4 +686,22 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         if (!modeSelected(ENERGY_OUT)) return ForgeDirection.UNKNOWN;
         return facing;
     }
+
+    @Nonnull
+    protected GUIProvider<?> createGUIProvider() {
+        return new PartGUIProvider<>(this);
+    }
+
+    @Override
+    @Nonnull
+    public GUIProvider<?> getGUI() {
+        IMultiBlockController controller = getTarget(false);
+        if (controller == null) return guiProvider;
+        if (!modeSelected(NOTHING, ENERGY_IN, ENERGY_OUT)) return guiProvider;
+        if (!canOpenControllerGui()) return guiProvider;
+        GUIProvider<?> controllerGUI = controller.getGUI();
+        return controllerGUI;
+    }
+
+    
 }

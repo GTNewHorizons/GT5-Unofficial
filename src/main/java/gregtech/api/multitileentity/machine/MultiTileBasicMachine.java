@@ -52,8 +52,8 @@ import gregtech.api.util.GT_Utility;
 import gregtech.client.GT_SoundLoop;
 import gregtech.common.gui.MachineGUIProvider;
 
-public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>, G extends GUIHost<G> & ProcessingLogicHost<P> & PowerLogicHost>
-    extends TickableMultiTileEntity implements IMultiTileMachine, ProcessingLogicHost<P>, PowerLogicHost, GUIHost<G> {
+public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>>
+    extends TickableMultiTileEntity implements IMultiTileMachine, ProcessingLogicHost<P>, PowerLogicHost, GUIHost {
 
     protected static final int ACTIVE = B[0];
     protected static final int TICKS_BETWEEN_RECIPE_CHECKS = 5 * TickTime.SECOND;
@@ -96,7 +96,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>, G 
     @Nonnull
     protected PowerLogic power = createPowerLogic();
     @Nonnull
-    protected GUIProvider<G> guiProvider = createGUIProvider();
+    protected GUIProvider<?> guiProvider = createGUIProvider();
 
     @SideOnly(Side.CLIENT)
     protected GT_SoundLoop activitySoundLoop;
@@ -738,6 +738,7 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>, G 
         return false;
     }
 
+    @Nonnull
     @Override
     public VoidingMode getVoidMode() {
         return voidingMode;
@@ -778,9 +779,13 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>, G 
             .setType(PowerLogic.RECEIVER);
     }
 
-    // @SuppressWarnings("unchecked")
     @Nonnull
-    protected GUIProvider<G> createGUIProvider() {
-        return new MachineGUIProvider<G>(this);
+    protected GUIProvider<?> createGUIProvider() {
+        return new MachineGUIProvider<>(this);
+    }
+
+    @Nonnull
+    public GUIProvider<?> getGUI() {
+        return guiProvider;
     }
 }

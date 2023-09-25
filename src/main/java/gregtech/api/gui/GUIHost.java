@@ -8,12 +8,12 @@ import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
-public interface GUIHost<G extends GUIHost<G>> extends ITileWithModularUI {
+public interface GUIHost extends ITileWithModularUI {
 
     @Nonnull
     @Override
     default ModularWindow createWindow(UIBuildContext uiContext) {
-        GUIProvider<G> gui = getGUI();
+        GUIProvider<?> gui = getGUI();
         return gui.openGUI(Objects.requireNonNull(uiContext));
     }
 
@@ -26,6 +26,6 @@ public interface GUIHost<G extends GUIHost<G>> extends ITileWithModularUI {
     }
 
     @Nonnull
-    GUIProvider<G> getGUI();
+    GUIProvider<?> getGUI();
 
 }
