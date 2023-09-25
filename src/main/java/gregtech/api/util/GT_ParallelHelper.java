@@ -64,6 +64,10 @@ public class GT_ParallelHelper {
      */
     private ItemInventoryLogic itemInputInventory;
     /**
+     * The output item inventory of the machine
+     */
+    private ItemInventoryLogic itemOutputInventory;
+    /**
      * The outputs of the recipe with the applied parallel
      */
     private ItemStack[] itemOutputs;
@@ -75,6 +79,10 @@ public class GT_ParallelHelper {
      * The inputs of the machine for the current recipe check
      */
     private FluidInventoryLogic fluidInputInventory;
+    /**
+     * The output fluid inventory of the machine;
+     */
+    private FluidInventoryLogic fluidOutputInventory;
     /**
      * The outputs of the recipe with the applied parallel
      */
@@ -117,7 +125,7 @@ public class GT_ParallelHelper {
      * Calculator to use for overclocking
      */
     private GT_OverclockCalculator calculator;
-
+    @Nonnull
     private CheckRecipeResult result = CheckRecipeResultRegistry.NONE;
 
     private Function<Integer, ItemStack[]> customItemOutputCalculation;
@@ -331,6 +339,21 @@ public class GT_ParallelHelper {
     }
 
     /**
+     * 
+     */
+    @Nonnull
+    public GT_ParallelHelper setItemOutputInventory(ItemInventoryLogic itemOutputInventory) {
+        this.itemOutputInventory = itemOutputInventory;
+        return this;
+    }
+
+    @Nonnull
+    public GT_ParallelHelper setFluidOutputInventory(FluidInventoryLogic fluidOutputInventory) {
+        this.fluidOutputInventory = fluidOutputInventory;
+        return this;
+    }
+
+    /**
      * Finishes the GT_ParallelHelper. Anything changed after this will not effect anything
      */
     @Nonnull
@@ -493,14 +516,17 @@ public class GT_ParallelHelper {
 
         // Let's look at how many parallels we can get with void protection
         if (protectExcessItem || protectExcessFluid) {
-            if (machine == null) {
+            if (machine == null && !muteMode) {
                 throw new IllegalStateException("Tried to calculate void protection, but machine is not set");
             }
             VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper();
-            voidProtectionHelper.setMachine(machine)
+            voidProtectionHelper.setMachine(machine, protectExcessItem, protectExcessFluid)
                 .setItemOutputs(recipe.mOutputs)
                 .setFluidOutputs(recipe.mFluidOutputs)
                 .setMaxParallel(maxParallel)
+                .setItemOutputInventory(itemOutputInventory)
+                .setFluidOutputInventory(fluidOutputInventory)
+                .setMuTEMode(muteMode)
                 .build();
             maxParallel = Math.min(voidProtectionHelper.getMaxParallel(), maxParallel);
             if (maxParallel <= 0) {

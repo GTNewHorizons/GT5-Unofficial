@@ -10,9 +10,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
+import com.gtnewhorizons.modularui.api.fluids.IFluidTankLong;
 
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.api.logic.FluidInventoryLogic;
+import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 
 /**
@@ -45,9 +48,21 @@ public class VoidProtectionHelper {
      */
     private FluidStack[] fluidOutputs;
     /**
+     * The item output inventory
+     */
+    private ItemInventoryLogic itemOutputInventory;
+    /**
+     * The fluid output inventory
+     */
+    private FluidInventoryLogic fluidOutputInventory;
+    /**
      * Has this helper been built?
      */
     private boolean built;
+    /**
+     * Is this helper working for a MuTE?
+     */
+    private boolean muteMode;
 
     public VoidProtectionHelper() {}
 
@@ -107,6 +122,21 @@ public class VoidProtectionHelper {
         return this;
     }
 
+    public VoidProtectionHelper setItemOutputInventory(ItemInventoryLogic itemOutputInventory) {
+        this.itemOutputInventory = itemOutputInventory;
+        return this;
+    }
+
+    public VoidProtectionHelper setFluidOutputInventory(FluidInventoryLogic fluidOutputInventory) {
+        this.fluidOutputInventory = fluidOutputInventory;
+        return this;
+    }
+
+    public VoidProtectionHelper setMuTEMode(boolean muteMode) {
+        this.muteMode = muteMode;
+        return this;
+    }
+
     /**
      * Finishes the VoidProtectionHelper. Anything changed after this will not affect anything
      */
@@ -149,7 +179,8 @@ public class VoidProtectionHelper {
             maxParallel = Math.min(calculateMaxItemParallels(), maxParallel);
         }
         if (protectExcessFluid && fluidOutputs.length > 0 && !machine.canDumpFluidToME()) {
-            maxParallel = Math.min(calculateMaxFluidParallels(), maxParallel);
+            maxParallel = Math
+                .min(muteMode ? calculateMaxFluidParallelsMuTE() : calculateMaxFluidParallels(), maxParallel);
         }
     }
 
@@ -228,11 +259,95 @@ public class VoidProtectionHelper {
         return aParallelQueue.element().batch;
     }
 
+    private int calculateMaxFluidParallelsMuTE() {
+        if (fluidOutputs.length > fluidOutputInventory.getInventory()
+            .getTanks()) {
+            return 0;
+        }
+
+        // A map to hold the items we will be 'inputting' into the output hatches. These fluidstacks are actually
+        // the recipe outputs.
+        Map<FluidStack, Integer> tFluidOutputMap = new HashMap<>();
+
+        // Map that keeps track of the number of parallel crafts we can accommodate for each fluid output.
+        // In the pair, we keep track of number of full crafts plus mb of fluid in a partial craft, to avoid
+        // issues with floating point math not being completely accurate when summing.
+        Map<FluidStack, ParallelData> tParallels = new HashMap<>();
+
+        // Iterate over the outputs, calculating require stack spacing they will require.
+        for (FluidStack aY : fluidOutputs) {
+            if (aY == null || aY.amount <= 0) {
+                continue;
+            }
+            tFluidOutputMap.merge(aY, aY.amount, Integer::sum);
+            tParallels.put(aY, new ParallelData(0, 0));
+        }
+
+        if (tFluidOutputMap.isEmpty()) {
+            // nothing to output, bail early
+            return maxParallel;
+        }
+
+        for (int i = 0; i < fluidOutputInventory.getInventory()
+            .getTanks(); i++) {
+            IFluidTankLong tank = fluidOutputInventory.getInventory()
+                .getFluidTank(i);
+            long tSpaceLeft = tank.getCapacityLong() - tank.getFluidAmountLong();
+            // check if hatch filled
+            if (tSpaceLeft <= 0) continue;
+            // check if hatch is empty and unrestricted
+            if (tank.getStoredFluid() == null) continue;
+
+            for (Map.Entry<FluidStack, ParallelData> entry : tParallels.entrySet()) {
+                FluidStack tFluidOutput = entry.getKey();
+                if (tank.fill(tFluidOutput.getFluid(), tFluidOutput.amount, false) == tFluidOutput.amount) continue;
+                // this fluid is not prevented by restrictions on output hatch
+                ParallelData tParallel = entry.getValue();
+                Integer tCraftSize = tFluidOutputMap.get(tFluidOutput);
+                tParallel.batch += (tParallel.partial + tSpaceLeft) / tCraftSize;
+                tParallel.partial = (tParallel.partial + tSpaceLeft) % tCraftSize;
+            }
+        }
+        // now that all partial/restricted hatches have been counted, create a priority queue for our outputs
+        // the lowest priority fluid is the number of complete parallel crafts we can support
+        PriorityQueue<ParallelStackInfo<FluidStack>> aParallelQueue = new PriorityQueue<>(
+            Comparator.comparing(i -> i.batch));
+        for (Map.Entry<FluidStack, ParallelData> entry : tParallels.entrySet()) {
+            aParallelQueue
+                .add(new ParallelStackInfo<>(entry.getValue().batch, entry.getValue().partial, entry.getKey()));
+        }
+        // add extra parallels for open slots as well
+        for (int i = 0; i < fluidOutputInventory.getInventory()
+            .getTanks(); i++) {
+            IFluidTankLong tank = fluidOutputInventory.getInventory()
+                .getFluidTank(i);
+            // partially filled or restricted hatch. done in the last pass
+            if (tank.getStoredFluid() != null) continue;
+
+            ParallelStackInfo<FluidStack> tParallel = aParallelQueue.poll();
+            assert tParallel != null; // will always be true, specifying assert here to avoid IDE/compiler warnings
+            Integer tCraftSize = tFluidOutputMap.get(tParallel.stack);
+            long tSpaceLeft = tank.getCapacityLong();
+            tParallel.batch += (tParallel.partial + tSpaceLeft) / tCraftSize;
+            tParallel.partial = (tParallel.partial + tSpaceLeft) % tCraftSize;
+            aParallelQueue.add(tParallel);
+        }
+
+        return aParallelQueue.element().batch;
+    }
+
     /**
      * Calculates the max parallels one can do with items if void protection is on
      */
     private int calculateMaxItemParallels() {
-        List<ItemStack> busStacks = machine.getItemOutputSlots(itemOutputs);
+        List<ItemStack> busStacks;
+
+        if (muteMode) {
+            busStacks = itemOutputInventory.getInventory()
+                .getStacks();
+        } else {
+            busStacks = machine.getItemOutputSlots(itemOutputs);
+        }
         // A map to hold the items we will be 'inputting' into the output buses. These itemstacks are actually the
         // recipe outputs.
         Map<ItemStack, Integer> tItemOutputMap = new ItemStackMap<>();
@@ -307,9 +422,9 @@ public class VoidProtectionHelper {
     private static class ParallelData {
 
         private int batch;
-        private int partial;
+        private long partial;
 
-        private ParallelData(int batch, int partial) {
+        private ParallelData(int batch, long partial) {
             this.batch = batch;
             this.partial = partial;
         }
@@ -318,10 +433,10 @@ public class VoidProtectionHelper {
     private static class ParallelStackInfo<T> {
 
         private int batch;
-        private int partial;
+        private long partial;
         private final T stack;
 
-        private ParallelStackInfo(int batch, int partial, T stack) {
+        private ParallelStackInfo(int batch, long partial, T stack) {
             this.batch = batch;
             this.partial = partial;
             this.stack = stack;

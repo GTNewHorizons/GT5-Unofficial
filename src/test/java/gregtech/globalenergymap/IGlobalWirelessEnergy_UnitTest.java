@@ -3,6 +3,12 @@ package gregtech.globalenergymap;
 import static gregtech.common.misc.GlobalVariableStorage.GlobalEnergy;
 import static gregtech.common.misc.GlobalVariableStorage.GlobalEnergyName;
 import static gregtech.common.misc.GlobalVariableStorage.GlobalEnergyTeam;
+import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
+import static gregtech.common.misc.WirelessNetworkManager.clearGlobalEnergyInformationMaps;
+import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
+import static gregtech.common.misc.WirelessNetworkManager.getUsernameFromUUID;
+import static gregtech.common.misc.WirelessNetworkManager.joinUserNetwork;
+import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -11,9 +17,7 @@ import java.math.BigInteger;
 
 import org.junit.jupiter.api.Test;
 
-import gregtech.api.interfaces.IGlobalWirelessEnergy;
-
-class IGlobalWirelessEnergy_UnitTest implements IGlobalWirelessEnergy {
+class IGlobalWirelessEnergy_UnitTest {
 
     static final String message = "Comparison failed";
 
@@ -31,7 +35,7 @@ class IGlobalWirelessEnergy_UnitTest implements IGlobalWirelessEnergy {
         addEUToGlobalEnergyMap(test_id, 1L);
         assertEquals(GlobalEnergy.get(test_id), new BigInteger("3"), message);
 
-        IGlobalWirelessEnergy.clearGlobalEnergyInformationMaps();
+        clearGlobalEnergyInformationMaps();
     }
 
     @Test
@@ -57,7 +61,7 @@ class IGlobalWirelessEnergy_UnitTest implements IGlobalWirelessEnergy {
         assertTrue(addEUToGlobalEnergyMap(user_uuid, new BigInteger("-2")));
         assertEquals(getUserEU(user_uuid), BigInteger.ZERO, message);
 
-        IGlobalWirelessEnergy.clearGlobalEnergyInformationMaps();
+        clearGlobalEnergyInformationMaps();
     }
 
     @Test
@@ -70,7 +74,7 @@ class IGlobalWirelessEnergy_UnitTest implements IGlobalWirelessEnergy {
         assertEquals(GlobalEnergyTeam.get(user_uuid), user_uuid, message);
         assertEquals(GlobalEnergyName.get(user_uuid), user_name, message);
 
-        IGlobalWirelessEnergy.clearGlobalEnergyInformationMaps();
+        clearGlobalEnergyInformationMaps();
     }
 
     @Test
@@ -98,7 +102,7 @@ class IGlobalWirelessEnergy_UnitTest implements IGlobalWirelessEnergy {
         assertEquals(GlobalEnergyName.get(user_uuid), user_name_0, message);
         assertEquals(GlobalEnergyName.get(user_name_0), user_uuid, message);
 
-        IGlobalWirelessEnergy.clearGlobalEnergyInformationMaps();
+        clearGlobalEnergyInformationMaps();
     }
 
     @Test
@@ -154,7 +158,7 @@ class IGlobalWirelessEnergy_UnitTest implements IGlobalWirelessEnergy {
         assertEquals(getUserEU(user_uuid_1), BigInteger.ONE, message);
         assertEquals(getUserEU(user_uuid_2), BigInteger.ONE, message);
 
-        IGlobalWirelessEnergy.clearGlobalEnergyInformationMaps();
+        clearGlobalEnergyInformationMaps();
     }
 
     @Test
@@ -168,14 +172,14 @@ class IGlobalWirelessEnergy_UnitTest implements IGlobalWirelessEnergy {
         strongCheckOrAddUser(user_uuid_0, user_name_0);
         strongCheckOrAddUser(user_uuid_1, user_name_1);
 
-        assertEquals(GetUsernameFromUUID(user_uuid_0), user_name_0, message);
-        assertEquals(GetUsernameFromUUID(user_uuid_1), user_name_1, message);
+        assertEquals(getUsernameFromUUID(user_uuid_0), user_name_0, message);
+        assertEquals(getUsernameFromUUID(user_uuid_1), user_name_1, message);
 
         joinUserNetwork(user_uuid_0, user_uuid_1);
 
-        assertEquals(GetUsernameFromUUID(user_uuid_0), user_name_1, message);
-        assertEquals(GetUsernameFromUUID(user_uuid_1), user_name_1, message);
+        assertEquals(getUsernameFromUUID(user_uuid_0), user_name_1, message);
+        assertEquals(getUsernameFromUUID(user_uuid_1), user_name_1, message);
 
-        IGlobalWirelessEnergy.clearGlobalEnergyInformationMaps();
+        clearGlobalEnergyInformationMaps();
     }
 }

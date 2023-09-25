@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
@@ -84,6 +86,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     protected boolean needsUpdate = false;
     protected boolean hasInventoryChanged = false;
     protected boolean isPainted = false;
+    @Nonnull
     protected ForgeDirection facing = ForgeDirection.WEST; // Default to WEST, so it renders facing Left in the
                                                            // inventory
     protected byte color;
